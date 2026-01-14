@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,7 @@ import UIKit
 
 internal final class ListHeaderView: UITableViewHeaderFooterView {
     
-    internal static let reuseIdentifier = String(describing: self)
+    internal static let reuseIdentifier = String(describing: ListHeaderView.self)
     
     internal var onTrailingButtonTap: (() -> Void)?
     
@@ -39,8 +39,10 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
         backgroundView?.backgroundColor = item.style.backgroundColor
         contentView.backgroundColor = item.style.backgroundColor
         titleLabel.adyen.apply(item.style.title)
-        titleLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListHeaderView.\(item.title)",
-                                                                         postfix: "titleLabel")
+        titleLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(
+            scopeInstance: "Adyen.ListHeaderView.\(item.title)",
+            postfix: "titleLabel"
+        )
         titleLabel.text = item.title.uppercased()
         
         trailingButton.adyen.apply(item.style.trailingButton)

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -24,7 +24,8 @@ internal final class DefaultAPIClient: AnyRetryAPIClient {
     }
     
     internal func perform<R>(
-        _ request: R, shouldRetry: ((Result<R.ResponseType, Error>) -> Bool)?,
+        _ request: R,
+        shouldRetry: ((Result<R.ResponseType, Error>) -> Bool)?,
         completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void
     ) where R: Request {
         apiClient.perform(request, shouldRetry: {

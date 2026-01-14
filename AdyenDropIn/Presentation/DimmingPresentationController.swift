@@ -1,11 +1,12 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 import UIKit
+@_spi(AdyenInternal) import Adyen
 
 // MARK: - DimmingPresentationController
 
@@ -37,15 +38,14 @@ internal final class DimmingPresentationController: UIPresentationController {
     }
     
     override internal var frameOfPresentedViewInContainerView: CGRect {
-        guard let containerView = containerView else { return super.frameOfPresentedViewInContainerView }
+        guard let containerView else { return super.frameOfPresentedViewInContainerView }
         return containerView.frame
     }
     
-    /// :nodoc:
     override internal func presentationTransitionWillBegin() {
         super.presentationTransitionWillBegin()
         
-        guard let containerView = containerView else { return }
+        guard let containerView else { return }
         attachDimmigView(to: containerView)
         
         presentedViewController.transitionCoordinator?.animate(alongsideTransition: { _ in
@@ -53,12 +53,10 @@ internal final class DimmingPresentationController: UIPresentationController {
         })
     }
     
-    /// :nodoc:
     override internal func presentationTransitionDidEnd(_ completed: Bool) {
         super.presentationTransitionDidEnd(completed)
     }
     
-    /// :nodoc:
     override internal func dismissalTransitionWillBegin() {
         super.dismissalTransitionWillBegin()
         

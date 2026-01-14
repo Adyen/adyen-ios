@@ -1,0 +1,76 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "adyen.card.stored.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "da-DK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TestBundle - Verify your card - DK"
+          }
+        },
+        "fr-FR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TestBundle - Verify your card - FR"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TestBundle - Verify your card - HI"
+          }
+        },
+        "is-IS" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TestBundle - Verify your card - IS"
+          }
+        },
+        "ro-RO" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TestBundle - Verify your card - RO"
+          }
+        }
+      }
+    },
+    "adyen.dropIn.stored.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "da-DK" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TestBundle - Confirm %@ payment - DK"
+          }
+        },
+        "fr-FR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TestBundle - Confirm %@ payment - FR"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TestBundle - Confirm %@ payment - HI"
+          }
+        },
+        "is-IS" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TestBundle - Confirm %@ payment - IS"
+          }
+        },
+        "ro-RO" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "TestBundle - Confirm %@ payment - RO"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

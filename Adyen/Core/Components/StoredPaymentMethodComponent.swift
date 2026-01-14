@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,75 +7,122 @@
 import Foundation
 import UIKit
 
-/// :nodoc:
-public final class StoredPaymentMethodComponent: PaymentComponent, PresentableComponent, Localizable {
+///  A component that handle stored payment methods.
+public final class StoredPaymentMethodComponent: PaymentComponent,
+    PresentableComponent,
+    PaymentAware {
 
-    /// :nodoc:
-    public let apiContext: APIContext
-    
-    /// :nodoc:
+    /// Component's configuration.
+    public var configuration: Configuration
+
+    /// The context object for this component.
+    public let context: AdyenContext
+
+    /// The stored payment method.
     public var paymentMethod: PaymentMethod { storedPaymentMethod }
 
-    /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
-
-    /// :nodoc:
-    public init(paymentMethod: StoredPaymentMethod,
-                apiContext: APIContext) {
+    
+    /// Initializes new instance of `StoredPaymentMethodComponent`.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The stored payment method.
+    ///   - context: The context object.
+    ///   - configuration: The configuration for the component.
+    public init(
+        paymentMethod: StoredPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         self.storedPaymentMethod = paymentMethod
-        self.apiContext = apiContext
+        self.context = context
+        self.configuration = configuration
     }
     
     private let storedPaymentMethod: StoredPaymentMethod
     
     // MARK: - PresentableComponent
 
-    /// :nodoc:
     public lazy var viewController: UIViewController = {
-        Analytics.sendEvent(
-            component: storedPaymentMethod.type,
-            flavor: _isDropIn ? .dropin : .components,
-            context: apiContext
+        sendInitialAnalytics()
+        sendDidLoadEvent()
+
+        let localizationParameters = configuration.localizationParameters
+        let displayInformation = storedPaymentMethod.displayInformation(using: localizationParameters)
+        let alertController = UIAlertController(
+            title: localizedString(
+                .dropInStoredTitle,
+                localizationParameters,
+                storedPaymentMethod.name
+            ),
+            message: displayInformation.title,
+            preferredStyle: .alert
         )
-        
-        let displayInformation = storedPaymentMethod.localizedDisplayInformation(using: localizationParameters)
-        let alertController = UIAlertController(title: localizedString(.dropInStoredTitle,
-                                                                       localizationParameters, storedPaymentMethod.name),
-                                                message: displayInformation.title,
-                                                preferredStyle: .alert)
 
         let cancelAction = UIAlertAction(title: localizedString(.cancelButton, localizationParameters), style: .cancel) { [weak self] _ in
-            guard let self = self else { return }
+            guard let self else { return }
             self.delegate?.didFail(with: ComponentError.cancelled, from: self)
         }
         alertController.addAction(cancelAction)
         
-        let submitActionTitle = localizedSubmitButtonTitle(with: payment?.amount,
-                                                           style: .immediate,
-                                                           localizationParameters)
+        let submitActionTitle = localizedSubmitButtonTitle(
+            with: payment?.amount,
+            style: .immediate,
+            localizationParameters
+        )
         let submitAction = UIAlertAction(title: submitActionTitle, style: .default) { [weak self] _ in
-            guard let self = self else { return }
+            guard let self else { return }
             let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
-            self.submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.amountToPay, order: self.order))
+            self.submit(data: PaymentComponentData(
+                paymentMethodDetails: details,
+                amount: self.payment?.amount,
+                order: self.order
+            ))
         }
         alertController.addAction(submitAction)
         
         return alertController
     }()
     
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
-    
 }
 
-/// :nodoc:
+extension StoredPaymentMethodComponent {
+
+    /// Configuration for Stored Payment type components.
+    public struct Configuration: AnyBasicComponentConfiguration {
+
+        public var localizationParameters: LocalizationParameters?
+
+        /// Initializes the configuration for Issuer list type components.
+        /// - Parameters:
+        ///   - localizationParameters: Localization parameters.
+        public init(localizationParameters: LocalizationParameters? = nil) {
+            self.localizationParameters = localizationParameters
+        }
+    }
+
+}
+
+@_spi(AdyenInternal)
+extension StoredPaymentMethodComponent: TrackableComponent {}
+
+/// Store payment method details.
 public struct StoredPaymentDetails: PaymentMethodDetails {
     
-    internal let type: String
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
+    
+    internal let type: PaymentMethodType
     
     internal let storedPaymentMethodIdentifier: String
-
-    /// :nodoc:
+    
+    /// Initializes a new instance of `StoredPaymentDetails`
+    ///
+    /// - Parameter paymentMethod: The payment method.
     public init(paymentMethod: StoredPaymentMethod) {
         self.type = paymentMethod.type
         self.storedPaymentMethodIdentifier = paymentMethod.identifier
@@ -84,6 +131,7 @@ public struct StoredPaymentDetails: PaymentMethodDetails {
     private enum CodingKeys: String, CodingKey {
         case type
         case storedPaymentMethodIdentifier = "storedPaymentMethodId"
+        case sdkData
     }
     
 }

@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import Foundation
 import UIKit
@@ -15,31 +15,28 @@ import UIKit
  - SeeAlso:
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
-public class CardComponent: PublicKeyConsumer,
-    PresentableComponent,
-    Localizable,
+public class CardComponent: PresentableComponent,
+    PaymentMethodAware,
+    PaymentAware,
     LoadingComponent {
 
     internal enum Constant {
         internal static let defaultCountryCode = "US"
         internal static let secondsThrottlingDelay = 0.5
-        internal static let publicBinLength = 6
-        internal static let privateBinLength = 11
+        internal static let thresholdBINLength = 11
         internal static let publicPanSuffixLength = 4
     }
     
-    /// :nodoc:
-    public let apiContext: APIContext
-
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
+    
     internal let cardPaymentMethod: AnyCardPaymentMethod
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public let publicKeyProvider: AnyPublicKeyProvider
 
     internal let binInfoProvider: AnyBinInfoProvider
-    
-    /// Describes the component's UI style.
-    public let style: FormComponentStyle
     
     /// The card payment method.
     public var paymentMethod: PaymentMethod { cardPaymentMethod }
@@ -51,104 +48,108 @@ public class CardComponent: PublicKeyConsumer,
     public let supportedCardTypes: [CardType]
 
     /// Card component configuration.
-    public let configuration: Configuration
-
-    /// The shopper's information to be prefilled.
-    public let shopperInformation: PrefilledShopperInformation?
+    public private(set) var configuration: Configuration
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate? {
         didSet {
             storedCardComponent?.delegate = delegate
+            // override installment config if using session (when session is set as delegate)
+            if let installmentAware = delegate as? InstallmentConfigurationAware,
+               installmentAware.isSession {
+                configuration.installmentConfiguration = installmentAware.installmentConfiguration
+            }
+            
+            if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
+               storePaymentMethodAware.isSession {
+                configuration.showsStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
+            }
         }
     }
-
-    /// The payment information.
-    public var payment: Payment? {
+    
+    /// The partial payment order if any.
+    public var order: PartialPaymentOrder? {
         didSet {
-            storedCardComponent?.payment = payment
+            storedCardComponent?.order = order
         }
     }
     
-    /// Initializes the card component.
-    ///
-    /// - Parameters:
-    ///   - paymentMethod: The card payment method.
-    ///   - apiContext: The API context.
-    ///   - configuration: The configuration of the component.
-    ///   - shopperInformation: The shopper's information, optional.
-    ///   - style: The Component's UI style.
-    public convenience init(paymentMethod: AnyCardPaymentMethod,
-                            apiContext: APIContext,
-                            configuration: Configuration = Configuration(),
-                            shopperInformation: PrefilledShopperInformation? = nil,
-                            style: FormComponentStyle = FormComponentStyle()) {
-        let publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
-        let binInfoProvider = BinInfoProvider(apiClient: APIClient(apiContext: apiContext),
-                                              publicKeyProvider: publicKeyProvider,
-                                              minBinLength: Constant.privateBinLength)
-        self.init(paymentMethod: paymentMethod,
-                  apiContext: apiContext,
-                  configuration: configuration,
-                  shopperInformation: shopperInformation,
-                  style: style,
-                  publicKeyProvider: publicKeyProvider,
-                  binProvider: binInfoProvider)
+    /// Determines whether the storedCardComponent is active
+    private var isStoredCardComponentActive: Bool {
+        storedCardComponent != nil
     }
     
-    /// :nodoc:
     /// Initializes the card component.
     ///
     /// - Parameters:
     ///   - paymentMethod: The card payment method.
-    ///   - apiContext: The API context.
+    ///   - context: The context object for this component.
+    ///   - configuration: The configuration of the component.
+    public convenience init(
+        paymentMethod: AnyCardPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
+        let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
+        let binInfoProvider = BinInfoProvider(
+            apiClient: APIClient(apiContext: context.apiContext),
+            publicKeyProvider: publicKeyProvider,
+            minBinLength: Constant.thresholdBINLength,
+            binLookupType: configuration.binLookupType
+        )
+        self.init(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: publicKeyProvider,
+            binProvider: binInfoProvider
+        )
+    }
+    
+    /// Initializes the card component.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The card payment method.
+    ///   - context: The context object for this component.
     ///   - configuration: The Card component configuration.
-    ///   - shopperInformation: The shopper's information.
-    ///   - style: The Component's UI style.
     ///   - publicKeyProvider: The public key provider
     ///   - binProvider: Any object capable to provide a BinInfo.
-    internal init(paymentMethod: AnyCardPaymentMethod,
-                  apiContext: APIContext,
-                  configuration: Configuration,
-                  shopperInformation: PrefilledShopperInformation? = nil,
-                  style: FormComponentStyle,
-                  publicKeyProvider: AnyPublicKeyProvider,
-                  binProvider: AnyBinInfoProvider) {
+    internal init(
+        paymentMethod: AnyCardPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration,
+        publicKeyProvider: AnyPublicKeyProvider,
+        binProvider: AnyBinInfoProvider
+    ) {
         self.cardPaymentMethod = paymentMethod
-        self.apiContext = apiContext
+        self.context = context
         self.configuration = configuration
-        self.shopperInformation = shopperInformation
-        self.style = style
         self.publicKeyProvider = publicKeyProvider
         self.binInfoProvider = binProvider
 
-        let paymentMethodCardTypes = paymentMethod.brands.compactMap(CardType.init)
-        let excludedCardTypes = configuration.excludedCardTypes
-        let allowedCardTypes = configuration.allowedCardTypes ?? paymentMethodCardTypes
-        self.supportedCardTypes = allowedCardTypes.minus(excludedCardTypes)
+        self.supportedCardTypes = configuration.allowedCardTypes ?? paymentMethod.brands
     }
     
     // MARK: - Presentable Component Protocol
     
-    /// :nodoc:
     public var viewController: UIViewController {
-        if let storedCardComponent = storedCardComponent {
+        if let storedCardComponent {
             return storedCardComponent.viewController
         }
         return securedViewController
     }
     
-    /// :nodoc:
     public var requiresModalPresentation: Bool { storedCardComponent?.requiresModalPresentation ?? true }
-    
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
-    
-    /// :nodoc:
+
     public func stopLoading() {
+        // since storedCardComponent is instantiated through this class
+        // cardViewController should not be accessed when it's the storedCardComponent
+        // we should separate stored card component logic into its own
+        if isStoredCardComponentActive { return }
+        
         cardViewController.stopLoading()
     }
-    
+
     // MARK: - Stored Card
     
     internal lazy var storedCardComponent: (PaymentComponent & PresentableComponent)? = {
@@ -157,46 +158,199 @@ public class CardComponent: PublicKeyConsumer,
         }
         var component: PaymentComponent & PresentableComponent
         if configuration.stored.showsSecurityCodeField {
-            component = StoredCardComponent(storedCardPaymentMethod: paymentMethod, apiContext: apiContext)
+            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context)
+            storedComponent.localizationParameters = configuration.localizationParameters
+            component = storedComponent
         } else {
-            component = StoredPaymentMethodComponent(paymentMethod: paymentMethod, apiContext: apiContext)
+            let storedConfiguration: StoredPaymentMethodComponent.Configuration
+            storedConfiguration = .init(localizationParameters: configuration.localizationParameters)
+            let storedComponent = StoredPaymentMethodComponent(
+                paymentMethod: paymentMethod,
+                context: context,
+                configuration: storedConfiguration
+            )
+            component = storedComponent
         }
-        component.payment = payment
         return component
     }()
     
+    /// Updates the visibility of the store payment method switch.
+    ///
+    /// - Parameter isVisible: Indicates whether to show the switch if `true` or to hide it if `false`.
+    public func update(storePaymentMethodFieldVisibility isVisible: Bool) {
+        cardViewController.update(storePaymentMethodFieldVisibility: isVisible)
+    }
+
+    public func update(storePaymentMethodFieldValue isOn: Bool) {
+        cardViewController.update(storePaymentMethodFieldValue: isOn)
+    }
+
     // MARK: - Form Items
     
-    private lazy var securedViewController = SecuredViewController(child: cardViewController, style: style)
+    private lazy var securedViewController = SecuredViewController(child: cardViewController, style: configuration.style)
     
     internal lazy var cardViewController: CardViewController = {
-        let formViewController = CardViewController(configuration: configuration,
-                                                    shopperInformation: shopperInformation,
-                                                    formStyle: style,
-                                                    payment: payment,
-                                                    logoProvider: LogoURLProvider(environment: apiContext.environment),
-                                                    supportedCardTypes: supportedCardTypes,
-                                                    scope: String(describing: self),
-                                                    localizationParameters: localizationParameters)
+
+        let formViewController = CardViewController(
+            configuration: configuration,
+            shopperInformation: configuration.shopperInformation,
+            formStyle: configuration.style,
+            payment: payment,
+            logoProvider: LogoURLProvider(environment: context.apiContext.environment),
+            supportedCardTypes: supportedCardTypes,
+            initialCountryCode: initialCountryCode,
+            scope: String(describing: self),
+            localizationParameters: configuration.localizationParameters,
+            cardScannerAnalyticsHandler: { [weak self] logSubType in
+                self?.sendCardScannerLogEvent(logSubType)
+            }
+        )
+
         formViewController.delegate = self
         formViewController.cardDelegate = self
-        formViewController.title = paymentMethod.name
+        formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
+
+        formViewController.items.onDidTriggerInfoEvent = { [weak self] infoEventData in
+            self?.sendInfoEvent(with: infoEventData)
+        }
+
         return formViewController
     }()
+    
+    private let panThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
+    private let binThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
+    
+    private func sendInfoEvent(with data: CardViewController.InfoEventData) {
+        var infoEvent = AnalyticsEventInfo(
+            component: paymentMethod.type.rawValue,
+            type: data.type
+        )
+        infoEvent.target = data.target
+        infoEvent.brand = data.brands?.first?.type.rawValue
+
+        // Send configData only when co-badged cards are displayed
+        if data.type == .displayed, infoEvent.target == .dualBrandButton {
+            infoEvent.configData = CoBadgedCardAnalyticsConfiguration(dualBrands: data.brands?.map(\.type.rawValue).joined(separator: ","))
+        }
+        if let errorCode = data.error?.analyticsErrorCode {
+            infoEvent.validationErrorCode = String(errorCode)
+        }
+        infoEvent.validationErrorMessage = data.error?.analyticsErrorMessage
+        context.analyticsProvider?.add(info: infoEvent)
+    }
 }
 
 extension CardComponent: CardViewControllerDelegate {
     
-    func didChangeBIN(_ value: String) {
-        self.cardComponentDelegate?.didChangeBIN(String(value.prefix(Constant.publicBinLength)), component: self)
-        binInfoProvider.provide(for: value, supportedTypes: supportedCardTypes) { [weak self] binInfo in
-            guard let self = self else { return }
-            // update response with sorted brands
-            var binInfo = binInfo
-            binInfo.brands = CardBrandSorter.sortBrands(binInfo.brands ?? [])
+    internal func didChange(pan: String) {
+        panThrottler.throttle { [weak self] in
+            self?.updateBrand(with: pan)
+        }
+    }
+    
+    internal func didChange(bin: String) {
+        binThrottler.throttle { [weak self] in
+            guard let self else { return }
+            self.cardComponentDelegate?.didChangeBIN(bin, component: self)
+        }
+    }
+    
+    private func updateBrand(with pan: String) {
+        binInfoProvider.provide(for: pan, supportedTypes: supportedCardTypes) { [weak self] binInfo in
+            guard let self else { return }
             self.cardViewController.update(binInfo: binInfo)
             self.cardComponentDelegate?.didChangeCardBrand(binInfo.brands ?? [], component: self)
         }
     }
+}
+
+@_spi(AdyenInternal)
+extension CardComponent: PublicKeyConsumer {}
+
+private extension CardComponent {
     
+    private var initialCountryCode: String {
+        
+        if
+            let preferredCountry = configuration.shopperInformation?.billingAddress?.country,
+            let supportedCountryCodes = configuration.billingAddress.countryCodes,
+            supportedCountryCodes.isEmpty || supportedCountryCodes.contains(preferredCountry) {
+            return preferredCountry
+        }
+        
+        return
+            configuration.billingAddress.countryCodes?.first ??
+            payment?.countryCode ??
+            Locale.current.regionCode ??
+            CardComponent.Constant.defaultCountryCode
+    }
+}
+
+private extension CardComponent.Configuration {
+    
+    func addressLookupViewModel(
+        with initialCountry: String,
+        prefillAddress: PostalAddress?,
+        lookupProvider: AddressLookupProvider,
+        completionHandler: @escaping (PostalAddress?) -> Void
+    ) -> AddressLookupViewController.ViewModel {
+        
+        .init(
+            for: .billing,
+            localizationParameters: localizationParameters,
+            supportedCountryCodes: billingAddress.countryCodes,
+            initialCountry: initialCountry,
+            prefillAddress: prefillAddress,
+            lookupProvider: lookupProvider,
+            completionHandler: completionHandler
+        )
+    }
+
+    func addressInputFormViewModel(
+        with initialCountry: String,
+        prefillAddress: PostalAddress?,
+        completionHandler: @escaping (PostalAddress?) -> Void
+    ) -> AddressInputFormViewController.ViewModel {
+        
+        .init(
+            for: .billing,
+            style: style,
+            localizationParameters: localizationParameters,
+            initialCountry: initialCountry,
+            prefillAddress: prefillAddress,
+            supportedCountryCodes: billingAddress.countryCodes,
+            addressViewModelBuilder: DefaultAddressViewModelBuilder(),
+            handleShowSearch: nil,
+            completionHandler: completionHandler
+        )
+    }
+}
+
+// MARK: - SubmitCustomizable
+
+extension CardComponent: SubmittableComponent {
+
+    public func submit() {
+        didSelectSubmitButton()
+    }
+
+    public func validate() -> Bool {
+        cardViewController.validate()
+    }
+}
+
+// MARK: - AdyenCardScanner Analytics
+
+extension CardComponent {
+
+    private func sendCardScannerLogEvent(_ subtype: AnalyticsEventLog.LogSubType) {
+        let component = paymentMethod.type.rawValue
+        let logEvent = AnalyticsEventLog(
+            component: component,
+            type: .cardScanner,
+            subType: subtype
+        )
+
+        context.analyticsProvider?.add(log: logEvent)
+    }
 }

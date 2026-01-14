@@ -1,34 +1,42 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenComponents)
     import AdyenComponents
 #endif
 #if canImport(AdyenActions)
-    import AdyenActions
+    @_spi(AdyenInternal) import AdyenActions
 #endif
 #if canImport(AdyenCard)
-    import AdyenCard
+    @_spi(AdyenInternal) import AdyenCard
 #endif
 import AdyenNetworking
 import UIKit
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension DropInComponent: PaymentMethodListComponentDelegate {
+
+    internal func didLoad(_ paymentMethodListComponent: PaymentMethodListComponent) {
+        sendDidLoadEvent()
+    }
     
-    internal func didSelect(_ component: PaymentComponent,
-                            in paymentMethodListComponent: PaymentMethodListComponent) {
+    internal func didSelect(
+        _ component: PaymentComponent,
+        in paymentMethodListComponent: PaymentMethodListComponent
+    ) {
         (rootComponent as? ComponentLoader)?.startLoading(for: component)
         didSelect(component)
     }
     
-    internal func didDelete(_ paymentMethod: StoredPaymentMethod,
-                            in paymentMethodListComponent: PaymentMethodListComponent,
-                            completion: @escaping (Bool) -> Void) {
+    internal func didDelete(
+        _ paymentMethod: StoredPaymentMethod,
+        in paymentMethodListComponent: PaymentMethodListComponent,
+        completion: @escaping (Bool) -> Void
+    ) {
         let deletionCompletion = { [weak self] (success: Bool) in
             defer {
                 completion(success)
@@ -37,21 +45,34 @@ extension DropInComponent: PaymentMethodListComponentDelegate {
             self?.paymentMethods.stored.removeAll(where: { $0 == paymentMethod })
             self?.reloadComponentManager()
         }
-        storedPaymentMethodsDelegate?.disable(storedPaymentMethod: paymentMethod, completion: deletionCompletion)
+        
+        if let sessionAsStoredPaymentMethodsDelegate {
+            sessionAsStoredPaymentMethodsDelegate.disable(
+                storedPaymentMethod: paymentMethod,
+                dropInComponent: self,
+                completion: deletionCompletion
+            )
+        } else {
+            storedPaymentMethodsDelegate?.disable(
+                storedPaymentMethod: paymentMethod,
+                completion: deletionCompletion
+            )
+        }
     }
-    
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension DropInComponent: PaymentComponentDelegate {
     
-    /// :nodoc:
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         paymentInProgress = true
-        delegate?.didSubmit(data, for: component.paymentMethod, from: self)
+        
+        component.prepareSubmitData(from: data) { [weak self] updatedData in
+            guard let self else { return }
+            self.delegate?.didSubmit(updatedData, from: component, in: self)
+        }
     }
     
-    /// :nodoc:
     public func didFail(with error: Error, from component: PaymentComponent) {
         if case ComponentError.cancelled = error {
             userDidCancel(component)
@@ -62,32 +83,28 @@ extension DropInComponent: PaymentComponentDelegate {
 
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension DropInComponent: ActionComponentDelegate {
     
-    /// :nodoc:
-    public func didOpenExternalApplication(_ component: ActionComponent) {
+    public func didOpenExternalApplication(component: ActionComponent) {
         stopLoading()
-        delegate?.didOpenExternalApplication(self)
-    }
-
-    /// :nodoc:
-    public func didComplete(from component: ActionComponent) {
-        delegate?.didComplete(from: self)
+        delegate?.didOpenExternalApplication(component: component, in: self)
     }
     
-    /// :nodoc:
+    public func didComplete(from component: ActionComponent) {
+        delegate?.didComplete(from: component, in: self)
+    }
+    
     public func didFail(with error: Error, from component: ActionComponent) {
         if case ComponentError.cancelled = error {
             userDidCancel(component)
         } else {
-            delegate?.didFail(with: error, from: self)
+            delegate?.didFail(with: error, from: component, in: self)
         }
     }
     
-    /// :nodoc:
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        delegate?.didProvide(data, from: self)
+        delegate?.didProvide(data, from: component, in: self)
     }
     
 }
@@ -110,34 +127,54 @@ extension DropInComponent: PreselectedPaymentMethodComponentDelegate {
     }
 }
 
-extension DropInComponent: PresentationDelegate {
+extension DropInComponent: NavigationDelegate {
 
-    /// :nodoc:
+    internal func dismiss(completion: (() -> Void)? = nil) {
+        navigationController.dismiss(animated: true, completion: completion)
+    }
+
+    @_spi(AdyenInternal)
     public func present(component: PresentableComponent) {
         navigationController.present(asModal: component)
     }
+
 }
 
 extension DropInComponent: FinalizableComponent {
 
-    /// Stops loading and finalize DropIn's selected payment if necessary.
-    /// This method must be called after certain payment methods (e.x. ApplePay)
-    /// - Parameter success: Status of the payment.
-    public func didFinalize(with success: Bool) {
+    public func didFinalize(with success: Bool, completion: (() -> Void)?) {
         stopLoading()
-        selectedPaymentComponent?.finalizeIfNeeded(with: success)
+        if let finalizableComponent = selectedPaymentComponent as? FinalizableComponent {
+            finalizableComponent.didFinalize(with: success, completion: completion)
+        } else {
+            completion?()
+        }
     }
 }
 
 extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func showConfirmation(for component: InstantPaymentComponent, with order: PartialPaymentOrder?) {
         let newRoot = preselectedPaymentMethodComponent(for: component, onCancel: { [weak self] in
-            guard let order = order else { return }
-            self?.partialPaymentDelegate?.cancelOrder(order)
+            guard let self, let order else { return }
+            self.partialPaymentDelegate?.cancelOrder(order, component: self)
         })
         navigationController.present(root: newRoot)
         rootComponent = newRoot
+    }
+}
+
+@_spi(AdyenInternal)
+extension DropInComponent: TrackableComponent {
+    public var analyticsFlavor: AnalyticsFlavor {
+        let paymentMethodTypes = paymentMethods.regular.map(\.type.rawValue)
+        return .dropIn(paymentMethods: paymentMethodTypes)
+    }
+    
+    public func sendDidLoadEvent() {
+        var infoEvent = AnalyticsEventInfo(component: "dropin", type: .rendered)
+        infoEvent.configData = DropInAnalyticsConfiguration(configuration: configuration)
+        context.analyticsProvider?.add(info: infoEvent)
     }
 }

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -44,9 +44,11 @@ internal final class DiffableListDataSource: UITableViewDiffableDataSource<ListS
     }
 
     // first reload must be NOT animated, since its crashes on iOS 14.
-    internal func reload(newSections: [ListSection],
-                         tableView: UITableView,
-                         animated: Bool = false) {
+    internal func reload(
+        newSections: [ListSection],
+        tableView: UITableView,
+        animated: Bool = false
+    ) {
         sections = newSections.filter { $0.items.isEmpty == false }
         var snapShot = NSDiffableDataSourceSnapshot<ListSection, ListItem>()
         snapShot.appendSections(sections)
@@ -58,9 +60,11 @@ internal final class DiffableListDataSource: UITableViewDiffableDataSource<ListS
         }
     }
     
-    internal func deleteItem(at indexPath: IndexPath,
-                             tableView: UITableView,
-                             animated: Bool = true) {
+    internal func deleteItem(
+        at indexPath: IndexPath,
+        tableView: UITableView,
+        animated: Bool = true
+    ) {
         var currentSnapshot = snapshot()
         
         deleteItem(at: indexPath, &currentSnapshot)
@@ -106,7 +110,7 @@ internal final class DiffableListDataSource: UITableViewDiffableDataSource<ListS
     
 }
 
-extension Array where Element == ListSection {
+extension [ListSection] {
     internal var isEditable: Bool {
         contains(where: \.isEditable)
     }

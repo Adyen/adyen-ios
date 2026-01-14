@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Indicates QR code payment methods.
@@ -13,6 +13,17 @@ public enum QRCodePaymentMethod: String, Codable, CaseIterable {
     /// PIX
     case pix
     
+    /// PromptPay
+    case promptPay = "promptpay"
+    
+    /// DuitNow
+    case duitNow = "duitnow"
+    
+    /// PayNow
+    case payNow = "paynow"
+
+    /// UPI QRCode flow
+    case upiQRCode = "upi_qr"
 }
 
 /// Describes any QR code action.

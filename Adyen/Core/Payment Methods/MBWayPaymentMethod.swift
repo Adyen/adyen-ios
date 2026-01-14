@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,22 +9,13 @@ import Foundation
 /// A MB Way payment method.
 public struct MBWayPaymentMethod: PaymentMethod {
     
-    /// :nodoc:
-    public let type: String
+    public let type: PaymentMethodType
     
-    /// :nodoc:
     public let name: String
     
-    /// Initializes the MB Way Wallet payment method.
-    ///
-    /// - Parameter type: The payment method type.
-    /// - Parameter name: The payment method name.
-    internal init(type: String, name: String) {
-        self.type = type
-        self.name = name
-    }
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }

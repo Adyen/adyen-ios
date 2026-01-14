@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,79 +7,61 @@
 import UIKit
 
 /// Displays a form for the user to enter details.
-/// :nodoc:
 @objc(ADYFormViewController)
-open class FormViewController: UIViewController, Localizable, KeyboardObserver, Observer, PreferredContentSizeConsumer {
+@_spi(AdyenInternal)
+open class FormViewController: UIViewController, AdyenObserver, PreferredContentSizeConsumer {
 
-    fileprivate enum Animations {
-        fileprivate static let keyboardBottomInset = "keyboardBottomInset"
-        fileprivate static let firstResponder = "firstResponder"
+    private enum Animations {
+        static let keyboardBottomInset = "keyboardBottomInset"
+        static let firstResponder = "firstResponder"
     }
 
-    /// :nodoc:
+    // MARK: - UI elements
+
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+
+    private let formView: FormView = {
+        let form = FormView()
+        form.translatesAutoresizingMaskIntoConstraints = false
+        return form
+    }()
+
+    // MARK: - Public properties
+
     public var requiresKeyboardInput: Bool { formRequiresInputView() }
 
     /// Indicates the `FormViewController` UI styling.
     public let style: ViewStyle
 
-    /// :nodoc:
     /// Delegate to handle different viewController events.
     public weak var delegate: ViewControllerDelegate?
 
-    // MARK: - Public
+    // MARK: - Private properties
+
+    private var keyboardObserver = KeyboardObserver()
+    private var scrollEnabled: Bool
+
+    // MARK: - Initializers
 
     /// Initializes the FormViewController.
     ///
-    /// - Parameter style: The `FormViewController` UI style.
-    public init(style: ViewStyle) {
+    /// - Parameters:
+    ///   - scrollEnabled: Boolean value that determines whether the form view contains a scroll view in its view hierarchy.
+    ///   - style: The `FormViewController` UI style.
+    ///   - localizationParameters: The localization parameters.
+    public init(
+        scrollEnabled: Bool,
+        style: ViewStyle,
+        localizationParameters: LocalizationParameters?
+    ) {
+        self.scrollEnabled = scrollEnabled
         self.style = style
-        super.init(nibName: nil, bundle: nil)
-        startObserving()
-    }
-
-    deinit {
-        stopObserving()
-    }
-
-    // MARK: - View lifecycle
-
-    /// :nodoc:
-    override open func viewDidLoad() {
-        super.viewDidLoad()
-        addFormView()
-        itemManager.topLevelItemViews.forEach(formView.appendItemView(_:))
-        delegate?.viewDidLoad(viewController: self)
-    }
-
-    /// :nodoc:
-    override open func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        delegate?.viewWillAppear(viewController: self)
-    }
-
-    /// :nodoc:
-    override open func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        delegate?.viewDidAppear(viewController: self)
-
-        view.adyen.animate(context: AnimationContext(animationKey: Animations.firstResponder,
-                                                     duration: 0,
-                                                     options: [.layoutSubviews, .beginFromCurrentState],
-                                                     animations: { [weak self] in
-                                                         self?.assignInitialFirstResponder()
-                                                     }))
-    }
-
-    /// :nodoc:
-    override open func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        resignFirstResponder()
-    }
-
-    /// :nodoc:
-    override open func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        resetForm()
+        self.localizationParameters = localizationParameters
+        super.init(nibName: nil, bundle: Bundle(for: FormViewController.self))
     }
 
     @available(*, unavailable)
@@ -87,7 +69,57 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         fatalError("init(coder:) has not been implemented")
     }
 
-    /// :nodoc:
+    // MARK: - View lifecycle
+
+    override open func loadView() {
+        super.loadView()
+        addSubviews()
+        setupLayout()
+        setupViews()
+    }
+
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+        itemManager.topLevelItemViews.forEach(formView.appendItemView(_:))
+        delegate?.viewDidLoad(viewController: self)
+
+        observe(keyboardObserver.$keyboardRect) { [weak self] _ in
+            self?.didUpdatePreferredContentSize()
+        }
+    }
+
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        delegate?.viewWillAppear(viewController: self)
+    }
+
+    override open func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        delegate?.viewDidAppear(viewController: self)
+
+        view.adyen.animate(context: AnimationContext(
+            animationKey: Animations.firstResponder,
+            duration: 0,
+            options: [.layoutSubviews, .beginFromCurrentState],
+            animations: { [weak self] in
+                self?.assignInitialFirstResponder()
+            }
+        ))
+    }
+
+    override open func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        resignFirstResponder()
+    }
+
+    override open func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        if scrollEnabled {
+            resetForm()
+        }
+    }
+
     override public var preferredContentSize: CGSize {
         get { formView.intrinsicContentSize }
 
@@ -99,39 +131,24 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         """) }
     }
 
-    // MARK: - KeyboardObserver
-
-    /// :nodoc:
-    public var keyboardObserver: Any?
-
-    /// :nodoc:
-    public func startObserving() {
-        startObserving { [weak self] in
-            self?.keyboardRect = $0
-            self?.didUpdatePreferredContentSize()
-        }
-    }
-
     // MARK: - Private Properties
-
-    private var keyboardRect: CGRect = .zero
 
     private lazy var itemManager = FormViewItemManager()
 
     // MARK: - PreferredContentSizeConsumer
 
-    /// :nodoc:
     public func willUpdatePreferredContentSize() { /* Empty implementation */ }
 
-    /// :nodoc:
     public func didUpdatePreferredContentSize() {
-        let bottomInset: CGFloat = keyboardRect.height - view.safeAreaInsets.bottom
-        let context = AnimationContext(animationKey: Animations.keyboardBottomInset,
-                                       duration: 0.25,
-                                       options: [.beginFromCurrentState, .layoutSubviews],
-                                       animations: { [weak self] in
-                                           self?.formView.contentInset.bottom = bottomInset
-                                       })
+        let bottomInset: CGFloat = keyboardObserver.keyboardRect.height - view.safeAreaInsets.bottom
+        let context = AnimationContext(
+            animationKey: Animations.keyboardBottomInset,
+            duration: 0.25,
+            options: [.beginFromCurrentState, .layoutSubviews],
+            animations: { [weak self] in
+                self?.scrollView.contentInset.bottom = bottomInset
+            }
+        )
         view.adyen.animate(context: context)
     }
 
@@ -141,7 +158,8 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
     ///
     /// - Parameters:
     ///   - item: The item to append.
-    public func append<T: FormItem>(_ item: T) {
+    @_spi(AdyenInternal)
+    public func append(_ item: some FormItem) {
         let itemView = itemManager.append(item)
         observerVisibility(of: item, and: itemView)
         itemView.applyTextDelegateIfNeeded(delegate: self)
@@ -153,21 +171,25 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         formView.appendItemView(itemView)
     }
 
-    private func observerVisibility<T: FormItem>(of item: T, and itemView: UIView) {
-        guard let item = item as? Hidable else { return }
-        itemView.adyen.hide(animationKey: String(describing: itemView),
-                            hidden: item.isHidden.wrappedValue, animated: false)
+    private func observerVisibility(of item: some FormItem, and itemView: UIView) {
+        itemView.adyen.hide(
+            animationKey: String(describing: itemView),
+            hidden: item.isHidden.wrappedValue,
+            animated: false
+        )
 
         observe(item.isHidden) { isHidden in
-            itemView.adyen.hide(animationKey: String(describing: itemView),
-                                hidden: isHidden, animated: true)
+            itemView.adyen.hide(
+                animationKey: String(describing: itemView),
+                hidden: isHidden,
+                animated: true
+            )
         }
     }
 
     // MARK: - Localizable
 
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
+    public let localizationParameters: LocalizationParameters?
 
     // MARK: - Validity
 
@@ -188,20 +210,25 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         return false
     }
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func showValidation() {
-        itemManager.flatItemViews
-            .compactMap { $0 as? AnyFormValueItemView }
-            .forEach { $0.validate() }
+        let validatableItemViews = itemManager.flatItemViews
+            .compactMap { $0 as? AnyFormValidatableValueItemView }
+
+        validatableItemViews.forEach { $0.showValidation() }
+
+        let firstInvalidItemView = validatableItemViews.first { !$0.isValid }
+
+        if let firstInvalidItemView {
+            UIAccessibility.post(notification: .screenChanged, argument: firstInvalidItemView)
+        }
     }
 
     private func getAllValidatableItems() -> [ValidatableFormItem] {
-        let visibleItems = itemManager.topLevelItem.filter {
-            !(($0 as? Hidable)?.isHidden.wrappedValue == true)
-        }
-
-        let validatableItems = visibleItems.flatMap(\.flatSubitems).compactMap { $0 as? ValidatableFormItem }
-        return validatableItems
+        itemManager.topLevelItem
+            .filter(\.isVisible)
+            .flatMap(\.flatSubitems)
+            .compactMap { $0 as? ValidatableFormItem }
     }
 
     private func formRequiresInputView() -> Bool {
@@ -212,20 +239,46 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
         itemManager.flatItemViews.forEach { $0.reset() }
     }
 
-    // MARK: - Private
+    public func focusNextInputField() {
+        let textInputItems = itemManager.flatItems.compactMap {
+            $0 as? FormTextInputItem
+        }.filter(\.isVisible)
 
-    private func addFormView() {
-        view.addSubview(formView)
-        view.backgroundColor = style.backgroundColor
-        formView.backgroundColor = style.backgroundColor
-        formView.adyen.anchor(inside: view.safeAreaLayoutGuide)
+        let firstEmptyItem = textInputItems.first(where: { $0.value.isEmpty })
+        firstEmptyItem?.focus()
     }
 
-    private lazy var formView: FormView = {
-        let form = FormView()
-        form.translatesAutoresizingMaskIntoConstraints = false
-        return form
-    }()
+    // MARK: - Private
+
+    private func addSubviews() {
+        if scrollEnabled {
+            view.addSubview(scrollView)
+            scrollView.addSubview(formView)
+        } else {
+            view.addSubview(formView)
+        }
+    }
+
+    private func setupLayout() {
+        if scrollEnabled {
+            scrollView.adyen.anchor(inside: view.safeAreaLayoutGuide)
+
+            NSLayoutConstraint.activate([
+                formView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+                formView.leadingAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.leadingAnchor),
+                formView.trailingAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.trailingAnchor),
+                formView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+            ])
+        } else {
+            formView.adyen.anchor(inside: view.safeAreaLayoutGuide)
+        }
+    }
+
+    private func setupViews() {
+        view.backgroundColor = style.backgroundColor
+        formView.backgroundColor = style.backgroundColor
+        formView.isEmbeddedInScrollView = scrollEnabled
+    }
 
     // MARK: - UIResponder
 
@@ -241,26 +294,25 @@ open class FormViewController: UIViewController, Localizable, KeyboardObserver, 
 
     private func assignInitialFirstResponder() {
         guard view.isUserInteractionEnabled else { return }
-        let textItemView = itemManager.topLevelItemViews.first(where: { $0.canBecomeFirstResponder })
+        let textItemView = itemManager.topLevelItemViews.first(where: { $0.canBecomeFirstResponder && !$0.isHidden })
         textItemView?.becomeFirstResponder()
     }
 }
 
 // MARK: - FormTextItemViewDelegate
 
+@_spi(AdyenInternal)
 extension FormViewController: FormTextItemViewDelegate {
 
-    /// :nodoc:
-    public func didReachMaximumLength<T: FormTextItem>(in itemView: FormTextItemView<T>) {
+    public func didReachMaximumLength(in itemView: FormTextItemView<some FormTextItem>) {
         handleReturnKey(from: itemView)
     }
 
-    /// :nodoc:
-    public func didSelectReturnKey<T: FormTextItem>(in itemView: FormTextItemView<T>) {
+    public func didSelectReturnKey(in itemView: FormTextItemView<some FormTextItem>) {
         handleReturnKey(from: itemView)
     }
 
-    private func handleReturnKey<T: FormTextItem>(from itemView: FormTextItemView<T>) {
+    private func handleReturnKey(from itemView: FormTextItemView<some FormTextItem>) {
         let itemViews = itemManager.flatItemViews
 
         // Determine the index of the current item view.
@@ -272,10 +324,10 @@ extension FormViewController: FormTextItemViewDelegate {
         let remainingItemViews = itemViews.suffix(from: itemViews.index(after: currentIndex))
 
         // Find the first item view that's eligible to become a first responder.
-        let nextItemView = remainingItemViews.first { $0.canBecomeFirstResponder && $0.isHidden == false }
+        let nextItemView = remainingItemViews.first { $0.canBecomeFirstResponder && !$0.isHidden }
 
         // Assign the first responder, or resign the current one if there is none remaining.
-        if let nextItemView = nextItemView {
+        if let nextItemView {
             nextItemView.becomeFirstResponder()
         } else {
             itemView.resignFirstResponder()

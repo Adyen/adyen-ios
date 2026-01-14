@@ -1,16 +1,20 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 /// A form item into which a card number is entered.
-internal final class FormCardNumberItem: FormTextItem, Observer {
+internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     
-    private static let binLength = 12
+    private enum Constants {
+        static let smallBinLength = 6
+        static let largeBinLength = 8
+        static let minimumPANLength = 16
+    }
 
     private let cardNumberFormatter = CardNumberFormatter()
 
@@ -20,34 +24,60 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
     /// Supported card type logos.
     internal let cardTypeLogos: [FormCardLogosItem.CardTypeLogo]
     
-    /// The observable of the card's BIN value.
-    /// The value contains up to 6 first digits of card' PAN.
-    @Observable("") internal var binValue: String
+    /// The card's BIN value up to 8 digits.
+    /// Reported with every entered digit.
+    @AdyenObservable("") internal var binValue: String
     
-    /// Currently selected brand for the entered bin.
-    @Observable(nil) internal private(set) var currentBrand: CardBrand?
+    /// Initial brand set after detection before any user interaction
+    @AdyenObservable(nil) internal private(set) var initialBrand: CardBrand?
+    
+    /// Brand selected in dual branded cards, set after user selection.
+    @AdyenObservable(nil) internal private(set) var selectedDualBrand: CardBrand?
     
     /// Detected brand logo(s) for the entered bin.
-    @Observable([]) internal private(set) var detectedBrandLogos: [FormCardLogosItem.CardTypeLogo]
+    @AdyenObservable([]) internal private(set) var detectedBrandLogos: [FormCardLogosItem.CardTypeLogo]
     
     /// Determines whether the item is currently the focused one (first responder).
-    @Observable(false) internal var isActive
+    @AdyenObservable(false) internal var isActive
     
     /// Current detected brands, mainly used for dual-branded cards.
     internal private(set) var detectedBrands: [CardBrand] = []
     
-    /// :nodoc:
     private let localizationParameters: LocalizationParameters?
     
+    internal let scanCardHandler: (() -> Void)?
+    internal var scanYourCardButtonTitle: String
+    
+    internal var supportsCardScanning: Bool { scanCardHandler != nil }
+    
+    /// Returns the initial brand for single brand cases
+    /// or `selectedDualBrand` for dual brand cases
+    internal var currentBrand: CardBrand? {
+        isDualBranded ? selectedDualBrand : initialBrand
+    }
+    
+    internal var isDualBranded: Bool = false
+
     /// Initializes the form card number item.
-    internal init(cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
-                  style: FormTextItemStyle = FormTextItemStyle(),
-                  localizationParameters: LocalizationParameters? = nil) {
-        self.cardTypeLogos = cardTypeLogos
+    internal init(
+        cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
+        style: FormTextItemStyle = FormTextItemStyle(),
+        localizationParameters: LocalizationParameters? = nil,
+        scanCardHandler: (() -> Void)? = nil
+    ) {
+        // these 4 US debit brands are not to be displayed
+        // but should be supported so it's done here for now
+        self.cardTypeLogos = cardTypeLogos.filter { logo in
+            logo.type != .accel &&
+                logo.type != .pulse &&
+                logo.type != .star &&
+                logo.type != .nyce
+        }
         self.supportedCardTypes = cardTypeLogos.map(\.type)
-        
         self.localizationParameters = localizationParameters
-        
+        self.scanCardHandler = scanCardHandler
+        self.scanYourCardButtonTitle = localizedString(.cardScanYourCardButton, localizationParameters)
+
         super.init(style: style)
 
         observe(publisher) { [weak self] value in self?.valueDidChange(value) }
@@ -63,51 +93,119 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
     // MARK: - Value
     
     private func valueDidChange(_ value: String) {
-        binValue = String(value.prefix(FormCardNumberItem.binLength))
         cardNumberFormatter.cardType = supportedCardTypes.adyen.type(forCardNumber: value)
+        updateBINIfNeeded()
     }
     
+    private func updateBINIfNeeded() {
+        switch (value, isValid()) {
+        case (_, true) where value.count >= Constants.minimumPANLength:
+            binValue = String(value.prefix(Constants.largeBinLength))
+        default:
+            binValue = String(value.prefix(Constants.smallBinLength))
+        }
+    }
+    
+    internal func setCardNumber(_ cardNumber: String) {
+        value = cardNumber
+    }
+
     // MARK: - BuildableFormItem
     
     override internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
     
+    @discardableResult
+    internal func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        guard
+            let text = textField.text,
+            let textRange = Range(range, in: text),
+            let selectedTextRange = textField.selectedTextRange
+        else { return true }
+        
+        let isDeletingSingleCharacter = (string.count - range.length) == -1
+        
+        let replacementLength: Int = replacementStringLength(
+            range: range,
+            replacementString: string,
+            in: text,
+            isDeletingSingleCharacter: isDeletingSingleCharacter
+        )
+        
+        let updatedText = text.replacingCharacters(in: textRange, with: string)
+        
+        let sanitizedText = formatter?.sanitizedValue(for: updatedText) ?? updatedText
+        let formattedText = formatter?.formattedValue(for: sanitizedText) ?? sanitizedText
+        
+        let oldCursorOffset = textField.offset(from: textField.beginningOfDocument, to: selectedTextRange.end)
+        
+        let isAdding = formattedText.count > text.count
+        
+        let oldNumberOfSpacesBeforeCursor = text.numberOfSpaces(beforeOffset: oldCursorOffset)
+
+        let projectedNewCursorOffset = oldCursorOffset + replacementLength + (isAdding ? 1 : 0)
+        let newNumberOfSpacesBeforeCursor = formattedText.numberOfSpaces(
+            beforeOffset: projectedNewCursorOffset
+        )
+        
+        let spaceDifference = newNumberOfSpacesBeforeCursor - oldNumberOfSpacesBeforeCursor
+        let newCursorOffset = oldCursorOffset + replacementLength + spaceDifference
+        
+        textField.text = formattedText
+        
+        if let newPosition = textField.position(from: textField.beginningOfDocument, offset: newCursorOffset) {
+            textField.selectedTextRange = textField.textRange(from: newPosition, to: newPosition)
+        }
+        
+        return false
+    }
+    
     /// Updates the item with the detected brands.
-    /// and sets the first supported one as the `currentBrand`.
+    /// and sets the first supported one as the `initialBrand`.
     internal func update(brands: [CardBrand]) {
         detectedBrands = brands
+        
         switch (brands.count, brands.first(where: \.isSupported)) {
         case (1, _):
-            update(currentBrand: brands.first)
+            update(initialBrand: brands.first)
         case let (2, .some(firstSupportedBrand)):
-            update(currentBrand: firstSupportedBrand)
+            update(initialBrand: firstSupportedBrand)
         case (2, nil):
             // if there are 2 brands and neither is supported,
             // need to show unsupported text
-            update(currentBrand: nil, defaultSupportedValue: false)
+            update(initialBrand: nil, defaultSupportedValue: false)
         default:
-            update(currentBrand: nil)
+            update(initialBrand: nil)
         }
+        
+        isDualBranded = brands.count == 2 && brands.allSatisfy(\.isSupported)
         
         detectedBrandLogos = brands.filter(\.isSupported)
             .compactMap { brand in
                 cardTypeLogos.first { $0.type == brand.type }
             }
     }
-    
-    /// Changes current brand with the given index to trigger updates
+
+    /// Changes the selected dual brand with the given cardBrand to trigger updates
     /// for the observing objects.
-    internal func selectBrand(at index: Int) {
-        let newBrand = detectedBrands.adyen[safeIndex: index]
-        update(currentBrand: newBrand)
+    internal func selectBrand(cardBrand: CardBrand) {
+        updateValidation(for: cardBrand)
+        self.selectedDualBrand = cardBrand
+    }
+
+    /// Updates the initial brand and the related validation checks.
+    private func update(initialBrand: CardBrand?, defaultSupportedValue: Bool = true) {
+        updateValidation(for: initialBrand, defaultSupportedValue: defaultSupportedValue)
+        self.initialBrand = initialBrand
+        updateBINIfNeeded()
     }
     
-    /// Updates the current brand and the related validation checks.
-    private func update(currentBrand: CardBrand?, defaultSupportedValue: Bool = true) {
+    private func updateValidation(for brand: CardBrand?, defaultSupportedValue: Bool = true) {
         // validation message will change based on if brand is supported or not
         // if brand is not supported, allow validation while editing to show the error instantly.
-        let isBrandSupported = currentBrand?.isSupported ?? defaultSupportedValue
+        let isBrandSupported = brand?.isSupported ?? defaultSupportedValue
         if isBrandSupported {
             allowsValidationWhileEditing = false
             validationFailureMessage = localizedString(.cardNumberItemInvalid, localizationParameters)
@@ -116,16 +214,51 @@ internal final class FormCardNumberItem: FormTextItem, Observer {
             validationFailureMessage = localizedString(.cardNumberItemUnknownBrand, localizationParameters)
         }
         
-        validator = CardNumberValidator(isLuhnCheckEnabled: currentBrand?.isLuhnCheckEnabled ?? true,
-                                        isEnteredBrandSupported: isBrandSupported,
-                                        panLength: currentBrand?.panLength)
-        self.currentBrand = currentBrand
+        validator = CardNumberValidator(
+            isLuhnCheckEnabled: brand?.isLuhnCheckEnabled ?? true,
+            isEnteredBrandSupported: isBrandSupported,
+            panLength: brand?.panLength
+        )
     }
     
+    /// Calculates the length of the string being replaced
+    ///
+    /// e.g. if the range is `2` characters long and the replacementString is `1` character the replacementStringLength would be `-1`
+    private func replacementStringLength(
+        range: NSRange,
+        replacementString: String,
+        in text: String,
+        isDeletingSingleCharacter: Bool
+    ) -> Int {
+        // Special case to allow "deleting" a space
+        // (can only be triggered when the user manually moves the cursor)
+        //
+        // 1234 5678 |310 // Deleting a character
+        if range.length == 1, replacementString.isEmpty, isDeletingSingleCharacter {
+            return -1
+        }
+        
+        var length = (formatter?.sanitizedValue(for: replacementString).count) ?? 0
+        
+        if let rangeIndexes = Range(range, in: text) {
+            let replacedText = String(text[rangeIndexes])
+            length -= (formatter?.sanitizedValue(for: replacedText).count) ?? 0
+        } else {
+            length -= range.length
+        }
+        
+        return length
+    }
 }
 
 extension FormItemViewBuilder {
     internal func build(with item: FormCardNumberItem) -> FormItemView<FormCardNumberItem> {
         FormCardNumberItemView(item: item)
+    }
+}
+
+private extension String {
+    func numberOfSpaces(beforeOffset offset: Int) -> Int {
+        max(0, prefix(max(0, offset)).split(separator: " ").count - 1)
     }
 }

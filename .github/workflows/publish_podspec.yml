@@ -1,0 +1,29 @@
+name: 🫛 Publish Adyen.podspec
+on:
+  workflow_dispatch:
+  workflow_call:
+    secrets: # When triggered via another workflow, secrets are not automatically forwarded
+      COCOAPODS_TRUNK_TOKEN:
+        required: true
+
+permissions:
+  contents: read
+  
+jobs:
+
+  publish:
+    runs-on: macos-15-xlarge
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Select latest Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '16.4'
+
+    - name: Publish Adyen.podspec
+      run: |
+        gem install cocoapods
+        pod trunk push Adyen.podspec --allow-warnings
+      env:
+        COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}

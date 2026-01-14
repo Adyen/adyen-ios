@@ -1,47 +1,59 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 /// A component that provides a form for Qiwi Wallet payments.
 public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
     
-    /// :nodoc:
+    /// Configuration for Qiwi Wallet Component
+    public typealias Configuration = PersonalInformationConfiguration
+    
     private let qiwiWalletPaymentMethod: QiwiWalletPaymentMethod
     
     /// Initializes the Qiwi Wallet component.
     ///
-    /// - Parameter paymentMethod: The Qiwi Wallet payment method.
-    /// - Parameter style: The Component's UI style.
-    public init(paymentMethod: QiwiWalletPaymentMethod,
-                apiContext: APIContext,
-                style: FormComponentStyle = FormComponentStyle()) {
+    /// - Parameters:
+    ///   - paymentMethod: The Qiwi Wallet payment method.
+    ///   - context: The context object for this component.
+    ///   - configuration: The component's configuration.
+    public init(
+        paymentMethod: QiwiWalletPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         self.qiwiWalletPaymentMethod = paymentMethod
-        let configuration = Configuration(fields: [.phone])
-        super.init(paymentMethod: paymentMethod,
-                   configuration: configuration,
-                   apiContext: apiContext,
-                   style: style)
+        super.init(
+            paymentMethod: paymentMethod,
+            context: context,
+            fields: [.phone],
+            configuration: configuration
+        )
     }
 
+    @_spi(AdyenInternal)
     override public func submitButtonTitle() -> String {
-        localizedString(.continueTo, localizationParameters, paymentMethod.name)
+        localizedString(.continueTo, configuration.localizationParameters, paymentMethod.name)
     }
 
-    override public func getPhoneExtensions() -> [PhoneExtension] { qiwiWalletPaymentMethod.phoneExtensions
+    @_spi(AdyenInternal)
+    override public func phoneExtensions() -> [PhoneExtension] { qiwiWalletPaymentMethod.phoneExtensions
     }
 
-    override public func createPaymentDetails() -> PaymentMethodDetails {
-        guard let phoneItem = phoneItem else {
-            fatalError("There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
+    @_spi(AdyenInternal)
+    override public func createPaymentDetails() throws -> PaymentMethodDetails {
+        guard let phoneItem else {
+            throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
-        return QiwiWalletDetails(paymentMethod: paymentMethod,
-                                 phonePrefix: phoneItem.prefix,
-                                 phoneNumber: phoneItem.value)
+        return QiwiWalletDetails(
+            paymentMethod: paymentMethod,
+            phonePrefix: phoneItem.prefix,
+            phoneNumber: phoneItem.value
+        )
     }
     
 }

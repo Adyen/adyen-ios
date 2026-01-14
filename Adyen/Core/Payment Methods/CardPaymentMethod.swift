@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,40 +9,37 @@ import Foundation
 /// A card payment method.
 public struct CardPaymentMethod: AnyCardPaymentMethod {
     
-    /// :nodoc:
-    public let type: String
+    public let type: PaymentMethodType
     
-    /// :nodoc:
     public let name: String
     
-    /// :nodoc:
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
+    
     public let fundingSource: CardFundingSource?
     
-    /// :nodoc:
-    public var displayInformation: DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: "card")
-    }
-    
     /// An array containing the supported brands, such as `"mc"`, `"visa"`, `"amex"`, `"bcmc"`.
-    public let brands: [String]
+    public let brands: [CardType]
     
     // MARK: - Decoding
     
-    /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.type = try container.decode(String.self, forKey: .type)
+        self.type = try container.decode(PaymentMethodType.self, forKey: .type)
         self.name = try container.decode(String.self, forKey: .name)
-        self.brands = try container.decodeIfPresent([String].self, forKey: .brands) ?? []
+        self.brands = try container.decodeIfPresent([CardType].self, forKey: .brands) ?? []
         self.fundingSource = try container.decodeIfPresent(CardFundingSource.self, forKey: .fundingSource)
     }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
     
-    internal init(type: String, name: String, fundingSource: CardFundingSource, brands: [String]) {
+    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        DisplayInformation(title: name, subtitle: nil, logoName: "card")
+    }
+    
+    internal init(type: PaymentMethodType, name: String, fundingSource: CardFundingSource, brands: [CardType]) {
         self.type = type
         self.name = name
         self.brands = brands
@@ -61,45 +58,46 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
 /// A stored card.
 public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod {
     
-    /// :nodoc:
-    public let type: String
+    public let type: PaymentMethodType
     
-    /// :nodoc:
-    public let identifier: String
-    
-    /// :nodoc:
     public let name: String
     
-    /// :nodoc:
-    public var brands: [String] { [brand] }
-    
-    /// :nodoc:
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
+
+    public let identifier: String
+
+    public var brands: [CardType] { [brand] }
+
     public var fundingSource: CardFundingSource?
-    
-    /// :nodoc:
-    public var displayInformation: DisplayInformation {
-        localizedDisplayInformation(using: nil)
-    }
-    
-    /// :nodoc:
-    public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+
+    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let expireDate = expiryMonth + "/" + String(expiryYear.suffix(2))
+        let localizedExpiryDate = localizedString(.cardStoredExpires, parameters, expireDate)
         
-        return DisplayInformation(title: String.Adyen.securedString + lastFour,
-                                  subtitle: localizedString(.cardStoredExpires, parameters, expireDate),
-                                  logoName: brand)
+        let lastFourSeparated = lastFour.map { String($0) }.joined(separator: ", ")
+        let accessibilityLabel = [
+            brand.name,
+            "\(localizedString(.accessibilityLastFourDigits, parameters)): \(lastFourSeparated)",
+            localizedExpiryDate
+        ].joined(separator: ", ")
+        
+        return DisplayInformation(
+            title: String.Adyen.securedString + lastFour,
+            subtitle: localizedExpiryDate,
+            logoName: brand.rawValue,
+            accessibilityLabel: accessibilityLabel
+        )
     }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
     
-    /// :nodoc:
     public let supportedShopperInteractions: [ShopperInteraction]
     
     /// The brand of the stored card, such as `"mc"` or `"visa"`.
-    public let brand: String
+    public let brand: CardType
     
     /// The last four digits of the card number.
     public let lastFour: String

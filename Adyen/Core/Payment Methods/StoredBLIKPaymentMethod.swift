@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,21 +9,24 @@ import Foundation
 /// Stored Blik payment.
 public struct StoredBLIKPaymentMethod: StoredPaymentMethod {
 
-    /// :nodoc:
-    public let type: String
+    public let type: PaymentMethodType
 
-    /// :nodoc:
     public let name: String
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
-    /// :nodoc:
     public let identifier: String
 
-    /// :nodoc:
     public let supportedShopperInteractions: [ShopperInteraction]
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
+    }
+    
+    @_spi(AdyenInternal)
+    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue)
     }
 
     // MARK: - Decoding

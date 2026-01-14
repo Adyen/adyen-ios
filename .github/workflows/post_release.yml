@@ -1,0 +1,28 @@
+# This workflow will public Cocoapods and Docs
+
+name: 🗣️ Post Release
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+  pages: write
+
+jobs:
+
+  publish-cocoapods:
+    name: 🫛 Publish Cocoapods
+    uses: ./.github/workflows/publish_podspec.yml
+    secrets: inherit
+
+  deploy-docs:
+    name: 📝 Deploy Docs
+    uses: ./.github/workflows/deploy-docs.yml
+
+  publish-app:
+    name: 🚀 Publish Demo App
+    uses: ./.github/workflows/publish-demo-app.yml
+    secrets: inherit

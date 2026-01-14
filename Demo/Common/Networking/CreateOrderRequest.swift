@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -66,6 +66,6 @@ internal struct CreateOrderResponse: Response {
     internal let orderData: String
 
     internal var order: PartialPaymentOrder {
-        PartialPaymentOrder(pspReference: pspReference, orderData: orderData)
+        PartialPaymentOrder(pspReference: pspReference, orderData: orderData, remainingAmount: remainingAmount)
     }
 }

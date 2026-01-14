@@ -1,20 +1,23 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenComponents)
     import AdyenComponents
 #endif
 #if canImport(AdyenActions)
-    import AdyenActions
+    @_spi(AdyenInternal) import AdyenActions
 #endif
 #if canImport(AdyenCard)
-    import AdyenCard
+    @_spi(AdyenInternal) import AdyenCard
 #endif
 import AdyenNetworking
+#if canImport(AdyenTwint)
+    import AdyenTwint
+#endif
 import UIKit
 
 /**
@@ -23,9 +26,12 @@ import UIKit
  - SeeAlso:
  [Implementation Reference](https://docs.adyen.com/online-payments/ios/drop-in)
  */
-public final class DropInComponent: NSObject, PresentableComponent {
+public final class DropInComponent: NSObject,
+    AnyDropInComponent,
+    ActionHandlingComponent,
+    LoadingComponent {
 
-    private var configuration: Configuration
+    internal var configuration: Configuration
 
     internal var paymentInProgress: Bool = false
 
@@ -33,32 +39,57 @@ public final class DropInComponent: NSObject, PresentableComponent {
 
     /// The payment methods to display.
     public internal(set) var paymentMethods: PaymentMethods
-    
-    /// Indicates the UI configuration of the drop in component.
-    public let style: Style
-    
+
     /// The title text on the first page of drop in component.
     public let title: String
 
-    /// :nodoc:
-    public var apiContext: APIContext { configuration.apiContext }
-    
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public var context: AdyenContext
+
     /// Initializes the drop in component.
     ///
     /// - Parameters:
     ///   - paymentMethods: The payment methods to display.
+    ///   - context: The context object for this component.
     ///   - configuration: The payment method specific configuration.
-    ///   - style: The UI styles of the components.
     ///   - title: Name of the application. To be displayed on a first payment page.
     ///            If no external value provided, the Main Bundle's name would be used.
-    public init(paymentMethods: PaymentMethods,
-                configuration: Configuration,
-                style: Style = Style(),
-                title: String? = nil) {
+    public init(
+        paymentMethods: PaymentMethods,
+        context: AdyenContext,
+        configuration: Configuration = .init(),
+        title: String? = nil
+    ) {
         self.title = title ?? Bundle.main.displayName
         self.configuration = configuration
+        self.context = context
         self.paymentMethods = paymentMethods
-        self.style = style
+
+        let scheduler = SimpleScheduler(maximumCount: 3)
+        self.apiClient = APIClient(apiContext: context.apiContext)
+            .retryAPIClient(with: scheduler)
+            .retryOnErrorAPIClient()
+
+        super.init()
+        
+        sendInitialAnalytics()
+    }
+
+    /// For testing only
+    internal init(
+        paymentMethods: PaymentMethods,
+        context: AdyenContext,
+        configuration: Configuration = .init(),
+        title: String? = nil,
+        apiClient: APIClientProtocol
+    ) {
+        self.title = title ?? Bundle.main.displayName
+        self.configuration = configuration
+        self.context = context
+        self.paymentMethods = paymentMethods
+        self.apiClient = apiClient
+
         super.init()
     }
 
@@ -69,16 +100,22 @@ public final class DropInComponent: NSObject, PresentableComponent {
 
     /// The partial payment flow delegate.
     public weak var partialPaymentDelegate: PartialPaymentDelegate?
-    
+
     /// The stored payment methods delegate.
-    public weak var storedPaymentMethodsDelegate: StoredPaymentMethodsDelegate?
+    public weak var storedPaymentMethodsDelegate: StoredPaymentMethodsDelegate? {
+        didSet {
+            guard let sessionAsStoredPaymentMethodsDelegate else { return }
+
+            let showRemoveStoredPaymentButton = sessionAsStoredPaymentMethodsDelegate.showRemovePaymentMethodButton
+            configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = showRemoveStoredPaymentButton
+        }
+    }
 
     /// The delegate for user activity on card component.
     public weak var cardComponentDelegate: CardComponentDelegate?
-    
+
     // MARK: - Presentable Component Protocol
-    
-    /// :nodoc:
+
     public var viewController: UIViewController { navigationController }
 
     // MARK: - Handling Actions
@@ -87,23 +124,24 @@ public final class DropInComponent: NSObject, PresentableComponent {
     ///
     /// - Parameter action: The action to handle.
     public func handle(_ action: Action) {
-        rootComponent.stopLoadingIfNeeded()
         actionComponent.handle(action)
     }
 
     // MARK: - Handling Partial Payments
 
-    /// :nodoc:
-    private lazy var apiClient: APIClientProtocol = {
-        let scheduler = SimpleScheduler(maximumCount: 3)
-        return APIClient(apiContext: apiContext)
-            .retryAPIClient(with: scheduler)
-            .retryOnErrorAPIClient()
-    }()
-    
+    private let apiClient: APIClientProtocol
+
     internal func reloadComponentManager() {
-        componentManager = createComponentManager(componentManager.order,
-                                                  componentManager.remainingAmount)
+        componentManager = createComponentManager(componentManager.order)
+    }
+
+    /// Convenience accessor to the session if it's the delegate for removing stored payment methods
+    internal var sessionAsStoredPaymentMethodsDelegate: SessionStoredPaymentMethodsDelegate? {
+        if let storedPaymentRemovable = storedPaymentMethodsDelegate as? SessionStoredPaymentMethodsDelegate,
+           storedPaymentRemovable.isSession {
+            return storedPaymentRemovable
+        }
+        return nil
     }
 
     /// Reloads the DropIn with a partial payment order and a new `PaymentMethods` object.
@@ -111,22 +149,23 @@ public final class DropInComponent: NSObject, PresentableComponent {
     /// - Parameter order: The partial payment order.
     /// - Parameter paymentMethods: The new payment methods.
     /// - Throws: `PartialPaymentError.missingOrderData` in case `order.orderData` is `nil`.
-    public func reload(with order: PartialPaymentOrder,
-                       _ paymentMethods: PaymentMethods) throws {
+    public func reload(
+        with order: PartialPaymentOrder,
+        _ paymentMethods: PaymentMethods
+    ) throws {
         guard let orderData = order.orderData else { throw PartialPaymentError.missingOrderData }
         let request = OrderStatusRequest(orderData: orderData)
         apiClient.perform(request) { [weak self] result in
-            self?.handle(result, order)
-        }
-    }
+            guard let self else { return }
 
-    private func handle(_ result: Result<OrderStatusResponse, Error>,
-                        _ order: PartialPaymentOrder) {
-        result.handle(success: {
-            self.handle($0, order)
-        }, failure: {
-            self.delegate?.didFail(with: $0, from: self)
-        })
+            switch result {
+            case let .success(orderResponse):
+                self.paymentMethods = paymentMethods
+                self.handle(orderResponse, order)
+            case let .failure(error):
+                self.delegate?.didFail(with: error, from: self)
+            }
+        }
     }
 
     private func handle(_ response: OrderStatusResponse, _ order: PartialPaymentOrder) {
@@ -135,64 +174,73 @@ public final class DropInComponent: NSObject, PresentableComponent {
             return
         }
         paymentMethods.paid = response.paymentMethods ?? []
-        componentManager = createComponentManager(order, response.remainingAmount)
+        componentManager = createComponentManager(order)
         paymentInProgress = false
         showPaymentMethodsList(onCancel: { [weak self] in
-            self?.partialPaymentDelegate?.cancelOrder(order)
+            guard let self else { return }
+            self.partialPaymentDelegate?.cancelOrder(order, component: self)
         })
     }
-    
+
     // MARK: - Private
 
-    private lazy var componentManager = createComponentManager(nil, nil)
+    private lazy var componentManager = createComponentManager(nil)
 
-    private func createComponentManager(_ order: PartialPaymentOrder?,
-                                        _ remainingAmount: Amount?) -> ComponentManager {
-        ComponentManager(paymentMethods: paymentMethods,
-                         configuration: configuration,
-                         style: style,
-                         partialPaymentEnabled: partialPaymentDelegate != nil,
-                         remainingAmount: remainingAmount,
-                         order: order,
-                         supportsEditingStoredPaymentMethods: storedPaymentMethodsDelegate != nil,
-                         presentationDelegate: self)
+    private func createComponentManager(_ order: PartialPaymentOrder?) -> ComponentManager {
+        ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            partialPaymentEnabled: partialPaymentDelegate != nil,
+            order: order,
+            supportsEditingStoredPaymentMethods: storedPaymentMethodsDelegate != nil,
+            presentationDelegate: self
+        )
     }
-    
+
     internal lazy var rootComponent: PresentableComponent = {
         if configuration.allowPreselectedPaymentView,
-           let preselectedComponents = componentManager.storedComponents.first {
-            return preselectedPaymentMethodComponent(for: preselectedComponents, onCancel: nil)
+           let preselectedComponent = componentManager.storedComponents.first {
+            return preselectedPaymentMethodComponent(for: preselectedComponent, onCancel: nil)
         } else if configuration.allowsSkippingPaymentList,
                   let singleRegularComponent = componentManager.singleRegularComponent {
             setNecessaryDelegates(on: singleRegularComponent)
+            // on this case we also need to send a dropin render event
+            // and there is no other place at the current structure than here
+            sendDidLoadEvent()
             return singleRegularComponent
         } else {
             return paymentMethodListComponent(onCancel: nil)
         }
     }()
-    
+
     internal lazy var navigationController = DropInNavigationController(
         rootComponent: rootComponent,
-        style: style.navigation,
+        style: configuration.style.navigation,
         cancelHandler: { [weak self] isRoot, component in
             self?.didSelectCancelButton(isRoot: isRoot, component: component)
         }
     )
 
     private lazy var actionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(apiContext: apiContext, style: style.actionComponent)
+        let handler = AdyenActionComponent(context: context)
+        handler.configuration.style = configuration.style.actionComponent
         handler._isDropIn = true
         handler.delegate = self
         handler.presentationDelegate = self
-        handler.localizationParameters = configuration.localizationParameters
+        handler.configuration.localizationParameters = configuration.localizationParameters
+        handler.configuration.threeDS = configuration.actionComponent.threeDS
+        handler.configuration.twint = configuration.actionComponent.twint
         return handler
     }()
-    
+
     internal func paymentMethodListComponent(onCancel: (() -> Void)?) -> PaymentMethodListComponent {
         let paymentComponents = componentManager.sections
-        let component = PaymentMethodListComponent(apiContext: apiContext,
-                                                   components: paymentComponents,
-                                                   style: style.listComponent)
+        let component = PaymentMethodListComponent(
+            context: context,
+            components: paymentComponents,
+            style: configuration.style.listComponent
+        )
         component.onCancel = onCancel
         component.localizationParameters = configuration.localizationParameters
         component.delegate = self
@@ -200,67 +248,72 @@ public final class DropInComponent: NSObject, PresentableComponent {
         return component
     }
     
-    internal func preselectedPaymentMethodComponent(for paymentComponent: PaymentComponent,
-                                                    onCancel: (() -> Void)?) -> PreselectedPaymentMethodComponent {
-        let component = PreselectedPaymentMethodComponent(component: paymentComponent,
-                                                          title: title,
-                                                          style: style.formComponent,
-                                                          listItemStyle: style.listComponent.listItem)
-        component.payment = configuration.payment
+    internal func preselectedPaymentMethodComponent(
+        for paymentComponent: PaymentComponent,
+        onCancel: (() -> Void)?
+    ) -> PreselectedPaymentMethodComponent {
+        let component = PreselectedPaymentMethodComponent(
+            component: paymentComponent,
+            title: title,
+            style: configuration.style.formComponent,
+            listItemStyle: configuration.style.listComponent.listItem
+        )
         component.localizationParameters = configuration.localizationParameters
         component.delegate = self
         component.onCancel = onCancel
         component._isDropIn = true
+        component.onDidLoad = { [weak self] in
+            self?.sendDidLoadEvent()
+        }
         return component
     }
-    
+
     internal func didSelect(_ component: PaymentComponent) {
         setNecessaryDelegates(on: component)
-        
+
         switch component {
-        case let component as PreApplePayComponent:
-            navigationController.present(asModal: component)
-        case let component as PresentableComponent where component.requiresModalPresentation:
-            navigationController.present(asModal: component)
-        case let component as PresentableComponent where component.viewController is UIAlertController:
-            navigationController.present(component.viewController, customPresentation: false)
         case let component as PresentableComponent:
-            navigationController.present(component.viewController, customPresentation: true)
-        case let component as InstantPaymentComponent:
+            navigationController.present(asModal: component)
+        case let component as PaymentInitiable:
             component.initiatePayment()
         default:
             break
         }
     }
-    
+
     private func didSelectCancelButton(isRoot: Bool, component: PresentableComponent) {
         guard !paymentInProgress || component is Cancellable else { return }
 
         userDidCancel(component)
-        
+
         if isRoot {
-            self.delegate?.didFail(with: ComponentError.cancelled, from: self)
+            sendExitEvent()
+            delegate?.didFail(with: ComponentError.cancelled, from: self)
         } else {
             navigationController.popViewController(animated: true)
         }
     }
 
     internal func userDidCancel(_ component: Component) {
-        stopLoading()
         component.cancelIfNeeded()
+
+        defer {
+            // As `stopLoading` sets the paymentInProgress to false
+            // we make sure to call it at the end of the function
+            stopLoading()
+        }
 
         if let component = (component as? PaymentComponent) ?? selectedPaymentComponent, paymentInProgress {
             delegate?.didCancel(component: component, from: self)
         }
-
-        paymentInProgress = false
     }
 
-    internal func stopLoading() {
+    public func stopLoading() {
+        paymentInProgress = false
         (rootComponent as? ComponentLoader)?.stopLoading()
         selectedPaymentComponent?.stopLoadingIfNeeded()
     }
-    
+
     private func setNecessaryDelegates(on component: PaymentComponent) {
         selectedPaymentComponent = component
         component.delegate = self
@@ -268,9 +321,13 @@ public final class DropInComponent: NSObject, PresentableComponent {
         (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
         (component as? PreApplePayComponent)?.presentationDelegate = self
-        
+
         component._isDropIn = true
-        component.payment = configuration.payment
+    }
+    
+    private func sendExitEvent() {
+        let logEvent = AnalyticsEventLog(component: "dropin", type: .closed)
+        context.analyticsProvider?.add(log: logEvent)
     }
 }
 
@@ -282,4 +339,27 @@ private extension Bundle {
             object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
     }
 
+}
+
+@_spi(AdyenInternal)
+extension DropInComponent: AdyenSessionAware {
+    public var isSession: Bool {
+        delegate is AdyenSessionAware
+    }
+}
+
+@_spi(AdyenInternal)
+extension DropInComponent: StorePaymentMethodFieldAware {
+
+    public var showStorePaymentMethodField: Bool? {
+        (delegate as? StorePaymentMethodFieldAware)?.showStorePaymentMethodField
+    }
+}
+
+@_spi(AdyenInternal)
+extension DropInComponent: InstallmentConfigurationAware {
+
+    public var installmentConfiguration: InstallmentConfiguration? {
+        (delegate as? InstallmentConfigurationAware)?.installmentConfiguration
+    }
 }

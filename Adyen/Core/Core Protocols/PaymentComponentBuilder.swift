@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,8 +7,8 @@
 import Foundation
 
 /// Builds a certain `PaymentComponent` based on the concrete `PaymentMethod`.
-/// :nodoc:
-public protocol PaymentComponentBuilder: APIContextAware {
+@_spi(AdyenInternal)
+public protocol PaymentComponentBuilder: AdyenContextAware {
     
     /// Builds a certain `PaymentComponent` based on a `StoredCardPaymentMethod`.
     func build(paymentMethod: StoredCardPaymentMethod) -> PaymentComponent?
@@ -18,6 +18,9 @@ public protocol PaymentComponentBuilder: APIContextAware {
     
     /// Builds a certain `PaymentComponent` based on a `StoredBCMCPaymentMethod`.
     func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent?
+    
+    /// Builds a certain `PaymentComponent` based on a `StoredACHDirectDebitPaymentMethod`.
+    func build(paymentMethod: StoredACHDirectDebitPaymentMethod) -> PaymentComponent?
     
     /// Builds a certain `PaymentComponent` based on a `CardPaymentMethod`.
     func build(paymentMethod: CardPaymentMethod) -> PaymentComponent?
@@ -61,18 +64,45 @@ public protocol PaymentComponentBuilder: APIContextAware {
     /// Builds a certain `PaymentComponent` based on a `GiftCardPaymentMethod`.
     func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent?
     
+    /// Builds a certain `PaymentComponent` based on a `MealVoucherPaymentMethod`.
+    func build(paymentMethod: MealVoucherPaymentMethod) -> PaymentComponent?
+    
     /// Builds a certain `PaymentComponent` based on a `BoletoPaymentMethod`.
     func build(paymentMethod: BoletoPaymentMethod) -> PaymentComponent?
     
     /// Builds a certain `PaymentComponent` based on a `AffirmPaymentMethod`.
     func build(paymentMethod: AffirmPaymentMethod) -> PaymentComponent?
     
-    /// Builds a certain `PaymentComponent` based on a `OXXOPaymentMethod`, as a default case.
-    func build(paymentMethod: OXXOPaymentMethod) -> PaymentComponent?
+    /// Builds a certain `PaymentComponent` based on a `AtomePaymentMethod`.
+    func build(paymentMethod: AtomePaymentMethod) -> PaymentComponent?
+
+    /// Builds a certain `PaymentComponent` based on  `OnlineBankingPaymentMethod`
+    func build(paymentMethod: OnlineBankingPaymentMethod) -> PaymentComponent?
+
+    /// Builds a certain `PaymentComponent` based on a `UPIPaymentMethod`.
+    func build(paymentMethod: UPIPaymentMethod) -> PaymentComponent?
+
+    /// Builds a certain `PaymentComponent` based on a `PayToPaymentMethod`.
+    func build(paymentMethod: PayToPaymentMethod) -> PaymentComponent?
     
-    /// Builds a certain `PaymentComponent` based on a `MultibancoPaymentMethod`, as a default case.
-    func build(paymentMethod: MultibancoPaymentMethod) -> PaymentComponent?
+    /// Builds a certain `PaymentComponent` based on a `StoredPayToPaymentMethod`.
+    func build(paymentMethod: StoredPayToPaymentMethod) -> PaymentComponent?
+
+    /// Builds a certain `PaymentComponent` based on a `CashAppPayPaymentMethod`.
+    func build(paymentMethod: CashAppPayPaymentMethod) -> PaymentComponent?
     
+    /// Builds a certain `PaymentComponent` based on a `StoredCashAppPayPaymentMethod`.
+    func build(paymentMethod: StoredCashAppPayPaymentMethod) -> PaymentComponent?
+
+    /// Builds a certain `PaymentComponent` based on a `TwintPaymentMethod`.
+    func build(paymentMethod: TwintPaymentMethod) -> PaymentComponent?
+
+    /// Builds a certain `PaymentComponent` based on a `StoredTwintPaymentMethod`.
+    func build(paymentMethod: StoredTwintPaymentMethod) -> PaymentComponent?
+    
+    /// Builds a certain `PaymentComponent` based on a `PayByBankUSPaymentMethod`.
+    func build(paymentMethod: PayByBankUSPaymentMethod) -> PaymentComponent?
+
     /// Builds a certain `PaymentComponent` based on any `PaymentMethod`, as a default case.
     func build(paymentMethod: PaymentMethod) -> PaymentComponent?
     

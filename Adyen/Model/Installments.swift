@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,6 +9,7 @@ import Foundation
 /// The model to create an installments instance.
 public struct Installments: Encodable, Equatable {
     
+    /// Installments plan.
     public enum Plan: String {
         /// Regular, monthly installment payments.
         case regular
@@ -23,7 +24,6 @@ public struct Installments: Encodable, Equatable {
     /// Selected plan
     public let plan: Plan
     
-    /// :nodoc:
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         

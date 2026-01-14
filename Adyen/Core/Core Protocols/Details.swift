@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,7 +10,38 @@ import Foundation
 public protocol Details: OpaqueEncodable {}
 
 /// Contains the payment details entered by the user to complete payment with chosen payment method.
-public protocol PaymentMethodDetails: Details {}
+public protocol PaymentMethodDetails: Details {
+    
+    @_spi(AdyenInternal)
+    var checkoutAttemptId: String? { get set }
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    var sdkData: String? { get set }
+}
+
+public extension PaymentMethodDetails {
+
+    /// This default implementation has to be provided to be able to build with `BUILD_LIBRARY_FOR_DISTRIBUTION` enabled
+    ///
+    /// - Warning: Access will cause an failure in debug mode to assure the correct implementation of the `PaymentMethodDetails` protocol
+    @_spi(AdyenInternal)
+    var checkoutAttemptId: String? {
+        get {
+            AdyenAssertion.assertionFailure(
+                message: "`@_spi(AdyenInternal) var checkoutAttemptId: String?` needs to be provided on `\(String(describing: Self.self))`"
+            )
+            
+            return "do-not-track"
+        }
+        // swiftlint:disable:next unused_setter_value
+        set {
+            AdyenAssertion.assertionFailure(
+                message: "`@_spi(AdyenInternal) var checkoutAttemptId: String?` needs to be provided on `\(String(describing: Self.self))`"
+            )
+        }
+    }
+}
 
 /// Contains additional details that were retrieved to complete a payment.
 public protocol AdditionalDetails: Details {}

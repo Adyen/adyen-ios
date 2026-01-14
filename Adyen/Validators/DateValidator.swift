@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,6 +7,7 @@
 import Foundation
 
 /// A generic validator for dates.
+@_spi(AdyenInternal)
 public final class DateValidator: Validator {
 
     private let formatter: DateFormatter
@@ -26,12 +27,10 @@ public final class DateValidator: Validator {
         formatter.dateFormat = format
     }
 
-    /// :nodoc:
     public func isValid(_ value: String) -> Bool {
         value.count == formatter.dateFormat.count && formatter.date(from: value) != nil
     }
 
-    /// :nodoc:
     public func maximumLength(for _: String) -> Int {
         formatter.dateFormat.count
     }

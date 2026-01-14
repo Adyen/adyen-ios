@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 internal protocol BACSConfirmationViewProtocol: FormViewProtocol {
@@ -19,12 +19,18 @@ internal class BACSConfirmationViewController: FormViewController, BACSConfirmat
 
     // MARK: - Initializers
 
-    internal init(title: String,
-                  styleProvider: FormComponentStyle,
-                  localizationParameters: LocalizationParameters? = nil) {
-        super.init(style: styleProvider)
+    internal init(
+        title: String,
+        scrollEnabled: Bool,
+        styleProvider: FormComponentStyle,
+        localizationParameters: LocalizationParameters? = nil
+    ) {
+        super.init(
+            scrollEnabled: scrollEnabled,
+            style: styleProvider,
+            localizationParameters: localizationParameters
+        )
         self.title = title
-        self.localizationParameters = localizationParameters
     }
 
     // MARK: - View life cycle

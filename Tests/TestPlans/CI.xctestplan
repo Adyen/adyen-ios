@@ -1,0 +1,38 @@
+{
+  "configurations" : [
+    {
+      "id" : "B9372B46-F512-46D8-B934-7756AE04DDBF",
+      "name" : "CI",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "commandLineArgumentEntries" : [
+      {
+        "argument" : "-UITests"
+      }
+    ],
+    "language" : "en",
+    "region" : "US",
+    "uiTestingScreenshotsLifetime" : "keepNever"
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Adyen.xcodeproj",
+        "identifier" : "B62D48AB2BBE8D79001EF01A",
+        "name" : "UnitTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Adyen.xcodeproj",
+        "identifier" : "E2C0E03B22097917008616F6",
+        "name" : "IntegrationUIKitTests"
+      }
+    }
+  ],
+  "version" : 1
+}

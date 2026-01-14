@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -21,18 +21,27 @@ private struct LocalizationInput {
 /// This method will try first to get the string from main bundle.
 /// If no localization is available on main bundle, it'll return from internal one.
 ///
-/// :nodoc:
 ///
 /// - Parameters:
 ///   - key: The key used to identify the localized string.
 ///   - parameters: The localization parameters.
 ///   - arguments: The arguments to substitute in the templated localized string.
 /// - Returns: The localized string for the given key, or the key itself if the localized string could not be found.
+@_spi(AdyenInternal)
 public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
-    
+    var translationAttempt: String?
+
+    var possibleInputs = buildPossibleInputs(key.key, parameters)
+    switch parameters?.mode {
+    case .enforced:
+        possibleInputs.appendPossibleInputs(for: Bundle.coreInternalResources, key.key, nil)
+        translationAttempt = attempt(possibleInputs, locale: parameters?.locale)
+    case .natural, .none:
+        translationAttempt = attempt(possibleInputs)
+    }
+
     // Use fallback in case attempt result is nil or empty
-    let result = attempt(buildPossibleInputs(key.key, parameters))
-        .flatMap(\.adyen.nilIfEmpty) ?? fallbackLocalizedString(key: key.key)
+    let result = translationAttempt.flatMap(\.adyen.nilIfEmpty) ?? fallbackLocalizedString(key: key.key)
     
     guard !arguments.isEmpty else {
         return result
@@ -54,39 +63,30 @@ private func fallbackLocalizedString(key: String) -> String {
     }
 }
 
-private func buildPossibleInputs(_ key: String,
-                                 _ parameters: LocalizationParameters?) -> [LocalizationInput] {
-    var possibleInputs = buildPossibleInputs(for: Bundle.main, key, parameters)
+private func buildPossibleInputs(
+    _ key: String,
+    _ parameters: LocalizationParameters?
+) -> [LocalizationInput] {
+    var possibleInputs = [LocalizationInput]()
+    possibleInputs.appendPossibleInputs(for: Bundle.main, key, parameters)
 
     if let customBundle = parameters?.bundle {
-        let inputs = buildPossibleInputs(for: customBundle, key, parameters)
-        possibleInputs.append(contentsOf: inputs)
+        possibleInputs.appendPossibleInputs(for: customBundle, key, parameters)
     }
 
-    return possibleInputs
-}
-
-private func buildPossibleInputs(for bundle: Bundle,
-                                 _ key: String,
-                                 _ parameters: LocalizationParameters?) -> [LocalizationInput] {
-    var possibleInputs = [LocalizationInput]()
-    
-    if let customKey = updated(key, withSeparator: parameters?.keySeparator) {
-        possibleInputs.append(LocalizationInput(key: customKey, table: parameters?.tableName, bundle: bundle))
-    }
-    
-    possibleInputs.append(LocalizationInput(key: key, table: parameters?.tableName, bundle: bundle))
-    
     return possibleInputs
 }
 
 private func updated(_ key: String, withSeparator separator: String?) -> String? {
-    guard let separator = separator else { return nil }
+    guard let separator else { return nil }
     return key.replacingOccurrences(of: ".", with: separator)
 }
 
-private func attempt(_ inputs: [LocalizationInput]) -> String? {
-    inputs.compactMap { attempt($0) }.first
+private func attempt(_ inputs: [LocalizationInput], locale: String? = nil) -> String? {
+    if let locale {
+        return inputs.compactMap { attemptEnforce(locale: locale, $0) }.first
+    }
+    return inputs.compactMap { attempt($0) }.first
 }
 
 private func attempt(_ input: LocalizationInput) -> String? {
@@ -99,7 +99,19 @@ private func attempt(_ input: LocalizationInput) -> String? {
     return nil
 }
 
-/// :nodoc:
+/// This method encapsulate individual file into own Bundle and uses it as a source for NSLocalizedString
+private func attemptEnforce(locale: String, _ input: LocalizationInput) -> String? {
+    let localizedString = input.bundle.path(forResource: locale, ofType: "lproj")
+        .flatMap(Bundle.init(path:))
+        .map { NSLocalizedString(input.key, tableName: input.table, bundle: $0, comment: "") }
+
+    if localizedString != input.key {
+        return localizedString
+    }
+    return nil
+}
+
+@_spi(AdyenInternal)
 public enum PaymentStyle {
     case needsRedirectToThirdParty(String)
 
@@ -108,31 +120,52 @@ public enum PaymentStyle {
 
 /// Helper function to create a localized submit button title. Optionally, the button title can include the given amount.
 ///
-/// :nodoc:
 ///
 /// - Parameter amount: The amount to include in the submit button title.
 /// - Parameter paymentMethodName: The payment method name.
 /// - Parameter parameters: The localization parameters.
-public func localizedSubmitButtonTitle(with amount: Amount?,
-                                       style: PaymentStyle,
-                                       _ parameters: LocalizationParameters?) -> String {
-    if let amount = amount, amount.value == 0 {
-        return localizedZeroPaymentAuthorisationButtonTitle(style: style,
-                                                            parameters)
-    }
-    guard let formattedAmount = amount?.formatted else {
+@_spi(AdyenInternal)
+public func localizedSubmitButtonTitle(
+    with amount: Amount?,
+    style: PaymentStyle,
+    _ parameters: LocalizationParameters?
+) -> String {
+    guard let amount else {
         return localizedString(.submitButton, parameters)
     }
-    
-    return localizedString(.submitButtonFormatted, parameters, formattedAmount)
+
+    if amount.value == 0 {
+        return localizedZeroPaymentAuthorisationButtonTitle(style: style, parameters)
+    }
+
+    var tempAmount = amount
+    tempAmount.localeIdentifier = amount.localeIdentifier ?? parameters?.locale
+    return localizedString(.submitButtonFormatted, parameters, tempAmount.formatted)
 }
 
-private func localizedZeroPaymentAuthorisationButtonTitle(style: PaymentStyle,
-                                                          _ parameters: LocalizationParameters?) -> String {
+private func localizedZeroPaymentAuthorisationButtonTitle(
+    style: PaymentStyle,
+    _ parameters: LocalizationParameters?
+) -> String {
     switch style {
     case let .needsRedirectToThirdParty(name):
         return localizedString(.preauthorizeWith, parameters, name)
     case .immediate:
         return localizedString(.confirmPreauthorization, parameters)
     }
+}
+
+extension [LocalizationInput] {
+
+    fileprivate mutating func appendPossibleInputs(
+        for bundle: Bundle,
+        _ key: String,
+        _ parameters: LocalizationParameters?
+    ) {
+        if let customKey = updated(key, withSeparator: parameters?.keySeparator) {
+            self.append(LocalizationInput(key: customKey, table: parameters?.tableName, bundle: bundle))
+        }
+        self.append(LocalizationInput(key: key, table: parameters?.tableName, bundle: bundle))
+    }
+
 }

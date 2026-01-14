@@ -1,0 +1,77 @@
+name: 📝 Get Release notes
+on:
+    workflow_dispatch:
+    workflow_call:
+      outputs:
+        RELEASE_NOTES:
+            description: "The Release Notes of the Release"
+            value: ${{ jobs.generate-release-notes.outputs.RELEASE_NOTES }}
+
+permissions:
+  contents: read
+    
+jobs:
+  generate-release-notes:
+    runs-on: ubuntu-latest
+    outputs:
+      RELEASE_NOTES: ${{ steps.generate-release-notes.outputs.RELEASE_NOTES }}
+    steps:
+      - name: Fetch repo
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          
+      - name: Get the list of allowed pull request labels
+        id: get-allowed_labels
+        run: |
+          RED='\033[0;31m'
+          NC='\033[0m'
+          FILE_NAME=.pull-requests-allowed-labels-list
+          FILE_PATH=$PROJECT_ROOT/$FILE_NAME
+          if [[ ! -f "$FILE_PATH" ]]; then
+             echo -e "${RED}$FILE_NAME file doesn't exits in the root of the respository${NC}"
+             exit 1
+          fi 
+          echo "LABELS=$(cat $FILE_PATH)" >> $GITHUB_OUTPUT
+        env:
+          PROJECT_ROOT: ${{ github.workspace }}
+          
+      - name: Generate release notes
+        id: generate-release-notes
+        run: |
+          # Get the latest tag
+          LATEST_TAG=$(git describe --tags --abbrev=0)
+          
+          # Get the commit messages since the latest tag
+          COMMITS=$(git log "$LATEST_TAG"..HEAD)
+          
+          # Convert the labels string to an array
+          IFS=',' read -r -a ALLOWED_LABELS_ARRAY <<< "$ALLOWED_LABELS"
+
+          OUTPUT=""
+          # Loop through each label and find matching commits
+          for LABEL in "${ALLOWED_LABELS_ARRAY[@]}"; do
+            LABEL=$(echo "$LABEL" | xargs) # Trim spaces
+            
+            # Finding content inside of <$LABEL> & </$LABEL> + trimming leading/trailling spaces/newlines
+            LABEL_OUTPUT=$(echo "$COMMITS" | awk "/<$LABEL>/,/<\/$LABEL>/" | sed "s/<$LABEL>//g; s/<\/$LABEL>//g" | xargs -0)
+            echo $LABEL_OUTPUT
+            
+            if [ -n "$LABEL_OUTPUT" ]; then
+              OUTPUT="$OUTPUT
+          ## $LABEL
+          $LABEL_OUTPUT"
+            fi
+          done
+          
+          if [ ! -z "$OUTPUT" ]; then
+             IFS="" echo "$OUTPUT" 
+             IFS="" echo "$OUTPUT" >> $GITHUB_STEP_SUMMARY
+
+             # Converting the output to Base64 to get a single line required by the GITHUB_OUTPUT
+             BASE64_RELEASE_NOTES=$(echo "$OUTPUT" | base64 | tr -d '\n')
+             echo "Base64 Release Notes: $BASE64_RELEASE_NOTES"
+             IFS="" echo "RELEASE_NOTES=$BASE64_RELEASE_NOTES" >> $GITHUB_OUTPUT
+          fi
+        env:
+          ALLOWED_LABELS: ${{ steps.get-allowed_labels.outputs.LABELS }}

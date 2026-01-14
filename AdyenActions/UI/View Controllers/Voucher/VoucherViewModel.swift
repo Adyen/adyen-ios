@@ -1,15 +1,17 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 extension VoucherView {
     
     internal struct Model {
+        
+        internal let action: VoucherAction
         
         internal let identifier: String
         
@@ -28,6 +30,8 @@ extension VoucherView {
         internal let mainButtonType: Button
         
         internal let style: Style
+        
+        internal let imageLoader: ImageLoading
         
         internal struct Style {
             

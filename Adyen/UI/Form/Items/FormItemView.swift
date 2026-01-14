@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,12 +7,18 @@
 import UIKit
 
 /// A view representing a form item.
-/// :nodoc:
-open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView, Observer {
+@_spi(AdyenInternal)
+open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView, AdyenObserver {
     
     /// The item represented by the view.
     public let item: ItemType
     
+    /// The primary view within this item designated for accessibility label updates, used for both descriptive text and validation messages.
+    internal var accessibilityLabelView: UIView? {
+        AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
+        return nil
+    }
+
     /// Initializes the form item view.
     ///
     /// - Parameter item: The item represented by the view.
@@ -24,7 +30,6 @@ open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView, Observer {
         preservesSuperviewLayoutMargins = true
     }
     
-    /// :nodoc:
     @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -36,13 +41,12 @@ open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView, Observer {
         []
     }
     
-    /// :nodoc:
     public func reset() { /* Do nothing */ }
     
 }
 
 /// A type-erased form item view.
-/// :nodoc:
+@_spi(AdyenInternal)
 public protocol AnyFormItemView: UIView {
     
     /// The embedding item view of the current item view.
@@ -51,17 +55,16 @@ public protocol AnyFormItemView: UIView {
     /// The array of item views embedded in the current item view.
     var childItemViews: [AnyFormItemView] { get }
     
-    /// :nodoc:
     func reset()
     
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public extension AnyFormItemView {
     
     /// The embedding item view of the current item view.
     var parentItemView: AnyFormItemView? {
-        guard let superview = superview else { return nil }
+        guard let superview else { return nil }
         let superviews = sequence(first: superview, next: { $0.superview })
         
         return superviews.first { $0 is AnyFormItemView } as? AnyFormItemView

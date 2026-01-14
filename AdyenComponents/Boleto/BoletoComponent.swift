@@ -1,64 +1,57 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
 /// A component that provides a form for Boleto payment.
-public final class BoletoComponent: PaymentComponent, LoadingComponent, PresentableComponent, Localizable, Observer {
+public final class BoletoComponent: PaymentComponent,
+    PaymentAware,
+    LoadingComponent,
+    PresentableComponent,
+    AdyenObserver {
 
-    /// :nodoc:
-    public let apiContext: APIContext
-    
-    /// :nodoc:
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
+
     public weak var delegate: PaymentComponentDelegate?
-    
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
         
-    /// :nodoc:
-    public var paymentMethod: PaymentMethod { configuration.boletoPaymentMethod }
-    
-    /// :nodoc:
-    public var payment: Payment? { configuration.payment }
-    
-    /// :nodoc:
-    private let configuration: Configuration
+    public var paymentMethod: PaymentMethod { boletoPaymentMethod }
 
-    /// :nodoc:
-    internal var shopperInformation: PrefilledShopperInformation {
-        configuration.shopperInformation
-    }
-    
-    /// :nodoc:
     public let requiresModalPresentation: Bool = true
     
-    /// :nodoc:
-    private let style: FormComponentStyle
+    /// The Component's configuration.
+    public var configuration: Configuration
+    
+    internal let boletoPaymentMethod: BoletoPaymentMethod
     
     /// Initializes the Boleto Component
     /// - Parameters:
+    ///   - paymentMethod: Boleto Payment Method
+    ///   - context: The context object for this component.
     ///   - configuration: The Component's configuration.
-    ///   - style: The Component's UI style.
-    public init(configuration: Configuration,
-                apiContext: APIContext,
-                style: FormComponentStyle = FormComponentStyle()) {
+    public init(
+        paymentMethod: BoletoPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration
+    ) {
+        self.boletoPaymentMethod = paymentMethod
+        self.context = context
         self.configuration = configuration
-        self.apiContext = apiContext
-        self.style = style
-        
         socialSecurityNumberItem.isHidden.wrappedValue = false
     }
+
+    // MARK: - Private
     
-    /// :nodoc:
     private lazy var socialSecurityNumberItem: FormTextInputItem = {
-        let socialSecurityNumberItem = FormTextInputItem(style: style.textField)
-        socialSecurityNumberItem.title = localizedString(.boletoSocialSecurityNumber, localizationParameters)
-        socialSecurityNumberItem.placeholder = localizedString(.boletoSocialSecurityNumber, localizationParameters)
+        let socialSecurityNumberItem = FormTextInputItem(style: configuration.style.textField)
+        socialSecurityNumberItem.title = localizedString(.boletoSocialSecurityNumber, configuration.localizationParameters)
+        socialSecurityNumberItem.placeholder = localizedString(.boletoSocialSecurityNumber, configuration.localizationParameters)
         socialSecurityNumberItem.formatter = BrazilSocialSecurityNumberFormatter()
         socialSecurityNumberItem.validator = NumericStringValidator(exactLength: 11) || NumericStringValidator(exactLength: 14)
         socialSecurityNumberItem.autocapitalizationType = .none
@@ -67,61 +60,60 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         return socialSecurityNumberItem
     }()
     
-    /// :nodoc:
     internal lazy var sendCopyByEmailItem: FormToggleItem = {
-        let sendCopyToEmailItem = FormToggleItem(style: style.toggle)
+        let sendCopyToEmailItem = FormToggleItem(style: configuration.style.toggle)
         sendCopyToEmailItem.value = false
-        sendCopyToEmailItem.title = localizedString(.boletoSendCopyToEmail, localizationParameters)
+        sendCopyToEmailItem.title = localizedString(.boletoSendCopyToEmail, configuration.localizationParameters)
         sendCopyToEmailItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "sendCopyToEmailItem")
 
         return sendCopyToEmailItem
     }()
     
-    /// :nodoc:
-    private func headerFormItem(key: LocalizationKey) -> FormContainerItem {
-        FormLabelItem(
-            text: localizedString(key, localizationParameters),
-            style: style.sectionHeader,
-            identifier: ViewIdentifierBuilder.build(
-                scopeInstance: self,
-                postfix: localizedString(key, localizationParameters)
-            )
-        ).addingDefaultMargins()
-    }
-    
-    /// :nodoc:
     private lazy var formComponent: FormComponent = {
-        let configuration = AbstractPersonalInformationComponent.Configuration(fields: formFields)
-        let component = FormComponent(paymentMethod: paymentMethod,
-                                      configuration: configuration,
-                                      apiContext: apiContext,
-                                      onCreatePaymentDetails: { [weak self] in self?.createPaymentDetails() },
-                                      style: style)
+        let configuration = AbstractPersonalInformationComponent.Configuration(
+            style: configuration.style,
+            shopperInformation: configuration.shopperInformation,
+            localizationParameters: configuration.localizationParameters
+        )
+        let component = FormComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            fields: formFields,
+            configuration: configuration,
+            onCreatePaymentDetails: { [weak self] in
+                var paymentMethodDetails: PaymentMethodDetails?
+                do {
+                    paymentMethodDetails = try self?.createPaymentDetails()
+                } catch {
+                    adyenPrint(error)
+                }
+                return paymentMethodDetails
+            }
+        )
 
         if let emailItem = component.emailItem {
             bind(sendCopyByEmailItem.publisher, to: emailItem, at: \.isHidden.wrappedValue, with: { !$0 })
         }
-        (component.viewController as? SecuredViewController)?.delegate = self
+        (component.viewController as? SecuredViewController<FormViewController>)?.delegate = self
         component.delegate = self
+        component._isDropIn = _isDropIn
         return component
     }()
     
-    /// :nodoc:
     public lazy var viewController: UIViewController = formComponent.viewController
     
-    /// :nodoc:
     /// Constructs the fields for the form based on the configuration
     private var formFields: [PersonalInformation] {
         var fields: [PersonalInformation] = [
-            .custom(CustomFormItemInjector(item: headerFormItem(key: .boletoPersonalDetails))),
             .firstName,
             .lastName,
             .custom(CustomFormItemInjector(item: socialSecurityNumberItem)),
-            .address
+            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 2))),
+            .address,
+            .custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1)))
         ]
 
         if configuration.showEmailAddress {
-            fields.append(.custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1))))
             fields.append(.custom(CustomFormItemInjector(item: sendCopyByEmailItem)))
             fields.append(.email)
             fields.append(.custom(CustomFormItemInjector(item: FormSpacerItem(numberOfSpaces: 1))))
@@ -130,28 +122,26 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         return fields
     }
 
-    /// :nodoc:
     /// Sets the initial values for the form fields based on configuration
     private func prefillFields(for component: FormComponent) {
-        shopperInformation.shopperName.map {
+        configuration.shopperInformation?.shopperName.map {
             component.firstNameItem?.value = $0.firstName
             component.lastNameItem?.value = $0.lastName
         }
-        shopperInformation.socialSecurityNumber.map { socialSecurityNumberItem.value = $0 }
-        shopperInformation.billingAddress.map { component.addressItem?.value = $0 }
+        configuration.shopperInformation?.socialSecurityNumber.map { socialSecurityNumberItem.value = $0 }
+        configuration.shopperInformation?.billingAddress.map { component.addressItem?.value = $0 }
 
         if let emailItem = component.emailItem {
             sendCopyByEmailItem.value = false
-            emailItem.value = shopperInformation.emailAddress ?? ""
+            emailItem.value = configuration.shopperInformation?.emailAddress ?? ""
         }
     }
     
-    /// :nodoc:
-    private func createPaymentDetails() -> PaymentMethodDetails {
+    private func createPaymentDetails() throws -> PaymentMethodDetails {
         guard let firstNameItem = formComponent.firstNameItem,
               let lastNameItem = formComponent.lastNameItem,
-              let billingAddress = shopperInformation.billingAddress ?? formComponent.addressItem?.value else {
-            fatalError("There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
+              let billingAddress = configuration.shopperInformation?.billingAddress ?? formComponent.addressItem?.value else {
+            throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
         
         let shopperName = ShopperName(firstName: firstNameItem.value, lastName: lastNameItem.value)
@@ -165,10 +155,9 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
         )
     }
     
-    /// :nodoc:
     /// Obtain email address depending if it was prefilled, or the checkbox was ticked
     private func getEmailDetails() -> String? {
-        if let prefilledEmail = shopperInformation.emailAddress {
+        if let prefilledEmail = configuration.shopperInformation?.emailAddress {
             return prefilledEmail
         } else if sendCopyByEmailItem.value, let filledEmail = formComponent.emailItem?.value {
             return filledEmail
@@ -176,31 +165,40 @@ public final class BoletoComponent: PaymentComponent, LoadingComponent, Presenta
 
         return nil
     }
+
+    // MARK: - Public
     
-    /// :nodoc:
     public func stopLoading() {
         formComponent.stopLoading()
     }
 }
 
+extension BoletoComponent: SubmittableComponent {
+    public func submit() {
+        formComponent.submit()
+    }
+    
+    public func validate() -> Bool {
+        formComponent.validate()
+    }
+}
+
+@_spi(AdyenInternal)
+extension BoletoComponent: TrackableComponent {}
+
+@_spi(AdyenInternal)
 extension BoletoComponent: ViewControllerDelegate {
-
-    /// :nodoc:
-    public func viewDidLoad(viewController: UIViewController) {}
-
-    /// :nodoc:
-    public func viewDidAppear(viewController: UIViewController) {}
-
-    /// :nodoc:
+    
     public func viewWillAppear(viewController: UIViewController) {
         prefillFields(for: formComponent)
     }
 }
 
+@_spi(AdyenInternal)
 extension BoletoComponent: PaymentComponentDelegate {
     
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        delegate?.didSubmit(data, from: self)
+        submit(data: data, component: self)
     }
     
     public func didFail(with error: Error, from component: PaymentComponent) {
@@ -208,37 +206,36 @@ extension BoletoComponent: PaymentComponentDelegate {
     }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension BoletoComponent {
     
-    /// :nodoc:
     fileprivate final class FormComponent: AbstractPersonalInformationComponent {
         
-        /// :nodoc:
         private let onCreatePaymentDetails: () -> PaymentMethodDetails?
         
-        /// :nodoc:
         fileprivate init(
             paymentMethod: PaymentMethod,
+            context: AdyenContext,
+            fields: [PersonalInformation],
             configuration: AbstractPersonalInformationComponent.Configuration,
-            apiContext: APIContext,
-            onCreatePaymentDetails: @escaping () -> PaymentMethodDetails?,
-            style: FormComponentStyle = FormComponentStyle()
+            onCreatePaymentDetails: @escaping () -> PaymentMethodDetails?
         ) {
             self.onCreatePaymentDetails = onCreatePaymentDetails
             
-            super.init(paymentMethod: paymentMethod,
-                       configuration: configuration,
-                       apiContext: apiContext,
-                       style: style)
+            super.init(
+                paymentMethod: paymentMethod,
+                context: context,
+                fields: fields,
+                configuration: configuration
+            )
         }
         
-        /// :nodoc:
+        @_spi(AdyenInternal)
         override public func submitButtonTitle() -> String {
-            localizedString(.boletobancarioBtnLabel, localizationParameters)
+            localizedString(.boletobancarioBtnLabel, configuration.localizationParameters)
         }
         
-        /// :nodoc:
+        @_spi(AdyenInternal)
         override public func createPaymentDetails() -> PaymentMethodDetails {
             onCreatePaymentDetails() ?? InstantPaymentDetails(type: paymentMethod.type)
         }

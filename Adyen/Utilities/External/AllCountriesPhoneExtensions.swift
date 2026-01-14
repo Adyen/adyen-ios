@@ -1,15 +1,12 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-// swiftlint:disable file_length
-/// :nodoc:
 internal let allCountriesPhoneExtensions: [String: String] = [
-
     "AF": "+93",
     
     "AL": "+355",
@@ -491,6 +488,4 @@ internal let allCountriesPhoneExtensions: [String: String] = [
     "VG": "+1 284",
     
     "VI": "+1 340"
-
 ]
-// swiftlint:enable file_length

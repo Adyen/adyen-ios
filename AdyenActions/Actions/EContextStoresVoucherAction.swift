@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,16 +13,9 @@ public class EContextStoresVoucherAction: GenericVoucherAction,
     /// Masked shopper telephone number.
     public let maskedTelephoneNumber: String
     
-    /// The instruction url.
-    @available(*, deprecated, message: "Please use `instructionsURL` instead.")
-    public var instructionsUrl: String {
-        instructionsURL.absoluteString
-    }
-    
     /// The instruction `URL` object.
     public let instructionsURL: URL
 
-    /// :nodoc:
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         maskedTelephoneNumber = try container.decode(String.self, forKey: .maskedTelephoneNumber)
@@ -30,7 +23,6 @@ public class EContextStoresVoucherAction: GenericVoucherAction,
         try super.init(from: decoder)
     }
 
-    /// :nodoc:
     private enum CodingKeys: String, CodingKey {
         case maskedTelephoneNumber,
              instructionsUrl

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import UIKit
 
 /// Interface for a basic picker input control.
-/// :nodoc:
+@_spi(AdyenInternal)
 public protocol PickerTextInputControl: UIView {
 
     /// Executed when the view resigns as first responder.
@@ -27,7 +27,6 @@ public protocol PickerTextInputControl: UIView {
     
 }
 
-/// :nodoc:
 /// A control to select a value from a list.
 internal class BasePickerInputControl: UIControl, PickerTextInputControl {
 
@@ -49,9 +48,13 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
 
     override internal var canBecomeFirstResponder: Bool { true }
 
-    internal var accessoryImage: UIImage? { UIImage(named: "chevron_down",
-                                                    in: Bundle.coreInternalResources,
-                                                    compatibleWith: nil) }
+    internal var accessoryImage: UIImage? {
+        .init(
+            named: "chevron_down",
+            in: Bundle.coreInternalResources,
+            compatibleWith: nil
+        )
+    }
 
     internal var customInputView: UIView
     
@@ -100,14 +103,12 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
         fatalError("init(coder:) has not been implemented")
     }
 
-    /// :nodoc:
     override internal func resignFirstResponder() -> Bool {
         let result = super.resignFirstResponder()
         onDidResignFirstResponder?()
         return result
     }
 
-    /// :nodoc:
     override internal func becomeFirstResponder() -> Bool {
         let result = super.becomeFirstResponder()
         onDidBecomeFirstResponder?()
@@ -128,7 +129,7 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
         stackView.isUserInteractionEnabled = false
 
         addSubview(stackView)
-        stackView.adyen.anchor(inside: self, with: .init(top: 0, left: 0, bottom: -1, right: -6))
+        stackView.adyen.anchor(inside: self, with: .init(top: 0, left: 0, bottom: 1, right: 6))
     }
 
     @objc

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,80 +7,92 @@
 import AdyenNetworking
 import Foundation
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public struct OrderStatusResponse: Response {
 
     /// The remaining amount to be paid.
-    /// :nodoc:
     public let remainingAmount: Amount
 
     /// The payment methods already used to partially pay.
-    /// :nodoc:
     public let paymentMethods: [OrderPaymentMethod]?
-
-    /// :nodoc:
-    public init(remainingAmount: Amount,
-                paymentMethods: [OrderPaymentMethod]?) {
+    
+    /// Initializes an instance of `OrderStatusResponse`.
+    ///
+    /// - Parameters:
+    ///   - remainingAmount: The remaining amount to be paid.
+    ///   - paymentMethods: The payment methods already used to partially pay.
+    public init(
+        remainingAmount: Amount,
+        paymentMethods: [OrderPaymentMethod]?
+    ) {
         self.remainingAmount = remainingAmount
         self.paymentMethods = paymentMethods
     }
 
-    /// :nodoc:
     internal enum CodingKeys: String, CodingKey {
         case remainingAmount
         case paymentMethods
     }
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public struct OrderPaymentMethod: PaymentMethod {
 
-    /// :nodoc:
     public var name: String {
         String.Adyen.securedString + lastFour
     }
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
-    /// :nodoc:
     public let lastFour: String
 
-    /// :nodoc:
-    public let type: String
+    public let type: PaymentMethodType
 
-    /// :nodoc:
     public let transactionLimit: Amount?
 
-    /// :nodoc:
     public let amount: Amount
 
-    /// :nodoc:
-    public var displayInformation: DisplayInformation {
-        localizedDisplayInformation(using: nil)
-    }
-
-    /// :nodoc:
-    public init(lastFour: String,
-                type: String,
-                transactionLimit: Amount?,
-                amount: Amount) {
+    public init(
+        lastFour: String,
+        type: PaymentMethodType,
+        transactionLimit: Amount?,
+        amount: Amount
+    ) {
         self.lastFour = lastFour
         self.type = type
         self.transactionLimit = transactionLimit
         self.amount = amount
     }
 
-    /// :nodoc:
-    public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        let disclosureText = AmountFormatter.formatted(amount: -amount.value,
-                                                       currencyCode: amount.currencyCode,
-                                                       localeIdentifier: parameters?.locale)
-        return DisplayInformation(title: name,
-                                  subtitle: nil,
-                                  logoName: type,
-                                  disclosureText: disclosureText)
+    @_spi(AdyenInternal)
+    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        let disclosureText = AmountFormatter.formatted(
+            amount: -amount.value,
+            currencyCode: amount.currencyCode,
+            localeIdentifier: parameters?.locale
+        )
+        let lastFourSeparated = lastFour.map { String($0) }.joined(separator: ", ")
+        let accessibilityLabel = [
+            self.type.name,
+            AmountFormatter.formatted(amount: amount.value, currencyCode: amount.currencyCode),
+            "\(localizedString(.accessibilityLastFourDigits, parameters)): \(lastFourSeparated)"
+        ].compactMap { $0 }.joined(separator: ", ")
+        
+        return DisplayInformation(
+            title: name,
+            subtitle: nil,
+            logoName: type.rawValue,
+            disclosureText: disclosureText,
+            accessibilityLabel: accessibilityLabel
+        )
     }
 
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        AlreadyPaidPaymentComponent(paymentMethod: self, apiContext: builder.apiContext)
+        AlreadyPaidPaymentComponent(
+            paymentMethod: self,
+            context: builder.context
+        )
     }
 
     private enum CodingKeys: String, CodingKey {

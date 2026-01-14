@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,7 +19,7 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
         bind(item.$message, to: self, at: \.accessibilityLabel)
         isHidden = item.isHidden.wrappedValue
         addSubview(containerView)
-        containerView.adyen.anchor(inside: layoutMarginsGuide, with: UIEdgeInsets(top: 16, left: 16, bottom: -16, right: -16))
+        containerView.adyen.anchor(inside: layoutMarginsGuide, with: UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0))
         containerView.backgroundColor = item.style.backgroundColor
         containerView.adyen.round(using: item.style.cornerRounding)
         backgroundColor = .clear
@@ -44,12 +44,12 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.preservesSuperviewLayoutMargins = true
 
-        return stackView.adyen.wrapped(with: UIEdgeInsets(top: 8, left: 16, bottom: -8, right: -16))
+        return stackView.adyen.wrapped(with: UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16))
     }()
 
     // MARK: - Message
 
-    private lazy var messageLabel: UILabel = {
+    internal lazy var messageLabel: UILabel = {
         let messageLabel = UILabel(style: item.style.message)
         messageLabel.numberOfLines = 0
         messageLabel.isAccessibilityElement = false
@@ -64,9 +64,11 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
     // MARK: - Icon
 
     private lazy var iconView: UIImageView = {
-        let view = UIImageView(image: UIImage(named: item.iconName,
-                                              in: Bundle.coreInternalResources,
-                                              compatibleWith: nil))
+        let view = UIImageView(image: .init(
+            named: item.iconName,
+            in: Bundle.coreInternalResources,
+            compatibleWith: nil
+        ))
         view.accessibilityIdentifier = item.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "iconView")
         }
@@ -78,4 +80,10 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
         return view
     }()
 
+    override internal func reset() {
+        super.reset()
+        
+        item.message = nil
+        item.isHidden.wrappedValue = true
+    }
 }

@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Describes an action in which a Doku voucher is presented to the shopper.
@@ -16,16 +16,9 @@ public final class DokuVoucherAction: GenericVoucherAction, InstructionAwareVouc
     /// The shopper email.
     public let shopperEmail: String
     
-    /// The instruction url.
-    @available(*, deprecated, message: "Please use `instructionsURL` instead.")
-    public var instructionsUrl: String {
-        instructionsURL.absoluteString
-    }
-    
     /// The instruction `URL` object.
     public let instructionsURL: URL
 
-    /// :nodoc:
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         shopperName = try container.decode(String.self, forKey: .shopperName)
@@ -34,28 +27,30 @@ public final class DokuVoucherAction: GenericVoucherAction, InstructionAwareVouc
         try super.init(from: decoder)
     }
 
-    /// :nodoc:
-    internal init(paymentMethodType: VoucherPaymentMethod,
-                  initialAmount: Amount,
-                  totalAmount: Amount,
-                  reference: String,
-                  shopperEmail: String,
-                  expiresAt: Date,
-                  merchantName: String,
-                  shopperName: String,
-                  instructionsUrl: URL) {
+    internal init(
+        paymentMethodType: VoucherPaymentMethod,
+        initialAmount: Amount,
+        totalAmount: Amount,
+        reference: String,
+        shopperEmail: String,
+        expiresAt: Date,
+        merchantName: String,
+        shopperName: String,
+        instructionsUrl: URL
+    ) {
         self.shopperEmail = shopperEmail
         self.shopperName = shopperName
         self.instructionsURL = instructionsUrl
-        super.init(paymentMethodType: paymentMethodType,
-                   initialAmount: initialAmount,
-                   totalAmount: totalAmount,
-                   reference: reference,
-                   expiresAt: expiresAt,
-                   merchantName: merchantName)
+        super.init(
+            paymentMethodType: paymentMethodType,
+            initialAmount: initialAmount,
+            totalAmount: totalAmount,
+            reference: reference,
+            expiresAt: expiresAt,
+            merchantName: merchantName
+        )
     }
 
-    /// :nodoc:
     private enum CodingKeys: String, CodingKey {
         case shopperEmail,
              shopperName,

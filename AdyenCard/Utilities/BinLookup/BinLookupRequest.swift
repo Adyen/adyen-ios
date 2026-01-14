@@ -1,12 +1,17 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import Foundation
+
+internal enum BinLookupRequestType: String, Codable {
+    case card
+    case bcmc
+}
 
 internal struct BinLookupRequest: APIRequest {
     
@@ -28,9 +33,12 @@ internal struct BinLookupRequest: APIRequest {
     
     internal let requestId = UUID().uuidString
     
+    internal let type: BinLookupRequestType
+    
     private enum CodingKeys: String, CodingKey {
         case encryptedBin
         case supportedBrands
         case requestId
+        case type
     }
 }

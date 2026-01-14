@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Describes the `AwaitViewController` UI elements.
@@ -34,15 +34,40 @@ internal struct AwaitComponentViewModel {
     ///
     /// - Parameter paymentMethodType: The `paymentMethodType` for which the await action is used.
     /// - Parameter localizationParameters: The localization parameters to control some aspects of how strings are localized
-    internal static func viewModel(with paymentMethodType: AwaitPaymentMethod,
-                                   localizationParameters: LocalizationParameters? = nil) -> AwaitComponentViewModel {
+    internal static func viewModel(
+        with paymentMethodType: AwaitPaymentMethod,
+        localizationParameters: LocalizationParameters? = nil
+    ) -> AwaitComponentViewModel {
+        
         switch paymentMethodType {
-        case .mbway, .blik:
-            let localizationKey = LocalizationKey(key: "adyen.\(paymentMethodType.rawValue).confirmPayment")
-            return AwaitComponentViewModel(icon: paymentMethodType.rawValue,
-                                           message: localizedString(localizationKey, localizationParameters),
-                                           spinnerTitle: localizedString(.awaitWaitForConfirmation, localizationParameters))
+        case .blik, .twint:
+            return AwaitComponentViewModel(
+                icon: paymentMethodType.rawValue,
+                message: localizedString(.blikConfirmPayment, localizationParameters),
+                spinnerTitle: localizedString(.awaitWaitForConfirmation, localizationParameters)
+            )
+
+        case .mbway:
+            return AwaitComponentViewModel(
+                icon: paymentMethodType.rawValue,
+                message: localizedString(.mbwayConfirmPayment, localizationParameters),
+                spinnerTitle: localizedString(.awaitWaitForConfirmation, localizationParameters)
+            )
+            
+        case .upicollect, .upiIntent:
+            return AwaitComponentViewModel(
+                icon: paymentMethodType.rawValue,
+                message: localizedString(.upiVpaWaitingMessage, localizationParameters),
+                spinnerTitle: localizedString(.upiCollectConfirmPayment, localizationParameters)
+            )
+
+        case .payTo:
+            return AwaitComponentViewModel(
+                icon: paymentMethodType.rawValue,
+                message: localizedString(.paytoAwaitDescription, localizationParameters),
+                spinnerTitle: localizedString(.upiCollectConfirmPayment, localizationParameters)
+            )
         }
     }
-    
+
 }

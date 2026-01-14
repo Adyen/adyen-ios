@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,17 +7,14 @@
 import Foundation
 
 /// An item for plain text input
-/// :nodoc:
-public final class FormTextInputItem: FormTextItem, Hidable {
+@_spi(AdyenInternal)
+open class FormTextInputItem: FormTextItem {
 
-    /// :nodoc:
-    public var isHidden: Observable<Bool> = Observable(false)
-
-    /// :nodoc:
-    @Observable(true) public var isEnabled: Bool
+    @AdyenObservable(true) public var isEnabled: Bool
     
-    /// :nodoc:
-    override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    open var focusHandler: (() -> Void)?
+
+    override open func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
     
@@ -27,8 +24,12 @@ public final class FormTextInputItem: FormTextItem, Hidable {
         super.init(style: style)
     }
     
-    /// :nodoc:
     override public func isValid() -> Bool {
         isHidden.wrappedValue ? true : super.isValid()
+    }
+    
+    open func focus() {
+        AdyenAssertion.assert(message: "`focusHandler` needs to be set", condition: focusHandler == nil)
+        focusHandler?()
     }
 }

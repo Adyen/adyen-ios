@@ -2,6 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>MERCHANT_CLIENT_KEY</key>
+	<string>$(MERCHANT_CLIENT_KEY)</string>
+	<key>MERCHANT_SERVER_HOST</key>
+	<string>$(MERCHANT_SERVER_HOST)</string>
+	<key>MERCHANT_ACCOUNT</key>
+	<string>$(MERCHANT_ACCOUNT)</string>
+	<key>ADYEN_SERVER_API_KEY</key>
+	<string>$(ADYEN_SERVER_API_KEY)</string>
+	<key>APPLE_PAY_MERCHANT_IDENTIFIER</key>
+	<string>$(APPLE_PAY_MERCHANT_IDENTIFIER)</string>
+	<key>APPLE_TEAM_IDENTIFIER</key>
+	<string>$(APPLE_TEAM_IDENTIFIER)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -43,7 +55,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(MARKETING_VERSION)</string>
+	<string>5.22.1</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -69,11 +81,66 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>twint-issuer50</string>
+		<string>twint-issuer49</string>
+		<string>twint-issuer48</string>
+		<string>twint-issuer47</string>
+		<string>twint-issuer46</string>
+		<string>twint-issuer45</string>
+		<string>twint-issuer44</string>
+		<string>twint-issuer43</string>
+		<string>twint-issuer42</string>
+		<string>twint-issuer41</string>
+		<string>twint-issuer40</string>
+		<string>twint-issuer39</string>
+		<string>twint-issuer38</string>
+		<string>twint-issuer37</string>
+		<string>twint-issuer36</string>
+		<string>twint-issuer35</string>
+		<string>twint-issuer34</string>
+		<string>twint-issuer33</string>
+		<string>twint-issuer32</string>
+		<string>twint-issuer31</string>
+		<string>twint-issuer30</string>
+		<string>twint-issuer29</string>
+		<string>twint-issuer28</string>
+		<string>twint-issuer27</string>
+		<string>twint-issuer26</string>
+		<string>twint-issuer25</string>
+		<string>twint-issuer24</string>
+		<string>twint-issuer23</string>
+		<string>twint-issuer22</string>
+		<string>twint-issuer21</string>
+		<string>twint-issuer20</string>
+		<string>twint-issuer19</string>
+		<string>twint-issuer18</string>
+		<string>twint-issuer17</string>
+		<string>twint-issuer16</string>
+		<string>twint-issuer15</string>
+		<string>twint-issuer14</string>
+		<string>twint-issuer13</string>
+		<string>twint-issuer12</string>
+		<string>twint-issuer11</string>
+		<string>twint-issuer10</string>
+		<string>twint-issuer9</string>
+		<string>twint-issuer8</string>
+		<string>twint-issuer7</string>
+		<string>twint-issuer6</string>
+		<string>twint-issuer5</string>
+		<string>twint-issuer4</string>
+		<string>twint-issuer3</string>
+		<string>twint-issuer2</string>
+		<string>twint-issuer1</string>
 		<string>weixinULAPI</string>
 		<string>weixin</string>
+		<string>weixinURLParamsAPI</string>
 	</array>
+	<key>LSMinimumSystemVersion</key>
+	<string>12.0.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -81,6 +148,10 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Scan credit card details</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Please authenticate yourself</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Save vouchers to your photos library</string>
 	<key>UILaunchStoryboardName</key>

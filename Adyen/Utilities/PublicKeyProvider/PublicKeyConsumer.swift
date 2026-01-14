@@ -1,24 +1,23 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-/// :nodoc:
-public protocol PublicKeyConsumer: PaymentComponent {
+@_spi(AdyenInternal)
+public protocol PublicKeyConsumer {
 
     /// Provider for fetching the public key.
     var publicKeyProvider: AnyPublicKeyProvider { get }
 }
 
-/// :nodoc:
-extension PublicKeyConsumer {
-    /// :nodoc:
+@_spi(AdyenInternal)
+extension PublicKeyConsumer where Self: PaymentComponent {
+    
     public typealias PublicKeySuccessHandler = (_ publicKey: String) -> Void
 
-    /// :nodoc:
     /// Convenient way to fetch the client public key with a closure for the success case
     /// and an option to notify the delegate on the failure case.
     /// - Parameters:
@@ -26,7 +25,7 @@ extension PublicKeyConsumer {
     ///   - successHandler: The block that is called when fetching was successful. Contains the public key.
     public func fetchCardPublicKey(notifyingDelegateOnFailure: Bool, successHandler: PublicKeySuccessHandler? = nil) {
         publicKeyProvider.fetch { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             
             switch result {
             case let .success(key):

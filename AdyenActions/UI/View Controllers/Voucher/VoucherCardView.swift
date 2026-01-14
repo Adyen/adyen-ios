@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import CoreGraphics
 import QuartzCore
 import UIKit
@@ -38,9 +38,11 @@ internal class VoucherCardView: UIView {
 
     private let model: VoucherSeparatorView.Model
 
-    internal init(model: VoucherSeparatorView.Model,
-                  topView: UIView,
-                  bottomView: UIView) {
+    internal init(
+        model: VoucherSeparatorView.Model,
+        topView: UIView,
+        bottomView: UIView
+    ) {
         self.model = model
         self.topView = topView
         self.bottomView = bottomView
@@ -90,20 +92,21 @@ internal class VoucherCardView: UIView {
         buildContainerLayer()
 
         addSubview(stackView)
-        stackView.adyen.anchor(inside: self, with: innerViewsInset)
+        stackView.adyen.anchor(
+            inside: self,
+            with: .init(
+                top: containerInsets.top + 16,
+                left: containerInsets.left,
+                bottom: containerInsets.bottom + 16,
+                right: containerInsets.right
+            )
+        )
 
         separatorView.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
         separatorView.heightAnchor.constraint(equalToConstant: 20).isActive = true
 
         bottomView.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
         topView.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
-    }
-
-    private var innerViewsInset: UIEdgeInsets {
-        UIEdgeInsets(top: containerInsets.top + 16,
-                     left: containerInsets.left,
-                     bottom: -containerInsets.bottom - 16,
-                     right: -containerInsets.right)
     }
 
     private func buildContainerLayer() {
@@ -128,10 +131,12 @@ internal class VoucherCardView: UIView {
     }
 
     private var containerLayerFrame: CGRect {
-        CGRect(x: containerInsets.left,
-               y: containerInsets.top,
-               width: bounds.size.width - containerInsets.left - containerInsets.right,
-               height: bounds.size.height - containerInsets.top - containerInsets.bottom)
+        CGRect(
+            x: containerInsets.left,
+            y: containerInsets.top,
+            width: bounds.size.width - containerInsets.left - containerInsets.right,
+            height: bounds.size.height - containerInsets.top - containerInsets.bottom
+        )
     }
 
     private let containerInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -24,7 +24,6 @@ public struct ImageStyle: TintableStyle {
     /// A flag used to determine how to lay out the image in its bounds.
     public var contentMode: UIView.ContentMode
     
-    /// :nodoc:
     public var backgroundColor = UIColor.Adyen.componentBackground
     
     /// The tint color of the icon.
@@ -37,11 +36,13 @@ public struct ImageStyle: TintableStyle {
     /// - Parameter cornerRadius: The image's corner radius.
     /// - Parameter clipsToBounds: A boolean value that determines whether the image is confined to the bounds of the view.
     /// - Parameter contentMode: A flag used to determine how to lay out the image in its bounds.
-    public init(borderColor: UIColor?,
-                borderWidth: CGFloat,
-                cornerRadius: CGFloat,
-                clipsToBounds: Bool,
-                contentMode: UIView.ContentMode) {
+    public init(
+        borderColor: UIColor?,
+        borderWidth: CGFloat,
+        cornerRadius: CGFloat,
+        clipsToBounds: Bool,
+        contentMode: UIView.ContentMode
+    ) {
         self.borderColor = borderColor
         self.borderWidth = borderWidth
         self.cornerRounding = .fixed(cornerRadius)
@@ -56,11 +57,13 @@ public struct ImageStyle: TintableStyle {
     /// - Parameter cornerRounding: The image's corner style.
     /// - Parameter clipsToBounds: A boolean value that determines whether the image is confined to the bounds of the view.
     /// - Parameter contentMode: A flag used to determine how to lay out the image in its bounds.
-    public init(borderColor: UIColor?,
-                borderWidth: CGFloat,
-                cornerRounding: CornerRounding,
-                clipsToBounds: Bool,
-                contentMode: UIView.ContentMode) {
+    public init(
+        borderColor: UIColor?,
+        borderWidth: CGFloat,
+        cornerRounding: CornerRounding,
+        clipsToBounds: Bool,
+        contentMode: UIView.ContentMode
+    ) {
         self.borderColor = borderColor
         self.borderWidth = borderWidth
         self.cornerRounding = cornerRounding

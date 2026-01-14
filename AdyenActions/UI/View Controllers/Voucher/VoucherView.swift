@@ -1,18 +1,22 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import PassKit
 import UIKit
 
-internal protocol VoucherViewDelegate: ActionViewDelegate {
+internal protocol VoucherViewDelegate: AnyObject {
     
-    func addToAppleWallet(completion: @escaping () -> Void)
+    func addToAppleWallet(action: VoucherAction, completion: @escaping () -> Void)
     
-    func secondaryButtonTap(sourceView: UIView)
+    func secondaryButtonTap(sourceView: UIView, action: VoucherAction)
+    
+    func didComplete()
+    
+    func mainButtonTap(sourceView: UIView, action: VoucherAction)
 }
 
 internal final class VoucherView: UIView, Localizable {
@@ -25,6 +29,10 @@ internal final class VoucherView: UIView, Localizable {
     
     private lazy var loadingView = LoadingView(contentView: containerView)
     
+    private var imageLoadingTask: AdyenCancellable? {
+        willSet { imageLoadingTask?.cancel() }
+    }
+    
     internal init(model: Model) {
         self.model = model
 
@@ -35,10 +43,8 @@ internal final class VoucherView: UIView, Localizable {
         buildUI()
     }
     
-    /// :nodoc:
     internal var localizationParameters: LocalizationParameters?
     
-    /// :nodoc:
     @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -120,8 +126,8 @@ internal final class VoucherView: UIView, Localizable {
         return stackView
     }()
     
-    internal lazy var logo: NetworkImageView = {
-        let logo = NetworkImageView()
+    internal lazy var logo: UIImageView = {
+        let logo = UIImageView()
         let logoSize = CGSize(width: 77.0, height: 50.0)
         logo.contentMode = .scaleAspectFit
         logo.clipsToBounds = true
@@ -130,9 +136,6 @@ internal final class VoucherView: UIView, Localizable {
         logo.widthAnchor.constraint(equalToConstant: logoSize.width).isActive = true
         logo.heightAnchor.constraint(equalToConstant: logoSize.height).isActive = true
         logo.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "logo")
-        
-        logo.imageURL = model.logoUrl
-        
         return logo
     }()
     
@@ -193,21 +196,21 @@ internal final class VoucherView: UIView, Localizable {
     }()
     
     @objc private func onMainButtonTap() {
-        delegate?.mainButtonTap(sourceView: mainButton)
+        delegate?.mainButtonTap(sourceView: mainButton, action: model.action)
     }
     
     @objc private func onSecondaryButtonTap() {
-        delegate?.secondaryButtonTap(sourceView: secondaryButton)
+        delegate?.secondaryButtonTap(sourceView: secondaryButton, action: model.action)
     }
     
     @objc private func appleWalletButtonPressed() {
         loadingView.showsActivityIndicator = true
-        delegate?.addToAppleWallet { [weak self] in
+        delegate?.addToAppleWallet(action: model.action) { [weak self] in
             self?.loadingView.showsActivityIndicator = false
         }
     }
     
-    internal func showCopyCodeConfirmation() {
+    internal func showCopyCodeConfirmation(resetAfter resetDelay: DispatchTimeInterval = .seconds(4)) {
         UIView.transition(
             with: secondaryButton,
             duration: 0.5,
@@ -218,9 +221,10 @@ internal final class VoucherView: UIView, Localizable {
                     self.model.style.codeConfirmationColor,
                     for: .normal
                 )
-            }, completion: { _ in
+            },
+            completion: { _ in
                 DispatchQueue.main.asyncAfter(
-                    deadline: .now() + .seconds(4)
+                    deadline: .now() + resetDelay
                 ) {
                     self.returnSecondaryButtonToNormalState()
                 }
@@ -246,4 +250,16 @@ internal final class VoucherView: UIView, Localizable {
         )
     }
     
+    override public func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        updateLogo()
+    }
+    
+    private func updateLogo() {
+        if superview == nil {
+            imageLoadingTask = nil
+        } else {
+            imageLoadingTask = logo.load(url: model.logoUrl, using: model.imageLoader)
+        }
+    }
 }

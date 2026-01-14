@@ -1,0 +1,95 @@
+name: SDK Size Analysis
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sdk-size-analysis:
+    runs-on: macos-15-xlarge
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 2  # Ensures the base ref is available
+
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16.4'
+
+      - name: Sanitize branch names
+        id: sanitize
+        run: |
+          base=${{ github.base_ref || github.ref_name }}
+          head=${{ github.head_ref || github.ref_name }}
+          echo "base_branch=${base}" >> $GITHUB_OUTPUT
+          echo "head_branch=${head}" >> $GITHUB_OUTPUT
+          echo "sanitized_base=${base//\//-}" >> $GITHUB_OUTPUT
+          echo "sanitized_head=${head//\//-}" >> $GITHUB_OUTPUT
+
+      - name: Run SDK Size Analysis Script
+        run: |
+          ./Scripts/sdk_size_analysis.sh
+
+      - name: Upload current SDK size JSON
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: sdk-sizes-${{ steps.sanitize.outputs.sanitized_head }}
+          path: sdk_size_output/sdk_sizes.json
+
+      - name: Try to download base branch size artifact
+        if: ${{ github.event_name == 'pull_request' }}
+        continue-on-error: true
+        uses: dawidd6/action-download-artifact@v12
+        with:
+          name: sdk-sizes-${{ steps.sanitize.outputs.sanitized_base }}
+          repo: ${{ github.repository }}
+          workflow: sdk-size-analysis.yml
+          branch: ${{ steps.sanitize.outputs.base_branch }}
+          path: base_sdk_size
+
+      - name: Format size comparison
+        if: ${{ github.event_name == 'pull_request' }}
+        id: compare
+        run: |
+          if [ -f base_sdk_size/sdk_sizes.json ]; then
+            echo "🔍 Comparing against '${{ steps.sanitize.outputs.base_branch }}'..." >> comment.txt
+            jq -r -s '
+              (.[0] // {}) as $base |
+              .[1] as $head |
+              $head | to_entries |
+              map("\(.key): \(.value) KB (" + (
+                if ($base[.key] != null) then
+                  ((.value - $base[.key]) | tostring) + " KB"
+                else
+                  "new"
+                end
+              ) + ")") |
+              .[]
+            ' base_sdk_size/sdk_sizes.json sdk_size_output/sdk_sizes.json >> comment.txt
+          else
+            echo "ℹ️ No baseline data found for '${{ steps.sanitize.outputs.base_branch }}'." >> comment.txt
+            echo "| Framework | Size |" >> comment.txt
+            echo "| --- | ---: |" >> comment.txt
+            jq -r 'to_entries | .[] | "| \(.key) | \(.value) KB |"' sdk_size_output/sdk_sizes.json >> comment.txt
+          fi
+
+          cat comment.txt
+
+      - name: Post SDK size comment
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: sdk-size
+          path: comment.txt

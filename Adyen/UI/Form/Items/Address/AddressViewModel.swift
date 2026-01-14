@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,8 @@
 import Foundation
 import UIKit
 
-internal enum AddressField: String, CaseIterable {
+@_spi(AdyenInternal)
+public enum AddressField: String, CaseIterable {
     case street
     case houseNumberOrName
     case apartment
@@ -17,72 +18,54 @@ internal enum AddressField: String, CaseIterable {
     case country
 }
 
-internal enum FormScheme {
+@_spi(AdyenInternal)
+public enum AddressFormScheme {
+    public var children: [AddressField] {
+        switch self {
+        case let .item(item): return [item]
+        case let .split(item1, item2): return [item1, item2]
+        }
+    }
+
     case item(AddressField)
     case split(AddressField, AddressField)
 }
 
-internal struct AddressViewModel {
+@_spi(AdyenInternal)
+public struct AddressViewModel {
 
     internal var labels: [AddressField: LocalizationKey]
     internal var placeholder: [AddressField: LocalizationKey]
-    internal var optionalFields: [AddressField]
-    internal var schema: [FormScheme]
 
-    // swiftlint:disable function_body_length explicit_acl
-    internal static subscript(countryCode: String) -> AddressViewModel {
-        var viewModel = AddressViewModel(labels: [.city: .cityFieldTitle,
-                                                  .houseNumberOrName: .houseNumberFieldTitle,
-                                                  .street: .streetFieldTitle,
-                                                  .stateOrProvince: .provinceOrTerritoryFieldTitle,
-                                                  .postalCode: .postalCodeFieldTitle,
-                                                  .apartment: .apartmentSuiteFieldTitle],
-                                         placeholder: [.city: .cityFieldPlaceholder,
-                                                       .houseNumberOrName: .houseNumberFieldPlaceholder,
-                                                       .street: .streetFieldPlaceholder,
-                                                       .stateOrProvince: .provinceOrTerritoryFieldPlaceholder,
-                                                       .postalCode: .postalCodeFieldPlaceholder,
-                                                       .apartment: .apartmentSuiteFieldPlaceholder],
-                                         optionalFields: [.apartment],
-                                         schema: AddressField.allCases.filter { $0 != .country }.map { .item($0) })
-        switch countryCode {
-        case "BR":
-            viewModel.labels[.stateOrProvince] = .stateFieldTitle
-            viewModel.placeholder[.stateOrProvince] = .selectStateOrProvinceFieldPlaceholder
-        case "CA":
-            viewModel.labels[.houseNumberOrName] = .apartmentSuiteFieldTitle
-            viewModel.labels[.stateOrProvince] = .provinceOrTerritoryFieldTitle
-            viewModel.labels[.street] = .addressFieldTitle
-            viewModel.placeholder[.houseNumberOrName] = .apartmentSuiteFieldPlaceholder
-            viewModel.placeholder[.stateOrProvince] = .provinceOrTerritoryFieldPlaceholder
-            viewModel.placeholder[.street] = .addressFieldPlaceholder
-            viewModel.optionalFields = [.houseNumberOrName]
-            viewModel.schema = [.street, .houseNumberOrName, .city, .postalCode, .stateOrProvince].map { .item($0) }
-        case "GB":
-            viewModel.labels[.city] = .cityTownFieldTitle
-            viewModel.placeholder[.city] = .cityTownFieldPlaceholder
-            viewModel.schema = [.houseNumberOrName, .street, .city, .postalCode].map { .item($0) }
-        case "US":
-            viewModel.labels[.postalCode] = .zipCodeFieldTitle
-            viewModel.labels[.houseNumberOrName] = .apartmentSuiteFieldTitle
-            viewModel.labels[.stateOrProvince] = .stateFieldTitle
-            viewModel.labels[.street] = .addressFieldTitle
-            viewModel.placeholder[.postalCode] = .zipCodeFieldPlaceholder
-            viewModel.placeholder[.houseNumberOrName] = .apartmentSuiteFieldPlaceholder
-            viewModel.placeholder[.stateOrProvince] = .selectStateFieldPlaceholder
-            viewModel.placeholder[.street] = .addressFieldPlaceholder
-            viewModel.optionalFields = [.houseNumberOrName]
-            viewModel.schema = [.item(.street),
-                                .item(.houseNumberOrName),
-                                .item(.city),
-                                .split(.stateOrProvince, .postalCode)]
-        default:
-            break
-        }
+    @_spi(AdyenInternal)
+    public var optionalFields: [AddressField]
 
-        return viewModel
+    @_spi(AdyenInternal)
+    public var scheme: [AddressFormScheme]
+
+    public init(
+        labels: [AddressField: LocalizationKey],
+        placeholder: [AddressField: LocalizationKey],
+        optionalFields: [AddressField],
+        scheme: [AddressFormScheme]
+    ) {
+        self.labels = labels
+        self.placeholder = placeholder
+        self.optionalFields = optionalFields
+        self.scheme = scheme
     }
-    // swiftlint:enable function_body_length explicit_acl
+
+}
+
+@_spi(AdyenInternal)
+public extension AddressViewModel {
+    
+    /// Returns all fields that are not specified as `optionalFields`
+    var requiredFields: Set<AddressField> {
+        let allAddressFieldsInScheme: Set<AddressField> = Set(scheme.flatMap(\.children))
+        let optionalAddressFields: Set<AddressField> = Set(optionalFields)
+        return allAddressFieldsInScheme.subtracting(optionalAddressFields)
+    }
 }
 
 extension AddressField {
@@ -105,5 +88,39 @@ extension AddressField {
             return .countryName
         }
     }
+}
 
+@_spi(AdyenInternal)
+public extension PostalAddress {
+
+    /// Validates whether all required fields are filled in and not empty
+    func satisfies(requiredFields: Set<AddressField>) -> Bool {
+
+        let fieldsValues = [
+            AddressField.city.rawValue: city,
+            AddressField.country.rawValue: country,
+            AddressField.postalCode.rawValue: postalCode,
+            AddressField.stateOrProvince.rawValue: stateOrProvince,
+            AddressField.street.rawValue: street,
+            AddressField.houseNumberOrName.rawValue: houseNumberOrName,
+            AddressField.apartment.rawValue: apartment
+        ].compactMapValues { $0 }
+        
+        let satisfied = checkIfAllFieldsPresent(
+            fieldsValues: fieldsValues,
+            requiredAddressFields: requiredFields
+        )
+        
+        return satisfied
+    }
+
+    private func checkIfAllFieldsPresent(
+        fieldsValues: [String: String],
+        requiredAddressFields: Set<AddressField>
+    ) -> Bool {
+        requiredAddressFields.allSatisfy {
+            guard let fieldValue = fieldsValues[$0.rawValue] else { return false }
+            return !fieldValue.isEmpty
+        }
+    }
 }

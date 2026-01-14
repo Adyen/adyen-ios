@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,13 +14,15 @@ public struct PostalAddress: Equatable, Encodable {
     internal static let invalidValue = "null"
 
     /// Create new instance of postal address.
-    public init(city: String? = nil,
-                country: String? = nil,
-                houseNumberOrName: String? = nil,
-                postalCode: String? = nil,
-                stateOrProvince: String? = nil,
-                street: String? = nil,
-                apartment: String? = nil) {
+    public init(
+        city: String? = nil,
+        country: String? = nil,
+        houseNumberOrName: String? = nil,
+        postalCode: String? = nil,
+        stateOrProvince: String? = nil,
+        street: String? = nil,
+        apartment: String? = nil
+    ) {
         self.city = city
         self.country = country
         self.houseNumberOrName = houseNumberOrName
@@ -64,12 +66,12 @@ public struct PostalAddress: Equatable, Encodable {
             .joined(separator: " ")
             .adyen.nilIfEmpty
 
-        try container.encode(city ?? PostalAddress.invalidValue, forKey: .city)
-        try container.encode(country ?? PostalAddress.invalidCountry, forKey: .country)
+        try container.encode(city.adyen.nilIfEmpty ?? PostalAddress.invalidValue, forKey: .city)
+        try container.encode(country.adyen.nilIfEmpty ?? PostalAddress.invalidCountry, forKey: .country)
         try container.encode(houseNumberOrNameValue ?? PostalAddress.invalidValue, forKey: .houseNumberOrName)
-        try container.encode(postalCode ?? PostalAddress.invalidValue, forKey: .postalCode)
-        try container.encode(stateOrProvince ?? PostalAddress.invalidValue, forKey: .stateOrProvince)
-        try container.encode(street ?? PostalAddress.invalidValue, forKey: .street)
+        try container.encode(postalCode.adyen.nilIfEmpty ?? PostalAddress.invalidValue, forKey: .postalCode)
+        try container.encode(stateOrProvince.adyen.nilIfEmpty ?? PostalAddress.invalidValue, forKey: .stateOrProvince)
+        try container.encode(street.adyen.nilIfEmpty ?? PostalAddress.invalidValue, forKey: .street)
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -81,15 +83,47 @@ public struct PostalAddress: Equatable, Encodable {
         case street
     }
 
+    public static func == (lhs: PostalAddress, rhs: PostalAddress) -> Bool {
+        let lhsFields = [
+            lhs.city,
+            lhs.postalCode,
+            lhs.street,
+            lhs.stateOrProvince,
+            lhs.country,
+            lhs.apartment,
+            lhs.houseNumberOrName
+        ]
+        .map { $0?.trimmingCharacters(in: .whitespaces).adyen.nilIfEmpty }
+        
+        let rhsFields = [
+            rhs.city,
+            rhs.postalCode,
+            rhs.street,
+            rhs.stateOrProvince,
+            rhs.country,
+            rhs.apartment,
+            rhs.houseNumberOrName
+        ]
+        .map { $0?.trimmingCharacters(in: .whitespaces).adyen.nilIfEmpty }
+        return zip(lhsFields, rhsFields).allSatisfy { $0 == $1 }
+    }
+    
+    public var isEmpty: Bool {
+        self == .init()
+    }
 }
 
 extension PostalAddress {
     
-    /// :nodoc:
-    public var formatted: String {
+    /// Multi line mailing address
+    @_spi(AdyenInternal)
+    public func formatted(using localizationParameters: LocalizationParameters?) -> String {
         let address = CNMutablePostalAddress()
         city.map { address.city = $0 }
-        country.map { address.isoCountryCode = $0 }
+        country.map {
+            address.isoCountryCode = $0
+            address.country = countryName(for: $0, using: localizationParameters)
+        }
         stateOrProvince.map { address.state = $0 }
         postalCode.map { address.postalCode = $0 }
         address.street = [street, houseNumberOrName, apartment]
@@ -99,4 +133,40 @@ extension PostalAddress {
         return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
     }
     
+    @_spi(AdyenInternal)
+    public var formattedStreet: String {
+        let address = CNMutablePostalAddress()
+        address.street = [street, houseNumberOrName, apartment]
+            .compactMap { $0 }
+            .joined(separator: " ")
+        
+        return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
+            .replacingOccurrences(of: "\n", with: ", ")
+    }
+    
+    @_spi(AdyenInternal)
+    public func formattedLocation(using localizationParameters: LocalizationParameters?) -> String {
+        let address = CNMutablePostalAddress()
+        city.map { address.city = $0 }
+        country.map {
+            address.isoCountryCode = $0
+            address.country = countryName(for: $0, using: localizationParameters)
+        }
+        stateOrProvince.map { address.state = $0 }
+        postalCode.map { address.postalCode = $0 }
+        
+        return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
+            .replacingOccurrences(of: "\n", with: ", ")
+    }
+    
+    private func countryName(
+        for countryCode: String,
+        using localizationParameters: LocalizationParameters?
+    ) -> String {
+        let locale = Locale(identifier: localizationParameters?.locale ?? Locale.current.identifier)
+        return RegionRepository.region(
+            from: locale as NSLocale,
+            for: countryCode
+        )?.name ?? countryCode
+    }
 }

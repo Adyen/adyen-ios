@@ -1,20 +1,26 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenEncryption)
     import AdyenEncryption
+#endif
+#if canImport(AdyenAuthentication)
+    import AdyenAuthentication
 #endif
 import Foundation
 
 /// Contains the details provided by the card component.
 public struct CardDetails: PaymentMethodDetails, ShopperInformation {
+    
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
 
     /// The payment method type.
-    public let type: String
+    public let type: PaymentMethodType
 
     /// The identifier of the selected stored payment method.
     public let storedPaymentMethodIdentifier: String?
@@ -51,14 +57,21 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
     public let socialSecurityNumber: String?
 
     /// The 3DS2 SDK version.
+    @available(*, deprecated, message: "This property is deprecated. Use the new sdkData property instead.")
     public let threeDS2SDKVersion: String = threeDS2SdkVersion
     
     /// Brand of the card.
     public let selectedBrand: String?
+    
+    /// Delegated Authentication Data.
+    public let delegatedAuthenticationData: DelegatedAuthenticationData?
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
 
     /// Initializes the card payment details.
     ///
-    /// :nodoc:
     ///
     /// - Parameters:
     ///   - paymentMethod: The used card payment method.
@@ -67,13 +80,16 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
     ///   - selectedBrand: Brand of the card.
     ///   - billingAddress: The billing address information.
     ///   - kcpDetails: The additional details for KCP authentication.
-    public init(paymentMethod: AnyCardPaymentMethod,
-                encryptedCard: EncryptedCard,
-                holderName: String? = nil,
-                selectedBrand: String? = nil,
-                billingAddress: PostalAddress? = nil,
-                kcpDetails: KCPDetails? = nil,
-                socialSecurityNumber: String? = nil) {
+    public init(
+        paymentMethod: AnyCardPaymentMethod,
+        encryptedCard: EncryptedCard,
+        holderName: String? = nil,
+        selectedBrand: String? = nil,
+        billingAddress: PostalAddress? = nil,
+        kcpDetails: KCPDetails? = nil,
+        socialSecurityNumber: String? = nil,
+        delegatedAuthenticationData: DelegatedAuthenticationData? = nil
+    ) {
         self.type = paymentMethod.type
         self.encryptedCardNumber = encryptedCard.number
         self.encryptedExpiryMonth = encryptedCard.expiryMonth
@@ -87,11 +103,23 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         self.taxNumber = kcpDetails?.taxNumber
         self.password = kcpDetails?.password
         self.socialSecurityNumber = socialSecurityNumber
+        self.delegatedAuthenticationData = delegatedAuthenticationData ?? Self.createDelegatedAuthenticationData()
+    }
+    
+    private static func createDelegatedAuthenticationData() -> DelegatedAuthenticationData? {
+        #if canImport(AdyenAuthentication)
+            if #available(iOS 14.0, *) {
+                return (try? DeviceSupportChecker().checkSupport()).map { DelegatedAuthenticationData.sdkOutput($0) }
+            } else {
+                return nil
+            }
+        #else
+            return nil
+        #endif
     }
 
     /// Initializes the card payment details for a stored card payment method.
     ///
-    /// :nodoc:
     ///
     /// - Parameters:
     ///   - paymentMethod: The used stored card payment method.
@@ -110,6 +138,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         self.password = nil
         self.socialSecurityNumber = nil
         self.selectedBrand = nil
+        self.delegatedAuthenticationData = Self.createDelegatedAuthenticationData()
     }
 
     // MARK: - Encoding
@@ -127,6 +156,17 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
         case taxNumber
         case password = "encryptedPassword"
         case threeDS2SDKVersion = "threeDS2SdkVersion"
+        case sdkData
     }
 
+}
+
+@_spi(AdyenInternal)
+extension CardDetails: DelegatedAuthenticationAware {}
+
+@_spi(AdyenInternal)
+extension CardDetails: SDKDataAuthenticationProvider {
+    public var authentication: SDKData.Authentication {
+        .init(threeDS2SdkVersion: threeDS2SdkVersion)
+    }
 }

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,11 +9,12 @@ import UIKit
 
 /// A View Controller wrapper to blur its content when going into the background.
 /// Used to wrap view controllers that contain sensitive user info.
-public final class SecuredViewController: UIViewController {
+@_spi(AdyenInternal)
+public final class SecuredViewController<ChildViewController: UIViewController>: UIViewController {
 
     private let notificationCenter = NotificationCenter.default
 
-    private let childViewController: UIViewController
+    internal let childViewController: ChildViewController
 
     private let style: ViewStyle
 
@@ -21,16 +22,13 @@ public final class SecuredViewController: UIViewController {
 
     private var backgroundObservers: [Any]?
 
-    /// :nodoc:
     public weak var delegate: ViewControllerDelegate?
 
-    /// :nodoc:
     override public var preferredContentSize: CGSize {
         get { childViewController.preferredContentSize }
         set { childViewController.preferredContentSize = newValue }
     }
 
-    /// :nodoc:
     override public var title: String? {
         get { childViewController.title }
         set { childViewController.title = newValue }
@@ -42,27 +40,24 @@ public final class SecuredViewController: UIViewController {
     ///
     /// - Parameter child: The wrapped `UIViewController`.
     /// - Parameter style: The UI style.
-    public init(child: UIViewController, style: ViewStyle) {
+    public init(child: ChildViewController, style: ViewStyle) {
         self.childViewController = child
         self.style = style
 
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: nil, bundle: Bundle(for: SecuredViewController.self))
     }
 
-    /// :nodoc:
     @available(*, unavailable)
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    /// :nodoc:
     deinit {
         backgroundObservers?.forEach { notificationCenter.removeObserver($0) }
     }
 
     // MARK: - View lifecycle
 
-    /// :nodoc:
     override public func viewDidLoad() {
         super.viewDidLoad()
 
@@ -73,13 +68,11 @@ public final class SecuredViewController: UIViewController {
         delegate?.viewDidLoad(viewController: self)
     }
 
-    /// :nodoc:
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         delegate?.viewDidAppear(viewController: self)
     }
 
-    /// :nodoc:
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         delegate?.viewWillAppear(viewController: self)
@@ -89,16 +82,10 @@ public final class SecuredViewController: UIViewController {
     private var blurEffectView: UIVisualEffectView
 
     private lazy var blurEffect: UIBlurEffect = {
-        if #available(iOS 12.0, *) {
-            switch traitCollection.userInterfaceStyle {
-            case .dark:
-                return UIBlurEffect(style: .dark)
-            case .light, .unspecified:
-                return UIBlurEffect(style: .light)
-            @unknown default:
-                return UIBlurEffect(style: .light)
-            }
-        } else {
+        switch traitCollection.userInterfaceStyle {
+        case .dark:
+            return UIBlurEffect(style: .dark)
+        default:
             return UIBlurEffect(style: .light)
         }
     }()
@@ -108,19 +95,23 @@ public final class SecuredViewController: UIViewController {
         view.addSubview(childViewController.view)
         childViewController.didMove(toParent: self)
 
-        childViewController.view.adyen.anchor(inside: view.safeAreaLayoutGuide)
+        childViewController.view.adyen.anchor(inside: view)
     }
 
     private func listenToBackgroundNotifications() {
         var array = [Any]()
-        array.append(notificationCenter.addObserver(forName: UIApplication.willResignActiveNotification,
-                                                    object: nil,
-                                                    queue: OperationQueue.main,
-                                                    using: { [weak self] _ in self?.addBlur() }))
-        array.append(notificationCenter.addObserver(forName: UIApplication.didBecomeActiveNotification,
-                                                    object: nil,
-                                                    queue: OperationQueue.main,
-                                                    using: { [weak self] _ in self?.removeBlur() }))
+        array.append(notificationCenter.addObserver(
+            forName: UIApplication.willResignActiveNotification,
+            object: nil,
+            queue: OperationQueue.main,
+            using: { [weak self] _ in self?.addBlur() }
+        ))
+        array.append(notificationCenter.addObserver(
+            forName: UIApplication.didBecomeActiveNotification,
+            object: nil,
+            queue: OperationQueue.main,
+            using: { [weak self] _ in self?.removeBlur() }
+        ))
         backgroundObservers = array
     }
 
@@ -136,16 +127,18 @@ public final class SecuredViewController: UIViewController {
     }
 
     private func removeBlur() {
-        UIView.animate(withDuration: 0.2,
-                       animations: { [weak self] in self?.blurEffectView.effect = nil },
-                       completion: { [weak self] _ in
-                           if let blurConstraints = self?.blurConstraints {
-                               NSLayoutConstraint.deactivate(blurConstraints)
-                           }
-                           self?.blurEffectView.removeFromSuperview()
-                           self?.$blurEffectView.reset()
+        UIView.animate(
+            withDuration: 0.2,
+            animations: { [weak self] in self?.blurEffectView.effect = nil },
+            completion: { [weak self] _ in
+                if let blurConstraints = self?.blurConstraints {
+                    NSLayoutConstraint.deactivate(blurConstraints)
+                }
+                self?.blurEffectView.removeFromSuperview()
+                self?.$blurEffectView.reset()
 
-                           self?.view.backgroundColor = self?.style.backgroundColor
-                       })
+                self?.view.backgroundColor = self?.style.backgroundColor
+            }
+        )
     }
 }

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,29 +11,39 @@ import UIKit
 public struct ListItemStyle: ViewStyle {
     
     /// The title style.
-    public var title = TextStyle(font: .preferredFont(forTextStyle: .body),
-                                 color: UIColor.Adyen.componentLabel,
-                                 textAlignment: .natural)
+    public var title = TextStyle(
+        font: .preferredFont(forTextStyle: .body),
+        color: UIColor.Adyen.componentLabel,
+        textAlignment: .natural
+    )
     
     /// The subtitle style.
-    public var subtitle = TextStyle(font: .preferredFont(forTextStyle: .footnote),
-                                    color: UIColor.Adyen.componentSecondaryLabel,
-                                    textAlignment: .natural)
+    public var subtitle = TextStyle(
+        font: .preferredFont(forTextStyle: .footnote),
+        color: UIColor.Adyen.componentSecondaryLabel,
+        textAlignment: .natural
+    )
 
     /// The trailing title style.
-    public var trailingText = TextStyle(font: .preferredFont(forTextStyle: .body),
-                                        color: UIColor.Adyen.componentLabel,
-                                        textAlignment: .natural)
+    public var trailingText = TextStyle(
+        font: .preferredFont(forTextStyle: .body),
+        color: UIColor.Adyen.componentLabel,
+        textAlignment: .natural
+    )
     
     /// The image style.
-    public var image = ImageStyle(borderColor: UIColor.Adyen.componentSeparator,
-                                  borderWidth: 1.0 / UIScreen.main.nativeScale,
-                                  cornerRadius: 4.0,
-                                  clipsToBounds: true,
-                                  contentMode: .scaleAspectFit)
+    public var image = ImageStyle(
+        borderColor: UIColor.Adyen.componentSeparator,
+        borderWidth: 1.0 / UIScreen.main.nativeScale,
+        cornerRadius: 4.0,
+        clipsToBounds: true,
+        contentMode: .scaleAspectFit
+    )
     
-    /// :nodoc:
     public var backgroundColor = UIColor.Adyen.componentBackground
+    
+    /// Background color when highlighted (tapped).
+    public var highlightedBackgroundColor: UIColor?
     
     /// Initializes the list item style.
     ///

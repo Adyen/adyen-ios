@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,80 +9,85 @@ import UIKit
 
 /// An abstract class that needs to be subclassed to abstract away any component
 /// who's form consists of a combination of personal information pieces like first name, last name, phone, email, and billing address.
-/// :nodoc:
-open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent, Localizable {
+open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent, PaymentAware {
 
+    public typealias Configuration = PersonalInformationConfiguration
+    
     // MARK: - Properties
 
-    /// :nodoc:
-    public let apiContext: APIContext
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
     
-    /// :nodoc:
     public let paymentMethod: PaymentMethod
 
-    /// :nodoc:
     public weak var delegate: PaymentComponentDelegate?
 
-    /// :nodoc:
-    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
+    public lazy var viewController: UIViewController = SecuredViewController(
+        child: formViewController,
+        style: configuration.style
+    )
 
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
-
-    /// Describes the component's UI style.
-    public let style: FormComponentStyle
-
-    /// :nodoc:
     public let requiresModalPresentation: Bool = true
 
-    /// :nodoc:
-    public let configuration: Configuration
+    @_spi(AdyenInternal)
+    public var configuration: Configuration
+    
+    private let fields: [PersonalInformation]
 
-    /// :nodoc:
-    public let shopperInformation: PrefilledShopperInformation?
-
-    /// Initializes the MB Way component.
-    ///
-    /// - Parameter paymentMethod: The payment method.
-    /// - Parameter configuration: The Component's configuration.
-    /// - Parameter style: The Component's UI style.
-    public init(paymentMethod: PaymentMethod,
-                configuration: Configuration,
-                apiContext: APIContext,
-                shopperInformation: PrefilledShopperInformation? = nil,
-                style: FormComponentStyle = FormComponentStyle()) {
-        self.paymentMethod = paymentMethod
-        self.configuration = configuration
-        self.apiContext = apiContext
-        self.shopperInformation = shopperInformation
-        self.style = style
-    }
-
-    /// :nodoc:
     internal lazy var formViewController: FormViewController = {
-        let formViewController = FormViewController(style: style)
-        formViewController.localizationParameters = localizationParameters
+        let formViewController = FormViewController(
+            scrollEnabled: configuration.showsSubmitButton,
+            style: configuration.style,
+            localizationParameters: configuration.localizationParameters
+        )
 
-        formViewController.title = paymentMethod.name
+        formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.delegate = self
         build(formViewController)
 
         return formViewController
     }()
 
-    /// :nodoc:
-    private func build(_ formViewController: FormViewController) {
-        configuration.fields.forEach { field in
-            self.add(field, into: formViewController)
-        }
-        formViewController.append(FormSpacerItem())
-        formViewController.append(button)
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+    // MARK: - Initializers
+
+    /// Initializes the MB Way component.
+    ///
+    /// - Parameter paymentMethod: The payment method.
+    /// - Parameter context: The context object for this component.
+    /// - Parameter fields: The component's fields.
+    /// - Parameter configuration: The Component's configuration.
+    @_spi(AdyenInternal)
+    public init(
+        paymentMethod: PaymentMethod,
+        context: AdyenContext,
+        fields: [PersonalInformation],
+        configuration: Configuration
+    ) {
+        self.paymentMethod = paymentMethod
+        self.context = context
+        self.fields = fields
+        self.configuration = configuration
     }
 
-    /// :nodoc:
-    private func add(_ field: PersonalInformation,
-                     into formViewController: FormViewController) {
+    // MARK: - Private
+
+    private func build(_ formViewController: FormViewController) {
+        fields.forEach { field in
+            self.add(field, into: formViewController)
+        }
+
+        if configuration.showsSubmitButton {
+            formViewController.append(FormSpacerItem())
+            formViewController.append(button)
+        }
+        formViewController.append(FormSpacerItem(numberOfSpaces: 4))
+    }
+
+    private func add(
+        _ field: PersonalInformation,
+        into formViewController: FormViewController
+    ) {
         switch field {
         case .email:
             emailItemInjector?.inject(into: formViewController)
@@ -101,102 +106,111 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         }
     }
 
-    /// :nodoc:
     internal lazy var firstNameItemInjector: NameFormItemInjector? = {
-        guard configuration.fields.contains(.firstName) else { return nil }
+        guard fields.contains(.firstName) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "firstNameItem")
-        let injector = NameFormItemInjector(value: shopperInformation?.shopperName?.firstName,
-                                            identifier: identifier,
-                                            localizationKey: .firstName,
-                                            style: style.textField,
-                                            contentType: .givenName)
-        injector.localizationParameters = localizationParameters
+        let injector = NameFormItemInjector(
+            value: configuration.shopperInformation?.shopperName?.firstName,
+            identifier: identifier,
+            localizationKey: .firstName,
+            style: configuration.style.textField,
+            contentType: .givenName
+        )
+        injector.localizationParameters = configuration.localizationParameters
         return injector
     }()
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public var firstNameItem: FormTextInputItem? { firstNameItemInjector?.item }
 
-    /// :nodoc:
     internal lazy var lastNameItemInjector: NameFormItemInjector? = {
-        guard configuration.fields.contains(.lastName) else { return nil }
+        guard fields.contains(.lastName) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "lastNameItem")
-        let injector = NameFormItemInjector(value: shopperInformation?.shopperName?.lastName,
-                                            identifier: identifier,
-                                            localizationKey: .lastName,
-                                            style: style.textField,
-                                            contentType: .familyName)
-        injector.localizationParameters = localizationParameters
+        let injector = NameFormItemInjector(
+            value: configuration.shopperInformation?.shopperName?.lastName,
+            identifier: identifier,
+            localizationKey: .lastName,
+            style: configuration.style.textField,
+            contentType: .familyName
+        )
+        injector.localizationParameters = configuration.localizationParameters
         return injector
     }()
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public var lastNameItem: FormTextInputItem? { lastNameItemInjector?.item }
 
-    /// :nodoc:
     internal lazy var emailItemInjector: EmailFormItemInjector? = {
-        guard configuration.fields.contains(.email) else { return nil }
+        guard fields.contains(.email) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "emailItem")
-        let injector = EmailFormItemInjector(value: shopperInformation?.emailAddress,
-                                             identifier: identifier,
-                                             style: style.textField)
-        injector.localizationParameters = localizationParameters
+        let injector = EmailFormItemInjector(
+            value: configuration.shopperInformation?.emailAddress,
+            identifier: identifier,
+            style: configuration.style.textField
+        )
+        injector.localizationParameters = configuration.localizationParameters
         return injector
     }()
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public var emailItem: FormTextInputItem? { emailItemInjector?.item }
     
-    /// :nodoc:
     internal lazy var addressItemInjector: AddressFormItemInjector? = {
-        guard configuration.fields.contains(.address) else { return nil }
+        guard fields.contains(.address) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "addressItem")
-        let initialCountry = shopperInformation?.billingAddress?.country ?? defaultCountryCode
-        return AddressFormItemInjector(value: shopperInformation?.billingAddress,
-                                       initialCountry: initialCountry,
-                                       identifier: identifier,
-                                       style: style.addressStyle)
+        let initialCountry = configuration.shopperInformation?.billingAddress?.country ?? defaultCountryCode
+        return AddressFormItemInjector(
+            value: configuration.shopperInformation?.billingAddress,
+            initialCountry: initialCountry,
+            identifier: identifier,
+            style: configuration.style,
+            presenter: self,
+            addressViewModelBuilder: addressViewModelBuilder(),
+            addressType: .billing
+        )
     }()
     
-    /// :nodoc:
-    public var addressItem: FormAddressItem? { addressItemInjector?.item }
+    @_spi(AdyenInternal)
+    public var addressItem: FormAddressPickerItem? { addressItemInjector?.item }
     
-    /// :nodoc:
     internal lazy var deliveryAddressItemInjector: AddressFormItemInjector? = {
-        guard configuration.fields.contains(.deliveryAddress) else { return nil }
+        guard fields.contains(.deliveryAddress) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "deliveryAddressItem")
-        let initialCountry = shopperInformation?.deliveryAddress?.country ?? defaultCountryCode
-        return AddressFormItemInjector(value: shopperInformation?.deliveryAddress,
-                                       initialCountry: initialCountry,
-                                       identifier: identifier,
-                                       style: style.addressStyle)
+        let initialCountry = configuration.shopperInformation?.deliveryAddress?.country ?? defaultCountryCode
+        return AddressFormItemInjector(
+            value: configuration.shopperInformation?.deliveryAddress,
+            initialCountry: initialCountry,
+            identifier: identifier,
+            style: configuration.style,
+            presenter: self,
+            addressViewModelBuilder: addressViewModelBuilder(),
+            addressType: .delivery
+        )
     }()
     
-    /// :nodoc:
-    public var deliveryAddressItem: FormAddressItem? { deliveryAddressItemInjector?.item }
+    @_spi(AdyenInternal)
+    public var deliveryAddressItem: FormAddressPickerItem? { deliveryAddressItemInjector?.item }
 
-    /// :nodoc:
     internal lazy var phoneItemInjector: PhoneFormItemInjector? = {
-        guard configuration.fields.contains(.phone) else { return nil }
+        guard fields.contains(.phone) else { return nil }
         let identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneNumberItem")
-        let injector = PhoneFormItemInjector(value: shopperInformation?.telephoneNumber,
-                                             identifier: identifier,
-                                             phoneExtensions: selectableValues,
-                                             style: style.textField)
-        injector.localizationParameters = localizationParameters
+        let injector = PhoneFormItemInjector(
+            value: configuration.shopperInformation?.phoneNumber,
+            identifier: identifier,
+            phoneExtensions: phoneExtensions(),
+            style: configuration.style.textField,
+            presenter: .init(self)
+        )
+        injector.localizationParameters = configuration.localizationParameters
         return injector
     }()
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public var phoneItem: FormPhoneNumberItem? { phoneItemInjector?.item }
-
-    private lazy var selectableValues: [PhoneExtensionPickerItem] = getPhoneExtensions().map {
-        PhoneExtensionPickerItem(identifier: $0.countryCode, element: $0)
-    }
 
     /// The button item.
     internal lazy var button: FormButtonItem = {
-        let item = FormButtonItem(style: style.mainButtonItem)
+        let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = submitButtonTitle()
         item.buttonSelectionHandler = { [weak self] in
@@ -205,42 +219,84 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return item
     }()
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     open func submitButtonTitle() -> String {
         fatalError("This is an abstract class that needs to be subclassed.")
     }
 
-    /// :nodoc:
-    open func createPaymentDetails() -> PaymentMethodDetails {
+    @_spi(AdyenInternal)
+    open func createPaymentDetails() throws -> PaymentMethodDetails {
         fatalError("This is an abstract class that needs to be subclassed.")
     }
 
-    /// :nodoc:
-    open func getPhoneExtensions() -> [PhoneExtension] {
+    @_spi(AdyenInternal)
+    open func phoneExtensions() -> [PhoneExtension] {
         fatalError("This is an abstract class that needs to be subclassed.")
     }
+    
+    @_spi(AdyenInternal)
+    open func addressViewModelBuilder() -> AddressViewModelBuilder {
+        DefaultAddressViewModelBuilder()
+    }
 
-    /// :nodoc:
     private var defaultCountryCode: String {
         payment?.countryCode ?? Locale.current.regionCode ?? "US"
     }
-
-    /// :nodoc:
+    
+    @_spi(AdyenInternal)
     public func showValidation() {
         formViewController.showValidation()
     }
 
-    /// :nodoc:
     internal func populateFields() {
-        guard let shopperInformation = shopperInformation else { return }
+        guard let shopperInformation = configuration.shopperInformation else { return }
 
         shopperInformation.shopperName.map {
             firstNameItem?.value = $0.firstName
             lastNameItem?.value = $0.lastName
         }
         shopperInformation.emailAddress.map { emailItem?.value = $0 }
-        shopperInformation.telephoneNumber.map { phoneItem?.value = $0 }
+        shopperInformation.phoneNumber.map { phoneItem?.value = $0.value }
         shopperInformation.billingAddress.map { addressItem?.value = $0 }
         shopperInformation.deliveryAddress.map { deliveryAddressItem?.value = $0 }
+    }
+}
+
+@_spi(AdyenInternal)
+extension AbstractPersonalInformationComponent: ViewControllerPresenter {
+    
+    public func presentViewController(_ viewController: UIViewController, animated: Bool) {
+        self.viewController.presentViewController(viewController, animated: animated)
+    }
+    
+    public func dismissViewController(animated: Bool) {
+        self.viewController.dismissViewController(animated: animated)
+    }
+}
+
+@_spi(AdyenInternal)
+extension AbstractPersonalInformationComponent: ViewControllerDelegate {
+    // MARK: - ViewControllerDelegate
+
+    public func viewWillAppear(viewController: UIViewController) {
+        populateFields()
+    }
+    
+    public func viewDidLoad(viewController: UIViewController) {
+        sendInitialAnalytics()
+        sendDidLoadEvent()
+    }
+}
+
+// MARK: - SubmitCustomizable
+
+extension AbstractPersonalInformationComponent: SubmittableComponent {
+
+    public func submit() {
+        didSelectSubmitButton()
+    }
+
+    public func validate() -> Bool {
+        formViewController.validate()
     }
 }

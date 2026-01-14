@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,16 +16,15 @@ public enum ThreeDS2Action: Decodable {
     /// Indicates a 3D Secure challenge should be presented.
     case challenge(ThreeDS2ChallengeAction)
 
-    /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(ActionType.self, forKey: .type)
 
         switch type {
         case .challenge:
-            self = .challenge(try ThreeDS2ChallengeAction(from: decoder))
+            self = try .challenge(ThreeDS2ChallengeAction(from: decoder))
         case .fingerprint:
-            self = .fingerprint(try ThreeDS2FingerprintAction(from: decoder))
+            self = try .fingerprint(ThreeDS2FingerprintAction(from: decoder))
         }
     }
 

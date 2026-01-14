@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Validates a card's expiration date.
@@ -12,38 +12,26 @@ import Foundation
 /// Validation will fail when the format is invalid or the date is in the past.
 public final class CardExpiryDateValidator: Validator {
     
+    private enum Constants {
+        static let maxYearsDifference = 30
+        static let firstMonth = 1
+        static let lastMonth = 12
+        static let minMonthDifference = -3
+        static let twentiethCenturyPrefix = "20"
+    }
+    
     private let referenceDate: Date
     
-    private static let maxYearsDifference: Int = 30
-    
-    /// :nodoc:
     public init() {
         self.referenceDate = Date()
     }
     
-    /// :nodoc:
     internal init(referenceDate: Date = Date()) {
         self.referenceDate = referenceDate
     }
     
-    /// :nodoc:
     public func isValid(_ string: String) -> Bool {
-        guard string.count == maximumLength(for: string) else { return false }
-        
-        guard let month = Int(string.adyen[0...1]) else { return false }
-        guard let year = Int("20" + string.adyen[2...3]) else { return false }
-        
-        guard (month >= 1 && month <= 12) || string.count < 2 else { return false }
-        guard let expiryDate = calculateExpiryDate(fromYear: year, month: month) else { return false }
-        
-        let diffComponents = calendar.dateComponents([.month, .year], from: referenceDate, to: expiryDate)
-        
-        let monthDiff = diffComponents.month ?? 0
-        let yearDiff = diffComponents.year ?? 0
-        
-        guard (0...Self.maxYearsDifference).contains(yearDiff), monthDiff >= -3 else { return false }
-        
-        return true
+        validate(string).isValid
     }
     
     private var calendar: Calendar { Calendar(identifier: .gregorian) }
@@ -60,9 +48,56 @@ public final class CardExpiryDateValidator: Validator {
         return endOfMonthDate
     }
     
-    /// :nodoc:
     public func maximumLength(for value: String) -> Int {
         4
     }
+}
+
+@_spi(AdyenInternal)
+extension CardExpiryDateValidator: StatusValidator {
     
+    public func validate(_ value: String) -> ValidationStatus {
+        guard !value.isEmpty else {
+            return .invalid(CardValidationError.expiryDateEmpty)
+        }
+        
+        guard value.count == maximumLength(for: value) else {
+            return .invalid(CardValidationError.expiryDatePartial)
+        }
+        
+        guard let month = Int(value.adyen[0...1]) else {
+            return .invalid(CardValidationError.expiryDatePartial)
+        }
+        
+        guard let year = Int(Constants.twentiethCenturyPrefix + value.adyen[2...3]) else {
+            return .invalid(CardValidationError.expiryDatePartial)
+        }
+        
+        guard (month >= Constants.firstMonth && month <= Constants.lastMonth) || value.count < 2 else {
+            return .invalid(CardValidationError.expiryDatePartial)
+        }
+        
+        guard let expiryDate = calculateExpiryDate(fromYear: year, month: month) else {
+            return .invalid(CardValidationError.expiryDatePartial)
+        }
+        
+        let diffComponents = calendar.dateComponents([.month, .year], from: referenceDate, to: expiryDate)
+        
+        let monthDiff = diffComponents.month ?? 0
+        let yearDiff = diffComponents.year ?? 0
+        
+        guard yearDiff >= 0 else {
+            return .invalid(CardValidationError.cardExpired)
+        }
+        
+        guard yearDiff <= Constants.maxYearsDifference else {
+            return .invalid(CardValidationError.expiryDateTooFar)
+        }
+        
+        guard monthDiff > Constants.minMonthDifference else {
+            return .invalid(CardValidationError.cardExpired)
+        }
+        
+        return .valid
+    }
 }

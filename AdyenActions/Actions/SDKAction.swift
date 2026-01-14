@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -12,24 +12,27 @@ public enum SDKAction: Decodable {
     /// Indicates a WeChat Pay SDK action.
     case weChatPay(WeChatPaySDKAction)
     
-    /// :nodoc:
+    /// Indicates a Twint SDK action.
+    case twint(TwintSDKAction)
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(SDKType.self, forKey: CodingKeys.type)
         
         switch type {
         case .weChatPay:
-            self = .weChatPay(try WeChatPaySDKAction(from: decoder))
+            self = try .weChatPay(WeChatPaySDKAction(from: decoder))
+        case .twint:
+            self = try .twint(TwintSDKAction(from: decoder))
         }
     }
     
-    /// :nodoc:
     private enum CodingKeys: String, CodingKey {
         case type = "paymentMethodType"
     }
     
-    /// :nodoc:
     private enum SDKType: String, Decodable {
         case weChatPay = "wechatpaySDK"
+        case twint = "twint"
     }
 }

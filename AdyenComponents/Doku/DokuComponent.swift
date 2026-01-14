@@ -1,51 +1,57 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
 /// A component that provides a form for Doku Wallet, Doku Alfamart, and Doku Indomaret  payments.
 public final class DokuComponent: AbstractPersonalInformationComponent {
 
-    /// :nodoc:
+    /// Configuration for Doku Component
+    public typealias Configuration = PersonalInformationConfiguration
+    
     private let dokuPaymentMethod: DokuPaymentMethod
 
     /// Initializes the Doku component.
     /// - Parameters:
     ///   - paymentMethod: The Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
-    ///   - apiContext: The component's UI style.
-    ///   - shopperInformation: The shopper's information.
-    ///   - style:The component's UI style.
-    public init(paymentMethod: DokuPaymentMethod,
-                apiContext: APIContext,
-                shopperInformation: PrefilledShopperInformation? = nil,
-                style: FormComponentStyle = FormComponentStyle()) {
+    ///   - context: The context object for this component.
+    ///   - configuration: The component's configuration.
+    public init(
+        paymentMethod: DokuPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         self.dokuPaymentMethod = paymentMethod
-        let configuration = Configuration(fields: [.firstName, .lastName, .email])
-        super.init(paymentMethod: paymentMethod,
-                   configuration: configuration,
-                   apiContext: apiContext,
-                   shopperInformation: shopperInformation,
-                   style: style)
+        super.init(
+            paymentMethod: paymentMethod,
+            context: context,
+            fields: [.firstName, .lastName, .email],
+            configuration: configuration
+        )
     }
 
+    @_spi(AdyenInternal)
     override public func submitButtonTitle() -> String {
-        localizedString(.confirmPurchase, localizationParameters)
+        localizedString(.confirmPurchase, configuration.localizationParameters)
     }
 
-    override public func createPaymentDetails() -> PaymentMethodDetails {
-        guard let firstNameItem = firstNameItem,
-              let lastNameItem = lastNameItem,
-              let emailItem = emailItem else {
-            fatalError("There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
+    @_spi(AdyenInternal)
+    override public func createPaymentDetails() throws -> PaymentMethodDetails {
+        guard let firstNameItem,
+              let lastNameItem,
+              let emailItem else {
+            throw UnknownError(errorDescription: "There seems to be an error in the BasicPersonalInfoFormComponent configuration.")
         }
-        return DokuDetails(paymentMethod: paymentMethod,
-                           firstName: firstNameItem.value,
-                           lastName: lastNameItem.value,
-                           emailAddress: emailItem.value)
+        return DokuDetails(
+            paymentMethod: paymentMethod,
+            firstName: firstNameItem.value,
+            lastName: lastNameItem.value,
+            emailAddress: emailItem.value
+        )
     }
 }

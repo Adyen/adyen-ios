@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -12,6 +12,6 @@ internal protocol Payload: Encodable {
 
 extension Payload {
     internal func jsonData() throws -> Data {
-        try JSONEncoder().encode(self)
+        try JSONEncoder.encodeWithSortedKeys(self)
     }
 }

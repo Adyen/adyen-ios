@@ -1,18 +1,18 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
 import UIKit
 
-internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIContextAware, Localizable {
+internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, AdyenContextAware, Localizable {
     
-    internal let apiContext: APIContext
+    internal let context: AdyenContext
     private let paymentMethod: StoredCardPaymentMethod
     private let amount: Amount?
 
@@ -20,44 +20,35 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIC
     internal var completionHandler: Completion<Result<CardDetails, Error>>?
     internal var localizationParameters: LocalizationParameters?
     
-    internal init(paymentMethod: StoredCardPaymentMethod,
-                  apiContext: APIContext,
-                  amount: Amount?) {
-        self.apiContext = apiContext
+    internal init(
+        paymentMethod: StoredCardPaymentMethod,
+        context: AdyenContext,
+        amount: Amount?
+    ) {
+        self.context = context
         self.paymentMethod = paymentMethod
         self.amount = amount
         
-        self.publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
+        self.publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
     }
-    
-    // MARK: - CVC length
-
-    private var minCharactersCount: Int {
-        switch CardType(rawValue: paymentMethod.brand) {
-        case .americanExpress:
-            return 4
-        default:
-            return 3
-        }
-    }
-
-    private let maxCharactersCount: Int = 4
 
     // MARK: - Alert Controller
     
     internal private(set) lazy var alertController: UIAlertController = {
         let title = localizedString(.cardStoredTitle, localizationParameters)
-        let displayInformation = paymentMethod.localizedDisplayInformation(using: localizationParameters)
+        let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
         let message = localizedString(.cardStoredMessage, localizationParameters, displayInformation.title)
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addTextField(configurationHandler: { [weak self] textField in
+            guard let self else { return }
             textField.textAlignment = .center
             textField.keyboardType = .numberPad
-            textField.placeholder = localizedString(.cardCvcItemPlaceholder, self?.localizationParameters)
-            textField.accessibilityLabel = localizedString(.cardCvcItemTitle, self?.localizationParameters)
+            textField.placeholder = localizedString(.cardCvcItemPlaceholder, self.localizationParameters)
+            textField.accessibilityLabel = localizedString(.cardCvcItemTitle, self.localizationParameters)
             textField.accessibilityIdentifier = "AdyenCard.StoredCardAlertManager.textField"
             textField.delegate = self
+            textField.addTarget(self, action: #selector(self.textDidChange(textField:)), for: .editingChanged)
         })
         
         let cancelActionTitle = localizedString(.cancelButton, localizationParameters)
@@ -73,9 +64,11 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIC
     }()
     
     private lazy var submitAction: UIAlertAction = {
-        let actionTitle = localizedSubmitButtonTitle(with: amount,
-                                                     style: .immediate,
-                                                     localizationParameters)
+        let actionTitle = localizedSubmitButtonTitle(
+            with: amount,
+            style: .immediate,
+            localizationParameters
+        )
         let action = UIAlertAction(title: actionTitle, style: .default) { [unowned self] _ in
             self.submit()
         }
@@ -122,39 +115,32 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, APIC
             let details = CardDetails(paymentMethod: paymentMethod, encryptedSecurityCode: encryptedSecurityCode)
             completionHandler?(.success(details))
         } catch {
+            sendEncryptionErrorEvent()
             completionHandler?(.failure(error))
         }
     }
     
-    // MARK: - UITextFieldDelegate
-    
-    internal func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard let textFieldText = textField.text else {
-            return false
-        }
-        
-        let newString = (textFieldText as NSString).replacingCharacters(in: range, with: string)
-        if newString.count > maxCharactersCount {
-            return false
-        }
-        
-        defer {
-            let isValidLength = (minCharactersCount...maxCharactersCount).contains(newString.count)
-            submitAction.isEnabled = isValidLength
-        }
-        
-        let isDeleting = (string.count == 0 && range.length == 1)
-        if isDeleting {
-            return true
-        }
-        
-        let newCharacters = CharacterSet(charactersIn: string)
-        let isNumber = CharacterSet.decimalDigits.isSuperset(of: newCharacters)
-        if isNumber {
-            return true
-        }
-        
-        return false
+    private func sendEncryptionErrorEvent() {
+        var errorEvent = AnalyticsEventError(
+            component: paymentMethod.type.rawValue,
+            type: .internal
+        )
+        errorEvent.code = AnalyticsConstants.ErrorCode.encryptionError.stringValue
+        context.analyticsProvider?.add(error: errorEvent)
     }
     
+    // MARK: - UITextFieldDelegate
+    
+    @objc
+    private func textDidChange(textField: UITextField) {
+        guard var text = textField.text else { return }
+        
+        let formatter = CardSecurityCodeFormatter(cardType: paymentMethod.brand)
+        let validator = CardSecurityCodeValidator(cardType: paymentMethod.brand)
+        
+        text = formatter.formattedValue(for: text)
+        
+        textField.text = text
+        submitAction.isEnabled = validator.isValid(text)
+    }
 }

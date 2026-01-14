@@ -1,40 +1,50 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 extension BoletoComponent {
     
     /// Boleto component configuration.
-    public struct Configuration {
+    public struct Configuration: AnyPersonalInformationConfiguration {
+        
+        /// Describes the component's UI style.
+        public let style: FormComponentStyle
+
+        /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
+        internal let showsSubmitButton: Bool
+
+        public var localizationParameters: LocalizationParameters?
+        
         /// Pre-filled optional personal information about the shopper
-        internal let shopperInformation: PrefilledShopperInformation
-        
-        /// A Boleto payment method
-        internal let boletoPaymentMethod: BoletoPaymentMethod
-        
-        /// The payment to be made
-        internal let payment: Payment?
+        public let shopperInformation: PrefilledShopperInformation?
         
         /// Indicates whether to show `sendCopyByEmail` checkbox and email text field
         internal let showEmailAddress: Bool
         
-        /// Initializes the configuration struct with shopper information
+        /// Initializes the configuration for Boleto Component.
         /// - Parameters:
-        ///   - boletoPaymentMethod: A Boleto payment method
-        ///   - payment: The payment to be made
+        ///   - style: The UI style of the component.
+        ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
+        ///   Defaults to`true`.
+        ///   - localizationParameters: Localization parameters.
         ///   - shopperInformation: Pre-filled optional personal information about the shopper
-        public init(boletoPaymentMethod: BoletoPaymentMethod,
-                    payment: Payment?,
-                    shopperInformation: PrefilledShopperInformation? = nil,
-                    showEmailAddress: Bool) {
-            self.boletoPaymentMethod = boletoPaymentMethod
-            self.payment = payment
-            self.shopperInformation = shopperInformation ?? PrefilledShopperInformation()
+        ///   - showEmailAddress: Indicates whether to show `sendCopyByEmail` checkbox and email text field
+        public init(
+            style: FormComponentStyle = FormComponentStyle(),
+            showsSubmitButton: Bool = true,
+            localizationParameters: LocalizationParameters? = nil,
+            shopperInformation: PrefilledShopperInformation?,
+            showEmailAddress: Bool
+        ) {
+            self.style = style
+            self.showsSubmitButton = showsSubmitButton
+            self.localizationParameters = localizationParameters
+            self.shopperInformation = shopperInformation
             self.showEmailAddress = showEmailAddress
         }
     }

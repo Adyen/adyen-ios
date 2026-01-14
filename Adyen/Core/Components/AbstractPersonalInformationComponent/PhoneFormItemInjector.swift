@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,42 +8,44 @@ import Foundation
 
 internal final class PhoneFormItemInjector: FormItemInjector, Localizable {
 
-    /// :nodoc:
     internal var localizationParameters: LocalizationParameters?
 
-    /// :nodoc:
     internal let style: FormTextItemStyle
 
-    /// :nodoc:
-    internal let phoneExtensions: [PhoneExtensionPickerItem]
+    internal let phoneExtensions: [PhoneExtension]
 
-    /// :nodoc:
-    internal var value: String?
+    internal var value: PhoneNumber?
 
-    /// :nodoc:
     internal var identifier: String
+    
+    internal let presenter: WeakReferenceViewControllerPresenter
 
-    /// :nodoc:
     internal lazy var item: FormPhoneNumberItem = {
-        let item = FormPhoneNumberItem(selectableValues: phoneExtensions,
-                                       style: style,
-                                       localizationParameters: localizationParameters)
-        item.value = value ?? ""
+        let item = FormPhoneNumberItem(
+            phoneNumber: value,
+            selectableValues: phoneExtensions,
+            style: style,
+            localizationParameters: localizationParameters,
+            presenter: presenter
+        )
         item.identifier = identifier
         return item
     }()
 
-    internal init(value: String?,
-                  identifier: String,
-                  phoneExtensions: [PhoneExtensionPickerItem],
-                  style: FormTextItemStyle) {
+    internal init(
+        value: PhoneNumber?,
+        identifier: String,
+        phoneExtensions: [PhoneExtension],
+        style: FormTextItemStyle,
+        presenter: WeakReferenceViewControllerPresenter
+    ) {
         self.value = value
         self.identifier = identifier
         self.phoneExtensions = phoneExtensions
         self.style = style
+        self.presenter = presenter
     }
 
-    /// :nodoc:
     internal func inject(into formViewController: FormViewController) {
         formViewController.append(item)
     }

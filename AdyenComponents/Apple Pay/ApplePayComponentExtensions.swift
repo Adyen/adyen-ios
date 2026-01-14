@@ -1,185 +1,154 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import PassKit
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     
-    /// :nodoc:
     public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-        dismiss { [weak self] in
-            guard let self = self, self.success == false else { return }
-            self.delegate?.didFail(with: ComponentError.cancelled, from: self)
+        if configuration.dismissesAutomatically {
+            controller.dismiss(animated: true) { [weak self] in
+                self?.handleViewControllerDidFinish()
+            }
+        } else {
+            handleViewControllerDidFinish()
         }
     }
     
-    /// :nodoc:
-    public func paymentAuthorizationViewController(_ controller: PKPaymentAuthorizationViewController,
-                                                   didAuthorizePayment payment: PKPayment,
-                                                   completion: @escaping (PKPaymentAuthorizationStatus) -> Void) {
+    private func handleViewControllerDidFinish() {
+        switch state {
+        case let .finalized(completion):
+            completion?()
+        case .initial:
+            // User cancelled without authorizing payment - allow component reuse
+            paymentAuthorizationViewController = nil
+            delegate?.didFail(with: ComponentError.cancelled, from: self)
+        case .submitted:
+            // Payment authorized but finalizeIfNeeded not called
+            // we call didFail here to not cause a breaking behavior change
+            delegate?.didFail(with: ComponentError.cancelled, from: self)
+        }
+    }
+    
+    public func paymentAuthorizationViewController(
+        _ controller: PKPaymentAuthorizationViewController,
+        didAuthorizePayment payment: PKPayment,
+        handler completion: @escaping (PKPaymentAuthorizationResult) -> Void
+    ) {
         guard payment.token.paymentData.isEmpty == false else {
-            completion(.failure)
+            completion(PKPaymentAuthorizationResult(status: .failure, errors: nil))
             delegate?.didFail(with: Error.invalidToken, from: self)
             return
         }
 
-        paymentAuthorizationCompletion = completion
+        // Call the authorization delegate's didAuthorize method for validation
+        // If no delegate is set, proceed directly with payment submission
+        if let authorizationDelegate {
+            authorizationDelegate.didAuthorize(payment: payment) { [weak self] result in
+                guard let self else { return }
+                if result.status == .success {
+                    self.proceedWithSubmission(for: payment, completion: completion)
+                } else {
+                    // Validation failed - pass the result back to Apple Pay
+                    completion(result)
+                }
+            }
+        } else {
+            proceedWithSubmission(for: payment, completion: completion)
+        }
+    }
+    
+    public func paymentAuthorizationViewController(
+        _ controller: PKPaymentAuthorizationViewController,
+        didSelectShippingContact contact: PKContact,
+        handler completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void
+    ) {
+        guard let applePayDelegate else {
+            return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
+        }
+
+        applePayDelegate.didUpdate(
+            contact: contact,
+            for: applePayPayment
+        ) { [weak self] result in
+            guard let self else { return }
+            self.updateApplePayPayment(result)
+            completion(result)
+        }
+    }
+
+    public func paymentAuthorizationViewController(
+        _ controller: PKPaymentAuthorizationViewController,
+        didSelect shippingMethod: PKShippingMethod,
+        handler completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void
+    ) {
+        guard let applePayDelegate else {
+            return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
+        }
+
+        applePayDelegate.didUpdate(
+            shippingMethod: shippingMethod,
+            for: applePayPayment
+        ) { [weak self] result in
+            guard let self else { return }
+            self.updateApplePayPayment(result)
+            completion(result)
+        }
+    }
+
+    @available(iOS 15.0, *)
+    public func paymentAuthorizationViewController(
+        _ controller: PKPaymentAuthorizationViewController,
+        didChangeCouponCode couponCode: String,
+        handler completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void
+    ) {
+        guard let applePayDelegate else {
+            return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
+        }
+
+        applePayDelegate.didUpdate(
+            couponCode: couponCode,
+            for: applePayPayment
+        ) { [weak self] result in
+            guard let self else { return }
+            self.updateApplePayPayment(result)
+            completion(result)
+        }
+    }
+
+    private func updateApplePayPayment(_ result: some PKPaymentRequestUpdate) {
+        if result.status == .success, result.paymentSummaryItems.count > 0 {
+            do {
+                applePayPayment = try applePayPayment.replacing(summaryItems: result.paymentSummaryItems)
+            } catch {
+                delegate?.didFail(with: error, from: self)
+            }
+        }
+    }
+    
+    private func proceedWithSubmission(
+        for payment: PKPayment,
+        completion: @escaping (PKPaymentAuthorizationResult) -> Void
+    ) {
+        state = .submitted(completion)
+        
         let token = payment.token.paymentData.base64EncodedString()
         let network = payment.token.paymentMethod.network?.rawValue ?? ""
-        let billingContact = payment.billingContact
-        let shippingContact = payment.shippingContact
-        let details = ApplePayDetails(paymentMethod: applePayPaymentMethod,
-                                      token: token,
-                                      network: network,
-                                      billingContact: billingContact,
-                                      shippingContact: shippingContact)
+        let details = ApplePayDetails(
+            paymentMethod: applePayPaymentMethod,
+            token: token,
+            network: network,
+            billingContact: payment.billingContact,
+            shippingContact: payment.shippingContact,
+            shippingMethod: payment.shippingMethod
+        )
         
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: self.amountToPay, order: order))
+        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: applePayPayment.amount, order: order))
     }
-}
-
-// MARK: - Apple Pay component configuration.
-
-extension ApplePayComponent {
-    
-    /// Apple Pay component configuration.
-    public struct Configuration {
-        
-        /// The public key used for encrypting card details.
-        public var summaryItems: [PKPaymentSummaryItem]
-
-        /// The merchant identifier for apple pay.
-        public var merchantIdentifier: String
-
-        /// A list of fields that you need for a billing contact in order to process the transaction.
-        /// Ignored on iOS 10.*.
-        public var requiredBillingContactFields: Set<PKContactField> = []
-
-        /// A list of fields that you need for a shipping contact in order to process the transaction.
-        /// Ignored on iOS 10.*.
-        public var requiredShippingContactFields: Set<PKContactField> = []
-
-        /// A pre-populated billing address.
-        public var billingContact: PKContact?
-
-        /// The flag to toggle onboarding.
-        /// If true, allow the shopper to add cards to Apple Pay if non exists yet.
-        /// If false, then Apple Pay is disabled if the shopper doesn't have supported cards on Apple Pay wallet.
-        public var allowOnboarding: Bool
-
-        /// Initializes the configuration.
-        ///
-        /// - Parameter summaryItems: The line items for this payment.
-        /// - Parameter merchantIdentifier: The merchant identifier.
-        /// - Parameter requiredBillingContactFields:
-        /// A list of fields that you need for a billing contact in order to process the transaction. Ignored on iOS 10.*.
-        /// - Parameter requiredShippingContactFields:
-        /// A list of fields that you need for a shipping contact in order to process the transaction. Ignored on iOS 10.*.
-        /// - Parameter requiredShippingContactFields: The excluded card brands.
-        /// - Parameter billingContact: A pre-populated billing address.
-        /// - Parameter allowOnboarding: The flag to toggle onboarding.
-        /// If true, allow the shopper to add cards to Apple Pay if non exists yet.
-        /// If false, then Apple Pay is disabled if the shopper doesn't have supported cards on Apple Pay wallet.
-        /// Default is false.
-        public init(summaryItems: [PKPaymentSummaryItem],
-                    merchantIdentifier: String,
-                    requiredBillingContactFields: Set<PKContactField> = [],
-                    requiredShippingContactFields: Set<PKContactField> = [],
-                    billingContact: PKContact? = nil,
-                    allowOnboarding: Bool = false) {
-            self.summaryItems = summaryItems
-            self.merchantIdentifier = merchantIdentifier
-            self.requiredBillingContactFields = requiredBillingContactFields
-            self.requiredShippingContactFields = requiredShippingContactFields
-            self.billingContact = billingContact
-            self.allowOnboarding = allowOnboarding
-        }
-
-        internal func createPaymentRequest(payment: Payment,
-                                           supportedNetworks: [PKPaymentNetwork]) -> PKPaymentRequest {
-            let paymentRequest = PKPaymentRequest()
-            paymentRequest.countryCode = payment.countryCode
-            paymentRequest.merchantIdentifier = merchantIdentifier
-            paymentRequest.currencyCode = payment.amount.currencyCode
-            paymentRequest.supportedNetworks = supportedNetworks
-            paymentRequest.merchantCapabilities = .capability3DS
-            paymentRequest.paymentSummaryItems = summaryItems
-            paymentRequest.requiredBillingContactFields = requiredBillingContactFields
-            paymentRequest.requiredShippingContactFields = requiredShippingContactFields
-            paymentRequest.billingContact = billingContact
-            return paymentRequest
-        }
-    }
-
-    // Adyen supports: interac, visa, mc, electron, maestro, amex, jcb, discover, elodebit, elo.
-    // Will support girocard in future versions
-    internal static var defaultNetworks: [PKPaymentNetwork] {
-        var networks: [PKPaymentNetwork] = [
-            .visa,
-            .masterCard,
-            .amex,
-            .discover,
-            .interac,
-            .JCB,
-            .suica,
-            .quicPay,
-            .idCredit,
-            .chinaUnionPay
-        ]
-
-        if #available(iOS 11.2, *) {
-            networks.append(.cartesBancaires)
-        }
-
-        if #available(iOS 12.1.1, *) {
-            networks.append(.elo)
-            networks.append(.mada)
-        }
-
-        if #available(iOS 12.0, *) {
-            networks.append(.maestro)
-            networks.append(.electron)
-            networks.append(.vPay)
-            networks.append(.eftpos)
-        }
-
-        if #available(iOS 14.0, *) {
-            networks.append(.girocard)
-        }
-
-        if #available(iOS 14.5, *) {
-            networks.append(.mir)
-        }
-
-        return networks
-    }
-
-}
-
-extension ApplePayPaymentMethod {
-
-    internal var supportedNetworks: [PKPaymentNetwork] {
-        var networks = ApplePayComponent.defaultNetworks
-        if let brands = brands {
-            let brandsSet = Set(brands)
-            networks = networks.filter { brandsSet.contains($0.adyenName) }
-        }
-        return networks
-    }
-
-}
-
-extension PKPaymentNetwork {
-
-    internal var adyenName: String {
-        if self == .masterCard { return "mc" }
-        return self.rawValue.lowercased()
-    }
-
 }

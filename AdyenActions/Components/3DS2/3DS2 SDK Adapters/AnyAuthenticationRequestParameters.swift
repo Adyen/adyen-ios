@@ -1,10 +1,9 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen3DS2
 import Foundation
 
 internal protocol AnyAuthenticationRequestParameters {
@@ -21,5 +20,3 @@ internal protocol AnyAuthenticationRequestParameters {
 
     var messageVersion: String { get }
 }
-
-extension ADYAuthenticationRequestParameters: AnyAuthenticationRequestParameters {}

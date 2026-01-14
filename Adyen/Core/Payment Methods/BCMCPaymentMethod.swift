@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,34 +8,39 @@ import Foundation
 
 /// A Bancontact card payment method.
 public struct BCMCPaymentMethod: AnyCardPaymentMethod {
-    /// A string identifying the type of payment method, such as `"card"`, `"ideal"`, `"applepay"`.
-    public var type: String { cardPaymentMethod.type }
-    
-    /// The name of the payment method, such as `"Credit Card"`, `"iDEAL"`, `"Apple Pay"`.
+
+    private var cardPaymentMethod: CardPaymentMethod
+
+    public var type: PaymentMethodType { cardPaymentMethod.type }
+
     public var name: String { cardPaymentMethod.name }
     
-    /// An array containing the supported brands, such as `"mc"`, `"visa"`, `"amex"`, `"bcmc"`.
-    /// In this case the brands is ["bcmc"].
-    public let brands: [String] = [PaymentMethodType.bcmc.rawValue]
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? {
+        get { cardPaymentMethod.merchantProvidedDisplayInformation }
+        set { cardPaymentMethod.merchantProvidedDisplayInformation = newValue }
+    }
     
-    /// :nodoc:
+    /// An array containing the supported brands, such as `"mc"`, `"visa"`, `"amex"`, `"bcmc"`.
+    ///
+    /// Used to configure the `allowedCardTypes` on the `BCMCComponent`'s configuration
+    public var brands: [CardType] { cardPaymentMethod.brands }
+    
     public var fundingSource: CardFundingSource? { cardPaymentMethod.fundingSource }
     
-    /// :nodoc:
-    private let cardPaymentMethod: CardPaymentMethod
-    
-    /// :nodoc:
     internal init(cardPaymentMethod: CardPaymentMethod) {
         self.cardPaymentMethod = cardPaymentMethod
     }
     
-    /// :nodoc:
     public init(from decoder: Decoder) throws {
         let cardPaymentMethod = try CardPaymentMethod(from: decoder)
         self.init(cardPaymentMethod: cardPaymentMethod)
     }
     
-    /// :nodoc:
+    public func encode(to encoder: Encoder) throws {
+        try cardPaymentMethod.encode(to: encoder)
+    }
+    
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }

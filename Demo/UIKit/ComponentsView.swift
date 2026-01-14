@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,7 +14,12 @@ internal final class ComponentsView: UIView {
         
         addSubview(tableView)
         
-        tableView.adyen.anchor(inside: self)
+        tableView.anchor(inside: self)
+        tableView.tableHeaderView = switchContainerView
+        switchContainerView.bounds.size.height = 55
+        
+        addSubview(activityIndicator)
+        activityIndicator.anchor(inside: self)
     }
     
     @available(*, unavailable)
@@ -22,9 +27,47 @@ internal final class ComponentsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    internal var isUsingSession: Bool {
+        sessionSwitch.isOn
+    }
+    
+    internal var showsLoadingIndicator: Bool {
+        get {
+            self.activityIndicator.isAnimating
+        }
+        set {
+            if newValue {
+                self.activityIndicator.startAnimating()
+            } else {
+                self.activityIndicator.stopAnimating()
+            }
+        }
+    }
+    
     // MARK: - Items
     
     internal var items = [[ComponentsItem]]()
+    
+    // MARK: - Loading
+    
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator: UIActivityIndicatorView
+        if #available(iOS 13.0, *) {
+            activityIndicator = UIActivityIndicatorView(style: .large)
+        } else {
+            activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        }
+        activityIndicator.hidesWhenStopped = true
+        
+        if #available(iOS 13.0, *) {
+            activityIndicator.color = .label
+            activityIndicator.backgroundColor = .systemGroupedBackground.withAlphaComponent(0.7)
+        } else {
+            activityIndicator.backgroundColor = .black.withAlphaComponent(0.3)
+        }
+        
+        return activityIndicator
+    }()
     
     // MARK: - Table View
     
@@ -40,9 +83,40 @@ internal final class ComponentsView: UIView {
         tableView.rowHeight = 56.0
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        
         return tableView
+    }()
+    
+    private lazy var sessionSwitch: UISwitch = {
+        let sessionSwitch = UISwitch()
+        sessionSwitch.isOn = true
+        return sessionSwitch
+    }()
+    
+    private lazy var switchStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 25
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Using Session"
+        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        
+        stackView.addArrangedSubview(label)
+        stackView.addArrangedSubview(sessionSwitch)
+        return stackView
+    }()
+    
+    private lazy var switchContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(switchStackView)
+        switchStackView.anchor(
+            inside: view.layoutMarginsGuide,
+            with: .init(top: 0, left: 20, bottom: 0, right: 20)
+        )
+        return view
     }()
     
     // MARK: - Apple Pay
@@ -55,14 +129,18 @@ internal final class ComponentsView: UIView {
     }
     
     private func setUpApplePayCell(_ cell: UITableViewCell) {
-        let style: PKPaymentButtonStyle
-        if #available(iOS 14.0, *) {
-            style = .automatic
-        } else if #available(iOS 12.0, *), traitCollection.userInterfaceStyle == .dark {
-            style = .white
-        } else {
-            style = .black
-        }
+        let style: PKPaymentButtonStyle = {
+            if #available(iOS 14.0, *) {
+                return .automatic
+            }
+            
+            switch traitCollection.userInterfaceStyle {
+            case .dark:
+                return .white
+            default:
+                return .black
+            }
+        }()
         
         let contentView = cell.contentView
         
@@ -70,10 +148,10 @@ internal final class ComponentsView: UIView {
         contentView.addSubview(payButton)
         payButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            payButton.heightAnchor.constraint(equalToConstant: 48.0),
-            payButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16.0),
-            payButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16.0),
-            payButton.centerYAnchor.constraint(equalTo: cell.contentView.centerYAnchor)
+            payButton.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
+            payButton.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor),
+            payButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            payButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
         
         payButton.addTarget(self, action: #selector(onApplePayButtonTap), for: .touchUpInside)
@@ -91,12 +169,24 @@ extension ComponentsView: UITableViewDataSource {
     }
     
     internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell: UITableViewCell = {
+            let identifier = "Cell"
+            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier) { return cell }
+            return UITableViewCell(style: .subtitle, reuseIdentifier: identifier)
+        }()
+        
         let item = items[indexPath.section][indexPath.row]
         if item.isApplePay == false {
             cell.textLabel?.font = .preferredFont(forTextStyle: .headline)
             cell.textLabel?.adjustsFontForContentSizeCategory = true
-            cell.textLabel?.text = items[indexPath.section][indexPath.item].title
+            cell.textLabel?.text = item.title
+            
+            cell.detailTextLabel?.font = .preferredFont(forTextStyle: .caption1)
+            if #available(iOS 13.0, *) {
+                cell.detailTextLabel?.textColor = .secondaryLabel
+            }
+            cell.detailTextLabel?.adjustsFontForContentSizeCategory = true
+            cell.detailTextLabel?.text = item.subtitle
         } else {
             setUpApplePayCell(cell)
         }

@@ -1,17 +1,20 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Contains the details supplied by the SEPA Direct Debit component.
 public struct SEPADirectDebitDetails: PaymentMethodDetails {
     
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
+    
     /// The payment method type.
-    public let type: String
+    public let type: PaymentMethodType
     
     /// The account IBAN number.
     public let iban: String
@@ -19,9 +22,12 @@ public struct SEPADirectDebitDetails: PaymentMethodDetails {
     /// The account owner name.
     public let ownerName: String
     
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
+    
     /// Initializes the SEPA Direct Debit details.
     ///
-    /// :nodoc:
     ///
     /// - Parameters:
     ///   - paymentMethod: The SEPA Direct Debit payment method.
@@ -37,6 +43,7 @@ public struct SEPADirectDebitDetails: PaymentMethodDetails {
         case type
         case iban
         case ownerName
+        case sdkData
     }
     
 }

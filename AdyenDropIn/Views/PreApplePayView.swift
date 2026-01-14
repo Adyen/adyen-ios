@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import PassKit
 import UIKit
 
@@ -15,32 +15,29 @@ internal protocol PreApplePayViewDelegate: AnyObject {
     
 }
 
-/// :nodoc:
 internal final class PreApplePayView: UIView, Localizable {
     
-    /// :nodoc:
     internal let model: Model
     
     /// The delegate of the view
     internal weak var delegate: PreApplePayViewDelegate?
     
-    /// :nodoc:
     internal var localizationParameters: LocalizationParameters?
     
     /// Creates PKPaymentButtonStyle based on Dark or Light Mode.
     private var paymentButtonStyleAuto: PKPaymentButtonStyle {
-        let buttonStyle: PKPaymentButtonStyle
         if #available(iOS 14.0, *) {
-            buttonStyle = .automatic
-        } else if #available(iOS 12.0, *), traitCollection.userInterfaceStyle == .dark {
-            buttonStyle = .white
-        } else {
-            buttonStyle = .black
+            return .automatic
         }
-        return buttonStyle
+        
+        switch traitCollection.userInterfaceStyle {
+        case .dark:
+            return .white
+        default:
+            return .black
+        }
     }
     
-    /// :nodoc:
     internal init(model: Model) {
         self.model = model
         super.init(frame: .zero)
@@ -54,13 +51,13 @@ internal final class PreApplePayView: UIView, Localizable {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /// :nodoc:
     private func buildUI() {
+        accessibilityIdentifier = "adyen.preApplePay"
+        
         addButton()
         addHintLabel()
     }
     
-    /// :nodoc:
     private func addButton() {
         addSubview(payButton)
         payButton.translatesAutoresizingMaskIntoConstraints = false
@@ -71,9 +68,10 @@ internal final class PreApplePayView: UIView, Localizable {
             payButton.heightAnchor.constraint(equalToConstant: 48.0)
         ])
         payButton.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "applePayButton")
+        
+        payButton.cornerRadius = model.style.cornerRadius
     }
     
-    /// :nodoc:
     private func addHintLabel() {
         addSubview(hintLabel)
         hintLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -85,24 +83,23 @@ internal final class PreApplePayView: UIView, Localizable {
         hintLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "hintLabel")
     }
     
-    /// :nodoc:
     private lazy var payButton: PKPaymentButton = {
-        let payButton = PKPaymentButton(paymentButtonType: model.style.paymentButtonType,
-                                        paymentButtonStyle: model.style.paymentButtonStyle ?? paymentButtonStyleAuto)
+        let payButton = PKPaymentButton(
+            paymentButtonType: model.style.paymentButtonType,
+            paymentButtonStyle: model.style.paymentButtonStyle ?? paymentButtonStyleAuto
+        )
         
         payButton.addTarget(self, action: #selector(onPayButtonTap), for: .touchUpInside)
         
         return payButton
     }()
     
-    /// :nodoc:
     private lazy var hintLabel: UILabel = {
         let hintLabel = UILabel(style: model.style.hintLabel)
         hintLabel.text = model.hint
         return hintLabel
     }()
     
-    /// :nodoc
     @objc private func onPayButtonTap() {
         delegate?.pay()
     }

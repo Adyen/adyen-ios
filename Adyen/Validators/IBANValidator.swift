@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,12 +8,11 @@ import Foundation
 
 /// Validates an IBAN (International Bank Account Number).
 /// The input is expected to be sanitized.
+@_spi(AdyenInternal)
 public final class IBANValidator: Validator {
     
-    /// :nodoc:
     public init() {}
     
-    /// :nodoc:
     public func isValid(_ value: String) -> Bool {
         let minimumLength = 4
         guard minimumLength...maximumLength(for: value) ~= value.count else {
@@ -30,7 +29,6 @@ public final class IBANValidator: Validator {
         return modulus == 1
     }
     
-    /// :nodoc:
     public func maximumLength(for value: String) -> Int {
         guard let countryCode = countryCode(in: value) else {
             return IBANSpecification.highestMaximumLength

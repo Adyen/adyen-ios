@@ -1,9 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Describes the Card brand.
@@ -30,7 +31,10 @@ public struct CardBrand: Decodable {
 
     /// Indicates the cvc policy of the brand.
     internal let cvcPolicy: RequirementPolicy
-    
+
+    /// Indicates the locale brand name.
+    internal let localeBrand: String?
+
     /// Indicates the expiry date policy of the brand.
     internal let expiryDatePolicy: RequirementPolicy
 
@@ -57,13 +61,16 @@ public struct CardBrand: Decodable {
     ///   - expiryDatePolicy: Indicates the expiry date policy of the brand.
     ///   - isLuhnCheckEnabled: Indicates whether Luhn check applies to card numbers of this brand.
     ///   - showsSocialSecurityNumber: Indicates whether to show social security number field or not.
-    internal init(type: CardType,
-                  isSupported: Bool = true,
-                  cvcPolicy: RequirementPolicy = .required,
-                  expiryDatePolicy: RequirementPolicy = .required,
-                  isLuhnCheckEnabled: Bool = true,
-                  showSocialSecurityNumber: Bool = false,
-                  panLength: Int? = nil) {
+    internal init(
+        type: CardType,
+        isSupported: Bool = true,
+        cvcPolicy: RequirementPolicy = .required,
+        expiryDatePolicy: RequirementPolicy = .required,
+        isLuhnCheckEnabled: Bool = true,
+        showSocialSecurityNumber: Bool = false,
+        panLength: Int? = nil,
+        localeBrand: String? = nil
+    ) {
         self.type = type
         self.isSupported = isSupported
         self.cvcPolicy = cvcPolicy
@@ -71,6 +78,7 @@ public struct CardBrand: Decodable {
         self.isLuhnCheckEnabled = isLuhnCheckEnabled
         self.showsSocialSecurityNumber = showSocialSecurityNumber
         self.panLength = panLength
+        self.localeBrand = localeBrand
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -81,6 +89,7 @@ public struct CardBrand: Decodable {
         case showsSocialSecurityNumber = "showSocialSecurityNumber"
         case expiryDatePolicy
         case panLength
+        case localeBrand
     }
     
     internal var isCVCOptional: Bool {
@@ -107,5 +116,4 @@ public struct CardBrand: Decodable {
     }
 }
 
-/// :nodoc:
 extension CardBrand: Equatable {}

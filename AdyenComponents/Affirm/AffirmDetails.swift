@@ -1,16 +1,19 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 
 /// Contains the details supplied by the Affirm component.
 public struct AffirmDetails: PaymentMethodDetails, ShopperInformation {
     
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
+    
     /// The payment method type.
-    public let type: String
+    public let type: PaymentMethodType
     
     /// The shopper's first and last name.
     public let shopperName: ShopperName?
@@ -27,6 +30,10 @@ public struct AffirmDetails: PaymentMethodDetails, ShopperInformation {
     /// The shopper's delivery address.
     public let deliveryAddress: PostalAddress?
     
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
+    
     /// Initializes the Affirm details.
     /// - Parameters:
     ///   - paymentMethod: Affirm payment method.
@@ -35,12 +42,14 @@ public struct AffirmDetails: PaymentMethodDetails, ShopperInformation {
     ///   - emailAddress: The shopper's email address.
     ///   - billingAddress: The shopper's billing address.
     ///   - deliveryAddress: The shopper's delivery address.
-    public init(paymentMethod: PaymentMethod,
-                shopperName: ShopperName,
-                telephoneNumber: String,
-                emailAddress: String,
-                billingAddress: PostalAddress,
-                deliveryAddress: PostalAddress?) {
+    public init(
+        paymentMethod: PaymentMethod,
+        shopperName: ShopperName,
+        telephoneNumber: String,
+        emailAddress: String,
+        billingAddress: PostalAddress,
+        deliveryAddress: PostalAddress?
+    ) {
         self.type = paymentMethod.type
         self.shopperName = shopperName
         self.telephoneNumber = telephoneNumber
@@ -51,8 +60,8 @@ public struct AffirmDetails: PaymentMethodDetails, ShopperInformation {
     
     // MARK: - Private
     
-    /// :nodoc:
     private enum CodingKeys: CodingKey {
         case type
+        case sdkData
     }
 }

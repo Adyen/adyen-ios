@@ -1,17 +1,20 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Contains the details supplied by the Doku component.
 public struct DokuDetails: PaymentMethodDetails {
+    
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
 
     /// The payment method type.
-    public let type: String
+    public let type: PaymentMethodType
 
     /// The first Name.
     public let firstName: String
@@ -21,6 +24,10 @@ public struct DokuDetails: PaymentMethodDetails {
 
     /// The email address.
     public let emailAddress: String
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
 
     /// Initializes the MB Way details.
     ///
@@ -30,10 +37,12 @@ public struct DokuDetails: PaymentMethodDetails {
     ///   - firstName: The first Name.
     ///   - lastName: The last Name.
     ///   - emailAddress: The email address.
-    public init(paymentMethod: PaymentMethod,
-                firstName: String,
-                lastName: String,
-                emailAddress: String) {
+    public init(
+        paymentMethod: PaymentMethod,
+        firstName: String,
+        lastName: String,
+        emailAddress: String
+    ) {
         self.type = paymentMethod.type
         self.firstName = firstName
         self.lastName = lastName
@@ -45,6 +54,7 @@ public struct DokuDetails: PaymentMethodDetails {
         case firstName
         case lastName
         case emailAddress = "shopperEmail"
+        case sdkData
     }
 
 }

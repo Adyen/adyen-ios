@@ -1,0 +1,90 @@
+name: 🥘 Prepare Release
+on:
+  workflow_dispatch:
+    inputs:
+      sdk-version:
+        description: 'SDK Version'
+        required: true
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write # create branch and new release
+  pull-requests: write # create PR
+
+jobs:
+
+  get-release-notes:
+    name: "Get Release Notes"
+    uses: ./.github/workflows/get_release_notes.yml
+
+  post-release-notes:
+    name: "Create Release Pull Request"
+    needs: get-release-notes
+    runs-on: macos-15-xlarge
+    steps:
+    
+    # Checking out the current branch
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    
+    # Update Version
+    - name: Updating Version Number
+      run: |
+        Scripts/increment_version.sh ${{ env.SDK_VERSION }}
+      env:
+        SDK_VERSION: ${{ github.event.inputs.sdk-version }}
+        
+    # Generating Docs (will show up as changes in the PR)
+    - name: Generate Docs
+      run: |
+        Scripts/generate_docc_documentation.sh
+      env:
+        LATEST_VERSION: ${{ github.event.inputs.sdk-version }}
+        
+    # Sanitizing the Release Notes from the get-release-notes job
+    - name: Prepare Release Notes
+      run: |
+        RELEASE_NOTES=$(echo "$BASE_64_RELEASE_NOTES" | base64 --decode)
+        TMP_DIR="${{ github.workspace }}/.tmp"
+        RELEASE_NOTES_FILE_PATH="$TMP_DIR/release_notes.md"
+        
+        if [ -e $RELEASE_NOTES_FILE_PATH ]
+        then
+            echo "OLD RELEASE NOTES"
+            cat "$RELEASE_NOTES_FILE_PATH"
+            rm -rf $RELEASE_NOTES_FILE_PATH # Making sure we start a fresh document
+        fi
+
+        mkdir -p "$TMP_DIR"
+        echo "$RELEASE_NOTES" >> $RELEASE_NOTES_FILE_PATH
+      env:
+        BASE_64_RELEASE_NOTES: ${{ needs.get-release-notes.outputs.RELEASE_NOTES }}
+    
+    # Creates a release/[sdk-version] branch with a PR to develop
+    - name: Create Pull Request
+      id: create_pr
+      uses: peter-evans/create-pull-request@v8
+      with:
+        delete-branch: true
+        branch: "release/${{ github.event.inputs.sdk-version }}"
+        commit-message: "chore: prepare '${{ github.event.inputs.sdk-version }}' release"
+        title: "[Release] ${{ github.event.inputs.sdk-version }}"
+        body-path: "${{ github.workspace }}/.tmp/release_notes.md"
+        token: ${{ secrets.AUTOMATION_BOT_TOKEN }}
+    
+    - name: Add release label
+      uses: actions-ecosystem/action-add-labels@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        labels: "release"
+        number: ${{ steps.create_pr.outputs.pull-request-number }}
+
+    - name: Auto approve release PR
+      uses: hmarr/auto-approve-action@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}

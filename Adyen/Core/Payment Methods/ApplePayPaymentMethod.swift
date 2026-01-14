@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,18 +9,40 @@ import Foundation
 /// An Apple pay payment method.
 public struct ApplePayPaymentMethod: PaymentMethod {
     
-    /// :nodoc:
-    public let type: String
+    public let type: PaymentMethodType
     
-    /// :nodoc:
     public let name: String
-
-    /// :nodoc:
-    public let brands: [String]?
     
-    /// :nodoc:
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
+
+    /// List of networks enabled on CA.
+    public let brands: [String]?
+
+    // MARK: - Initializers
+
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
+    }
+
+    internal init(
+        type: PaymentMethodType,
+        name: String,
+        merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? = nil,
+        brands: [String]?
+    ) {
+        self.type = type
+        self.name = name
+        self.merchantProvidedDisplayInformation = merchantProvidedDisplayInformation
+        self.brands = brands
+    }
+
+    // MARK: - Private
+
+    private enum CodingKeys: String, CodingKey {
+        case type
+        case name
+        case brands
     }
     
 }

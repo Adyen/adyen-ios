@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,6 @@ import Foundation
 import UIKit
 
 /// A style of form elements in which a value can be entered.
-/// :nodoc:
 public protocol FormValueItemStyle: TintableStyle {
     
     /// The color of bottom line separating form elements.
@@ -20,13 +19,13 @@ public protocol FormValueItemStyle: TintableStyle {
 }
 
 /// An item in a form in which a value can be entered.
-/// :nodoc:
+@_spi(AdyenInternal)
 open class FormValueItem<ValueType: Equatable, StyleType: FormValueItemStyle>: FormItem {
 
-    /// :nodoc:
+    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    
     public private(set) var subitems: [FormItem]
 
-    /// :nodoc:
     public var identifier: String?
 
     /// The value entered in the item.
@@ -36,17 +35,17 @@ open class FormValueItem<ValueType: Equatable, StyleType: FormValueItemStyle>: F
     }
 
     /// The publisher for value change updates.
-    public var publisher: Observable<ValueType>
+    public var publisher: AdyenObservable<ValueType>
 
     /// The style of  form item view.
     public var style: StyleType
 
     /// The title of the item.
-    @Observable(nil) public var title: String?
+    @AdyenObservable(nil) public var title: String?
 
     /// Create new instance of FormValueItem
     internal init(value: ValueType, style: StyleType) {
-        self.publisher = Observable(value)
+        self.publisher = AdyenObservable(value)
         self.style = style
         self.subitems = []
     }

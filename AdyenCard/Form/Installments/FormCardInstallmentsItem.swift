@@ -1,13 +1,13 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 
 /// A form element that handles the display and selection of installment options based on the configuration.
-internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentElement>, Observer {
+internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentElement>, AdyenObserver {
     
     /// Configurations  to prepare the picker form items.
     private let installmentConfiguration: InstallmentConfiguration
@@ -25,7 +25,7 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
     }
     
     private var currentInstallmentOptions: InstallmentOptions? {
-        guard let cardType = cardType else { return installmentConfiguration.defaultOptions }
+        guard let cardType else { return installmentConfiguration.defaultOptions }
         
         return installmentConfiguration.cardBasedOptions?[cardType] ?? installmentConfiguration.defaultOptions
     }
@@ -37,18 +37,20 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
 
     /// Creates the picker values to display in addition to `oneTimePaymentElement`
     private var additionalPickerElements: [InstallmentElement] {
-        guard let currentInstallmentOptions = currentInstallmentOptions else { return [] }
+        guard let currentInstallmentOptions else { return [] }
         var values: [InstallmentElement] = []
         if currentInstallmentOptions.includesRevolving {
             values.append(InstallmentElement(kind: .plan(.revolving), localizationParameters: localizationParameters))
         }
         
-        let showAmount = installmentConfiguration.showInstallmentPrice
+        let showAmount = installmentConfiguration.showInstallmentAmount
         let monthValues = currentInstallmentOptions.regularInstallmentMonths.map {
             InstallmentElement(
-                kind: .month(InstallmentElement.InstallmentMonth(monthValue: Int($0),
-                                                                 amount: amount,
-                                                                 showAmount: showAmount)),
+                kind: .month(InstallmentElement.InstallmentMonth(
+                    monthValue: Int($0),
+                    amount: amount,
+                    showAmount: showAmount
+                )),
                 localizationParameters: localizationParameters
             )
         }
@@ -58,17 +60,21 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
 
     /// Initializes the installments element.
     /// There will be one element in the picker at initialization.
-    internal init(installmentConfiguration: InstallmentConfiguration,
-                  style: FormTextItemStyle,
-                  amount: Amount?,
-                  localizationParameters: LocalizationParameters? = nil) {
+    internal init(
+        installmentConfiguration: InstallmentConfiguration,
+        style: FormTextItemStyle,
+        amount: Amount?,
+        localizationParameters: LocalizationParameters? = nil
+    ) {
         self.installmentConfiguration = installmentConfiguration
         self.amount = amount
         self.localizationParameters = localizationParameters
         let oneTimePaymentElement = InstallmentElement(kind: .plan(.oneTime), localizationParameters: localizationParameters)
-        super.init(preselectedValue: oneTimePaymentElement.pickerElement,
-                   selectableValues: [oneTimePaymentElement.pickerElement],
-                   style: style)
+        super.init(
+            preselectedValue: oneTimePaymentElement.pickerElement,
+            selectableValues: [oneTimePaymentElement.pickerElement],
+            style: style
+        )
         isHidden.wrappedValue = true
         title = localizedString(.cardInstallmentsNumberOfInstallments, localizationParameters)
         updatePickerContent()
@@ -93,14 +99,7 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
         selectableValues = newValues.map(\.pickerElement)
     }
     
-    /// :nodoc:
     override internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
-    }
-}
-
-extension FormItemViewBuilder {
-    internal func build(with item: FormCardInstallmentsItem) -> BaseFormPickerItemView<InstallmentElement> {
-        FormCardInstallmentsItemView(item: item)
     }
 }

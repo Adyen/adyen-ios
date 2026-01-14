@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import PassKit
 import UIKit
 
@@ -40,9 +40,11 @@ internal class ShareableVoucherView: UIView, Localizable {
         let topView = createTopView()
         let bottomView = createBottomView()
         
-        return VoucherCardView(model: model.separatorModel,
-                               topView: topView,
-                               bottomView: bottomView)
+        return VoucherCardView(
+            model: model.separatorModel,
+            topView: topView,
+            bottomView: bottomView
+        )
     }()
     
     private lazy var textLabel: UILabel = {
@@ -70,11 +72,13 @@ internal class ShareableVoucherView: UIView, Localizable {
     internal func createTopView() -> UIView {
         logoView.image = model.logo
         let textLabelWrapper = textLabel.adyen.wrapped(
-            with: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: -16)
+            with: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         )
-        let stackView = UIStackView(arrangedSubviews: [logoView,
-                                                       textLabelWrapper,
-                                                       amountLabel])
+        let stackView = UIStackView(arrangedSubviews: [
+            logoView,
+            textLabelWrapper,
+            amountLabel
+        ])
         stackView.spacing = 16
         stackView.distribution = .equalSpacing
         stackView.axis = .vertical
@@ -125,7 +129,7 @@ internal class ShareableVoucherView: UIView, Localizable {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         let containerView = stackView.adyen.wrapped(
-            with: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: -16)
+            with: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         )
         valueLabel.widthAnchor.constraint(
             lessThanOrEqualTo: containerView.widthAnchor,

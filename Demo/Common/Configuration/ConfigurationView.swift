@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,6 +15,9 @@ internal struct ConfigurationView: View {
         case merchantAccount = "Merchant Account"
         case region = "Region"
         case payment = "Payment"
+        case components = "Components"
+        case authentication = "Authentication"
+        case dropIn = "DropIn"
     }
     
     @ObservedObject internal var viewModel: ConfigurationViewModel
@@ -43,35 +46,49 @@ internal struct ConfigurationView: View {
     internal var body: some View {
         NavigationView {
             Form {
-                wrapInSection(view: apiVersionSection, section: .apiVersion)
-                wrapInSection(view: merchantAccountSection, section: .merchantAccount)
-                wrapInSection(view: regionSection, section: .region)
+                apiVersionSection
+                merchantAccountSection
+                regionSection
                 wrapInSection(view: paymentSection, section: .payment)
+                wrapInSection(view: dropInSection, section: .dropIn)
+                wrapInSection(view: componentsSection, section: .components)
+                wrapInSection(view: authenticationSection, section: .authentication)
             }.navigationBarTitle("Configuration", displayMode: .inline)
                 .navigationBarItems(
                     leading: Button("Default", action: viewModel.defaultTapped),
                     trailing: Button("Save", action: viewModel.doneTapped)
                 )
-        }.onAppear {
+        }
+        .navigationViewStyle(.stack)
+        .onAppear {
             countrySearchSting = ""
             currencySearchString = ""
         }
     }
     
-    private func wrapInSection<T: View>(
-        view: T,
+    private func wrapInSection(
+        view: some View,
         section: ConfigurationSection
     ) -> some View {
         Section(header: Text(section.rawValue.uppercased())) { view }
     }
     
     private var apiVersionSection: some View {
-        TextField(ConfigurationSection.apiVersion.rawValue, text: $viewModel.apiVersion)
-            .keyboardType(.numberPad)
+        TextFieldItemView(
+            title: "API Version",
+            value: $viewModel.apiVersion,
+            placeholder: ConfigurationSection.apiVersion.rawValue,
+            keyboardType: .numberPad
+        )
     }
     
     private var merchantAccountSection: some View {
-        TextField(ConfigurationSection.merchantAccount.rawValue, text: $viewModel.merchantAccount)
+        TextFieldItemView(
+            title: "Merchant Account",
+            value: $viewModel.merchantAccount,
+            placeholder: ConfigurationSection.merchantAccount.rawValue,
+            keyboardType: .default
+        )
     }
     
     private var regionSection: some View {
@@ -110,22 +127,73 @@ internal struct ConfigurationView: View {
                 rows: filteredCurrencies,
                 transform: { ListItemView(viewModel: $0.toListItemViewModel) }
             )
-            TextField("Amount", text: $viewModel.value)
-                .keyboardType(.numberPad)
+            TextFieldItemView(
+                title: "Amount ",
+                value: $viewModel.value,
+                placeholder: "Amount",
+                keyboardType: .numberPad
+            )
+        }
+
+    }
+
+    private var dropInSection: some View {
+        NavigationLink(destination: DropInSettingsView(viewModel: viewModel)) {
+            HStack {
+                Text("DropIn")
+            }
+        }
+    }
+
+    private var componentsSection: some View {
+        Group {
+            cardComponentSection
+            applePaySection
+            analyticsSection
         }
     }
     
-    private func pickerWithSearchBar<T: Hashable, P: Hashable>(
+    private var authenticationSection: some View {
+        Toggle(isOn: $viewModel.allowForceCardRedirectAction) {
+            Text("Force Card RedirectAction")
+        }
+    }
+
+    internal var cardComponentSection: some View {
+        NavigationLink(destination: CardSettingsView(viewModel: viewModel)) {
+            HStack {
+                Text("Card Component")
+            }
+        }
+    }
+
+    private var applePaySection: some View {
+        NavigationLink(destination: ApplePaySettingsView(viewModel: viewModel)) {
+            HStack {
+                Text("Apple Pay")
+            }
+        }
+    }
+
+    private var analyticsSection: some View {
+        NavigationLink(destination: AnalyticsSettingsView(viewModel: viewModel)) {
+            HStack {
+                Text("Analytics")
+            }
+        }
+    }
+
+    private func pickerWithSearchBar<T: Hashable>(
         with selectionBinding: Binding<String>,
         title: String,
         searchString: Binding<String>,
         rows: [T],
-        transform: @escaping (T) -> ListItemView<P>
+        transform: @escaping (T) -> ListItemView<some Hashable>
     ) -> some View {
         Picker(title, selection: selectionBinding) {
             SearchBar(searchString: searchString, placeholder: "Search...")
             ForEach(rows, id: \.self, content: transform)
-        }
+        }.navigationLinkStyle()
     }
     
     private func setToCountryCurrency() {
@@ -142,6 +210,32 @@ internal struct ConfigurationView: View {
 }
 
 @available(iOS 13.0.0, *)
+internal struct TextFieldItemView: View {
+
+    internal let title: String
+    internal let placeholder: String
+    internal let keyboardType: UIKeyboardType
+    internal let value: Binding<String>
+
+    internal init(title: String, value: Binding<String>, placeholder: String, keyboardType: UIKeyboardType) {
+        self.title = title
+        self.placeholder = placeholder
+        self.keyboardType = keyboardType
+        self.value = value
+    }
+
+    internal var body: some View {
+        HStack {
+            Text(title)
+            TextField(placeholder, text: value)
+                .keyboardType(keyboardType)
+                .multilineTextAlignment(.trailing)
+                .padding(.trailing, 10)
+        }
+    }
+}
+
+@available(iOS 13.0.0, *)
 private struct ListItemView<T: Hashable>: View {
     let viewModel: ViewModel<T>
     
@@ -152,10 +246,10 @@ private struct ListItemView<T: Hashable>: View {
         }.tag(viewModel.tag)
     }
     
-    fileprivate struct ViewModel<T: Hashable> {
+    fileprivate struct ViewModel<Tag: Hashable> {
         let title: String
         let subtitle: String
-        let tag: T
+        let tag: Tag
     }
 }
 
@@ -191,5 +285,17 @@ extension CurrencyDisplayInfo {
     internal func matches(_ predicate: String) -> Bool {
         code.range(of: predicate, options: [.anchored, .caseInsensitive]) != nil ||
             symbol.range(of: predicate, options: [.anchored, .caseInsensitive]) != nil
+    }
+}
+
+@available(iOS 13.0.0, *)
+extension Picker {
+    @ViewBuilder
+    fileprivate func navigationLinkStyle() -> some View {
+        if #available(iOS 16.0.0, *) {
+            self.pickerStyle(NavigationLinkPickerStyle())
+        } else {
+            self
+        }
     }
 }

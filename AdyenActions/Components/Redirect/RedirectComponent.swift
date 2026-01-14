@@ -1,10 +1,11 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
+import AdyenNetworking
 import UIKit
 
 extension RedirectComponent: AnyRedirectComponent {}
@@ -13,45 +14,97 @@ extension RedirectComponent: AnyRedirectComponent {}
 public final class RedirectComponent: ActionComponent {
     
     /// Describes the types of errors that can be returned by the component.
-    public enum Error: Swift.Error {
+    public enum Error: LocalizedError {
         
         /// Indicates that no app is installed that can handle the payment.
         case appNotFound
         
+        /// Indicates that invalid parameters are passed back from the issuer.
+        case invalidRedirectParameters
+        
+        public var errorDescription: String? {
+            switch self {
+            case .appNotFound:
+                return "No app installed that can handle the payment."
+            case .invalidRedirectParameters:
+                return "Query parameters returned by the issuer is invalid or empty."
+            }
+        }
+        
     }
     
-    /// :nodoc:
-    public let apiContext: APIContext
+    /// The component configurations.
+    public struct Configuration {
+        
+        /// The component's UI style.
+        public var style: RedirectComponentStyle?
+        
+        fileprivate let componentName = "redirect"
+        
+        /// Initializes an instance of `Configuration`
+        ///
+        /// - Parameter style: The component's UI style.
+        public init(style: RedirectComponentStyle? = nil) {
+            self.style = style
+        }
+    }
     
-    /// :nodoc:
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
+    
     public weak var delegate: ActionComponentDelegate?
 
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
     
-    /// :nodoc:
     internal var appLauncher: AnyAppLauncher = AppLauncher()
+    
+    internal lazy var apiClient: AnyRetryAPIClient = {
+        APIClient(apiContext: context.apiContext).retryAPIClient(with: SimpleScheduler(maximumCount: 2))
+    }()
+    
     private var browserComponent: BrowserComponent?
-    private let style: RedirectComponentStyle?
-    private let componentName = "redirect"
+    
+    /// The component configurations.
+    public var configuration: Configuration
+    
+    private var action: RedirectAction?
     
     /// Initializes the component.
     ///
-    /// - Parameter apiContext: The API context.
-    /// - Parameter style: The component's UI style.
-    public init(apiContext: APIContext,
-                style: RedirectComponentStyle? = nil) {
-        self.apiContext = apiContext
-        self.style = style
+    /// - Parameter context: The context object for this component.
+    /// - Parameter configuration: The component configurations.
+    public init(
+        context: AdyenContext,
+        configuration: Configuration = Configuration()
+    ) {
+        self.context = context
+        self.configuration = configuration
+    }
+    
+    internal convenience init(
+        context: AdyenContext,
+        configuration: Configuration = Configuration(),
+        apiClient: AnyRetryAPIClient
+    ) {
+        self.init(context: context, configuration: configuration)
+        self.apiClient = apiClient
     }
     
     /// Handles a redirect action.
     ///
     /// - Parameter action: The redirect action object.
     public func handle(_ action: RedirectAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        Analytics.sendEvent(
+            component: configuration.componentName,
+            flavor: _isDropIn ? .dropin : .components,
+            context: context.apiContext
+        )
         
-        if action.url.isHttp {
+        self.action = action
+        
+        if action.url.adyen.isHttp {
             openHttpSchemeUrl(action)
         } else {
             openCustomSchemeUrl(action)
@@ -66,7 +119,11 @@ public final class RedirectComponent: ActionComponent {
     /// - Returns: A boolean value indicating whether the URL was handled by the redirect component.
     @discardableResult
     public static func applicationDidOpen(from url: URL) -> Bool {
-        RedirectListener.applicationDidOpen(from: url)
+        do {
+            return try RedirectListener.applicationDidOpen(from: url)
+        } catch {
+            return false
+        }
     }
     
     // MARK: - Http link handling
@@ -74,10 +131,10 @@ public final class RedirectComponent: ActionComponent {
     private func openHttpSchemeUrl(_ action: RedirectAction) {
         // Try to open as a universal app link, if it fails open the in-app browser.
         appLauncher.openUniversalAppUrl(action.url) { [weak self] success in
-            guard let self = self else { return }
+            guard let self else { return }
             self.registerRedirectBounceBackListener(action)
             if success {
-                self.delegate?.didOpenExternalApplication(self)
+                self.delegate?.didOpenExternalApplication(component: self)
             } else {
                 self.openInAppBrowser(action)
             }
@@ -85,7 +142,11 @@ public final class RedirectComponent: ActionComponent {
     }
 
     private func openInAppBrowser(_ action: RedirectAction) {
-        let component = BrowserComponent(url: action.url, apiContext: apiContext, style: style)
+        let component = BrowserComponent(
+            url: action.url,
+            context: context,
+            style: configuration.style
+        )
         component.delegate = self
         browserComponent = component
         presentationDelegate?.present(component: component)
@@ -95,11 +156,12 @@ public final class RedirectComponent: ActionComponent {
 
     private func openCustomSchemeUrl(_ action: RedirectAction) {
         appLauncher.openCustomSchemeUrl(action.url) { [weak self] success in
-            guard let self = self else { return }
+            guard let self else { return }
             if success {
                 self.registerRedirectBounceBackListener(action)
-                self.delegate?.didOpenExternalApplication(self)
+                self.delegate?.didOpenExternalApplication(component: self)
             } else {
+                self.sendErrorEvent(.redirectFailed, type: .redirect)
                 self.delegate?.didFail(with: RedirectComponent.Error.appNotFound, from: self)
             }
         }
@@ -109,19 +171,64 @@ public final class RedirectComponent: ActionComponent {
 
     private func registerRedirectBounceBackListener(_ action: RedirectAction) {
         RedirectListener.registerForURL { [weak self] returnURL in
-            guard let self = self else { return }
-            
-            let additionalDetails = RedirectDetails(returnURL: returnURL)
-            let actionData = ActionComponentData(details: additionalDetails, paymentData: action.paymentData)
-            self.delegate?.didProvide(actionData, from: self)
+            guard let self else { return }
+            try self.didOpen(url: returnURL, action)
         }
+    }
+    
+    private func didOpen(url returnURL: URL, _ action: RedirectAction) throws {
+        switch action.type {
+        case .nativeRedirect:
+            try handleNativeMobileRedirect(
+                withReturnURL: returnURL,
+                redirectStateData: action.nativeRedirectData,
+                action
+            )
+        case .redirect:
+            try notifyDelegateDidProvide(redirectDetails: RedirectDetails(returnURL: returnURL), action)
+        }
+    }
+    
+    private func handleNativeMobileRedirect(withReturnURL returnURL: URL, redirectStateData: String?, _ action: RedirectAction) throws {
+        guard let queryString = returnURL.query else {
+            sendErrorEvent(.redirectParseFailed, type: .redirect)
+            throw Error.invalidRedirectParameters
+        }
+        let request = NativeRedirectResultRequest(
+            redirectData: redirectStateData,
+            returnQueryString: queryString
+        )
+        apiClient.perform(request) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case let .failure(error):
+                self.sendErrorEvent(.apiErrorNativeRedirect, type: .api)
+                self.delegate?.didFail(with: error, from: self)
+            case let .success(response):
+                self.notifyDelegateDidProvide(redirectDetails: response, action)
+            }
+        }
+    }
+
+    private func notifyDelegateDidProvide(redirectDetails: RedirectDetails, _ action: RedirectAction) {
+        let actionData = ActionComponentData(details: redirectDetails, paymentData: action.paymentData)
+        delegate?.didProvide(actionData, from: self)
+    }
+    
+    private func sendErrorEvent(_ code: AnalyticsConstants.ErrorCode, type: AnalyticsEventError.ErrorType) {
+        let componentName = action?.paymentMethodType ?? configuration.componentName
+        var errorEvent = AnalyticsEventError(
+            component: componentName,
+            type: type
+        )
+        errorEvent.code = code.stringValue
+        context.analyticsProvider?.add(error: errorEvent)
     }
     
 }
 
 extension RedirectComponent: BrowserComponentDelegate {
 
-    /// :nodoc:
     internal func didCancel() {
         if browserComponent != nil {
             browserComponent = nil
@@ -129,34 +236,29 @@ extension RedirectComponent: BrowserComponentDelegate {
         }
     }
 
-    /// :nodoc:
     internal func didOpenExternalApplication() {
-        delegate?.didOpenExternalApplication(self)
+        delegate?.didOpenExternalApplication(component: self)
     }
     
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 extension RedirectComponent: ActionComponentDelegate {
     
-    /// :nodoc:
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         delegate?.didProvide(data, from: self)
     }
 
-    /// :nodoc:
     public func didComplete(from component: ActionComponent) {
         delegate?.didComplete(from: self)
     }
     
-    /// :nodoc:
     public func didFail(with error: Swift.Error, from component: ActionComponent) {
         delegate?.didFail(with: error, from: self)
     }
     
-    /// :nodoc:
-    public func didOpenExternalApplication(_ component: ActionComponent) {
-        delegate?.didOpenExternalApplication(self)
+    public func didOpenExternalApplication(component: ActionComponent) {
+        delegate?.didOpenExternalApplication(component: self)
     }
     
 }

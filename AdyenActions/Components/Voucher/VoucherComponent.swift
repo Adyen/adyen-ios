@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenNetworking
 import PassKit
 import UIKit
@@ -17,95 +17,103 @@ internal protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
 /// A component that handles voucher action.
 public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent {
 
-    /// :nodoc:
-    public let apiContext: APIContext
-
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
+    
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
 
-    /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
 
-    /// :nodoc:
     public let requiresModalPresentation: Bool = true
-
-    /// The Component UI style.
-    public let style: VoucherComponentStyle
-
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
-
-    /// :nodoc:
-    internal var voucherShareableViewProvider: AnyVoucherShareableViewProvider
     
-    /// :nodoc:
-    internal var action: VoucherAction?
+    /// The voucher component configurations.
+    public struct Configuration {
+        
+        /// The component UI style.
+        public var style: VoucherComponentStyle = .init()
+        
+        /// The localization parameters, leave it nil to use the default parameters.
+        public var localizationParameters: LocalizationParameters?
+        
+        /// Initializes an instance of `Configuration`
+        ///
+        /// - Parameters:
+        ///   - style: The Component UI style.
+        ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
+        public init(style: VoucherComponentStyle = VoucherComponentStyle(), localizationParameters: LocalizationParameters? = nil) {
+            self.style = style
+            self.localizationParameters = localizationParameters
+        }
+    }
+    
+    /// The voucher component configurations.
+    public var configuration: Configuration
 
-    /// :nodoc:
+    internal var voucherShareableViewProvider: AnyVoucherShareableViewProvider
+
     private lazy var apiClient: APIClientProtocol = {
         let scheduler = SimpleScheduler(maximumCount: 3)
-        return APIClient(apiContext: apiContext)
+        return APIClient(apiContext: context.apiContext)
             .retryAPIClient(with: scheduler)
             .retryOnErrorAPIClient()
     }()
     
-    /// :nodoc:
-    internal var canAddPasses: Bool {
-        PKAddPassesViewController.canAddPasses() && action.flatMap(\.anyAction.passCreationToken) != nil
+    internal func canAddPasses(action: AnyVoucherAction) -> Bool {
+        PKAddPassesViewController.canAddPasses() && action.passCreationToken != nil
     }
 
-    /// :nodoc:
     private let componentName = "voucher"
 
-    /// :nodoc:
     internal let passProvider: AnyAppleWalletPassProvider
     
-    /// :nodoc:
     internal var view: VoucherView?
 
     /// Initializes the `VoucherComponent`.
     ///
-    /// - Parameter apiContext: The API context.
-    /// - Parameter style: The Component UI style.
-    public convenience init(apiContext: APIContext, style: VoucherComponentStyle?) {
+    /// - Parameter context: The context object for this component.
+    /// - Parameter configuration: The voucher component configurations.
+    public convenience init(
+        context: AdyenContext,
+        configuration: Configuration = Configuration()
+    ) {
         self.init(
-            apiContext: apiContext,
+            context: context,
             voucherShareableViewProvider: nil,
-            style: style ?? VoucherComponentStyle(),
-            passProvider: AppleWalletPassProvider(apiContext: apiContext)
+            configuration: configuration,
+            passProvider: AppleWalletPassProvider(context: context)
         )
     }
 
-    /// Initializes the `AwaitComponent`.
-    /// - Parameter apiContext: The API context.
-    /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
-    /// - Parameter style: The Component UI style.
+    /// Initializes the `VoucherComponent`.
+    /// - Parameter context: The context object for this component.
+    /// - Parameter voucherShareableViewProvider: Provides view for this component.
+    /// - Parameter configuration: The voucher component configurations.
+    /// - Parameter passProvider: Object to save the voucher pass in the AppleWallet.
     internal init(
-        apiContext: APIContext,
+        context: AdyenContext,
         voucherShareableViewProvider: AnyVoucherShareableViewProvider?,
-        style: VoucherComponentStyle,
+        configuration: Configuration = Configuration(),
         passProvider: AnyAppleWalletPassProvider?
     ) {
-        self.apiContext = apiContext
-        self.style = style
+        self.context = context
+        self.configuration = configuration
         self.voucherShareableViewProvider = voucherShareableViewProvider ??
-            VoucherShareableViewProvider(style: style, environment: apiContext.environment)
-        self.passProvider = passProvider ?? AppleWalletPassProvider(apiContext: apiContext)
+            VoucherShareableViewProvider(style: configuration.style, environment: context.apiContext.environment)
+        self.passProvider = passProvider ?? AppleWalletPassProvider(context: context)
     }
 
-    /// :nodoc:
     public func didCancel() {}
 
     /// Handles await action.
     ///
     /// - Parameter action: The await action object.
     public func handle(_ action: VoucherAction) {
-        self.action = action
-        
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         fetchAndCacheAppleWalletPassIfNeeded(with: action.anyAction)
 
-        voucherShareableViewProvider.localizationParameters = localizationParameters
+        voucherShareableViewProvider.localizationParameters = configuration.localizationParameters
 
         let view = VoucherView(model: viewModel(with: action))
         view.delegate = self
@@ -114,7 +122,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
         
         setUpPresenterViewController(parentViewController: viewController)
 
-        if let presentationDelegate = presentationDelegate {
+        if let presentationDelegate {
             let presentableComponent = PresentableComponentWrapper(
                 component: self,
                 viewController: viewController,
@@ -131,11 +139,15 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     internal let presenterViewController = UIViewController()
         
     private func navBarType() -> NavigationBarType {
-        let model = ActionNavigationBar.Model(leadingButtonTitle: Bundle.Adyen.localizedEditCopy,
-                                              trailingButtonTitle: Bundle.Adyen.localizedDoneCopy)
-        let style = ActionNavigationBar.Style(leadingButton: style.editButton,
-                                              trailingButton: style.doneButton,
-                                              backgroundColor: style.backgroundColor)
+        let model = ActionNavigationBar.Model(
+            leadingButtonTitle: Bundle.Adyen.localizedEditCopy,
+            trailingButtonTitle: Bundle.Adyen.localizedDoneCopy
+        )
+        let style = ActionNavigationBar.Style(
+            leadingButton: configuration.style.editButton,
+            trailingButton: configuration.style.doneButton,
+            backgroundColor: configuration.style.backgroundColor
+        )
         
         let navBar = ActionNavigationBar(model: model, style: style)
         
@@ -152,41 +164,43 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     private func viewModel(with action: VoucherAction) -> VoucherView.Model {
         let anyAction = action.anyAction
         let viewStyle = VoucherView.Model.Style(
-            editButton: style.editButton,
-            doneButton: style.doneButton,
-            mainButton: style.mainButton,
-            secondaryButton: style.secondaryButton,
-            codeConfirmationColor: style.codeConfirmationColor,
-            amountLabel: style.amountLabel,
-            currencyLabel: style.currencyLabel,
+            editButton: configuration.style.editButton,
+            doneButton: configuration.style.doneButton,
+            mainButton: configuration.style.mainButton,
+            secondaryButton: configuration.style.secondaryButton,
+            codeConfirmationColor: configuration.style.codeConfirmationColor,
+            amountLabel: configuration.style.amountLabel,
+            currencyLabel: configuration.style.currencyLabel,
             logoCornerRounding: .fixed(5),
-            backgroundColor: style.backgroundColor
+            backgroundColor: configuration.style.backgroundColor
         )
         
         let comps = anyAction.totalAmount.formattedComponents
         
         return VoucherView.Model(
+            action: action,
             identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "voucherView"),
             amount: comps.formattedValue,
             currency: comps.formattedCurrencySymbol,
             logoUrl: LogoURLProvider.logoURL(
                 withName: anyAction.paymentMethodType.rawValue,
-                environment: apiContext.environment,
+                environment: context.apiContext.environment,
                 size: .medium
             ),
             mainButton: getPrimaryButtonTitle(with: action),
-            secondaryButtonTitle: localizedString(.moreOptions, localizationParameters),
-            codeConfirmationTitle: localizedString(.pixInstructionsCopiedMessage, localizationParameters),
-            mainButtonType: canAddPasses ? .addToAppleWallet : .save,
-            style: viewStyle
+            secondaryButtonTitle: localizedString(.moreOptions, configuration.localizationParameters),
+            codeConfirmationTitle: localizedString(.pixInstructionsCopiedMessage, configuration.localizationParameters),
+            mainButtonType: canAddPasses(action: action.anyAction) ? .addToAppleWallet : .save,
+            style: viewStyle,
+            imageLoader: ImageLoaderProvider.imageLoader()
         )
     }
     
     private func getPrimaryButtonTitle(with action: VoucherAction) -> String {
-        if action.anyAction is DownloadableVoucher {
-            return localizedString(.boletoDownloadPdf, localizationParameters)
+        if action.anyAction is Downloadable {
+            return localizedString(.boletoDownloadPdf, configuration.localizationParameters)
         } else {
-            return localizedString(.voucherSaveImage, localizationParameters)
+            return localizedString(.voucherSaveImage, configuration.localizationParameters)
         }
     }
 

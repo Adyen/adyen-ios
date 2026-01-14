@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,22 +9,13 @@ import Foundation
 /// A Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
 public struct DokuPaymentMethod: PaymentMethod {
 
-    /// :nodoc:
-    public let type: String
+    public let type: PaymentMethodType
 
-    /// :nodoc:
     public let name: String
+    
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
-    /// Initializes the Doku Wallet, Doku Alfamart, or Doku Indomaret payment method.
-    ///
-    /// - Parameter type: The payment method type.
-    /// - Parameter name: The payment method name.
-    internal init(type: String, name: String) {
-        self.type = type
-        self.name = name
-    }
-
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
@@ -34,3 +25,12 @@ public struct DokuPaymentMethod: PaymentMethod {
         case name
     }
 }
+
+/// A Doku Wallet payment method.
+public typealias DokuWalletPaymentMethod = DokuPaymentMethod
+
+/// A Doku Alfamart payment method.
+public typealias AlfamartPaymentMethod = DokuPaymentMethod
+
+/// A Doku Indomaret payment method.
+public typealias IndomaretPaymentMethod = DokuPaymentMethod

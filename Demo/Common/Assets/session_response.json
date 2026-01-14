@@ -1,0 +1,20 @@
+{
+    "id" : "CS763F2D4C3E21282F",
+    "shopperEmail" : "checkoutShopperiOS@example.org",
+    "amount" : {
+        "currency" : "EUR",
+        "value" : 17408
+    },
+    "channel" : "iOS",
+    "countryCode" : "NL",
+    "additionalData" : {
+        "allow3DS2" : "true"
+    },
+    "expiresAt" : "2022-04-20T16:02:16+02:00",
+    "merchantAccount" : "TestMerchantCheckout",
+    "shopperReference" : "iOS Checkout Shopper",
+    "reference" : "Test Order Reference - iOS UIHost",
+    "sessionData" : "Ab02b4c0!BQABAgBujbeaJ8n\/ZQjQ2eBvnoToUUn4hsL0mLx5Su0d6xLOcAkHXdFMSEQoNiCn6j4MkSm81c6u55RXpIuK9GZwFO\/STStpODuDhxYZh2X\/4kYwhYJ1Da0jmaWd+B2BXXMQOKjlEVqADXK8YbK9tGgLu35Qzuxy3ggf18n9Z\/dJMil4hKb6Gdq\/NPZtFrbDMVVq4ixjZ1N1jScNCSSjViYmewn6d+Cm5cCmrAluA7DbqfFPn41tR1RfnO0\/opJXEZ1KYh0fqKMAfKWe4iERL8Rf+laTQzBgkbbXfxvEsqjnC4aEI7M414tWL3HgitXDqE\/H\/qlhbu+OiZ3ZdpFBFejQivtV58+KslSKgO3gRmf3YuRkqjJsbWYmraYf1FAMiq\/zq+gmWhCwTIiFuQSnymr9G3xl4WMaYlupEjxHuK7lst0Z8vdX1Q0WgzYDhwavW\/1boo8PhO\/XHeOb7u+OK+GDzdFORCO0rAaiq4AtWgYEUcaUfD2aYx7ctmoy2+9j+6QbKStmHjqZjKuWJEePg2dPVyF3sPMQ6vdglSwIBH4Hsq3+bmkw7K5Tve88P5k1lSrscTHST5L+qbMEGba4si6OE0agqZ\/8KW7hA7WJqEsDWSPqD4GYh1ULDeVUGHtRuw\/givRjSnsUuL0fDGw2DDgtzmAfCJe48PPpe9j+RDnR5f8T9RCWHc9RtRAeM4sxKCpFxs+BAEp7ImtleSI6IkFGMEFBQTEwM0NBNTM3RUFFRDg3QzI0REQ1MzkwOUI4MEE3OEE5MjNFMzgyM0Q2OERBQ0M5NEI5RkY4MzA1REMifYdIRonloMH\/1znzDjp\/jAzh1kSSK28wQITHhA9qaqMolN3N4Ks27u7hD5WGRPAUl78gtoj08NxRJxo\/lkNLk+Edr11h4wF\/oKCg5ZqwzTrGXlUf5jxUELfLpsht3lJQRyGNf3DIyI24FjPnk2MIJpdzq6eVUYZj24iojysi0bhG\/kHNY4pdyG1mWD3fFgfFvJ3kiciaVn6lk7BQ0rn0N1Y4Oa7W+XGqGrQiWf9mzx9bv1R6aXyLiIwKlLsVQoZwhUhmGAeK1qMVzWbxzQBxUEV2hgfJwbkQhKx0RmqeKVoU+R2f2aDtJCTkF2GRNF9nyB5ba9lc\/C2YRbYJ1N+X5+8FIj7R2ePhV\/3xlWC4nb\/PyEBDnp4cxrU\/d24fcEjAqeyrZK6cwzHTDFq9Kw94KHytDyAk8duBKrW0m7rRpVLulR1HNWczzT+Q5L7VCEeXQ4p6SWh2EctPkYAxSTpilFzT5HjkLBOcNN7ZpV1OC7ymXJS8rir\/EN5xcH82zbZMaGRypqugjBJ9bRjNc1YYJmrRCTlxmB4sfC2\/WQa\/Vq6dVcKRYg==",
+    "returnUrl" : "ui-host:\/\/",
+    "shopperLocale" : "en_US"
+}

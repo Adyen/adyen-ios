@@ -1,51 +1,75 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
+import UIKit
 
 internal final class AddressFormItemInjector: FormItemInjector, Localizable {
     
-    /// :nodoc:
     internal var localizationParameters: LocalizationParameters?
 
-    /// :nodoc:
     internal var value: PostalAddress?
 
-    /// :nodoc:
     private let initialCountry: String
 
-    /// :nodoc:
     internal var identifier: String
 
-    /// :nodoc:
-    internal let style: AddressStyle
+    internal let style: FormComponentStyle
 
-    /// :nodoc:
-    internal lazy var item: FormAddressItem = {
-        let addressItem = FormAddressItem(initialCountry: initialCountry,
-                                          style: style,
-                                          localizationParameters: localizationParameters,
-                                          identifier: identifier)
-        value.map { addressItem.value = $0 }
-        return addressItem
+    internal let addressViewModelBuilder: AddressViewModelBuilder
+    
+    private weak var presenter: ViewControllerPresenter?
+    
+    private let addressType: FormAddressPickerItem.AddressType
+
+    internal lazy var item: FormAddressPickerItem = {
+        .init(
+            for: addressType,
+            initialCountry: initialCountry,
+            supportedCountryCodes: nil,
+            prefillAddress: value,
+            style: style,
+            localizationParameters: localizationParameters,
+            identifier: identifier,
+            addressViewModelBuilder: addressViewModelBuilder,
+            presenter: self,
+            lookupProvider: nil
+        )
     }()
     
-    internal init(value: PostalAddress?,
-                  initialCountry: String,
-                  identifier: String,
-                  style: AddressStyle) {
+    internal init(
+        value: PostalAddress?,
+        initialCountry: String,
+        identifier: String,
+        style: FormComponentStyle,
+        presenter: ViewControllerPresenter?,
+        addressViewModelBuilder: AddressViewModelBuilder,
+        addressType: FormAddressPickerItem.AddressType
+    ) {
         self.value = value
         self.initialCountry = initialCountry
         self.identifier = identifier
         self.style = style
+        self.presenter = presenter
+        self.addressViewModelBuilder = addressViewModelBuilder
+        self.addressType = addressType
     }
 
-    /// :nodoc:
     internal func inject(into formViewController: FormViewController) {
         formViewController.append(item)
     }
     
+}
+
+extension AddressFormItemInjector: ViewControllerPresenter {
+    
+    internal func presentViewController(_ viewController: UIViewController, animated: Bool) {
+        presenter?.presentViewController(viewController, animated: animated)
+    }
+    
+    internal func dismissViewController(animated: Bool) {
+        presenter?.dismissViewController(animated: animated)
+    }
 }

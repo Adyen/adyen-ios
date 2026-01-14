@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 
 /// Validates a phone number.
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class PhoneNumberValidator: RegularExpressionValidator {
     
     public init() {

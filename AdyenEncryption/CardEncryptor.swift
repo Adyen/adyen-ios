@@ -1,12 +1,12 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-/// An object that provides static methods for encrypting card information and retrieving public keys from the server.
+/// An object that provides static methods for encrypting card information.
 public enum CardEncryptor: AnyEncryptor {
     
     // MARK: - Card Encryption
@@ -42,10 +42,12 @@ public enum CardEncryptor: AnyEncryptor {
             encryptedYear = try encrypt(CardPayload().add(expiryYear: expiryYear), with: publicKey)
         }
 
-        return EncryptedCard(number: encryptedNumber,
-                             securityCode: encryptedCode,
-                             expiryMonth: encryptedMonth,
-                             expiryYear: encryptedYear)
+        return EncryptedCard(
+            number: encryptedNumber,
+            securityCode: encryptedCode,
+            expiryMonth: encryptedMonth,
+            expiryYear: encryptedYear
+        )
     }
 
     /// Encrypts card number.

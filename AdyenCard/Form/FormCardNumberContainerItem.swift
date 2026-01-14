@@ -1,14 +1,16 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 /// A form item which consists of card number item and the supported card icons below.
-internal final class FormCardNumberContainerItem: FormItem, Observer {
+internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
+    
+    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
     /// The supported card type logos.
     internal let cardTypeLogos: [FormCardLogosItem.CardTypeLogo]
@@ -17,14 +19,27 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
     
     internal let style: FormTextItemStyle
     
+    internal let showsSupportedCardLogos: Bool
+    
     private let localizationParameters: LocalizationParameters?
+    
+    private let scanCardHandler: (() -> Void)?
    
-    internal lazy var subitems: [FormItem] = [numberItem, supportedCardLogosItem]
+    internal lazy var subitems: [FormItem] = {
+        var subItems: [FormItem] = [numberItem]
+        if showsSupportedCardLogos {
+            subItems.append(supportedCardLogosItem)
+        }
+        return subItems
+    }()
     
     internal lazy var numberItem: FormCardNumberItem = {
-        let item = FormCardNumberItem(cardTypeLogos: cardTypeLogos,
-                                      style: style,
-                                      localizationParameters: localizationParameters)
+        let item = FormCardNumberItem(
+            cardTypeLogos: cardTypeLogos,
+            style: style,
+            localizationParameters: localizationParameters,
+            scanCardHandler: scanCardHandler
+        )
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "numberItem")
         return item
     }()
@@ -35,18 +50,25 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
         return item
     }()
     
-    internal init(cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
-                  style: FormTextItemStyle,
-                  localizationParameters: LocalizationParameters?) {
+    internal init(
+        cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
+        showsSupportedCardLogos: Bool = true,
+        style: FormTextItemStyle,
+        localizationParameters: LocalizationParameters?,
+        scanCardHandler: (() -> Void)?
+    ) {
         self.cardTypeLogos = cardTypeLogos
+        self.showsSupportedCardLogos = showsSupportedCardLogos
         self.localizationParameters = localizationParameters
         self.style = style
+        self.scanCardHandler = scanCardHandler
         
-        observe(numberItem.$isActive) { [weak self] isActive in
-            guard let self = self else { return }
-            // logo item only visible when number item is active or when it's invalid
-            let hidden = !isActive && self.numberItem.isValid()
-            self.supportedCardLogosItem.isHidden.wrappedValue = hidden
+        if showsSupportedCardLogos {
+            observe(numberItem.$isActive) { [weak self] _ in
+                guard let self else { return }
+                // logo item should be visible when field is invalid after active state changes
+                self.supportedCardLogosItem.isHidden.wrappedValue = self.numberItem.isValid()
+            }
         }
     }
     
@@ -55,32 +77,34 @@ internal final class FormCardNumberContainerItem: FormItem, Observer {
     }
     
     internal func update(brands: [CardBrand]) {
-        // reduce alpha of supported card icons if brand is detected
-        let supportedBrands = brands.filter(\.isSupported)
-        supportedCardLogosItem.alpha = supportedBrands.isEmpty ? 1 : 0.3
         numberItem.update(brands: brands)
+        
+        if showsSupportedCardLogos {
+            supportedCardLogosItem.isHidden.wrappedValue = brands.contains(where: \.isSupported)
+        }
+    }
+    
+    internal func setCardNumber(_ cardNumber: String) {
+        numberItem.setCardNumber(cardNumber)
     }
 }
 
 /// Form item to display multiple card logos.
-internal final class FormCardLogosItem: FormItem, Hidable {
+internal final class FormCardLogosItem: FormItem {
     
-    internal var isHidden: Observable<Bool> = Observable(false)
+    internal var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
     internal var identifier: String?
     
     internal var subitems: [FormItem] = []
     
-    internal let cardLogos: [CardTypeLogo]
-    
     internal let style: FormTextItemStyle
     
-    /// Observable property to update the owner view's alpha.
-    @Observable(1) internal var alpha: CGFloat
+    internal var cardLogos: [CardTypeLogo]
     
     internal init(cardLogos: [CardTypeLogo], style: FormTextItemStyle) {
-        self.cardLogos = cardLogos
         self.style = style
+        self.cardLogos = cardLogos
     }
     
     internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
@@ -95,7 +119,7 @@ extension FormItemViewBuilder {
     }
     
     internal func build(with item: FormCardNumberContainerItem) -> FormItemView<FormCardNumberContainerItem> {
-        FormVerticalStackItemView<FormCardNumberContainerItem>(item: item, itemSpacing: 0)
+        FormVerticalStackItemView(item: item, itemSpacing: 0)
     }
 }
 

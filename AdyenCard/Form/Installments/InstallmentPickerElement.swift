@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 
 /// Type that combines month values and plan selections
 /// to be able to show in a picker item.
@@ -40,12 +40,12 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
     }
     
     /// Value to be represented in a BaseFormPickerItem
-    internal var pickerElement: InstallmentPickerElement {
+    internal var pickerElement: BasePickerElement<InstallmentElement> {
         switch kind {
         case let .plan(plan):
-            return InstallmentPickerElement(identifier: plan.installmentPlan.rawValue, element: self)
+            return .init(identifier: plan.installmentPlan.rawValue, element: self)
         case let .month(month):
-            return InstallmentPickerElement(identifier: String(month.monthValue), element: self)
+            return .init(identifier: String(month.monthValue), element: self)
         }
     }
     
@@ -89,9 +89,11 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
         internal func title(with localizationParameters: LocalizationParameters?) -> String {
             var localizedText: String
             if showAmount,
-               let amount = amount,
-               let formatted = AmountFormatter.formatted(amount: amount.value / monthValue,
-                                                         currencyCode: amount.currencyCode) {
+               let amount,
+               let formatted = AmountFormatter.formatted(
+                   amount: amount.value / monthValue,
+                   currencyCode: amount.currencyCode
+               ) {
                 localizedText = localizedString(.cardInstallmentsMonthsAndPrice, localizationParameters, String(monthValue), formatted)
             } else {
                 localizedText = localizedString(.cardInstallmentsMonths, localizationParameters, String(monthValue))

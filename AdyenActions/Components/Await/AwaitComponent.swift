@@ -1,92 +1,139 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// A component that handles Await action's.
 public final class AwaitComponent: ActionComponent, Cancellable {
     
-    /// :nodoc:
-    public let apiContext: APIContext
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
     
     /// Delegates `PresentableComponent`'s presentation.
     public weak var presentationDelegate: PresentationDelegate?
     
-    /// :nodoc:
     public weak var delegate: ActionComponentDelegate?
     
-    /// :nodoc:
     public let requiresModalPresentation: Bool = true
+
+    internal var appLauncher: AnyAppLauncher = AppLauncher()
+
+    /// The await component configurations.
+    public struct Configuration {
+        
+        /// The component UI style.
+        public var style: AwaitComponentStyle
+        
+        /// The localization parameters, leave it nil to use the default parameters.
+        public var localizationParameters: LocalizationParameters?
+        
+        /// Initializes an instance of `Configuration`
+        ///
+        /// - Parameters:
+        ///   - style: The Component UI style.
+        ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
+        public init(
+            style: AwaitComponentStyle = .init(),
+            localizationParameters: LocalizationParameters? = nil
+        ) {
+            self.style = style
+            self.localizationParameters = localizationParameters
+        }
+    }
     
-    /// The Component UI style.
-    public let style: AwaitComponentStyle
+    /// The await component configurations.
+    public var configuration: Configuration
     
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
-    
-    /// :nodoc:
     private let awaitComponentBuilder: AnyPollingHandlerProvider
     
     /// Initializes the `AwaitComponent`.
     ///
-    /// - Parameter apiContext: The API context.
-    /// - Parameter style: The Component UI style.
-    public convenience init(apiContext: APIContext, style: AwaitComponentStyle?) {
-        self.init(apiContext: apiContext,
-                  awaitComponentBuilder: PollingHandlerProvider(apiContext: apiContext),
-                  style: style)
+    /// - Parameter context: The context object for this component.
+    /// - Parameter configuration: The await component configurations.
+    public convenience init(
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
+        self.init(
+            context: context,
+            awaitComponentBuilder: PollingHandlerProvider(context: context),
+            configuration: configuration
+        )
     }
     
     /// Initializes the `AwaitComponent`.
     ///
-    /// - Parameter apiContext: The API context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter awaitComponentBuilder: The payment method specific await action handler provider.
-    /// - Parameter style: The Component UI style.
-    internal init(apiContext: APIContext,
-                  awaitComponentBuilder: AnyPollingHandlerProvider,
-                  style: AwaitComponentStyle?) {
-        self.apiContext = apiContext
-        self.style = style ?? AwaitComponentStyle()
+    /// - Parameter configuration: The Component UI style.
+    internal init(
+        context: AdyenContext,
+        awaitComponentBuilder: AnyPollingHandlerProvider,
+        configuration: Configuration = .init()
+    ) {
+        self.context = context
+        self.configuration = configuration
         self.awaitComponentBuilder = awaitComponentBuilder
     }
     
-    /// :nodoc:
     private let componentName = "await"
     
+    /// Handles redirect await action.
+    ///
+    /// - Parameter action: The await action object.
+    public func handle(_ action: RedirectableAwaitAction) {
+        appLauncher.openCustomSchemeUrl(action.url) { [weak self] success in
+            guard let self else { return }
+            if success {
+                let awaitAction = AwaitAction(
+                    paymentData: action.paymentData,
+                    paymentMethodType: action.paymentMethodType
+                )
+                
+                self.handle(awaitAction)
+                self.delegate?.didOpenExternalApplication(component: self)
+            } else {
+                self.delegate?.didFail(with: RedirectComponent.Error.appNotFound, from: self)
+                self.didCancel()
+            }
+        }
+    }
+
+    public func didCancel() {
+        paymentMethodSpecificPollingComponent?.didCancel()
+    }
+
     /// Handles await action.
     ///
     /// - Parameter action: The await action object.
     public func handle(_ action: AwaitAction) {
-        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: apiContext)
-        
-        let viewModel = AwaitComponentViewModel.viewModel(with: action.paymentMethodType,
-                                                          localizationParameters: localizationParameters)
-        let viewController = AwaitViewController(viewModel: viewModel, style: style)
-        
-        if let presentationDelegate = presentationDelegate {
+        Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
+
+        let viewModel = AwaitComponentViewModel.viewModel(
+            with: action.paymentMethodType,
+            localizationParameters: configuration.localizationParameters
+        )
+        let viewController = AwaitViewController(viewModel: viewModel, style: configuration.style)
+
+        if let presentationDelegate {
             let presentableComponent = PresentableComponentWrapper(component: self, viewController: viewController)
             presentationDelegate.present(component: presentableComponent)
         } else {
             let message = "PresentationDelegate is nil. Provide a presentation delegate to AwaitComponent."
             AdyenAssertion.assertionFailure(message: message)
         }
-        
+
         paymentMethodSpecificPollingComponent = awaitComponentBuilder.handler(for: action.paymentMethodType)
         paymentMethodSpecificPollingComponent?.delegate = delegate
-        
+
         paymentMethodSpecificPollingComponent?.handle(action)
     }
-    
-    /// :nodoc:
-    public func didCancel() {
-        paymentMethodSpecificPollingComponent?.didCancel()
-    }
-    
-    /// :nodoc:
+
     private var paymentMethodSpecificPollingComponent: AnyPollingHandler?
     
 }

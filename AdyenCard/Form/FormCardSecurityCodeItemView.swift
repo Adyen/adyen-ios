@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 /// A view representing a form card security code item.
@@ -21,14 +21,19 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
 
             if let textField = self?.textField {
                 textField.apply(placeholderText: localizedPlaceholder, with: item.style.placeholderText)
+                textField.accessibilityLabel = self?.accessibilityLabel(placeholder: localizedPlaceholder)
             }
         }
 
-        observe(item.$isOptional) { [weak self] _ in
+        observe(item.$displayMode) { [weak self] _ in
             self?.updateValidationStatus()
         }
         
         item.$selectedCard.publish(nil)
+
+        item.focusHandler = { [weak self] in
+            self?.becomeFirstResponder()
+        }
     }
     
     internal lazy var cardHintView: HintView = {
@@ -39,9 +44,15 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
 
     override internal func updateValidationStatus(forced: Bool = false) {
         super.updateValidationStatus(forced: forced)
-
-        if item.isOptional {
+        
+        alpha = item.displayMode.isVisible ? 1.0 : 0.0
+        isUserInteractionEnabled = item.displayMode.isVisible
+        
+        switch item.displayMode {
+        case .optional:
             accessory = .customView(cardHintView)
+        case .hidden, .required:
+            break
         }
     }
     
@@ -55,12 +66,11 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         super.textFieldDidEndEditing(text)
         cardHintView.isHighlighted = false
     }
-    
 }
 
 extension FormCardSecurityCodeItemView {
     
-    internal class HintView: UIImageView, Observer {
+    internal class HintView: UIImageView, AdyenObserver {
         
         private lazy var bundle = Bundle.cardInternalResources
         private let minimumAlpha: CGFloat = 0.3
@@ -104,22 +114,26 @@ extension FormCardSecurityCodeItemView {
         private func flipCard(toFront: Bool) {
             guard showFront != toFront else { return }
             showFront = toFront
-            UIView.transition(with: self,
-                              duration: 0.5,
-                              options: .transitionFlipFromRight,
-                              animations: {
-                                  self.image = UIImage(named: self.logoResource, in: self.bundle, compatibleWith: nil)
-                                  self.hintImage.image = UIImage(named: self.hintResource, in: self.bundle, compatibleWith: nil)
-                              },
-                              completion: nil)
+            UIView.transition(
+                with: self,
+                duration: 0.5,
+                options: .transitionFlipFromRight,
+                animations: {
+                    self.image = UIImage(named: self.logoResource, in: self.bundle, compatibleWith: nil)
+                    self.hintImage.image = UIImage(named: self.hintResource, in: self.bundle, compatibleWith: nil)
+                },
+                completion: nil
+            )
         }
         
         private func animateHint() {
-            UIView.animate(withDuration: blinkDuration,
-                           delay: 0,
-                           options: [.repeat, .autoreverse],
-                           animations: { self.hintImage.alpha = self.minimumAlpha },
-                           completion: nil)
+            UIView.animate(
+                withDuration: blinkDuration,
+                delay: 0,
+                options: [.repeat, .autoreverse],
+                animations: { self.hintImage.alpha = self.minimumAlpha },
+                completion: nil
+            )
         }
         
         override public var accessibilityIdentifier: String? {
@@ -134,8 +148,15 @@ extension FormCardSecurityCodeItemView {
             hintImage.adyen.anchor(inside: self)
         }
         
-        private lazy var hintImage = UIImageView(image: UIImage(named: self.hintResource,
-                                                                in: self.bundle,
-                                                                compatibleWith: nil))
+        private lazy var hintImage = UIImageView(image: UIImage(
+            named: self.hintResource,
+            in: self.bundle,
+            compatibleWith: nil
+        ))
+    }
+
+    private func accessibilityLabel(placeholder: String) -> String {
+        let title = item.title ?? ""
+        return title.isEmpty ? placeholder : "\(title), \(placeholder)"
     }
 }

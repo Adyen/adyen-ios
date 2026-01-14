@@ -1,55 +1,99 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-/// Provides a placeholder for payment methods that don't need any payment detail to be filled.
-/// :nodoc:
+@_spi(AdyenInternal)
+public protocol PaymentInitiable {
+    /// Initiate the payment flow
+    func initiatePayment()
+}
+
+/// A component that handles payment methods that don't need any payment detail to be filled.
 public final class InstantPaymentComponent: PaymentComponent {
-    
-    /// :nodoc:
-    public let apiContext: APIContext
+
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
 
     /// The ready to submit payment data.
-    public let paymentData: PaymentComponentData?
+    public let paymentData: PaymentComponentData
 
-    /// :nodoc:
+    /// The payment method.
     public let paymentMethod: PaymentMethod
 
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
 
-    /// :nodoc:
-    public init(paymentMethod: PaymentMethod,
-                paymentData: PaymentComponentData?,
-                apiContext: APIContext) {
+    /// Initializes a new instance of `InstantPaymentComponent`.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The payment method.
+    ///   - paymentData: The ready to submit payment data.
+    ///   - context: The context object for this component.
+    public init(
+        paymentMethod: PaymentMethod,
+        context: AdyenContext,
+        paymentData: PaymentComponentData
+    ) {
         self.paymentMethod = paymentMethod
         self.paymentData = paymentData
-        self.apiContext = apiContext
+        self.context = context
+    }
+
+    /// Initializes a new instance of `InstantPaymentComponent`.
+    ///
+    /// - Parameters:
+    ///   - paymentMethod: The payment method.
+    ///   - context: The context object for this component.
+    ///   - order: The partial order for this payment.
+    public init(
+        paymentMethod: PaymentMethod,
+        context: AdyenContext,
+        order: PartialPaymentOrder?
+    ) {
+        self.paymentMethod = paymentMethod
+        self.context = context
+
+        let details = InstantPaymentDetails(type: paymentMethod.type)
+        self.paymentData = PaymentComponentData(
+            paymentMethodDetails: details,
+            amount: context.payment?.amount,
+            order: order
+        )
     }
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
     public func initiatePayment() {
-        let details = InstantPaymentDetails(type: paymentMethod.type)
-        let paymentData = self.paymentData ?? PaymentComponentData(paymentMethodDetails: details, amount: amountToPay, order: order)
+        // We are not attempting to fetch the checkoutAttemptId as it won't be ready for the payment
+        // and we don't want to block it for an analytics call.
         submit(data: paymentData)
     }
 }
 
+@_spi(AdyenInternal)
+extension InstantPaymentComponent: PaymentInitiable {}
+
 /// Describes a payment details that contains nothing but the payment method type name.
-/// :nodoc:
 public struct InstantPaymentDetails: PaymentMethodDetails {
+    
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
 
     /// The payment method type name.
-    public let type: String
+    public let type: PaymentMethodType
 
     /// Initializes an `EmptyPaymentDetails`.
     ///
     /// - Parameter type: The payment method type name.
-    public init(type: String) {
+    public init(type: PaymentMethodType) {
         self.type = type
     }
 

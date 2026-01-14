@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -34,22 +34,20 @@ open class LengthValidator: Validator {
         self.maximumLength = exactLength
     }
     
-    /// :nodoc:
     open func isValid(_ value: String) -> Bool {
         let length = value.count
         
-        if let minimumLength = minimumLength, length < minimumLength {
+        if let minimumLength, length < minimumLength {
             return false
         }
         
-        if let maximumLength = maximumLength, length > maximumLength {
+        if let maximumLength, length > maximumLength {
             return false
         }
         
         return true
     }
     
-    /// :nodoc:
     public func maximumLength(for value: String) -> Int {
         maximumLength ?? .max
     }

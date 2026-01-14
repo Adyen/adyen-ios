@@ -1,48 +1,60 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import AdyenNetworking
 import Foundation
-    
-/// :nodoc:
+
 /// Struct that defines the environment to retrieve resources from.
 public struct Environment: AnyAPIEnvironment {
     
-    /// :nodoc:
     public var baseURL: URL
 
-    /// :nodoc:
     /// Adyen's test environment.
     public static let test = Environment(baseURL: URL(string: "https://checkoutshopper-test.adyen.com/")!)
-
-    /// :nodoc:
+    
+    @_spi(AdyenInternal)
     public static let beta = Environment(baseURL: URL(string: "https://checkoutshopper-beta.adyen.com/")!)
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
+    public static let local = Environment(baseURL: URL(string: "http://localhost:8080/")!)
+
     /// Adyen's default live environment.
-    public static let live = Environment(baseURL: URL(string: "https://checkoutshopper-live.adyen.com/")!)
-    
-    /// :nodoc:
+    @available(*, deprecated, message: "Please explicitly select the environment matching your region.")
+    public static let live = liveEurope
+
     /// Adyen's European live environment.
-    public static let liveEurope = Environment.live
-    
-    /// :nodoc:
+    public static let liveEurope = Environment(baseURL: URL(string: "https://checkoutshopper-live.adyen.com/")!)
+
     /// Adyen's Australian live environment.
     public static let liveAustralia = Environment(baseURL: URL(string: "https://checkoutshopper-live-au.adyen.com/")!)
-    
-    /// :nodoc:
+
     /// Adyen's United States live environment.
     public static let liveUnitedStates = Environment(baseURL: URL(string: "https://checkoutshopper-live-us.adyen.com/")!)
+
+    /// Adyen's apse live  environment.
+    public static let liveApse = Environment(baseURL: URL(string: "https://checkoutshopper-live-apse.adyen.com/")!)
+
+    /// Adyen's India live  environment.
+    public static let liveIndia = Environment(baseURL: URL(string: "https://checkoutshopper-live-in.adyen.com/")!)
+    
+    /// Determines if the environment is one of Adyen's live environments.
+    @_spi(AdyenInternal)
+    public var isLive: Bool {
+        baseURL.absoluteString.hasPrefix("https://checkoutshopper-live")
+    }
 
     /// Initializes an `Environment` object.
     ///
     /// - Parameters:
     ///   - baseURL: The environment base url.
-    public init(baseURL: URL) {
+    internal init(baseURL: URL) {
         self.baseURL = baseURL
     }
 
 }
+
+@_spi(AdyenInternal)
+extension Environment: Equatable {}

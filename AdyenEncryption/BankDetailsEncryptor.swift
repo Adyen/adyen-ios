@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -54,7 +54,6 @@ extension BankDetailsEncryptor {
         /// Indicates an error when trying to encrypt empty or invalid routing number.
         case invalidRoutingNumber
         
-        /// :nodoc:
         public var errorDescription: String? {
             switch self {
             case .invalidAccountNumber:

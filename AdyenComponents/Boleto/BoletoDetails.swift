@@ -1,17 +1,20 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Contains the details supplied by the Boleto component.
 public struct BoletoDetails: PaymentMethodDetails, ShopperInformation {
+    
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
 
     /// The type of the payment method
-    public let type: String
+    public let type: PaymentMethodType
 
     /// The first name and last name of the shopper.
     public let shopperName: ShopperName?
@@ -25,8 +28,11 @@ public struct BoletoDetails: PaymentMethodDetails, ShopperInformation {
     /// The billing address of the shopper.
     public let billingAddress: PostalAddress?
     
-    /// :nodoc:
     public let telephoneNumber: String? = nil
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
     
     /// Initializes the Boleto details
     /// - Parameters:
@@ -36,7 +42,7 @@ public struct BoletoDetails: PaymentMethodDetails, ShopperInformation {
     ///   - emailAddress: Optional email address of the shopper.
     ///   - billingAddress: Billing address of the shopper.
     public init(
-        type: String,
+        type: PaymentMethodType,
         shopperName: ShopperName,
         socialSecurityNumber: String,
         emailAddress: String?,
@@ -51,5 +57,6 @@ public struct BoletoDetails: PaymentMethodDetails, ShopperInformation {
     
     private enum CodingKeys: CodingKey {
         case type
+        case sdkData
     }
 }

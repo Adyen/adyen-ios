@@ -5,17 +5,23 @@ on:
       newVersion:
         description: 'The new version'
         required: true
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write # create new PR
+
 jobs:
 
   Update:
-    runs-on: macos-11
+    runs-on: macos-15
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v6
       with:
         fetch-depth: 0
-    - uses: n1hility/cancel-previous-runs@v2
-      with:
-        token: ${{ secrets.MANUAL_ACTION_TOKEN }}
 
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
@@ -26,11 +32,11 @@ jobs:
       run: |
         Scripts/increment_version.sh ${{ github.event.inputs.newVersion }}
     - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v3
+      uses: peter-evans/create-pull-request@v8
       with:
         delete-branch: true
         branch: update-version-github-action
         commit-message: "chore: updated version"
         title: Update version
         body: Update version.
-        token: ${{ secrets.MANUAL_ACTION_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}

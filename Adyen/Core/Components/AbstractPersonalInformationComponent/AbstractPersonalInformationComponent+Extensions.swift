@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,33 +9,33 @@ import UIKit
 
 extension AbstractPersonalInformationComponent: LoadingComponent {
 
-    /// :nodoc:
     public func stopLoading() {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
 
-    /// :nodoc:
     internal func didSelectSubmitButton() {
-        guard formViewController.validate() else { return }
+        guard validate() else { return }
 
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
-
-        let details = createPaymentDetails()
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: amountToPay, order: order))
+        do {
+            let details = try createPaymentDetails()
+            submit(data: PaymentComponentData(
+                paymentMethodDetails: details,
+                amount: payment?.amount,
+                order: order
+            ))
+        } catch {
+            delegate?.didFail(with: error, from: self)
+        }
     }
 }
 
-extension AbstractPersonalInformationComponent: TrackableComponent {
+@_spi(AdyenInternal)
+extension AbstractPersonalInformationComponent: TrackableComponent {}
 
-    /// :nodoc:
-    public func viewWillAppear(viewController: UIViewController) {
-        populateFields()
-    }
-}
-
-/// :nodoc:
+@_spi(AdyenInternal)
 public enum PersonalInformation: Equatable {
     case firstName
     case lastName
@@ -57,22 +57,6 @@ public enum PersonalInformation: Equatable {
             return true
         default:
             return false
-        }
-    }
-}
-
-/// :nodoc:
-extension AbstractPersonalInformationComponent {
-
-    /// :nodoc:
-    public struct Configuration {
-
-        /// :nodoc:
-        public let fields: [PersonalInformation]
-
-        /// :nodoc:
-        public init(fields: [PersonalInformation]) {
-            self.fields = fields
         }
     }
 }

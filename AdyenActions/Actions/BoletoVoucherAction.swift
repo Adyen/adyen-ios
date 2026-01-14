@@ -1,23 +1,21 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
-/// :nodoc:
 /// Describes a voucher that can be downloaded.
-internal protocol DownloadableVoucher {
+internal protocol Downloadable {
     
-    /// :nodoc:
     /// Download URL.
     var downloadUrl: URL { get }
 }
 
 /// Describes an action in which a Boleto voucher is presented to the shopper.
-public final class BoletoVoucherAction: Decodable, AnyVoucherAction, DownloadableVoucher {
+public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadable {
     
     /// The `paymentMethodType` for which the voucher is presented.
     public let paymentMethodType: VoucherPaymentMethod
@@ -34,10 +32,9 @@ public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadabl
     /// Download URL
     public let downloadUrl: URL
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public let passCreationToken: String?
     
-    /// :nodoc:
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
@@ -50,8 +47,12 @@ public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadabl
         let expiresAtString = try container.decode(String.self, forKey: .expiresAt)
         let dateFormatter = ISO8601DateFormatter()
         dateFormatter.formatOptions = [
-            .withYear, .withMonth, .withDay, .withTime,
-            .withDashSeparatorInDate, .withColonSeparatorInTime
+            .withYear,
+            .withMonth,
+            .withDay,
+            .withTime,
+            .withDashSeparatorInDate,
+            .withColonSeparatorInTime
         ]
 
         if let date = dateFormatter.date(from: expiresAtString) {
@@ -63,13 +64,14 @@ public final class BoletoVoucherAction: Decodable, AnyVoucherAction, Downloadabl
         }
     }
     
-    /// :nodoc:
-    internal init(paymentMethodType: VoucherPaymentMethod,
-                  totalAmount: Amount,
-                  reference: String,
-                  expiresAt: Date,
-                  downloadUrl: URL,
-                  passCreationToken: String? = nil) {
+    internal init(
+        paymentMethodType: VoucherPaymentMethod,
+        totalAmount: Amount,
+        reference: String,
+        expiresAt: Date,
+        downloadUrl: URL,
+        passCreationToken: String? = nil
+    ) {
         self.paymentMethodType = paymentMethodType
         self.totalAmount = totalAmount
         self.reference = reference

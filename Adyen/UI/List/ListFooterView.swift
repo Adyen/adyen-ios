@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -22,6 +22,10 @@ internal final class ListFooterView: UIView {
         addSubview(stackView)
 
         stackView.adyen.anchor(inside: self)
+        
+        isAccessibilityElement = true
+        accessibilityLabel = title
+        accessibilityTraits = .header
     }
 
     @available(*, unavailable)
@@ -36,7 +40,7 @@ internal final class ListFooterView: UIView {
     // MARK: - UI
 
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [separatorView, titleContainerView])
+        let stackView = UIStackView(arrangedSubviews: [titleContainerView])
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.distribution = .fill
@@ -48,30 +52,24 @@ internal final class ListFooterView: UIView {
     }()
 
     private lazy var titleContainerView: UIView = {
-        titleBackgroundView.adyen.wrapped(with: UIEdgeInsets(top: 12, left: 16, bottom: -12, right: -16))
-    }()
-
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = style.separatorColor
-        view.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale).isActive = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+        titleBackgroundView.adyen.wrapped(with: .init(top: 6, left: 16, bottom: 12, right: 16))
     }()
 
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel(style: style.title)
         titleLabel.numberOfLines = 0
         titleLabel.isAccessibilityElement = false
-        titleLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "Adyen.ListFooterView.\(title)",
-                                                                         postfix: "titleLabel")
+        titleLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(
+            scopeInstance: "Adyen.ListFooterView.\(title)",
+            postfix: "titleLabel"
+        )
         titleLabel.text = title
 
         return titleLabel
     }()
 
     private lazy var titleBackgroundView: UIView = {
-        let view = titleLabel.adyen.wrapped(with: UIEdgeInsets(top: 8, left: 16, bottom: -8, right: -16))
+        let view = titleLabel.adyen.wrapped(with: .init(top: 8, left: 16, bottom: 8, right: 16))
         view.backgroundColor = style.title.backgroundColor
         view.adyen.round(using: style.title.cornerRounding)
         return view

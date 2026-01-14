@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,8 +7,8 @@
 import Foundation
 
 /// A form view representing a plain text input.
-/// :nodoc:
-public final class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
+@_spi(AdyenInternal)
+open class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
 
     // MARK: - Initializers
 
@@ -18,7 +18,7 @@ public final class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
         super.init(item: item)
 
         observe(item.$isEnabled) { [weak self] isEnabled in
-            guard let self = self else { return }
+            guard let self else { return }
             self.textField.isEnabled = isEnabled
             if isEnabled {
                 self.updateValidationStatus()
@@ -27,6 +27,16 @@ public final class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
                 self.resetValidationStatus()
                 self.textField.textColor = item.style.text.disabledColor
             }
+        }
+        
+        observe(item.isHidden) { [weak self] isHidden in
+            if isHidden {
+                self?.resignFirstResponder()
+            }
+        }
+        
+        item.focusHandler = { [weak self] in
+            self?.becomeFirstResponder()
         }
     }
 }

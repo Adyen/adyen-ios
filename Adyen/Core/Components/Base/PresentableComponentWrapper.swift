@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,25 +8,25 @@ import Foundation
 import UIKit
 
 /// A component that wraps any `Component` to make it a `PresentableComponent`.
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class PresentableComponentWrapper: PresentableComponent,
     Cancellable,
     FinalizableComponent,
     LoadingComponent {
     
-    /// :nodoc:
-    public var apiContext: APIContext { component.apiContext }
+    public var apiContext: APIContext { component.context.apiContext }
+
+    /// The context object for this component.
+    public var context: AdyenContext { component.context }
     
-    /// :nodoc:
     public let viewController: UIViewController
     
     /// The wrapped component.
     public let component: Component
     
-    /// :nodoc:
     public var requiresModalPresentation: Bool = true
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public var navBarType: NavigationBarType
     
     /// Initializes the wrapper component.
@@ -43,20 +43,16 @@ public final class PresentableComponentWrapper: PresentableComponent,
         self.viewController = viewController
         self.navBarType = navBarType
     }
-    
-    /// :nodoc:
+
     public func didCancel() {
         component.cancelIfNeeded()
         stopLoading()
     }
 
-    /// :nodoc:
-    public func didFinalize(with success: Bool) {
-        component.finalizeIfNeeded(with: success)
-        stopLoading()
+    public func didFinalize(with success: Bool, completion: (() -> Void)?) {
+        component.finalizeIfNeeded(with: success, completion: completion)
     }
 
-    /// :nodoc:
     public func stopLoading() {
         component.stopLoadingIfNeeded()
     }

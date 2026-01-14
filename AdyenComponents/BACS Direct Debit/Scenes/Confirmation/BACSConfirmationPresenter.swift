@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 internal protocol BACSConfirmationPresenterProtocol: AnyObject {
@@ -32,10 +32,12 @@ internal class BACSConfirmationPresenter: BACSConfirmationPresenterProtocol {
 
     // MARK: - Initializers
 
-    internal init(data: BACSDirectDebitData,
-                  view: BACSConfirmationViewProtocol,
-                  router: BACSDirectDebitRouterProtocol,
-                  itemsFactory: BACSItemsFactoryProtocol) {
+    internal init(
+        data: BACSDirectDebitData,
+        view: BACSConfirmationViewProtocol,
+        router: BACSDirectDebitRouterProtocol,
+        itemsFactory: BACSItemsFactoryProtocol
+    ) {
         self.data = data
         self.router = router
         self.view = view

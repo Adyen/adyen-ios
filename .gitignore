@@ -20,6 +20,7 @@ xcuserdata
 ## Build generated
 [Bb]uild*
 DerivedData
+.index-build
 
 # macOS
 .DS_Store
@@ -28,6 +29,7 @@ DerivedData
 
 # Carthage
 Carthage/
+Cartfile.resolved
 
 #Internal
 Internal/
@@ -39,3 +41,9 @@ Package.resolved
 
 # CI temp files
 TempProject/
+.build
+.vscode
+.tmp
+
+# Configuration files with secrets
+Demo/Secrets.*.xcconfig

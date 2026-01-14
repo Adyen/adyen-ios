@@ -1,0 +1,135 @@
+//
+// Copyright (c) Adyen N.V.
+//
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//
+
+import XCTest
+@testable @_spi(AdyenInternal) import Adyen
+@testable @_spi(AdyenInternal) import AdyenActions
+
+#if canImport(TwintSDK)
+    import TwintSDK
+#endif
+
+#if canImport(TwintSDK)
+
+    extension TWAppConfiguration {
+        static var dummy: TWAppConfiguration {
+            let twintAppConfiguration = TWAppConfiguration(appURLScheme: "scheme://")
+            twintAppConfiguration.appDisplayName = "Test App"
+            return twintAppConfiguration
+        }
+    }
+
+    extension TwintSDKActionComponent.Configuration {
+        static var dummy: Self {
+            .init(callbackAppScheme: "ui-host")
+        }
+        
+        static func dummy(maxIssuerNumber: Int) -> Self {
+            .init(callbackAppScheme: "ui-host", maxIssuerNumber: maxIssuerNumber)
+        }
+    }
+
+    extension TwintSDKAction {
+        static var dummy: TwintSDKAction {
+            .init(
+                sdkData: .init(token: "token", isStored: false),
+                paymentData: "paymentData",
+                paymentMethodType: "paymentMethodType",
+                type: "type"
+            )
+        }
+    }
+
+    extension TwintSDKActionTests {
+    
+        struct PollingError: Error {}
+    
+        static func actionComponent(
+            with twintSpy: TwintSpy,
+            configuration: TwintSDKActionComponent.Configuration = .dummy,
+            context: AdyenContext = Dummy.context,
+            presentationDelegate: PresentationDelegate?,
+            delegate: ActionComponentDelegate?,
+            shouldFailPolling: Bool = false
+        ) -> TwintSDKActionComponent {
+        
+            let pollingHandler = PollingHandlerMock()
+            let pollingBuilder = AwaitActionHandlerProviderMock { _ in
+                pollingHandler
+            } onQRHandler: { _ in
+                XCTFail("onQRHandler should not have been called")
+                return PollingHandlerMock()
+            }
+        
+            let component = TwintSDKActionComponent(
+                context: context,
+                configuration: configuration,
+                twint: twintSpy,
+                pollingComponentBuilder: pollingBuilder
+            )
+        
+            pollingHandler.onHandle = { action in
+                let additionalDetails = AwaitActionDetails(payload: "payload")
+                let actionData = ActionComponentData(details: additionalDetails, paymentData: action.paymentData)
+            
+                if shouldFailPolling {
+                    pollingHandler.delegate?.didFail(with: PollingError(), from: component)
+                } else {
+                    pollingHandler.delegate?.didProvide(actionData, from: component)
+                }
+            }
+        
+            component.presentationDelegate = presentationDelegate
+            component.delegate = delegate
+        
+            return component
+        }
+    
+        // MARK: PresentationDelegateMock
+    
+        /// PresentationDelegateMock that fails when `doPresent` is called
+        static func failingPresentationDelegateMock() -> PresentationDelegateMock {
+            let presentationDelegateMock = PresentationDelegateMock()
+            presentationDelegateMock.doPresent = { _ in
+                XCTFail("Nothing should have been displayed")
+            }
+            return presentationDelegateMock
+        }
+    
+        /// ActionComponentDelegateMock that fails when `onDidFail` is called
+        static func successFlowActionComponentDelegateMock(
+            onProvide: @escaping (ActionComponentData) -> Void
+        ) -> ActionComponentDelegateMock {
+        
+            let actionComponentDelegateMock = ActionComponentDelegateMock()
+            actionComponentDelegateMock.onDidFail = { error, component in
+                XCTFail("delegate.onDidFail should not have been called")
+            }
+            actionComponentDelegateMock.onDidProvide = { data, component in
+                onProvide(data)
+            }
+        
+            return actionComponentDelegateMock
+        }
+    
+        /// ActionComponentDelegateMock that fails when `onDidProvide` is called
+        static func failureFlowActionComponentDelegateMock(
+            onDidFail: @escaping (Error) -> Void
+        ) -> ActionComponentDelegateMock {
+        
+            let actonComponentDelegateMock = ActionComponentDelegateMock()
+            actonComponentDelegateMock.onDidFail = { error, component in
+                onDidFail(error)
+            }
+            actonComponentDelegateMock.onDidProvide = { data, component in
+                XCTFail("delegate.onDidProvide should not have been called")
+            }
+        
+            return actonComponentDelegateMock
+        }
+    }
+
+#endif

@@ -76,9 +76,9 @@
           "type" : "select"
         }
       ],
-      "name" : "iDEAL",
       "supportsRecurring" : true,
-      "type" : "ideal"
+      "type": "onlineBanking_PL",
+      "name": "Online Banking"
     },
     {
       "brands" : [
@@ -785,6 +785,24 @@
       "name" : "PayU NetBanking",
       "supportsRecurring" : true,
       "type" : "payu_IN_nb"
+    },
+    {
+        "apps" : [
+            {
+                "id" : "bhim",
+                "name" : "BHIM"
+            },
+            {
+                "id" : "gpay",
+                "name" : "Google Pay"
+            },
+            {
+                "id" : "phonepe",
+                "name" : "PhonePe"
+            }
+        ],
+        "name" : "UPI",
+        "type" : "upi"
     },
     {
       "details" : [

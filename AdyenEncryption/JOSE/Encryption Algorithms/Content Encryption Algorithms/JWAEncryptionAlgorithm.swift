@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -35,19 +35,28 @@ internal struct JWAInput {
     internal let additionalAuthenticationData: Data
 }
 
+/// Indicates encryption related errors.
 public enum EncryptionError: LocalizedError {
+
+    /// Indicates a problem with the key
     case invalidKey
     
+    /// Indicates a problem with the initialization vector
     case invalidInitializationVector
     
+    /// Indicates an encryption problem.
     case encryptionFailed
     
+    /// Indicates unknown problem.
     case unknownError
     
+    /// Indicates a problem with a random data generation.
     case failedToGenerateRandomData
     
+    /// Indicates a problem with a Base64 encoding.
     case invalidBase64
     
+    /// Any other error.
     case other(Error)
     
     public var errorDescription: String? {

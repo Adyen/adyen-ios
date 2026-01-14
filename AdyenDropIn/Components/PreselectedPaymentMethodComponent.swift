@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
@@ -21,17 +21,17 @@ internal protocol PreselectedPaymentMethodComponentDelegate: AnyObject {
 /// A component that presents a single preselected payment method and option to open more payment methods.
 internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     PresentableComponent,
-    PaymentAwareComponent,
+    PaymentMethodAware,
     Localizable,
     Cancellable {
     
     private let title: String
     private let defaultComponent: PaymentComponent
     
-    /// :nodoc:
-    internal var apiContext: APIContext { defaultComponent.apiContext }
+    internal var apiContext: APIContext { defaultComponent.context.apiContext }
 
-    /// :nodoc:
+    internal var context: AdyenContext { defaultComponent.context }
+
     internal var paymentMethod: PaymentMethod { defaultComponent.paymentMethod }
     
     /// Delegate actions.
@@ -46,17 +46,20 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     /// Call back when the list is dismissed.
     internal var onCancel: (() -> Void)?
     
-    /// Initializes the list component.
-    ///
-    /// - Parameter components: The components to display in the list.
-    /// - Parameter style: The component's UI style.
+    /// Callback for when the component is loaded on display.
+    internal var onDidLoad: (() -> Void)?
+    
+    /// Initializes the pre selected payment component.
     /// - Parameter component: The pre-selected component.
     /// - Parameter title: The title.
+    /// - Parameter style: The component's UI style.
     /// - Parameter listItemStyle: The list item UI style.
-    internal init(component: PaymentComponent,
-                  title: String,
-                  style: FormComponentStyle,
-                  listItemStyle: ListItemStyle) {
+    internal init(
+        component: PaymentComponent,
+        title: String,
+        style: FormComponentStyle,
+        listItemStyle: ListItemStyle
+    ) {
         self.title = title
         self.style = style
         self.listItemStyle = listItemStyle
@@ -72,14 +75,17 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     // MARK: - View Controller
     
     public lazy var viewController: UIViewController = {
-        let formViewController = FormViewController(style: style)
-        formViewController.localizationParameters = localizationParameters
+        let formViewController = FormViewController(
+            scrollEnabled: true,
+            style: style,
+            localizationParameters: localizationParameters
+        )
         formViewController.delegate = self
         
         formViewController.append(listItem)
         formViewController.append(submitButtonItem)
-        if let footnoteItem = footnoteItem {
-            formViewController.append(footnoteItem.addingDefaultMargins())
+        if let footnoteItem {
+            formViewController.append(footnoteItem.padding())
         }
         formViewController.append(FormSpacerItem())
         formViewController.append(separator)
@@ -98,21 +104,35 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
     private lazy var listItem: ListItem = {
         let paymentMethod = defaultComponent.paymentMethod
-        let displayInformation = paymentMethod.localizedDisplayInformation(using: localizationParameters)
-        var listItem = ListItem(title: displayInformation.title, style: self.listItemStyle)
-        listItem.imageURL = LogoURLProvider.logoURL(for: paymentMethod, environment: apiContext.environment)
-        listItem.subtitle = displayInformation.subtitle
-        listItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "defaultComponent")
-        return listItem
+        let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
+        let imageURL = LogoURLProvider.logoURL(
+            withName: displayInformation.logoName,
+            environment: context.apiContext.environment
+        )
+        let identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: "defaultComponent"
+        )
+        return .init(
+            title: displayInformation.title,
+            subtitle: displayInformation.subtitle,
+            icon: .init(url: imageURL),
+            style: self.listItemStyle,
+            identifier: identifier,
+            accessibilityLabel: displayInformation.accessibilityLabel
+        )
     }()
     
     private lazy var submitButtonItem: FormButtonItem = {
-        let item = FormButtonItem(style: style.mainButtonItem)
-        item.title = localizedSubmitButtonTitle(with: payment?.amount,
-                                                style: .immediate,
-                                                localizationParameters)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "submitButton")
         let component = self.defaultComponent
+        let item = FormButtonItem(style: style.mainButtonItem)
+        item.title = localizedSubmitButtonTitle(
+            with: component.context.payment?.amount,
+            style: .immediate,
+            localizationParameters
+        )
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "submitButton")
+
         item.buttonSelectionHandler = { [weak self] in
             self?.delegate?.didProceed(with: component)
         }
@@ -130,7 +150,9 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     }()
 
     private lazy var footnoteItem: FormLabelItem? = {
-        guard let footnoteText = paymentMethod.displayInformation.footnoteText else { return nil }
+        guard let footnoteText = paymentMethod
+            .displayInformation(using: localizationParameters)
+            .footnoteText else { return nil }
         let item = FormLabelItem(text: footnoteText, style: style.footnoteLabel)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "footnote")
         return item
@@ -149,9 +171,15 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
     // MARK: - Localization
     
-    /// :nodoc:
     public var localizationParameters: LocalizationParameters?
     
 }
 
+extension PreselectedPaymentMethodComponent: ViewControllerDelegate {
+    func viewDidLoad(viewController: UIViewController) {
+        onDidLoad?()
+    }
+}
+
+@_spi(AdyenInternal)
 extension PreselectedPaymentMethodComponent: TrackableComponent {}

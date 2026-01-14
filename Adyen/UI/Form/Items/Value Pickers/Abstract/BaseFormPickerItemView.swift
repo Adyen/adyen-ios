@@ -1,16 +1,15 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import UIKit
 
-/// :nodoc:
 /// Represents a picker item view.
-open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormValueItemView<BasePickerElement<T>,
-    FormTextItemStyle,
-    BaseFormPickerItem<T>>,
+@_spi(AdyenInternal)
+open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>:
+    FormValueItemView<BasePickerElement<T>, FormTextItemStyle, BaseFormPickerItem<T>>,
     UIPickerViewDelegate,
     UIPickerViewDataSource {
 
@@ -19,7 +18,10 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
         let pickerView = UIPickerView()
         pickerView.delegate = self
         pickerView.dataSource = self
-        pickerView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        pickerView.autoresizingMask = [
+            .flexibleHeight,
+            .flexibleWidth
+        ]
         return pickerView
     }()
     
@@ -40,34 +42,33 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
         initialize()
         select(value: item.value)
         observe(item.$selectableValues) { [weak self] change in
-            guard let self = self else { return }
+            guard let self else { return }
             self.inputControl.showChevron = change.count > 1
             self.pickerView.reloadAllComponents()
             change.first.map(self.select)
         }
     }
 
-    /// :nodoc:
     override open var canBecomeFirstResponder: Bool { true }
 
-    /// :nodoc:
     @discardableResult
-    override open func becomeFirstResponder() -> Bool {
+    override public func becomeFirstResponder() -> Bool {
         inputControl.becomeFirstResponder()
     }
 
-    /// :nodoc:
     @discardableResult
-    override open func resignFirstResponder() -> Bool {
+    override public func resignFirstResponder() -> Bool {
         inputControl.resignFirstResponder()
     }
 
     // MARK: - Abstract
 
     internal func createInputControl() -> PickerTextInputControl {
-        BasePickerInputControl(inputView: pickerView,
-                               inputAccessoryView: pickerViewToolbar,
-                               style: item.style.text)
+        BasePickerInputControl(
+            inputView: pickerView,
+            inputAccessoryView: pickerViewToolbar,
+            style: item.style.text
+        )
     }
 
     internal func updateSelection() {
@@ -75,16 +76,19 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
     }
 
     /// Function called right after `init` for additional initialization of controls.
-    /// :nodoc:
-    open func initialize() {
-        addSubview(inputControl)
+    private func initialize() {
         inputControl.preservesSuperviewLayoutMargins = true
-        (inputControl as UIView).adyen.anchor(inside: self)
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, inputControl])
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        addSubview(stackView)
+        stackView.preservesSuperviewLayoutMargins = true
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.adyen.anchor(inside: self)
     }
 
     /// The main control of the picker element that
     /// handles displaying the selected value and triggering the picker view.
-    /// :nodoc:
     public lazy var inputControl: PickerTextInputControl = {
         let view = createInputControl()
         view.showChevron = item.selectableValues.count > 1
@@ -100,7 +104,7 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>: FormV
         }
 
         view.onDidTap = { [weak self] in
-            guard let self = self, self.item.selectableValues.count > 1 else { return }
+            guard let self, self.item.selectableValues.count > 1 else { return }
             self.becomeFirstResponder()
         }
 

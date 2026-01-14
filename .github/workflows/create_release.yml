@@ -1,0 +1,57 @@
+name: "🚀 Release on merge"
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: write 
+
+jobs:
+  create_release:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
+    name: "Create Release"
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+
+    - name: Fetch Pull Request Details
+      continue-on-error: true
+      run: |
+        SOURCE_BRANCH=${{ github.event.pull_request.head.ref }}
+        
+        # Extracting the version number from the source branch name
+        # If the version number does not match we fail to indicate an issue
+        VERSION_NUMBER=${SOURCE_BRANCH#release/}
+        if [[ ! "$VERSION_NUMBER" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+          echo "'$VERSION_NUMBER' does not match semantic versioning format. Exiting."
+          exit 1
+        fi
+        
+        MERGE_COMMIT_SHA=${{ github.event.pull_request.merge_commit_sha }}
+        PR_NUMBER=${{ github.event.pull_request.number }}
+        
+        echo "SOURCE_BRANCH=$SOURCE_BRANCH" >> $GITHUB_ENV
+        echo "VERSION_NUMBER=$VERSION_NUMBER" >> $GITHUB_ENV
+        echo "MERGE_COMMIT_SHA=$MERGE_COMMIT_SHA" >> $GITHUB_ENV
+        
+        # Requesting the PR info
+        PR_INFO=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER})
+        
+        # Extracting the PR body from the PR info
+        PR_BODY=$(jq --raw-output .body <<< "$PR_INFO")
+        echo "PR Body: $PR_BODY"
+        
+        echo "$PR_BODY" >> "${{ github.workspace }}/release_content.md"
+        
+    - name: Create Release
+      uses: softprops/action-gh-release@v2
+      with:
+        body_path: "${{ github.workspace }}/release_content.md"
+        draft: true
+        target_commitish: ${{ env.MERGE_COMMIT_SHA }}
+        tag_name: ${{ env.VERSION_NUMBER }}
+        token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import SafariServices
 import UIKit
 
@@ -16,7 +16,9 @@ internal protocol BrowserComponentDelegate: AnyObject {
 /// A component that opens a URL in web browsed and presents it.
 internal final class BrowserComponent: NSObject, PresentableComponent {
 
-    internal let apiContext: APIContext
+    /// :nodoc
+    internal let context: AdyenContext
+
     private let url: URL
     private let style: RedirectComponentStyle?
     private let componentName = "browser"
@@ -36,17 +38,22 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
         return safariViewController
     }()
     
-    /// :nodoc:
     internal weak var delegate: BrowserComponentDelegate?
+    
+    @AdyenDependency(\.openAppDetector) private var openAppDetector
     
     /// Initializes the component.
     ///
     /// - Parameter url: The URL to where the user should be redirected
-    /// - Parameter apiContext: The API context.
+    /// - Parameter context: The context object for this component.
     /// - Parameter style: The component's UI style.
-    internal init(url: URL, apiContext: APIContext, style: RedirectComponentStyle? = nil) {
+    internal init(
+        url: URL,
+        context: AdyenContext,
+        style: RedirectComponentStyle? = nil
+    ) {
         self.url = url
-        self.apiContext = apiContext
+        self.context = context
         self.style = style
         super.init()
     }
@@ -55,11 +62,11 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
     /// - SFSafariViewController deliberately closed by user and current app still in foreground;
     /// - SFSafariViewController finished due to a successful redirect to an external app and current app no longer in foreground.
     private func finish() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-            if UIApplication.shared.applicationState == .active {
-                self.delegate?.didCancel()
-            } else {
+        openAppDetector.checkIfExternalAppDidOpen { didOpenExternalApp in
+            if didOpenExternalApp {
                 self.delegate?.didOpenExternalApplication()
+            } else {
+                self.delegate?.didCancel()
             }
         }
     }
@@ -71,15 +78,17 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
 extension BrowserComponent: SFSafariViewControllerDelegate, UIAdaptivePresentationControllerDelegate {
     
     /// Called when user clicks "Cancel" button or Safari redirects to other app.
-    /// :nodoc:
     internal func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
         finish()
     }
 
     /// Called when user drag VC down to dismiss.
-    /// :nodoc:
     internal func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         self.delegate?.didCancel()
     }
 
+    /// Called when the user opens the current page in the default browser by tapping the toolbar button.
+    internal func safariViewControllerWillOpenInBrowser(_ controller: SFSafariViewController) {
+        self.delegate?.didOpenExternalApplication()
+    }
 }

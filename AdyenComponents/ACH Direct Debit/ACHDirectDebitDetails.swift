@@ -1,16 +1,19 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 
 /// Contains the details supplied by the ACH Direct Debit component.
 public struct ACHDirectDebitDetails: PaymentMethodDetails, ShopperInformation {
     
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
+    
     /// The payment method type.
-    public let type: String
+    public let type: PaymentMethodType
 
     /// The name of the bank account holder.
     public let holderName: String
@@ -23,6 +26,10 @@ public struct ACHDirectDebitDetails: PaymentMethodDetails, ShopperInformation {
     
     /// The shopper's billing address.
     public let billingAddress: PostalAddress?
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
     
     /// Initializes the ACH Direct Debit details.
     /// - Parameters:
@@ -44,5 +51,6 @@ public struct ACHDirectDebitDetails: PaymentMethodDetails, ShopperInformation {
         case holderName = "ownerName"
         case encryptedBankAccountNumber
         case encryptedBankRoutingNumber = "encryptedBankLocationId"
+        case sdkData
     }
 }

@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Indicates the Voucher payment methods.
@@ -24,7 +24,16 @@ public enum VoucherPaymentMethod: String, Codable, CaseIterable {
     
     /// Boleto Bancairo Santander
     case boletoBancairoSantander = "boletobancario_santander"
-    
+
+    /// Boleto Bancario
+    case boletoBancario = "boletobancario"
+
+    /// Boleto Bancario Itau
+    case boletoBancarioItau = "boletobancario_itau"
+
+    /// Primeiro Pay Boleto
+    case primeiroPayBoleto = "primeiropay_boleto"
+
     /// OXXO
     case oxxo
     
@@ -49,45 +58,64 @@ public enum VoucherAction: Decodable {
     
     /// Indicates a Boleto Bancairo Santander Voucher type.
     case boletoBancairoSantander(BoletoVoucherAction)
-    
+
+    /// Indicates a Boleto Bancario Voucher type.
+    case boletoBancario(BoletoVoucherAction)
+
+    /// Indicates a Boleto Bancario Itau Voucher type.
+    case boletoBancarioItau(BoletoVoucherAction)
+
+    /// Indicates a Primeiro Pay Boleto Voucher type.
+    case primeiroPayBoleto(BoletoVoucherAction)
+
     /// Indicates an OXXO voucher type
     case oxxo(OXXOVoucherAction)
     
     /// Indicates an Multibanco voucher type
     case multibanco(MultibancoVoucherAction)
 
-    /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
 
         switch type {
         case .dokuIndomaret:
-            self = .dokuIndomaret(try DokuVoucherAction(from: decoder))
+            self = try .dokuIndomaret(DokuVoucherAction(from: decoder))
         case .dokuAlfamart:
-            self = .dokuAlfamart(try DokuVoucherAction(from: decoder))
+            self = try .dokuAlfamart(DokuVoucherAction(from: decoder))
         case .econtextStores:
-            self = .econtextStores(try EContextStoresVoucherAction(from: decoder))
+            self = try .econtextStores(EContextStoresVoucherAction(from: decoder))
         case .econtextATM:
-            self = .econtextATM(try EContextATMVoucherAction(from: decoder))
+            self = try .econtextATM(EContextATMVoucherAction(from: decoder))
         case .boletoBancairoSantander:
-            self = .boletoBancairoSantander(try BoletoVoucherAction(from: decoder))
+            self = try .boletoBancairoSantander(BoletoVoucherAction(from: decoder))
+        case .boletoBancario:
+            self = try .boletoBancario(BoletoVoucherAction(from: decoder))
+        case .boletoBancarioItau:
+            self = try .boletoBancarioItau(BoletoVoucherAction(from: decoder))
+        case .primeiroPayBoleto:
+            self = try .primeiroPayBoleto(BoletoVoucherAction(from: decoder))
         case .oxxo:
-            self = .oxxo(try OXXOVoucherAction(from: decoder))
+            self = try .oxxo(OXXOVoucherAction(from: decoder))
         case .multibanco:
-            self = .multibanco(try MultibancoVoucherAction(from: decoder))
+            self = try .multibanco(MultibancoVoucherAction(from: decoder))
         }
     }
 
-    /// :nodoc:
     private enum CodingKeys: String, CodingKey {
         case paymentMethodType
     }
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public var anyAction: AnyVoucherAction {
         switch self {
         case let .boletoBancairoSantander(action):
+            return action
+        case let .boletoBancario(action):
+            return action
+        case let .boletoBancarioItau(action):
+            return action
+        case let .primeiroPayBoleto(action):
             return action
         case let .dokuAlfamart(action):
             return action
@@ -105,11 +133,9 @@ public enum VoucherAction: Decodable {
     }
 }
 
-/// :nodoc:
 /// Describes a voucher that has an instructions url.
 internal protocol InstructionAwareVoucherAction {
     
-    /// :nodoc:
     /// The instruction url.
     var instructionsURL: URL { get }
 }
@@ -135,10 +161,9 @@ public class GenericVoucherAction: Decodable, AnyVoucherAction {
     /// Merchant Name.
     public let merchantName: String
 
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public let passCreationToken: String?
 
-    /// :nodoc:
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         paymentMethodType = try container.decode(VoucherPaymentMethod.self, forKey: .paymentMethodType)
@@ -151,8 +176,12 @@ public class GenericVoucherAction: Decodable, AnyVoucherAction {
         let expiresAtString = try container.decode(String.self, forKey: .expiresAt)
         let dateFormatter = ISO8601DateFormatter()
         dateFormatter.formatOptions = [
-            .withYear, .withMonth, .withDay, .withTime,
-            .withDashSeparatorInDate, .withColonSeparatorInTime
+            .withYear,
+            .withMonth,
+            .withDay,
+            .withTime,
+            .withDashSeparatorInDate,
+            .withColonSeparatorInTime
         ]
 
         if let date = dateFormatter.date(from: expiresAtString) {
@@ -164,14 +193,15 @@ public class GenericVoucherAction: Decodable, AnyVoucherAction {
         }
     }
 
-    /// :nodoc:
-    internal init(paymentMethodType: VoucherPaymentMethod,
-                  initialAmount: Amount,
-                  totalAmount: Amount,
-                  reference: String,
-                  expiresAt: Date,
-                  merchantName: String,
-                  passCreationToken: String? = nil) {
+    internal init(
+        paymentMethodType: VoucherPaymentMethod,
+        initialAmount: Amount,
+        totalAmount: Amount,
+        reference: String,
+        expiresAt: Date,
+        merchantName: String,
+        passCreationToken: String? = nil
+    ) {
         self.paymentMethodType = paymentMethodType
         self.initialAmount = initialAmount
         self.totalAmount = totalAmount

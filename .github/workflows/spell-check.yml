@@ -4,23 +4,25 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
-  push:
-    branches:
-    - master
-    - develop
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
 
   setup:
-    runs-on: macos-11
+    runs-on: macos-15
     steps:
-    - uses: actions/checkout@v2
-    - uses: n1hility/cancel-previous-runs@v2
+    - uses: actions/checkout@v6
       with:
-        token: ${{ secrets.MANUAL_ACTION_TOKEN }}
-
+        fetch-depth: 0
 
     - name: Spell check
       run: |
         brew install mint
         Scripts/spell_check.sh
+      env:
+        target_branch: ${{ github.event.pull_request.base.ref }}

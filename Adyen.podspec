@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'Adyen'
-  s.version = '4.7.0'
+  s.version = '5.22.1'
   s.summary = "Adyen Components for iOS"
   s.description = <<-DESC
     Adyen Components for iOS allows you to accept in-app payments by providing you with the building blocks you need to create a checkout experience.
@@ -11,10 +11,10 @@ Pod::Spec.new do |s|
   s.author = { 'Adyen' => 'support@adyen.com' }
   s.source = { :git => 'https://github.com/Adyen/adyen-ios.git', :tag => "#{s.version}" }
   s.platform = :ios
-  s.ios.deployment_target = '11.0'
-  s.swift_version = '5.1'
+  s.ios.deployment_target = '12.0'
+  s.swift_version = '5.7'
   s.frameworks = 'Foundation'
-  s.default_subspecs = 'Core', 'Components', 'Actions', 'Card', 'Encryption', 'DropIn'
+  s.default_subspecs = 'Core', 'Components', 'Actions', 'Card', 'Encryption', 'DropIn', 'Session'
   s.pod_target_xcconfig = {'SWIFT_SUPPRESS_WARNINGS' => 'YES' }
 
   s.subspec 'DropIn' do |plugin|
@@ -31,7 +31,20 @@ Pod::Spec.new do |s|
     plugin.source_files = 'AdyenWeChatPay/**/*.swift'
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/Actions'
-    plugin.dependency 'AdyenWeChatPayInternal', '2.1.0'
+    plugin.dependency 'AdyenWeChatPayInternal', '2.2.0'
+  end
+
+  s.subspec 'CashAppPay' do |plugin|
+    plugin.source_files = 'AdyenCashAppPay/**/*.swift'
+    plugin.dependency 'Adyen/Core'
+    plugin.dependency 'CashAppPayKit', '0.6.2'
+    plugin.dependency 'CashAppPayKitUI', '0.6.2'
+  end
+
+  s.subspec 'AdyenTwint' do |plugin|
+    plugin.source_files = 'AdyenTwint/**/*.swift'
+    plugin.dependency 'Adyen/Core'
+    plugin.vendored_frameworks = 'XCFramework/Dynamic/TwintSDK.xcframework'
   end
 
   s.subspec 'Card' do |plugin|
@@ -41,10 +54,13 @@ Pod::Spec.new do |s|
     plugin.exclude_files = 'AdyenCard/**/BundleSPMExtension.swift'
     plugin.resource_bundles = {
         'AdyenCard' => [
-            'AdyenCard/Assets/**/*.strings',
             'AdyenCard/Assets/**/*.xcassets'
         ]
     }
+  end
+
+  s.subspec 'CardScanner' do |plugin|
+    plugin.dependency 'AdyenCardScanner'
   end
 
   s.subspec 'Components' do |plugin|
@@ -53,10 +69,15 @@ Pod::Spec.new do |s|
     plugin.source_files = 'AdyenComponents/**/*.swift'
   end
 
+  s.subspec 'Session' do |plugin|
+    plugin.dependency 'Adyen/Core'
+    plugin.dependency 'Adyen/Actions'
+    plugin.source_files = 'AdyenSession/**/*.swift'
+  end
 
   s.subspec 'Actions' do |plugin|
     plugin.dependency 'Adyen/Core'
-    plugin.dependency 'Adyen3DS2', '2.2.4'
+    plugin.dependency 'Adyen3DS2', '2.4.4'
     plugin.source_files = 'AdyenActions/**/*.swift'
     plugin.exclude_files = 'AdyenActions/**/BundleSPMExtension.swift'
     plugin.resource_bundles = {
@@ -73,15 +94,21 @@ Pod::Spec.new do |s|
   s.subspec 'SwiftUI' do |plugin|
     plugin.source_files = 'AdyenSwiftUI/**/*.swift'
   end
+  
+  s.subspec 'DelegatedAuthentication' do |plugin|
+    plugin.source_files = 'AdyenDelegatedAuthentication/**/*.swift'
+    plugin.dependency 'AdyenAuthentication', '3.1.0'
+  end
 
   s.subspec 'Core' do |plugin|
     plugin.source_files = 'Adyen/**/*.swift'
     plugin.exclude_files = 'Adyen/**/BundleSPMExtension.swift'
-    plugin.dependency 'AdyenNetworking', '1.0.0'
+    plugin.dependency 'AdyenNetworking', '3.0.1'
     plugin.resource_bundles = {
         'Adyen' => [
             'Adyen/Assets/**/*.strings',
-            'Adyen/Assets/**/*.xcassets'
+            'Adyen/Assets/**/*.xcassets',
+            'Adyen/PrivacyInfo.xcprivacy'
         ]
     }
   end

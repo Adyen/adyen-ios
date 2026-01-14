@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,19 +8,14 @@ import Foundation
 
 internal final class EmailFormItemInjector: FormItemInjector, Localizable {
 
-    /// :nodoc:
     internal var localizationParameters: LocalizationParameters?
 
-    /// :nodoc:
     internal let style: FormTextItemStyle
 
-    /// :nodoc:
     internal var value: String?
 
-    /// :nodoc:
     internal var identifier: String
 
-    /// :nodoc:
     internal lazy var item: FormTextInputItem = {
         let item = FormTextInputItem(style: style)
         item.value = value ?? ""
@@ -34,15 +29,16 @@ internal final class EmailFormItemInjector: FormItemInjector, Localizable {
         return item
     }()
 
-    internal init(value: String?,
-                  identifier: String,
-                  style: FormTextItemStyle) {
+    internal init(
+        value: String?,
+        identifier: String,
+        style: FormTextItemStyle
+    ) {
         self.value = value
         self.identifier = identifier
         self.style = style
     }
 
-    /// :nodoc:
     internal func inject(into formViewController: FormViewController) {
         formViewController.append(item)
     }

@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>LSMinimumSystemVersion</key>
+	<string>14.0.0</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -37,13 +39,14 @@
 		<string>sk-SK</string>
 		<string>sl-SL</string>
 		<string>ar</string>
+		<string>hi</string>
 	</array>
 	<key>CFBundleName</key>
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(MARKETING_VERSION)</string>
+	<string>5.22.1</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -73,6 +76,7 @@
 	<array>
 		<string>weixin</string>
 		<string>weixinULAPI</string>
+		<string>weixinURLParamsAPI</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

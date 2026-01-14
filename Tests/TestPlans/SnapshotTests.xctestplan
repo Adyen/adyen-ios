@@ -1,0 +1,50 @@
+{
+  "configurations" : [
+    {
+      "id" : "F6C52BC7-9DF1-4138-96A1-4E2B4DD1956E",
+      "name" : "Snapshot Tests 🇺🇸",
+      "options" : {
+        "language" : "en",
+        "region" : "US"
+      }
+    },
+    {
+      "id" : "44BA0F19-88A4-4C8B-AF7C-2E5189C5F53D",
+      "name" : "Snapshot Tests 🇩🇪",
+      "options" : {
+        "language" : "de",
+        "region" : "DE"
+      }
+    },
+    {
+      "id" : "4416B627-B259-4571-9E45-99CE55AAD778",
+      "name" : "Snapshot Tests 🇦🇪",
+      "options" : {
+        "language" : "ar",
+        "region" : "AE"
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "commandLineArgumentEntries" : [
+      {
+        "argument" : "-UITests"
+      }
+    ],
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Adyen.xcodeproj",
+      "identifier" : "F9CCA3B4296ECB3E00AD643D",
+      "name" : "AdyenUIHostUITests"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Adyen.xcodeproj",
+        "identifier" : "F9CCA3B4296ECB3E00AD643D",
+        "name" : "SnapshotsTests"
+      }
+    }
+  ],
+  "version" : 1
+}

@@ -1,6 +1,12 @@
---disable blankLinesAtStartOfScope,blankLinesAtEndOfScope,unusedArguments,redundantSelf,wrapMultilineStatementBraces,extensionAccessControl,redundantClosure
---swiftversion "5.2"
+--disable blankLinesAtStartOfScope,blankLinesAtEndOfScope,unusedArguments,redundantSelf,wrapMultilineStatementBraces,extensionAccessControl,redundantClosure,redundantInternal,preferForLoop,redundantRawValues,docCommentsBeforeModifiers,redundantPublic
+--swiftversion "5.7"
 --commas inline
 --ranges nospace
 --trimwhitespace nonblank-lines
 --decimalgrouping none
+--wrapcollections before-first
+--wraparguments before-first
+--header "\nCopyright (c) Adyen N.V.\n\nThis file is open source and available under the MIT license. See the LICENSE file for more info.\n"
+
+# file options
+--exclude Scripts

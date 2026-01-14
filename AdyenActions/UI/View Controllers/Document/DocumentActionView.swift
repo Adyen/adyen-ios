@@ -1,19 +1,20 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
+import SwiftUI
 import UIKit
 
-/// Callback protocol for basic action views with completion and main button actions.
-internal protocol ActionViewDelegate: AnyObject {
+/// Callback protocol for document action views.
+internal protocol DocumentActionViewDelegate: AnyObject {
     
     func didComplete()
     
-    func mainButtonTap(sourceView: UIView)
+    func mainButtonTap(sourceView: UIView, downloadable: Downloadable)
 }
 
 internal final class DocumentActionView: UIView {
@@ -26,9 +27,8 @@ internal final class DocumentActionView: UIView {
         return stackView
     }()
     
-    internal lazy var imageView: NetworkImageView = {
-        let imageView = NetworkImageView()
-        imageView.imageURL = viewModel.logoURL
+    internal lazy var imageView: UIImageView = {
+        let imageView = UIImageView()
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "icon")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.widthAnchor.constraint(equalToConstant: 80).isActive = true
@@ -66,16 +66,24 @@ internal final class DocumentActionView: UIView {
         return button
     }()
 
-    internal weak var delegate: ActionViewDelegate?
+    internal weak var delegate: DocumentActionViewDelegate?
     
     /// The view model.
     private let viewModel: DocumentActionViewModel
     
+    private let imageLoader: ImageLoading
+    private var imageLoadingTask: AdyenCancellable?
+    
     /// The UI style.
     private let style: DocumentComponentStyle
     
-    internal init(viewModel: DocumentActionViewModel, style: DocumentComponentStyle) {
+    internal init(
+        viewModel: DocumentActionViewModel,
+        style: DocumentComponentStyle,
+        imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
+    ) {
         self.viewModel = viewModel
+        self.imageLoader = imageLoader
         self.style = style
         super.init(frame: .zero)
         configureViews()
@@ -89,14 +97,29 @@ internal final class DocumentActionView: UIView {
     private func configureViews() {
         backgroundColor = style.backgroundColor
         addSubview(stackView)
-        stackView.adyen.anchor(inside: .view(self), edgeInsets: .init(left: 20, right: -20))
-        NSLayoutConstraint.activate([stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-                                     stackView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
-                                     stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -30)])
+        stackView.adyen.anchor(inside: .view(self), edgeInsets: .init(left: 20, right: 20))
+        NSLayoutConstraint.activate([
+            stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            stackView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
+            stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -30)
+        ])
         
     }
     
     @objc private func onMainButtonTap() {
-        delegate?.mainButtonTap(sourceView: mainButton)
+        delegate?.mainButtonTap(sourceView: mainButton, downloadable: viewModel.action)
+    }
+    
+    override public func didMoveToWindow() {
+        super.didMoveToWindow()
+        updateLogo()
+    }
+    
+    private func updateLogo() {
+        if window != nil {
+            imageLoadingTask = imageView.load(url: viewModel.logoURL, using: imageLoader)
+        } else {
+            imageLoadingTask = nil
+        }
     }
 }

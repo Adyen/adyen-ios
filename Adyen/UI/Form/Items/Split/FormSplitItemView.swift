@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -35,7 +35,7 @@ internal final class FormSplitItemView: FormItemView<FormSplitItem> {
         stackView.axis = .horizontal
         stackView.alignment = .top
         stackView.distribution = .fillEqually
-        stackView.spacing = 16
+        stackView.spacing = 0
         return stackView
     }()
 

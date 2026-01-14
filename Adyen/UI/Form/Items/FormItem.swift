@@ -1,21 +1,16 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-/// :nodoc:
-public protocol Hidable {
-
-    /// :nodoc:
-    var isHidden: Observable<Bool> { get }
-}
-
 /// An item in a form.
-/// :nodoc:
+@_spi(AdyenInternal)
 public protocol FormItem: AnyObject {
+    
+    var isHidden: AdyenObservable<Bool> { get }
     
     /// An identifier for the `FormItem`,
     /// that  is set to the `FormItemView.accessibilityIdentifier` when the corresponding `FormItemView` is created.
@@ -28,7 +23,7 @@ public protocol FormItem: AnyObject {
     func build(with builder: FormItemViewBuilder) -> AnyFormItemView
 }
 
-/// :nodoc:
+@_spi(AdyenInternal)
 public extension FormItem {
     
     /// The flat list of all sub-items.
@@ -39,7 +34,7 @@ public extension FormItem {
 }
 
 /// A validatable form item.
-/// :nodoc:
+@_spi(AdyenInternal)
 public protocol ValidatableFormItem: FormItem {
     
     /// A message that is displayed when validation fails.
@@ -53,11 +48,10 @@ public protocol ValidatableFormItem: FormItem {
 }
 
 /// A form item that requires keyboard input or otherwise custom input view.
-/// :nodoc:
+@_spi(AdyenInternal)
 public protocol InputViewRequiringFormItem: FormItem {}
 
 /// Delegate to the view all events that requires change in corespondent FormView changes.
-/// :nodoc:
 internal protocol SelfRenderingFormItemDelegate: AnyObject {
 
     /// Notify delegate that items have changed.
@@ -69,9 +63,9 @@ internal protocol CompoundFormItem {
     var delegate: SelfRenderingFormItemDelegate? { get set }
 }
 
-extension Hidable {
+@_spi(AdyenInternal)
+extension FormItem {
 
-    /// :nodoc:
     public var isVisible: Bool {
         get {
             !self.isHidden.wrappedValue
@@ -81,5 +75,4 @@ extension Hidable {
             self.isHidden.wrappedValue = !newValue
         }
     }
-
 }

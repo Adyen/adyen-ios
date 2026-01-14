@@ -1,21 +1,25 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
 /// A component that provides a form for SEPA Direct Debit payments.
-public final class SEPADirectDebitComponent: PaymentComponent, PresentableComponent, Localizable, LoadingComponent {
+public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, PresentableComponent, LoadingComponent {
     
-    /// :nodoc:
-    public let apiContext: APIContext
+    /// Configuration for SEPA Direct Debit Component
+    public typealias Configuration = BasicComponentConfiguration
     
-    /// Describes the component's UI style.
-    public let style: FormComponentStyle
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
+    
+    /// Component's configuration
+    public var configuration: Configuration
     
     /// The SEPA Direct Debit payment method.
     public var paymentMethod: PaymentMethod {
@@ -28,45 +32,51 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     /// Initializes the SEPA Direct Debit component.
     ///
     /// - Parameter paymentMethod: The SEPA Direct Debit payment method.
-    /// - Parameter style: The Component's UI style.
-    public init(paymentMethod: SEPADirectDebitPaymentMethod,
-                apiContext: APIContext,
-                style: FormComponentStyle = FormComponentStyle()) {
-        self.style = style
-        self.apiContext = apiContext
+    /// - Parameter context: The context object for this component.
+    /// - Parameter configuration: Configuration for the component.
+    public init(
+        paymentMethod: SEPADirectDebitPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
         self.sepaDirectDebitPaymentMethod = paymentMethod
+        self.context = context
+        self.configuration = configuration
     }
     
     private let sepaDirectDebitPaymentMethod: SEPADirectDebitPaymentMethod
     
     // MARK: - Presentable Component Protocol
     
-    /// :nodoc:
-    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
+    public lazy var viewController: UIViewController = SecuredViewController(
+        child: formViewController,
+        style: configuration.style
+    )
     
-    /// :nodoc:
     public var requiresModalPresentation: Bool = true
     
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
-    
-    /// :nodoc:
     public func stopLoading() {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
-    
+
     // MARK: - View Controller
     
     private lazy var formViewController: FormViewController = {
-        let formViewController = FormViewController(style: style)
-        formViewController.localizationParameters = localizationParameters
+        let formViewController = FormViewController(
+            scrollEnabled: configuration.showsSubmitButton,
+            style: configuration.style,
+            localizationParameters: configuration.localizationParameters
+        )
         formViewController.delegate = self
 
-        formViewController.title = paymentMethod.name
+        formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.append(nameItem)
         formViewController.append(ibanItem)
-        formViewController.append(button)
+
+        if configuration.showsSubmitButton {
+            formViewController.append(button)
+        }
 
         return formViewController
     }()
@@ -74,27 +84,29 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     // MARK: - Private
     
     private func didSelectSubmitButton() {
-        guard formViewController.validate() else {
+        guard validate() else {
             return
         }
         
-        let details = SEPADirectDebitDetails(paymentMethod: sepaDirectDebitPaymentMethod,
-                                             iban: ibanItem.value,
-                                             ownerName: nameItem.value)
+        let details = SEPADirectDebitDetails(
+            paymentMethod: sepaDirectDebitPaymentMethod,
+            iban: ibanItem.value,
+            ownerName: nameItem.value
+        )
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
         
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: amountToPay, order: order))
+        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
     }
     
     // MARK: - Form Items
     
     internal lazy var nameItem: FormTextInputItem = {
-        let nameItem = FormTextInputItem(style: style.textField)
-        nameItem.title = localizedString(.sepaNameItemTitle, localizationParameters)
-        nameItem.placeholder = localizedString(.sepaNameItemPlaceholder, localizationParameters)
+        let nameItem = FormTextInputItem(style: configuration.style.textField)
+        nameItem.title = localizedString(.sepaNameItemTitle, configuration.localizationParameters)
+        nameItem.placeholder = localizedString(.sepaNameItemPlaceholder, configuration.localizationParameters)
         nameItem.validator = LengthValidator(minimumLength: 2)
-        nameItem.validationFailureMessage = localizedString(.sepaNameItemInvalid, localizationParameters)
+        nameItem.validationFailureMessage = localizedString(.sepaNameItemInvalid, configuration.localizationParameters)
         nameItem.autocapitalizationType = .words
         nameItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "nameItem")
         return nameItem
@@ -109,23 +121,25 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
             return IBANFormatter().formattedValue(for: example)
         }
         
-        let ibanItem = FormTextInputItem(style: style.textField)
-        ibanItem.title = localizedString(.sepaIbanItemTitle, localizationParameters)
+        let ibanItem = FormTextInputItem(style: configuration.style.textField)
+        ibanItem.title = localizedString(.sepaIbanItemTitle, configuration.localizationParameters)
         ibanItem.placeholder = localizedPlaceholder()
         ibanItem.formatter = IBANFormatter()
         ibanItem.validator = IBANValidator()
-        ibanItem.validationFailureMessage = localizedString(.sepaIbanItemInvalid, localizationParameters)
+        ibanItem.validationFailureMessage = localizedString(.sepaIbanItemInvalid, configuration.localizationParameters)
         ibanItem.autocapitalizationType = .allCharacters
         ibanItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "ibanItem")
         return ibanItem
     }()
 
     internal lazy var button: FormButtonItem = {
-        let item = FormButtonItem(style: style.mainButtonItem)
+        let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
-        item.title = localizedSubmitButtonTitle(with: payment?.amount,
-                                                style: .immediate,
-                                                localizationParameters)
+        item.title = localizedSubmitButtonTitle(
+            with: payment?.amount,
+            style: .immediate,
+            configuration.localizationParameters
+        )
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }
@@ -134,4 +148,21 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
 
 }
 
+@_spi(AdyenInternal)
 extension SEPADirectDebitComponent: TrackableComponent {}
+
+@_spi(AdyenInternal)
+extension SEPADirectDebitComponent: ViewControllerDelegate {}
+
+// MARK: - SubmitCustomizable
+
+extension SEPADirectDebitComponent: SubmittableComponent {
+
+    public func submit() {
+        didSelectSubmitButton()
+    }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
+}

@@ -7,15 +7,30 @@ opt_in_rules:
   - explicit_acl
 
 excluded:
+  - Build
+  - .build
+  - .index-build
   - Tests
+  - AdyenCardScannerTests
   - Internal
   - Docs
   - Demo
   - Package.swift
   - DerivedData
   - Carthage
+  - TempProject
+  - Scripts
 
 line_length:
   ignores_function_declarations: true
   ignores_urls: true
   warning: 140
+  
+file_length:
+  warning: 500
+  
+identifier_name:
+  min_length:
+    warning: 2
+  max_length:
+    warning: 40

@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Adyen3DS2
 import Foundation
 
@@ -15,46 +15,135 @@ internal protocol AnyRedirectComponent: ActionComponent {
 /// Handles the 3D Secure 2 fingerprint and challenge.
 public final class ThreeDS2Component: ActionComponent {
     
-    /// :nodoc:
-    public let apiContext: APIContext
-
-    /// The appearance configuration of the 3D Secure 2 challenge UI.
-    public let appearanceConfiguration = ADYAppearanceConfiguration()
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
     
     /// The delegate of the component.
     public weak var delegate: ActionComponentDelegate?
 
-    /// `RedirectComponent` style
-    public let redirectComponentStyle: RedirectComponentStyle?
+    /// Delegates `PresentableComponent`'s presentation.  This property must be set if you wish to use delegated authentication.
+    public weak var presentationDelegate: PresentationDelegate? {
+        didSet {
+            threeDS2ClassicFlowHandler.presentationDelegate = presentationDelegate
+            threeDS2CompactFlowHandler.presentationDelegate = presentationDelegate
+        }
+    }
+    
+    /// Three DS2 component configurations.
+    public var configuration: Configuration {
+        didSet {
+            updateConfiguration()
+        }
+    }
+    
+    /// Three DS2 component configurations.
+    public struct Configuration {
+        
+        /// ``RedirectComponent`` style
+        public var redirectComponentStyle: RedirectComponentStyle?
+        
+        /// The appearance configuration of the 3D Secure 2 challenge UI.
+        public var appearanceConfiguration = ADYAppearanceConfiguration()
+        
+        /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
+        public var requestorAppURL: URL?
+        
+        /// The configuration for Delegated Authentication.
+        public let delegateAuthentication: DelegatedAuthentication?
+        
+        /// The configuration for Delegated Authentication.
+        public struct DelegatedAuthentication {
+            // The relying party identifier that is used for PassKeys.
+            // See: https://developer.apple.com/documentation/xcode/supporting-associated-domains
+            // See: https://developer.apple.com/documentation/authenticationservices/public-private_key_authentication/supporting_passkeys
+            public let relyingPartyIdentifier: String
 
-    /// Delegates `PresentableComponent`'s presentation.
-    public weak var presentationDelegate: PresentationDelegate?
+            /// The configuration for Delegated Authentication Component style
+            public let delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle
+
+            /// The localization parameters, leave it nil to use the default parameters.
+            public let localizationParameters: LocalizationParameters?
+
+            /// Initializes a new instance.
+            ///
+            /// - Parameter relyingPartyIdentifier: The relying party identifier that is used for PassKeys
+            /// - Parameter delegatedAuthenticationComponentStyle: The delegated authentication component style.
+            /// - Parameter localizationParameters: The localization parameters, leave it nil to use the default parameters.
+            public init(
+                relyingPartyIdentifier: String,
+                delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle = .init(),
+                localizationParameters: LocalizationParameters? = nil
+            ) {
+                self.relyingPartyIdentifier = relyingPartyIdentifier
+                self.delegatedAuthenticationComponentStyle = delegatedAuthenticationComponentStyle
+                self.localizationParameters = localizationParameters
+            }
+        }
+        
+        /// Initializes a new instance
+        ///
+        /// - Parameters:
+        ///   - redirectComponentStyle: `RedirectComponent` style
+        ///   - appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
+        ///   - requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
+        ///   - delegateAuthentication: The configuration for delegate authentication
+        public init(
+            redirectComponentStyle: RedirectComponentStyle? = nil,
+            appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
+            requestorAppURL: URL? = nil,
+            delegateAuthentication: DelegatedAuthentication? = nil
+        ) {
+            self.redirectComponentStyle = redirectComponentStyle
+            self.appearanceConfiguration = appearanceConfiguration
+            self.requestorAppURL = requestorAppURL
+            self.delegateAuthentication = delegateAuthentication
+        }
+    }
     
     /// Initializes the 3D Secure 2 component.
     ///
-    /// - Parameter redirectComponentStyle: `RedirectComponent` style
-    public init(apiContext: APIContext,
-                redirectComponentStyle: RedirectComponentStyle? = nil) {
-        self.apiContext = apiContext
-        self.redirectComponentStyle = redirectComponentStyle
-    }
+    /// - Parameter context: The context object for this component.
+    /// - Parameter configuration: The component's configuration.
+    public init(
+        context: AdyenContext,
+        configuration: Configuration = Configuration()
+    ) {
+        self.context = context
+        self.configuration = configuration
 
+        self.updateConfiguration()
+    }
+    
     /// Initializes the 3D Secure 2 component.
     ///
-    /// - Parameter threeDS2CompactFlowHandler: The internal `AnyThreeDS2ActionHandler` for the compact flow.
-    /// - Parameter threeDS2ClassicFlowHandler: The internal `AnyThreeDS2ActionHandler` for the classic flow.
-    /// - Parameter redirectComponent: The redirect component.
-    /// - Parameter redirectComponentStyle: `RedirectComponent` style.
-    /// :nodoc:
-    internal convenience init(apiContext: APIContext,
-                              threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
-                              threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
-                              redirectComponent: AnyRedirectComponent,
-                              redirectComponentStyle: RedirectComponentStyle? = nil) {
-        self.init(apiContext: redirectComponent.apiContext, redirectComponentStyle: redirectComponentStyle)
+    /// - Parameters:
+    ///   - context: The  Adyen context.
+    ///   - threeDS2CompactFlowHandler: The internal `AnyThreeDS2ActionHandler` for the compact flow.
+    ///   - threeDS2ClassicFlowHandler: The internal `AnyThreeDS2ActionHandler` for the classic flow.
+    ///   - redirectComponent: The redirect component.
+    ///   - redirectComponentStyle: `RedirectComponent` style.
+    internal convenience init(
+        context: AdyenContext,
+        threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
+        threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
+        redirectComponent: AnyRedirectComponent,
+        configuration: Configuration = Configuration()
+    ) {
+        self.init(
+            context: context,
+            configuration: configuration
+        )
         self.threeDS2CompactFlowHandler = threeDS2CompactFlowHandler
         self.threeDS2ClassicFlowHandler = threeDS2ClassicFlowHandler
         self.redirectComponent = redirectComponent
+        self.updateConfiguration()
+    }
+    
+    private func updateConfiguration() {
+        let threeDSRequestorAppURL = configuration.requestorAppURL
+        threeDS2ClassicFlowHandler.threeDSRequestorAppURL = threeDSRequestorAppURL
+        threeDS2CompactFlowHandler.threeDSRequestorAppURL = threeDSRequestorAppURL
     }
 
     // MARK: - 3D Secure 2 action
@@ -137,24 +226,36 @@ public final class ThreeDS2Component: ActionComponent {
         delegate?.didFail(with: error, from: self)
     }
 
-    private lazy var threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler = {
-        let handler = ThreeDS2CompactActionHandler(apiContext: apiContext, appearanceConfiguration: appearanceConfiguration)
-
+    internal lazy var threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler = {
+        let handler = ThreeDS2CompactActionHandler(
+            context: context,
+            service: ThreeDSServiceProvider(),
+            appearanceConfiguration: configuration.appearanceConfiguration,
+            delegatedAuthenticationConfiguration: configuration.delegateAuthentication
+        )
+        handler.presentationDelegate = presentationDelegate
         handler._isDropIn = _isDropIn
+        handler.threeDSRequestorAppURL = configuration.requestorAppURL
 
         return handler
     }()
 
-    private lazy var threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler = {
-        let handler = ThreeDS2ClassicActionHandler(apiContext: apiContext, appearanceConfiguration: appearanceConfiguration)
-
+    internal lazy var threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler = {
+        let handler = ThreeDS2ClassicActionHandler(
+            context: context,
+            service: ThreeDSServiceProvider(),
+            appearanceConfiguration: configuration.appearanceConfiguration,
+            delegatedAuthenticationConfiguration: configuration.delegateAuthentication
+        )
+        handler.presentationDelegate = presentationDelegate
         handler._isDropIn = _isDropIn
-
+        handler.threeDSRequestorAppURL = configuration.requestorAppURL
         return handler
     }()
 
     private lazy var redirectComponent: AnyRedirectComponent = {
-        let component = RedirectComponent(apiContext: apiContext, style: redirectComponentStyle)
+        let component = RedirectComponent(context: context)
+        component.configuration.style = configuration.redirectComponentStyle
 
         component.delegate = self
         component._isDropIn = _isDropIn
@@ -164,10 +265,11 @@ public final class ThreeDS2Component: ActionComponent {
     }()
 }
 
+// This is for the RedirectComponent inside the ThreeDS2Component
 extension ThreeDS2Component: ActionComponentDelegate {
 
-    public func didOpenExternalApplication(_ component: ActionComponent) {
-        delegate?.didOpenExternalApplication(self)
+    public func didOpenExternalApplication(component: ActionComponent) {
+        delegate?.didOpenExternalApplication(component: self)
     }
 
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {

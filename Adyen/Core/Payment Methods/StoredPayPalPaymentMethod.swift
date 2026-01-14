@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,32 +9,24 @@ import Foundation
 /// A stored PayPal account.
 public struct StoredPayPalPaymentMethod: StoredPaymentMethod {
     
-    /// :nodoc:
-    public let type: String
-    
-    /// :nodoc:
-    public let identifier: String
-    
-    /// :nodoc:
+    public let type: PaymentMethodType
+
     public let name: String
     
-    /// :nodoc:
-    public let supportedShopperInteractions: [ShopperInteraction]
-    
-    /// :nodoc:
-    public var displayInformation: DisplayInformation {
-        DisplayInformation(title: name, subtitle: emailAddress, logoName: type)
-    }
+    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
-    /// :nodoc:
-    public func localizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name, subtitle: emailAddress, logoName: type)
+    public let identifier: String
+
+    public let supportedShopperInteractions: [ShopperInteraction]
+
+    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        DisplayInformation(title: name, subtitle: emailAddress, logoName: type.rawValue)
     }
     
     /// The email address of the PayPal account.
     public let emailAddress: String
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }

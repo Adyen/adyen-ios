@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -29,10 +29,22 @@ internal struct PaymentsRequest: APIRequest {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         let currentConfiguration = ConfigurationConstants.current
+
+        // Important: for the demo purpose we are setting amount here.
+        // If you choose not to provide the amount to the payment component - it could be specified by your backend.
         let amount = data.amount ?? currentConfiguration.amount
+        
+        // If there is an order in the request, amount is optional
+        if data.order == nil {
+            try container.encode(amount, forKey: .amount)
+        }
         
         try container.encode(data.paymentMethod.encodable, forKey: .details)
         try container.encode(data.storePaymentMethod, forKey: .storePaymentMethod)
+        try container.encodeIfPresent(
+            data.delegatedAuthenticationData,
+            forKey: .delegatedAuthenticationData
+        )
         try container.encodeIfPresent(data.shopperName, forKey: .shopperName)
         try container.encodeIfPresent(data.emailAddress ?? ConfigurationConstants.shopperEmail, forKey: .shopperEmail)
         try container.encodeIfPresent(data.telephoneNumber, forKey: .telephoneNumber)
@@ -42,15 +54,42 @@ internal struct PaymentsRequest: APIRequest {
         try container.encode(Locale.current.identifier, forKey: .shopperLocale)
         try container.encodeIfPresent(data.browserInfo, forKey: .browserInfo)
         try container.encode("iOS", forKey: .channel)
-        try container.encode(amount, forKey: .amount)
         try container.encode(ConfigurationConstants.reference, forKey: .reference)
         try container.encode(currentConfiguration.countryCode, forKey: .countryCode)
-        try container.encode(ConfigurationConstants.returnUrl, forKey: .returnUrl)
+        try container.encode(ConfigurationConstants.returnUrl.absoluteString, forKey: .returnUrl)
         try container.encode(ConfigurationConstants.shopperReference, forKey: .shopperReference)
-        try container.encode(ConfigurationConstants.additionalData, forKey: .additionalData)
+        let configuration: AdditionalData.AuthenticationConfiguration = currentConfiguration.threeDSConfigurationSettings.allowForceCardRedirectAction ? .cardRedirectAction : .nativeThreeDSAction
+        try container.encode(
+            AdditionalData(configuration: configuration),
+            forKey: .additionalData
+        )
         try container.encode(currentConfiguration.merchantAccount, forKey: .merchantAccount)
         try container.encodeIfPresent(data.order?.compactOrder, forKey: .order)
         try container.encodeIfPresent(data.installments, forKey: .installments)
+        try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
+        try container.encode(ConfigurationConstants.recurringProcessingModel, forKey: .recurringProcessingModel)
+        try container.encode(ConfigurationConstants.mandate, forKey: .mandate)
+    }
+    
+    private struct AdditionalData: Encodable {
+        let allow3DS2: Bool?
+        let executeThreeD: Bool
+        
+        enum AuthenticationConfiguration {
+            case nativeThreeDSAction
+            case cardRedirectAction
+        }
+        
+        init(configuration: AuthenticationConfiguration) {
+            switch configuration {
+            case .cardRedirectAction:
+                self.allow3DS2 = nil
+                self.executeThreeD = true
+            case .nativeThreeDSAction:
+                self.allow3DS2 = true
+                self.executeThreeD = true
+            }
+        }
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -74,31 +113,71 @@ internal struct PaymentsRequest: APIRequest {
         case socialSecurityNumber
         case order
         case installments
+        case lineItems
+        case delegatedAuthenticationData
+        case recurringProcessingModel
+        case mandate
     }
     
 }
 
 internal struct PaymentsResponse: Response {
+
+    internal static var received: PaymentsResponse = .init()
     
     internal let resultCode: ResultCode
     
     internal let action: Action?
 
     internal let order: PartialPaymentOrder?
+
+    internal let refusalReason: String?
+
+    internal let refusalReasonCode: String?
+
+    internal let amount: Amount?
     
     internal init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.resultCode = try container.decode(ResultCode.self, forKey: .resultCode)
         self.action = try container.decodeIfPresent(Action.self, forKey: .action)
         self.order = try container.decodeIfPresent(PartialPaymentOrder.self, forKey: .order)
+        self.refusalReasonCode = try container.decodeIfPresent(String.self, forKey: .refusalReasonCode)
+        self.amount = try container.decodeIfPresent(Amount.self, forKey: .amount)
+        if let additionalData = try? container.nestedContainer(keyedBy: CodingKeys.self, forKey: .additionalData) {
+            self.refusalReason = try additionalData.decodeIfPresent(String.self, forKey: .refusalReason)
+        } else {
+            self.refusalReason = nil
+        }
+    }
+
+    private init() {
+        resultCode = .received
+        action = nil
+        order = nil
+        amount = nil
+        refusalReasonCode = nil
+        refusalReason = nil
     }
     
     private enum CodingKeys: String, CodingKey {
         case resultCode
         case action
         case order
+        case refusalReason = "refusalReasonRaw"
+        case refusalReasonCode
+        case additionalData
+        case amount
     }
     
+    internal var isAccepted: Bool {
+        switch resultCode {
+        case .authorised, .received, .pending:
+            return true
+        case .refused, .cancelled, .error, .redirectShopper, .identifyShopper, .challengeShopper, .presentToShopper:
+            return false
+        }
+    }
 }
 
 internal extension PaymentsResponse {

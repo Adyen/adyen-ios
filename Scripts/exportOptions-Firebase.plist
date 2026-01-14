@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>method</key>
+    <string>enterprise</string>
+    <key>signingStyle</key>
+    <string>manual</string>
+    <key>teamID</key>
+    <string>8GDUWCHDXJ</string>
+    <key>teamName</key>
+    <string>Adyen B.V.</string>
+    <key>signingCertificate</key>
+	  <string>iPhone Distribution: Adyen B.V.</string>
+    <key>provisioningProfiles</key>
+    <dict>
+      <key>com.adyen.enterprise.checkout.demo.uikit</key>
+      <string>CheckoutDemoUIKit - Firebase Distribution Profile</string>
+    </dict>
+</dict>
+</plist>

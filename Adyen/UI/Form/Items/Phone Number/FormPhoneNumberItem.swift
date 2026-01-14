@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,7 @@
 import Foundation
 
 /// Describes a phone number entry form item.
-/// :nodoc:
+@_spi(AdyenInternal)
 public final class FormPhoneNumberItem: FormTextItem {
     
     /// The phone prefix picker item.
@@ -15,7 +15,7 @@ public final class FormPhoneNumberItem: FormTextItem {
     
     /// The phone prefix value.
     public var prefix: String {
-        phonePrefixItem.value.element.value
+        phonePrefixItem.value?.value ?? ""
     }
     
     public var phoneNumber: String {
@@ -27,12 +27,25 @@ public final class FormPhoneNumberItem: FormTextItem {
     /// - Parameter selectableValues: The list of values to select from.
     /// - Parameter style: The `FormTextItemStyle` UI style.
     /// - Parameter localizationParameters: Parameters for custom localization, leave it nil to use the default parameters.
-    public init(selectableValues: [PhoneExtensionPickerItem],
-                style: FormTextItemStyle,
-                localizationParameters: LocalizationParameters? = nil) {
-        phonePrefixItem = FormPhoneExtensionPickerItem(selectableValues: selectableValues, style: style)
+    public init(
+        phoneNumber: PhoneNumber?,
+        selectableValues: [PhoneExtension],
+        style: FormTextItemStyle,
+        localizationParameters: LocalizationParameters? = nil,
+        presenter: WeakReferenceViewControllerPresenter
+    ) {
+        phonePrefixItem = .init(
+            preselectedExtension: selectableValues.preselectedPhoneNumberPrefix(for: phoneNumber),
+            selectableExtensions: selectableValues,
+            validationFailureMessage: nil,
+            style: style,
+            presenter: presenter
+        )
+        
         super.init(style: style)
+        
         phonePrefixItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "phoneExtensionPickerItem")
+        value = phoneNumber?.value ?? ""
 
         title = localizedString(.phoneNumberTitle, localizationParameters)
         placeholder = localizedString(.phoneNumberPlaceholder, localizationParameters)
@@ -42,9 +55,28 @@ public final class FormPhoneNumberItem: FormTextItem {
         keyboardType = .numberPad
     }
     
-    /// :nodoc:
     override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
+}
+
+private extension [PhoneExtension] {
     
+    func preselectedPhoneNumberPrefix(for phoneNumber: PhoneNumber?) -> PhoneExtension {
+        
+        if let matchingCallingCode = first(where: { $0.value == phoneNumber?.callingCode }) {
+            return matchingCallingCode
+        }
+        
+        if let matchingLocaleRegion = first(where: { $0.countryCode == Locale.current.regionCode }) {
+            return matchingLocaleRegion
+        }
+        
+        if let firstSelectableValue = first {
+            return firstSelectableValue
+        }
+        
+        AdyenAssertion.assertionFailure(message: "Empty list of selectableValues provided")
+        return .init(value: "+1", countryCode: "US")
+    }
 }

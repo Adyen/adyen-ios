@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 /// /// Contains the styling customization options for various Action Components.
@@ -24,7 +24,7 @@ public struct ActionComponentStyle {
     
     /// Indicates the UI configuration of the document action component.
     public var documentActionComponentStyle: DocumentComponentStyle
-    
+
     /// Initializes the
     /// - Parameters:
     ///   - redirectComponentStyle: The UI configuration of the redirect component.

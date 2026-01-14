@@ -1,17 +1,20 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
 import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.
-public final class ACHDirectDebitComponent: PaymentComponent, PresentableComponent, Localizable, LoadingComponent, PublicKeyConsumer {
+public final class ACHDirectDebitComponent: PaymentComponent,
+    PaymentAware,
+    PresentableComponent,
+    LoadingComponent {
     
     private enum ViewIdentifier {
         static let headerItem = "headerItem"
@@ -19,42 +22,40 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         static let bankAccountNumberItem = "bankAccountNumberItem"
         static let bankRoutingNumberItem = "bankRoutingNumberItem"
         static let billingAddressItem = "billingAddressItem"
+        static let storeDetailsItem = "storeDetailsItem"
         static let payButtonItem = "payButtonItem"
     }
     
-    /// :nodoc:
-    public let apiContext: APIContext
+    /// The context object for this component.
+    @_spi(AdyenInternal)
+    public let context: AdyenContext
     
-    /// :nodoc:
     public var paymentMethod: PaymentMethod {
         achDirectDebitPaymentMethod
     }
 
-    /// :nodoc:
-    public weak var delegate: PaymentComponentDelegate?
+    public weak var delegate: PaymentComponentDelegate? {
+        didSet {
+            if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
+               storePaymentMethodAware.isSession {
+                configuration.showsStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
+            }
+        }
+    }
     
     /// Component configuration
-    public let configuration: Configuration
+    public var configuration: Configuration
 
-    /// :nodoc:
-    public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
+    public lazy var viewController: UIViewController = SecuredViewController(
+        child: formViewController,
+        style: configuration.style
+    )
 
-    /// :nodoc:
-    public var localizationParameters: LocalizationParameters?
-
-    /// Describes the component's UI style.
-    public let style: FormComponentStyle
-
-    /// :nodoc:
     public let requiresModalPresentation: Bool = true
-
-    /// :nodoc:
-    public let shopperInformation: PrefilledShopperInformation?
     
-    /// :nodoc:
+    @_spi(AdyenInternal)
     public let publicKeyProvider: AnyPublicKeyProvider
     
-    /// :nodoc:
     private var defaultCountryCode: String {
         payment?.countryCode ?? configuration.billingAddressCountryCodes.first ?? "US"
     }
@@ -65,45 +66,35 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     
     /// Initializes the ACH Direct Debit component.
     /// - Parameters:
-    ///   - configuration: Configuration for the component.
     ///   - paymentMethod: The ACH Direct Debit payment method.
-    ///   - apiContext: The component's API context.
-    ///   - shopperInformation: The shopper's information.
-    ///   - localizationParameters: The localization parameters.
-    ///   - style: The component's style.
-    public convenience init(configuration: Configuration,
-                            paymentMethod: ACHDirectDebitPaymentMethod,
-                            apiContext: APIContext,
-                            shopperInformation: PrefilledShopperInformation? = nil,
-                            localizationParameters: LocalizationParameters? = nil,
-                            style: FormComponentStyle) {
-        self.init(configuration: configuration,
-                  paymentMethod: paymentMethod,
-                  apiContext: apiContext,
-                  publicKeyProvider: PublicKeyProvider(apiContext: apiContext),
-                  shopperInformation: shopperInformation,
-                  localizationParameters: localizationParameters,
-                  style: style)
+    ///   - context: The context object for this component.
+    ///   - configuration: Configuration for the component.
+    public convenience init(
+        paymentMethod: ACHDirectDebitPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init()
+    ) {
+        self.init(
+            paymentMethod: paymentMethod,
+            context: context,
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext)
+        )
     }
     
-    /// :nodoc:
-    internal init(configuration: Configuration,
-                  paymentMethod: ACHDirectDebitPaymentMethod,
-                  apiContext: APIContext,
-                  publicKeyProvider: AnyPublicKeyProvider,
-                  shopperInformation: PrefilledShopperInformation? = nil,
-                  localizationParameters: LocalizationParameters? = nil,
-                  style: FormComponentStyle) {
+    internal init(
+        paymentMethod: ACHDirectDebitPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init(),
+        publicKeyProvider: AnyPublicKeyProvider
+    ) {
         self.configuration = configuration
         self.achDirectDebitPaymentMethod = paymentMethod
-        self.apiContext = apiContext
+        self.context = context
+        self.configuration = configuration
         self.publicKeyProvider = publicKeyProvider
-        self.localizationParameters = localizationParameters
-        self.shopperInformation = shopperInformation
-        self.style = style
     }
     
-    /// :nodoc:
     public func stopLoading() {
         payButton.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
@@ -113,9 +104,9 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
         payButton.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
     }
-    
+
     private func didSelectSubmitButton() {
-        guard formViewController.validate() else { return }
+        guard validate() else { return }
         
         startLoading()
         
@@ -126,160 +117,250 @@ public final class ACHDirectDebitComponent: PaymentComponent, PresentableCompone
     
     private func submitEncryptedData(publicKey: String) {
         do {
-            let encryptedBankAccountNumber = try BankDetailsEncryptor.encrypt(accountNumber: bankAccountNumberItem.value,
-                                                                              with: publicKey)
-            let encryptedBankRoutingNumber = try BankDetailsEncryptor.encrypt(routingNumber: bankRoutingNumberItem.value,
-                                                                              with: publicKey)
+            let encryptedBankAccountNumber = try BankDetailsEncryptor.encrypt(
+                accountNumber: bankAccountNumberItem.value,
+                with: publicKey
+            )
+            let encryptedBankRoutingNumber = try BankDetailsEncryptor.encrypt(
+                routingNumber: bankRoutingNumberItem.value,
+                with: publicKey
+            )
             
-            let details = ACHDirectDebitDetails(paymentMethod: achDirectDebitPaymentMethod,
-                                                holderName: holderNameItem.value,
-                                                encryptedBankAccountNumber: encryptedBankAccountNumber,
-                                                encryptedBankRoutingNumber: encryptedBankRoutingNumber,
-                                                billingAddress: billingAddressItem.value)
+            let details = ACHDirectDebitDetails(
+                paymentMethod: achDirectDebitPaymentMethod,
+                holderName: holderNameItem.value,
+                encryptedBankAccountNumber: encryptedBankAccountNumber,
+                encryptedBankRoutingNumber: encryptedBankRoutingNumber,
+                billingAddress: billingAddressItem.value
+            )
             
-            submit(data: PaymentComponentData(paymentMethodDetails: details, amount: amountToPay, order: order))
+            submit(data: PaymentComponentData(
+                paymentMethodDetails: details,
+                amount: payment?.amount,
+                order: order,
+                storePaymentMethod: storePayment
+            ))
         } catch {
             delegate?.didFail(with: error, from: self)
         }
     }
     
+    private var storePayment: Bool? {
+        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : nil
+    }
+    
     // MARK: - Form Items
     
     internal lazy var headerItem: FormLabelItem = {
-        let item = FormLabelItem(text: localizedString(.achBankAccountTitle, localizationParameters),
-                                 style: style.sectionHeader)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                      postfix: ViewIdentifier.headerItem)
+        let item = FormLabelItem(
+            text: localizedString(.achBankAccountTitle, configuration.localizationParameters),
+            style: configuration.style.sectionHeader
+        )
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.headerItem
+        )
         return item
     }()
     
     internal lazy var holderNameItem: FormTextInputItem = {
-        let textItem = FormTextInputItem(style: style.textField)
+        let textItem = FormTextInputItem(style: configuration.style.textField)
 
-        let localizedTitle = localizedString(.achAccountHolderNameFieldTitle, localizationParameters)
+        let localizedTitle = localizedString(.achAccountHolderNameFieldTitle, configuration.localizationParameters)
         textItem.title = localizedTitle
         textItem.placeholder = localizedTitle
 
         textItem.validator = LengthValidator(minimumLength: 1, maximumLength: 70)
 
-        textItem.validationFailureMessage = localizedString(.achAccountHolderNameFieldInvalid, localizationParameters)
+        textItem.validationFailureMessage = localizedString(.achAccountHolderNameFieldInvalid, configuration.localizationParameters)
 
         textItem.autocapitalizationType = .words
 
-        textItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                          postfix: ViewIdentifier.holderNameItem)
+        textItem.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.holderNameItem
+        )
         return textItem
     }()
     
     internal lazy var bankAccountNumberItem: FormTextInputItem = {
-        let textItem = FormTextInputItem(style: style.textField)
+        let textItem = FormTextInputItem(style: configuration.style.textField)
 
-        let localizedTitle = localizedString(.achAccountNumberFieldTitle, localizationParameters)
+        let localizedTitle = localizedString(.achAccountNumberFieldTitle, configuration.localizationParameters)
         textItem.title = localizedTitle
         textItem.placeholder = localizedTitle
 
         textItem.validator = NumericStringValidator(minimumLength: 4, maximumLength: 17)
         textItem.formatter = NumericFormatter()
 
-        textItem.validationFailureMessage = localizedString(.achAccountNumberFieldInvalid, localizationParameters)
+        textItem.validationFailureMessage = localizedString(.achAccountNumberFieldInvalid, configuration.localizationParameters)
 
         textItem.autocapitalizationType = .none
         textItem.keyboardType = .numberPad
 
-        textItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                          postfix: ViewIdentifier.bankAccountNumberItem)
+        textItem.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.bankAccountNumberItem
+        )
         return textItem
     }()
     
     internal lazy var bankRoutingNumberItem: FormTextInputItem = {
-        let textItem = FormTextInputItem(style: style.textField)
+        let textItem = FormTextInputItem(style: configuration.style.textField)
 
-        let localizedTitle = localizedString(.achAccountLocationFieldTitle, localizationParameters)
+        let localizedTitle = localizedString(.achAccountLocationFieldTitle, configuration.localizationParameters)
         textItem.title = localizedTitle
         textItem.placeholder = localizedTitle
 
         textItem.validator = NumericStringValidator(minimumLength: 9, maximumLength: 9)
         textItem.formatter = NumericFormatter()
 
-        textItem.validationFailureMessage = localizedString(.achAccountLocationFieldInvalid, localizationParameters)
+        textItem.validationFailureMessage = localizedString(.achAccountLocationFieldInvalid, configuration.localizationParameters)
 
         textItem.autocapitalizationType = .none
         textItem.keyboardType = .numberPad
 
-        textItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                          postfix: ViewIdentifier.bankRoutingNumberItem)
+        textItem.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.bankRoutingNumberItem
+        )
         return textItem
     }()
     
-    internal lazy var billingAddressItem: FormAddressItem = {
-        let identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                     postfix: ViewIdentifier.billingAddressItem)
+    internal lazy var storeDetailsItem: FormToggleItem = {
+        let storeDetailsItem = FormToggleItem(style: configuration.style.toggle)
+        storeDetailsItem.title = localizedString(.cardStoreDetailsButton, configuration.localizationParameters)
+        storeDetailsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.storeDetailsItem)
+        
+        return storeDetailsItem
+    }()
+    
+    internal lazy var billingAddressItem: FormAddressPickerItem = {
+        let identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.billingAddressItem
+        )
 
         var initialCountry = defaultCountryCode
-        if let prefillCountryCode = shopperInformation?.billingAddress?.country,
-           configuration.billingAddressCountryCodes.contains(prefillCountryCode) {
+        
+        if
+            let prefillCountryCode = configuration.shopperInformation?.billingAddress?.country,
+            configuration.billingAddressCountryCodes.contains(prefillCountryCode) {
             initialCountry = prefillCountryCode
         }
-        let item = FormAddressItem(initialCountry: initialCountry,
-                                   style: style.addressStyle,
-                                   localizationParameters: localizationParameters,
-                                   identifier: identifier,
-                                   supportedCountryCodes: configuration.billingAddressCountryCodes)
-        shopperInformation?.billingAddress.map { item.value = $0 }
-        item.style.backgroundColor = UIColor.Adyen.lightGray
-        return item
+        
+        let prefillAddress = configuration.shopperInformation?.billingAddress
+        
+        return FormAddressPickerItem(
+            for: .billing,
+            initialCountry: initialCountry,
+            supportedCountryCodes: configuration.billingAddressCountryCodes,
+            prefillAddress: prefillAddress,
+            style: configuration.style,
+            localizationParameters: configuration.localizationParameters,
+            identifier: identifier,
+            presenter: self
+        )
     }()
     
     internal lazy var payButton: FormButtonItem = {
-        let item = FormButtonItem(style: style.mainButtonItem)
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self,
-                                                      postfix: ViewIdentifier.payButtonItem)
-        item.title = localizedString(.confirmPurchase, localizationParameters)
+        let item = FormButtonItem(style: configuration.style.mainButtonItem)
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.payButtonItem
+        )
+        item.title = localizedSubmitButtonTitle(
+            with: payment?.amount,
+            style: .immediate,
+            configuration.localizationParameters
+        )
         item.buttonSelectionHandler = { [weak self] in
             self?.didSelectSubmitButton()
         }
         return item
     }()
+
+    // MARK: - Private
     
     private lazy var formViewController: FormViewController = {
-        let formViewController = FormViewController(style: style)
-        formViewController.localizationParameters = localizationParameters
+        let formViewController = FormViewController(
+            scrollEnabled: configuration.showsSubmitButton,
+            style: configuration.style,
+            localizationParameters: configuration.localizationParameters
+        )
         formViewController.delegate = self
 
-        formViewController.title = paymentMethod.name.uppercased()
+        formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
 
         formViewController.append(FormSpacerItem())
-        formViewController.append(headerItem.addingDefaultMargins())
+        formViewController.append(headerItem.padding())
         formViewController.append(FormSpacerItem())
         formViewController.append(holderNameItem)
         formViewController.append(bankAccountNumberItem)
         formViewController.append(bankRoutingNumberItem)
         formViewController.append(FormSpacerItem())
+        
         if configuration.showsBillingAddress {
             formViewController.append(billingAddressItem)
         }
-        formViewController.append(FormSpacerItem(numberOfSpaces: 2))
-        formViewController.append(payButton)
+        if configuration.showsStorePaymentMethodField {
+            formViewController.append(storeDetailsItem)
+        }
+        
+        if configuration.showsSubmitButton {
+            formViewController.append(FormSpacerItem(numberOfSpaces: 2))
+            formViewController.append(payButton)
+        }
 
         return formViewController
     }()
 }
 
-/// :nodoc:
-extension ACHDirectDebitComponent: TrackableComponent {
-    
-    /// :nodoc:
+@_spi(AdyenInternal)
+extension ACHDirectDebitComponent: TrackableComponent {}
+
+@_spi(AdyenInternal)
+extension ACHDirectDebitComponent: ViewControllerDelegate {
+
     public func viewDidLoad(viewController: UIViewController) {
-        Analytics.sendEvent(component: paymentMethod.type, flavor: _isDropIn ? .dropin : .components, context: apiContext)
+        sendInitialAnalytics()
+        sendDidLoadEvent()
         // just cache the public key value
         fetchCardPublicKey(notifyingDelegateOnFailure: false)
     }
 }
 
+/// Describes any configuration for the ACH Direct Debit component.
+public protocol AnyACHDirectDebitConfiguration {
+    
+    /// Indicates if the field for storing the card payment method should be displayed in the form.
+    var showsStorePaymentMethodField: Bool { get }
+    
+    /// Determines whether the billing address should be displayed or not.
+    var showsBillingAddress: Bool { get }
+    
+    /// List of ISO country codes that is supported for the billing address.
+    var billingAddressCountryCodes: [String] { get }
+}
+
 extension ACHDirectDebitComponent {
     
     /// Configuration for the ACH Direct Debit Component
-    public struct Configuration {
+    public struct Configuration: AnyACHDirectDebitConfiguration, AnyPersonalInformationConfiguration {
+
+        /// Describes the component's UI style.
+        public var style: FormComponentStyle
+
+        /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
+        internal let showsSubmitButton: Bool
+
+        /// The shopper's information to be prefilled.
+        public var shopperInformation: PrefilledShopperInformation?
+        
+        public var localizationParameters: LocalizationParameters?
+        
+        /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to `true`.
+        public var showsStorePaymentMethodField: Bool
         
         /// Determines whether the billing address should be displayed or not.
         /// Defaults to `true`.
@@ -288,17 +369,62 @@ extension ACHDirectDebitComponent {
         /// List of ISO country codes that is supported for the billing address.
         /// Defaults to ["US", "PR"].
         public var billingAddressCountryCodes: [String]
-        
+
         /// Initializes the configuration for ACH Direct Debit Component.
         /// - Parameters:
+        ///   - style: The UI style of the component.
+        ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
+        ///   Defaults to`true`.
+        ///   - shopperInformation: The shopper's information to be prefilled.
+        ///   - localizationParameters: Localization parameters.
         ///   - showsBillingAddress: Determines whether the billing address should be displayed or not.
         ///   Defaults to `true`.
         ///   - billingAddressCountryCodes: ISO country codes that is supported for the billing address.
         ///   Defaults to ["US", "PR"].
-        public init(showsBillingAddress: Bool = true,
-                    billingAddressCountryCodes: [String] = ["US", "PR"]) {
+        public init(
+            style: FormComponentStyle = FormComponentStyle(),
+            showsSubmitButton: Bool = true,
+            shopperInformation: PrefilledShopperInformation? = nil,
+            localizationParameters: LocalizationParameters? = nil,
+            showsStorePaymentMethodField: Bool = true,
+            showsBillingAddress: Bool = true,
+            billingAddressCountryCodes: [String] = ["US", "PR"]
+        ) {
+            self.style = style
+            self.showsSubmitButton = showsSubmitButton
+            self.shopperInformation = shopperInformation
+            self.localizationParameters = localizationParameters
+            self.showsStorePaymentMethodField = showsStorePaymentMethodField
             self.showsBillingAddress = showsBillingAddress
             self.billingAddressCountryCodes = billingAddressCountryCodes
         }
+    }
+}
+
+@_spi(AdyenInternal)
+extension ACHDirectDebitComponent: ViewControllerPresenter {
+    
+    public func presentViewController(_ viewController: UIViewController, animated: Bool) {
+        self.viewController.presentViewController(viewController, animated: animated)
+    }
+    
+    public func dismissViewController(animated: Bool) {
+        self.viewController.dismissViewController(animated: animated)
+    }
+}
+
+@_spi(AdyenInternal)
+extension ACHDirectDebitComponent: PublicKeyConsumer {}
+
+// MARK: - SubmitCustomizable
+
+extension ACHDirectDebitComponent: SubmittableComponent {
+
+    public func submit() {
+        didSelectSubmitButton()
+    }
+
+    public func validate() -> Bool {
+        formViewController.validate()
     }
 }

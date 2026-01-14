@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,8 +16,10 @@ extension AnyEncryptor {
         guard tokens.count == 2 else { throw EncryptionError.invalidKey }
         let secKey = try createSecKey(fromModulus: tokens[1], exponent: tokens[0])
         return try JSONWebEncryptionGenerator()
-            .generate(withPayload: payload.jsonData(),
-                      publicRSAKey: secKey,
-                      header: .defaultHeader).compactRepresentation
+            .generate(
+                withPayload: payload.jsonData(),
+                publicRSAKey: secKey,
+                header: .defaultHeader
+            ).compactRepresentation
     }
 }

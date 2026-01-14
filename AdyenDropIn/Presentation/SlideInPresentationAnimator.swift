@@ -1,10 +1,10 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 /// Animate sequential slid in and out movement for transitioning controllers.
@@ -37,23 +37,29 @@ internal final class SlideInPresentationAnimator: NSObject, UIViewControllerAnim
         toShow.view.frame.origin.y = containerView.bounds.height
         toShow.updateFrame(keyboardRect: .zero)
 
-        let context = KeyFrameAnimationContext(animationKey: Animation.dropinTransitionPresentation.rawValue,
-                                               duration: duration,
-                                               delay: 0.0,
-                                               options: [.beginFromCurrentState],
-                                               animations: {
-                                                   UIView.addKeyframe(withRelativeStartTime: 0.0,
-                                                                      relativeDuration: hideDistance / distance) {
-                                                       toHide.view.frame.origin.y = containerView.bounds.height
-                                                   }
-                                                   UIView.addKeyframe(withRelativeStartTime: hideDistance / distance,
-                                                                      relativeDuration: showDistance / distance) {
-                                                       toShow.view.frame.origin.y = containerView.frame.origin.y
-                                                   }
-                                               },
-                                               completion: { finished in
-                                                   transitionContext.completeTransition(finished)
-                                               })
+        let context = KeyFrameAnimationContext(
+            animationKey: Animation.dropinTransitionPresentation.rawValue,
+            duration: duration,
+            delay: 0.0,
+            options: [.beginFromCurrentState],
+            animations: {
+                UIView.addKeyframe(
+                    withRelativeStartTime: 0.0,
+                    relativeDuration: hideDistance / distance
+                ) {
+                    toHide.view.frame.origin.y = containerView.bounds.height
+                }
+                UIView.addKeyframe(
+                    withRelativeStartTime: hideDistance / distance,
+                    relativeDuration: showDistance / distance
+                ) {
+                    toShow.view.frame.origin.y = containerView.frame.origin.y
+                }
+            },
+            completion: { finished in
+                transitionContext.completeTransition(finished)
+            }
+        )
         containerView.adyen.animate(context: context)
     }
 }

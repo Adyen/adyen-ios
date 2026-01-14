@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,7 +11,7 @@ public enum Action: Decodable {
     
     /// Indicates the user should be redirected to a URL.
     case redirect(RedirectAction)
-    
+
     /// Indicates the user should be redirected to an SDK.
     case sdk(SDKAction)
     
@@ -26,7 +26,10 @@ public enum Action: Decodable {
     case threeDS2(ThreeDS2Action)
     
     /// Indicate that the SDK should wait for user action.
-    case await(AwaitAction)
+    case await (AwaitAction)
+
+    /// Indicate that the SDK should wait for user action while redirecting.
+    case redirectableAwait(RedirectableAwaitAction)
 
     /// Indicates that a voucher is presented to the shopper.
     case voucher(VoucherAction)
@@ -39,24 +42,23 @@ public enum Action: Decodable {
     
     // MARK: - Coding
     
-    /// :nodoc:
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(ActionType.self, forKey: .type)
         
         switch type {
-        case .redirect:
-            self = .redirect(try RedirectAction(from: decoder))
+        case .redirect, .nativeRedirect:
+            self = try .redirect(RedirectAction(from: decoder))
         case .threeDS2Fingerprint:
-            self = .threeDS2Fingerprint(try ThreeDS2FingerprintAction(from: decoder))
+            self = try .threeDS2Fingerprint(ThreeDS2FingerprintAction(from: decoder))
         case .threeDS2Challenge:
-            self = .threeDS2Challenge(try ThreeDS2ChallengeAction(from: decoder))
+            self = try .threeDS2Challenge(ThreeDS2ChallengeAction(from: decoder))
         case .threeDS2:
-            self = .threeDS2(try ThreeDS2Action(from: decoder))
+            self = try .threeDS2(ThreeDS2Action(from: decoder))
         case .sdk:
-            self = .sdk(try SDKAction(from: decoder))
+            self = try .sdk(SDKAction(from: decoder))
         case .await:
-            self = .await(try AwaitAction(from: decoder))
+            self = try Self.handleAwaitType(from: decoder)
         case .voucher:
             self = try Self.handleVoucherType(from: decoder)
         case .qrCode:
@@ -64,13 +66,12 @@ public enum Action: Decodable {
         }
     }
     
-    /// :nodoc:
     private static func handleQRCodeType(from decoder: Decoder) throws -> Action {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         if (try? container.decode(QRCodePaymentMethod.self, forKey: .paymentMethodType)) != nil {
-            return .qrCode(try QRCodeAction(from: decoder))
+            return try .qrCode(QRCodeAction(from: decoder))
         } else {
-            return .redirect(try RedirectAction(from: decoder))
+            return try .redirect(RedirectAction(from: decoder))
         }
     }
     
@@ -78,14 +79,24 @@ public enum Action: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         // extract bacs from others since it is not fully a voucher
         if (try? container.decode(String.self, forKey: .paymentMethodType)) == Constant.bacsDirectDebitName {
-            return .document(try DocumentAction(from: decoder))
+            return try .document(DocumentAction(from: decoder))
         } else {
-            return .voucher(try VoucherAction(from: decoder))
+            return try .voucher(VoucherAction(from: decoder))
         }
     }
-    
+
+    private static func handleAwaitType(from decoder: Decoder) throws -> Action {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        if (try? container.decode(URL.self, forKey: .redirectUrl)) != nil {
+            return try .redirectableAwait(RedirectableAwaitAction(from: decoder))
+        } else {
+            return try .await(AwaitAction(from: decoder))
+        }
+    }
+
     private enum ActionType: String, Decodable {
         case redirect
+        case nativeRedirect
         case threeDS2Fingerprint
         case threeDS2Challenge
         case threeDS2
@@ -98,6 +109,7 @@ public enum Action: Decodable {
     private enum CodingKeys: String, CodingKey {
         case type
         case paymentMethodType
+        case redirectUrl = "url"
     }
     
     private enum Constant {

@@ -1,16 +1,15 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
 
 internal final class AwaitView: UIView {
     
-    /// :nodoc:
     internal lazy var icon: UIImageView = {
         var image = UIImage(named: viewModel.icon)
         if image == nil {
@@ -24,7 +23,6 @@ internal final class AwaitView: UIView {
         return imageView
     }()
     
-    /// :nodoc:
     internal lazy var messageLabel: UILabel = {
         let label = UILabel(style: style.message)
         label.text = viewModel.message
@@ -35,7 +33,6 @@ internal final class AwaitView: UIView {
         return label
     }()
     
-    /// :nodoc:
     internal lazy var spinnerView: UIView = {
         let stackView = UIStackView(arrangedSubviews: [activityIndicatorView, spinnerTitleLabel])
         stackView.axis = .horizontal
@@ -48,7 +45,6 @@ internal final class AwaitView: UIView {
         return stackView
     }()
     
-    /// :nodoc:
     internal lazy var activityIndicatorView: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView(style: .gray)
         activityIndicatorView.color = style.spinnerTitle.color
@@ -60,7 +56,6 @@ internal final class AwaitView: UIView {
         return activityIndicatorView
     }()
     
-    /// :nodoc:
     internal lazy var spinnerTitleLabel: UILabel = {
         let label = UILabel(style: style.spinnerTitle)
         label.text = viewModel.spinnerTitle
@@ -80,8 +75,10 @@ internal final class AwaitView: UIView {
     ///
     /// - Parameter viewModel: The view model.
     /// - Parameter style: The UI style.
-    internal init(viewModel: AwaitComponentViewModel,
-                  style: AwaitComponentStyle = AwaitComponentStyle()) {
+    internal init(
+        viewModel: AwaitComponentViewModel,
+        style: AwaitComponentStyle = AwaitComponentStyle()
+    ) {
         self.viewModel = viewModel
         self.style = style
         super.init(frame: .zero)
@@ -97,7 +94,6 @@ internal final class AwaitView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /// :nodoc:
     private func configureConstraints() {
         let constraints = [
             icon.topAnchor.constraint(equalTo: topAnchor, constant: 16),

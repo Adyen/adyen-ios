@@ -1,20 +1,27 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 /// Contains the details supplied by the issuer list component.
 public struct IssuerListDetails: PaymentMethodDetails {
     
+    @_spi(AdyenInternal)
+    public var checkoutAttemptId: String?
+    
     /// The payment method type.
-    public let type: String
+    public let type: PaymentMethodType
     
     /// The selected issuer.
     public let issuer: String
+    
+    /// An encoded string containing important SDK-specific data.
+    /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
+    public var sdkData: String?
     
     /// Initializes the Issuer List details.
     ///
@@ -27,9 +34,6 @@ public struct IssuerListDetails: PaymentMethodDetails {
     }
     
 }
-
-/// Contains the details supplied by the IDEAL component.
-public typealias IdealDetails = IssuerListDetails
 
 /// Contains the details supplied by the MOLPay component.
 public typealias MOLPayDetails = IssuerListDetails
@@ -45,3 +49,6 @@ public typealias EntercashDetails = IssuerListDetails
 
 /// Contains the details supplied by the OpenBanking component.
 public typealias OpenBankingDetails = IssuerListDetails
+
+/// Contains the details supplied by the Online Banking Poland component.
+public typealias OnlineBankingPolandDetails = IssuerListDetails

@@ -1,17 +1,24 @@
 //
-// Copyright (c) 2021 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import UIKit
 
 /// Contains the styling customization options for the QR code component.
 public struct QRCodeComponentStyle: ViewStyle {
     
     /// The copy button style.
-    public var copyButton = ButtonStyle(
+    public var copyCodeButton = ButtonStyle(
+        title: TextStyle(font: .preferredFont(forTextStyle: .headline), color: .white),
+        cornerRadius: 8,
+        background: UIColor.Adyen.defaultBlue
+    )
+
+    /// The save as image button style.
+    public var saveAsImageButton = ButtonStyle(
         title: TextStyle(font: .preferredFont(forTextStyle: .headline), color: .white),
         cornerRadius: 8,
         background: UIColor.Adyen.defaultBlue
@@ -20,6 +27,12 @@ public struct QRCodeComponentStyle: ViewStyle {
     /// The instruction label style.
     public var instructionLabel = TextStyle(font: .preferredFont(forTextStyle: .subheadline), color: UIColor.Adyen.componentLabel)
     
+    /// The amount to pay label style.
+    public var amountToPayLabel = TextStyle(
+        font: .preferredFont(forTextStyle: .callout).adyen.font(with: .bold),
+        color: UIColor.Adyen.componentLabel
+    )
+
     /// The progress view style.
     public var progressView = ProgressViewStyle(
         progressTintColor: UIColor.Adyen.defaultBlue,
@@ -32,7 +45,6 @@ public struct QRCodeComponentStyle: ViewStyle {
     /// The corner rounding for the logo
     public var logoCornerRounding: CornerRounding = .fixed(5)
         
-    /// :nodoc:
     public var backgroundColor = UIColor.Adyen.componentBackground
     
     /// Initializes the QR code component style with the default style

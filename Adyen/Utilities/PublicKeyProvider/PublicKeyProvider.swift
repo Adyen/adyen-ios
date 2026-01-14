@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2022 Adyen N.V.
+// Copyright (c) Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,51 +7,60 @@
 import AdyenNetworking
 import Foundation
 
-/// :nodoc:
 /// Interface to fetch the client public key.
+@_spi(AdyenInternal)
 public protocol AnyPublicKeyProvider: AnyObject {
     
-    /// :nodoc:
     typealias CompletionHandler = (Result<String, Error>) -> Void
     
-    /// :nodoc:
     /// Fetches the client public key with a closure for success and failure.
     func fetch(completion: @escaping CompletionHandler)
 }
 
-/// :nodoc:
 /// `PublicKeyProvider` is used to fetch the client public key that is needed for encrypting data.
+@_spi(AdyenInternal)
 public final class PublicKeyProvider: AnyPublicKeyProvider {
 
     private let request: ClientKeyRequest
 
     private let retryApiClient: AnyRetryAPIClient
     
-    internal static var cachedPublicKey: String?
+    internal static var publicKeysCache = [String: String]()
     
-    /// :nodoc:
+    private var cachedPublicKey: String? {
+        get {
+            Self.publicKeysCache[request.clientKey]
+        }
+        
+        set {
+            Self.publicKeysCache[request.clientKey] = newValue
+        }
+    }
+    
     public convenience init(apiContext: APIContext) {
         let scheduler = SimpleScheduler(maximumCount: 2)
-        self.init(apiClient: APIClient(apiContext: apiContext).retryAPIClient(with: scheduler),
-                  request: ClientKeyRequest(clientKey: apiContext.clientKey))
+        self.init(
+            apiClient: APIClient(apiContext: apiContext).retryAPIClient(with: scheduler),
+            request: ClientKeyRequest(clientKey: apiContext.clientKey)
+        )
     }
 
-    /// :nodoc:
     /// For testing only
     internal init(apiClient: AnyRetryAPIClient, request: ClientKeyRequest) {
         self.retryApiClient = apiClient
         self.request = request
     }
     
-    /// :nodoc:
     public func fetch(completion: @escaping CompletionHandler) {
-        if let publicKey = Self.cachedPublicKey {
+        if let publicKey = cachedPublicKey {
             completion(.success(publicKey))
             return
         }
         
         apiClient.perform(request, completionHandler: { [weak self] result in
-            self?.handle(result, completion: completion)
+            DispatchQueue.main.async {
+                self?.handle(result, completion: completion)
+            }
         })
     }
     
@@ -65,10 +74,22 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
     private func handle(_ result: Result<ClientKeyResponse, Swift.Error>, completion: @escaping CompletionHandler) {
         switch result {
         case let .success(response):
-            Self.cachedPublicKey = response.cardPublicKey
+            cachedPublicKey = response.cardPublicKey
             completion(.success(response.cardPublicKey))
         case let .failure(error):
+            if error is DecodingError {
+                // Disclaimer: This error check is not 100% reliable. Need to improve the endpoint.
+                return completion(.failure(Error.invalidClientKey))
+            }
             completion(.failure(error))
+        }
+    }
+
+    public enum Error: Swift.Error, LocalizedError {
+        case invalidClientKey
+
+        public var errorDescription: String? {
+            "Client key not found on the selected environment."
         }
     }
 }
