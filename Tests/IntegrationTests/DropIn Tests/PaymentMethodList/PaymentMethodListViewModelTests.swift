@@ -13,6 +13,7 @@ import Testing
 import UIKit
 
 @Suite
+@MainActor
 struct PaymentMethodListViewModelTests {
 
     // MARK: - Tests
@@ -20,7 +21,7 @@ struct PaymentMethodListViewModelTests {
     @Test
     func paymentMethodListView_shouldReturn_listViewController() async throws {
         // Given
-        let (sut, _, _) = await makeSUT()
+        let (sut, _, _) = makeSUT()
 
         // When
         let paymentMethodListView = sut.paymentMethodListView
@@ -32,7 +33,7 @@ struct PaymentMethodListViewModelTests {
     @Test
     func cancel_shouldCallRouter_dismiss() async throws {
         // Given
-        let (sut, _, routerMock) = await makeSUT()
+        let (sut, _, routerMock) = makeSUT()
 
         // When
         sut.cancel()
@@ -44,7 +45,7 @@ struct PaymentMethodListViewModelTests {
     @Test
     func didSelect_presentableComponent_shouldStartLoadingAndPresent() async throws {
         // Given
-        let (sut, _, routerMock) = await makeSUT()
+        let (sut, _, routerMock) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
 
         // When
@@ -57,7 +58,7 @@ struct PaymentMethodListViewModelTests {
     @Test
     func didSelect_paymentInitiableComponent_shouldInitiatePayment() async throws {
         // Given
-        let (sut, _, _) = await makeSUT()
+        let (sut, _, _) = makeSUT()
         let paymentMethodMock = PaymentMethodMock(type: .twint, name: "Twint")
         let initiableComponentMock = InitiableComponentMock(paymentMethod: paymentMethodMock)
 
@@ -71,7 +72,7 @@ struct PaymentMethodListViewModelTests {
     @Test
     func didSubmit_shoulCallDropInFlowManager_submit() async throws {
         // Given
-        let (sut, dropInFlowManagerMock, _) = await makeSUT()
+        let (sut, dropInFlowManagerMock, _) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
         let data = makePaymentComponentDataMock()
 
@@ -88,7 +89,7 @@ struct PaymentMethodListViewModelTests {
     @Test
     func didFail_givenComponentError_shouldCallDropInFlowManagerFail() async throws {
         // Given
-        let (sut, dropInFlowManagerMock, _) = await makeSUT()
+        let (sut, dropInFlowManagerMock, _) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
         let error = ErrorMock(errorDescription: "Failure")
 
@@ -102,7 +103,7 @@ struct PaymentMethodListViewModelTests {
     @Test
     func didFail_givenCancellation_shouldDismissAndStopLoading() async throws {
         // Given
-        let (sut, dropInFlowManagerMock, routerMock) = await makeSUT()
+        let (sut, dropInFlowManagerMock, routerMock) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
 
         // When
@@ -116,7 +117,7 @@ struct PaymentMethodListViewModelTests {
     @Test
     func presentActionComponent_shouldCallRouterPresentActionComponent() async throws {
         // Given
-        let (sut, _, routerMock) = await makeSUT()
+        let (sut, _, routerMock) = makeSUT()
         let actionComponentMock = makeActionComponentMock()
 
         // When
@@ -129,7 +130,7 @@ struct PaymentMethodListViewModelTests {
     @Test
     func presentActionComponent_whenCancelled_shouldRunCancelCallback() async throws {
         // Given
-        let (sut, _, routerMock) = await makeSUT()
+        let (sut, _, routerMock) = makeSUT()
         let actionComponentMock = makeActionComponentMock()
 
         await confirmation("The cancel callback should be called") { (confirm: Confirmation) in
@@ -146,7 +147,7 @@ struct PaymentMethodListViewModelTests {
 
     // MARK: - Helpers
 
-    private func makeSUT() async -> (
+    private func makeSUT() -> (
         sut: PaymentMethodListViewModel,
         dropInFlowManagerMock: DropInFlowManagingMock,
         routerMock: PaymentMethodListRoutingMock
