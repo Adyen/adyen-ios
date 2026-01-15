@@ -7,7 +7,6 @@
 @testable import AdyenDropIn
 import Testing
 
-@Suite
 @MainActor
 struct PaymentMethodListViewControllerTests {
 

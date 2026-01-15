@@ -12,7 +12,6 @@
 import Testing
 import UIKit
 
-@Suite
 @MainActor
 struct PaymentMethodListViewModelTests {
 
