@@ -88,12 +88,14 @@ jobs:
         runtime: ${{ matrix.runtime }}
 
     - name: Build and test
+      env:
+        DEST="platform=iOS Simulator,OS=${{ matrix.version }},name=${{ matrix.displayname }}"
       run: |
-        xcodebuild -version
-        xcodebuild test -project ${project} -scheme "${scheme}" ${params} -destination "${destination}" ## | xcpretty --utf --color && exit ${PIPESTATUS[0]}
+        echo "Destination: $DEST"
         xcodebuild test \
-          -project "" \
+          -project "Adyen.xcodeproj" \
           -scheme "IntegrationUIKitTests" \
-          -destination "OS=${{ matrix.version }},name=${{ matrix.displayname }}" \
+          -destination "$DEST" \
           -skipPackagePluginValidation \
           -enable-testing
+
