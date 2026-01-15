@@ -92,7 +92,7 @@ jobs:
         DEST: "platform=iOS Simulator,OS=${{ matrix.version }},name=${{ matrix.displayname }}"
       run: |
         echo "Destination: $DEST"
-        xcodebuild test \
+        xcodebuild build test \
           -project "Adyen.xcodeproj" \
           -scheme "IntegrationUIKitTests" \
           -destination "$DEST" \
