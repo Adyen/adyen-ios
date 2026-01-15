@@ -87,32 +87,15 @@ jobs:
         device: ${{ matrix.device }}
         runtime: ${{ matrix.runtime }}
 
-    - name: Build and Test
+    - name: Build and test
+      env:
+        DEST: "platform=iOS Simulator,OS=${{ matrix.version }},name=${{ matrix.displayname }}"
       run: |
-        echo "Selected iOS Simulator: ${{ matrix.displayname }} (${matrix.version})"
-
-        # Create the simulator (UDID)
-        UDID=$(xcrun simctl create "${{ matrix.displayname }}" "${{ matrix.device }}" "com.apple.CoreSimulator.SimRuntime.${{ matrix.runtime }}")
-        echo "Simulator UDID: $UDID"
-
-        # Boot the simulator and wait until ready
-        xcrun simctl boot "$UDID"
-        xcrun simctl bootstatus "$UDID" -b
-
-        # Build & run tests using UDID destination
-        DEST="platform=iOS Simulator,id=${UDID}"
-        echo "Running tests on destination: $DEST"
-
-        xcodebuild test \
+        echo "Destination: $DEST"
+        xcodebuild build test \
           -project "Adyen.xcodeproj" \
           -scheme "IntegrationUIKitTests" \
           -destination "$DEST" \
-          -skipPackagePluginValidation \
-          | tee xcodebuild.log
-
-        # Shutdown simulator after tests
-        xcrun simctl shutdown "$UDID"
-        xcrun simctl delete "$UDID"
-
+          -skipPackagePluginValidation
 
 
