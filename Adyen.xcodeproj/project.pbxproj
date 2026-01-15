@@ -760,6 +760,8 @@
 		C92245BF2EE9CB0900815A51 /* PKPaymentNetworkExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92245BD2EE9CB0900815A51 /* PKPaymentNetworkExtensionsTests.swift */; };
 		C923A8232E900165004AC234 /* QRCodeViewStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923A8222E900165004AC234 /* QRCodeViewStyle.swift */; };
 		C923A8252E9001B9004AC234 /* QRCodeFlowType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923A8242E9001B9004AC234 /* QRCodeFlowType.swift */; };
+		C923E1992F0FF07400E38413 /* ViewControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923E1972F0FF07400E38413 /* ViewControllerSpy.swift */; };
+		C923E19B2F1548FC00E38413 /* PaymentMethodListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923E19A2F1548FC00E38413 /* PaymentMethodListViewControllerTests.swift */; };
 		C924FB902ECF6E27009D57EC /* ActionPresentationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C924FB8F2ECF6E27009D57EC /* ActionPresentationHelper.swift */; };
 		C92665362C49346200D3D852 /* SubmittableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92665352C49346200D3D852 /* SubmittableComponent.swift */; };
 		C927083827590B7500D15EA0 /* BACSInputFormViewProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26B1275900B9001A488F /* BACSInputFormViewProtocolMock.swift */; };
@@ -804,6 +806,9 @@
 		C96E07A3283B92E300345732 /* BACSDirectDebitComponentTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96E07A1283B92D500345732 /* BACSDirectDebitComponentTrackerTests.swift */; };
 		C96ECA302E2160B600A86C59 /* DropInRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96ECA2E2E2160B600A86C59 /* DropInRoot.swift */; };
 		C971DD612DF04FA80027711E /* PaymentMethodListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971DD602DF04FA80027711E /* PaymentMethodListViewModel.swift */; };
+		C97518852F0FC6C60091DFE4 /* PaymentMethodListComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97518822F0FC6C60091DFE4 /* PaymentMethodListComponentDelegateMock.swift */; };
+		C97518862F0FC6C60091DFE4 /* PaymentMethodListComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97518832F0FC6C60091DFE4 /* PaymentMethodListComponentTests.swift */; };
+		C97518882F0FC7620091DFE4 /* PaymentMethodListRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97518872F0FC7620091DFE4 /* PaymentMethodListRouterTests.swift */; };
 		C978F5EF2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */; };
 		C981254E2851E9AF006D1374 /* PaymentComponentSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981254C2851E903006D1374 /* PaymentComponentSubject.swift */; };
 		C98125502851E9E4006D1374 /* PaymentComponentSubjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981254F2851E9E4006D1374 /* PaymentComponentSubjectTests.swift */; };
@@ -830,6 +835,8 @@
 		C9C22D9C2DE5F9BB0028C23F /* PreApplePayComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22D9A2DE5F9BB0028C23F /* PreApplePayComponent.swift */; };
 		C9C22D9F2DE5F9BE0028C23F /* PaymentMethodListComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22D9D2DE5F9BE0028C23F /* PaymentMethodListComponent.swift */; };
 		C9C22DA12DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22DA02DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift */; };
+		C9D5139A2F0E7A5C00F57DD6 /* PaymentMethodListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D513992F0E7A5C00F57DD6 /* PaymentMethodListViewModelTests.swift */; };
+		C9D5139C2F0E810500F57DD6 /* PaymentMethodsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D5139B2F0E810500F57DD6 /* PaymentMethodsMock.swift */; };
 		C9D8EB9927452355006D8CA1 /* BACSInputFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9827452355006D8CA1 /* BACSInputFormViewController.swift */; };
 		C9D8EB9B2745282E006D8CA1 /* BACSInputPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9A2745282E006D8CA1 /* BACSInputPresenter.swift */; };
 		C9D8EB9E27452D3B006D8CA1 /* BACSItemsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9D27452D3B006D8CA1 /* BACSItemsFactory.swift */; };
@@ -926,7 +933,7 @@
 		E7451A112600EDE0000BDCCF /* StoredCardConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7451A102600EDE0000BDCCF /* StoredCardConfiguration.swift */; };
 		E745256925C1C9E1006A941F /* AdyenActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C6F23F1924B000B4B2B /* AdyenActionComponent.swift */; };
 		E746E67127B3FA700076BB71 /* InstantComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = E746E67027B3FA700076BB71 /* InstantComponents.swift */; };
-		E74CE3DF26727EB1008231D2 /* DropInDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74CE3DE26727EB1008231D2 /* DropInDelegateMock.swift */; };
+		E74CE3DF26727EB1008231D2 /* DropInComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74CE3DE26727EB1008231D2 /* DropInComponentDelegateMock.swift */; };
 		E74D918325AF3FE600743B0C /* CardBrandProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74D918225AF3FE600743B0C /* CardBrandProviderTests.swift */; };
 		E74E41D22C492C1600354C76 /* AdyenWeChatPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; };
 		E74E41D32C492C1600354C76 /* AdyenWeChatPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1217,7 +1224,6 @@
 		F9842CD025710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9842CCF25710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift */; };
 		F9885430272C078E00F34557 /* DisableStoredPaymentMethodRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F988542F272C078E00F34557 /* DisableStoredPaymentMethodRequest.swift */; };
 		F9885431272C078E00F34557 /* DisableStoredPaymentMethodRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F988542F272C078E00F34557 /* DisableStoredPaymentMethodRequest.swift */; };
-		F9885435272C17BD00F34557 /* PaymentMethodListComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9885432272C167800F34557 /* PaymentMethodListComponentDelegateMock.swift */; };
 		F9976BA526D654ED00D2D7CE /* Throttler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E773EA35251E26BE00119499 /* Throttler.swift */; };
 		F9976BB526D90C6700D2D7CE /* MultibancoShareableVoucherViewProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9976BB426D90C6700D2D7CE /* MultibancoShareableVoucherViewProviderTests.swift */; };
 		F99D2EFE2661363D00BB5B2F /* AppleWalletPassRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F99D2EFD2661363D00BB5B2F /* AppleWalletPassRequest.swift */; };
@@ -1318,7 +1324,6 @@
 		F9EDB78B2395608D00CFB3C9 /* SEPADirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB78A2395608D00CFB3C9 /* SEPADirectDebitComponentTests.swift */; };
 		F9EDB78D2395643A00CFB3C9 /* CardComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB78C2395643A00CFB3C9 /* CardComponentTests.swift */; };
 		F9EDB78F23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB78E23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift */; };
-		F9EDB7922396603F00CFB3C9 /* PaymentMethodListComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB7912396603F00CFB3C9 /* PaymentMethodListComponentTests.swift */; };
 		F9EDB794239663C200CFB3C9 /* PaymentMethodMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB793239663C200CFB3C9 /* PaymentMethodMock.swift */; };
 		F9EDB796239663F800CFB3C9 /* PaymentComponentMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB795239663F800CFB3C9 /* PaymentComponentMock.swift */; };
 		F9EDB7982396643A00CFB3C9 /* CardPaymentMethodMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB7972396643A00CFB3C9 /* CardPaymentMethodMock.swift */; };
@@ -2326,6 +2331,8 @@
 		C92245BD2EE9CB0900815A51 /* PKPaymentNetworkExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PKPaymentNetworkExtensionsTests.swift; sourceTree = "<group>"; };
 		C923A8222E900165004AC234 /* QRCodeViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewStyle.swift; sourceTree = "<group>"; };
 		C923A8242E9001B9004AC234 /* QRCodeFlowType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeFlowType.swift; sourceTree = "<group>"; };
+		C923E1972F0FF07400E38413 /* ViewControllerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerSpy.swift; sourceTree = "<group>"; };
+		C923E19A2F1548FC00E38413 /* PaymentMethodListViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListViewControllerTests.swift; sourceTree = "<group>"; };
 		C924FB8F2ECF6E27009D57EC /* ActionPresentationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionPresentationHelper.swift; sourceTree = "<group>"; };
 		C92665352C49346200D3D852 /* SubmittableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittableComponent.swift; sourceTree = "<group>"; };
 		C927083D27590BDB00D15EA0 /* BACSInputFormViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewControllerTests.swift; sourceTree = "<group>"; };
@@ -2366,6 +2373,9 @@
 		C96E07A1283B92D500345732 /* BACSDirectDebitComponentTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTrackerTests.swift; sourceTree = "<group>"; };
 		C96ECA2E2E2160B600A86C59 /* DropInRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInRoot.swift; sourceTree = "<group>"; };
 		C971DD602DF04FA80027711E /* PaymentMethodListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListViewModel.swift; sourceTree = "<group>"; };
+		C97518822F0FC6C60091DFE4 /* PaymentMethodListComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListComponentDelegateMock.swift; sourceTree = "<group>"; };
+		C97518832F0FC6C60091DFE4 /* PaymentMethodListComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListComponentTests.swift; sourceTree = "<group>"; };
+		C97518872F0FC7620091DFE4 /* PaymentMethodListRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListRouterTests.swift; sourceTree = "<group>"; };
 		C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardSecurityCodeItemViewTests.swift; sourceTree = "<group>"; };
 		C97C16A928059A5A00534419 /* AnalyticsEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEventTests.swift; sourceTree = "<group>"; };
 		C97C16AB280702B200534419 /* AnalyticsFlavorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsFlavorTests.swift; sourceTree = "<group>"; };
@@ -2399,6 +2409,8 @@
 		C9C22D9A2DE5F9BB0028C23F /* PreApplePayComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayComponent.swift; sourceTree = "<group>"; };
 		C9C22D9D2DE5F9BE0028C23F /* PaymentMethodListComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListComponent.swift; sourceTree = "<group>"; };
 		C9C22DA02DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentMethodViewModel.swift; sourceTree = "<group>"; };
+		C9D513992F0E7A5C00F57DD6 /* PaymentMethodListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListViewModelTests.swift; sourceTree = "<group>"; };
+		C9D5139B2F0E810500F57DD6 /* PaymentMethodsMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsMock.swift; sourceTree = "<group>"; };
 		C9D8EB9827452355006D8CA1 /* BACSInputFormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewController.swift; sourceTree = "<group>"; };
 		C9D8EB9A2745282E006D8CA1 /* BACSInputPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputPresenter.swift; sourceTree = "<group>"; };
 		C9D8EB9D27452D3B006D8CA1 /* BACSItemsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSItemsFactory.swift; sourceTree = "<group>"; };
@@ -2563,7 +2575,7 @@
 		E7451A102600EDE0000BDCCF /* StoredCardConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredCardConfiguration.swift; sourceTree = "<group>"; };
 		E746E67027B3FA700076BB71 /* InstantComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantComponents.swift; sourceTree = "<group>"; };
 		E749FD1D23CF4998000D18BA /* NavigationStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStyle.swift; sourceTree = "<group>"; };
-		E74CE3DE26727EB1008231D2 /* DropInDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInDelegateMock.swift; sourceTree = "<group>"; };
+		E74CE3DE26727EB1008231D2 /* DropInComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInComponentDelegateMock.swift; sourceTree = "<group>"; };
 		E74D918225AF3FE600743B0C /* CardBrandProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardBrandProviderTests.swift; sourceTree = "<group>"; };
 		E755BF7126B40C90007AAB25 /* DateValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateValidator.swift; sourceTree = "<group>"; };
 		E757F02525D2ED4C007C813D /* APIClientMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientMock.swift; sourceTree = "<group>"; };
@@ -2892,7 +2904,6 @@
 		F9842CCF25710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ClassicActionHandlerTests.swift; sourceTree = "<group>"; };
 		F986B55628620289002A471C /* FormPostalCodeItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPostalCodeItem.swift; sourceTree = "<group>"; };
 		F988542F272C078E00F34557 /* DisableStoredPaymentMethodRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisableStoredPaymentMethodRequest.swift; sourceTree = "<group>"; };
-		F9885432272C167800F34557 /* PaymentMethodListComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListComponentDelegateMock.swift; sourceTree = "<group>"; };
 		F99262C324EECB9F00C9A60D /* ApplePayComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayComponentExtensions.swift; sourceTree = "<group>"; };
 		F9976BB226D903F400D2D7CE /* MultibancoVoucherAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultibancoVoucherAction.swift; sourceTree = "<group>"; };
 		F9976BB426D90C6700D2D7CE /* MultibancoShareableVoucherViewProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultibancoShareableVoucherViewProviderTests.swift; sourceTree = "<group>"; };
@@ -2994,7 +3005,6 @@
 		F9EDB78A2395608D00CFB3C9 /* SEPADirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		F9EDB78C2395643A00CFB3C9 /* CardComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentTests.swift; sourceTree = "<group>"; };
 		F9EDB78E23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredCardAlertManagerTests.swift; sourceTree = "<group>"; };
-		F9EDB7912396603F00CFB3C9 /* PaymentMethodListComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListComponentTests.swift; sourceTree = "<group>"; };
 		F9EDB793239663C200CFB3C9 /* PaymentMethodMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodMock.swift; sourceTree = "<group>"; };
 		F9EDB795239663F800CFB3C9 /* PaymentComponentMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentMock.swift; sourceTree = "<group>"; };
 		F9EDB7972396643A00CFB3C9 /* CardPaymentMethodMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardPaymentMethodMock.swift; sourceTree = "<group>"; };
@@ -4410,6 +4420,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		C923E1982F0FF07400E38413 /* Spies */ = {
+			isa = PBXGroup;
+			children = (
+				C923E1972F0FF07400E38413 /* ViewControllerSpy.swift */,
+			);
+			path = Spies;
+			sourceTree = "<group>";
+		};
 		C927083B27590B9100D15EA0 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
@@ -4555,6 +4573,15 @@
 				C96ECA2E2E2160B600A86C59 /* DropInRoot.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		C97518842F0FC6C60091DFE4 /* PaymentMethodListComponent */ = {
+			isa = PBXGroup;
+			children = (
+				C97518822F0FC6C60091DFE4 /* PaymentMethodListComponentDelegateMock.swift */,
+				C97518832F0FC6C60091DFE4 /* PaymentMethodListComponentTests.swift */,
+			);
+			path = PaymentMethodListComponent;
 			sourceTree = "<group>";
 		};
 		C978F5EC2732CD0800F59B3C /* CardNumberItem */ = {
@@ -4766,6 +4793,15 @@
 				C9B6683827C903FE006950B9 /* AdyenContext.swift */,
 			);
 			path = AdyenContext;
+			sourceTree = "<group>";
+		};
+		C9D513A12F0E8A4A00F57DD6 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				E74CE3DE26727EB1008231D2 /* DropInComponentDelegateMock.swift */,
+				C9D5139B2F0E810500F57DD6 /* PaymentMethodsMock.swift */,
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		C9D8EB9527440297006D8CA1 /* Input */ = {
@@ -5528,10 +5564,11 @@
 		E759E1F325CB371800B1F8DC /* DropIn Tests */ = {
 			isa = PBXGroup;
 			children = (
+				C923E1982F0FF07400E38413 /* Spies */,
+				C9D513A12F0E8A4A00F57DD6 /* Mocks */,
 				C993EB622EE056D000353ECA /* ComponentContainer */,
-				F9EDB79023965FFC00CFB3C9 /* Payment Method List */,
+				F9EDB79023965FFC00CFB3C9 /* PaymentMethodList */,
 				E759E1F425CB373F00B1F8DC /* DropInTests.swift */,
-				E74CE3DE26727EB1008231D2 /* DropInDelegateMock.swift */,
 				E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */,
 				E767F4DB25A603A50077029E /* ModalToolbarTests.swift */,
 				E7D5311B2447065B000046B4 /* PreselectedPaymentComponentTests.swift */,
@@ -6917,13 +6954,15 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
-		F9EDB79023965FFC00CFB3C9 /* Payment Method List */ = {
+		F9EDB79023965FFC00CFB3C9 /* PaymentMethodList */ = {
 			isa = PBXGroup;
 			children = (
-				F9EDB7912396603F00CFB3C9 /* PaymentMethodListComponentTests.swift */,
-				F9885432272C167800F34557 /* PaymentMethodListComponentDelegateMock.swift */,
+				C97518842F0FC6C60091DFE4 /* PaymentMethodListComponent */,
+				C9D513992F0E7A5C00F57DD6 /* PaymentMethodListViewModelTests.swift */,
+				C97518872F0FC7620091DFE4 /* PaymentMethodListRouterTests.swift */,
+				C923E19A2F1548FC00E38413 /* PaymentMethodListViewControllerTests.swift */,
 			);
-			path = "Payment Method List";
+			path = PaymentMethodList;
 			sourceTree = "<group>";
 		};
 		F9F1A97F26CCEA7A0005CB1D /* JOSE */ = {
@@ -8661,8 +8700,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				21C711242D6D3B2500A08111 /* ThreeDSServiceableMock.swift in Sources */,
+				C9D5139C2F0E810500F57DD6 /* PaymentMethodsMock.swift in Sources */,
 				F9B8AF6027DB4E8700DC0894 /* ActionHandlingComponentMock.swift in Sources */,
 				00EACBC0287EF1D50082B360 /* OnlineBankingComponentTests.swift in Sources */,
+				C97518882F0FC7620091DFE4 /* PaymentMethodListRouterTests.swift in Sources */,
 				F9AC61C0243750D80062A00D /* AppLauncherMock.swift in Sources */,
 				C9BB460927622F4100E6730B /* BACSConfirmationPresenterTests.swift in Sources */,
 				B65F0EBA2ED89EC00015AC41 /* TestTheme.swift in Sources */,
@@ -8709,11 +8750,14 @@
 				F9EDB794239663C200CFB3C9 /* PaymentMethodMock.swift in Sources */,
 				E9E3DAC8221EDDAF00697074 /* CardNumbers.swift in Sources */,
 				E9E3DACF221EEB5300697074 /* CardSecurityCodeValidatorTests.swift in Sources */,
+				C97518852F0FC6C60091DFE4 /* PaymentMethodListComponentDelegateMock.swift in Sources */,
+				C97518862F0FC6C60091DFE4 /* PaymentMethodListComponentTests.swift in Sources */,
 				81FC2C982BB1BB68007F1316 /* URLProtocolMock.swift in Sources */,
 				F97BC2AD2668C63200F1D242 /* AppleWalletPassProviderTests.swift in Sources */,
 				F957AA6A2552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift in Sources */,
 				C9DA53DD2E97F65900D83C94 /* QRCodeViewModelMock.swift in Sources */,
 				A07355D7276B350F00530562 /* DocumentActionViewDelegateMock.swift in Sources */,
+				C9D5139A2F0E7A5C00F57DD6 /* PaymentMethodListViewModelTests.swift in Sources */,
 				F99F085A2383EAC800EBB948 /* FormatterMock.swift in Sources */,
 				A0B4B9B12BC027DE00C99926 /* CardComponentEventTests.swift in Sources */,
 				5A22C279262D688600F12D97 /* QRCodeActionComponentTests.swift in Sources */,
@@ -8724,6 +8768,7 @@
 				B60946152DA5656100CEE6CF /* CardScannerTestsHelpers.swift in Sources */,
 				B6D808402BCD29DF00F3F5EB /* LocalizationTests.swift in Sources */,
 				C927083E27590BDB00D15EA0 /* BACSInputFormViewControllerTests.swift in Sources */,
+				C923E19B2F1548FC00E38413 /* PaymentMethodListViewControllerTests.swift in Sources */,
 				0067E740296C161E005B8D76 /* UPIComponentTests.swift in Sources */,
 				F9C5F0F125CAB917005A6E54 /* VoucherShareableViewProviderMock.swift in Sources */,
 				F96AE51B26038602009F82BD /* XCTestCase+FormTextItemView.swift in Sources */,
@@ -8760,7 +8805,6 @@
 				F99D4603262D647400880D72 /* AddressViewModelTests.swift in Sources */,
 				F95B6D9025231880002C9062 /* PhoneNumberValidatorTests.swift in Sources */,
 				F9639B5224E29E340073F38A /* PresentationDelegateMock.swift in Sources */,
-				F9EDB7922396603F00CFB3C9 /* PaymentMethodListComponentTests.swift in Sources */,
 				B6C4C6682ECF61E000500BCD /* FormLabelItemTests.swift in Sources */,
 				F919DFA224ED599D0027976E /* AdyenActionComponentTests.swift in Sources */,
 				81DA70912BDA6120006CE5D5 /* PaymentMethods+Equatable.swift in Sources */,
@@ -8812,7 +8856,6 @@
 				F9AC61C424375F510062A00D /* PresentingViewControllerMock.swift in Sources */,
 				5AF8CD4D26691D3A00102339 /* Dummy.swift in Sources */,
 				C9DA53E12E97F6DE00D83C94 /* QRCodeViewControllerTests.swift in Sources */,
-				F9885435272C17BD00F34557 /* PaymentMethodListComponentDelegateMock.swift in Sources */,
 				8100F2C02A4C37E4008C09E7 /* FormSelectableItemViewTests.swift in Sources */,
 				E9021DF2225CC6D0009CF7F4 /* RedirectDetailsTests.swift in Sources */,
 				81825CB82AC59C3300F91912 /* UIView+Search.swift in Sources */,
@@ -8829,7 +8872,7 @@
 				C9C21914276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift in Sources */,
 				E7085C1E2629FDD700D0153B /* RedirectListnerTests.swift in Sources */,
 				0008887C2D4CFA73009C03E1 /* PayToComponentTests.swift in Sources */,
-				E74CE3DF26727EB1008231D2 /* DropInDelegateMock.swift in Sources */,
+				E74CE3DF26727EB1008231D2 /* DropInComponentDelegateMock.swift in Sources */,
 				A020EC5A29ED33F90050B2FE /* CashAppPayComponentTests.swift in Sources */,
 				8128977E2CCA6FE900275487 /* SupportedPaymentMethodLogosViewTests.swift in Sources */,
 				F967581527D25B1600A16FB6 /* SelfRetainingAPIClientTests.swift in Sources */,
@@ -8845,6 +8888,7 @@
 				00EACBC9288013AE0082B360 /* XCTestCase+Coder.swift in Sources */,
 				C9E6C5C82F02C5CF0030E6C5 /* ComponentContainerRouterTests.swift in Sources */,
 				E7975F982880421600A12C40 /* XCTestCase+Result.swift in Sources */,
+				C923E1992F0FF07400E38413 /* ViewControllerSpy.swift in Sources */,
 				81B505792A7BE209009B4CB3 /* UIBarButtonItem+XCTest.swift in Sources */,
 				813F21C82CEB64EB0072D193 /* PayByBankUSComponentTests.swift in Sources */,
 				00F621C527F1AF5A00C04097 /* AtomeComponentTests.swift in Sources */,
@@ -10820,7 +10864,7 @@
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/IntegrationTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -10829,6 +10873,7 @@
 				MARKETING_VERSION = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adyen.AdyenTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_PACKAGE_NAME = com.adyen.checkout;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AdyenUIHost.app/AdyenUIHost";
 			};
 			name = Firebase;
@@ -10852,6 +10897,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_PACKAGE_NAME = com.adyen.checkout;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AdyenUIHost.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AdyenUIHost";
@@ -11292,7 +11338,7 @@
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/IntegrationTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -11314,7 +11360,7 @@
 				DEVELOPMENT_TEAM = B2NYSS5932;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/IntegrationTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -12082,6 +12128,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_PACKAGE_NAME = com.adyen.checkout;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AdyenUIHost.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AdyenUIHost";
@@ -12107,6 +12154,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_PACKAGE_NAME = com.adyen.checkout;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AdyenUIHost.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AdyenUIHost";
