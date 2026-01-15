@@ -89,7 +89,7 @@ jobs:
 
     - name: Build and test
       env:
-        DEST="platform=iOS Simulator,OS=${{ matrix.version }},name=${{ matrix.displayname }}"
+        DEST: "platform=iOS Simulator,OS=${{ matrix.version }},name=${{ matrix.displayname }}"
       run: |
         echo "Destination: $DEST"
         xcodebuild test \
@@ -98,4 +98,5 @@ jobs:
           -destination "$DEST" \
           -skipPackagePluginValidation \
           -enable-testing
+
 
