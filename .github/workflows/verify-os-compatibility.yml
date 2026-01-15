@@ -90,9 +90,10 @@ jobs:
     - name: Build and test
       run: |
         xcodebuild -version
+        xcodebuild test -project ${project} -scheme "${scheme}" ${params} -destination "${destination}" ## | xcpretty --utf --color && exit ${PIPESTATUS[0]}
         xcodebuild test \
-          -project "Adyen.xcodeproj" \
+          -project "" \
           -scheme "IntegrationUIKitTests" \
-          -destination "platform=iOS Simulator,OS=${matrix.version},name=${matrix.displayname}" \
+          -destination "OS=${{ matrix.version }},name=${{ matrix.displayname }}" \
           -skipPackagePluginValidation \
           -enable-testing
