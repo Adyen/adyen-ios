@@ -7,6 +7,7 @@
 import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) import AdyenUI
 
 internal protocol PreselectedPaymentMethodViewModelProtocol {
     var paymentMethodView: UIViewController { get }
@@ -19,6 +20,16 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
 
     internal weak var router: PreselectedPaymentMethodRouting?
     private let component: PaymentComponent
+    
+    internal var paymentMethod: PaymentMethod { component.paymentMethod }
+    internal var apiContext: APIContext { component.context.apiContext }
+    internal var context: AdyenContext { component.context }
+    
+    internal let style: FormComponentStyle
+    internal let listItemStyle: ListItemStyle
+    internal var localizationParameters: LocalizationParameters?
+    internal let title: String
+    
     private let preselectedPaymentMethodComponent: PreselectedPaymentMethodComponent
     private var dropInFlowManager: DropInFlowManaging
 
@@ -30,14 +41,17 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging
     ) {
-        let style = configuration.style
         self.component = component
         self.dropInFlowManager = dropInFlowManager
+        self.style = configuration.style.formComponent
+        self.listItemStyle = configuration.style.listComponent.listItem
+        self.localizationParameters = configuration.localizationParameters
+        self.title = title
         self.preselectedPaymentMethodComponent = PreselectedPaymentMethodComponent(
             component: component,
             title: title,
-            style: style.formComponent,
-            listItemStyle: style.listComponent.listItem
+            style: self.style,
+            listItemStyle: self.listItemStyle
         )
         // TODO: - Localization parameters need to be moved to configuration level.
         self.preselectedPaymentMethodComponent.localizationParameters = configuration.localizationParameters
@@ -65,6 +79,64 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
 
     internal func didProceed(with component: any PaymentComponent) {
         startPaymentFlow(for: component)
+    }
+
+    // MARK: - Form Item Factories
+
+    internal func makeListItem() -> ListItem {
+        let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
+        let imageURL = LogoURLProvider.logoURL(
+            withName: displayInformation.logoName,
+            environment: context.apiContext.environment
+        )
+        return ListItem(
+            title: displayInformation.title,
+            subtitle: displayInformation.subtitle,
+            icon: .init(url: imageURL),
+            style: listItemStyle,
+            identifier: ViewIdentifierBuilder.build(scopeInstance: "preselectedPaymentMethod", postfix: "defaultComponent"),
+            accessibilityLabel: displayInformation.accessibilityLabel
+        )
+    }
+
+    internal func makeSubmitButtonItem() -> FormButtonItem {
+        let item = FormButtonItem(style: style.mainButtonItem)
+        item.title = localizedSubmitButtonTitle(
+            with: context.payment?.amount,
+            style: .immediate,
+            localizationParameters
+        )
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: "preselectedPaymentMethod", postfix: "submitButton")
+        item.buttonSelectionHandler = { [weak self] in
+            guard let self else { return }
+            self.didProceed(with: self.component)
+        }
+        return item
+    }
+
+    internal func makeOpenAllButtonItem() -> FormButtonItem {
+        let item = FormButtonItem(style: style.secondaryButtonItem)
+        item.title = localizedString(.dropInPreselectedOpenAllTitle, localizationParameters)
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: "preselectedPaymentMethod", postfix: "openAllButton")
+        item.buttonSelectionHandler = { [weak self] in
+            self?.didRequestAllPaymentMethods()
+        }
+        return item
+    }
+
+    internal func makeSeparatorItem() -> FormSeparatorItem {
+        let separator = FormSeparatorItem(color: style.separatorColor ?? UIColor.Adyen.componentSeparator)
+        separator.identifier = ViewIdentifierBuilder.build(scopeInstance: "preselectedPaymentMethod", postfix: "separator")
+        return separator
+    }
+
+    internal func makeFootnoteItem() -> FormLabelItem? {
+        guard let footnoteText = paymentMethod
+            .displayInformation(using: localizationParameters)
+            .footnoteText else { return nil }
+        let item = FormLabelItem(text: footnoteText, style: style.footnoteLabel)
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: "preselectedPaymentMethod", postfix: "footnote")
+        return item
     }
 
     // MARK: - Private
