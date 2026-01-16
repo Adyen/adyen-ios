@@ -26,6 +26,7 @@ struct ComponentContainerRouterTests {
 
         // When
         sut.present(paymentComponent: paymentComponent)
+        try await Task.sleep(for: .milliseconds(300))
 
         // Then
         #expect(navController.viewControllers.contains(paymentComponent.viewController))
