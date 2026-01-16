@@ -19,50 +19,50 @@ extension UIViewController {
         style: TestTheme.TextFieldStyle,
         file: StaticString = #file,
         line: UInt = #line
-    ) {
+    ) throws {
         for id in identifiers {
             let name = id.components(separatedBy: ".").last ?? id
-            let titleLabel: UILabel? = view.findView(with: "\(id).titleLabel")
-            let textField: UITextField? = view.findView(with: "\(id).textField")
-            let container: UIView? = view.findView(with: "\(id).entryTextStackView")
+            let titleLabel: UILabel = try XCTUnwrap(view.findView(with: "\(id).titleLabel"))
+            let textField: UITextField = try XCTUnwrap(view.findView(with: "\(id).textField"))
+            let container: UIView = try XCTUnwrap(view.findView(with: "\(id).entryTextStackView"))
 
             XCTAssertEqual(
-                titleLabel?.textColor,
+                titleLabel.textColor,
                 style.titleColor,
                 "\(name) title color: expected \(style.titleColor)",
                 file: file,
                 line: line
             )
             XCTAssertEqual(
-                titleLabel?.font,
+                titleLabel.font,
                 style.titleFont,
                 "\(name) title font: expected \(style.titleFont)",
                 file: file,
                 line: line
             )
             XCTAssertEqual(
-                textField?.textColor,
+                textField.textColor,
                 style.textColor,
                 "\(name) text color: expected \(style.textColor)",
                 file: file,
                 line: line
             )
             XCTAssertEqual(
-                textField?.font,
+                textField.font,
                 style.textFont,
                 "\(name) text font: expected \(style.textFont)",
                 file: file,
                 line: line
             )
             XCTAssertEqual(
-                container?.backgroundColor,
+                container.backgroundColor,
                 style.containerColor,
                 "\(name) container: expected \(style.containerColor)",
                 file: file,
                 line: line
             )
             XCTAssertEqual(
-                container?.layer.cornerRadius ?? 0,
+                container.layer.cornerRadius,
                 style.cornerRadius,
                 accuracy: 0.1,
                 "\(name) radius: expected \(style.cornerRadius)",
@@ -78,27 +78,27 @@ extension UIViewController {
         style: TestTheme.ButtonStyle,
         file: StaticString = #file,
         line: UInt = #line
-    ) {
+    ) throws {
         let name = identifier.components(separatedBy: ".").last ?? identifier
-        let button: UIControl? = view.findView(with: "\(identifier).button")
-        let titleLabel: UILabel? = view.findView(with: "\(identifier).button.titleLabel")
+        let button: UIControl = try XCTUnwrap(view.findView(with: "\(identifier).button"))
+        let titleLabel: UILabel = try XCTUnwrap(view.findView(with: "\(identifier).button.titleLabel"))
 
         XCTAssertEqual(
-            button?.backgroundColor,
+            button.backgroundColor,
             style.backgroundColor,
             "\(name) background: expected \(style.backgroundColor)",
             file: file,
             line: line
         )
         XCTAssertEqual(
-            titleLabel?.textColor,
+            titleLabel.textColor,
             style.textColor,
             "\(name) text color: expected \(style.textColor)",
             file: file,
             line: line
         )
         XCTAssertEqual(
-            button?.layer.cornerRadius ?? 0,
+            button.layer.cornerRadius,
             style.cornerRadius,
             accuracy: 0.1,
             "\(name) radius: expected \(style.cornerRadius)",
