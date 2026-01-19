@@ -58,9 +58,18 @@ internal enum CheckoutComponentBuilder {
         }
         
         // TODO: create real checkout errors
+        // TODO: for gift card, throw correct error code
         fatalError()
     }
     
+    internal static func build(
+        for storedPaymentMethod: StoredPaymentMethod,
+        configuration: CheckoutConfiguration
+    ) -> PaymentComponent {
+        fatalError()
+    }
+    
+    // TODO: this will be removed as CheckoutActionComponent already handles actions.
     internal static func build(
         for action: Action,
         configuration: CheckoutConfiguration

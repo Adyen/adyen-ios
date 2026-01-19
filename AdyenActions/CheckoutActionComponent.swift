@@ -11,11 +11,8 @@ import UIKit
 
 /**
  An action handler component to perform any supported action out of the box.
- 
- - SeeAlso:
- [Implementation Reference](https://github.com/Adyen/adyen-ios#handling-an-action)
  */
-public final class AdyenActionComponent: ActionComponent, ActionHandlingComponent {
+public final class CheckoutActionComponent: ActionComponent, ActionHandlingComponent {
     
     /// :nodoc:
     /// The context object for this component.
@@ -127,7 +124,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         public init(
             localizationParameters: LocalizationParameters? = nil,
             style: ActionComponentStyle = .init(),
-            threeDS: AdyenActionComponent.Configuration.ThreeDS = .init(),
+            threeDS: CheckoutActionComponent.Configuration.ThreeDS = .init(),
             twint: Twint? = nil
         ) {
             self.localizationParameters = localizationParameters
@@ -141,7 +138,7 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
     
     internal var appLauncher: AnyAppLauncher = AppLauncher()
     
-    /// Initializes a new instance of `AdyenActionComponent`
+    /// Initializes a new instance of `CheckoutActionComponent`
     ///
     /// - Parameters:
     ///   - context: The context object.

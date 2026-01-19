@@ -131,11 +131,11 @@ When `/payments` or `/payments/details` responds with a non-final result and an 
     }
     
     @Tab(Components) {  
-        In case of using individual components, create and persist an instance of ``AdyenActionComponent``:
+        In case of using individual components, create and persist an instance of ``CheckoutActionComponent``:
 
         ```swift
-        lazy var actionComponent: AdyenActionComponent = {
-            let handler = AdyenActionComponent(context: context)
+        lazy var actionComponent: CheckoutActionComponent = {
+            let handler = CheckoutActionComponent(context: context)
             handler.delegate = self
             handler.presentationDelegate = self
             return handler

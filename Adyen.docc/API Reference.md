@@ -90,7 +90,7 @@ The Adyen DropIn/Components SDK API Reference.
 
 ### Action-handling components
 
-- ``AdyenActionComponent``
+- ``CheckoutActionComponent``
 - ``VoucherComponent``
 - ``QRCodeActionComponent``
 - ``AwaitComponent``

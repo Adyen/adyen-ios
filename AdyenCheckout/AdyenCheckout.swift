@@ -28,13 +28,13 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     internal weak var presentationDelegate: PresentationDelegate?
     
     internal lazy var actionHandlingComponent: ActionHandlingComponent = {
-        let handler = AdyenActionComponent(
+        let handler = CheckoutActionComponent(
             context: configuration.context,
-            configuration: AdyenActionComponent.Configuration()
+            configuration: CheckoutActionComponent.Configuration()
         )
-        // TODO: create a way for CheckoutConfig to have AdyenActionComponent.Configuration
+        // TODO: create a way for CheckoutConfig to have CheckoutActionComponent.Configuration
         // and it should provided if they want to have action handling
-        // move AdyenActionComponent.Configuration to its own entity and make it public
+        // move CheckoutActionComponent.Configuration to its own entity and make it public
         handler.delegate = self
         handler.presentationDelegate = presentationDelegate
         return handler
@@ -112,17 +112,17 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         )
     }
     
-    public func createComponent(with paymentMethod: any PaymentMethod) -> AdyenCheckoutComponent? {
+    public func createComponent(with paymentMethod: any PaymentMethod) -> CheckoutPaymentComponent? {
         // TODO: Add new v6 style here
-        AdyenCheckoutComponent(
+        CheckoutPaymentComponent(
             paymentMethod: paymentMethod,
             configuration: configuration,
             delegate: self
         )
     }
     
-    public func createComponent(with action: Action) -> AdyenCheckoutComponent? {
-        AdyenCheckoutComponent(
+    public func createComponent(with action: Action) -> CheckoutPaymentComponent? {
+        CheckoutPaymentComponent(
             action: action,
             configuration: configuration,
             delegate: self
