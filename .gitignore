@@ -27,10 +27,6 @@ DerivedData
 .AppleDouble
 .LSOverride
 
-# Carthage
-Carthage/
-Cartfile.resolved
-
 #Internal
 Internal/
 .gitmodules
@@ -47,3 +43,4 @@ TempProject/
 
 # Configuration files with secrets
 Demo/Secrets.*.xcconfig
+/.claude

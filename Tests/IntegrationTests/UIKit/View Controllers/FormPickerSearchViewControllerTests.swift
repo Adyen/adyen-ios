@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 extension SearchViewController.InterfaceState {
@@ -80,7 +81,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         ) { _ in }
         
         // Allow setup in viewDidLoad
-        setupRootViewController(pickerSearchViewController)
+        pickerSearchViewController.loadViewIfNeeded()
         
         let searchViewController = pickerSearchViewController.viewControllers.first as! SearchViewController
         
@@ -118,7 +119,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         ) { _ in }
         
         // Allow setup in viewDidLoad
-        setupRootViewController(pickerSearchViewController)
+        pickerSearchViewController.loadViewIfNeeded()
         
         let searchViewController = pickerSearchViewController.viewControllers.first as! SearchViewController
         

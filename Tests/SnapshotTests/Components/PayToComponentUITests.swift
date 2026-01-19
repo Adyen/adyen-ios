@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
 import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class PayToComponentUITests: XCTestCase {
@@ -171,7 +172,7 @@ class PayToComponentUITests: XCTestCase {
             XCTAssertEqual(details.shopperName?.firstName, "test")
             XCTAssertEqual(details.shopperName?.lastName, "lastname")
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             self.wait(for: .aMoment)
 
             self.assertViewControllerImage(matching: sut.viewController, named: "pay_id_flow_mobile")
@@ -234,7 +235,7 @@ class PayToComponentUITests: XCTestCase {
             XCTAssertEqual(details.shopperName?.firstName, "test")
             XCTAssertEqual(details.shopperName?.lastName, "lastname")
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             self.wait(for: .aMoment)
 
             self.assertViewControllerImage(matching: sut.viewController, named: "pay_id_flow_using_email")
@@ -300,7 +301,7 @@ class PayToComponentUITests: XCTestCase {
             XCTAssertEqual(details.shopperName?.firstName, "test")
             XCTAssertEqual(details.shopperName?.lastName, "lastname")
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             self.wait(for: .aMoment)
 
             self.assertViewControllerImage(matching: sut.viewController, named: "pay_id_flow_using_abn")
@@ -367,7 +368,7 @@ class PayToComponentUITests: XCTestCase {
             XCTAssertEqual(details.shopperName?.firstName, "test")
             XCTAssertEqual(details.shopperName?.lastName, "lastname")
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             self.wait(for: .aMoment)
 
             self.assertViewControllerImage(matching: sut.viewController, named: "pay_id_flow_using_organizationId")
@@ -436,7 +437,7 @@ class PayToComponentUITests: XCTestCase {
             XCTAssertEqual(details.shopperName?.firstName, "test")
             XCTAssertEqual(details.shopperName?.lastName, "lastname")
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             self.wait(for: .aMoment)
 
             self.assertViewControllerImage(matching: sut.viewController, named: "payto_bsb_flow")

@@ -11,55 +11,41 @@ import AdyenSession
 internal protocol InitialDataFlowProtocol: AnyObject {
     var context: AdyenContext { get }
     var apiClient: APIClientProtocol { get }
-    func requestAdyenSessionConfiguration(completion: @escaping (Result<AdyenSession.Configuration, Error>) -> Void)
+    func requestSessionInitialInfo(completion: @escaping (Result<SessionResponse, Error>) -> Void)
     func generateContext() -> AdyenContext
     func start()
 }
 
 extension InitialDataFlowProtocol {
 
-    internal func requestAdyenSessionConfiguration(completion: @escaping (Result<AdyenSession.Configuration, Error>) -> Void) {
+    internal func requestSessionInitialInfo(completion: @escaping (Result<SessionResponse, Error>) -> Void) {
         let request = SessionRequest()
-        apiClient.perform(request) { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case let .success(response):
-                let config = self.initializeSession(with: response.sessionId, data: response.sessionData)
-                completion(.success(config))
-            case let .failure(error):
-                completion(.failure(error))
-            }
-        }
+        apiClient.perform(request, completionHandler: completion)
     }
     
     func generateContext() -> AdyenContext {
-        var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
+        let analyticsConfiguration = AnalyticsConfiguration(
+            isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
+        )
         return AdyenContext(
             apiContext: ConfigurationConstants.apiContext,
             payment: ConfigurationConstants.current.payment,
+            amount: ConfigurationConstants.current.amount,
             analyticsConfiguration: analyticsConfiguration
         )
     }
-
-    private func initializeSession(with sessionId: String, data: String) -> AdyenSession.Configuration {
-        let configuration = AdyenSession.Configuration(
-            sessionIdentifier: sessionId,
-            initialSessionData: data,
-            context: context,
-            actionComponent: .init(
-                threeDS: .init(
-                    requestorAppURL: ConfigurationConstants.returnUrl,
-                    delegateAuthentication: ConfigurationConstants.delegatedAuthenticationConfigurations
-                ),
-                twint: .init(callbackAppScheme: ConfigurationConstants.returnUrl.scheme!)
-            )
-        )
-        return configuration
+    
+    internal func requestSessionInitialInfo() async throws -> SessionResponse {
+        let request = SessionRequest()
+        return try await withCheckedThrowingContinuation { continuation in
+            apiClient.perform(request) { result in
+                continuation.resume(with: result)
+            }
+        }
     }
 }
 
-extension SessionPaymentResultCode {
+extension CheckoutResultCode {
     var isSuccess: Bool {
         self == .authorised || self == .received || self == .pending
     }

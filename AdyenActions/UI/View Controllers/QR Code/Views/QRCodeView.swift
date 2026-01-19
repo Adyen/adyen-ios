@@ -6,6 +6,9 @@
 
 import UIKit
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 
 internal final class QRCodeView: UIView, AdyenObserver {
     

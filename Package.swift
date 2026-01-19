@@ -1,4 +1,4 @@
-// swift-tools-version:5.7
+// swift-tools-version:5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "Adyen",
     defaultLocalization: "en-us",
-    platforms: [.iOS(.v12)],
+    platforms: [.iOS(.v13)],
     products: [
         .library(
             name: "Adyen",
@@ -59,6 +59,14 @@ let package = Package(
         .library(
             name: "AdyenDelegatedAuthentication",
             targets: ["AdyenDelegatedAuthentication"]
+        ),
+        .library(
+            name: "AdyenCheckout",
+            targets: ["AdyenCheckout"]
+        ),
+        .library(
+            name: "AdyenUI",
+            targets: ["AdyenUI"]
         )
     ],
     dependencies: [
@@ -86,7 +94,9 @@ let package = Package(
     targets: [
         .target(
             name: "Adyen",
-            dependencies: [.product(name: "AdyenNetworking", package: "adyen-networking-ios")],
+            dependencies: [
+                .product(name: "AdyenNetworking", package: "adyen-networking-ios")
+            ],
             path: "Adyen",
             exclude: [
                 "Info.plist",
@@ -109,6 +119,7 @@ let package = Package(
             name: "AdyenActions",
             dependencies: [
                 .target(name: "Adyen"),
+                .target(name: "AdyenUI"),
                 .product(name: "Adyen3DS2", package: "adyen-3ds2-ios")
             ],
             path: "AdyenActions",
@@ -121,7 +132,8 @@ let package = Package(
             name: "AdyenCard",
             dependencies: [
                 .target(name: "Adyen"),
-                .target(name: "AdyenEncryption")
+                .target(name: "AdyenEncryption"),
+                .target(name: "AdyenUI")
             ],
             path: "AdyenCard",
             exclude: [
@@ -140,6 +152,7 @@ let package = Package(
             name: "AdyenComponents",
             dependencies: [
                 .target(name: "Adyen"),
+                .target(name: "AdyenUI"),
                 .target(name: "AdyenEncryption")
             ],
             path: "AdyenComponents",
@@ -157,6 +170,7 @@ let package = Package(
         .target(
             name: "AdyenDropIn",
             dependencies: [
+                .target(name: "Adyen"),
                 .target(name: "AdyenCard"),
                 .target(name: "AdyenComponents"),
                 .target(name: "AdyenActions")
@@ -176,6 +190,7 @@ let package = Package(
             name: "AdyenCashAppPay",
             dependencies: [
                 .target(name: "Adyen"),
+                .target(name: "AdyenUI"),
                 .product(name: "PayKit", package: "cash-app-pay-ios-sdk"),
                 .product(name: "PayKitUI", package: "cash-app-pay-ios-sdk")
             ],
@@ -186,9 +201,31 @@ let package = Package(
             name: "AdyenTwint",
             dependencies: [
                 .target(name: "Adyen"),
+                .target(name: "AdyenUI"),
                 .target(name: "TwintSDK")
             ],
             path: "AdyenTwint",
+            exclude: ["Info.plist"]
+        ),
+        .target(
+            name: "AdyenCheckout",
+            dependencies: [
+                .target(name: "Adyen"),
+                .target(name: "AdyenDropIn"),
+                .target(name: "AdyenSession"),
+                .target(name: "AdyenCard"),
+                .target(name: "AdyenComponents"),
+                .target(name: "AdyenActions")
+            ],
+            path: "AdyenCheckout",
+            exclude: ["Info.plist"]
+        ),
+        .target(
+            name: "AdyenUI",
+            dependencies: [
+                .target(name: "Adyen")
+            ],
+            path: "AdyenUI",
             exclude: ["Info.plist"]
         ),
         .binaryTarget(

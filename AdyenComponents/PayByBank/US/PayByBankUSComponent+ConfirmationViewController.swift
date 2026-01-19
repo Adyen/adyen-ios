@@ -4,8 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import UIKit
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
+import UIKit
 
 extension PayByBankUSComponent {
     
@@ -27,7 +30,7 @@ extension PayByBankUSComponent {
         internal lazy var titleLabel = Self.defaultLabel
         internal lazy var subtitleLabel = Self.defaultLabel
         internal lazy var messageLabel = Self.defaultLabel
-        internal let submitButton: SubmitButton
+        internal let submitButton: FormButton
         
         // MARK: UIViewController
         
@@ -39,7 +42,7 @@ extension PayByBankUSComponent {
                 trailingText: model.supportedBanksMoreText
             )
            
-            self.submitButton = SubmitButton(style: model.style.submitButton)
+            self.submitButton = FormButton(style: model.style.submitButton)
             
             super.init(nibName: nil, bundle: nil)
         }

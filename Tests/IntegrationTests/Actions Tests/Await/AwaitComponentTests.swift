@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenActions
 @testable import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 final class PollingHandlerMock: AnyPollingHandler {
@@ -73,16 +74,6 @@ class AwaitComponentTests: XCTestCase {
         sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
 
         waitForExpectations(timeout: 2, handler: nil)
-    }
-
-    func testRequiresKeyboardInput() {
-        let sut = AwaitViewController(viewModel: AwaitComponentViewModel(icon: "icon", message: "message", spinnerTitle: "spinner title"))
-
-        let wrapperViewController = WrapperViewController(
-            child: ModalViewController(rootViewController: sut, navBarType: .regular)
-        )
-
-        XCTAssertFalse(wrapperViewController.requiresKeyboardInput)
     }
 
     func testActionHandling() {

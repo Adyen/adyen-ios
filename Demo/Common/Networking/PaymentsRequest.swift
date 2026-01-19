@@ -125,7 +125,7 @@ internal struct PaymentsResponse: Response {
 
     internal static var received: PaymentsResponse = .init()
     
-    internal let resultCode: ResultCode
+    internal let resultCode: CheckoutResultCode
     
     internal let action: Action?
 
@@ -139,7 +139,7 @@ internal struct PaymentsResponse: Response {
     
     internal init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.resultCode = try container.decode(ResultCode.self, forKey: .resultCode)
+        self.resultCode = try container.decode(CheckoutResultCode.self, forKey: .resultCode)
         self.action = try container.decodeIfPresent(Action.self, forKey: .action)
         self.order = try container.decodeIfPresent(PartialPaymentOrder.self, forKey: .order)
         self.refusalReasonCode = try container.decodeIfPresent(String.self, forKey: .refusalReasonCode)
@@ -174,26 +174,8 @@ internal struct PaymentsResponse: Response {
         switch resultCode {
         case .authorised, .received, .pending:
             return true
-        case .refused, .cancelled, .error, .redirectShopper, .identifyShopper, .challengeShopper, .presentToShopper:
+        case .refused, .cancelled, .error, .redirectShopper, .identifyShopper, .challengeShopper, .presentToShopper, .authenticationFinished, .authenticationNotRequired, .other:
             return false
         }
     }
-}
-
-internal extension PaymentsResponse {
-    
-    // swiftlint:disable:next explicit_acl
-    enum ResultCode: String, Decodable {
-        case authorised = "Authorised"
-        case refused = "Refused"
-        case pending = "Pending"
-        case cancelled = "Cancelled"
-        case error = "Error"
-        case received = "Received"
-        case redirectShopper = "RedirectShopper"
-        case identifyShopper = "IdentifyShopper"
-        case challengeShopper = "ChallengeShopper"
-        case presentToShopper = "PresentToShopper"
-    }
-    
 }

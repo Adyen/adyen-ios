@@ -193,7 +193,7 @@ private extension InstantPaymentComponentAdvancedFlow {
     }
 
     @objc private func cancelPressed() {
-        instantPaymentComponent?.cancelIfNeeded()
+        instantPaymentComponent?.cancel()
         presenter?.dismiss(completion: nil)
     }
 }

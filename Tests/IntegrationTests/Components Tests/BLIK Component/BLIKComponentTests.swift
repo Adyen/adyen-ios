@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class BLIKComponentTests: XCTestCase {
@@ -63,7 +64,7 @@ class BLIKComponentTests: XCTestCase {
  
     func testVCTitle() {
 
-        setupRootViewController(sut.viewController)
+        sut.viewController.loadViewIfNeeded()
 
         wait(for: .milliseconds(300))
         XCTAssertEqual(sut.viewController.title, paymentMethod.name.uppercased())
@@ -123,14 +124,15 @@ class BLIKComponentTests: XCTestCase {
 
     func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
         // Given
-        let configuration = BLIKComponent.Configuration(showsSubmitButton: false)
+        var configuration = BLIKComponentConfiguration()
+        configuration.showsSubmitButton = false
         let sut = BLIKComponent(
             paymentMethod: paymentMethod,
             context: context,
             configuration: configuration
         )
 
-        setupRootViewController(sut.viewController)
+        sut.viewController.loadViewIfNeeded()
 
         let codeItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem"))
 
@@ -149,16 +151,15 @@ class BLIKComponentTests: XCTestCase {
 
     func testValidateGivenInvalidInputShouldReturnFormViewControllerValidateResult() throws {
         // Given
-        let configuration = BLIKComponent.Configuration(showsSubmitButton: false)
+        var configuration = BLIKComponentConfiguration()
+        configuration.showsSubmitButton = false
         let sut = BLIKComponent(
             paymentMethod: paymentMethod,
             context: context,
             configuration: configuration
         )
 
-        setupRootViewController(sut.viewController)
-
-        let didSubmitExpectation = XCTestExpectation(description: "Expect delegate.didSubmit() to be called.")
+        sut.viewController.loadViewIfNeeded()
 
         let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
         let expectedResult = formViewController.validate()

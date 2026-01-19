@@ -53,7 +53,8 @@ extension CardComponent {
             
             if let number = card.number {
                 let publicSuffix = String(number.suffix(Constant.publicPanSuffixLength))
-                cardComponentDelegate?.didSubmit(lastFour: publicSuffix, finalBIN: cardViewController.cardBIN, component: self)
+                // TODO: Implement onFieldValidationChange closure to provide last four digits and final BIN.
+                // This will replace the removed CardComponentDelegate.didSubmit(lastFour:finalBIN:component:) method.
             }
 
             submit(data: data)

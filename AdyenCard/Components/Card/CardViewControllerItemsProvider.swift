@@ -5,6 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 import UIKit
 
 extension CardViewController {
@@ -17,18 +20,18 @@ extension CardViewController {
     }
 
     internal final class ItemsProvider {
-
         private let formStyle: FormComponentStyle
+        private let theme: AdyenTheme
         private let amount: Amount?
         private var localizationParameters: LocalizationParameters?
-        private let configuration: CardComponent.Configuration
+        private let configuration: CardComponentConfiguration
         private let shopperInformation: PrefilledShopperInformation?
         private let cardLogos: [FormCardLogosItem.CardTypeLogo]
         private let scope: String
         private let initialCountry: String
         private let addressViewModelBuilder: AddressViewModelBuilder
         private let presenter: WeakReferenceViewControllerPresenter
-        private let addressMode: CardComponent.AddressFormType
+        private let addressMode: BillingAddressMode
         private let scanCardHandler: (() -> Void)?
 
         /// Closure that is called when an event is triggered via the field items.
@@ -36,8 +39,9 @@ extension CardViewController {
 
         internal init(
             formStyle: FormComponentStyle,
+            theme: AdyenTheme,
             payment: Payment?,
-            configuration: CardComponent.Configuration,
+            configuration: CardComponentConfiguration,
             shopperInformation: PrefilledShopperInformation?,
             cardLogos: [FormCardLogosItem.CardTypeLogo],
             scope: String,
@@ -45,7 +49,7 @@ extension CardViewController {
             localizationParameters: LocalizationParameters?,
             addressViewModelBuilder: AddressViewModelBuilder,
             presenter: ViewControllerPresenter,
-            addressMode: CardComponent.AddressFormType,
+            addressMode: BillingAddressMode,
             scanCardHandler: (() -> Void)?
         ) {
             self.formStyle = formStyle
@@ -60,11 +64,16 @@ extension CardViewController {
             self.presenter = .init(presenter)
             self.addressMode = addressMode
             self.scanCardHandler = scanCardHandler
+            self.theme = theme
         }
         
         internal lazy var billingAddressPickerItem: FormAddressPickerItem? = {
             switch addressMode {
-            case let .lookup(provider):
+            case let .lookup(onLookup, onAddressSelected):
+                let provider = AsyncAddressLookupProvider(
+                    onLookup: onLookup,
+                    onAddressSelected: onAddressSelected
+                )
                 return billingAddressPickerItem(with: provider)
             case .full:
                 return billingAddressPickerItem(with: nil)
@@ -82,6 +91,7 @@ extension CardViewController {
                 initialCountry: initialCountry,
                 supportedCountryCodes: configuration.billingAddress.countryCodes,
                 prefillAddress: prefillAddress,
+                theme: theme,
                 style: formStyle,
                 localizationParameters: localizationParameters,
                 identifier: identifier,

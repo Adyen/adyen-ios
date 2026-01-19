@@ -50,7 +50,7 @@ public struct AnalyticsConfiguration {
     // MARK: - Properties
 
     /// A Boolean value that determines whether analytics is enabled.
-    public var isEnabled = true
+    public let isEnabled: Bool
     
     @_spi(AdyenInternal)
     public var context: AnalyticsContext = .init()
@@ -58,7 +58,9 @@ public struct AnalyticsConfiguration {
     // MARK: - Initializers
     
     /// Initializes a new instance of `AnalyticsConfiguration`
-    public init() { /* Empty implementation */ }
+    public init(isEnabled: Bool = true) {
+        self.isEnabled = isEnabled
+    }
 }
 
 /// Additional fields to be provided with an ``InitialAnalyticsRequest``

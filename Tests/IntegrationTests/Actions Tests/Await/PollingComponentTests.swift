@@ -366,7 +366,7 @@ class PollingComponentTests: XCTestCase {
 
         sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
 
-        sut.cancelIfNeeded()
+        sut.cancel()
 
         waitForExpectations(timeout: 5, handler: nil)
 

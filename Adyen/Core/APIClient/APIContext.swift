@@ -47,5 +47,4 @@ public struct APIContext: AnyAPIContext {
         self.environment = environment
         self.clientKey = clientKey
     }
-
 }

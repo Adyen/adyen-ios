@@ -51,18 +51,18 @@ internal final class DropInExample: InitialDataFlowProtocol {
     // MARK: - Networking
 
     private func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
-        requestAdyenSessionConfiguration { [weak self] response in
+        requestSessionInitialInfo { [weak self] response in
             guard let self else { return }
             
             switch response {
-            case let .success(config):
-                AdyenSession.initialize(
-                    with: config,
-                    delegate: self,
-                    presentationDelegate: self,
-                    completion: completion
-                )
-                
+            case let .success(model):
+//                AdyenSession.initialize(
+//                    with: config,
+//                    delegate: self,
+//                    presentationDelegate: self,
+//                    completion: completion
+//                )
+                break
             case let .failure(error):
                 completion(.failure(error))
             }
@@ -78,7 +78,7 @@ internal final class DropInExample: InitialDataFlowProtocol {
     }
 
     private func dropInComponent(from session: AdyenSession) -> DropInComponent {
-        let paymentMethods = session.sessionContext.paymentMethods
+        let paymentMethods = session.state.paymentMethods
         let configuration = dropInConfiguration(from: paymentMethods)
         let component = DropInComponent(
             paymentMethods: paymentMethods,
@@ -121,7 +121,7 @@ internal final class DropInExample: InitialDataFlowProtocol {
 
 extension DropInExample: AdyenSessionDelegate {
 
-    func didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession) {
+    func didComplete(with result: CheckoutResult, component: Component, session: AdyenSession) {
         dismissAndShowAlert(result.resultCode.isSuccess, result.resultCode.rawValue)
     }
 

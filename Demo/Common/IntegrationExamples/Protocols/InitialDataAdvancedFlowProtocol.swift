@@ -39,13 +39,29 @@ extension InitialDataAdvancedFlowProtocol {
     }
     
     func generateContext() -> AdyenContext {
-        var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
+        let analyticsConfiguration = AnalyticsConfiguration(
+            isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
+        )
         return AdyenContext(
             apiContext: ConfigurationConstants.apiContext,
             payment: ConfigurationConstants.current.payment,
+            amount: ConfigurationConstants.current.amount,
             analyticsConfiguration: analyticsConfiguration
         )
+    }
+    
+    internal func requestPaymentMethods(
+        order: PartialPaymentOrder?,
+        amount: Amount = ConfigurationConstants.current.amount
+    ) async throws -> PaymentMethods {
+        let request = PaymentMethodsRequest(order: order, amount: amount)
+        let response = try await withCheckedThrowingContinuation { continuation in
+            apiClient.perform(request) { result in
+                continuation.resume(with: result)
+            }
+        }
+            
+        return response.paymentMethods
     }
 
 }

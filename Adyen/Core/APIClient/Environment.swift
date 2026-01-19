@@ -21,10 +21,6 @@ public struct Environment: AnyAPIEnvironment {
     @_spi(AdyenInternal)
     public static let local = Environment(baseURL: URL(string: "http://localhost:8080/")!)
 
-    /// Adyen's default live environment.
-    @available(*, deprecated, message: "Please explicitly select the environment matching your region.")
-    public static let live = liveEurope
-
     /// Adyen's European live environment.
     public static let liveEurope = Environment(baseURL: URL(string: "https://checkoutshopper-live.adyen.com/")!)
 

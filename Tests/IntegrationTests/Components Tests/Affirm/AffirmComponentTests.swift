@@ -5,7 +5,8 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@testable import AdyenComponents
+@_spi(AdyenInternal) @testable import AdyenComponents
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class AffirmComponentTests: XCTestCase {
@@ -137,7 +138,7 @@ class AffirmComponentTests: XCTestCase {
             XCTAssertEqual(details.billingAddress, expectedBillingAddress)
             XCTAssertEqual(details.deliveryAddress, expectedDeliveryAddress)
             
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             didSubmitExpectation.fulfill()
         }
         

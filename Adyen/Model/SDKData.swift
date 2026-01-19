@@ -6,17 +6,16 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public struct SDKData: Codable {
+package struct SDKData: Codable {
     
     internal struct Analytics: Codable {
         internal let checkoutAttemptId: String
     }
     
-    public struct Authentication: Codable {
+    package struct Authentication: Codable {
         internal let threeDS2SdkVersion: String
         
-        public init(threeDS2SdkVersion: String) {
+        package init(threeDS2SdkVersion: String) {
             self.threeDS2SdkVersion = threeDS2SdkVersion
         }
     }
@@ -27,8 +26,7 @@ public struct SDKData: Codable {
     private let supportNativeRedirect: Bool = true
     private let timestamp = Int(Date().timeIntervalSince1970 * 1000)
     
-    @_spi(AdyenInternal)
-    public var encodedValue: String? {
+    package var encodedValue: String? {
         try? AdyenCoder.encodeBase64(self)
     }
     
@@ -53,7 +51,6 @@ public struct SDKData: Codable {
     }
 }
 
-@_spi(AdyenInternal)
-public protocol SDKDataAuthenticationProvider {
+package protocol SDKDataAuthenticationProvider {
     var authentication: SDKData.Authentication { get }
 }

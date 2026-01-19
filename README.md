@@ -1,6 +1,5 @@
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/adyen/adyen-ios/verify-os-compatibility.yml?branch=develop)
 [![Pod](https://img.shields.io/cocoapods/v/Adyen.svg?style=flat)](http://cocoapods.org/pods/Adyen)
-[![carthage compatible](https://img.shields.io/badge/carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![SwiftPM](https://img.shields.io/badge/swift%20package%20manager-compatible-brightgreen.svg)](https://swiftpackageregistry.com/Adyen/adyen-ios)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Adyen_adyen-ios&metric=coverage)](https://sonarcloud.io/component_measures?metric=coverage&id=Adyen_adyen-ios)
 
@@ -39,7 +38,7 @@ More information about our versioning and the Drop-in/Components lifecycle can b
 
 ## Installation
 
-Adyen iOS are available through [Swift Package Manager](https://swift.org/package-manager/), [CocoaPods](http://cocoapods.org) or [Carthage](https://github.com/Carthage/Carthage).
+Adyen iOS is available through either [CocoaPods](http://cocoapods.org) or [Swift Package Manager](https://swift.org/package-manager/).
 
 ### Minimum Requirements
 
@@ -95,22 +94,26 @@ pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
 
 :warning: _`Adyen/AdyenWeChatPay` and `AdyenWeChatPayInternal` modules doesn't support any simulators and can only be tested on a real device._
 
-### Carthage
+### Swift Package Manager
 
-1. Add `github "adyen/adyen-ios"` to your `Cartfile`.
-2. Run `carthage update`.
-3. Link the framework with your target as described in [Carthage Readme](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application).
+1. Follow Apple's [Adding Package Dependencies to Your App](
+https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app
+) guide on how to add a Swift Package dependency.
+2. Use `https://github.com/Adyen/adyen-ios` as the repository URL.
+3. Specify the version to be at least `4.9.0`.
 
-You can add all modules or select individual modules to add to your integration. But make sure to include each module dependency modules.
+You can add all modules or select individual modules to add to your integration.
+The `AdyenWeChatPay` module needs to be explicitly added to support WeChat Pay.
+The `AdyenTwint` module needs to be explicitly added to support Twint native flow.
+The `AdyenSwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers.
 
-* `AdyenDropIn`: DropInComponent.
+* `AdyenDropIn`: all modules except `AdyenWeChatPay`.
 * `AdyenSession`: handler for the simplified checkout flow.
 * `AdyenCard`: the card components.
 * `AdyenComponents`: all other payment components except WeChat Pay.
 * `AdyenActions`:  action components.
 * `AdyenEncryption`: encryption.
 * `AdyenWeChatPay`: WeChat Pay component.
-* `AdyenWeChatPayInternal`: WeChat Pay component.
 * `AdyenTwint`: Twint component.
 * `AdyenSwiftUI`: SwiftUI apps specific module.
 

@@ -42,7 +42,7 @@ internal struct CreateOrderRequest: APIRequest {
     }
 }
 
-internal struct CreateOrderResponse: SessionResponse {
+internal struct CreateOrderResponse: SessionDataAware {
 
     internal let pspReference: String
 

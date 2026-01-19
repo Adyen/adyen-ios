@@ -72,6 +72,18 @@ internal final class ComponentsViewController: UIViewController {
         applePayComponent.presenter = self
         return applePayComponent
     }
+    
+    private var blikAdvancedFlowExample: BLIKComponentAdvancedFlowExample {
+        let blikAdvanced = BLIKComponentAdvancedFlowExample()
+        blikAdvanced.presenter = self
+        return blikAdvanced
+    }
+    
+    private var blikExample: BLIKComponentExample {
+        let blikAdvanced = BLIKComponentExample()
+        blikAdvanced.presenter = self
+        return blikAdvanced
+    }
 
     // MARK: - View
     
@@ -87,6 +99,7 @@ internal final class ComponentsViewController: UIViewController {
             [ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)],
             [
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
+                ComponentsItem(title: "BLIK Component", selectionHandler: presentBlikComponent),
                 ComponentsItem(
                     title: "Issuer List",
                     subtitle: "e.g. Open Banking, ...",
@@ -159,6 +172,14 @@ internal final class ComponentsViewController: UIViewController {
             start(applePayComponentExample)
         } else {
             start(applePayComponentAdvancedFlowExample)
+        }
+    }
+    
+    internal func presentBlikComponent() {
+        if componentsView.isUsingSession {
+            start(blikExample)
+        } else {
+            start(blikAdvancedFlowExample)
         }
     }
 }

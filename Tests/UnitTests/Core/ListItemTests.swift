@@ -6,6 +6,7 @@
 
 import XCTest
 @testable @_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable import AdyenUI
 
 final class ListItemTests: XCTestCase {
     // Checks COIOS-797: NSInternalInconsistencyException 1008: Item identifiers are not unique

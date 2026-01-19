@@ -7,13 +7,14 @@
 import Foundation
 import UIKit
 
+// TODO: Fix Stored PM UI
 ///  A component that handle stored payment methods.
 public final class StoredPaymentMethodComponent: PaymentComponent,
     PresentableComponent,
     PaymentAware {
 
     /// Component's configuration.
-    public var configuration: Configuration
+    // public var configuration: Configuration
 
     /// The context object for this component.
     public let context: AdyenContext
@@ -31,12 +32,12 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
     ///   - configuration: The configuration for the component.
     public init(
         paymentMethod: StoredPaymentMethod,
-        context: AdyenContext,
-        configuration: Configuration = .init()
+        context: AdyenContext
+        // configuration: Configuration = .init()
     ) {
         self.storedPaymentMethod = paymentMethod
         self.context = context
-        self.configuration = configuration
+        //  self.configuration = configuration
     }
     
     private let storedPaymentMethod: StoredPaymentMethod
@@ -46,42 +47,44 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
     public lazy var viewController: UIViewController = {
         sendInitialAnalytics()
         sendDidLoadEvent()
-
-        let localizationParameters = configuration.localizationParameters
-        let displayInformation = storedPaymentMethod.displayInformation(using: localizationParameters)
-        let alertController = UIAlertController(
-            title: localizedString(
-                .dropInStoredTitle,
-                localizationParameters,
-                storedPaymentMethod.name
-            ),
-            message: displayInformation.title,
-            preferredStyle: .alert
-        )
-
-        let cancelAction = UIAlertAction(title: localizedString(.cancelButton, localizationParameters), style: .cancel) { [weak self] _ in
-            guard let self else { return }
-            self.delegate?.didFail(with: ComponentError.cancelled, from: self)
-        }
-        alertController.addAction(cancelAction)
         
-        let submitActionTitle = localizedSubmitButtonTitle(
-            with: payment?.amount,
-            style: .immediate,
-            localizationParameters
-        )
-        let submitAction = UIAlertAction(title: submitActionTitle, style: .default) { [weak self] _ in
-            guard let self else { return }
-            let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
-            self.submit(data: PaymentComponentData(
-                paymentMethodDetails: details,
-                amount: self.payment?.amount,
-                order: self.order
-            ))
-        }
-        alertController.addAction(submitAction)
+        // TODO: Fix
+
+//        let localizationParameters = configuration.localizationParameters
+//        let displayInformation = storedPaymentMethod.displayInformation(using: localizationParameters)
+//        let alertController = UIAlertController(
+//            title: localizedString(
+//                .dropInStoredTitle,
+//                localizationParameters,
+//                storedPaymentMethod.name
+//            ),
+//            message: displayInformation.title,
+//            preferredStyle: .alert
+//        )
+//
+//        let cancelAction = UIAlertAction(title: localizedString(.cancelButton, localizationParameters), style: .cancel) { [weak self] _ in
+//            guard let self else { return }
+//            self.delegate?.didFail(with: ComponentError.cancelled, from: self)
+//        }
+//        alertController.addAction(cancelAction)
+//
+//        let submitActionTitle = localizedSubmitButtonTitle(
+//            with: payment?.amount,
+//            style: .immediate,
+//            localizationParameters
+//        )
+//        let submitAction = UIAlertAction(title: submitActionTitle, style: .default) { [weak self] _ in
+//            guard let self else { return }
+//            let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
+//            self.submit(data: PaymentComponentData(
+//                paymentMethodDetails: details,
+//                amount: self.payment?.amount,
+//                order: self.order
+//            ))
+//        }
+//        alertController.addAction(submitAction)
         
-        return alertController
+        return UIAlertController()
     }()
     
 }
@@ -89,17 +92,17 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
 extension StoredPaymentMethodComponent {
 
     /// Configuration for Stored Payment type components.
-    public struct Configuration: AnyBasicComponentConfiguration {
-
-        public var localizationParameters: LocalizationParameters?
-
-        /// Initializes the configuration for Issuer list type components.
-        /// - Parameters:
-        ///   - localizationParameters: Localization parameters.
-        public init(localizationParameters: LocalizationParameters? = nil) {
-            self.localizationParameters = localizationParameters
-        }
-    }
+//    public struct Configuration {
+//
+//        public var localizationParameters: LocalizationParameters?
+//
+//        /// Initializes the configuration for Issuer list type components.
+//        /// - Parameters:
+//        ///   - localizationParameters: Localization parameters.
+//        public init(localizationParameters: LocalizationParameters? = nil) {
+//            self.localizationParameters = localizationParameters
+//        }
+//    }
 
 }
 

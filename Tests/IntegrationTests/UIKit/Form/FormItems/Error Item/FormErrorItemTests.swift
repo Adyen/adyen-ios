@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class FormErrorItemTests: XCTestCase {
@@ -12,7 +13,7 @@ class FormErrorItemTests: XCTestCase {
     func testHidingAndShowing() throws {
         let formViewController = FormViewController(style: FormComponentStyle())
 
-        setupRootViewController(formViewController)
+        formViewController.loadViewIfNeeded()
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {

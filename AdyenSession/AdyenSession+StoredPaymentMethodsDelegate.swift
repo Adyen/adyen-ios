@@ -11,12 +11,12 @@ import UIKit
 @_spi(AdyenInternal)
 extension AdyenSession: SessionStoredPaymentMethodsDelegate {
     
-    public var showRemovePaymentMethodButton: Bool { sessionContext.configuration.showRemovePaymentMethodButton }
+    public var showRemovePaymentMethodButton: Bool { state.responseConfiguration.showRemovePaymentMethodButton }
     
     public func disable(storedPaymentMethod: StoredPaymentMethod, dropInComponent: AnyDropInComponent, completion: @escaping Completion<Bool>) {
         let request = DisableStoredPaymentMethodRequest(
-            sessionId: sessionContext.identifier,
-            sessionData: sessionContext.data,
+            sessionId: state.identifier,
+            sessionData: state.data,
             storedPaymentMethodId: storedPaymentMethod.identifier
         )
         apiClient.perform(request) { [weak self] result in

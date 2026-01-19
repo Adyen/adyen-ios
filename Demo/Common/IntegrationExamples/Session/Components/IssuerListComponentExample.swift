@@ -45,16 +45,17 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
     // MARK: - Networking
 
     internal func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
-        requestAdyenSessionConfiguration { [weak self] response in
+        requestSessionInitialInfo { [weak self] response in
             guard let self else { return }
             switch response {
-            case let .success(configuration):
-                AdyenSession.initialize(
-                    with: configuration,
-                    delegate: self,
-                    presentationDelegate: self,
-                    completion: completion
-                )
+            case let .success(model):
+//                AdyenSession.initialize(
+//                    with: configuration,
+//                    delegate: self,
+//                    presentationDelegate: self,
+//                    completion: completion
+//                )
+                break
             case let .failure(error):
                 completion(.failure(error))
             }
@@ -75,7 +76,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
     }
 
     private func issuerListComponent(from session: AdyenSession) throws -> IssuerListComponent {
-        let paymentMethods = session.sessionContext.paymentMethods
+        let paymentMethods = session.state.paymentMethods
         guard let paymentMethod = paymentMethods.paymentMethod(ofType: IssuerListPaymentMethod.self) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: IssuerListPaymentMethod.self)
         }
@@ -107,7 +108,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
 
 extension IssuerListComponentExample: AdyenSessionDelegate {
     
-    func didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession) {
+    func didComplete(with result: CheckoutResult, component: Component, session: AdyenSession) {
         dismissAndShowAlert(result.resultCode.isSuccess, result.resultCode.rawValue)
     }
 
@@ -144,7 +145,7 @@ private extension IssuerListComponentExample {
     }
     
     @objc private func cancelPressed() {
-        issuerListComponent?.cancelIfNeeded()
+        issuerListComponent?.cancel()
         presenter?.dismiss(completion: nil)
     }
 }

@@ -5,12 +5,15 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 import UIKit
 
 internal class PayToIdentifierItem: FormStringPickerItem {
     
     override internal func build(with builder: FormItemViewBuilder) -> any AnyFormItemView {
-        PayToFormPickerItemView(item: self)
+        PayToFormPickerItemView(item: self, theme: builder.theme)
     }
 }
 
@@ -25,6 +28,6 @@ internal class PayToFormPickerItemView: BaseFormPickerItemView<FormStringPickerE
 extension FormItemViewBuilder {
     
     internal func build(with item: PayToIdentifierItem) -> PayToFormPickerItemView {
-        PayToFormPickerItemView(item: item)
+        PayToFormPickerItemView(item: item, theme: theme)
     }
 }

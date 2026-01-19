@@ -8,13 +8,13 @@
 import AdyenNetworking
 import Foundation
 
-internal protocol SessionResponse: Response {
+internal protocol SessionDataAware: Response {
     var sessionData: String { get }
 }
 
 /// A protocol that contains payment result values for session calls.
-internal protocol SessionPaymentResultAware {
-    var resultCode: PaymentsResponse.ResultCode { get }
+internal protocol SessionResultAware {
+    var resultCode: CheckoutResultCode { get }
     
     var sessionResult: String? { get }
 }
@@ -60,7 +60,7 @@ internal struct SessionSetupRequest: Request {
     }
 }
 
-internal struct SessionSetupResponse: SessionResponse {
+internal struct SessionSetupResponse: SessionDataAware {
     
     internal let countryCode: String?
     

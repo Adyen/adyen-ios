@@ -7,12 +7,12 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 
 /// A component that provides a form for BLIK payments.
 public final class BLIKComponent: PaymentComponent, PresentableComponent, PaymentAware, LoadingComponent {
-    
-    /// Configuration for BLIK Component.
-    public typealias Configuration = BasicComponentConfiguration
     
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -24,11 +24,11 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
 
     public lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
-        style: configuration.style
+        theme: configuration.theme
     )
     
     /// Component's configuration
-    public var configuration: Configuration
+    public var configuration: BLIKComponentConfiguration
 
     public let requiresModalPresentation: Bool = true
 
@@ -42,7 +42,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     public init(
         paymentMethod: BLIKPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: BLIKComponentConfiguration = .init()
     ) {
         self.blikPaymentMethod = paymentMethod
         self.context = context
@@ -57,9 +57,10 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
             scrollEnabled: configuration.showsSubmitButton,
-            style: configuration.style,
-            localizationParameters: configuration.localizationParameters
+            localizationParameters: configuration.localizationParameters,
+            theme: configuration.theme
         )
+
         formViewController.delegate = self
 
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
@@ -81,16 +82,16 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     /// The helper message item.
     internal lazy var hintLabelItem: FormLabelItem = .init(
         text: localizedString(.blikHelp, configuration.localizationParameters),
-        style: configuration.style.hintLabel,
         identifier: ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: "blikCodeHintLabel"
-        )
+        ),
+        labelStyle: configuration.theme.elements.labels.body
     )
 
     /// The BLIK code item.
     internal lazy var codeItem: FormTextInputItem = {
-        let item = FormTextInputItem(style: configuration.style.textField)
+        let item = FormTextInputItem()
         item.title = localizedString(.blikCode, configuration.localizationParameters)
         item.placeholder = localizedString(.blikPlaceholder, configuration.localizationParameters)
         item.validator = NumericStringValidator(exactLength: 6)
@@ -101,9 +102,10 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
         return item
     }()
 
-    /// The footer item.
+    /// The button item.
     internal lazy var button: FormButtonItem = {
-        let item = FormButtonItem(style: configuration.style.mainButtonItem)
+        let buttonStylePrimary = configuration.theme.elements.buttons.primary
+        let item = FormButtonItem(buttonStyle: buttonStylePrimary)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(
             with: payment?.amount,
@@ -128,7 +130,8 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
+        let data = PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order)
+        submit(data: data)
     }
 }
 

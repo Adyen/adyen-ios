@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
 import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 final class MBWayComponentUITests: XCTestCase {
@@ -82,7 +83,7 @@ final class MBWayComponentUITests: XCTestCase {
             let data = data.paymentMethod as! MBWayDetails
             XCTAssertEqual(data.telephoneNumber, "+3511233456789")
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
             

@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
 import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class OnlineBankingComponentUITests: XCTestCase {
@@ -18,7 +19,7 @@ class OnlineBankingComponentUITests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         paymentMethod = try! AdyenCoder.decode(onlineBankingDictionary) as OnlineBankingPaymentMethod
-        context = AdyenContext(apiContext: Dummy.apiContext, payment: nil)
+        context = AdyenContext(apiContext: Dummy.apiContext, payment: nil, amount: Dummy.amount)
         style = FormComponentStyle()
     }
 
@@ -78,7 +79,7 @@ class OnlineBankingComponentUITests: XCTestCase {
         sut.delegate = delegate
 
         // Then
-        let button: SubmitButton! = sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
+        let button: FormButton! = sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
 
         let didContinueExpectation = XCTestExpectation(description: "Dummy Expectation")
 
@@ -88,7 +89,7 @@ class OnlineBankingComponentUITests: XCTestCase {
             let details = data.paymentMethod as! OnlineBankingDetails
             XCTAssertEqual(details.type, .onlineBankingCZ)
             XCTAssertEqual(details.issuer, "jp")
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             
             self.verifyViewControllerImage(matching: sut.viewController, named: "online_banking_flow")
             didContinueExpectation.fulfill()
@@ -110,7 +111,7 @@ class OnlineBankingComponentUITests: XCTestCase {
 
         UIApplication.shared.adyen.mainKeyWindow?.rootViewController = sut.viewController
        
-        let button: SubmitButton = try XCTUnwrap(
+        let button: FormButton = try XCTUnwrap(
             sut.viewController.view.findView(with: "AdyenComponents.OnlineBankingComponent.continueButton.button")
         )
 

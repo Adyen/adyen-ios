@@ -7,13 +7,20 @@
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
 import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 final class BLIKComponentUITests: XCTestCase {
 
     private let payment = Payment(amount: Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
     private var paymentMethod: BLIKPaymentMethod { BLIKPaymentMethod(type: .blik, name: "test_name") }
-    private var context: AdyenContext { AdyenContext(apiContext: Dummy.apiContext, payment: payment) }
+    private var context: AdyenContext {
+        AdyenContext(
+            apiContext: Dummy.apiContext,
+            payment: payment,
+            amount: Dummy.amount
+        )
+    }
 
     func testUIConfiguration() {
         var style = FormComponentStyle()
@@ -45,13 +52,13 @@ final class BLIKComponentUITests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        let config = BLIKComponent.Configuration(style: style)
+        let config = BLIKComponentConfiguration(style: style)
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
     func testSubmitForm() throws {
-        let config = BLIKComponent.Configuration(style: .init())
+        let config = BLIKComponentConfiguration(style: .init())
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
         let delegate = PaymentComponentDelegateMock()
@@ -59,7 +66,7 @@ final class BLIKComponentUITests: XCTestCase {
         
         setupRootViewController(sut.viewController)
 
-        let submitButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button"))
+        let submitButton: FormButton = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.payButtonItem.button"))
 
         let blikCodeView: FormTextInputItemView! = sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem")
         self.populate(textItemView: blikCodeView, with: "123456")
@@ -72,7 +79,7 @@ final class BLIKComponentUITests: XCTestCase {
             let data = data.paymentMethod as! BLIKDetails
             XCTAssertEqual(data.blikCode, "123456")
 
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             XCTAssertEqual(sut.viewController.view.isUserInteractionEnabled, true)
             XCTAssertEqual(sut.button.showsActivityIndicator, false)
             

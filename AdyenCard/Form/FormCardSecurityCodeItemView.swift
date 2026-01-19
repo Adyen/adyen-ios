@@ -5,24 +5,32 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 import UIKit
 
 /// A view representing a form card security code item.
 internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> {
-    
-    internal required init(item: FormCardSecurityCodeItem) {
-        super.init(item: item)
+
+    /// Initializes the form card security code item view with theme.
+    /// - Parameters:
+    ///   - item: The item represented by the view.
+    ///   - theme: The theme to use for styling.
+    internal required init(item: FormCardSecurityCodeItem, theme: AdyenTheme) {
+        super.init(item: item, theme: theme)
         accessory = .customView(cardHintView)
         textField.allowsEditingActions = false
         
         observe(item.$selectedCard) { [weak self] cardsType in
+            guard let self else { return }
             let number = cardsType == CardType.americanExpress ? "4" : "3"
             let localizedPlaceholder = localizedString(.cardCvcItemPlaceholderDigits, item.localizationParameters, number)
-
-            if let textField = self?.textField {
-                textField.apply(placeholderText: localizedPlaceholder, with: item.style.placeholderText)
-                textField.accessibilityLabel = self?.accessibilityLabel(placeholder: localizedPlaceholder)
-            }
+            
+            // Set placeholder on item - it will be shown in footer label
+            self.item.placeholder = localizedPlaceholder
+            self.showHint()
+            self.textField.accessibilityLabel = self.accessibilityLabel(placeholder: localizedPlaceholder)
         }
 
         observe(item.$displayMode) { [weak self] _ in
@@ -35,7 +43,7 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
             self?.becomeFirstResponder()
         }
     }
-    
+
     internal lazy var cardHintView: HintView = {
         let view = HintView(item: self.item)
         view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cvvHintIcon")

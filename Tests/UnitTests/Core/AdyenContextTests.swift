@@ -19,31 +19,48 @@ class AdyenContextTests: XCTestCase {
         let apiContext = try! APIContext(environment: Environment.test, clientKey: "local_DUMMYKEYFORTESTING")
         let context = AdyenContext(
             apiContext: apiContext,
-            payment: .init(amount: oneEUR, countryCode: "NL")
+            payment: .init(amount: oneEUR, countryCode: "NL"),
+            amount: oneEUR
         )
         
         XCTAssertEqual(context.payment?.amount, oneEUR)
+        XCTAssertEqual(context.amount, oneEUR)
         context.update(payment: Payment(amount: twoEUR, countryCode: "NL"))
         XCTAssertEqual(context.payment?.amount, twoEUR)
     }
     
     func testPublicInit() {
-        let context = AdyenContext(apiContext: Dummy.apiContext, payment: Dummy.payment)
+        let context = AdyenContext(
+            apiContext: Dummy.apiContext,
+            payment: Dummy.payment,
+            amount: Dummy.amount
+        )
         
-        XCTAssertEqual(context.payment?.amount, Dummy.payment.amount)
+        XCTAssertEqual(context.payment?.amount, Dummy.amount)
+        XCTAssertEqual(context.amount, Dummy.amount)
         XCTAssertEqual(context.apiContext.clientKey, Dummy.apiContext.clientKey)
     }
     
     func testInternalInit() {
-        let context = AdyenContext(apiContext: Dummy.apiContext, payment: Dummy.payment, analyticsProvider: AnalyticsProviderMock())
+        let context = AdyenContext(
+            apiContext: Dummy.apiContext,
+            payment: Dummy.payment,
+            amount: Dummy.amount,
+            analyticsProvider: AnalyticsProviderMock()
+        )
         
-        XCTAssertEqual(context.payment?.amount, Dummy.payment.amount)
+        XCTAssertEqual(context.payment?.amount, Dummy.amount)
+        XCTAssertEqual(context.amount, Dummy.amount)
         XCTAssertEqual(context.apiContext.clientKey, Dummy.apiContext.clientKey)
         XCTAssertNotNil(context.analyticsProvider)
     }
     
     func testInitWithRegularEnvironmentShouldHaveAnalyticsProvider() {
-        let context = AdyenContext(apiContext: Dummy.apiContext, payment: Dummy.payment)
+        let context = AdyenContext(
+            apiContext: Dummy.apiContext,
+            payment: Dummy.payment,
+            amount: Dummy.amount
+        )
         
         XCTAssertNotNil(context.analyticsProvider)
     }
@@ -51,7 +68,11 @@ class AdyenContextTests: XCTestCase {
     func testInitWithDifferentEnvironmentShouldNotHaveAnalyticsProvider() {
         let apiContext = try! APIContext(environment: TestEnvironment.test, clientKey: "local_DUMMYKEYFORTESTING")
         
-        let context = AdyenContext(apiContext: apiContext, payment: Dummy.payment)
+        let context = AdyenContext(
+            apiContext: apiContext,
+            payment: Dummy.payment,
+            amount: Dummy.amount
+        )
         XCTAssertNil(context.analyticsProvider)
     }
     
@@ -59,6 +80,7 @@ class AdyenContextTests: XCTestCase {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             payment: Dummy.payment,
+            amount: Dummy.amount,
             analyticsConfiguration: AnalyticsConfiguration()
         )
         
@@ -67,12 +89,12 @@ class AdyenContextTests: XCTestCase {
     }
     
     func testOnlyAnalyticsProviderShouldBeCreated() {
-        var config = AnalyticsConfiguration()
-        config.isEnabled = false
+        let config = AnalyticsConfiguration(isEnabled: false)
         
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             payment: Dummy.payment,
+            amount: Dummy.amount,
             analyticsConfiguration: config
         )
         

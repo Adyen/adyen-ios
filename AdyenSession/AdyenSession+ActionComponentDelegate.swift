@@ -21,20 +21,19 @@ extension AdyenSession: ActionComponentDelegate {
     }
     
     internal func didComplete(currentComponent: Component) {
-        guard let resultCode = sessionContext.resultCode else {
+        guard let resultCode = state.resultCode else {
             AdyenAssertion.assertionFailure(message: "Missing resultCode.")
             return
         }
-        let result = AdyenSessionResult(
-            resultCode: SessionPaymentResultCode(paymentResultCode: resultCode),
-            encodedResult: sessionContext.sessionResult
+        let result = CheckoutResult(
+            resultCode: resultCode,
+            sessionResult: state.sessionResult
         )
         delegate?.didComplete(with: result, component: currentComponent, session: self)
     }
 
     public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        let handler = delegate?.handlerForAdditionalDetails(in: component, session: self) ?? self
-        handler.didProvide(data, from: component, session: self)
+        didProvide(data, from: component, dropInComponent: nil)
     }
     
     public func didOpenExternalApplication(component: ActionComponent) {
@@ -46,17 +45,16 @@ extension AdyenSession: ActionComponentDelegate {
     }
 }
 
-@_spi(AdyenInternal)
-extension AdyenSession: AdyenSessionPaymentDetailsHandler {
-    public func didProvide(
+extension AdyenSession {
+    package func didProvide(
         _ actionComponentData: ActionComponentData,
         from component: ActionComponent,
-        session: AdyenSession
+        dropInComponent: AnyDropInComponent?
     ) {
         (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
         let request = PaymentDetailsRequest(
-            sessionId: sessionContext.identifier,
-            sessionData: sessionContext.data,
+            sessionId: state.identifier,
+            sessionData: state.data,
             paymentData: actionComponentData.paymentData,
             details: actionComponentData.details
         )

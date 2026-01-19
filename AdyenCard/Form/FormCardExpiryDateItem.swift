@@ -4,8 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
+import Foundation
 
 /// A form item into which card expiry date is entered, formatted and validated.
 internal final class FormCardExpiryDateItem: FormTextInputItem {
@@ -82,7 +85,7 @@ internal final class FormCardExpiryDateItem: FormTextInputItem {
 
 extension FormItemViewBuilder {
     internal func build(with item: FormCardExpiryDateItem) -> FormTextInputItemView {
-        let view = FormTextInputItemView(item: item)
+        let view = FormTextInputItemView(item: item, theme: theme)
         view.observe(item.$title) { _ in
             view.accessibilityLabelView?.accessibilityLabel = item.accessibilityValue
         }

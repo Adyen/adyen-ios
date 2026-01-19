@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) import Adyen
 @testable import AdyenActions
+@_spi(AdyenInternal) @testable import AdyenUI
 import UIKit
 import XCTest
 

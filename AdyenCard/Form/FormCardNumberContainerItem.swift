@@ -5,6 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 import UIKit
 
 /// A form item which consists of card number item and the supported card icons below.
@@ -119,7 +122,7 @@ extension FormItemViewBuilder {
     }
     
     internal func build(with item: FormCardNumberContainerItem) -> FormItemView<FormCardNumberContainerItem> {
-        FormVerticalStackItemView(item: item, itemSpacing: 0)
+        FormVerticalStackItemView(item: item, itemSpacing: 0, theme: theme)
     }
 }
 

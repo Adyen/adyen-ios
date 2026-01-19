@@ -1,0 +1,54 @@
+//
+// Copyright (c) Adyen N.V.
+//
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//
+
+@_spi(AdyenInternal) import Adyen
+import UIKit
+
+package typealias CheckoutComponentDelegate = (PaymentComponentDelegate & ActionComponentDelegate)
+
+// TODO: add description
+public final class AdyenCheckoutComponent {
+    
+    internal let paymentComponent: PaymentComponent?
+    
+    private let actionComponent: ActionComponent?
+    
+    private var configuration: CheckoutConfiguration
+    
+    internal weak var delegate: CheckoutComponentDelegate?
+    
+    public var viewController: UIViewController? {
+        guard let presentableComponent = paymentComponent as? PresentableComponent else {
+            return nil
+        }
+        return presentableComponent.viewController
+    }
+    
+    package init(
+        paymentMethod: PaymentMethod,
+        configuration: CheckoutConfiguration,
+        delegate: CheckoutComponentDelegate?
+    ) {
+        self.configuration = configuration
+        self.delegate = delegate
+        // TODO: Add new v6 style here
+        self.paymentComponent = CheckoutComponentBuilder.build(for: paymentMethod, configuration: configuration)
+        self.paymentComponent?.delegate = delegate
+        self.actionComponent = nil
+    }
+    
+    package init(
+        action: Action,
+        configuration: CheckoutConfiguration,
+        delegate: CheckoutComponentDelegate?
+    ) {
+        self.configuration = configuration
+        self.delegate = delegate
+        self.actionComponent = CheckoutComponentBuilder.build(for: action, configuration: configuration)
+        self.actionComponent?.delegate = delegate
+        self.paymentComponent = nil
+    }
+}

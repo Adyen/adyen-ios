@@ -5,6 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 import UIKit
 
 /// A form item into which a card number is entered.
@@ -85,7 +88,8 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         title = localizedString(.cardNumberItemTitle, localizationParameters)
         validator = CardNumberValidator(isLuhnCheckEnabled: true, isEnteredBrandSupported: true)
         formatter = cardNumberFormatter
-        placeholder = localizedString(.cardNumberItemPlaceholder, localizationParameters)
+        // Brand icons are used instead of a placeholder
+        placeholder = nil
         validationFailureMessage = localizedString(.cardNumberItemInvalid, localizationParameters)
         keyboardType = .numberPad
     }
@@ -253,7 +257,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
 
 extension FormItemViewBuilder {
     internal func build(with item: FormCardNumberItem) -> FormItemView<FormCardNumberItem> {
-        FormCardNumberItemView(item: item)
+        FormCardNumberItemView(item: item, theme: theme)
     }
 }
 

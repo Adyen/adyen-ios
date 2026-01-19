@@ -14,6 +14,9 @@
 #if canImport(AdyenActions)
     @_spi(AdyenInternal) import AdyenActions
 #endif
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 import Foundation
 
 internal final class ComponentManager {
@@ -39,7 +42,7 @@ internal final class ComponentManager {
         partialPaymentEnabled: Bool = true,
         order: PartialPaymentOrder?,
         supportsEditingStoredPaymentMethods: Bool = false,
-        presentationDelegate: PresentationDelegate
+        presentationDelegate: PresentationDelegate?
     ) {
         self.paymentMethods = paymentMethods
         self.configuration = configuration

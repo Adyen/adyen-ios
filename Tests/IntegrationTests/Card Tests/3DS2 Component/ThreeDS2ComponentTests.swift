@@ -9,6 +9,7 @@
 import XCTest
 @_spi(AdyenInternal) import Adyen
 import Adyen3DS2
+@_spi(AdyenInternal) import AdyenUI
 
 @available(iOS 16.0, *)
 class ThreeDS2ComponentTests: XCTestCase {
@@ -560,7 +561,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             let onAuthenticateExpectation = expectation(description: "On Authentication - should be called in the AuthneticationSDK")
             authenticationServiceMock.onAuthenticate = { _ in
                 onAuthenticateExpectation.fulfill()
-                throw MockError()
+                throw ErrorMock()
             }
             authenticationServiceMock.onRegister = { _ in
                 XCTFail("On Register should not be called in the SDK.")
@@ -803,7 +804,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             let onRegisterExpectation = expectation(description: "On Registration - should be called in the AuthneticationSDK")
             authenticationServiceMock.onRegister = { _ in
                 onRegisterExpectation.fulfill()
-                throw MockError()
+                throw ErrorMock()
             }
     
             let delegate = ActionComponentDelegateMock()
@@ -912,11 +913,11 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTAssertNotNil(descriptionLabel)
             XCTAssertEqual(descriptionLabel?.text, "Approve this transaction to complete your purchase.")
 
-            let firstButton: SubmitButton? = viewController.view.findView(by: "primaryButton")
+            let firstButton: FormButton? = viewController.view.findView(by: "primaryButton")
             XCTAssertNotNil(firstButton)
             XCTAssertEqual(firstButton?.title, "Approve transaction")
 
-            let secondButton: SubmitButton? = viewController.view.findView(by: "secondaryButton")
+            let secondButton: FormButton? = viewController.view.findView(by: "secondaryButton")
             XCTAssertNotNil(secondButton)
             XCTAssertEqual(secondButton?.title, "Other options")
         }
@@ -940,11 +941,11 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTAssertNotNil(troubleshootingDescriptionLabel)
             XCTAssertEqual(troubleshootingDescriptionLabel?.text, "Ongoing payment issues may be resolved by resetting your Secure Checkout details.")
 
-            let troubleshootingButton: SubmitButton? = controller.view.findView(by: "troubleshootingButton")
+            let troubleshootingButton: FormButton? = controller.view.findView(by: "troubleshootingButton")
             XCTAssertNotNil(troubleshootingButton)
             XCTAssertEqual(troubleshootingButton?.title, "Reset Secure Checkout")
 
-            let firstButton: SubmitButton? = controller.view.findView(by: "primaryButton")
+            let firstButton: FormButton? = controller.view.findView(by: "primaryButton")
             XCTAssertNotNil(firstButton)
             XCTAssertEqual(firstButton?.title, "Approve differently")
         }
@@ -969,10 +970,10 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTAssertNotNil(descriptionLabel)
             XCTAssertEqual(descriptionLabel?.text, "Check out faster next time with this card")
 
-            let firstButton: SubmitButton? = viewController.view.findView(by: "primaryButton")
+            let firstButton: FormButton? = viewController.view.findView(by: "primaryButton")
             XCTAssertNotNil(firstButton)
             XCTAssertEqual(firstButton?.title, "Use secure checkout")
-            let secondButton: SubmitButton? = viewController.view.findView(by: "secondaryButton")
+            let secondButton: FormButton? = viewController.view.findView(by: "secondaryButton")
             XCTAssertNotNil(secondButton)
             XCTAssertEqual(secondButton?.title, "Not now")
         }
@@ -988,7 +989,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTAssertNotNil(descriptionLabel)
             XCTAssertEqual(descriptionLabel?.text, "Your payment has still been authenticated successfully but the Secure Checkout service was unavailable.")
 
-            let firstButton: SubmitButton? = controller.view.findView(by: "primaryButton")
+            let firstButton: FormButton? = controller.view.findView(by: "primaryButton")
             XCTAssertNotNil(firstButton)
             XCTAssertEqual(firstButton?.title, "Finish")
 

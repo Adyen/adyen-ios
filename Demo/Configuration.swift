@@ -11,6 +11,9 @@ import AdyenComponents
 import AdyenDropIn
 import Foundation
 import PassKit
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 internal enum ConfigurationConstants {
     // swiftlint:disable explicit_acl
@@ -102,8 +105,8 @@ internal struct CardSettings: Codable {
     internal var showsStoredCardSecurityCodeField = true
     internal var showsSecurityCodeField = true
     internal var addressMode: AddressFormType = .none
-    internal var socialSecurityNumberMode: CardComponent.FieldVisibility = .auto
-    internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
+    internal var socialSecurityNumberMode: CardComponentConfiguration.FieldVisibility = .auto
+    internal var koreanAuthenticationMode: CardComponentConfiguration.FieldVisibility = .auto
     internal var enableInstallments = false
     internal var showsInstallmentAmount = false
     
@@ -229,35 +232,25 @@ internal struct DemoAppSettings: Codable {
         }
     }
 
-    internal var cardConfiguration: CardComponent.Configuration {
+    internal var cardConfiguration: CardComponentConfiguration {
         var storedCardConfig = StoredCardConfiguration()
         storedCardConfig.showsSecurityCodeField = cardSettings.showsStoredCardSecurityCodeField
-
-        var billingAddressConfig = BillingAddressConfiguration()
-        billingAddressConfig.mode = cardComponentAddressFormType(from: cardSettings.addressMode)
         
-        let style = FormComponentStyle()
-
-        return .init(
-            style: style,
-            showsHolderNameField: cardSettings.showsHolderNameField,
-            showsStorePaymentMethodField: cardSettings.showsStorePaymentMethodField,
-            showsSecurityCodeField: cardSettings.showsSecurityCodeField,
-            koreanAuthenticationMode: cardSettings.koreanAuthenticationMode,
-            socialSecurityNumberMode: cardSettings.socialSecurityNumberMode,
-            storedCardConfiguration: storedCardConfig,
-            installmentConfiguration: installmentConfiguration,
-            billingAddress: billingAddressConfig
-        )
+        return CardComponentConfiguration()
+            .showsHolderNameField(cardSettings.showsHolderNameField)
+            .showsStorePaymentMethodField(cardSettings.showsStorePaymentMethodField)
+            .showsSecurityCodeField(cardSettings.showsSecurityCodeField)
+            .koreanAuthenticationMode(cardSettings.koreanAuthenticationMode)
+            .socialSecurityNumberMode(cardSettings.socialSecurityNumberMode)
+            .stored(storedCardConfig)
+            .installmentConfiguration(installmentConfiguration)
+            .billingAddressMode(billingAddressMode(from: cardSettings.addressMode))
     }
 
     internal var cardDropInConfiguration: DropInComponent.Card {
         var storedCardConfig = StoredCardConfiguration()
         storedCardConfig.showsSecurityCodeField = cardSettings.showsStoredCardSecurityCodeField
-
-        var billingAddressConfig = BillingAddressConfiguration()
-        billingAddressConfig.mode = cardComponentAddressFormType(from: cardSettings.addressMode)
-
+        
         return .init(
             showsHolderNameField: cardSettings.showsHolderNameField,
             showsStorePaymentMethodField: cardSettings.showsStorePaymentMethodField,
@@ -265,18 +258,20 @@ internal struct DemoAppSettings: Codable {
             koreanAuthenticationMode: cardSettings.koreanAuthenticationMode,
             socialSecurityNumberMode: cardSettings.socialSecurityNumberMode,
             storedCardConfiguration: storedCardConfig,
-            installmentConfiguration: installmentConfiguration,
-            billingAddress: billingAddressConfig
+            installmentConfiguration: installmentConfiguration
         )
-
     }
 
     internal var dropInConfiguration: DropInComponent.Configuration {
         var style = DropInComponent.Style()
         style.navigation.tintColor = .red
-        
+
+        // TODO: Add new style here
+        let theme = AdyenTheme.default
+
         let dropInConfig = DropInComponent.Configuration(
             style: style,
+            theme: theme,
             allowsSkippingPaymentList: dropInSettings.allowsSkippingPaymentList,
             allowPreselectedPaymentView: dropInSettings.allowPreselectedPaymentView
         )
@@ -303,21 +298,34 @@ internal struct DemoAppSettings: Codable {
     }
 
     internal var analyticsConfiguration: AnalyticsConfiguration {
-        var analyticsConfiguration = AnalyticsConfiguration()
-        analyticsConfiguration.isEnabled = ConfigurationConstants.current.analyticsSettings.isEnabled
-        return analyticsConfiguration
+        AnalyticsConfiguration(
+            isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
+        )
     }
 
 }
 
 private extension DemoAppSettings {
     
-    private func cardComponentAddressFormType(from addressFormType: CardSettings.AddressFormType) -> CardComponent.AddressFormType {
+    private func billingAddressMode(from addressFormType: CardSettings.AddressFormType) -> BillingAddressMode {
         switch addressFormType {
         case .lookup:
-            return .lookup(provider: DemoAddressLookupProvider())
+            let provider = DemoAddressLookupProvider()
+            return .lookup(
+                onAddressLookup: { searchTerm in
+                    await provider.searchAsync(searchTerm)
+                },
+                onAddressSelected: { selected in
+                    try await provider.completeAsync(selected)
+                }
+            )
         case .lookupMapKit:
-            return .lookup(provider: MapkitAddressLookupProvider())
+            let provider = MapkitAddressLookupProvider()
+            return .lookup(
+                onAddressLookup: { searchTerm in
+                    await provider.searchAsync(searchTerm)
+                }
+            )
         case .full:
             return .full
         case .postalCode:

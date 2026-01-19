@@ -8,6 +8,7 @@
 import AdyenActions
 import AdyenComponents
 import AdyenEncryption
+@_spi(AdyenInternal) @testable import AdyenUI
 import Foundation
 import PassKit
 
@@ -15,6 +16,9 @@ enum Dummy: Error {
     case error
 
     internal static let payment = Payment(amount: Amount(value: 100, currencyCode: "EUR"), countryCode: "NL")
+    
+    // connected to payment so when payment is removed it's obvious
+    internal static let amount = payment.amount
     
     /// This is not a real public key, this is just a random string with the right pattern.
     internal static let publicKey = "9E1CB|B2BCED4E13103C5983A9B09D63DE84ACC0183D40D0E187DAE2A4390BA63BBFF209FF0C122044B826697C71391E5D5C1449F9C248E47DBB5BEEBCD72D4167F46CD6BBCEBB4E53DB440A86F4C00E155DF4813ABE04D019D6D85BE34044D585A6EE4CF527171EBCB985DA7403AAA762F7358093575A529251DD4D9009471269AC21DD311A29EAD64B1AE809E1F0C74486787FCBBBEBBB2F3573DF6F011566982A49EA96E959215BA6584B61A0CEDD3322AE9D67EE954CA8644851894B85C971982467F1DD0054508DCF3AE74ABB8E6F54DBF2A8ABB6B3CCBB0BD5637DA93200891918D65F9C4D399AABDA94F7CE8125C9B35DE9398DF51CC11E385F951C0B4D8EBD"
@@ -25,6 +29,7 @@ enum Dummy: Error {
         AdyenContext(
             apiContext: apiContext,
             payment: payment,
+            amount: amount,
             analyticsProvider: AnalyticsProviderMock()
         )
     }
@@ -33,6 +38,7 @@ enum Dummy: Error {
         AdyenContext(
             apiContext: apiContext,
             payment: payment,
+            amount: amount,
             analyticsProvider: AnalyticsProviderMock()
         )
     }

@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class BACSDirectDebitComponentTests: XCTestCase {
@@ -103,7 +104,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
             XCTAssertEqual(details.bankAccountNumber, self?.bacsDataMock.bankAccountNumber)
             XCTAssertEqual(details.bankLocationId, self?.bacsDataMock.bankLocationId)
 
-            self?.sut.stopLoadingIfNeeded()
+            self?.sut.stopLoading()
             didSubmitExpectation.fulfill()
         }
 

@@ -29,7 +29,7 @@ let package = Package(
     name: \"TempProject\",
     defaultLocalization: \"en-US\",
     platforms: [
-        .iOS(.v12)
+        .iOS(.v13)
     ],
     products: [
         .library(
@@ -55,6 +55,7 @@ let package = Package(
                 .product(name: \"AdyenTwint\", package: \"Adyen\"),
                 .product(name: \"AdyenDropIn\", package: \"Adyen\"),
                 .product(name: \"AdyenDelegatedAuthentication\", package: \"Adyen\"),
+                .product(name: \"AdyenCheckout\", package: \"Adyen\"),
             ]
         )
     ]

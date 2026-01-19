@@ -8,6 +8,7 @@
 @_spi(AdyenInternal) @testable import AdyenCard
 @testable import AdyenComponents
 import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class GiftCardUITests: XCTestCase {

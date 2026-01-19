@@ -25,20 +25,10 @@ public struct PaymentComponentData {
 
     /// The partial payment order if any.
     public let order: PartialPaymentOrder?
-
-    /// The remaining amount if there is an order, the full amount otherwise.
-    @available(*, deprecated, message: "This property is deprecated. Use the amount property if needed.")
-    public var amountToPay: Amount? {
-        order?.remainingAmount ?? amount
-    }
     
     /// The installments object.
     public let installments: Installments?
     
-    /// Indicates whether the current SDK version suports native redirect without glue pages.
-    @available(*, deprecated, message: "This property is deprecated. Use the new paymentMethod.sdkData property instead.")
-    public let supportNativeRedirect: Bool = true
-
     /// Shopper name.
     public var shopperName: ShopperName? {
         guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }
@@ -59,12 +49,6 @@ public struct PaymentComponentData {
     
     /// Indicates the device default browser info.
     public let browserInfo: BrowserInfo?
-
-    /// A unique identifier for a checkout attempt.
-    @available(*, deprecated, message: "This property is deprecated. Use the new paymentMethod.sdkData property instead.")
-    public var checkoutAttemptId: String? {
-        paymentMethod.checkoutAttemptId
-    }
 
     /// The billing address information.
     public var billingAddress: PostalAddress? {
@@ -101,8 +85,7 @@ public struct PaymentComponentData {
     ///   - checkoutAttemptId: The checkoutAttempt identifier.
     ///   - installments: Installments selection if specified.
     ///   - sdkData: The encoded SDK data if specified.
-    @_spi(AdyenInternal)
-    public init(
+    package init(
         paymentMethodDetails: some PaymentMethodDetails,
         amount: Amount?,
         order: PartialPaymentOrder?,
@@ -131,8 +114,7 @@ public struct PaymentComponentData {
         )
     }
 
-    @_spi(AdyenInternal)
-    public func replacing(order: PartialPaymentOrder) -> PaymentComponentData {
+    package func replacing(order: PartialPaymentOrder) -> PaymentComponentData {
         PaymentComponentData(
             paymentMethodDetails: paymentMethod,
             amount: amount,
@@ -143,8 +125,7 @@ public struct PaymentComponentData {
         )
     }
 
-    @_spi(AdyenInternal)
-    public func replacing(amount: Amount) -> PaymentComponentData {
+    package func replacing(amount: Amount) -> PaymentComponentData {
         PaymentComponentData(
             paymentMethodDetails: paymentMethod,
             amount: amount,
@@ -155,8 +136,7 @@ public struct PaymentComponentData {
         )
     }
 
-    @_spi(AdyenInternal)
-    public func replacing(checkoutAttemptId: String?) -> PaymentComponentData {
+    package func replacing(checkoutAttemptId: String?) -> PaymentComponentData {
         guard let checkoutAttemptId else { return self }
         var paymentMethod = paymentMethod
         paymentMethod.checkoutAttemptId = checkoutAttemptId
@@ -175,8 +155,7 @@ public struct PaymentComponentData {
     ///
     /// - Parameters:
     ///   - completion: The completion closure that is called with the new `PaymentComponentData` instance.
-    @_spi(AdyenInternal)
-    public func dataByAddingBrowserInfo(completion: @escaping ((_ newData: PaymentComponentData) -> Void)) {
+    package func dataByAddingBrowserInfo(completion: @escaping ((_ newData: PaymentComponentData) -> Void)) {
         BrowserInfo.initialize {
             completion(PaymentComponentData(
                 paymentMethodDetails: paymentMethod,
