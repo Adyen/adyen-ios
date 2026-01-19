@@ -270,13 +270,13 @@ class FormPickerItemViewStyleTests: XCTestCase {
     func test_view_backgroundColor_shouldUseStyleBackgroundColor() {
         // Given - Current behavior: uses item.style.backgroundColor
         var style = FormTextItemStyle()
-        style.backgroundColor = .systemYellow
+        style.backgroundColor = .yellow
         let customItem = TestFormPickerItem(style: style)
 
         // When
         let customSut = FormPickerItemView(item: customItem)
 
         // Then - Currently reads from item.style.backgroundColor
-        XCTAssertEqual(customSut.backgroundColor, .systemYellow)
+        XCTAssertEqual(customSut.backgroundColor, .yellow)
     }
 }

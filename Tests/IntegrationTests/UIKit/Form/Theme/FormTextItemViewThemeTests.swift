@@ -34,10 +34,10 @@ final class FormTextItemViewThemeTests: XCTestCase {
     func test_formTextItemView_withCustomColors_shouldApplyToUI() {
         // Given - item with required validation that will fail when empty
         let customColors = AdyenColors(
-            container: .systemYellow,
+            container: .yellow,
             containerOutline: .systemPurple,
-            primary: .systemPink,
-            destructive: .systemOrange
+            primary: .magenta,
+            destructive: .orange
         )
         let item = FormTextInputItem()
         item.validator = LengthValidator(minimumLength: 1, maximumLength: 100)
@@ -48,21 +48,21 @@ final class FormTextItemViewThemeTests: XCTestCase {
 
         // Then - trigger validation to show error state
         sut.showValidation()
-        XCTAssertEqual(sut.titleLabel.textColor, .systemPink)
-        XCTAssertEqual(sut.textField.textColor, .systemPink)
-        XCTAssertEqual(sut.footerLabel.textColor, .systemOrange)
+        XCTAssertEqual(sut.titleLabel.textColor, .magenta)
+        XCTAssertEqual(sut.textField.textColor, .magenta)
+        XCTAssertEqual(sut.footerLabel.textColor, .orange)
 
         let containerView = getContainerView(from: sut)
-        XCTAssertEqual(containerView?.backgroundColor, .systemYellow)
+        XCTAssertEqual(containerView?.backgroundColor, .yellow)
         // Error state should show destructive border color
-        XCTAssertEqual(containerView?.layer.borderColor, UIColor.systemOrange.cgColor)
+        XCTAssertEqual(containerView?.layer.borderColor, UIColor.orange.cgColor)
     }
 
     func test_formTextItemView_borderColor_shouldUpdateOnEditingStateChange() {
         // Given
         let customColors = AdyenColors(
             containerOutline: .systemGreen,
-            primary: .systemOrange
+            primary: .orange
         )
         let sut = makeSUT(colors: customColors)
         let containerView = getContainerView(from: sut)
@@ -74,7 +74,7 @@ final class FormTextItemViewThemeTests: XCTestCase {
         triggerEditing(on: sut, isEditing: true)
 
         // Then
-        XCTAssertEqual(containerView?.layer.borderColor, UIColor.systemOrange.cgColor)
+        XCTAssertEqual(containerView?.layer.borderColor, UIColor.orange.cgColor)
 
         // When - stop editing
         triggerEditing(on: sut, isEditing: false)
