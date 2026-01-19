@@ -17,7 +17,7 @@ package struct AdyenLabelStyles {
     package var footnoteEmphasized: AdyenLabelStyle
 
     /// A default instance of AdyenLabelStyles.
-    internal static let `default` = AdyenElements.default.labels
+    package static let `default` = AdyenElements.default.labels
 
     /// Initializes the label styles with all parameters required.
     ///

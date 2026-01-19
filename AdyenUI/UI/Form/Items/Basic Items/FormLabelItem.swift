@@ -71,7 +71,9 @@ internal final class FormLabelItemView: UILabel, AnyFormItemView {
         numberOfLines = 0
         accessibilityIdentifier = item.identifier
 
-        apply(theme.elements.labels.body)
+        // TODO: Why are we using the AdyenTheme directly here? I assumed that AdyenTheme would influence the way we define the AdyenLabelStyle and that in turn influences the UI.
+        // Here it looks like we assume that FromLabelItemView will always be body type?
+        apply(item.labelStyle)
     }
 
     // MARK: - AnyFormItemView

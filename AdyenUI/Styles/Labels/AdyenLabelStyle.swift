@@ -82,7 +82,7 @@ extension AdyenLabelStyle {
     /// Returns a new AdyenLabelStyle with the specified text alignment.
     /// - Parameter alignment: The text alignment to set.
     /// - Returns: A new `AdyenLabelStyle` instance.
-    internal func textAlignment(_ alignment: NSTextAlignment) -> AdyenLabelStyle {
+    package func textAlignment(_ alignment: NSTextAlignment) -> AdyenLabelStyle {
         var newStyle = self
         newStyle.textAlignment = alignment
         return newStyle

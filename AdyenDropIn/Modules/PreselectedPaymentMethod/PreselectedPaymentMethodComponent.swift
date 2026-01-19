@@ -119,13 +119,9 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
         let item = FormLabelItem(
             text: displayInformation.title,
-            style: TextStyle(
-                font: .systemFont(ofSize: 34, weight: .bold),
-                color: UIColor(red: 0, green: 0.067, blue: 0.173, alpha: 1),
-                textAlignment: .center
-            )
+            identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title"),
+            labelStyle: AdyenLabelStyles.default.title.textAlignment(.center)
         )
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
         return item
     }()
     
@@ -134,16 +130,16 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
         let amount = defaultComponent.context.payment?.amount
         let formattedAmount = amount.map { AmountFormatter.formatted(amount: $0.value, currencyCode: $0.currencyCode) } ?? ""
+
+        // TODO: Need to construct this from Localization variable substitution
         let subtitleText = "Use your \(displayInformation.title) to pay \(formattedAmount)"
+
         let item = FormLabelItem(
             text: subtitleText,
-            style: TextStyle(
-                font: .systemFont(ofSize: 17, weight: .regular),
-                color: UIColor(red: 0, green: 0.071, blue: 0.133, alpha: 1),
-                textAlignment: .center
-            )
+            identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "subtitle"),
+            labelStyle: AdyenLabelStyles.default.subtitle.textAlignment(.center)
         )
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "subtitle")
+
         return item
     }()
     
