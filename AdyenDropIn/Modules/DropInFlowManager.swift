@@ -54,8 +54,8 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     // MARK: - Private
 
-    private lazy var actionComponent: AdyenActionComponent = {
-        let actionComponent = AdyenActionComponent(context: context)
+    private lazy var actionComponent: CheckoutActionComponent = {
+        let actionComponent = CheckoutActionComponent(context: context)
         actionComponent.delegate = self
         actionComponent.presentationDelegate = self
         actionComponent.configuration.style = configuration.style.actionComponent

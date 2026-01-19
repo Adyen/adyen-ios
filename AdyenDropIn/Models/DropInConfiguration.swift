@@ -95,10 +95,10 @@ public extension DropInComponent {
         public init() { /* Empty initializer */ }
         
         /// Three DS configurations
-        public var threeDS: AdyenActionComponent.Configuration.ThreeDS = .init()
+        public var threeDS: CheckoutActionComponent.Configuration.ThreeDS = .init()
         
         /// Twint configurations
-        public var twint: AdyenActionComponent.Configuration.Twint?
+        public var twint: CheckoutActionComponent.Configuration.Twint?
     }
 
     /// Boleto component configuration.

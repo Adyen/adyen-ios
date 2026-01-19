@@ -14,7 +14,7 @@ import XCTest
     import AdyenTwint
 #endif
 
-class AdyenActionComponentTests: XCTestCase {
+class CheckoutActionComponentTests: XCTestCase {
 
     let weChatActionResponse = """
     {
@@ -99,7 +99,7 @@ class AdyenActionComponentTests: XCTestCase {
     }
 
     func testRedirectToHttpWebLink() throws {
-        let sut = AdyenActionComponent(context: Dummy.context)
+        let sut = CheckoutActionComponent(context: Dummy.context)
         let delegate = ActionComponentDelegateMock()
         sut.presentationDelegate = try UIViewController.topPresenter()
         sut.delegate = delegate
@@ -115,7 +115,7 @@ class AdyenActionComponentTests: XCTestCase {
     }
 
     func testAwaitAction() throws {
-        let sut = AdyenActionComponent(context: Dummy.context)
+        let sut = CheckoutActionComponent(context: Dummy.context)
         sut.presentationDelegate = try UIViewController.topPresenter()
 
         let action = Action.await(AwaitAction(paymentData: "SOME_DATA", paymentMethodType: .blik))
@@ -146,7 +146,7 @@ class AdyenActionComponentTests: XCTestCase {
             completion?(true)
         }
         
-        let sut = AdyenActionComponent(context: Dummy.context)
+        let sut = CheckoutActionComponent(context: Dummy.context)
         sut.appLauncher = mockAppLauncher
         
         sut.presentationDelegate = try UIViewController.topPresenter()
@@ -175,7 +175,7 @@ class AdyenActionComponentTests: XCTestCase {
     }
 
     func testWeChatAction() throws {
-        let sut = AdyenActionComponent(context: Dummy.context)
+        let sut = CheckoutActionComponent(context: Dummy.context)
 
         let expectation = expectation(description: "Assertion Expectation")
 
@@ -192,7 +192,7 @@ class AdyenActionComponentTests: XCTestCase {
     }
 
     func test3DSAction() throws {
-        let sut = AdyenActionComponent(context: Dummy.context)
+        let sut = CheckoutActionComponent(context: Dummy.context)
         let action = try JSONDecoder().decode(ThreeDS2Action.self, from: threeDSFingerprintAction.data(using: .utf8)!)
         sut.handle(Action.threeDS2(action))
 
@@ -200,7 +200,7 @@ class AdyenActionComponentTests: XCTestCase {
     }
 
     func testVoucherAction() throws {
-        let sut = AdyenActionComponent(context: Dummy.context)
+        let sut = CheckoutActionComponent(context: Dummy.context)
         sut.presentationDelegate = try UIViewController.topPresenter()
         
         let action = try JSONDecoder().decode(VoucherAction.self, from: voucherAction.data(using: .utf8)!)
@@ -221,7 +221,7 @@ class AdyenActionComponentTests: XCTestCase {
     
     func testQRCodeAction() throws {
 
-        let sut = AdyenActionComponent(context: Dummy.context)
+        let sut = CheckoutActionComponent(context: Dummy.context)
         sut.presentationDelegate = try UIViewController.topPresenter()
         
         let action = try JSONDecoder().decode(QRCodeAction.self, from: qrAction.data(using: .utf8)!)
@@ -232,7 +232,7 @@ class AdyenActionComponentTests: XCTestCase {
     
     func testDocumentAction() throws {
         // DocumentAction
-        let sut = AdyenActionComponent(context: Dummy.context)
+        let sut = CheckoutActionComponent(context: Dummy.context)
         sut.presentationDelegate = try UIViewController.topPresenter()
         
         let action = try JSONDecoder().decode(DocumentAction.self, from: documentAction.data(using: .utf8)!)
@@ -244,7 +244,7 @@ class AdyenActionComponentTests: XCTestCase {
     
     func testTwintAction() throws {
         
-        let sut = AdyenActionComponent(context: Dummy.context)
+        let sut = CheckoutActionComponent(context: Dummy.context)
         sut.presentationDelegate = try UIViewController.topPresenter()
         
         let assertionExpectation = expectation(description: "Should Assert if no Twint configuration is provided")
@@ -287,7 +287,7 @@ class AdyenActionComponentTests: XCTestCase {
                 XCTFail("No assertion should have been raised")
             }
             
-            _ = AdyenActionComponent.Configuration.Twint(callbackAppScheme: scheme)
+            _ = CheckoutActionComponent.Configuration.Twint(callbackAppScheme: scheme)
         }
         
         // Invalid Configuration
@@ -297,7 +297,7 @@ class AdyenActionComponentTests: XCTestCase {
                 XCTAssertEqual(message, "Format of provided callbackAppScheme '\(scheme)' is incorrect.")
             }
             
-            _ = AdyenActionComponent.Configuration.Twint(callbackAppScheme: scheme)
+            _ = CheckoutActionComponent.Configuration.Twint(callbackAppScheme: scheme)
         }
     }
     
@@ -339,7 +339,7 @@ class AdyenActionComponentTests: XCTestCase {
     private func testEvent(for action: Action) {
         
         let analyticsProviderMock = AnalyticsProviderMock()
-        let sut = AdyenActionComponent(context: Dummy.context(with: analyticsProviderMock))
+        let sut = CheckoutActionComponent(context: Dummy.context(with: analyticsProviderMock))
         
         sut.handle(action)
         
