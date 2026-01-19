@@ -395,14 +395,9 @@ class CardComponentTests: XCTestCase {
 
         var configuration = CardComponentConfiguration()
 
-        let tintColor: UIColor = .black
-        let titleColor: UIColor = .gray
-
-        configuration.style = {
-            var style = FormComponentStyle(tintColor: tintColor)
-            style.textField.title.color = titleColor
-            return style
-        }()
+        let tintColor = UIColor.black
+        
+        configuration.theme = AdyenTheme(colors: AdyenColors(primary: tintColor))
 
         let component = CardComponent(
             paymentMethod: method,
@@ -413,16 +408,17 @@ class CardComponentTests: XCTestCase {
         presentOnRoot(component.viewController)
 
         let switchView: UISwitch = try XCTUnwrap(component.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch"))
+        switchView.isOn = true
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> = try XCTUnwrap(component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
 
-        XCTAssertEqual(switchView.onTintColor, tintColor)
-        XCTAssertEqual(securityCodeItemView.titleLabel.textColor, titleColor)
+        XCTAssertEqual(switchView.onTintColor?.cgColor, tintColor.cgColor)
+        XCTAssertEqual(securityCodeItemView.titleLabel.textColor.cgColor, tintColor.cgColor)
 
         try withoutAnimation {
             focus(textItemView: securityCodeItemView)
         }
 
-        XCTAssertEqual(securityCodeItemView.titleLabel.textColor, tintColor)
+        XCTAssertEqual(securityCodeItemView.titleLabel.textColor.cgColor, tintColor.cgColor)
     }
 
     // TODO: Fix Later
