@@ -67,6 +67,11 @@ public struct FormItemViewBuilder {
         FormImageView(item: item)
     }
 
+    /// Builds `FormCardImageItemView` from `FormCardImageItem`.
+    package func build(with item: FormCardImageItem) -> FormItemView<FormCardImageItem> {
+        FormCardImageItemView(item: item)
+    }
+
     /// Builds `FormSeparatorItemView` from `FormSeparatorItem`.
     package func build(with item: FormSeparatorItem) -> FormItemView<FormSeparatorItem> {
         FormSeparatorItemView(item: item, theme: theme)

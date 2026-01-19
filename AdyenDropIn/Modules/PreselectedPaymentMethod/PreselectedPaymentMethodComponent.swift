@@ -85,13 +85,11 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         )
         formViewController.delegate = self
         
-        formViewController.append(listItem)
-        formViewController.append(submitButtonItem)
-        if let footnoteItem {
-            formViewController.append(footnoteItem.padding())
-        }
+        formViewController.append(cardImageItem)
+        formViewController.append(titleItem)
+        formViewController.append(subtitleItem)
         formViewController.append(FormSpacerItem())
-        formViewController.append(separator)
+        formViewController.append(submitButtonItem)
         formViewController.append(openAllButtonItem)
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
         
@@ -99,31 +97,54 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         return formViewController
     }()
     
-    private lazy var separator: FormSeparatorItem = {
-        let separator = FormSeparatorItem(color: style.separatorColor ?? UIColor.Adyen.componentSeparator)
-        separator.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "separator")
-        return separator
-    }()
-    
-    private lazy var listItem: ListItem = {
+    private lazy var cardImageItem: FormCardImageItem = {
         let paymentMethod = defaultComponent.paymentMethod
         let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
         let imageURL = LogoURLProvider.logoURL(
             withName: displayInformation.logoName,
-            environment: context.apiContext.environment
+            environment: context.apiContext.environment,
+            size: .large
         )
-        let identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: "defaultComponent"
+        let item = FormCardImageItem(
+            imageURL: imageURL,
+            size: CGSize(width: 150, height: 94),
+            cornerRadius: 5
         )
-        return .init(
-            title: displayInformation.title,
-            subtitle: displayInformation.subtitle,
-            icon: .init(url: imageURL),
-            style: self.listItemStyle,
-            identifier: identifier,
-            accessibilityLabel: displayInformation.accessibilityLabel
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardImage")
+        return item
+    }()
+    
+    private lazy var titleItem: FormLabelItem = {
+        let paymentMethod = defaultComponent.paymentMethod
+        let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
+        let item = FormLabelItem(
+            text: displayInformation.title,
+            style: TextStyle(
+                font: .systemFont(ofSize: 34, weight: .bold),
+                color: UIColor(red: 0, green: 0.067, blue: 0.173, alpha: 1),
+                textAlignment: .center
+            )
         )
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
+        return item
+    }()
+    
+    private lazy var subtitleItem: FormLabelItem = {
+        let paymentMethod = defaultComponent.paymentMethod
+        let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
+        let amount = defaultComponent.context.payment?.amount
+        let formattedAmount = amount.map { AmountFormatter.formatted(amount: $0.value, currencyCode: $0.currencyCode) } ?? ""
+        let subtitleText = "Use your \(displayInformation.title) to pay \(formattedAmount)"
+        let item = FormLabelItem(
+            text: subtitleText,
+            style: TextStyle(
+                font: .systemFont(ofSize: 17, weight: .regular),
+                color: UIColor(red: 0, green: 0.071, blue: 0.133, alpha: 1),
+                textAlignment: .center
+            )
+        )
+        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "subtitle")
+        return item
     }()
     
     private lazy var submitButtonItem: FormButtonItem = {
