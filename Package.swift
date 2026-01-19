@@ -76,7 +76,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/Adyen/adyen-authentication-ios",
-            exact: "3.1.0"
+            exact: "3.2.0"
         ),
         .package(
             url: "https://github.com/Adyen/adyen-networking-ios",
