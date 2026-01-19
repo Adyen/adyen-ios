@@ -132,17 +132,17 @@ class CardComponentTests: XCTestCase {
         // Given - custom theme with distinctive colors and button styling
         let colorToTest = UIColor.blue
         let customColors = AdyenColors(
-            container: .systemYellow,
-            containerOutline: .systemPurple,
+            container: .yellow,
+            containerOutline: .purple,
             primary: colorToTest,
-            highlight: .systemBlue
+            highlight: .blue
         )
         
         var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
         configuration.showsStorePaymentMethodField = true
         configuration.theme = AdyenTheme(colors: customColors)
-            .primaryButton(backgroundColor: .systemRed, textColor: .white, cornerRadius: 12)
+            .primaryButton(backgroundColor: .red, textColor: .white, cornerRadius: 12)
             .cornerRadius(8)
 
         let sut = CardComponent(
@@ -204,7 +204,7 @@ class CardComponentTests: XCTestCase {
         let payButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button.titleLabel")
         
         XCTAssertNotNil(payButton, "Pay button should exist")
-        XCTAssertEqual(payButton?.backgroundColor, .systemRed, "Pay button should use theme button background color")
+        XCTAssertEqual(payButton?.backgroundColor, .red, "Pay button should use theme button background color")
         XCTAssertEqual(payButtonTitle?.textColor, .white, "Pay button title should use theme button text color")
         
         // Verify button corner radius
