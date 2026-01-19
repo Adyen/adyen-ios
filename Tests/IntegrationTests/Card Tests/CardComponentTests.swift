@@ -130,18 +130,19 @@ class CardComponentTests: XCTestCase {
 
     func test_component_withCustomTheme_shouldApplyThemeStyles() {
         // Given - custom theme with distinctive colors and button styling
+        let colorToTest = UIColor.blue
         let customColors = AdyenColors(
-            container: .systemYellow,
-            containerOutline: .systemPurple,
-            primary: .systemPink,
-            highlight: .systemBlue
+            container: .yellow,
+            containerOutline: .purple,
+            primary: colorToTest,
+            highlight: .blue
         )
         
         var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
         configuration.showsStorePaymentMethodField = true
         configuration.theme = AdyenTheme(colors: customColors)
-            .primaryButton(backgroundColor: .systemRed, textColor: .white, cornerRadius: 12)
+            .primaryButton(backgroundColor: .red, textColor: .white, cornerRadius: 12)
             .cornerRadius(8)
 
         let sut = CardComponent(
@@ -160,24 +161,24 @@ class CardComponentTests: XCTestCase {
         let cardNumberItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.textField")
         let cardNumberItemContainer: UIView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         
-        XCTAssertEqual(cardNumberItemTitleLabel?.textColor, .systemPink, "Card number title should use theme primary color")
-        XCTAssertEqual(cardNumberItemTextField?.textColor, .systemPink, "Card number text should use theme primary color")
+        XCTAssertEqual(cardNumberItemTitleLabel?.textColor, colorToTest, "Card number title should use theme primary color")
+        XCTAssertEqual(cardNumberItemTextField?.textColor, colorToTest, "Card number text should use theme primary color")
         
         // Holder name field
         let holderNameItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem.titleLabel")
         let holderNameItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem.textField")
         let holderNameItemContainer: UIView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem")
         
-        XCTAssertEqual(holderNameItemTitleLabel?.textColor, .systemPink, "Holder name title should use theme primary color")
-        XCTAssertEqual(holderNameItemTextField?.textColor, .systemPink, "Holder name text should use theme primary color")
+        XCTAssertEqual(holderNameItemTitleLabel?.textColor, colorToTest, "Holder name title should use theme primary color")
+        XCTAssertEqual(holderNameItemTextField?.textColor, colorToTest, "Holder name text should use theme primary color")
         
         // Expiry date field
         let expiryDateItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem.titleLabel")
         let expiryDateItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem.textField")
         let expiryDateItemContainer: UIView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
         
-        XCTAssertEqual(expiryDateItemTitleLabel?.textColor, .systemPink, "Expiry date title should use theme primary color")
-        XCTAssertEqual(expiryDateItemTextField?.textColor, .systemPink, "Expiry date text should use theme primary color")
+        XCTAssertEqual(expiryDateItemTitleLabel?.textColor, colorToTest, "Expiry date title should use theme primary color")
+        XCTAssertEqual(expiryDateItemTextField?.textColor, colorToTest, "Expiry date text should use theme primary color")
         
         // Security code field
         let securityCodeItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.titleLabel")
@@ -185,8 +186,8 @@ class CardComponentTests: XCTestCase {
         let securityCodeItemContainer: UIView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
         let securityCodeCvvHint: UIView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.cvvHintIcon")
         
-        XCTAssertEqual(securityCodeItemTitleLabel?.textColor, .systemPink, "Security code title should use theme primary color")
-        XCTAssertEqual(securityCodeItemTextField?.textColor, .systemPink, "Security code text should use theme primary color")
+        XCTAssertEqual(securityCodeItemTitleLabel?.textColor, colorToTest, "Security code title should use theme primary color")
+        XCTAssertEqual(securityCodeItemTextField?.textColor, colorToTest, "Security code text should use theme primary color")
         XCTAssertNotNil(securityCodeCvvHint, "CVV hint should be present")
         
         // MARK: - Test 2: Containers Exist and Are Styled
@@ -203,7 +204,7 @@ class CardComponentTests: XCTestCase {
         let payButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button.titleLabel")
         
         XCTAssertNotNil(payButton, "Pay button should exist")
-        XCTAssertEqual(payButton?.backgroundColor, .systemRed, "Pay button should use theme button background color")
+        XCTAssertEqual(payButton?.backgroundColor, .red, "Pay button should use theme button background color")
         XCTAssertEqual(payButtonTitle?.textColor, .white, "Pay button title should use theme button text color")
         
         // Verify button corner radius
@@ -394,14 +395,9 @@ class CardComponentTests: XCTestCase {
 
         var configuration = CardComponentConfiguration()
 
-        let tintColor: UIColor = .black
-        let titleColor: UIColor = .gray
-
-        configuration.style = {
-            var style = FormComponentStyle(tintColor: tintColor)
-            style.textField.title.color = titleColor
-            return style
-        }()
+        let tintColor = UIColor.black
+        
+        configuration.theme = AdyenTheme(colors: AdyenColors(primary: tintColor))
 
         let component = CardComponent(
             paymentMethod: method,
@@ -412,16 +408,17 @@ class CardComponentTests: XCTestCase {
         presentOnRoot(component.viewController)
 
         let switchView: UISwitch = try XCTUnwrap(component.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch"))
+        switchView.isOn = true
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> = try XCTUnwrap(component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
 
-        XCTAssertEqual(switchView.onTintColor, tintColor)
-        XCTAssertEqual(securityCodeItemView.titleLabel.textColor, titleColor)
+        XCTAssertEqual(switchView.onTintColor?.cgColor, tintColor.cgColor)
+        XCTAssertEqual(securityCodeItemView.titleLabel.textColor.cgColor, tintColor.cgColor)
 
         try withoutAnimation {
             focus(textItemView: securityCodeItemView)
         }
 
-        XCTAssertEqual(securityCodeItemView.titleLabel.textColor, tintColor)
+        XCTAssertEqual(securityCodeItemView.titleLabel.textColor.cgColor, tintColor.cgColor)
     }
 
     // TODO: Fix Later

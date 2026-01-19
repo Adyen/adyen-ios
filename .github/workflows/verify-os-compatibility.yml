@@ -41,16 +41,16 @@ jobs:
           device: 'iPhone 15 Pro'
           displayname: 'iPhone-15-Pro'
           os: 'macos-15'
-          xcode_version: '26.0' 
+          xcode_version: '16.4' 
           needs_custom_sim: true
                             
-        # Xcode 26 - iOS 16
+        # Xcode 16.4 - iOS 16
         - version: '16.4'
           runtime: 'iOS-16-4'
           device: 'iPhone 14 Pro'
           displayname: 'iPhone-14-Pro'
           os: 'macos-15'
-          xcode_version: '26.0'
+          xcode_version: '16.4'
           needs_custom_sim: true
 
     steps:
