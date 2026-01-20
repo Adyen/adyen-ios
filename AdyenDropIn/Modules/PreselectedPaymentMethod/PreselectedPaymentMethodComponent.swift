@@ -90,7 +90,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         formViewController.append(subtitleItem)
         formViewController.append(FormSpacerItem())
         formViewController.append(submitButtonItem)
-        formViewController.append(openAllButtonItem)
+        formViewController.append(changePaymentMethodButtonItem)
         formViewController.append(FormSpacerItem(numberOfSpaces: 2))
         
         formViewController.title = title
@@ -132,7 +132,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         let formattedAmount = amount.map { AmountFormatter.formatted(amount: $0.value, currencyCode: $0.currencyCode) } ?? ""
 
         // TODO: Need to construct this from Localization variable substitution
-        let subtitleText = "Use your \(displayInformation.title) to pay \(formattedAmount)"
+        let subtitleText = "Use your \(displayInformation.logoName) to pay \(formattedAmount)"
 
         let item = FormLabelItem(
             text: subtitleText,
@@ -145,12 +145,11 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     
     private lazy var submitButtonItem: FormButtonItem = {
         let component = self.defaultComponent
+        let paymentMethod = component.paymentMethod
+        let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
+
         let item = FormButtonItem(style: style.mainButtonItem)
-        item.title = localizedSubmitButtonTitle(
-            with: component.context.payment?.amount,
-            style: .immediate,
-            localizationParameters
-        )
+        item.title = "Use \(displayInformation.title)"
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "submitButton")
 
         item.buttonSelectionHandler = { [weak self] in
@@ -159,7 +158,7 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
         return item
     }()
     
-    private lazy var openAllButtonItem: FormButtonItem = {
+    private lazy var changePaymentMethodButtonItem: FormButtonItem = {
         let item = FormButtonItem(style: style.secondaryButtonItem)
         item.title = localizedString(.dropInPreselectedOpenAllTitle, localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "openAllButton")
@@ -181,12 +180,12 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     public func startLoading(for component: PaymentComponent) {
         guard component === defaultComponent else { return }
         submitButtonItem.showsActivityIndicator = true
-        openAllButtonItem.enabled = false
+        changePaymentMethodButtonItem.enabled = false
     }
     
     internal func stopLoading() {
         submitButtonItem.showsActivityIndicator = false
-        openAllButtonItem.enabled = true
+        changePaymentMethodButtonItem.enabled = true
     }
     
     // MARK: - Localization

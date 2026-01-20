@@ -82,7 +82,7 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
         ].joined(separator: ", ")
         
         return DisplayInformation(
-            title: String.Adyen.securedString + lastFour,
+            title: brand.name + " " + String.Adyen.securedString + lastFour,
             subtitle: localizedExpiryDate,
             logoName: brand.rawValue,
             accessibilityLabel: accessibilityLabel

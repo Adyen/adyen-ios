@@ -4,12 +4,16 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+//
+// Copyright (c) 2026 Adyen N.V.
+//
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//
 import Foundation
 import UIKit
-@_spi(AdyenInternal) import Adyen
 
 extension UIStackView {
-    convenience init(
+    package convenience init(
         arrangedSubviews: [UIView],
         axis: NSLayoutConstraint.Axis = .vertical,
         distribution: UIStackView.Distribution = .fill,
@@ -24,7 +28,7 @@ extension UIStackView {
         self.spacing = spacing
         self.distribution = distribution
         self.translatesAutoresizingMaskIntoConstraints = false
-        
+
         if withBackground {
             let subView = UIView(frame: view.bounds)
             if #available(iOS 13.0, *) {
