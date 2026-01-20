@@ -69,9 +69,7 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
         
         self.adyenCheckout = checkout
         
-        guard let paymentMethods = checkout.paymentMethods,
-              let blikPaymentMethod = paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self),
-              let component = checkout.createComponent(with: blikPaymentMethod) else {
+        guard let component = checkout.createPaymentComponent(for: .blik) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: BLIKPaymentMethod.self)
         }
         

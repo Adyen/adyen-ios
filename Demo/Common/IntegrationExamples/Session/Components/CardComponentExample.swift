@@ -100,9 +100,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         
         self.adyenCheckout = checkout
         
-        guard let paymentMethods = checkout.paymentMethods,
-              let blikPaymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self),
-              let component = checkout.createComponent(with: blikPaymentMethod) else {
+        guard let component = checkout.createPaymentComponent(for: .scheme) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
         }
         

@@ -112,18 +112,56 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
         )
     }
     
-    public func createComponent(with paymentMethod: any PaymentMethod) -> CheckoutPaymentComponent? {
+    /// Creates a payment component for the specified payment method type.
+    ///
+    /// Use this method to create a component for regular (non-stored) payment methods.
+    ///
+    /// - Parameter type: The type of payment method to create a component for (e.g., `.scheme` for cards, `.ideal` for iDEAL).
+    /// - Returns: A configured payment component, or `nil` if the payment method is not available
+    ///   in the current payment methods.
+    ///
+    /// ## Example
+    /// ```swift
+    /// if let cardComponent = checkout.createPaymentComponent(for: .scheme) {
+    ///     present(cardComponent.viewController, animated: true)
+    /// }
+    /// ```
+    public func createPaymentComponent(for type: PaymentMethodType) -> CheckoutPaymentComponent? {
+        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: type) else { return nil }
+        
         // TODO: Add new v6 style here
-        CheckoutPaymentComponent(
+        return CheckoutPaymentComponent(
             paymentMethod: paymentMethod,
             configuration: configuration,
             delegate: self
         )
     }
     
-    public func createComponent(with action: Action) -> CheckoutPaymentComponent? {
-        CheckoutPaymentComponent(
-            action: action,
+    /// Creates a payment component for a stored payment method.
+    ///
+    /// Use this method to create a component for previously saved payment methods,
+    /// such as stored cards or saved bank accounts. The identifier uniquely identifies
+    /// the stored payment method from the shopper's saved payment methods.
+    ///
+    /// - Parameter identifier: The unique identifier of the stored payment method.
+    ///   This value comes from `StoredPaymentMethod.identifier` in `paymentMethods.stored`.
+    /// - Returns: A configured payment component, or `nil` if no stored payment method
+    ///   with the given identifier exists.
+    ///
+    /// ## Example
+    /// ```swift
+    ///
+    /// // Create component for selected stored method
+    /// if let storedComponent = checkout.createPaymentComponent(for: selectedMethod.identifier) {
+    ///     present(storedComponent.viewController, animated: true)
+    /// }
+    /// ```
+    public func createPaymentComponent(for identifier: String) -> CheckoutPaymentComponent? {
+        guard let storedPaymentMethod = paymentMethods?.stored.first(where: { $0.identifier == identifier }) else { return nil }
+        
+        // TODO: Add new v6 style here
+        return CheckoutPaymentComponent(
+            storedPaymentMethod: storedPaymentMethod,
             configuration: configuration,
             delegate: self
         )

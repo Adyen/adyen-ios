@@ -107,9 +107,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
         self.adyenCheckout = checkout
 
-        guard let cardPaymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self),
-              let component = checkout.createComponent(with: cardPaymentMethod)
-        else {
+        guard let component = checkout.createPaymentComponent(for: .scheme) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
         }
 

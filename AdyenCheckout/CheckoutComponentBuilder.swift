@@ -62,21 +62,33 @@ internal enum CheckoutComponentBuilder {
         fatalError()
     }
     
+    /// Builds stored payment components.
     internal static func build(
         for storedPaymentMethod: StoredPaymentMethod,
         configuration: CheckoutConfiguration
     ) -> PaymentComponent {
-        fatalError()
+        
+        // TODO: stored components requires no configuration
+        // (when new localization is implemented, see if this needs to updated
+        
+        switch storedPaymentMethod {
+            
+        #if canImport(AdyenCard)
+            case let storedCard as StoredCardPaymentMethod:
+                StoredCardComponent(
+                    storedCardPaymentMethod: storedCard,
+                    context: configuration.context
+                )
+        #endif
+            
+        default:
+            StoredPaymentMethodComponent(
+                paymentMethod: storedPaymentMethod,
+                context: configuration.context
+            )
+        }
     }
-    
-    // TODO: this will be removed as CheckoutActionComponent already handles actions.
-    internal static func build(
-        for action: Action,
-        configuration: CheckoutConfiguration
-    ) -> ActionComponent {
-        fatalError()
-    }
-    
+
     /// Creates a component using the provided factory for standard payment methods.
     ///
     /// This works for all components whose configurations conform to

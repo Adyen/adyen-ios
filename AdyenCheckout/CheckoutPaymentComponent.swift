@@ -14,8 +14,6 @@ public final class CheckoutPaymentComponent {
     
     internal let paymentComponent: PaymentComponent?
     
-    private let actionComponent: ActionComponent?
-    
     private var configuration: CheckoutConfiguration
     
     internal weak var delegate: CheckoutComponentDelegate?
@@ -37,18 +35,17 @@ public final class CheckoutPaymentComponent {
         // TODO: Add new v6 style here
         self.paymentComponent = CheckoutComponentBuilder.build(for: paymentMethod, configuration: configuration)
         self.paymentComponent?.delegate = delegate
-        self.actionComponent = nil
     }
     
     package init(
-        action: Action,
+        storedPaymentMethod: StoredPaymentMethod,
         configuration: CheckoutConfiguration,
         delegate: CheckoutComponentDelegate?
     ) {
         self.configuration = configuration
         self.delegate = delegate
-        self.actionComponent = CheckoutComponentBuilder.build(for: action, configuration: configuration)
-        self.actionComponent?.delegate = delegate
-        self.paymentComponent = nil
+        // TODO: Add new v6 style here
+        self.paymentComponent = CheckoutComponentBuilder.build(for: storedPaymentMethod, configuration: configuration)
+        self.paymentComponent?.delegate = delegate
     }
 }
