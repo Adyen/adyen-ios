@@ -53,9 +53,6 @@ public protocol PresentableComponent: Component {
 public extension PresentableComponent {
     
     @_spi(AdyenInternal)
-    var requiresModalPresentation: Bool { false }
-    
-    @_spi(AdyenInternal)
     var navBarType: NavigationBarType { .regular }
     
 }
