@@ -144,7 +144,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     /// the stored payment method from the shopper's saved payment methods.
     ///
     /// - Parameter identifier: The unique identifier of the stored payment method.
-    ///   This value comes from `StoredPaymentMethod.identifier` in `paymentMethods.stored`.
+    ///   This value comes from `paymentMethods.stored`.
     /// - Returns: A configured payment component, or `nil` if no stored payment method
     ///   with the given identifier exists.
     ///

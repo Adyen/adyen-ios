@@ -7,17 +7,30 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-package typealias CheckoutComponentDelegate = (PaymentComponentDelegate & ActionComponentDelegate)
-
-// TODO: add description
+/// A component that handles payment method UI and data collection.
+///
+/// Create instances using `AdyenCheckout.createPaymentComponent(for:)`.
+///
+/// ```swift
+/// let component = checkout.createPaymentComponent(for: .scheme)
+/// ```
+///
+/// ## Custom Pay Button
+/// If you opted to use your own pay button, call
+/// ``submit()`` when the shopper taps your button.
+///
+/// ```swift
+/// component.submit()
+/// ```
 public final class CheckoutPaymentComponent {
     
     internal let paymentComponent: PaymentComponent?
     
     private var configuration: CheckoutConfiguration
     
-    internal weak var delegate: CheckoutComponentDelegate?
+    internal weak var delegate: PaymentComponentDelegate?
     
+    /// The view controller of the component.
     public var viewController: UIViewController? {
         guard let presentableComponent = paymentComponent as? PresentableComponent else {
             return nil
@@ -28,7 +41,7 @@ public final class CheckoutPaymentComponent {
     package init(
         paymentMethod: PaymentMethod,
         configuration: CheckoutConfiguration,
-        delegate: CheckoutComponentDelegate?
+        delegate: PaymentComponentDelegate?
     ) {
         self.configuration = configuration
         self.delegate = delegate
@@ -40,7 +53,7 @@ public final class CheckoutPaymentComponent {
     package init(
         storedPaymentMethod: StoredPaymentMethod,
         configuration: CheckoutConfiguration,
-        delegate: CheckoutComponentDelegate?
+        delegate: PaymentComponentDelegate?
     ) {
         self.configuration = configuration
         self.delegate = delegate
