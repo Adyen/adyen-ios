@@ -9,24 +9,24 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for stored card payments.
-internal final class StoredCardComponent: PaymentComponent, PaymentAware, PresentableComponent, Localizable {
+package final class StoredCardComponent: PaymentComponent, PaymentAware, PresentableComponent, Localizable {
     
     /// The context object for this component.
-    internal let context: AdyenContext
+    package let context: AdyenContext
     
     /// The card payment method.
-    internal var paymentMethod: PaymentMethod { storedCardPaymentMethod }
+    package var paymentMethod: PaymentMethod { storedCardPaymentMethod }
     
     /// The delegate of the component.
-    internal weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
     
-    internal var localizationParameters: LocalizationParameters?
+    package var localizationParameters: LocalizationParameters?
     
-    internal var requiresModalPresentation: Bool = false
+    package var requiresModalPresentation: Bool = false
     
     private let storedCardPaymentMethod: StoredCardPaymentMethod
     
-    internal init(
+    package init(
         storedCardPaymentMethod: StoredCardPaymentMethod,
         context: AdyenContext
     ) {
@@ -34,7 +34,7 @@ internal final class StoredCardComponent: PaymentComponent, PaymentAware, Presen
         self.context = context
     }
     
-    internal var viewController: UIViewController {
+    package var viewController: UIViewController {
         storedCardAlertManager.alertController
     }
     

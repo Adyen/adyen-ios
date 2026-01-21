@@ -15,9 +15,9 @@ import AdyenNetworking
 
 internal protocol AdyenCheckoutProtocol {
     
-    func createComponent(with paymentMethod: PaymentMethod) -> CheckoutPaymentComponent?
+    func createPaymentComponent(for type: PaymentMethodType) -> CheckoutPaymentComponent?
     
-    func createComponent(with action: Action) -> CheckoutPaymentComponent?
+    func createPaymentComponent(for identifier: String) -> CheckoutPaymentComponent?
     
     func createDropIn() -> DropInComponent?
 }
