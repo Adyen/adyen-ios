@@ -73,7 +73,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         ))
     }
     
-    func testUIConfiguration() {
+    func testUIConfiguration() throws {
         // Given - use TestTheme helper for distinctive, verifiable styling
         var configuration = ACHDirectDebitComponentConfiguration().billingAddressCountryCodes(["US", "UK"])
         configuration.theme = TestTheme.distinctive()
@@ -92,7 +92,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         // MARK: - Assert text fields use theme styling
 
         let prefix = "AdyenComponents.ACHDirectDebitComponent"
-        sut.viewController.assertTextFieldsUseTheme(
+        try sut.viewController.assertTextFieldsUseTheme(
             [
                 "\(prefix).holderNameItem",
                 "\(prefix).bankAccountNumberItem",
@@ -103,7 +103,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
         // MARK: - Assert pay button uses theme styling
 
-        sut.viewController.assertButtonUsesTheme(
+        try sut.viewController.assertButtonUsesTheme(
             "\(prefix).payButtonItem",
             style: TestTheme.expectedButtonStyle
         )

@@ -15,7 +15,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     internal weak var presenter: PresenterExampleProtocol?
 
     private var adyenCheckout: AdyenCheckout?
-    private var adyenComponent: AdyenCheckoutComponent?
+    private var adyenComponent: CheckoutPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
 
@@ -44,7 +44,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     // MARK: - Presentation
     
     private func cardComponent(from paymentMethods: PaymentMethods) async throws
-        -> AdyenCheckoutComponent {
+        -> CheckoutPaymentComponent {
 
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
@@ -171,7 +171,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     }
 
     @MainActor
-    private func present(component: AdyenCheckoutComponent) {
+    private func present(component: CheckoutPaymentComponent) {
         presenter?.present(viewController: viewController(for: component), completion: nil)
     }
 
@@ -183,7 +183,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         }
     }
 
-    private func viewController(for component: AdyenCheckoutComponent) -> UIViewController {
+    private func viewController(for component: CheckoutPaymentComponent) -> UIViewController {
         let navigation = UINavigationController(rootViewController: component.viewController!)
         component.viewController?.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,

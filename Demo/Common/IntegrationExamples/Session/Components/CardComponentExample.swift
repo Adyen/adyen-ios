@@ -16,7 +16,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
     internal weak var presenter: PresenterExampleProtocol?
 
     private var adyenCheckout: AdyenCheckout?
-    private var adyenComponent: AdyenCheckoutComponent?
+    private var adyenComponent: CheckoutPaymentComponent?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     
@@ -45,7 +45,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
     
     // MARK: - Presentation
     
-    private func cardComponent(from sessionResponse: SessionResponse) async throws -> AdyenCheckoutComponent {
+    private func cardComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
             amount: ConfigurationConstants.current.amount,
@@ -124,7 +124,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
     }
     
     @MainActor
-    private func present(component: AdyenCheckoutComponent) {
+    private func present(component: CheckoutPaymentComponent) {
         presenter?.present(viewController: viewController(for: component), completion: nil)
     }
     
@@ -145,7 +145,7 @@ extension CardComponentExample: PresentationDelegate {
 
 private extension CardComponentExample {
     
-    func viewController(for component: AdyenCheckoutComponent) -> UIViewController {
+    func viewController(for component: CheckoutPaymentComponent) -> UIViewController {
         guard let viewController = component.viewController else { fatalError("Cannot find component's view controller") }
         
         let navigation = UINavigationController(rootViewController: viewController)

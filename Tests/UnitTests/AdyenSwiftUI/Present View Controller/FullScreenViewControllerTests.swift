@@ -20,7 +20,8 @@ final class FullScreenViewControllerTests: XCTestCase {
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = host
         window.makeKeyAndVisible()
-        
+        wait(for: .seconds(1))
+
         DispatchQueue.main.async {
             viewModel.viewController = testVC
         }

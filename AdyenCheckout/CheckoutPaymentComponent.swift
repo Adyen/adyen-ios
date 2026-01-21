@@ -10,7 +10,7 @@ import UIKit
 package typealias CheckoutComponentDelegate = (PaymentComponentDelegate & ActionComponentDelegate)
 
 // TODO: add description
-public final class AdyenCheckoutComponent {
+public final class CheckoutPaymentComponent {
     
     internal let paymentComponent: PaymentComponent?
     

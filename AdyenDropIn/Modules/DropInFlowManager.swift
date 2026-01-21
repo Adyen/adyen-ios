@@ -10,6 +10,7 @@
 #endif
 import Foundation
 
+// sourcery:AutoMockable
 internal protocol ActionPresenter: AnyObject {
     func present(actionComponent: PresentableComponent)
     func didCancel(actionComponent: ActionComponent)
@@ -53,8 +54,8 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     // MARK: - Private
 
-    private lazy var actionComponent: AdyenActionComponent = {
-        let actionComponent = AdyenActionComponent(context: context)
+    private lazy var actionComponent: CheckoutActionComponent = {
+        let actionComponent = CheckoutActionComponent(context: context)
         actionComponent.delegate = self
         actionComponent.presentationDelegate = self
         actionComponent.configuration.style = configuration.style.actionComponent
@@ -74,18 +75,8 @@ internal class DropInFlowManager: DropInFlowManaging {
         guard let dropInComponent else { return }
         self.actionPresenter = actionPresenter
 
-        let checkoutAttemptId = component.context.analyticsProvider?.checkoutAttemptId
-        let updatedData = data.replacing(
-            checkoutAttemptId: checkoutAttemptId
-        )
-
-        guard updatedData.browserInfo == nil else {
-            dropInComponentDelegate?.didSubmit(updatedData, from: component, in: dropInComponent)
-            return
-        }
-        updatedData.dataByAddingBrowserInfo { [weak self] newData in
-            guard let self else { return }
-            dropInComponentDelegate?.didSubmit(newData, from: component, in: dropInComponent)
+        component.prepareSubmitData(from: data) { [weak self] updatedData in
+            self?.dropInComponentDelegate?.didSubmit(updatedData, from: component, in: dropInComponent)
         }
     }
 

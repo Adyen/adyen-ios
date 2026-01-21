@@ -85,7 +85,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, sut.configuration.localizationParameters))
     }
     
-    func testUIConfiguration() {
+    func testUIConfiguration() throws {
         // Given - use TestTheme helper for distinctive, verifiable styling
         var configuration = SEPADirectDebitComponent.Configuration()
         configuration.theme = TestTheme.distinctive()
@@ -103,7 +103,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         // MARK: - Assert text fields use theme styling
 
         let prefix = "AdyenComponents.SEPADirectDebitComponent"
-        sut.viewController.assertTextFieldsUseTheme(
+        try sut.viewController.assertTextFieldsUseTheme(
             [
                 "\(prefix).nameItem",
                 "\(prefix).ibanItem"
@@ -113,7 +113,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
         // MARK: - Assert pay button uses theme styling
 
-        sut.viewController.assertButtonUsesTheme(
+        try sut.viewController.assertButtonUsesTheme(
             "\(prefix).payButtonItem",
             style: TestTheme.expectedButtonStyle
         )
