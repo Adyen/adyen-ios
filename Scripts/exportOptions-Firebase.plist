@@ -11,7 +11,7 @@
     <key>teamName</key>
     <string>Adyen B.V.</string>
     <key>signingCertificate</key>
-    <string>iPhone Distribution: Adyen B.V.</string>
+      <string>iPhone Distribution: Adyen B.V.</string>
     <key>provisioningProfiles</key>
     <dict>
       <key>com.adyen.enterprise.checkout.demo.uikit</key>
