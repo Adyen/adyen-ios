@@ -15,7 +15,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
     
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var adyenCheckout: AdyenCheckout?
+    private var checkout: Checkout?
     private var adyenComponent: CheckoutPaymentComponent?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
@@ -91,13 +91,13 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
         
-        let checkout = try await AdyenCheckout.setup(
+        let checkout = try await Checkout.setup(
             with: sessionResponse,
             configuration: configuration,
             presentationDelegate: self
         )
         
-        self.adyenCheckout = checkout
+        self.checkout = checkout
         
         guard let component = checkout.createPaymentComponent(for: .scheme) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)

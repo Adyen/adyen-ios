@@ -12,8 +12,8 @@
 @_spi(AdyenInternal) @testable import AdyenActions
 import XCTest
 
-final class AdyenCheckoutTests: XCTestCase {
-    var mockProvider: AdyenCheckoutProviderMock!
+final class CheckoutTests: XCTestCase {
+    var mockProvider: CheckoutProviderMock!
     var configuration: CheckoutConfiguration!
     var paymentMethods: PaymentMethods!
     
@@ -31,7 +31,7 @@ final class AdyenCheckoutTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        mockProvider = AdyenCheckoutProviderMock()
+        mockProvider = CheckoutProviderMock()
         configuration = CheckoutConfiguration(context: Dummy.context)
         paymentMethods = try! AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
     }
@@ -47,7 +47,7 @@ final class AdyenCheckoutTests: XCTestCase {
             responseConfiguration: .init(installmentOptions: nil, enableStoreDetails: true)
         ))
         
-        let expectedCheckout = AdyenCheckout(
+        let expectedCheckout = Checkout(
             configuration: configuration,
             session: expectedSession,
             paymentMethods: nil,
@@ -56,7 +56,7 @@ final class AdyenCheckoutTests: XCTestCase {
         )
         mockProvider.setupWithSessionResult = .success(expectedCheckout)
 
-        let checkout = try await AdyenCheckout.setup(
+        let checkout = try await Checkout.setup(
             with: .init(
                 sessionIdentifier: "sessionId",
                 sessionData: "sessionData"
@@ -80,7 +80,7 @@ final class AdyenCheckoutTests: XCTestCase {
         mockProvider.setupWithSessionResult = .failure(TestError())
         
         do {
-            _ = try await AdyenCheckout.setup(
+            _ = try await Checkout.setup(
                 with: .init(
                     sessionIdentifier: "sessionId",
                     sessionData: "sessionData"
@@ -96,7 +96,7 @@ final class AdyenCheckoutTests: XCTestCase {
     }
 
     func testSetupWithPaymentMethods_Success() async throws {
-        let expectedCheckout = AdyenCheckout(
+        let expectedCheckout = Checkout(
             configuration: configuration,
             session: nil,
             paymentMethods: paymentMethods,
@@ -106,7 +106,7 @@ final class AdyenCheckoutTests: XCTestCase {
         
         mockProvider.setupWithPaymentMethodsResult = .success(expectedCheckout)
         
-        let checkout = try await AdyenCheckout.setup(
+        let checkout = try await Checkout.setup(
             with: paymentMethods,
             configuration: configuration,
             presentationDelegate: nil,
@@ -123,7 +123,7 @@ final class AdyenCheckoutTests: XCTestCase {
         mockProvider.setupWithPaymentMethodsResult = .failure(TestError())
         
         do {
-            _ = try await AdyenCheckout.setup(
+            _ = try await Checkout.setup(
                 with: paymentMethods,
                 configuration: configuration,
                 presentationDelegate: nil,
@@ -207,7 +207,7 @@ final class AdyenCheckoutTests: XCTestCase {
             completion?(CheckoutPaymentsResponse(resultCode: .authorised))
         }
         
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             checkoutAttemptId: "attemptId",
             presentationDelegate: nil
@@ -222,7 +222,7 @@ final class AdyenCheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forType_returnsComponent_whenPaymentMethodExists() {
         // Given
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: "attemptId",
@@ -239,7 +239,7 @@ final class AdyenCheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forType_returnsNil_whenPaymentMethodDoesNotExist() {
         // Given
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: "attemptId",
@@ -255,7 +255,7 @@ final class AdyenCheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forType_returnsNil_whenPaymentMethodsIsNil() {
         // Given
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             paymentMethods: nil,
             checkoutAttemptId: "attemptId",
@@ -271,7 +271,7 @@ final class AdyenCheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forScheme_returnsCardComponent() {
         // Given
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: "attemptId",
@@ -290,7 +290,7 @@ final class AdyenCheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forIdentifier_returnsComponent_whenStoredMethodExists() {
         // Given
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: "attemptId",
@@ -307,7 +307,7 @@ final class AdyenCheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forIdentifier_returnsNil_whenStoredMethodDoesNotExist() {
         // Given
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: "attemptId",
@@ -323,7 +323,7 @@ final class AdyenCheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forIdentifier_returnsNil_whenPaymentMethodsIsNil() {
         // Given
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             paymentMethods: nil,
             checkoutAttemptId: "attemptId",
@@ -339,7 +339,7 @@ final class AdyenCheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forIdentifier_returnsCorrectStoredMethod() {
         // Given
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: "attemptId",

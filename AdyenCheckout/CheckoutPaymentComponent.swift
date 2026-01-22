@@ -9,7 +9,7 @@ import UIKit
 
 /// A component that handles payment method UI and data collection.
 ///
-/// Create instances using `AdyenCheckout.createPaymentComponent(for:)`.
+/// Create instances using `Checkout.createPaymentComponent(for:)`.
 ///
 /// ```swift
 /// let component = checkout.createPaymentComponent(for: .scheme)
