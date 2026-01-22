@@ -11,7 +11,7 @@ public struct SessionResponse: Decodable, Sendable {
     
     package let sessionData: String
     
-    /// Initializes a new Configuration object
+    /// Initializes a new SessionResponse object
     ///
     /// - Parameters:
     ///   - sessionIdentifier: The session identifier.
