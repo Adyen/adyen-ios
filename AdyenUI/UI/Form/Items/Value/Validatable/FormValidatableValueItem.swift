@@ -19,7 +19,7 @@ open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueTy
 
     /// Single source of truth for whether validation error should be displayed.
     /// Views observe this property to update their UI reactively.
-    @AdyenObservable(false) public var shouldShowValidationError: Bool
+    @AdyenUIObservable(false) public var shouldShowValidationError: Bool
     
     /// Tracks whether the field is currently being edited.
     /// Views update this when focus changes, allowing reactive UI updates.

@@ -195,7 +195,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     open func handleFormattedValueDidChange(_ newValue: String) {
         textField.text = newValue
-        updateValidationStatus()
     }
     
     @_spi(AdyenInternal)

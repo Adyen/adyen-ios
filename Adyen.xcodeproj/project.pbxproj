@@ -901,6 +901,7 @@
 		E2C0E0AE220B0840008616F6 /* AdyenCard.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E05F220982AE008616F6 /* AdyenCard.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E2D12C00221D91ED00EF682F /* StringHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D12BFF221D91ED00EF682F /* StringHelpers.swift */; };
 		E2D12C132223E1C000EF682F /* CardTypeDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D12C122223E1C000EF682F /* CardTypeDetector.swift */; };
+		E6649EF167099D4D907F40CE /* AdyenUIObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3634248172978754419DC8FD /* AdyenUIObservable.swift */; };
 		E700A72D2549E2F00012B64C /* BLIKPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E700A72C2549E2F00012B64C /* BLIKPaymentMethod.swift */; };
 		E702BDA5260108A700280682 /* ClientKeyValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E702BDA4260108A700280682 /* ClientKeyValidator.swift */; };
 		E702BDE42602149E00280682 /* Assertion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E702BDE32602149E00280682 /* Assertion.swift */; };
@@ -1980,6 +1981,7 @@
 		21CBEF4E2D88CA1600178809 /* ThreeDS2ComponentThreeDSConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ComponentThreeDSConfiguration.swift; sourceTree = "<group>"; };
 		21CBEF632D8B0A0500178809 /* ThreeDSServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSServiceProvider.swift; sourceTree = "<group>"; };
 		21CBEF652D8B6B2F00178809 /* ThreeDSServiceProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSServiceProviderTests.swift; sourceTree = "<group>"; };
+		3634248172978754419DC8FD /* AdyenUIObservable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AdyenUIObservable.swift; path = AdyenUI/Utilities/AdyenUIObservable.swift; sourceTree = SOURCE_ROOT; };
 		3A944D9CA552D7C8E2063601 /* FormAddressPickerItemViewStyleTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FormAddressPickerItemViewStyleTests.swift; sourceTree = "<group>"; };
 		5A1315C826296B100092366D /* ProgressViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewStyle.swift; sourceTree = "<group>"; };
 		5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoComponentExtensions.swift; sourceTree = "<group>"; };
@@ -3377,6 +3379,7 @@
 			isa = PBXGroup;
 			children = (
 				F9E441512382A0DD00D3CD48 /* ViewIdentifierBuilder.swift */,
+				3634248172978754419DC8FD /* AdyenUIObservable.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -8261,6 +8264,7 @@
 				0019C48D2E6AE08200B0C3A3 /* FormButtonItemView.swift in Sources */,
 				0019C48E2E6AE08200B0C3A3 /* FormButtonItem.swift in Sources */,
 				B643C7642EEAD2CF00EF8407 /* FormSectionHeaderItem.swift in Sources */,
+				E6649EF167099D4D907F40CE /* AdyenUIObservable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

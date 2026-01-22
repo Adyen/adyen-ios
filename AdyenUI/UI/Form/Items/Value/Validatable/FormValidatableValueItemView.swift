@@ -12,7 +12,7 @@ import UIKit
 open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValueItem<ValueType>>:
     FormValueItemView<ValueType, FormTextItemStyle, ItemType>,
     AnyFormValidatableValueItemView {
-    
+
     public required init(item: ItemType, theme: AdyenTheme) {
         super.init(item: item, theme: theme)
         setupValidationObserver()
@@ -20,7 +20,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     }
 
     // MARK: - Views
-    
+
     // Shows placeholder hint when valid, validation error when invalid.
     internal lazy var footerLabel: UILabel = {
         let footerLabel = UILabel()
@@ -34,13 +34,18 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         footerLabel.isHidden = true
         return footerLabel
     }()
-    
+
     // MARK: - Validation
 
     private func setupValidationObserver() {
         observe(item.$shouldShowValidationError) { [weak self] _ in
-            self?.updateFooterDisplay(animated: true)
+            self?.onValidationStateChanged()
         }
+    }
+
+    private func onValidationStateChanged() {
+        updateFooterDisplay(animated: true)
+        updateAccessibility()
     }
 
     private func updateFooterDisplay(animated: Bool) {
@@ -50,38 +55,32 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
             displayHint(animated: animated)
         }
     }
-    
+
     // MARK: - Validation API
-    
+
     public var isValid: Bool {
         item.isValid()
     }
-    
+
     // Called by form to trigger explicit validation (e.g., Pay button).
     // Delegates to updateValidationStatus so subclasses can update their UI (e.g., border color).
     public func showValidation() {
         updateValidationStatus(forced: true)
     }
-    
+
     open func updateValidationStatus(forced: Bool = false) {
         guard forced else {
             accessibilityLabelView?.accessibilityLabel = item.title
             return
         }
 
-        // Forced validation: update the single source of truth
-        // Observer will call updateFooterDisplay(animated: true) when this changes
-        // In the future, this logic moves to the Item and View listens to Item updates
         item.shouldShowValidationError = !item.isValid()
-        updateAccessibility()
-        
         triggerValidationErrorCallbackIfNeeded()
     }
 
     /// Clears validation error state.
     internal func resetValidationStatus() {
         item.shouldShowValidationError = false
-        accessibilityLabelView?.accessibilityLabel = item.title
     }
 
     private func updateAccessibility() {

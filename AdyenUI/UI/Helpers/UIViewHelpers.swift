@@ -71,8 +71,6 @@ extension AdyenScope where Base: UIView {
     }
     
     private func hideWithoutAnimation(_ hidden: Bool) {
-        guard base.isHidden != hidden else { return }
-        
         base.isHidden = hidden
         base.alpha = hidden ? 0 : 1
     }
