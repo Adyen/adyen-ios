@@ -20,10 +20,10 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branch }}
 
-      - name: Select latest Xcode
+      - name: Select Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '16.4'
+          xcode-version: '16.1'
 
       - uses: actions/setup-node@v6
         with:
