@@ -21,9 +21,7 @@ internal final class StoredCardComponent: PaymentComponent, PaymentAware, Presen
     internal weak var delegate: PaymentComponentDelegate?
     
     internal var localizationParameters: LocalizationParameters?
-    
-    internal var requiresModalPresentation: Bool = false
-    
+        
     private let storedCardPaymentMethod: StoredCardPaymentMethod
     
     internal init(

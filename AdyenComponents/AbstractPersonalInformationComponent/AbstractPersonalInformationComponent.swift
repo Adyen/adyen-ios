@@ -31,8 +31,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         style: configuration.style
     )
 
-    public let requiresModalPresentation: Bool = true
-
     @_spi(AdyenInternal)
     public var configuration: Configuration
     

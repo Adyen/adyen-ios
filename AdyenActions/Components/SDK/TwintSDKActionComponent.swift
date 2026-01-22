@@ -23,8 +23,6 @@ import Foundation
 
         public weak var delegate: ActionComponentDelegate?
 
-        public let requiresModalPresentation: Bool = false
-
         private let pollingComponentBuilder: AnyPollingHandlerProvider?
 
         private var pollingComponent: AnyPollingHandler?
@@ -217,7 +215,6 @@ import Foundation
                 component: self,
                 viewController: viewController
             )
-            presentableComponent.requiresModalPresentation = false
             presentationDelegate.present(component: presentableComponent)
         }
 
