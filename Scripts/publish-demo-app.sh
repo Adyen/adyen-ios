@@ -128,6 +128,13 @@ AUTH_KEY_PATH="$RUNNER_TEMP/auth_key.p8"
 echo -n "$XCODE_AUTHENTICATION_KEY_BASE64" | base64 --decode > "$AUTH_KEY_PATH"
 chmod 600 "$AUTH_KEY_PATH"  # restrict permissions
 
+# ---- Debug: List installed certificates and profiles ----
+echo "🔍 Installed certificates:"
+security find-identity -v -p codesigning "$KEYCHAIN_PATH"
+
+echo "🔍 Installed provisioning profiles:"
+ls -la ~/Library/MobileDevice/Provisioning\ Profiles/
+
 echo "📤 Exporting .ipa with manual signing..."
 xcodebuild -exportArchive \
   -archivePath "$ARCHIVE_PATH" \
