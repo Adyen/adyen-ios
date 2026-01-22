@@ -55,7 +55,7 @@ internal class CheckoutProviderMock: CheckoutProviding {
 
     }
     
-    // Convenience for direct AdyenCheckoutProviding use
+    // Convenience for direct CheckoutProviding use
     func setup(
         with sessionId: String,
         sessionData: String,

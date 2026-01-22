@@ -218,7 +218,7 @@ final class CheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forType_returnsComponent_whenPaymentMethodExists() {
         // Given
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: "attemptId",
@@ -235,7 +235,7 @@ final class CheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forType_returnsNil_whenPaymentMethodDoesNotExist() {
         // Given
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: "attemptId",
@@ -251,7 +251,7 @@ final class CheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forType_returnsNil_whenPaymentMethodsIsNil() {
         // Given
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             paymentMethods: nil,
             checkoutAttemptId: "attemptId",
@@ -267,7 +267,7 @@ final class CheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forScheme_returnsCardComponent() {
         // Given
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: "attemptId",
@@ -286,7 +286,7 @@ final class CheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forIdentifier_returnsComponent_whenStoredMethodExists() {
         // Given
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: "attemptId",
@@ -303,7 +303,7 @@ final class CheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forIdentifier_returnsNil_whenStoredMethodDoesNotExist() {
         // Given
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: "attemptId",
@@ -319,7 +319,7 @@ final class CheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forIdentifier_returnsNil_whenPaymentMethodsIsNil() {
         // Given
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             paymentMethods: nil,
             checkoutAttemptId: "attemptId",
@@ -335,7 +335,7 @@ final class CheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forIdentifier_returnsCorrectStoredMethod() {
         // Given
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: "attemptId",

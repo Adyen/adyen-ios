@@ -43,7 +43,7 @@ import Foundation
 /// ```swift
 /// let component = checkout.createPaymentComponent(for: .scheme)
 /// ```
-public final class Checkout: AdyenCheckoutProtocol {
+public final class Checkout: CheckoutProtocol {
     
     /// The available payment methods for this checkout session.
     public let paymentMethods: PaymentMethods?
@@ -77,7 +77,7 @@ public final class Checkout: AdyenCheckoutProtocol {
     ///   - sessionData: The session data from the `/sessions` response.
     ///   - configuration: The checkout configuration.
     ///   - presentationDelegate: Optional delegate for handling UI presentation.
-    /// - Returns: An `AdyenCheckout` instance.
+    /// - Returns: An `Checkout` instance.
     /// - Throws: An error if setup fails.
     public static func setup(
         with sessionId: String,
@@ -102,7 +102,7 @@ public final class Checkout: AdyenCheckoutProtocol {
     ///   - paymentMethods: The payment methods from the `/paymentMethods` response.
     ///   - configuration: The checkout configuration.
     ///   - presentationDelegate: Optional delegate for handling UI presentation.
-    /// - Returns: An `AdyenCheckout` instance.
+    /// - Returns: An `Checkout` instance.
     /// - Throws: An error if setup fails.
     public static func setup(
         with paymentMethods: PaymentMethods,
@@ -137,7 +137,7 @@ public final class Checkout: AdyenCheckoutProtocol {
     }
 }
 
-public extension AdyenCheckout {
+public extension Checkout {
 
     /// Creates a payment component for the specified payment method type.
     ///
@@ -213,15 +213,15 @@ public extension AdyenCheckout {
     }
 }
 
-internal extension AdyenCheckout {
+internal extension Checkout {
 
     static func setup(
         with sessionId: String,
         sessionData: String,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil,
-        provider: AdyenCheckoutProviding = AdyenCheckoutProvider.default
-    ) async throws -> AdyenCheckout {
+        provider: CheckoutProviding = CheckoutProvider.default
+    ) async throws -> Checkout {
         try await provider.setup(
             with: sessionId,
             sessionData: sessionData,
@@ -234,8 +234,8 @@ internal extension AdyenCheckout {
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil,
-        provider: AdyenCheckoutProviding = AdyenCheckoutProvider.default
-    ) async throws -> AdyenCheckout {
+        provider: CheckoutProviding = CheckoutProvider.default
+    ) async throws -> Checkout {
         try await provider.setup(
             with: paymentMethods,
             configuration: configuration,
