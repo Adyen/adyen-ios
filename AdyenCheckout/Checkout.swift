@@ -77,7 +77,7 @@ public final class Checkout: CheckoutProtocol {
     ///   - sessionData: The session data from the `/sessions` response.
     ///   - configuration: The checkout configuration.
     ///   - presentationDelegate: Optional delegate for handling UI presentation.
-    /// - Returns: An `Checkout` instance.
+    /// - Returns: A `Checkout` instance.
     /// - Throws: An error if setup fails.
     public static func setup(
         with sessionId: String,
@@ -102,7 +102,7 @@ public final class Checkout: CheckoutProtocol {
     ///   - paymentMethods: The payment methods from the `/paymentMethods` response.
     ///   - configuration: The checkout configuration.
     ///   - presentationDelegate: Optional delegate for handling UI presentation.
-    /// - Returns: An `Checkout` instance.
+    /// - Returns: A `Checkout` instance.
     /// - Throws: An error if setup fails.
     public static func setup(
         with paymentMethods: PaymentMethods,
