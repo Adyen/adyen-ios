@@ -20,10 +20,10 @@ var context: AdyenContext {
 }
 ```
 
-Create an instance of ``Session.Configuration`` with the response you received from the `/sessions` call and the ``AdyenContext`` instance.
+Create an instance of ``AdyenSession.Configuration`` with the response you received from the `/sessions` call and the ``AdyenContext`` instance.
 
 ```swift
-let configuration = Session.Configuration(sessionIdentifier: response.sessionId,
+let configuration = AdyenSession.Configuration(sessionIdentifier: response.sessionId,
                                                initialSessionData: response.sessionData,
                                                context: context)
 ```
@@ -85,7 +85,7 @@ Also for voucher payment methods like Doku variants, in order for the ``DokuComp
 
 ## Presenting the component
 
-Initialize a choosen component class and set the ``Session`` instance as the `delegate` and `partialPaymentDelegate` (if needed) of the component instance.
+Initialize a choosen component class and set the ``AdyenSession`` instance as the `delegate` and `partialPaymentDelegate` (if needed) of the component instance.
 Some components designed to be embedded into another `UIViewContolller` (ex. `UINavigationController`); others must be presented "as-is".
 
 ```swift
@@ -111,14 +111,14 @@ private func present(component: PresentableComponent) {
 }
 ```
 
-### Implementing `SessionDelegate`
+### Implementing `AdyenSessionDelegate`
 
-``Session`` makes the necessary calls to handle the whole flow and notifies your application through its delegate, ``SessionDelegate``. To handle the results of the Drop-in, the following methods of ``SessionDelegate`` should be implemented:
+``AdyenSession`` makes the necessary calls to handle the whole flow and notifies your application through its delegate, ``AdyenSessionDelegate``. To handle the results of the Drop-in, the following methods of ``AdyenSessionDelegate`` should be implemented:
 
 ---
 
 ```swift
-func didComplete(with result: SessionResult, component: Component, session: Session)
+func didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession)
 ```
 
 This method will be invoked when the component finishes without any further steps needed by the application. The application just needs to dismiss the current component, ideally after calling `finalizeIfNeeded` on the component.
@@ -126,7 +126,7 @@ This method will be invoked when the component finishes without any further step
 ---
 
 ```swift
-func didFail(with error: Error, from component: Component, session: Session)
+func didFail(with error: Error, from component: Component, session: AdyenSession)
 ```
 
 This method is invoked when an error occurred during the use of the components.
@@ -144,7 +144,7 @@ This optional method is invoked after a redirect to an external application has 
 
 ## Handling an action
 
-Actions are handled by the ``Session``.
+Actions are handled by the ``AdyenSession``.
 
 
 ### Receiving redirect

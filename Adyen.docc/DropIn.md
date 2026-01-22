@@ -22,18 +22,18 @@ var context: AdyenContext {
 }
 ```
 
-Create an instance of `Session.Configuration` with the response you received from the `/sessions` call and the ``AdyenContext`` instance.
+Create an instance of `AdyenSession.Configuration` with the response you received from the `/sessions` call and the ``AdyenContext`` instance.
 
 ```swift
-let configuration = Session.Configuration(sessionIdentifier: response.sessionId,
+let configuration = AdyenSession.Configuration(sessionIdentifier: response.sessionId,
                                                initialSessionData: response.sessionData,
                                                context: context)
 ```
 
-Call the static `initialize` function of the ``Session`` by providing the configuration and the delegates, which will asynchronously create and return the session instance.
+Call the static `initialize` function of the ``AdyenSession`` by providing the configuration and the delegates, which will asynchronously create and return the session instance.
 
 ```swift
-Session.initialize(with: configuration, delegate: self, presentationDelegate: self) { [weak self] result in
+AdyenSession.initialize(with: configuration, delegate: self, presentationDelegate: self) { [weak self] result in
     switch result {
     case let .success(session):
         // store the session object
@@ -76,7 +76,7 @@ Also for voucher payment methods like Doku variants, in order for the ``DokuComp
 
 ## Presenting the Drop-in
 
-Initialize the ``DropInComponent`` class and set the ``Session`` instance as the `delegate` and `partialPaymentDelegate` (if needed) of the ``DropInComponent`` instance.
+Initialize the ``DropInComponent`` class and set the ``AdyenSession`` instance as the `delegate` and `partialPaymentDelegate` (if needed) of the ``DropInComponent`` instance.
 
 ```swift
 let dropInComponent = DropInComponent(paymentMethods: paymentMethods,
@@ -94,14 +94,14 @@ present(dropInComponent.viewController, animated: true)
 
 ```
 
-### Implementing `SessionDelegate`
+### Implementing `AdyenSessionDelegate`
 
-``Session`` makes the necessary calls to handle the whole flow and notifies your application through its delegate, ``SessionDelegate``. To handle the results of the Drop-in, the following methods of ``SessionDelegate`` should be implemented:
+``AdyenSession`` makes the necessary calls to handle the whole flow and notifies your application through its delegate, ``AdyenSessionDelegate``. To handle the results of the Drop-in, the following methods of ``AdyenSessionDelegate`` should be implemented:
 
 ---
 
 ```swift
-func didComplete(with result: SessionResult, component: Component, session: Session)
+func didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession)
 ```
 
 This method will be invoked when the component finishes without any further steps needed by the application. The application just needs to dismiss the current component, ideally after calling `finalizeIfNeeded` on the component.
@@ -109,7 +109,7 @@ This method will be invoked when the component finishes without any further step
 ---
 
 ```swift
-func didFail(with error: Error, from component: Component, session: Session)
+func didFail(with error: Error, from component: Component, session: AdyenSession)
 ```
 
 This method is invoked when an error occurred during the use of the Drop-in or the components.
@@ -127,7 +127,7 @@ This optional method is invoked after a redirect to an external application has 
 
 ## Handling an action
 
-Actions are handled by the Drop-in via its delegate ``Session``.
+Actions are handled by the Drop-in via its delegate ``AdyenSession``.
 
 
 ### Receiving redirect
