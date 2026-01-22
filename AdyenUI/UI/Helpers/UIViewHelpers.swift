@@ -49,20 +49,20 @@ extension AdyenScope where Base: UIView {
         animationKey: String,
         _ hidden: Bool
     ) {
+        // Set isHidden immediately for synchronous state updates (tests)
+        base.isHidden = hidden
+        
         let context = KeyFrameAnimationContext(
             animationKey: animationKey,
             duration: 0.35,
             delay: 0,
             options: [.calculationModeCubicPaced, .beginFromCurrentState],
             animations: { [weak base] in
-                UIView.addKeyframe(withRelativeStartTime: hidden ? 0.5 : 0, relativeDuration: 0.5) {
-                    base?.isHidden = hidden
-                }
-                UIView.addKeyframe(withRelativeStartTime: hidden ? 0 : 0.5, relativeDuration: 0.5) {
-                    base?.alpha = hidden ? 0 : 1
-                }
+                // Only animate alpha for visual transition
+                base?.alpha = hidden ? 0 : 1
             },
             completion: { [weak base] _ in
+                // Ensure final state is consistent
                 base?.isHidden = hidden
                 base?.alpha = hidden ? 0 : 1
             }
