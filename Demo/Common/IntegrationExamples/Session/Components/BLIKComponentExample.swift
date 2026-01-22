@@ -5,7 +5,6 @@
 //
 
 import Adyen
-import AdyenActions
 import AdyenCheckout
 import AdyenComponents
 
@@ -61,8 +60,7 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
         }
         
         let checkout = try await AdyenCheckout.setup(
-            with: sessionResponse.sessionId,
-            sessionData: sessionResponse.sessionData,
+            with: sessionResponse,
             configuration: configuration,
             presentationDelegate: self
         )

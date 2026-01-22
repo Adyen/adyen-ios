@@ -12,7 +12,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
 
     // MARK: - Properties
 
-    internal var session: AdyenSession?
+    internal var session: Session?
     internal weak var presenter: PresenterExampleProtocol?
     internal var issuerListComponent: IssuerListComponent?
     
@@ -44,7 +44,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
 
     // MARK: - Networking
 
-    internal func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
+    internal func loadSession(completion: @escaping (Result<Session, Error>) -> Void) {
         requestSessionInitialInfo { [weak self] response in
             guard let self else { return }
             switch response {
@@ -64,7 +64,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
 
     // MARK: Presentation
 
-    internal func presentComponent(with session: AdyenSession) {
+    internal func presentComponent(with session: Session) {
         do {
             let component = try issuerListComponent(from: session)
             let componentViewController = viewController(for: component)
@@ -75,7 +75,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
         }
     }
 
-    private func issuerListComponent(from session: AdyenSession) throws -> IssuerListComponent {
+    private func issuerListComponent(from session: Session) throws -> IssuerListComponent {
         let paymentMethods = session.state.paymentMethods
         guard let paymentMethod = paymentMethods.paymentMethod(ofType: IssuerListPaymentMethod.self) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: IssuerListPaymentMethod.self)
@@ -108,15 +108,15 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
 
 extension IssuerListComponentExample: AdyenSessionDelegate {
     
-    func didComplete(with result: CheckoutResult, component: Component, session: AdyenSession) {
+    func didComplete(with result: CheckoutResult, component: Component, session: Session) {
         dismissAndShowAlert(result.resultCode.isSuccess, result.resultCode.rawValue)
     }
 
-    func didFail(with error: Error, from component: Component, session: AdyenSession) {
+    func didFail(with error: Error, from component: Component, session: Session) {
         dismissAndShowAlert(false, error.localizedDescription)
     }
 
-    func didOpenExternalApplication(component: ActionComponent, session: AdyenSession) {
+    func didOpenExternalApplication(component: ActionComponent, session: Session) {
         print(#function)
     }
 }

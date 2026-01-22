@@ -11,7 +11,7 @@
 import AdyenNetworking
 
 package protocol AdyenSessionProtocol: AnyObject {
-    var state: AdyenSession.State { get }
+    var state: Session.State { get }
     var delegate: AdyenSessionDelegate? { get set }
     var presentationDelegate: PresentationDelegate? { get set }
     

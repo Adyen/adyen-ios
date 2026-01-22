@@ -17,7 +17,7 @@ class SessionTests: XCTestCase {
 
     var analyticsProviderMock: AnalyticsProviderMock!
     var context: AdyenContext!
-    var sut: AdyenSession!
+    var sut: Session!
     var sutDelegate: SessionDelegateMock!
     var expectedPaymentMethods: PaymentMethods!
 
@@ -74,10 +74,10 @@ class SessionTests: XCTestCase {
             configuration: .init(installmentOptions: nil, enableStoreDetails: false)
         ))]
 
-        let session = try await AdyenSession.setup(
+        let session = try await Session.setup(
             with: .init(
                 sessionIdentifier: "session_id",
-                initialSessionData: "session_data_0"
+                sessionData: "session_data_0"
             ),
             apiClient: apiClient,
             context: context
@@ -1049,8 +1049,8 @@ class SessionTests: XCTestCase {
         apiClient: APIClientMock = APIClientMock(),
         delegate: AdyenSessionDelegate = SessionDelegateMock(),
         configuration: SessionSetupResponse.Configuration = .init(installmentOptions: nil, enableStoreDetails: true)
-    ) -> AdyenSession {
-        let sessionState = AdyenSession.State(
+    ) -> Session {
+        let sessionState = Session.State(
             data: "session_data_0",
             identifier: "session_id",
             countryCode: "US",
@@ -1059,7 +1059,7 @@ class SessionTests: XCTestCase {
             paymentMethods: expectedPaymentMethods,
             responseConfiguration: configuration
         )
-        let sut = AdyenSession(
+        let sut = Session(
             state: sessionState,
             baseAPIClient: apiClient,
             context: context,

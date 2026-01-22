@@ -57,8 +57,10 @@ final class AdyenCheckoutTests: XCTestCase {
         mockProvider.setupWithSessionResult = .success(expectedCheckout)
 
         let checkout = try await AdyenCheckout.setup(
-            with: "sessionId",
-            sessionData: "sessionData",
+            with: .init(
+                sessionIdentifier: "sessionId",
+                sessionData: "sessionData"
+            ),
             configuration: configuration,
             presentationDelegate: nil,
             provider: mockProvider
@@ -79,8 +81,10 @@ final class AdyenCheckoutTests: XCTestCase {
         
         do {
             _ = try await AdyenCheckout.setup(
-                with: "sessionId",
-                sessionData: "sessionData",
+                with: .init(
+                    sessionIdentifier: "sessionId",
+                    sessionData: "sessionData"
+                ),
                 configuration: configuration,
                 presentationDelegate: nil,
                 provider: mockProvider
@@ -144,12 +148,12 @@ final class AdyenCheckoutTests: XCTestCase {
         
         mockProvider.mockedSessionResult = .success(sessionMock)
         
-        let initialInfo = AdyenSession.InitialInfo(sessionIdentifier: "test_id", initialSessionData: "test_data")
+        let response = SessionResponse(sessionIdentifier: "test_id", sessionData: "test_data")
         let apiClient = APIClientMock()
         
         do {
             let result = try await mockProvider.setupSession(
-                with: initialInfo,
+                with: response,
                 configuration: configuration,
                 apiClient: apiClient
             )

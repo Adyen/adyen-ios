@@ -21,7 +21,7 @@ public protocol AdyenSessionDelegate: AnyObject {
     ///   - result: The result object of the completed payment.
     ///   - component: The component object.
     ///   - session: The session object.
-    func didComplete(with result: CheckoutResult, component: Component, session: AdyenSession)
+    func didComplete(with result: CheckoutResult, component: Component, session: Session)
     
     /// Invoked when a payment component fails.
     ///
@@ -29,7 +29,7 @@ public protocol AdyenSessionDelegate: AnyObject {
     ///   - error: The error that occurred.
     ///   - component: The component that failed.
     ///   - session: The session object.
-    func didFail(with error: Error, from component: Component, session: AdyenSession)
+    func didFail(with error: Error, from component: Component, session: Session)
     
     /// Invoked when the action component opens a third party application outside the scope of the Adyen checkout,
     /// e.g WeChat Pay Application.
@@ -38,11 +38,11 @@ public protocol AdyenSessionDelegate: AnyObject {
     /// - Parameters:
     ///   - component: The current component object.
     ///   - session: The session object.
-    func didOpenExternalApplication(component: ActionComponent, session: AdyenSession)
+    func didOpenExternalApplication(component: ActionComponent, session: Session)
 }
 
 /// Provides default empty implementation for ``AdyenSessionDelegate``
 public extension AdyenSessionDelegate {
     
-    func didOpenExternalApplication(component: ActionComponent, session: AdyenSession) {}
+    func didOpenExternalApplication(component: ActionComponent, session: Session) {}
 }

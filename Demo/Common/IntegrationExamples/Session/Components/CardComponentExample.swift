@@ -92,8 +92,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         }
         
         let checkout = try await AdyenCheckout.setup(
-            with: sessionResponse.sessionId,
-            sessionData: sessionResponse.sessionData,
+            with: sessionResponse,
             configuration: configuration,
             presentationDelegate: self
         )

@@ -548,6 +548,7 @@
 		A07B2CF226A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */; };
 		A080E3E32EDC5BC10031B09A /* AddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81AA3B332ACD9CE800F5719D /* AddressLookupProvider.swift */; };
 		A080E3E72EDC5F0A0031B09A /* AsyncAddressLookupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A080E3E62EDC5F000031B09A /* AsyncAddressLookupProvider.swift */; };
+		A094534B2F22573800780C2A /* SessionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A094534A2F22573400780C2A /* SessionResponse.swift */; };
 		A09ADA112807142600BF6802 /* SessionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09ADA102807142600BF6802 /* SessionRequest.swift */; };
 		A09ADA122807142600BF6802 /* SessionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09ADA102807142600BF6802 /* SessionRequest.swift */; };
 		A09C704327032870004C01AA /* FormCardLogosItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09C704227032870004C01AA /* FormCardLogosItemView.swift */; };
@@ -2213,6 +2214,7 @@
 		A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatter.swift; sourceTree = "<group>"; };
 		A07B2CF126A5D4FE0008185C /* BrazilSocialSecurityNumberFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrazilSocialSecurityNumberFormatterTests.swift; sourceTree = "<group>"; };
 		A080E3E62EDC5F000031B09A /* AsyncAddressLookupProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncAddressLookupProvider.swift; sourceTree = "<group>"; };
+		A094534A2F22573400780C2A /* SessionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionResponse.swift; sourceTree = "<group>"; };
 		A09ADA102807142600BF6802 /* SessionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRequest.swift; sourceTree = "<group>"; };
 		A09C704227032870004C01AA /* FormCardLogosItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardLogosItemView.swift; sourceTree = "<group>"; };
 		A09FB2EA2B8399B700270D51 /* TrackableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackableComponent.swift; sourceTree = "<group>"; };
@@ -5534,6 +5536,7 @@
 		E746E67227B429100076BB71 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				A094534A2F22573400780C2A /* SessionResponse.swift */,
 				E9E3DAAE221D5C5E00697074 /* CardType.swift */,
 				E27BFD8F22B114DC00692E0D /* ShopperInteraction.swift */,
 				E788A4EE2658030100089448 /* DisplayInformation.swift */,
@@ -8608,6 +8611,7 @@
 				F926D52023F4217A00D058D3 /* DeviceDependent.swift in Sources */,
 				A069FDFA2DDDDAEF00A214B8 /* CheckoutResultCode.swift in Sources */,
 				F9D5753123828EBB009C18B5 /* AnyCardPaymentMethod.swift in Sources */,
+				A094534B2F22573800780C2A /* SessionResponse.swift in Sources */,
 				E2B317A92265EBD200C1BB30 /* EventPublisher.swift in Sources */,
 				E755BF7226B40C90007AAB25 /* DateValidator.swift in Sources */,
 				00EACBB02872F0D90082B360 /* OnlineBankingPaymentMethod.swift in Sources */,

@@ -19,7 +19,7 @@ internal final class DropInExample: InitialDataFlowProtocol {
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var session: AdyenSession?
+    private var session: Session?
     private var dropInComponent: DropInComponent?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
@@ -50,13 +50,13 @@ internal final class DropInExample: InitialDataFlowProtocol {
     
     // MARK: - Networking
 
-    private func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
+    private func loadSession(completion: @escaping (Result<Session, Error>) -> Void) {
         requestSessionInitialInfo { [weak self] response in
             guard let self else { return }
             
             switch response {
             case let .success(model):
-//                AdyenSession.initialize(
+//                Session.initialize(
 //                    with: config,
 //                    delegate: self,
 //                    presentationDelegate: self,
@@ -71,13 +71,13 @@ internal final class DropInExample: InitialDataFlowProtocol {
     
     // MARK: - Presentation
     
-    private func presentComponent(with session: AdyenSession) {
+    private func presentComponent(with session: Session) {
         let dropIn = dropInComponent(from: session)
         presenter?.present(viewController: dropIn.viewController, completion: nil)
         dropInComponent = dropIn
     }
 
-    private func dropInComponent(from session: AdyenSession) -> DropInComponent {
+    private func dropInComponent(from session: Session) -> DropInComponent {
         let paymentMethods = session.state.paymentMethods
         let configuration = dropInConfiguration(from: paymentMethods)
         let component = DropInComponent(
@@ -121,11 +121,11 @@ internal final class DropInExample: InitialDataFlowProtocol {
 
 extension DropInExample: AdyenSessionDelegate {
 
-    func didComplete(with result: CheckoutResult, component: Component, session: AdyenSession) {
+    func didComplete(with result: CheckoutResult, component: Component, session: Session) {
         dismissAndShowAlert(result.resultCode.isSuccess, result.resultCode.rawValue)
     }
 
-    func didFail(with error: Error, from component: Component, session: AdyenSession) {
+    func didFail(with error: Error, from component: Component, session: Session) {
         if (error as? ComponentError) == .cancelled {
             presenter?.dismiss(completion: nil)
         } else {
@@ -133,12 +133,12 @@ extension DropInExample: AdyenSessionDelegate {
         }
     }
 
-    func didOpenExternalApplication(component: ActionComponent, session: AdyenSession) {}
+    func didOpenExternalApplication(component: ActionComponent, session: Session) {}
 
 }
 
 extension DropInExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {
-        // The implementation of this delegate method is not needed when using AdyenSession as the session handles the presentation
+        // The implementation of this delegate method is not needed when using Session as the session handles the presentation
     }
 }

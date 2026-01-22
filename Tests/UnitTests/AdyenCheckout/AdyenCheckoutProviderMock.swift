@@ -24,7 +24,7 @@ internal class AdyenCheckoutProviderMock: AdyenCheckoutProviding {
     var mockedCheckoutAttemptId: Result<String, Error>?
     
     func setupSession(
-        with initialInfo: AdyenSession.InitialInfo,
+        with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         apiClient: APIClientProtocol
     ) async throws -> AdyenSessionProtocol {
@@ -57,8 +57,7 @@ internal class AdyenCheckoutProviderMock: AdyenCheckoutProviding {
     
     // Convenience for direct AdyenCheckoutProviding use
     func setup(
-        with sessionId: String,
-        sessionData: String,
+        with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
     ) async throws -> AdyenCheckout {

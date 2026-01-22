@@ -67,27 +67,23 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     
     // MARK: - Public
     
-    // TODO: should we replace sessionId/sessionData params with a struct to future proof session init?
     /// Sets up checkout for the session flow.
     ///
     /// Use this method when integrating with the `/sessions` endpoint.
     ///
     /// - Parameters:
-    ///   - sessionId: The session ID from the `/sessions` response.
-    ///   - sessionData: The session data from the `/sessions` response.
+    ///   - sessionResponse: The response from the `/sessions` call.
     ///   - configuration: The checkout configuration.
     ///   - presentationDelegate: Optional delegate for handling UI presentation.
     /// - Returns: An `AdyenCheckout` instance.
     /// - Throws: An error if setup fails.
     public static func setup(
-        with sessionId: String,
-        sessionData: String,
+        with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil
     ) async throws -> AdyenCheckout {
         try await setup(
-            with: sessionId,
-            sessionData: sessionData,
+            with: sessionResponse,
             configuration: configuration,
             presentationDelegate: presentationDelegate,
             provider: AdyenCheckoutProvider.default
@@ -156,7 +152,6 @@ public extension AdyenCheckout {
     func createPaymentComponent(for type: PaymentMethodType) -> CheckoutPaymentComponent? {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: type) else { return nil }
         
-        // TODO: Add new v6 style here
         return CheckoutPaymentComponent(
             paymentMethod: paymentMethod,
             configuration: configuration,
@@ -186,7 +181,6 @@ public extension AdyenCheckout {
     func createPaymentComponent(for identifier: String) -> CheckoutPaymentComponent? {
         guard let storedPaymentMethod = paymentMethods?.stored.first(where: { $0.identifier == identifier }) else { return nil }
         
-        // TODO: Add new v6 style here
         return CheckoutPaymentComponent(
             storedPaymentMethod: storedPaymentMethod,
             configuration: configuration,
@@ -216,15 +210,13 @@ public extension AdyenCheckout {
 internal extension AdyenCheckout {
     
     static func setup(
-        with sessionId: String,
-        sessionData: String,
+        with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil,
         provider: AdyenCheckoutProviding = AdyenCheckoutProvider.default
     ) async throws -> AdyenCheckout {
         try await provider.setup(
-            with: sessionId,
-            sessionData: sessionData,
+            with: sessionResponse,
             configuration: configuration,
             presentationDelegate: presentationDelegate
         )

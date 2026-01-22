@@ -12,19 +12,19 @@ import AdyenSession
 
 class SessionDelegateMock: AdyenSessionDelegate {
     
-    var onDidComplete: ((CheckoutResult, Component, AdyenSession) -> Void)?
-    var onDidFail: ((Error, Component, AdyenSession) -> Void)?
+    var onDidComplete: ((CheckoutResult, Component, Session) -> Void)?
+    var onDidFail: ((Error, Component, Session) -> Void)?
     var onDidOpenExternalApplication: (() -> Void)?
     
-    func didComplete(with result: CheckoutResult, component: Component, session: AdyenSession) {
+    func didComplete(with result: CheckoutResult, component: Component, session: Session) {
         onDidComplete?(result, component, session)
     }
     
-    func didFail(with error: Error, from component: Component, session: AdyenSession) {
+    func didFail(with error: Error, from component: Component, session: Session) {
         onDidFail?(error, component, session)
     }
     
-    func didOpenExternalApplication(component: ActionComponent, session: AdyenSession) {
+    func didOpenExternalApplication(component: ActionComponent, session: Session) {
         onDidOpenExternalApplication?()
     }
 }

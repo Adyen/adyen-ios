@@ -4,10 +4,8 @@ The Adyen DropIn/Components SDK API Reference.
 
 ## Adyen Session
 
-- ``AdyenSession``
+- ``Session``
 - ``AdyenSessionDelegate``
-- ``AdyenSessionPaymentsHandler``
-- ``AdyenSessionPaymentDetailsHandler``
 
 ## Drop In Component
 

@@ -76,11 +76,11 @@ extension AdyenCheckout: ActionComponentDelegate {
 }
 
 extension AdyenCheckout: AdyenSessionDelegate {
-    public func didComplete(with result: CheckoutResult, component: any Component, session: AdyenSession) {
+    public func didComplete(with result: CheckoutResult, component: any Component, session: Session) {
         finish(with: result)
     }
     
-    public func didFail(with error: any Error, from component: any Component, session: AdyenSession) {
+    public func didFail(with error: any Error, from component: any Component, session: Session) {
         finish(with: error)
     }
     
