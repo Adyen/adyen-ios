@@ -14,8 +14,8 @@ import Foundation
 /// ``Session`` acts as the delegate for the checkout payment flow.
 /// It can handle the required steps internally such as `/payments` and `/payment/details`
 /// calls and partial payment calls, then provide feedback
-/// via ``AdyenSessionDelegate`` methods.
-public final class Session: AdyenSessionProtocol {
+/// via ``SessionDelegate`` methods.
+public final class Session: SessionProtocol {
     
     /// The session context information.
     public internal(set) var state: Session.State
@@ -24,7 +24,7 @@ public final class Session: AdyenSessionProtocol {
     public package(set) weak var presentationDelegate: PresentationDelegate?
     
     /// The delegate object.
-    public package(set) weak var delegate: AdyenSessionDelegate?
+    public package(set) weak var delegate: SessionDelegate?
     
     internal let context: AdyenContext
     
@@ -62,7 +62,7 @@ public final class Session: AdyenSessionProtocol {
         state: Session.State,
         baseAPIClient: APIClientProtocol,
         context: AdyenContext,
-        delegate: AdyenSessionDelegate? = nil,
+        delegate: SessionDelegate? = nil,
         presentationDelegate: PresentationDelegate? = nil
     ) {
         self.state = state
@@ -76,7 +76,7 @@ public final class Session: AdyenSessionProtocol {
     /// - Parameter sessionResponse: The session setup initial data.
     /// - Parameter apiClient: The api client object for network calls.
     /// - Parameter context: The context object for the session.
-    /// - Returns: A configured AdyenSession instance.
+    /// - Returns: A configured Session instance.
     /// - Throws: An error if the session setup fails.
     package static func setup(
         with sessionResponse: SessionResponse,

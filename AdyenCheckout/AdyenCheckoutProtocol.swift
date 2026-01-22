@@ -41,7 +41,7 @@ internal protocol AdyenSessionProviding {
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         apiClient: APIClientProtocol
-    ) async throws -> AdyenSessionProtocol
+    ) async throws -> SessionProtocol
 }
 
 internal protocol CheckoutAttemptIdProviding {

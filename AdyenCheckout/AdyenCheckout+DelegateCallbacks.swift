@@ -75,7 +75,7 @@ extension AdyenCheckout: ActionComponentDelegate {
     }
 }
 
-extension AdyenCheckout: AdyenSessionDelegate {
+extension AdyenCheckout: SessionDelegate {
     public func didComplete(with result: CheckoutResult, component: any Component, session: Session) {
         finish(with: result)
     }

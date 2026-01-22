@@ -85,7 +85,7 @@ internal class AdyenCheckoutProvider: AdyenCheckoutProviding {
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         apiClient: APIClientProtocol
-    ) async throws -> AdyenSessionProtocol {
+    ) async throws -> SessionProtocol {
         try await Session.setup(
             with: sessionResponse,
             apiClient: apiClient,

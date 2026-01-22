@@ -117,7 +117,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 
 }
 
-extension ApplePayComponentExample: AdyenSessionDelegate {
+extension ApplePayComponentExample: SessionDelegate {
     
     func didComplete(with result: CheckoutResult, component: Component, session: Session) {
         dismissAndShowAlert(result.resultCode.isSuccess, result.resultCode.rawValue)

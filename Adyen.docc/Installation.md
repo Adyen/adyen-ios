@@ -20,8 +20,8 @@ Adyen Components for iOS are available through either CocoaPods or Swift Package
         The `AdyenWeChatPay` module needs to be explicitly added to support WeChat Pay.
         The `AdyenSwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers.
 
-        * `AdyenDropIn`: all modules except `AdyenWeChatPay` `AdyenCashAppPay`, `AdyenSwiftUI` and `AdyenSession`.
-        * `AdyenSession`: handler for the simplified checkout flow.
+        * `AdyenDropIn`: all modules except `AdyenWeChatPay` `AdyenCashAppPay`, `AdyenSwiftUI` and `Session`.
+        * `Session`: handler for the simplified checkout flow.
         * `AdyenCard`: the card components.
         * `AdyenComponents`: all other payment components except WeChat Pay.
         * `AdyenActions`:  action components.

@@ -10,7 +10,7 @@ import AdyenComponents
 import AdyenDropIn
 import AdyenSession
 
-class SessionDelegateMock: AdyenSessionDelegate {
+class SessionDelegateMock: SessionDelegate {
     
     var onDidComplete: ((CheckoutResult, Component, Session) -> Void)?
     var onDidFail: ((Error, Component, Session) -> Void)?

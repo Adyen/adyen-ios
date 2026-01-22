@@ -11,8 +11,8 @@
 import AdyenNetworking
 import Foundation
 
-/// Describes the methods a delegate of ``AdyenSession`` needs to implement.
-public protocol AdyenSessionDelegate: AnyObject {
+/// Describes the methods a delegate of ``Session`` needs to implement.
+public protocol SessionDelegate: AnyObject {
     
     /// Invoked when the component finishes without any further steps needed by the application.
     /// The application only needs to dismiss the component.
@@ -41,8 +41,8 @@ public protocol AdyenSessionDelegate: AnyObject {
     func didOpenExternalApplication(component: ActionComponent, session: Session)
 }
 
-/// Provides default empty implementation for ``AdyenSessionDelegate``
-public extension AdyenSessionDelegate {
+/// Provides default empty implementation for ``SessionDelegate``
+public extension SessionDelegate {
     
     func didOpenExternalApplication(component: ActionComponent, session: Session) {}
 }

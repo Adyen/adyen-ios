@@ -5,7 +5,7 @@ The Adyen DropIn/Components SDK API Reference.
 ## Adyen Session
 
 - ``Session``
-- ``AdyenSessionDelegate``
+- ``SessionDelegate``
 
 ## Drop In Component
 

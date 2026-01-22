@@ -114,7 +114,7 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
 
 }
 
-extension InstantPaymentComponentExample: AdyenSessionDelegate {
+extension InstantPaymentComponentExample: SessionDelegate {
 
     func didComplete(with result: CheckoutResult, component: Component, session: Session) {
         dismissAndShowAlert(result.resultCode.isSuccess, result.resultCode.rawValue)

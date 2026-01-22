@@ -19,7 +19,7 @@ internal class AdyenCheckoutProviderMock: AdyenCheckoutProviding {
     var setupWithPaymentMethodsResult: Result<AdyenCheckout, Error>?
     
     // For AdyenSessionProviding
-    var mockedSessionResult: Result<AdyenSessionProtocol, Error>?
+    var mockedSessionResult: Result<SessionProtocol, Error>?
     // For CheckoutAttemptIdProviding
     var mockedCheckoutAttemptId: Result<String, Error>?
     
@@ -27,7 +27,7 @@ internal class AdyenCheckoutProviderMock: AdyenCheckoutProviding {
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         apiClient: APIClientProtocol
-    ) async throws -> AdyenSessionProtocol {
+    ) async throws -> SessionProtocol {
         
         switch mockedSessionResult {
         case let .success(session):

@@ -1047,7 +1047,7 @@ class SessionTests: XCTestCase {
     private func initializeSession(
         expectedPaymentMethods: PaymentMethods,
         apiClient: APIClientMock = APIClientMock(),
-        delegate: AdyenSessionDelegate = SessionDelegateMock(),
+        delegate: SessionDelegate = SessionDelegateMock(),
         configuration: SessionSetupResponse.Configuration = .init(installmentOptions: nil, enableStoreDetails: true)
     ) -> Session {
         let sessionState = Session.State(

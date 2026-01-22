@@ -106,7 +106,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
 
 }
 
-extension IssuerListComponentExample: AdyenSessionDelegate {
+extension IssuerListComponentExample: SessionDelegate {
     
     func didComplete(with result: CheckoutResult, component: Component, session: Session) {
         dismissAndShowAlert(result.resultCode.isSuccess, result.resultCode.rawValue)

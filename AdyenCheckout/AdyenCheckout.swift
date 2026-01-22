@@ -47,7 +47,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     
     /// The available payment methods for this checkout session.
     public let paymentMethods: PaymentMethods?
-    internal let session: AdyenSessionProtocol?
+    internal let session: SessionProtocol?
     internal let checkoutAttemptId: String?
     internal let configuration: CheckoutConfiguration
     internal weak var presentationDelegate: PresentationDelegate?
@@ -117,7 +117,7 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
 
     internal init(
         configuration: CheckoutConfiguration,
-        session: AdyenSessionProtocol? = nil,
+        session: SessionProtocol? = nil,
         paymentMethods: PaymentMethods? = nil,
         checkoutAttemptId: String?,
         presentationDelegate: PresentationDelegate?
