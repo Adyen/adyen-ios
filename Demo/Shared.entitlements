@@ -6,7 +6,5 @@
 	<array>
 		<string>webcredentials:test-authentication-adyen.netlify.app</string>
 	</array>
-	<key>com.apple.developer.in-app-payments</key>
-	<array/>
 </dict>
 </plist>
