@@ -12,8 +12,8 @@
 @_spi(AdyenInternal) @testable import AdyenActions
 import XCTest
 
-final class AdyenCheckoutTests: XCTestCase {
-    var mockProvider: AdyenCheckoutProviderMock!
+final class CheckoutTests: XCTestCase {
+    var mockProvider: CheckoutProviderMock!
     var configuration: CheckoutConfiguration!
     var paymentMethods: PaymentMethods!
     
@@ -31,7 +31,7 @@ final class AdyenCheckoutTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        mockProvider = AdyenCheckoutProviderMock()
+        mockProvider = CheckoutProviderMock()
         configuration = CheckoutConfiguration(context: Dummy.context)
         paymentMethods = try! AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
     }
@@ -47,7 +47,7 @@ final class AdyenCheckoutTests: XCTestCase {
             responseConfiguration: .init(installmentOptions: nil, enableStoreDetails: true)
         ))
         
-        let expectedCheckout = AdyenCheckout(
+        let expectedCheckout = Checkout(
             configuration: configuration,
             session: expectedSession,
             paymentMethods: nil,
@@ -56,7 +56,7 @@ final class AdyenCheckoutTests: XCTestCase {
         )
         mockProvider.setupWithSessionResult = .success(expectedCheckout)
 
-        let checkout = try await AdyenCheckout.setup(
+        let checkout = try await Checkout.setup(
             with: "sessionId",
             sessionData: "sessionData",
             configuration: configuration,
@@ -78,7 +78,7 @@ final class AdyenCheckoutTests: XCTestCase {
         mockProvider.setupWithSessionResult = .failure(TestError())
         
         do {
-            _ = try await AdyenCheckout.setup(
+            _ = try await Checkout.setup(
                 with: "sessionId",
                 sessionData: "sessionData",
                 configuration: configuration,
@@ -92,7 +92,7 @@ final class AdyenCheckoutTests: XCTestCase {
     }
 
     func testSetupWithPaymentMethods_Success() async throws {
-        let expectedCheckout = AdyenCheckout(
+        let expectedCheckout = Checkout(
             configuration: configuration,
             session: nil,
             paymentMethods: paymentMethods,
@@ -102,7 +102,7 @@ final class AdyenCheckoutTests: XCTestCase {
         
         mockProvider.setupWithPaymentMethodsResult = .success(expectedCheckout)
         
-        let checkout = try await AdyenCheckout.setup(
+        let checkout = try await Checkout.setup(
             with: paymentMethods,
             configuration: configuration,
             presentationDelegate: nil,
@@ -119,7 +119,7 @@ final class AdyenCheckoutTests: XCTestCase {
         mockProvider.setupWithPaymentMethodsResult = .failure(TestError())
         
         do {
-            _ = try await AdyenCheckout.setup(
+            _ = try await Checkout.setup(
                 with: paymentMethods,
                 configuration: configuration,
                 presentationDelegate: nil,
@@ -203,7 +203,7 @@ final class AdyenCheckoutTests: XCTestCase {
             completion?(CheckoutPaymentsResponse(resultCode: .authorised))
         }
         
-        let sut = AdyenCheckout(
+        let sut = Checkout(
             configuration: configuration,
             checkoutAttemptId: "attemptId",
             presentationDelegate: nil
@@ -212,6 +212,147 @@ final class AdyenCheckoutTests: XCTestCase {
         waitForExpectations(timeout: 1)
         
         XCTAssertTrue(didCallSubmit)
+    }
+    
+    // MARK: - createPaymentComponent(for type:) Tests
+    
+    func test_createPaymentComponent_forType_returnsComponent_whenPaymentMethodExists() {
+        // Given
+        let sut = Checkout(
+            configuration: configuration,
+            paymentMethods: paymentMethods,
+            checkoutAttemptId: "attemptId",
+            presentationDelegate: nil
+        )
+        
+        // When
+        let component = sut.createPaymentComponent(for: .blik)
+        
+        // Then
+        XCTAssertNotNil(component)
+        XCTAssertNotNil(component?.viewController)
+    }
+    
+    func test_createPaymentComponent_forType_returnsNil_whenPaymentMethodDoesNotExist() {
+        // Given
+        let sut = Checkout(
+            configuration: configuration,
+            paymentMethods: paymentMethods,
+            checkoutAttemptId: "attemptId",
+            presentationDelegate: nil
+        )
+        
+        // When
+        let component = sut.createPaymentComponent(for: .ideal)
+        
+        // Then
+        XCTAssertNil(component)
+    }
+    
+    func test_createPaymentComponent_forType_returnsNil_whenPaymentMethodsIsNil() {
+        // Given
+        let sut = Checkout(
+            configuration: configuration,
+            paymentMethods: nil,
+            checkoutAttemptId: "attemptId",
+            presentationDelegate: nil
+        )
+        
+        // When
+        let component = sut.createPaymentComponent(for: .scheme)
+        
+        // Then
+        XCTAssertNil(component)
+    }
+    
+    func test_createPaymentComponent_forScheme_returnsCardComponent() {
+        // Given
+        let sut = Checkout(
+            configuration: configuration,
+            paymentMethods: paymentMethods,
+            checkoutAttemptId: "attemptId",
+            presentationDelegate: nil
+        )
+        
+        // When
+        let component = sut.createPaymentComponent(for: .scheme)
+        
+        // Then
+        XCTAssertNotNil(component)
+        XCTAssertNotNil(component?.viewController)
+    }
+    
+    // MARK: - createPaymentComponent(for identifier:) Tests
+    
+    func test_createPaymentComponent_forIdentifier_returnsComponent_whenStoredMethodExists() {
+        // Given
+        let sut = Checkout(
+            configuration: configuration,
+            paymentMethods: paymentMethods,
+            checkoutAttemptId: "attemptId",
+            presentationDelegate: nil
+        )
+        let storedMethodIdentifier = paymentMethods.stored.first!.identifier
+        
+        // When
+        let component = sut.createPaymentComponent(for: storedMethodIdentifier)
+        
+        // Then
+        XCTAssertNotNil(component)
+    }
+    
+    func test_createPaymentComponent_forIdentifier_returnsNil_whenStoredMethodDoesNotExist() {
+        // Given
+        let sut = Checkout(
+            configuration: configuration,
+            paymentMethods: paymentMethods,
+            checkoutAttemptId: "attemptId",
+            presentationDelegate: nil
+        )
+        
+        // When
+        let component = sut.createPaymentComponent(for: "non-existent-identifier")
+        
+        // Then
+        XCTAssertNil(component)
+    }
+    
+    func test_createPaymentComponent_forIdentifier_returnsNil_whenPaymentMethodsIsNil() {
+        // Given
+        let sut = Checkout(
+            configuration: configuration,
+            paymentMethods: nil,
+            checkoutAttemptId: "attemptId",
+            presentationDelegate: nil
+        )
+        
+        // When
+        let component = sut.createPaymentComponent(for: "any-identifier")
+        
+        // Then
+        XCTAssertNil(component)
+    }
+    
+    func test_createPaymentComponent_forIdentifier_returnsCorrectStoredMethod() {
+        // Given
+        let sut = Checkout(
+            configuration: configuration,
+            paymentMethods: paymentMethods,
+            checkoutAttemptId: "attemptId",
+            presentationDelegate: nil
+        )
+        
+        // Get the first stored card identifier
+        guard let storedCard = paymentMethods.stored.first(where: { $0 is StoredCardPaymentMethod }) else {
+            XCTFail("Expected stored card payment method in test data")
+            return
+        }
+        
+        // When
+        let component = sut.createPaymentComponent(for: storedCard.identifier)
+        
+        // Then
+        XCTAssertNotNil(component)
     }
     
 }

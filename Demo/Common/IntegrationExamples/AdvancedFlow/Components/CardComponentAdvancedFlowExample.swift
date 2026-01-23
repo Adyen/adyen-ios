@@ -14,7 +14,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var adyenCheckout: AdyenCheckout?
+    private var checkout: Checkout?
     private var adyenComponent: CheckoutPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
@@ -99,17 +99,15 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
 
-        let checkout = try await AdyenCheckout.setup(
+        let checkout = try await Checkout.setup(
             with: paymentMethods,
             configuration: configuration,
             presentationDelegate: self
         )
 
-        self.adyenCheckout = checkout
+        self.checkout = checkout
 
-        guard let cardPaymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self),
-              let component = checkout.createComponent(with: cardPaymentMethod)
-        else {
+        guard let component = checkout.createPaymentComponent(for: .scheme) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
         }
 
