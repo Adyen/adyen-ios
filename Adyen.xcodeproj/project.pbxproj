@@ -4982,6 +4982,7 @@
 				E2345C0D229BDD2D000F2C94 /* ThreeDS2Details.swift */,
 				F9842C58256D72B60063CE5A /* ThreeDSResult.swift */,
 				21099B0C2CB7276E0096502C /* PaymentInfo.swift */,
+				F9C6BD5F26DFBA0600DA7512 /* ThreeDS2SdkVersion.swift */,
 			);
 			path = 3DS2;
 			sourceTree = "<group>";
@@ -6243,7 +6244,6 @@
 				E76CAC4D26BC0CC200117953 /* CardViewControllerItemsProvider.swift */,
 				A0290DFC2C4FD6D5005BE269 /* CardAnalyticsConfiguration.swift */,
 				0055CDA62DD215CC0019F1D9 /* CoBadgedCardAnalyticsConfiguration.swift */,
-				F9C6BD5F26DFBA0600DA7512 /* ThreeDS2SdkVersion.swift */,
 				A0080EAE2EAFC750008A143C /* BillingAddressConfiguration.swift */,
 			);
 			path = Card;
