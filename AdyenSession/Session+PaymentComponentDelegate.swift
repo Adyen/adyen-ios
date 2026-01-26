@@ -162,7 +162,7 @@ extension Session {
     
     private func updateDropIn(_ dropInComponent: AnyDropInComponent, with order: PartialPaymentOrder, currentComponent: Component) {
         let initialInfo = SessionResponse(
-            sessionIdentifier: state.identifier,
+            id: state.identifier,
             sessionData: state.data
         )
         Task {

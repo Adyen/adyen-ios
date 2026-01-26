@@ -58,7 +58,7 @@ final class CheckoutTests: XCTestCase {
 
         let checkout = try await Checkout.setup(
             with: .init(
-                sessionIdentifier: "sessionId",
+                id: "sessionId",
                 sessionData: "sessionData"
             ),
             configuration: configuration,
@@ -82,7 +82,7 @@ final class CheckoutTests: XCTestCase {
         do {
             _ = try await Checkout.setup(
                 with: .init(
-                    sessionIdentifier: "sessionId",
+                    id: "sessionId",
                     sessionData: "sessionData"
                 ),
                 configuration: configuration,
@@ -148,7 +148,7 @@ final class CheckoutTests: XCTestCase {
         
         mockProvider.mockedSessionResult = .success(sessionMock)
         
-        let response = SessionResponse(sessionIdentifier: "test_id", sessionData: "test_data")
+        let response = SessionResponse(id: "test_id", sessionData: "test_data")
         let apiClient = APIClientMock()
         
         do {

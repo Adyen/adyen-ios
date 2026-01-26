@@ -7,25 +7,25 @@
 /// Response data obtained from the `/sessions` call.
 public struct SessionResponse: Decodable, Sendable {
     
-    package let sessionIdentifier: String
+    package let id: String
     
     package let sessionData: String
     
     /// Initializes a new SessionResponse object
     ///
     /// - Parameters:
-    ///   - sessionIdentifier: The session identifier.
+    ///   - id: The session identifier.
     ///   - sessionData: The session data.
     public init(
-        sessionIdentifier: String,
+        id: String,
         sessionData: String
     ) {
-        self.sessionIdentifier = sessionIdentifier
+        self.id = id
         self.sessionData = sessionData
     }
     
     private enum CodingKeys: String, CodingKey {
-        case sessionIdentifier = "id"
+        case id
         case sessionData
     }
 }

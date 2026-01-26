@@ -104,7 +104,7 @@ public final class Session: SessionProtocol {
         order: PartialPaymentOrder? = nil
     ) async throws -> State {
         
-        let sessionId = sessionResponse.sessionIdentifier
+        let sessionId = sessionResponse.id
         let sessionData = sessionResponse.sessionData
         
         let request = SessionSetupRequest(
