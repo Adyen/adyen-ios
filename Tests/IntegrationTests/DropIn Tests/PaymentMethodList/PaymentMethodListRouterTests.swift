@@ -16,7 +16,7 @@ struct PaymentMethodListRouterTests {
     @Test("This test makes sure the component's view controller is the start of the navigation flow.")
     func rootViewController_shouldHave_componentViewController_asFirstView() async throws {
         // Given
-        let (sut, expectedViewController, _, _) = makeSUT()
+        let (sut, expectedViewController, _, _, _) = makeSUT()
 
         // When
         let rootViewController = sut.rootViewController
@@ -31,7 +31,7 @@ struct PaymentMethodListRouterTests {
     @Test
     func dismiss_shouldCall_listener_didDismissPaymentMethodList() async throws {
         // Given
-        let (sut, _, listenerMock, _) = makeSUT()
+        let (sut, _, _, listenerMock, _) = makeSUT()
 
         // When
         sut.dismiss(completion: nil)
@@ -43,7 +43,7 @@ struct PaymentMethodListRouterTests {
     @Test
     func dismiss_shouldDeallocate_childRouter() async throws {
         // Given
-        let (sut, _, _, _) = makeSUT()
+        let (sut, _, _, _, _) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
         sut.present(paymentComponent: paymentComponentMock) {}
         try #require(sut.childRouter != nil)
@@ -56,9 +56,9 @@ struct PaymentMethodListRouterTests {
     }
 
     @Test
-    func presentComponent_should_presentComponentContainerViewController() async throws {
+    func presentComponent_should_pushComponentContainerViewController() async throws {
         // Given
-        let (sut, viewControllerSpy, _, componentContainerAssemblerMock) = makeSUT()
+        let (sut, _, navigationControllerSpy, _, componentContainerAssemblerMock) = makeSUT()
         let paymentComponent = makePaymentComponentMock()
         let componentContainerRouter = componentContainerAssemblerMock.resolveComponentContainerRouterForDelegateOnCancelReturnValue
         let expectedComponentContainerViewController = try #require(componentContainerRouter?.rootViewController)
@@ -67,16 +67,16 @@ struct PaymentMethodListRouterTests {
         sut.present(paymentComponent: paymentComponent) {}
 
         // Then
-        #expect(viewControllerSpy.presentCallsCount == 1)
+        #expect(navigationControllerSpy.pushViewControllerCallsCount == 1)
         #expect(sut.childRouter === componentContainerRouter)
-        let receivedComponentContainerViewController = viewControllerSpy.capturedPresentedViewController
+        let receivedComponentContainerViewController = navigationControllerSpy.capturedPushedViewController
         #expect(expectedComponentContainerViewController === receivedComponentContainerViewController)
     }
 
     @Test
     func presentActionComponent() async throws {
         // Given
-        let (sut, viewControllerSpy, _, _) = makeSUT()
+        let (sut, viewControllerSpy, _, _, _) = makeSUT()
         let actionComponent = makeActionComponent()
 
         // When
@@ -89,7 +89,7 @@ struct PaymentMethodListRouterTests {
     @Test
     func didDismissComponentContainer_should_deallocatedChildRouter() async throws {
         // Given
-        let (sut, _, _, _) = makeSUT()
+        let (sut, _, _, _, _) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
         sut.present(paymentComponent: paymentComponentMock) {}
         try #require(sut.childRouter != nil)
@@ -106,10 +106,13 @@ struct PaymentMethodListRouterTests {
     private func makeSUT() -> (
         sut: PaymentMethodListRouter,
         viewControllerSpy: ViewControllerSpy,
+        navigationControllerSpy: NavigationControllerSpy,
         listenerMock: PaymentMethodListRouterListenerMock,
         componentContainerAssemblerMock: ComponentContainerAssemblerProtocolMock
     ) {
         let viewControllerSpy = ViewControllerSpy()
+        let navigationControllerSpy = NavigationControllerSpy()
+        viewControllerSpy.setNavigationController(navigationControllerSpy)
         let listenerMock = PaymentMethodListRouterListenerMock()
 
         let componentContainerRouterMock = RouterMock()
@@ -123,7 +126,7 @@ struct PaymentMethodListRouterTests {
             componentContainerAssembler: componentContainerAssemblerMock
         )
 
-        return (sut, viewControllerSpy, listenerMock, componentContainerAssemblerMock)
+        return (sut, viewControllerSpy, navigationControllerSpy, listenerMock, componentContainerAssemblerMock)
     }
 
     private func makePaymentComponentMock() -> PresentableComponentMock {

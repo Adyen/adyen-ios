@@ -31,12 +31,25 @@ final class ViewControllerSpy: UIViewController {
         completion?()
     }
 
-    private var _navigationController: UINavigationController?
+    private var _navigationController: NavigationControllerSpy?
     override var navigationController: UINavigationController? {
         _navigationController
     }
 
-    func setNavigationController(_ nav: UINavigationController) {
+    func setNavigationController(_ nav: NavigationControllerSpy) {
         self._navigationController = nav
+    }
+}
+
+final class NavigationControllerSpy: UINavigationController {
+    
+    var pushViewControllerCallsCount = 0
+    var capturedPushedViewController: UIViewController?
+    var pushAnimated: Bool?
+    
+    override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+        pushViewControllerCallsCount += 1
+        capturedPushedViewController = viewController
+        pushAnimated = animated
     }
 }
