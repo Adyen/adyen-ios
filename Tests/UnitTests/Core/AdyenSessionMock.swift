@@ -7,17 +7,17 @@
 @_spi(AdyenInternal) @testable import AdyenSession
 @_spi(AdyenInternal) @testable import Adyen
 
-public final class AdyenSessionMock: AdyenSessionProtocol {
-    public var state: AdyenSession.State
-    public var delegate: AdyenSessionDelegate?
+public final class AdyenSessionMock: SessionProtocol {
+    public var state: Session.State
+    public var delegate: SessionDelegate?
     public var presentationDelegate: PresentationDelegate?
 
     var didSubmitCalled = false
     var didProvideCalled = false
 
     internal init(
-        state: AdyenSession.State,
-        delegate: AdyenSessionDelegate? = nil,
+        state: Session.State,
+        delegate: SessionDelegate? = nil,
         presentationDelegate: PresentationDelegate? = nil
     ) {
         self.state = state

@@ -10,9 +10,9 @@
 #endif
 import AdyenNetworking
 
-package protocol AdyenSessionProtocol: AnyObject {
-    var state: AdyenSession.State { get }
-    var delegate: AdyenSessionDelegate? { get set }
+package protocol SessionProtocol: AnyObject {
+    var state: Session.State { get }
+    var delegate: SessionDelegate? { get set }
     var presentationDelegate: PresentationDelegate? { get set }
     
     func didSubmit(

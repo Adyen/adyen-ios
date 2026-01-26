@@ -47,7 +47,7 @@ public final class Checkout: CheckoutProtocol {
     
     /// The available payment methods for this checkout session.
     public let paymentMethods: PaymentMethods?
-    internal let session: AdyenSessionProtocol?
+    internal let session: SessionProtocol?
     internal let checkoutAttemptId: String?
     internal let configuration: CheckoutConfiguration
     internal weak var presentationDelegate: PresentationDelegate?
@@ -66,28 +66,24 @@ public final class Checkout: CheckoutProtocol {
     }()
     
     // MARK: - Public
-
-    // TODO: should we replace sessionId/sessionData params with a struct to future proof session init?
+    
     /// Sets up checkout for the session flow.
     ///
     /// Use this method when integrating with the `/sessions` endpoint.
     ///
     /// - Parameters:
-    ///   - sessionId: The session ID from the `/sessions` response.
-    ///   - sessionData: The session data from the `/sessions` response.
+    ///   - sessionResponse: The response from the `/sessions` call.
     ///   - configuration: The checkout configuration.
     ///   - presentationDelegate: Optional delegate for handling UI presentation.
     /// - Returns: A `Checkout` instance.
     /// - Throws: An error if setup fails.
     public static func setup(
-        with sessionId: String,
-        sessionData: String,
+        with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil
     ) async throws -> Checkout {
         try await setup(
-            with: sessionId,
-            sessionData: sessionData,
+            with: sessionResponse,
             configuration: configuration,
             presentationDelegate: presentationDelegate,
             provider: CheckoutProvider.default
@@ -121,7 +117,7 @@ public final class Checkout: CheckoutProtocol {
 
     internal init(
         configuration: CheckoutConfiguration,
-        session: AdyenSessionProtocol? = nil,
+        session: SessionProtocol? = nil,
         paymentMethods: PaymentMethods? = nil,
         checkoutAttemptId: String?,
         presentationDelegate: PresentationDelegate?
@@ -155,8 +151,7 @@ public extension Checkout {
     /// ```
     func createPaymentComponent(for type: PaymentMethodType) -> CheckoutPaymentComponent? {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: type) else { return nil }
-
-        // TODO: Add new v6 style here
+        
         return CheckoutPaymentComponent(
             paymentMethod: paymentMethod,
             configuration: configuration,
@@ -185,8 +180,7 @@ public extension Checkout {
     /// ```
     func createPaymentComponent(for identifier: String) -> CheckoutPaymentComponent? {
         guard let storedPaymentMethod = paymentMethods?.stored.first(where: { $0.identifier == identifier }) else { return nil }
-
-        // TODO: Add new v6 style here
+        
         return CheckoutPaymentComponent(
             storedPaymentMethod: storedPaymentMethod,
             configuration: configuration,
@@ -216,15 +210,13 @@ public extension Checkout {
 internal extension Checkout {
 
     static func setup(
-        with sessionId: String,
-        sessionData: String,
+        with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil,
         provider: CheckoutProviding = CheckoutProvider.default
     ) async throws -> Checkout {
         try await provider.setup(
-            with: sessionId,
-            sessionData: sessionData,
+            with: sessionResponse,
             configuration: configuration,
             presentationDelegate: presentationDelegate
         )
