@@ -1,0 +1,14 @@
+//
+// Copyright (c) Adyen N.V.
+//
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//
+
+import Adyen
+import Foundation
+
+internal enum DropInRoot {
+    case preselected(_ paymentComponent: PaymentComponent)
+    case component(_ paymentComponent: PresentableComponent)
+    case paymentMethodList
+}

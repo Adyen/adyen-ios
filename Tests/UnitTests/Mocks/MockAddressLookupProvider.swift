@@ -5,16 +5,17 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class MockAddressLookupProvider: AddressLookupProvider {
-    private var resultProvider: (_ searchTerm: String) -> [LookupAddressModel]
+    private var resultProvider: (_ searchTerm: String) -> [AddressLookupResult]
     
-    required init(resultProvider: @escaping (String) -> [LookupAddressModel]) {
+    required init(resultProvider: @escaping (String) -> [AddressLookupResult]) {
         self.resultProvider = resultProvider
     }
     
-    func lookUp(searchTerm: String, resultHandler: @escaping ([LookupAddressModel]) -> Void) {
+    func lookUp(searchTerm: String, resultHandler: @escaping ([AddressLookupResult]) -> Void) {
         resultHandler(resultProvider(searchTerm))
     }
 }

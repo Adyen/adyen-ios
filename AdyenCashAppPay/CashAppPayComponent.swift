@@ -5,12 +5,14 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 import PayKit
 import PayKitUI
 import UIKit
 
 /// A component that handles a Cash App Pay payment.
-@available(iOS 13.0, *)
 public final class CashAppPayComponent: PaymentComponent,
     PaymentAware,
     PresentableComponent,
@@ -221,7 +223,6 @@ public final class CashAppPayComponent: PaymentComponent,
 
 }
 
-@available(iOS 13.0, *)
 extension CashAppPayComponent: CashAppPayObserver {
 
     public func stateDidChange(to state: CashAppPayState) {
@@ -264,7 +265,6 @@ extension CashAppPayComponent: CashAppPayObserver {
     }
 }
 
-@available(iOS 13.0, *)
 extension CashAppPayComponent {
 
     /// Describes the errors that can occur during the Cash App Pay payment flow, in addition to Cash App Pay's own errors.
@@ -285,17 +285,14 @@ extension CashAppPayComponent {
     }
 }
 
-@available(iOS 13.0, *)
 @_spi(AdyenInternal)
 extension CashAppPayComponent: TrackableComponent {}
 
-@available(iOS 13.0, *)
 @_spi(AdyenInternal)
 extension CashAppPayComponent: ViewControllerDelegate {}
 
 // MARK: - SubmitCustomizable
 
-@available(iOS 13.0, *)
 extension CashAppPayComponent: SubmittableComponent {
 
     public func submit() {

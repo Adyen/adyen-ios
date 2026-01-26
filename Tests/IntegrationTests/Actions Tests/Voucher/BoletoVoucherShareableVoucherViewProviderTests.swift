@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) import Adyen
 @_spi(AdyenInternal) @testable import AdyenActions
+@_spi(AdyenInternal) import AdyenUI
 import XCTest
 
 class BoletoVoucherShareableVoucherViewProviderTests: XCTestCase {

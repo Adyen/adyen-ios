@@ -14,11 +14,10 @@ import UIKit
 @_spi(AdyenInternal)
 extension AdyenSession: PaymentComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
-        let handler = delegate?.handlerForPayments(in: component, session: self) ?? self
-        handler.didSubmit(data, from: component, dropInComponent: nil, session: self)
+        didSubmit(data, from: component, dropInComponent: nil)
     }
     
-    internal func finish(with result: AdyenSessionResult, component: Component) {
+    internal func finish(with result: CheckoutResult, component: Component) {
         let success = result.resultCode == .authorised
             || result.resultCode == .received
             || result.resultCode == .pending
@@ -48,17 +47,15 @@ extension AdyenSession: PaymentComponentDelegate {
     }
 }
 
-@_spi(AdyenInternal)
-extension AdyenSession: AdyenSessionPaymentsHandler {
-    public func didSubmit(
+extension AdyenSession {
+    package func didSubmit(
         _ paymentComponentData: PaymentComponentData,
-        from component: Component,
-        dropInComponent: AnyDropInComponent?,
-        session: AdyenSession
+        from component: PaymentComponent,
+        dropInComponent: AnyDropInComponent?
     ) {
         let request = PaymentsRequest(
-            sessionId: sessionContext.identifier,
-            sessionData: sessionContext.data,
+            sessionId: state.identifier,
+            sessionData: state.data,
             data: paymentComponentData
         )
         apiClient.perform(request) { [weak self] in
@@ -89,29 +86,62 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
         } else if let order = response.order,
                   let remainingAmount = order.remainingAmount,
                   remainingAmount.value > 0 {
-            let handleOrderBlock: (() -> Void) = { [weak self] in
-                self?.handle(order: order, for: currentComponent, in: dropInComponent)
+            
+            guard let dropInComponent else {
+                finish(
+                    with: PartialPaymentError.notSupportedForComponent,
+                    component: currentComponent
+                )
+                return
             }
             
-            if response.resultCode == .refused {
-                showPaymentFailedAlert(on: dropInComponent, completion: handleOrderBlock)
-            } else {
-                handleOrderBlock()
-            }
+            handle(
+                order: order,
+                resultCode: response.resultCode,
+                currentComponent: currentComponent,
+                dropInComponent: dropInComponent
+            )
+            
         } else {
-            let result = AdyenSessionResult(
-                resultCode: SessionPaymentResultCode(paymentResultCode: response.resultCode),
-                encodedResult: response.sessionResult
+            let result = CheckoutResult(
+                resultCode: response.resultCode,
+                sessionResult: response.sessionResult
             )
             finish(with: result, component: currentComponent)
         }
     }
     
-    private func showPaymentFailedAlert(on dropInComponent: AnyDropInComponent?, completion: @escaping (() -> Void)) {
-        guard let dropInComponent else {
-            completion()
-            return
+    private func handle(
+        action: Action,
+        for currentComponent: Component,
+        in dropInComponent: AnyDropInComponent?
+    ) {
+        if let dropInComponent = dropInComponent as? ActionHandlingComponent {
+            dropInComponent.handle(action)
+        } else {
+            actionHandlingComponent.handle(action)
         }
+    }
+    
+    private func handle(
+        order: PartialPaymentOrder,
+        resultCode: CheckoutResultCode,
+        currentComponent: Component,
+        dropInComponent: AnyDropInComponent
+    ) {
+        let updateDropInBlock: (() -> Void) = { [weak self] in
+            self?.updateDropIn(dropInComponent, with: order, currentComponent: currentComponent)
+        }
+        
+        // dropIn needs to be updated in both cases
+        if resultCode == .refused {
+            showPaymentFailedAlert(on: dropInComponent, completion: updateDropInBlock)
+        } else {
+            updateDropInBlock()
+        }
+    }
+    
+    private func showPaymentFailedAlert(on dropInComponent: AnyDropInComponent, completion: @escaping (() -> Void)) {
         let localizationParameters = (dropInComponent as? Localizable)?.localizationParameters
         let title = localizedString(.errorTitle, localizationParameters)
         let message = localizedString(.paymentRefusedMessage, localizationParameters)
@@ -130,50 +160,30 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
         dropInComponent.viewController.present(alertController, animated: true)
     }
     
-    private func handle(
-        action: Action,
-        for currentComponent: Component,
-        in dropInComponent: AnyDropInComponent?
-    ) {
-        if let dropInComponent = dropInComponent as? ActionHandlingComponent {
-            dropInComponent.handle(action)
-        } else {
-            actionComponent.handle(action)
-        }
-    }
-    
-    private func handle(
-        order: PartialPaymentOrder,
-        for currentComponent: Component,
-        in dropInComponent: AnyDropInComponent?
-    ) {
-        guard let dropInComponent else {
-            finish(
-                with: PartialPaymentError.notSupportedForComponent,
-                component: currentComponent
-            )
-            return
-        }
-        Self.makeSetupCall(
-            with: configuration,
-            baseAPIClient: apiClient,
-            order: order
-        ) { [weak self] result in
-            self?.updateContext(with: result, component: currentComponent)
-            self?.reload(
-                dropInComponent: dropInComponent,
-                with: order,
-                currentComponent: currentComponent
-            )
-        }
-    }
-    
-    private func updateContext(with result: Result<Context, Error>, component: Component) {
-        switch result {
-        case let .success(context):
-            sessionContext = context
-        case let .failure(error):
-            finish(with: error, component: component)
+    private func updateDropIn(_ dropInComponent: AnyDropInComponent, with order: PartialPaymentOrder, currentComponent: Component) {
+        let initialInfo = AdyenSession.InitialInfo(
+            sessionIdentifier: state.identifier,
+            initialSessionData: state.data
+        )
+        Task {
+            do {
+                let newState = try await Self.makeSetupCall(
+                    with: initialInfo,
+                    baseAPIClient: apiClient,
+                    order: order
+                )
+                
+                // Update state and reload
+                state = newState
+                reload(
+                    dropInComponent: dropInComponent,
+                    with: order,
+                    currentComponent: currentComponent
+                )
+            } catch {
+                // Handle error
+                finish(with: error, component: currentComponent)
+            }
         }
     }
     
@@ -183,7 +193,7 @@ extension AdyenSession: AdyenSessionPaymentsHandler {
         currentComponent: Component
     ) {
         do {
-            try dropInComponent.reload(with: order, sessionContext.paymentMethods)
+            try dropInComponent.reload(with: order, state.paymentMethods)
         } catch {
             finish(with: error, component: currentComponent)
         }

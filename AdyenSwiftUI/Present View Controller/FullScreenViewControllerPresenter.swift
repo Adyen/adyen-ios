@@ -7,7 +7,6 @@
 import SwiftUI
 
 #if canImport(SwiftUI) && canImport(Combine)
-    @available(iOS 13.0, *)
     public extension View {
 
         /// Present a `ViewController` modally.
@@ -21,7 +20,6 @@ import SwiftUI
         }
     }
 
-    @available(iOS 13.0, *)
     internal struct FullScreenViewControllerPresenter: ViewModifier {
 
         @Binding internal var viewController: UIViewController?
@@ -34,7 +32,6 @@ import SwiftUI
         }
     }
 
-    @available(iOS 13.0, *)
     internal struct FullScreenView: UIViewControllerRepresentable {
 
         @Binding internal var viewController: UIViewController?

@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class LoadingViewTests: XCTestCase {
@@ -25,7 +26,7 @@ class LoadingViewTests: XCTestCase {
     }
 
     func testShowingSpinnerDelay() throws {
-        setupRootViewController(viewController)
+        viewController.loadViewIfNeeded()
         
         sut.showsActivityIndicator = true
         XCTAssertEqual(sut.showsActivityIndicator, false)
@@ -34,7 +35,7 @@ class LoadingViewTests: XCTestCase {
     }
     
     func testHidingSpinner() throws {
-        setupRootViewController(viewController)
+        viewController.loadViewIfNeeded()
         
         sut.showsActivityIndicator = true
         wait(for: .milliseconds(2))

@@ -7,6 +7,9 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 
 /// A component that provides a form for SEPA Direct Debit payments.
 public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, PresentableComponent, LoadingComponent {
@@ -65,8 +68,8 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
             scrollEnabled: configuration.showsSubmitButton,
-            style: configuration.style,
-            localizationParameters: configuration.localizationParameters
+            localizationParameters: configuration.localizationParameters,
+            theme: configuration.theme
         )
         formViewController.delegate = self
 

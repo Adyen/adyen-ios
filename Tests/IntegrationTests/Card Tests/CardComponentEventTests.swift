@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable @_spi(AdyenInternal) import AdyenCard
+@testable @_spi(AdyenInternal) import AdyenUI
 import XCTest
 
 final class CardComponentEventTests: XCTestCase {
@@ -26,7 +27,7 @@ final class CardComponentEventTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponent.Configuration()
+            configuration: CardComponentConfiguration()
         )
 
         // When
@@ -95,7 +96,7 @@ final class CardComponentEventTests: XCTestCase {
 
     func testHolderNameFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
-        var config = CardComponent.Configuration()
+        var config = CardComponentConfiguration()
         config.showsHolderNameField = true
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
@@ -110,7 +111,7 @@ final class CardComponentEventTests: XCTestCase {
 
     func testKCPFieldFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
-        var config = CardComponent.Configuration()
+        var config = CardComponentConfiguration()
         config.koreanAuthenticationMode = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
@@ -125,7 +126,7 @@ final class CardComponentEventTests: XCTestCase {
 
     func testKCPPasswordFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
-        var config = CardComponent.Configuration()
+        var config = CardComponentConfiguration()
         config.koreanAuthenticationMode = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
@@ -140,7 +141,7 @@ final class CardComponentEventTests: XCTestCase {
     
     func testSocialSecurityFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
-        var config = CardComponent.Configuration()
+        var config = CardComponentConfiguration()
         config.socialSecurityNumberMode = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
         
@@ -155,7 +156,7 @@ final class CardComponentEventTests: XCTestCase {
     
     func testPostalCodeFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
-        var config = CardComponent.Configuration()
+        var config = CardComponentConfiguration()
         config.billingAddress.mode = .postalCode
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
         
@@ -188,7 +189,7 @@ final class CardComponentEventTests: XCTestCase {
         XCTAssertEqual(secondInfoEvent.target, target)
     }
     
-    private func makeSUT(with configuration: CardComponent.Configuration = .init(), analyticsProviderMock: AnalyticsProviderMock) -> CardComponent {
+    private func makeSUT(with configuration: CardComponentConfiguration = .init(), analyticsProviderMock: AnalyticsProviderMock) -> CardComponent {
         let context = Dummy.context(with: analyticsProviderMock)
         let cardComponent = CardComponent(
             paymentMethod: method,

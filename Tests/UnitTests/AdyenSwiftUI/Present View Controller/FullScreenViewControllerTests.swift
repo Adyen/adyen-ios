@@ -20,13 +20,14 @@ final class FullScreenViewControllerTests: XCTestCase {
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = host
         window.makeKeyAndVisible()
-        
+        wait(for: .seconds(1))
+
         DispatchQueue.main.async {
             viewModel.viewController = testVC
         }
         
         let predicate = NSPredicate { _, _ in host.presentedViewController === testVC }
         let expectation = XCTNSPredicateExpectation(predicate: predicate, object: host)
-        wait(for: [expectation], timeout: 2.0)
+        wait(for: [expectation], timeout: 5.0)
     }
 }

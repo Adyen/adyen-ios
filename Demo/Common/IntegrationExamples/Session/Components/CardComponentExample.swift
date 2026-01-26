@@ -6,8 +6,8 @@
 
 import Adyen
 import AdyenCard
+import AdyenCheckout
 import AdyenComponents
-import AdyenSession
 
 internal final class CardComponentExample: InitialDataFlowProtocol {
 
@@ -15,8 +15,8 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
     
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var session: AdyenSession?
-    private var cardComponent: PresentableComponent?
+    private var checkout: Checkout?
+    private var adyenComponent: CheckoutPaymentComponent?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     
@@ -27,79 +27,105 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
     internal init() {}
 
     internal func start() {
-        presenter?.showLoadingIndicator()
-        loadSession { [weak self] response in
-            guard let self else { return }
-            
-            self.presenter?.hideLoadingIndicator()
-                
-            switch response {
-            case let .success(session):
-                self.session = session
-                self.presentComponent(with: session)
-                
-            case let .failure(error):
-                self.presentAlert(with: error)
-            }
-        }
-    }
-    
-    // MARK: - Networking
-
-    private func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
-        requestAdyenSessionConfiguration { [weak self] response in
-            guard let self else { return }
-            
-            switch response {
-            case let .success(configuration):
-                AdyenSession.initialize(
-                    with: configuration,
-                    delegate: self,
-                    presentationDelegate: self,
-                    completion: completion
-                )
-                
-            case let .failure(error):
-                completion(.failure(error))
+        startLoading()
+        
+        Task {
+            do {
+                let sessionResponse = try await requestSessionInitialInfo()
+                let component = try await self.cardComponent(from: sessionResponse)
+                self.adyenComponent = component
+                await hideLoading()
+                await present(component: component)
+            } catch {
+                await hideLoading()
+                await handleError(error)
             }
         }
     }
     
     // MARK: - Presentation
     
-    private func presentComponent(with session: AdyenSession) {
-        do {
-            let component = try cardComponent(from: session)
-            let componentViewController = viewController(for: component)
-            presenter?.present(viewController: componentViewController, completion: nil)
-            cardComponent = component
-        } catch {
-            self.presentAlert(with: error)
+    private func cardComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
+        let configuration = try CheckoutConfiguration(
+            environment: ConfigurationConstants.componentsEnvironment,
+            amount: ConfigurationConstants.current.amount,
+            clientKey: ConfigurationConstants.clientKey,
+            analyticsConfiguration: .init(
+                isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
+            )
+        ) {
+            ConfigurationConstants.current.cardConfiguration
+                .installmentConfiguration(
+                    InstallmentConfiguration(
+                        defaultOptions: .init(
+                            monthValues: [3, 5, 7],
+                            includesRevolving: false
+                        )
+                    )
+                )
+                .billingAddressMode(
+                    .lookup(
+                        onAddressLookup: { searchTerm in
+                            await MapkitAddressLookupProvider().searchAsync(searchTerm)
+                        },
+                        onAddressSelected: { result in
+                            try await DemoAddressLookupProvider().completeAsync(result)
+                        }
+                    )
+                )
+                .onBinChange { bin in
+                    print("Here is the bin \(bin)")
+                }
+                .onBinLookup { brands in
+                    print("Bin lookup response \(brands)")
+                }
+                .showsSecurityCodeField(false)
         }
-    }
-    
-    private func cardComponent(from session: AdyenSession) throws -> CardComponent {
-        let paymentMethods = session.sessionContext.paymentMethods
+        .onComplete { [weak self] result in
+            self?.dismissAndShowAlert(
+                result.resultCode.isSuccess,
+                result.resultCode.rawValue
+            )
+        }
+        .onError { [weak self] error in
+            self?.dismissAndShowAlert(false, error.localizedDescription)
+        }
         
-        guard let paymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self) else {
+        let checkout = try await Checkout.setup(
+            with: sessionResponse.sessionId,
+            sessionData: sessionResponse.sessionData,
+            configuration: configuration,
+            presentationDelegate: self
+        )
+        
+        self.checkout = checkout
+        
+        guard let component = checkout.createPaymentComponent(for: .scheme) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
         }
-
-        let component = CardComponent(
-            paymentMethod: paymentMethod,
-            context: context,
-            configuration: ConfigurationConstants.current.cardConfiguration
-        )
-        component.delegate = session
+        
         return component
     }
 
-    // MARK: - Alert handling
-
-    private func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
-        presenter?.presentAlert(with: error, retryHandler: retryHandler)
+    private func startLoading() {
+        presenter?.showLoadingIndicator()
     }
-
+    
+    @MainActor
+    private func handleError(_ error: Error) {
+        presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
+    }
+    
+    @MainActor
+    private func hideLoading() {
+        presenter?.hideLoadingIndicator()
+    }
+    
+    @MainActor
+    private func present(component: CheckoutPaymentComponent) {
+        presenter?.present(viewController: viewController(for: component), completion: nil)
+    }
+    
     private func dismissAndShowAlert(_ success: Bool, _ message: String) {
         presenter?.dismiss {
             // Payment is processed. Add your code here.
@@ -109,52 +135,19 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
     }
 }
 
-extension CardComponentExample: CardComponentDelegate {
-
-    func didSubmit(lastFour: String, finalBIN: String, component: CardComponent) {
-        print("Card used: **** **** **** \(lastFour)")
-        print("Final BIN: \(finalBIN)")
-    }
-
-    internal func didChangeBIN(_ value: String, component: CardComponent) {
-        print("Current BIN: \(value)")
-    }
-
-    internal func didChangeCardBrand(_ value: [CardBrand]?, component: CardComponent) {
-        print("Current card type: \((value ?? []).reduce("") { "\($0), \($1)" })")
-    }
-}
-
-extension CardComponentExample: AdyenSessionDelegate {
-    
-    func didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession) {
-        dismissAndShowAlert(result.resultCode.isSuccess, result.resultCode.rawValue)
-    }
-
-    func didFail(with error: Error, from component: Component, session: AdyenSession) {
-        dismissAndShowAlert(false, error.localizedDescription)
-    }
-
-    func didOpenExternalApplication(component: ActionComponent, session: AdyenSession) {}
-
-}
-
 extension CardComponentExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {
-        let componentViewController = viewController(for: component)
-        presenter?.present(viewController: componentViewController, completion: nil)
+        presenter?.present(viewController: component.viewController, completion: nil)
     }
 }
 
 private extension CardComponentExample {
     
-    func viewController(for component: PresentableComponent) -> UIViewController {
-        guard component.requiresModalPresentation else {
-            return component.viewController
-        }
+    func viewController(for component: CheckoutPaymentComponent) -> UIViewController {
+        guard let viewController = component.viewController else { fatalError("Cannot find component's view controller") }
         
-        let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.leftBarButtonItem = .init(
+        let navigation = UINavigationController(rootViewController: viewController)
+        viewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
             target: self,
             action: #selector(cancelPressed)
@@ -163,7 +156,8 @@ private extension CardComponentExample {
     }
     
     @objc private func cancelPressed() {
-        cardComponent?.cancelIfNeeded()
+        // TODO: how to do component cancellation
+//        cardComponent?.cancelIfNeeded()
         presenter?.dismiss(completion: nil)
     }
 }

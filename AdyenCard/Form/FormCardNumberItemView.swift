@@ -5,6 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 import UIKit
 
 /// A view representing a form card number item.
@@ -13,11 +16,12 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     private static let cardSpacing: CGFloat = 4.0
     private static let cardSize = CGSize(width: 24.0, height: 16.0)
     
-    /// Initializes the form card number item view.
-    ///
-    /// - Parameter item: The item represented by the view.
-    internal required init(item: FormCardNumberItem) {
-        super.init(item: item)
+    /// Initializes the form card number item view with theme.
+    /// - Parameters:
+    ///   - item: The item represented by the view.
+    ///   - theme: The theme to use for styling.
+    internal required init(item: FormCardNumberItem, theme: AdyenTheme) {
+        super.init(item: item, theme: theme)
         accessory = .customView(detectedBrandsView)
         if item.supportsCardScanning {
             textField.inputAccessoryView = makeCardScanAccessoryView(
@@ -28,7 +32,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         textField.textContentType = .creditCardNumber
         textField.returnKeyType = .default
         textField.allowsEditingActions = false
-        
+
         observe(item.$initialBrand) { [weak self] _ in
             guard let self else { return }
             self.updateValidationStatus(forced: true)
@@ -39,19 +43,19 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
             self?.detectedBrandsView.updateCurrentLogos(newValue)
         }
     }
-    
+
     override public func handleFormattedValueDidChange(_ newValue: String) {
         textField.text = newValue
         updateValidationStatus()
     }
-    
+
     @_spi(AdyenInternal)
     override public func textDidChange(textField: UITextField) {
         // Overriding to not use the default behavior of the super class
         _ = item.textDidChange(value: textField.text ?? "")
         notifyDelegateOfMaxLengthIfNeeded()
     }
-    
+
     @_spi(AdyenInternal)
     override public func textField(
         _ textField: UITextField,

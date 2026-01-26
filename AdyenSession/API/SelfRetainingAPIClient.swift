@@ -8,21 +8,10 @@
 import AdyenNetworking
 import Foundation
 
-/// An API Client that retains its self until destroyed manually or request is concluded.
+/// An API Client that retains itself by implicit self capturing until the closure executed.
 internal final class SelfRetainingAPIClient: APIClientProtocol {
     
     private let apiClient: APIClientProtocol
-    
-    private var instance: APIClientProtocol?
-    
-    /// For Testing only
-    internal var onDeinit: (() -> Void)?
-    
-    private var retainCount: Int = 0
-    
-    deinit {
-        onDeinit?()
-    }
     
     /// Initializes the API client.
     ///
@@ -36,28 +25,8 @@ internal final class SelfRetainingAPIClient: APIClientProtocol {
         _ request: R,
         completionHandler: @escaping CompletionHandler<R.ResponseType>
     ) where R: Request {
-        AdyenAssertion.assert(
-            message: "This function must be called on the main thread",
-            condition: !Thread.isMainThread
-        )
-        instance = self
-        retainCount += 1
-        apiClient.perform(request) { [weak self] in
+        apiClient.perform(request) {
             completionHandler($0)
-            self?.destroyIfNeeded()
-        }
-    }
-    
-    /// Destroy the retain cycle to enable `self` to be deallocated.
-    private func destroyIfNeeded() {
-        AdyenAssertion.assert(
-            message: "This function must be called on the main thread",
-            condition: !Thread.isMainThread
-        )
-        retainCount -= 1
-        
-        if retainCount == 0 {
-            instance = nil
         }
     }
 }

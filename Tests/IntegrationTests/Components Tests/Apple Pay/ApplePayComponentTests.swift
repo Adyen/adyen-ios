@@ -89,7 +89,6 @@ class ApplePayComponentTest: XCTestCase {
         }
 
         viewController.loadViewIfNeeded()
-        
         self.sut.paymentAuthorizationViewControllerDidFinish(viewController as! PKPaymentAuthorizationViewController)
 
         waitForExpectations(timeout: 10)

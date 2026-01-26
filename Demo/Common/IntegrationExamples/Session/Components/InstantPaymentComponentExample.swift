@@ -47,16 +47,17 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
     // MARK: - Networking
 
     internal func loadSession(completion: @escaping (Result<AdyenSession, Error>) -> Void) {
-        requestAdyenSessionConfiguration { [weak self] response in
+        requestSessionInitialInfo { [weak self] response in
             guard let self else { return }
             switch response {
-            case let .success(configuration):
-                AdyenSession.initialize(
-                    with: configuration,
-                    delegate: self,
-                    presentationDelegate: self,
-                    completion: completion
-                )
+            case let .success(model):
+//                AdyenSession.initialize(
+//                    with: configuration,
+//                    delegate: self,
+//                    presentationDelegate: self,
+//                    completion: completion
+//                )
+                break
             case let .failure(error):
                 completion(.failure(error))
             }
@@ -77,7 +78,7 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
     }
 
     private func instantPaymentComponent(from session: AdyenSession) throws -> InstantPaymentComponent {
-        let paymentMethods = session.sessionContext.paymentMethods
+        let paymentMethods = session.state.paymentMethods
         
         // Get the correct payment method from the paymentMethods object
         // In this example the first supported `InstantPaymentMethod` is chosen
@@ -115,7 +116,7 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
 
 extension InstantPaymentComponentExample: AdyenSessionDelegate {
 
-    func didComplete(with result: AdyenSessionResult, component: Component, session: AdyenSession) {
+    func didComplete(with result: CheckoutResult, component: Component, session: AdyenSession) {
         dismissAndShowAlert(result.resultCode.isSuccess, result.resultCode.rawValue)
     }
 
@@ -153,7 +154,7 @@ private extension InstantPaymentComponentExample {
     }
 
     @objc private func cancelPressed() {
-        instantPaymentComponent?.cancelIfNeeded()
+        instantPaymentComponent?.cancel()
         presenter?.dismiss(completion: nil)
     }
 }

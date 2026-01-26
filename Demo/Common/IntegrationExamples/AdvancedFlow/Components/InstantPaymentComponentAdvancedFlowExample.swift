@@ -24,8 +24,8 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
 
     // MARK: - Action Handling
 
-    private lazy var adyenActionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(context: context)
+    private lazy var actionComponent: CheckoutActionComponent = {
+        let handler = CheckoutActionComponent(context: context)
         handler.delegate = self
         handler.presentationDelegate = self
         return handler
@@ -83,7 +83,7 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
         switch result {
         case let .success(response):
             if let action = response.action {
-                adyenActionComponent.handle(action)
+                actionComponent.handle(action)
             } else {
                 finish(with: response)
             }
@@ -193,7 +193,7 @@ private extension InstantPaymentComponentAdvancedFlow {
     }
 
     @objc private func cancelPressed() {
-        instantPaymentComponent?.cancelIfNeeded()
+        instantPaymentComponent?.cancel()
         presenter?.dismiss(completion: nil)
     }
 }

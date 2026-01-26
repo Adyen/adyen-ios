@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenActions
 @testable import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class AssertsTests: XCTestCase {
@@ -30,21 +31,6 @@ class AssertsTests: XCTestCase {
         AdyenAssertion.listener = nil
         context = nil
         try super.tearDownWithError()
-    }
-
-    func testListViewControllerPreferredContentSizeAssertion() {
-        let sut = ListViewController(style: ListComponentStyle())
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-
-        AdyenAssertion.listener = { message in
-            XCTAssertEqual(message, "PreferredContentSize is overridden for this view controller.\ngetter - returns content size of scroll view.\nsetter - no implemented.")
-            expectation.fulfill()
-        }
-
-        sut.preferredContentSize = .zero
-
-        wait(for: [expectation], timeout: 10)
-
     }
 
     func testFormViewControllerPreferredContentSizeAssertion() {
@@ -127,21 +113,6 @@ class AssertsTests: XCTestCase {
 
         AdyenAssertion.listener = { message in
             XCTAssertEqual(message, "PreferredContentSize is overridden for this view controller.\ngetter - returns minimum possible content size.\nsetter - no implemented.")
-            expectation.fulfill()
-        }
-
-        sut.preferredContentSize = .zero
-
-        wait(for: [expectation], timeout: 10)
-
-    }
-
-    func testModalViewControllerPreferredContentSizeAssertion() {
-        let sut = ModalViewController(rootViewController: UIViewController(), navBarType: .regular)
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-
-        AdyenAssertion.listener = { message in
-            XCTAssertEqual(message, "PreferredContentSize is overridden for this view controller.\ngetter - returns combined size of an inner content and navigation bar.\nsetter - no implemented.")
             expectation.fulfill()
         }
 

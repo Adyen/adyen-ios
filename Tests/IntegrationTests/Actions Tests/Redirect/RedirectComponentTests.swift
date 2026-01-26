@@ -24,7 +24,13 @@ class RedirectComponentTests: XCTestCase {
         }
     }
 
-    func testUIConfiguration() {
+    func testUIConfiguration() throws {
+        // SFSafariViewController.preferredBarTintColor and preferredControlTintColor are deprecated
+        // and return nil on iOS 26.0+, making this test non-functional
+        if #available(iOS 26.0, *) {
+            throw XCTSkip("SFSafariViewController color customization APIs are deprecated on iOS 26.0+")
+        }
+
         let action = RedirectAction(url: URL(string: "https://adyen.com")!, paymentData: "data")
         let style = RedirectComponentStyle(
             preferredBarTintColor: UIColor.red,

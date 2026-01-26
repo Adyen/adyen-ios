@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenCard
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class FormCardExpiryDateItemViewTests: XCTestCase {

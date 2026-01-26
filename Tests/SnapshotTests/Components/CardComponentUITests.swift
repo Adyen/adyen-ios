@@ -20,7 +20,7 @@ class CardComponentUITests: XCTestCase {
     
     func test_all_fields() throws {
 
-        let configuration = CardComponent.Configuration.extended
+        let configuration = CardComponentConfiguration.extended
         
         let sut = CardComponent(
             paymentMethod: paymentMethod,
@@ -33,7 +33,7 @@ class CardComponentUITests: XCTestCase {
     
     func test_hidden_cvc() throws {
         
-        var configuration = CardComponent.Configuration.minimal
+        var configuration = CardComponentConfiguration.minimal
         configuration.showsSecurityCodeField = false
         
         let sut = CardComponent(
@@ -47,10 +47,10 @@ class CardComponentUITests: XCTestCase {
     
     func test_billing_address_modes() throws {
         
-        var configuration = CardComponent.Configuration.minimal
+        var configuration = CardComponentConfiguration.minimal
         
-        [CardComponent.AddressFormType.none, .full, .postalCode].forEach { mode in
-            configuration.billingAddress.mode = mode
+        [BillingAddressMode.none, .full, .postalCode].forEach { mode in
+            configuration = configuration.billingAddressMode(mode)
             
             let sut = CardComponent(
                 paymentMethod: paymentMethod,
@@ -69,10 +69,10 @@ class CardComponentUITests: XCTestCase {
 
 // MARK: - Convenience
 
-private extension CardComponent.Configuration {
+private extension CardComponentConfiguration {
     
     static var minimal: Self {
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = false
         configuration.koreanAuthenticationMode = .hide
         configuration.socialSecurityNumberMode = .hide
@@ -81,7 +81,7 @@ private extension CardComponent.Configuration {
     }
     
     static var extended: Self {
-        var configuration = CardComponent.Configuration()
+        var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
         configuration.billingAddress.mode = .full
         configuration.koreanAuthenticationMode = .show
@@ -101,7 +101,7 @@ private extension CardComponent.Configuration {
     }
 }
 
-private extension CardComponent.AddressFormType {
+private extension BillingAddressMode {
     
     var description: String {
         switch self {

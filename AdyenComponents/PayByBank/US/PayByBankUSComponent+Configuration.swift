@@ -5,10 +5,13 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 
 extension PayByBankUSComponent {
     
-    public struct Configuration: AnyBasicComponentConfiguration {
+    public struct Configuration {
         
         /// The UI style of the component.
         public var style: PayByBankUSComponent.Style

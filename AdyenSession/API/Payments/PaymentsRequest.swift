@@ -75,9 +75,9 @@ internal struct PaymentsRequest: APIRequest {
     }
 }
 
-internal struct PaymentsResponse: SessionResponse, SessionPaymentResultAware {
+internal struct PaymentsResponse: SessionDataAware, SessionResultAware {
     
-    internal let resultCode: ResultCode
+    internal let resultCode: CheckoutResultCode
     
     internal let action: Action?
 
@@ -93,23 +93,5 @@ internal struct PaymentsResponse: SessionResponse, SessionPaymentResultAware {
         case sessionData
         case resultCode
         case sessionResult
-    }
-}
-
-internal extension PaymentsResponse {
-    
-    enum ResultCode: String, Decodable {
-        case authenticationFinished = "AuthenticationFinished"
-        case authenticationNotRequired = "AuthenticationNotRequired"
-        case authorised = "Authorised"
-        case refused = "Refused"
-        case pending = "Pending"
-        case cancelled = "Cancelled"
-        case error = "Error"
-        case received = "Received"
-        case redirectShopper = "RedirectShopper"
-        case identifyShopper = "IdentifyShopper"
-        case challengeShopper = "ChallengeShopper"
-        case presentToShopper = "PresentToShopper"
     }
 }

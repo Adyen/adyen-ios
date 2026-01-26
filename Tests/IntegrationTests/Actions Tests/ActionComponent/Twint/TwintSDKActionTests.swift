@@ -230,7 +230,7 @@ import XCTest
                 configurationsBlock([.dummy])
             } handlePay: { code, appConfiguration, callbackAppScheme, completionHandler in
                 payBlockExpectation.fulfill()
-                let error = MockError(errorDescription: expectedAlertMessage)
+                let error = ErrorMock(errorDescription: expectedAlertMessage)
                 completionHandler(error)
             } handleRegisterForUOF: { _, _, _, completionHandler in
                 XCTFail("RegisterForUOF should not have been called.")

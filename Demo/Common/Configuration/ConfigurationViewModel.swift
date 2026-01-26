@@ -21,8 +21,8 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var showsStoredCardSecurityCodeField = true
     @Published internal var showsSecurityCodeField = true
     @Published internal var addressMode: CardSettings.AddressFormType = .none
-    @Published internal var socialSecurityNumberMode: CardComponent.FieldVisibility = .auto
-    @Published internal var koreanAuthenticationMode: CardComponent.FieldVisibility = .auto
+    @Published internal var socialSecurityNumberMode: CardComponentConfiguration.FieldVisibility = .auto
+    @Published internal var koreanAuthenticationMode: CardComponentConfiguration.FieldVisibility = .auto
     @Published internal var allowDisablingStoredPaymentMethods: Bool = false
     @Published internal var allowsSkippingPaymentList: Bool = false
     @Published internal var allowPreselectedPaymentView: Bool = true

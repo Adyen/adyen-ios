@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class PayToComponentTests: XCTestCase {
@@ -364,6 +365,7 @@ class PayToComponentTests: XCTestCase {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             payment: Dummy.payment,
+            amount: Dummy.amount,
             analyticsProvider: analyticsProviderMock
         )
         let paymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)

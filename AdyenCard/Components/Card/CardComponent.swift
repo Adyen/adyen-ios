@@ -6,6 +6,9 @@
 
 @_spi(AdyenInternal) import Adyen
 import AdyenNetworking
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 import Foundation
 import UIKit
 
@@ -41,14 +44,11 @@ public class CardComponent: PresentableComponent,
     /// The card payment method.
     public var paymentMethod: PaymentMethod { cardPaymentMethod }
 
-    /// The delegate for user activity on card component.
-    public weak var cardComponentDelegate: CardComponentDelegate?
-
     /// The supported card types.
     public let supportedCardTypes: [CardType]
 
     /// Card component configuration.
-    public private(set) var configuration: Configuration
+    public internal(set) var configuration: CardComponentConfiguration
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate? {
@@ -88,7 +88,7 @@ public class CardComponent: PresentableComponent,
     public convenience init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: CardComponentConfiguration = .init()
     ) {
         let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
         let binInfoProvider = BinInfoProvider(
@@ -117,7 +117,7 @@ public class CardComponent: PresentableComponent,
     internal init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration,
+        configuration: CardComponentConfiguration,
         publicKeyProvider: AnyPublicKeyProvider,
         binProvider: AnyBinInfoProvider
     ) {
@@ -156,22 +156,26 @@ public class CardComponent: PresentableComponent,
         guard let paymentMethod = paymentMethod as? StoredCardPaymentMethod else {
             return nil
         }
+        // TODO: FIX StoredCard UI
         var component: PaymentComponent & PresentableComponent
-        if configuration.stored.showsSecurityCodeField {
-            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context)
-            storedComponent.localizationParameters = configuration.localizationParameters
-            component = storedComponent
-        } else {
-            let storedConfiguration: StoredPaymentMethodComponent.Configuration
-            storedConfiguration = .init(localizationParameters: configuration.localizationParameters)
-            let storedComponent = StoredPaymentMethodComponent(
-                paymentMethod: paymentMethod,
-                context: context,
-                configuration: storedConfiguration
-            )
-            component = storedComponent
-        }
+        // if configuration.stored.showsSecurityCodeField {
+        let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context)
+        storedComponent.localizationParameters = configuration.localizationParameters
+        component = storedComponent
         return component
+        // }
+       
+        // else {
+//            let storedConfiguration: StoredPaymentMethodComponent.Configuration
+//            storedConfiguration = .init(localizationParameters: configuration.localizationParameters)
+//            let storedComponent = StoredPaymentMethodComponent(
+//                paymentMethod: paymentMethod,
+//                context: context,
+//                configuration: storedConfiguration
+//            )
+//            component = storedComponent
+//        }
+        
     }()
     
     /// Updates the visibility of the store payment method switch.
@@ -201,6 +205,7 @@ public class CardComponent: PresentableComponent,
             initialCountryCode: initialCountryCode,
             scope: String(describing: self),
             localizationParameters: configuration.localizationParameters,
+            theme: configuration.theme,
             cardScannerAnalyticsHandler: { [weak self] logSubType in
                 self?.sendCardScannerLogEvent(logSubType)
             }
@@ -251,7 +256,7 @@ extension CardComponent: CardViewControllerDelegate {
     internal func didChange(bin: String) {
         binThrottler.throttle { [weak self] in
             guard let self else { return }
-            self.cardComponentDelegate?.didChangeBIN(bin, component: self)
+            self.configuration.onBinChange?(bin)
         }
     }
     
@@ -259,7 +264,7 @@ extension CardComponent: CardViewControllerDelegate {
         binInfoProvider.provide(for: pan, supportedTypes: supportedCardTypes) { [weak self] binInfo in
             guard let self else { return }
             self.cardViewController.update(binInfo: binInfo)
-            self.cardComponentDelegate?.didChangeCardBrand(binInfo.brands ?? [], component: self)
+            self.configuration.onBinLookup?(binInfo.brands ?? [])
         }
     }
 }
@@ -286,7 +291,7 @@ private extension CardComponent {
     }
 }
 
-private extension CardComponent.Configuration {
+private extension CardComponentConfiguration {
     
     func addressLookupViewModel(
         with initialCountry: String,

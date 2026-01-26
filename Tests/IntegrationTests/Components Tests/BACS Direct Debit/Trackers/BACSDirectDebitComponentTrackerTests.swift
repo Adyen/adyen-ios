@@ -27,6 +27,7 @@ class BACSDirectDebitComponentTrackerTests: XCTestCase {
         let adyenContext = AdyenContext(
             apiContext: apiContext,
             payment: Dummy.payment,
+            amount: Dummy.amount,
             analyticsProvider: analyticsProvider
         )
         sut = BACSDirectDebitComponentTracker(

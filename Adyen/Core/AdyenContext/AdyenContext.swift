@@ -7,6 +7,8 @@
 import AdyenNetworking
 import Foundation
 
+// TODO: make non public
+
 /// A class that defines the behavior of the components in a payment flow.
 public final class AdyenContext: PaymentAware {
     
@@ -15,11 +17,13 @@ public final class AdyenContext: PaymentAware {
     /// The API context used to retrieve internal resources.
     public let apiContext: APIContext
     
+    // TODO: get rid of payment
     /// The payment information.
     public private(set) var payment: Payment?
     
-    @_spi(AdyenInternal)
-    public let analyticsProvider: AnyAnalyticsProvider?
+    package let analyticsProvider: AnyAnalyticsProvider?
+    
+    package let amount: Amount
     
     // MARK: - Initializers
     
@@ -28,7 +32,12 @@ public final class AdyenContext: PaymentAware {
     ///   - apiContext: The API context used to retrieve internal resources.
     ///   - analyticsConfiguration: A configuration object that specifies the behavior for the analytics.
     ///   - payment: The payment information.
-    public convenience init(apiContext: APIContext, payment: Payment?, analyticsConfiguration: AnalyticsConfiguration = .init()) {
+    public convenience init(
+        apiContext: APIContext,
+        payment: Payment?,
+        amount: Amount,
+        analyticsConfiguration: AnalyticsConfiguration = .init()
+    ) {
         
         let analyticsProvider = Self.createAnalyticsProvider(
             apiContext: apiContext,
@@ -38,6 +47,7 @@ public final class AdyenContext: PaymentAware {
         self.init(
             apiContext: apiContext,
             payment: payment,
+            amount: amount,
             analyticsProvider: analyticsProvider
         )
     }
@@ -46,9 +56,11 @@ public final class AdyenContext: PaymentAware {
     internal init(
         apiContext: APIContext,
         payment: Payment?,
+        amount: Amount,
         analyticsProvider: AnyAnalyticsProvider?
     ) {
         self.apiContext = apiContext
+        self.amount = amount
         self.analyticsProvider = analyticsProvider
         self.payment = payment
     }

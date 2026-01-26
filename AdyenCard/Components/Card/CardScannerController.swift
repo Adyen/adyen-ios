@@ -29,7 +29,6 @@ internal protocol CardScannerControlling: CardScannerAvailability {
 #if canImport(AdyenCardScanner)
     import AdyenCardScanner
 
-    @available(iOS 13.0, *)
     private struct CardScannerAvailabilityWrapper: CardScannerAvailability {
         var isScannerAvailable: Bool {
             AdyenCardScanner.CardScanner.isAvailable
@@ -57,7 +56,6 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         }
     }
 
-    @available(iOS 13.0, *)
     internal struct CardScannerProviderWrapper: CardScannerProviding {
         internal func createCardScanner(completion: @escaping (Result<CardScannerCardDetails, Error>) -> Void) -> UIViewController? {
 
@@ -75,7 +73,6 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         }
     }
 
-    @available(iOS 13.0, *)
     internal final class CardScannerController: CardScannerControlling {
         internal enum CardScannerError: Error {
             case scanningError

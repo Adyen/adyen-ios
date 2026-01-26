@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
 import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class UPIComponentUITests: XCTestCase {
@@ -227,7 +228,7 @@ class UPIComponentUITests: XCTestCase {
         let errorItem = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.errorItem") as? FormErrorItemView)
         XCTAssertTrue(errorItem.isHidden)
         
-        let continueButton: SubmitButton = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button"))
+        let continueButton: FormButton = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.continueButton.button"))
         
         // Tapping button with no apps selected - error should be shown
         

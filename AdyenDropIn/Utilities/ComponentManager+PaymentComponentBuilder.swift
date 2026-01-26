@@ -24,6 +24,7 @@ import Foundation
 
 extension ComponentManager: PaymentComponentBuilder {
 
+    // TODO: FIX StoredPaymentMethodComponent
     internal func build(paymentMethod: StoredCardPaymentMethod) -> PaymentComponent? {
         createCardComponent(with: paymentMethod)
     }
@@ -31,40 +32,40 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(
             paymentMethod: paymentMethod,
-            context: context,
-            configuration: .init(localizationParameters: configuration.localizationParameters)
+            context: context
+            // configuration: .init(localizationParameters: configuration.localizationParameters)
         )
     }
 
     internal func build(paymentMethod: StoredBCMCPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(
             paymentMethod: paymentMethod,
-            context: context,
-            configuration: .init(localizationParameters: configuration.localizationParameters)
+            context: context
+            // configuration: .init(localizationParameters: configuration.localizationParameters)
         )
     }
 
     internal func build(paymentMethod: StoredACHDirectDebitPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(
             paymentMethod: paymentMethod,
-            context: context,
-            configuration: .init(localizationParameters: configuration.localizationParameters)
+            context: context
+            // configuration: .init(localizationParameters: configuration.localizationParameters)
         )
     }
 
     internal func build(paymentMethod: StoredCashAppPayPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(
             paymentMethod: paymentMethod,
-            context: context,
-            configuration: .init(localizationParameters: configuration.localizationParameters)
+            context: context
+            // configuration: .init(localizationParameters: configuration.localizationParameters)
         )
     }
 
     internal func build(paymentMethod: StoredTwintPaymentMethod) -> PaymentComponent? {
         StoredPaymentMethodComponent(
             paymentMethod: paymentMethod,
-            context: context,
-            configuration: .init(localizationParameters: configuration.localizationParameters)
+            context: context
+            // configuration: .init(localizationParameters: configuration.localizationParameters)
         )
     }
 
@@ -292,8 +293,8 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: StoredPayToPaymentMethod) -> (any PaymentComponent)? {
         StoredPaymentMethodComponent(
             paymentMethod: paymentMethod,
-            context: context,
-            configuration: .init(localizationParameters: configuration.localizationParameters)
+            context: context
+            // configuration: .init(localizationParameters: configuration.localizationParameters)
         )
     }
 }
@@ -315,21 +316,15 @@ private extension ComponentManager {
     }
 
     func createBancontactComponent(with paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
-        let cardConfiguration = configuration.card
-        let configuration = CardComponent.Configuration(
-            style: configuration.style.formComponent,
-            shopperInformation: configuration.shopperInformation,
-            localizationParameters: configuration.localizationParameters,
-            showsHolderNameField: cardConfiguration.showsHolderNameField,
-            showsStorePaymentMethodField: cardConfiguration.showsStorePaymentMethodField,
-            showsSecurityCodeField: cardConfiguration.showsSecurityCodeField,
-            storedCardConfiguration: cardConfiguration.stored
-        )
-
+        // TODO: To be replaced with a factory call
+        var cardConfiguration = configuration.card.cardComponentConfiguration
+        cardConfiguration.style = configuration.style.formComponent
+        cardConfiguration.localizationParameters = configuration.localizationParameters
+        cardConfiguration.shopperInformation = configuration.shopperInformation
         return BCMCComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: configuration
+            configuration: cardConfiguration
         )
     }
 
@@ -396,14 +391,12 @@ private extension ComponentManager {
     }
 
     func createACHDirectDebitComponent(_ paymentMethod: ACHDirectDebitPaymentMethod) -> ACHDirectDebitComponent {
-        let config = ACHDirectDebitComponent.Configuration(
-            style: configuration.style.formComponent,
-            shopperInformation: configuration.shopperInformation,
-            localizationParameters: configuration.localizationParameters,
-            showsStorePaymentMethodField: configuration.ach.showsStorePaymentMethodField,
-            showsBillingAddress: configuration.ach.showsBillingAddress,
-            billingAddressCountryCodes: configuration.ach.billingAddressCountryCodes
-        )
+        var config = ACHDirectDebitComponentConfiguration()
+        config.shopperInformation = configuration.shopperInformation
+        config.localizationParameters = configuration.localizationParameters
+        config.showStorePaymentMethodField = configuration.ach.showsStorePaymentMethodField
+        config.showBillingAddress = configuration.ach.showsBillingAddress
+        config.billingAddressCountryCodes = configuration.ach.billingAddressCountryCodes
         return ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -438,9 +431,9 @@ private extension ComponentManager {
     }
 
     func createBLIKComponent(_ paymentMethod: BLIKPaymentMethod) -> BLIKComponent? {
-        let config = BLIKComponent.Configuration(
-            style: configuration.style.formComponent,
-            localizationParameters: configuration.localizationParameters
+        let config = BLIKComponentConfiguration(
+            localizationParameters: configuration.localizationParameters,
+            theme: configuration.theme
         )
         return BLIKComponent(
             paymentMethod: paymentMethod,

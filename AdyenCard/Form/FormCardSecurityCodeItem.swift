@@ -5,6 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 
 /// A form item into which a card's security code (CVC/CVV) is entered.
 internal final class FormCardSecurityCodeItem: FormTextInputItem {
@@ -73,6 +76,6 @@ internal final class FormCardSecurityCodeItem: FormTextInputItem {
 
 extension FormItemViewBuilder {
     internal func build(with item: FormCardSecurityCodeItem) -> FormItemView<FormCardSecurityCodeItem> {
-        FormCardSecurityCodeItemView(item: item)
+        FormCardSecurityCodeItemView(item: item, theme: theme)
     }
 }

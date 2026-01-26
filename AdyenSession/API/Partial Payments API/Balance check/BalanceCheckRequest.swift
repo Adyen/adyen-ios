@@ -48,7 +48,7 @@ internal struct BalanceCheckRequest: APIRequest {
     }
 }
 
-internal struct BalanceCheckResponse: SessionResponse {
+internal struct BalanceCheckResponse: SessionDataAware {
 
     internal let sessionData: String
 

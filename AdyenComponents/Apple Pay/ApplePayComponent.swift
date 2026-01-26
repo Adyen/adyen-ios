@@ -57,7 +57,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// - Parameter configuration: Apple Pay component configuration
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment`.
     /// if user can't make payments on any of the payment request’s supported networks.
-    /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplyPay` if the current device's hardware doesn't support ApplePay.
+    /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplePay` if the current device's hardware doesn't support ApplePay.
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment` if user can't make payments on any of the supported networks.
     public init(
         paymentMethod: ApplePayPaymentMethod,
@@ -65,7 +65,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         configuration: Configuration
     ) throws {
         guard PKPaymentAuthorizationViewController.canMakePayments() else {
-            throw Error.deviceDoesNotSupportApplyPay
+            throw Error.deviceDoesNotSupportApplePay
         }
         let supportedNetworks = paymentMethod.supportedNetworks()
         guard configuration.allowOnboarding || Self.canMakePaymentWith(supportedNetworks) else {

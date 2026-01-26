@@ -8,11 +8,6 @@
 import AdyenNetworking
 import Foundation
 
-/// Any action that has payment data
-internal protocol PaymentDataAware {
-    var paymentData: String { get }
-}
-
 /// A component that handles Await action's.
 internal protocol AnyPollingHandler: ActionComponent, Cancellable {
     func handle(_ action: PaymentDataAware)

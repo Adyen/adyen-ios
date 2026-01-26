@@ -35,7 +35,7 @@ jobs:
           xcode_version: '26.0'
           needs_custom_sim: false
           
-        # Xcode 16.2 - iOS 17
+        # Xcode 26 - iOS 17
         - version: '17.5'
           runtime: 'iOS-17-5'
           device: 'iPhone 15 Pro'
@@ -44,7 +44,7 @@ jobs:
           xcode_version: '16.4' 
           needs_custom_sim: true
                             
-        # Xcode 16.2 - iOS 16
+        # Xcode 16.4 - iOS 16
         - version: '16.4'
           runtime: 'iOS-16-4'
           device: 'iPhone 14 Pro'
@@ -88,11 +88,14 @@ jobs:
         runtime: ${{ matrix.runtime }}
 
     - name: Build and test
-      run: |
-        xcodebuild -version
-        xcodebuild build test -project ${project} -scheme "${scheme}" ${params} -destination "${destination}" ## | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
-        project: 'Adyen.xcodeproj'
-        params: "-skipPackagePluginValidation"
-        scheme: 'IntegrationUIKitTests'
-        destination: "OS=${{ matrix.version }},name=${{ matrix.displayname }}"
+        DEST: "platform=iOS Simulator,OS=${{ matrix.version }},name=${{ matrix.displayname }}"
+      run: |
+        echo "Destination: $DEST"
+        xcodebuild build test \
+          -project "Adyen.xcodeproj" \
+          -scheme "IntegrationUIKitTests" \
+          -destination "$DEST" \
+          -skipPackagePluginValidation
+
+

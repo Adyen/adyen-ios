@@ -5,6 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 import Foundation
 import UIKit
 
@@ -72,8 +75,8 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
     
     internal private(set) lazy var qrCodeView = QRCodeView(viewModel: viewModel, style: style)
         
-    internal private(set) lazy var actionButton: SubmitButton = {
-        let button = SubmitButton(style: actionButtonStyle)
+    internal private(set) lazy var actionButton: FormButton = {
+        let button = FormButton(style: actionButtonStyle)
         
         button.title = viewModel.actionButtonTitle
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(

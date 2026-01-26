@@ -221,3 +221,4 @@ whiteList:
   - viewcontroller
   - xcconfig
   - adhoc
+  - sourcery

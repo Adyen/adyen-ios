@@ -9,6 +9,9 @@ import UIKit
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 
 internal protocol CardViewControllerProtocol {
     func update(storePaymentMethodFieldVisibility isVisible: Bool)
@@ -17,7 +20,7 @@ internal protocol CardViewControllerProtocol {
 
 internal class CardViewController: FormViewController {
     
-    private let configuration: CardComponent.Configuration
+    private let configuration: CardComponentConfiguration
     private let shopperInformation: PrefilledShopperInformation?
     private let supportedCardTypes: [CardType]
     private let formStyle: FormComponentStyle
@@ -57,6 +60,7 @@ internal class CardViewController: FormViewController {
         
         return ItemsProvider(
             formStyle: formStyle,
+            theme: theme,
             payment: payment,
             configuration: configuration,
             shopperInformation: shopperInformation,
@@ -84,8 +88,9 @@ internal class CardViewController: FormViewController {
     ///   - initialCountryCode: The initially used country code for the billing address
     ///   - scope: The view's scope.
     ///   - localizationParameters: Localization parameters.
+    ///   - theme: The theme to use for styling.
     internal init(
-        configuration: CardComponent.Configuration,
+        configuration: CardComponentConfiguration,
         shopperInformation: PrefilledShopperInformation?,
         formStyle: FormComponentStyle,
         payment: Payment?,
@@ -94,6 +99,7 @@ internal class CardViewController: FormViewController {
         initialCountryCode: String,
         scope: String,
         localizationParameters: LocalizationParameters?,
+        theme: AdyenTheme,
         cardScannerAnalyticsHandler: @escaping CardScannerAnalyticsHandler
     ) {
         self.configuration = configuration
@@ -108,11 +114,11 @@ internal class CardViewController: FormViewController {
         self.cardLogos = supportedCardTypes.map {
             .init(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
         }
-        
+
         super.init(
             scrollEnabled: configuration.showsSubmitButton,
-            style: formStyle,
-            localizationParameters: localizationParameters
+            localizationParameters: localizationParameters,
+            theme: theme
         )
     }
 
@@ -316,12 +322,11 @@ extension CardViewController {
     
     private func setupView() {
         append(items.numberContainerItem)
+
+        append(items.expiryDateItem)
         
         if configuration.showsSecurityCodeField {
-            let splitTextItem = FormSplitItem(items: items.expiryDateItem, items.securityCodeItem, style: formStyle.textField)
-            append(splitTextItem)
-        } else {
-            append(items.expiryDateItem)
+            append(items.securityCodeItem)
         }
         
         if configuration.showsHolderNameField {
@@ -362,12 +367,14 @@ extension CardViewController {
     private var billingAddressItem: FormItem? {
         
         switch configuration.billingAddress.mode {
-        case .lookup:
-            return items.billingAddressPickerItem
-            
-        case .full:
-            return items.billingAddressPickerItem
-            
+        case .lookup, .full:
+            guard let pickerItem = items.billingAddressPickerItem else { return nil }
+            return pickerItem.withSectionHeader(
+                title: localizedString(.billingAddressSectionTitle, localizationParameters),
+                // TODO: Localize subtitle after aligning on i18n cases with Android
+                subtitle: "Enter the billing address that is linked to the card"
+            )
+
         case .postalCode:
             return items.postalCodeItem
             

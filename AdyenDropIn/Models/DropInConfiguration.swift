@@ -14,9 +14,13 @@
 #if canImport(AdyenActions)
     @_spi(AdyenInternal) import AdyenActions
 #endif
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 import Foundation
 import PassKit
 
+// TODO: get rid of duplicate component configs inside dropin. they should be only one specified by merchant
 public extension DropInComponent {
     
     /// Contains the configuration for the drop in component and the embedded payment method components.
@@ -52,6 +56,9 @@ public extension DropInComponent {
         /// Indicates the UI configuration of the drop in component.
         public var style: DropInComponent.Style
 
+        /// Indicates the UI style configuration of the drop in component.
+        public var theme: AdyenTheme = .default
+
         /// Boleto component configuration.
         public var boleto: Boleto = .init()
 
@@ -71,12 +78,14 @@ public extension DropInComponent {
         ///   - allowPreselectedPaymentView: Boolean to enable the preselected stored payment method view step.
         public init(
             style: Style = Style(),
+            theme: AdyenTheme = .default,
             allowsSkippingPaymentList: Bool = false,
             allowPreselectedPaymentView: Bool = true
         ) {
             self.style = style
             self.allowsSkippingPaymentList = allowsSkippingPaymentList
             self.allowPreselectedPaymentView = allowPreselectedPaymentView
+            self.theme = theme
         }
     }
     
@@ -86,10 +95,10 @@ public extension DropInComponent {
         public init() { /* Empty initializer */ }
         
         /// Three DS configurations
-        public var threeDS: AdyenActionComponent.Configuration.ThreeDS = .init()
+        public var threeDS: CheckoutActionComponent.Configuration.ThreeDS = .init()
         
         /// Twint configurations
-        public var twint: AdyenActionComponent.Configuration.Twint?
+        public var twint: CheckoutActionComponent.Configuration.Twint?
     }
 
     /// Boleto component configuration.
@@ -99,7 +108,7 @@ public extension DropInComponent {
     }
 
     /// ACH Component configuration specific to Drop In Component.
-    struct ACH: AnyACHDirectDebitConfiguration {
+    struct ACH {
         
         /// Indicates if the field for storing the card payment method should be displayed in the form.
         /// Defaults to `true`.
@@ -139,6 +148,7 @@ public extension DropInComponent {
         public var showsSecurityCodeField: Bool = true
     }
     
+    // TODO: since these will be removed, changes on card config don't need to be added here
     /// Card Component configuration specific to Drop In Component.
     struct Card: AnyCardComponentConfiguration {
         
@@ -153,11 +163,11 @@ public extension DropInComponent {
 
         /// Indicates whether to show the security fields for South Korea issued cards. Defaults to `auto`.
         /// In AUTO mode the field will appear only for card issued in "KR" (South Korea).
-        public var koreanAuthenticationMode: CardComponent.FieldVisibility
+        public var koreanAuthenticationMode: CardComponentConfiguration.FieldVisibility
 
         /// Indicates the visibility mode for the social security number field (CPF/CNPJ) for Brazilian cards. Defaults to `auto`.
         /// In `auto` mode the field will appear based on card bin lookup.
-        public var socialSecurityNumberMode: CardComponent.FieldVisibility
+        public var socialSecurityNumberMode: CardComponentConfiguration.FieldVisibility
 
         /// Stored card configuration.
         public var stored: StoredCardConfiguration
@@ -169,9 +179,6 @@ public extension DropInComponent {
 
         /// Installments options to present to the user.
         public var installmentConfiguration: InstallmentConfiguration?
-        
-        /// Billing address fields configurations.
-        public var billingAddress: BillingAddressConfiguration
         
         /// Configuration of Card component.
         ///
@@ -193,12 +200,11 @@ public extension DropInComponent {
             showsHolderNameField: Bool = false,
             showsStorePaymentMethodField: Bool = true,
             showsSecurityCodeField: Bool = true,
-            koreanAuthenticationMode: CardComponent.FieldVisibility = .auto,
-            socialSecurityNumberMode: CardComponent.FieldVisibility = .auto,
+            koreanAuthenticationMode: CardComponentConfiguration.FieldVisibility = .auto,
+            socialSecurityNumberMode: CardComponentConfiguration.FieldVisibility = .auto,
             storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
             allowedCardTypes: [CardType]? = nil,
-            installmentConfiguration: InstallmentConfiguration? = nil,
-            billingAddress: BillingAddressConfiguration = .init()
+            installmentConfiguration: InstallmentConfiguration? = nil
         ) {
             self.showsHolderNameField = showsHolderNameField
             self.showsSecurityCodeField = showsSecurityCodeField
@@ -208,21 +214,10 @@ public extension DropInComponent {
             self.koreanAuthenticationMode = koreanAuthenticationMode
             self.socialSecurityNumberMode = socialSecurityNumberMode
             self.installmentConfiguration = installmentConfiguration
-            self.billingAddress = billingAddress
         }
         
-        internal var cardComponentConfiguration: CardComponent.Configuration {
-            CardComponent.Configuration(
-                showsHolderNameField: showsHolderNameField,
-                showsStorePaymentMethodField: showsStorePaymentMethodField,
-                showsSecurityCodeField: showsSecurityCodeField,
-                koreanAuthenticationMode: koreanAuthenticationMode,
-                socialSecurityNumberMode: socialSecurityNumberMode,
-                storedCardConfiguration: stored,
-                allowedCardTypes: allowedCardTypes,
-                installmentConfiguration: installmentConfiguration,
-                billingAddress: billingAddress
-            )
+        internal var cardComponentConfiguration: CardComponentConfiguration {
+            CardComponentConfiguration()
         }
         
     }

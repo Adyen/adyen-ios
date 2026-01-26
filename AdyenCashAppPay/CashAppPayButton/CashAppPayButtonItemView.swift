@@ -5,11 +5,13 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 import PayKitUI
 import UIKit
 
 /// A view representing a Cash App Pay button view.
-@available(iOS 13.0, *)
 internal final class CashAppPayButtonItemView: FormItemView<CashAppPayButtonItem> {
     
     internal required init(item: CashAppPayButtonItem) {

@@ -7,6 +7,7 @@
 import XCTest
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
+@_spi(AdyenInternal) @testable import AdyenUI
 
 class AtomeComponentUITests: XCTestCase {
 
@@ -102,7 +103,7 @@ class AtomeComponentUITests: XCTestCase {
             XCTAssertEqual(details.shopperName?.lastName, "Del Mar")
             XCTAssertEqual(details.telephoneNumber, "+11234567")
             XCTAssertEqual(details.billingAddress, expectedBillingAddress)
-            sut.stopLoadingIfNeeded()
+            sut.stopLoading()
             didSubmitExpectation.fulfill()
         }
 
