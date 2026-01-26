@@ -132,26 +132,17 @@ extension InstantPaymentComponentExample: AdyenSessionDelegate {
 extension InstantPaymentComponentExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {
         presenter?.hideLoadingIndicator()
-        let componentViewController = viewController(for: component)
+        let componentViewController = component.viewController
+        componentViewController.navigationItem.leftBarButtonItem = .init(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(cancelPressed)
+        )
         presenter?.present(viewController: componentViewController, completion: nil)
     }
 }
 
 private extension InstantPaymentComponentExample {
-
-    func viewController(for component: PresentableComponent) -> UIViewController {
-        guard component.requiresModalPresentation else {
-            return component.viewController
-        }
-
-        let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.leftBarButtonItem = .init(
-            barButtonSystemItem: .cancel,
-            target: self,
-            action: #selector(cancelPressed)
-        )
-        return navigation
-    }
 
     @objc private func cancelPressed() {
         instantPaymentComponent?.cancel()
