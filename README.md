@@ -206,9 +206,9 @@ present(dropInComponent.viewController, animated: true)
 
 ```
 
-#### Implementing `SessionDelegate`
+#### Implementing `AdyenSessionDelegate`
 
-`AdyenSession` makes the necessary calls to handle the whole flow and notifies your application through its delegate, `SessionDelegate`. To handle the results of the Drop-in, the following methods of `SessionDelegate` should be implemented:
+`AdyenSession` makes the necessary calls to handle the whole flow and notifies your application through its delegate, `AdyenSessionDelegate`. To handle the results of the Drop-in, the following methods of `AdyenSessionDelegate` should be implemented:
 
 ---
 
