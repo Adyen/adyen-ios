@@ -97,12 +97,6 @@ private func present(component: PresentableComponent) {
     // Keep the component instance to avoid it being destroyed after the function is executed.
     self.component = component
 
-    // Check if component can be presented as is or needs extra navigation layer.
-    guard component.requiresModalPresentation else {
-        presenter?.present(viewController: component.viewController, completion: nil)
-        return
-    }
-
     let navigation = UINavigationController(rootViewController: component.viewController)
     component.viewController.navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel,
                                                                        target: self,
