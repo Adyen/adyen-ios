@@ -38,8 +38,6 @@ public final class PayByBankUSComponent: PaymentComponent, PresentableComponent 
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
     
-    public var requiresModalPresentation: Bool = true
-    
     public var viewController: UIViewController {
         confirmationViewController
     }

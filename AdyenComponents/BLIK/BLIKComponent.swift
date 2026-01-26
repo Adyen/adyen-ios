@@ -30,8 +30,6 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     /// Component's configuration
     public var configuration: BLIKComponentConfiguration
 
-    public let requiresModalPresentation: Bool = true
-
     private let blikPaymentMethod: BLIKPaymentMethod
 
     /// Initializes the BLIK component.

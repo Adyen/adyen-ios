@@ -20,7 +20,7 @@ package final class StoredCardComponent: PaymentComponent, PaymentAware, Present
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
     
-    internal var localizationParameters: LocalizationParameters?
+    package var localizationParameters: LocalizationParameters?
         
     private let storedCardPaymentMethod: StoredCardPaymentMethod
     
