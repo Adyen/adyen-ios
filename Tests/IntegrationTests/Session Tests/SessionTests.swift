@@ -76,7 +76,7 @@ class SessionTests: XCTestCase {
 
         let session = try await Session.setup(
             with: .init(
-                sessionIdentifier: "session_id",
+                id: "session_id",
                 sessionData: "session_data_0"
             ),
             apiClient: apiClient,
