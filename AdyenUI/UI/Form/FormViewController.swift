@@ -96,6 +96,7 @@ open class FormViewController: UIViewController, AdyenObserver {
     override open func viewDidLoad() {
         super.viewDidLoad()
         itemManager.topLevelItemViews.forEach(formView.appendItemView(_:))
+        dismissKeyboardOnTap()
         delegate?.viewDidLoad(viewController: self)
     }
 
@@ -274,9 +275,16 @@ open class FormViewController: UIViewController, AdyenObserver {
         formView.isEmbeddedInScrollView = scrollEnabled
     }
 
+    private func dismissKeyboardOnTap() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(resignFirstResponder))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+
     // MARK: - UIResponder
 
     @discardableResult
+    @objc
     override public func resignFirstResponder() -> Bool {
         let textItemView = itemManager.flatItemViews.first(where: { $0.isFirstResponder })
         textItemView?.resignFirstResponder()
