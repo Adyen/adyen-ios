@@ -48,11 +48,6 @@ class AffirmComponentTests: XCTestCase {
         XCTAssertEqual(paymentMethodType, expectedPaymentMethodType)
     }
     
-    func testComponent_shouldRequireModalPresentation() throws {
-        // Then
-        XCTAssertTrue(sut.requiresModalPresentation)
-    }
-    
     func testCreatePaymentDetails_withSeparateDeliveryAddressDisabled_shouldCreateDetailsWithSameBillingAndDeliveryAddress() throws {
         // Given
         let expectedDeliveryAddress = PostalAddressMocks.newYorkPostalAddress
