@@ -11,20 +11,20 @@
 import AdyenNetworking
 import Foundation
 
-/// ``AdyenSession`` acts as the delegate for the checkout payment flow.
+/// ``Session`` acts as the delegate for the checkout payment flow.
 /// It can handle the required steps internally such as `/payments` and `/payment/details`
 /// calls and partial payment calls, then provide feedback
-/// via ``AdyenSessionDelegate`` methods.
-public final class AdyenSession: AdyenSessionProtocol {
+/// via ``SessionDelegate`` methods.
+public final class Session: SessionProtocol {
     
     /// The session context information.
-    public internal(set) var state: AdyenSession.State
+    public internal(set) var state: Session.State
     
     /// The presentation delegate.
     public package(set) weak var presentationDelegate: PresentationDelegate?
     
     /// The delegate object.
-    public package(set) weak var delegate: AdyenSessionDelegate?
+    public package(set) weak var delegate: SessionDelegate?
     
     internal let context: AdyenContext
     
@@ -59,10 +59,10 @@ public final class AdyenSession: AdyenSessionProtocol {
     private let baseAPIClient: APIClientProtocol
     
     internal init(
-        state: AdyenSession.State,
+        state: Session.State,
         baseAPIClient: APIClientProtocol,
         context: AdyenContext,
-        delegate: AdyenSessionDelegate? = nil,
+        delegate: SessionDelegate? = nil,
         presentationDelegate: PresentationDelegate? = nil
     ) {
         self.state = state
@@ -72,24 +72,24 @@ public final class AdyenSession: AdyenSessionProtocol {
         self.context = context
     }
     
-    /// Initializes an instance of ``AdyenSession`` asynchronously.
-    /// - Parameter initialInfo: The session setup initial data.
+    /// Initializes an instance of ``Session`` asynchronously.
+    /// - Parameter sessionResponse: The session setup initial data.
     /// - Parameter apiClient: The api client object for network calls.
     /// - Parameter context: The context object for the session.
-    /// - Returns: A configured AdyenSession instance.
+    /// - Returns: A configured Session instance.
     /// - Throws: An error if the session setup fails.
     package static func setup(
-        with initialInfo: AdyenSession.InitialInfo,
+        with sessionResponse: SessionResponse,
         apiClient: APIClientProtocol,
         context: AdyenContext
-    ) async throws -> AdyenSession {
+    ) async throws -> Session {
         
         let sessionState = try await makeSetupCall(
-            with: initialInfo,
+            with: sessionResponse,
             baseAPIClient: apiClient
         )
         
-        let session = AdyenSession(
+        let session = Session(
             state: sessionState,
             baseAPIClient: apiClient,
             context: context
@@ -99,13 +99,13 @@ public final class AdyenSession: AdyenSessionProtocol {
     }
     
     internal static func makeSetupCall(
-        with initialInfo: AdyenSession.InitialInfo,
+        with sessionResponse: SessionResponse,
         baseAPIClient: APIClientProtocol,
         order: PartialPaymentOrder? = nil
     ) async throws -> State {
         
-        let sessionId = initialInfo.sessionIdentifier
-        let sessionData = initialInfo.initialSessionData
+        let sessionId = sessionResponse.id
+        let sessionData = sessionResponse.sessionData
         
         let request = SessionSetupRequest(
             sessionId: sessionId,
@@ -142,28 +142,7 @@ public final class AdyenSession: AdyenSessionProtocol {
     }
 }
 
-extension AdyenSession {
-    
-    /// Initial parameters required for the session call.
-    public struct InitialInfo {
-        
-        internal let sessionIdentifier: String
-        
-        internal let initialSessionData: String
-        
-        /// Initializes a new Configuration object
-        ///
-        /// - Parameters:
-        ///   - sessionIdentifier: The session identifier.
-        ///   - initialSessionData: The initial session data.
-        public init(
-            sessionIdentifier: String,
-            initialSessionData: String
-        ) {
-            self.sessionIdentifier = sessionIdentifier
-            self.initialSessionData = initialSessionData
-        }
-    }
+extension Session {
     
     /// Current state/information of session that gets updated after each internal call.
     public struct State {
@@ -198,19 +177,19 @@ extension AdyenSession {
 }
 
 @_spi(AdyenInternal)
-extension AdyenSession: AdyenSessionAware {
+extension Session: AdyenSessionAware {
     
     public var isSession: Bool { true }
 }
 
 @_spi(AdyenInternal)
-extension AdyenSession: InstallmentConfigurationAware {
+extension Session: InstallmentConfigurationAware {
     
     public var installmentConfiguration: InstallmentConfiguration? { state.responseConfiguration.installmentOptions }
 }
 
 @_spi(AdyenInternal)
-extension AdyenSession: StorePaymentMethodFieldAware {
+extension Session: StorePaymentMethodFieldAware {
     
     public var showStorePaymentMethodField: Bool? { state.responseConfiguration.enableStoreDetails }
 }

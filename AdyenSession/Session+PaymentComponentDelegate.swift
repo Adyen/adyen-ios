@@ -12,7 +12,7 @@ import Foundation
 import UIKit
 
 @_spi(AdyenInternal)
-extension AdyenSession: PaymentComponentDelegate {
+extension Session: PaymentComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         didSubmit(data, from: component, dropInComponent: nil)
     }
@@ -47,7 +47,7 @@ extension AdyenSession: PaymentComponentDelegate {
     }
 }
 
-extension AdyenSession {
+extension Session {
     package func didSubmit(
         _ paymentComponentData: PaymentComponentData,
         from component: PaymentComponent,
@@ -161,9 +161,9 @@ extension AdyenSession {
     }
     
     private func updateDropIn(_ dropInComponent: AnyDropInComponent, with order: PartialPaymentOrder, currentComponent: Component) {
-        let initialInfo = AdyenSession.InitialInfo(
-            sessionIdentifier: state.identifier,
-            initialSessionData: state.data
+        let initialInfo = SessionResponse(
+            id: state.identifier,
+            sessionData: state.data
         )
         Task {
             do {
