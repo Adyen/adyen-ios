@@ -22,14 +22,13 @@ public protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentMe
     
 }
 
-@_spi(AdyenInternal)
-extension PaymentComponent {
-    
+package extension PaymentComponent {
+
     /// Submits payment data to the payment delegate.
     /// - Parameters:
     ///   - data: The Payment data to be submitted
     ///   - component: The component from which the payment originates.
-    public func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
+    func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
         sendSubmitEvent()
         
         let component = component ?? self
@@ -40,12 +39,12 @@ extension PaymentComponent {
         }
     }
     
-    public var checkoutAttemptId: String {
+    var checkoutAttemptId: String {
         context.analyticsProvider?.checkoutAttemptId ?? AnalyticsConstants.fetchCheckoutAttemptIdFailed
     }
     
     /// Adds SDK related info to payment data object and returns the final data in the completion.
-    public func prepareSubmitData(from data: PaymentComponentData, completion: @escaping (PaymentComponentData) -> Void) {
+    func prepareSubmitData(from data: PaymentComponentData, completion: @escaping (PaymentComponentData) -> Void) {
         
         let sdkData = SDKData(
             checkoutAttemptId: checkoutAttemptId,

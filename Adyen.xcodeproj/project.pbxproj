@@ -838,6 +838,7 @@
 		C9C22D9C2DE5F9BB0028C23F /* PreApplePayComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22D9A2DE5F9BB0028C23F /* PreApplePayComponent.swift */; };
 		C9C22D9F2DE5F9BE0028C23F /* PaymentMethodListComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22D9D2DE5F9BE0028C23F /* PaymentMethodListComponent.swift */; };
 		C9C22DA12DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22DA02DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift */; };
+		C9C7583C2F28F2AF00BAC651 /* StoredPaymentMethodComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */; };
 		C9D5139A2F0E7A5C00F57DD6 /* PaymentMethodListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D513992F0E7A5C00F57DD6 /* PaymentMethodListViewModelTests.swift */; };
 		C9D5139C2F0E810500F57DD6 /* PaymentMethodsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D5139B2F0E810500F57DD6 /* PaymentMethodsMock.swift */; };
 		C9D8EB9927452355006D8CA1 /* BACSInputFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EB9827452355006D8CA1 /* BACSInputFormViewController.swift */; };
@@ -1137,7 +1138,6 @@
 		F94E37B82818138900617382 /* session_response.json in Resources */ = {isa = PBXBuildFile; fileRef = A023A9B328103C2D004FDCA4 /* session_response.json */; };
 		F94F0DEB28AA3FB400C0923D /* ThreeDS2PlusDACoreActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F0DEA28AA3FB400C0923D /* ThreeDS2PlusDACoreActionHandler.swift */; };
 		F94F0DF628AB7BCC00C0923D /* DelegatedAuthenticationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F0DF528AB7BCC00C0923D /* DelegatedAuthenticationData.swift */; };
-		F957A9CE255051130099AD73 /* StoredPaymentMethodComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */; };
 		F957AA462552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA452552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift */; };
 		F957AA5A2552D8BB0099AD73 /* ThreeDS2ComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA592552D8BB0099AD73 /* ThreeDS2ComponentTests.swift */; };
 		F957AA622552D8D20099AD73 /* AnyThreeDS2ActionHandlerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA612552D8D20099AD73 /* AnyThreeDS2ActionHandlerMock.swift */; };
@@ -4772,6 +4772,14 @@
 			path = PaymentMethodList;
 			sourceTree = "<group>";
 		};
+		C9C7583B2F28F27300BAC651 /* StoredPaymentMethodComponent */ = {
+			isa = PBXGroup;
+			children = (
+				E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */,
+			);
+			path = StoredPaymentMethodComponent;
+			sourceTree = "<group>";
+		};
 		C9CA0B68282E7E4A00C4E9C2 /* Requests */ = {
 			isa = PBXGroup;
 			children = (
@@ -5094,7 +5102,6 @@
 				A0F41E3E26CA60A80089AD6C /* Installment */,
 				E28098B1220DA7910087928F /* Base */,
 				F917308D26491ED900985310 /* InstantPaymentComponent.swift */,
-				E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */,
 				F9A6C41C26550B7100D8CD3E /* AlreadyPaidPaymentComponent.swift */,
 				A06B7A9B2A1CEEAE008FC09D /* AnyCashAppPayConfiguration.swift */,
 			);
@@ -6095,26 +6102,27 @@
 			isa = PBXGroup;
 			children = (
 				F97C81AD25BAC8CF00D7F85C /* AbstractPersonalInformationComponent */,
-				F9175E57259393E800D653BE /* AdyenComponents.h */,
-				F9175E58259393E800D653BE /* Info.plist */,
-				81D2186B2CC7D54F00B7FC4C /* PayByBank */,
 				A0414C1B27888BF300DF3FE9 /* ACH Direct Debit */,
-				00EACBAA2872E8CA0082B360 /* OnlineBanking */,
+				F9175E57259393E800D653BE /* AdyenComponents.h */,
 				C982FFD626945FCE00AED849 /* Affirm */,
-				002B92EF294B2596000B93F4 /* UPI */,
-				000888762D4CF5DB009C03E1 /* PayTo */,
-				00F621BC27EB12FA00C04097 /* Atome */,
 				E97B971B229E83E300505476 /* Apple Pay */,
+				00F621BC27EB12FA00C04097 /* Atome */,
 				C9BF0DB1273539EB00DCAA1E /* BACS Direct Debit */,
 				F9B016F72604F388001F23FC /* BasicPersonalInfoFormComponent */,
 				E700A7342549E9FC0012B64C /* BLIK */,
 				5A54603D264A5CD900724A87 /* Boleto */,
 				F97C836E25BF03C500D7F85C /* Doku */,
-				E28098BC220DBA9D0087928F /* Issuer List */,
+				F9175E58259393E800D653BE /* Info.plist */,
 				E746E66F27B3FA540076BB71 /* Instant */,
+				E28098BC220DBA9D0087928F /* Issuer List */,
 				F9D644DA24D2D9340059CBE3 /* MB Way */,
+				00EACBAA2872E8CA0082B360 /* OnlineBanking */,
+				81D2186B2CC7D54F00B7FC4C /* PayByBank */,
+				000888762D4CF5DB009C03E1 /* PayTo */,
 				F926D52D23F5A2EC00D058D3 /* Qiwi Wallet */,
 				E28098B4220DA79C0087928F /* SEPA Direct Debit */,
+				C9C7583B2F28F27300BAC651 /* StoredPaymentMethodComponent */,
+				002B92EF294B2596000B93F4 /* UPI */,
 			);
 			path = AdyenComponents;
 			sourceTree = "<group>";
@@ -8682,7 +8690,6 @@
 				A00167792BD274E40099A6AE /* BrazilSocialSecurityNumberValidator.swift in Sources */,
 				E216D3C9221AFB830013CBCF /* IBANValidator.swift in Sources */,
 				A09FB2ED2B86051000270D51 /* AnalyticsEventDataSource.swift in Sources */,
-				F957A9CE255051130099AD73 /* StoredPaymentMethodComponent.swift in Sources */,
 				F9FE253B2625AED6001874BB /* PartialPaymentComponent.swift in Sources */,
 				A001297C2C0DF2E0009EF80C /* StoredPaymentMethodsDelegate.swift in Sources */,
 				E9E3DB03222548E100697074 /* AdyenCoder.swift in Sources */,
@@ -9110,6 +9117,7 @@
 				0019C4D72E6EEAA100B0C3A3 /* AbstractPersonalInformationComponent.swift in Sources */,
 				0019C4D82E6EEAA100B0C3A3 /* AddressFormItemInjector.swift in Sources */,
 				0019C4D92E6EEAA100B0C3A3 /* PhoneFormItemInjector.swift in Sources */,
+				C9C7583C2F28F2AF00BAC651 /* StoredPaymentMethodComponent.swift in Sources */,
 				0019C4DA2E6EEAA100B0C3A3 /* AbstractPersonalInformationComponent+Extensions.swift in Sources */,
 				0019C4DB2E6EEAA100B0C3A3 /* NameFormItemInjector.swift in Sources */,
 				0019C4DC2E6EEAA100B0C3A3 /* EmailFormItemInjector.swift in Sources */,

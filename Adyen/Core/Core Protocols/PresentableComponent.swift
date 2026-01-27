@@ -21,34 +21,30 @@ public protocol Cancellable: AnyObject {
     func didCancel()
 }
 
-@_spi(AdyenInternal)
-public protocol AnyNavigationBar: UIView {
-    
+package protocol AnyNavigationBar: UIView {
+
     var onCancelHandler: (() -> Void)? { get set }
     
 }
 
-@_spi(AdyenInternal)
-public enum NavigationBarType {
+package enum NavigationBarType {
     case regular
     case custom(AnyNavigationBar)
 }
 
 /// A component that provides a view controller for the shopper to fill payment details.
-public protocol PresentableComponent: Component {
-    
+package protocol PresentableComponent: Component {
+
     /// Returns a view controller that presents the payment details for the shopper to fill.
     var viewController: UIViewController { get }
     
     /// Indicates whether Component implements a custom Navigation bar.
-    @_spi(AdyenInternal)
     var navBarType: NavigationBarType { get }
 }
 
 /// A component that provides a view controller for the shopper to fill payment details.
-public extension PresentableComponent {
-    
-    @_spi(AdyenInternal)
+package extension PresentableComponent {
+
     var navBarType: NavigationBarType { .regular }
-    
+
 }

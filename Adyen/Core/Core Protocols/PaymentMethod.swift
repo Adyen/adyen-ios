@@ -24,8 +24,8 @@ public protocol PaymentMethod: Codable {
     /// - Parameters:
     ///   - using: The localization parameters.
     @_spi(AdyenInternal)
-    func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation
-    
+    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation
+
     @_spi(AdyenInternal)
     func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent?
 }
@@ -48,9 +48,8 @@ public extension PaymentMethod {
 /// A protocol to define any partial payment method such as gift cards, `MealVoucher` etc.
 public protocol PartialPaymentMethod: PaymentMethod {}
 
-@_spi(AdyenInternal)
-public extension PaymentMethod {
-    
+package extension PaymentMethod {
+
     func displayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let defaultDisplayInformation = defaultDisplayInformation(using: parameters)
         if let merchantProvidedDisplayInformation {
@@ -66,7 +65,6 @@ public extension PaymentMethod {
         return defaultDisplayInformation
     }
 
-    @_spi(AdyenInternal)
     func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
     }

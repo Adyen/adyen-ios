@@ -27,8 +27,7 @@ private struct LocalizationInput {
 ///   - parameters: The localization parameters.
 ///   - arguments: The arguments to substitute in the templated localized string.
 /// - Returns: The localized string for the given key, or the key itself if the localized string could not be found.
-@_spi(AdyenInternal)
-public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
+package func localizedString(_ key: LocalizationKey, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
     var translationAttempt: String?
 
     var possibleInputs = buildPossibleInputs(key.key, parameters)
@@ -111,10 +110,8 @@ private func attemptEnforce(locale: String, _ input: LocalizationInput) -> Strin
     return nil
 }
 
-@_spi(AdyenInternal)
-public enum PaymentStyle {
+package enum PaymentStyle {
     case needsRedirectToThirdParty(String)
-
     case immediate
 }
 
@@ -124,8 +121,7 @@ public enum PaymentStyle {
 /// - Parameter amount: The amount to include in the submit button title.
 /// - Parameter paymentMethodName: The payment method name.
 /// - Parameter parameters: The localization parameters.
-@_spi(AdyenInternal)
-public func localizedSubmitButtonTitle(
+package func localizedSubmitButtonTitle(
     with amount: Amount?,
     style: PaymentStyle,
     _ parameters: LocalizationParameters?

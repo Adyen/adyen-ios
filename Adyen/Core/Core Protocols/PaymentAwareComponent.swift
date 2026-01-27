@@ -22,10 +22,9 @@ public protocol PaymentAware {
 
 }
 
-@_spi(AdyenInternal)
 extension PartialPaymentOrderAware {
 
-    public var order: PartialPaymentOrder? {
+    package var order: PartialPaymentOrder? {
         get {
             objc_getAssociatedObject(self, &AssociatedKeys.order) as? PartialPaymentOrder
         }
