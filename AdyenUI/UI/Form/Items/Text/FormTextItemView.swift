@@ -50,6 +50,10 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
             self?.handleFormattedValueDidChange(newValue)
         }
         
+        observe(item.$shouldShowValidationError) { [weak self] _ in
+            self?.onValidationStateChanged()
+        }
+
         updateValidationStatus()
         
         addSubview(textStackView)
@@ -334,6 +338,32 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     private func removeAccessoryIfNeeded() {
         if case .customView = accessory { return }
         accessory = .none
+    }
+
+    // MARK: - Validation State Changes
+
+    private func onValidationStateChanged() {
+        updateAccessory()
+        updateBorderColor()
+    }
+
+    private func updateAccessory() {
+        if item.shouldShowValidationError {
+            accessory = .invalid
+            isShowingValidationError = true
+        } else {
+            if case .customView = accessory {
+                isShowingValidationError = false
+            } else {
+                let hasContent = !(textField.text ?? "").isEmpty
+                if hasContent, !isEditing {
+                    accessory = .valid
+                } else {
+                    accessory = .none
+                }
+                isShowingValidationError = false
+            }
+        }
     }
 
     // MARK: - Border Styling

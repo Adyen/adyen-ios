@@ -7,6 +7,12 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 
+/// Represents the trigger for validation logic.
+package enum ValidationTrigger {
+    case focusLost
+    case explicit
+}
+
 /// A validatable item in a form in which holds a generic value.
 @_spi(AdyenInternal)
 open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueType, FormTextItemStyle>, ValidatableFormItem {
@@ -37,5 +43,14 @@ open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueTy
     public func validationStatus() -> ValidationStatus? {
         AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
         return nil
+    }
+
+    /// Triggers validation based on the given trigger type.
+    /// - Parameter trigger: The validation trigger.
+    package func triggerValidation(_ trigger: ValidationTrigger) {
+        if trigger == .focusLost, let stringValue = value as? String, stringValue.isEmpty {
+            return
+        }
+        shouldShowValidationError = !isValid()
     }
 }
