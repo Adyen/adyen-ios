@@ -9,6 +9,7 @@ import Foundation
 /// Wraps a value to make it observable.
 /// Note: When the `wrappedValue` is updated, the observable will only publish the new value to subscribers
 ///       if it is not equal to the previous value.
+// TODO: Convert to package
 @propertyWrapper
 open class AdyenObservable<ValueType: Equatable>: EventPublisher {
     
