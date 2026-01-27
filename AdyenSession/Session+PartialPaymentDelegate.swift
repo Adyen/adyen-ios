@@ -8,7 +8,7 @@
 import Foundation
 
 @_spi(AdyenInternal)
-extension AdyenSession: PartialPaymentDelegate {
+extension Session: PartialPaymentDelegate {
     
     public func checkBalance(
         with data: PaymentComponentData,

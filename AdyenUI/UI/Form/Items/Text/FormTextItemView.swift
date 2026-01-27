@@ -195,7 +195,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     open func handleFormattedValueDidChange(_ newValue: String) {
         textField.text = newValue
-        updateValidationStatus()
     }
     
     @_spi(AdyenInternal)
@@ -270,7 +269,13 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// This method updates UI according to a validity state.
     /// Subclasses can override this method to stay notified when the text field resigns its first responder status.
     open func textFieldDidEndEditing(_ textField: UITextField) {
+        item.isEditing = false
         isEditing = false
+        // Validate on focus loss (if field has content)
+        let hasContent = !(textField.text ?? "").isEmpty
+        if hasContent {
+            item.shouldShowValidationError = !item.isValid()
+        }
         updateBorderColor()
         item.onDidEndEditing?()
     }
@@ -278,19 +283,29 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// This method hides validation accessories icons.
     /// Subclasses can override this method to stay notified when textField became the first responder.
     open func textFieldDidBeginEditing(_ textField: UITextField) {
+        item.isEditing = true
         isEditing = true
+        resetValidationStatus()
         updateBorderColor()
         item.onDidBeginEditing?()
     }
     
     override open func updateValidationStatus(forced: Bool = false) {
-        let textFieldNotEmpty = !(textField.text ?? "").isEmpty
+        let isTextFieldEmpty = (textField.text ?? "").isEmpty
         
-        // if validation check is allowed during editing, ignore editing check
-        let forceShowValidationStatus = (forced || textFieldNotEmpty)
-            && (item.allowsValidationWhileEditing || !isEditing)
+        // Determine if we should show validation UI (accessory, border)
+        // When forced (explicit validation like Pay button), always validate
+        // Otherwise, only validate if field has content and not editing
+        let shouldShowValidationUI: Bool
+        if forced {
+            shouldShowValidationUI = true
+        } else if isTextFieldEmpty {
+            shouldShowValidationUI = false
+        } else {
+            shouldShowValidationUI = item.allowsValidationWhileEditing || !isEditing
+        }
         
-        if forceShowValidationStatus {
+        if shouldShowValidationUI {
             accessory = item.isValid() ? .valid : .invalid
             isShowingValidationError = !item.isValid()
         } else {
@@ -299,7 +314,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         }
         updateBorderColor()
         
-        super.updateValidationStatus(forced: forceShowValidationStatus)
+        super.updateValidationStatus(forced: shouldShowValidationUI)
     }
     
     public func notifyDelegateOfMaxLengthIfNeeded() {

@@ -19,8 +19,7 @@ internal class CheckoutProvider: CheckoutProviding {
     internal static let `default` = CheckoutProvider()
     
     internal func setup(
-        with sessionId: String,
-        sessionData: String,
+        with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
@@ -29,10 +28,7 @@ internal class CheckoutProvider: CheckoutProviding {
         
         // create and store session and payment methods
         async let session = setupSession(
-            with: .init(
-                sessionIdentifier: sessionId,
-                initialSessionData: sessionData
-            ),
+            with: sessionResponse,
             configuration: configuration,
             apiClient: apiClient
         )
@@ -86,12 +82,12 @@ internal class CheckoutProvider: CheckoutProviding {
     // MARK: Internal
     
     internal func setupSession(
-        with initialInfo: AdyenSession.InitialInfo,
+        with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         apiClient: APIClientProtocol
-    ) async throws -> AdyenSessionProtocol {
-        try await AdyenSession.setup(
-            with: initialInfo,
+    ) async throws -> SessionProtocol {
+        try await Session.setup(
+            with: sessionResponse,
             apiClient: apiClient,
             context: configuration.context
         )

@@ -19,15 +19,15 @@ internal class CheckoutProviderMock: CheckoutProviding {
     var setupWithPaymentMethodsResult: Result<Checkout, Error>?
     
     // For AdyenSessionProviding
-    var mockedSessionResult: Result<AdyenSessionProtocol, Error>?
+    var mockedSessionResult: Result<SessionProtocol, Error>?
     // For CheckoutAttemptIdProviding
     var mockedCheckoutAttemptId: Result<String, Error>?
     
     func setupSession(
-        with initialInfo: AdyenSession.InitialInfo,
+        with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         apiClient: APIClientProtocol
-    ) async throws -> AdyenSessionProtocol {
+    ) async throws -> SessionProtocol {
         
         switch mockedSessionResult {
         case let .success(session):
@@ -57,8 +57,7 @@ internal class CheckoutProviderMock: CheckoutProviding {
     
     // Convenience for direct CheckoutProviding use
     func setup(
-        with sessionId: String,
-        sessionData: String,
+        with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
