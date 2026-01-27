@@ -24,8 +24,7 @@ internal protocol CheckoutProtocol {
 
 internal protocol CheckoutProviding: AdyenSessionProviding, CheckoutAttemptIdProviding {
     func setup(
-        with sessionId: String,
-        sessionData: String,
+        with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout
@@ -39,10 +38,10 @@ internal protocol CheckoutProviding: AdyenSessionProviding, CheckoutAttemptIdPro
 
 internal protocol AdyenSessionProviding {
     func setupSession(
-        with initialInfo: AdyenSession.InitialInfo,
+        with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         apiClient: APIClientProtocol
-    ) async throws -> AdyenSessionProtocol
+    ) async throws -> SessionProtocol
 }
 
 internal protocol CheckoutAttemptIdProviding {

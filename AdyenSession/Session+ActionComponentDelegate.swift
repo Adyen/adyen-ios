@@ -11,7 +11,7 @@
 import Foundation
 
 @_spi(AdyenInternal)
-extension AdyenSession: ActionComponentDelegate {
+extension Session: ActionComponentDelegate {
     public func didFail(with error: Error, from component: ActionComponent) {
         failWithError(error, component)
     }
@@ -45,7 +45,7 @@ extension AdyenSession: ActionComponentDelegate {
     }
 }
 
-extension AdyenSession {
+extension Session {
     package func didProvide(
         _ actionComponentData: ActionComponentData,
         from component: ActionComponent,

@@ -8,7 +8,7 @@
 import Foundation
 
 @_spi(AdyenInternal)
-extension AdyenSession: DropInComponentDelegate {
+extension Session: DropInComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
         didSubmit(data, from: component, dropInComponent: dropInComponent)
     }
