@@ -16,6 +16,14 @@ open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueTy
     
     /// A message that is displayed when validation fails. Observable.
     @AdyenObservable(nil) public var validationFailureMessage: String?
+
+    /// Single source of truth for whether validation error should be displayed.
+    /// Views observe this property to update their UI reactively.
+    @AdyenUIObservable(false) public var shouldShowValidationError: Bool
+    
+    /// Tracks whether the field is currently being edited.
+    /// Views update this when focus changes, allowing reactive UI updates.
+    @AdyenObservable(false) public var isEditing: Bool
     
     /// Closure that is triggered when there is a validation error.
     public var onDidShowValidationError: ((ValidationError) -> Void)?

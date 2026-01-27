@@ -35,7 +35,8 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
 
         observe(item.$initialBrand) { [weak self] _ in
             guard let self else { return }
-            self.updateValidationStatus(forced: true)
+            // Don't force validation - brand detection is not a validation trigger
+            self.updateValidationStatus(forced: false)
             self.notifyDelegateOfMaxLengthIfNeeded()
         }
         

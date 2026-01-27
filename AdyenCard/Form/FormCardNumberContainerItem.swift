@@ -68,11 +68,20 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
         
         if showsSupportedCardLogos {
             observe(numberItem.$isActive) { [weak self] _ in
-                guard let self else { return }
-                // logo item should be visible when field is invalid after active state changes
-                self.supportedCardLogosItem.isHidden.wrappedValue = self.numberItem.isValid()
+                self?.updateLogosVisibility()
+            }
+            observe(numberItem.$shouldShowValidationError) { [weak self] _ in
+                self?.updateLogosVisibility()
             }
         }
+    }
+    
+    private func updateLogosVisibility() {
+        guard showsSupportedCardLogos else { return }
+        let brandDetected = !numberItem.detectedBrands.isEmpty
+        let errorShown = numberItem.shouldShowValidationError
+        supportedCardLogosItem.isHidden.wrappedValue =
+            brandDetected || numberItem.isValid() || errorShown
     }
     
     internal func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
@@ -82,9 +91,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     internal func update(brands: [CardBrand]) {
         numberItem.update(brands: brands)
         
-        if showsSupportedCardLogos {
-            supportedCardLogosItem.isHidden.wrappedValue = brands.contains(where: \.isSupported)
-        }
+        updateLogosVisibility()
     }
     
     internal func setCardNumber(_ cardNumber: String) {
