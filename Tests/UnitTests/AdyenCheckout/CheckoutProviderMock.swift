@@ -11,23 +11,23 @@
 @_spi(AdyenInternal) @testable import AdyenActions
 import AdyenNetworking
 
-internal class AdyenCheckoutProviderMock: AdyenCheckoutProviding {
+internal class CheckoutProviderMock: CheckoutProviding {
     var setupSessionCalled = false
-    var setupWithSessionResult: Result<AdyenCheckout, Error>?
+    var setupWithSessionResult: Result<Checkout, Error>?
     
     var setupPaymentMethodsCalled = false
-    var setupWithPaymentMethodsResult: Result<AdyenCheckout, Error>?
+    var setupWithPaymentMethodsResult: Result<Checkout, Error>?
     
     // For AdyenSessionProviding
-    var mockedSessionResult: Result<AdyenSessionProtocol, Error>?
+    var mockedSessionResult: Result<SessionProtocol, Error>?
     // For CheckoutAttemptIdProviding
     var mockedCheckoutAttemptId: Result<String, Error>?
     
     func setupSession(
-        with initialInfo: AdyenSession.InitialInfo,
+        with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         apiClient: APIClientProtocol
-    ) async throws -> AdyenSessionProtocol {
+    ) async throws -> SessionProtocol {
         
         switch mockedSessionResult {
         case let .success(session):
@@ -55,13 +55,12 @@ internal class AdyenCheckoutProviderMock: AdyenCheckoutProviding {
 
     }
     
-    // Convenience for direct AdyenCheckoutProviding use
+    // Convenience for direct CheckoutProviding use
     func setup(
-        with sessionId: String,
-        sessionData: String,
+        with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> AdyenCheckout {
+    ) async throws -> Checkout {
         setupSessionCalled = true
         
         switch setupWithSessionResult {
@@ -78,7 +77,7 @@ internal class AdyenCheckoutProviderMock: AdyenCheckoutProviding {
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> AdyenCheckout {
+    ) async throws -> Checkout {
         setupPaymentMethodsCalled = true
         
         switch setupWithPaymentMethodsResult {

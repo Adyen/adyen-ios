@@ -19,12 +19,12 @@ import Foundation
 
 /// The entry point for the Adyen Checkout SDK.
 ///
-/// Use `AdyenCheckout` to create payment components and handle actions.
+/// Use `Checkout` to create payment components and handle actions.
 /// Initialize using one of the static `setup` methods.
 ///
 /// ## Session Flow
 /// ```swift
-/// let checkout = try await AdyenCheckout.setup(
+/// let checkout = try await Checkout.setup(
 ///     with: sessionId,
 ///     sessionData: sessionData,
 ///     configuration: config
@@ -33,7 +33,7 @@ import Foundation
 ///
 /// ## Advanced Flow
 /// ```swift
-/// let checkout = try await AdyenCheckout.setup(
+/// let checkout = try await Checkout.setup(
 ///     with: paymentMethods,
 ///     configuration: config
 /// )
@@ -43,11 +43,11 @@ import Foundation
 /// ```swift
 /// let component = checkout.createPaymentComponent(for: .scheme)
 /// ```
-public final class AdyenCheckout: AdyenCheckoutProtocol {
+public final class Checkout: CheckoutProtocol {
     
     /// The available payment methods for this checkout session.
     public let paymentMethods: PaymentMethods?
-    internal let session: AdyenSessionProtocol?
+    internal let session: SessionProtocol?
     internal let checkoutAttemptId: String?
     internal let configuration: CheckoutConfiguration
     internal weak var presentationDelegate: PresentationDelegate?
@@ -67,30 +67,26 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     
     // MARK: - Public
     
-    // TODO: should we replace sessionId/sessionData params with a struct to future proof session init?
     /// Sets up checkout for the session flow.
     ///
     /// Use this method when integrating with the `/sessions` endpoint.
     ///
     /// - Parameters:
-    ///   - sessionId: The session ID from the `/sessions` response.
-    ///   - sessionData: The session data from the `/sessions` response.
+    ///   - sessionResponse: The response from the `/sessions` call.
     ///   - configuration: The checkout configuration.
     ///   - presentationDelegate: Optional delegate for handling UI presentation.
-    /// - Returns: An `AdyenCheckout` instance.
+    /// - Returns: A `Checkout` instance.
     /// - Throws: An error if setup fails.
     public static func setup(
-        with sessionId: String,
-        sessionData: String,
+        with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil
-    ) async throws -> AdyenCheckout {
+    ) async throws -> Checkout {
         try await setup(
-            with: sessionId,
-            sessionData: sessionData,
+            with: sessionResponse,
             configuration: configuration,
             presentationDelegate: presentationDelegate,
-            provider: AdyenCheckoutProvider.default
+            provider: CheckoutProvider.default
         )
     }
     
@@ -102,26 +98,26 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     ///   - paymentMethods: The payment methods from the `/paymentMethods` response.
     ///   - configuration: The checkout configuration.
     ///   - presentationDelegate: Optional delegate for handling UI presentation.
-    /// - Returns: An `AdyenCheckout` instance.
+    /// - Returns: A `Checkout` instance.
     /// - Throws: An error if setup fails.
     public static func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil
-    ) async throws -> AdyenCheckout {
+    ) async throws -> Checkout {
         try await setup(
             with: paymentMethods,
             configuration: configuration,
             presentationDelegate: presentationDelegate,
-            provider: AdyenCheckoutProvider.default
+            provider: CheckoutProvider.default
         )
     }
-    
+
     // MARK: Internal
 
     internal init(
         configuration: CheckoutConfiguration,
-        session: AdyenSessionProtocol? = nil,
+        session: SessionProtocol? = nil,
         paymentMethods: PaymentMethods? = nil,
         checkoutAttemptId: String?,
         presentationDelegate: PresentationDelegate?
@@ -137,8 +133,8 @@ public final class AdyenCheckout: AdyenCheckoutProtocol {
     }
 }
 
-public extension AdyenCheckout {
-    
+public extension Checkout {
+
     /// Creates a payment component for the specified payment method type.
     ///
     /// Use this method to create a component for regular (non-stored) payment methods.
@@ -156,14 +152,13 @@ public extension AdyenCheckout {
     func createPaymentComponent(for type: PaymentMethodType) -> CheckoutPaymentComponent? {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: type) else { return nil }
         
-        // TODO: Add new v6 style here
         return CheckoutPaymentComponent(
             paymentMethod: paymentMethod,
             configuration: configuration,
             delegate: self
         )
     }
-    
+
     /// Creates a payment component for a stored payment method.
     ///
     /// Use this method to create a component for previously saved payment methods,
@@ -186,14 +181,13 @@ public extension AdyenCheckout {
     func createPaymentComponent(for identifier: String) -> CheckoutPaymentComponent? {
         guard let storedPaymentMethod = paymentMethods?.stored.first(where: { $0.identifier == identifier }) else { return nil }
         
-        // TODO: Add new v6 style here
         return CheckoutPaymentComponent(
             storedPaymentMethod: storedPaymentMethod,
             configuration: configuration,
             delegate: self
         )
     }
-    
+
     /// Creates a Drop-in component with all available payment methods.
     ///
     /// - Returns: A configured Drop-in component, or `nil` if unavailable.
@@ -201,7 +195,7 @@ public extension AdyenCheckout {
         // TODO: dropin creation discussion with new changes
         nil
     }
-    
+
     /// Handles an action received from the `/payments` or `/payments/details` response.
     ///
     /// Some actions require showing UI (e.g., 3DS challenges, vouchers, QR codes).
@@ -213,29 +207,27 @@ public extension AdyenCheckout {
     }
 }
 
-internal extension AdyenCheckout {
-    
+internal extension Checkout {
+
     static func setup(
-        with sessionId: String,
-        sessionData: String,
+        with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil,
-        provider: AdyenCheckoutProviding = AdyenCheckoutProvider.default
-    ) async throws -> AdyenCheckout {
+        provider: CheckoutProviding = CheckoutProvider.default
+    ) async throws -> Checkout {
         try await provider.setup(
-            with: sessionId,
-            sessionData: sessionData,
+            with: sessionResponse,
             configuration: configuration,
             presentationDelegate: presentationDelegate
         )
     }
-    
+
     static func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil,
-        provider: AdyenCheckoutProviding = AdyenCheckoutProvider.default
-    ) async throws -> AdyenCheckout {
+        provider: CheckoutProviding = CheckoutProvider.default
+    ) async throws -> Checkout {
         try await provider.setup(
             with: paymentMethods,
             configuration: configuration,
