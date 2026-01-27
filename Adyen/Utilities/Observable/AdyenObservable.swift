@@ -9,8 +9,9 @@ import Foundation
 /// Wraps a value to make it observable.
 /// Note: When the `wrappedValue` is updated, the observable will only publish the new value to subscribers
 ///       if it is not equal to the previous value.
+// TODO: Convert to package
 @propertyWrapper
-public final class AdyenObservable<ValueType: Equatable>: EventPublisher {
+open class AdyenObservable<ValueType: Equatable>: EventPublisher {
     
     /// Initializes the observable.
     ///
@@ -18,11 +19,11 @@ public final class AdyenObservable<ValueType: Equatable>: EventPublisher {
     public init(_ value: ValueType) {
         self.wrappedValue = value
     }
-    
+
     // MARK: - Value
 
     /// The value being observed.
-    public var wrappedValue: ValueType {
+    open var wrappedValue: ValueType {
         didSet {
             guard wrappedValue != oldValue else { return }
             
@@ -31,17 +32,17 @@ public final class AdyenObservable<ValueType: Equatable>: EventPublisher {
     }
     
     // MARK: - Event Publisher
-    
+
     /// The event published by the observable.
     /// Contains the new value.
     public typealias Event = ValueType
-    
+
     /// The event handlers attached to the observable.
     public var eventHandlers = [EventHandlerToken: EventHandler<Event>]()
     
-    public var projectedValue: AdyenObservable { self }
+    open var projectedValue: AdyenObservable { self }
     
     @_spi(AdyenInternal)
     public let eventHandlersLock: NSLock = .init()
-    
+
 }
