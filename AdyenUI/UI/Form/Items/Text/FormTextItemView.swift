@@ -166,7 +166,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     public var accessory: AccessoryType = .none {
         didSet {
             guard accessory != oldValue else { return }
-            self.changeAccessories()
+            changeAccessories()
         }
     }
     

@@ -112,7 +112,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     package func showHint() {
         let newText = item.placeholder
         let newColor = theme.colors.textSecondary
-        let shouldBeVisible = newText != nil && !newText!.isEmpty
+        let shouldBeVisible = newText?.isEmpty == false
         
         updateFooter(text: newText, color: newColor, visible: shouldBeVisible, animated: true)
     }
