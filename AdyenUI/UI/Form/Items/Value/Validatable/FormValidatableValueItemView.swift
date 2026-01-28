@@ -43,17 +43,31 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         }
     }
 
-    private func onValidationStateChanged() {
+    open func onValidationStateChanged() {
         updateFooterDisplay(animated: true)
         updateAccessibility()
     }
 
     private func updateFooterDisplay(animated: Bool) {
-        if let errorMessage = item.validationState.errorMessage {
-            displayError(errorMessage, animated: animated)
+        let newText: String?
+        let newColor: UIColor
+        let shouldBeVisible: Bool
+        
+        if let errorMessage = item.validationState.errorMessage, !errorMessage.isEmpty {
+            newText = errorMessage
+            newColor = theme.colors.destructive
+            shouldBeVisible = true
+        } else if let placeholder = item.placeholder, !placeholder.isEmpty {
+            newText = placeholder
+            newColor = theme.colors.textSecondary
+            shouldBeVisible = true
         } else {
-            displayHint(animated: animated)
+            newText = nil
+            newColor = theme.colors.textSecondary
+            shouldBeVisible = false
         }
+        
+        updateFooter(text: newText, color: newColor, visible: shouldBeVisible, animated: animated)
     }
 
     // MARK: - Validation API
@@ -93,38 +107,45 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         item.onDidShowValidationError?(error)
     }
 
-    // MARK: - Footer Display (Private)
-
-    /// Displays the placeholder hint in the footer.
-    private func displayHint(animated: Bool) {
-        guard let placeholder = item.placeholder, !placeholder.isEmpty else {
-            footerLabel.adyen.hide(animationKey: Constants.footerAnimationKey, hidden: true, animated: animated)
-            return
-        }
-        footerLabel.text = placeholder
-        footerLabel.textColor = theme.colors.textSecondary
-        footerLabel.adyen.hide(animationKey: Constants.footerAnimationKey, hidden: false, animated: animated)
-    }
-
-    /// Displays the error message in the footer.
-    private func displayError(_ message: String?, animated: Bool) {
-        guard let message, !message.isEmpty else {
-            displayHint(animated: animated)
-            return
-        }
-        footerLabel.text = message
-        footerLabel.textColor = theme.colors.destructive
-        footerLabel.adyen.hide(animationKey: Constants.footerAnimationKey, hidden: false, animated: animated)
-    }
-
     // MARK: - Package API (for subclasses that need direct control)
 
     package func showHint() {
-        displayHint(animated: true)
+        let newText = item.placeholder
+        let newColor = theme.colors.textSecondary
+        let shouldBeVisible = newText != nil && !newText!.isEmpty
+        
+        updateFooter(text: newText, color: newColor, visible: shouldBeVisible, animated: true)
     }
 
     package func showError(_ message: String?) {
-        displayError(message, animated: true)
+        guard let message, !message.isEmpty else {
+            showHint()
+            return
+        }
+        updateFooter(text: message, color: theme.colors.destructive, visible: true, animated: true)
+    }
+    
+    private func updateFooter(text: String?, color: UIColor, visible: Bool, animated: Bool) {
+        let contentChanged = footerLabel.text != text || footerLabel.textColor != color
+        let wasVisible = !footerLabel.isHidden
+        
+        // Set state immediately for synchronous access (tests)
+        footerLabel.text = text
+        footerLabel.textColor = color
+        
+        if animated, visible, wasVisible, contentChanged {
+            // Crossfade: visible -> visible with different content
+            UIView.transition(
+                with: footerLabel,
+                duration: 0.2,
+                options: [.transitionCrossDissolve, .beginFromCurrentState],
+                animations: nil
+            )
+        } else if animated {
+            footerLabel.adyen.hide(animationKey: Constants.footerAnimationKey, hidden: !visible, animated: true)
+        } else {
+            footerLabel.adyen.hide(animationKey: Constants.footerAnimationKey, hidden: !visible, animated: false)
+        }
     }
 }
 
