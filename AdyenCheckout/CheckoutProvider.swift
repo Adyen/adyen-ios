@@ -79,6 +79,31 @@ internal class CheckoutProvider: CheckoutProviding {
         return checkout
     }
     
+    /// Sets up the checkout object for action handling only.
+    /// - Parameters:
+    ///   - configuration: The `CheckoutConfiguration` instance.
+    ///   - presentationDelegate: A delegate for handling action UI presentation.
+    internal func setup(
+        configuration: CheckoutConfiguration,
+        presentationDelegate: PresentationDelegate?
+    ) async throws -> Checkout {
+        let apiClient = APIClient(apiContext: configuration.context.apiContext)
+        
+        // fetch and store checkout attempt id
+        let checkoutAttemptId = try await fetchCheckoutAttemptId(
+            with: configuration,
+            apiClient: apiClient
+        )
+        
+        let checkout = Checkout(
+            configuration: configuration,
+            checkoutAttemptId: checkoutAttemptId,
+            presentationDelegate: presentationDelegate
+        )
+        
+        return checkout
+    }
+    
     // MARK: Internal
     
     internal func setupSession(

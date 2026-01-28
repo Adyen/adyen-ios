@@ -34,6 +34,11 @@ internal protocol CheckoutProviding: AdyenSessionProviding, CheckoutAttemptIdPro
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout
+    
+    func setup(
+        configuration: CheckoutConfiguration,
+        presentationDelegate: PresentationDelegate?
+    ) async throws -> Checkout
 }
 
 internal protocol AdyenSessionProviding {

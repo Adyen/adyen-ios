@@ -359,6 +359,69 @@ final class CheckoutTests: XCTestCase {
         XCTAssertNotNil(component)
     }
     
+    // MARK: - Action-Only Setup Tests
+    
+    func testSetupActionOnly_Success() async throws {
+        // Given
+        let expectedCheckout = Checkout(
+            configuration: configuration,
+            checkoutAttemptId: "attemptId",
+            presentationDelegate: nil
+        )
+        mockProvider.setupActionOnlyResult = .success(expectedCheckout)
+        
+        // When
+        let checkout = try await Checkout.setup(
+            configuration: configuration,
+            presentationDelegate: nil,
+            provider: mockProvider
+        )
+        
+        // Then
+        XCTAssertEqual(checkout.checkoutAttemptId, "attemptId")
+        XCTAssertNil(checkout.session)
+        XCTAssertNil(checkout.paymentMethods)
+        XCTAssertTrue(mockProvider.setupActionOnlyCalled)
+    }
+    
+    func testSetupActionOnly_Failure() async {
+        // Given
+        mockProvider.setupActionOnlyResult = .failure(TestError())
+        
+        // When/Then
+        do {
+            _ = try await Checkout.setup(
+                configuration: configuration,
+                presentationDelegate: nil,
+                provider: mockProvider
+            )
+            XCTFail("Expected error to be thrown")
+        } catch {
+            XCTAssertTrue(error is TestError)
+        }
+    }
+    
+    func testSetupActionOnly_createPaymentComponent_returnsNil() async throws {
+        // Given
+        let expectedCheckout = Checkout(
+            configuration: configuration,
+            checkoutAttemptId: "attemptId",
+            presentationDelegate: nil
+        )
+        mockProvider.setupActionOnlyResult = .success(expectedCheckout)
+        
+        // When
+        let checkout = try await Checkout.setup(
+            configuration: configuration,
+            presentationDelegate: nil,
+            provider: mockProvider
+        )
+        
+        // Then - createPaymentComponent should return nil since no paymentMethods
+        let component = checkout.createPaymentComponent(for: .scheme)
+        XCTAssertNil(component)
+    }
+    
 }
 
 struct TestError: Error {}
