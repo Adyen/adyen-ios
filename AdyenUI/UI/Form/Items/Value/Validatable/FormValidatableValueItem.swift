@@ -73,6 +73,11 @@ open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueTy
 
     /// Triggers validation based on the given trigger type.
     /// - Parameter trigger: The validation trigger.
+    /// Resets validation state to initial (clears any error).
+    package func resetValidation() {
+        validationState = .initial
+    }
+    
     package func triggerValidation(_ trigger: ValidationTrigger) {
         if trigger == .focusLost, let stringValue = value as? String, stringValue.isEmpty {
             return

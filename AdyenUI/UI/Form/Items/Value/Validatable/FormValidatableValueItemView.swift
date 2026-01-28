@@ -74,13 +74,13 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
             return
         }
 
-        item.shouldShowValidationError = !item.isValid()
+        item.triggerValidation(.explicit)
         triggerValidationErrorCallbackIfNeeded()
     }
 
     /// Clears validation error state.
     internal func resetValidationStatus() {
-        item.shouldShowValidationError = false
+        item.resetValidation()
     }
 
     private func updateAccessibility() {

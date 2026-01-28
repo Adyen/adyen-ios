@@ -275,11 +275,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     open func textFieldDidEndEditing(_ textField: UITextField) {
         item.isEditing = false
         isEditing = false
-        // Validate on focus loss (if field has content)
-        let hasContent = !(textField.text ?? "").isEmpty
-        if hasContent {
-            item.shouldShowValidationError = !item.isValid()
-        }
+        item.triggerValidation(.focusLost)
         updateBorderColor()
         item.onDidEndEditing?()
     }
@@ -295,28 +291,17 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     }
     
     override open func updateValidationStatus(forced: Bool = false) {
-        let isTextFieldEmpty = (textField.text ?? "").isEmpty
-        
-        // Determine if we should show validation UI (accessory, border)
-        // When forced (explicit validation like Pay button), always validate
-        // Otherwise, only validate if field has content and not editing
-        let shouldShowValidationUI: Bool
+        // When forced (explicit validation like Pay button), trigger model validation.
+        // The observer will handle UI updates when validationState changes.
         if forced {
-            shouldShowValidationUI = true
-        } else if isTextFieldEmpty {
-            shouldShowValidationUI = false
-        } else {
-            shouldShowValidationUI = item.allowsValidationWhileEditing || !isEditing
+            super.updateValidationStatus(forced: true)
+            return
         }
         
-        if shouldShowValidationUI {
-            accessory = item.isValid() ? .valid : .invalid
-        } else {
-            removeAccessoryIfNeeded()
-        }
+        // For non-forced updates, just refresh UI based on current state.
+        // This handles initial setup and editing state changes.
+        updateAccessory()
         updateBorderColor()
-        
-        super.updateValidationStatus(forced: shouldShowValidationUI)
     }
     
     public func notifyDelegateOfMaxLengthIfNeeded() {
