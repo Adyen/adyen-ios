@@ -123,8 +123,9 @@ public final class Checkout: CheckoutProtocol {
     
     /// Sets up checkout for action handling only.
     ///
-    /// Use this method when you have your own payment UI and only need the SDK
-    /// to handle actions (e.g., 3DS challenges, redirects, QR codes).
+    /// Use this method for the advanced flow when handling the `/payments` call yourself
+    /// and only need the SDK to process resulting actions such as 3DS challenges,
+    /// redirects, or QR codes.
     ///
     /// - Parameters:
     ///   - configuration: The checkout configuration.
