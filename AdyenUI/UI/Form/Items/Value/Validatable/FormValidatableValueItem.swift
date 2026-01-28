@@ -7,10 +7,30 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 
-/// Represents the trigger for validation logic.
 package enum ValidationTrigger {
     case focusLost
     case explicit
+}
+
+package enum ValidationState: Equatable {
+    case initial
+    case valid
+    case invalid(String)
+    
+    /// Whether error UI should be displayed.
+    var shouldShowError: Bool {
+        switch self {
+        case .invalid: true
+        case .initial, .valid: false
+        }
+    }
+    
+    var errorMessage: String? {
+        switch self {
+        case let .invalid(message): message
+        case .initial, .valid: nil
+        }
+    }
 }
 
 /// A validatable item in a form in which holds a generic value.
@@ -23,9 +43,15 @@ open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueTy
     /// A message that is displayed when validation fails. Observable.
     @AdyenObservable(nil) public var validationFailureMessage: String?
 
-    /// Single source of truth for whether validation error should be displayed.
+    /// Single source of truth for validation state.
     /// Views observe this property to update their UI reactively.
-    @AdyenUIObservable(false) public var shouldShowValidationError: Bool
+    @AdyenUIObservable(.initial) package var validationState: ValidationState
+    
+    /// Backward-compatible computed property for checking if error should be shown.
+    public var shouldShowValidationError: Bool {
+        get { validationState.shouldShowError }
+        set { validationState = newValue ? .invalid(validationFailureMessage ?? "") : .initial }
+    }
     
     /// Tracks whether the field is currently being edited.
     /// Views update this when focus changes, allowing reactive UI updates.
@@ -51,6 +77,6 @@ open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueTy
         if trigger == .focusLost, let stringValue = value as? String, stringValue.isEmpty {
             return
         }
-        shouldShowValidationError = !isValid()
+        validationState = isValid() ? .valid : .invalid(validationFailureMessage ?? "")
     }
 }

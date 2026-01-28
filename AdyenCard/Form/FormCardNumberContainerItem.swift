@@ -70,7 +70,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
             observe(numberItem.$isActive) { [weak self] _ in
                 self?.updateLogosVisibility()
             }
-            observe(numberItem.$shouldShowValidationError) { [weak self] _ in
+            observe(numberItem.$validationState) { [weak self] _ in
                 self?.updateLogosVisibility()
             }
         }

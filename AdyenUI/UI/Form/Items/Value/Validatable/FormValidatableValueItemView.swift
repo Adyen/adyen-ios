@@ -38,7 +38,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     // MARK: - Validation
 
     private func setupValidationObserver() {
-        observe(item.$shouldShowValidationError) { [weak self] _ in
+        observe(item.$validationState) { [weak self] _ in
             self?.onValidationStateChanged()
         }
     }
@@ -49,8 +49,8 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     }
 
     private func updateFooterDisplay(animated: Bool) {
-        if item.shouldShowValidationError {
-            displayError(item.validationFailureMessage, animated: animated)
+        if let errorMessage = item.validationState.errorMessage {
+            displayError(errorMessage, animated: animated)
         } else {
             displayHint(animated: animated)
         }
@@ -84,10 +84,10 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     }
 
     private func updateAccessibility() {
-        if item.shouldShowValidationError {
+        if let errorMessage = item.validationState.errorMessage {
             accessibilityLabelView?.accessibilityLabel = [
                 item.title,
-                item.validationFailureMessage
+                errorMessage
             ].compactMap { $0 }.joined(separator: ", ")
         } else {
             accessibilityLabelView?.accessibilityLabel = item.title
@@ -95,7 +95,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     }
 
     private func triggerValidationErrorCallbackIfNeeded() {
-        guard item.shouldShowValidationError,
+        guard item.validationState.shouldShowError,
               window != nil,
               let validationStatus = item.validationStatus(),
               let error = validationStatus.validationError

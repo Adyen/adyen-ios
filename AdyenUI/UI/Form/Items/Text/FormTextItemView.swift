@@ -50,7 +50,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
             self?.handleFormattedValueDidChange(newValue)
         }
         
-        observe(item.$shouldShowValidationError) { [weak self] _ in
+        observe(item.$validationState) { [weak self] _ in
             self?.onValidationStateChanged()
         }
 
@@ -311,10 +311,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         
         if shouldShowValidationUI {
             accessory = item.isValid() ? .valid : .invalid
-            isShowingValidationError = !item.isValid()
         } else {
             removeAccessoryIfNeeded()
-            isShowingValidationError = false
         }
         updateBorderColor()
         
@@ -330,7 +328,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
 
     override internal func resetValidationStatus() {
         super.resetValidationStatus()
-        isShowingValidationError = false
         updateBorderColor()
         removeAccessoryIfNeeded()
     }
@@ -348,28 +345,19 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     }
 
     private func updateAccessory() {
-        if item.shouldShowValidationError {
+        if item.validationState.shouldShowError {
             accessory = .invalid
-            isShowingValidationError = true
-        } else {
-            if case .customView = accessory {
-                isShowingValidationError = false
-            } else {
-                let hasContent = !(textField.text ?? "").isEmpty
-                if hasContent, !isEditing {
-                    accessory = .valid
-                } else {
-                    accessory = .none
-                }
-                isShowingValidationError = false
-            }
+            return
         }
+        
+        // Keep custom view unchanged
+        if case .customView = accessory { return }
+        
+        let hasContent = !(textField.text ?? "").isEmpty
+        accessory = (hasContent && !isEditing) ? .valid : .none
     }
 
     // MARK: - Border Styling
-
-    /// Tracks whether a validation error is currently being shown.
-    private var isShowingValidationError = false
 
     /// Updates the border color based on both editing state and validation state.
     /// Priority: editing (active color) > validation error (error color) > default (normal color)
@@ -378,7 +366,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         let borderColor: UIColor
         if isEditing {
             borderColor = style.borderActiveColor
-        } else if isShowingValidationError {
+        } else if item.validationState.shouldShowError {
             borderColor = style.errorColor
         } else {
             borderColor = style.borderColor
