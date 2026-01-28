@@ -50,11 +50,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
             self?.handleFormattedValueDidChange(newValue)
         }
         
-        observe(item.$validationState) { [weak self] _ in
-            self?.onValidationStateChanged()
-        }
-
-        updateValidationStatus()
+        updateValidation()
         
         addSubview(textStackView)
         configureConstraints()
@@ -228,7 +224,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     // MARK: - Editing
     
     override internal func didChangeEditingStatus() {
-        updateValidationStatus()
+        updateValidation()
     }
     
     // MARK: - Layout
@@ -290,16 +286,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         item.onDidBeginEditing?()
     }
     
-    override open func updateValidationStatus(forced: Bool = false) {
-        // When forced (explicit validation like Pay button), trigger model validation.
-        // The observer will handle UI updates when validationState changes.
-        if forced {
-            super.updateValidationStatus(forced: true)
-            return
-        }
-        
-        // For non-forced updates, just refresh UI based on current state.
-        // This handles initial setup and editing state changes.
+    open func updateValidation() {
         updateAccessory()
         updateBorderColor()
     }
@@ -324,7 +311,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
 
     // MARK: - Validation State Changes
 
-    private func onValidationStateChanged() {
+    override open func onValidationStateChanged() {
+        super.onValidationStateChanged()
         updateAccessory()
         updateBorderColor()
     }

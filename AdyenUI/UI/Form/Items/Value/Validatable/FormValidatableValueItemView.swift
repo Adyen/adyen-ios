@@ -63,17 +63,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     }
 
     // Called by form to trigger explicit validation (e.g., Pay button).
-    // Delegates to updateValidationStatus so subclasses can update their UI (e.g., border color).
     public func showValidation() {
-        updateValidationStatus(forced: true)
-    }
-
-    open func updateValidationStatus(forced: Bool = false) {
-        guard forced else {
-            accessibilityLabelView?.accessibilityLabel = item.title
-            return
-        }
-
         item.triggerValidation(.explicit)
         triggerValidationErrorCallbackIfNeeded()
     }
