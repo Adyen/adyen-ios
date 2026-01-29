@@ -8,6 +8,7 @@ import Adyen
 import Foundation
 import UIKit
 
+// sourcery:AutoMockable
 internal protocol PreselectedPaymentMethodAssemblerProtocol {
     func resolvePreselectedPaymentMethodRouter(
         delegate: PreselectedPaymentMethodRouterListener?,
@@ -51,8 +52,8 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     ) -> Router {
         let viewModel = PreselectedPaymentMethodViewModel(
             component: component,
-            title: title,
-            configuration: configuration,
+            theme: configuration.theme,
+            localizationParameters: configuration.localizationParameters,
             dropInFlowManager: dropInFlowManager
         )
         let viewController = PreselectedPaymentMethodViewController(viewModel: viewModel)

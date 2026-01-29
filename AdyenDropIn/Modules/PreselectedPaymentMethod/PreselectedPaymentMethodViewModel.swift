@@ -8,46 +8,118 @@ import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
 
-internal protocol PreselectedPaymentMethodViewModelProtocol {
-    var paymentMethodView: UIViewController { get }
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
+
+internal protocol PreselectedPaymentMethodViewModelProtocol: AnyObject {
+
+    // To Retrieve what to be displayed
+    var cardImageItem: CardImageItem { get }
+    var titleText: String { get }
+    var subtitleText: String { get }
+    var primaryButtonConfiguration: PreselectedPaymentMethodViewController.ButtonConfiguration { get }
+    var secondaryButtonConfiguration: PreselectedPaymentMethodViewController.ButtonConfiguration { get }
+
+    /// Theming
+    var theme: AdyenTheme { get }
+
+    /// Loading state
+    var onLoadingStateChange: ((_ isLoading: Bool) -> Void)? { get set }
+
+    // Actions
     func cancel()
+    func viewDidLoad()
 }
 
-internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewModelProtocol, PreselectedPaymentMethodComponentDelegate {
+internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewModelProtocol {
+
+    private enum Constants {
+        static let cardImageSize = CGSize(width: 80, height: 52)
+    }
 
     // MARK: - Properties
 
-    internal weak var router: PreselectedPaymentMethodRouting?
     private let component: PaymentComponent
-    private let preselectedPaymentMethodComponent: PreselectedPaymentMethodComponent
-    private var dropInFlowManager: DropInFlowManaging
+    internal let theme: AdyenTheme
+    private let localizationParameters: LocalizationParameters?
+    private let dropInFlowManager: DropInFlowManaging
+
+    internal weak var router: PreselectedPaymentMethodRouting?
+
+    // TODO: Robert: DropInComponent needs to send an event on the component being loaded.
+    /// Callback for when the component is loaded on display.
+    internal var onDidLoad: (() -> Void)?
+
+    /// Callback for when the loading state changes.
+    internal var onLoadingStateChange: ((_ isLoading: Bool) -> Void)?
 
     // MARK: - Initializers
 
     internal init(
         component: PaymentComponent,
-        title: String,
-        configuration: DropInComponent.Configuration,
+        theme: AdyenTheme,
+        localizationParameters: LocalizationParameters?,
         dropInFlowManager: DropInFlowManaging
     ) {
-        let style = configuration.style
         self.component = component
         self.dropInFlowManager = dropInFlowManager
-        self.preselectedPaymentMethodComponent = PreselectedPaymentMethodComponent(
-            component: component,
-            title: title,
-            style: style.formComponent,
-            listItemStyle: style.listComponent.listItem
-        )
-        // TODO: - Localization parameters need to be moved to configuration level.
-        self.preselectedPaymentMethodComponent.localizationParameters = configuration.localizationParameters
-        self.preselectedPaymentMethodComponent.delegate = self
+        self.theme = theme
+        self.localizationParameters = localizationParameters
     }
 
     // MARK: - PreselectedPaymentMethodViewModelProtocol
 
-    internal var paymentMethodView: UIViewController {
-        preselectedPaymentMethodComponent.viewController
+    internal var cardImageItem: CardImageItem {
+        let paymentMethod = component.paymentMethod
+        let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
+        // TODO: Robert: This will change as we will not rely on DisplayInformation for V6.
+        let imageURL = LogoURLProvider.logoURL(
+            withName: displayInformation.logoName,
+            environment: component.context.apiContext.environment,
+            size: .large
+        )
+        return CardImageItem(imageURL: imageURL, sizeMode: .fixed(Constants.cardImageSize))
+    }
+
+    internal var titleText: String {
+        let displayInformation = component.paymentMethod.displayInformation(using: localizationParameters)
+        return displayInformation.title
+    }
+
+    private var formattedAmount: String {
+        let amount = component.context.amount
+        guard let formatted = AmountFormatter.formatted(amount: amount.value, currencyCode: amount.currencyCode) else {
+            return ""
+        }
+        return formatted
+    }
+
+    internal var subtitleText: String {
+        localizedString(.preselectedPaymentMethodSubtitle, localizationParameters, component.paymentMethod.name, formattedAmount)
+    }
+
+    internal lazy var primaryButtonConfiguration: PreselectedPaymentMethodViewController.ButtonConfiguration = {
+        PreselectedPaymentMethodViewController.ButtonConfiguration(
+            title: localizedString(.submitButtonFormatted, localizationParameters, formattedAmount),
+            action: { [weak self] in
+                guard let self else { return }
+                self.didProceed(with: self.component)
+            }
+        )
+    }()
+
+    internal lazy var secondaryButtonConfiguration: PreselectedPaymentMethodViewController.ButtonConfiguration = {
+        PreselectedPaymentMethodViewController.ButtonConfiguration(
+            title: localizedString(.preselectedPaymentMethodOtherOptions, localizationParameters),
+            action: { [weak self] in
+                self?.didRequestAllPaymentMethods()
+            }
+        )
+    }()
+
+    internal func viewDidLoad() {
+        onDidLoad?()
     }
 
     internal func cancel() {
@@ -57,17 +129,15 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
         router?.dismiss(completion: nil)
     }
 
-    // MARK: - PreselectedPaymentMethodComponentDelegate
+    // MARK: - Button Actions to Pay or Other Payment options
 
-    internal func didRequestAllPaymentMethods() {
+    private func didRequestAllPaymentMethods() {
         router?.presentPaymentMethodList()
     }
 
-    internal func didProceed(with component: any PaymentComponent) {
+    private func didProceed(with component: any PaymentComponent) {
         startPaymentFlow(for: component)
     }
-
-    // MARK: - Private
 
     private func startPaymentFlow(for component: PaymentComponent) {
         startLoading(for: component)
@@ -84,13 +154,15 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
             break
         }
     }
-    
+
+    // MARK: -
+
     private func startLoading(for component: PaymentComponent) {
-        preselectedPaymentMethodComponent.startLoading(for: component)
+        onLoadingStateChange?(true)
     }
-    
+
     private func stopLoading() {
-        preselectedPaymentMethodComponent.stopLoading()
+        onLoadingStateChange?(false)
     }
 }
 
