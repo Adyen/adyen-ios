@@ -6,8 +6,7 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public protocol AdyenCancellable {
+package protocol AdyenCancellable {
     func cancel()
 }
 

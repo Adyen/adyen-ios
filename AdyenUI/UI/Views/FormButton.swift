@@ -10,6 +10,10 @@ import UIKit
 /// A rounded button for use in forms.
 @_spi(AdyenInternal)
 public final class FormButton: UIControl {
+    private enum Constants {
+        static let leadingImageWidth: CGFloat = 24
+        static let leadingImageHeight: CGFloat = 24
+    }
 
     private var style: ButtonStyle
     private var buttonStyle: AdyenButtonStyle = .primary(for: .default)
@@ -26,7 +30,7 @@ public final class FormButton: UIControl {
         
         addSubview(backgroundView)
         addSubview(activityIndicatorView)
-        addSubview(titleLabel)
+        addSubview(contentStackView)
 
         backgroundColor = style.backgroundColor
         self.adyen.round(using: style.cornerRounding)
@@ -50,7 +54,26 @@ public final class FormButton: UIControl {
 
         addSubview(backgroundView)
         addSubview(activityIndicatorView)
-        addSubview(titleLabel)
+        addSubview(contentStackView)
+
+        backgroundColor = buttonStyle.backgroundColor
+        self.adyen.round(using: buttonStyle.cornerRadius ?? .fixed(AdyenUIConstants.defaultCornerRadius))
+
+        configureConstraints()
+    }
+
+    /// Initializes the form button with AdyenButtonStyle.
+    package init(buttonStyle: AdyenButtonStyle) {
+        self.buttonStyle = buttonStyle
+        self.style = .init(title: .init(font: .preferredFont(forTextStyle: .body), color: .red))
+        super.init(frame: .zero)
+
+        isAccessibilityElement = true
+        accessibilityTraits = .button
+
+        addSubview(backgroundView)
+        addSubview(activityIndicatorView)
+        addSubview(contentStackView)
 
         backgroundColor = buttonStyle.backgroundColor
         self.adyen.round(using: buttonStyle.cornerRadius ?? .fixed(AdyenUIConstants.defaultCornerRadius))
@@ -95,6 +118,37 @@ public final class FormButton: UIControl {
         return titleLabel
     }()
     
+    // MARK: - Leading Image
+    
+    /// The optional leading image displayed to the left of the title.
+    public var leadingImage: UIImage? {
+        didSet {
+            leadingImageView.image = leadingImage
+            leadingImageView.isHidden = leadingImage == nil
+        }
+    }
+    
+    private lazy var leadingImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = buttonStyle.textColor
+        imageView.isHidden = true
+        imageView.setContentHuggingPriority(.required, for: .horizontal)
+        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+        return imageView
+    }()
+    
+    internal lazy var contentStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [leadingImageView, titleLabel])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.spacing = 8
+        stackView.isUserInteractionEnabled = false
+        return stackView
+    }()
+    
     override public var accessibilityIdentifier: String? {
         didSet {
             titleLabel.accessibilityIdentifier = accessibilityIdentifier.map {
@@ -114,11 +168,11 @@ public final class FormButton: UIControl {
         set {
             if newValue {
                 activityIndicatorView.startAnimating()
-                titleLabel.alpha = 0.0
+                contentStackView.alpha = 0.0
                 isEnabled = false
             } else {
                 activityIndicatorView.stopAnimating()
-                titleLabel.alpha = 1.0
+                contentStackView.alpha = 1.0
                 isEnabled = true
             }
         }
@@ -153,19 +207,24 @@ public final class FormButton: UIControl {
         backgroundView.adyen.anchor(inside: self)
         
         let heightConstraint = heightAnchor.constraint(equalToConstant: AdyenUIConstants.submitButtonHeight)
-        let labelConstraints = [
-            titleLabel.topAnchor.constraint(equalTo: topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
+        let contentConstraints = [
+            contentStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            contentStackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
+            contentStackView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
         ].map { $0.adyen.with(priority: .defaultHigh) }
+        
+        let imageConstraints = [
+            leadingImageView.widthAnchor.constraint(equalToConstant: Constants.leadingImageWidth),
+            leadingImageView.heightAnchor.constraint(equalToConstant: Constants.leadingImageHeight)
+        ]
         
         let spinnerConstraints = [
             activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
             activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ]
 
-        let allConstraints = labelConstraints + spinnerConstraints + [heightConstraint]
+        let allConstraints = contentConstraints + imageConstraints + spinnerConstraints + [heightConstraint]
 
         NSLayoutConstraint.activate(allConstraints)
     }

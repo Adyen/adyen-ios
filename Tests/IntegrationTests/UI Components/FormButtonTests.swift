@@ -32,7 +32,7 @@ final class FormButtonTests: XCTestCase {
         // Then assert loading state and title visibility
         XCTAssertTrue(sut.showsActivityIndicator, "Activity indicator should be showing after tap")
         XCTAssertTrue(activityIndicatorView.isAnimating, "Activity indicator should be animating after tap")
-        XCTAssertTrue(sut.titleLabel.alpha == 0.0, "Button title should be hidden after tap")
+        XCTAssertTrue(sut.contentStackView.alpha == 0.0, "Button title should be hidden after tap. (Button title is arranged in the stackview).")
         XCTAssertFalse(sut.isEnabled, "Button should be disabled during loading")
     }
 

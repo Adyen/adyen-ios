@@ -556,6 +556,10 @@ public struct LocalizationKey {
     public static let cardScannerCameraAccessDeniedAlertMessage = LocalizationKey(key: "adyen.card.scanner.camera.access.denied.alert.message")
     /// Open Settings
     public static let cardScannerCameraAccessDeniedAlertSettingsButtonTitle = LocalizationKey(key: "adyen.card.scanner.camera.access.denied.alert.settingsButton.title")
+    /// Use %@ to pay %@
+    public static let preselectedPaymentMethodSubtitle = LocalizationKey(key: "adyen.preselectedPaymentMethod.subtitle")
+    /// Other payment options
+    public static let preselectedPaymentMethodOtherOptions = LocalizationKey(key: "adyen.preselectedPaymentMethod.otherOptions")
     
     internal let key: String
     

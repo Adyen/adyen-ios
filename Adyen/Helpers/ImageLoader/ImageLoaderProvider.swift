@@ -6,12 +6,11 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public final class ImageLoaderProvider {
-    
+package enum ImageLoaderProvider {
+
     @AdyenDependency(\.imageLoader) private static var underlyingImageLoader
     
-    public static func imageLoader() -> ImageLoading {
+    package static func imageLoader() -> ImageLoading {
         underlyingImageLoader
     }
 }
