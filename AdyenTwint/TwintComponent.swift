@@ -70,7 +70,7 @@ public final class TwintComponent: PaymentComponent {
 }
 
 @_spi(AdyenInternal)
-extension TwintComponent: PaymentInitiable {}
+extension TwintComponent: InitiablePaymentComponent {}
 
 @_spi(AdyenInternal)
 extension TwintComponent: TrackableComponent {}

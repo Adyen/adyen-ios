@@ -50,7 +50,7 @@ class PresentableComponentMock: PaymentComponentMock, PresentableComponent, Load
     }
 }
 
-class InitiableComponentMock: PaymentComponentMock, PaymentInitiable {
+class InitiableComponentMock: PaymentComponentMock, InitiablePaymentComponent {
 
     // MARK: - initiatePayment
 

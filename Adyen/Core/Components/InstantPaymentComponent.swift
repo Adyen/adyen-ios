@@ -6,14 +6,13 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public protocol PaymentInitiable {
+public protocol InitiablePaymentComponent: PaymentComponent {
     /// Initiate the payment flow
     func initiatePayment()
 }
 
 /// A component that handles payment methods that don't need any payment detail to be filled.
-public final class InstantPaymentComponent: PaymentComponent {
+public final class InstantPaymentComponent: InitiablePaymentComponent {
 
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -73,9 +72,6 @@ public final class InstantPaymentComponent: PaymentComponent {
         submit(data: paymentData)
     }
 }
-
-@_spi(AdyenInternal)
-extension InstantPaymentComponent: PaymentInitiable {}
 
 /// Describes a payment details that contains nothing but the payment method type name.
 public struct InstantPaymentDetails: PaymentMethodDetails {
