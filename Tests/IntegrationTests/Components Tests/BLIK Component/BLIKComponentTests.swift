@@ -70,12 +70,6 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(sut.viewController.title, paymentMethod.name.uppercased())
     }
 
-    func testRequiresModalPresentation() {
-        let blikPaymentMethod = BLIKPaymentMethod(type: .blik, name: "Test name")
-        let sut = BLIKComponent(paymentMethod: blikPaymentMethod, context: context)
-        XCTAssertEqual(sut.requiresModalPresentation, true)
-    }
-
     func testViewDidLoadShouldSendInitialCall() throws {
         // When
         let analyticsProviderMock = AnalyticsProviderMock()

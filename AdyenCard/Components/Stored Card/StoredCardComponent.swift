@@ -21,9 +21,7 @@ package final class StoredCardComponent: PaymentComponent, PaymentAware, Present
     package weak var delegate: PaymentComponentDelegate?
     
     package var localizationParameters: LocalizationParameters?
-    
-    package var requiresModalPresentation: Bool = false
-    
+        
     private let storedCardPaymentMethod: StoredCardPaymentMethod
     
     package init(

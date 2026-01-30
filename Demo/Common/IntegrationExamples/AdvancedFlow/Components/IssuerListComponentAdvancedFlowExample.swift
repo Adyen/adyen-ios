@@ -173,10 +173,6 @@ extension IssuerListComponentAdvancedFlowExample: PresentationDelegate {
 private extension IssuerListComponentAdvancedFlowExample {
     
     private func viewController(for component: PresentableComponent) -> UIViewController {
-        guard component.requiresModalPresentation else {
-            return component.viewController
-        }
-
         let navigation = UINavigationController(rootViewController: component.viewController)
         component.viewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,

@@ -43,8 +43,6 @@ public final class OnlineBankingComponent: PaymentComponent,
         style: configuration.style
     )
 
-    public var requiresModalPresentation: Bool = true
-
     /// Component's configuration
     public var configuration: Configuration
 

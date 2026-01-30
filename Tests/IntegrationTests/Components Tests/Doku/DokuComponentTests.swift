@@ -99,16 +99,6 @@ class DokuComponentTests: XCTestCase {
         XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
     }
 
-    func testRequiresModalPresentation() {
-        let dokuPaymentMethod = DokuPaymentMethod(type: .dokuWallet, name: "Test name")
-        let sut = DokuComponent(
-            paymentMethod: dokuPaymentMethod,
-            context: context,
-            configuration: DokuComponent.Configuration()
-        )
-        XCTAssertEqual(sut.requiresModalPresentation, true)
-    }
-
     func testDokuPrefilling() throws {
         // Given
         let config = DokuComponent.Configuration(shopperInformation: shopperInformation)

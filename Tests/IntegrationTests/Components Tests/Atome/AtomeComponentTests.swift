@@ -45,11 +45,6 @@ class AtomeComponentTests: XCTestCase {
         XCTAssertEqual(paymentMethodType, expectedPaymentMethodType)
     }
     
-    func testComponent_ShouldRequireModalPresentation() throws {
-        // Assert
-        XCTAssertTrue(sut.requiresModalPresentation)
-    }
-    
     func testCreatePaymentDetails() throws {
         // Given
         let expectedBillingAddress = PostalAddressMocks.singaporePostalAddress

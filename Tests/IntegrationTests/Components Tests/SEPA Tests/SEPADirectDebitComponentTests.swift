@@ -130,12 +130,6 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, sepaPaymentMethod.name)
     }
-    
-    func testRequiresModalPresentation() {
-        let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
-        let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod, context: context)
-        XCTAssertEqual(sut.requiresModalPresentation, true)
-    }
 
     func testStopLoading() {
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")

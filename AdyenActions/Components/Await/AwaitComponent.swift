@@ -19,8 +19,6 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     
     public weak var delegate: ActionComponentDelegate?
     
-    public let requiresModalPresentation: Bool = true
-
     internal var appLauncher: AnyAppLauncher = AppLauncher()
 
     /// The await component configurations.

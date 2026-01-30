@@ -137,12 +137,6 @@ class QiwiWalletComponentTests: XCTestCase {
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.CardComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, self.method.name)
     }
-    
-    func testRequiresModalPresentation() {
-        let qiwiPaymentMethod = QiwiWalletPaymentMethod(type: .qiwiWallet, name: "Test name")
-        let sut = QiwiWalletComponent(paymentMethod: qiwiPaymentMethod, context: context, configuration: QiwiWalletComponent.Configuration())
-        XCTAssertEqual(sut.requiresModalPresentation, true)
-    }
 
     func testSubmit() {
         let phoneExtensions = [PhoneExtension(value: "+3", countryCode: "UK")]

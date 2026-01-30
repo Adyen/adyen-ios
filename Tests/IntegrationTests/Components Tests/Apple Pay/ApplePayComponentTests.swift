@@ -227,10 +227,6 @@ class ApplePayComponentTest: XCTestCase {
         waitForExpectations(timeout: 10)
     }
 
-    func testRequiresModalPresentation() {
-        XCTAssertEqual(sut?.requiresModalPresentation, false)
-    }
-
     func testPresentationViewControllerValidPayment() {
         XCTAssertTrue(sut?.viewController is PKPaymentAuthorizationViewController)
     }
