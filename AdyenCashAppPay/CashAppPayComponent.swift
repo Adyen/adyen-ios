@@ -57,8 +57,6 @@ public final class CashAppPayComponent: PaymentComponent,
         style: configuration.style
     )
 
-    public var requiresModalPresentation: Bool = true
-
     private let cashAppPayPaymentMethod: CashAppPayPaymentMethod
 
     private var storePayment: Bool? {

@@ -67,9 +67,6 @@ public final class UPIComponent: PaymentComponent,
         style: configuration.style
     )
     
-    /// This indicates that `viewController` expected to be presented modally,
-    public var requiresModalPresentation: Bool = true
-    
     /// Component's configuration
     public var configuration: Configuration
     

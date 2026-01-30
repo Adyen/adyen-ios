@@ -23,8 +23,6 @@ package final class PresentableComponentWrapper: PresentableComponent,
     /// The wrapped component.
     package let component: Component
 
-    package var requiresModalPresentation: Bool = true
-
     package var navBarType: NavigationBarType
 
     /// Initializes the wrapper component.

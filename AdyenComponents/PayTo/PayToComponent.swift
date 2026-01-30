@@ -46,9 +46,6 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
         style: configuration.style
     )
 
-    /// This indicates that `viewController` expected to be presented modally,
-    public var requiresModalPresentation: Bool = true
-
     // MARK: Component specific
 
     /// Currently selected PayId identifier

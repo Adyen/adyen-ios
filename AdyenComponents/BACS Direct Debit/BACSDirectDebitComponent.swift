@@ -25,8 +25,6 @@ public final class BACSDirectDebitComponent: PaymentComponent, PaymentAware, Pre
 
     public let viewController: UIViewController
 
-    public var requiresModalPresentation: Bool = true
-
     /// The object that acts as the delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
 

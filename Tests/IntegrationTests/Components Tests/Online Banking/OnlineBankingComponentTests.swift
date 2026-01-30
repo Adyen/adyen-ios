@@ -55,11 +55,6 @@ class OnlineBankingComponentTests: XCTestCase {
         XCTAssertEqual(paymentMethodType, expectedPaymentMethodType)
     }
 
-    func testComponent_ShouldRequireModalPresentation() throws {
-        // Assert
-        XCTAssertTrue(sut.requiresModalPresentation)
-    }
-
     func testRequiresKeyboardInput() {
         let childViewController = getFormViewController()
 
