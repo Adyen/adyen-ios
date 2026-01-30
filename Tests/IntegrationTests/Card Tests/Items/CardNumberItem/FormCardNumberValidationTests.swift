@@ -128,7 +128,8 @@ class FormCardNumberValidationTests: XCTestCase {
         // When - focus loss triggers validation
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
 
-        // Then - error should be shown
+        // Then - wait for animation and verify error is shown
+        wait(until: { !sut.footerLabel.isHidden }, timeout: 1.0)
         XCTAssertTrue(
             numberItem.shouldShowValidationError,
             "Error should be shown after focus loss with invalid input"
@@ -275,9 +276,8 @@ class FormCardNumberValidationTests: XCTestCase {
         // When - validation triggered
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
 
-        // Then - footer should be visible (animation behavior verified manually)
-        // This test documents that animation SHOULD occur
-        // BUG: Animation is currently missing
+        // Then - wait for animation and verify footer appears
+        wait(until: { !sut.footerLabel.isHidden }, timeout: 1.0)
         XCTAssertFalse(sut.footerLabel.isHidden, "Footer should appear (with animation)")
     }
 
