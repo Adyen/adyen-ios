@@ -49,17 +49,23 @@ extension AdyenScope where Base: UIView {
         animationKey: String,
         _ hidden: Bool
     ) {
-        // Set isHidden immediately for synchronous state updates (tests)
-        base.isHidden = hidden
-        
+        // Find the nearest UIStackView parent for proper layout animation
+        let parentStackView = findParentStackView(from: base)
+
+        // Force current layout state before animation starts
+        parentStackView?.layoutIfNeeded()
+
         let context = KeyFrameAnimationContext(
             animationKey: animationKey,
             duration: 0.35,
             delay: 0,
             options: [.calculationModeCubicPaced, .beginFromCurrentState],
-            animations: { [weak base] in
-                // Only animate alpha for visual transition
+            animations: { [weak base, weak parentStackView] in
+                // Set isHidden INSIDE animation block so stack view animates height
+                base?.isHidden = hidden
                 base?.alpha = hidden ? 0 : 1
+                // Animate stack view layout for smooth height transition
+                parentStackView?.layoutIfNeeded()
             },
             completion: { [weak base] _ in
                 // Ensure final state is consistent
@@ -69,7 +75,18 @@ extension AdyenScope where Base: UIView {
         )
         animate(context: context)
     }
-    
+
+    private func findParentStackView(from view: UIView) -> UIStackView? {
+        var current: UIView? = view.superview
+        while let parent = current {
+            if let stackView = parent as? UIStackView {
+                return stackView
+            }
+            current = parent.superview
+        }
+        return nil
+    }
+
     private func hideWithoutAnimation(_ hidden: Bool) {
         base.isHidden = hidden
         base.alpha = hidden ? 0 : 1
