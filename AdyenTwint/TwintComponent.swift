@@ -11,7 +11,7 @@
 import TwintSDK
 
 /// A component that handles a Twint payment.
-public final class TwintComponent: PaymentComponent {
+public final class TwintComponent: InitiablePaymentComponent {
 
     /// Configuration for Twint Component.
     public typealias Configuration = BasicComponentConfiguration
@@ -68,9 +68,6 @@ public final class TwintComponent: PaymentComponent {
         submit(data: paymentData)
     }
 }
-
-@_spi(AdyenInternal)
-extension TwintComponent: InitiablePaymentComponent {}
 
 @_spi(AdyenInternal)
 extension TwintComponent: TrackableComponent {}

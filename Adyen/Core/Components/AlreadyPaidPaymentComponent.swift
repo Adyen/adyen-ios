@@ -10,6 +10,8 @@ import Foundation
 @_spi(AdyenInternal)
 public final class AlreadyPaidPaymentComponent: PaymentComponent {
 
+    public var type: ComponentType = .none
+
     /// The context object for this component.
     public let context: AdyenContext
     

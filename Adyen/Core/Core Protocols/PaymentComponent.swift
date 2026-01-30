@@ -14,12 +14,33 @@ public protocol PaymentMethodAware {
     
 }
 
+public enum ComponentType {
+    case presentable(PresentableComponent)
+    case instant(InitiablePaymentComponent)
+    case none
+}
+
 /// A component that handles the initial phase of getting payment details to initiate a payment.
 public protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentMethodAware {
     
     /// The delegate of the payment component.
     var delegate: PaymentComponentDelegate? { get set }
-    
+
+    var type: ComponentType { get }
+}
+
+public extension PaymentComponent where Self: PresentableComponent {
+
+    var type: ComponentType {
+        .presentable(self)
+    }
+}
+
+public extension PaymentComponent where Self: InitiablePaymentComponent {
+
+    var type: ComponentType {
+        .instant(self)
+    }
 }
 
 @_spi(AdyenInternal)
