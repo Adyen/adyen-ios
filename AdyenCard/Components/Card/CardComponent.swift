@@ -139,8 +139,6 @@ public class CardComponent: PresentableComponent,
         return securedViewController
     }
     
-    public var requiresModalPresentation: Bool { storedCardComponent?.requiresModalPresentation ?? true }
-
     public func stopLoading() {
         // since storedCardComponent is instantiated through this class
         // cardViewController should not be accessed when it's the storedCardComponent

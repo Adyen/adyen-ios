@@ -150,18 +150,6 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.viewController.title, method.name.uppercased())
     }
     
-    func testRequiresModalPresentation() {
-        let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
-        let config = ACHDirectDebitComponentConfiguration().billingAddressCountryCodes(["US", "UK"])
-        let sut = ACHDirectDebitComponent(
-            paymentMethod: paymentMethod,
-            context: context,
-            configuration: config,
-            publicKeyProvider: PublicKeyProviderMock()
-        )
-        XCTAssertEqual(sut.requiresModalPresentation, true)
-    }
-
     func testStopLoading() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let config = ACHDirectDebitComponentConfiguration().billingAddressCountryCodes(["US", "UK"])

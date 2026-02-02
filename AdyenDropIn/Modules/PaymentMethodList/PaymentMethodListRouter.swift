@@ -64,13 +64,12 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         )
         self.childRouter = componentContainerRouter
 
+        // TODO: - Temporary workaround until component's flow type is defined.
         let componentContainerViewController = componentContainerRouter.rootViewController
-
-        // TODO: - Invert `requiresModalPresentation` logic or remove it fully.
-        if paymentComponent.requiresModalPresentation {
-            viewController.navigationController?.pushViewController(componentContainerViewController, animated: true)
-        } else {
+        if paymentComponent.viewController is UIAlertController {
             viewController.present(componentContainerViewController, animated: true)
+        } else {
+            viewController.navigationController?.pushViewController(componentContainerViewController, animated: true)
         }
     }
 

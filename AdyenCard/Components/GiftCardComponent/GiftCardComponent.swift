@@ -148,8 +148,6 @@ public final class GiftCardComponent: PresentableComponent,
 
     public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
 
-    public var requiresModalPresentation: Bool { true }
-
     private lazy var formViewController: FormViewController = {
 
         let formViewController = FormViewController(

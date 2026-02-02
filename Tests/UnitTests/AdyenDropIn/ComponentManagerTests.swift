@@ -554,7 +554,6 @@ class ComponentManagerTests: XCTestCase {
         // Then
         let giftCardComponent = try XCTUnwrap(paymentComponent as? GiftCardComponent)
         XCTAssertTrue(giftCardComponent.showsSecurityCodeField)
-        XCTAssertTrue(giftCardComponent.requiresModalPresentation)
         XCTAssertEqual(giftCardComponent.localizationParameters, configuration.localizationParameters)
     }
     
@@ -593,7 +592,6 @@ class ComponentManagerTests: XCTestCase {
         // Then
         let giftCardComponent = try XCTUnwrap(paymentComponent as? GiftCardComponent)
         XCTAssertTrue(giftCardComponent.showsSecurityCodeField)
-        XCTAssertTrue(giftCardComponent.requiresModalPresentation)
         XCTAssertEqual(giftCardComponent.localizationParameters, configuration.localizationParameters)
     }
     

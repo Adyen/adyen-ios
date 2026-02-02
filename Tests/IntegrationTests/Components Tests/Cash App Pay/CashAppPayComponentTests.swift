@@ -191,15 +191,6 @@ import XCTest
             XCTAssertEqual(paymentMethodType, expectedPaymentMethodType)
         }
         
-        func testComponent_ShouldRequireModalPresentation() throws {
-            // Given
-            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
-            let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
-            
-            // Assert
-            XCTAssertTrue(sut.requiresModalPresentation)
-        }
-        
         func testOneTimeSubmitDetails() {
             let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)

@@ -78,12 +78,6 @@ class MBWayComponentTests: XCTestCase {
         XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
     }
 
-    func testRequiresModalPresentation() {
-        let mbWayPaymentMethod = MBWayPaymentMethod(type: .mbWay, name: "Test name")
-        let sut = MBWayComponent(paymentMethod: mbWayPaymentMethod, context: context)
-        XCTAssertEqual(sut.requiresModalPresentation, true)
-    }
-
     func testMBWayPrefilling() throws {
         // Given
         let config = MBWayComponent.Configuration(shopperInformation: shopperInformation)

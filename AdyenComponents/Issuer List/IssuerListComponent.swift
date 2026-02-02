@@ -89,8 +89,6 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
     public func stopLoading() {
         searchViewController.resultsListViewController.stopLoading()
     }
-    
-    public var requiresModalPresentation: Bool = true
 
     // MARK: - Private
 

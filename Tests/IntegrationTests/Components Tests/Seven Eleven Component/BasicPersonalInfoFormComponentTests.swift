@@ -238,16 +238,6 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
     }
 
-    func testRequiresModalPresentation() {
-        let paymentMethod = SevenElevenPaymentMethod(type: .econtextSevenEleven, name: "Test name")
-        let sut = SevenElevenComponent(
-            paymentMethod: paymentMethod,
-            context: Dummy.context,
-            configuration: BasicPersonalInfoFormComponent.Configuration()
-        )
-        XCTAssertEqual(sut.requiresModalPresentation, true)
-    }
-
     func testBasicPersonalInfoFormPrefilling() throws {
         // Given
         let config = BasicPersonalInfoFormComponent.Configuration(shopperInformation: shopperInformation)
