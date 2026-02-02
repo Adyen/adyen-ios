@@ -14,8 +14,12 @@ public protocol PaymentMethodAware {
     
 }
 
+/// A component that handles stored payment methods.
+public protocol StoredPaymentComponent: PresentableComponent {}
+
 public enum ComponentType {
     case presentable(PresentableComponent)
+    case stored(StoredPaymentComponent)
     case instant(InitiablePaymentComponent)
     case none
 }
@@ -33,6 +37,13 @@ public extension PaymentComponent where Self: PresentableComponent {
 
     var type: ComponentType {
         .presentable(self)
+    }
+}
+
+public extension PaymentComponent where Self: StoredPaymentComponent {
+
+    var type: ComponentType {
+        .stored(self)
     }
 }
 

@@ -10,17 +10,19 @@ import UIKit
 // TODO: Fix Stored PM UI
 ///  A component that handle stored payment methods.
 public final class StoredPaymentMethodComponent: PaymentComponent,
-    PresentableComponent,
+    StoredPaymentComponent,
     PaymentAware {
 
-    /// Component's configuration.
+    // Component's configuration.
     // public var configuration: Configuration
 
     /// The context object for this component.
     public let context: AdyenContext
 
     /// The stored payment method.
-    public var paymentMethod: PaymentMethod { storedPaymentMethod }
+    public var paymentMethod: PaymentMethod {
+        storedPaymentMethod
+    }
 
     public weak var delegate: PaymentComponentDelegate?
     
@@ -87,23 +89,6 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
         return UIAlertController()
     }()
     
-}
-
-extension StoredPaymentMethodComponent {
-
-    /// Configuration for Stored Payment type components.
-//    public struct Configuration {
-//
-//        public var localizationParameters: LocalizationParameters?
-//
-//        /// Initializes the configuration for Issuer list type components.
-//        /// - Parameters:
-//        ///   - localizationParameters: Localization parameters.
-//        public init(localizationParameters: LocalizationParameters? = nil) {
-//            self.localizationParameters = localizationParameters
-//        }
-//    }
-
 }
 
 @_spi(AdyenInternal)
