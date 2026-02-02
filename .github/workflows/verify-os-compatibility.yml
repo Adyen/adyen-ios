@@ -32,7 +32,7 @@ jobs:
           device: 'iPhone 16 Pro'
           displayname: 'iPhone-16-Pro'
           os: 'macos-15'
-          xcode_version: '26.0'
+          xcode_version: '26.2'
           needs_custom_sim: false
           
         # Xcode 26 - iOS 17
