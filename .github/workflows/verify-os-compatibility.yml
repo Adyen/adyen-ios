@@ -26,7 +26,7 @@ jobs:
       matrix:
         include:
         
-        # Xcode 26 - iOS 18
+        # Xcode 26.2 - iOS 18
         - version: '18.6'
           runtime: 'iOS-18-6'
           device: 'iPhone 16 Pro'
@@ -35,7 +35,7 @@ jobs:
           xcode_version: '26.2'
           needs_custom_sim: false
           
-        # Xcode 26 - iOS 17
+        # Xcode 16.4 - iOS 17
         - version: '17.5'
           runtime: 'iOS-17-5'
           device: 'iPhone 15 Pro'
