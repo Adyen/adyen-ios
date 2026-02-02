@@ -10,7 +10,7 @@ import XCTest
 @_spi(AdyenInternal) @testable import AdyenActions
 import AdyenComponents
 import AdyenDropIn
-import AdyenEncryption
+@testable import AdyenEncryption
 import AdyenNetworking
 
 class SessionTests: XCTestCase {
@@ -1137,7 +1137,7 @@ class SessionTests: XCTestCase {
     }
 
     func testPaymentsRequestEncodesInstallments() throws {
-        let paymentMethod = try XCTUnwrap(expectedPaymentMethods.regular[1] as? CardPaymentMethod)
+        let paymentMethod = CardPaymentMethodMock(fundingSource: .credit, type: .other("test_type"), name: "test name", brands: [.visa, .bcmc])
         let encryptedCard = EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year")
         let cardDetails = CardDetails(paymentMethod: paymentMethod, encryptedCard: encryptedCard)
         let installments = Installments(totalMonths: 3, plan: .regular)
@@ -1163,7 +1163,7 @@ class SessionTests: XCTestCase {
     }
 
     func testPaymentsRequestOmitsInstallmentsWhenNil() throws {
-        let paymentMethod = try XCTUnwrap(expectedPaymentMethods.regular[1] as? CardPaymentMethod)
+        let paymentMethod = CardPaymentMethodMock(fundingSource: .credit, type: .other("test_type"), name: "test name", brands: [.visa, .bcmc])
         let encryptedCard = EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year")
         let cardDetails = CardDetails(paymentMethod: paymentMethod, encryptedCard: encryptedCard)
         let data = PaymentComponentData(
