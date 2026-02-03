@@ -25,8 +25,7 @@ import Foundation
 /// ## Session Flow
 /// ```swift
 /// let checkout = try await Checkout.setup(
-///     with: sessionId,
-///     sessionData: sessionData,
+///     with: sessionResponse,
 ///     configuration: config
 /// )
 /// ```
@@ -37,6 +36,15 @@ import Foundation
 ///     with: paymentMethods,
 ///     configuration: config
 /// )
+/// ```
+///
+/// ## Action Handling Only
+/// ```swift
+/// let checkout = try await Checkout.setup(
+///     configuration: config,
+///     presentationDelegate: self
+/// )
+/// checkout.handle(action: action)
 /// ```
 ///
 /// ## Creating Components
@@ -107,6 +115,28 @@ public final class Checkout: CheckoutProtocol {
     ) async throws -> Checkout {
         try await setup(
             with: paymentMethods,
+            configuration: configuration,
+            presentationDelegate: presentationDelegate,
+            provider: CheckoutProvider.default
+        )
+    }
+    
+    /// Sets up checkout for action handling only.
+    ///
+    /// Use this method for the advanced flow when handling the `/payments` call yourself
+    /// and only need the SDK to process resulting actions such as 3DS challenges,
+    /// redirects, or QR codes.
+    ///
+    /// - Parameters:
+    ///   - configuration: The checkout configuration.
+    ///   - presentationDelegate: Delegate for handling action UI presentation.
+    /// - Returns: A `Checkout` instance.
+    /// - Throws: An error if setup fails.
+    public static func setup(
+        configuration: CheckoutConfiguration,
+        presentationDelegate: PresentationDelegate? = nil
+    ) async throws -> Checkout {
+        try await setup(
             configuration: configuration,
             presentationDelegate: presentationDelegate,
             provider: CheckoutProvider.default
@@ -230,6 +260,17 @@ internal extension Checkout {
     ) async throws -> Checkout {
         try await provider.setup(
             with: paymentMethods,
+            configuration: configuration,
+            presentationDelegate: presentationDelegate
+        )
+    }
+    
+    static func setup(
+        configuration: CheckoutConfiguration,
+        presentationDelegate: PresentationDelegate? = nil,
+        provider: CheckoutProviding = CheckoutProvider.default
+    ) async throws -> Checkout {
+        try await provider.setup(
             configuration: configuration,
             presentationDelegate: presentationDelegate
         )
