@@ -33,7 +33,7 @@ final class BLIKComponentFactoryTests: XCTestCase {
         let configuration = factory.defaultConfiguration()
         
         // Then
-        XCTAssertEqual(configuration.componentType, .payment(.blik))
+        XCTAssertEqual(configuration.configurationType, .payment(.blik))
         XCTAssertTrue(configuration.showsSubmitButton)
     }
     
@@ -134,9 +134,9 @@ final class BLIKComponentFactoryTests: XCTestCase {
         XCTAssertNotNil(factory as any PaymentComponentFactory)
     }
     
-    func testFactory_HasCorrectAssociatedTypes() {
+    func testFactory_HasCorrectAssociatedTypes() throws {
         // Given
-        let paymentMethod = createBLIKPaymentMethod()!
+        let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         let configuration = factory.defaultConfiguration()
         
         // When
@@ -148,7 +148,7 @@ final class BLIKComponentFactoryTests: XCTestCase {
         
         // Then - Verify types through their properties
         XCTAssertEqual(paymentMethod.type, .blik)
-        XCTAssertEqual(configuration.componentType, .payment(.blik))
+        XCTAssertEqual(configuration.configurationType, .payment(.blik))
         XCTAssertEqual(component.paymentMethod.type, .blik)
     }
     

@@ -14,7 +14,7 @@ import UIKit
 /// Configuration for BLIK Component.
 public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
     
-    package let componentType: Adyen.CheckoutComponentType = .payment(.blik)
+    package let configurationType: Adyen.CheckoutConfigurationType = .payment(.blik)
     
     package var showsSubmitButton: Bool = true
 

@@ -37,7 +37,7 @@ public struct CheckoutConfiguration {
     package var showsSubmitButton: Bool = true
     
     // TODO: how we store configurations may change
-    package var configurations: [CheckoutComponentType: CheckoutComponentConfiguration]
+    package var configurations: [CheckoutConfigurationType: CheckoutComponentConfiguration]
     
     package var onSubmit: SubmitHandler?
     
@@ -75,13 +75,13 @@ public struct CheckoutConfiguration {
             analyticsConfiguration: analyticsConfiguration
         )
         
-        var configDictionary: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
+        var configDictionary: [CheckoutConfigurationType: CheckoutComponentConfiguration] = [:]
         let content = content()
         let configArray = (content as? CompositeCheckoutConfiguration)?.configurations ?? []
         
         for configuration in configArray {
             if let configuration = configuration as? CheckoutComponentConfiguration {
-                configDictionary[configuration.componentType] = configuration
+                configDictionary[configuration.configurationType] = configuration
             }
         }
         let configurations = configDictionary
@@ -91,7 +91,7 @@ public struct CheckoutConfiguration {
     
     internal init(
         context: AdyenContext,
-        configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:],
+        configurations: [CheckoutConfigurationType: CheckoutComponentConfiguration] = [:],
         theme: AdyenTheme = .default
     ) {
         self.context = context
