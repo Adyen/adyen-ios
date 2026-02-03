@@ -71,8 +71,6 @@ open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueTy
         return nil
     }
 
-    /// Triggers validation based on the given trigger type.
-    /// - Parameter trigger: The validation trigger.
     /// Resets validation state to initial (clears any error).
     package func resetValidation() {
         validationState = .initial
