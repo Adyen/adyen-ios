@@ -50,7 +50,7 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         return view
     }()
 
-    override public func updateValidation() {
+    override internal func updateValidation() {
         super.updateValidation()
         
         alpha = item.displayMode.isVisible ? 1.0 : 0.0
