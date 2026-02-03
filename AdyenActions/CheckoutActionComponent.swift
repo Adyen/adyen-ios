@@ -9,10 +9,10 @@ import Adyen3DS2
 import Foundation
 import UIKit
 
+// TODO: make package
 /**
  An action handler component to perform any supported action out of the box.
  */
-// TODO: make package
 public final class CheckoutActionComponent: ActionComponent, ActionHandlingComponent {
     
     /// :nodoc:

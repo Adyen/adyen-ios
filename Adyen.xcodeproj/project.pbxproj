@@ -570,6 +570,8 @@
 		A0BFBB562D6F45C1003F543E /* PayToPayIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BFBB552D6F45AB003F543E /* PayToPayIdentifier.swift */; };
 		A0BFBB582D75FD4F003F543E /* PayToDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BFBB572D75FD44003F543E /* PayToDetails.swift */; };
 		A0C9B59B288AE34600D6BDAB /* InstallmentOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F41E5526CBCA6E0089AD6C /* InstallmentOptions.swift */; };
+		A0CB49652F2A05BD00372021 /* DummyActionComponentExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CB49642F2A05B100372021 /* DummyActionComponentExample.swift */; };
+		A0CB49662F2A05BD00372021 /* DummyActionComponentExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CB49642F2A05B100372021 /* DummyActionComponentExample.swift */; };
 		A0D48FB827109B0200C0B82C /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */; };
 		A0DB48662AFD020400348C83 /* AnalyticsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB48652AFD020400348C83 /* AnalyticsRequest.swift */; };
 		A0DB48682AFD068400348C83 /* AdyenAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB48672AFD068400348C83 /* AdyenAnalytics.swift */; };
@@ -2236,6 +2238,7 @@
 		A0BFBB532D6F2670003F543E /* PayToItemsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToItemsProvider.swift; sourceTree = "<group>"; };
 		A0BFBB552D6F45AB003F543E /* PayToPayIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToPayIdentifier.swift; sourceTree = "<group>"; };
 		A0BFBB572D75FD44003F543E /* PayToDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToDetails.swift; sourceTree = "<group>"; };
+		A0CB49642F2A05B100372021 /* DummyActionComponentExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyActionComponentExample.swift; sourceTree = "<group>"; };
 		A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayHelpers.swift; sourceTree = "<group>"; };
 		A0D87A252D9420AF00763AD6 /* CheckoutConfiguration+Callbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CheckoutConfiguration+Callbacks.swift"; sourceTree = "<group>"; };
 		A0DB48652AFD020400348C83 /* AnalyticsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsRequest.swift; sourceTree = "<group>"; };
@@ -4215,6 +4218,7 @@
 				B67D1F542E4615390000C37F /* CardComponentAdvancedFlowExample.swift */,
 				B67D1F552E4615390000C37F /* InstantPaymentComponentAdvancedFlowExample.swift */,
 				B67D1F562E4615390000C37F /* IssuerListComponentAdvancedFlowExample.swift */,
+				A0CB49642F2A05B100372021 /* DummyActionComponentExample.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -9009,6 +9013,7 @@
 				F9A53C502549887F009000A7 /* PaymentsRequest.swift in Sources */,
 				A0DDB1A32E5763B4001B409A /* BLIKComponentAdvancedFlowExample.swift in Sources */,
 				00A25E5D2A404303001B32B6 /* ComponentCreationError.swift in Sources */,
+				A0CB49662F2A05BD00372021 /* DummyActionComponentExample.swift in Sources */,
 				004BA68129D4639900A8C69B /* PresenterExampleProtocol.swift in Sources */,
 				B6EE0F392BBE9C4500B9810D /* APIClientHelper.swift in Sources */,
 				F9A53C532549887F009000A7 /* PaymentMethodsRequest.swift in Sources */,
@@ -9351,6 +9356,7 @@
 				00ED81B229DD74AB00A6B52C /* PresenterExampleProtocol.swift in Sources */,
 				F9A53C4E2549887F009000A7 /* PaymentDetailsRequest.swift in Sources */,
 				F9A53D6325499B13009000A7 /* Configuration.swift in Sources */,
+				A0CB49652F2A05BD00372021 /* DummyActionComponentExample.swift in Sources */,
 				B6EE0F382BBE9C4500B9810D /* APIClientHelper.swift in Sources */,
 				F95B6D9A2527454E002C9062 /* SceneDelegate.swift in Sources */,
 				A0DDB1A22E5763B4001B409A /* BLIKComponentAdvancedFlowExample.swift in Sources */,

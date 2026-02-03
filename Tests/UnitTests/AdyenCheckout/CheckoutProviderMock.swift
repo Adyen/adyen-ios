@@ -18,6 +18,9 @@ internal class CheckoutProviderMock: CheckoutProviding {
     var setupPaymentMethodsCalled = false
     var setupWithPaymentMethodsResult: Result<Checkout, Error>?
     
+    var setupActionOnlyCalled = false
+    var setupActionOnlyResult: Result<Checkout, Error>?
+    
     // For AdyenSessionProviding
     var mockedSessionResult: Result<SessionProtocol, Error>?
     // For CheckoutAttemptIdProviding
@@ -81,6 +84,22 @@ internal class CheckoutProviderMock: CheckoutProviding {
         setupPaymentMethodsCalled = true
         
         switch setupWithPaymentMethodsResult {
+        case let .success(checkout):
+            return checkout
+        case let .failure(error):
+            throw error
+        case nil:
+            throw TestError()
+        }
+    }
+    
+    func setup(
+        configuration: CheckoutConfiguration,
+        presentationDelegate: PresentationDelegate?
+    ) async throws -> Checkout {
+        setupActionOnlyCalled = true
+        
+        switch setupActionOnlyResult {
         case let .success(checkout):
             return checkout
         case let .failure(error):
