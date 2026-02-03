@@ -37,96 +37,24 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
         /// The UI style configurations.
         public var style: ActionComponentStyle = .init()
         
-        /// Three DS configurations
-        public var threeDS: ThreeDS = .init()
+        /// Three DS configurations.
+        public var threeDS: ThreeDS2ActionConfiguration
         
-        /// Three DS configurations
-        public struct ThreeDS {
-            /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
-            public var requestorAppURL: URL?
-            
-            /// The configuration for Delegated Authentication.
-            public var delegateAuthentication: ThreeDS2Component.Configuration.DelegatedAuthentication?
-            
-            /// ThreeDS2Component UI configuration.
-            public var appearanceConfiguration: ADYAppearanceConfiguration
-            
-            /// Initializes a new instance
-            ///
-            /// - Parameter requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
-            public init(
-                requestorAppURL: URL? = nil,
-                delegateAuthentication: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil,
-                appearanceConfiguration: ADYAppearanceConfiguration = .init()
-            ) {
-                self.requestorAppURL = requestorAppURL
-                self.delegateAuthentication = delegateAuthentication
-                self.appearanceConfiguration = appearanceConfiguration
-            }
-        }
+        /// Twint configurations.
+        public var twint: TwintActionConfiguration?
         
-        public var twint: Twint?
-        
-        public struct Twint {
-            
-            /// The callback app scheme invoked once the Twint app is done with the payment
-            ///
-            /// - Important: This value is  required to only provide the scheme,
-            /// without a host/path/.... (e.g. "my-app", not a url "my-app://...")
-            public var callbackAppScheme: String
-            
-            /// The issuer number of the highest scheme you listed under `LSApplicationQueriesSchemes`.
-            /// E.g. pass 39, if you listed all schemes from "twint-issuer1" up to and including "twint-issuer39".
-            /// The value is clamped between 0 and 39.
-            ///
-            /// - Important: All apps above "twint-issuer39" will always be returned if one of these apps is installed.
-            /// For this to work, `LSApplicationQueriesSchemes` must include "twint-extended".
-            /// If you configure any `maxIssuerNumber` below 39, the result will always contain all apps above `maxIssuerNumber`
-            /// up to and including 39, even if none of them are installed.
-            /// Additionally, if the fetch fails and the cache is empty, none of these apps will be found when probing.
-            public var maxIssuerNumber: Int
-            
-            /// Initializes a new instance
-            ///
-            /// - Parameter callbackAppScheme: The callback app scheme invoked once the Twint app is done with the payment
-            ///
-            /// - Important: The value of ``callbackAppScheme`` is  required to only provide the scheme,
-            /// without a host/path/... (e.g. "my-app", not a url "my-app://...")
-            public init(
-                callbackAppScheme: String,
-                maxIssuerNumber: Int = .max
-            ) {
-                if !Self.isCallbackSchemeValid(callbackAppScheme) {
-                    AdyenAssertion.assertionFailure(message: "Format of provided callbackAppScheme '\(callbackAppScheme)' is incorrect.")
-                }
-                
-                self.callbackAppScheme = callbackAppScheme
-                self.maxIssuerNumber = maxIssuerNumber
-            }
-            
-            /// Validating whether or not the provided `callbackAppScheme` only contains a scheme
-            private static func isCallbackSchemeValid(_ callbackAppScheme: String) -> Bool {
-                if let url = URL(string: callbackAppScheme), url.scheme != nil {
-                    // If the scheme is not nil it means that more information than just the scheme was provided
-                    return false
-                }
-                
-                return true
-            }
-        }
-        
-        /// Initializes a new instance
+        /// Initializes a new instance.
         ///
         /// - Parameters:
         ///   - localizationParameters: Localization parameters.
         ///   - style: The UI style configurations.
-        ///   - threeDS: Three DS configurations
-        ///   - twint: Twint configurations
+        ///   - threeDS: Three DS configurations.
+        ///   - twint: Twint configurations.
         public init(
             localizationParameters: LocalizationParameters? = nil,
             style: ActionComponentStyle = .init(),
-            threeDS: CheckoutActionComponent.Configuration.ThreeDS = .init(),
-            twint: Twint? = nil
+            threeDS: ThreeDS2ActionConfiguration = .init(),
+            twint: TwintActionConfiguration? = nil
         ) {
             self.localizationParameters = localizationParameters
             self.style = style
@@ -222,7 +150,7 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
             redirectComponentStyle: configuration.style.redirectComponentStyle,
             appearanceConfiguration: configuration.threeDS.appearanceConfiguration,
             requestorAppURL: configuration.threeDS.requestorAppURL,
-            delegateAuthentication: configuration.threeDS.delegateAuthentication
+            delegatedAuthentication: configuration.threeDS.delegatedAuthentication
         )
         let component = ThreeDS2Component(
             context: context,
@@ -272,7 +200,8 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
         #if canImport(TwintSDK)
             guard let twintConfiguration = configuration.twint else {
                 AdyenAssertion.assertionFailure(
-                    message: "Twint action configuration instance must not be nil in order to use AdyenTwint")
+                    message: "Twint action configuration instance must not be nil in order to use AdyenTwint"
+                )
                 return
             }
         

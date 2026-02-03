@@ -30,10 +30,41 @@ public struct ThreeDS2ActionConfiguration: CheckoutComponentConfiguration {
     public var requestorAppURL: URL?
     
     /// The configuration for Delegated Authentication.
-    public var delegatedAuthentication: DelegatedAuthenticationConfiguration?
+    public var delegatedAuthentication: DelegatedAuthentication?
     
     /// ThreeDS2Component UI configuration.
     public var appearanceConfiguration: ADYAppearanceConfiguration
+    
+    /// Configuration for Delegated Authentication in 3D Secure 2.
+    public struct DelegatedAuthentication {
+        
+        /// The relying party identifier that is used for PassKeys.
+        /// See: https://developer.apple.com/documentation/xcode/supporting-associated-domains
+        /// See: https://developer.apple.com/documentation/authenticationservices/public-private_key_authentication/supporting_passkeys
+        public let relyingPartyIdentifier: String
+        
+        /// The configuration for Delegated Authentication Component style.
+        public let style: DelegatedAuthenticationComponentStyle
+        
+        /// The localization parameters, leave it nil to use the default parameters.
+        public let localizationParameters: LocalizationParameters?
+        
+        /// Initializes a new instance.
+        ///
+        /// - Parameters:
+        ///   - relyingPartyIdentifier: The relying party identifier that is used for PassKeys.
+        ///   - style: The delegated authentication component style.
+        ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
+        public init(
+            relyingPartyIdentifier: String,
+            style: DelegatedAuthenticationComponentStyle = .init(),
+            localizationParameters: LocalizationParameters? = nil
+        ) {
+            self.relyingPartyIdentifier = relyingPartyIdentifier
+            self.style = style
+            self.localizationParameters = localizationParameters
+        }
+    }
     
     /// Initializes a new instance.
     ///
@@ -43,7 +74,7 @@ public struct ThreeDS2ActionConfiguration: CheckoutComponentConfiguration {
     ///   - appearanceConfiguration: ThreeDS2Component UI configuration.
     public init(
         requestorAppURL: URL? = nil,
-        delegatedAuthentication: DelegatedAuthenticationConfiguration? = nil,
+        delegatedAuthentication: DelegatedAuthentication? = nil,
         appearanceConfiguration: ADYAppearanceConfiguration = .init()
     ) {
         self.requestorAppURL = requestorAppURL
@@ -109,32 +140,5 @@ public struct TwintActionConfiguration: CheckoutComponentConfiguration {
             return false
         }
         return true
-    }
-}
-
-// MARK: - DelegatedAuthenticationConfiguration
-
-/// Configuration for Delegated Authentication in 3D Secure 2.
-public struct DelegatedAuthenticationConfiguration {
-    
-    /// The relying party identifier that is used for PassKeys.
-    /// See: https://developer.apple.com/documentation/xcode/supporting-associated-domains
-    /// See: https://developer.apple.com/documentation/authenticationservices/public-private_key_authentication/supporting_passkeys
-    public let relyingPartyIdentifier: String
-    
-    /// The localization parameters, leave it nil to use the default parameters.
-    public let localizationParameters: LocalizationParameters?
-    
-    /// Initializes a new instance.
-    ///
-    /// - Parameters:
-    ///   - relyingPartyIdentifier: The relying party identifier that is used for PassKeys.
-    ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
-    public init(
-        relyingPartyIdentifier: String,
-        localizationParameters: LocalizationParameters? = nil
-    ) {
-        self.relyingPartyIdentifier = relyingPartyIdentifier
-        self.localizationParameters = localizationParameters
     }
 }

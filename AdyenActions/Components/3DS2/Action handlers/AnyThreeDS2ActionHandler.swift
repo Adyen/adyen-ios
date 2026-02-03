@@ -33,9 +33,13 @@ internal protocol ComponentWrapper: Component {
 
 extension ComponentWrapper {
 
-    internal var apiContext: APIContext { wrappedComponent.context.apiContext }
+    internal var apiContext: APIContext {
+        wrappedComponent.context.apiContext
+    }
 
-    internal var context: AdyenContext { wrappedComponent.context }
+    internal var context: AdyenContext {
+        wrappedComponent.context
+    }
 
     internal var _isDropIn: Bool { // swiftlint:disable:this identifier_name
         get {
@@ -52,7 +56,7 @@ internal func createDefaultThreeDS2CoreActionHandler(
     context: AdyenContext,
     service: ThreeDSService,
     appearanceConfiguration: ADYAppearanceConfiguration,
-    delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?
+    delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication?
 ) -> AnyThreeDS2CoreActionHandler {
     #if canImport(AdyenAuthentication)
         if #available(iOS 16.0, *), let delegatedAuthenticationConfiguration {

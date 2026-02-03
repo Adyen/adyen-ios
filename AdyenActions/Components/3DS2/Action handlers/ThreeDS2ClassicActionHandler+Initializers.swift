@@ -18,7 +18,7 @@ extension ThreeDS2ClassicActionHandler {
         context: AdyenContext,
         service: ThreeDSService,
         appearanceConfiguration: ADYAppearanceConfiguration,
-        delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?
+        delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication?
     ) {
         let defaultHandler = createDefaultThreeDS2CoreActionHandler(
             context: context,

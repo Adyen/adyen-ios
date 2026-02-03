@@ -10,6 +10,7 @@
 #endif
 import UIKit
 
+// TODO: make package
 /// Contains the styling customization options for Delegated Authentication Screens(Registration & Approval)
 public struct DelegatedAuthenticationComponentStyle {
     

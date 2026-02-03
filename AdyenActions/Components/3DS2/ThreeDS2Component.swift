@@ -50,36 +50,7 @@ public final class ThreeDS2Component: ActionComponent {
         public var requestorAppURL: URL?
         
         /// The configuration for Delegated Authentication.
-        public let delegateAuthentication: DelegatedAuthentication?
-        
-        /// The configuration for Delegated Authentication.
-        public struct DelegatedAuthentication {
-            // The relying party identifier that is used for PassKeys.
-            // See: https://developer.apple.com/documentation/xcode/supporting-associated-domains
-            // See: https://developer.apple.com/documentation/authenticationservices/public-private_key_authentication/supporting_passkeys
-            public let relyingPartyIdentifier: String
-
-            /// The configuration for Delegated Authentication Component style
-            public let delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle
-
-            /// The localization parameters, leave it nil to use the default parameters.
-            public let localizationParameters: LocalizationParameters?
-
-            /// Initializes a new instance.
-            ///
-            /// - Parameter relyingPartyIdentifier: The relying party identifier that is used for PassKeys
-            /// - Parameter delegatedAuthenticationComponentStyle: The delegated authentication component style.
-            /// - Parameter localizationParameters: The localization parameters, leave it nil to use the default parameters.
-            public init(
-                relyingPartyIdentifier: String,
-                delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle = .init(),
-                localizationParameters: LocalizationParameters? = nil
-            ) {
-                self.relyingPartyIdentifier = relyingPartyIdentifier
-                self.delegatedAuthenticationComponentStyle = delegatedAuthenticationComponentStyle
-                self.localizationParameters = localizationParameters
-            }
-        }
+        public let delegatedAuthentication: ThreeDS2ActionConfiguration.DelegatedAuthentication?
         
         /// Initializes a new instance
         ///
@@ -87,17 +58,17 @@ public final class ThreeDS2Component: ActionComponent {
         ///   - redirectComponentStyle: `RedirectComponent` style
         ///   - appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
         ///   - requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
-        ///   - delegateAuthentication: The configuration for delegate authentication
+        ///   - delegatedAuthentication: The configuration for delegated authentication
         public init(
             redirectComponentStyle: RedirectComponentStyle? = nil,
             appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
             requestorAppURL: URL? = nil,
-            delegateAuthentication: DelegatedAuthentication? = nil
+            delegatedAuthentication: ThreeDS2ActionConfiguration.DelegatedAuthentication? = nil
         ) {
             self.redirectComponentStyle = redirectComponentStyle
             self.appearanceConfiguration = appearanceConfiguration
             self.requestorAppURL = requestorAppURL
-            self.delegateAuthentication = delegateAuthentication
+            self.delegatedAuthentication = delegatedAuthentication
         }
     }
     
@@ -231,7 +202,7 @@ public final class ThreeDS2Component: ActionComponent {
             context: context,
             service: ThreeDSServiceProvider(),
             appearanceConfiguration: configuration.appearanceConfiguration,
-            delegatedAuthenticationConfiguration: configuration.delegateAuthentication
+            delegatedAuthenticationConfiguration: configuration.delegatedAuthentication
         )
         handler.presentationDelegate = presentationDelegate
         handler._isDropIn = _isDropIn
@@ -245,7 +216,7 @@ public final class ThreeDS2Component: ActionComponent {
             context: context,
             service: ThreeDSServiceProvider(),
             appearanceConfiguration: configuration.appearanceConfiguration,
-            delegatedAuthenticationConfiguration: configuration.delegateAuthentication
+            delegatedAuthenticationConfiguration: configuration.delegatedAuthentication
         )
         handler.presentationDelegate = presentationDelegate
         handler._isDropIn = _isDropIn
@@ -265,7 +236,7 @@ public final class ThreeDS2Component: ActionComponent {
     }()
 }
 
-// This is for the RedirectComponent inside the ThreeDS2Component
+/// This is for the RedirectComponent inside the ThreeDS2Component
 extension ThreeDS2Component: ActionComponentDelegate {
 
     public func didOpenExternalApplication(component: ActionComponent) {
