@@ -79,7 +79,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     private func updateLogosVisibility() {
         guard showsSupportedCardLogos else { return }
         let brandDetected = !numberItem.detectedBrands.isEmpty
-        let errorShown = numberItem.shouldShowValidationError
+        let errorShown = numberItem.validationState.shouldShowError
         supportedCardLogosItem.isHidden.wrappedValue =
             brandDetected || numberItem.isValid() || errorShown
     }
@@ -150,8 +150,5 @@ extension FormCardLogosItem {
             self.type = type
         }
         
-        internal static func == (lhs: FormCardLogosItem.CardTypeLogo, rhs: FormCardLogosItem.CardTypeLogo) -> Bool {
-            lhs.url == rhs.url && lhs.type == rhs.type
-        }
     }
 }

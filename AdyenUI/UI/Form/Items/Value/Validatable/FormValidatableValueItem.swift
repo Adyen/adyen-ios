@@ -17,15 +17,14 @@ package enum ValidationState: Equatable {
     case valid
     case invalid(String)
     
-    /// Whether error UI should be displayed.
-    var shouldShowError: Bool {
+    package var shouldShowError: Bool {
         switch self {
         case .invalid: true
         case .initial, .valid: false
         }
     }
     
-    var errorMessage: String? {
+    package var errorMessage: String? {
         switch self {
         case let .invalid(message): message
         case .initial, .valid: nil
@@ -46,12 +45,6 @@ open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueTy
     /// Single source of truth for validation state.
     /// Views observe this property to update their UI reactively.
     @AdyenUIObservable(.initial) package var validationState: ValidationState
-    
-    /// Backward-compatible computed property for checking if error should be shown.
-    public var shouldShowValidationError: Bool {
-        get { validationState.shouldShowError }
-        set { validationState = newValue ? .invalid(validationFailureMessage ?? "") : .initial }
-    }
     
     /// Tracks whether the field is currently being edited.
     /// Views update this when focus changes, allowing reactive UI updates.

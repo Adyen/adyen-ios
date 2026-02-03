@@ -7,7 +7,6 @@
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
-
 @testable @_spi(AdyenInternal) import AdyenCard
 
 /// Tests for card number validation display behavior.
@@ -53,7 +52,7 @@ class FormCardNumberValidationTests: XCTestCase {
             sut.footerLabel.isHidden,
             "No error should be shown - brand detection is NOT a validation trigger"
         )
-        XCTAssertFalse(item.shouldShowValidationError, "shouldShowValidationError should be false")
+        XCTAssertFalse(item.validationState.shouldShowError, "shouldShowValidationError should be false")
 
         // The accessory should show brand, not validation error
         if case .invalid = sut.accessory {
@@ -92,7 +91,7 @@ class FormCardNumberValidationTests: XCTestCase {
 
         // AND - no error should be shown on the number item
         XCTAssertFalse(
-            containerItem.numberItem.shouldShowValidationError,
+            containerItem.numberItem.validationState.shouldShowError,
             "No validation error should be shown - brand detection is not validation"
         )
     }
@@ -131,7 +130,7 @@ class FormCardNumberValidationTests: XCTestCase {
         // Then - wait for animation and verify error is shown
         wait(until: { !sut.footerLabel.isHidden }, timeout: 1.0)
         XCTAssertTrue(
-            numberItem.shouldShowValidationError,
+            numberItem.validationState.shouldShowError,
             "Error should be shown after focus loss with invalid input"
         )
         XCTAssertFalse(sut.footerLabel.isHidden, "Footer should show error message")
@@ -166,14 +165,14 @@ class FormCardNumberValidationTests: XCTestCase {
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
 
         // Verify error state
-        XCTAssertTrue(numberItem.shouldShowValidationError, "Precondition: error should be shown")
+        XCTAssertTrue(numberItem.validationState.shouldShowError, "Precondition: error should be shown")
 
         // When - user taps back into field
         sut.textField.delegate?.textFieldDidBeginEditing?(sut.textField)
 
         // Then - error should clear
         XCTAssertFalse(
-            numberItem.shouldShowValidationError, "Error should clear when field gains focus"
+            numberItem.validationState.shouldShowError, "Error should clear when field gains focus"
         )
         XCTAssertTrue(sut.footerLabel.isHidden, "Footer should be hidden")
     }
@@ -206,7 +205,7 @@ class FormCardNumberValidationTests: XCTestCase {
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
 
         // Then - should show valid state
-        XCTAssertFalse(item.shouldShowValidationError, "No error for valid input")
+        XCTAssertFalse(item.validationState.shouldShowError, "No error for valid input")
 
         // Card number uses customView for valid state to show detected brand
         if case .customView = sut.accessory {
@@ -248,7 +247,7 @@ class FormCardNumberValidationTests: XCTestCase {
         }
 
         // Then - no validation error while typing
-        XCTAssertFalse(item.shouldShowValidationError, "No validation error while typing")
+        XCTAssertFalse(item.validationState.shouldShowError, "No validation error while typing")
         XCTAssertTrue(sut.footerLabel.isHidden, "Footer should be hidden while typing")
 
         // Accessory should not show invalid state
