@@ -51,7 +51,10 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         rootViewController.present(paymentMethodListRouter.rootViewController, animated: true)
     }
 
-    internal func present(paymentComponent: any PresentableComponent, onCancel: @escaping (() -> Void)) {
+    internal func present(
+        paymentComponent: any PresentableComponent,
+        onCancel: @escaping (() -> Void)
+    ) {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: paymentComponent,
             delegate: self,
@@ -61,7 +64,10 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         rootViewController.present(componentContainerRouter.rootViewController, animated: true)
     }
 
-    internal func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?) {
+    internal func present(
+        actionComponent: any PresentableComponent,
+        onCancel: (() -> Void)?
+    ) {
         let actionViewController = ActionPresentationHelper.viewController(
             for: actionComponent,
             onCancel: onCancel

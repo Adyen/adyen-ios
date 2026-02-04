@@ -73,8 +73,12 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
         startLoading(for: component)
         
         switch component.type {
-        case let .presentable(presentableComponent):
-            router?.present(paymentComponent: presentableComponent) { [weak self] in
+        case let .presentable(paymentComponent):
+            router?.present(paymentComponent: paymentComponent) { [weak self] in
+                self?.stopLoading()
+            }
+        case let .stored(storedPaymentComponent):
+            router?.present(paymentComponent: storedPaymentComponent) { [weak self] in
                 self?.stopLoading()
             }
         case let .instant(initiablePaymentComponent):
