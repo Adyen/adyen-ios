@@ -31,44 +31,9 @@ public final class ThreeDS2Component: ActionComponent {
     }
     
     /// Three DS2 component configurations.
-    public var configuration: Configuration {
+    public var configuration: ThreeDS2ActionConfiguration {
         didSet {
             updateConfiguration()
-        }
-    }
-    
-    /// Three DS2 component configurations.
-    public struct Configuration {
-        
-        /// ``RedirectComponent`` style
-        public var redirectComponentStyle: RedirectComponentStyle?
-        
-        /// The appearance configuration of the 3D Secure 2 challenge UI.
-        public var appearanceConfiguration = ADYAppearanceConfiguration()
-        
-        /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
-        public var requestorAppURL: URL?
-        
-        /// The configuration for Delegated Authentication.
-        public let delegatedAuthentication: ThreeDS2ActionConfiguration.DelegatedAuthentication?
-        
-        /// Initializes a new instance
-        ///
-        /// - Parameters:
-        ///   - redirectComponentStyle: `RedirectComponent` style
-        ///   - appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
-        ///   - requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
-        ///   - delegatedAuthentication: The configuration for delegated authentication
-        public init(
-            redirectComponentStyle: RedirectComponentStyle? = nil,
-            appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
-            requestorAppURL: URL? = nil,
-            delegatedAuthentication: ThreeDS2ActionConfiguration.DelegatedAuthentication? = nil
-        ) {
-            self.redirectComponentStyle = redirectComponentStyle
-            self.appearanceConfiguration = appearanceConfiguration
-            self.requestorAppURL = requestorAppURL
-            self.delegatedAuthentication = delegatedAuthentication
         }
     }
     
@@ -78,7 +43,7 @@ public final class ThreeDS2Component: ActionComponent {
     /// - Parameter configuration: The component's configuration.
     public init(
         context: AdyenContext,
-        configuration: Configuration = Configuration()
+        configuration: ThreeDS2ActionConfiguration = .init()
     ) {
         self.context = context
         self.configuration = configuration
@@ -99,7 +64,7 @@ public final class ThreeDS2Component: ActionComponent {
         threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
         threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
         redirectComponent: AnyRedirectComponent,
-        configuration: Configuration = Configuration()
+        configuration: ThreeDS2ActionConfiguration = .init()
     ) {
         self.init(
             context: context,

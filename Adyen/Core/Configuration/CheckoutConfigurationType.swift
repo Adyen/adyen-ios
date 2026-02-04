@@ -20,11 +20,9 @@ package enum CheckoutConfigurationType: Hashable {
 }
 
 package enum ActionComponentType: Hashable {
+    // Contains only action types that require public configuration.
+    // Add more cases if their configs need to be public.
+    
     case threeDS2
     case twint
-    case redirect
-    case await
-        case qrCode
-    case voucher
-    case document
 }

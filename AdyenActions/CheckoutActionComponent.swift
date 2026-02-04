@@ -146,12 +146,12 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
     }
     
     private func createThreeDS2Component() -> ThreeDS2Component {
-        let threeDS2Configuration = ThreeDS2Component.Configuration(
-            redirectComponentStyle: configuration.style.redirectComponentStyle,
-            appearanceConfiguration: configuration.threeDS.appearanceConfiguration,
-            requestorAppURL: configuration.threeDS.requestorAppURL,
-            delegatedAuthentication: configuration.threeDS.delegatedAuthentication
-        )
+        var threeDS2Configuration = ThreeDS2ActionConfiguration()
+        threeDS2Configuration.requestorAppURL = configuration.threeDS.requestorAppURL
+        threeDS2Configuration.delegatedAuthentication = configuration.threeDS.delegatedAuthentication
+        threeDS2Configuration.appearanceConfiguration = configuration.threeDS.appearanceConfiguration
+        threeDS2Configuration.redirectComponentStyle = configuration.style.redirectComponentStyle
+        
         let component = ThreeDS2Component(
             context: context,
             configuration: threeDS2Configuration
@@ -207,12 +207,7 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
         
             let component = TwintSDKActionComponent(
                 context: context,
-                configuration: .init(
-                    style: configuration.style.awaitComponentStyle,
-                    callbackAppScheme: twintConfiguration.callbackAppScheme,
-                    maxIssuerNumber: twintConfiguration.maxIssuerNumber,
-                    localizationParameters: configuration.localizationParameters
-                )
+                configuration: twintConfiguration
             )
             component._isDropIn = _isDropIn
             component.delegate = delegate
