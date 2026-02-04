@@ -51,7 +51,6 @@ internal protocol AdyenSessionProviding {
 
 internal protocol CheckoutAttemptIdProviding {
     func fetchCheckoutAttemptId(
-        with configuration: CheckoutConfiguration,
-        apiClient: APIClientProtocol
-    ) async throws -> String
+        with configuration: CheckoutConfiguration
+    ) async throws -> String?
 }

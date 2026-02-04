@@ -21,8 +21,8 @@ public final class AdyenContext: PaymentAware {
     /// The payment information.
     public private(set) var payment: Payment?
     
-    package let analyticsProvider: AnyAnalyticsProvider?
-    
+    package var analyticsProvider: AnyAnalyticsProvider?
+
     package let amount: Amount
     
     // MARK: - Initializers
@@ -32,7 +32,7 @@ public final class AdyenContext: PaymentAware {
     ///   - apiContext: The API context used to retrieve internal resources.
     ///   - analyticsConfiguration: A configuration object that specifies the behavior for the analytics.
     ///   - payment: The payment information.
-    public convenience init(
+    package convenience init(
         apiContext: APIContext,
         payment: Payment?,
         amount: Amount,
@@ -69,14 +69,36 @@ public final class AdyenContext: PaymentAware {
     public func update(payment: Payment?) {
         self.payment = payment
     }
-    
-    private static func createAnalyticsProvider(apiContext: APIContext, analyticsConfiguration: AnalyticsConfiguration) -> AnyAnalyticsProvider? {
+
+    /// The API environment for Analytics is different than the APIClient environment that is used for other payment calls. This constructs that.
+    package static func createAnalyticsAPIClient(
+        apiContext: APIContext,
+        analyticsConfiguration: AnalyticsConfiguration
+    ) -> APIClient? {
         guard
             let analyticsEnvironment = (apiContext.environment as? Environment)?.toAnalyticsEnvironment(),
             let analyticsApiContext = try? APIContext(
                 environment: analyticsEnvironment,
                 clientKey: apiContext.clientKey
             )
+        else {
+            AdyenAssertion.assertionFailure(
+                message: "APIClient for Analytics couldn't be created. Ensure the used environment is of type `Environment`"
+            )
+            return nil
+        }
+
+        return APIClient(apiContext: analyticsApiContext)
+    }
+
+    private static func createAnalyticsProvider(
+        apiContext: APIContext,
+        analyticsConfiguration: AnalyticsConfiguration
+    ) -> AnyAnalyticsProvider? {
+        guard let apiClient = AdyenContext.createAnalyticsAPIClient(
+            apiContext: apiContext,
+            analyticsConfiguration: analyticsConfiguration
+        )
         else {
             AdyenAssertion.assertionFailure(
                 message: "AnalyticsProvider couldn't be created. Ensure the used environment is of type `Environment`"
@@ -90,14 +112,14 @@ public final class AdyenContext: PaymentAware {
             let eventDataSource = AnalyticsEventDataSource()
             let syncEventDataSource = ThreadSafeAnalyticsEventDataSource(dataSource: eventDataSource)
             eventAnalyticsProvider = EventAnalyticsProvider(
-                apiClient: APIClient(apiContext: analyticsApiContext),
+                apiClient: apiClient,
                 context: analyticsConfiguration.context,
                 eventDataSource: syncEventDataSource
             )
         }
         
         return AnalyticsProvider(
-            apiClient: APIClient(apiContext: analyticsApiContext),
+            apiClient: apiClient,
             configuration: analyticsConfiguration,
             eventAnalyticsProvider: eventAnalyticsProvider
         )

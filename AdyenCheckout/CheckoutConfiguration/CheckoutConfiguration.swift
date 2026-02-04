@@ -51,6 +51,8 @@ public struct CheckoutConfiguration {
     
     package var theme: AdyenTheme
 
+    package let analyticsConfiguration: AnalyticsConfiguration
+
     /// Creates a CheckoutConfiguration instance.
     /// - Parameters:
     ///   - environment: The environment to retrieve internal resources from.
@@ -67,7 +69,6 @@ public struct CheckoutConfiguration {
         @CheckoutConfigurationBuilder content: () -> CheckoutConfigurable
     ) throws {
         let apiContext = try APIContext(environment: environment, clientKey: clientKey)
-        
         let context = AdyenContext(
             apiContext: apiContext,
             payment: nil,
@@ -86,15 +87,17 @@ public struct CheckoutConfiguration {
         }
         let configurations = configDictionary
         
-        self.init(context: context, configurations: configurations)
+        self.init(context: context, configurations: configurations, analyticsConfiguration: analyticsConfiguration)
     }
     
     internal init(
         context: AdyenContext,
         configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:],
+        analyticsConfiguration: AnalyticsConfiguration,
         theme: AdyenTheme = .default
     ) {
         self.context = context
+        self.analyticsConfiguration = analyticsConfiguration
         self.configurations = configurations
         self.theme = theme
     }

@@ -43,10 +43,9 @@ internal class CheckoutProviderMock: CheckoutProviding {
     }
     
     func fetchCheckoutAttemptId(
-        with configuration: CheckoutConfiguration,
-        apiClient: APIClientProtocol
-    ) async throws -> String {
-        
+        with configuration: CheckoutConfiguration
+    ) async throws -> String? {
+
         switch mockedCheckoutAttemptId {
         case let .success(attemptId):
             return attemptId

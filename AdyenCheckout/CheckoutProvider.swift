@@ -35,8 +35,7 @@ internal class CheckoutProvider: CheckoutProviding {
         
         // fetch and store checkout attempt id
         async let checkoutAttemptId = fetchCheckoutAttemptId(
-            with: configuration,
-            apiClient: apiClient
+            with: configuration
         )
         
         return try await Checkout(
@@ -59,12 +58,9 @@ internal class CheckoutProvider: CheckoutProviding {
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
-        let apiClient = APIClient(apiContext: configuration.context.apiContext)
-        
-        // fetch and store checkout attempt id
-        let checkoutAttemptId = try await fetchCheckoutAttemptId(
-            with: configuration,
-            apiClient: apiClient
+
+        let checkoutAttemptId = try? await fetchCheckoutAttemptId(
+            with: configuration
         )
         
         return Checkout(
@@ -83,12 +79,9 @@ internal class CheckoutProvider: CheckoutProviding {
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
-        let apiClient = APIClient(apiContext: configuration.context.apiContext)
-        
-        // fetch and store checkout attempt id
-        let checkoutAttemptId = try await fetchCheckoutAttemptId(
-            with: configuration,
-            apiClient: apiClient
+
+        let checkoutAttemptId = try? await fetchCheckoutAttemptId(
+            with: configuration
         )
         
         return Checkout(
@@ -111,11 +104,30 @@ internal class CheckoutProvider: CheckoutProviding {
             context: configuration.context
         )
     }
-    
+
     internal func fetchCheckoutAttemptId(
-        with configuration: CheckoutConfiguration,
-        apiClient: APIClientProtocol
-    ) async throws -> String {
-        ""
+        with configuration: CheckoutConfiguration
+    ) async throws -> String? {
+
+        guard let apiClient = AdyenContext.createAnalyticsAPIClient(
+            apiContext: configuration.context.apiContext,
+            analyticsConfiguration: configuration.analyticsConfiguration
+        ) else {
+            return nil
+        }
+
+        let request = RequestCheckoutAttemptIdRequest()
+
+        let response = try await withCheckedThrowingContinuation { continuation in
+            apiClient.perform(request) { result in
+                continuation.resume(with: result)
+            }
+        }
+
+        // TODO: Robert: This will need to be removed once we determine how we are going to create the AnalyticsProvider. For now we just need to inform the AnalyticProvider.
+        configuration.context.analyticsProvider?.checkoutAttemptId = response.checkoutAttemptId
+
+        return response.checkoutAttemptId
     }
+
 }

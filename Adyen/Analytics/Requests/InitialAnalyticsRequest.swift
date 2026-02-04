@@ -7,22 +7,12 @@
 import AdyenNetworking
 import Foundation
 
-internal struct InitialAnalyticsResponse: Response {
-
-    // MARK: - Properties
-
-    internal let checkoutAttemptId: String
-
-    internal enum CodingKeys: String, CodingKey {
-        case checkoutAttemptId
-    }
-}
-
+// TODO: Robert: Rename this to something that updates the analytics with some Analytics Data. Think enrichment.
 internal struct InitialAnalyticsRequest: APIRequest {
 
-    internal typealias ResponseType = InitialAnalyticsResponse
+    internal typealias ResponseType = RequestCheckoutAttemptIdResponse
 
-    internal let path: String = "checkoutanalytics/v3/analytics"
+    internal let path: String = AnalyticsConstants.analyticsRequestPath
 
     internal var counter: UInt = 0
 
@@ -50,6 +40,7 @@ internal struct InitialAnalyticsRequest: APIRequest {
     internal let level: String
     internal let amount: Amount?
     internal let sessionId: String?
+    internal let checkoutAttemptId: String?
 
     // MARK: - Initializers
 
@@ -71,6 +62,7 @@ internal struct InitialAnalyticsRequest: APIRequest {
         self.level = data.level.rawValue
         self.amount = data.amount
         self.sessionId = data.sessionId
+        self.checkoutAttemptId = data.checkoutAttemptId
     }
 
     internal enum CodingKeys: CodingKey {
@@ -91,5 +83,6 @@ internal struct InitialAnalyticsRequest: APIRequest {
         case level
         case amount
         case sessionId
+        case checkoutAttemptId
     }
 }

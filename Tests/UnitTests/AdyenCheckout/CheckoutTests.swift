@@ -32,7 +32,7 @@ final class CheckoutTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockProvider = CheckoutProviderMock()
-        configuration = CheckoutConfiguration(context: Dummy.context)
+        configuration = CheckoutConfiguration(context: Dummy.context, analyticsConfiguration: AnalyticsConfiguration())
         paymentMethods = try! AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
     }
 
@@ -170,8 +170,7 @@ final class CheckoutTests: XCTestCase {
         
         do {
             let result = try await mockProvider.fetchCheckoutAttemptId(
-                with: configuration,
-                apiClient: apiClient
+                with: configuration
             )
             
             XCTAssertEqual(result, expectedId)

@@ -19,7 +19,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
     override func setUp() {
         super.setUp()
         context = Dummy.context
-        checkoutConfiguration = CheckoutConfiguration(context: context)
+        checkoutConfiguration = CheckoutConfiguration(context: context, analyticsConfiguration: AnalyticsConfiguration())
     }
     
     override func tearDown() {
@@ -57,7 +57,8 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         
         checkoutConfiguration = CheckoutConfiguration(
             context: context,
-            configurations: [.payment(.blik): blikConfig]
+            configurations: [.payment(.blik): blikConfig],
+            analyticsConfiguration: AnalyticsConfiguration()
         )
         
         // When
@@ -82,8 +83,8 @@ final class CheckoutComponentBuilderTests: XCTestCase {
     func testBuild_WithBLIKAndNoConfiguration_UsesDefaultConfiguration() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
-        checkoutConfiguration = CheckoutConfiguration(context: context)
-        
+        checkoutConfiguration = CheckoutConfiguration(context: context, analyticsConfiguration: AnalyticsConfiguration())
+
         // When
         let component = CheckoutComponentBuilder.build(
             for: paymentMethod,
@@ -105,7 +106,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             payment: Payment(amount: customAmount, countryCode: "US"),
             amount: customAmount
         )
-        checkoutConfiguration = CheckoutConfiguration(context: customContext)
+        checkoutConfiguration = CheckoutConfiguration(context: customContext, analyticsConfiguration: AnalyticsConfiguration())
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         
         // When
@@ -158,7 +159,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             payment: Payment(amount: Amount(value: 500, currencyCode: "USD"), countryCode: "US"),
             amount: Amount(value: 500, currencyCode: "USD")
         )
-        checkoutConfiguration = CheckoutConfiguration(context: customContext)
+        checkoutConfiguration = CheckoutConfiguration(context: customContext, analyticsConfiguration: AnalyticsConfiguration())
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         
         // When
@@ -183,7 +184,8 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         
         checkoutConfiguration = CheckoutConfiguration(
             context: context,
-            configurations: [.payment(.blik): blikConfig]
+            configurations: [.payment(.blik): blikConfig],
+            analyticsConfiguration: AnalyticsConfiguration()
         )
         checkoutConfiguration.showsSubmitButton = false // Global override
         
@@ -210,7 +212,8 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         
         checkoutConfiguration = CheckoutConfiguration(
             context: context,
-            configurations: [.payment(.blik): customConfig]
+            configurations: [.payment(.blik): customConfig],
+            analyticsConfiguration: AnalyticsConfiguration()
         )
         
         // When
@@ -226,8 +229,8 @@ final class CheckoutComponentBuilderTests: XCTestCase {
     func testBuild_UsesDefaultConfigurationWhenNotStored() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
-        checkoutConfiguration = CheckoutConfiguration(context: context) // No stored config
-        
+        checkoutConfiguration = CheckoutConfiguration(context: context, analyticsConfiguration: AnalyticsConfiguration()) // No stored config
+
         // When
         let component = CheckoutComponentBuilder.build(
             for: paymentMethod,
@@ -266,7 +269,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let customTheme = AdyenTheme()
             .colors(AdyenColors(primary: .yellow))
 
-        checkoutConfiguration = CheckoutConfiguration(context: context)
+        checkoutConfiguration = CheckoutConfiguration(context: context, analyticsConfiguration: AnalyticsConfiguration())
         checkoutConfiguration.theme = customTheme
 
         // When
@@ -293,7 +296,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let customTheme = AdyenTheme()
             .colors(AdyenColors(primary: .yellow))
 
-        checkoutConfiguration = CheckoutConfiguration(context: context)
+        checkoutConfiguration = CheckoutConfiguration(context: context, analyticsConfiguration: AnalyticsConfiguration())
         checkoutConfiguration.theme = customTheme
 
         // When
@@ -339,7 +342,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             payment: Payment(amount: customAmount, countryCode: "NL"),
             amount: customAmount
         )
-        checkoutConfiguration = CheckoutConfiguration(context: customContext)
+        checkoutConfiguration = CheckoutConfiguration(context: customContext, analyticsConfiguration: AnalyticsConfiguration())
         let storedPaymentMethod = try XCTUnwrap(createStoredCardPaymentMethod())
         
         // When

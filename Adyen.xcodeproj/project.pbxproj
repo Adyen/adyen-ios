@@ -864,6 +864,7 @@
 		C9F468E227465FCF00500FF5 /* BACSDirectDebitData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F468E127465FCF00500FF5 /* BACSDirectDebitData.swift */; };
 		C9F9905D2DC2566C00D2BFB0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C9F9905C2DC2566C00D2BFB0 /* README.md */; };
 		C9F990612DC261C500D2BFB0 /* plist-file-demo.png in Resources */ = {isa = PBXBuildFile; fileRef = C9F990602DC261C500D2BFB0 /* plist-file-demo.png */; };
+		E1A2B3C427BEA68D002F5728 /* RequestCheckoutAttemptIdRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A2B3C327BEA68D002F5728 /* RequestCheckoutAttemptIdRequest.swift */; };
 		E2028F5C2227F1930007FF8B /* Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5B2227F1930007FF8B /* Details.swift */; };
 		E2028F5E222805E20007FF8B /* CardDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2028F5D222805E20007FF8B /* CardDetails.swift */; };
 		E216D3C3221AEDBE0013CBCF /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E216D3C2221AEDBE0013CBCF /* Formatter.swift */; };
@@ -2445,6 +2446,7 @@
 		C9F9905C2DC2566C00D2BFB0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C9F990602DC261C500D2BFB0 /* plist-file-demo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plist-file-demo.png"; sourceTree = "<group>"; };
 		C9FC2C3D2D50D0B700C9D0F3 /* AdyenCardScanner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenCardScanner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1A2B3C327BEA68D002F5728 /* RequestCheckoutAttemptIdRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestCheckoutAttemptIdRequest.swift; sourceTree = "<group>"; };
 		E2028F5B2227F1930007FF8B /* Details.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Details.swift; sourceTree = "<group>"; };
 		E2028F5D222805E20007FF8B /* CardDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetails.swift; sourceTree = "<group>"; };
 		E216D3BB221AAB240013CBCF /* FormItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormItem.swift; sourceTree = "<group>"; };
@@ -4781,6 +4783,7 @@
 		C9CA0B68282E7E4A00C4E9C2 /* Requests */ = {
 			isa = PBXGroup;
 			children = (
+				E1A2B3C327BEA68D002F5728 /* RequestCheckoutAttemptIdRequest.swift */,
 				C9BAE20E27BEA68D002F5728 /* InitialAnalyticsRequest.swift */,
 				A0DB48652AFD020400348C83 /* AnalyticsRequest.swift */,
 			);
@@ -8625,6 +8628,7 @@
 				A04EA85E2B69509500723F39 /* AnalyticsEnvironment.swift in Sources */,
 				C9B6683527C7CB7A006950B9 /* AnalyticsFlavor.swift in Sources */,
 				C9BAE20F27BEA68D002F5728 /* InitialAnalyticsRequest.swift in Sources */,
+				E1A2B3C427BEA68D002F5728 /* RequestCheckoutAttemptIdRequest.swift in Sources */,
 				F926D52023F4217A00D058D3 /* DeviceDependent.swift in Sources */,
 				A069FDFA2DDDDAEF00A214B8 /* CheckoutResultCode.swift in Sources */,
 				F9D5753123828EBB009C18B5 /* AnyCardPaymentMethod.swift in Sources */,

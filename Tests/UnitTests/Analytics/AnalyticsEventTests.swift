@@ -16,7 +16,7 @@ class AnalyticsEventTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         apiClient = APIClientMock()
-        let checkoutAttemptIdResponse = InitialAnalyticsResponse(checkoutAttemptId: "checkoutAttempId1")
+        let checkoutAttemptIdResponse = RequestCheckoutAttemptIdResponse(checkoutAttemptId: "checkoutAttempId1")
         let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
         apiClient.mockedResults = [checkoutAttemptIdResult]
         sut = AnalyticsProvider(
@@ -83,7 +83,7 @@ class AnalyticsEventTests: XCTestCase {
 
     // MARK: - Private
 
-    private var checkoutAttemptIdResponse: InitialAnalyticsResponse {
+    private var checkoutAttemptIdResponse: RequestCheckoutAttemptIdResponse {
         .init(checkoutAttemptId: "cb3eef98-978e-4f6f-b299-937a4450be1f1648546838056be73d8f38ee8bcc3a65ec14e41b037a59f255dcd9e83afe8c06bd3e7abcad993")
     }
 }

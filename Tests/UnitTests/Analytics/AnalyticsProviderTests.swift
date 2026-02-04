@@ -28,7 +28,7 @@ class AnalyticsProviderTests: XCTestCase {
         let apiClient = APIClientMock()
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
-        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: expectedCheckoutAttemptId)
+        let initialAnalyticsResponse = RequestCheckoutAttemptIdResponse(checkoutAttemptId: expectedCheckoutAttemptId)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
@@ -44,7 +44,7 @@ class AnalyticsProviderTests: XCTestCase {
         let apiClient = APIClientMock()
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
-        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: expectedCheckoutAttemptId)
+        let initialAnalyticsResponse = RequestCheckoutAttemptIdResponse(checkoutAttemptId: expectedCheckoutAttemptId)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
@@ -76,7 +76,7 @@ class AnalyticsProviderTests: XCTestCase {
         let apiClient = APIClientMock()
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
-        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: expectedCheckoutAttemptId)
+        let initialAnalyticsResponse = RequestCheckoutAttemptIdResponse(checkoutAttemptId: expectedCheckoutAttemptId)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         apiClient.mockedResults = [checkoutAttemptIdResult]
 
@@ -96,7 +96,7 @@ class AnalyticsProviderTests: XCTestCase {
         let analyticsExpectation = expectation(description: "Initial request is triggered")
         
         let apiClient = APIClientMock()
-        apiClient.mockedResults = [.success(InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptId))]
+        apiClient.mockedResults = [.success(RequestCheckoutAttemptIdResponse(checkoutAttemptId: checkoutAttemptId))]
         apiClient.onExecute = { request in
             if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
                 XCTAssertNil(initialAnalyticsdRequest.amount)
@@ -149,7 +149,7 @@ class AnalyticsProviderTests: XCTestCase {
     func eventsShouldNotBeSentWhenDisabled() throws {
         let apiClient = APIClientMock()
 
-        let initialAnalyticsResponse = InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
+        let initialAnalyticsResponse = RequestCheckoutAttemptIdResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
         let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
         
         let analyticsResponse = EmptyResponse()
@@ -189,7 +189,7 @@ class AnalyticsProviderTests: XCTestCase {
         let analyticsExpectation = expectation(description: "Initial request is triggered")
         
         let apiClient = APIClientMock()
-        apiClient.mockedResults = [.success(InitialAnalyticsResponse(checkoutAttemptId: checkoutAttemptId))]
+        apiClient.mockedResults = [.success(RequestCheckoutAttemptIdResponse(checkoutAttemptId: checkoutAttemptId))]
         apiClient.onExecute = { request in
             if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
                 XCTAssertEqual(initialAnalyticsdRequest.amount, amount)
@@ -222,7 +222,8 @@ class AnalyticsProviderTests: XCTestCase {
         let analyticsData = AnalyticsData(
             flavor: .components(type: .achDirectDebit),
             additionalFields: AdditionalAnalyticsFields(amount: .init(value: 1, currencyCode: "EUR"), sessionId: "test_session_id"),
-            configuration: configuration
+            configuration: configuration,
+            checkoutAttemptId: nil
         )
         
         let request = InitialAnalyticsRequest(data: analyticsData)
