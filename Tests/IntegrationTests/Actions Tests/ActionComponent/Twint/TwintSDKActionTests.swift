@@ -21,7 +21,7 @@ import XCTest
             try super.tearDownWithError()
         }
 
-        func testNoAppFound() throws {
+        func testNoAppFound() {
 
             let fetchBlockExpectation = expectation(description: "Fetch was called")
             let noAppFoundAlertExpectation = expectation(description: "No app found alert was shown")
@@ -79,7 +79,7 @@ import XCTest
             )
         }
 
-        func testSingleAppFound() throws {
+        func testSingleAppFound() {
 
             let expectedMaxIssuerNumber = 5
             let fetchBlockExpectation = expectation(description: "Fetch was called")
@@ -94,7 +94,7 @@ import XCTest
                 XCTAssertEqual(code, TwintSDKAction.dummy.sdkData.token)
                 XCTAssertEqual(appConfiguration.appDisplayName, TWAppConfiguration.dummy.appDisplayName)
                 XCTAssertEqual(appConfiguration.appURLScheme, TWAppConfiguration.dummy.appURLScheme)
-                XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.callbackAppScheme)
+                XCTAssertEqual(callbackAppScheme, TwintActionConfiguration.dummy.callbackAppScheme)
                 completionHandler(nil)
             } handleRegisterForUOF: { _, _, _, completionHandler in
                 XCTFail("RegisterForUOF should not have been called.")
@@ -149,7 +149,7 @@ import XCTest
                 XCTAssertEqual(code, TwintSDKAction.dummy.sdkData.token)
                 XCTAssertEqual(appConfiguration.appDisplayName, TWAppConfiguration.dummy.appDisplayName)
                 XCTAssertEqual(appConfiguration.appURLScheme, TWAppConfiguration.dummy.appURLScheme)
-                XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.callbackAppScheme)
+                XCTAssertEqual(callbackAppScheme, TwintActionConfiguration.dummy.callbackAppScheme)
                 completionHandler(nil)
             } handleRegisterForUOF: { _, _, _, completionHandler in
                 XCTFail("RegisterForUOF should not have been called.")
@@ -216,7 +216,7 @@ import XCTest
             wait(for: [cancelExpectation], timeout: 1)
         }
 
-        func testPayError() throws {
+        func testPayError() {
 
             let fetchBlockExpectation = expectation(description: "Fetch was called")
             let payBlockExpectation = expectation(description: "Pay was called")
@@ -279,7 +279,7 @@ import XCTest
             )
         }
 
-        func testHandleWhenIsStoredEnabledAndSingleAppFoundShouldCallTwintRegisterForUOF() throws {
+        func testHandleWhenIsStoredEnabledAndSingleAppFoundShouldCallTwintRegisterForUOF() {
             // Given
             let fetchBlockExpectation = expectation(description: "Fetch was called")
             let registerForUFO = expectation(description: "registerForUFO was called")
@@ -296,7 +296,7 @@ import XCTest
                 XCTAssertEqual(code, TwintSDKAction.dummy.sdkData.token)
                 XCTAssertEqual(appConfiguration.appDisplayName, TWAppConfiguration.dummy.appDisplayName)
                 XCTAssertEqual(appConfiguration.appURLScheme, TWAppConfiguration.dummy.appURLScheme)
-                XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.callbackAppScheme)
+                XCTAssertEqual(callbackAppScheme, TwintActionConfiguration.dummy.callbackAppScheme)
                 completionHandler(nil)
             } handleController: { installedAppConfigurations, selectionHandler, cancelHandler in
                 XCTFail("Twint controller should not have been shown")
@@ -354,7 +354,7 @@ import XCTest
                 XCTAssertEqual(code, TwintSDKAction.dummy.sdkData.token)
                 XCTAssertEqual(appConfiguration.appDisplayName, TWAppConfiguration.dummy.appDisplayName)
                 XCTAssertEqual(appConfiguration.appURLScheme, TWAppConfiguration.dummy.appURLScheme)
-                XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.callbackAppScheme)
+                XCTAssertEqual(callbackAppScheme, TwintActionConfiguration.dummy.callbackAppScheme)
                 completionHandler(nil)
             } handleController: { installedAppConfigurations, selectionHandler, cancelHandler in
                 XCTAssertEqual(installedAppConfigurations, expectedAppConfigurations)

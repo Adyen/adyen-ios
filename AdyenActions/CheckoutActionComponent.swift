@@ -146,15 +146,9 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
     }
     
     private func createThreeDS2Component() -> ThreeDS2Component {
-        var threeDS2Configuration = ThreeDS2ActionConfiguration()
-        threeDS2Configuration.requestorAppURL = configuration.threeDS.requestorAppURL
-        threeDS2Configuration.delegatedAuthentication = configuration.threeDS.delegatedAuthentication
-        threeDS2Configuration.appearanceConfiguration = configuration.threeDS.appearanceConfiguration
-        threeDS2Configuration.redirectComponentStyle = configuration.style.redirectComponentStyle
-        
         let component = ThreeDS2Component(
             context: context,
-            configuration: threeDS2Configuration
+            configuration: configuration.threeDS
         )
         component._isDropIn = _isDropIn
         component.delegate = delegate

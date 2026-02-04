@@ -574,6 +574,7 @@
 		A0CB49662F2A05BD00372021 /* DummyActionComponentExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CB49642F2A05B100372021 /* DummyActionComponentExample.swift */; };
 		A0CB497D2F336B7600372021 /* ThreeDS2ActionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CB497C2F336B6E00372021 /* ThreeDS2ActionConfiguration.swift */; };
 		A0CB497F2F33729D00372021 /* TwintActionConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CB497E2F33729400372021 /* TwintActionConfiguration.swift */; };
+		A0CB49812F33969400372021 /* ActionConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CB49802F33969400372021 /* ActionConfigurationTests.swift */; };
 		A0D48FB827109B0200C0B82C /* ArrayHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */; };
 		A0DB48662AFD020400348C83 /* AnalyticsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB48652AFD020400348C83 /* AnalyticsRequest.swift */; };
 		A0DB48682AFD068400348C83 /* AdyenAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DB48672AFD068400348C83 /* AdyenAnalytics.swift */; };
@@ -2243,6 +2244,7 @@
 		A0CB49642F2A05B100372021 /* DummyActionComponentExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyActionComponentExample.swift; sourceTree = "<group>"; };
 		A0CB497C2F336B6E00372021 /* ThreeDS2ActionConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ActionConfiguration.swift; sourceTree = "<group>"; };
 		A0CB497E2F33729400372021 /* TwintActionConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwintActionConfiguration.swift; sourceTree = "<group>"; };
+		A0CB49802F33969400372021 /* ActionConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionConfigurationTests.swift; sourceTree = "<group>"; };
 		A0D48FB727109B0200C0B82C /* ArrayHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayHelpers.swift; sourceTree = "<group>"; };
 		A0D87A252D9420AF00763AD6 /* CheckoutConfiguration+Callbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CheckoutConfiguration+Callbacks.swift"; sourceTree = "<group>"; };
 		A0DB48652AFD020400348C83 /* AnalyticsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsRequest.swift; sourceTree = "<group>"; };
@@ -5678,6 +5680,7 @@
 			isa = PBXGroup;
 			children = (
 				F919DFA124ED599D0027976E /* CheckoutActionComponentTests.swift */,
+				A0CB49802F33969400372021 /* ActionConfigurationTests.swift */,
 				F9AC61C1243751A70062A00D /* ActionComponentDelegateMock.swift */,
 				81DA70862BDA6075006CE5D5 /* Twint */,
 			);
@@ -8901,6 +8904,7 @@
 				A020EC5A29ED33F90050B2FE /* CashAppPayComponentTests.swift in Sources */,
 				8128977E2CCA6FE900275487 /* SupportedPaymentMethodLogosViewTests.swift in Sources */,
 				F967581527D25B1600A16FB6 /* SelfRetainingAPIClientTests.swift in Sources */,
+				A0CB49812F33969400372021 /* ActionConfigurationTests.swift in Sources */,
 				81088A252BDBC2DD007FCDB9 /* CancellableMock.swift in Sources */,
 				81DA70892BDA6075006CE5D5 /* TwintSDKActionTests+Convenience.swift in Sources */,
 				F9EDB7A02397BD8500CFB3C9 /* DummyPaymentMethods.swift in Sources */,
