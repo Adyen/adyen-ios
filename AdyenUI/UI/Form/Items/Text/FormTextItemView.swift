@@ -311,7 +311,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
 
     // MARK: - Validation State Changes
 
-    override open func onValidationStateChanged(state: ValidationState) {
+    override package func onValidationStateChanged(state: ValidationState) {
         super.onValidationStateChanged(state: state)
         updateAccessory(state: state)
         updateBorderColor(state: state)

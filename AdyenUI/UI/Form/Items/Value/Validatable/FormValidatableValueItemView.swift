@@ -43,7 +43,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         }
     }
 
-    open func onValidationStateChanged(state: ValidationState) {
+    package func onValidationStateChanged(state: ValidationState) {
         updateFooterDisplay(state: state, animated: true)
         updateAccessibility(state: state)
     }
