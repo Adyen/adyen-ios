@@ -16,7 +16,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     public required init(item: ItemType, theme: AdyenTheme) {
         super.init(item: item, theme: theme)
         setupValidationObserver()
-        updateFooterDisplay(animated: false)
+        updateFooterDisplay(state: item.validationState, animated: false)
     }
 
     // MARK: - Views
@@ -38,22 +38,22 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     // MARK: - Validation
 
     private func setupValidationObserver() {
-        observe(item.$validationState) { [weak self] _ in
-            self?.onValidationStateChanged()
+        observe(item.$validationState) { [weak self] state in
+            self?.onValidationStateChanged(state: state)
         }
     }
 
-    open func onValidationStateChanged() {
-        updateFooterDisplay(animated: true)
-        updateAccessibility()
+    open func onValidationStateChanged(state: ValidationState) {
+        updateFooterDisplay(state: state, animated: true)
+        updateAccessibility(state: state)
     }
 
-    private func updateFooterDisplay(animated: Bool) {
+    private func updateFooterDisplay(state: ValidationState, animated: Bool) {
         let newText: String?
         let newColor: UIColor
         let shouldBeVisible: Bool
         
-        if let errorMessage = item.validationState.errorMessage, !errorMessage.isEmpty {
+        if let errorMessage = state.errorMessage, !errorMessage.isEmpty {
             newText = errorMessage
             newColor = theme.colors.destructive
             shouldBeVisible = true
@@ -87,8 +87,8 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         item.resetValidation()
     }
 
-    private func updateAccessibility() {
-        if let errorMessage = item.validationState.errorMessage {
+    private func updateAccessibility(state: ValidationState) {
+        if let errorMessage = state.errorMessage {
             accessibilityLabelView?.accessibilityLabel = [
                 item.title,
                 errorMessage

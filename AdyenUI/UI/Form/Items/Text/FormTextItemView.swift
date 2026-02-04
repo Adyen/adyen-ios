@@ -311,14 +311,18 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
 
     // MARK: - Validation State Changes
 
-    override open func onValidationStateChanged() {
-        super.onValidationStateChanged()
-        updateAccessory()
-        updateBorderColor()
+    override open func onValidationStateChanged(state: ValidationState) {
+        super.onValidationStateChanged(state: state)
+        updateAccessory(state: state)
+        updateBorderColor(state: state)
     }
 
     private func updateAccessory() {
-        if item.validationState.shouldShowError {
+        updateAccessory(state: item.validationState)
+    }
+
+    private func updateAccessory(state: ValidationState) {
+        if state.shouldShowError {
             accessory = .invalid
             return
         }
@@ -335,11 +339,15 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// Updates the border color based on both editing state and validation state.
     /// Priority: editing (active color) > validation error (error color) > default (normal color)
     private func updateBorderColor() {
+        updateBorderColor(state: item.validationState)
+    }
+
+    private func updateBorderColor(state: ValidationState) {
         let style = theme.elements.textField
         let borderColor: UIColor
         if isEditing {
             borderColor = style.borderActiveColor
-        } else if item.validationState.shouldShowError {
+        } else if state.shouldShowError {
             borderColor = style.errorColor
         } else {
             borderColor = style.borderColor
