@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -45,21 +45,8 @@ public struct AdyenFonts {
         self.footnoteEmphasized = footnoteEmphasized
     }
     
-    // A static default AdyenFonts.
+    /// A static default AdyenFonts.
     public static var `default`: AdyenFonts = .init()
 }
 
-extension AdyenFonts: Equatable {
-    // MARK: - Equatable Conformance
-    
-    public static func == (lhs: AdyenFonts, rhs: AdyenFonts) -> Bool {
-        lhs.title == rhs.title &&
-            lhs.subtitle == rhs.subtitle &&
-            lhs.body == rhs.body &&
-            lhs.bodyEmphasized == rhs.bodyEmphasized &&
-            lhs.subHeadline == rhs.subHeadline &&
-            lhs.subHeadlineEmphasized == rhs.subHeadlineEmphasized &&
-            lhs.footnote == rhs.footnote &&
-            lhs.footnoteEmphasized == rhs.footnoteEmphasized
-    }
-}
+extension AdyenFonts: Equatable {}

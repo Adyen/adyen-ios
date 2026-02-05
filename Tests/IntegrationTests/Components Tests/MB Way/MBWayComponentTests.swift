@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -45,10 +45,10 @@ class MBWayComponentTests: XCTestCase {
 
         XCTAssertNotNil(sut.button.title)
         XCTAssertEqual(sut.button.title, localizedString(.continueTo, sut.configuration.localizationParameters, paymentMethod.name))
-        XCTAssertTrue(sut.button.title!.contains(paymentMethod.name))
+        XCTAssertTrue(try XCTUnwrap(sut.button.title?.contains(paymentMethod.name)))
     }
 
-    func testLocalizationWithCustomKeySeparator() throws {
+    func testLocalizationWithCustomKeySeparator() {
         let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
         let sut = MBWayComponent(
             paymentMethod: paymentMethod,
@@ -117,7 +117,7 @@ class MBWayComponentTests: XCTestCase {
         XCTAssertTrue(phoneNumber.isEmpty)
     }
 
-    func testViewDidLoadShouldSendInitialCall() throws {
+    func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)

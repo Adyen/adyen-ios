@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -21,7 +21,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
 
     // MARK: - Views
 
-    // Shows placeholder hint when valid, validation error when invalid.
+    /// Shows placeholder hint when valid, validation error when invalid.
     internal lazy var footerLabel: UILabel = {
         let footerLabel = UILabel()
         footerLabel.apply(theme.elements.labels.subheadline)
@@ -76,7 +76,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         item.isValid()
     }
 
-    // Called by form to trigger explicit validation (e.g., Pay button).
+    /// Called by form to trigger explicit validation (e.g., Pay button).
     public func showValidation() {
         item.triggerValidation(.explicit)
         triggerValidationErrorCallbackIfNeeded()

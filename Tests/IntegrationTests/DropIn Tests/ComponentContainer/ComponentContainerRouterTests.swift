@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -33,7 +33,7 @@ struct ComponentContainerRouterTests {
     }
 
     @Test
-    func presentActionComponent_shouldPresentModallyViewController() async throws {
+    func presentActionComponent_shouldPresentModallyViewController() async {
         // Given
         let (sut, viewControllerSpy, _) = await makeSUT()
         let actionComponent = await makeActionComponent()
@@ -69,7 +69,7 @@ struct ComponentContainerRouterTests {
     }
 
     @Test
-    func dismiss_shouldCall_listener_didDismissComponentContainer() async throws {
+    func dismiss_shouldCall_listener_didDismissComponentContainer() async {
         // Given
         let (sut, viewControllerSpy, listenerMock) = await makeSUT()
 

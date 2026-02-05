@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,7 +10,7 @@ import XCTest
 
 class AnalyticsProviderTests: XCTestCase {
     
-    func testAnalyticsProviderIsInitializedWithCorrectDefaultConfigurationValues() throws {
+    func testAnalyticsProviderIsInitializedWithCorrectDefaultConfigurationValues() {
         // Given
         let sut = AnalyticsProvider(
             apiClient: APIClientMock(),
@@ -23,7 +23,7 @@ class AnalyticsProviderTests: XCTestCase {
         XCTAssertNil(sut.eventAnalyticsProvider)
     }
 
-    func testFetchCheckoutAttemptIdShouldTriggerRequest() throws {
+    func testFetchCheckoutAttemptIdShouldTriggerRequest() {
         // Given
         let apiClient = APIClientMock()
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
@@ -39,7 +39,7 @@ class AnalyticsProviderTests: XCTestCase {
         wait(until: sut, at: \.checkoutAttemptId, is: expectedCheckoutAttemptId)
     }
 
-    func testFetchCheckoutAttemptIdWhenRequestSucceedShouldCallCompletionWithNonNilValue() throws {
+    func testFetchCheckoutAttemptIdWhenRequestSucceedShouldCallCompletionWithNonNilValue() {
         // Given
         let apiClient = APIClientMock()
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
@@ -56,7 +56,7 @@ class AnalyticsProviderTests: XCTestCase {
         wait(until: sut, at: \.checkoutAttemptId, is: expectedCheckoutAttemptId)
     }
 
-    func testFetchCheckoutAttemptIdGivenFailureShouldCallCompletionWithNilValue() throws {
+    func testFetchCheckoutAttemptIdGivenFailureShouldCallCompletionWithNilValue() {
         // Given
         let apiClient = APIClientMock()
 
@@ -71,7 +71,7 @@ class AnalyticsProviderTests: XCTestCase {
         XCTAssertNil(sut.checkoutAttemptId, "The checkoutAttemptId is not nil.")
     }
 
-    func testFetchCheckoutAttemptIdShouldSetCheckoutAttemptIdProperty() throws {
+    func testFetchCheckoutAttemptIdShouldSetCheckoutAttemptIdProperty() {
         // Given
         let apiClient = APIClientMock()
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
@@ -88,7 +88,7 @@ class AnalyticsProviderTests: XCTestCase {
         wait(until: sut, at: \.checkoutAttemptId, is: expectedCheckoutAttemptId)
     }
     
-    func testInitialRequest() throws {
+    func testInitialRequest() {
         // Given
         
         let checkoutAttemptId = checkoutAttemptIdMockValue
@@ -179,7 +179,7 @@ class AnalyticsProviderTests: XCTestCase {
         wait(for: [networkRequestExpectation], timeout: 1)
     }
     
-    func testAdditionalFields() throws {
+    func testAdditionalFields() {
      
         // Given
         
@@ -264,12 +264,10 @@ class AnalyticsProviderTests: XCTestCase {
     }
     
     private func createSUT(apiClient: APIClientMock) -> AnalyticsProvider {
-        let sut = AnalyticsProvider(
+        AnalyticsProvider(
             apiClient: apiClient,
             configuration: AnalyticsConfiguration(),
             eventAnalyticsProvider: nil
         )
-        
-        return sut
     }
 }

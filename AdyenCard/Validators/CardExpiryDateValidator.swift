@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -34,7 +34,9 @@ public final class CardExpiryDateValidator: Validator {
         validate(string).isValid
     }
     
-    private var calendar: Calendar { Calendar(identifier: .gregorian) }
+    private var calendar: Calendar {
+        Calendar(identifier: .gregorian)
+    }
     
     private func calculateExpiryDate(fromYear year: Int, month: Int) -> Date? {
         var expiryDateComponents = DateComponents()

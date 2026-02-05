@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -63,7 +63,7 @@ class VoucherViewTests: XCTestCase {
         XCTAssertNil(mainButton)
         XCTAssertNotNil(addToAppleWalletButton)
         
-        addToAppleWalletButton!.sendActions(for: .touchUpInside)
+        addToAppleWalletButton?.sendActions(for: .touchUpInside)
         
         waitForExpectations(timeout: 5, handler: nil)
     }

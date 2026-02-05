@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -82,7 +82,7 @@ internal final class FormCoBadgedCardItem: FormItem {
 
             let isSelected = brand.type.rawValue == defaultSelectedBrand.type.rawValue ? true : false
 
-            /// Title should be 'localeBrand' and if it is nil then use 'brand' property from binLookup
+            // Title should be 'localeBrand' and if it is nil then use 'brand' property from binLookup
             let selectableItem = SelectableFormItem(
                 title: brand.localeBrand ?? brand.type.rawValue,
                 imageUrl: brandLogoURL,

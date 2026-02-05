@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,7 +13,7 @@ import XCTest
 // TODO: DropInComponent tests need be rewritten pretty much from scratch.
 // TODO: All the logic being tested here will be splitted among the different drop-in modules.
 class DropInTests: XCTestCase {
-//
+    ///
     static let paymentMethods =
         """
         {

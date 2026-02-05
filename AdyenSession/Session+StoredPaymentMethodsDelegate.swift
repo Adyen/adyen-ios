@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,7 +11,9 @@ import UIKit
 @_spi(AdyenInternal)
 extension Session: SessionStoredPaymentMethodsDelegate {
     
-    public var showRemovePaymentMethodButton: Bool { state.responseConfiguration.showRemovePaymentMethodButton }
+    public var showRemovePaymentMethodButton: Bool {
+        state.responseConfiguration.showRemovePaymentMethodButton
+    }
     
     public func disable(storedPaymentMethod: StoredPaymentMethod, dropInComponent: AnyDropInComponent, completion: @escaping Completion<Bool>) {
         let request = DisableStoredPaymentMethodRequest(
@@ -48,7 +50,7 @@ extension Session: SessionStoredPaymentMethodsDelegate {
         dropIn.viewController.present(alertController, animated: true)
     }
     
-    // empty implementation of the old method
+    /// empty implementation of the old method
     public func disable(storedPaymentMethod: Adyen.StoredPaymentMethod, completion: @escaping Adyen.Completion<Bool>) {
         AdyenAssertion.assertionFailure(message: "Use the new delegate method from session.")
     }

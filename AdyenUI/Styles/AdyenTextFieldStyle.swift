@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -70,7 +70,7 @@ package struct AdyenTextFieldStyle {
     }
 }
 
-// This extension adds the method chaining to the AdyenTextFieldStyle struct.
+/// This extension adds the method chaining to the AdyenTextFieldStyle struct.
 extension AdyenTextFieldStyle {
     
     /// Returns a new style with the specified background color.

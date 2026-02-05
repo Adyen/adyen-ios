@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -122,7 +122,9 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     }()
 
     @_spi(AdyenInternal)
-    public var firstNameItem: FormTextInputItem? { firstNameItemInjector?.item }
+    public var firstNameItem: FormTextInputItem? {
+        firstNameItemInjector?.item
+    }
 
     internal lazy var lastNameItemInjector: NameFormItemInjector? = {
         guard fields.contains(.lastName) else { return nil }
@@ -139,7 +141,9 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     }()
 
     @_spi(AdyenInternal)
-    public var lastNameItem: FormTextInputItem? { lastNameItemInjector?.item }
+    public var lastNameItem: FormTextInputItem? {
+        lastNameItemInjector?.item
+    }
 
     internal lazy var emailItemInjector: EmailFormItemInjector? = {
         guard fields.contains(.email) else { return nil }
@@ -154,7 +158,9 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     }()
 
     @_spi(AdyenInternal)
-    public var emailItem: FormTextInputItem? { emailItemInjector?.item }
+    public var emailItem: FormTextInputItem? {
+        emailItemInjector?.item
+    }
     
     internal lazy var addressItemInjector: AddressFormItemInjector? = {
         guard fields.contains(.address) else { return nil }
@@ -171,7 +177,9 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         )
     }()
     
-    package var addressItem: FormAddressPickerItem? { addressItemInjector?.item }
+    package var addressItem: FormAddressPickerItem? {
+        addressItemInjector?.item
+    }
     
     internal lazy var deliveryAddressItemInjector: AddressFormItemInjector? = {
         guard fields.contains(.deliveryAddress) else { return nil }
@@ -188,7 +196,9 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         )
     }()
 
-    package var deliveryAddressItem: FormAddressPickerItem? { deliveryAddressItemInjector?.item }
+    package var deliveryAddressItem: FormAddressPickerItem? {
+        deliveryAddressItemInjector?.item
+    }
 
     internal lazy var phoneItemInjector: PhoneFormItemInjector? = {
         guard fields.contains(.phone) else { return nil }
@@ -205,7 +215,9 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     }()
 
     @_spi(AdyenInternal)
-    public var phoneItem: FormPhoneNumberItem? { phoneItemInjector?.item }
+    public var phoneItem: FormPhoneNumberItem? {
+        phoneItemInjector?.item
+    }
 
     /// The button item.
     internal lazy var button: FormButtonItem = {

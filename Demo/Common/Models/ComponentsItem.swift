@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,7 +11,9 @@ internal struct ComponentsItem: Hashable {
     internal let title: String
     internal let subtitle: String?
     
-    internal var isApplePay: Bool { title == "Apple Pay" }
+    internal var isApplePay: Bool {
+        title == "Apple Pay"
+    }
     
     internal let selectionHandler: () -> Void
     

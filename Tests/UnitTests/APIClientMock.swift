@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,7 +16,7 @@ internal final class APIClientMock: APIClientProtocol {
 
     internal private(set) var counter: Int = 0
 
-    internal func perform<R>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) where R: Request {
+    internal func perform<R: Request>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) {
         counter += 1
         let nextResult = self.mockedResults.removeFirst()
         DispatchQueue.main.async {

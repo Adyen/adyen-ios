@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -43,7 +43,9 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     internal weak var delegate: SelfRenderingFormItemDelegate?
     
-    override public var subitems: [FormItem] { items }
+    override public var subitems: [FormItem] {
+        items
+    }
     
     internal let addressViewModelBuilder: AddressViewModelBuilder
     

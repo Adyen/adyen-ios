@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -37,7 +37,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         )
     }
 
-    func testLocalizationWithCustomTableName() throws {
+    func testLocalizationWithCustomTableName() {
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
 
         let config = ACHDirectDebitComponentConfiguration()
@@ -235,7 +235,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 100)
     }
 
-    func testViewDidLoadShouldSendInitialCall() throws {
+    func testViewDidLoadShouldSendInitialCall() {
         
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()

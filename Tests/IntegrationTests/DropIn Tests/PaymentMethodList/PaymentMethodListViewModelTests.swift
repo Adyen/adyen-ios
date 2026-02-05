@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2026 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -18,7 +18,7 @@ struct PaymentMethodListViewModelTests {
     // MARK: - Tests
 
     @Test
-    func paymentMethodListView_shouldReturn_listViewController() async throws {
+    func paymentMethodListView_shouldReturn_listViewController() {
         // Given
         let (sut, _, _) = makeSUT()
 
@@ -30,7 +30,7 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
-    func cancel_shouldCallRouter_dismiss() async throws {
+    func cancel_shouldCallRouter_dismiss() {
         // Given
         let (sut, _, routerMock) = makeSUT()
 
@@ -42,7 +42,7 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
-    func didSelect_presentableComponent_shouldStartLoadingAndPresent() async throws {
+    func didSelect_presentableComponent_shouldStartLoadingAndPresent() {
         // Given
         let (sut, _, routerMock) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
@@ -55,7 +55,7 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
-    func didSelect_paymentInitiableComponent_shouldInitiatePayment() async throws {
+    func didSelect_paymentInitiableComponent_shouldInitiatePayment() {
         // Given
         let (sut, _, _) = makeSUT()
         let paymentMethodMock = PaymentMethodMock(type: .twint, name: "Twint")
@@ -69,7 +69,7 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
-    func didSubmit_shoulCallDropInFlowManager_submit() async throws {
+    func didSubmit_shoulCallDropInFlowManager_submit() {
         // Given
         let (sut, dropInFlowManagerMock, _) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
@@ -86,7 +86,7 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
-    func didFail_givenComponentError_shouldCallDropInFlowManagerFail() async throws {
+    func didFail_givenComponentError_shouldCallDropInFlowManagerFail() {
         // Given
         let (sut, dropInFlowManagerMock, _) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
@@ -100,7 +100,7 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
-    func didFail_givenCancellation_shouldDismissAndStopLoading() async throws {
+    func didFail_givenCancellation_shouldDismissAndStopLoading() {
         // Given
         let (sut, dropInFlowManagerMock, routerMock) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
@@ -114,7 +114,7 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
-    func presentActionComponent_shouldCallRouterPresentActionComponent() async throws {
+    func presentActionComponent_shouldCallRouterPresentActionComponent() {
         // Given
         let (sut, _, routerMock) = makeSUT()
         let actionComponentMock = makeActionComponentMock()
@@ -127,7 +127,7 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
-    func presentActionComponent_whenCancelled_shouldRunCancelCallback() async throws {
+    func presentActionComponent_whenCancelled_shouldRunCancelCallback() async {
         // Given
         let (sut, _, routerMock) = makeSUT()
         let actionComponentMock = makeActionComponentMock()

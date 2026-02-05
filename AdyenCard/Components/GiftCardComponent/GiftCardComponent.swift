@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -45,7 +45,9 @@ public final class GiftCardComponent: PresentableComponent,
     public let publicKeyProvider: AnyPublicKeyProvider
 
     /// The gift card payment method.
-    public var paymentMethod: PaymentMethod { partialPaymentMethodType.partialPaymentMethod }
+    public var paymentMethod: PaymentMethod {
+        partialPaymentMethodType.partialPaymentMethod
+    }
 
     /// Describes the component's UI style.
     public let style: FormComponentStyle

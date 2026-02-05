@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -177,8 +177,7 @@ internal typealias VoidHandler = () -> Void
                 delegatedAuthenticationSDKOutput: authenticationSDKOutput,
                 deleteDelegatedAuthenticationCredential: deleteDelegatedAuthenticationCredential
             )
-            let encodedFingerprintResult = try AdyenCoder.encodeBase64(fingerprintResult)
-            return encodedFingerprintResult
+            return try AdyenCoder.encodeBase64(fingerprintResult)
         }
         
         // MARK: - Delegated Authentication
@@ -226,7 +225,8 @@ internal typealias VoidHandler = () -> Void
             cardType: CardType?,
             cardNumber: String?,
             amount: Amount?,
-            completion: @escaping (Result<(daOutput: String, delete: Bool?), ApprovalFlowError>
+            completion: @escaping (
+                Result<(daOutput: String, delete: Bool?), ApprovalFlowError>
             ) -> Void
         ) {
             presenter.showApprovalScreen(
@@ -521,7 +521,7 @@ internal typealias VoidHandler = () -> Void
     }
 
     private extension Bundle {
-        // Name of the app - title under the icon.
+        /// Name of the app - title under the icon.
         var displayName: String {
             object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ??
                 object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""

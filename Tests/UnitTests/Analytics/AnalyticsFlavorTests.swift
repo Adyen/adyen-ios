@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,7 +16,7 @@ class AnalyticsFlavorTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testAnalyticsFlavorValueWhenFlavorIsComponentsMatchesFlavorType() throws {
+    func testAnalyticsFlavorValueWhenFlavorIsComponentsMatchesFlavorType() {
         // Given
         let expectedFlavorValue = "components"
 
@@ -27,7 +27,7 @@ class AnalyticsFlavorTests: XCTestCase {
         XCTAssertEqual(expectedFlavorValue, sut.value)
     }
 
-    func testAnalyticsFlavorValueWhenFlavorIsDropInMatchesFlavorType() throws {
+    func testAnalyticsFlavorValueWhenFlavorIsDropInMatchesFlavorType() {
         // Given
         let expectedFlavorValue = "dropin"
 

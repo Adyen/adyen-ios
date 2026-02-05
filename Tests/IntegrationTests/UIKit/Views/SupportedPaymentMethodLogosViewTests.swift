@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -20,8 +20,8 @@ class SupportedPaymentMethodLogosViewTests: XCTestCase {
     
     func test_setup() throws {
         let trailingText = "TRAILING_TEXT"
-        let supportedLogosView = SupportedPaymentMethodLogosView(
-            imageUrls: [URL(string: "https://adyen.com")!],
+        let supportedLogosView = try SupportedPaymentMethodLogosView(
+            imageUrls: [XCTUnwrap(URL(string: "https://adyen.com"))],
             trailingText: trailingText
         )
         XCTAssertEqual(supportedLogosView.subviews.count, 0)
