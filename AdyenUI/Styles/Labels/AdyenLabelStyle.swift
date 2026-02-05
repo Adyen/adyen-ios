@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -49,7 +49,7 @@ package struct AdyenLabelStyle {
     }
 }
 
-// This extension adds the method chaining to the AdyenLabelStyle struct.
+/// This extension adds the method chaining to the AdyenLabelStyle struct.
 extension AdyenLabelStyle {
 
     /// Returns a new AdyenLabelStyle with the specified font.

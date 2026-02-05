@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,7 +10,9 @@ import XCTest
 
 extension XCTestCase {
     
-    static var shouldRecordSnapshots: Bool { CommandLine.arguments.contains("-GenerateSnapshots") }
+    static var shouldRecordSnapshots: Bool {
+        CommandLine.arguments.contains("-GenerateSnapshots")
+    }
     
     enum SnapshotPrecision: Float {
         case `default` = 1.0

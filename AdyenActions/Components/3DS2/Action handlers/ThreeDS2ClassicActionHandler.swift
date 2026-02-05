@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,7 +13,9 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     
     internal let context: AdyenContext
 
-    internal var wrappedComponent: Component { coreActionHandler }
+    internal var wrappedComponent: Component {
+        coreActionHandler
+    }
 
     internal let coreActionHandler: AnyThreeDS2CoreActionHandler
     

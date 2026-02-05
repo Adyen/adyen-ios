@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -26,11 +26,6 @@ internal struct NativeRedirectResultRequest: Request {
     internal let redirectData: String?
 
     internal let returnQueryString: String
-
-    internal init(redirectData: String?, returnQueryString: String) {
-        self.redirectData = redirectData
-        self.returnQueryString = returnQueryString
-    }
 
     private enum CodingKeys: String, CodingKey {
         case redirectData

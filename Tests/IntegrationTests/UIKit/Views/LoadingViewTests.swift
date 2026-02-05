@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -25,7 +25,7 @@ class LoadingViewTests: XCTestCase {
         sut.adyen.anchor(inside: viewController.view)
     }
 
-    func testShowingSpinnerDelay() throws {
+    func testShowingSpinnerDelay() {
         viewController.loadViewIfNeeded()
         
         sut.showsActivityIndicator = true
@@ -34,7 +34,7 @@ class LoadingViewTests: XCTestCase {
         wait(until: sut, at: \.showsActivityIndicator, is: true)
     }
     
-    func testHidingSpinner() throws {
+    func testHidingSpinner() {
         viewController.loadViewIfNeeded()
         
         sut.showsActivityIndicator = true

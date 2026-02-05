@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,7 +14,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     lazy var paymentMethod = SevenElevenPaymentMethod(type: .econtextSevenEleven, name: "test_name")
     let payment = Payment(amount: Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
 
-    func testLocalizationWithCustomTableName() throws {
+    func testLocalizationWithCustomTableName() {
         let localization = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let config = BasicPersonalInfoFormComponent.Configuration(localizationParameters: localization)
         let sut = SevenElevenComponent(
@@ -66,7 +66,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
     func testUIConfiguration() {
         var style = FormComponentStyle()
 
-        /// Footer
+        // Footer
         style.mainButtonItem.button.title.color = .white
         style.mainButtonItem.button.title.backgroundColor = .red
         style.mainButtonItem.button.title.textAlignment = .center
@@ -74,10 +74,10 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         style.mainButtonItem.button.backgroundColor = .red
         style.mainButtonItem.backgroundColor = .brown
 
-        /// background color
+        // background color
         style.backgroundColor = .yellow
 
-        /// Text field
+        // Text field
         style.textField.backgroundColor = .cyan
         style.textField.text.color = .brown
         style.textField.text.font = .systemFont(ofSize: 13)
@@ -129,7 +129,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
         let phoneNumberViewTitleLabel: UILabel? = sut.viewController.view.findView(with: ViewIdentifier.phoneTitleLabel)
         let phoneNumberViewTextField: UITextField? = sut.viewController.view.findView(with: ViewIdentifier.phoneTextField)
 
-        /// Test submit button
+        // Test submit button
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: ViewIdentifier.payButton)
         let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: ViewIdentifier.payButtonTitleLabel)
 
@@ -140,7 +140,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
 //        XCTAssertEqual(payButtonItemViewButtonTitle?.textColor, .white)
 //        XCTAssertEqual(payButtonItemViewButtonTitle?.font, .systemFont(ofSize: 22))
 
-        /// Test phone number field
+        // Test phone number field
 //        XCTAssertEqual(phoneNumberView?.backgroundColor, .red)
 //        XCTAssertEqual(phoneNumberViewTitleLabel?.textColor, .yellow)
 //        XCTAssertEqual(phoneNumberViewTitleLabel?.backgroundColor, .blue)
@@ -175,7 +175,7 @@ class BasicPersonalInfoFormComponentTests: XCTestCase {
 //        XCTAssertEqual(textViewTextField?.font, style.text.font)
     }
 
-    func testSubmitForm() throws {
+    func testSubmitForm() {
         let sut = SevenElevenComponent(
             paymentMethod: paymentMethod,
             context: Dummy.context,

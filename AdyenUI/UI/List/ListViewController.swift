@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2018 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -31,7 +31,9 @@ package final class ListViewController: UITableViewController {
     
     // MARK: - Data Source
     
-    package var sections: [ListSection] { dataSource.sections }
+    package var sections: [ListSection] {
+        dataSource.sections
+    }
     
     private lazy var dataSource: ListViewControllerDataSource = {
         if #available(iOS 13, *) {

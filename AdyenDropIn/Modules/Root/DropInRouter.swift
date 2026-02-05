@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -52,8 +52,7 @@ internal class DropInRouter: DropInRouting {
             )
             self.childRouter = preselectedPaymentMethodRouter
             let preselectedPaymentMethodViewController = preselectedPaymentMethodRouter.rootViewController
-            let navigationController = UINavigationController(rootViewController: preselectedPaymentMethodViewController)
-            return navigationController
+            return UINavigationController(rootViewController: preselectedPaymentMethodViewController)
         case let .component(paymentComponent):
             let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
                 for: paymentComponent,

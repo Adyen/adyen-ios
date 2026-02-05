@@ -1,11 +1,10 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import XCTest
-
 @testable @_spi(AdyenInternal) import Adyen
 @testable @_spi(AdyenInternal) import AdyenComponents
 @_spi(AdyenInternal) @testable import AdyenUI
@@ -15,7 +14,7 @@ class PayByBankUSComponentTests: XCTestCase {
     let context = Dummy.context
     let paymentMethod = PayByBankUSPaymentMethod(type: .payByBankAISDD, name: "Plaid")
     
-    func test_initiatePaymentShouldCallPaymentComponentDelegateDidSubmit() throws {
+    func test_initiatePaymentShouldCallPaymentComponentDelegateDidSubmit() {
         
         let sut = PayByBankUSComponent(
             paymentMethod: paymentMethod,

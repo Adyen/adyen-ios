@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -37,7 +37,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     UITextFieldDelegate,
     AnyFormTextItemView {
     
-    override public var accessibilityLabelView: UIView? { textField }
+    override public var accessibilityLabelView: UIView? {
+        textField
+    }
 
     /// Initializes the text item view with theme.
     /// - Parameters:

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -23,11 +23,9 @@ extension AdyenScope where Base: UIView {
         guard size.width > 0, size.height > 0 else { return nil }
 
         let renderer = UIGraphicsImageRenderer(size: size)
-        let image = renderer.image { _ in
+        return renderer.image { _ in
             base.drawHierarchy(in: base.bounds, afterScreenUpdates: true)
         }
-
-        return image
     }
     
     public func hide(

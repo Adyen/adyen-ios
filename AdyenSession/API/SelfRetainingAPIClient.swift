@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -21,10 +21,10 @@ internal final class SelfRetainingAPIClient: APIClientProtocol {
         self.apiClient = apiClient
     }
     
-    internal func perform<R>(
+    internal func perform<R: Request>(
         _ request: R,
         completionHandler: @escaping CompletionHandler<R.ResponseType>
-    ) where R: Request {
+    ) {
         apiClient.perform(request) {
             completionHandler($0)
         }

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -32,7 +32,7 @@ final class DualBrandAccessoryViewTests: XCTestCase {
         super.tearDown()
     }
     
-    func testUpdateCurrentLogos_WhenResettingLoadedImages_ShouldResetToPlaceholder() {
+    func testUpdateCurrentLogos_WhenResettingLoadedImages_ShouldResetToPlaceholder() throws {
         // Given: Set up dual brand state with loaded images
         let expectation = expectation(description: "Wait for image loading")
         expectation.expectedFulfillmentCount = 2 // Two images to load
@@ -49,9 +49,9 @@ final class DualBrandAccessoryViewTests: XCTestCase {
             }
             return nil
         }
-        let dualBrandLogos = [
-            FormCardLogosItem.CardTypeLogo(url: URL(string: "https://example.com/visa.png")!, type: .visa),
-            FormCardLogosItem.CardTypeLogo(url: URL(string: "https://example.com/bcmc.png")!, type: .bcmc)
+        let dualBrandLogos = try [
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa),
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), type: .bcmc)
         ]
             
         // Load initial dual brand state
@@ -73,17 +73,17 @@ final class DualBrandAccessoryViewTests: XCTestCase {
         XCTAssertTrue(sut.secondaryLogoView.isHidden, "Secondary logo should be hidden")
     }
 
-    func testUpdateCurrentLogos_changingFromDualToSingle_resetsAndShowsSingleBrand() {
+    func testUpdateCurrentLogos_changingFromDualToSingle_resetsAndShowsSingleBrand() throws {
         // Given: Set up dual brand state
-        let dualBrandLogos = [
-            FormCardLogosItem.CardTypeLogo(url: URL(string: "https://example.com/visa.png")!, type: .visa),
-            FormCardLogosItem.CardTypeLogo(url: URL(string: "https://example.com/bcmc.png")!, type: .bcmc)
+        let dualBrandLogos = try [
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa),
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), type: .bcmc)
         ]
         sut.updateCurrentLogos(dualBrandLogos)
         
         // When: Update with single brand
-        let singleBrandLogo = [
-            FormCardLogosItem.CardTypeLogo(url: URL(string: "https://example.com/amex.png")!, type: .americanExpress)
+        let singleBrandLogo = try [
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/amex.png")), type: .americanExpress)
         ]
         sut.updateCurrentLogos(singleBrandLogo)
         

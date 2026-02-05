@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -12,8 +12,13 @@ import XCTest
 
 final class IssuerListComponentUITests: XCTestCase {
 
-    private var context: AdyenContext { Dummy.context }
-    private var paymentMethod: IssuerListPaymentMethod { try! AdyenCoder.decode(issuerListDictionary) as IssuerListPaymentMethod }
+    private var context: AdyenContext {
+        Dummy.context
+    }
+
+    private var paymentMethod: IssuerListPaymentMethod {
+        try! AdyenCoder.decode(issuerListDictionary) as IssuerListPaymentMethod
+    }
 
     override func run() {
         AdyenDependencyValues.runTestWithValues {

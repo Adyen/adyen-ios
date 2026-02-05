@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -58,7 +58,7 @@ class QRCodeViewModelTests: XCTestCase {
     
     // MARK: - performAction (.copyCode)
     
-    func test_performAction_copyCode_callOnCopyCode() throws {
+    func test_performAction_copyCode_callOnCopyCode() {
         // Given
         let copyCodeExpectation = expectation(description: "copyCode was not called")
         var receivedCode: String?
@@ -102,7 +102,7 @@ class QRCodeViewModelTests: XCTestCase {
         wait(for: [expectation], timeout: 2.5)
     }
     
-    func test_performAction_copyCode_startAnimation() throws {
+    func test_performAction_copyCode_startAnimation() {
         // Given
         let expectedView = UIView()
         let copyCodeExpectation = expectation(description: "copyCode was not called")

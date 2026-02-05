@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -42,7 +42,9 @@ public class CardComponent: PresentableComponent,
     internal let binInfoProvider: AnyBinInfoProvider
     
     /// The card payment method.
-    public var paymentMethod: PaymentMethod { cardPaymentMethod }
+    public var paymentMethod: PaymentMethod {
+        cardPaymentMethod
+    }
 
     /// The supported card types.
     public let supportedCardTypes: [CardType]

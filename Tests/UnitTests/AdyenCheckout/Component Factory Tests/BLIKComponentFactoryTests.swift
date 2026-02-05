@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -134,9 +134,9 @@ final class BLIKComponentFactoryTests: XCTestCase {
         XCTAssertNotNil(factory as any PaymentComponentFactory)
     }
     
-    func testFactory_HasCorrectAssociatedTypes() {
+    func testFactory_HasCorrectAssociatedTypes() throws {
         // Given
-        let paymentMethod = createBLIKPaymentMethod()!
+        let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         let configuration = factory.defaultConfiguration()
         
         // When

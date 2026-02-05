@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -115,7 +115,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testInvalidFingerprintToken() throws {
+    func testInvalidFingerprintToken() {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
 
         let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
@@ -151,7 +151,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testChallengeFlowSuccess() throws {
+    func testChallengeFlowSuccess() {
         let service = ThreeDSServiceableMock()
         service.onResetTransaction = {}
         service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
@@ -204,7 +204,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testChallengeFlowFailure() throws {
+    func testChallengeFlowFailure() {
 
         let service = ThreeDSServiceableMock()
         service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
@@ -241,7 +241,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testChallengeFlowMissingTransaction() throws {
+    func testChallengeFlowMissingTransaction() {
         let service = ThreeDSServiceableMock()
         let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration(), service: service)
         service.onPerformChallenge = { $1(.failure(.transactionNotInitialized)) }
@@ -265,7 +265,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testInvalidChallengeToken() throws {
+    func testInvalidChallengeToken() {
         let service = ThreeDSServiceableMock()
         service.onResetTransaction = {}
         service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }

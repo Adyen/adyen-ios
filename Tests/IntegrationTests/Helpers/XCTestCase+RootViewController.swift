@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -59,7 +59,9 @@ extension XCTestCase {
 extension DispatchTimeInterval {
     
     /// .milliseconds(100)
-    static var aMoment: Self { .milliseconds(100) }
+    static var aMoment: Self {
+        .milliseconds(100)
+    }
 }
 
 extension XCTestCase {

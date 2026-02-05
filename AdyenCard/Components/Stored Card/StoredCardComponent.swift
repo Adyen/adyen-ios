@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,7 +15,9 @@ package final class StoredCardComponent: PaymentComponent, PaymentAware, Present
     package let context: AdyenContext
     
     /// The card payment method.
-    package var paymentMethod: PaymentMethod { storedCardPaymentMethod }
+    package var paymentMethod: PaymentMethod {
+        storedCardPaymentMethod
+    }
     
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
