@@ -37,10 +37,10 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
         /// The UI style configurations.
         public var style: ActionComponentStyle = .init()
         
-        /// Three DS configurations.
+        /// Three DS configuration.
         public var threeDS: ThreeDS2ActionConfiguration
         
-        /// Twint configurations.
+        /// Twint configuration.
         public var twint: TwintActionConfiguration?
         
         /// Initializes a new instance.

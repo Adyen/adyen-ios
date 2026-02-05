@@ -526,7 +526,7 @@
 		A04F8C2B29E5957B00F3F62B /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
 		A04F8C3129E596C300F3F62B /* CashAppPayDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01D775529B250C10075BD70 /* CashAppPayDetails.swift */; };
 		A04F8C3229E596C300F3F62B /* CashAppPayComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03B7C9129B0C61500FDDDFC /* CashAppPayComponent.swift */; };
-		A052F5D82DB1250D00C47D3E /* CheckoutConfigurationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A052F5D72DB124FC00C47D3E /* CheckoutConfigurationType.swift */; };
+		A052F5D82DB1250D00C47D3E /* CheckoutComponentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A052F5D72DB124FC00C47D3E /* CheckoutComponentType.swift */; };
 		A052F5DA2DB143FB00C47D3E /* BLIKComponentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A052F5D92DB143F200C47D3E /* BLIKComponentConfiguration.swift */; };
 		A05D7212276A28EE0087F3E9 /* DocumentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05D7211276A28EE0087F3E9 /* DocumentComponentTests.swift */; };
 		A06170A92CCF96B300AF388A /* EventAnalyticsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06170A82CCF96B300AF388A /* EventAnalyticsProvider.swift */; };
@@ -2201,7 +2201,7 @@
 		A04F8C1E29E5950100F3F62B /* AdyenCashAppPay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenCashAppPay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A04F8C2029E5950100F3F62B /* AdyenCashAppPay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenCashAppPay.h; sourceTree = "<group>"; };
 		A04F8C2129E5950100F3F62B /* AdyenCashAppPay.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = AdyenCashAppPay.docc; sourceTree = "<group>"; };
-		A052F5D72DB124FC00C47D3E /* CheckoutConfigurationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutConfigurationType.swift; sourceTree = "<group>"; };
+		A052F5D72DB124FC00C47D3E /* CheckoutComponentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutComponentType.swift; sourceTree = "<group>"; };
 		A052F5D92DB143F200C47D3E /* BLIKComponentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentConfiguration.swift; sourceTree = "<group>"; };
 		A052F5DB2DB145FB00C47D3E /* CheckoutConfigurable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutConfigurable.swift; sourceTree = "<group>"; };
 		A05A9B7D2B8F8DF300E5E178 /* AnalyticsEventDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEventDataSourceTests.swift; sourceTree = "<group>"; };
@@ -3968,7 +3968,7 @@
 				81AA3B332ACD9CE800F5719D /* AddressLookupProvider.swift */,
 				A080E3E62EDC5F000031B09A /* AsyncAddressLookupProvider.swift */,
 				A0A26BF92DC101B600DB5B4E /* CheckoutBaseCallbacks.swift */,
-				A052F5D72DB124FC00C47D3E /* CheckoutConfigurationType.swift */,
+				A052F5D72DB124FC00C47D3E /* CheckoutComponentType.swift */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -8651,7 +8651,7 @@
 				F9D5751823799BB0009C18B5 /* AnyPaymentMethodDecoder.swift in Sources */,
 				F96F44CD23B257D700871C1F /* Logger.swift in Sources */,
 				A06B7A9A2A1CEC59008FC09D /* StoredCashAppPayPaymentMethod.swift in Sources */,
-				A052F5D82DB1250D00C47D3E /* CheckoutConfigurationType.swift in Sources */,
+				A052F5D82DB1250D00C47D3E /* CheckoutComponentType.swift in Sources */,
 				E9093403228EDADA00C9F04B /* Payment.swift in Sources */,
 				A0414C2E2790420B00DF3FE9 /* PublicKeyProvider.swift in Sources */,
 				E216D3CD221AFBB90013CBCF /* Validator.swift in Sources */,

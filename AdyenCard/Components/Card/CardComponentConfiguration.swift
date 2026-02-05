@@ -12,7 +12,7 @@
 /// Card component configuration.
 public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPersonalInformationConfiguration {
     
-    package let configurationType: Adyen.CheckoutConfigurationType = .payment(.scheme)
+    package let componentType: Adyen.CheckoutComponentType = .payment(.scheme)
     
     package var theme: AdyenTheme
     

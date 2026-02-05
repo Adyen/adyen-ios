@@ -33,7 +33,7 @@ final class BLIKComponentFactoryTests: XCTestCase {
         let configuration = factory.defaultConfiguration()
         
         // Then
-        XCTAssertEqual(configuration.configurationType, .payment(.blik))
+        XCTAssertEqual(configuration.componentType, .payment(.blik))
         XCTAssertTrue(configuration.showsSubmitButton)
     }
     
@@ -148,7 +148,7 @@ final class BLIKComponentFactoryTests: XCTestCase {
         
         // Then - Verify types through their properties
         XCTAssertEqual(paymentMethod.type, .blik)
-        XCTAssertEqual(configuration.configurationType, .payment(.blik))
+        XCTAssertEqual(configuration.componentType, .payment(.blik))
         XCTAssertEqual(component.paymentMethod.type, .blik)
     }
     

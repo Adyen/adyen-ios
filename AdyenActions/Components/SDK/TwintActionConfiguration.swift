@@ -13,7 +13,7 @@ import Foundation
 /// Configuration for Twint action handling.
 public struct TwintActionConfiguration: CheckoutComponentConfiguration {
     
-    package let configurationType: CheckoutConfigurationType = .action(.twint)
+    package let componentType: CheckoutComponentType = .action(.twint)
     
     package var showsSubmitButton: Bool = false
     
@@ -25,7 +25,7 @@ public struct TwintActionConfiguration: CheckoutComponentConfiguration {
     
     package var maxIssuerNumber: Int
     
-    /// Initializes a new instance.
+    /// Initializes a new TwintActionConfiguration instance.
     ///
     /// - Parameters:
     ///   - callbackAppScheme: The callback app scheme invoked once the Twint app is done with the payment.

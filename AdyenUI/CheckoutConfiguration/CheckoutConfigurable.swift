@@ -14,7 +14,7 @@ public protocol CheckoutConfigurable {}
 /// Configuration interface for all Checkout Components.
 package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     
-    var configurationType: CheckoutConfigurationType { get }
+    var componentType: CheckoutComponentType { get }
     
     var showsSubmitButton: Bool { get set }
     

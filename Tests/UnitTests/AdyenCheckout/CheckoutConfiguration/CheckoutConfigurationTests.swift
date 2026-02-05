@@ -44,7 +44,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         )
         
         // Then - Should return the stored configuration with custom value
-        XCTAssertEqual(resolvedConfig.configurationType, .payment(.blik))
+        XCTAssertEqual(resolvedConfig.componentType, .payment(.blik))
         XCTAssertFalse(resolvedConfig.showsSubmitButton, "Should use stored configuration value")
     }
     
@@ -62,7 +62,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         )
         
         // Then - Should return the default value
-        XCTAssertEqual(resolvedConfig.configurationType, .payment(.blik))
+        XCTAssertEqual(resolvedConfig.componentType, .payment(.blik))
         XCTAssertFalse(resolvedConfig.showsSubmitButton, "Should use default value")
     }
     
@@ -129,7 +129,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         XCTAssertNotNil(resolvedConfig)
         
         XCTAssertNotNil(resolvedConfig, "Should be BLIKComponentConfiguration")
-        XCTAssertEqual(resolvedConfig.configurationType, .payment(.blik))
+        XCTAssertEqual(resolvedConfig.componentType, .payment(.blik))
     }
     
     // MARK: - Helper Methods

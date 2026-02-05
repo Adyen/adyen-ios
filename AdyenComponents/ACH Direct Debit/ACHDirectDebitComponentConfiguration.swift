@@ -15,7 +15,7 @@ import UIKit
 /// Configuration for ACH Direct Debit Component.
 public struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfiguration, CheckoutComponentConfiguration {
 
-    package let configurationType: CheckoutConfigurationType = .payment(.achDirectDebit)
+    package let componentType: CheckoutComponentType = .payment(.achDirectDebit)
 
     package var style: FormComponentStyle
 

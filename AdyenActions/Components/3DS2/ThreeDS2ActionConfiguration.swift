@@ -13,7 +13,7 @@ import Adyen3DS2
 /// Configuration for 3D Secure 2 action handling.
 public struct ThreeDS2ActionConfiguration: CheckoutComponentConfiguration {
     
-    package let configurationType: CheckoutConfigurationType = .action(.threeDS2)
+    package let componentType: CheckoutComponentType = .action(.threeDS2)
     
     package var showsSubmitButton: Bool // TODO: get rid of this
     
