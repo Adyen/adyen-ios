@@ -23,6 +23,10 @@ private class FormSelectableValueItemMock: FormSelectableValueItem<String?> {
         self.title = title
     }
 }
+    
+override func isEmpty() -> Bool {
+    value == nil
+}
 
 private class FormSelectableValueItemViewMock: FormSelectableValueItemView<String, FormSelectableValueItemMock> {}
 
@@ -233,7 +237,8 @@ class FormPickerItemViewStyleTests: XCTestCase {
         let expectedColor = AdyenTheme.default.colors.destructive
         XCTAssertEqual(
             sut.footerLabel.textColor?.resolvedColor(
-                with: UITraitCollection(userInterfaceStyle: .light)),
+                with: UITraitCollection(userInterfaceStyle: .light)
+            ),
             expectedColor.resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
         )
     }

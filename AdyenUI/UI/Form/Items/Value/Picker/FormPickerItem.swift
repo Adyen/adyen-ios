@@ -124,6 +124,10 @@ open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> 
         nil
     }
     
+    override public func isEmpty() -> Bool {
+        value == nil
+    }
+    
     public func updateValidationFailureMessage() {
         AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
     }

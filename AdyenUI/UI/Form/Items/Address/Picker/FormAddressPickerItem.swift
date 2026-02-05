@@ -104,6 +104,10 @@ package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress
     override package func validationStatus() -> ValidationStatus? {
         nil
     }
+    
+    override package func isEmpty() -> Bool {
+        value == nil
+    }
 }
 
 // MARK: - Convenience
