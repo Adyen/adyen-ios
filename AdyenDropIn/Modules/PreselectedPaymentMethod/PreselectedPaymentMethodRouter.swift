@@ -14,7 +14,7 @@ internal protocol PreselectedPaymentMethodRouterListener: AnyObject {
 
 internal protocol PreselectedPaymentMethodRouting: AnyObject {
     func presentPaymentMethodList()
-    func present(paymentComponent: any PresentableComponent, onCancel: @escaping (() -> Void))
+    func present(component: PaymentComponent, onCancel: @escaping () -> Void)
     func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?)
     func dismiss(completion: (() -> Void)?)
 }
@@ -65,6 +65,20 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     }
 
     internal func present(
+        component: PaymentComponent,
+        onCancel: @escaping () -> Void
+    ) {
+        switch component.type {
+        case let .presentable(presentable):
+            presentModalComponent(presentable, onCancel: onCancel)
+        case let .stored(stored):
+            presentModalComponent(stored, onCancel: onCancel)
+        case .instant, .none:
+            break
+        }
+    }
+
+    internal func present(
         actionComponent: any PresentableComponent,
         onCancel: (() -> Void)?
     ) {
@@ -80,6 +94,29 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
             self?.childRouter = nil
             self?.listener?.didDismissPreselectedPaymentMethod(completion: completion)
         }
+    }
+
+    // MARK: - Private
+
+    private func presentModalComponent(
+        _ component: PresentableComponent,
+        onCancel: @escaping () -> Void
+    ) {
+        let componentContainerViewController = componentContainerViewController(for: component, onCancel: onCancel)
+        rootViewController.present(componentContainerViewController, animated: true)
+    }
+
+    private func componentContainerViewController(
+        for component: PresentableComponent,
+        onCancel: @escaping () -> Void
+    ) -> UIViewController {
+        let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
+            for: component,
+            delegate: self,
+            onCancel: onCancel
+        )
+        childRouter = componentContainerRouter
+        return componentContainerRouter.rootViewController
     }
 }
 
