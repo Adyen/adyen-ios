@@ -60,6 +60,12 @@ open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueTy
         AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
         return nil
     }
+    
+    /// Checks if the value is considered empty.
+    public func isEmpty() -> Bool {
+        AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
+        return false
+    }
 
     /// Resets validation state to initial (clears any error).
     package func resetValidation() {
@@ -67,7 +73,7 @@ open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueTy
     }
     
     package func triggerValidation(_ trigger: ValidationTrigger) {
-        if trigger == .focusLost, let stringValue = value as? String, stringValue.isEmpty {
+        if trigger == .focusLost, isEmpty() {
             return
         }
         validationState = isValid() ? .valid : .invalid(validationFailureMessage ?? "")
