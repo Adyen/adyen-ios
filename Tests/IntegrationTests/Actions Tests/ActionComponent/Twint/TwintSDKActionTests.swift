@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -21,7 +21,7 @@ import XCTest
             try super.tearDownWithError()
         }
 
-        func testNoAppFound() throws {
+        func testNoAppFound() {
 
             let fetchBlockExpectation = expectation(description: "Fetch was called")
             let noAppFoundAlertExpectation = expectation(description: "No app found alert was shown")
@@ -79,7 +79,7 @@ import XCTest
             )
         }
 
-        func testSingleAppFound() throws {
+        func testSingleAppFound() {
 
             let expectedMaxIssuerNumber = 5
             let fetchBlockExpectation = expectation(description: "Fetch was called")
@@ -216,7 +216,7 @@ import XCTest
             wait(for: [cancelExpectation], timeout: 1)
         }
 
-        func testPayError() throws {
+        func testPayError() {
 
             let fetchBlockExpectation = expectation(description: "Fetch was called")
             let payBlockExpectation = expectation(description: "Pay was called")
@@ -279,7 +279,7 @@ import XCTest
             )
         }
 
-        func testHandleWhenIsStoredEnabledAndSingleAppFoundShouldCallTwintRegisterForUOF() throws {
+        func testHandleWhenIsStoredEnabledAndSingleAppFoundShouldCallTwintRegisterForUOF() {
             // Given
             let fetchBlockExpectation = expectation(description: "Fetch was called")
             let registerForUFO = expectation(description: "registerForUFO was called")

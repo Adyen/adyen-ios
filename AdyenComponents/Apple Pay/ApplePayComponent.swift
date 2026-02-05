@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -24,7 +24,9 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     public let context: AdyenContext
 
     /// The Apple Pay payment method.
-    public var paymentMethod: PaymentMethod { applePayPaymentMethod }
+    public var paymentMethod: PaymentMethod {
+        applePayPaymentMethod
+    }
 
     internal let configuration: Configuration
 

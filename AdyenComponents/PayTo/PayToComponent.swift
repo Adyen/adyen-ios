@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -27,7 +27,9 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
     public var configuration: Configuration
 
     /// The payment method object for this component.
-    public var paymentMethod: PaymentMethod { payToPaymentMethod }
+    public var paymentMethod: PaymentMethod {
+        payToPaymentMethod
+    }
 
     private let payToPaymentMethod: PayToPaymentMethod
 

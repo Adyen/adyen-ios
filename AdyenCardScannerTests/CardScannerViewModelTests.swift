@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -30,7 +30,7 @@ final class CardScannerViewModelTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testVideoPreviewLayer() throws {
+    func testVideoPreviewLayer() {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
@@ -54,7 +54,7 @@ final class CardScannerViewModelTests: XCTestCase {
         XCTAssertTrue(expectedVideoPreviewLayer === receivedVideoPreviewLayer)
     }
 
-    func testRequestCaptureAuthorizationGivenAuthorizedShouldCallCaptureSessionManagerConfigureSession() throws {
+    func testRequestCaptureAuthorizationGivenAuthorizedShouldCallCaptureSessionManagerConfigureSession() {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
@@ -84,7 +84,7 @@ final class CardScannerViewModelTests: XCTestCase {
         wait(for: [configureSessionExpectation], timeout: 1.0)
     }
 
-    func testRequestCaptureAuthorizationGivenRejectedShouldCallViewDismiss() throws {
+    func testRequestCaptureAuthorizationGivenRejectedShouldCallViewDismiss() {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
@@ -115,7 +115,7 @@ final class CardScannerViewModelTests: XCTestCase {
 
     }
 
-    func testRequestCaptureAuthorizationGivenDeniedShouldCallViewDismiss() throws {
+    func testRequestCaptureAuthorizationGivenDeniedShouldCallViewDismiss() {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
@@ -145,7 +145,7 @@ final class CardScannerViewModelTests: XCTestCase {
         wait(for: [presentAccessDeniedAlertExpectation], timeout: 1.0)
     }
 
-    func testStartCaptureSessionShouldCallCaptureSessionManagerStartCaptureSession() throws {
+    func testStartCaptureSessionShouldCallCaptureSessionManagerStartCaptureSession() {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
@@ -167,7 +167,7 @@ final class CardScannerViewModelTests: XCTestCase {
         XCTAssertEqual(captureSessionManager.startCaptureSessionCallsCount, 1)
     }
 
-    func testStartCaptureSessionShouldCallCaptureSessionManagerStopCaptureSession() throws {
+    func testStartCaptureSessionShouldCallCaptureSessionManagerStopCaptureSession() {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
@@ -189,7 +189,7 @@ final class CardScannerViewModelTests: XCTestCase {
         XCTAssertEqual(captureSessionManager.stopCaptureSessionCallsCount, 1)
     }
 
-    func testStartCaptureSessionShouldCallCaptureSessionManagerUpdateVideoOrientation() throws {
+    func testStartCaptureSessionShouldCallCaptureSessionManagerUpdateVideoOrientation() {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
@@ -248,7 +248,7 @@ final class CardScannerViewModelTests: XCTestCase {
         XCTAssertEqual(cardImageParser.parseCallsCount, 1)
     }
 
-    func testDidCaptureWithNilImageShouldNotParseCardImage() throws {
+    func testDidCaptureWithNilImageShouldNotParseCardImage() {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
@@ -326,7 +326,7 @@ final class CardScannerViewModelTests: XCTestCase {
         XCTAssertEqual(expectedCroppedImageSize, croppedImage.extent.size)
     }
 
-    func testOpenSettingsApp() throws {
+    func testOpenSettingsApp() {
         // Given
         cardImageParser = CardImageParsingMock()
         captureSessionManager = CaptureSessionManagingMock()
@@ -355,7 +355,7 @@ final class CardScannerViewModelTests: XCTestCase {
 
     // MARK: - Localization
 
-    func testCameraAlertTitle() throws {
+    func testCameraAlertTitle() {
         // Given
         let expectedCameraAlertTitle = "adyen.card.scanner.camera.access.denied.alert.title"
 
@@ -382,7 +382,7 @@ final class CardScannerViewModelTests: XCTestCase {
         )
     }
 
-    func testCameraAlertMessage() throws {
+    func testCameraAlertMessage() {
         // Given
         let expectedCameraAlertMessage = "adyen.card.scanner.camera.access.denied.alert.message"
 
@@ -409,7 +409,7 @@ final class CardScannerViewModelTests: XCTestCase {
         )
     }
 
-    func testCameraAlertSettingButtonTitle() throws {
+    func testCameraAlertSettingButtonTitle() {
         // Given
         let expectedCameraAlertSettingButtonTitle = "adyen.card.scanner.camera.access.denied.alert.settingsButton.title"
 
@@ -436,7 +436,7 @@ final class CardScannerViewModelTests: XCTestCase {
         )
     }
 
-    func testCameraAlertCancelButtonTitle() throws {
+    func testCameraAlertCancelButtonTitle() {
         // Given
         let expectedCameraAlertSettingButtonTitle = "adyen.cancelButton"
 

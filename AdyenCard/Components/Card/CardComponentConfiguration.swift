@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -250,7 +250,7 @@ public protocol AnyCardComponentConfiguration {
     /// In `auto` mode the field will appear based on card bin lookup.
     var socialSecurityNumberMode: CardComponentConfiguration.FieldVisibility { get }
 
-    /// Billing address fields configurations
+    // Billing address fields configurations
 //    var billingAddress: BillingAddressConfiguration { get }
 
     /// Stored card configuration.

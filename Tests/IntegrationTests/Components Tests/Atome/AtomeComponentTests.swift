@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -34,7 +34,7 @@ class AtomeComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testComponent_ShouldPaymentMethodTypeBeAtome() throws {
+    func testComponent_ShouldPaymentMethodTypeBeAtome() {
         // Given
         let expectedPaymentMethodType: PaymentMethodType = .atome
         
@@ -69,7 +69,7 @@ class AtomeComponentTests: XCTestCase {
         XCTAssertEqual(phoneNumber, "+16787860987")
     }
     
-    func testGetPhoneExtensions_ShouldReturnNonEmptyPhoneExtensionList() throws {
+    func testGetPhoneExtensions_ShouldReturnNonEmptyPhoneExtensionList() {
         // Action
         let phoneExtensions = sut.phoneExtensions()
         
@@ -77,7 +77,7 @@ class AtomeComponentTests: XCTestCase {
         XCTAssertFalse(phoneExtensions.isEmpty)
     }
 
-    func testViewDidLoadShouldSendInitialCall() throws {
+    func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)

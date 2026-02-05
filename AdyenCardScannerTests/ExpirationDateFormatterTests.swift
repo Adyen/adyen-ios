@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -54,7 +54,7 @@ final class ExpirationDateFormatterTests: XCTestCase {
         XCTAssertEqual(receivedDate, expectedDate)
     }
 
-    func testDateFromStringWithInvalidFormatDateShouldReturnNil() throws {
+    func testDateFromStringWithInvalidFormatDateShouldReturnNil() {
         // Given
         let longFormatDate = "2028/03"
         sut = ExpirationDateFormatter()

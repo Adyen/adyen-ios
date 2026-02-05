@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -81,13 +81,12 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
         }
 
         let shopperName = ShopperName(firstName: firstName, lastName: lastName)
-        let atomeDetails = AtomeDetails(
+        return AtomeDetails(
             paymentMethod: paymentMethod,
             shopperName: shopperName,
             telephoneNumber: telephoneNumber,
             billingAddress: billingAddress
         )
-        return atomeDetails
     }
 
     @_spi(AdyenInternal)

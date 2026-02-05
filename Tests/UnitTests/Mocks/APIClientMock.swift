@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -17,7 +17,7 @@ final class APIClientMock: APIClientProtocol {
 
     private(set) var counter: Int = 0
 
-    func perform<R>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) where R: Request {
+    func perform<R: Request>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) {
         counter += 1
         DispatchQueue.main.async {
             self.onExecute?()

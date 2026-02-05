@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -108,7 +108,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case "wechatpaySDK": self = .weChatPaySDK
         case "mbway": self = .mbWay
         case "blik": self = .blik
-        /// `paywithgoogle` and `googlepay` should be blocked on iOS
+        // `paywithgoogle` and `googlepay` should be blocked on iOS
         case "paywithgoogle", "googlepay": self = .googlePay
         case "afterpay_default": self = .afterpay
         case "androidpay": self = .androidPay

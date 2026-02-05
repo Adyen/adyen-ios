@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -12,7 +12,9 @@ public struct ClientKeyRequest: APIRequest {
     
     public typealias ResponseType = ClientKeyResponse
     
-    public var path: String { "checkoutshopper/v1/clientKeys/\(clientKey)" }
+    public var path: String {
+        "checkoutshopper/v1/clientKeys/\(clientKey)"
+    }
     
     public let clientKey: String
     

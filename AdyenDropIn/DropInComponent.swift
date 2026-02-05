@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -55,8 +55,7 @@ public final class DropInComponent: NSObject,
     }()
 
     private lazy var componentManager: ComponentManager = {
-        let componentManager = createComponentManager(order: nil)
-        return componentManager
+        createComponentManager(order: nil)
     }()
 
     internal var configuration: Configuration
@@ -306,7 +305,7 @@ public final class DropInComponent: NSObject,
 
 private extension Bundle {
 
-    // Name of the app - title under the icon.
+    /// Name of the app - title under the icon.
     var displayName: String {
         object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ??
             object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,13 +16,13 @@ class ThreeDS2ComponentTests: XCTestCase {
 
     func testFullFlowRedirectSuccess() throws {
 
-        let mockedAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "data")
+        let mockedAction = try RedirectAction(url: XCTUnwrap(URL(string: "https://www.adyen.com")), paymentData: "data")
 
         let mockedDetails = try RedirectDetails(returnURL: Dummy.returnUrl)
         let mockedData = ActionComponentData(details: mockedDetails, paymentData: "data")
 
         let threeDSActionHandler = AnyThreeDS2ActionHandlerMock()
-        threeDSActionHandler.mockedFingerprintResult = .success(.action(.redirect(RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "data"))))
+        threeDSActionHandler.mockedFingerprintResult = try .success(.action(.redirect(RedirectAction(url: XCTUnwrap(URL(string: "https://www.adyen.com")), paymentData: "data"))))
 
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { [weak redirectComponent] action in
@@ -59,7 +59,7 @@ class ThreeDS2ComponentTests: XCTestCase {
     }
 
     func testFullFlowRedirectFailure() throws {
-        let mockedAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "data")
+        let mockedAction = try RedirectAction(url: XCTUnwrap(URL(string: "https://www.adyen.com")), paymentData: "data")
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
         threeDS2ActionHandler.mockedFingerprintResult = .success(.action(.redirect(mockedAction)))
@@ -97,7 +97,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testFullFlowChallengeSuccess() throws {
+    func testFullFlowChallengeSuccess() {
 
         let mockedAction = ThreeDS2ChallengeAction(
             challengeToken: "token",
@@ -140,7 +140,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testFullFlowChallengeWrongAction() throws {
+    func testFullFlowChallengeWrongAction() {
 
         let mockedAction = ThreeDS2ChallengeAction(
             challengeToken: "token",
@@ -190,7 +190,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testFullFlowChallengeFailure() throws {
+    func testFullFlowChallengeFailure() {
 
         let mockedAction = ThreeDS2ChallengeAction(
             challengeToken: "token",
@@ -230,7 +230,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testFullFlowFingerprintFailure() throws {
+    func testFullFlowFingerprintFailure() {
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
         threeDS2ActionHandler.mockedFingerprintResult = .failure(Dummy.error)
@@ -263,7 +263,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testFingerprintSuccess() throws {
+    func testFingerprintSuccess() {
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
 
@@ -309,14 +309,14 @@ class ThreeDS2ComponentTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
     
-    func testSettingRequestorAppURL() throws {
+    func testSettingRequestorAppURL() {
         let sut = ThreeDS2Component(context: Dummy.context)
         sut.configuration.requestorAppURL = URL(string: "https://google.com")
         XCTAssertEqual(sut.threeDS2CompactFlowHandler.threeDSRequestorAppURL, URL(string: "https://google.com"))
         XCTAssertEqual(sut.threeDS2ClassicFlowHandler.threeDSRequestorAppURL, URL(string: "https://google.com"))
     }
     
-    func testSettingRequestorAppURLWithInitializer() throws {
+    func testSettingRequestorAppURLWithInitializer() {
         let configuration = ThreeDS2Component.Configuration(requestorAppURL: URL(string: "https://google.com"))
         let sut = ThreeDS2Component(
             context: Dummy.context,
@@ -326,7 +326,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         XCTAssertEqual(sut.threeDS2ClassicFlowHandler.threeDSRequestorAppURL, URL(string: "https://google.com"))
     }
     
-    func testSettingRequestorAppURLWithInitializerAndInjectedHandlers() throws {
+    func testSettingRequestorAppURLWithInitializerAndInjectedHandlers() {
         let threeDS2CompactFlowHandler = AnyThreeDS2ActionHandlerMock()
         let threeDS2ClassicFlowHandler = AnyThreeDS2ActionHandlerMock()
         let redirectComponent = AnyRedirectComponentMock()
@@ -346,7 +346,7 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
 
-        let mockedResult = try! ThreeDSResult(authenticated: true, authorizationToken: "AuthToken")
+        let mockedResult = try ThreeDSResult(authenticated: true, authorizationToken: "AuthToken")
         let mockedDetails = ThreeDS2Details.challengeResult(mockedResult)
         threeDS2ActionHandler.mockedChallengeResult = .success(.details(mockedDetails))
 
@@ -390,7 +390,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testFullFlowFrictionless() throws {
+    func testFullFlowFrictionless() {
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
 

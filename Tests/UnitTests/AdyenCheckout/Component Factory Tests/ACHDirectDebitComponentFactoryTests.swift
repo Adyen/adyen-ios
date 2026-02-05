@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -162,9 +162,9 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         XCTAssertNotNil(sut as any PaymentComponentFactory)
     }
 
-    func test_factory_hasCorrectAssociatedTypes() {
+    func test_factory_hasCorrectAssociatedTypes() throws {
         // Given
-        let paymentMethod = createACHPaymentMethod()!
+        let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
         let configuration = sut.defaultConfiguration()
 
         // When

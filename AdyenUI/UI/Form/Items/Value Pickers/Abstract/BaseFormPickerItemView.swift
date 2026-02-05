@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -52,7 +52,9 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>:
         }
     }
 
-    override open var canBecomeFirstResponder: Bool { true }
+    override open var canBecomeFirstResponder: Bool {
+        true
+    }
 
     @discardableResult
     override public func becomeFirstResponder() -> Bool {
@@ -120,7 +122,9 @@ open class BaseFormPickerItemView<T: CustomStringConvertible & Equatable>:
 
     // MARK: - UIPickerViewDelegate and UIPickerViewDataSource
 
-    public func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
+    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        1
+    }
 
     public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         item.selectableValues.count

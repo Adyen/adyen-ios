@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -118,7 +118,7 @@ internal final class ComponentManager {
         }
     }()
 
-    // Filter out payment methods without the Ecommerce shopper interaction.
+    /// Filter out payment methods without the Ecommerce shopper interaction.
     internal lazy var storedComponents: [PaymentComponent] = paymentMethods.stored.filter {
         $0.supportedShopperInteractions.contains(.shopperPresent)
     }.compactMap(component(for:))

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,7 +15,7 @@ class FormAddressItemTests: XCTestCase {
         AdyenAssertion.listener = nil
     }
     
-    func testHeader() throws {
+    func testHeader() {
         
         let formAddressItem = FormAddressItem(
             initialCountry: "NL",
@@ -42,7 +42,7 @@ class FormAddressItemTests: XCTestCase {
         XCTAssertFalse(formAddressItemWithoutHeader.flatSubitems.contains { $0.identifier == "AdyenUI.FormAddressItem.title" })
     }
     
-    func testCountryPickerItemUpdate() throws {
+    func testCountryPickerItemUpdate() {
         
         let formAddressItem = FormAddressItem(
             initialCountry: "NL",
@@ -53,13 +53,13 @@ class FormAddressItemTests: XCTestCase {
             addressViewModelBuilder: DefaultAddressViewModelBuilder()
         )
         
-        XCTAssertEqual(formAddressItem.countryPickerItem.value!.identifier, "NL")
+        XCTAssertEqual(formAddressItem.countryPickerItem.value?.identifier, "NL")
         
         formAddressItem.value = .init(country: "US")
-        XCTAssertEqual(formAddressItem.countryPickerItem.value!.identifier, "US")
+        XCTAssertEqual(formAddressItem.countryPickerItem.value?.identifier, "US")
     }
     
-    func testCountryPickerItemUpdateUnsupportedCountry() throws {
+    func testCountryPickerItemUpdateUnsupportedCountry() {
         
         let formAddressItem = FormAddressItem(
             initialCountry: "NL",

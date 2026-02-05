@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,7 +7,9 @@
 import UIKit
 
 internal final class DiffableListDataSource: UITableViewDiffableDataSource<ListSection, ListItem>, ListViewControllerDataSource {
-    internal var cellReuseIdentifier: String { coreDataSource.cellReuseIdentifier }
+    internal var cellReuseIdentifier: String {
+        coreDataSource.cellReuseIdentifier
+    }
     
     private typealias DataSnapshot = NSDiffableDataSourceSnapshot<ListSection, ListItem>
     
@@ -42,7 +44,7 @@ internal final class DiffableListDataSource: UITableViewDiffableDataSource<ListS
         coreDataSource.cell(for: tableView, at: indexPath)
     }
 
-    // first reload must be NOT animated, since its crashes on iOS 14.
+    /// first reload must be NOT animated, since its crashes on iOS 14.
     internal func reload(
         newSections: [ListSection],
         tableView: UITableView,

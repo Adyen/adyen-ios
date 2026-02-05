@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -39,14 +39,12 @@ internal class CheckoutProvider: CheckoutProviding {
             apiClient: apiClient
         )
         
-        let checkout = try await Checkout(
+        return try await Checkout(
             configuration: configuration,
             session: session,
             checkoutAttemptId: checkoutAttemptId,
             presentationDelegate: presentationDelegate
         )
-        
-        return checkout
     }
     
     /// Sets up the checkout object for the advanced flow
@@ -69,14 +67,12 @@ internal class CheckoutProvider: CheckoutProviding {
             apiClient: apiClient
         )
         
-        let checkout = Checkout(
+        return Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: checkoutAttemptId,
             presentationDelegate: presentationDelegate
         )
-        
-        return checkout
     }
     
     /// Sets up the checkout object for action handling only.
@@ -95,13 +91,11 @@ internal class CheckoutProvider: CheckoutProviding {
             apiClient: apiClient
         )
         
-        let checkout = Checkout(
+        return Checkout(
             configuration: configuration,
             checkoutAttemptId: checkoutAttemptId,
             presentationDelegate: presentationDelegate
         )
-        
-        return checkout
     }
     
     // MARK: Internal

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,7 +16,7 @@ class PublicKeyProviderTests: XCTestCase {
         AdyenAssertion.listener = nil
     }
 
-    func testMultipleFetchCallsAndOneRequestDispatched() throws {
+    func testMultipleFetchCallsAndOneRequestDispatched() {
         var baseApiClient = APIClientMock()
         var apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
         var sut = PublicKeyProvider(apiClient: apiClient, request: ClientKeyRequest(clientKey: Dummy.apiContext.clientKey))
