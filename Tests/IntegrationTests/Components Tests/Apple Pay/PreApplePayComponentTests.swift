@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -150,7 +150,7 @@ class PreApplePayComponentTests: XCTestCase {
         XCTAssertEqual(hintLabel.text, self.applePayPayment.amount.formatted)
     }
 
-    func testSubmitWithAnalyticsEnabledShouldSetCheckoutAttemptIdInPaymentComponentData() throws {
+    func testSubmitWithAnalyticsEnabledShouldSetCheckoutAttemptIdInPaymentComponentData() {
         // Given
         let paymentMethodDetails = ApplePayDetails(
             paymentMethod: paymentMethod,

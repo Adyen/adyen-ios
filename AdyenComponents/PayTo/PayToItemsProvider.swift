@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -97,7 +97,7 @@ internal class PayToItemsProvider: PayToItemsProviding {
 
     /// The segment control item to choose the payTo flow.
     internal func createFlowSelectionItem() -> FormSegmentedControlItem {
-        let item = FormSegmentedControlItem(
+        FormSegmentedControlItem(
             items: ["PayID", "BSB"],
             style: style.segmentedControlStyle,
             identifier: ViewIdentifierBuilder.build(
@@ -105,7 +105,6 @@ internal class PayToItemsProvider: PayToItemsProviding {
                 postfix: ViewIdentifier.flowSelectionItem
             )
         )
-        return item
     }
 
     /// The payid flow title label item.

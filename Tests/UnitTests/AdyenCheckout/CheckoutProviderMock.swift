@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -21,9 +21,9 @@ internal class CheckoutProviderMock: CheckoutProviding {
     var setupActionOnlyCalled = false
     var setupActionOnlyResult: Result<Checkout, Error>?
     
-    // For AdyenSessionProviding
+    /// For AdyenSessionProviding
     var mockedSessionResult: Result<SessionProtocol, Error>?
-    // For CheckoutAttemptIdProviding
+    /// For CheckoutAttemptIdProviding
     var mockedCheckoutAttemptId: Result<String, Error>?
     
     func setupSession(
@@ -58,7 +58,7 @@ internal class CheckoutProviderMock: CheckoutProviding {
 
     }
     
-    // Convenience for direct CheckoutProviding use
+    /// Convenience for direct CheckoutProviding use
     func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,

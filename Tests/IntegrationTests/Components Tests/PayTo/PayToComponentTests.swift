@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -30,11 +30,11 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(sut)
     }
 
-    func test_paymentMethodType_isPayto() throws {
+    func test_paymentMethodType_isPayto() {
         XCTAssertEqual(sut.paymentMethod.type, .payTo)
     }
 
-    func test_flowSelection_titleLabel_exists() throws {
+    func test_flowSelection_titleLabel_exists() {
         // Given
         sut.viewController.loadViewIfNeeded()
 
@@ -45,7 +45,7 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(flowSelectionTitleLabelItem, "Flow selection title label should exist")
     }
 
-    func test_flowSelectionItem_exists() throws {
+    func test_flowSelectionItem_exists() {
         // Given
         sut.viewController.loadViewIfNeeded()
 
@@ -70,7 +70,7 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(phoneNumberItem, "Phone number item should exist")
     }
 
-    func test_phoneNumberItem_invalidNumbers() throws {
+    func test_phoneNumberItem_invalidNumbers() {
         // Given
         let invalidNumbers = [
             "" // Empty phone number
@@ -85,7 +85,7 @@ class PayToComponentTests: XCTestCase {
         }
     }
 
-    func test_phoneNumberItem_validNumbers_withoutLeadingZero() throws {
+    func test_phoneNumberItem_validNumbers_withoutLeadingZero() {
         // Given
         let validNumbers = [
             "9",
@@ -106,7 +106,7 @@ class PayToComponentTests: XCTestCase {
         }
     }
 
-    func test_phoneNumberItem_validNumbers_withLeadingZero() throws {
+    func test_phoneNumberItem_validNumbers_withLeadingZero() {
         // Given
         let validNumbersWithZero = [
             "041124123",
@@ -123,7 +123,7 @@ class PayToComponentTests: XCTestCase {
         }
     }
 
-    func test_payid_titleLabel_exists() throws {
+    func test_payid_titleLabel_exists() {
         // Given
         sut.viewController.loadViewIfNeeded()
 
@@ -336,7 +336,7 @@ class PayToComponentTests: XCTestCase {
         XCTAssertNotNil(bankStateNumberInputItem, "Bank state number input field should exist")
     }
 
-    func test_payment_instruction_titleLabel_exists() throws {
+    func test_payment_instruction_titleLabel_exists() {
         // Given
         sut.viewController.loadViewIfNeeded()
 

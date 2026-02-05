@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2026 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,7 +11,7 @@ import Testing
 struct PaymentMethodListViewControllerTests {
 
     @Test
-    func viewDidLoad_should_enableIsModalInPresentation() async throws {
+    func viewDidLoad_should_enableIsModalInPresentation() {
         // Given
         let (sut, _) = makeSUT()
 
@@ -23,7 +23,7 @@ struct PaymentMethodListViewControllerTests {
     }
 
     @Test
-    func viewDidLoad_should_setupNavigationItem() async throws {
+    func viewDidLoad_should_setupNavigationItem() {
         // Given
         let (sut, viewModelMock) = makeSUT()
         let expectedTitle = "Payment Methods"
@@ -38,7 +38,7 @@ struct PaymentMethodListViewControllerTests {
     }
 
     @Test
-    func viewDidLoad_should_setupCancelButton() async throws {
+    func viewDidLoad_should_setupCancelButton() {
         // Given
         let (sut, _) = makeSUT()
 
@@ -50,7 +50,7 @@ struct PaymentMethodListViewControllerTests {
     }
 
     @Test
-    func cancelTapped_should_callViewModelCancel() async throws {
+    func cancelTapped_should_callViewModelCancel() throws {
         // Given
         let (sut, viewModelMock) = makeSUT()
         sut.loadViewIfNeeded()
@@ -63,7 +63,7 @@ struct PaymentMethodListViewControllerTests {
     }
 
     @Test
-    func viewDidLoad_should_setupPaymentMethodListView() async throws {
+    func viewDidLoad_should_setupPaymentMethodListView() {
         // Given
         let (sut, viewModelMock) = makeSUT()
         let paymentMethodListViewMock = UIViewController()

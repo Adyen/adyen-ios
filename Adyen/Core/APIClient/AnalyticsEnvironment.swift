@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -29,7 +29,9 @@ public enum AnalyticsEnvironment: String, AnyAPIEnvironment {
     @_spi(AdyenInternal)
     case local = "http://localhost:8080/"
     
-    public var baseURL: URL { URL(string: rawValue)! }
+    public var baseURL: URL {
+        URL(string: rawValue)!
+    }
     
 }
 

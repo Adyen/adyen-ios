@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,7 +13,10 @@ import XCTest
 final class BLIKComponentUITests: XCTestCase {
 
     private let payment = Payment(amount: Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
-    private var paymentMethod: BLIKPaymentMethod { BLIKPaymentMethod(type: .blik, name: "test_name") }
+    private var paymentMethod: BLIKPaymentMethod {
+        BLIKPaymentMethod(type: .blik, name: "test_name")
+    }
+
     private var context: AdyenContext {
         AdyenContext(
             apiContext: Dummy.apiContext,
@@ -30,7 +33,7 @@ final class BLIKComponentUITests: XCTestCase {
         style.hintLabel.textAlignment = .center
         style.hintLabel.color = .cyan
 
-        /// Footer
+        // Footer
         style.mainButtonItem.button.title.color = .white
         style.mainButtonItem.button.title.backgroundColor = .red
         style.mainButtonItem.button.title.textAlignment = .center
@@ -38,10 +41,10 @@ final class BLIKComponentUITests: XCTestCase {
         style.mainButtonItem.button.backgroundColor = .red
         style.mainButtonItem.backgroundColor = .brown
 
-        /// background color
+        // background color
         style.backgroundColor = .red
 
-        /// Text field
+        // Text field
         style.textField.text.color = .red
         style.textField.text.font = .systemFont(ofSize: 13)
         style.textField.text.textAlignment = .right

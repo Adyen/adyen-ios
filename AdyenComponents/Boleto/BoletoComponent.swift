@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -24,7 +24,9 @@ public final class BoletoComponent: PaymentComponent,
 
     public weak var delegate: PaymentComponentDelegate?
         
-    public var paymentMethod: PaymentMethod { boletoPaymentMethod }
+    public var paymentMethod: PaymentMethod {
+        boletoPaymentMethod
+    }
     
     /// The Component's configuration.
     public var configuration: Configuration

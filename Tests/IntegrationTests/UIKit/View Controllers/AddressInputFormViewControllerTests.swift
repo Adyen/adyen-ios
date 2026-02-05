@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -44,7 +44,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertNil(view.findView(by: "AddressInputFormViewController.addressItem.title"))
         
         XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
-        XCTAssertEqual(countryItemView.item.value!.title, "Netherlands")
+        XCTAssertEqual(countryItemView.item.value?.title, "Netherlands")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "House number")
         XCTAssertEqual(addressItemView.titleLabel.text, "Street")
         XCTAssertEqual(apartmentSuiteItemView.titleLabel.text, "Apartment / Suite (optional)")
@@ -100,7 +100,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertNil(apartmentSuiteItemView)
 
         XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
-        XCTAssertEqual(countryItemView.item.value!.title, "United States")
+        XCTAssertEqual(countryItemView.item.value?.title, "United States")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "Apartment / Suite (optional)")
         XCTAssertEqual(addressItemView.titleLabel.text, "Address")
         XCTAssertEqual(cityItemView.titleLabel.text, "City")
@@ -147,7 +147,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
 
         XCTAssertNil(apartmentSuiteItemView)
         XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
-        XCTAssertEqual(countryItemView.item.value!.title, "United Kingdom")
+        XCTAssertEqual(countryItemView.item.value?.title, "United Kingdom")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "House number")
         XCTAssertEqual(addressItemView.titleLabel.text, "Street")
         XCTAssertEqual(cityItemView.titleLabel.text, "City / Town")
@@ -182,7 +182,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertNil(apartmentSuiteItemView)
 
         XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
-        XCTAssertEqual(countryItemView.item.value!.title, "Canada")
+        XCTAssertEqual(countryItemView.item.value?.title, "Canada")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "Apartment / Suite (optional)")
         XCTAssertEqual(addressItemView.titleLabel.text, "Address")
         XCTAssertEqual(cityItemView.titleLabel.text, "City")
@@ -190,7 +190,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertEqual(postalCodeItemView.titleLabel.text, "Postal code")
         XCTAssertNil(apartmentSuiteItemView)
 
-        countryItemView.item.value = countryItemView.item.selectableValues.first { $0.identifier == "BR" }!
+        countryItemView.item.value = try XCTUnwrap(countryItemView.item.selectableValues.first { $0.identifier == "BR" })
 
         houseNumberItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.houseNumberOrName"))
         countryItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.country"))
@@ -201,7 +201,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         postalCodeItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.postalCode"))
 
         XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
-        XCTAssertEqual(countryItemView.item.value!.title, "Brazil")
+        XCTAssertEqual(countryItemView.item.value?.title, "Brazil")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "House number")
         XCTAssertEqual(addressItemView.titleLabel.text, "Street")
         XCTAssertEqual(cityItemView.titleLabel.text, "City")
@@ -299,7 +299,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         )
     }
     
-    func testClearShouldAssignEmptyStreet() throws {
+    func testClearShouldAssignEmptyStreet() {
         // Given
         let viewController = AddressInputFormViewController(
             viewModel: self.viewModel(

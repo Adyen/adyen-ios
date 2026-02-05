@@ -1,12 +1,12 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-// Utility class with example test card numbers.
+/// Utility class with example test card numbers.
 enum CardNumbers {
     
     static let masterCard = [

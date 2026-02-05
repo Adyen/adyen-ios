@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -40,7 +40,9 @@ open class AdyenObservable<ValueType: Equatable>: EventPublisher {
     /// The event handlers attached to the observable.
     public var eventHandlers = [EventHandlerToken: EventHandler<Event>]()
     
-    open var projectedValue: AdyenObservable { self }
+    open var projectedValue: AdyenObservable {
+        self
+    }
     
     @_spi(AdyenInternal)
     public let eventHandlersLock: NSLock = .init()

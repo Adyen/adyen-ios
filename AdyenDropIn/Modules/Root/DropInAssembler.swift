@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -62,25 +62,21 @@ internal struct DropInAssembler {
             configuration: configuration
         )
 
-        let router = DropInRouter(
+        return DropInRouter(
             viewModel: viewModel,
             preselectedPaymentMethodAssembler: preselectedPaymentMethodAssembler,
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler
         )
-
-        return router
     }
 
     // MARK: - Private
 
     private func resolveAPIClient() -> APIClientProtocol {
         let scheduler = SimpleScheduler(maximumCount: 3)
-        let apiClient = APIClient(apiContext: context.apiContext)
+        return APIClient(apiContext: context.apiContext)
             .retryAPIClient(with: scheduler)
             .retryOnErrorAPIClient()
-
-        return apiClient
     }
 
     private var preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {

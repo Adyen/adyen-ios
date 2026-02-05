@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -39,7 +39,7 @@ class BACSInputFormViewControllerTests: XCTestCase {
         XCTAssertFalse(title.isEmpty)
     }
 
-    func testViewDidLoadShouldCallPresenterViewDidLoad() throws {
+    func testViewDidLoadShouldCallPresenterViewDidLoad() {
         // When
         sut.viewDidLoad()
 
@@ -47,7 +47,7 @@ class BACSInputFormViewControllerTests: XCTestCase {
         XCTAssertTrue(presenter.viewDidLoadCalled)
     }
 
-    func testViewWillAppearShouldCallPresenterViewWillAppear() throws {
+    func testViewWillAppearShouldCallPresenterViewWillAppear() {
         // When
         sut.viewWillAppear(true)
 

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -15,10 +15,10 @@ public final class TwintSDKAction: PaymentDataAware, Decodable {
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     public let paymentData: String
 
-    // The payment method type
+    /// The payment method type
     public let paymentMethodType: String
 
-    // The payment method subtype
+    /// The payment method subtype
     public let type: String
     
     internal enum CodingKeys: CodingKey {

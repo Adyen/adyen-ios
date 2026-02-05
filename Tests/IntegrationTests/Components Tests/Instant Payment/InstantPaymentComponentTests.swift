@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -41,7 +41,7 @@ class InstantPaymentComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testCustomPaymentData() throws {
+    func testCustomPaymentData() {
         let delegateExpectation = expectation(description: "expect delegate to be called.")
         delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === self.sut)
