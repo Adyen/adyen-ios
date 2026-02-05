@@ -171,37 +171,35 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
 
     // MARK: - Validation
 
-    override open func updateValidationStatus(forced: Bool = false) {
-        guard forced else {
-            showHint()
-            updateContainerBorderColor(isValid: true)
-            accessibilityLabelView?.accessibilityLabel = item.title
-            return
-        }
-
-        if item.isValid() {
-            showHint()
-            updateContainerBorderColor(isValid: true)
-            accessibilityLabelView?.accessibilityLabel = item.title
-        } else {
-            showError(item.validationFailureMessage)
+    override public func showValidation() {
+        item.triggerValidation(.explicit)
+        
+        if item.validationState.shouldShowError {
+            showError(item.validationState.errorMessage)
             updateContainerBorderColor(isValid: false)
             accessibilityLabelView?.accessibilityLabel = [
                 item.title,
-                item.validationFailureMessage
+                item.validationState.errorMessage
             ].compactMap { $0 }.joined(separator: ", ")
 
             if let validationStatus = item.validationStatus(),
                let error = validationStatus.validationError {
                 item.onDidShowValidationError?(error)
             }
+        } else {
+            updateValidation()
         }
     }
-
-    override internal func resetValidationStatus() {
+    
+    internal func updateValidation() {
         showHint()
         updateContainerBorderColor(isValid: true)
         accessibilityLabelView?.accessibilityLabel = item.title
+    }
+
+    override internal func resetValidationStatus() {
+        super.resetValidationStatus()
+        updateValidation()
     }
 }
 

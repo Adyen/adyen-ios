@@ -608,6 +608,7 @@
 		B605AC122D8D988D0084D583 /* AdyenCardScanner.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C9FC2C3D2D50D0B700C9D0F3 /* AdyenCardScanner.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B60946132DA562FD00CEE6CF /* CardScannerProviderDispatchOnceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60946122DA562FD00CEE6CF /* CardScannerProviderDispatchOnceTests.swift */; };
 		B60946152DA5656100CEE6CF /* CardScannerTestsHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60946142DA5656100CEE6CF /* CardScannerTestsHelpers.swift */; };
+		B60FB35C2F33769500F77471 /* CardComponentValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60FB35B2F33769500F77471 /* CardComponentValidationTests.swift */; };
 		B61CE9152DDDD7C3009B7503 /* FormButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61CE9142DDDD7C3009B7503 /* FormButtonTests.swift */; };
 		B6244E082E327A5300F42780 /* Configuration+secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6244E072E327A5300F42780 /* Configuration+secrets.swift */; };
 		B6244E092E327A5300F42780 /* Configuration+secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6244E072E327A5300F42780 /* Configuration+secrets.swift */; };
@@ -2266,6 +2267,7 @@
 		B605AC092D897A930084D583 /* CardScannerControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerControllerTests.swift; sourceTree = "<group>"; };
 		B60946122DA562FD00CEE6CF /* CardScannerProviderDispatchOnceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerProviderDispatchOnceTests.swift; sourceTree = "<group>"; };
 		B60946142DA5656100CEE6CF /* CardScannerTestsHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerTestsHelpers.swift; sourceTree = "<group>"; };
+		B60FB35B2F33769500F77471 /* CardComponentValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentValidationTests.swift; sourceTree = "<group>"; };
 		B61CE9142DDDD7C3009B7503 /* FormButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormButtonTests.swift; sourceTree = "<group>"; };
 		B6244DFF2E3224BE00F42780 /* Secrets.template.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.template.xcconfig; sourceTree = "<group>"; };
 		B6244E072E327A5300F42780 /* Configuration+secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Configuration+secrets.swift"; sourceTree = "<group>"; };
@@ -6010,6 +6012,7 @@
 				F9D57534238291A1009C18B5 /* BCMCComponentTests.swift */,
 				F9EDB78C2395643A00CFB3C9 /* CardComponentTests.swift */,
 				A0B4B9B02BC027DE00C99926 /* CardComponentEventTests.swift */,
+				B60FB35B2F33769500F77471 /* CardComponentValidationTests.swift */,
 				F924C071246BEEF0006DDAB8 /* CardDetailsTests.swift */,
 				F9EDB78E23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift */,
 				F919DF9F24EABCC10027976E /* StoredCardComponentTests.swift */,
@@ -8756,6 +8759,7 @@
 				E9E3DABB221EA22F00697074 /* CardExpiryDateFormatterTests.swift in Sources */,
 				F9639B5624E3DB190073F38A /* PollingComponentTests.swift in Sources */,
 				C98125502851E9E4006D1374 /* PaymentComponentSubjectTests.swift in Sources */,
+				B60FB35C2F33769500F77471 /* CardComponentValidationTests.swift in Sources */,
 				F9976BB526D90C6700D2D7CE /* MultibancoShareableVoucherViewProviderTests.swift in Sources */,
 				E7877803282409FF004A6366 /* ApplePayDelegateMock.swift in Sources */,
 				F99F08642383F2B000EBB948 /* FormTextItemViewTests.swift in Sources */,

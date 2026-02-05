@@ -30,7 +30,7 @@ package class FormPickerItemView<Value: FormPickable>: FormSelectableValueItemVi
     
     override package func showValidation() {
         if item.isValid() {
-            updateValidationStatus(forced: false)
+            updateValidation()
         } else {
             super.showValidation()
         }
