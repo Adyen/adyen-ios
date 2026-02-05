@@ -8,6 +8,7 @@
 #if canImport(AdyenUI)
     @_spi(AdyenInternal) import AdyenUI
 #endif
+import Foundation
 
 /// Configuration for Twint action handling.
 public struct TwintActionConfiguration: CheckoutComponentConfiguration {
