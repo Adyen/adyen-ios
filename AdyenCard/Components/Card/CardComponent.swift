@@ -152,7 +152,7 @@ public class CardComponent: PresentableComponent,
 
     // MARK: - Stored Card
 
-    package lazy var storedCardComponent: (PaymentComponent & StoredPaymentComponent)? = {
+    package lazy var storedCardComponent: StoredPaymentComponent? = {
         guard let paymentMethod = paymentMethod as? StoredCardPaymentMethod else {
             return nil
         }

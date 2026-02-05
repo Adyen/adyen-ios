@@ -4,11 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
-
 import Adyen
 import AdyenComponents
 import AdyenSession
+import Foundation
 
 internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
 
@@ -71,7 +70,7 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
             let component = try instantPaymentComponent(from: session)
             instantPaymentComponent = component
             presenter?.showLoadingIndicator()
-            component.initiatePayment()
+            component.initiatePayment(delegate: session)
         } catch {
             self.presentAlert(with: error)
         }
@@ -86,9 +85,7 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: InstantPaymentMethod.self)
         }
         
-        let component = InstantPaymentComponent(paymentMethod: paymentMethod, context: context, order: nil)
-        component.delegate = session
-        return component
+        return InstantPaymentComponent(paymentMethod: paymentMethod, context: context, order: nil)
     }
 
     private func present(_ component: PresentableComponent) {

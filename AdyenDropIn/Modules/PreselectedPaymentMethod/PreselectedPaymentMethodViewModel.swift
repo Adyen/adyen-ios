@@ -77,9 +77,8 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
             router?.present(component: component) { [weak self] in
                 self?.stopLoading()
             }
-        case let .instant(initiablePaymentComponent):
-            initiablePaymentComponent.delegate = self
-            initiablePaymentComponent.initiatePayment()
+        case let .initiable(initiablePaymentComponent):
+            initiablePaymentComponent.initiatePayment(delegate: self)
         case .none:
             break
         }

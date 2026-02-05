@@ -8,7 +8,7 @@ import Foundation
 
 public protocol InitiablePaymentComponent: PaymentComponent {
     /// Initiate the payment flow
-    func initiatePayment()
+    func initiatePayment(delegate: PaymentComponentDelegate)
 }
 
 /// A component that handles payment methods that don't need any payment detail to be filled.
@@ -66,9 +66,10 @@ public final class InstantPaymentComponent: InitiablePaymentComponent {
     }
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
-    public func initiatePayment() {
+    public func initiatePayment(delegate: PaymentComponentDelegate) {
         // We are not attempting to fetch the checkoutAttemptId as it won't be ready for the payment
         // and we don't want to block it for an analytics call.
+        self.delegate = delegate
         submit(data: paymentData)
     }
 }

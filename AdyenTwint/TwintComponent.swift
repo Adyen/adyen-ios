@@ -64,7 +64,8 @@ public final class TwintComponent: InitiablePaymentComponent {
     // MARK: - PaymentInitiable
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
-    public func initiatePayment() {
+    public func initiatePayment(delegate: PaymentComponentDelegate) {
+        self.delegate = delegate
         submit(data: paymentData)
     }
 }
