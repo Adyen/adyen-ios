@@ -327,7 +327,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         XCTAssertEqual(sut.threeDS2ClassicFlowHandler.threeDSRequestorAppURL, URL(string: "https://google.com"))
     }
     
-    func testSettingRequestorAppURLWithInitializerAndInjectedHandlers() {
+    func testSettingRequestorAppURLWithInitializerAndInjectedHandlers() throws {
         let threeDS2CompactFlowHandler = AnyThreeDS2ActionHandlerMock()
         let threeDS2ClassicFlowHandler = AnyThreeDS2ActionHandlerMock()
         let redirectComponent = AnyRedirectComponentMock()
