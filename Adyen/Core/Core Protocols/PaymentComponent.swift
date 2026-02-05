@@ -18,7 +18,7 @@ public protocol PaymentMethodAware {
 public protocol StoredPaymentComponent: PresentableComponent {}
 
 public enum ComponentType {
-    case presentable(PresentableComponent)
+    case regular(PresentableComponent)
     case stored(StoredPaymentComponent)
     case instant(InitiablePaymentComponent)
     case none
@@ -36,7 +36,7 @@ public protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentMe
 public extension PaymentComponent where Self: PresentableComponent {
 
     var type: ComponentType {
-        .presentable(self)
+        .regular(self)
     }
 }
 

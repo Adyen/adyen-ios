@@ -69,7 +69,7 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         onCancel: @escaping () -> Void
     ) {
         switch component.type {
-        case let .presentable(presentable):
+        case let .regular(presentable):
             presentModalComponent(presentable, onCancel: onCancel)
         case let .stored(stored):
             presentModalComponent(stored, onCancel: onCancel)

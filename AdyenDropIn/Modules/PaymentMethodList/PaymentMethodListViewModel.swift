@@ -79,7 +79,7 @@ extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
         startLoading(for: component)
         
         switch component.type {
-        case .presentable, .stored:
+        case .regular, .stored:
             router?.present(component: component) { [weak self] in
                 self?.stopLoading()
             }
