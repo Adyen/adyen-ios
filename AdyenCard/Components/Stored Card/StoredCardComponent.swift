@@ -9,13 +9,15 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for stored card payments.
-package final class StoredCardComponent: PaymentComponent, PaymentAware, PresentableComponent, Localizable {
-    
+package final class StoredCardComponent: PaymentComponent, PaymentAware, StoredPaymentComponent, Localizable {
+
     /// The context object for this component.
     package let context: AdyenContext
     
     /// The card payment method.
-    package var paymentMethod: PaymentMethod { storedCardPaymentMethod }
+    package var paymentMethod: PaymentMethod {
+        storedCardPaymentMethod
+    }
     
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?

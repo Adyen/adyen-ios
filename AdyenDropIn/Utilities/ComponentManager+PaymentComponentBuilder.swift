@@ -26,7 +26,8 @@ extension ComponentManager: PaymentComponentBuilder {
 
     // TODO: FIX StoredPaymentMethodComponent
     internal func build(paymentMethod: StoredCardPaymentMethod) -> PaymentComponent? {
-        createCardComponent(with: paymentMethod)
+        let cardComponent = createCardComponent(with: paymentMethod)
+        return cardComponent.storedCardComponent
     }
 
     internal func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {
@@ -248,7 +249,8 @@ extension ComponentManager: PaymentComponentBuilder {
         #if canImport(PayKit)
             guard let cashAppPayDropInConfig = configuration.cashAppPay else {
                 AdyenAssertion.assertionFailure(
-                    message: "Cash App Pay configuration instance must not be nil in order to use CashAppPayComponent")
+                    message: "Cash App Pay configuration instance must not be nil in order to use CashAppPayComponent"
+                )
                 return nil
             }
             if #available(iOS 13.0, *) {
@@ -303,7 +305,7 @@ extension ComponentManager: PaymentComponentBuilder {
 
 private extension ComponentManager {
     
-    func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> PaymentComponent? {
+    func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> CardComponent {
         var cardConfiguration = configuration.card.cardComponentConfiguration
         cardConfiguration.style = configuration.style.formComponent
         cardConfiguration.localizationParameters = configuration.localizationParameters
