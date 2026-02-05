@@ -21,7 +21,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
 
     // MARK: - Views
 
-    // Shows placeholder hint when valid, validation error when invalid.
+    /// Shows placeholder hint when valid, validation error when invalid.
     internal lazy var footerLabel: UILabel = {
         let footerLabel = UILabel()
         footerLabel.apply(theme.elements.labels.subheadline)
@@ -40,6 +40,11 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     private func setupValidationObserver() {
         observe(item.$validationState) { [weak self] state in
             self?.onValidationStateChanged(state: state)
+        }
+
+        observe(item.$placeholder) { [weak self] _ in
+            guard let self else { return }
+            self.updateFooterDisplay(state: self.item.validationState, animated: true)
         }
     }
 
@@ -76,7 +81,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         item.isValid()
     }
 
-    // Called by form to trigger explicit validation (e.g., Pay button).
+    /// Called by form to trigger explicit validation (e.g., Pay button).
     public func showValidation() {
         item.triggerValidation(.explicit)
         triggerValidationErrorCallbackIfNeeded()
@@ -107,24 +112,6 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         item.onDidShowValidationError?(error)
     }
 
-    // MARK: - Package API (for subclasses that need direct control)
-
-    package func showHint() {
-        let newText = item.placeholder
-        let newColor = theme.colors.textSecondary
-        let shouldBeVisible = newText?.isEmpty == false
-        
-        updateFooter(text: newText, color: newColor, visible: shouldBeVisible, animated: true)
-    }
-
-    package func showError(_ message: String?) {
-        guard let message, !message.isEmpty else {
-            showHint()
-            return
-        }
-        updateFooter(text: message, color: theme.colors.destructive, visible: true, animated: true)
-    }
-    
     private func updateFooter(text: String?, color: UIColor, visible: Bool, animated: Bool) {
         let contentChanged = footerLabel.text != text || footerLabel.textColor != color
         let wasVisible = !footerLabel.isHidden

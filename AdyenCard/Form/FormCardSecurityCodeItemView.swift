@@ -27,9 +27,8 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
             let number = cardsType == CardType.americanExpress ? "4" : "3"
             let localizedPlaceholder = localizedString(.cardCvcItemPlaceholderDigits, item.localizationParameters, number)
             
-            // Set placeholder on item - it will be shown in footer label
+            // Set placeholder on item - it will be shown in footer label reactively
             self.item.placeholder = localizedPlaceholder
-            self.showHint()
             self.textField.accessibilityLabel = self.accessibilityLabel(placeholder: localizedPlaceholder)
         }
 
