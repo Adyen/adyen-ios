@@ -22,6 +22,10 @@ private class FormSelectableValueItemMock: FormSelectableValueItem<String?> {
         super.init(value: nil, style: style, placeholder: placeholder)
         self.title = title
     }
+    
+    override func isEmpty() -> Bool {
+        value == nil
+    }
 }
 
 private class FormSelectableValueItemViewMock: FormSelectableValueItemView<String, FormSelectableValueItemMock> {}
