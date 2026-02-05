@@ -142,11 +142,11 @@ class PreselectedPaymentComponentTests: XCTestCase {
 
         let submitButtonContainer = view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton")
         let submitButton = try XCTUnwrap(submitButtonContainer?.findView(by: "button"))
-        let submitButtonLabel: UILabel! = try XCTUnwrap(submitButton?.findView(by: "titleLabel"))
+        let submitButtonLabel: UILabel! = try XCTUnwrap(submitButton.findView(by: "titleLabel"))
 
         let openAllButtonContainer = view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.openAllButton")
         let openAllButton = try XCTUnwrap(openAllButtonContainer?.findView(by: "button"))
-        let openAllButtonLabel: UILabel! = try XCTUnwrap(openAllButton?.findView(by: "titleLabel"))
+        let openAllButtonLabel: UILabel! = try XCTUnwrap(openAllButton.findView(by: "titleLabel"))
 
         let separator = view.findView(by: "separatorLine")
 
@@ -159,10 +159,10 @@ class PreselectedPaymentComponentTests: XCTestCase {
         // Button and separator styling now use AdyenTheme instead of FormComponentStyle
         // PreselectedPaymentMethodComponent uses default theme, so elements get default theme colors
         let defaultButtonStyle = AdyenButtonStyle.primary(for: .default)
-        XCTAssertEqual(submitButton?.backgroundColor, defaultButtonStyle.backgroundColor)
+        XCTAssertEqual(submitButton.backgroundColor, defaultButtonStyle.backgroundColor)
         XCTAssertEqual(submitButtonLabel.textColor, defaultButtonStyle.textColor)
 
-        XCTAssertEqual(openAllButton?.backgroundColor, defaultButtonStyle.backgroundColor)
+        XCTAssertEqual(openAllButton.backgroundColor, defaultButtonStyle.backgroundColor)
         XCTAssertEqual(openAllButtonLabel.textColor, defaultButtonStyle.textColor)
 
         // Separator also uses theme colors now (migrated in PR #2)
@@ -175,7 +175,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
         
         let submitButtonContainer = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton")
         let submitButton = try XCTUnwrap(submitButtonContainer?.findView(by: "button"))
-        let submitButtonLabel: UILabel! = try XCTUnwrap(submitButton?.findView(by: "titleLabel"))
+        let submitButtonLabel: UILabel! = try XCTUnwrap(submitButton.findView(by: "titleLabel"))
         
         wait(for: .milliseconds(300))
         
@@ -189,7 +189,7 @@ class PreselectedPaymentComponentTests: XCTestCase {
 
         let submitButtonContainer = sut.viewController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton")
         let submitButton = try XCTUnwrap(submitButtonContainer?.findView(by: "button"))
-        let submitButtonLabel: UILabel! = try XCTUnwrap(submitButton?.findView(by: "titleLabel"))
+        let submitButtonLabel: UILabel! = try XCTUnwrap(submitButton.findView(by: "titleLabel"))
 
         wait(for: .milliseconds(300))
 
