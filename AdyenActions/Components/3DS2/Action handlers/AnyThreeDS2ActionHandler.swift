@@ -56,7 +56,7 @@ internal func createDefaultThreeDS2CoreActionHandler(
     context: AdyenContext,
     service: ThreeDSService,
     appearanceConfiguration: ADYAppearanceConfiguration,
-    delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?
+    delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication?
 ) -> AnyThreeDS2CoreActionHandler {
     #if canImport(AdyenAuthentication)
         if #available(iOS 16.0, *), let delegatedAuthenticationConfiguration {

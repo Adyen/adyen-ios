@@ -94,7 +94,7 @@ import XCTest
                 XCTAssertEqual(code, TwintSDKAction.dummy.sdkData.token)
                 XCTAssertEqual(appConfiguration.appDisplayName, TWAppConfiguration.dummy.appDisplayName)
                 XCTAssertEqual(appConfiguration.appURLScheme, TWAppConfiguration.dummy.appURLScheme)
-                XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.callbackAppScheme)
+                XCTAssertEqual(callbackAppScheme, TwintActionConfiguration.dummy.callbackAppScheme)
                 completionHandler(nil)
             } handleRegisterForUOF: { _, _, _, completionHandler in
                 XCTFail("RegisterForUOF should not have been called.")
@@ -149,7 +149,7 @@ import XCTest
                 XCTAssertEqual(code, TwintSDKAction.dummy.sdkData.token)
                 XCTAssertEqual(appConfiguration.appDisplayName, TWAppConfiguration.dummy.appDisplayName)
                 XCTAssertEqual(appConfiguration.appURLScheme, TWAppConfiguration.dummy.appURLScheme)
-                XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.callbackAppScheme)
+                XCTAssertEqual(callbackAppScheme, TwintActionConfiguration.dummy.callbackAppScheme)
                 completionHandler(nil)
             } handleRegisterForUOF: { _, _, _, completionHandler in
                 XCTFail("RegisterForUOF should not have been called.")
@@ -296,7 +296,7 @@ import XCTest
                 XCTAssertEqual(code, TwintSDKAction.dummy.sdkData.token)
                 XCTAssertEqual(appConfiguration.appDisplayName, TWAppConfiguration.dummy.appDisplayName)
                 XCTAssertEqual(appConfiguration.appURLScheme, TWAppConfiguration.dummy.appURLScheme)
-                XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.callbackAppScheme)
+                XCTAssertEqual(callbackAppScheme, TwintActionConfiguration.dummy.callbackAppScheme)
                 completionHandler(nil)
             } handleController: { installedAppConfigurations, selectionHandler, cancelHandler in
                 XCTFail("Twint controller should not have been shown")
@@ -354,7 +354,7 @@ import XCTest
                 XCTAssertEqual(code, TwintSDKAction.dummy.sdkData.token)
                 XCTAssertEqual(appConfiguration.appDisplayName, TWAppConfiguration.dummy.appDisplayName)
                 XCTAssertEqual(appConfiguration.appURLScheme, TWAppConfiguration.dummy.appURLScheme)
-                XCTAssertEqual(callbackAppScheme, TwintSDKActionComponent.Configuration.dummy.callbackAppScheme)
+                XCTAssertEqual(callbackAppScheme, TwintActionConfiguration.dummy.callbackAppScheme)
                 completionHandler(nil)
             } handleController: { installedAppConfigurations, selectionHandler, cancelHandler in
                 XCTAssertEqual(installedAppConfigurations, expectedAppConfigurations)
