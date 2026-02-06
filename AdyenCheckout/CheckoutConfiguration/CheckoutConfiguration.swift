@@ -113,6 +113,11 @@ public struct CheckoutConfiguration {
         return defaultValue()
     }
     
+    internal func configuration<T: CheckoutComponentConfiguration>(for actionType: ActionComponentType) -> T? {
+        let config = configurations[.action(actionType)] as? T
+        return config
+    }
+    
 }
 
 extension CheckoutConfiguration {

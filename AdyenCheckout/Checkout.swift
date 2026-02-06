@@ -65,7 +65,8 @@ public final class Checkout: CheckoutProtocol {
             for: .threeDS2,
             defaultValue: ThreeDS2ActionConfiguration()
         )
-        let twintConfig: TwintActionConfiguration? = configuration.configurations[.action(.twint)] as? TwintActionConfiguration
+        
+        let twintConfig: TwintActionConfiguration? = configuration.configuration(for: .twint)
         
         let actionConfig = CheckoutActionComponent.Configuration(
             threeDS: threeDS2Config,
