@@ -51,6 +51,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     package func onValidationStateChanged(state: ValidationState) {
         updateFooterDisplay(state: state, animated: true)
         updateAccessibility(state: state)
+        triggerValidationErrorCallbackIfNeeded()
     }
 
     private func updateFooterDisplay(state: ValidationState, animated: Bool) {
@@ -84,7 +85,6 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     /// Called by form to trigger explicit validation (e.g., Pay button).
     public func showValidation() {
         item.triggerValidation(.explicit)
-        triggerValidationErrorCallbackIfNeeded()
     }
 
     /// Clears validation error state.
