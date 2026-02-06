@@ -16,6 +16,7 @@ class PaymentComponentSubject: PaymentComponent {
     var payment: Payment?
     var order: PartialPaymentOrder?
     var paymentMethod: PaymentMethod
+    var type: ComponentType = .undefined
 
     // MARK: - Initializers
 

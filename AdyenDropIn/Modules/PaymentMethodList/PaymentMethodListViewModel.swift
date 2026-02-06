@@ -85,7 +85,7 @@ extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
             }
         case let .initiable(initiablePaymentComponent):
             initiablePaymentComponent.initiatePayment(delegate: self)
-        case .none:
+        case .undefined:
             break
         }
     }

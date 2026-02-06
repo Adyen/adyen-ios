@@ -21,7 +21,7 @@ public enum ComponentType {
     case regular(PaymentComponent & PresentableComponent)
     case stored(StoredPaymentComponent)
     case initiable(InitiablePaymentComponent)
-    case none
+    case undefined
 }
 
 /// A component that handles the initial phase of getting payment details to initiate a payment.

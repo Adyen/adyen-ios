@@ -79,7 +79,7 @@ internal class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewMo
             }
         case let .initiable(initiablePaymentComponent):
             initiablePaymentComponent.initiatePayment(delegate: self)
-        case .none:
+        case .undefined:
             break
         }
     }
