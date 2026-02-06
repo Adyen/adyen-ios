@@ -28,14 +28,6 @@ package class FormPickerItemView<Value: FormPickable>: FormSelectableValueItemVi
         }
     }
     
-    override package func showValidation() {
-        if item.isValid() {
-            updateValidation()
-        } else {
-            super.showValidation()
-        }
-    }
-    
     override package func reset() {
         item.resetValue()
         resetValidationStatus()

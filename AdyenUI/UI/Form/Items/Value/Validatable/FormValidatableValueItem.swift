@@ -46,9 +46,6 @@ open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueTy
     /// Views observe this property to update their UI reactively.
     @AdyenUIObservable(.initial) package var validationState: ValidationState
     
-    /// Tracks whether the field is currently being edited.
-    /// Views update this when focus changes, allowing reactive UI updates.
-    @AdyenObservable(false) public var isEditing: Bool
     
     /// Closure that is triggered when there is a validation error.
     public var onDidShowValidationError: ((ValidationError) -> Void)?
