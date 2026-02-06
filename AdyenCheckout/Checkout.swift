@@ -61,13 +61,22 @@ public final class Checkout: CheckoutProtocol {
     internal weak var presentationDelegate: PresentationDelegate?
     
     internal lazy var actionHandlingComponent: ActionHandlingComponent = {
+        let threeDS2Config: ThreeDS2ActionConfiguration = configuration.configuration(
+            for: .threeDS2,
+            defaultValue: ThreeDS2ActionConfiguration()
+        )
+        
+        let twintConfig: TwintActionConfiguration? = configuration.configuration(for: .twint)
+        
+        let actionConfig = CheckoutActionComponent.Configuration(
+            threeDS: threeDS2Config,
+            twint: twintConfig
+        )
+        
         let handler = CheckoutActionComponent(
             context: configuration.context,
-            configuration: CheckoutActionComponent.Configuration()
+            configuration: actionConfig
         )
-        // TODO: create a way for CheckoutConfig to have CheckoutActionComponent.Configuration
-        // and it should provided if they want to have action handling
-        // move CheckoutActionComponent.Configuration to its own entity and make it public
         handler.delegate = self
         handler.presentationDelegate = presentationDelegate
         return handler

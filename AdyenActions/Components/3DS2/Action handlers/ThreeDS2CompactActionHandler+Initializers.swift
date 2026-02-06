@@ -18,7 +18,7 @@ extension ThreeDS2CompactActionHandler {
         context: AdyenContext,
         service: ThreeDSService,
         appearanceConfiguration: ADYAppearanceConfiguration,
-        delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?
+        delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication?
     ) {
         
         let fingerprintSubmitter = ThreeDS2FingerprintSubmitter(context: context)

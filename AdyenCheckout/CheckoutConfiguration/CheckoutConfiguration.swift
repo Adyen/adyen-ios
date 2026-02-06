@@ -106,7 +106,17 @@ public struct CheckoutConfiguration {
         return defaultValue()
     }
     
-    // TODO: same for action
+    internal func configuration<T: CheckoutComponentConfiguration>(for actionType: ActionComponentType, defaultValue: @autoclosure () -> T) -> T {
+        if let config = configurations[.action(actionType)] as? T {
+            return config
+        }
+        return defaultValue()
+    }
+    
+    internal func configuration<T: CheckoutComponentConfiguration>(for actionType: ActionComponentType) -> T? {
+        let config = configurations[.action(actionType)] as? T
+        return config
+    }
     
 }
 

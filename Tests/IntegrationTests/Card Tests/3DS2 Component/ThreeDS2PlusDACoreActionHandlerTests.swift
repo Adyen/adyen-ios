@@ -24,7 +24,7 @@ import XCTest
         
         static let relyingPartyIdentifier = "test-authentication-adyen.netlify.app"
         
-        static var delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication {
+        static var delegatedAuthenticationConfigurations: ThreeDS2ActionConfiguration.DelegatedAuthentication {
             .init(relyingPartyIdentifier: relyingPartyIdentifier)
         }
     

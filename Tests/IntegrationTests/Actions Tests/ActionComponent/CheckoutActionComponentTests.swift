@@ -287,7 +287,7 @@ class CheckoutActionComponentTests: XCTestCase {
                 XCTFail("No assertion should have been raised")
             }
             
-            _ = CheckoutActionComponent.Configuration.Twint(callbackAppScheme: scheme)
+            _ = TwintActionConfiguration(callbackAppScheme: scheme)
         }
         
         // Invalid Configuration
@@ -297,7 +297,7 @@ class CheckoutActionComponentTests: XCTestCase {
                 XCTAssertEqual(message, "Format of provided callbackAppScheme '\(scheme)' is incorrect.")
             }
             
-            _ = CheckoutActionComponent.Configuration.Twint(callbackAppScheme: scheme)
+            _ = TwintActionConfiguration(callbackAppScheme: scheme)
         }
     }
     
