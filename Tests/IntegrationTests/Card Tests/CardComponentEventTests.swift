@@ -347,6 +347,64 @@ final class CardComponentEventTests: XCTestCase {
         )
     }
 
+    // MARK: - Focus loss with invalid input validation events
+
+    // EVT-UC5: Focus Loss with Invalid Input - Send Both Unfocus and Validation Error Events
+    func test_cardNumber_onFocusLossWithInvalidValue_shouldSendUnfocusAndValidationErrorEvents()
+        throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = makeSUT(analyticsProviderMock: analyticsProviderMock)
+
+        let cardNumberItemView: FormTextItemView<FormCardNumberItem> = try XCTUnwrap(
+            sut.cardViewController.view.findView(
+                with: "AdyenCard.FormCardNumberContainerItem.numberItem"
+            )
+        )
+
+        testFocusLossValidationErrorEvent(
+            for: cardNumberItemView,
+            target: .cardNumber,
+            invalidValue: "123",
+            analyticsProviderMock: analyticsProviderMock
+        )
+    }
+
+    // EVT-UC5: Focus Loss with Invalid Input - Send Both Unfocus and Validation Error Events
+    func test_expiryDate_onFocusLossWithInvalidValue_shouldSendUnfocusAndValidationErrorEvents()
+        throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = makeSUT(analyticsProviderMock: analyticsProviderMock)
+
+        let expiryDateItemView: FormTextInputItemView = try XCTUnwrap(
+            sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
+        )
+
+        testFocusLossValidationErrorEvent(
+            for: expiryDateItemView,
+            target: .expiryDate,
+            invalidValue: "1",
+            analyticsProviderMock: analyticsProviderMock
+        )
+    }
+
+    // EVT-UC5: Focus Loss with Invalid Input - Send Both Unfocus and Validation Error Events
+    func test_securityCode_onFocusLossWithInvalidValue_shouldSendUnfocusAndValidationErrorEvents()
+        throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = makeSUT(analyticsProviderMock: analyticsProviderMock)
+
+        let securityCodeItemView: FormCardSecurityCodeItemView = try XCTUnwrap(
+            sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
+        )
+
+        testFocusLossValidationErrorEvent(
+            for: securityCodeItemView,
+            target: .securityCode,
+            invalidValue: "1",
+            analyticsProviderMock: analyticsProviderMock
+        )
+    }
+
     // EVT-UC4: Explicit Validation Success - No Validation Error Event
     func test_cardNumber_withValidValue_shouldNotSendValidationErrorEvent() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
@@ -432,6 +490,45 @@ final class CardComponentEventTests: XCTestCase {
         )
         XCTAssertNotNil(
             validationEvent?.validationErrorMessage, "Validation error should include error message"
+        )
+    }
+
+    private func testFocusLossValidationErrorEvent(
+        for field: FormTextItemView<some FormTextItem>,
+        target: AnalyticsEventTarget,
+        invalidValue: String,
+        analyticsProviderMock: AnalyticsProviderMock
+    ) {
+        analyticsProviderMock.clearAll()
+
+        field.item.value = invalidValue
+        field.textFieldDidBeginEditing(field.textField)
+        field.textFieldDidEndEditing(field.textField)
+
+        XCTAssertEqual(
+            analyticsProviderMock.infos.count,
+            3,
+            "Expected focus, unfocus, and validation error events"
+        )
+
+        let focusEvent = analyticsProviderMock.infos[0]
+        XCTAssertEqual(focusEvent.type, .focus)
+        XCTAssertEqual(focusEvent.target, target)
+
+        let unfocusEvent = analyticsProviderMock.infos[1]
+        XCTAssertEqual(unfocusEvent.type, .unfocus)
+        XCTAssertEqual(unfocusEvent.target, target)
+
+        let validationEvent = analyticsProviderMock.infos[2]
+        XCTAssertEqual(validationEvent.type, .validationError)
+        XCTAssertEqual(validationEvent.target, target)
+        XCTAssertNotNil(
+            validationEvent.validationErrorCode,
+            "Validation error should include error code"
+        )
+        XCTAssertNotNil(
+            validationEvent.validationErrorMessage,
+            "Validation error should include error message"
         )
     }
 
