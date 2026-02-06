@@ -114,8 +114,7 @@ public struct CheckoutConfiguration {
     }
     
     internal func configuration<T: CheckoutComponentConfiguration>(for actionType: ActionComponentType) -> T? {
-        let config = configurations[.action(actionType)] as? T
-        return config
+        configurations[.action(actionType)] as? T
     }
     
 }

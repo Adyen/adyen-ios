@@ -41,10 +41,12 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
     }
     
     class MockComponent: PaymentComponent {
+
         // PaymentComponent requirements
         var delegate: PaymentComponentDelegate?
         let paymentMethod: PaymentMethod
-        
+        var type: ComponentType = .undefined
+
         /// Component requirements (via AdyenContextAware)
         let context: AdyenContext
         
