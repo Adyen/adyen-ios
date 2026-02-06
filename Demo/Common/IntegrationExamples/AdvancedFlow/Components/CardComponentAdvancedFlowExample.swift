@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,7 +19,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
 
-    // comes from demo app protocol, unused on new structure
+    /// comes from demo app protocol, unused on new structure
     internal lazy var context: AdyenContext = generateContext()
 
     internal init() {}
@@ -59,7 +59,8 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                     .lookup(
                         onAddressLookup: { searchTerm in
                             await MapkitAddressLookupProvider().searchAsync(searchTerm)
-                        })
+                        }
+                    )
                 )
                 .onBinChange { bin in
                     print("Here is the bin \(bin)")
@@ -124,7 +125,8 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 completion?(
                     CheckoutPaymentsResponse(
                         resultCode: response.resultCode, action: response.action
-                    ))
+                    )
+                )
             case let .failure(error):
                 // TODO: change last parameter to accept error as well Result<CheckoutCallbackResult, Error>
                 break
@@ -144,7 +146,8 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 completion?(
                     CheckoutPaymentsResponse(
                         resultCode: response.resultCode, action: response.action
-                    ))
+                    )
+                )
             case let .failure(error):
                 // TODO: add error handling but maybe after async callbacks
                 break

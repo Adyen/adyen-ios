@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -27,14 +27,13 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
             let number = cardsType == CardType.americanExpress ? "4" : "3"
             let localizedPlaceholder = localizedString(.cardCvcItemPlaceholderDigits, item.localizationParameters, number)
             
-            // Set placeholder on item - it will be shown in footer label
+            // Set placeholder on item - it will be shown in footer label reactively
             self.item.placeholder = localizedPlaceholder
-            self.showHint()
             self.textField.accessibilityLabel = self.accessibilityLabel(placeholder: localizedPlaceholder)
         }
 
         observe(item.$displayMode) { [weak self] _ in
-            self?.updateValidationStatus()
+            self?.updateValidation()
         }
         
         item.$selectedCard.publish(nil)
@@ -50,8 +49,8 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         return view
     }()
 
-    override internal func updateValidationStatus(forced: Bool = false) {
-        super.updateValidationStatus(forced: forced)
+    override internal func updateValidation() {
+        super.updateValidation()
         
         alpha = item.displayMode.isVisible ? 1.0 : 0.0
         isUserInteractionEnabled = item.displayMode.isVisible

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -44,7 +44,7 @@ class BACSInputPresenterTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testViewDidLoadShouldCreateItems() throws {
+    func testViewDidLoadShouldCreateItems() {
         // When
         sut.viewDidLoad()
 
@@ -58,7 +58,7 @@ class BACSInputPresenterTests: XCTestCase {
         XCTAssertEqual(itemsFactory.createLegalConsentToggleCallsCount, 1)
     }
 
-    func testViewDidLoadShouldAddItemsToFormView() throws {
+    func testViewDidLoadShouldAddItemsToFormView() {
         // When
         sut.viewDidLoad()
 
@@ -66,7 +66,7 @@ class BACSInputPresenterTests: XCTestCase {
         XCTAssertEqual(view.addItemCallsCount, 11)
     }
 
-    func testViewDidLoadShouldCallTrackerSendEvent() throws {
+    func testViewDidLoadShouldCallTrackerSendEvent() {
         // When
         sut.viewDidLoad()
 
@@ -74,7 +74,7 @@ class BACSInputPresenterTests: XCTestCase {
         XCTAssertEqual(tracker.initialEventCallsCount, 1)
     }
 
-    func testContinuePaymentWhenButtonTappedShouldDisplayValidationOnView() throws {
+    func testContinuePaymentWhenButtonTappedShouldDisplayValidationOnView() {
         // When
         sut.viewDidLoad()
         sut.continueButtonItem?.buttonSelectionHandler?()
@@ -83,7 +83,7 @@ class BACSInputPresenterTests: XCTestCase {
         XCTAssertEqual(view.displayValidationCallsCount, 1)
     }
 
-    func testContinuePaymentWhenAnyTextItemIsNotValidShouldNotCallRouterPresentConfirmation() throws {
+    func testContinuePaymentWhenAnyTextItemIsNotValidShouldNotCallRouterPresentConfirmation() {
         // Given
         sut.viewDidLoad()
         sut.amountConsentToggleItem?.value = true
@@ -101,7 +101,7 @@ class BACSInputPresenterTests: XCTestCase {
         XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 0)
     }
 
-    func testContinuePaymentWhenAmountConsentItemIsDisabledShouldNotCallRouterPresentConfirmation() throws {
+    func testContinuePaymentWhenAmountConsentItemIsDisabledShouldNotCallRouterPresentConfirmation() {
         // Given
         sut.viewDidLoad()
         sut.amountConsentToggleItem?.value = false
@@ -119,7 +119,7 @@ class BACSInputPresenterTests: XCTestCase {
         XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 0)
     }
 
-    func testContinuePaymentWhenLegalConsentItemIsDisabledShouldNotCallRouterPresentConfirmation() throws {
+    func testContinuePaymentWhenLegalConsentItemIsDisabledShouldNotCallRouterPresentConfirmation() {
         // Given
         sut.viewDidLoad()
         sut.amountConsentToggleItem?.value = true
@@ -137,7 +137,7 @@ class BACSInputPresenterTests: XCTestCase {
         XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 0)
     }
 
-    func testContinuePaymentWhenAnyItemValueIsNilShouldNotCallRouterPresentConfirmation() throws {
+    func testContinuePaymentWhenAnyItemValueIsNilShouldNotCallRouterPresentConfirmation() {
         // Given
         sut.viewDidLoad()
         sut.amountConsentToggleItem?.value = true
@@ -155,7 +155,7 @@ class BACSInputPresenterTests: XCTestCase {
         XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 0)
     }
 
-    func testContinuePaymentWhenAllItemsAreValidShouldCallRouterPresentConfirmation() throws {
+    func testContinuePaymentWhenAllItemsAreValidShouldCallRouterPresentConfirmation() {
         // Given
         sut.viewDidLoad()
         sut.amountConsentToggleItem?.value = true
@@ -173,7 +173,7 @@ class BACSInputPresenterTests: XCTestCase {
         XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 1)
     }
 
-    func testContinuePaymentShouldCreateBacsDataWithCorrectValues() throws {
+    func testContinuePaymentShouldCreateBacsDataWithCorrectValues() {
         // Given
         sut.viewDidLoad()
         let expectedBacsData = bacsDataMock

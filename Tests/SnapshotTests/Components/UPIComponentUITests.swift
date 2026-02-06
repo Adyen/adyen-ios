@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -17,8 +17,14 @@ class UPIComponentUITests: XCTestCase {
         name: "upi",
         apps: upiApps
     )
-    private var context: AdyenContext { Dummy.context }
-    private var style: FormComponentStyle { FormComponentStyle() }
+    private var context: AdyenContext {
+        Dummy.context
+    }
+
+    private var style: FormComponentStyle {
+        FormComponentStyle()
+    }
+
     private var upiApps: [Issuer] = [
         Issuer(identifier: "bhim", name: "BHIM"),
         Issuer(identifier: "gpay", name: "Google Pay"),
@@ -30,11 +36,11 @@ class UPIComponentUITests: XCTestCase {
         BrowserInfo.cachedUserAgent = "some_value"
     }
 
-    func testUIConfiguration() throws {
+    func testUIConfiguration() {
         var style = style
         style.backgroundColor = .green
         
-        /// Footer
+        // Footer
         style.mainButtonItem.button.title.color = .white
         style.mainButtonItem.button.title.backgroundColor = .red
         style.mainButtonItem.button.title.textAlignment = .center
@@ -42,7 +48,7 @@ class UPIComponentUITests: XCTestCase {
         style.mainButtonItem.button.backgroundColor = .red
         style.mainButtonItem.backgroundColor = .brown
         
-        /// Text field
+        // Text field
         style.textField.text.color = .yellow
         style.textField.text.font = .systemFont(ofSize: 5)
         style.textField.text.textAlignment = .center
@@ -74,7 +80,7 @@ class UPIComponentUITests: XCTestCase {
         var style = style
         style.backgroundColor = .green
         
-        /// Footer
+        // Footer
         style.mainButtonItem.button.title.color = .white
         style.mainButtonItem.button.title.backgroundColor = .red
         style.mainButtonItem.button.title.textAlignment = .center
@@ -82,7 +88,7 @@ class UPIComponentUITests: XCTestCase {
         style.mainButtonItem.button.backgroundColor = .red
         style.mainButtonItem.backgroundColor = .brown
         
-        /// Text field
+        // Text field
         style.textField.text.color = .yellow
         style.textField.text.font = .systemFont(ofSize: 5)
         style.textField.text.textAlignment = .center
@@ -98,7 +104,7 @@ class UPIComponentUITests: XCTestCase {
         style.textField.title.textAlignment = .left
         style.textField.backgroundColor = .blue
         
-        /// segmentedControlStyle
+        // segmentedControlStyle
         style.segmentedControlStyle.tintColor = .yellow
         style.segmentedControlStyle.backgroundColor = .blue
         style.segmentedControlStyle.textStyle.backgroundColor = .systemPink

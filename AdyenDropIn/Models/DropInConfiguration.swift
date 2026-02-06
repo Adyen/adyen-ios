@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -95,10 +95,10 @@ public extension DropInComponent {
         public init() { /* Empty initializer */ }
         
         /// Three DS configurations
-        public var threeDS: CheckoutActionComponent.Configuration.ThreeDS = .init()
+        public var threeDS: ThreeDS2ActionConfiguration = .init()
         
         /// Twint configurations
-        public var twint: CheckoutActionComponent.Configuration.Twint?
+        public var twint: TwintActionConfiguration?
     }
 
     /// Boleto component configuration.

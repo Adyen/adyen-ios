@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,12 +16,12 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     public required init(item: ItemType, theme: AdyenTheme) {
         super.init(item: item, theme: theme)
         setupValidationObserver()
-        updateFooterDisplay(animated: false)
+        updateFooterDisplay(state: item.validationState, animated: false)
     }
 
     // MARK: - Views
 
-    // Shows placeholder hint when valid, validation error when invalid.
+    /// Shows placeholder hint when valid, validation error when invalid.
     internal lazy var footerLabel: UILabel = {
         let footerLabel = UILabel()
         footerLabel.apply(theme.elements.labels.subheadline)
@@ -38,22 +38,41 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     // MARK: - Validation
 
     private func setupValidationObserver() {
-        observe(item.$shouldShowValidationError) { [weak self] _ in
-            self?.onValidationStateChanged()
+        observe(item.$validationState) { [weak self] state in
+            self?.onValidationStateChanged(state: state)
+        }
+
+        observe(item.$placeholder) { [weak self] _ in
+            guard let self else { return }
+            self.updateFooterDisplay(state: self.item.validationState, animated: true)
         }
     }
 
-    private func onValidationStateChanged() {
-        updateFooterDisplay(animated: true)
-        updateAccessibility()
+    package func onValidationStateChanged(state: ValidationState) {
+        updateFooterDisplay(state: state, animated: true)
+        updateAccessibility(state: state)
     }
 
-    private func updateFooterDisplay(animated: Bool) {
-        if item.shouldShowValidationError {
-            displayError(item.validationFailureMessage, animated: animated)
+    private func updateFooterDisplay(state: ValidationState, animated: Bool) {
+        let newText: String?
+        let newColor: UIColor
+        let shouldBeVisible: Bool
+        
+        if let errorMessage = state.errorMessage, !errorMessage.isEmpty {
+            newText = errorMessage
+            newColor = theme.colors.destructive
+            shouldBeVisible = true
+        } else if let placeholder = item.placeholder, !placeholder.isEmpty {
+            newText = placeholder
+            newColor = theme.colors.textSecondary
+            shouldBeVisible = true
         } else {
-            displayHint(animated: animated)
+            newText = nil
+            newColor = theme.colors.textSecondary
+            shouldBeVisible = false
         }
+        
+        updateFooter(text: newText, color: newColor, visible: shouldBeVisible, animated: animated)
     }
 
     // MARK: - Validation API
@@ -62,32 +81,22 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         item.isValid()
     }
 
-    // Called by form to trigger explicit validation (e.g., Pay button).
-    // Delegates to updateValidationStatus so subclasses can update their UI (e.g., border color).
+    /// Called by form to trigger explicit validation (e.g., Pay button).
     public func showValidation() {
-        updateValidationStatus(forced: true)
-    }
-
-    open func updateValidationStatus(forced: Bool = false) {
-        guard forced else {
-            accessibilityLabelView?.accessibilityLabel = item.title
-            return
-        }
-
-        item.shouldShowValidationError = !item.isValid()
+        item.triggerValidation(.explicit)
         triggerValidationErrorCallbackIfNeeded()
     }
 
     /// Clears validation error state.
     internal func resetValidationStatus() {
-        item.shouldShowValidationError = false
+        item.resetValidation()
     }
 
-    private func updateAccessibility() {
-        if item.shouldShowValidationError {
+    private func updateAccessibility(state: ValidationState) {
+        if let errorMessage = state.errorMessage {
             accessibilityLabelView?.accessibilityLabel = [
                 item.title,
-                item.validationFailureMessage
+                errorMessage
             ].compactMap { $0 }.joined(separator: ", ")
         } else {
             accessibilityLabelView?.accessibilityLabel = item.title
@@ -95,7 +104,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     }
 
     private func triggerValidationErrorCallbackIfNeeded() {
-        guard item.shouldShowValidationError,
+        guard item.validationState.shouldShowError,
               window != nil,
               let validationStatus = item.validationStatus(),
               let error = validationStatus.validationError
@@ -103,38 +112,27 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         item.onDidShowValidationError?(error)
     }
 
-    // MARK: - Footer Display (Private)
-
-    /// Displays the placeholder hint in the footer.
-    private func displayHint(animated: Bool) {
-        guard let placeholder = item.placeholder, !placeholder.isEmpty else {
-            footerLabel.adyen.hide(animationKey: Constants.footerAnimationKey, hidden: true, animated: animated)
-            return
+    private func updateFooter(text: String?, color: UIColor, visible: Bool, animated: Bool) {
+        let contentChanged = footerLabel.text != text || footerLabel.textColor != color
+        let wasVisible = !footerLabel.isHidden
+        
+        // Set state immediately for synchronous access (tests)
+        footerLabel.text = text
+        footerLabel.textColor = color
+        
+        if animated, visible, wasVisible, contentChanged {
+            // Crossfade: visible -> visible with different content
+            UIView.transition(
+                with: footerLabel,
+                duration: 0.2,
+                options: [.transitionCrossDissolve, .beginFromCurrentState],
+                animations: nil
+            )
+        } else if animated {
+            footerLabel.adyen.hide(animationKey: Constants.footerAnimationKey, hidden: !visible, animated: true)
+        } else {
+            footerLabel.adyen.hide(animationKey: Constants.footerAnimationKey, hidden: !visible, animated: false)
         }
-        footerLabel.text = placeholder
-        footerLabel.textColor = theme.colors.textSecondary
-        footerLabel.adyen.hide(animationKey: Constants.footerAnimationKey, hidden: false, animated: animated)
-    }
-
-    /// Displays the error message in the footer.
-    private func displayError(_ message: String?, animated: Bool) {
-        guard let message, !message.isEmpty else {
-            displayHint(animated: animated)
-            return
-        }
-        footerLabel.text = message
-        footerLabel.textColor = theme.colors.destructive
-        footerLabel.adyen.hide(animationKey: Constants.footerAnimationKey, hidden: false, animated: animated)
-    }
-
-    // MARK: - Package API (for subclasses that need direct control)
-
-    package func showHint() {
-        displayHint(animated: true)
-    }
-
-    package func showError(_ message: String?) {
-        displayError(message, animated: true)
     }
 }
 

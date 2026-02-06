@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -34,7 +34,7 @@ public final class FormSegmentedControlItem: FormItem {
         self.identifier = identifier
     }
 
-    // The segmented control items.
+    /// The segmented control items.
     private var items: [String]
 
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
@@ -56,7 +56,9 @@ public final class FormSegmentedControlItem: FormItem {
 
 internal class ADYSegmentedControl: UISegmentedControl, AnyFormItemView {
 
-    public var childItemViews: [AnyFormItemView] { [] }
+    public var childItemViews: [AnyFormItemView] {
+        []
+    }
 
     public func reset() { /* Do nothing */ }
 }

@@ -1,10 +1,11 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Adyen
+import AdyenActions
 import AdyenCard
 import AdyenCheckout
 import AdyenComponents
@@ -67,9 +68,6 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
                     .lookup(
                         onAddressLookup: { searchTerm in
                             await MapkitAddressLookupProvider().searchAsync(searchTerm)
-                        },
-                        onAddressSelected: { result in
-                            try await DemoAddressLookupProvider().completeAsync(result)
                         }
                     )
                 )
@@ -80,6 +78,8 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
                     print("Bin lookup response \(brands)")
                 }
                 .showsSecurityCodeField(false)
+            ThreeDS2ActionConfiguration()
+                .requestorAppURL(ConfigurationConstants.returnUrl)
         }
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(

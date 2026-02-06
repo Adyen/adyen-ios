@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -25,7 +25,9 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
         }
     }
 
-    internal var wrappedComponent: Component { coreActionHandler }
+    internal var wrappedComponent: Component {
+        coreActionHandler
+    }
 
     internal let coreActionHandler: AnyThreeDS2CoreActionHandler
     
@@ -55,7 +57,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
         appearanceConfiguration: ADYAppearanceConfiguration,
         service: ThreeDSService,
         coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
-        delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil
+        delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication? = nil
     ) {
         self.context = context
         self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(

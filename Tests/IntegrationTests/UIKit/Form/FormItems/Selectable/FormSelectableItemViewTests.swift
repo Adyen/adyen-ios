@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -21,6 +21,10 @@ private class FormSelectableValueItemMock: FormSelectableValueItem<String?> {
     init(style: FormTextItemStyle, title: String = "Title", placeholder: String = placeholderText) {
         super.init(value: nil, style: style, placeholder: placeholder)
         self.title = title
+    }
+    
+    override func isEmpty() -> Bool {
+        value == nil
     }
 }
 
@@ -233,7 +237,8 @@ class FormPickerItemViewStyleTests: XCTestCase {
         let expectedColor = AdyenTheme.default.colors.destructive
         XCTAssertEqual(
             sut.footerLabel.textColor?.resolvedColor(
-                with: UITraitCollection(userInterfaceStyle: .light)),
+                with: UITraitCollection(userInterfaceStyle: .light)
+            ),
             expectedColor.resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
         )
     }

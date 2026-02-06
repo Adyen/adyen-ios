@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,7 +16,9 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
         }
     }
 
-    override internal var accessibilityLabelView: UIView? { selectionButton }
+    override internal var accessibilityLabelView: UIView? {
+        selectionButton
+    }
 
     package required init(item: ItemType, theme: AdyenTheme) {
         super.init(item: item, theme: theme)
@@ -171,37 +173,9 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
 
     // MARK: - Validation
 
-    override open func updateValidationStatus(forced: Bool = false) {
-        guard forced else {
-            showHint()
-            updateContainerBorderColor(isValid: true)
-            accessibilityLabelView?.accessibilityLabel = item.title
-            return
-        }
-
-        if item.isValid() {
-            showHint()
-            updateContainerBorderColor(isValid: true)
-            accessibilityLabelView?.accessibilityLabel = item.title
-        } else {
-            showError(item.validationFailureMessage)
-            updateContainerBorderColor(isValid: false)
-            accessibilityLabelView?.accessibilityLabel = [
-                item.title,
-                item.validationFailureMessage
-            ].compactMap { $0 }.joined(separator: ", ")
-
-            if let validationStatus = item.validationStatus(),
-               let error = validationStatus.validationError {
-                item.onDidShowValidationError?(error)
-            }
-        }
-    }
-
-    override internal func resetValidationStatus() {
-        showHint()
-        updateContainerBorderColor(isValid: true)
-        accessibilityLabelView?.accessibilityLabel = item.title
+    override package func onValidationStateChanged(state: ValidationState) {
+        super.onValidationStateChanged(state: state)
+        updateContainerBorderColor(isValid: !state.shouldShowError)
     }
 }
 

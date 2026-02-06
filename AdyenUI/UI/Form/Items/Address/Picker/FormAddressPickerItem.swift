@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -103,6 +103,10 @@ package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress
 
     override package func validationStatus() -> ValidationStatus? {
         nil
+    }
+    
+    override package func isEmpty() -> Bool {
+        value == nil
     }
 }
 

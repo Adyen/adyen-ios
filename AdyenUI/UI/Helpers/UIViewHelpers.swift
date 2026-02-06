@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -23,11 +23,9 @@ extension AdyenScope where Base: UIView {
         guard size.width > 0, size.height > 0 else { return nil }
 
         let renderer = UIGraphicsImageRenderer(size: size)
-        let image = renderer.image { _ in
+        return renderer.image { _ in
             base.drawHierarchy(in: base.bounds, afterScreenUpdates: true)
         }
-
-        return image
     }
     
     public func hide(
@@ -49,17 +47,23 @@ extension AdyenScope where Base: UIView {
         animationKey: String,
         _ hidden: Bool
     ) {
-        // Set isHidden immediately for synchronous state updates (tests)
-        base.isHidden = hidden
-        
+        // Find the nearest UIStackView parent for proper layout animation
+        let parentStackView = findParentStackView(from: base)
+
+        // Force current layout state before animation starts
+        parentStackView?.layoutIfNeeded()
+
         let context = KeyFrameAnimationContext(
             animationKey: animationKey,
             duration: 0.35,
             delay: 0,
             options: [.calculationModeCubicPaced, .beginFromCurrentState],
-            animations: { [weak base] in
-                // Only animate alpha for visual transition
+            animations: { [weak base, weak parentStackView] in
+                // Set isHidden INSIDE animation block so stack view animates height
+                base?.isHidden = hidden
                 base?.alpha = hidden ? 0 : 1
+                // Animate stack view layout for smooth height transition
+                parentStackView?.layoutIfNeeded()
             },
             completion: { [weak base] _ in
                 // Ensure final state is consistent
@@ -69,7 +73,18 @@ extension AdyenScope where Base: UIView {
         )
         animate(context: context)
     }
-    
+
+    private func findParentStackView(from view: UIView) -> UIStackView? {
+        var current: UIView? = view.superview
+        while let parent = current {
+            if let stackView = parent as? UIStackView {
+                return stackView
+            }
+            current = parent.superview
+        }
+        return nil
+    }
+
     private func hideWithoutAnimation(_ hidden: Bool) {
         base.isHidden = hidden
         base.alpha = hidden ? 0 : 1

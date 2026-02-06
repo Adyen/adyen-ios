@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -37,7 +37,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     UITextFieldDelegate,
     AnyFormTextItemView {
     
-    override public var accessibilityLabelView: UIView? { textField }
+    override public var accessibilityLabelView: UIView? {
+        textField
+    }
 
     /// Initializes the text item view with theme.
     /// - Parameters:
@@ -50,7 +52,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
             self?.handleFormattedValueDidChange(newValue)
         }
         
-        updateValidationStatus()
+        updateValidation()
         
         addSubview(textStackView)
         configureConstraints()
@@ -166,7 +168,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     public var accessory: AccessoryType = .none {
         didSet {
             guard accessory != oldValue else { return }
-            self.changeAccessories()
+            changeAccessories()
         }
     }
     
@@ -224,7 +226,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     // MARK: - Editing
     
     override internal func didChangeEditingStatus() {
-        updateValidationStatus()
+        updateValidation()
     }
     
     // MARK: - Layout
@@ -269,13 +271,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// This method updates UI according to a validity state.
     /// Subclasses can override this method to stay notified when the text field resigns its first responder status.
     open func textFieldDidEndEditing(_ textField: UITextField) {
-        item.isEditing = false
         isEditing = false
-        // Validate on focus loss (if field has content)
-        let hasContent = !(textField.text ?? "").isEmpty
-        if hasContent {
-            item.shouldShowValidationError = !item.isValid()
-        }
+        item.triggerValidation(.focusLost)
         updateBorderColor()
         item.onDidEndEditing?()
     }
@@ -283,38 +280,15 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// This method hides validation accessories icons.
     /// Subclasses can override this method to stay notified when textField became the first responder.
     open func textFieldDidBeginEditing(_ textField: UITextField) {
-        item.isEditing = true
         isEditing = true
         resetValidationStatus()
         updateBorderColor()
         item.onDidBeginEditing?()
     }
     
-    override open func updateValidationStatus(forced: Bool = false) {
-        let isTextFieldEmpty = (textField.text ?? "").isEmpty
-        
-        // Determine if we should show validation UI (accessory, border)
-        // When forced (explicit validation like Pay button), always validate
-        // Otherwise, only validate if field has content and not editing
-        let shouldShowValidationUI: Bool
-        if forced {
-            shouldShowValidationUI = true
-        } else if isTextFieldEmpty {
-            shouldShowValidationUI = false
-        } else {
-            shouldShowValidationUI = item.allowsValidationWhileEditing || !isEditing
-        }
-        
-        if shouldShowValidationUI {
-            accessory = item.isValid() ? .valid : .invalid
-            isShowingValidationError = !item.isValid()
-        } else {
-            removeAccessoryIfNeeded()
-            isShowingValidationError = false
-        }
+    open func updateValidation() {
+        updateAccessory()
         updateBorderColor()
-        
-        super.updateValidationStatus(forced: shouldShowValidationUI)
     }
     
     public func notifyDelegateOfMaxLengthIfNeeded() {
@@ -326,7 +300,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
 
     override internal func resetValidationStatus() {
         super.resetValidationStatus()
-        isShowingValidationError = false
         updateBorderColor()
         removeAccessoryIfNeeded()
     }
@@ -336,19 +309,45 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         accessory = .none
     }
 
-    // MARK: - Border Styling
+    // MARK: - Validation State Changes
 
-    /// Tracks whether a validation error is currently being shown.
-    private var isShowingValidationError = false
+    override package func onValidationStateChanged(state: ValidationState) {
+        super.onValidationStateChanged(state: state)
+        updateAccessory(state: state)
+        updateBorderColor(state: state)
+    }
+
+    private func updateAccessory() {
+        updateAccessory(state: item.validationState)
+    }
+
+    private func updateAccessory(state: ValidationState) {
+        if state.shouldShowError {
+            accessory = .invalid
+            return
+        }
+        
+        // Keep custom view unchanged
+        if case .customView = accessory { return }
+        
+        let hasContent = !(textField.text ?? "").isEmpty
+        accessory = (hasContent && !isEditing) ? .valid : .none
+    }
+
+    // MARK: - Border Styling
 
     /// Updates the border color based on both editing state and validation state.
     /// Priority: editing (active color) > validation error (error color) > default (normal color)
     private func updateBorderColor() {
+        updateBorderColor(state: item.validationState)
+    }
+
+    private func updateBorderColor(state: ValidationState) {
         let style = theme.elements.textField
         let borderColor: UIColor
         if isEditing {
             borderColor = style.borderActiveColor
-        } else if isShowingValidationError {
+        } else if state.shouldShowError {
             borderColor = style.errorColor
         } else {
             borderColor = style.borderColor

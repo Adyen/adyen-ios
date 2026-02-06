@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -18,7 +18,9 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     @_spi(AdyenInternal)
     public let context: AdyenContext
     
-    public var paymentMethod: PaymentMethod { blikPaymentMethod }
+    public var paymentMethod: PaymentMethod {
+        blikPaymentMethod
+    }
 
     public weak var delegate: PaymentComponentDelegate?
 

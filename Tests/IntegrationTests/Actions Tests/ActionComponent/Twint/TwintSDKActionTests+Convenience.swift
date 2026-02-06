@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -22,13 +22,14 @@ import XCTest
         }
     }
 
-    extension TwintSDKActionComponent.Configuration {
+    extension TwintActionConfiguration {
         static var dummy: Self {
             .init(callbackAppScheme: "ui-host")
         }
         
         static func dummy(maxIssuerNumber: Int) -> Self {
-            .init(callbackAppScheme: "ui-host", maxIssuerNumber: maxIssuerNumber)
+            .init(callbackAppScheme: "ui-host")
+                .maxIssuerNumber(maxIssuerNumber)
         }
     }
 
@@ -49,7 +50,7 @@ import XCTest
     
         static func actionComponent(
             with twintSpy: TwintSpy,
-            configuration: TwintSDKActionComponent.Configuration = .dummy,
+            configuration: TwintActionConfiguration = .dummy,
             context: AdyenContext = Dummy.context,
             presentationDelegate: PresentationDelegate?,
             delegate: ActionComponentDelegate?,

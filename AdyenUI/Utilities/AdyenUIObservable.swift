@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2026 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -18,12 +18,14 @@
 @propertyWrapper
 public final class AdyenUIObservable<ValueType: Equatable>: AdyenObservable<ValueType> {
 
-    // Required for @propertyWrapper - delegates to parent's wrappedValue
+    /// Required for @propertyWrapper - delegates to parent's wrappedValue
     override public var wrappedValue: ValueType {
         didSet {
             publish(wrappedValue)
         }
     }
 
-    override public var projectedValue: AdyenObservable<ValueType> { self }
+    override public var projectedValue: AdyenObservable<ValueType> {
+        self
+    }
 }

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -18,9 +18,12 @@ internal class CheckoutProviderMock: CheckoutProviding {
     var setupPaymentMethodsCalled = false
     var setupWithPaymentMethodsResult: Result<Checkout, Error>?
     
-    // For AdyenSessionProviding
+    var setupActionOnlyCalled = false
+    var setupActionOnlyResult: Result<Checkout, Error>?
+    
+    /// For AdyenSessionProviding
     var mockedSessionResult: Result<SessionProtocol, Error>?
-    // For CheckoutAttemptIdProviding
+    /// For CheckoutAttemptIdProviding
     var mockedCheckoutAttemptId: Result<String, Error>?
     
     func setupSession(
@@ -55,7 +58,7 @@ internal class CheckoutProviderMock: CheckoutProviding {
 
     }
     
-    // Convenience for direct CheckoutProviding use
+    /// Convenience for direct CheckoutProviding use
     func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
@@ -81,6 +84,22 @@ internal class CheckoutProviderMock: CheckoutProviding {
         setupPaymentMethodsCalled = true
         
         switch setupWithPaymentMethodsResult {
+        case let .success(checkout):
+            return checkout
+        case let .failure(error):
+            throw error
+        case nil:
+            throw TestError()
+        }
+    }
+    
+    func setup(
+        configuration: CheckoutConfiguration,
+        presentationDelegate: PresentationDelegate?
+    ) async throws -> Checkout {
+        setupActionOnlyCalled = true
+        
+        switch setupActionOnlyResult {
         case let .success(checkout):
             return checkout
         case let .failure(error):

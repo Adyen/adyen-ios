@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,6 +10,7 @@
 #endif
 import UIKit
 
+// TODO: make package
 /// Contains the styling customization options for Delegated Authentication Screens(Registration & Approval)
 public struct DelegatedAuthenticationComponentStyle {
     

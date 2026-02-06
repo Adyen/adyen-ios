@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -18,7 +18,7 @@ extension ThreeDS2ClassicActionHandler {
         context: AdyenContext,
         service: ThreeDSService,
         appearanceConfiguration: ADYAppearanceConfiguration,
-        delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication?
+        delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication?
     ) {
         let defaultHandler = createDefaultThreeDS2CoreActionHandler(
             context: context,

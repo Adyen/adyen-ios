@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,10 +13,14 @@ package final class PresentableComponentWrapper: PresentableComponent,
     FinalizableComponent,
     LoadingComponent {
     
-    package var apiContext: APIContext { component.context.apiContext }
+    package var apiContext: APIContext {
+        component.context.apiContext
+    }
 
     /// The context object for this component.
-    package var context: AdyenContext { component.context }
+    package var context: AdyenContext {
+        component.context
+    }
 
     package let viewController: UIViewController
 

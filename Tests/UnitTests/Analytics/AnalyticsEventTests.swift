@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -36,7 +36,7 @@ class AnalyticsEventTests: XCTestCase {
         sut.sendInitialAnalytics(with: flavor, additionalFields: nil)
     }
 
-    func testSendInitialEventGivenEnabledAndFlavorIsComponentsShouldSendInitialRequest() throws {
+    func testSendInitialEventGivenEnabledAndFlavorIsComponentsShouldSendInitialRequest() {
         // Given
         sut = AnalyticsProvider(
             apiClient: apiClient,
@@ -59,7 +59,7 @@ class AnalyticsEventTests: XCTestCase {
         XCTAssertEqual(sut.checkoutAttemptId, "cb3eef98-978e-4f6f-b299-937a4450be1f1648546838056be73d8f38ee8bcc3a65ec14e41b037a59f255dcd9e83afe8c06bd3e7abcad993")
     }
 
-    func testSendInitialEventGivenEnabledAndFlavorIsDropInShouldSendInitialRequest() throws {
+    func testSendInitialEventGivenEnabledAndFlavorIsDropInShouldSendInitialRequest() {
         // Given
         sut = AnalyticsProvider(
             apiClient: apiClient,

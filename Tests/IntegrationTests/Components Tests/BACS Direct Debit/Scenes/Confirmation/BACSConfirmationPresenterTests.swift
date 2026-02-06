@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -38,7 +38,7 @@ class BACSConfirmationPresenterTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testViewDidLoadShouldCreateItems() throws {
+    func testViewDidLoadShouldCreateItems() {
         // When
         sut.viewDidLoad()
 
@@ -50,7 +50,7 @@ class BACSConfirmationPresenterTests: XCTestCase {
         XCTAssertEqual(itemsFactory.createPaymentButtonCallsCount, 1)
     }
 
-    func testViewDidLoadShouldAddItemsToFormView() throws {
+    func testViewDidLoadShouldAddItemsToFormView() {
         // When
         sut.viewDidLoad()
 

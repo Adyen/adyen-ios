@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -24,7 +24,7 @@ open class FormTextInputItemView: FormTextItemView<FormTextInputItem> {
             guard let self else { return }
             self.textField.isEnabled = isEnabled
             if isEnabled {
-                self.updateValidationStatus()
+                self.updateValidation()
                 self.textField.textColor = self.theme.elements.textField.text.color
             } else {
                 self.resetValidationStatus()

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -24,7 +24,7 @@ import XCTest
         
         static let relyingPartyIdentifier = "test-authentication-adyen.netlify.app"
         
-        static var delegatedAuthenticationConfigurations: ThreeDS2Component.Configuration.DelegatedAuthentication {
+        static var delegatedAuthenticationConfigurations: ThreeDS2ActionConfiguration.DelegatedAuthentication {
             .init(relyingPartyIdentifier: relyingPartyIdentifier)
         }
     
@@ -55,7 +55,7 @@ import XCTest
             challengeAction = ThreeDS2ChallengeAction(challengeToken: challengeToken, authorisationToken: "authToken", paymentData: "paymentData")
         }
 
-        func testSettingThreeDSRequestorAppURL() throws {
+        func testSettingThreeDSRequestorAppURL() {
             let sut = ThreeDS2PlusDACoreActionHandler(
                 context: Dummy.context,
                 service: ThreeDSServiceableMock(),
@@ -66,7 +66,7 @@ import XCTest
             XCTAssertEqual(sut.threeDSRequestorAppURL, URL(string: "https://google.com"))
         }
         
-        func testWrappedComponent() throws {
+        func testWrappedComponent() {
             let sut = ThreeDS2PlusDACoreActionHandler(
                 context: Dummy.context,
                 service: ThreeDSServiceableMock(),
@@ -118,7 +118,7 @@ import XCTest
             waitForExpectations(timeout: 20, handler: nil)
         }
 
-        func testInvalidFingerprintToken() throws {
+        func testInvalidFingerprintToken() {
             let service = ThreeDSServiceableMock()
             service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
             service.onResetTransaction = {}
@@ -159,7 +159,7 @@ import XCTest
             waitForExpectations(timeout: 2, handler: nil)
         }
 
-        func testOnChallengeFlowCancellationRegistration() throws {
+        func testOnChallengeFlowCancellationRegistration() {
             let service = ThreeDSServiceableMock()
             service.onPerformChallenge = { params, completion in
                 completion(.failure(.cancelled(errorPayload: "")))
@@ -209,7 +209,7 @@ import XCTest
                 self.expectedSDKRegistrationOutput
             }
         
-            let expectedResult = try! ThreeDSResult(
+            let expectedResult = try ThreeDSResult(
                 from: AnyChallengeResultMock(
                     sdkTransactionIdentifier: "sdkTransactionIdentifier",
                     transactionStatus: "Y"
@@ -243,7 +243,7 @@ import XCTest
             waitForExpectations(timeout: 2, handler: nil)
         }
     
-        func testChallengeFlowFailure() throws {
+        func testChallengeFlowFailure() {
             let service = ThreeDSServiceableMock()
             service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
             service.onPerformChallenge = { $1(.failure(.challengeError(errorPayload: ""))) }
@@ -279,7 +279,7 @@ import XCTest
             waitForExpectations(timeout: 2, handler: nil)
         }
 
-        func testChallengeFlowMissingTransaction() throws {
+        func testChallengeFlowMissingTransaction() {
             let authenticationServiceMock = AuthenticationServiceMock()
             let sut = ThreeDS2PlusDACoreActionHandler(
                 context: Dummy.context,
@@ -308,7 +308,7 @@ import XCTest
             waitForExpectations(timeout: 2, handler: nil)
         }
 
-        func testInvalidChallengeToken() throws {
+        func testInvalidChallengeToken() {
             let service = ThreeDSServiceableMock()
             service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
             service.onPerformChallenge = { parameters, completion in
@@ -347,7 +347,7 @@ import XCTest
         
         // MARK: - Delegated Authentication tests
 
-        // The approval flow of delegated authentication
+        /// The approval flow of delegated authentication
         func testDelegatedAuthenticationApprovalFlowWhenUserApproves() throws {
             
             // The token and result are base 64 encoded.
@@ -407,11 +407,11 @@ import XCTest
             XCTAssertEqual(shownAmount, Amount(value: 1, currencyCode: "EUR"))
         }
 
-        func testDelegatedAuthenticationApprovalFlowWhenUserApprovesButVerificationFails() throws {
+        func testDelegatedAuthenticationApprovalFlowWhenUserApprovesButVerificationFails() {
             // The token and result are base 64 encoded.
             enum TestData {
                 static let fingerprintToken = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES0lucHV0IjoiIyNTb21lZGVsZWdhdGVkQXV0aGVudGljYXRpb25TREtJbnB1dCMjIiwiZGlyZWN0b3J5U2VydmVySWQiOiJGMDEzMzcxMzM3IiwiZGlyZWN0b3J5U2VydmVyUHVibGljS2V5IjoiI0RpcmVjdG9yeVNlcnZlclB1YmxpY0tleSMiLCJkaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIjoiIyNEaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIyMiLCJ0aHJlZURTTWVzc2FnZVZlcnNpb24iOiIyLjIuMCIsInRocmVlRFNTZXJ2ZXJUcmFuc0lEIjoiMTUwZmEzYjgtZTZjOC00N2ExLTk2ZTAtOTEwNzYzYmVlYzU3In0="
-                // Result without delegatedAuthenticationSDKOutput
+                /// Result without delegatedAuthenticationSDKOutput
                 static let expectedFingerprintResult = "eyJzZGtBcHBJRCI6InNka0FwcGxpY2F0aW9uSWRlbnRpZmllciIsInNka0VuY0RhdGEiOiJkZXZpY2VfaW5mbyIsInNka0VwaGVtUHViS2V5Ijp7ImNydiI6IlAtMjU2Iiwia3R5IjoiRUMiLCJ4IjoiM2IzbVBmV2h1T3h3T1d5ZExlalMzREpFVVBpTVZGeHR6R0NWNjkwNnJmYyIsInkiOiJ6djBrejFTS2ZOdlQzcWw3NUwyMTdkZTZac3p4ZkxBOExVS09JS2U1WmY0In0sInNka1JlZmVyZW5jZU51bWJlciI6InNka1JlZmVyZW5jZU51bWJlciIsInNka1RyYW5zSUQiOiJzZGtUcmFuc2FjdGlvbklkZW50aWZpZXIifQ=="
             }
 
@@ -452,13 +452,13 @@ import XCTest
             waitForExpectations(timeout: 20, handler: nil)
         }
 
-        func testDelegatedAuthenticationApprovalFlowWhenUserDoesntConsentToApprove() throws {
+        func testDelegatedAuthenticationApprovalFlowWhenUserDoesntConsentToApprove() {
             // The token and result are base 64 encoded.
             enum TestData {
-                // Token with delegatedAuthenticationSDKInput
+                /// Token with delegatedAuthenticationSDKInput
                 static let fingerprintToken = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES0lucHV0IjoiIyNTb21lZGVsZWdhdGVkQXV0aGVudGljYXRpb25TREtJbnB1dCMjIiwiZGlyZWN0b3J5U2VydmVySWQiOiJGMDEzMzcxMzM3IiwiZGlyZWN0b3J5U2VydmVyUHVibGljS2V5IjoiI0RpcmVjdG9yeVNlcnZlclB1YmxpY0tleSMiLCJkaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIjoiIyNEaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIyMiLCJ0aHJlZURTTWVzc2FnZVZlcnNpb24iOiIyLjIuMCIsInRocmVlRFNTZXJ2ZXJUcmFuc0lEIjoiMTUwZmEzYjgtZTZjOC00N2ExLTk2ZTAtOTEwNzYzYmVlYzU3In0="
                             
-                // Result without delegatedAuthenticationSDKOutput
+                /// Result without delegatedAuthenticationSDKOutput
                 static let expectedFingerprintResult = "eyJzZGtBcHBJRCI6InNka0FwcGxpY2F0aW9uSWRlbnRpZmllciIsInNka0VuY0RhdGEiOiJkZXZpY2VfaW5mbyIsInNka0VwaGVtUHViS2V5Ijp7ImNydiI6IlAtMjU2Iiwia3R5IjoiRUMiLCJ4IjoiM2IzbVBmV2h1T3h3T1d5ZExlalMzREpFVVBpTVZGeHR6R0NWNjkwNnJmYyIsInkiOiJ6djBrejFTS2ZOdlQzcWw3NUwyMTdkZTZac3p4ZkxBOExVS09JS2U1WmY0In0sInNka1JlZmVyZW5jZU51bWJlciI6InNka1JlZmVyZW5jZU51bWJlciIsInNka1RyYW5zSUQiOiJzZGtUcmFuc2FjdGlvbklkZW50aWZpZXIifQ=="
             }
 
@@ -502,10 +502,10 @@ import XCTest
         func testDelegatedAuthenticationFingerPrintResultWhenRemovingCredentials() {
             // The token and result are base 64 encoded.
             enum TestData {
-                // Token with delegatedAuthenticationSDKInput
+                /// Token with delegatedAuthenticationSDKInput
                 static let fingerprintToken = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES0lucHV0IjoiIyNTb21lZGVsZWdhdGVkQXV0aGVudGljYXRpb25TREtJbnB1dCMjIiwiZGlyZWN0b3J5U2VydmVySWQiOiJGMDEzMzcxMzM3IiwiZGlyZWN0b3J5U2VydmVyUHVibGljS2V5IjoiI0RpcmVjdG9yeVNlcnZlclB1YmxpY0tleSMiLCJkaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIjoiIyNEaXJlY3RvcnlTZXJ2ZXJSb290Q2VydGlmaWNhdGVzIyMiLCJ0aHJlZURTTWVzc2FnZVZlcnNpb24iOiIyLjIuMCIsInRocmVlRFNTZXJ2ZXJUcmFuc0lEIjoiMTUwZmEzYjgtZTZjOC00N2ExLTk2ZTAtOTEwNzYzYmVlYzU3In0="
                             
-                // Result with delegatedAuthenticationSDKOutput & the deleteCredentials flag
+                /// Result with delegatedAuthenticationSDKOutput & the deleteCredentials flag
                 static let expectedFingerprintResult = "eyJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES091dHB1dCI6Im9uQXV0aGVudGljYXRlLXNka091dHB1dCIsImRlbGV0ZURlbGVnYXRlZEF1dGhlbnRpY2F0aW9uQ3JlZGVudGlhbCI6dHJ1ZSwic2RrQXBwSUQiOiJzZGtBcHBsaWNhdGlvbklkZW50aWZpZXIiLCJzZGtFbmNEYXRhIjoiZGV2aWNlX2luZm8iLCJzZGtFcGhlbVB1YktleSI6eyJjcnYiOiJQLTI1NiIsImt0eSI6IkVDIiwieCI6IjNiM21QZldodU94d09XeWRMZWpTM0RKRVVQaU1WRnh0ekdDVjY5MDZyZmMiLCJ5IjoienYwa3oxU0tmTnZUM3FsNzVMMjE3ZGU2WnN6eGZMQThMVUtPSUtlNVpmNCJ9LCJzZGtSZWZlcmVuY2VOdW1iZXIiOiJzZGtSZWZlcmVuY2VOdW1iZXIiLCJzZGtUcmFuc0lEIjoic2RrVHJhbnNhY3Rpb25JZGVudGlmaWVyIn0="
             }
 

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -25,14 +25,6 @@ package class FormPickerItemView<Value: FormPickable>: FormSelectableValueItemVi
             }
             
             item.presenter?.presentViewController(pickerViewController, animated: true)
-        }
-    }
-    
-    override package func showValidation() {
-        if item.isValid() {
-            updateValidationStatus(forced: false)
-        } else {
-            super.showValidation()
         }
     }
     

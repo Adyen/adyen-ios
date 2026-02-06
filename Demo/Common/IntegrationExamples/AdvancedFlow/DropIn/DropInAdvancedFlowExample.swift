@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -67,7 +67,7 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
         let configuration = ConfigurationConstants.current.dropInConfiguration
 
         configuration.applePay = try? ConfigurationConstants.current.applePayConfiguration()
-        configuration.actionComponent.threeDS.delegateAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
+        configuration.actionComponent.threeDS.delegatedAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
         configuration.actionComponent.threeDS.requestorAppURL = ConfigurationConstants.returnUrl
         configuration.card = ConfigurationConstants.current.cardDropInConfiguration
         return configuration

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,7 +19,7 @@
             try super.tearDownWithError()
         }
 
-        // This test requires AdyenCardScanner framework to be imported for the test target
+        /// This test requires AdyenCardScanner framework to be imported for the test target
         func test_scannerIsAvailable() {
             let (sut, _, _) = makeSUT()
             XCTAssertTrue(sut.isScannerAvailable)
@@ -32,7 +32,7 @@
             XCTAssertEqual(currentEventSubtype, .cardScannerUnavailable)
         }
 
-        func test_openCardScanner_withTitle_presentsCorrectTitle() throws {
+        func test_openCardScanner_withTitle_presentsCorrectTitle() {
             let expectation = XCTestExpectation(description: "Card scanner should complete the flow")
             let (sut, presenter, _) = makeSUT()
 
@@ -57,7 +57,7 @@
             wait(for: [expectation], timeout: 3.0)
         }
 
-        func test_dismiss_shouldDismissPresentedNavigationController() throws {
+        func test_dismiss_shouldDismissPresentedNavigationController() {
             // Given
             let (sut, presenter, _) = makeSUT()
             let window = UIWindow(frame: UIScreen.main.bounds)
@@ -79,7 +79,7 @@
             XCTAssertNil(presenter.presentedViewController)
         }
 
-        func testHandleCardScanningCancelation() throws {
+        func testHandleCardScanningCancelation() {
             let (sut, presenter, _) = makeSUT()
 
             sut.openCardScanner()

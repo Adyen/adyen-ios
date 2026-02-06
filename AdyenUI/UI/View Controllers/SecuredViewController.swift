@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -53,10 +53,10 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
         super.init(nibName: nil, bundle: Bundle(for: SecuredViewController.self))
     }
 
-//    /// Initializes the `SecuredViewController`.
-//    ///
-//    /// - Parameter child: The wrapped `UIViewController`.
-//    /// - Parameter theme: checkout theme.
+    ///    /// Initializes the `SecuredViewController`.
+    ///    ///
+    ///    /// - Parameter child: The wrapped `UIViewController`.
+    ///    /// - Parameter theme: checkout theme.
     package init(
         child: ChildViewController,
         style: ViewStyle = FormComponentStyle(),

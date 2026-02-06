@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -28,8 +28,8 @@ public final class Session: SessionProtocol {
     
     internal let context: AdyenContext
     
-    // Session's API client should be only of SessionAPIClient type
-    // in order to update session data/result after each internal API call.
+    /// Session's API client should be only of SessionAPIClient type
+    /// in order to update session data/result after each internal API call.
     internal private(set) lazy var apiClient: SessionAPIClient = {
         SessionAPIClient(
             apiClient: baseAPIClient,
@@ -179,17 +179,23 @@ extension Session {
 @_spi(AdyenInternal)
 extension Session: AdyenSessionAware {
     
-    public var isSession: Bool { true }
+    public var isSession: Bool {
+        true
+    }
 }
 
 @_spi(AdyenInternal)
 extension Session: InstallmentConfigurationAware {
     
-    public var installmentConfiguration: InstallmentConfiguration? { state.responseConfiguration.installmentOptions }
+    public var installmentConfiguration: InstallmentConfiguration? {
+        state.responseConfiguration.installmentOptions
+    }
 }
 
 @_spi(AdyenInternal)
 extension Session: StorePaymentMethodFieldAware {
     
-    public var showStorePaymentMethodField: Bool? { state.responseConfiguration.enableStoreDetails }
+    public var showStorePaymentMethodField: Bool? {
+        state.responseConfiguration.enableStoreDetails
+    }
 }

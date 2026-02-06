@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -182,10 +182,10 @@ final class CheckoutTests: XCTestCase {
     
     // MARK: - payment component delegate
     
-    func test_didSubmit_callsOnSubmit_whenSet() {
+    func test_didSubmit_callsOnSubmit_whenSet() throws {
         let expectation = expectation(description: "onSubmit called")
         var didCallSubmit = false
-        let blik = paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self)!
+        let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let blikDetails = BLIKDetails(
             paymentMethod: blik,
             blikCode: "code"
@@ -288,7 +288,7 @@ final class CheckoutTests: XCTestCase {
     
     // MARK: - createPaymentComponent(for identifier:) Tests
     
-    func test_createPaymentComponent_forIdentifier_returnsComponent_whenStoredMethodExists() {
+    func test_createPaymentComponent_forIdentifier_returnsComponent_whenStoredMethodExists() throws {
         // Given
         let sut = Checkout(
             configuration: configuration,
@@ -296,7 +296,7 @@ final class CheckoutTests: XCTestCase {
             checkoutAttemptId: "attemptId",
             presentationDelegate: nil
         )
-        let storedMethodIdentifier = paymentMethods.stored.first!.identifier
+        let storedMethodIdentifier = try XCTUnwrap(paymentMethods.stored.first?.identifier)
         
         // When
         let component = sut.createPaymentComponent(for: storedMethodIdentifier)
@@ -357,6 +357,69 @@ final class CheckoutTests: XCTestCase {
         
         // Then
         XCTAssertNotNil(component)
+    }
+    
+    // MARK: - Action-Only Setup Tests
+    
+    func testSetupActionOnly_Success() async throws {
+        // Given
+        let expectedCheckout = Checkout(
+            configuration: configuration,
+            checkoutAttemptId: "attemptId",
+            presentationDelegate: nil
+        )
+        mockProvider.setupActionOnlyResult = .success(expectedCheckout)
+        
+        // When
+        let checkout = try await Checkout.setup(
+            configuration: configuration,
+            presentationDelegate: nil,
+            provider: mockProvider
+        )
+        
+        // Then
+        XCTAssertEqual(checkout.checkoutAttemptId, "attemptId")
+        XCTAssertNil(checkout.session)
+        XCTAssertNil(checkout.paymentMethods)
+        XCTAssertTrue(mockProvider.setupActionOnlyCalled)
+    }
+    
+    func testSetupActionOnly_Failure() async {
+        // Given
+        mockProvider.setupActionOnlyResult = .failure(TestError())
+        
+        // When/Then
+        do {
+            _ = try await Checkout.setup(
+                configuration: configuration,
+                presentationDelegate: nil,
+                provider: mockProvider
+            )
+            XCTFail("Expected error to be thrown")
+        } catch {
+            XCTAssertTrue(error is TestError)
+        }
+    }
+    
+    func testSetupActionOnly_createPaymentComponent_returnsNil() async throws {
+        // Given
+        let expectedCheckout = Checkout(
+            configuration: configuration,
+            checkoutAttemptId: "attemptId",
+            presentationDelegate: nil
+        )
+        mockProvider.setupActionOnlyResult = .success(expectedCheckout)
+        
+        // When
+        let checkout = try await Checkout.setup(
+            configuration: configuration,
+            presentationDelegate: nil,
+            provider: mockProvider
+        )
+        
+        // Then - createPaymentComponent should return nil since no paymentMethods
+        let component = checkout.createPaymentComponent(for: .scheme)
+        XCTAssertNil(component)
     }
     
 }
