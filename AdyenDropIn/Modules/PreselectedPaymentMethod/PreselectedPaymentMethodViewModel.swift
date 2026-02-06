@@ -18,9 +18,12 @@ internal protocol PreselectedPaymentMethodViewModelProtocol: AnyObject {
     var cardImageItem: CardImageItem { get }
     var titleText: String { get }
     var subtitleText: String { get }
-    var primaryButtonConfiguration: PreselectedPaymentMethodViewController.ButtonConfiguration { get }
-    var secondaryButtonConfiguration: PreselectedPaymentMethodViewController.ButtonConfiguration { get }
 
+    var primaryButtonTitle: String { get }
+    func primaryButtonTapped()
+
+    var secondaryButtonTitle: String { get }
+    func secondaryButtonTapped()
     /// Theming
     var theme: AdyenTheme { get }
 
@@ -99,24 +102,21 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
         localizedString(.preselectedPaymentMethodSubtitle, localizationParameters, component.paymentMethod.name, formattedAmount)
     }
 
-    internal lazy var primaryButtonConfiguration: PreselectedPaymentMethodViewController.ButtonConfiguration = {
-        PreselectedPaymentMethodViewController.ButtonConfiguration(
-            title: localizedString(.submitButtonFormatted, localizationParameters, formattedAmount),
-            action: { [weak self] in
-                guard let self else { return }
-                self.didProceed(with: self.component)
-            }
-        )
-    }()
+    internal var primaryButtonTitle: String {
+        localizedString(.submitButtonFormatted, localizationParameters, formattedAmount)
+    }
 
-    internal lazy var secondaryButtonConfiguration: PreselectedPaymentMethodViewController.ButtonConfiguration = {
-        PreselectedPaymentMethodViewController.ButtonConfiguration(
-            title: localizedString(.preselectedPaymentMethodOtherOptions, localizationParameters),
-            action: { [weak self] in
-                self?.didRequestAllPaymentMethods()
-            }
-        )
-    }()
+    func primaryButtonTapped() {
+        didProceed(with: self.component)
+    }
+
+    internal var secondaryButtonTitle: String {
+        localizedString(.preselectedPaymentMethodOtherOptions, localizationParameters)
+    }
+
+    func secondaryButtonTapped() {
+        didRequestAllPaymentMethods()
+    }
 
     internal func viewDidLoad() {
         onDidLoad?()

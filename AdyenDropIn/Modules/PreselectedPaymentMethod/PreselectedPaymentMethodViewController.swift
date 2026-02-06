@@ -14,11 +14,6 @@ import UIKit
 
 internal class PreselectedPaymentMethodViewController: UIViewController {
 
-    internal struct ButtonConfiguration {
-        internal let title: String
-        internal let action: () -> Void
-    }
-
     // MARK: - Constants
 
     private enum Constants {
@@ -133,8 +128,8 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     private func configureContent() {
         titleLabel.text = viewModel.titleText
         subtitleLabel.text = viewModel.subtitleText
-        primaryButton.title = viewModel.primaryButtonConfiguration.title
-        secondaryButton.title = viewModel.secondaryButtonConfiguration.title
+        primaryButton.title = viewModel.primaryButtonTitle
+        secondaryButton.title = viewModel.secondaryButtonTitle
     }
 
     private func setupNavigationItem() {
@@ -168,11 +163,11 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     }
 
     @objc private func primaryButtonTapped() {
-        viewModel.primaryButtonConfiguration.action()
+        viewModel.primaryButtonTapped()
     }
 
     @objc private func secondaryButtonTapped() {
-        viewModel.secondaryButtonConfiguration.action()
+        viewModel.secondaryButtonTapped()
     }
 
     // MARK: - Subviews
