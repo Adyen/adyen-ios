@@ -51,7 +51,6 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     package func onValidationStateChanged(state: ValidationState) {
         updateFooterDisplay(state: state, animated: true)
         updateAccessibility(state: state)
-        triggerValidationErrorCallbackIfNeeded()
     }
 
     private func updateFooterDisplay(state: ValidationState, animated: Bool) {
@@ -101,14 +100,6 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         } else {
             accessibilityLabelView?.accessibilityLabel = item.title
         }
-    }
-
-    private func triggerValidationErrorCallbackIfNeeded() {
-        guard item.validationState.shouldShowError,
-              let validationStatus = item.validationStatus(),
-              let error = validationStatus.validationError
-        else { return }
-        item.onDidShowValidationError?(error)
     }
 
     private func updateFooter(text: String?, color: UIColor, visible: Bool, animated: Bool) {
