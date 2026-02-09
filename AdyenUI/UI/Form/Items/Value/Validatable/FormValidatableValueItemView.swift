@@ -41,6 +41,11 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         observe(item.$validationState) { [weak self] state in
             self?.onValidationStateChanged(state: state)
         }
+
+        observe(item.$placeholder) { [weak self] _ in
+            guard let self else { return }
+            self.updateFooterDisplay(state: self.item.validationState, animated: true)
+        }
     }
 
     package func onValidationStateChanged(state: ValidationState) {
@@ -107,24 +112,6 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         item.onDidShowValidationError?(error)
     }
 
-    // MARK: - Package API (for subclasses that need direct control)
-
-    package func showHint() {
-        let newText = item.placeholder
-        let newColor = theme.colors.textSecondary
-        let shouldBeVisible = newText?.isEmpty == false
-        
-        updateFooter(text: newText, color: newColor, visible: shouldBeVisible, animated: true)
-    }
-
-    package func showError(_ message: String?) {
-        guard let message, !message.isEmpty else {
-            showHint()
-            return
-        }
-        updateFooter(text: message, color: theme.colors.destructive, visible: true, animated: true)
-    }
-    
     private func updateFooter(text: String?, color: UIColor, visible: Bool, animated: Bool) {
         let contentChanged = footerLabel.text != text || footerLabel.textColor != color
         let wasVisible = !footerLabel.isHidden
