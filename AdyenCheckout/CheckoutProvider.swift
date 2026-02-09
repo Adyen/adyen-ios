@@ -63,7 +63,7 @@ internal class CheckoutProvider: CheckoutProviding {
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
 
-        let checkoutAttemptId = try? await checkoutAttemptIdFetcher.fetchCheckoutAttemptId(
+        let checkoutAttemptId = await checkoutAttemptIdFetcher.fetchCheckoutAttemptId(
             with: configuration
         )
         
@@ -84,7 +84,7 @@ internal class CheckoutProvider: CheckoutProviding {
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
 
-        let checkoutAttemptId = try? await checkoutAttemptIdFetcher.fetchCheckoutAttemptId(
+        let checkoutAttemptId = await checkoutAttemptIdFetcher.fetchCheckoutAttemptId(
             with: configuration
         )
         
