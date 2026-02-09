@@ -19,7 +19,7 @@ internal final class AnalyticsProvider: AnyAnalyticsProvider {
 
     /// This value is nil when analytics is disabled by configuration provided by the merchant.
     internal var eventAnalyticsProvider: AnyEventAnalyticsProvider?
-    private let uniqueAssetAPIClient: UniqueAssetAPIClient<RequestCheckoutAttemptIdResponse>
+    private let uniqueAssetAPIClient: UniqueAssetAPIClient<EmptyResponse>
     private let configuration: AnalyticsConfiguration
 
     // MARK: - Initializers
@@ -31,7 +31,7 @@ internal final class AnalyticsProvider: AnyAnalyticsProvider {
     ) {
         self.configuration = configuration
         self.eventAnalyticsProvider = eventAnalyticsProvider
-        self.uniqueAssetAPIClient = UniqueAssetAPIClient<RequestCheckoutAttemptIdResponse>(apiClient: apiClient)
+        self.uniqueAssetAPIClient = UniqueAssetAPIClient<EmptyResponse>(apiClient: apiClient)
     }
 
     // MARK: - AnyAnalyticsProvider
@@ -45,9 +45,7 @@ internal final class AnalyticsProvider: AnyAnalyticsProvider {
         )
 
         let initialAnalyticsRequest = InitialAnalyticsRequest(data: analyticsData)
-        uniqueAssetAPIClient.perform(initialAnalyticsRequest) { [weak self] result in
-            self?.handleInitialAnalyticsResponse(result)
-        }
+        uniqueAssetAPIClient.perform(initialAnalyticsRequest) { _ in }
     }
 
     internal func add(info: AnalyticsEventInfo) {
@@ -60,21 +58,5 @@ internal final class AnalyticsProvider: AnyAnalyticsProvider {
     
     internal func add(error: AnalyticsEventError) {
         eventAnalyticsProvider?.add(error: error)
-    }
-    
-    // MARK: - Private
-    
-    private func handleInitialAnalyticsResponse(_ result: Result<RequestCheckoutAttemptIdResponse, Error>) {
-        // TODO: Robert: Ideally we ignore the response. And this method can be deleted,
-        // but to validate the requirement that the attemptID will be the same one returned during development we assert.
-        guard let fetchedCheckoutAttemptID = try? result.get().checkoutAttemptId else {
-            return
-        }
-
-        if checkoutAttemptId != nil, fetchedCheckoutAttemptID != checkoutAttemptId {
-            // This will fail on debug builds. If this fails then we need to discuss as the logic is a bit different.
-            // As the precondition that the checkoutAttemptID should be the same as returned by the EmptyRequest and InitialRequest.
-            AdyenAssertion.assertionFailure(message: "Analytics handleInitialAnalyticsResponse checkoutAttemptId mismatch: current:\(checkoutAttemptId), response: \(fetchedCheckoutAttemptID)")
-        }
     }
 }

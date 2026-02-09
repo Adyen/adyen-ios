@@ -502,8 +502,10 @@
 		A03056D82DEDED2F00ED7014 /* AdyenCheckout.h in Headers */ = {isa = PBXBuildFile; fileRef = A03056CC2DEDED2F00ED7014 /* AdyenCheckout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A03056DA2DEF331100ED7014 /* Checkout+DelegateCallbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056D92DEF32FD00ED7014 /* Checkout+DelegateCallbacks.swift */; };
 		A03056DC2DF07F8100ED7014 /* CheckoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056DB2DF07F7800ED7014 /* CheckoutProvider.swift */; };
+		A03056DD2DF07F8200ED7014 /* CheckoutAttemptIdFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056DE2DF07F7900ED7014 /* CheckoutAttemptIdFetcher.swift */; };
 		A03056E62E005CD200ED7014 /* CheckoutProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056E52E005CD100ED7014 /* CheckoutProviderMock.swift */; };
 		A03056E82E016D9A00ED7014 /* CheckoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056E72E016D9A00ED7014 /* CheckoutTests.swift */; };
+		A03056EB2E016DA000ED7014 /* CheckoutProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056EC2E016DA000ED7014 /* CheckoutProviderTests.swift */; };
 		A03056EA2E1284ED00ED7014 /* SessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056E92E1284E500ED7014 /* SessionProtocol.swift */; };
 		A03EE72F2760A2E300470561 /* DocumentActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE72E2760A2E300470561 /* DocumentActionViewModel.swift */; };
 		A03EE7312761297800470561 /* DocumentComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE7302761297800470561 /* DocumentComponentStyle.swift */; };
@@ -2178,8 +2180,10 @@
 		A03056D12DEDED2F00ED7014 /* CheckoutComponentBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutComponentBuilder.swift; sourceTree = "<group>"; };
 		A03056D92DEF32FD00ED7014 /* Checkout+DelegateCallbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Checkout+DelegateCallbacks.swift"; sourceTree = "<group>"; };
 		A03056DB2DF07F7800ED7014 /* CheckoutProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutProvider.swift; sourceTree = "<group>"; };
+		A03056DE2DF07F7900ED7014 /* CheckoutAttemptIdFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutAttemptIdFetcher.swift; sourceTree = "<group>"; };
 		A03056E52E005CD100ED7014 /* CheckoutProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutProviderMock.swift; sourceTree = "<group>"; };
 		A03056E72E016D9A00ED7014 /* CheckoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutTests.swift; sourceTree = "<group>"; };
+		A03056EC2E016DA000ED7014 /* CheckoutProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutProviderTests.swift; sourceTree = "<group>"; };
 		A03056E92E1284E500ED7014 /* SessionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionProtocol.swift; sourceTree = "<group>"; };
 		A03B7C9129B0C61500FDDDFC /* CashAppPayComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPayComponent.swift; sourceTree = "<group>"; };
 		A03EE72E2760A2E300470561 /* DocumentActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentActionViewModel.swift; sourceTree = "<group>"; };
@@ -4013,6 +4017,7 @@
 				A03056D02DEDED2F00ED7014 /* CheckoutProtocol.swift */,
 				A03056CE2DEDED2F00ED7014 /* Checkout.swift */,
 				A03056DB2DF07F7800ED7014 /* CheckoutProvider.swift */,
+				A03056DE2DF07F7900ED7014 /* CheckoutAttemptIdFetcher.swift */,
 				A03056D92DEF32FD00ED7014 /* Checkout+DelegateCallbacks.swift */,
 				A03056CF2DEDED2F00ED7014 /* CheckoutPaymentComponent.swift */,
 				A03056D12DEDED2F00ED7014 /* CheckoutComponentBuilder.swift */,
@@ -4029,6 +4034,7 @@
 			children = (
 				A0E1B64A2EABA0BF0070B915 /* CheckoutComponentBuilderTests.swift */,
 				A03056E52E005CD100ED7014 /* CheckoutProviderMock.swift */,
+				A03056EC2E016DA000ED7014 /* CheckoutProviderTests.swift */,
 				A03056E72E016D9A00ED7014 /* CheckoutTests.swift */,
 				A0E1B6432EAB9F460070B915 /* CheckoutConfiguration */,
 				A0E1B6402EAB9CFD0070B915 /* Component Factory Tests */,
@@ -8359,6 +8365,7 @@
 				00600F332E7D9D6F00637477 /* CheckoutConfiguration.swift in Sources */,
 				00600F372E7D9FE600637477 /* CheckoutConfiguration+Callbacks.swift in Sources */,
 				A03056DC2DF07F8100ED7014 /* CheckoutProvider.swift in Sources */,
+				A03056DD2DF07F8200ED7014 /* CheckoutAttemptIdFetcher.swift in Sources */,
 				A03056D62DEDED2F00ED7014 /* CheckoutPaymentComponent.swift in Sources */,
 				00262C8D2E8286E200DDDFA4 /* ConfigurationBuilder.swift in Sources */,
 				A03056D72DEDED2F00ED7014 /* Checkout.swift in Sources */,
@@ -8420,6 +8427,7 @@
 				A06C76452E1EAF9700213E53 /* AdyenSessionMock.swift in Sources */,
 				B62D48C02BBE8DF5001EF01A /* APIClientMock.swift in Sources */,
 				A03056E82E016D9A00ED7014 /* CheckoutTests.swift in Sources */,
+				A03056EB2E016DA000ED7014 /* CheckoutProviderTests.swift in Sources */,
 				B6D8083A2BCD1F8900F3F5EB /* AdyenCoderTests.swift in Sources */,
 				B6D808252BCD155400F3F5EB /* String+UIImage.swift in Sources */,
 				B6D8081A2BCD151F00F3F5EB /* ImageLoaderMock.swift in Sources */,

@@ -14,7 +14,11 @@ import Foundation
 /// Plain static provider layer to create the Checkout object.
 internal class CheckoutProvider: CheckoutProviding {
     
-    private init() {}
+    private let checkoutAttemptIdFetcher: CheckoutAttemptIdFetching
+    
+    internal init(checkoutAttemptIdFetcher: CheckoutAttemptIdFetching = DefaultCheckoutAttemptIdFetcher()) {
+        self.checkoutAttemptIdFetcher = checkoutAttemptIdFetcher
+    }
     
     internal static let `default` = CheckoutProvider()
     
@@ -108,26 +112,7 @@ internal class CheckoutProvider: CheckoutProviding {
     internal func fetchCheckoutAttemptId(
         with configuration: CheckoutConfiguration
     ) async throws -> String? {
-
-        guard let apiClient = AdyenContext.createAnalyticsAPIClient(
-            apiContext: configuration.context.apiContext,
-            analyticsConfiguration: configuration.analyticsConfiguration
-        ) else {
-            return nil
-        }
-
-        let request = RequestCheckoutAttemptIdRequest()
-
-        let response = try await withCheckedThrowingContinuation { continuation in
-            apiClient.perform(request) { result in
-                continuation.resume(with: result)
-            }
-        }
-
-        // TODO: Robert: This will need to be removed once we determine how we are going to create the AnalyticsProvider. For now we just need to inform the AnalyticProvider.
-        configuration.context.analyticsProvider?.checkoutAttemptId = response.checkoutAttemptId
-
-        return response.checkoutAttemptId
+        try await checkoutAttemptIdFetcher.fetchCheckoutAttemptId(with: configuration)
     }
 
 }
