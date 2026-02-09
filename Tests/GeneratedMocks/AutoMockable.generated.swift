@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-// Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.3.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // swiftlint:disable line_length
 // swiftlint:disable variable_name
@@ -17,6 +17,7 @@ import Foundation
 #endif
 
 @testable import Adyen
+@testable import AdyenCheckout
 @testable import AdyenDropIn
 
 class ActionPresenterMock: ActionPresenter {
@@ -55,6 +56,33 @@ class ActionPresenterMock: ActionPresenter {
         didCancelActionComponentReceivedActionComponent = actionComponent
         didCancelActionComponentReceivedInvocations.append(actionComponent)
         didCancelActionComponentClosure?(actionComponent)
+    }
+
+}
+
+class CheckoutAttemptIdFetchingMock: CheckoutAttemptIdFetching {
+
+    // MARK: - fetchCheckoutAttemptId
+
+    var fetchCheckoutAttemptIdWithCallsCount = 0
+    var fetchCheckoutAttemptIdWithCalled: Bool {
+        fetchCheckoutAttemptIdWithCallsCount > 0
+    }
+
+    var fetchCheckoutAttemptIdWithReceivedConfiguration: CheckoutConfiguration?
+    var fetchCheckoutAttemptIdWithReceivedInvocations: [CheckoutConfiguration] = []
+    var fetchCheckoutAttemptIdWithReturnValue: String?
+    var fetchCheckoutAttemptIdWithClosure: ((CheckoutConfiguration) async -> String?)?
+
+    func fetchCheckoutAttemptId(with configuration: CheckoutConfiguration) async -> String? {
+        fetchCheckoutAttemptIdWithCallsCount += 1
+        fetchCheckoutAttemptIdWithReceivedConfiguration = configuration
+        fetchCheckoutAttemptIdWithReceivedInvocations.append(configuration)
+        if let fetchCheckoutAttemptIdWithClosure {
+            return await fetchCheckoutAttemptIdWithClosure(configuration)
+        } else {
+            return fetchCheckoutAttemptIdWithReturnValue
+        }
     }
 
 }

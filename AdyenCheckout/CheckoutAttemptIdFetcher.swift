@@ -8,7 +8,7 @@
 import AdyenNetworking
 import Foundation
 
-/// Protocol for fetching the checkout attempt ID.
+// sourcery:AutoMockable
 internal protocol CheckoutAttemptIdFetching {
     func fetchCheckoutAttemptId(
         with configuration: CheckoutConfiguration
@@ -17,19 +17,26 @@ internal protocol CheckoutAttemptIdFetching {
 
 /// Default implementation that performs the actual API call to fetch the checkout attempt ID.
 /// If there is any failure in fetching the checkoutAttemptId then we should return nil, as that would imply that there will not be any analytics send for this session.
-/// Improvement: This is an edge case and the current success rate of the api is pretty high 99 something so this would rarely ever fail. If this ever becomes a constraint we could add a retying logic to try twice if it failed once. But that is an improvement if needed alone. 
+/// Improvement: This is an edge case and the current success rate of the api is pretty high 99 something so this would rarely ever fail. If this ever becomes a constraint we could add a retying logic to try twice if it failed once. But that is an improvement if needed alone.
 internal class DefaultCheckoutAttemptIdFetcher: CheckoutAttemptIdFetching {
 
-    internal init() {}
+    internal typealias APIClientFactory = (CheckoutConfiguration) -> APIClientProtocol?
+
+    private let apiClientFactory: APIClientFactory
+
+    internal init() {
+        self.apiClientFactory = DefaultCheckoutAttemptIdFetcher.defaultAPIClientFactory
+    }
+
+    internal init(apiClientFactory: @escaping APIClientFactory) {
+        self.apiClientFactory = apiClientFactory
+    }
 
     internal func fetchCheckoutAttemptId(
         with configuration: CheckoutConfiguration
     ) async -> String? {
 
-        guard let apiClient = AdyenContext.createAnalyticsAPIClient(
-            apiContext: configuration.context.apiContext,
-            analyticsConfiguration: configuration.analyticsConfiguration
-        ) else {
+        guard let apiClient = apiClientFactory(configuration) else {
             return nil
         }
 
@@ -49,5 +56,14 @@ internal class DefaultCheckoutAttemptIdFetcher: CheckoutAttemptIdFetching {
         } catch {
             return nil
         }
+    }
+
+    // MARK: - Private
+
+    private static let defaultAPIClientFactory: APIClientFactory = { configuration in
+        AdyenContext.createAnalyticsAPIClient(
+            apiContext: configuration.context.apiContext,
+            analyticsConfiguration: configuration.analyticsConfiguration
+        )
     }
 }

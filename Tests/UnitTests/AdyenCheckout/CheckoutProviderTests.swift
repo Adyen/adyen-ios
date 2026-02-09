@@ -12,7 +12,7 @@ import XCTest
 
 final class CheckoutProviderTests: XCTestCase {
 
-    // MARK: - CheckoutAttemptIdFetching Tests (testing the fetcher in isolation)
+    // MARK: - DefaultCheckoutAttemptIdFetcher Tests (testing the fetcher in isolation)
 
     func test_fetchCheckoutAttemptId_returnsCheckoutAttemptId_whenAPIClientSucceeds() async {
         // Given
@@ -33,7 +33,7 @@ final class CheckoutProviderTests: XCTestCase {
             analyticsConfiguration: AnalyticsConfiguration()
         )
 
-        let sut = TestableCheckoutAttemptIdFetcher(apiClient: apiClientMock)
+        let sut = DefaultCheckoutAttemptIdFetcher(apiClientFactory: { _ in apiClientMock })
 
         // When
         let result = await sut.fetchCheckoutAttemptId(with: configuration)
@@ -61,7 +61,7 @@ final class CheckoutProviderTests: XCTestCase {
             analyticsConfiguration: AnalyticsConfiguration()
         )
 
-        let sut = TestableCheckoutAttemptIdFetcher(apiClient: apiClientMock)
+        let sut = DefaultCheckoutAttemptIdFetcher(apiClientFactory: { _ in apiClientMock })
 
         // When
         _ = await sut.fetchCheckoutAttemptId(with: configuration)
@@ -88,7 +88,7 @@ final class CheckoutProviderTests: XCTestCase {
             analyticsConfiguration: AnalyticsConfiguration()
         )
 
-        let sut = TestableCheckoutAttemptIdFetcher(apiClient: apiClientMock)
+        let sut = DefaultCheckoutAttemptIdFetcher(apiClientFactory: { _ in apiClientMock })
 
         // When
         let result = await sut.fetchCheckoutAttemptId(with: configuration)
@@ -115,7 +115,7 @@ final class CheckoutProviderTests: XCTestCase {
             analyticsConfiguration: AnalyticsConfiguration()
         )
 
-        let sut = TestableCheckoutAttemptIdFetcher(apiClient: apiClientMock)
+        let sut = DefaultCheckoutAttemptIdFetcher(apiClientFactory: { _ in apiClientMock })
 
         // When
         _ = await sut.fetchCheckoutAttemptId(with: configuration)
@@ -138,7 +138,7 @@ final class CheckoutProviderTests: XCTestCase {
             analyticsConfiguration: AnalyticsConfiguration()
         )
 
-        let sut = TestableCheckoutAttemptIdFetcher(apiClient: nil)
+        let sut = DefaultCheckoutAttemptIdFetcher(apiClientFactory: { _ in nil })
 
         // When
         let result = await sut.fetchCheckoutAttemptId(with: configuration)
@@ -161,7 +161,7 @@ final class CheckoutProviderTests: XCTestCase {
             analyticsConfiguration: AnalyticsConfiguration()
         )
 
-        let sut = TestableCheckoutAttemptIdFetcher(apiClient: nil)
+        let sut = DefaultCheckoutAttemptIdFetcher(apiClientFactory: { _ in nil })
 
         // When
         _ = await sut.fetchCheckoutAttemptId(with: configuration)
@@ -170,39 +170,4 @@ final class CheckoutProviderTests: XCTestCase {
         XCTAssertNil(analyticsProviderMock.checkoutAttemptId)
     }
 
-}
-
-// MARK: - TestableCheckoutAttemptIdFetcher
-
-private class TestableCheckoutAttemptIdFetcher: CheckoutAttemptIdFetching {
-
-    private let apiClient: APIClientProtocol?
-
-    init(apiClient: APIClientProtocol?) {
-        self.apiClient = apiClient
-    }
-
-    func fetchCheckoutAttemptId(
-        with configuration: CheckoutConfiguration
-    ) async -> String? {
-        guard let apiClient else {
-            return nil
-        }
-
-        let request = RequestCheckoutAttemptIdRequest()
-
-        do {
-            let response = try await withCheckedThrowingContinuation { continuation in
-                apiClient.perform(request) { result in
-                    continuation.resume(with: result)
-                }
-            }
-
-            configuration.context.analyticsProvider?.checkoutAttemptId = response.checkoutAttemptId
-
-            return response.checkoutAttemptId
-        } catch {
-            return nil
-        }
-    }
 }
