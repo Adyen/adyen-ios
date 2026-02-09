@@ -57,7 +57,7 @@ public final class Checkout: CheckoutProtocol {
     public let paymentMethods: PaymentMethods?
     internal let session: SessionProtocol?
     
-    /// This is used primarily for sending Analytic Events. If this doesn't exist then there wouldn't be any analytics sent.
+    /// This is used primarily for sending Analytic Events. If this doesn't exist then there would not be any analytics sent.
     internal let checkoutAttemptId: String?
 
     internal let configuration: CheckoutConfiguration
