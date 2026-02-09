@@ -19,11 +19,11 @@ internal protocol PreselectedPaymentMethodViewModelProtocol: AnyObject {
     var titleText: String { get }
     var subtitleText: String { get }
 
-    var primaryButtonTitle: String { get }
-    func primaryButtonTapped()
+    var submitButtonTitle: String { get }
+    func submitPayment()
 
-    var secondaryButtonTitle: String { get }
-    func secondaryButtonTapped()
+    var showAllPaymentMethodsButtonTitle: String { get }
+    func showAllPaymentMethods()
     /// Theming
     var theme: AdyenTheme { get }
 
@@ -102,19 +102,19 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
         localizedString(.preselectedPaymentMethodSubtitle, localizationParameters, component.paymentMethod.name, formattedAmount)
     }
 
-    internal var primaryButtonTitle: String {
+    internal var submitButtonTitle: String {
         localizedString(.submitButtonFormatted, localizationParameters, formattedAmount)
     }
 
-    func primaryButtonTapped() {
+    func submitPayment() {
         didProceed(with: self.component)
     }
 
-    internal var secondaryButtonTitle: String {
+    internal var showAllPaymentMethodsButtonTitle: String {
         localizedString(.preselectedPaymentMethodOtherOptions, localizationParameters)
     }
 
-    func secondaryButtonTapped() {
+    func showAllPaymentMethods() {
         didRequestAllPaymentMethods()
     }
 

@@ -128,8 +128,8 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     private func configureContent() {
         titleLabel.text = viewModel.titleText
         subtitleLabel.text = viewModel.subtitleText
-        primaryButton.title = viewModel.primaryButtonTitle
-        secondaryButton.title = viewModel.secondaryButtonTitle
+        primaryButton.title = viewModel.submitButtonTitle
+        secondaryButton.title = viewModel.showAllPaymentMethodsButtonTitle
     }
 
     private func setupNavigationItem() {
@@ -163,11 +163,11 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     }
 
     @objc private func primaryButtonTapped() {
-        viewModel.primaryButtonTapped()
+        viewModel.submitPayment()
     }
 
     @objc private func secondaryButtonTapped() {
-        viewModel.secondaryButtonTapped()
+        viewModel.showAllPaymentMethods()
     }
 
     // MARK: - Subviews

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2026 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,7 +10,6 @@
 @testable import AdyenDropIn
 @testable import AdyenEncryption
 @_spi(AdyenInternal) @testable import AdyenUI
-
 import Testing
 import UIKit
 
@@ -28,54 +27,62 @@ struct PreselectedPaymentMethodIntegrationTests {
         // TODO: Robert: This is a strange failure, it never seems to match even if the strings are the same.
         // try #expect(sut.preSelectedViewController.primaryTitleText == testDataPaymentType.expectedTitle, "Card number")
         try #expect(sut.preSelectedViewController.subTitleText == testDataPaymentType.expectedSubTitleText, "Use payment.method to pay amount")
-        try #expect(sut.preSelectedViewController.primaryButtonText == testDataPaymentType.primaryButtonText, "Pay amount")
-        try #expect(sut.preSelectedViewController.secondaryButtonText == testDataPaymentType.secondaryButtonText, "Other Payment methods")
+        try #expect(sut.preSelectedViewController.submitButtonText == testDataPaymentType.submitButtonText, "Pay amount")
+        try #expect(sut.preSelectedViewController.showAllPaymentMethodsButtonText == testDataPaymentType.showAllPaymentMethodsButtonText, "Other Payment methods")
     }
     
-    // MARK: - Primary Button (Pay) Tests
+    // MARK: - Submit Payment Tests
     
-    @Test("PaymentComponent that is initiable - triggers submit action - tap pay")
-    func paymentInitableComponent_payTapped() async throws {
+    @Test("PaymentComponent that is initiable - submit payment triggers submit action")
+    func initiableComponent_submitPayment_triggersSubmit() throws {
         // Given - use an initiable component that triggers submit directly
         let sut = SUT_PaymentInitiable(type: .initiableBCMC)
 
-        // When - simulate primary button tap
-        try sut.preSelectedViewController.tapPrimaryButton()
+        // When - user submits payment
+        try sut.preSelectedViewController.submitPayment()
+        
         // Then - verify dropInFlowManager.submit was called
         #expect(sut.dropInFlowManager.submitFromActionPresenterCalled)
     }
 
-    @Test("PaymentComponent that is presentable - triggers presentation - tap pay")
-    func presentableComponent_payTapped() async throws {
+    @Test("PaymentComponent that is presentable - submit payment triggers presentation")
+    func presentableComponent_submitPayment_triggersPresentation() throws {
         let sut = SUT_MockedPaymentMethodRouter(type: .visa)
-        // When - simulate primary button tap
-        try sut.preSelectedViewController.tapPrimaryButton()
+        
+        // When - user submits payment
+        try sut.preSelectedViewController.submitPayment()
+        
         // Then - verify presentComponent is called
         #expect(sut.preselectedPaymentMethodRouter.presentPaymentComponentOnCancelCalled)
         #expect(sut.preselectedPaymentMethodRouter.presentPaymentMethodListCalled == false)
     }
 
-    @Test("PaymentComponent - tap other payment solutions")
-    func paymentComponent_otherPaymentSolutionsTapped() async throws {
-        // Given - use an initiable component that triggers submit directly
+    // MARK: - Show All Payment Methods Tests
+
+    @Test("PaymentComponent - show all payment methods presents payment method list")
+    func paymentComponent_showAllPaymentMethods_presentsPaymentMethodList() throws {
+        // Given
         let sut = SUT_MockedPaymentMethodRouter(type: .visa)
 
-        // When - simulate secondary button tap
-        try sut.preSelectedViewController.tapSecondaryButton()
-        // Then - verify dropInFlowManager.submit was called
+        // When - user requests to see all payment methods
+        try sut.preSelectedViewController.showAllPaymentMethods()
+        
+        // Then - verify payment method list is presented
         #expect(sut.preselectedPaymentMethodRouter.presentPaymentMethodListCalled)
         #expect(sut.preselectedPaymentMethodRouter.presentPaymentComponentOnCancelCalled == false)
     }
 
-    @Test("PaymentComponent - tap cancel")
-    func paymentComponent_cancelTapped() async throws {
-        // Given - use an initiable component that triggers submit directly
+    // MARK: - Cancel Tests
+
+    @Test("PaymentComponent - cancel dismisses and cancels component")
+    func paymentComponent_cancel_dismissesAndCancels() {
+        // Given
         let sut = SUT_MockedPaymentMethodRouter(type: .visa)
 
-        // When - simulate primary button tap
-        sut.preSelectedViewController.tapCancel()
+        // When - user cancels
+        sut.preSelectedViewController.cancel()
 
-        // Then - verify dropInFlowManager.submit was called
+        // Then - verify dismiss and cancel are called
         #expect(sut.preselectedPaymentMethodRouter.dismissCompletionCalled)
         #expect(sut.dropInFlowManagerMock.cancelComponentCalled)
     }
@@ -146,8 +153,8 @@ struct PreselectedPaymentMethodIntegrationTests {
 
     // MARK: - SUT: (ViewControllerProxy)
 
-    // A view controller proxy to `inspect/perform actions` on the view.
-    // The assumption is that the viewcontroller will be PreSelectedPaymentMethodViewController
+    /// A view controller proxy to `inspect/perform actions` on the view.
+    /// The assumption is that the viewcontroller will be PreSelectedPaymentMethodViewController
     @MainActor
     struct PreSelectedPaymentViewControllerProxy {
         let viewController: UIViewController
@@ -168,49 +175,49 @@ struct PreselectedPaymentMethodIntegrationTests {
             }
         }
 
-        var primaryButtonText: String {
+        var submitButtonText: String {
             get throws {
-                let button = try primaryButton()
+                let button = try submitButton()
                 return try #require(button.title)
             }
         }
 
-        var secondaryButtonText: String {
+        var showAllPaymentMethodsButtonText: String {
             get throws {
-                let button = try secondaryButton()
+                let button = try showAllPaymentMethodsButton()
                 return try #require(button.title)
             }
         }
 
         // MARK: - UI elements
 
-        func primaryButton() throws -> FormButton {
+        func submitButton() throws -> FormButton {
             try #require(
                 viewController.view.findView(by: "primaryButton") as? FormButton,
-                "Cannot find primaryButton - Check if the element exists in the view."
+                "Cannot find submitButton - Check if the element exists in the view."
             )
         }
 
-        func secondaryButton() throws -> FormButton {
+        func showAllPaymentMethodsButton() throws -> FormButton {
             try #require(
                 viewController.view.findView(by: "secondaryButton") as? FormButton,
-                "Cannot find secondaryButton - Check if the element exists in the view."
+                "Cannot find showAllPaymentMethodsButton - Check if the element exists in the view."
             )
         }
 
-        // MARK: - Interactions
+        // MARK: - User Actions
 
-        func tapPrimaryButton() throws {
-            let button = try primaryButton()
+        func submitPayment() throws {
+            let button = try submitButton()
             button.sendActions(for: .touchUpInside)
         }
 
-        func tapSecondaryButton() throws {
-            let button = try secondaryButton()
+        func showAllPaymentMethods() throws {
+            let button = try showAllPaymentMethodsButton()
             button.sendActions(for: .touchUpInside)
         }
 
-        func tapCancel() {
+        func cancel() {
             let cancelButton = viewController.navigationItem.leftBarButtonItem
             _ = cancelButton?.target?.perform(cancelButton?.action)
         }
@@ -223,7 +230,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         case visa
         case bcmc
 
-        // PaymentInitiable
+        /// PaymentInitiable
         case initiableBCMC
 
         var paymentComponent: PaymentComponent {
@@ -262,11 +269,11 @@ struct PreselectedPaymentMethodIntegrationTests {
             }
         }
 
-        var primaryButtonText: String {
+        var submitButtonText: String {
             "Pay €1.00"
         }
 
-        var secondaryButtonText: String {
+        var showAllPaymentMethodsButtonText: String {
             "Other payment options"
         }
     }
