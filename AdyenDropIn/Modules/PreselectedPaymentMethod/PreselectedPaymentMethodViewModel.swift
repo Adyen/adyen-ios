@@ -106,7 +106,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
         localizedString(.submitButtonFormatted, localizationParameters, formattedAmount)
     }
 
-    func submitPayment() {
+    internal func submitPayment() {
         didProceed(with: self.component)
     }
 
@@ -114,7 +114,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
         localizedString(.preselectedPaymentMethodOtherOptions, localizationParameters)
     }
 
-    func showAllPaymentMethods() {
+    internal func showAllPaymentMethods() {
         didRequestAllPaymentMethods()
     }
 
