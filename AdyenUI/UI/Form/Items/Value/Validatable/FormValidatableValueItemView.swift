@@ -105,7 +105,6 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
 
     private func triggerValidationErrorCallbackIfNeeded() {
         guard item.validationState.shouldShowError,
-              window != nil,
               let validationStatus = item.validationStatus(),
               let error = validationStatus.validationError
         else { return }
