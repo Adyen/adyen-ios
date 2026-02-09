@@ -23,8 +23,6 @@ internal class CheckoutProviderMock: CheckoutProviding {
     
     /// For AdyenSessionProviding
     var mockedSessionResult: Result<SessionProtocol, Error>?
-    /// For CheckoutAttemptIdProviding
-    var mockedCheckoutAttemptId: Result<String, Error>?
     
     func setupSession(
         with sessionResponse: SessionResponse,
@@ -40,21 +38,6 @@ internal class CheckoutProviderMock: CheckoutProviding {
         case nil:
             throw TestError()
         }
-    }
-    
-    func fetchCheckoutAttemptId(
-        with configuration: CheckoutConfiguration
-    ) async throws -> String? {
-
-        switch mockedCheckoutAttemptId {
-        case let .success(attemptId):
-            return attemptId
-        case let .failure(error):
-            throw error
-        case nil:
-            throw TestError()
-        }
-
     }
     
     /// Convenience for direct CheckoutProviding use

@@ -22,7 +22,7 @@ internal protocol CheckoutProtocol {
     func createDropIn() -> DropInComponent?
 }
 
-internal protocol CheckoutProviding: AdyenSessionProviding, CheckoutAttemptIdProviding {
+internal protocol CheckoutProviding: AdyenSessionProviding {
     func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
@@ -47,10 +47,4 @@ internal protocol AdyenSessionProviding {
         configuration: CheckoutConfiguration,
         apiClient: APIClientProtocol
     ) async throws -> SessionProtocol
-}
-
-internal protocol CheckoutAttemptIdProviding {
-    func fetchCheckoutAttemptId(
-        with configuration: CheckoutConfiguration
-    ) async throws -> String?
 }

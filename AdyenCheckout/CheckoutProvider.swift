@@ -38,7 +38,7 @@ internal class CheckoutProvider: CheckoutProviding {
         )
         
         // fetch and store checkout attempt id
-        async let checkoutAttemptId = fetchCheckoutAttemptId(
+        async let checkoutAttemptId = checkoutAttemptIdFetcher.fetchCheckoutAttemptId(
             with: configuration
         )
         
@@ -63,7 +63,7 @@ internal class CheckoutProvider: CheckoutProviding {
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
 
-        let checkoutAttemptId = try? await fetchCheckoutAttemptId(
+        let checkoutAttemptId = try? await checkoutAttemptIdFetcher.fetchCheckoutAttemptId(
             with: configuration
         )
         
@@ -84,7 +84,7 @@ internal class CheckoutProvider: CheckoutProviding {
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
 
-        let checkoutAttemptId = try? await fetchCheckoutAttemptId(
+        let checkoutAttemptId = try? await checkoutAttemptIdFetcher.fetchCheckoutAttemptId(
             with: configuration
         )
         
@@ -107,12 +107,6 @@ internal class CheckoutProvider: CheckoutProviding {
             apiClient: apiClient,
             context: configuration.context
         )
-    }
-
-    internal func fetchCheckoutAttemptId(
-        with configuration: CheckoutConfiguration
-    ) async throws -> String? {
-        try await checkoutAttemptIdFetcher.fetchCheckoutAttemptId(with: configuration)
     }
 
 }
