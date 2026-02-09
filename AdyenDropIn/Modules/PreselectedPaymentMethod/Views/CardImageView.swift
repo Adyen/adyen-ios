@@ -1,10 +1,11 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2026 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Adyen
+import AdyenUI
 import UIKit
 
 internal class CardImageItem {
@@ -30,25 +31,24 @@ internal class CardImageItem {
     /// The URL of the card image.
     internal var imageURL: URL?
 
-    internal var identifier: String?
-
     /// The size mode of the card image.
     internal var sizeMode: SizeMode
 
+    internal var theme: AdyenTheme
     /// Initializes the form card image item.
     ///
     /// - Parameters:
     ///   - imageURL: The URL of the card image to display.
     ///   - sizeMode: The size mode of the card image.
-    ///   - identifier: An optional accessibility identifier.
+    ///   - theme: The them to apply
     internal init(
         imageURL: URL?,
         sizeMode: SizeMode,
-        identifier: String? = nil
+        theme: AdyenTheme
     ) {
         self.imageURL = imageURL
         self.sizeMode = sizeMode
-        self.identifier = identifier
+        self.theme = theme
     }
 }
 
@@ -128,9 +128,8 @@ internal final class CardImageView: UIView {
     // MARK: - Shadow
 
     private func applyShadow() {
-        // TODO: Robert: Use AdyenTheme
-        containerView.backgroundColor = .systemBackground
-        containerView.layer.shadowColor = UIColor.label.cgColor
+        containerView.backgroundColor = item.theme.colors.background
+        containerView.layer.shadowColor = item.theme.colors.supportShadow.cgColor
         containerView.layer.shadowOffset = CGSize(width: 0, height: Constants.shadowOffsetHeight)
         containerView.layer.shadowRadius = Constants.shadowRadius
         containerView.layer.shadowOpacity = Constants.shadowOpacity
@@ -181,7 +180,7 @@ internal final class CardImageView: UIView {
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = Constants.cardImageViewCornerRadius
-        imageView.backgroundColor = .secondarySystemBackground
+        imageView.backgroundColor = item.theme.colors.background
         return imageView
     }()
 }

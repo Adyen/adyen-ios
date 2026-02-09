@@ -38,6 +38,10 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
 
     private let viewModel: PreselectedPaymentMethodViewModelProtocol
 
+    private var theme: AdyenTheme {
+        viewModel.theme
+    }
+
     // MARK: - Initializers
 
     internal init(viewModel: PreselectedPaymentMethodViewModelProtocol) {
@@ -64,8 +68,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     // MARK: - setup & configurations
 
     private func setupView() {
-        // TODO: Robert: Use Adyen Theme
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = theme.colors.background
 
         view.addSubview(scrollView)
         scrollView.addSubview(contentStackView)
@@ -244,7 +247,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.apply(viewModel.theme.elements.labels.title)
+        label.apply(theme.elements.labels.title)
         label.numberOfLines = 0
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
 
@@ -254,7 +257,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     private lazy var subtitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.apply(viewModel.theme.elements.labels.body)
+        label.apply(theme.elements.labels.body)
         label.numberOfLines = 0
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "subTitle")
         return label
@@ -269,7 +272,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     }()
 
     private lazy var primaryButton: FormButton = {
-        let button = FormButton(buttonStyle: viewModel.theme.elements.buttons.primary)
+        let button = FormButton(buttonStyle: theme.elements.buttons.primary)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(primaryButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton")
@@ -280,7 +283,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     }()
 
     private lazy var secondaryButton: FormButton = {
-        let button = FormButton(buttonStyle: viewModel.theme.elements.buttons.secondary)
+        let button = FormButton(buttonStyle: theme.elements.buttons.secondary)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(secondaryButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "secondaryButton")
