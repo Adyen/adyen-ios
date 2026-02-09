@@ -22,13 +22,14 @@ import XCTest
         }
     }
 
-    extension TwintSDKActionComponent.Configuration {
+    extension TwintActionConfiguration {
         static var dummy: Self {
             .init(callbackAppScheme: "ui-host")
         }
         
         static func dummy(maxIssuerNumber: Int) -> Self {
-            .init(callbackAppScheme: "ui-host", maxIssuerNumber: maxIssuerNumber)
+            .init(callbackAppScheme: "ui-host")
+                .maxIssuerNumber(maxIssuerNumber)
         }
     }
 
@@ -49,7 +50,7 @@ import XCTest
     
         static func actionComponent(
             with twintSpy: TwintSpy,
-            configuration: TwintSDKActionComponent.Configuration = .dummy,
+            configuration: TwintActionConfiguration = .dummy,
             context: AdyenContext = Dummy.context,
             presentationDelegate: PresentationDelegate?,
             delegate: ActionComponentDelegate?,

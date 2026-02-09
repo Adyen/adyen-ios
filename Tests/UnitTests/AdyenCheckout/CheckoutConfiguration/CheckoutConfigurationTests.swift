@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
+@_spi(AdyenInternal) @testable import AdyenActions
 @_spi(AdyenInternal) @testable import AdyenCheckout
 @_spi(AdyenInternal) @testable import AdyenComponents
 @_spi(AdyenInternal) @testable import AdyenUI
@@ -130,6 +131,158 @@ final class CheckoutConfigurationTests: XCTestCase {
         
         XCTAssertNotNil(resolvedConfig, "Should be BLIKComponentConfiguration")
         XCTAssertEqual(resolvedConfig.componentType, .payment(.blik))
+    }
+    
+    // MARK: - Action Configuration Tests
+    
+    func testActionConfiguration_WithDefaultValue_ReturnsProvidedConfiguration() {
+        // Given
+        let threeDS2Config = ThreeDS2ActionConfiguration()
+            .requestorAppURL(URL(string: "https://example.com")!)
+        
+        let checkoutConfig = CheckoutConfiguration(
+            context: context,
+            configurations: [.action(.threeDS2): threeDS2Config]
+        )
+        
+        // When
+        let resolvedConfig: ThreeDS2ActionConfiguration = checkoutConfig.configuration(
+            for: .threeDS2,
+            defaultValue: ThreeDS2ActionConfiguration()
+        )
+        
+        // Then - Should return the stored configuration
+        XCTAssertEqual(resolvedConfig.componentType, .action(.threeDS2))
+        XCTAssertEqual(resolvedConfig.requestorAppURL, URL(string: "https://example.com"))
+    }
+    
+    func testActionConfiguration_WithDefaultValue_ReturnsDefaultWhenMissing() {
+        // Given
+        let checkoutConfig = CheckoutConfiguration(context: context)
+        let defaultConfig = ThreeDS2ActionConfiguration()
+            .requestorAppURL(URL(string: "https://default.com")!)
+        
+        // When
+        let resolvedConfig: ThreeDS2ActionConfiguration = checkoutConfig.configuration(
+            for: .threeDS2,
+            defaultValue: defaultConfig
+        )
+        
+        // Then - Should return the default value
+        XCTAssertEqual(resolvedConfig.componentType, .action(.threeDS2))
+        XCTAssertEqual(resolvedConfig.requestorAppURL, URL(string: "https://default.com"))
+    }
+    
+    func testActionConfiguration_Optional_ReturnsProvidedConfiguration() {
+        // Given
+        let threeDS2Config = ThreeDS2ActionConfiguration()
+            .requestorAppURL(URL(string: "https://example.com")!)
+        
+        let checkoutConfig = CheckoutConfiguration(
+            context: context,
+            configurations: [.action(.threeDS2): threeDS2Config]
+        )
+        
+        // When
+        let resolvedConfig: ThreeDS2ActionConfiguration? = checkoutConfig.configuration(for: .threeDS2)
+        
+        // Then - Should return the stored configuration
+        XCTAssertNotNil(resolvedConfig)
+        XCTAssertEqual(resolvedConfig?.componentType, .action(.threeDS2))
+        XCTAssertEqual(resolvedConfig?.requestorAppURL, URL(string: "https://example.com"))
+    }
+    
+    func testActionConfiguration_Optional_ReturnsNilWhenMissing() {
+        // Given
+        let checkoutConfig = CheckoutConfiguration(context: context)
+        
+        // When
+        let resolvedConfig: ThreeDS2ActionConfiguration? = checkoutConfig.configuration(for: .threeDS2)
+        
+        // Then - Should return nil
+        XCTAssertNil(resolvedConfig)
+    }
+    
+    func testActionConfiguration_TwintConfiguration_ReturnsProvidedConfiguration() {
+        // Given
+        let twintConfig = TwintActionConfiguration(callbackAppScheme: "my-app")
+            .maxIssuerNumber(39)
+        
+        let checkoutConfig = CheckoutConfiguration(
+            context: context,
+            configurations: [.action(.twint): twintConfig]
+        )
+        
+        // When - Using defaultValue variant
+        let resolvedConfig: TwintActionConfiguration = checkoutConfig.configuration(
+            for: .twint,
+            defaultValue: TwintActionConfiguration(callbackAppScheme: "default-app")
+        )
+        
+        // Then
+        XCTAssertEqual(resolvedConfig.componentType, .action(.twint))
+        XCTAssertEqual(resolvedConfig.callbackAppScheme, "my-app")
+        XCTAssertEqual(resolvedConfig.maxIssuerNumber, 39)
+    }
+    
+    func testActionConfiguration_TwintConfiguration_Optional_ReturnsProvidedConfiguration() {
+        // Given
+        let twintConfig = TwintActionConfiguration(callbackAppScheme: "my-app")
+            .maxIssuerNumber(39)
+        
+        let checkoutConfig = CheckoutConfiguration(
+            context: context,
+            configurations: [.action(.twint): twintConfig]
+        )
+        
+        // When - Using optional variant
+        let resolvedConfig: TwintActionConfiguration? = checkoutConfig.configuration(for: .twint)
+        
+        // Then
+        XCTAssertNotNil(resolvedConfig)
+        XCTAssertEqual(resolvedConfig?.callbackAppScheme, "my-app")
+        XCTAssertEqual(resolvedConfig?.maxIssuerNumber, 39)
+    }
+    
+    func testActionConfiguration_AutoclosureNotEvaluatedWhenConfigExists() {
+        // Given
+        let threeDS2Config = ThreeDS2ActionConfiguration()
+        
+        let checkoutConfig = CheckoutConfiguration(
+            context: context,
+            configurations: [.action(.threeDS2): threeDS2Config]
+        )
+        var defaultWasCalled = false
+        
+        // When
+        let _: ThreeDS2ActionConfiguration = checkoutConfig.configuration(
+            for: .threeDS2,
+            defaultValue: {
+                defaultWasCalled = true
+                return ThreeDS2ActionConfiguration()
+            }()
+        )
+        
+        // Then - Default should not be evaluated since config exists
+        XCTAssertFalse(defaultWasCalled, "Autoclosure should not be evaluated when config exists")
+    }
+    
+    func testActionConfiguration_AutoclosureEvaluatedWhenConfigMissing() {
+        // Given
+        let checkoutConfig = CheckoutConfiguration(context: context)
+        var defaultWasCalled = false
+        
+        // When
+        let _: ThreeDS2ActionConfiguration = checkoutConfig.configuration(
+            for: .threeDS2,
+            defaultValue: {
+                defaultWasCalled = true
+                return ThreeDS2ActionConfiguration()
+            }()
+        )
+        
+        // Then - Default should be evaluated since no config exists
+        XCTAssertTrue(defaultWasCalled, "Autoclosure should be evaluated when config is missing")
     }
     
     // MARK: - Helper Methods

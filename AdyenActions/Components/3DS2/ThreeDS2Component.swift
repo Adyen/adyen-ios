@@ -31,73 +31,9 @@ public final class ThreeDS2Component: ActionComponent {
     }
     
     /// Three DS2 component configurations.
-    public var configuration: Configuration {
+    public var configuration: ThreeDS2ActionConfiguration {
         didSet {
             updateConfiguration()
-        }
-    }
-    
-    /// Three DS2 component configurations.
-    public struct Configuration {
-        
-        /// ``RedirectComponent`` style
-        public var redirectComponentStyle: RedirectComponentStyle?
-        
-        /// The appearance configuration of the 3D Secure 2 challenge UI.
-        public var appearanceConfiguration = ADYAppearanceConfiguration()
-        
-        /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
-        public var requestorAppURL: URL?
-        
-        /// The configuration for Delegated Authentication.
-        public let delegateAuthentication: DelegatedAuthentication?
-        
-        /// The configuration for Delegated Authentication.
-        public struct DelegatedAuthentication {
-            // The relying party identifier that is used for PassKeys.
-            // See: https://developer.apple.com/documentation/xcode/supporting-associated-domains
-            // See: https://developer.apple.com/documentation/authenticationservices/public-private_key_authentication/supporting_passkeys
-            public let relyingPartyIdentifier: String
-
-            /// The configuration for Delegated Authentication Component style
-            public let delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle
-
-            /// The localization parameters, leave it nil to use the default parameters.
-            public let localizationParameters: LocalizationParameters?
-
-            /// Initializes a new instance.
-            ///
-            /// - Parameter relyingPartyIdentifier: The relying party identifier that is used for PassKeys
-            /// - Parameter delegatedAuthenticationComponentStyle: The delegated authentication component style.
-            /// - Parameter localizationParameters: The localization parameters, leave it nil to use the default parameters.
-            public init(
-                relyingPartyIdentifier: String,
-                delegatedAuthenticationComponentStyle: DelegatedAuthenticationComponentStyle = .init(),
-                localizationParameters: LocalizationParameters? = nil
-            ) {
-                self.relyingPartyIdentifier = relyingPartyIdentifier
-                self.delegatedAuthenticationComponentStyle = delegatedAuthenticationComponentStyle
-                self.localizationParameters = localizationParameters
-            }
-        }
-        
-        /// Initializes a new instance
-        ///
-        /// - Parameters:
-        ///   - redirectComponentStyle: `RedirectComponent` style
-        ///   - appearanceConfiguration: The appearance configuration of the 3D Secure 2 challenge UI.
-        ///   - requestorAppURL: `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
-        ///   - delegateAuthentication: The configuration for delegate authentication
-        public init(
-            redirectComponentStyle: RedirectComponentStyle? = nil,
-            appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration(),
-            requestorAppURL: URL? = nil,
-            delegateAuthentication: DelegatedAuthentication? = nil
-        ) {
-            self.redirectComponentStyle = redirectComponentStyle
-            self.appearanceConfiguration = appearanceConfiguration
-            self.requestorAppURL = requestorAppURL
-            self.delegateAuthentication = delegateAuthentication
         }
     }
     
@@ -107,7 +43,7 @@ public final class ThreeDS2Component: ActionComponent {
     /// - Parameter configuration: The component's configuration.
     public init(
         context: AdyenContext,
-        configuration: Configuration = Configuration()
+        configuration: ThreeDS2ActionConfiguration = .init()
     ) {
         self.context = context
         self.configuration = configuration
@@ -128,7 +64,7 @@ public final class ThreeDS2Component: ActionComponent {
         threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
         threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
         redirectComponent: AnyRedirectComponent,
-        configuration: Configuration = Configuration()
+        configuration: ThreeDS2ActionConfiguration = .init()
     ) {
         self.init(
             context: context,
@@ -231,7 +167,7 @@ public final class ThreeDS2Component: ActionComponent {
             context: context,
             service: ThreeDSServiceProvider(),
             appearanceConfiguration: configuration.appearanceConfiguration,
-            delegatedAuthenticationConfiguration: configuration.delegateAuthentication
+            delegatedAuthenticationConfiguration: configuration.delegatedAuthentication
         )
         handler.presentationDelegate = presentationDelegate
         handler._isDropIn = _isDropIn
@@ -245,7 +181,7 @@ public final class ThreeDS2Component: ActionComponent {
             context: context,
             service: ThreeDSServiceProvider(),
             appearanceConfiguration: configuration.appearanceConfiguration,
-            delegatedAuthenticationConfiguration: configuration.delegateAuthentication
+            delegatedAuthenticationConfiguration: configuration.delegatedAuthentication
         )
         handler.presentationDelegate = presentationDelegate
         handler._isDropIn = _isDropIn

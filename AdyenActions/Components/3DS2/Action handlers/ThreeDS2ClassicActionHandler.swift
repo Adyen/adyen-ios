@@ -41,7 +41,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
         appearanceConfiguration: ADYAppearanceConfiguration,
         service: ThreeDSService,
         coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
-        delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil
+        delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication? = nil
     ) {
         self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
             context: context,
