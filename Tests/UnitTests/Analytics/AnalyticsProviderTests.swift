@@ -23,69 +23,79 @@ class AnalyticsProviderTests: XCTestCase {
         XCTAssertNil(sut.eventAnalyticsProvider)
     }
 
-    func testFetchCheckoutAttemptIdShouldTriggerRequest() {
+    func testSendInitialAnalyticsShouldTriggerRequest() {
         // Given
         let apiClient = APIClientMock()
-        let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
-        let initialAnalyticsResponse = RequestCheckoutAttemptIdResponse(checkoutAttemptId: expectedCheckoutAttemptId)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
-        apiClient.mockedResults = [checkoutAttemptIdResult]
+        let analyticsResponse = EmptyResponse()
+        let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
+        apiClient.mockedResults = [analyticsResult]
+
+        let analyticsExpectation = expectation(description: "Initial analytics request is triggered")
+        apiClient.onExecute = { request in
+            if request is InitialAnalyticsRequest {
+                analyticsExpectation.fulfill()
+            }
+        }
 
         let sut = createSUT(apiClient: apiClient)
         // When
         sut.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
-        
-        wait(until: sut, at: \.checkoutAttemptId, is: expectedCheckoutAttemptId)
+
+        wait(for: [analyticsExpectation], timeout: 10)
     }
 
-    func testFetchCheckoutAttemptIdWhenRequestSucceedShouldCallCompletionWithNonNilValue() {
+    func testCheckoutAttemptIdIsIncludedInInitialRequest() {
         // Given
         let apiClient = APIClientMock()
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
-        let initialAnalyticsResponse = RequestCheckoutAttemptIdResponse(checkoutAttemptId: expectedCheckoutAttemptId)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
-        apiClient.mockedResults = [checkoutAttemptIdResult]
+        let analyticsResponse = EmptyResponse()
+        let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
+        apiClient.mockedResults = [analyticsResult]
+
+        let analyticsExpectation = expectation(description: "Initial request includes checkoutAttemptId")
+        apiClient.onExecute = { request in
+            if let initialRequest = request as? InitialAnalyticsRequest {
+                XCTAssertEqual(initialRequest.checkoutAttemptId, expectedCheckoutAttemptId)
+                analyticsExpectation.fulfill()
+            }
+        }
 
         let sut = createSUT(apiClient: apiClient)
+        sut.checkoutAttemptId = expectedCheckoutAttemptId
         // When
         sut.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
-        
+
         // Then
-        wait(until: sut, at: \.checkoutAttemptId, is: expectedCheckoutAttemptId)
+        wait(for: [analyticsExpectation], timeout: 10)
     }
 
-    func testFetchCheckoutAttemptIdGivenFailureShouldCallCompletionWithNilValue() {
+    func testCheckoutAttemptIdIsNilWhenNotSetExternally() {
         // Given
         let apiClient = APIClientMock()
 
-        let error = NSError(domain: "", code: 500, userInfo: [NSLocalizedDescriptionKey: "Internal Server Error"])
-        let checkoutAttemptIdResult: Result<Response, Error> = .failure(error)
-        apiClient.mockedResults = [checkoutAttemptIdResult]
+        let analyticsResponse = EmptyResponse()
+        let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
+        apiClient.mockedResults = [analyticsResult]
 
         let sut = createSUT(apiClient: apiClient)
         // When
         sut.sendInitialAnalytics(with: .components(type: .atome), additionalFields: nil)
         // Then
-        XCTAssertNil(sut.checkoutAttemptId, "The checkoutAttemptId is not nil.")
+        XCTAssertNil(sut.checkoutAttemptId, "The checkoutAttemptId should be nil when not set externally.")
     }
 
-    func testFetchCheckoutAttemptIdShouldSetCheckoutAttemptIdProperty() {
+    func testSettingCheckoutAttemptIdExternally() {
         // Given
-        let apiClient = APIClientMock()
         let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
 
-        let initialAnalyticsResponse = RequestCheckoutAttemptIdResponse(checkoutAttemptId: expectedCheckoutAttemptId)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
-        apiClient.mockedResults = [checkoutAttemptIdResult]
-
-        let sut = createSUT(apiClient: apiClient)
+        let sut = createSUT(apiClient: APIClientMock())
         // When
-        sut.sendInitialAnalytics(with: .components(type: .atome), additionalFields: nil)
-        
+        sut.checkoutAttemptId = expectedCheckoutAttemptId
+
         // Then
-        wait(until: sut, at: \.checkoutAttemptId, is: expectedCheckoutAttemptId)
+        XCTAssertEqual(sut.checkoutAttemptId, expectedCheckoutAttemptId)
     }
     
     func testInitialRequest() {
@@ -96,7 +106,7 @@ class AnalyticsProviderTests: XCTestCase {
         let analyticsExpectation = expectation(description: "Initial request is triggered")
         
         let apiClient = APIClientMock()
-        apiClient.mockedResults = [.success(RequestCheckoutAttemptIdResponse(checkoutAttemptId: checkoutAttemptId))]
+        apiClient.mockedResults = [.success(EmptyResponse())]
         apiClient.onExecute = { request in
             if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
                 XCTAssertNil(initialAnalyticsdRequest.amount)
@@ -149,13 +159,10 @@ class AnalyticsProviderTests: XCTestCase {
     func eventsShouldNotBeSentWhenDisabled() throws {
         let apiClient = APIClientMock()
 
-        let initialAnalyticsResponse = RequestCheckoutAttemptIdResponse(checkoutAttemptId: checkoutAttemptIdMockValue)
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(initialAnalyticsResponse)
-        
         let analyticsResponse = EmptyResponse()
         let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
         
-        apiClient.mockedResults = [checkoutAttemptIdResult, analyticsResult]
+        apiClient.mockedResults = [analyticsResult]
         
         let sut = createSUT(apiClient: apiClient)
         
@@ -189,7 +196,7 @@ class AnalyticsProviderTests: XCTestCase {
         let analyticsExpectation = expectation(description: "Initial request is triggered")
         
         let apiClient = APIClientMock()
-        apiClient.mockedResults = [.success(RequestCheckoutAttemptIdResponse(checkoutAttemptId: checkoutAttemptId))]
+        apiClient.mockedResults = [.success(EmptyResponse())]
         apiClient.onExecute = { request in
             if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
                 XCTAssertEqual(initialAnalyticsdRequest.amount, amount)
