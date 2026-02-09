@@ -5,21 +5,13 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
+import XCTest
 @testable @_spi(AdyenInternal) import AdyenCard
 @testable @_spi(AdyenInternal) import AdyenUI
-import XCTest
 
 final class CardComponentEventTests: XCTestCase {
-    
-    private var method: CardPaymentMethod {
-        .init(
-            type: .card,
-            name: "Test name",
-            fundingSource: .credit,
-            brands: [.visa, .americanExpress, .masterCard]
-        )
-    }
-    
+
+    // EVT-UC9: Component Rendered - Send Initial Event
     func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
@@ -36,10 +28,10 @@ final class CardComponentEventTests: XCTestCase {
         // Then
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
         XCTAssertEqual(analyticsProviderMock.infos.count, 1)
-        
+
         let info = analyticsProviderMock.infos.first
         XCTAssertEqual(info?.type, .rendered)
-        
+
         let configDataDict = try XCTUnwrap(info?.configData?.stringOnlyDictionary)
         XCTAssertEqual(configDataDict["socialSecurityNumberMode"], "auto")
         XCTAssertEqual(configDataDict["hasInstallmentOptions"], "false")
@@ -50,15 +42,18 @@ final class CardComponentEventTests: XCTestCase {
         XCTAssertEqual(configDataDict["enableStoredDetails"], "true")
         XCTAssertEqual(configDataDict.keys.count, 7)
     }
-    
-    // MARK: Focus/unfocus
 
-    func testCardNumberFocusEvents() throws {
+    // MARK: - Focus/unfocus events
+
+    /// EVT-UC1, EVT-UC2: Field Focus/Unfocus - Send Focus and Unfocus Events
+    func test_cardNumber_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = makeSUT(analyticsProviderMock: analyticsProviderMock)
 
         let cardNumberItemView: FormTextItemView<FormCardNumberItem> = try XCTUnwrap(
-            sut.cardViewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
+            sut.cardViewController.view.findView(
+                with: "AdyenCard.FormCardNumberContainerItem.numberItem"
+            )
         )
 
         testFocusEvents(
@@ -68,11 +63,14 @@ final class CardComponentEventTests: XCTestCase {
         )
     }
 
-    func testExpiryDateFocusEvents() throws {
+    /// EVT-UC1, EVT-UC2: Field Focus/Unfocus - Send Focus and Unfocus Events
+    func test_expiryDate_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = makeSUT(analyticsProviderMock: analyticsProviderMock)
 
-        let expiryDateItemView: FormTextInputItemView = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem"))
+        let expiryDateItemView: FormTextInputItemView = try XCTUnwrap(
+            sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
+        )
 
         testFocusEvents(
             for: expiryDateItemView,
@@ -81,11 +79,14 @@ final class CardComponentEventTests: XCTestCase {
         )
     }
 
-    func testSecurityCodeFocusEvents() throws {
+    /// EVT-UC1, EVT-UC2: Field Focus/Unfocus - Send Focus and Unfocus Events
+    func test_securityCode_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = makeSUT(analyticsProviderMock: analyticsProviderMock)
 
-        let securityCodeItemView: FormCardSecurityCodeItemView = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
+        let securityCodeItemView: FormCardSecurityCodeItemView = try XCTUnwrap(
+            sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
+        )
 
         testFocusEvents(
             for: securityCodeItemView,
@@ -94,13 +95,16 @@ final class CardComponentEventTests: XCTestCase {
         )
     }
 
-    func testHolderNameFocusEvents() throws {
+    /// EVT-UC1, EVT-UC2: Field Focus/Unfocus - Send Focus and Unfocus Events
+    func test_holderName_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardComponentConfiguration()
         config.showsHolderNameField = true
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
-        let holderNameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem"))
+        let holderNameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
+            sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem")
+        )
 
         testFocusEvents(
             for: holderNameItemView,
@@ -109,13 +113,18 @@ final class CardComponentEventTests: XCTestCase {
         )
     }
 
-    func testKCPFieldFocusEvents() throws {
+    /// EVT-UC1, EVT-UC2: Field Focus/Unfocus - Send Focus and Unfocus Events
+    func test_kcpField_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardComponentConfiguration()
         config.koreanAuthenticationMode = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
-        let kcpItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.additionalAuthCodeItem"))
+        let kcpItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
+            sut.cardViewController.view.findView(
+                with: "AdyenCard.CardComponent.additionalAuthCodeItem"
+            )
+        )
 
         testFocusEvents(
             for: kcpItemView,
@@ -124,13 +133,18 @@ final class CardComponentEventTests: XCTestCase {
         )
     }
 
-    func testKCPPasswordFocusEvents() throws {
+    /// EVT-UC1, EVT-UC2: Field Focus/Unfocus - Send Focus and Unfocus Events
+    func test_kcpPassword_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardComponentConfiguration()
         config.koreanAuthenticationMode = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
-        let kcpPasswordItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.additionalAuthPasswordItem"))
+        let kcpPasswordItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
+            sut.cardViewController.view.findView(
+                with: "AdyenCard.CardComponent.additionalAuthPasswordItem"
+            )
+        )
 
         testFocusEvents(
             for: kcpPasswordItemView,
@@ -138,58 +152,232 @@ final class CardComponentEventTests: XCTestCase {
             analyticsProviderMock: analyticsProviderMock
         )
     }
-    
-    func testSocialSecurityFocusEvents() throws {
+
+    /// EVT-UC1, EVT-UC2: Field Focus/Unfocus - Send Focus and Unfocus Events
+    func test_socialSecurity_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardComponentConfiguration()
         config.socialSecurityNumberMode = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
-        
-        let socialSecurityItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem"))
-        
+
+        let socialSecurityItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
+            sut.cardViewController.view.findView(
+                with: "AdyenCard.CardComponent.socialSecurityNumberItem"
+            )
+        )
+
         testFocusEvents(
             for: socialSecurityItemView,
             target: .boletoSocialSecurityNumber,
             analyticsProviderMock: analyticsProviderMock
         )
     }
-    
-    func testPostalCodeFocusEvents() throws {
+
+    /// EVT-UC1, EVT-UC2: Field Focus/Unfocus - Send Focus and Unfocus Events
+    func test_postalCode_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardComponentConfiguration()
         config.billingAddress.mode = .postalCode
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
-        
-        let postalCodeItemView: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.postalCodeItem"))
-        
+
+        let postalCodeItemView: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(
+            sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.postalCodeItem")
+        )
+
         testFocusEvents(
             for: postalCodeItemView,
             target: .addressPostalCode,
             analyticsProviderMock: analyticsProviderMock
         )
     }
-    
-    private func testFocusEvents(
-        for field: FormTextItemView<some FormTextItem>,
-        target: AnalyticsEventTarget,
-        analyticsProviderMock: AnalyticsProviderMock
-    ) {
-        analyticsProviderMock.clearAll()
-        
-        field.textFieldDidBeginEditing(field.textField)
-        field.textFieldDidEndEditing(field.textField)
-        
-        let firstInfoEvent = analyticsProviderMock.infos[0]
-        let secondInfoEvent = analyticsProviderMock.infos[1]
-        
-        XCTAssertEqual(firstInfoEvent.type, .focus)
-        XCTAssertEqual(firstInfoEvent.target, target)
-        
-        XCTAssertEqual(secondInfoEvent.type, .unfocus)
-        XCTAssertEqual(secondInfoEvent.target, target)
+
+    // MARK: - Validation error events
+
+    // EVT-UC3: Explicit Validation Failure - Send Validation Error Event
+    func test_cardNumber_withInvalidValue_shouldSendValidationErrorEvent() throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = makeSUT(analyticsProviderMock: analyticsProviderMock)
+
+        let cardNumberItemView: FormTextItemView<FormCardNumberItem> = try XCTUnwrap(
+            sut.cardViewController.view.findView(
+                with: "AdyenCard.FormCardNumberContainerItem.numberItem"
+            )
+        )
+
+        testValidationErrorEvent(
+            for: cardNumberItemView,
+            target: .cardNumber,
+            invalidValue: "123",
+            analyticsProviderMock: analyticsProviderMock
+        )
     }
-    
-    private func makeSUT(with configuration: CardComponentConfiguration = .init(), analyticsProviderMock: AnalyticsProviderMock) -> CardComponent {
+
+    // EVT-UC3: Explicit Validation Failure - Send Validation Error Event
+    func test_expiryDate_withInvalidValue_shouldSendValidationErrorEvent() throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = makeSUT(analyticsProviderMock: analyticsProviderMock)
+
+        let expiryDateItemView: FormTextInputItemView = try XCTUnwrap(
+            sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
+        )
+
+        testValidationErrorEvent(
+            for: expiryDateItemView,
+            target: .expiryDate,
+            invalidValue: "13/20",
+            analyticsProviderMock: analyticsProviderMock
+        )
+    }
+
+    // EVT-UC3: Explicit Validation Failure - Send Validation Error Event
+    func test_securityCode_withInvalidValue_shouldSendValidationErrorEvent() throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = makeSUT(analyticsProviderMock: analyticsProviderMock)
+
+        let securityCodeItemView: FormCardSecurityCodeItemView = try XCTUnwrap(
+            sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
+        )
+
+        testValidationErrorEvent(
+            for: securityCodeItemView,
+            target: .securityCode,
+            invalidValue: "12",
+            analyticsProviderMock: analyticsProviderMock
+        )
+    }
+
+    // EVT-UC3: Explicit Validation Failure - Send Validation Error Event
+    func test_holderName_withInvalidValue_shouldSendValidationErrorEvent() throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        var config = CardComponentConfiguration()
+        config.showsHolderNameField = true
+        let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
+
+        let holderNameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
+            sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem")
+        )
+
+        testValidationErrorEvent(
+            for: holderNameItemView,
+            target: .holderName,
+            invalidValue: "",
+            analyticsProviderMock: analyticsProviderMock
+        )
+    }
+
+    // EVT-UC3: Explicit Validation Failure - Send Validation Error Event
+    func test_kcpField_withInvalidValue_shouldSendValidationErrorEvent() throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        var config = CardComponentConfiguration()
+        config.koreanAuthenticationMode = .show
+        let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
+
+        let kcpItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
+            sut.cardViewController.view.findView(
+                with: "AdyenCard.CardComponent.additionalAuthCodeItem"
+            )
+        )
+
+        testValidationErrorEvent(
+            for: kcpItemView,
+            target: .taxNumber,
+            invalidValue: "123",
+            analyticsProviderMock: analyticsProviderMock
+        )
+    }
+
+    // EVT-UC3: Explicit Validation Failure - Send Validation Error Event
+    func test_kcpPassword_withInvalidValue_shouldSendValidationErrorEvent() throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        var config = CardComponentConfiguration()
+        config.koreanAuthenticationMode = .show
+        let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
+
+        let kcpPasswordItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
+            sut.cardViewController.view.findView(
+                with: "AdyenCard.CardComponent.additionalAuthPasswordItem"
+            )
+        )
+
+        testValidationErrorEvent(
+            for: kcpPasswordItemView,
+            target: .authPassWord,
+            invalidValue: "1",
+            analyticsProviderMock: analyticsProviderMock
+        )
+    }
+
+    // EVT-UC3: Explicit Validation Failure - Send Validation Error Event
+    func test_socialSecurity_withInvalidValue_shouldSendValidationErrorEvent() throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        var config = CardComponentConfiguration()
+        config.socialSecurityNumberMode = .show
+        let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
+
+        let socialSecurityItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
+            sut.cardViewController.view.findView(
+                with: "AdyenCard.CardComponent.socialSecurityNumberItem"
+            )
+        )
+
+        testValidationErrorEvent(
+            for: socialSecurityItemView,
+            target: .boletoSocialSecurityNumber,
+            invalidValue: "123",
+            analyticsProviderMock: analyticsProviderMock
+        )
+    }
+
+    // EVT-UC3: Explicit Validation Failure - Send Validation Error Event
+    func test_postalCode_withInvalidValue_shouldSendValidationErrorEvent() throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        var config = CardComponentConfiguration()
+        config.billingAddress.mode = .postalCode
+        let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
+
+        let postalCodeItemView: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(
+            sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.postalCodeItem")
+        )
+
+        testValidationErrorEvent(
+            for: postalCodeItemView,
+            target: .addressPostalCode,
+            invalidValue: "1",
+            analyticsProviderMock: analyticsProviderMock
+        )
+    }
+
+    // EVT-UC4: Explicit Validation Success - No Validation Error Event
+    func test_cardNumber_withValidValue_shouldNotSendValidationErrorEvent() throws {
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let sut = makeSUT(analyticsProviderMock: analyticsProviderMock)
+
+        let cardNumberItemView: FormTextItemView<FormCardNumberItem> = try XCTUnwrap(
+            sut.cardViewController.view.findView(
+                with: "AdyenCard.FormCardNumberContainerItem.numberItem"
+            )
+        )
+
+        analyticsProviderMock.clearAll()
+
+        cardNumberItemView.item.value = "5454545454545454"
+        cardNumberItemView.showValidation()
+
+        let validationErrorEvents = analyticsProviderMock.infos.filter {
+            $0.type == .validationError
+        }
+        XCTAssertTrue(
+            validationErrorEvents.isEmpty,
+            "No validation error event should be sent when input is valid"
+        )
+    }
+
+    // MARK: - Helper methods
+
+    private func makeSUT(
+        with configuration: CardComponentConfiguration = .init(),
+        analyticsProviderMock: AnalyticsProviderMock
+    ) -> CardComponent {
         let context = Dummy.context(with: analyticsProviderMock)
         let cardComponent = CardComponent(
             paymentMethod: method,
@@ -197,8 +385,63 @@ final class CardComponentEventTests: XCTestCase {
             configuration: configuration
         )
         cardComponent.viewController.loadViewIfNeeded()
-        
+
         return cardComponent
+    }
+
+    private func testFocusEvents(
+        for field: FormTextItemView<some FormTextItem>,
+        target: AnalyticsEventTarget,
+        analyticsProviderMock: AnalyticsProviderMock
+    ) {
+        analyticsProviderMock.clearAll()
+
+        field.textFieldDidBeginEditing(field.textField)
+        field.textFieldDidEndEditing(field.textField)
+
+        let firstInfoEvent = analyticsProviderMock.infos[0]
+        let secondInfoEvent = analyticsProviderMock.infos[1]
+
+        XCTAssertEqual(firstInfoEvent.type, .focus)
+        XCTAssertEqual(firstInfoEvent.target, target)
+
+        XCTAssertEqual(secondInfoEvent.type, .unfocus)
+        XCTAssertEqual(secondInfoEvent.target, target)
+    }
+
+    private func testValidationErrorEvent(
+        for field: FormTextItemView<some FormTextItem>,
+        target: AnalyticsEventTarget,
+        invalidValue: String,
+        analyticsProviderMock: AnalyticsProviderMock
+    ) {
+        analyticsProviderMock.clearAll()
+
+        field.item.value = invalidValue
+        field.showValidation()
+
+        XCTAssertEqual(
+            analyticsProviderMock.infos.count, 1, "Expected exactly one validation error event"
+        )
+
+        let validationEvent = analyticsProviderMock.infos.first
+        XCTAssertEqual(validationEvent?.type, .validationError)
+        XCTAssertEqual(validationEvent?.target, target)
+        XCTAssertNotNil(
+            validationEvent?.validationErrorCode, "Validation error should include error code"
+        )
+        XCTAssertNotNil(
+            validationEvent?.validationErrorMessage, "Validation error should include error message"
+        )
+    }
+
+    private var method: CardPaymentMethod {
+        .init(
+            type: .card,
+            name: "Test name",
+            fundingSource: .credit,
+            brands: [.visa, .americanExpress, .masterCard]
+        )
     }
 
 }
