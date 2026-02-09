@@ -57,7 +57,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupNavigationItem()
-        configureSheetPresentation()
+        configurePresentationSheet()
         viewModel.viewDidLoad()
     }
 
@@ -89,7 +89,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     /// Two tasks,
     /// 1. Avoid swipe down to dismiss.
     /// 2. to make the screen dynamic sizable.
-    private func configureSheetPresentation() {
+    private func configurePresentationSheet() {
         // Adding this to avoid swiping down to dimiss the controller.
         isModalInPresentation = true
 
@@ -273,7 +273,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(primaryButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton")
-        // TODO: Robert: Create an interface in AdyenUI to get the bento images. Here it always fallsback to the the systemlockIcon. 
+        // TODO: Robert: Create an interface in AdyenUI to get the bento images. Here it always fallsback to the the systemlockIcon.
         button.leadingImage =
             (UIImage(named: Images.bentoLockIcon) ?? UIImage(systemName: Images.systemLockIcon))?.withRenderingMode(.alwaysTemplate)
         return button
