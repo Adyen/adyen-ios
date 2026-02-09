@@ -9,7 +9,6 @@ import AdyenNetworking
 import Foundation
 
 // sourcery:AutoMockable
-// TODO: Robert: rename to checkoutAttemptID Poviding & provider similar to publickeyfetcher.
 internal protocol CheckoutAttemptIdFetching {
     func fetchCheckoutAttemptId(
         with configuration: CheckoutConfiguration
@@ -21,47 +20,38 @@ internal protocol CheckoutAttemptIdFetching {
 /// Improvement: This is an edge case and the current success rate of the api is pretty high 99 something so this would rarely ever fail. If this ever becomes a constraint we could add a retying logic to try twice if it failed once. But that is an improvement if needed alone.
 internal class CheckoutAttemptIdFetcher: CheckoutAttemptIdFetching {
 
-    internal typealias APIClientFactory = (CheckoutConfiguration) -> APIClientProtocol?
-
-    private let apiClientFactory: APIClientFactory
+    private let apiClientProvider: (CheckoutConfiguration) -> APIClientProtocol?
 
     internal init() {
-        self.apiClientFactory = CheckoutAttemptIdFetcher.defaultAPIClientFactory
+        self.apiClientProvider = CheckoutAttemptIdFetcher.defaultAPIClientProvider
     }
 
-    internal init(apiClientFactory: @escaping APIClientFactory) {
-        self.apiClientFactory = apiClientFactory
+    internal init(apiClientProvider: @escaping (CheckoutConfiguration) -> APIClientProtocol?) {
+        self.apiClientProvider = apiClientProvider
     }
 
     internal func fetchCheckoutAttemptId(
         with configuration: CheckoutConfiguration
     ) async -> String? {
-
-        guard let apiClient = apiClientFactory(configuration) else {
-            return nil
-        }
-
         let request = RequestCheckoutAttemptIdRequest()
-
-        do {
-            let response = try await withCheckedThrowingContinuation { continuation in
-                apiClient.perform(request) { result in
-                    continuation.resume(with: result)
-                }
-            }
-
-            // TODO: Robert: This will need to be removed once we determine how we are going to create the AnalyticsProvider. For now we just need to inform the AnalyticProvider.
-            configuration.context.analyticsProvider?.checkoutAttemptId = response.checkoutAttemptId
-
-            return response.checkoutAttemptId
-        } catch {
+        guard let apiClient = apiClientProvider(configuration) else {
             return nil
         }
+
+        let response = try? await withCheckedThrowingContinuation { continuation in
+            apiClient.perform(request) { result in
+                continuation.resume(with: result)
+            }
+        }
+        // TODO: Robert: This will need to be removed once we determine how we are going to create the AnalyticsProvider. For now we just need to inform the AnalyticProvider.
+        configuration.context.analyticsProvider?.checkoutAttemptId = response?.checkoutAttemptId
+
+        return response?.checkoutAttemptId
     }
 
     // MARK: - Private
 
-    private static let defaultAPIClientFactory: APIClientFactory = { configuration in
+    private static let defaultAPIClientProvider: (CheckoutConfiguration) -> APIClientProtocol? = { configuration in
         AdyenContext.createAnalyticsAPIClient(
             apiContext: configuration.context.apiContext
         )

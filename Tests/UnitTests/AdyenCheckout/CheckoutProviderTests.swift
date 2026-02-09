@@ -12,7 +12,7 @@ import XCTest
 
 final class CheckoutProviderTests: XCTestCase {
 
-    // MARK: - DefaultCheckoutAttemptIdFetcher Tests (testing the fetcher in isolation)
+    // MARK: - CheckoutAttemptIdFetcher Tests (testing the fetcher in isolation)
 
     func test_fetchCheckoutAttemptId_returnsCheckoutAttemptId_whenAPIClientSucceeds() async {
         // Given
@@ -29,11 +29,10 @@ final class CheckoutProviderTests: XCTestCase {
             analyticsProvider: analyticsProviderMock
         )
         let configuration = CheckoutConfiguration(
-            context: context,
-            analyticsConfiguration: AnalyticsConfiguration()
+            context: context
         )
 
-        let sut = DefaultCheckoutAttemptIdFetcher(apiClientFactory: { _ in apiClientMock })
+        let sut = CheckoutAttemptIdFetcher(apiClientProvider: { _ in apiClientMock })
 
         // When
         let result = await sut.fetchCheckoutAttemptId(with: configuration)
@@ -57,11 +56,10 @@ final class CheckoutProviderTests: XCTestCase {
             analyticsProvider: analyticsProviderMock
         )
         let configuration = CheckoutConfiguration(
-            context: context,
-            analyticsConfiguration: AnalyticsConfiguration()
+            context: context
         )
 
-        let sut = DefaultCheckoutAttemptIdFetcher(apiClientFactory: { _ in apiClientMock })
+        let sut = CheckoutAttemptIdFetcher(apiClientProvider: { _ in apiClientMock })
 
         // When
         _ = await sut.fetchCheckoutAttemptId(with: configuration)
@@ -84,11 +82,10 @@ final class CheckoutProviderTests: XCTestCase {
             analyticsProvider: analyticsProviderMock
         )
         let configuration = CheckoutConfiguration(
-            context: context,
-            analyticsConfiguration: AnalyticsConfiguration()
+            context: context
         )
 
-        let sut = DefaultCheckoutAttemptIdFetcher(apiClientFactory: { _ in apiClientMock })
+        let sut = CheckoutAttemptIdFetcher(apiClientProvider: { _ in apiClientMock })
 
         // When
         let result = await sut.fetchCheckoutAttemptId(with: configuration)
@@ -111,11 +108,10 @@ final class CheckoutProviderTests: XCTestCase {
             analyticsProvider: analyticsProviderMock
         )
         let configuration = CheckoutConfiguration(
-            context: context,
-            analyticsConfiguration: AnalyticsConfiguration()
+            context: context
         )
 
-        let sut = DefaultCheckoutAttemptIdFetcher(apiClientFactory: { _ in apiClientMock })
+        let sut = CheckoutAttemptIdFetcher(apiClientProvider: { _ in apiClientMock })
 
         // When
         _ = await sut.fetchCheckoutAttemptId(with: configuration)
@@ -134,11 +130,10 @@ final class CheckoutProviderTests: XCTestCase {
             analyticsProvider: analyticsProviderMock
         )
         let configuration = CheckoutConfiguration(
-            context: context,
-            analyticsConfiguration: AnalyticsConfiguration()
+            context: context
         )
 
-        let sut = DefaultCheckoutAttemptIdFetcher(apiClientFactory: { _ in nil })
+        let sut = CheckoutAttemptIdFetcher(apiClientProvider: { _ in nil })
 
         // When
         let result = await sut.fetchCheckoutAttemptId(with: configuration)
@@ -157,11 +152,10 @@ final class CheckoutProviderTests: XCTestCase {
             analyticsProvider: analyticsProviderMock
         )
         let configuration = CheckoutConfiguration(
-            context: context,
-            analyticsConfiguration: AnalyticsConfiguration()
+            context: context
         )
 
-        let sut = DefaultCheckoutAttemptIdFetcher(apiClientFactory: { _ in nil })
+        let sut = CheckoutAttemptIdFetcher(apiClientProvider: { _ in nil })
 
         // When
         _ = await sut.fetchCheckoutAttemptId(with: configuration)

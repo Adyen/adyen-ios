@@ -32,7 +32,7 @@ final class CheckoutTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockProvider = CheckoutProviderMock()
-        configuration = CheckoutConfiguration(context: Dummy.context, analyticsConfiguration: AnalyticsConfiguration())
+        configuration = CheckoutConfiguration(context: Dummy.context)
         paymentMethods = try! AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
     }
 
