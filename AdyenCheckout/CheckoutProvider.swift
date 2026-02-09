@@ -16,7 +16,7 @@ internal class CheckoutProvider: CheckoutProviding {
     
     private let checkoutAttemptIdFetcher: CheckoutAttemptIdFetching
     
-    internal init(checkoutAttemptIdFetcher: CheckoutAttemptIdFetching = DefaultCheckoutAttemptIdFetcher()) {
+    internal init(checkoutAttemptIdFetcher: CheckoutAttemptIdFetching = CheckoutAttemptIdFetcher()) {
         self.checkoutAttemptIdFetcher = checkoutAttemptIdFetcher
     }
     
@@ -41,7 +41,12 @@ internal class CheckoutProvider: CheckoutProviding {
         async let checkoutAttemptId = checkoutAttemptIdFetcher.fetchCheckoutAttemptId(
             with: configuration
         )
-        
+
+        // TODO: Robert: Create the AdyenContext async. which in turn will create the analytics provider if checkoutAttemptId is available & the configuration flag is true.
+
+
+        // TODO: Robert: for the public key fetching we do it async here at this point and pass it down to AdyenContext.
+
         return try await Checkout(
             configuration: configuration,
             session: session,

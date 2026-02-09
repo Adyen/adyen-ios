@@ -11,6 +11,7 @@ internal final class AnalyticsProvider: AnyAnalyticsProvider {
 
     // MARK: - Properties
 
+    // TODO: Robert: This should become required(non optional) and it need not be passed to the eventAnalyticsProvider, and should be available during init. 
     internal var checkoutAttemptId: String? {
         didSet {
             eventAnalyticsProvider?.checkoutAttemptId = checkoutAttemptId

@@ -70,10 +70,9 @@ public final class AdyenContext: PaymentAware {
         self.payment = payment
     }
 
-    /// The API environment for Analytics is different than the APIClient environment that is used for other payment calls. This constructs that.
+    /// The API environment for Analytics is different than the APIClient environment that is used for other payment calls.
     package static func createAnalyticsAPIClient(
-        apiContext: APIContext,
-        analyticsConfiguration: AnalyticsConfiguration
+        apiContext: APIContext
     ) -> APIClient? {
         guard
             let analyticsEnvironment = (apiContext.environment as? Environment)?.toAnalyticsEnvironment(),
@@ -95,11 +94,7 @@ public final class AdyenContext: PaymentAware {
         apiContext: APIContext,
         analyticsConfiguration: AnalyticsConfiguration
     ) -> AnyAnalyticsProvider? {
-        guard let apiClient = AdyenContext.createAnalyticsAPIClient(
-            apiContext: apiContext,
-            analyticsConfiguration: analyticsConfiguration
-        )
-        else {
+        guard let apiClient = AdyenContext.createAnalyticsAPIClient(apiContext: apiContext) else {
             AdyenAssertion.assertionFailure(
                 message: "AnalyticsProvider couldn't be created. Ensure the used environment is of type `Environment`"
             )
@@ -107,7 +102,7 @@ public final class AdyenContext: PaymentAware {
         }
 
         var eventAnalyticsProvider: AnyEventAnalyticsProvider?
-        
+        // TODO: Robert: If flag is true we create everything. If false, we send the RequestCheckoutAttemptID and Enrichment call with analytical data.
         if analyticsConfiguration.isEnabled {
             let eventDataSource = AnalyticsEventDataSource()
             let syncEventDataSource = ThreadSafeAnalyticsEventDataSource(dataSource: eventDataSource)

@@ -9,6 +9,7 @@ import AdyenNetworking
 import Foundation
 
 // sourcery:AutoMockable
+// TODO: Robert: rename to checkoutAttemptID Poviding & provider similar to publickeyfetcher.
 internal protocol CheckoutAttemptIdFetching {
     func fetchCheckoutAttemptId(
         with configuration: CheckoutConfiguration
@@ -18,14 +19,14 @@ internal protocol CheckoutAttemptIdFetching {
 /// Default implementation that performs the actual API call to fetch the checkout attempt ID.
 /// If there is any failure in fetching the checkoutAttemptId then we should return nil, as that would imply that there will not be any analytics send for this session.
 /// Improvement: This is an edge case and the current success rate of the api is pretty high 99 something so this would rarely ever fail. If this ever becomes a constraint we could add a retying logic to try twice if it failed once. But that is an improvement if needed alone.
-internal class DefaultCheckoutAttemptIdFetcher: CheckoutAttemptIdFetching {
+internal class CheckoutAttemptIdFetcher: CheckoutAttemptIdFetching {
 
     internal typealias APIClientFactory = (CheckoutConfiguration) -> APIClientProtocol?
 
     private let apiClientFactory: APIClientFactory
 
     internal init() {
-        self.apiClientFactory = DefaultCheckoutAttemptIdFetcher.defaultAPIClientFactory
+        self.apiClientFactory = CheckoutAttemptIdFetcher.defaultAPIClientFactory
     }
 
     internal init(apiClientFactory: @escaping APIClientFactory) {
@@ -62,8 +63,7 @@ internal class DefaultCheckoutAttemptIdFetcher: CheckoutAttemptIdFetching {
 
     private static let defaultAPIClientFactory: APIClientFactory = { configuration in
         AdyenContext.createAnalyticsAPIClient(
-            apiContext: configuration.context.apiContext,
-            analyticsConfiguration: configuration.analyticsConfiguration
+            apiContext: configuration.context.apiContext
         )
     }
 }
