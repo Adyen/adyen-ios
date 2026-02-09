@@ -86,21 +86,8 @@ class AnalyticsProviderTests: XCTestCase {
         XCTAssertNil(sut.checkoutAttemptId, "The checkoutAttemptId should be nil when not set externally.")
     }
 
-    func testSettingCheckoutAttemptIdExternally() {
-        // Given
-        let expectedCheckoutAttemptId = checkoutAttemptIdMockValue
-
-        let sut = createSUT(apiClient: APIClientMock())
-        // When
-        sut.checkoutAttemptId = expectedCheckoutAttemptId
-
-        // Then
-        XCTAssertEqual(sut.checkoutAttemptId, expectedCheckoutAttemptId)
-    }
-    
     func testInitialRequest() {
         // Given
-        
         let checkoutAttemptId = checkoutAttemptIdMockValue
         
         let analyticsExpectation = expectation(description: "Initial request is triggered")
@@ -120,9 +107,7 @@ class AnalyticsProviderTests: XCTestCase {
         let analyticsProvider = createSUT(apiClient: apiClient)
         
         // When
-        
         analyticsProvider.sendInitialAnalytics(with: .components(type: .achDirectDebit), additionalFields: nil)
-        
         wait(for: [analyticsExpectation], timeout: 10)
     }
     

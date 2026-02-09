@@ -43,8 +43,6 @@ internal class CheckoutProvider: CheckoutProviding {
         )
 
         // TODO: Robert: Create the AdyenContext async. which in turn will create the analytics provider if checkoutAttemptId is available & the configuration flag is true.
-
-
         // TODO: Robert: for the public key fetching we do it async here at this point and pass it down to AdyenContext.
 
         return try await Checkout(

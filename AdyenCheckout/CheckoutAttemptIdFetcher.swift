@@ -37,15 +37,12 @@ internal class CheckoutAttemptIdFetcher: CheckoutAttemptIdFetching {
         with configuration: CheckoutConfiguration
     ) async -> String? {
         let request = RequestCheckoutAttemptIdRequest()
-        guard let apiClient = apiClientProvider(configuration) else {
-            return nil
-        }
-
-        guard let response = try? await withCheckedThrowingContinuation({ continuation in
-            apiClient.perform(request) { result in
-                continuation.resume(with: result)
-            }
-        }) else {
+        guard let apiClient = apiClientProvider(configuration),
+              let response = try? await withCheckedThrowingContinuation({ continuation in
+                  apiClient.perform(request) { result in
+                      continuation.resume(with: result)
+                  }
+              }) else {
             return nil
         }
         // TODO: Robert: This will need to be removed once we determine how we are going to create the AnalyticsProvider. For now we just need to inform the AnalyticProvider.
