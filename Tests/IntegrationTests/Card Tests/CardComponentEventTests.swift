@@ -4,11 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import XCTest
-
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenCard
 @_spi(AdyenInternal) @testable import AdyenUI
+import XCTest
 
 final class CardComponentEventTests: XCTestCase {
 
@@ -209,6 +208,7 @@ final class CardComponentEventTests: XCTestCase {
             for: cardNumberItemView,
             target: .cardNumber,
             invalidValue: "123",
+            expectedErrorCode: AnalyticsConstants.ValidationErrorCodes.cardNumberPartial,
             analyticsProviderMock: analyticsProviderMock
         )
     }
@@ -226,6 +226,7 @@ final class CardComponentEventTests: XCTestCase {
             for: expiryDateItemView,
             target: .expiryDate,
             invalidValue: "13/20",
+            expectedErrorCode: AnalyticsConstants.ValidationErrorCodes.expiryDatePartial,
             analyticsProviderMock: analyticsProviderMock
         )
     }
@@ -243,6 +244,7 @@ final class CardComponentEventTests: XCTestCase {
             for: securityCodeItemView,
             target: .securityCode,
             invalidValue: "12",
+            expectedErrorCode: AnalyticsConstants.ValidationErrorCodes.securityCodePartial,
             analyticsProviderMock: analyticsProviderMock
         )
     }
@@ -262,6 +264,7 @@ final class CardComponentEventTests: XCTestCase {
             for: holderNameItemView,
             target: .holderName,
             invalidValue: "",
+            expectedErrorCode: AnalyticsConstants.ValidationErrorCodes.holderNameEmpty,
             analyticsProviderMock: analyticsProviderMock
         )
     }
@@ -283,6 +286,7 @@ final class CardComponentEventTests: XCTestCase {
             for: kcpItemView,
             target: .taxNumber,
             invalidValue: "123",
+            expectedErrorCode: AnalyticsConstants.ValidationErrorCodes.kcpFieldPartial,
             analyticsProviderMock: analyticsProviderMock
         )
     }
@@ -304,6 +308,7 @@ final class CardComponentEventTests: XCTestCase {
             for: kcpPasswordItemView,
             target: .authPassWord,
             invalidValue: "1",
+            expectedErrorCode: AnalyticsConstants.ValidationErrorCodes.kcpPasswordPartial,
             analyticsProviderMock: analyticsProviderMock
         )
     }
@@ -325,6 +330,7 @@ final class CardComponentEventTests: XCTestCase {
             for: socialSecurityItemView,
             target: .boletoSocialSecurityNumber,
             invalidValue: "123",
+            expectedErrorCode: AnalyticsConstants.ValidationErrorCodes.brazilSSNPartial,
             analyticsProviderMock: analyticsProviderMock
         )
     }
@@ -344,6 +350,7 @@ final class CardComponentEventTests: XCTestCase {
             for: postalCodeItemView,
             target: .addressPostalCode,
             invalidValue: "1",
+            expectedErrorCode: AnalyticsConstants.ValidationErrorCodes.postalCodePartial,
             analyticsProviderMock: analyticsProviderMock
         )
     }
@@ -366,6 +373,7 @@ final class CardComponentEventTests: XCTestCase {
             for: cardNumberItemView,
             target: .cardNumber,
             invalidValue: "123",
+            expectedErrorCode: AnalyticsConstants.ValidationErrorCodes.cardNumberPartial,
             analyticsProviderMock: analyticsProviderMock
         )
     }
@@ -384,6 +392,7 @@ final class CardComponentEventTests: XCTestCase {
             for: expiryDateItemView,
             target: .expiryDate,
             invalidValue: "1",
+            expectedErrorCode: AnalyticsConstants.ValidationErrorCodes.expiryDatePartial,
             analyticsProviderMock: analyticsProviderMock
         )
     }
@@ -402,6 +411,7 @@ final class CardComponentEventTests: XCTestCase {
             for: securityCodeItemView,
             target: .securityCode,
             invalidValue: "1",
+            expectedErrorCode: AnalyticsConstants.ValidationErrorCodes.securityCodePartial,
             analyticsProviderMock: analyticsProviderMock
         )
     }
@@ -472,6 +482,7 @@ final class CardComponentEventTests: XCTestCase {
         for field: FormTextItemView<some FormTextItem>,
         target: AnalyticsEventTarget,
         invalidValue: String,
+        expectedErrorCode: Int,
         analyticsProviderMock: AnalyticsProviderMock
     ) {
         analyticsProviderMock.clearAll()
@@ -486,8 +497,10 @@ final class CardComponentEventTests: XCTestCase {
         let validationEvent = analyticsProviderMock.infos.first
         XCTAssertEqual(validationEvent?.type, .validationError)
         XCTAssertEqual(validationEvent?.target, target)
-        XCTAssertNotNil(
-            validationEvent?.validationErrorCode, "Validation error should include error code"
+        XCTAssertEqual(
+            validationEvent?.validationErrorCode,
+            String(expectedErrorCode),
+            "Expected error code \(expectedErrorCode) for \(target)"
         )
         XCTAssertNotNil(
             validationEvent?.validationErrorMessage, "Validation error should include error message"
@@ -498,6 +511,7 @@ final class CardComponentEventTests: XCTestCase {
         for field: FormTextItemView<some FormTextItem>,
         target: AnalyticsEventTarget,
         invalidValue: String,
+        expectedErrorCode: Int,
         analyticsProviderMock: AnalyticsProviderMock
     ) {
         analyticsProviderMock.clearAll()
@@ -523,9 +537,10 @@ final class CardComponentEventTests: XCTestCase {
         let validationEvent = analyticsProviderMock.infos[2]
         XCTAssertEqual(validationEvent.type, .validationError)
         XCTAssertEqual(validationEvent.target, target)
-        XCTAssertNotNil(
+        XCTAssertEqual(
             validationEvent.validationErrorCode,
-            "Validation error should include error code"
+            String(expectedErrorCode),
+            "Expected error code \(expectedErrorCode) for \(target)"
         )
         XCTAssertNotNil(
             validationEvent.validationErrorMessage,
