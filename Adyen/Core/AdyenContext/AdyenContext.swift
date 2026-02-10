@@ -71,6 +71,7 @@ public final class AdyenContext: PaymentAware {
     }
 
     /// The API environment for Analytics is different than the APIClient environment that is used for other payment calls.
+    /// // TODO: Robert: Move this to the CheckoutConfiguration
     package static func createAnalyticsAPIClient(
         apiContext: APIContext
     ) -> APIClient? {
@@ -90,6 +91,7 @@ public final class AdyenContext: PaymentAware {
         return APIClient(apiContext: analyticsApiContext)
     }
 
+    // TODO: Robert: this stays here even in the init of the AnlyticalProvider. 
     private static func createAnalyticsProvider(
         apiContext: APIContext,
         analyticsConfiguration: AnalyticsConfiguration

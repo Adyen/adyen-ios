@@ -22,6 +22,7 @@ internal protocol CheckoutAttemptIdProviding {
 /// Improvement: This is an edge case and the current success rate of the api is pretty high 99 something so this would rarely ever fail. If this ever becomes a constraint we could add a retying logic to try twice if it failed once. But that is an improvement if needed alone.
 internal class CheckoutAttemptIdProvider: CheckoutAttemptIdProviding {
 
+    // TODO: Robert: Don't pass CheckoutConfiguration but Make this (APIContext) -> APIClientProtocol?
     private let apiClientProvider: (CheckoutConfiguration) -> APIClientProtocol?
 
     internal init() {
