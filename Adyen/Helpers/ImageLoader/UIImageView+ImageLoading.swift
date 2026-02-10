@@ -6,8 +6,7 @@
 
 import UIKit
 
-@_spi(AdyenInternal)
-public extension UIImageView {
+package extension UIImageView {
     @discardableResult
     func load(
         url: URL,
