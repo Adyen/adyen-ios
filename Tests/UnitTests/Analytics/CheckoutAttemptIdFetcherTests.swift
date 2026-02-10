@@ -10,7 +10,7 @@ import AdyenNetworking
 @_spi(AdyenInternal) @testable import AdyenSession
 import XCTest
 
-final class CheckoutProviderTests: XCTestCase {
+final class CheckoutAttemptIdFetcherTests: XCTestCase {
 
     // MARK: - CheckoutAttemptIdFetcher Tests (testing the fetcher in isolation)
 
