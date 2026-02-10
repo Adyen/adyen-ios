@@ -163,23 +163,6 @@ final class CheckoutTests: XCTestCase {
         }
     }
     
-    func testFetchCheckoutAttemptIdProtocolCall() async {
-        let expectedId = "test_attempt_id"
-        mockProvider.mockedCheckoutAttemptId = .success(expectedId)
-        let apiClient = APIClientMock()
-        
-        do {
-            let result = try await mockProvider.fetchCheckoutAttemptId(
-                with: configuration,
-                apiClient: apiClient
-            )
-            
-            XCTAssertEqual(result, expectedId)
-        } catch {
-            XCTFail("Should not throw an error")
-        }
-    }
-    
     // MARK: - payment component delegate
     
     func test_didSubmit_callsOnSubmit_whenSet() throws {

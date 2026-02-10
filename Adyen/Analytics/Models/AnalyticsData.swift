@@ -89,12 +89,15 @@ internal struct AnalyticsData: Encodable {
     
     internal let level: AnalyticsLevel
 
+    internal let checkoutAttemptId: String?
+
     // MARK: - Initializers
 
     internal init(
         flavor: AnalyticsFlavor,
         additionalFields: AdditionalAnalyticsFields?,
-        configuration: AnalyticsConfiguration
+        configuration: AnalyticsConfiguration,
+        checkoutAttemptId: String?
     ) {
         self.flavor = flavor.value
         self.amount = additionalFields?.amount
@@ -104,6 +107,8 @@ internal struct AnalyticsData: Encodable {
         self.platform = configuration.context.platform.rawValue
         
         self.level = configuration.analyticsLevel
+
+        self.checkoutAttemptId = checkoutAttemptId
 
         switch flavor {
         case let .dropIn(type, paymentMethods):
