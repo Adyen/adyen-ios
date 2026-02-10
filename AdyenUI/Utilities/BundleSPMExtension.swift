@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2026 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,27 +7,17 @@
 import Foundation
 import UIKit
 
-/// This is excluded from the normal xcode project file,
-/// and used only when built with Swift Package Manager,
-/// since swift packages has different code to access internal resources,
-/// that doesn't compile in a normal xcode project.
-/// The Bundle extension in `UIBundleExtension.swift` is used instead.
 internal extension Bundle {
-    // swiftlint:disable explicit_acl
-
-    /// The main bundle of the framework.
     static let adyenUI: Bundle = .init(for: FormButton.self)
 
-#if SWIFT_PACKAGE
-    /// The bundle in which the framework's resources are located.
-    static let adyenUIInternalResources: Bundle = .module
-#else
-    /// The bundle in which the framework's resources are located.
-    internal static let adyenUIInternalResources: Bundle = {
-        let url = adyenUI.url(forResource: "AdyenUI", withExtension: "bundle")
-        let bundle = url.flatMap { Bundle(url: $0) }
-        return bundle ?? adyenUI
-    }()
-#endif
-    // swiftlint:enable explicit_acl
+    #if SWIFT_PACKAGE
+        /// The bundle in which the framework's resources are located. This will be available when using swift packages, open the Package.swift file and see. 
+        static let adyenUIInternalResources: Bundle = .module
+    #else
+        internal static let adyenUIInternalResources: Bundle = {
+            let url = adyenUI.url(forResource: "AdyenUI", withExtension: "bundle")
+            let bundle = url.flatMap { Bundle(url: $0) }
+            return bundle ?? adyenUI
+        }()
+    #endif
 }
