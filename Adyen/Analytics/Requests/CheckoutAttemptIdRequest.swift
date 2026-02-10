@@ -7,7 +7,7 @@
 import AdyenNetworking
 import Foundation
 
-package struct RequestCheckoutAttemptIdResponse: Response {
+package struct CheckoutAttemptIdResponse: Response {
 
     // MARK: - Properties
 
@@ -18,9 +18,9 @@ package struct RequestCheckoutAttemptIdResponse: Response {
     }
 }
 
-package struct RequestCheckoutAttemptIdRequest: APIRequest {
+package struct CheckoutAttemptIdRequest: APIRequest {
 
-    package typealias ResponseType = RequestCheckoutAttemptIdResponse
+    package typealias ResponseType = CheckoutAttemptIdResponse
 
     package let path: String = AnalyticsConstants.analyticsRequestPath
 

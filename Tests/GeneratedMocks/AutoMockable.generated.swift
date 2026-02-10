@@ -60,33 +60,6 @@ class ActionPresenterMock: ActionPresenter {
 
 }
 
-class CheckoutAttemptIdFetchingMock: CheckoutAttemptIdFetching {
-
-    // MARK: - fetchCheckoutAttemptId
-
-    var fetchCheckoutAttemptIdWithCallsCount = 0
-    var fetchCheckoutAttemptIdWithCalled: Bool {
-        fetchCheckoutAttemptIdWithCallsCount > 0
-    }
-
-    var fetchCheckoutAttemptIdWithReceivedConfiguration: CheckoutConfiguration?
-    var fetchCheckoutAttemptIdWithReceivedInvocations: [CheckoutConfiguration] = []
-    var fetchCheckoutAttemptIdWithReturnValue: String?
-    var fetchCheckoutAttemptIdWithClosure: ((CheckoutConfiguration) async -> String?)?
-
-    func fetchCheckoutAttemptId(with configuration: CheckoutConfiguration) async -> String? {
-        fetchCheckoutAttemptIdWithCallsCount += 1
-        fetchCheckoutAttemptIdWithReceivedConfiguration = configuration
-        fetchCheckoutAttemptIdWithReceivedInvocations.append(configuration)
-        if let fetchCheckoutAttemptIdWithClosure {
-            return await fetchCheckoutAttemptIdWithClosure(configuration)
-        } else {
-            return fetchCheckoutAttemptIdWithReturnValue
-        }
-    }
-
-}
-
 class ComponentContainerAssemblerProtocolMock: ComponentContainerAssemblerProtocol {
 
     // MARK: - resolveComponentContainerRouter

@@ -14,10 +14,10 @@ import Foundation
 /// Plain static provider layer to create the Checkout object.
 internal class CheckoutProvider: CheckoutProviding {
     
-    private let checkoutAttemptIdFetcher: CheckoutAttemptIdFetching
-    
-    internal init(checkoutAttemptIdFetcher: CheckoutAttemptIdFetching = CheckoutAttemptIdFetcher()) {
-        self.checkoutAttemptIdFetcher = checkoutAttemptIdFetcher
+    private let checkoutAttemptIdProvider: CheckoutAttemptIdProviding
+
+    internal init(checkoutAttemptIdProvider: CheckoutAttemptIdProviding = CheckoutAttemptIdProvider()) {
+        self.checkoutAttemptIdProvider = checkoutAttemptIdProvider
     }
     
     internal static let `default` = CheckoutProvider()
@@ -38,7 +38,7 @@ internal class CheckoutProvider: CheckoutProviding {
         )
         
         // fetch and store checkout attempt id
-        async let checkoutAttemptId = checkoutAttemptIdFetcher.fetchCheckoutAttemptId(
+        async let checkoutAttemptId = checkoutAttemptIdProvider.fetchCheckoutAttemptId(
             with: configuration
         )
 
@@ -66,7 +66,7 @@ internal class CheckoutProvider: CheckoutProviding {
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
 
-        let checkoutAttemptId = await checkoutAttemptIdFetcher.fetchCheckoutAttemptId(
+        let checkoutAttemptId = await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
             with: configuration
         )
         
@@ -87,7 +87,7 @@ internal class CheckoutProvider: CheckoutProviding {
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
 
-        let checkoutAttemptId = await checkoutAttemptIdFetcher.fetchCheckoutAttemptId(
+        let checkoutAttemptId = await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
             with: configuration
         )
         

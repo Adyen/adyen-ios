@@ -8,8 +8,7 @@
 import AdyenNetworking
 import Foundation
 
-// sourcery:AutoMockable
-internal protocol CheckoutAttemptIdFetching {
+internal protocol CheckoutAttemptIdProviding {
     func fetchCheckoutAttemptId(
         with configuration: CheckoutConfiguration
     ) async -> String?
@@ -21,12 +20,12 @@ internal protocol CheckoutAttemptIdFetching {
 /// 2. Sends a `RequestCheckoutAttemptIdRequest` to get the checkoutAttemptId.
 /// Note: If there is any failure in fetching the checkoutAttemptId then we will return nil, as that would imply that there should not be any analytics events sent.
 /// Improvement: This is an edge case and the current success rate of the api is pretty high 99 something so this would rarely ever fail. If this ever becomes a constraint we could add a retying logic to try twice if it failed once. But that is an improvement if needed alone.
-internal class CheckoutAttemptIdFetcher: CheckoutAttemptIdFetching {
+internal class CheckoutAttemptIdProvider: CheckoutAttemptIdProviding {
 
     private let apiClientProvider: (CheckoutConfiguration) -> APIClientProtocol?
 
     internal init() {
-        self.apiClientProvider = CheckoutAttemptIdFetcher.defaultAPIClientProvider
+        self.apiClientProvider = CheckoutAttemptIdProvider.defaultAPIClientProvider
     }
 
     internal init(apiClientProvider: @escaping (CheckoutConfiguration) -> APIClientProtocol?) {
@@ -36,7 +35,7 @@ internal class CheckoutAttemptIdFetcher: CheckoutAttemptIdFetching {
     internal func fetchCheckoutAttemptId(
         with configuration: CheckoutConfiguration
     ) async -> String? {
-        let request = RequestCheckoutAttemptIdRequest()
+        let request = CheckoutAttemptIdRequest()
         guard let apiClient = apiClientProvider(configuration),
               let response = try? await withCheckedThrowingContinuation({ continuation in
                   apiClient.perform(request) { result in

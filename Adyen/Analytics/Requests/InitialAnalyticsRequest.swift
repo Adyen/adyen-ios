@@ -10,7 +10,7 @@ import Foundation
 // TODO: Robert: Rename this to something that updates the analytics with some Analytics Data. Think enrichment, as this is no longer the `initial` AnalyticsRequest.
 internal struct InitialAnalyticsRequest: APIRequest {
 
-    /// This request actually generates a `RequestCheckoutAttemptIdResponse` response type. But we ignore this response.
+    /// This request actually generates a `CheckoutAttemptIdResponse` response type. But we ignore this response.
     internal typealias ResponseType = EmptyResponse
 
     internal let path: String = AnalyticsConstants.analyticsRequestPath
