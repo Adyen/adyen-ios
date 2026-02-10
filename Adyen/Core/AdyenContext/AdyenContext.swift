@@ -91,7 +91,7 @@ public final class AdyenContext: PaymentAware {
         return APIClient(apiContext: analyticsApiContext)
     }
 
-    // TODO: Robert: this stays here even in the init of the AnlyticalProvider. 
+    // TODO: Robert: this stays here even in the init of the AnalyticalProvider.
     private static func createAnalyticsProvider(
         apiContext: APIContext,
         analyticsConfiguration: AnalyticsConfiguration
