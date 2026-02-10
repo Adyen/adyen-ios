@@ -8,7 +8,7 @@
 import Testing
 import UIKit
 
-struct PreselectedPaymentMethodIntegrationTests {
+struct AdyenUIAssetsAccessTests {
     @Test("Images", arguments: [UIImage.adyenLock, UIImage.systemLock])
     func verifyImages(image: UIImage?) {
         #expect(image != nil)
