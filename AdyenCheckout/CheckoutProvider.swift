@@ -13,7 +13,7 @@ import Foundation
 
 /// Plain static provider layer to create the Checkout object.
 internal class CheckoutProvider: CheckoutProviding {
-    
+
     private let checkoutAttemptIdProvider: CheckoutAttemptIdProviding
 
     internal init(checkoutAttemptIdProvider: CheckoutAttemptIdProviding = CheckoutAttemptIdProvider()) {
@@ -28,27 +28,36 @@ internal class CheckoutProvider: CheckoutProviding {
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
         
-        let apiClient = APIClient(apiContext: configuration.context.apiContext)
+        let apiClient = APIClient(apiContext: configuration.apiContext)
         
         // create and store session and payment methods
-        async let session = setupSession(
-            with: sessionResponse,
-            configuration: configuration,
-            apiClient: apiClient
-        )
-        
+
         // fetch and store checkout attempt id
         async let checkoutAttemptId = checkoutAttemptIdProvider.fetchCheckoutAttemptId(
-            with: configuration
+            with: configuration.apiContext
         )
 
         // TODO: Robert: Create the AdyenContext async. which in turn will create the analytics provider if checkoutAttemptId is available & the configuration flag is true.
         // TODO: Robert: for the public key fetching we do it async here at this point and pass it down to AdyenContext.
 
+        let adyenContext = AdyenContext(
+            apiContext: configuration.apiContext,
+            payment: nil,
+            amount: configuration.amount,
+            analyticsConfiguration: configuration.analyticsConfiguration
+        )
+
+        async let session = setupSession(
+            with: sessionResponse,
+            adyenContext: adyenContext,
+            apiClient: apiClient
+        )
+
         return try await Checkout(
             configuration: configuration,
             session: session,
             checkoutAttemptId: checkoutAttemptId,
+            adyenContext: adyenContext,
             presentationDelegate: presentationDelegate
         )
     }
@@ -67,13 +76,21 @@ internal class CheckoutProvider: CheckoutProviding {
     ) async throws -> Checkout {
 
         let checkoutAttemptId = await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
-            with: configuration
+            with: configuration.apiContext
         )
-        
+
+        let adyenContext = AdyenContext(
+            apiContext: configuration.apiContext,
+            payment: nil,
+            amount: configuration.amount,
+            analyticsConfiguration: configuration.analyticsConfiguration
+        )
+
         return Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: checkoutAttemptId,
+            adyenContext: adyenContext,
             presentationDelegate: presentationDelegate
         )
     }
@@ -88,12 +105,20 @@ internal class CheckoutProvider: CheckoutProviding {
     ) async throws -> Checkout {
 
         let checkoutAttemptId = await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
-            with: configuration
+            with: configuration.apiContext
         )
-        
+
+        let adyenContext = AdyenContext(
+            apiContext: configuration.apiContext,
+            payment: nil,
+            amount: configuration.amount,
+            analyticsConfiguration: configuration.analyticsConfiguration
+        )
+
         return Checkout(
             configuration: configuration,
             checkoutAttemptId: checkoutAttemptId,
+            adyenContext: adyenContext,
             presentationDelegate: presentationDelegate
         )
     }
@@ -102,13 +127,13 @@ internal class CheckoutProvider: CheckoutProviding {
     
     internal func setupSession(
         with sessionResponse: SessionResponse,
-        configuration: CheckoutConfiguration,
+        adyenContext: AdyenContext,
         apiClient: APIClientProtocol
     ) async throws -> SessionProtocol {
         try await Session.setup(
             with: sessionResponse,
             apiClient: apiClient,
-            context: configuration.context
+            context: adyenContext
         )
     }
 

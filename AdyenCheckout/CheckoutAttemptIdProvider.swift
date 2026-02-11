@@ -10,7 +10,7 @@ import Foundation
 
 internal protocol CheckoutAttemptIdProviding {
     func fetchCheckoutAttemptId(
-        with configuration: CheckoutConfiguration
+        with apiContext: APIContext
     ) async -> String?
 }
 
@@ -23,21 +23,21 @@ internal protocol CheckoutAttemptIdProviding {
 internal class CheckoutAttemptIdProvider: CheckoutAttemptIdProviding {
 
     // TODO: Robert: Don't pass CheckoutConfiguration but Make this (APIContext) -> APIClientProtocol?
-    private let apiClientProvider: (CheckoutConfiguration) -> APIClientProtocol?
+    private let apiClientProvider: (APIContext) -> APIClientProtocol?
 
     internal init() {
         self.apiClientProvider = CheckoutAttemptIdProvider.defaultAPIClientProvider
     }
 
-    internal init(apiClientProvider: @escaping (CheckoutConfiguration) -> APIClientProtocol?) {
+    internal init(apiClientProvider: @escaping (APIContext) -> APIClientProtocol?) {
         self.apiClientProvider = apiClientProvider
     }
 
     internal func fetchCheckoutAttemptId(
-        with configuration: CheckoutConfiguration
+        with apiContext: APIContext
     ) async -> String? {
         let request = CheckoutAttemptIdRequest()
-        guard let apiClient = apiClientProvider(configuration),
+        guard let apiClient = apiClientProvider(apiContext),
               let response = try? await withCheckedThrowingContinuation({ continuation in
                   apiClient.perform(request) { result in
                       continuation.resume(with: result)
@@ -46,16 +46,16 @@ internal class CheckoutAttemptIdProvider: CheckoutAttemptIdProviding {
             return nil
         }
         // TODO: Robert: This will need to be removed once we determine how we are going to create the AnalyticsProvider. For now we just need to inform the AnalyticProvider.
-        configuration.context.analyticsProvider?.checkoutAttemptId = response.checkoutAttemptId
+        // configuration.context.analyticsProvider?.checkoutAttemptId = response.checkoutAttemptId
 
         return response.checkoutAttemptId
     }
 
     // MARK: - Private
 
-    private static let defaultAPIClientProvider: (CheckoutConfiguration) -> APIClientProtocol? = { configuration in
+    private static let defaultAPIClientProvider: (APIContext) -> APIClientProtocol? = { apiContext in
         AdyenContext.createAnalyticsAPIClient(
-            apiContext: configuration.context.apiContext
+            apiContext: apiContext
         )
     }
 }

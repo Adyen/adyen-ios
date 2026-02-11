@@ -46,11 +46,14 @@ public struct CheckoutConfiguration {
     package var onError: CheckoutErrorHandler?
     
     package var onComplete: CheckoutSuccessHandler?
-    
-    package let context: AdyenContext
-    
+
+    package let apiContext: APIContext
+
     package var theme: AdyenTheme
 
+    package let amount: Amount
+
+    package let analyticsConfiguration: AnalyticsConfiguration
     /// Creates a CheckoutConfiguration instance.
     /// - Parameters:
     ///   - environment: The environment to retrieve internal resources from.
@@ -86,15 +89,21 @@ public struct CheckoutConfiguration {
         }
         let configurations = configDictionary
         
-        self.init(context: context, configurations: configurations)
+        self.init(apiContext: apiContext, amount: amount, analyticsConfiguration: analyticsConfiguration, context: context, configurations: configurations)
     }
     
     internal init(
+        apiContext: APIContext,
+        amount: Amount,
+        analyticsConfiguration: AnalyticsConfiguration,
         context: AdyenContext,
         configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:],
         theme: AdyenTheme = .default
     ) {
-        self.context = context
+        // self.context = context
+        self.analyticsConfiguration = analyticsConfiguration
+        self.amount = amount
+        self.apiContext = apiContext
         self.configurations = configurations
         self.theme = theme
     }

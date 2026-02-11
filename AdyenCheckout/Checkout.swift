@@ -62,7 +62,8 @@ public final class Checkout: CheckoutProtocol {
 
     internal let configuration: CheckoutConfiguration
     internal weak var presentationDelegate: PresentationDelegate?
-    
+    internal let adyenContext: AdyenContext
+
     internal lazy var actionHandlingComponent: ActionHandlingComponent = {
         let threeDS2Config: ThreeDS2ActionConfiguration = configuration.configuration(
             for: .threeDS2,
@@ -77,7 +78,7 @@ public final class Checkout: CheckoutProtocol {
         )
         
         let handler = CheckoutActionComponent(
-            context: configuration.context,
+            context: adyenContext,
             configuration: actionConfig
         )
         handler.delegate = self
@@ -162,6 +163,7 @@ public final class Checkout: CheckoutProtocol {
         session: SessionProtocol? = nil,
         paymentMethods: PaymentMethods? = nil,
         checkoutAttemptId: String?,
+        adyenContext: AdyenContext,
         presentationDelegate: PresentationDelegate?
     ) {
         self.configuration = configuration
@@ -169,7 +171,7 @@ public final class Checkout: CheckoutProtocol {
         self.paymentMethods = paymentMethods ?? session?.state.paymentMethods
         self.checkoutAttemptId = checkoutAttemptId
         self.presentationDelegate = presentationDelegate
-        
+        self.adyenContext = adyenContext
         self.session?.delegate = self
         self.session?.presentationDelegate = presentationDelegate
     }
