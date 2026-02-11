@@ -14,7 +14,11 @@ import Foundation
 /// Plain static provider layer to create the Checkout object.
 internal class CheckoutProvider: CheckoutProviding {
     
-    private init() {}
+    private let checkoutAttemptIdProvider: CheckoutAttemptIdProviding
+
+    internal init(checkoutAttemptIdProvider: CheckoutAttemptIdProviding = CheckoutAttemptIdProvider()) {
+        self.checkoutAttemptIdProvider = checkoutAttemptIdProvider
+    }
     
     internal static let `default` = CheckoutProvider()
     
@@ -34,11 +38,13 @@ internal class CheckoutProvider: CheckoutProviding {
         )
         
         // fetch and store checkout attempt id
-        async let checkoutAttemptId = fetchCheckoutAttemptId(
-            with: configuration,
-            apiClient: apiClient
+        async let checkoutAttemptId = checkoutAttemptIdProvider.fetchCheckoutAttemptId(
+            with: configuration
         )
-        
+
+        // TODO: Robert: Create the AdyenContext async. which in turn will create the analytics provider if checkoutAttemptId is available & the configuration flag is true.
+        // TODO: Robert: for the public key fetching we do it async here at this point and pass it down to AdyenContext.
+
         return try await Checkout(
             configuration: configuration,
             session: session,
@@ -59,12 +65,9 @@ internal class CheckoutProvider: CheckoutProviding {
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
-        let apiClient = APIClient(apiContext: configuration.context.apiContext)
-        
-        // fetch and store checkout attempt id
-        let checkoutAttemptId = try await fetchCheckoutAttemptId(
-            with: configuration,
-            apiClient: apiClient
+
+        let checkoutAttemptId = await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
+            with: configuration
         )
         
         return Checkout(
@@ -83,12 +86,9 @@ internal class CheckoutProvider: CheckoutProviding {
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
-        let apiClient = APIClient(apiContext: configuration.context.apiContext)
-        
-        // fetch and store checkout attempt id
-        let checkoutAttemptId = try await fetchCheckoutAttemptId(
-            with: configuration,
-            apiClient: apiClient
+
+        let checkoutAttemptId = await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
+            with: configuration
         )
         
         return Checkout(
@@ -111,11 +111,5 @@ internal class CheckoutProvider: CheckoutProviding {
             context: configuration.context
         )
     }
-    
-    internal func fetchCheckoutAttemptId(
-        with configuration: CheckoutConfiguration,
-        apiClient: APIClientProtocol
-    ) async throws -> String {
-        ""
-    }
+
 }

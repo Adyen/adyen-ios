@@ -135,10 +135,10 @@ final class CheckoutConfigurationTests: XCTestCase {
     
     // MARK: - Action Configuration Tests
     
-    func testActionConfiguration_WithDefaultValue_ReturnsProvidedConfiguration() {
+    func testActionConfiguration_WithDefaultValue_ReturnsProvidedConfiguration() throws {
         // Given
-        let threeDS2Config = ThreeDS2ActionConfiguration()
-            .requestorAppURL(URL(string: "https://example.com")!)
+        let threeDS2Config = try ThreeDS2ActionConfiguration()
+            .requestorAppURL(XCTUnwrap(URL(string: "https://example.com")))
         
         let checkoutConfig = CheckoutConfiguration(
             context: context,
@@ -156,11 +156,11 @@ final class CheckoutConfigurationTests: XCTestCase {
         XCTAssertEqual(resolvedConfig.requestorAppURL, URL(string: "https://example.com"))
     }
     
-    func testActionConfiguration_WithDefaultValue_ReturnsDefaultWhenMissing() {
+    func testActionConfiguration_WithDefaultValue_ReturnsDefaultWhenMissing() throws {
         // Given
         let checkoutConfig = CheckoutConfiguration(context: context)
-        let defaultConfig = ThreeDS2ActionConfiguration()
-            .requestorAppURL(URL(string: "https://default.com")!)
+        let defaultConfig = try ThreeDS2ActionConfiguration()
+            .requestorAppURL(XCTUnwrap(URL(string: "https://default.com")))
         
         // When
         let resolvedConfig: ThreeDS2ActionConfiguration = checkoutConfig.configuration(
@@ -173,10 +173,10 @@ final class CheckoutConfigurationTests: XCTestCase {
         XCTAssertEqual(resolvedConfig.requestorAppURL, URL(string: "https://default.com"))
     }
     
-    func testActionConfiguration_Optional_ReturnsProvidedConfiguration() {
+    func testActionConfiguration_Optional_ReturnsProvidedConfiguration() throws {
         // Given
-        let threeDS2Config = ThreeDS2ActionConfiguration()
-            .requestorAppURL(URL(string: "https://example.com")!)
+        let threeDS2Config = try ThreeDS2ActionConfiguration()
+            .requestorAppURL(XCTUnwrap(URL(string: "https://example.com")))
         
         let checkoutConfig = CheckoutConfiguration(
             context: context,
@@ -194,8 +194,10 @@ final class CheckoutConfigurationTests: XCTestCase {
     
     func testActionConfiguration_Optional_ReturnsNilWhenMissing() {
         // Given
-        let checkoutConfig = CheckoutConfiguration(context: context)
-        
+        let checkoutConfig = CheckoutConfiguration(
+            context: context
+        )
+
         // When
         let resolvedConfig: ThreeDS2ActionConfiguration? = checkoutConfig.configuration(for: .threeDS2)
         
