@@ -46,19 +46,20 @@ open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueTy
     /// Views observe this property to update their UI reactively.
     @AdyenObservable(.initial) package var validationState: ValidationState
     
-    /// Token to retain the validation state observer subscription.
-    private var validationStateObserverToken: EventHandlerToken?
+    /// Observation manager that automatically cleans up handlers on deinit.
+    private let observationManager = ObservationManager()
     
     /// Closure that is triggered when there is a validation error.
     public var onDidShowValidationError: ((ValidationError) -> Void)?
+    
     override internal init(value: ValueType, style: FormTextItemStyle) {
         super.init(value: value, style: style)
 
-        validationStateObserverToken = $validationState.addEventHandler { [weak self] newState in
+        _ = observationManager.observe($validationState) { [weak self] newState in
             self?.notifyOnValidationError(for: newState)
         }
     }
-    
+
     public func isValid() -> Bool {
         AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
         return false

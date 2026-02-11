@@ -7,11 +7,13 @@
 import Foundation
 
 /// Manages all the observations of an observer.
-internal class ObservationManager {
+package class ObservationManager {
     
     private var observations = [Observation]()
     private let lock = NSLock()
-    
+
+    package init() {}
+
     deinit {
         let observationsToRemove = lock.withLock {
             let copy = observations
@@ -26,7 +28,7 @@ internal class ObservationManager {
     
     // MARK: - Adding and Removing Observations
     
-    internal func observe<T: EventPublisher>(_ eventPublisher: T, eventHandler: @escaping EventHandler<T.Event>) -> Observation {
+    package func observe<T: EventPublisher>(_ eventPublisher: T, eventHandler: @escaping EventHandler<T.Event>) -> Observation {
         let eventHandlerToken = eventPublisher.addEventHandler(eventHandler)
         
         let observation = Observation(unobserveHandler: { [weak eventPublisher] in
@@ -40,7 +42,7 @@ internal class ObservationManager {
         return observation
     }
     
-    internal func remove(_ observation: Observation) {
+    package func remove(_ observation: Observation) {
         lock.withLock {
             observations.removeAll { element in
                 element == observation
