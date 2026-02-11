@@ -10,7 +10,7 @@ import Foundation
 
 internal protocol CheckoutAttemptIdProviding {
     func fetchCheckoutAttemptId(
-        with apiContext: APIContext
+        with apiContext: APIContext?
     ) async -> String?
 }
 
@@ -22,27 +22,19 @@ internal protocol CheckoutAttemptIdProviding {
 /// Improvement: This is an edge case and the current success rate of the api is pretty high 99 something so this would rarely ever fail. If this ever becomes a constraint we could add a retying logic to try twice if it failed once. But that is an improvement if needed alone.
 internal class CheckoutAttemptIdProvider: CheckoutAttemptIdProviding {
 
-    // TODO: Robert: Don't pass CheckoutConfiguration but Make this (APIContext) -> APIClientProtocol?
-    private let apiClientProvider: (APIContext) -> APIClientProtocol?
-
-    internal init() {
-        self.apiClientProvider = CheckoutAttemptIdProvider.defaultAPIClientProvider
-    }
-
-    internal init(apiClientProvider: @escaping (APIContext) -> APIClientProtocol?) {
-        self.apiClientProvider = apiClientProvider
-    }
-
     internal func fetchCheckoutAttemptId(
-        with apiContext: APIContext
+        with apiContext: APIContext?
     ) async -> String? {
+        guard let analyticsApiContext = apiContext else {
+            return nil
+        }
         let request = CheckoutAttemptIdRequest()
-        guard let apiClient = apiClientProvider(apiContext),
-              let response = try? await withCheckedThrowingContinuation({ continuation in
-                  apiClient.perform(request) { result in
-                      continuation.resume(with: result)
-                  }
-              }) else {
+        let apiClient = APIClient(apiContext: analyticsApiContext)
+        guard let response = try? await withCheckedThrowingContinuation({ continuation in
+            apiClient.perform(request) { result in
+                continuation.resume(with: result)
+            }
+        }) else {
             return nil
         }
         // TODO: Robert: This will need to be removed once we determine how we are going to create the AnalyticsProvider. For now we just need to inform the AnalyticProvider.
@@ -51,11 +43,4 @@ internal class CheckoutAttemptIdProvider: CheckoutAttemptIdProviding {
         return response.checkoutAttemptId
     }
 
-    // MARK: - Private
-
-    private static let defaultAPIClientProvider: (APIContext) -> APIClientProtocol? = { apiContext in
-        AdyenContext.createAnalyticsAPIClient(
-            apiContext: apiContext
-        )
-    }
 }

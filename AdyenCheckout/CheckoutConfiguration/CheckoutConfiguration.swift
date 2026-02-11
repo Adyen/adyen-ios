@@ -77,10 +77,14 @@ public struct CheckoutConfiguration {
         @CheckoutConfigurationBuilder content: () -> CheckoutConfigurable
     ) throws {
         let apiContext = try APIContext(environment: environment, clientKey: clientKey)
+        let analyticsApiContext = Self.createAnalyticsAPIContext(apiContext: apiContext)
+
         let context = AdyenContext(
             apiContext: apiContext,
             payment: nil,
             amount: amount,
+            checkoutAttemptId: nil, // TODO: Eren: We shouldn't set this here. We need to create this after CheckoutProvider fetches the checkoutAttemptId.
+            analyticsAPIContext: analyticsApiContext,
             analyticsConfiguration: analyticsConfiguration
         )
         
@@ -94,8 +98,6 @@ public struct CheckoutConfiguration {
             }
         }
         let configurations = configDictionary
-
-        let analyticsApiContext = Self.createAnalyticsAPIContext(apiContext: apiContext)
 
         self.init(
             apiContext: apiContext,

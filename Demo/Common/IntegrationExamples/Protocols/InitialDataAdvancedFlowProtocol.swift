@@ -46,6 +46,8 @@ extension InitialDataAdvancedFlowProtocol {
             apiContext: ConfigurationConstants.apiContext,
             payment: ConfigurationConstants.current.payment,
             amount: ConfigurationConstants.current.amount,
+            checkoutAttemptId: nil, // TODO: Eren: We need to verify if this is the right place to inject the checkoutAttemptID.
+            analyticsAPIContext: nil,
             analyticsConfiguration: analyticsConfiguration
         )
     }

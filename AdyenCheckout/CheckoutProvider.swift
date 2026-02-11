@@ -31,22 +31,18 @@ internal class CheckoutProvider: CheckoutProviding {
         let apiClient = APIClient(apiContext: configuration.apiContext)
 
         // fetch and store checkout attempt id
-        async let checkoutAttemptId: String? = {
-            guard let analyticsApiContext = configuration.analyticsApiContext else {
-                return nil
-            }
-            return await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
-                with: analyticsApiContext
-            )
-        }()
+        let checkoutAttemptId: String? = await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
+            with: configuration.analyticsApiContext
+        )
 
-        // TODO: Robert: Create the AdyenContext async. which in turn will create the analytics provider if checkoutAttemptId is available & the configuration flag is true.
         // TODO: Robert: for the public key fetching we do it async here at this point and pass it down to AdyenContext.
 
         let adyenContext = AdyenContext(
             apiContext: configuration.apiContext,
             payment: nil,
             amount: configuration.amount,
+            checkoutAttemptId: checkoutAttemptId,
+            analyticsAPIContext: configuration.analyticsApiContext,
             analyticsConfiguration: configuration.analyticsConfiguration
         )
 
@@ -80,23 +76,20 @@ internal class CheckoutProvider: CheckoutProviding {
     ) async throws -> Checkout {
 
         // fetch and store checkout attempt id
-        async let checkoutAttemptId: String? = {
-            guard let analyticsApiContext = configuration.analyticsApiContext else {
-                return nil
-            }
-            return await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
-                with: analyticsApiContext
-            )
-        }()
+        let checkoutAttemptId: String? = await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
+            with: configuration.analyticsApiContext
+        )
 
         let adyenContext = AdyenContext(
             apiContext: configuration.apiContext,
             payment: nil,
             amount: configuration.amount,
+            checkoutAttemptId: checkoutAttemptId,
+            analyticsAPIContext: configuration.analyticsApiContext,
             analyticsConfiguration: configuration.analyticsConfiguration
         )
 
-        return await Checkout(
+        return Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: checkoutAttemptId,
@@ -115,23 +108,21 @@ internal class CheckoutProvider: CheckoutProviding {
     ) async throws -> Checkout {
 
         // fetch and store checkout attempt id
-        async let checkoutAttemptId: String? = {
-            guard let analyticsApiContext = configuration.analyticsApiContext else {
-                return nil
-            }
-            return await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
-                with: analyticsApiContext
-            )
-        }()
+        // fetch and store checkout attempt id
+        let checkoutAttemptId: String? = await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
+            with: configuration.analyticsApiContext
+        )
 
         let adyenContext = AdyenContext(
             apiContext: configuration.apiContext,
             payment: nil,
             amount: configuration.amount,
+            checkoutAttemptId: checkoutAttemptId,
+            analyticsAPIContext: configuration.analyticsApiContext,
             analyticsConfiguration: configuration.analyticsConfiguration
         )
 
-        return await Checkout(
+        return Checkout(
             configuration: configuration,
             checkoutAttemptId: checkoutAttemptId,
             adyenContext: adyenContext,

@@ -13,9 +13,8 @@ package protocol AnyInitialAnalyticsProvider {
 }
 
 package protocol AnyEventAnalyticsProvider {
+    var checkoutAttemptId: String? { get }
 
-    var checkoutAttemptId: String? { get set }
-    
     /// Adds an info event to be sent.
     func add(info: AnalyticsEventInfo)
     
