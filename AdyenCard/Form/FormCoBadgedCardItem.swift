@@ -82,7 +82,7 @@ internal final class FormCoBadgedCardItem: FormItem {
 
             let isSelected = brand.type.rawValue == defaultSelectedBrand.type.rawValue ? true : false
 
-            /// Title should be 'localeBrand' and if it is nil then use 'brand' property from binLookup
+            // Title should be 'localeBrand' and if it is nil then use 'brand' property from binLookup
             let selectableItem = SelectableFormItem(
                 title: brand.localeBrand ?? brand.type.rawValue,
                 imageUrl: brandLogoURL,
@@ -132,6 +132,6 @@ internal final class FormCoBadgedCardItem: FormItem {
 
 extension FormItemViewBuilder {
     internal func build(with item: FormCoBadgedCardItem) -> FormItemView<FormCoBadgedCardItem> {
-        FormCoBadgedCardItemView(item: item)
+        FormCoBadgedCardItemView(item: item, theme: theme)
     }
 }

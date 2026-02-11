@@ -118,7 +118,7 @@ internal final class FormCardLogosItem: FormItem {
 
 extension FormItemViewBuilder {
     internal func build(with item: FormCardLogosItem) -> FormItemView<FormCardLogosItem> {
-        FormCardLogosItemView(item: item)
+        FormCardLogosItemView(item: item, theme: theme)
     }
     
     internal func build(with item: FormCardNumberContainerItem) -> FormItemView<FormCardNumberContainerItem> {
@@ -143,8 +143,5 @@ extension FormCardLogosItem {
             self.type = type
         }
         
-        internal static func == (lhs: FormCardLogosItem.CardTypeLogo, rhs: FormCardLogosItem.CardTypeLogo) -> Bool {
-            lhs.url == rhs.url && lhs.type == rhs.type
-        }
     }
 }

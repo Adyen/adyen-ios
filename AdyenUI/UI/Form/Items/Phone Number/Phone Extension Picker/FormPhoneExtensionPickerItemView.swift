@@ -11,11 +11,17 @@ import UIKit
 @_spi(AdyenInternal)
 public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExtensionPickerItem> {
     
+    package let theme: AdyenTheme
+    
     private enum Constants {
         static let chevronImageName = "chevron_down"
     }
     
-    private lazy var valueLabel = UILabel(style: item.style.text)
+    private lazy var valueLabel: UILabel = {
+        let label = UILabel()
+        label.apply(theme.elements.labels.body)
+        return label
+    }()
     
     private lazy var chevronView: UIImageView = {
         let image = UIImage(
@@ -32,7 +38,7 @@ public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExten
     /// The country code view.
     private lazy var countryCodeLabel: UILabel = {
         let label = UILabel()
-        label.adyen.apply(item.style.text)
+        label.apply(theme.elements.labels.body)
         return label
     }()
     
@@ -44,7 +50,8 @@ public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExten
         }
     }
     
-    public required init(item: FormPhoneExtensionPickerItem) {
+    init(item: FormPhoneExtensionPickerItem, theme: AdyenTheme) {
+        self.theme = theme
         super.init(item: item)
         setupView()
         updateSelection()
@@ -65,6 +72,10 @@ public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExten
             
             item.presenter?.presentViewController(pickerViewController, animated: true)
         }
+    }
+    
+    public required convenience init(item: FormPhoneExtensionPickerItem) {
+        self.init(item: item, theme: .default)
     }
     
     internal func setupView() {

@@ -12,6 +12,8 @@ import UIKit
 
 internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem>, UICollectionViewDataSource {
     
+    package let theme: AdyenTheme
+    
     private enum Constants {
         static let cardSpacing: CGFloat = 3
         static let rowSpacing: CGFloat = 2
@@ -31,12 +33,17 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem>, UIC
     
     internal lazy var imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
     
-    internal required init(item: FormCardLogosItem) {
+    init(item: FormCardLogosItem, theme: AdyenTheme) {
+        self.theme = theme
         super.init(item: item)
         addSubview(collectionView)
         collectionView.adyen.anchor(inside: self.layoutMarginsGuide)
         collectionView.register(CardLogoCell.self, forCellWithReuseIdentifier: CardLogoCell.reuseIdentifier)
         collectionView.dataSource = self
+    }
+    
+    internal required convenience init(item: FormCardLogosItem) {
+        self.init(item: item, theme: .default)
     }
 
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -49,7 +56,7 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem>, UIC
             cell.update(
                 imageUrl: logo.url,
                 altText: logo.type.name,
-                style: item.style.icon,
+                separatorColor: theme.colors.separator,
                 imageLoader: imageLoader
             )
         }
@@ -108,7 +115,7 @@ extension FormCardLogosItemView {
             fatalError("init(coder:) has not been implemented")
         }
         
-        internal func update(imageUrl: URL, altText: String, style: ImageStyle, imageLoader: ImageLoading) {
+        internal func update(imageUrl: URL, altText: String, separatorColor: UIColor, imageLoader: ImageLoading) {
             self.imageUrl = imageUrl
             self.imageLoader = imageLoader
             
@@ -116,11 +123,11 @@ extension FormCardLogosItemView {
             cardTypeImageView.accessibilityValue = altText
             cardTypeImageView.accessibilityTraits.insert(.image)
             
-            cardTypeImageView.layer.masksToBounds = style.clipsToBounds
-            cardTypeImageView.layer.borderWidth = style.borderWidth
-            cardTypeImageView.layer.borderColor = style.borderColor?.cgColor
-            cardTypeImageView.backgroundColor = style.backgroundColor
-            cardTypeImageView.adyen.round(using: style.cornerRounding)
+            cardTypeImageView.layer.masksToBounds = true
+            cardTypeImageView.layer.borderWidth = 1.0 / UIScreen.main.nativeScale
+            cardTypeImageView.layer.borderColor = separatorColor.cgColor
+            cardTypeImageView.backgroundColor = .clear
+            cardTypeImageView.adyen.round(using: .fixed(AdyenUIConstants.imageCornerRadius))
             
             updateIcon()
         }

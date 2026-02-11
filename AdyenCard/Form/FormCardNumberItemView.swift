@@ -99,9 +99,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     
     /// Logo view for the brand(s) icons and selection for dual-branded cards.
     internal lazy var detectedBrandsView: DualBrandAccessoryView = {
-        let cardTypeLogosView = DualBrandAccessoryView(style: item.style.icon)
-        cardTypeLogosView.backgroundColor = item.style.backgroundColor
-        return cardTypeLogosView
+        DualBrandAccessoryView(separatorColor: theme.colors.separator)
     }()
     
     @objc private func openCardScanner() {
