@@ -37,8 +37,6 @@ internal class CheckoutAttemptIdProvider: CheckoutAttemptIdProviding {
         }) else {
             return nil
         }
-        // TODO: Robert: This will need to be removed once we determine how we are going to create the AnalyticsProvider. For now we just need to inform the AnalyticProvider.
-        // configuration.context.analyticsProvider?.checkoutAttemptId = response.checkoutAttemptId
 
         return response.checkoutAttemptId
     }
