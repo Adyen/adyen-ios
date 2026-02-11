@@ -49,7 +49,7 @@ internal final class FormSplitItemView: FormItemView<FormSplitItem> {
     }()
 
     private static func build(_ item: FormItem, theme: AdyenTheme) -> AnyFormItemView {
-        let itemView = FormItemViewBuilder(theme: theme).build(item)
+        let itemView = item.build(with: FormItemViewBuilder(theme: theme))
         itemView.preservesSuperviewLayoutMargins = true
         return itemView
     }

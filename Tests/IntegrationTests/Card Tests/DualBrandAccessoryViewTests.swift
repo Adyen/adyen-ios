@@ -20,7 +20,7 @@ final class DualBrandAccessoryViewTests: XCTestCase {
         brandSelectionCount = 0
         imageLoader = ImageLoaderMock()
         sut = FormCardNumberItemView.DualBrandAccessoryView(
-            style: brandImageStyle,
+            separatorColor: .gray,
             imageLoader: imageLoader
         )
     }
@@ -91,12 +91,5 @@ final class DualBrandAccessoryViewTests: XCTestCase {
         XCTAssertTrue(sut.secondaryLogoView.isHidden, "Secondary logo should be hidden")
     }
     
-    private var brandImageStyle: ImageStyle = .init(
-        borderColor: nil,
-        borderWidth: 0.0,
-        cornerRadius: 0.0,
-        clipsToBounds: true,
-        contentMode: .scaleAspectFit
-    )
 
 }

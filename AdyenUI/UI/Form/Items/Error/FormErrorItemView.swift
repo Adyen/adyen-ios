@@ -60,7 +60,7 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
 
     internal lazy var messageLabel: UILabel = {
         let messageLabel = UILabel()
-        messageLabel.apply(theme.elements.labels.callout)
+        messageLabel.apply(theme.elements.labels.subheadline)
         messageLabel.numberOfLines = 0
         messageLabel.isAccessibilityElement = false
         messageLabel.accessibilityIdentifier = item.identifier.map {

@@ -123,7 +123,7 @@ package final class SelectableFormItemView: FormItemView<SelectableFormItem> {
     }
 
     /// Initializes the selectable form item view.
-    init(item: SelectableFormItem, theme: AdyenTheme) {
+    package init(item: SelectableFormItem, theme: AdyenTheme) {
         self.theme = theme
         super.init(item: item)
         backgroundColor = theme.colors.background
