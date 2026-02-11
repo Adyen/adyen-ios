@@ -62,8 +62,6 @@ public struct TextStyle: ViewStyle {
     
 }
 
-extension NSTextAlignment {}
-
 extension TextStyle: Equatable {
     
     public static func == (lhs: TextStyle, rhs: TextStyle) -> Bool {

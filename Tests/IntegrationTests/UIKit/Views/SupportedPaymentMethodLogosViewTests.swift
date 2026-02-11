@@ -20,8 +20,8 @@ class SupportedPaymentMethodLogosViewTests: XCTestCase {
     
     func test_setup() throws {
         let trailingText = "TRAILING_TEXT"
-        let supportedLogosView = SupportedPaymentMethodLogosView(
-            imageUrls: [URL(string: "https://adyen.com")!],
+        let supportedLogosView = try SupportedPaymentMethodLogosView(
+            imageUrls: [XCTUnwrap(URL(string: "https://adyen.com"))],
             trailingText: trailingText
         )
         XCTAssertEqual(supportedLogosView.subviews.count, 0)

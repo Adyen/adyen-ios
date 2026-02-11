@@ -4,11 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
-
 import Adyen
 import AdyenActions
 import AdyenComponents
+import Foundation
 
 internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlowProtocol {
 
@@ -24,8 +23,8 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
 
     // MARK: - Action Handling
 
-    private lazy var adyenActionComponent: AdyenActionComponent = {
-        let handler = AdyenActionComponent(context: context)
+    private lazy var actionComponent: CheckoutActionComponent = {
+        let handler = CheckoutActionComponent(context: context)
         handler.delegate = self
         handler.presentationDelegate = self
         return handler
@@ -83,7 +82,7 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
         switch result {
         case let .success(response):
             if let action = response.action {
-                adyenActionComponent.handle(action)
+                actionComponent.handle(action)
             } else {
                 finish(with: response)
             }
@@ -171,26 +170,17 @@ extension InstantPaymentComponentAdvancedFlow: ActionComponentDelegate {
 
 extension InstantPaymentComponentAdvancedFlow: PresentationDelegate {
     internal func present(component: PresentableComponent) {
-        let componentViewController = viewController(for: component)
+        let componentViewController = component.viewController
+        componentViewController.navigationItem.leftBarButtonItem = .init(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(cancelPressed)
+        )
         presenter?.present(viewController: componentViewController, completion: nil)
     }
 }
 
 private extension InstantPaymentComponentAdvancedFlow {
-    
-    private func viewController(for component: PresentableComponent) -> UIViewController {
-        guard component.requiresModalPresentation else {
-            return component.viewController
-        }
-
-        let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.leftBarButtonItem = .init(
-            barButtonSystemItem: .cancel,
-            target: self,
-            action: #selector(cancelPressed)
-        )
-        return navigation
-    }
 
     @objc private func cancelPressed() {
         instantPaymentComponent?.cancel()

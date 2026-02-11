@@ -33,7 +33,9 @@ open class FormViewController: UIViewController, AdyenObserver {
 
     // MARK: - Public properties
 
-    public var requiresKeyboardInput: Bool { formRequiresInputView() }
+    public var requiresKeyboardInput: Bool {
+        formRequiresInputView()
+    }
 
     /// Indicates the `FormViewController` UI styling.
     public var style: ViewStyle = FormComponentStyle()

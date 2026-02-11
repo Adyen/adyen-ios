@@ -40,7 +40,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func test_submit_with_no_attemptId_sets_constant_in_sdkData() throws {
+    func test_submit_with_no_attemptId_sets_constant_in_sdkData() {
         // Given
         analyticsProviderMock.checkoutAttemptId = nil
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
@@ -69,7 +69,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         wait(for: [didSubmitExpectation], timeout: 3)
     }
 
-    func test_submit_sets_browserInfo() throws {
+    func test_submit_sets_browserInfo() {
         // Given
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
@@ -90,7 +90,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         wait(for: [didSubmitExpectation], timeout: 3)
     }
     
-    func test_submit_event() throws {
+    func test_submit_event() {
         let expectedCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
         analyticsProviderMock._checkoutAttemptId = expectedCheckoutAttemptId
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
@@ -111,7 +111,7 @@ class PaymentComponentSubjectTests: XCTestCase {
     
     // MARK: - SDKData Tests
     
-    func test_submit_creates_sdkData_with_analytics() throws {
+    func test_submit_creates_sdkData_with_analytics() {
         // Given
         let expectedCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
         analyticsProviderMock.checkoutAttemptId = expectedCheckoutAttemptId
@@ -143,7 +143,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         wait(for: [didSubmitExpectation], timeout: 3)
     }
     
-    func test_submit_with_authenticationProvider_includes_authentication_in_sdkData() throws {
+    func test_submit_with_authenticationProvider_includes_authentication_in_sdkData() {
         // Given
         let expectedCheckoutAttemptId = "test-checkout-attempt-id"
         analyticsProviderMock.checkoutAttemptId = expectedCheckoutAttemptId
@@ -175,7 +175,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         wait(for: [didSubmitExpectation], timeout: 3)
     }
     
-    func test_submit_without_authenticationProvider_includes_only_analytics_in_sdkData() throws {
+    func test_submit_without_authenticationProvider_includes_only_analytics_in_sdkData() {
         // Given
         let expectedCheckoutAttemptId = "test-checkout-attempt-id"
         analyticsProviderMock.checkoutAttemptId = expectedCheckoutAttemptId
@@ -204,7 +204,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         wait(for: [didSubmitExpectation], timeout: 3)
     }
     
-    func test_submit_includes_sdkData_other_fields() throws {
+    func test_submit_includes_sdkData_other_fields() {
         // Given
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)

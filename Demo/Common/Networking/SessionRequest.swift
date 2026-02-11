@@ -99,17 +99,7 @@ internal struct SessionRequest: APIRequest {
     
 }
 
-internal struct SessionResponse: Response {
-    
-    internal let sessionData: String
-    
-    internal let sessionId: String
-    
-    internal enum CodingKeys: String, CodingKey {
-        case sessionData
-        case sessionId = "id"
-    }
-}
+extension SessionResponse: @retroactive Response {}
 
 private struct AuthenticationData: Encodable {
     struct ThreeDSRequestData: Encodable {

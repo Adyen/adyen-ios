@@ -34,7 +34,7 @@ class AtomeComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testComponent_ShouldPaymentMethodTypeBeAtome() throws {
+    func testComponent_ShouldPaymentMethodTypeBeAtome() {
         // Given
         let expectedPaymentMethodType: PaymentMethodType = .atome
         
@@ -43,11 +43,6 @@ class AtomeComponentTests: XCTestCase {
         
         // Assert
         XCTAssertEqual(paymentMethodType, expectedPaymentMethodType)
-    }
-    
-    func testComponent_ShouldRequireModalPresentation() throws {
-        // Assert
-        XCTAssertTrue(sut.requiresModalPresentation)
     }
     
     func testCreatePaymentDetails() throws {
@@ -74,7 +69,7 @@ class AtomeComponentTests: XCTestCase {
         XCTAssertEqual(phoneNumber, "+16787860987")
     }
     
-    func testGetPhoneExtensions_ShouldReturnNonEmptyPhoneExtensionList() throws {
+    func testGetPhoneExtensions_ShouldReturnNonEmptyPhoneExtensionList() {
         // Action
         let phoneExtensions = sut.phoneExtensions()
         
@@ -82,7 +77,7 @@ class AtomeComponentTests: XCTestCase {
         XCTAssertFalse(phoneExtensions.isEmpty)
     }
 
-    func testViewDidLoadShouldSendInitialCall() throws {
+    func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)

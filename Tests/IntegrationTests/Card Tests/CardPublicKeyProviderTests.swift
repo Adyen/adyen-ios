@@ -16,7 +16,7 @@ class PublicKeyProviderTests: XCTestCase {
         AdyenAssertion.listener = nil
     }
 
-    func testMultipleFetchCallsAndOneRequestDispatched() throws {
+    func testMultipleFetchCallsAndOneRequestDispatched() {
         var baseApiClient = APIClientMock()
         var apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
         var sut = PublicKeyProvider(apiClient: apiClient, request: ClientKeyRequest(clientKey: Dummy.apiContext.clientKey))

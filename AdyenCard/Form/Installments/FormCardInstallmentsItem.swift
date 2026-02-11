@@ -89,10 +89,8 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
     }
 
     private func updatePickerContent() {
-        // if there is no installment for the current card type
-        // clear picker and hide the component
+        // if there is no installment for the current card type then clear picker
         guard !additionalPickerElements.isEmpty else {
-            isHidden.wrappedValue = true
             selectableValues = [oneTimePaymentElement.pickerElement]
             return
         }

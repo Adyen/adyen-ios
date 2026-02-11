@@ -11,12 +11,12 @@ import XCTest
 
 class AdyenContextTests: XCTestCase {
     
-    func testAdditionalFieldsBinding() {
+    func testAdditionalFieldsBinding() throws {
 
         let oneEUR = Amount(value: 1, currencyCode: "EUR")
         let twoEUR = Amount(value: 2, currencyCode: "EUR")
         
-        let apiContext = try! APIContext(environment: Environment.test, clientKey: "local_DUMMYKEYFORTESTING")
+        let apiContext = try APIContext(environment: Environment.test, clientKey: "local_DUMMYKEYFORTESTING")
         let context = AdyenContext(
             apiContext: apiContext,
             payment: .init(amount: oneEUR, countryCode: "NL"),
@@ -65,8 +65,8 @@ class AdyenContextTests: XCTestCase {
         XCTAssertNotNil(context.analyticsProvider)
     }
     
-    func testInitWithDifferentEnvironmentShouldNotHaveAnalyticsProvider() {
-        let apiContext = try! APIContext(environment: TestEnvironment.test, clientKey: "local_DUMMYKEYFORTESTING")
+    func testInitWithDifferentEnvironmentShouldNotHaveAnalyticsProvider() throws {
+        let apiContext = try APIContext(environment: TestEnvironment.test, clientKey: "local_DUMMYKEYFORTESTING")
         
         let context = AdyenContext(
             apiContext: apiContext,
@@ -106,5 +106,7 @@ class AdyenContextTests: XCTestCase {
 enum TestEnvironment: AnyAPIEnvironment {
     case test
     
-    var baseURL: URL { URL(string: "test")! }
+    var baseURL: URL {
+        URL(string: "test")!
+    }
 }

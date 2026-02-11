@@ -75,7 +75,9 @@ public struct QiwiWalletPaymentMethod: PaymentMethod {
             case key
             case items
             
-            static var phoneExtensionsKey: String { "qiwiwallet.telephoneNumberPrefix" }
+            static var phoneExtensionsKey: String {
+                "qiwiwallet.telephoneNumberPrefix"
+            }
         }
     }
 }

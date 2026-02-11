@@ -27,7 +27,9 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
     public var configuration: Configuration
 
     /// The payment method object for this component.
-    public var paymentMethod: PaymentMethod { payToPaymentMethod }
+    public var paymentMethod: PaymentMethod {
+        payToPaymentMethod
+    }
 
     private let payToPaymentMethod: PayToPaymentMethod
 
@@ -45,9 +47,6 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
         child: formViewController,
         style: configuration.style
     )
-
-    /// This indicates that `viewController` expected to be presented modally,
-    public var requiresModalPresentation: Bool = true
 
     // MARK: Component specific
 

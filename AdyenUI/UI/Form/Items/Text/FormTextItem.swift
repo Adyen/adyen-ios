@@ -11,9 +11,6 @@ import UIKit
 @_spi(AdyenInternal)
 open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFormItem {
 
-    /// The placeholder of the text field.
-    @AdyenObservable(nil) public var placeholder: String?
-    
     override public var value: String {
         get { publisher.wrappedValue }
         set { publishTransformed(value: newValue) }
@@ -57,6 +54,10 @@ open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFor
     override public func validationStatus() -> ValidationStatus? {
         guard let statusValidator = validator as? StatusValidator else { return nil }
         return statusValidator.validate(value)
+    }
+    
+    override public func isEmpty() -> Bool {
+        value.isEmpty
     }
     
     /// The formatted text value.

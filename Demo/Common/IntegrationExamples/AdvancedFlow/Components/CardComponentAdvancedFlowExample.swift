@@ -14,12 +14,12 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var adyenCheckout: AdyenCheckout?
-    private var adyenComponent: AdyenCheckoutComponent?
+    private var checkout: Checkout?
+    private var adyenComponent: CheckoutPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
 
-    // comes from demo app protocol, unused on new structure
+    /// comes from demo app protocol, unused on new structure
     internal lazy var context: AdyenContext = generateContext()
 
     internal init() {}
@@ -44,7 +44,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     // MARK: - Presentation
     
     private func cardComponent(from paymentMethods: PaymentMethods) async throws
-        -> AdyenCheckoutComponent {
+        -> CheckoutPaymentComponent {
 
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
@@ -59,7 +59,8 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                     .lookup(
                         onAddressLookup: { searchTerm in
                             await MapkitAddressLookupProvider().searchAsync(searchTerm)
-                        })
+                        }
+                    )
                 )
                 .onBinChange { bin in
                     print("Here is the bin \(bin)")
@@ -69,15 +70,19 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 }
         }
         .theme(
-            AdyenTheme(colors: AdyenColors(primary: .systemPurple))
-                .bodyLabel(font: AdyenFonts.default.bodyEmphasized)
-                .destructiveButton(
-                    backgroundColor: .systemRed,
-                    textColor: .white,
-                    disabledBackgroundColor: .systemGray,
-                    disabledTextColor: .lightGray
-                )
-                .cornerRadius(8.0)
+            AdyenTheme(
+                colors:
+                .default
+//                AdyenColors(primary: .systemPurple)
+            )
+            .bodyLabel(font: AdyenFonts.default.bodyEmphasized)
+            .destructiveButton(
+                backgroundColor: .systemRed,
+                textColor: .white,
+                disabledBackgroundColor: .systemGray,
+                disabledTextColor: .lightGray
+            )
+            .cornerRadius(8.0)
         )
         .onSubmit { [weak self] data, handler in
             self?.callPayments(with: data, completion: handler)
@@ -95,17 +100,15 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
 
-        let checkout = try await AdyenCheckout.setup(
+        let checkout = try await Checkout.setup(
             with: paymentMethods,
             configuration: configuration,
             presentationDelegate: self
         )
 
-        self.adyenCheckout = checkout
+        self.checkout = checkout
 
-        guard let cardPaymentMethod = paymentMethods.paymentMethod(ofType: CardPaymentMethod.self),
-              let component = checkout.createComponent(with: cardPaymentMethod)
-        else {
+        guard let component = checkout.createPaymentComponent(for: .scheme) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
         }
 
@@ -122,7 +125,8 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 completion?(
                     CheckoutPaymentsResponse(
                         resultCode: response.resultCode, action: response.action
-                    ))
+                    )
+                )
             case let .failure(error):
                 // TODO: change last parameter to accept error as well Result<CheckoutCallbackResult, Error>
                 break
@@ -142,7 +146,8 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 completion?(
                     CheckoutPaymentsResponse(
                         resultCode: response.resultCode, action: response.action
-                    ))
+                    )
+                )
             case let .failure(error):
                 // TODO: add error handling but maybe after async callbacks
                 break
@@ -167,7 +172,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     }
 
     @MainActor
-    private func present(component: AdyenCheckoutComponent) {
+    private func present(component: CheckoutPaymentComponent) {
         presenter?.present(viewController: viewController(for: component), completion: nil)
     }
 
@@ -179,7 +184,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         }
     }
 
-    private func viewController(for component: AdyenCheckoutComponent) -> UIViewController {
+    private func viewController(for component: CheckoutPaymentComponent) -> UIViewController {
         let navigation = UINavigationController(rootViewController: component.viewController!)
         component.viewController?.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Adyen N.V.
+// Copyright (c) 2026 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -44,7 +44,7 @@ class OnlineBankingComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testComponent_ShouldPaymentMethodTypeBeOnlineBanking() throws {
+    func testComponent_ShouldPaymentMethodTypeBeOnlineBanking() {
         // Given
         let expectedPaymentMethodType: PaymentMethodType = .onlineBankingCZ
 
@@ -53,11 +53,6 @@ class OnlineBankingComponentTests: XCTestCase {
 
         // Assert
         XCTAssertEqual(paymentMethodType, expectedPaymentMethodType)
-    }
-
-    func testComponent_ShouldRequireModalPresentation() throws {
-        // Assert
-        XCTAssertTrue(sut.requiresModalPresentation)
     }
 
     func testRequiresKeyboardInput() {
@@ -75,7 +70,7 @@ class OnlineBankingComponentTests: XCTestCase {
         (sut.viewController as! SecuredViewController<FormViewController>).childViewController
     }
 
-    func testSubmit_shouldCallPaymentDelegateDidSubmit() throws {
+    func testSubmit_shouldCallPaymentDelegateDidSubmit() {
         // Given
         let sut = OnlineBankingComponent(
             paymentMethod: paymentMethod,

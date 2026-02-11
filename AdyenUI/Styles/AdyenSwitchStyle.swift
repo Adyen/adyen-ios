@@ -15,7 +15,7 @@ package struct AdyenSwitchStyle {
     /// The color of `onTintColor` of switch.
     package var tintColor: UIColor?
 
-    // The background color of the switch.
+    /// The background color of the switch.
     package var backgroundColor: UIColor
 
     package var cornerRadius: CornerRounding
@@ -44,7 +44,7 @@ package struct AdyenSwitchStyle {
     }
 }
 
-// This extension adds the method chaining to the AdyenToggleStyle struct.
+/// This extension adds the method chaining to the AdyenToggleStyle struct.
 extension AdyenSwitchStyle {
 
     /// Returns a new AdyenToggleStyle with the specified title.

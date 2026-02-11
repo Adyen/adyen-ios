@@ -40,7 +40,7 @@ public class FormAttributedLabelItem: FormItem {
     /// The text of the label.
     private let originalText: String
 
-    // The links present in the label.
+    /// The links present in the label.
     private let links: [String]
 
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
@@ -71,7 +71,9 @@ public class FormAttributedLabelItem: FormItem {
 
 private class LinkTextViewFormItem: LinkTextView, AnyFormItemView {
     
-    public var childItemViews: [AnyFormItemView] { [] }
+    public var childItemViews: [AnyFormItemView] {
+        []
+    }
     
     public func reset() {}
 }

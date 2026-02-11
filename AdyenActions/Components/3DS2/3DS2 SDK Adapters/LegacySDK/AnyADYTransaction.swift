@@ -16,7 +16,9 @@ internal protocol AnyADYTransaction {
 
 extension ADYTransaction: AnyADYTransaction {
 
-    internal var authenticationParameters: AnyAuthenticationRequestParameters { authenticationRequestParameters }
+    internal var authenticationParameters: AnyAuthenticationRequestParameters {
+        authenticationRequestParameters
+    }
 
     internal func performChallenge(
         with parameters: ADYChallengeParameters,

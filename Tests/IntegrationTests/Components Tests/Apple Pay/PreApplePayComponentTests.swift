@@ -150,7 +150,7 @@ class PreApplePayComponentTests: XCTestCase {
         XCTAssertEqual(hintLabel.text, self.applePayPayment.amount.formatted)
     }
 
-    func testSubmitWithAnalyticsEnabledShouldSetCheckoutAttemptIdInPaymentComponentData() throws {
+    func testSubmitWithAnalyticsEnabledShouldSetCheckoutAttemptIdInPaymentComponentData() {
         // Given
         let paymentMethodDetails = ApplePayDetails(
             paymentMethod: paymentMethod,

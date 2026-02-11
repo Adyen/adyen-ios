@@ -6,12 +6,13 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public enum AnalyticsConstants {
+package enum AnalyticsConstants {
     
     /// A constant to pass into the payment data object in the case where fetching the checkout attempt Id fails.
     public static let fetchCheckoutAttemptIdFailed = "fetch-checkoutAttemptId-failed"
-    
+
+    package static let analyticsRequestPath = "checkoutanalytics/v3/analytics"
+
     /// Struct to hold error codes as type-safe static variables.
     public struct ErrorCode {
         
@@ -40,7 +41,9 @@ public enum AnalyticsConstants {
         
         private var rawValue: Int
         
-        public var stringValue: String { String(rawValue) }
+        public var stringValue: String {
+            String(rawValue)
+        }
     }
     
     public enum ValidationErrorCodes {

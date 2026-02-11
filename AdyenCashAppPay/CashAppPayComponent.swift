@@ -37,7 +37,9 @@ public final class CashAppPayComponent: PaymentComponent,
     public var context: AdyenContext
 
     /// The payment method object for this component.
-    public var paymentMethod: PaymentMethod { cashAppPayPaymentMethod }
+    public var paymentMethod: PaymentMethod {
+        cashAppPayPaymentMethod
+    }
 
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate? {
@@ -56,8 +58,6 @@ public final class CashAppPayComponent: PaymentComponent,
         child: formViewController,
         style: configuration.style
     )
-
-    public var requiresModalPresentation: Bool = true
 
     private let cashAppPayPaymentMethod: CashAppPayPaymentMethod
 

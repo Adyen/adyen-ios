@@ -6,7 +6,7 @@
 
 import Foundation
 
-// Twint payment method
+/// Twint payment method
 public struct TwintPaymentMethod: PaymentMethod {
    
     public var type: PaymentMethodType

@@ -32,17 +32,29 @@ public protocol ShopperInformation {
 @_spi(AdyenInternal)
 public extension ShopperInformation {
     
-    var shopperName: ShopperName? { nil }
+    var shopperName: ShopperName? {
+        nil
+    }
 
-    var emailAddress: String? { nil }
+    var emailAddress: String? {
+        nil
+    }
 
-    var telephoneNumber: String? { nil }
+    var telephoneNumber: String? {
+        nil
+    }
     
-    var billingAddress: PostalAddress? { nil }
+    var billingAddress: PostalAddress? {
+        nil
+    }
     
-    var deliveryAddress: PostalAddress? { nil }
+    var deliveryAddress: PostalAddress? {
+        nil
+    }
 
-    var socialSecurityNumber: String? { nil }
+    var socialSecurityNumber: String? {
+        nil
+    }
     
 }
 

@@ -21,8 +21,8 @@ final class ThreeDSServiceProviderTests: XCTestCase {
         messageVersion: "messageVersion"
     )
 
-    // Expect during fingerprint that
-    // Service is created and fingerprint performed.
+    /// Expect during fingerprint that
+    /// Service is created and fingerprint performed.
     func testPerformFingerprint() {
         let serviceMock = ThreeDSServiceableMock()
         serviceMock.onResetTransaction = {}

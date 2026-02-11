@@ -61,7 +61,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         XCTAssertEqual(sut.wrappedComponent._isDropIn, true)
     }
 
-    func testFingerprintFlowInvalidFingerprintToken() throws {
+    func testFingerprintFlowInvalidFingerprintToken() {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
 
         let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
@@ -109,7 +109,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testChallengeFlowSuccess() throws {
+    func testChallengeFlowSuccess() {
 
         let service = ThreeDSServiceableMock()
         service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
@@ -163,7 +163,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testChallengeFlowFailure() throws {
+    func testChallengeFlowFailure() {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
 
         let service = ThreeDSServiceableMock()
@@ -215,7 +215,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testChallengeFlowInvalidChallengeToken() throws {
+    func testChallengeFlowInvalidChallengeToken() {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
         let mockedAction = ThreeDS2ChallengeAction(challengeToken: "Invalid-token", authorisationToken: "AuthToken", paymentData: "paymentData")
 
@@ -259,7 +259,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testChallengeFlowMissingTransaction() throws {
+    func testChallengeFlowMissingTransaction() {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
         let service = ThreeDSServiceableMock()
         let analyticsProviderMock = AnalyticsProviderMock()
@@ -298,7 +298,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testFingerprintFlowInvalidEphemeralPublicKey() throws {
+    func testFingerprintFlowInvalidEphemeralPublicKey() {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
 
         let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
@@ -306,15 +306,17 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
 
         let service = ThreeDSServiceableMock()
         service.onPerformFingerprint = {
-            $1(.success(
-                AuthenticationRequestParametersMock(
-                    deviceInformation: "device_info",
-                    sdkApplicationIdentifier: "sdkApplicationIdentifier",
-                    sdkTransactionIdentifier: "sdkTransactionIdentifier",
-                    sdkReferenceNumber: "sdkReferenceNumber",
-                    sdkEphemeralPublicKey: "invalid-key",
-                    messageVersion: "messageVersion"
-                ))
+            $1(
+                .success(
+                    AuthenticationRequestParametersMock(
+                        deviceInformation: "device_info",
+                        sdkApplicationIdentifier: "sdkApplicationIdentifier",
+                        sdkTransactionIdentifier: "sdkTransactionIdentifier",
+                        sdkReferenceNumber: "sdkReferenceNumber",
+                        sdkEphemeralPublicKey: "invalid-key",
+                        messageVersion: "messageVersion"
+                    )
+                )
             )
         }
         service.onResetTransaction = {}
@@ -353,7 +355,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testFingerprintFlowFrictionless() throws {
+    func testFingerprintFlowFrictionless() {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
 
         let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
@@ -407,7 +409,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
     func testFingerprintFlow3DS1Fallback() throws {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
 
-        let redirectAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "data")
+        let redirectAction = try RedirectAction(url: XCTUnwrap(URL(string: "https://www.adyen.com")), paymentData: "data")
         submitter.mockedResult = .success(.action(.redirect(redirectAction)))
 
         let service = ThreeDSServiceableMock()
@@ -443,7 +445,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testFingerprintFlowSubmitterFailure() throws {
+    func testFingerprintFlowSubmitterFailure() {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
 
         submitter.mockedResult = .failure(Dummy.error)
@@ -471,7 +473,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
     
-    func testFingerprintFailureThatSubmitsErrorPayload() throws {
+    func testFingerprintFailureThatSubmitsErrorPayload() {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
         let onSubmitFingerprint = expectation(description: "Expect onSubmitFingerprint to be called.")
         let errorPayload = "Error Payload"

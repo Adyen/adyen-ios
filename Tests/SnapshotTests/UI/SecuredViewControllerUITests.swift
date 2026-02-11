@@ -5,7 +5,6 @@
 //
 
 import Foundation
-
 import XCTest
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenCard
@@ -21,7 +20,7 @@ class SecuredViewControllerUITests: XCTestCase {
         }
     }
     
-    func testBlur() throws {
+    func testBlur() {
         // temp deleted
     }
 }

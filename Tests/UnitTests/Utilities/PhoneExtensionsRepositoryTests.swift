@@ -9,7 +9,7 @@ import XCTest
 
 class PhoneExtensionsRepositoryTests: XCTestCase {
 
-    func testQiwiWalletCodes() throws {
+    func testQiwiWalletCodes() {
         let query = PhoneExtensionsQuery(paymentMethod: .qiwiWallet)
         XCTAssertEqual(query.codes, PhoneNumberPaymentMethod.qiwiWallet.codes)
     }

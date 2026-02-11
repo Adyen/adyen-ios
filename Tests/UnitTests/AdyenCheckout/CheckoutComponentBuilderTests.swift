@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
+@_spi(AdyenInternal) @testable import AdyenCard
 @_spi(AdyenInternal) @testable import AdyenCheckout
 @_spi(AdyenInternal) @testable import AdyenComponents
 @_spi(AdyenInternal) @testable import AdyenUI
@@ -82,7 +83,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         checkoutConfiguration = CheckoutConfiguration(context: context)
-        
+
         // When
         let component = CheckoutComponentBuilder.build(
             for: paymentMethod,
@@ -226,7 +227,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         checkoutConfiguration = CheckoutConfiguration(context: context) // No stored config
-        
+
         // When
         let component = CheckoutComponentBuilder.build(
             for: paymentMethod,
@@ -263,7 +264,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         // Given
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
         let customTheme = AdyenTheme()
-            .colors(AdyenColors(primary: .systemPink))
+            .colors(AdyenColors(primary: .yellow))
 
         checkoutConfiguration = CheckoutConfiguration(context: context)
         checkoutConfiguration.theme = customTheme
@@ -281,7 +282,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         }
         XCTAssertEqual(
             achComponent.configuration.theme.colors.primary,
-            UIColor.systemPink,
+            UIColor.yellow,
             "Theme should be propagated from CheckoutConfiguration to component"
         )
     }
@@ -290,7 +291,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         let customTheme = AdyenTheme()
-            .colors(AdyenColors(primary: .systemPink))
+            .colors(AdyenColors(primary: .yellow))
 
         checkoutConfiguration = CheckoutConfiguration(context: context)
         checkoutConfiguration.theme = customTheme
@@ -308,11 +309,81 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         }
         XCTAssertEqual(
             blikComponent.configuration.theme.colors.primary,
-            UIColor.systemPink,
+            UIColor.yellow,
             "Theme should be propagated from CheckoutConfiguration to component"
         )
     }
 
+    // MARK: - Stored Payment Method Tests
+    
+    func test_build_withStoredCardPaymentMethod_returnsStoredCardComponent() throws {
+        // Given
+        let storedPaymentMethod = try XCTUnwrap(createStoredCardPaymentMethod())
+        
+        // When
+        let component = CheckoutComponentBuilder.build(
+            for: storedPaymentMethod,
+            configuration: checkoutConfiguration
+        )
+        
+        // Then
+        XCTAssertEqual(component.paymentMethod.type, .scheme)
+        XCTAssertTrue(component is StoredCardComponent, "Component should be StoredCardComponent")
+    }
+    
+    func test_build_withStoredCardPaymentMethod_passesCorrectContext() throws {
+        // Given
+        let customAmount = Amount(value: 1000, currencyCode: "EUR")
+        let customContext = AdyenContext(
+            apiContext: Dummy.apiContext,
+            payment: Payment(amount: customAmount, countryCode: "NL"),
+            amount: customAmount
+        )
+        checkoutConfiguration = CheckoutConfiguration(context: customContext)
+        let storedPaymentMethod = try XCTUnwrap(createStoredCardPaymentMethod())
+        
+        // When
+        let component = CheckoutComponentBuilder.build(
+            for: storedPaymentMethod,
+            configuration: checkoutConfiguration
+        )
+        
+        // Then
+        XCTAssertEqual(component.context.amount.value, 1000)
+        XCTAssertEqual(component.context.amount.currencyCode, "EUR")
+    }
+    
+    func test_build_withGenericStoredPaymentMethod_returnsStoredPaymentMethodComponent() throws {
+        // Given
+        let storedPaymentMethod = try XCTUnwrap(createStoredPayPalPaymentMethod())
+        
+        // When
+        let component = CheckoutComponentBuilder.build(
+            for: storedPaymentMethod,
+            configuration: checkoutConfiguration
+        )
+        
+        // Then
+        XCTAssertEqual(component.paymentMethod.type, .payPal)
+        XCTAssertTrue(component is StoredPaymentMethodComponent, "Component should be StoredPaymentMethodComponent")
+    }
+    
+    func test_build_withStoredBCMCPaymentMethod_returnsStoredPaymentMethodComponent() throws {
+        // Given
+        let storedPaymentMethod = try XCTUnwrap(createStoredBCMCPaymentMethod())
+        
+        // When
+        let component = CheckoutComponentBuilder.build(
+            for: storedPaymentMethod,
+            configuration: checkoutConfiguration
+        )
+        
+        // Then
+        XCTAssertEqual(component.paymentMethod.type, .bcmc)
+        // StoredBCMC falls through to generic StoredPaymentMethodComponent
+        XCTAssertTrue(component is StoredPaymentMethodComponent, "Component should be StoredPaymentMethodComponent")
+    }
+    
     // MARK: - Helper Methods
     
     private func createBLIKPaymentMethod() -> BLIKPaymentMethod? {
@@ -329,5 +400,55 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             "name": "ACH Direct Debit"
         ]
         return try? AdyenCoder.decode(dict) as ACHDirectDebitPaymentMethod
+    }
+    
+    private func createStoredCardPaymentMethod() -> StoredCardPaymentMethod? {
+        let dict: [String: Any] = [
+            "type": "scheme",
+            "id": "9314881977134903",
+            "name": "VISA",
+            "brand": "visa",
+            "lastFour": "1111",
+            "expiryMonth": "08",
+            "expiryYear": "2018",
+            "holderName": "test",
+            "fundingSource": "credit",
+            "supportedShopperInteractions": [
+                "Ecommerce",
+                "ContAuth"
+            ]
+        ]
+        return try? AdyenCoder.decode(dict) as StoredCardPaymentMethod
+    }
+    
+    private func createStoredPayPalPaymentMethod() -> StoredPayPalPaymentMethod? {
+        let dict: [String: Any] = [
+            "type": "paypal",
+            "id": "9314881977134903",
+            "name": "PayPal",
+            "shopperEmail": "example@shopper.com",
+            "supportedShopperInteractions": [
+                "Ecommerce",
+                "ContAuth"
+            ]
+        ]
+        return try? AdyenCoder.decode(dict) as StoredPayPalPaymentMethod
+    }
+    
+    private func createStoredBCMCPaymentMethod() -> StoredBCMCPaymentMethod? {
+        let dict: [String: Any] = [
+            "expiryMonth": "10",
+            "expiryYear": "2020",
+            "id": "8415736344108917",
+            "supportedShopperInteractions": [
+                "Ecommerce"
+            ],
+            "lastFour": "4449",
+            "brand": "bcmc",
+            "type": "scheme",
+            "holderName": "Checkout Shopper PlaceHolder",
+            "name": "Maestro"
+        ]
+        return try? AdyenCoder.decode(dict) as StoredBCMCPaymentMethod
     }
 }

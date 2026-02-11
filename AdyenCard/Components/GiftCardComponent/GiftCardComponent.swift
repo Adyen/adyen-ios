@@ -45,7 +45,9 @@ public final class GiftCardComponent: PresentableComponent,
     public let publicKeyProvider: AnyPublicKeyProvider
 
     /// The gift card payment method.
-    public var paymentMethod: PaymentMethod { partialPaymentMethodType.partialPaymentMethod }
+    public var paymentMethod: PaymentMethod {
+        partialPaymentMethodType.partialPaymentMethod
+    }
 
     /// Describes the component's UI style.
     public let style: FormComponentStyle
@@ -147,8 +149,6 @@ public final class GiftCardComponent: PresentableComponent,
     // MARK: - Presentable Component Protocol
 
     public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
-
-    public var requiresModalPresentation: Bool { true }
 
     private lazy var formViewController: FormViewController = {
 

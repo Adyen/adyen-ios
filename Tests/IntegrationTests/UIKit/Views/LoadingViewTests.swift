@@ -25,7 +25,7 @@ class LoadingViewTests: XCTestCase {
         sut.adyen.anchor(inside: viewController.view)
     }
 
-    func testShowingSpinnerDelay() throws {
+    func testShowingSpinnerDelay() {
         viewController.loadViewIfNeeded()
         
         sut.showsActivityIndicator = true
@@ -34,7 +34,7 @@ class LoadingViewTests: XCTestCase {
         wait(until: sut, at: \.showsActivityIndicator, is: true)
     }
     
-    func testHidingSpinner() throws {
+    func testHidingSpinner() {
         viewController.loadViewIfNeeded()
         
         sut.showsActivityIndicator = true

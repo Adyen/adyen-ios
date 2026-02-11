@@ -17,7 +17,7 @@ enum Dummy: Error {
 
     internal static let payment = Payment(amount: Amount(value: 100, currencyCode: "EUR"), countryCode: "NL")
     
-    // connected to payment so when payment is removed it's obvious
+    /// connected to payment so when payment is removed it's obvious
     internal static let amount = payment.amount
     
     /// This is not a real public key, this is just a random string with the right pattern.

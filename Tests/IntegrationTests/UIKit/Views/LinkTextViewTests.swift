@@ -10,7 +10,7 @@ import XCTest
 
 class LinkTextViewTests: XCTestCase {
     
-    func testNoLink() throws {
+    func testNoLink() {
         
         // Given
         
@@ -51,9 +51,9 @@ class LinkTextViewTests: XCTestCase {
             linkRangeDelimiter: "%#"
         )
         
-        let result = linkTextView.textView(
+        let result = try linkTextView.textView(
             linkTextView,
-            shouldInteractWith: URL(string: "0")!,
+            shouldInteractWith: XCTUnwrap(URL(string: "0")),
             in: NSRange(location: 0, length: 1),
             interaction: .preview
         )
@@ -64,12 +64,12 @@ class LinkTextViewTests: XCTestCase {
         
         wait(for: [expectation], timeout: 10)
         XCTAssertEqual(links.count, 1)
-        XCTAssertEqual(links.first!, "0")
+        XCTAssertEqual(links.first, "0")
         XCTAssertEqual(linkTextView.attributedText.string, "Hello World")
         XCTAssertFalse(result)
     }
     
-    func testMultipleLinks() throws {
+    func testMultipleLinks() {
      
         // Given
         

@@ -16,9 +16,9 @@ class AnalyticsEventTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         apiClient = APIClientMock()
-        let checkoutAttemptIdResponse = InitialAnalyticsResponse(checkoutAttemptId: "checkoutAttempId1")
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
-        apiClient.mockedResults = [checkoutAttemptIdResult]
+        let emptyResponse = EmptyResponse()
+        let emptyResult: Result<Response, Error> = .success(emptyResponse)
+        apiClient.mockedResults = [emptyResult]
         sut = AnalyticsProvider(
             apiClient: apiClient,
             configuration: .init(),
@@ -36,7 +36,7 @@ class AnalyticsEventTests: XCTestCase {
         sut.sendInitialAnalytics(with: flavor, additionalFields: nil)
     }
 
-    func testSendInitialEventGivenEnabledAndFlavorIsComponentsShouldSendInitialRequest() throws {
+    func testSendInitialEventGivenEnabledAndFlavorIsComponentsShouldSendInitialRequest() {
         // Given
         sut = AnalyticsProvider(
             apiClient: apiClient,
@@ -47,8 +47,8 @@ class AnalyticsEventTests: XCTestCase {
         let flavor: AnalyticsFlavor = .components(type: .affirm)
         let expectedRequestCalls = 1
 
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
-        apiClient.mockedResults = [checkoutAttemptIdResult]
+        let emptyResult: Result<Response, Error> = .success(EmptyResponse())
+        apiClient.mockedResults = [emptyResult]
 
         // When
         sendInitialAnalytics(flavor: flavor)
@@ -56,10 +56,10 @@ class AnalyticsEventTests: XCTestCase {
         // Then
         wait(for: .milliseconds(1))
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "Invalid request number made.")
-        XCTAssertEqual(sut.checkoutAttemptId, "cb3eef98-978e-4f6f-b299-937a4450be1f1648546838056be73d8f38ee8bcc3a65ec14e41b037a59f255dcd9e83afe8c06bd3e7abcad993")
+        XCTAssertNil(sut.checkoutAttemptId)
     }
 
-    func testSendInitialEventGivenEnabledAndFlavorIsDropInShouldSendInitialRequest() throws {
+    func testSendInitialEventGivenEnabledAndFlavorIsDropInShouldSendInitialRequest() {
         // Given
         sut = AnalyticsProvider(
             apiClient: apiClient,
@@ -70,8 +70,8 @@ class AnalyticsEventTests: XCTestCase {
         let flavor: AnalyticsFlavor = .dropIn(paymentMethods: ["scheme", "paypal", "affirm"])
         let expectedRequestCalls = 1
 
-        let checkoutAttemptIdResult: Result<Response, Error> = .success(checkoutAttemptIdResponse)
-        apiClient.mockedResults = [checkoutAttemptIdResult]
+        let emptyResult: Result<Response, Error> = .success(EmptyResponse())
+        apiClient.mockedResults = [emptyResult]
 
         // When
         sendInitialAnalytics(flavor: flavor)
@@ -81,9 +81,4 @@ class AnalyticsEventTests: XCTestCase {
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "Invalid request number made.")
     }
 
-    // MARK: - Private
-
-    private var checkoutAttemptIdResponse: InitialAnalyticsResponse {
-        .init(checkoutAttemptId: "cb3eef98-978e-4f6f-b299-937a4450be1f1648546838056be73d8f38ee8bcc3a65ec14e41b037a59f255dcd9e83afe8c06bd3e7abcad993")
-    }
 }

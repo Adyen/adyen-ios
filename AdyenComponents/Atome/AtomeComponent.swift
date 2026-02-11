@@ -81,13 +81,12 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
         }
 
         let shopperName = ShopperName(firstName: firstName, lastName: lastName)
-        let atomeDetails = AtomeDetails(
+        return AtomeDetails(
             paymentMethod: paymentMethod,
             shopperName: shopperName,
             telephoneNumber: telephoneNumber,
             billingAddress: billingAddress
         )
-        return atomeDetails
     }
 
     @_spi(AdyenInternal)

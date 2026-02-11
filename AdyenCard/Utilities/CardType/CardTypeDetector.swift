@@ -11,7 +11,7 @@ import Foundation
 @_spi(AdyenInternal)
 extension Array: AdyenCompatible {}
 
-/// Adds helper functionality to any `[CardType]` instance through the `adyen` property.
+// Adds helper functionality to any `[CardType]` instance through the `adyen` property.
 
 package extension AdyenScope where Base == [CardType] {
     

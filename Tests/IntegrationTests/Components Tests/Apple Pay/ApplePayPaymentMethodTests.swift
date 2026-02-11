@@ -124,13 +124,11 @@ final class ApplePayPaymentMethodTests: XCTestCase {
     // MARK: - Private
 
     private func makeSUT(brands: [String]?) -> ApplePayPaymentMethod {
-        let sut = ApplePayPaymentMethod(
+        ApplePayPaymentMethod(
             type: .applePay,
             name: "ApplePay",
             merchantProvidedDisplayInformation: nil,
             brands: brands
         )
-
-        return sut
     }
 }

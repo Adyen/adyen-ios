@@ -17,7 +17,7 @@ public protocol Formatter: Sanitizer {
     
 }
 
-/// Sanitizes (removes any illegal character)  string values.
+// Sanitizes (removes any illegal character)  string values.
 
 public protocol Sanitizer {
 

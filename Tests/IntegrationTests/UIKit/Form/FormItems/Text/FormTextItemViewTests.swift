@@ -132,6 +132,7 @@ class FormTextItemViewTests: XCTestCase {
         XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.theme.elements.textField.title.color.toHexString())
         
         sut.textField.text = "123456H"
+        item.value = "123456H" // Set item value so validation has content to validate
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
         wait(for: [validationExpectation], timeout: 10)
@@ -156,6 +157,7 @@ class FormTextItemViewTests: XCTestCase {
         XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.theme.elements.textField.title.color.toHexString())
         
         sut.textField.text = "123456H"
+        item.value = "123456H" // Set item value so validation has content to validate
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
         wait(for: [validationExpectation], timeout: 10)
@@ -163,7 +165,7 @@ class FormTextItemViewTests: XCTestCase {
         XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.theme.elements.textField.text.color.toHexString())
     }
 
-    func testTextFieldSanitizationGivenNonAllowedCharactersShouldSanitizeAndFormatInput() throws {
+    func testTextFieldSanitizationGivenNonAllowedCharactersShouldSanitizeAndFormatInput() {
         // Given
         let validator = CardNumberValidator(isLuhnCheckEnabled: false, isEnteredBrandSupported: false)
         let formatter = CardNumberFormatter()

@@ -10,11 +10,11 @@ import XCTest
 
 class AssetsAccessTests: XCTestCase {
 
-    func testCoreResourcesAccess() throws {
+    func testCoreResourcesAccess() {
         XCTAssertNotNil(UIImage(named: "verification_false", in: Bundle.coreInternalResources, compatibleWith: nil))
     }
 
-    func testActionResourcesAccess() throws {
+    func testActionResourcesAccess() {
         XCTAssertNotNil(UIImage(named: "mbway", in: Bundle.actionsInternalResources, compatibleWith: nil))
         XCTAssertNotNil(UIImage(named: "blik", in: Bundle.actionsInternalResources, compatibleWith: nil))
     }

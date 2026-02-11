@@ -82,7 +82,7 @@ class AssertsTests: XCTestCase {
 
     }
 
-    func testVoucherComponentPresentationDelegateAssertion() {
+    func testVoucherComponentPresentationDelegateAssertion() throws {
         let sut = VoucherComponent(context: context)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
@@ -91,7 +91,7 @@ class AssertsTests: XCTestCase {
             expectation.fulfill()
         }
 
-        sut.handle(VoucherAction.dokuAlfamart(DokuVoucherAction(
+        try sut.handle(VoucherAction.dokuAlfamart(DokuVoucherAction(
             paymentMethodType: .dokuAlfamart,
             initialAmount: Amount(value: 100, currencyCode: "USD"),
             totalAmount: Amount(value: 100, currencyCode: "USD"),
@@ -100,7 +100,7 @@ class AssertsTests: XCTestCase {
             expiresAt: .distantFuture,
             merchantName: "",
             shopperName: "",
-            instructionsUrl: URL(string: "https://google.com")!
+            instructionsUrl: XCTUnwrap(URL(string: "https://google.com"))
         )))
 
         wait(for: [expectation], timeout: 10)

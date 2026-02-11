@@ -27,14 +27,14 @@ class CardDetailsTests: XCTestCase {
             )
         )
         let data = try JSONEncoder().encode(sut)
-        let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+        let dictionary = try XCTUnwrap(try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any])
         
-        XCTAssertEqual(dictionary["fundingSource"] as! String, "credit")
-        XCTAssertEqual(dictionary["type"] as! String, "test_type")
-        XCTAssertEqual(dictionary["encryptedExpiryYear"] as! String, "year")
-        XCTAssertEqual(dictionary["encryptedCardNumber"] as! String, "number")
-        XCTAssertEqual(dictionary["encryptedSecurityCode"] as! String, "code")
-        XCTAssertEqual(dictionary["holderName"] as! String, "holder")
+        XCTAssertEqual(dictionary["fundingSource"] as? String, "credit")
+        XCTAssertEqual(dictionary["type"] as? String, "test_type")
+        XCTAssertEqual(dictionary["encryptedExpiryYear"] as? String, "year")
+        XCTAssertEqual(dictionary["encryptedCardNumber"] as? String, "number")
+        XCTAssertEqual(dictionary["encryptedSecurityCode"] as? String, "code")
+        XCTAssertEqual(dictionary["holderName"] as? String, "holder")
 
         XCTAssertNil(dictionary["billingAddress"])
     }
@@ -47,20 +47,20 @@ class CardDetailsTests: XCTestCase {
             billingAddress: PostalAddress(postalCode: "postal")
         )
         let data = try JSONEncoder().encode(sut)
-        let dictionary = try JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
+        let dictionary = try XCTUnwrap(try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any])
         
-        XCTAssertEqual(dictionary["fundingSource"] as! String, "debit")
-        XCTAssertEqual(dictionary["type"] as! String, "test_type")
-        XCTAssertEqual(dictionary["encryptedExpiryYear"] as! String, "year")
-        XCTAssertEqual(dictionary["encryptedCardNumber"] as! String, "number")
-        XCTAssertEqual(dictionary["encryptedSecurityCode"] as! String, "code")
-        XCTAssertEqual(dictionary["encryptedExpiryMonth"] as! String, "month")
+        XCTAssertEqual(dictionary["fundingSource"] as? String, "debit")
+        XCTAssertEqual(dictionary["type"] as? String, "test_type")
+        XCTAssertEqual(dictionary["encryptedExpiryYear"] as? String, "year")
+        XCTAssertEqual(dictionary["encryptedCardNumber"] as? String, "number")
+        XCTAssertEqual(dictionary["encryptedSecurityCode"] as? String, "code")
+        XCTAssertEqual(dictionary["encryptedExpiryMonth"] as? String, "month")
 
         XCTAssertNil(dictionary["billingAddress"])
     }
 
-    func testEncodingFullAddress() {
-        let data = try! JSONEncoder().encode(PostalAddress(
+    func testEncodingFullAddress() throws {
+        let data = try JSONEncoder().encode(PostalAddress(
             city: "city",
             country: "country",
             houseNumberOrName: "numer",
@@ -69,7 +69,7 @@ class CardDetailsTests: XCTestCase {
             street: "street",
             apartment: "apartment"
         ))
-        let dictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: String]
+        let dictionary = try XCTUnwrap(try JSONSerialization.jsonObject(with: data, options: []) as? [String: String])
 
         XCTAssertEqual(dictionary["city"], "city")
         XCTAssertEqual(dictionary["country"], "country")
@@ -80,9 +80,9 @@ class CardDetailsTests: XCTestCase {
         XCTAssertEqual(dictionary["apartment"], nil)
     }
 
-    func testEncodingPostCode() {
-        let data = try! JSONEncoder().encode(PostalAddress(postalCode: "postal"))
-        let dictionary = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: String]
+    func testEncodingPostCode() throws {
+        let data = try JSONEncoder().encode(PostalAddress(postalCode: "postal"))
+        let dictionary = try XCTUnwrap(try JSONSerialization.jsonObject(with: data, options: []) as? [String: String])
 
         XCTAssertEqual(dictionary["city"], "null")
         XCTAssertEqual(dictionary["country"], "ZZ")

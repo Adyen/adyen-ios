@@ -16,7 +16,7 @@ class AnalyticsFlavorTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testAnalyticsFlavorValueWhenFlavorIsComponentsMatchesFlavorType() throws {
+    func testAnalyticsFlavorValueWhenFlavorIsComponentsMatchesFlavorType() {
         // Given
         let expectedFlavorValue = "components"
 
@@ -27,7 +27,7 @@ class AnalyticsFlavorTests: XCTestCase {
         XCTAssertEqual(expectedFlavorValue, sut.value)
     }
 
-    func testAnalyticsFlavorValueWhenFlavorIsDropInMatchesFlavorType() throws {
+    func testAnalyticsFlavorValueWhenFlavorIsDropInMatchesFlavorType() {
         // Given
         let expectedFlavorValue = "dropin"
 

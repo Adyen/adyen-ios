@@ -9,7 +9,7 @@ import XCTest
 
 class KeyboardObserverTests: XCTestCase, AdyenObserver {
     
-    func testKeyboardNotificationHandling() {
+    func testKeyboardNotificationHandling() throws {
         
         let keyboardObserver = KeyboardObserver()
         
@@ -39,10 +39,10 @@ class KeyboardObserverTests: XCTestCase, AdyenObserver {
         
         // Valid Notification
         
-        NotificationCenter.default.post(
+        try NotificationCenter.default.post(
             name: UIResponder.keyboardWillChangeFrameNotification,
             object: nil,
-            userInfo: [UIResponder.keyboardFrameEndUserInfoKey: expectedRects.first!]
+            userInfo: [UIResponder.keyboardFrameEndUserInfoKey: XCTUnwrap(expectedRects.first)]
         )
         
         wait(for: [validExpectation], timeout: 10)

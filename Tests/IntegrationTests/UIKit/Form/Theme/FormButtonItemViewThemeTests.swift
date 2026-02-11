@@ -12,8 +12,8 @@ final class FormButtonItemViewThemeTests: XCTestCase {
 
     func test_formButtonItemView_withCustomTheme_shouldApplyThemeColors() throws {
         // Given - expected colors and custom theme
-        let expectedBackgroundColor: UIColor = .systemPurple
-        let expectedTextColor: UIColor = .systemYellow
+        let expectedBackgroundColor: UIColor = .purple
+        let expectedTextColor: UIColor = .yellow
 
         let customColors = AdyenColors(
             primary: expectedBackgroundColor,

@@ -35,7 +35,8 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
 
         observe(item.$initialBrand) { [weak self] _ in
             guard let self else { return }
-            self.updateValidationStatus(forced: true)
+            // Don't force validation - brand detection is not a validation trigger
+            self.updateValidation()
             self.notifyDelegateOfMaxLengthIfNeeded()
         }
         
@@ -46,7 +47,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
 
     override public func handleFormattedValueDidChange(_ newValue: String) {
         textField.text = newValue
-        updateValidationStatus()
+        updateValidation()
     }
 
     @_spi(AdyenInternal)
@@ -103,7 +104,6 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     }()
     
     @objc private func openCardScanner() {
-        guard let scanCardHandler = item.scanCardHandler else { return }
-        scanCardHandler()
+        item.scanCardHandler?()
     }
 }

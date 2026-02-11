@@ -12,7 +12,9 @@ public struct ClientKeyRequest: APIRequest {
     
     public typealias ResponseType = ClientKeyResponse
     
-    public var path: String { "checkoutshopper/v1/clientKeys/\(clientKey)" }
+    public var path: String {
+        "checkoutshopper/v1/clientKeys/\(clientKey)"
+    }
     
     public let clientKey: String
     

@@ -12,7 +12,7 @@ public struct TwintSDKData: Decodable {
     /// SDK token.
     public let token: String
 
-    // Determines if the Twint payment is tokenized.
+    /// Determines if the Twint payment is tokenized.
     public let isStored: Bool
 
     private enum CodingKeys: String, CodingKey {

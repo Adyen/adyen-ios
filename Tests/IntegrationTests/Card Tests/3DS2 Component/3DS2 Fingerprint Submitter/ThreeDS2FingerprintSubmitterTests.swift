@@ -27,7 +27,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
         let apiClient = APIClientMock()
         let sut = ThreeDS2FingerprintSubmitter(context: Dummy.context, apiClient: apiClient)
 
-        let mockedRedirectAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "data")
+        let mockedRedirectAction = try RedirectAction(url: XCTUnwrap(URL(string: "https://www.adyen.com")), paymentData: "data")
         let mockedAction = Action.redirect(mockedRedirectAction)
         let mockedResponse = Submit3DS2FingerprintResponse(result: .action(mockedAction))
         apiClient.mockedResults = [.success(mockedResponse)]
@@ -56,7 +56,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testThreeDSChallenge() throws {
+    func testThreeDSChallenge() {
         let apiClient = APIClientMock()
         let sut = ThreeDS2FingerprintSubmitter(context: Dummy.context, apiClient: apiClient)
 
@@ -89,7 +89,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testNoAction() throws {
+    func testNoAction() {
         let apiClient = APIClientMock()
         let sut = ThreeDS2FingerprintSubmitter(context: Dummy.context, apiClient: apiClient)
 
@@ -123,7 +123,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testFailure() throws {
+    func testFailure() {
         let apiClient = APIClientMock()
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2FingerprintSubmitter(context: Dummy.context(with: analyticsProviderMock), apiClient: apiClient)

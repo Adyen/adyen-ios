@@ -11,7 +11,9 @@ internal struct ComponentsItem: Hashable {
     internal let title: String
     internal let subtitle: String?
     
-    internal var isApplePay: Bool { title == "Apple Pay" }
+    internal var isApplePay: Bool {
+        title == "Apple Pay"
+    }
     
     internal let selectionHandler: () -> Void
     

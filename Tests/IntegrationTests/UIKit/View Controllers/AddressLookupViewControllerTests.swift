@@ -34,7 +34,8 @@ class AddressLookupViewControllerTests: XCTestCase {
         // Given
         let results = mockAddressResults
         let (viewModel, sut) = makeSUTWithViewController(
-            prefillAddress: results.first?.postalAddress)
+            prefillAddress: results.first?.postalAddress
+        )
 
         // When
         sut.loadViewIfNeeded()
@@ -68,7 +69,8 @@ class AddressLookupViewControllerTests: XCTestCase {
         // Given
         let results = mockAddressResults
         let (viewModel, sut) = makeSUTWithViewController(
-            prefillAddress: results.first?.postalAddress)
+            prefillAddress: results.first?.postalAddress
+        )
         sut.loadViewIfNeeded()
         viewModel.interfaceState = .search
 
@@ -181,10 +183,10 @@ class AddressLookupViewControllerTests: XCTestCase {
 
     // MARK: - Address Selection Tests
 
-    func testAddressSelection_updatesStateWithSelectedAddress() {
+    func testAddressSelection_updatesStateWithSelectedAddress() throws {
         // Given
         let results = mockAddressResults
-        let expectedAddress = results.first!.postalAddress
+        let expectedAddress = try XCTUnwrap(results.first?.postalAddress)
         let stateChangeExpectation = expectation(description: "State changed")
 
         let viewModel = makeSUT(

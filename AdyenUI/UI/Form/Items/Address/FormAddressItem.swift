@@ -43,7 +43,9 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     internal weak var delegate: SelfRenderingFormItemDelegate?
     
-    override public var subitems: [FormItem] { items }
+    override public var subitems: [FormItem] {
+        items
+    }
     
     internal let addressViewModelBuilder: AddressViewModelBuilder
     

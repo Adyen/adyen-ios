@@ -13,7 +13,10 @@ class BLIKComponentTests: XCTestCase {
 
     lazy var paymentMethod = BLIKPaymentMethod(type: .blik, name: "test_name")
     let payment = Payment(amount: Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
-    var context: AdyenContext { Dummy.context(with: payment) }
+    var context: AdyenContext {
+        Dummy.context(with: payment)
+    }
+
     var sut: BLIKComponent!
 
     override func setUp() {
@@ -24,7 +27,7 @@ class BLIKComponentTests: XCTestCase {
         sut = nil
     }
 
-    func testLocalizationWithCustomTableName() throws {
+    func testLocalizationWithCustomTableName() {
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
         XCTAssertEqual(sut.hintLabelItem.text, localizedString(.blikHelp, sut.configuration.localizationParameters))
@@ -36,7 +39,7 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.configuration.localizationParameters))
     }
 
-    func testLocalizationWithZeroPayment() throws {
+    func testLocalizationWithZeroPayment() {
         let payment = Payment(amount: Amount(value: 0, currencyCode: "PLN"), countryCode: "PL")
         let context: AdyenContext = Dummy.context(with: payment)
         sut = BLIKComponent(paymentMethod: paymentMethod, context: context)
@@ -70,13 +73,7 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(sut.viewController.title, paymentMethod.name.uppercased())
     }
 
-    func testRequiresModalPresentation() {
-        let blikPaymentMethod = BLIKPaymentMethod(type: .blik, name: "Test name")
-        let sut = BLIKComponent(paymentMethod: blikPaymentMethod, context: context)
-        XCTAssertEqual(sut.requiresModalPresentation, true)
-    }
-
-    func testViewDidLoadShouldSendInitialCall() throws {
+    func testViewDidLoadShouldSendInitialCall() {
         // When
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)

@@ -76,7 +76,9 @@ internal final class FormLabelItemView: UILabel, AnyFormItemView {
 
     // MARK: - AnyFormItemView
 
-    internal var childItemViews: [AnyFormItemView] { [] }
+    internal var childItemViews: [AnyFormItemView] {
+        []
+    }
 
     internal func reset() { /* Do nothing */ }
 }

@@ -34,7 +34,9 @@ public final class CardExpiryDateValidator: Validator {
         validate(string).isValid
     }
     
-    private var calendar: Calendar { Calendar(identifier: .gregorian) }
+    private var calendar: Calendar {
+        Calendar(identifier: .gregorian)
+    }
     
     private func calculateExpiryDate(fromYear year: Int, month: Int) -> Date? {
         var expiryDateComponents = DateComponents()

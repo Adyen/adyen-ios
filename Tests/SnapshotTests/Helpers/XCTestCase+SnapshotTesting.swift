@@ -10,7 +10,9 @@ import XCTest
 
 extension XCTestCase {
     
-    static var shouldRecordSnapshots: Bool { CommandLine.arguments.contains("-GenerateSnapshots") }
+    static var shouldRecordSnapshots: Bool {
+        CommandLine.arguments.contains("-GenerateSnapshots")
+    }
     
     enum SnapshotPrecision: Float {
         case `default` = 1.0

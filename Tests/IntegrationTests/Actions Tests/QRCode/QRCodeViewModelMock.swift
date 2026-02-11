@@ -35,7 +35,7 @@ internal final class QRCodeViewModelMock: QRCodeViewModelProtocol {
         loadLogoImageCompletions.append(completion)
     }
     
-    // Helper to trigger completion manually in tests
+    /// Helper to trigger completion manually in tests
     func completeLoadLogoImage(with image: UIImage?, at index: Int = 0) {
         guard loadLogoImageCompletions.indices.contains(index) else { return }
         loadLogoImageCompletions[index](image)

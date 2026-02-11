@@ -228,8 +228,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
                 UIPasteboard.general.string = code
             }
         )
-        let viewController = QRCodeViewController(viewModel: viewModel, style: style)
-        return viewController
+        return QRCodeViewController(viewModel: viewModel, style: style)
     }
     
     private func qrCodeInstructions(for action: QRCodeAction) -> String {

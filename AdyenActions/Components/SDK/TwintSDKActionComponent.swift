@@ -23,61 +23,12 @@ import Foundation
 
         public weak var delegate: ActionComponentDelegate?
 
-        public let requiresModalPresentation: Bool = false
-
         private let pollingComponentBuilder: AnyPollingHandlerProvider?
 
         private var pollingComponent: AnyPollingHandler?
 
-        /// The TwintSDK component configurations.
-        public struct Configuration {
-
-            /// The component UI style.
-            public var style: AwaitComponentStyle
-
-            /// The localization parameters, leave it nil to use the default parameters.
-            public var localizationParameters: LocalizationParameters?
-
-            /// The callback app scheme invoked once the Twint app is done with the payment
-            ///
-            /// - Important: This value is  required to only provide the scheme,
-            /// without a host/path/.... (e.g. "my-app", not a url "my-app://...")
-            public let callbackAppScheme: String
-            
-            /// The issuer number of the highest scheme you listed under `LSApplicationQueriesSchemes`.
-            /// E.g. pass 39, if you listed all schemes from "twint-issuer1" up to and including "twint-issuer39".
-            /// The value is clamped between 0 and 39.
-            ///
-            /// - Important: All apps above "twint-issuer39" will always be returned if one of these apps is installed.
-            /// For this to work, `LSApplicationQueriesSchemes` must include "twint-extended".
-            /// If you configure any `maxIssuerNumber` below 39, the result will always contain all apps above `maxIssuerNumber`
-            /// up to and including 39, even if none of them are installed.
-            /// Additionally, if the fetch fails and the cache is empty, none of these apps will be found when probing.
-            public let maxIssuerNumber: Int
-
-            /// Initializes an instance of `Configuration`
-            ///
-            /// - Parameters:
-            ///   - style: The Component UI style.
-            ///   - callbackAppScheme: The callback app scheme invoked once the Twint app is done with the payment
-            ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
-            /// - Important: The value of ``callbackAppScheme`` is  required to only provide the scheme,
-            /// without a host/path/... (e.g. "my-app", not a url "my-app://...")
-            public init(
-                style: AwaitComponentStyle = .init(),
-                callbackAppScheme: String,
-                maxIssuerNumber: Int = .max,
-                localizationParameters: LocalizationParameters? = nil
-            ) {
-                self.style = style
-                self.callbackAppScheme = callbackAppScheme
-                self.maxIssuerNumber = maxIssuerNumber
-                self.localizationParameters = localizationParameters
-            }
-        }
-
         /// The twint component configurations.
-        public var configuration: Configuration
+        public var configuration: TwintActionConfiguration
 
         private let twint: Twint
 
@@ -87,7 +38,7 @@ import Foundation
         /// - Parameter configuration: The TwintSDK component configurations.
         public init(
             context: AdyenContext,
-            configuration: Configuration
+            configuration: TwintActionConfiguration
         ) {
             self.context = context
             self.configuration = configuration
@@ -97,7 +48,7 @@ import Foundation
 
         internal init(
             context: AdyenContext,
-            configuration: Configuration,
+            configuration: TwintActionConfiguration,
             twint: Twint,
             pollingComponentBuilder: AnyPollingHandlerProvider? = nil
         ) {
@@ -217,7 +168,6 @@ import Foundation
                 component: self,
                 viewController: viewController
             )
-            presentableComponent.requiresModalPresentation = false
             presentationDelegate.present(component: presentableComponent)
         }
 

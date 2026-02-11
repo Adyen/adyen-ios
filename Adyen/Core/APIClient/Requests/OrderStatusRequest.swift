@@ -12,7 +12,9 @@ public struct OrderStatusRequest: APIRequest {
 
     public typealias ResponseType = OrderStatusResponse
 
-    public var path: String { "checkoutshopper/v1/order/status" }
+    public var path: String {
+        "checkoutshopper/v1/order/status"
+    }
 
     public var counter: UInt = 0
     

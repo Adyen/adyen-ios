@@ -52,8 +52,7 @@ internal class DropInRouter: DropInRouting {
             )
             self.childRouter = preselectedPaymentMethodRouter
             let preselectedPaymentMethodViewController = preselectedPaymentMethodRouter.rootViewController
-            let navigationController = UINavigationController(rootViewController: preselectedPaymentMethodViewController)
-            return navigationController
+            return UINavigationController(rootViewController: preselectedPaymentMethodViewController)
         case let .component(paymentComponent):
             let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
                 for: paymentComponent,

@@ -49,7 +49,7 @@ package struct AdyenLabelStyle {
     }
 }
 
-// This extension adds the method chaining to the AdyenLabelStyle struct.
+/// This extension adds the method chaining to the AdyenLabelStyle struct.
 extension AdyenLabelStyle {
 
     /// Returns a new AdyenLabelStyle with the specified font.

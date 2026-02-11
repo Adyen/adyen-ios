@@ -134,9 +134,9 @@ final class BLIKComponentFactoryTests: XCTestCase {
         XCTAssertNotNil(factory as any PaymentComponentFactory)
     }
     
-    func testFactory_HasCorrectAssociatedTypes() {
+    func testFactory_HasCorrectAssociatedTypes() throws {
         // Given
-        let paymentMethod = createBLIKPaymentMethod()!
+        let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         let configuration = factory.defaultConfiguration()
         
         // When

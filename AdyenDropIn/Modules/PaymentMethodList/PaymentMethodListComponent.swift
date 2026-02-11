@@ -64,7 +64,9 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     
     // MARK: - View Controller
     
-    internal var viewController: UIViewController { listViewController }
+    internal var viewController: UIViewController {
+        listViewController
+    }
 
     private let brandProtectedComponents: Set<PaymentMethodType> = [.applePay]
     

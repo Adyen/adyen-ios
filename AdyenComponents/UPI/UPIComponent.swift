@@ -56,7 +56,9 @@ public final class UPIComponent: PaymentComponent,
     public var context: AdyenContext
     
     /// The payment method object for this component.
-    public var paymentMethod: PaymentMethod { upiPaymentMethod }
+    public var paymentMethod: PaymentMethod {
+        upiPaymentMethod
+    }
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
@@ -66,9 +68,6 @@ public final class UPIComponent: PaymentComponent,
         child: formViewController,
         style: configuration.style
     )
-    
-    /// This indicates that `viewController` expected to be presented modally,
-    public var requiresModalPresentation: Bool = true
     
     /// Component's configuration
     public var configuration: Configuration
@@ -204,8 +203,7 @@ public final class UPIComponent: PaymentComponent,
     internal lazy var upiAppsList: [SelectableFormItem] = {
         guard let apps = upiPaymentMethod.apps, !apps.isEmpty else { return [] }
         
-        var upiAppslist = apps.map { selectableFormItem(from: $0) }
-        return upiAppslist
+        return apps.map { selectableFormItem(from: $0) }
     }()
     
     /// The continue button item.

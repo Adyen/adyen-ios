@@ -22,8 +22,13 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
     struct MockPaymentMethod: PaymentMethod {
         var merchantProvidedDisplayInformation: Adyen.MerchantCustomDisplayInformation?
         
-        var type: PaymentMethodType { .other("mock") }
-        var name: String { "Mock Payment Method" }
+        var type: PaymentMethodType {
+            .other("mock")
+        }
+
+        var name: String {
+            "Mock Payment Method"
+        }
         
         func encode(to encoder: Encoder) throws {}
         init(from decoder: Decoder) throws {}
@@ -40,13 +45,13 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         var delegate: PaymentComponentDelegate?
         let paymentMethod: PaymentMethod
         
-        // Component requirements (via AdyenContextAware)
+        /// Component requirements (via AdyenContextAware)
         let context: AdyenContext
         
-        // PartialPaymentOrderAware requirements
+        /// PartialPaymentOrderAware requirements
         var order: PartialPaymentOrder?
         
-        // Custom property to verify configuration
+        /// Custom property to verify configuration
         let configValue: String
         
         init(paymentMethod: PaymentMethod, context: AdyenContext, configuration: MockConfiguration) {

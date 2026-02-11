@@ -34,7 +34,7 @@ public final class FormSegmentedControlItem: FormItem {
         self.identifier = identifier
     }
 
-    // The segmented control items.
+    /// The segmented control items.
     private var items: [String]
 
     public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
@@ -56,7 +56,9 @@ public final class FormSegmentedControlItem: FormItem {
 
 internal class ADYSegmentedControl: UISegmentedControl, AnyFormItemView {
 
-    public var childItemViews: [AnyFormItemView] { [] }
+    public var childItemViews: [AnyFormItemView] {
+        []
+    }
 
     public func reset() { /* Do nothing */ }
 }

@@ -32,7 +32,7 @@ class AppleWalletPassProviderTests: XCTestCase {
             apiClient: apiClient
         )
 
-        baseApiClient.mockedResults = [.success(try! AppleWalletPassResponse(passBase64String: "123".data(using: .utf8)!.base64EncodedString()))]
+        baseApiClient.mockedResults = try [.success(AppleWalletPassResponse(passBase64String: XCTUnwrap("123".data(using: .utf8)?.base64EncodedString())))]
 
         let fetchExpectation = expectation(description: "PublicKeyProvider.fetch() completion handler must be called.")
         fetchExpectation.expectedFulfillmentCount = 10

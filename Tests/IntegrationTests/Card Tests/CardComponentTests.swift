@@ -130,18 +130,19 @@ class CardComponentTests: XCTestCase {
 
     func test_component_withCustomTheme_shouldApplyThemeStyles() {
         // Given - custom theme with distinctive colors and button styling
+        let colorToTest = UIColor.blue
         let customColors = AdyenColors(
-            container: .systemYellow,
-            containerOutline: .systemPurple,
-            primary: .systemPink,
-            highlight: .systemBlue
+            container: .yellow,
+            containerOutline: .purple,
+            primary: colorToTest,
+            highlight: .blue
         )
         
         var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
         configuration.showsStorePaymentMethodField = true
         configuration.theme = AdyenTheme(colors: customColors)
-            .primaryButton(backgroundColor: .systemRed, textColor: .white, cornerRadius: 12)
+            .primaryButton(backgroundColor: .red, textColor: .white, cornerRadius: 12)
             .cornerRadius(8)
 
         let sut = CardComponent(
@@ -160,24 +161,24 @@ class CardComponentTests: XCTestCase {
         let cardNumberItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem.textField")
         let cardNumberItemContainer: UIView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         
-        XCTAssertEqual(cardNumberItemTitleLabel?.textColor, .systemPink, "Card number title should use theme primary color")
-        XCTAssertEqual(cardNumberItemTextField?.textColor, .systemPink, "Card number text should use theme primary color")
+        XCTAssertEqual(cardNumberItemTitleLabel?.textColor, colorToTest, "Card number title should use theme primary color")
+        XCTAssertEqual(cardNumberItemTextField?.textColor, colorToTest, "Card number text should use theme primary color")
         
         // Holder name field
         let holderNameItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem.titleLabel")
         let holderNameItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem.textField")
         let holderNameItemContainer: UIView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.holderNameItem")
         
-        XCTAssertEqual(holderNameItemTitleLabel?.textColor, .systemPink, "Holder name title should use theme primary color")
-        XCTAssertEqual(holderNameItemTextField?.textColor, .systemPink, "Holder name text should use theme primary color")
+        XCTAssertEqual(holderNameItemTitleLabel?.textColor, colorToTest, "Holder name title should use theme primary color")
+        XCTAssertEqual(holderNameItemTextField?.textColor, colorToTest, "Holder name text should use theme primary color")
         
         // Expiry date field
         let expiryDateItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem.titleLabel")
         let expiryDateItemTextField: UITextField? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem.textField")
         let expiryDateItemContainer: UIView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
         
-        XCTAssertEqual(expiryDateItemTitleLabel?.textColor, .systemPink, "Expiry date title should use theme primary color")
-        XCTAssertEqual(expiryDateItemTextField?.textColor, .systemPink, "Expiry date text should use theme primary color")
+        XCTAssertEqual(expiryDateItemTitleLabel?.textColor, colorToTest, "Expiry date title should use theme primary color")
+        XCTAssertEqual(expiryDateItemTextField?.textColor, colorToTest, "Expiry date text should use theme primary color")
         
         // Security code field
         let securityCodeItemTitleLabel: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.titleLabel")
@@ -185,8 +186,8 @@ class CardComponentTests: XCTestCase {
         let securityCodeItemContainer: UIView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
         let securityCodeCvvHint: UIView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.cvvHintIcon")
         
-        XCTAssertEqual(securityCodeItemTitleLabel?.textColor, .systemPink, "Security code title should use theme primary color")
-        XCTAssertEqual(securityCodeItemTextField?.textColor, .systemPink, "Security code text should use theme primary color")
+        XCTAssertEqual(securityCodeItemTitleLabel?.textColor, colorToTest, "Security code title should use theme primary color")
+        XCTAssertEqual(securityCodeItemTextField?.textColor, colorToTest, "Security code text should use theme primary color")
         XCTAssertNotNil(securityCodeCvvHint, "CVV hint should be present")
         
         // MARK: - Test 2: Containers Exist and Are Styled
@@ -203,7 +204,7 @@ class CardComponentTests: XCTestCase {
         let payButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.payButtonItem.button.titleLabel")
         
         XCTAssertNotNil(payButton, "Pay button should exist")
-        XCTAssertEqual(payButton?.backgroundColor, .systemRed, "Pay button should use theme button background color")
+        XCTAssertEqual(payButton?.backgroundColor, .red, "Pay button should use theme button background color")
         XCTAssertEqual(payButtonTitle?.textColor, .white, "Pay button title should use theme button text color")
         
         // Verify button corner radius
@@ -262,7 +263,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(securityCodeView)
     }
 
-    func test_securityCodeHint_whenCardNumberChanges_shouldUpdateHint() {
+    func test_securityCodeHint_whenCardNumberChanges_shouldUpdateHint() throws {
 
         let sut = CardComponent(
             paymentMethod: method,
@@ -277,12 +278,12 @@ class CardComponentTests: XCTestCase {
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem>? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem")
 
         XCTAssertNotNil(securityCodeCvvHint)
-        XCTAssertFalse(securityCodeCvvHint!.showFront)
-        XCTAssertEqual(securityCodeItemView?.textField.placeholder, "3 digits")
+        XCTAssertFalse(try XCTUnwrap(securityCodeCvvHint?.showFront))
+        XCTAssertEqual(securityCodeItemView?.footerLabel.text, "3 digits")
 
-        self.populate(textItemView: cardNumberItemView!, with: "370000")
-        XCTAssertTrue(securityCodeCvvHint!.showFront)
-        XCTAssertEqual(securityCodeItemView?.textField.placeholder, "4 digits")
+        try self.populate(textItemView: XCTUnwrap(cardNumberItemView), with: "370000")
+        XCTAssertTrue(try XCTUnwrap(securityCodeCvvHint?.showFront))
+        XCTAssertEqual(securityCodeItemView?.footerLabel.text, "4 digits")
 
     }
 
@@ -360,7 +361,7 @@ class CardComponentTests: XCTestCase {
         )
     }
 
-    func test_securityCodeFormatter_whenCardTypeChanges_shouldUpdateMaxLength() {
+    func test_securityCodeFormatter_whenCardTypeChanges_shouldUpdateMaxLength() throws {
         
         let sut = CardComponent(
             paymentMethod: method,
@@ -375,12 +376,12 @@ class CardComponentTests: XCTestCase {
         let securityCodeCvvHint: FormCardSecurityCodeItemView.HintView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem.cvvHintIcon")
 
         XCTAssertNotNil(securityCodeCvvHint)
-        self.populate(textItemView: securityCodeItemView!, with: "12345")
-        XCTAssertEqual(securityCodeItemView!.textField.text, "123")
+        try self.populate(textItemView: XCTUnwrap(securityCodeItemView), with: "12345")
+        XCTAssertEqual(securityCodeItemView?.textField.text, "123")
 
-        self.populate(textItemView: cardNumberItemView!, with: "370000")
-        self.populate(textItemView: securityCodeItemView!, with: "12345")
-        XCTAssertEqual(securityCodeItemView!.textField.text, "1234")
+        try self.populate(textItemView: XCTUnwrap(cardNumberItemView), with: "370000")
+        try self.populate(textItemView: XCTUnwrap(securityCodeItemView), with: "12345")
+        XCTAssertEqual(securityCodeItemView?.textField.text, "1234")
 
     }
 
@@ -394,14 +395,9 @@ class CardComponentTests: XCTestCase {
 
         var configuration = CardComponentConfiguration()
 
-        let tintColor: UIColor = .black
-        let titleColor: UIColor = .gray
-
-        configuration.style = {
-            var style = FormComponentStyle(tintColor: tintColor)
-            style.textField.title.color = titleColor
-            return style
-        }()
+        let tintColor = UIColor.black
+        
+        configuration.theme = AdyenTheme(colors: AdyenColors(primary: tintColor))
 
         let component = CardComponent(
             paymentMethod: method,
@@ -412,16 +408,17 @@ class CardComponentTests: XCTestCase {
         presentOnRoot(component.viewController)
 
         let switchView: UISwitch = try XCTUnwrap(component.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem.switch"))
+        switchView.isOn = true
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> = try XCTUnwrap(component.viewController.view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
 
-        XCTAssertEqual(switchView.onTintColor, tintColor)
-        XCTAssertEqual(securityCodeItemView.titleLabel.textColor, titleColor)
+        XCTAssertEqual(switchView.onTintColor?.cgColor, tintColor.cgColor)
+        XCTAssertEqual(securityCodeItemView.titleLabel.textColor.cgColor, tintColor.cgColor)
 
         try withoutAnimation {
             focus(textItemView: securityCodeItemView)
         }
 
-        XCTAssertEqual(securityCodeItemView.titleLabel.textColor, tintColor)
+        XCTAssertEqual(securityCodeItemView.titleLabel.textColor.cgColor, tintColor.cgColor)
     }
 
     // TODO: Fix Later
@@ -489,7 +486,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(vc?.actions[1].title, "Pay")
     }
 
-    func test_storedCard_withPaymentAmount_shouldShowAmountInPayButton() throws {
+    func test_storedCard_withPaymentAmount_shouldShowAmountInPayButton() {
         let sut = CardComponent(
             paymentMethod: storedMethod,
             context: context
@@ -504,7 +501,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(vc?.actions[1].title, "Pay €1.00")
     }
 
-    func test_storedCard_withCustomLocalization_shouldUseLocalizedStrings() throws {
+    func test_storedCard_withCustomLocalization_shouldUseLocalizedStrings() {
         var configuration = CardComponentConfiguration()
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         let sut = CardComponent(
@@ -595,7 +592,7 @@ class CardComponentTests: XCTestCase {
 //        XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
 //    }
 
-    func test_cardLogos_onInit_shouldShowUpTo4CardTypes() {
+    func test_cardLogos_onInit_shouldShowUpTo4CardTypes() throws {
         // Given
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard, .maestro, .jcb, .chinaUnionPay])
         let sut = CardComponent(
@@ -606,11 +603,11 @@ class CardComponentTests: XCTestCase {
 
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         XCTAssertNotNil(cardNumberItemView)
-        let textItemView: FormTextItemView<FormCardNumberItem>? = cardNumberItemView!.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
+        let textItemView: FormTextItemView<FormCardNumberItem>? = try XCTUnwrap(cardNumberItemView?.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem"))
         XCTAssertNotNil(textItemView)
-        let cardLogoView = cardNumberItemView!.detectedBrandsView
+        let cardLogoView = try XCTUnwrap(cardNumberItemView?.detectedBrandsView)
         XCTAssertNotNil(cardLogoView)
-        let cardNumberItem = cardNumberItemView!.item
+        let cardNumberItem = try XCTUnwrap(cardNumberItemView?.item)
         
         XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 6)
         XCTAssertFalse(cardLogoView.primaryLogoView.isHidden)
@@ -717,7 +714,7 @@ class CardComponentTests: XCTestCase {
         
         XCTAssertTrue(cardNumberItemView.isFirstResponder)
         
-        populate(textItemView: cardNumberItemView, with: Dummy.amexCard.number!)
+        try populate(textItemView: cardNumberItemView, with: XCTUnwrap(Dummy.amexCard.number))
         
         wait(until: expiryDateItemView, at: \.isFirstResponder, is: false)
         wait(until: cardNumberItemView, at: \.isFirstResponder, is: true)
@@ -729,7 +726,7 @@ class CardComponentTests: XCTestCase {
         
         wait(until: cardNumberItemView, at: \.isFirstResponder, is: true)
         
-        populate(textItemView: cardNumberItemView, with: Dummy.amexCard.number!)
+        try populate(textItemView: cardNumberItemView, with: XCTUnwrap(Dummy.amexCard.number))
         
         wait(until: cardNumberItemView, at: \.isFirstResponder, is: false)
         wait(until: expiryDateItemView, at: \.isFirstResponder, is: true)
@@ -816,7 +813,7 @@ class CardComponentTests: XCTestCase {
 
         let postalCodeItemView: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.CardComponent.postalCodeItem"))
         XCTAssertEqual(postalCodeItemView.titleLabel.text, "Postal code")
-        XCTAssertTrue(postalCodeItemView.alertLabel.isHidden)
+        XCTAssertFalse(postalCodeItemView.isShowingValidationError)
         
         self.populate(textItemView: postalCodeItemView, with: "12345")
 
@@ -962,7 +959,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNil(brazilSSNItemView)
     }
     
-    func test_brazilSSNField_withShowMode_shouldAlwaysBeVisible() {
+    func test_brazilSSNField_withShowMode_shouldAlwaysBeVisible() throws {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard, .elo])
 
         var configuration = CardComponentConfiguration()
@@ -975,16 +972,16 @@ class CardComponentTests: XCTestCase {
         )
         
         let brazilSSNItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.CardComponent.socialSecurityNumberItem")
-        XCTAssertFalse(brazilSSNItemView!.isHidden)
+        XCTAssertFalse(try XCTUnwrap(brazilSSNItemView?.isHidden))
         
         // config is always show, so bin response is ignored
         let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: false)])
         sut.cardViewController.update(binInfo: newResponse)
         
-        XCTAssertFalse(brazilSSNItemView!.isHidden)
+        XCTAssertFalse(try XCTUnwrap(brazilSSNItemView?.isHidden))
     }
 
-    func test_cardNumberValidation_withLuhnCheckEnabled_shouldValidateChecksum() {
+    func test_cardNumberValidation_withLuhnCheckEnabled_shouldValidateChecksum() throws {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
@@ -1003,7 +1000,7 @@ class CardComponentTests: XCTestCase {
         cardNumberItem.value = "4111 1111 1111 1111"
         XCTAssertTrue(cardNumberItem.isValid())
 
-        cardNumberItem.selectBrand(cardBrand: brands.last!)
+        try cardNumberItem.selectBrand(cardBrand: XCTUnwrap(brands.last))
         XCTAssertTrue(cardNumberItem.isValid())
         cardNumberItem.value = "4111 1111 1111"
         XCTAssertTrue(cardNumberItem.isValid())
@@ -1136,7 +1133,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(decodedInstallments["plan"] as? String, installments.plan.rawValue)
     }
     
-    func test_installmentsField_withDefaultAndCardBasedOptions_shouldShowCorrectOptions() {
+    func test_installmentsField_withDefaultAndCardBasedOptions_shouldShowCorrectOptions() throws {
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [
             .visa:
                 InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
@@ -1160,34 +1157,34 @@ class CardComponentTests: XCTestCase {
         setupRootViewController(sut.viewController)
         
         let installmentItemView: BaseFormPickerItemView<InstallmentElement>? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
-        XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
-        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
-        XCTAssertFalse(installmentItemView!.isHidden)
+        XCTAssertEqual(installmentItemView?.titleLabel.text, "Number of installments")
+        XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
+        XCTAssertFalse(try XCTUnwrap(installmentItemView?.isHidden))
         
         sut.cardViewController.items.installmentsItem?.update(cardType: .visa)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 9)
-        installmentItemView?.select(value: sut.cardViewController.items.installmentsItem!.selectableValues[2])
-        XCTAssertEqual(installmentItemView!.inputControl.label, "2 months")
+        try installmentItemView?.select(value: XCTUnwrap(sut.cardViewController.items.installmentsItem?.selectableValues[2]))
+        XCTAssertEqual(installmentItemView?.inputControl.label, "2 months")
         XCTAssertNotNil(sut.cardViewController.installments)
         
         sut.cardViewController.items.installmentsItem?.update(cardType: .americanExpress)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 5)
-        XCTAssertFalse(installmentItemView!.isHidden)
+        XCTAssertFalse(try XCTUnwrap(installmentItemView?.isHidden))
         XCTAssertNil(sut.cardViewController.installments)
-        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
-        installmentItemView?.select(value: sut.cardViewController.items.installmentsItem!.selectableValues[2])
-        XCTAssertEqual(installmentItemView!.inputControl.label, "6 months")
+        XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
+        try installmentItemView?.select(value: XCTUnwrap(sut.cardViewController.items.installmentsItem?.selectableValues[2]))
+        XCTAssertEqual(installmentItemView?.inputControl.label, "6 months")
         XCTAssertNotNil(sut.cardViewController.installments)
         
         // nil card type refers to default options if exists
         sut.cardViewController.items.installmentsItem?.update(cardType: nil)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 5)
-        XCTAssertFalse(installmentItemView!.isHidden)
-        XCTAssertEqual(installmentItemView!.inputControl.label, "6 months")
+        XCTAssertFalse(try XCTUnwrap(installmentItemView?.isHidden))
+        XCTAssertEqual(installmentItemView?.inputControl.label, "6 months")
         XCTAssertNotNil(sut.cardViewController.installments)
     }
     
-    func test_installmentsField_withDefaultOptions_shouldShowDefaultOptions() {
+    func test_installmentsField_withDefaultOptions_shouldShowDefaultOptions() throws {
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
         var configuration = CardComponentConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(defaultOptions: defaultInstallmentOptions)
@@ -1203,27 +1200,27 @@ class CardComponentTests: XCTestCase {
         setupRootViewController(sut.viewController)
         
         let installmentItemView: BaseFormPickerItemView<InstallmentElement>? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
-        XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
-        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
-        XCTAssertFalse(installmentItemView!.isHidden)
+        XCTAssertEqual(installmentItemView?.titleLabel.text, "Number of installments")
+        XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
+        XCTAssertFalse(try XCTUnwrap(installmentItemView?.isHidden))
         
         sut.cardViewController.items.installmentsItem?.update(cardType: .americanExpress)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 5)
-        XCTAssertFalse(installmentItemView!.isHidden)
+        XCTAssertFalse(try XCTUnwrap(installmentItemView?.isHidden))
         XCTAssertNil(sut.cardViewController.installments)
-        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
+        XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
         
-        installmentItemView?.select(value: sut.cardViewController.items.installmentsItem!.selectableValues[2])
-        XCTAssertEqual(installmentItemView!.inputControl.label, "6 months")
+        try installmentItemView?.select(value: XCTUnwrap(sut.cardViewController.items.installmentsItem?.selectableValues[2]))
+        XCTAssertEqual(installmentItemView?.inputControl.label, "6 months")
         XCTAssertNotNil(sut.cardViewController.installments)
         
         sut.cardViewController.items.installmentsItem?.update(cardType: .visa)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 5)
-        XCTAssertEqual(installmentItemView!.inputControl.label, "6 months")
+        XCTAssertEqual(installmentItemView?.inputControl.label, "6 months")
         XCTAssertNotNil(sut.cardViewController.installments)
     }
 
-    func test_installmentsField_withCardBasedOptions_shouldShowCardSpecificOptions() {
+    func test_installmentsField_withCardBasedOptions_shouldShowCardSpecificOptions() throws {
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [
             .visa:
                 InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
@@ -1242,39 +1239,39 @@ class CardComponentTests: XCTestCase {
         setupRootViewController(sut.viewController)
         
         let installmentItemView: BaseFormPickerItemView<InstallmentElement>? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
-        XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
-        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
-        XCTAssertTrue(installmentItemView!.isHidden)
+        XCTAssertEqual(installmentItemView?.titleLabel.text, "Number of installments")
+        XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
+        XCTAssertTrue(try XCTUnwrap(installmentItemView?.isHidden))
         
         sut.cardViewController.items.installmentsItem?.update(cardType: .americanExpress)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 1)
-        XCTAssertTrue(installmentItemView!.isHidden)
+        XCTAssertTrue(try XCTUnwrap(installmentItemView?.isHidden))
         XCTAssertNil(sut.cardViewController.installments)
-        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
+        XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
         
         // set card type one that has installment options
         sut.cardViewController.items.installmentsItem?.update(cardType: .visa)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 9)
-        XCTAssertFalse(installmentItemView!.isHidden)
-        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
+        XCTAssertFalse(try XCTUnwrap(installmentItemView?.isHidden))
+        XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
         XCTAssertNil(sut.cardViewController.installments)
         
-        installmentItemView?.select(value: sut.cardViewController.items.installmentsItem!.selectableValues[2])
-        XCTAssertEqual(installmentItemView!.inputControl.label, "2 months")
+        try installmentItemView?.select(value: XCTUnwrap(sut.cardViewController.items.installmentsItem?.selectableValues[2]))
+        XCTAssertEqual(installmentItemView?.inputControl.label, "2 months")
         XCTAssertNotNil(sut.cardViewController.installments)
         
-        installmentItemView?.select(value: sut.cardViewController.items.installmentsItem!.selectableValues[1])
-        XCTAssertEqual(installmentItemView!.inputControl.label, "Revolving payment")
+        try installmentItemView?.select(value: XCTUnwrap(sut.cardViewController.items.installmentsItem?.selectableValues[1]))
+        XCTAssertEqual(installmentItemView?.inputControl.label, "Revolving payment")
         XCTAssertNotNil(sut.cardViewController.installments)
         
         // nil card type means no options since there is no default option
         sut.cardViewController.items.installmentsItem?.update(cardType: nil)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 1)
-        XCTAssertFalse(installmentItemView!.isHidden)
-        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
+        XCTAssertFalse(try XCTUnwrap(installmentItemView?.isHidden))
+        XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
     }
     
-    func test_installmentsField_withAmountShown_shouldDisplayInstallmentAmounts() {
+    func test_installmentsField_withAmountShown_shouldDisplayInstallmentAmounts() throws {
         let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [
             .visa:
                 InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
@@ -1294,40 +1291,40 @@ class CardComponentTests: XCTestCase {
         setupRootViewController(sut.viewController)
         
         let installmentItemView: BaseFormPickerItemView<InstallmentElement>? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
-        XCTAssertEqual(installmentItemView!.titleLabel.text, "Number of installments")
-        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
-        XCTAssertTrue(installmentItemView!.isHidden)
+        XCTAssertEqual(installmentItemView?.titleLabel.text, "Number of installments")
+        XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
+        XCTAssertTrue(try XCTUnwrap(installmentItemView?.isHidden))
         
         sut.cardViewController.items.installmentsItem?.update(cardType: .americanExpress)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 1)
-        XCTAssertTrue(installmentItemView!.isHidden)
+        XCTAssertTrue(try XCTUnwrap(installmentItemView?.isHidden))
         XCTAssertNil(sut.cardViewController.installments)
-        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
+        XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
         
         // set card type one that has installment options
         sut.cardViewController.items.installmentsItem?.update(cardType: .visa)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 9)
-        XCTAssertFalse(installmentItemView!.isHidden)
-        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
+        XCTAssertFalse(try XCTUnwrap(installmentItemView?.isHidden))
+        XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
         XCTAssertNil(sut.cardViewController.installments)
         
-        installmentItemView?.select(value: sut.cardViewController.items.installmentsItem!.selectableValues[2])
-        XCTAssertEqual(installmentItemView!.inputControl.label, "2x €0.50")
+        try installmentItemView?.select(value: XCTUnwrap(sut.cardViewController.items.installmentsItem?.selectableValues[2]))
+        XCTAssertEqual(installmentItemView?.inputControl.label, "2x €0.50")
         XCTAssertNotNil(sut.cardViewController.installments)
         
-        installmentItemView?.select(value: sut.cardViewController.items.installmentsItem!.selectableValues[3])
-        XCTAssertEqual(installmentItemView!.inputControl.label, "3x €0.33")
+        try installmentItemView?.select(value: XCTUnwrap(sut.cardViewController.items.installmentsItem?.selectableValues[3]))
+        XCTAssertEqual(installmentItemView?.inputControl.label, "3x €0.33")
         XCTAssertNotNil(sut.cardViewController.installments)
         
-        installmentItemView?.select(value: sut.cardViewController.items.installmentsItem!.selectableValues[4])
-        XCTAssertEqual(installmentItemView!.inputControl.label, "4x €0.25")
+        try installmentItemView?.select(value: XCTUnwrap(sut.cardViewController.items.installmentsItem?.selectableValues[4]))
+        XCTAssertEqual(installmentItemView?.inputControl.label, "4x €0.25")
         XCTAssertNotNil(sut.cardViewController.installments)
         
         // nil card type means no options since there is no default option
         sut.cardViewController.items.installmentsItem?.update(cardType: nil)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 1)
-        XCTAssertFalse(installmentItemView!.isHidden)
-        XCTAssertEqual(installmentItemView!.inputControl.label, "One time payment")
+        XCTAssertFalse(try XCTUnwrap(installmentItemView?.isHidden))
+        XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
     }
     
     func test_supportedCardLogos_whenFieldActiveOrInactive_shouldUpdateVisibility() throws {
@@ -1349,7 +1346,7 @@ class CardComponentTests: XCTestCase {
 
         // valid card but still active. logos should be hidden
         numberItem.isActive = true
-        populate(textItemView: cardNumberItemView, with: Dummy.visaCard.number!)
+        try populate(textItemView: cardNumberItemView, with: XCTUnwrap(Dummy.visaCard.number))
         wait(until: logoItemView, at: \.isHidden, is: true)
 
         // with valid card and inactive, logos should still be hidden
@@ -1380,7 +1377,7 @@ class CardComponentTests: XCTestCase {
 
         let newResponse = BinLookupResponse(brands: [CardBrand(type: .visa), CardBrand(type: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
 
-        sut.cardViewController.showCoBadgedCardsUI(for: newResponse.brands!)
+        try sut.cardViewController.showCoBadgedCardsUI(for: XCTUnwrap(newResponse.brands))
 
         wait(for: .aMoment)
 
@@ -1401,7 +1398,7 @@ class CardComponentTests: XCTestCase {
 
         let newResponse = BinLookupResponse(brands: [CardBrand(type: .masterCard), CardBrand(type: .other(named: "eftpos_australia"))], issuingCountryCode: "AU", isCreatedLocally: false)
 
-        sut.cardViewController.showCoBadgedCardsUI(for: newResponse.brands!)
+        try sut.cardViewController.showCoBadgedCardsUI(for: XCTUnwrap(newResponse.brands))
 
         wait(for: .aMoment)
 
@@ -1409,7 +1406,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
     }
 
-    func test_coBadgedCardsUI_shouldShowCorrectBrandNames() throws {
+    func test_coBadgedCardsUI_shouldShowCorrectBrandNames() {
         // Given
 
         let sut = CardComponent(
@@ -1445,7 +1442,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(sut.cardViewController.items.coBadgedCardItem.selectableFormItems[1].title, newResponse.brands?[1].type.rawValue)
     }
 
-    func test_coBadgedCardsUI_whenDisplayed_shouldSendAnalyticsInfo() throws {
+    func test_coBadgedCardsUI_whenDisplayed_shouldSendAnalyticsInfo() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(
@@ -1471,7 +1468,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(dualBrandDisplayedCalled?.brand)
     }
 
-    func test_coBadgedCardsUI_whenSelected_shouldSendAnalyticsInfo() throws {
+    func test_coBadgedCardsUI_whenSelected_shouldSendAnalyticsInfo() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(
@@ -1504,7 +1501,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNil(dualBrandSelectedCalled?.configData)
     }
 
-    func test_storePaymentMethodField_shouldUpdateVisibilityBasedOnBinResponse() throws {
+    func test_storePaymentMethodField_shouldUpdateVisibilityBasedOnBinResponse() {
         
         // Given
         
@@ -1539,7 +1536,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(cardViewController.items.storeDetailsItem.value)
     }
 
-    func test_clear_shouldResetPostalCodeItem() throws {
+    func test_clear_shouldResetPostalCodeItem() {
         // Given
         var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .postalCode
@@ -1561,7 +1558,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(sut.cardViewController.items.postalCodeItem.value.isEmpty)
     }
 
-    func test_clear_shouldResetNumberItem() throws {
+    func test_clear_shouldResetNumberItem() {
         // Given
         var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .postalCode
@@ -1583,7 +1580,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(sut.cardViewController.items.numberContainerItem.numberItem.value.isEmpty)
     }
 
-    func test_clear_shouldResetExpiryDateItem() throws {
+    func test_clear_shouldResetExpiryDateItem() {
         // Given
         var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .postalCode
@@ -1605,7 +1602,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(sut.cardViewController.items.expiryDateItem.value.isEmpty)
     }
 
-    func test_clear_shouldResetSecurityCodeItem() throws {
+    func test_clear_shouldResetSecurityCodeItem() {
         // Given
         var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .postalCode
@@ -1627,7 +1624,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(sut.cardViewController.items.securityCodeItem.value.isEmpty)
     }
 
-    func test_clear_shouldResetHolderNameItem() throws {
+    func test_clear_shouldResetHolderNameItem() {
         // Given
         var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
@@ -1650,7 +1647,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(sut.cardViewController.items.holderNameItem.value.isEmpty)
     }
 
-    func test_clear_shouldResetStoreDetailsItem() throws {
+    func test_clear_shouldResetStoreDetailsItem() {
         // Given
 
         var configuration = CardComponentConfiguration()

@@ -44,7 +44,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertNil(view.findView(by: "AddressInputFormViewController.addressItem.title"))
         
         XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
-        XCTAssertEqual(countryItemView.item.value!.title, "Netherlands")
+        XCTAssertEqual(countryItemView.item.value?.title, "Netherlands")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "House number")
         XCTAssertEqual(addressItemView.titleLabel.text, "Street")
         XCTAssertEqual(apartmentSuiteItemView.titleLabel.text, "Apartment / Suite (optional)")
@@ -52,22 +52,22 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertEqual(provinceOrTerritoryItemView.titleLabel.text, "Province or Territory")
         XCTAssertEqual(postalCodeItemView.titleLabel.text, "Postal code")
 
-        XCTAssertTrue(houseNumberItemView.alertLabel.isHidden)
-        XCTAssertTrue(addressItemView.alertLabel.isHidden)
-        XCTAssertTrue(apartmentSuiteItemView.alertLabel.isHidden)
-        XCTAssertTrue(cityItemView.alertLabel.isHidden)
-        XCTAssertTrue(provinceOrTerritoryItemView.alertLabel.isHidden)
-        XCTAssertTrue(postalCodeItemView.alertLabel.isHidden)
+        XCTAssertFalse(houseNumberItemView.isShowingValidationError)
+        XCTAssertFalse(addressItemView.isShowingValidationError)
+        XCTAssertFalse(apartmentSuiteItemView.isShowingValidationError)
+        XCTAssertFalse(cityItemView.isShowingValidationError)
+        XCTAssertFalse(provinceOrTerritoryItemView.isShowingValidationError)
+        XCTAssertFalse(postalCodeItemView.isShowingValidationError)
         
         let doneButton = try XCTUnwrap(viewController.navigationItem.rightBarButtonItem)
         try doneButton.tap()
         
-        wait { !houseNumberItemView.alertLabel.isHidden }
-        XCTAssertFalse(addressItemView.alertLabel.isHidden)
-        XCTAssertTrue(apartmentSuiteItemView.alertLabel.isHidden)
-        XCTAssertFalse(cityItemView.alertLabel.isHidden)
-        XCTAssertFalse(provinceOrTerritoryItemView.alertLabel.isHidden)
-        XCTAssertFalse(postalCodeItemView.alertLabel.isHidden)
+        wait { houseNumberItemView.isShowingValidationError }
+        XCTAssertTrue(addressItemView.isShowingValidationError)
+        XCTAssertFalse(apartmentSuiteItemView.isShowingValidationError)
+        XCTAssertTrue(cityItemView.isShowingValidationError)
+        XCTAssertTrue(provinceOrTerritoryItemView.isShowingValidationError)
+        XCTAssertTrue(postalCodeItemView.isShowingValidationError)
     }
     
     func testAddressUS() throws {
@@ -100,25 +100,25 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertNil(apartmentSuiteItemView)
 
         XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
-        XCTAssertEqual(countryItemView.item.value!.title, "United States")
+        XCTAssertEqual(countryItemView.item.value?.title, "United States")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "Apartment / Suite (optional)")
         XCTAssertEqual(addressItemView.titleLabel.text, "Address")
         XCTAssertEqual(cityItemView.titleLabel.text, "City")
         XCTAssertEqual(provinceOrTerritoryItemView.titleLabel.text, "State")
         XCTAssertEqual(postalCodeItemView.titleLabel.text, "Zip code")
 
-        XCTAssertTrue(houseNumberItemView.alertLabel.isHidden)
-        XCTAssertTrue(addressItemView.alertLabel.isHidden)
-        XCTAssertTrue(cityItemView.alertLabel.isHidden)
-        XCTAssertTrue(postalCodeItemView.alertLabel.isHidden)
+        XCTAssertFalse(houseNumberItemView.isShowingValidationError)
+        XCTAssertFalse(addressItemView.isShowingValidationError)
+        XCTAssertFalse(cityItemView.isShowingValidationError)
+        XCTAssertFalse(postalCodeItemView.isShowingValidationError)
 
         let doneButton = try XCTUnwrap(viewController.navigationItem.rightBarButtonItem)
         try doneButton.tap()
         
-        wait(until: houseNumberItemView.alertLabel, at: \.isHidden, is: true)
-        wait(until: addressItemView.alertLabel, at: \.isHidden, is: false)
-        wait(until: cityItemView.alertLabel, at: \.isHidden, is: false)
-        wait(until: postalCodeItemView.alertLabel, at: \.isHidden, is: false)
+        wait { !houseNumberItemView.isShowingValidationError }
+        wait { addressItemView.isShowingValidationError }
+        wait { cityItemView.isShowingValidationError }
+        wait { postalCodeItemView.isShowingValidationError }
     }
 
     func testAddressUK() throws {
@@ -147,7 +147,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
 
         XCTAssertNil(apartmentSuiteItemView)
         XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
-        XCTAssertEqual(countryItemView.item.value!.title, "United Kingdom")
+        XCTAssertEqual(countryItemView.item.value?.title, "United Kingdom")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "House number")
         XCTAssertEqual(addressItemView.titleLabel.text, "Street")
         XCTAssertEqual(cityItemView.titleLabel.text, "City / Town")
@@ -182,7 +182,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertNil(apartmentSuiteItemView)
 
         XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
-        XCTAssertEqual(countryItemView.item.value!.title, "Canada")
+        XCTAssertEqual(countryItemView.item.value?.title, "Canada")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "Apartment / Suite (optional)")
         XCTAssertEqual(addressItemView.titleLabel.text, "Address")
         XCTAssertEqual(cityItemView.titleLabel.text, "City")
@@ -190,7 +190,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertEqual(postalCodeItemView.titleLabel.text, "Postal code")
         XCTAssertNil(apartmentSuiteItemView)
 
-        countryItemView.item.value = countryItemView.item.selectableValues.first { $0.identifier == "BR" }!
+        countryItemView.item.value = try XCTUnwrap(countryItemView.item.selectableValues.first { $0.identifier == "BR" })
 
         houseNumberItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.houseNumberOrName"))
         countryItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.country"))
@@ -201,7 +201,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         postalCodeItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.postalCode"))
 
         XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
-        XCTAssertEqual(countryItemView.item.value!.title, "Brazil")
+        XCTAssertEqual(countryItemView.item.value?.title, "Brazil")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "House number")
         XCTAssertEqual(addressItemView.titleLabel.text, "Street")
         XCTAssertEqual(cityItemView.titleLabel.text, "City")
@@ -299,7 +299,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         )
     }
     
-    func testClearShouldAssignEmptyStreet() throws {
+    func testClearShouldAssignEmptyStreet() {
         // Given
         let viewController = AddressInputFormViewController(
             viewModel: self.viewModel(

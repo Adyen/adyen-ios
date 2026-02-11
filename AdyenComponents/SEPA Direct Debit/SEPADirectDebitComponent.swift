@@ -56,8 +56,6 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
         style: configuration.style
     )
     
-    public var requiresModalPresentation: Bool = true
-    
     public func stopLoading() {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true

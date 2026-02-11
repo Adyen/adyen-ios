@@ -66,8 +66,8 @@ public struct CheckoutConfiguration {
         analyticsConfiguration: AnalyticsConfiguration = .init(),
         @CheckoutConfigurationBuilder content: () -> CheckoutConfigurable
     ) throws {
+        // TODO: Robert: api context to be a property & to be used when creating the AnalyticalAPIClient from here instead of AdyenContext.
         let apiContext = try APIContext(environment: environment, clientKey: clientKey)
-        
         let context = AdyenContext(
             apiContext: apiContext,
             payment: nil,
@@ -106,8 +106,18 @@ public struct CheckoutConfiguration {
         return defaultValue()
     }
     
-    // TODO: same for action
+    internal func configuration<T: CheckoutComponentConfiguration>(for actionType: ActionComponentType, defaultValue: @autoclosure () -> T) -> T {
+        if let config = configurations[.action(actionType)] as? T {
+            return config
+        }
+        return defaultValue()
+    }
     
+    internal func configuration<T: CheckoutComponentConfiguration>(for actionType: ActionComponentType) -> T? {
+        configurations[.action(actionType)] as? T
+    }
+
+    // TODO: Robert: Create the analytical APIClient.
 }
 
 extension CheckoutConfiguration {

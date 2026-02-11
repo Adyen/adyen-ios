@@ -13,17 +13,19 @@ package final class PresentableComponentWrapper: PresentableComponent,
     FinalizableComponent,
     LoadingComponent {
     
-    package var apiContext: APIContext { component.context.apiContext }
+    package var apiContext: APIContext {
+        component.context.apiContext
+    }
 
     /// The context object for this component.
-    package var context: AdyenContext { component.context }
+    package var context: AdyenContext {
+        component.context
+    }
 
     package let viewController: UIViewController
 
     /// The wrapped component.
     package let component: Component
-
-    package var requiresModalPresentation: Bool = true
 
     package var navBarType: NavigationBarType
 

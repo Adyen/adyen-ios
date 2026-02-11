@@ -58,8 +58,10 @@ extension XCTestCase {
 
 extension DispatchTimeInterval {
     
-    /// .milliseconds(30)
-    static var aMoment: Self { .milliseconds(30) }
+    /// .milliseconds(100)
+    static var aMoment: Self {
+        .milliseconds(100)
+    }
 }
 
 extension XCTestCase {

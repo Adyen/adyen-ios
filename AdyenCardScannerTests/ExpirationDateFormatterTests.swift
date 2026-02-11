@@ -54,7 +54,7 @@ final class ExpirationDateFormatterTests: XCTestCase {
         XCTAssertEqual(receivedDate, expectedDate)
     }
 
-    func testDateFromStringWithInvalidFormatDateShouldReturnNil() throws {
+    func testDateFromStringWithInvalidFormatDateShouldReturnNil() {
         // Given
         let longFormatDate = "2028/03"
         sut = ExpirationDateFormatter()

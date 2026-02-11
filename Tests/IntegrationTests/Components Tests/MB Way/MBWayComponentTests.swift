@@ -45,10 +45,10 @@ class MBWayComponentTests: XCTestCase {
 
         XCTAssertNotNil(sut.button.title)
         XCTAssertEqual(sut.button.title, localizedString(.continueTo, sut.configuration.localizationParameters, paymentMethod.name))
-        XCTAssertTrue(sut.button.title!.contains(paymentMethod.name))
+        XCTAssertTrue(try XCTUnwrap(sut.button.title?.contains(paymentMethod.name)))
     }
 
-    func testLocalizationWithCustomKeySeparator() throws {
+    func testLocalizationWithCustomKeySeparator() {
         let config = MBWayComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
         let sut = MBWayComponent(
             paymentMethod: paymentMethod,
@@ -76,12 +76,6 @@ class MBWayComponentTests: XCTestCase {
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.MBWayComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
-    }
-
-    func testRequiresModalPresentation() {
-        let mbWayPaymentMethod = MBWayPaymentMethod(type: .mbWay, name: "Test name")
-        let sut = MBWayComponent(paymentMethod: mbWayPaymentMethod, context: context)
-        XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
     func testMBWayPrefilling() throws {
@@ -123,7 +117,7 @@ class MBWayComponentTests: XCTestCase {
         XCTAssertTrue(phoneNumber.isEmpty)
     }
 
-    func testViewDidLoadShouldSendInitialCall() throws {
+    func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)

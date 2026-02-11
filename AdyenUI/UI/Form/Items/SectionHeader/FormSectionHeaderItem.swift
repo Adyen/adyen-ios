@@ -10,7 +10,10 @@ import UIKit
 package final class FormSectionHeaderItem<ContentItem: FormItem>: FormItem {
 
     package var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
-    package var subitems: [FormItem] { [content] }
+    package var subitems: [FormItem] {
+        [content]
+    }
+
     package var identifier: String?
     package let title: String
     package let subtitle: String?

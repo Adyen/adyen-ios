@@ -41,7 +41,7 @@ class TwintComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testCustomPaymentData() throws {
+    func testCustomPaymentData() {
         let delegateExpectation = expectation(description: "expect delegate to be called.")
         delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === self.sut)
@@ -56,7 +56,7 @@ class TwintComponentTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
-    func testInitiatePaymentShouldCallPaymentComponentDelegateDidSubmit() throws {
+    func testInitiatePaymentShouldCallPaymentComponentDelegateDidSubmit() {
         // Given
         let sut = TwintComponent(paymentMethod: paymentMethod, context: context)
 

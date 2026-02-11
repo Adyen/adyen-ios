@@ -37,7 +37,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     UITextFieldDelegate,
     AnyFormTextItemView {
     
-    override public var accessibilityLabelView: UIView? { textField }
+    override public var accessibilityLabelView: UIView? {
+        textField
+    }
 
     /// Initializes the text item view with theme.
     /// - Parameters:
@@ -46,20 +48,15 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     public required init(item: ItemType, theme: AdyenTheme) {
         super.init(item: item, theme: theme)
 
-        bind(item.$placeholder, to: textField, at: \.placeholder)
         observe(item.$formattedValue) { [weak self] newValue in
             self?.handleFormattedValueDidChange(newValue)
         }
         
-        updateValidationStatus()
+        updateValidation()
         
         addSubview(textStackView)
         configureConstraints()
         
-        observe(item.$validationFailureMessage) { [weak self] newValue in
-            self?.alertLabel.text = newValue
-        }
-
         configure()
     }
 
@@ -84,15 +81,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         textField.textColor = style.text.color
         textField.textAlignment = style.text.textAlignment
 
-        // Placeholder
-        textField.apply(placeholderText: item.placeholder, with: style.placeholder)
-
         // Container
         entryTextStackView.backgroundColor = style.containerColor
         entryTextStackView.layer.borderWidth = style.borderWidth
-
-        // Alert
-        alertLabel.textColor = style.errorColor
 
         // Corner radius
         switch style.cornerRadius {
@@ -103,7 +94,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         }
 
         // Border styling
-        updateBorderStyling()
+        updateBorderColor()
     }
     
     override public func reset() {
@@ -118,7 +109,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     // MARK: - Stack View
     
     private lazy var textStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, entryTextStackView, alertLabel])
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, entryTextStackView, footerLabel])
         stackView.axis = .vertical
         stackView.alignment = .fill
         stackView.spacing = 8.0
@@ -177,7 +168,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     public var accessory: AccessoryType = .none {
         didSet {
             guard accessory != oldValue else { return }
-            self.changeAccessories()
+            changeAccessories()
         }
     }
     
@@ -206,7 +197,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     open func handleFormattedValueDidChange(_ newValue: String) {
         textField.text = newValue
-        updateValidationStatus()
     }
     
     @_spi(AdyenInternal)
@@ -236,7 +226,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     // MARK: - Editing
     
     override internal func didChangeEditingStatus() {
-        updateValidationStatus()
+        updateValidation()
     }
     
     // MARK: - Layout
@@ -282,32 +272,23 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// Subclasses can override this method to stay notified when the text field resigns its first responder status.
     open func textFieldDidEndEditing(_ textField: UITextField) {
         isEditing = false
-        updateBorderStyling()
         item.onDidEndEditing?()
+        item.triggerValidation(.focusLost)
+        updateBorderColor()
     }
     
     /// This method hides validation accessories icons.
     /// Subclasses can override this method to stay notified when textField became the first responder.
     open func textFieldDidBeginEditing(_ textField: UITextField) {
         isEditing = true
-        updateBorderStyling()
+        resetValidationStatus()
+        updateBorderColor()
         item.onDidBeginEditing?()
     }
     
-    override open func updateValidationStatus(forced: Bool = false) {
-        let textFieldNotEmpty = !(textField.text ?? "").isEmpty
-        
-        // if validation check is allowed during editing, ignore editing check
-        let forceShowValidationStatus = (forced || textFieldNotEmpty)
-            && (item.allowsValidationWhileEditing || !isEditing)
-        
-        if forceShowValidationStatus {
-            accessory = item.isValid() ? .valid : .invalid
-        } else {
-            removeAccessoryIfNeeded()
-        }
-        
-        super.updateValidationStatus(forced: forceShowValidationStatus)
+    open func updateValidation() {
+        updateAccessory()
+        updateBorderColor()
     }
     
     public func notifyDelegateOfMaxLengthIfNeeded() {
@@ -319,6 +300,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
 
     override internal func resetValidationStatus() {
         super.resetValidationStatus()
+        updateBorderColor()
         removeAccessoryIfNeeded()
     }
 
@@ -327,11 +309,49 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         accessory = .none
     }
 
+    // MARK: - Validation State Changes
+
+    override package func onValidationStateChanged(state: ValidationState) {
+        super.onValidationStateChanged(state: state)
+        updateAccessory(state: state)
+        updateBorderColor(state: state)
+    }
+
+    private func updateAccessory() {
+        updateAccessory(state: item.validationState)
+    }
+
+    private func updateAccessory(state: ValidationState) {
+        if state.shouldShowError {
+            accessory = .invalid
+            return
+        }
+        
+        // Keep custom view unchanged
+        if case .customView = accessory { return }
+        
+        let hasContent = !(textField.text ?? "").isEmpty
+        accessory = (hasContent && !isEditing) ? .valid : .none
+    }
+
     // MARK: - Border Styling
 
-    /// Updates the border color based on editing state.
-    private func updateBorderStyling() {
-        let borderColor = isEditing ? theme.elements.textField.borderActiveColor : theme.elements.textField.borderColor
+    /// Updates the border color based on both editing state and validation state.
+    /// Priority: editing (active color) > validation error (error color) > default (normal color)
+    private func updateBorderColor() {
+        updateBorderColor(state: item.validationState)
+    }
+
+    private func updateBorderColor(state: ValidationState) {
+        let style = theme.elements.textField
+        let borderColor: UIColor
+        if isEditing {
+            borderColor = style.borderActiveColor
+        } else if state.shouldShowError {
+            borderColor = style.errorColor
+        } else {
+            borderColor = style.borderColor
+        }
         entryTextStackView.layer.borderColor = borderColor.cgColor
     }
 }

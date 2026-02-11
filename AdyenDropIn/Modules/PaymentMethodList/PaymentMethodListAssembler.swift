@@ -7,6 +7,7 @@
 import Adyen
 import Foundation
 
+// sourcery:AutoMockable
 internal protocol PaymentMethodListAssemblerProtocol {
     func resolvePaymentMethodListRouter(delegate: PaymentMethodListRouterListener?) -> Router
 }

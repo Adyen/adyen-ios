@@ -61,8 +61,6 @@ internal final class PreApplePayComponent: PresentableComponent,
         return viewController
     }()
     
-    internal let requiresModalPresentation: Bool = true
-    
     internal init(
         paymentMethod: ApplePayPaymentMethod,
         context: AdyenContext,

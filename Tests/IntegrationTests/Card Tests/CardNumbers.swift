@@ -6,7 +6,7 @@
 
 import Foundation
 
-// Utility class with example test card numbers.
+/// Utility class with example test card numbers.
 enum CardNumbers {
     
     static let masterCard = [

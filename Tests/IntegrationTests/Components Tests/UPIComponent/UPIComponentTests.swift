@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Adyen N.V.
+// Copyright (c) 2026 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -36,15 +36,6 @@ class UPIComponentTests: XCTestCase {
         )
 
         XCTAssertEqual(sut.paymentMethod.type, .upi)
-    }
-
-    func test_shouldRequireModalPresentation() throws {
-        let sut = try UPIComponent(
-            paymentMethod: AdyenCoder.decode(upi),
-            context: Dummy.context
-        )
-
-        XCTAssertTrue(sut.requiresModalPresentation)
     }
 
     func test_requiresKeyboardInput() throws {

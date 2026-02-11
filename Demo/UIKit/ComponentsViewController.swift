@@ -84,6 +84,12 @@ internal final class ComponentsViewController: UIViewController {
         blikAdvanced.presenter = self
         return blikAdvanced
     }
+    
+    private var dummyActionExample: DummyActionComponentExample {
+        let dummyAction = DummyActionComponentExample()
+        dummyAction.presenter = self
+        return dummyAction
+    }
 
     // MARK: - View
     
@@ -100,6 +106,11 @@ internal final class ComponentsViewController: UIViewController {
             [
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
                 ComponentsItem(title: "BLIK Component", selectionHandler: presentBlikComponent),
+                ComponentsItem(
+                    title: "Dummy Action (Advanced Only)",
+                    subtitle: "Standalone action handling via a dummy action response.",
+                    selectionHandler: presentDummyActionComponent
+                ),
                 ComponentsItem(
                     title: "Issuer List",
                     subtitle: "e.g. Open Banking, ...",
@@ -181,6 +192,10 @@ internal final class ComponentsViewController: UIViewController {
         } else {
             start(blikAdvancedFlowExample)
         }
+    }
+    
+    internal func presentDummyActionComponent() {
+        start(dummyActionExample)
     }
 }
 

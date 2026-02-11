@@ -21,10 +21,10 @@ internal final class SelfRetainingAPIClient: APIClientProtocol {
         self.apiClient = apiClient
     }
     
-    internal func perform<R>(
+    internal func perform<R: Request>(
         _ request: R,
         completionHandler: @escaping CompletionHandler<R.ResponseType>
-    ) where R: Request {
+    ) {
         apiClient.perform(request) {
             completionHandler($0)
         }

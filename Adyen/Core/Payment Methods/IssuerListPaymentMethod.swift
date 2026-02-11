@@ -69,7 +69,9 @@ public struct IssuerListPaymentMethod: PaymentMethod {
             case key
             case items
             
-            static var issuerKey: String { "issuer" }
+            static var issuerKey: String {
+                "issuer"
+            }
         }
     }
     

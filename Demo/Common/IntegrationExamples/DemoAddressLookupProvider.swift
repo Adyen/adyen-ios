@@ -12,7 +12,9 @@ import Contacts
 public class DemoAddressLookupProvider {
     
     private struct AddressCompletionError: LocalizedError {
-        var errorDescription: String? { "Could not complete address" }
+        var errorDescription: String? {
+            "Could not complete address"
+        }
     }
     
     private let minDebounceDelay: TimeInterval = 0.3
@@ -65,7 +67,7 @@ public class DemoAddressLookupProvider {
         searchTask = searchTask(for: searchTerm, completion: resultHandler)
     }
     
-    // Optional implementation to fetch the full address for an incomplete version
+    /// Optional implementation to fetch the full address for an incomplete version
     public func complete(incompleteAddress: AddressLookupResult, resultHandler: @escaping (Result<PostalAddress, Error>) -> Void) {
         
         var dispatchWorkItem: DispatchWorkItem?

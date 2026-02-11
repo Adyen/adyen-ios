@@ -37,10 +37,6 @@ public enum NavigationBarType {
 /// A component that provides a view controller for the shopper to fill payment details.
 public protocol PresentableComponent: Component {
     
-    /// Indicates whether `viewController` expected to be presented modally,
-    /// hence it can not handle its own presentation and dismissal.
-    var requiresModalPresentation: Bool { get }
-    
     /// Returns a view controller that presents the payment details for the shopper to fill.
     var viewController: UIViewController { get }
     
@@ -53,9 +49,8 @@ public protocol PresentableComponent: Component {
 public extension PresentableComponent {
     
     @_spi(AdyenInternal)
-    var requiresModalPresentation: Bool { false }
-    
-    @_spi(AdyenInternal)
-    var navBarType: NavigationBarType { .regular }
+    var navBarType: NavigationBarType {
+        .regular
+    }
     
 }

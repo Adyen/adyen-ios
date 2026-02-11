@@ -13,7 +13,9 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     
     internal let context: AdyenContext
 
-    internal var wrappedComponent: Component { coreActionHandler }
+    internal var wrappedComponent: Component {
+        coreActionHandler
+    }
 
     internal let coreActionHandler: AnyThreeDS2CoreActionHandler
     
@@ -39,7 +41,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
         appearanceConfiguration: ADYAppearanceConfiguration,
         service: ThreeDSService,
         coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
-        delegatedAuthenticationConfiguration: ThreeDS2Component.Configuration.DelegatedAuthentication? = nil
+        delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication? = nil
     ) {
         self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
             context: context,

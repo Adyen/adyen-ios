@@ -10,7 +10,6 @@
 import Testing
 import UIKit
 
-@Suite
 @MainActor
 struct ComponentContainerRouterTests {
 
@@ -27,13 +26,14 @@ struct ComponentContainerRouterTests {
 
         // When
         sut.present(paymentComponent: paymentComponent)
+        try await Task.sleep(for: .milliseconds(300))
 
         // Then
         #expect(navController.viewControllers.contains(paymentComponent.viewController))
     }
 
     @Test
-    func presentActionComponent_shouldPresentModallyViewController() async throws {
+    func presentActionComponent_shouldPresentModallyViewController() async {
         // Given
         let (sut, viewControllerSpy, _) = await makeSUT()
         let actionComponent = await makeActionComponent()
@@ -69,7 +69,7 @@ struct ComponentContainerRouterTests {
     }
 
     @Test
-    func dismiss_shouldCall_listener_didDismissComponentContainer() async throws {
+    func dismiss_shouldCall_listener_didDismissComponentContainer() async {
         // Given
         let (sut, viewControllerSpy, listenerMock) = await makeSUT()
 

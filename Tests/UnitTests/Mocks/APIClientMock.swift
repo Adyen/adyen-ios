@@ -17,7 +17,7 @@ final class APIClientMock: APIClientProtocol {
 
     private(set) var counter: Int = 0
 
-    func perform<R>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) where R: Request {
+    func perform<R: Request>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) {
         counter += 1
         DispatchQueue.main.async {
             self.onExecute?()

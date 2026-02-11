@@ -5,7 +5,6 @@
 //
 
 import Adyen
-import AdyenActions
 import AdyenCheckout
 import AdyenComponents
 
@@ -13,12 +12,12 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
     
     internal weak var presenter: PresenterExampleProtocol?
     
-    private var adyenCheckout: AdyenCheckout?
-    private var adyenComponent: AdyenCheckoutComponent?
+    private var checkout: Checkout?
+    private var adyenComponent: CheckoutPaymentComponent?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     
-    // comes from demo app protocol, unused on new structure
+    /// comes from demo app protocol, unused on new structure
     internal lazy var context: AdyenContext = generateContext()
     
     func start() {
@@ -38,7 +37,7 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
         }
     }
     
-    private func blikComponent(from sessionResponse: SessionResponse) async throws -> AdyenCheckoutComponent {
+    private func blikComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
         
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
@@ -60,18 +59,15 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
         
-        let checkout = try await AdyenCheckout.setup(
-            with: sessionResponse.sessionId,
-            sessionData: sessionResponse.sessionData,
+        let checkout = try await Checkout.setup(
+            with: sessionResponse,
             configuration: configuration,
             presentationDelegate: self
         )
         
-        self.adyenCheckout = checkout
+        self.checkout = checkout
         
-        guard let paymentMethods = checkout.paymentMethods,
-              let blikPaymentMethod = paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self),
-              let component = checkout.createComponent(with: blikPaymentMethod) else {
+        guard let component = checkout.createPaymentComponent(for: .blik) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: BLIKPaymentMethod.self)
         }
         
@@ -93,7 +89,7 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
     }
     
     @MainActor
-    private func present(component: AdyenCheckoutComponent) {
+    private func present(component: CheckoutPaymentComponent) {
         presenter?.present(viewController: viewController(for: component), completion: nil)
     }
     
@@ -105,7 +101,7 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
         }
     }
     
-    private func viewController(for component: AdyenCheckoutComponent) -> UIViewController {
+    private func viewController(for component: CheckoutPaymentComponent) -> UIViewController {
         guard let viewController = component.viewController else { fatalError("Cannot find component's view controller") }
         
         let navigation = UINavigationController(rootViewController: viewController)

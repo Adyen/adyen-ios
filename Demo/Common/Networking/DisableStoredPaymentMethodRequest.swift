@@ -16,7 +16,9 @@ internal struct DisableStoredPaymentMethodRequest: APIRequest {
     internal let merchantAccount: String
     internal let shopperReference: String
 
-    internal var path: String { "storedPaymentMethods/\(storedPaymentId)" }
+    internal var path: String {
+        "storedPaymentMethods/\(storedPaymentId)"
+    }
 
     internal var counter: UInt = 0
 
@@ -24,10 +26,12 @@ internal struct DisableStoredPaymentMethodRequest: APIRequest {
 
     internal var headers: [String: String] = [:]
 
-    internal var queryParameters: [URLQueryItem] { [
-        .init(name: "merchantAccount", value: merchantAccount),
-        .init(name: "shopperReference", value: shopperReference)
-    ] }
+    internal var queryParameters: [URLQueryItem] {
+        [
+            .init(name: "merchantAccount", value: merchantAccount),
+            .init(name: "shopperReference", value: shopperReference)
+        ]
+    }
 
     internal func encode(to encoder: Encoder) throws {}
 

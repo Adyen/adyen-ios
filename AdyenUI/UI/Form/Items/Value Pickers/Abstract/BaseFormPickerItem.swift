@@ -28,7 +28,9 @@ public struct BasePickerElement<ElementType: CustomStringConvertible>: PickerEle
         lhs.identifier == rhs.identifier
     }
 
-    public var description: String { element.description }
+    public var description: String {
+        element.description
+    }
     
     public init(identifier: String, element: ElementType) {
         self.identifier = identifier

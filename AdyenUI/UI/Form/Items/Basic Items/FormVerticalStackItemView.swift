@@ -54,7 +54,9 @@ open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormI
         stackView.spacing = itemSpacing
     }
 
-    override public var childItemViews: [AnyFormItemView] { views }
+    override public var childItemViews: [AnyFormItemView] {
+        views
+    }
 
     // MARK: - Layout
 

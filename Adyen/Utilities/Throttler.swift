@@ -6,7 +6,7 @@
 
 import Foundation
 
-// Throttles come code execution.
+/// Throttles come code execution.
 @_spi(AdyenInternal)
 public final class Throttler {
     

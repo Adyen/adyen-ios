@@ -19,18 +19,18 @@ final class ListViewControllerUITests: XCTestCase {
         }
     }
     
-    func testUIConfiguration() throws {
+    func testUIConfiguration() {
         var listComponentStyle = ListComponentStyle()
         listComponentStyle.backgroundColor = .red
         
-        /// Section header
+        // Section header
         listComponentStyle.sectionHeader.title.color = .white
         listComponentStyle.sectionHeader.title.backgroundColor = .red
         listComponentStyle.sectionHeader.title.textAlignment = .center
         listComponentStyle.sectionHeader.title.font = .systemFont(ofSize: 22)
         listComponentStyle.sectionHeader.backgroundColor = .brown
         
-        /// list item
+        // list item
         listComponentStyle.listItem.backgroundColor = .magenta
         listComponentStyle.listItem.title.color = .white
         listComponentStyle.listItem.title.backgroundColor = .black

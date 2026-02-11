@@ -106,12 +106,10 @@ public extension PostalAddress {
             AddressField.apartment.rawValue: apartment
         ].compactMapValues { $0 }
         
-        let satisfied = checkIfAllFieldsPresent(
+        return checkIfAllFieldsPresent(
             fieldsValues: fieldsValues,
             requiredAddressFields: requiredFields
         )
-        
-        return satisfied
     }
 
     private func checkIfAllFieldsPresent(

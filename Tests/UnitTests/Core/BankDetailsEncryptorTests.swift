@@ -10,7 +10,7 @@ import XCTest
 
 class BankDetailsEncryptorTests: XCTestCase {
 
-    // Account number
+    /// Account number
     func testEncryptNumberShouldEncrypt() {
         let key = Dummy.publicKey
         XCTAssertNotNil(try BankDetailsEncryptor.encrypt(accountNumber: "123456789", with: key))
@@ -31,7 +31,7 @@ class BankDetailsEncryptorTests: XCTestCase {
         }
     }
     
-    // Routing number
+    /// Routing number
     func testEncryptRoutingNumberShouldEncrypt() {
         let key = Dummy.publicKey
         XCTAssertNotNil(try BankDetailsEncryptor.encrypt(routingNumber: "123456789", with: key))

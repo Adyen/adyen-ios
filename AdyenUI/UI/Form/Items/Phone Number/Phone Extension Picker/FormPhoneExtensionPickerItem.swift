@@ -9,11 +9,25 @@ import UIKit
 
 @_spi(AdyenInternal)
 extension PhoneExtension: FormPickable {
-    public var identifier: String { countryCode }
-    public var icon: UIImage? { nil }
-    public var title: String { value }
-    public var subtitle: String? { countryDisplayName }
-    public var trailingText: String? { nil }
+    public var identifier: String {
+        countryCode
+    }
+
+    public var icon: UIImage? {
+        nil
+    }
+
+    public var title: String {
+        value
+    }
+
+    public var subtitle: String? {
+        countryDisplayName
+    }
+
+    public var trailingText: String? {
+        nil
+    }
 }
 
 /// A picker form item for picking regions.

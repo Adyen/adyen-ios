@@ -8,31 +8,32 @@
 import UIKit
 
 /// Displays a list from which items can be selected.
-@_spi(AdyenInternal)
-public final class ListViewController: UITableViewController {
-    
+package final class ListViewController: UITableViewController {
+
     /// Indicates the list view controller UI style.
-    public let style: ViewStyle
+    package let style: ViewStyle
 
     /// Delegate to handle different viewController events.
-    public weak var delegate: ViewControllerDelegate?
+    package weak var delegate: ViewControllerDelegate?
     
     /// Initializes the list view controller.
     ///
     /// - Parameter style: The UI style.
-    public init(style: ViewStyle) {
+    package init(style: ViewStyle) {
         self.style = style
         super.init(style: .grouped)
     }
     
     @available(*, unavailable)
-    public required init?(coder aDecoder: NSCoder) {
+    package required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Data Source
     
-    public var sections: [ListSection] { dataSource.sections }
+    package var sections: [ListSection] {
+        dataSource.sections
+    }
     
     private lazy var dataSource: ListViewControllerDataSource = {
         if #available(iOS 13, *) {
@@ -44,7 +45,7 @@ public final class ListViewController: UITableViewController {
         }
     }()
     
-    public func reload(newSections: [ListSection], animated: Bool = false) {
+    package func reload(newSections: [ListSection], animated: Bool = false) {
         dataSource.sections.flatMap(\.items).forEach { $0.loadingHandler = nil }
         
         dataSource.reload(newSections: newSections, tableView: tableView, animated: animated)
@@ -64,13 +65,13 @@ public final class ListViewController: UITableViewController {
         }
     }
     
-    public func deleteItem(at indexPath: IndexPath, animated: Bool = true) {
+    package func deleteItem(at indexPath: IndexPath, animated: Bool = true) {
         dataSource.deleteItem(at: indexPath, tableView: tableView, animated: animated)
     }
     
     // MARK: - View
     
-    override public func viewDidLoad() {
+    override package func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = style.backgroundColor
@@ -90,19 +91,19 @@ public final class ListViewController: UITableViewController {
         delegate?.viewDidLoad(viewController: self)
     }
 
-    override public func viewDidAppear(_ animated: Bool) {
+    override package func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         delegate?.viewDidAppear(viewController: self)
     }
     
-    override public func viewWillAppear(_ animated: Bool) {
+    override package func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         delegate?.viewWillAppear(viewController: self)
     }
     
     // MARK: - UITableViewDelegate
     
-    override public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    override package func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerItem = sections[section].header else { return nil }
         
         let headerView: ListHeaderView
@@ -135,7 +136,7 @@ public final class ListViewController: UITableViewController {
         tableView.setEditing(isEditingModeOn, animated: true)
     }
 
-    override public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    override package func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard let footer = sections[section].footer else {
             return nil
         }
@@ -147,22 +148,22 @@ public final class ListViewController: UITableViewController {
         return footerView
     }
 
-    override public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    override package func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         sections[section].footer == nil ? 0 : 55
     }
     
-    override public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override package func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         sections[section].header == nil ? 0 : 44.0
     }
     
-    override public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override package func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let item = sections[indexPath.section].items[indexPath.item]
         item.selectionHandler?()
     }
     
-    override public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    override package func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         sections[indexPath.section].header?.editingStyle.tableViewEditingStyle ?? .none
     }
     
@@ -176,7 +177,7 @@ public final class ListViewController: UITableViewController {
     }
     
     /// Stops all loading animations.
-    public func stopLoading() {
+    package func stopLoading() {
         dataSource.stopLoading(tableView)
     }
 }

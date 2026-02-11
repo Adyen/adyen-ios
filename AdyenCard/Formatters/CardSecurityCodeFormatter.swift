@@ -12,7 +12,9 @@ public final class CardSecurityCodeFormatter: NumericFormatter {
     
     /// Indicate is validating CVV belong to a Amex card
     private var cardType: CardType?
-    private var expectedLength: Int { cardType == CardType.americanExpress ? 4 : 3 }
+    private var expectedLength: Int {
+        cardType == CardType.americanExpress ? 4 : 3
+    }
     
     /// Initiate new instance of CardSecurityCodeValidator
     override public init() {

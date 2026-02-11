@@ -16,7 +16,7 @@ internal final class APIClientMock: APIClientProtocol {
 
     internal private(set) var counter: Int = 0
 
-    internal func perform<R>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) where R: Request {
+    internal func perform<R: Request>(_ request: R, completionHandler: @escaping (Result<R.ResponseType, Error>) -> Void) {
         counter += 1
         let nextResult = self.mockedResults.removeFirst()
         DispatchQueue.main.async {

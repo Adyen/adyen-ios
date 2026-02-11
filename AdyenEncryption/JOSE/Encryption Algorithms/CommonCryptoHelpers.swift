@@ -104,8 +104,10 @@ internal func generateRSAPublicKey(with modulus: Data, exponent: Data) -> Data {
     let exponentLengthOctets = exponentBytes.count.encodedOctets()
 
     // Total length is the sum of components + types
-    let totalLengthOctets = (modulusLengthOctets.count + modulusBytes.count +
-        exponentLengthOctets.count + exponentBytes.count + 2).encodedOctets()
+    let totalLengthOctets = (
+        modulusLengthOctets.count + modulusBytes.count +
+            exponentLengthOctets.count + exponentBytes.count + 2
+    ).encodedOctets()
     
     // Combine the two sets of data into a single container
     let bytesArray: [UInt8] = [ // Container type and size

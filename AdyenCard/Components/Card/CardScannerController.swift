@@ -60,7 +60,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         internal func createCardScanner(completion: @escaping (Result<CardScannerCardDetails, Error>) -> Void) -> UIViewController? {
 
             let localizationBundle = Bundle.coreInternalResources
-            let cardScannerViewController = AdyenCardScanner.CardScanner.createCardScanner(
+            return AdyenCardScanner.CardScanner.createCardScanner(
                 localizationBundle: localizationBundle
             ) { result in
                 switch result {
@@ -68,8 +68,6 @@ internal protocol CardScannerControlling: CardScannerAvailability {
                 case let .failure(error): completion(.failure(error))
                 }
             }
-
-            return cardScannerViewController
         }
     }
 
@@ -102,7 +100,8 @@ internal protocol CardScannerControlling: CardScannerAvailability {
             presenter: UIViewController,
             availabilityProvider: CardScannerAvailability = CardScannerAvailabilityWrapper(),
             cardScannerProvider: CardScannerProviding = CardScannerProviderDispatchOnce(
-                scannerProvider: CardScannerProviderWrapper()),
+                scannerProvider: CardScannerProviderWrapper()
+            ),
             analyticsHandler: @escaping CardScannerAnalyticsHandler
         ) {
             self.presenter = presenter

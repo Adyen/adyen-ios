@@ -51,7 +51,9 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     internal let scanCardHandler: (() -> Void)?
     internal var scanYourCardButtonTitle: String
     
-    internal var supportsCardScanning: Bool { scanCardHandler != nil }
+    internal var supportsCardScanning: Bool {
+        scanCardHandler != nil
+    }
     
     /// Returns the initial brand for single brand cases
     /// or `selectedDualBrand` for dual brand cases
@@ -88,7 +90,8 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         title = localizedString(.cardNumberItemTitle, localizationParameters)
         validator = CardNumberValidator(isLuhnCheckEnabled: true, isEnteredBrandSupported: true)
         formatter = cardNumberFormatter
-        placeholder = localizedString(.cardNumberItemPlaceholder, localizationParameters)
+        // Brand icons are used instead of a placeholder
+        placeholder = nil
         validationFailureMessage = localizedString(.cardNumberItemInvalid, localizationParameters)
         keyboardType = .numberPad
     }

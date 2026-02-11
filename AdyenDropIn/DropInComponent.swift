@@ -55,8 +55,7 @@ public final class DropInComponent: NSObject,
     }()
 
     private lazy var componentManager: ComponentManager = {
-        let componentManager = createComponentManager(order: nil)
-        return componentManager
+        createComponentManager(order: nil)
     }()
 
     internal var configuration: Configuration
@@ -306,7 +305,7 @@ public final class DropInComponent: NSObject,
 
 private extension Bundle {
 
-    // Name of the app - title under the icon.
+    /// Name of the app - title under the icon.
     var displayName: String {
         object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ??
             object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""

@@ -8,7 +8,7 @@
 import AdyenNetworking
 import Foundation
 
-/// API Client to handle ``AdyenSession`` related requests.
+/// API Client to handle ``Session`` related requests.
 /// All session related responses containing `sessionData` require updating the session data of the main `session` property,
 /// which is passed as a weak reference to this class.
 internal final class SessionAPIClient: APIClientProtocol {
@@ -31,7 +31,7 @@ internal final class SessionAPIClient: APIClientProtocol {
         self.onSessionResultUpdate = onSessionResultUpdate
     }
     
-    internal func perform<R>(_ request: R, completionHandler: @escaping CompletionHandler<R.ResponseType>) where R: Request {
+    internal func perform<R: Request>(_ request: R, completionHandler: @escaping CompletionHandler<R.ResponseType>) {
         apiClient.perform(request) { [weak self] result in
             guard let self else { return }
             // update session context with data and result code if exist

@@ -105,10 +105,10 @@ class ModalToolbarTests: XCTestCase {
         XCTAssertNotEqual(sut.cancelButton.image(for: .normal), UIImage(systemName: "cart"))
     }
 
-    func testCustomButtonStyle() {
+    func testCustomButtonStyle() throws {
         var style = NavigationStyle()
         
-        let customImage = UIImage(systemName: "cart")!
+        let customImage = try XCTUnwrap(UIImage(systemName: "cart"))
         style.cancelButton = .custom(customImage)
 
         sut = ModalToolbar(title: "SomeTitle", style: style)

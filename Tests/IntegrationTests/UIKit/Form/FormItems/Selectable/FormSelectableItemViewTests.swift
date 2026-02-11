@@ -22,6 +22,10 @@ private class FormSelectableValueItemMock: FormSelectableValueItem<String?> {
         super.init(value: nil, style: style, placeholder: placeholder)
         self.title = title
     }
+    
+    override func isEmpty() -> Bool {
+        value == nil
+    }
 }
 
 private class FormSelectableValueItemViewMock: FormSelectableValueItemView<String, FormSelectableValueItemMock> {}
@@ -223,28 +227,34 @@ class FormPickerItemViewStyleTests: XCTestCase {
         XCTAssertEqual(sut.valueLabel.font, AdyenTheme.default.elements.labels.body.font)
     }
 
-    // MARK: - AlertLabel Style Tests
+    // MARK: - FooterLabel Style Tests
 
-    func test_alertLabel_color_shouldUseThemeDestructiveColor() {
-        // After migration: alertLabel uses theme.colors.destructive for error color
+    func test_footerLabel_color_shouldUseThemeDestructiveColor() {
+        // Given - force validation to show error state
+        sut.showValidation()
+        
+        // Then - footerLabel uses destructive color when showing error
         let expectedColor = AdyenTheme.default.colors.destructive
         XCTAssertEqual(
-            sut.alertLabel.textColor?.resolvedColor(
-                with: UITraitCollection(userInterfaceStyle: .light)),
+            sut.footerLabel.textColor?.resolvedColor(
+                with: UITraitCollection(userInterfaceStyle: .light)
+            ),
             expectedColor.resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
         )
     }
 
-    func test_alertLabel_font_shouldUseThemeSubheadlineStyle() {
-        // Then - alertLabel font is styled by theme (in FormValidatableValueItemView)
+    func test_footerLabel_font_shouldUseThemeSubheadlineStyle() {
+        // Then - footerLabel font is styled by theme
         let expectedFont = AdyenTheme.default.elements.labels.subheadline.font
-        XCTAssertEqual(sut.alertLabel.font, expectedFont)
+        XCTAssertEqual(sut.footerLabel.font, expectedFont)
     }
 
-    func test_alertLabel_text_shouldUseItemValidationFailureMessage() {
-        // Given - TestFormPickerItem sets validationFailureMessage in updateValidationFailureMessage()
-        // Then
-        XCTAssertEqual(sut.alertLabel.text, "Please select a value")
+    func test_footerLabel_text_shouldUseItemValidationFailureMessage() {
+        // Given - force validation to show error message
+        sut.showValidation()
+        
+        // Then - TestFormPickerItem sets validationFailureMessage in updateValidationFailureMessage()
+        XCTAssertEqual(sut.footerLabel.text, "Please select a value")
     }
 
     // MARK: - View-Level Style Tests
@@ -265,13 +275,13 @@ class FormPickerItemViewStyleTests: XCTestCase {
     func test_view_backgroundColor_shouldUseStyleBackgroundColor() {
         // Given - Current behavior: uses item.style.backgroundColor
         var style = FormTextItemStyle()
-        style.backgroundColor = .systemYellow
+        style.backgroundColor = .yellow
         let customItem = TestFormPickerItem(style: style)
 
         // When
         let customSut = FormPickerItemView(item: customItem)
 
         // Then - Currently reads from item.style.backgroundColor
-        XCTAssertEqual(customSut.backgroundColor, .systemYellow)
+        XCTAssertEqual(customSut.backgroundColor, .yellow)
     }
 }

@@ -12,8 +12,13 @@ import XCTest
 
 final class IssuerListComponentUITests: XCTestCase {
 
-    private var context: AdyenContext { Dummy.context }
-    private var paymentMethod: IssuerListPaymentMethod { try! AdyenCoder.decode(issuerListDictionary) as IssuerListPaymentMethod }
+    private var context: AdyenContext {
+        Dummy.context
+    }
+
+    private var paymentMethod: IssuerListPaymentMethod {
+        try! AdyenCoder.decode(issuerListDictionary) as IssuerListPaymentMethod
+    }
 
     override func run() {
         AdyenDependencyValues.runTestWithValues {

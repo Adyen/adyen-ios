@@ -53,10 +53,10 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
         super.init(nibName: nil, bundle: Bundle(for: SecuredViewController.self))
     }
 
-//    /// Initializes the `SecuredViewController`.
-//    ///
-//    /// - Parameter child: The wrapped `UIViewController`.
-//    /// - Parameter theme: checkout theme.
+    ///    /// Initializes the `SecuredViewController`.
+    ///    ///
+    ///    /// - Parameter child: The wrapped `UIViewController`.
+    ///    /// - Parameter theme: checkout theme.
     package init(
         child: ChildViewController,
         style: ViewStyle = FormComponentStyle(),

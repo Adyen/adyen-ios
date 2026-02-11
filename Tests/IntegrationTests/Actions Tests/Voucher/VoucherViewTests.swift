@@ -63,7 +63,7 @@ class VoucherViewTests: XCTestCase {
         XCTAssertNil(mainButton)
         XCTAssertNotNil(addToAppleWalletButton)
         
-        addToAppleWalletButton!.sendActions(for: .touchUpInside)
+        addToAppleWalletButton?.sendActions(for: .touchUpInside)
         
         waitForExpectations(timeout: 5, handler: nil)
     }

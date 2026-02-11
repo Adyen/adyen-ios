@@ -12,6 +12,7 @@ internal protocol PreselectedPaymentMethodRouterListener: AnyObject {
     func didDismissPreselectedPaymentMethod(completion: (() -> Void)?)
 }
 
+// sourcery:AutoMockable
 internal protocol PreselectedPaymentMethodRouting: AnyObject {
     func presentPaymentMethodList()
     func present(paymentComponent: any PresentableComponent, onCancel: @escaping (() -> Void))

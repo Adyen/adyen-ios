@@ -10,14 +10,13 @@
 import Testing
 import UIKit
 
-@Suite
 @MainActor
 struct ComponentContainerViewControllerTests {
 
     // MARK: - Tests
 
     @Test
-    func viewDidDisappear_shouldCallViewModelCancel() async throws {
+    func viewDidDisappear_shouldCallViewModelCancel() async {
         // Given
         let (sut, viewModelMock, _) = await makeSUT()
 
@@ -29,7 +28,7 @@ struct ComponentContainerViewControllerTests {
     }
 
     @Test
-    func componentView_shouldMatchViewModelComponentViewController() async throws {
+    func componentView_shouldMatchViewModelComponentViewController() async {
         // Given
         let (sut, _, expectedComponentViewController) = await makeSUT()
 
@@ -56,7 +55,7 @@ struct ComponentContainerViewControllerTests {
     }
 
     @Test
-    func navigationItem() async throws {
+    func navigationItem() async {
         // Given
         let (sut, _, componentViewControllerMock) = await makeSUT()
         let expectedNavigationItemTitle = componentViewControllerMock.title

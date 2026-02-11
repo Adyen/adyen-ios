@@ -52,8 +52,6 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         child: formViewController,
         style: configuration.style
     )
-
-    package let requiresModalPresentation: Bool = true
     
     package let publicKeyProvider: AnyPublicKeyProvider
     

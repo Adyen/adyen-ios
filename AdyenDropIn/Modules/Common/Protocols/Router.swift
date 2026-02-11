@@ -7,6 +7,7 @@
 import Foundation
 import UIKit
 
+// sourcery:AutoMockable
 internal protocol Router: AnyObject {
     var childRouter: Router? { get }
     var rootViewController: UIViewController { get }

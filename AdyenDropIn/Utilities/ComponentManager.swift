@@ -118,7 +118,7 @@ internal final class ComponentManager {
         }
     }()
 
-    // Filter out payment methods without the Ecommerce shopper interaction.
+    /// Filter out payment methods without the Ecommerce shopper interaction.
     internal lazy var storedComponents: [PaymentComponent] = paymentMethods.stored.filter {
         $0.supportedShopperInteractions.contains(.shopperPresent)
     }.compactMap(component(for:))

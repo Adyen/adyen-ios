@@ -10,7 +10,7 @@ import XCTest
 
 class AddressViewModelTests: XCTestCase {
 
-    func testAddressValidation() throws {
+    func testAddressValidation() {
         
         var address = PostalAddress()
         XCTAssertFalse(address.satisfies(requiredFields: [.postalCode]))
@@ -30,7 +30,7 @@ class AddressViewModelTests: XCTestCase {
         XCTAssertTrue(address.satisfies(requiredFields: Set(AddressField.allCases)))
     }
     
-    func testViewModelRequiredFields() throws {
+    func testViewModelRequiredFields() {
         
         let viewModelBuilder = DefaultAddressViewModelBuilder()
 

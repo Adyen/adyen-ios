@@ -15,10 +15,6 @@ internal enum LocalizationMode: Equatable {
 /// like the localization table to use and the separator of the key strings.
 public struct LocalizationParameters: Equatable {
 
-    public static func == (lhs: LocalizationParameters, rhs: LocalizationParameters) -> Bool {
-        lhs.mode == rhs.mode
-    }
-
     internal let mode: LocalizationMode
 
     /// The locale identifier for external resources and numeric formats.

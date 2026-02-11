@@ -30,8 +30,8 @@ public class SearchViewController: UIViewController, AdyenObserver {
     /// Delegate to handle different viewController events.
     public weak var delegate: ViewControllerDelegate?
     
-    public lazy var resultsListViewController = ListViewController(style: viewModel.style)
-    
+    package lazy var resultsListViewController = ListViewController(style: viewModel.style)
+
     /// Initializes the search view controller.
     ///
     /// - Parameters:

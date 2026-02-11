@@ -11,15 +11,15 @@
 import Testing
 import UIKit
 
-@Suite
+@MainActor
 struct ComponentContainerViewModelTests {
 
     // MARK: - Tests
 
     @Test("The exposed componentViewController should match the one coming from the component's view controller")
-    func componentViewController_shouldMatchComponentViewController() async throws {
+    func componentViewController_shouldMatchComponentViewController() {
         // Given
-        let (sut, _, paymentComponentMock, _, _) = await makeSUT()
+        let (sut, _, paymentComponentMock, _, _) = makeSUT()
         let expectedComponentViewController = paymentComponentMock.viewController
 
         // When
@@ -30,9 +30,9 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func didSubmit_shouldCallDropInFlowManagerSubmit() async throws {
+    func didSubmit_shouldCallDropInFlowManagerSubmit() {
         // Given
-        let (sut, cardPaymentMethodMock, paymentComponentMock, dropInFlowManagerMock, _) = await makeSUT()
+        let (sut, cardPaymentMethodMock, paymentComponentMock, dropInFlowManagerMock, _) = makeSUT()
 
         // When
         let paymentData = makePaymentComponentData(paymentMethod: cardPaymentMethodMock)
@@ -43,9 +43,9 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func didFail_givenComponentError_shouldCallDropInFlowManagerFail() async throws {
+    func didFail_givenComponentError_shouldCallDropInFlowManagerFail() {
         // Given
-        let (sut, _, paymentComponentMock, dropInFlowManagerMock, _) = await makeSUT()
+        let (sut, _, paymentComponentMock, dropInFlowManagerMock, _) = makeSUT()
 
         // When
         let errorMock = ErrorMock(errorDescription: "Payment component's error")
@@ -56,9 +56,9 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func didFail_givenCancellation_shouldCallDropInFlowManagerCancel() async throws {
+    func didFail_givenCancellation_shouldCallDropInFlowManagerCancel() {
         // Given
-        let (sut, _, paymentComponentMock, dropInFlowManagerMock, _) = await makeSUT()
+        let (sut, _, paymentComponentMock, dropInFlowManagerMock, _) = makeSUT()
 
         // When
         let cancelledError = ComponentError.cancelled
@@ -70,9 +70,9 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func didFail_givenCancellation_shouldCallStopComponentLoading() async throws {
+    func didFail_givenCancellation_shouldCallStopComponentLoading() {
         // Given
-        let (sut, _, paymentComponentMock, _, _) = await makeSUT()
+        let (sut, _, paymentComponentMock, _, _) = makeSUT()
 
         // When
         let cancelledError = ComponentError.cancelled
@@ -83,7 +83,7 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func didFail_givenCancellation_shouldPerfomCancelCallback() async throws {
+    func didFail_givenCancellation_shouldPerfomCancelCallback() async {
         // Given
         await withCheckedContinuation { continuation in
             let onCancelCallback: () -> Void = {
@@ -91,7 +91,7 @@ struct ComponentContainerViewModelTests {
             }
 
             Task {
-                let (sut, _, paymentComponentMock, _, _) = await makeSUT(onCancel: onCancelCallback)
+                let (sut, _, paymentComponentMock, _, _) = makeSUT(onCancel: onCancelCallback)
 
                 // When
                 let cancelledError = ComponentError.cancelled
@@ -104,9 +104,9 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func didFail_givenCancellation_shouldCallRouterDismiss() async throws {
+    func didFail_givenCancellation_shouldCallRouterDismiss() {
         // Given
-        let (sut, _, paymentComponentMock, _, routerMock) = await makeSUT()
+        let (sut, _, paymentComponentMock, _, routerMock) = makeSUT()
 
         // When
         let cancelledError = ComponentError.cancelled
@@ -117,9 +117,9 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func presentActionComponent_shouldCallRouterPresentActionComponent() async throws {
+    func presentActionComponent_shouldCallRouterPresentActionComponent() {
         // Given
-        let (sut, _, _, _, routerMock) = await makeSUT()
+        let (sut, _, _, _, routerMock) = makeSUT()
 
         let contextMock = AdyenContext(
             apiContext: Dummy.apiContext,
@@ -127,7 +127,7 @@ struct ComponentContainerViewModelTests {
             amount: .init(value: 100, currencyCode: "EUR")
         )
         let redirectComponent = RedirectComponent(context: contextMock)
-        let viewControllerMock = await UIViewController()
+        let viewControllerMock = UIViewController()
         let actionComponentMock = PresentableComponentWrapper(component: redirectComponent, viewController: viewControllerMock)
 
         // When
@@ -138,9 +138,9 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func presentActionComponent_whenCancelled_shouldStopPaymentComponentLoading() async throws {
+    func presentActionComponent_whenCancelled_shouldStopPaymentComponentLoading() {
         // Given
-        let (sut, _, paymentComponentMock, _, routerMock) = await makeSUT()
+        let (sut, _, paymentComponentMock, _, routerMock) = makeSUT()
 
         let contextMock = AdyenContext(
             apiContext: Dummy.apiContext,
@@ -148,7 +148,7 @@ struct ComponentContainerViewModelTests {
             amount: .init(value: 100, currencyCode: "EUR")
         )
         let redirectComponent = RedirectComponent(context: contextMock)
-        let viewControllerMock = await UIViewController()
+        let viewControllerMock = UIViewController()
         let actionComponentMock = PresentableComponentWrapper(component: redirectComponent, viewController: viewControllerMock)
 
         routerMock.presentActionComponentOnCancelClosure = { _, onCancel in
@@ -162,9 +162,9 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func didCancel_shouldStopPaymentComponentLoading() async throws {
+    func didCancel_shouldStopPaymentComponentLoading() {
         // Given
-        let (sut, _, paymentComponentMock, _, _) = await makeSUT()
+        let (sut, _, paymentComponentMock, _, _) = makeSUT()
 
         let contextMock = AdyenContext(
             apiContext: Dummy.apiContext,
@@ -182,7 +182,7 @@ struct ComponentContainerViewModelTests {
 
     // MARK: - Helpers
 
-    private func makeSUT(onCancel: (() -> Void)? = nil) async -> (
+    private func makeSUT(onCancel: (() -> Void)? = nil) -> (
         sut: ComponentContainerViewModel,
         paymentMethodMock: CardPaymentMethodMock,
         paymentComponentMock: PresentableComponentMock,
@@ -194,7 +194,7 @@ struct ComponentContainerViewModelTests {
             name: "Card",
             brands: [.visa, .masterCard]
         )
-        let viewControllerMock = await UIViewController()
+        let viewControllerMock = UIViewController()
 
         let paymentComponentMock = PresentableComponentMock(
             paymentMethod: cardPaymentMethodMock,

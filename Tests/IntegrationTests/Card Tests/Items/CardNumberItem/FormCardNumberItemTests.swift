@@ -166,7 +166,7 @@ class FormCardNumberItemTests: XCTestCase {
         let sut = FormCardNumberItem(cardTypeLogos: [], localizationParameters: expectedLocalizationParameters)
         
         XCTAssertEqual(sut.title, localizedString(.cardNumberItemTitle, expectedLocalizationParameters))
-        XCTAssertEqual(sut.placeholder, localizedString(.cardNumberItemPlaceholder, expectedLocalizationParameters))
+        XCTAssertNil(sut.placeholder) // Brand icons are used instead of a placeholder
         XCTAssertEqual(sut.validationFailureMessage, localizedString(.cardNumberItemInvalid, expectedLocalizationParameters))
     }
     
@@ -175,26 +175,26 @@ class FormCardNumberItemTests: XCTestCase {
         let sut = FormCardNumberItem(cardTypeLogos: [], localizationParameters: expectedLocalizationParameters)
         
         XCTAssertEqual(sut.title, localizedString(LocalizationKey(key: "adyen_card_numberItem_title"), expectedLocalizationParameters))
-        XCTAssertEqual(sut.placeholder, localizedString(LocalizationKey(key: "adyen_card_numberItem_placeholder"), expectedLocalizationParameters))
+        XCTAssertNil(sut.placeholder) // Brand icons are used instead of a placeholder
         XCTAssertEqual(sut.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_numberItem_invalid"), expectedLocalizationParameters))
     }
     
-    func testCursorMovement() throws {
+    func testCursorMovement() {
         
         let textField = UITextField()
         textField.becomeFirstResponder()
         
         let item = FormCardNumberItem(cardTypeLogos: [])
         
-        /// Desired behavior
-        ///
-        /// 1234 56|31 0
-        /// 1234 567|3 10 // Adding 7 -> move 1 to the right
-        /// 1234 5678 |310 // Adding 8 -> move 2 to the right
-        /// 1234 5678 9|310 // Adding 9 -> move 1 to the right
-        /// 1234 5678| 310 // Removing 9 -> move 2 to the left
-        /// 1234 567|3 10 // Removing 8 -> move 1 to the left
-        /// 1234 56|31 0 // Removing 7 -> move 1 to the left
+        // Desired behavior
+        //
+        // 1234 56|31 0
+        // 1234 567|3 10 // Adding 7 -> move 1 to the right
+        // 1234 5678 |310 // Adding 8 -> move 2 to the right
+        // 1234 5678 9|310 // Adding 9 -> move 1 to the right
+        // 1234 5678| 310 // Removing 9 -> move 2 to the left
+        // 1234 567|3 10 // Removing 8 -> move 1 to the left
+        // 1234 56|31 0 // Removing 7 -> move 1 to the left
         
         // Adding a character
         

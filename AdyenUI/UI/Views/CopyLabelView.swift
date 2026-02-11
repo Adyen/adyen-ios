@@ -63,7 +63,9 @@ public final class CopyLabelView: UIView, Localizable {
         backgroundColor = UIColor.Adyen.lightGray
     }
 
-    override public var canBecomeFirstResponder: Bool { true }
+    override public var canBecomeFirstResponder: Bool {
+        true
+    }
 
     @objc private func handleCopy() {
         let pastBoard = UIPasteboard.general

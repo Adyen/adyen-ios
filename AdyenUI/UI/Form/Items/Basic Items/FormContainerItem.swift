@@ -13,7 +13,9 @@ public class FormContainerItem<ContentItem: FormItem>: FormItem {
 
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
 
-    public var subitems: [FormItem] { [content] }
+    public var subitems: [FormItem] {
+        [content]
+    }
 
     public var identifier: String?
 

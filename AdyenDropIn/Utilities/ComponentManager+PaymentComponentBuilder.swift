@@ -248,7 +248,8 @@ extension ComponentManager: PaymentComponentBuilder {
         #if canImport(PayKit)
             guard let cashAppPayDropInConfig = configuration.cashAppPay else {
                 AdyenAssertion.assertionFailure(
-                    message: "Cash App Pay configuration instance must not be nil in order to use CashAppPayComponent")
+                    message: "Cash App Pay configuration instance must not be nil in order to use CashAppPayComponent"
+                )
                 return nil
             }
             if #available(iOS 13.0, *) {

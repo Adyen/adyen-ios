@@ -31,7 +31,9 @@ public struct AddressStyle: FormValueItemStyle {
     public var backgroundColor: UIColor = .clear
 
     /// The color of form view item's separator line.
-    public var separatorColor: UIColor? { textField.separatorColor }
+    public var separatorColor: UIColor? {
+        textField.separatorColor
+    }
     
     /// Initializes the form address item configuration.
     /// - Parameters:

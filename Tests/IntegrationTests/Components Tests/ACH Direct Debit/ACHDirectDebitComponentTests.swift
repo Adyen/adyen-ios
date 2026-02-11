@@ -37,7 +37,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         )
     }
 
-    func testLocalizationWithCustomTableName() throws {
+    func testLocalizationWithCustomTableName() {
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
 
         let config = ACHDirectDebitComponentConfiguration()
@@ -73,7 +73,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         ))
     }
     
-    func testUIConfiguration() {
+    func testUIConfiguration() throws {
         // Given - use TestTheme helper for distinctive, verifiable styling
         var configuration = ACHDirectDebitComponentConfiguration().billingAddressCountryCodes(["US", "UK"])
         configuration.theme = TestTheme.distinctive()
@@ -92,7 +92,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         // MARK: - Assert text fields use theme styling
 
         let prefix = "AdyenComponents.ACHDirectDebitComponent"
-        sut.viewController.assertTextFieldsUseTheme(
+        try sut.viewController.assertTextFieldsUseTheme(
             [
                 "\(prefix).holderNameItem",
                 "\(prefix).bankAccountNumberItem",
@@ -103,7 +103,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
         // MARK: - Assert pay button uses theme styling
 
-        sut.viewController.assertButtonUsesTheme(
+        try sut.viewController.assertButtonUsesTheme(
             "\(prefix).payButtonItem",
             style: TestTheme.expectedButtonStyle
         )
@@ -150,18 +150,6 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.viewController.title, method.name.uppercased())
     }
     
-    func testRequiresModalPresentation() {
-        let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
-        let config = ACHDirectDebitComponentConfiguration().billingAddressCountryCodes(["US", "UK"])
-        let sut = ACHDirectDebitComponent(
-            paymentMethod: paymentMethod,
-            context: context,
-            configuration: config,
-            publicKeyProvider: PublicKeyProviderMock()
-        )
-        XCTAssertEqual(sut.requiresModalPresentation, true)
-    }
-
     func testStopLoading() {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let config = ACHDirectDebitComponentConfiguration().billingAddressCountryCodes(["US", "UK"])
@@ -199,9 +187,9 @@ class ACHDirectDebitComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        XCTAssertEqual(nameItemView?.alertLabel.text, "Invalid account holder name")
-        XCTAssertEqual(accountNumberItemView?.alertLabel.text, "Invalid account number")
-        XCTAssertEqual(routingNumberItemView?.alertLabel.text, "Invalid ABA routing number")
+        XCTAssertEqual(nameItemView?.footerLabel.text, "Invalid account holder name")
+        XCTAssertEqual(accountNumberItemView?.footerLabel.text, "Invalid account number")
+        XCTAssertEqual(routingNumberItemView?.footerLabel.text, "Invalid ABA routing number")
     }
     
     func testSubmission() throws {
@@ -247,7 +235,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 100)
     }
 
-    func testViewDidLoadShouldSendInitialCall() throws {
+    func testViewDidLoadShouldSendInitialCall() {
         
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()

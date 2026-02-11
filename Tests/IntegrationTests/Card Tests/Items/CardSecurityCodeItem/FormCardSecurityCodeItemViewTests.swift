@@ -35,7 +35,7 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testTextFieldSanitizationGivenNonAllowedCharactersShouldSanitizeAndFormatInput() throws {
+    func testTextFieldSanitizationGivenNonAllowedCharactersShouldSanitizeAndFormatInput() {
         // Given
         let expectedCVV = "458"
         let expectedFormattedCVV = formatter.formattedValue(for: expectedCVV)
@@ -51,7 +51,7 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         XCTAssertEqual(sut.textField.allowsEditingActions, false)
     }
 
-    func testTextFieldSanitizationGivenCorrectSecurityCodeShouldSanitizeAndFormatInput() throws {
+    func testTextFieldSanitizationGivenCorrectSecurityCodeShouldSanitizeAndFormatInput() {
         // Given
         let expectedCVV = "917"
         let expectedFormattedCVV = formatter.formattedValue(for: expectedCVV)

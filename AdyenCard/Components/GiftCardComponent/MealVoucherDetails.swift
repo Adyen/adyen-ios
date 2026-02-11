@@ -56,5 +56,7 @@ public struct MealVoucherDetails: PartialPaymentMethodDetails {
 }
 
 extension PaymentMethodType {
-    fileprivate static var mealVoucher: PaymentMethodType { PaymentMethodType.other("mealVoucher_FR") }
+    fileprivate static var mealVoucher: PaymentMethodType {
+        PaymentMethodType.other("mealVoucher_FR")
+    }
 }

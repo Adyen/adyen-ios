@@ -9,7 +9,7 @@ import XCTest
 @_spi(AdyenInternal) @testable import AdyenUI
 
 final class ListItemTests: XCTestCase {
-    // Checks COIOS-797: NSInternalInconsistencyException 1008: Item identifiers are not unique
+    /// Checks COIOS-797: NSInternalInconsistencyException 1008: Item identifiers are not unique
     func test_listItem_isAlwaysUnique() {
         let item1 = ListItem(title: "Test title 11", icon: .dummy(), trailingInfo: .text("Text"))
         let item2 = ListItem(title: "Test title 11", icon: .dummy(), trailingInfo: .text("Text"))

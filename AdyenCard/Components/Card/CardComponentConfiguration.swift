@@ -250,7 +250,7 @@ public protocol AnyCardComponentConfiguration {
     /// In `auto` mode the field will appear based on card bin lookup.
     var socialSecurityNumberMode: CardComponentConfiguration.FieldVisibility { get }
 
-    /// Billing address fields configurations
+    // Billing address fields configurations
 //    var billingAddress: BillingAddressConfiguration { get }
 
     /// Stored card configuration.

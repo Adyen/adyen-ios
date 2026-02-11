@@ -25,13 +25,13 @@ public final class BACSDirectDebitComponent: PaymentComponent, PaymentAware, Pre
 
     public let viewController: UIViewController
 
-    public var requiresModalPresentation: Bool = true
-
     /// The object that acts as the delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
 
     /// The BACS Direct Debit payment method.
-    public var paymentMethod: PaymentMethod { bacsPaymentMethod }
+    public var paymentMethod: PaymentMethod {
+        bacsPaymentMethod
+    }
 
     /// The context object for this component.
     @_spi(AdyenInternal)

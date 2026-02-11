@@ -29,7 +29,9 @@ public enum AnalyticsEnvironment: String, AnyAPIEnvironment {
     @_spi(AdyenInternal)
     case local = "http://localhost:8080/"
     
-    public var baseURL: URL { URL(string: rawValue)! }
+    public var baseURL: URL {
+        URL(string: rawValue)!
+    }
     
 }
 

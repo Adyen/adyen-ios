@@ -6,7 +6,7 @@
 
 import UIKit
 
-// Region of Interest (ROI) view.
+/// Region of Interest (ROI) view.
 internal class ROIView: UIView {
 
     // MARK: - Properties

@@ -34,7 +34,9 @@ public final class OnlineBankingComponent: PaymentComponent,
     @_spi(AdyenInternal)
     public var context: AdyenContext
 
-    public var paymentMethod: PaymentMethod { onlineBankingPaymentMethod }
+    public var paymentMethod: PaymentMethod {
+        onlineBankingPaymentMethod
+    }
 
     public weak var delegate: PaymentComponentDelegate?
 
@@ -42,8 +44,6 @@ public final class OnlineBankingComponent: PaymentComponent,
         child: formViewController,
         style: configuration.style
     )
-
-    public var requiresModalPresentation: Bool = true
 
     /// Component's configuration
     public var configuration: Configuration

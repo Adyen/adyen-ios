@@ -44,7 +44,7 @@ class BACSDirectDebitComponentTrackerTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testSendInitialEventShouldCallAnalyticsProviderSendInitialEvent() throws {
+    func testSendInitialEventShouldCallAnalyticsProviderSendInitialEvent() {
         // When
         sut.sendInitialAnalytics()
 

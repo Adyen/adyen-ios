@@ -39,7 +39,7 @@ class BACSInputFormViewControllerTests: XCTestCase {
         XCTAssertFalse(title.isEmpty)
     }
 
-    func testViewDidLoadShouldCallPresenterViewDidLoad() throws {
+    func testViewDidLoadShouldCallPresenterViewDidLoad() {
         // When
         sut.viewDidLoad()
 
@@ -47,7 +47,7 @@ class BACSInputFormViewControllerTests: XCTestCase {
         XCTAssertTrue(presenter.viewDidLoadCalled)
     }
 
-    func testViewWillAppearShouldCallPresenterViewWillAppear() throws {
+    func testViewWillAppearShouldCallPresenterViewWillAppear() {
         // When
         sut.viewWillAppear(true)
 

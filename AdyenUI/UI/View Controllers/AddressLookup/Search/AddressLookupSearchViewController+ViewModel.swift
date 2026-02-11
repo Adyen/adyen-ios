@@ -100,10 +100,11 @@ extension AddressLookupSearchViewController {
                 message: error.localizedDescription,
                 preferredStyle: .alert
             )
-            alert.addAction(.init(
-                title: localizedString(.dismissButton, localizationParameters),
-                style: .default
-            )
+            alert.addAction(
+                .init(
+                    title: localizedString(.dismissButton, localizationParameters),
+                    style: .default
+                )
             )
             presentationHandler(alert)
         }

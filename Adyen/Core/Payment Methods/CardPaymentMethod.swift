@@ -66,7 +66,9 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
 
     public let identifier: String
 
-    public var brands: [CardType] { [brand] }
+    public var brands: [CardType] {
+        [brand]
+    }
 
     public var fundingSource: CardFundingSource?
 

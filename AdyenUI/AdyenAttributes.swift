@@ -9,9 +9,5 @@ import Foundation
 package struct AdyenAttributes: Equatable {
     package var cornerRadius: CGFloat
 
-    internal init(cornerRadius: CGFloat) {
-        self.cornerRadius = cornerRadius
-    }
-
     internal static let `default` = AdyenAttributes(cornerRadius: AdyenUIConstants.defaultCornerRadius)
 }

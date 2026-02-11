@@ -44,7 +44,8 @@ public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
     }
 
     @_spi(AdyenInternal)
-    override public func phoneExtensions() -> [PhoneExtension] { qiwiWalletPaymentMethod.phoneExtensions
+    override public func phoneExtensions() -> [PhoneExtension] {
+        qiwiWalletPaymentMethod.phoneExtensions
     }
 
     @_spi(AdyenInternal)

@@ -30,7 +30,7 @@ extension TrackableComponent where Self: ViewControllerDelegate {
     }
 }
 
-// Generic extension to send events for all components and dropIn.
+/// Generic extension to send events for all components and dropIn.
 @_spi(AdyenInternal)
 extension TrackableComponent where Self: Component {
     

@@ -45,7 +45,9 @@ internal class CardViewController: FormViewController {
         return controller
     }()
     
-    private var isCardScannerAvailable: Bool { cardScannerController.isScannerAvailable }
+    private var isCardScannerAvailable: Bool {
+        cardScannerController.isScannerAvailable
+    }
 
     internal lazy var items = {
         

@@ -16,7 +16,9 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
         }
     }
 
-    override internal var accessibilityLabelView: UIView? { selectionButton }
+    override internal var accessibilityLabelView: UIView? {
+        selectionButton
+    }
 
     package required init(item: ItemType, theme: AdyenTheme) {
         super.init(item: item, theme: theme)
@@ -110,16 +112,6 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
         return valueLabel
     }()
 
-    internal lazy var footerLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 0
-        label.isAccessibilityElement = false
-        label.accessibilityIdentifier = item.identifier.map {
-            ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "footerLabel")
-        }
-        return label
-    }()
-
     // MARK: - Selection
 
     @objc
@@ -145,35 +137,12 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
 
         chevronView.tintColor = theme.colors.primary
         valueLabel.apply(theme.elements.labels.body)
-        footerLabel.apply(theme.elements.labels.subheadline)
-
-        footerLabel.text = item.placeholder
-        footerLabel.isHidden = item.placeholder.isEmpty
     }
 
     private func updateContainerBorderColor(isValid: Bool) {
         let style = theme.elements.textField
         let borderColor = isValid ? style.borderColor : style.errorColor
         containerView.layer.borderColor = borderColor.cgColor
-    }
-
-    // MARK: - Hint/Error Display
-
-    private func showHint() {
-
-        footerLabel.text = item.placeholder
-        footerLabel.textColor = theme.colors.textSecondary
-        footerLabel.isHidden = item.placeholder.isEmpty
-    }
-
-    private func showError(_ message: String?) {
-        guard let message, !message.isEmpty else {
-            showHint()
-            return
-        }
-        footerLabel.text = message
-        footerLabel.textColor = theme.colors.destructive
-        footerLabel.isHidden = false
     }
 
     // MARK: - Convenience
@@ -204,37 +173,9 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
 
     // MARK: - Validation
 
-    override open func updateValidationStatus(forced: Bool = false) {
-        guard forced else {
-            showHint()
-            updateContainerBorderColor(isValid: true)
-            accessibilityLabelView?.accessibilityLabel = item.title
-            return
-        }
-
-        if item.isValid() {
-            showHint()
-            updateContainerBorderColor(isValid: true)
-            accessibilityLabelView?.accessibilityLabel = item.title
-        } else {
-            showError(item.validationFailureMessage)
-            updateContainerBorderColor(isValid: false)
-            accessibilityLabelView?.accessibilityLabel = [
-                item.title,
-                item.validationFailureMessage
-            ].compactMap { $0 }.joined(separator: ", ")
-
-            if let validationStatus = item.validationStatus(),
-               let error = validationStatus.validationError {
-                item.onDidShowValidationError?(error)
-            }
-        }
-    }
-
-    override internal func resetValidationStatus() {
-        showHint()
-        updateContainerBorderColor(isValid: true)
-        accessibilityLabelView?.accessibilityLabel = item.title
+    override package func onValidationStateChanged(state: ValidationState) {
+        super.onValidationStateChanged(state: state)
+        updateContainerBorderColor(isValid: !state.shouldShowError)
     }
 }
 

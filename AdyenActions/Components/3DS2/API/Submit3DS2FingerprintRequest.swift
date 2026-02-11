@@ -12,7 +12,9 @@ internal struct Submit3DS2FingerprintRequest: APIRequest {
 
     internal typealias ResponseType = Submit3DS2FingerprintResponse
 
-    internal var path: String { "checkoutshopper/v1/submitThreeDS2Fingerprint" }
+    internal var path: String {
+        "checkoutshopper/v1/submitThreeDS2Fingerprint"
+    }
 
     internal var counter: UInt = 0
 

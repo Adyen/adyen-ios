@@ -38,7 +38,9 @@ public final class LazyOptional<ValueType> {
         
     }
     
-    public var projectedValue: LazyOptional { self }
+    public var projectedValue: LazyOptional {
+        self
+    }
     
     /// Dealloc the property, and it will get initialized when called again.
     public func reset() {

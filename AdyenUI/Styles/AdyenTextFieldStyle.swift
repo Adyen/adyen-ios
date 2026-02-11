@@ -70,7 +70,7 @@ package struct AdyenTextFieldStyle {
     }
 }
 
-// This extension adds the method chaining to the AdyenTextFieldStyle struct.
+/// This extension adds the method chaining to the AdyenTextFieldStyle struct.
 extension AdyenTextFieldStyle {
     
     /// Returns a new style with the specified background color.

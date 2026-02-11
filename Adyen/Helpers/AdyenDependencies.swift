@@ -37,7 +37,9 @@ public struct AdyenDependencyValues {
     /// A static subscript accessor for updating and references dependencies directly.
     ///
     /// Used only by ``AdyenDependency`` to get the current value for a dependency
-    fileprivate subscript<T>(_ keyPath: KeyPath<AdyenDependencyValues, T>) -> T { self[keyPath: keyPath] }
+    fileprivate subscript<T>(_ keyPath: KeyPath<AdyenDependencyValues, T>) -> T {
+        self[keyPath: keyPath]
+    }
     
     /// Supply custom test values for specific dependencies
     ///
@@ -72,7 +74,9 @@ public struct AdyenDependencyValues {
 @propertyWrapper
 public struct AdyenDependency<T> {
     private let keyPath: KeyPath<AdyenDependencyValues, T>
-    public var wrappedValue: T { AdyenDependencyValues.current[keyPath] }
+    public var wrappedValue: T {
+        AdyenDependencyValues.current[keyPath]
+    }
     
     public init(_ keyPath: KeyPath<AdyenDependencyValues, T>) {
         self.keyPath = keyPath

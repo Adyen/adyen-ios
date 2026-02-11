@@ -27,11 +27,6 @@ internal struct NativeRedirectResultRequest: Request {
 
     internal let returnQueryString: String
 
-    internal init(redirectData: String?, returnQueryString: String) {
-        self.redirectData = redirectData
-        self.returnQueryString = returnQueryString
-    }
-
     private enum CodingKeys: String, CodingKey {
         case redirectData
         case returnQueryString

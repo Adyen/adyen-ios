@@ -8,7 +8,10 @@ import Foundation
 import UIKit
 
 internal final class DummyCardScannerController: CardScannerControlling {
-    internal var isScannerAvailable: Bool { false }
+    internal var isScannerAvailable: Bool {
+        false
+    }
+
     internal var onScanComplete: ((Result<CardScannerCardDetails, any Error>) -> Void)?
     internal var title: String?
     internal func openCardScanner() { /* Empty implementation */ }
@@ -24,7 +27,9 @@ internal final class DummyCardScannerController: CardScannerControlling {
     // MARK: - Helpers
 
     internal struct DummyCardScannerAvailability: CardScannerAvailability {
-        internal var isScannerAvailable: Bool { false }
+        internal var isScannerAvailable: Bool {
+            false
+        }
     }
 
     internal struct DummyCardScannerProvider: CardScannerProviding {

@@ -69,7 +69,8 @@ class FormViewControllerTests: XCTestCase {
         // Then
         let scrollView = try XCTUnwrap(
             sut.view.subviews.filter { $0 is UIScrollView
-            }.first)
+            }.first
+        )
         let formView = try XCTUnwrap(scrollView.subviews.filter { $0 is FormView }.first)
         let stackView = try XCTUnwrap(formView.subviews.filter { $0 is UIStackView }.first)
         let cardHolderItemView = try XCTUnwrap(stackView.subviews.last as? FormTextInputItemView)

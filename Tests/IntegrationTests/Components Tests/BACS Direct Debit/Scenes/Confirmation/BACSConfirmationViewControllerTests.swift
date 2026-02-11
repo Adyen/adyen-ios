@@ -33,7 +33,7 @@ class BACSConfirmationViewControllerTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testViewDidLoadShouldCallPresenterViewDidLoad() throws {
+    func testViewDidLoadShouldCallPresenterViewDidLoad() {
         // When
         sut.viewDidLoad()
 
@@ -41,7 +41,7 @@ class BACSConfirmationViewControllerTests: XCTestCase {
         XCTAssertTrue(presenter.viewDidLoadCalled)
     }
 
-    func testSetUsetInteractionWhenSetToFalseShouldDisableViewUserInteraction() throws {
+    func testSetUsetInteractionWhenSetToFalseShouldDisableViewUserInteraction() {
         // When
         sut.setUserInteraction(enabled: false)
 
@@ -49,7 +49,7 @@ class BACSConfirmationViewControllerTests: XCTestCase {
         XCTAssertFalse(sut.view.isUserInteractionEnabled)
     }
 
-    func testSetUsetInteractionWhenSetToTrueShouldEnableViewUserInteraction() throws {
+    func testSetUsetInteractionWhenSetToTrueShouldEnableViewUserInteraction() {
         // When
         sut.setUserInteraction(enabled: true)
 

@@ -18,7 +18,7 @@ class CardComponentUITests: XCTestCase {
         brands: [.accel]
     )
     
-    func test_all_fields() throws {
+    func test_all_fields() {
 
         let configuration = CardComponentConfiguration.extended
         
@@ -31,7 +31,7 @@ class CardComponentUITests: XCTestCase {
         verifyViewControllerImage(matching: sut.viewController, named: "CardComponentUITests.\(#function)")
     }
     
-    func test_hidden_cvc() throws {
+    func test_hidden_cvc() {
         
         var configuration = CardComponentConfiguration.minimal
         configuration.showsSecurityCodeField = false
@@ -45,7 +45,7 @@ class CardComponentUITests: XCTestCase {
         verifyViewControllerImage(matching: sut.viewController, named: "CardComponentUITests.\(#function)")
     }
     
-    func test_billing_address_modes() throws {
+    func test_billing_address_modes() {
         
         var configuration = CardComponentConfiguration.minimal
         

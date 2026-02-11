@@ -15,10 +15,10 @@ public final class TwintSDKAction: PaymentDataAware, Decodable {
     /// The server-generated payment data that should be submitted to the `/payments/details` endpoint.
     public let paymentData: String
 
-    // The payment method type
+    /// The payment method type
     public let paymentMethodType: String
 
-    // The payment method subtype
+    /// The payment method subtype
     public let type: String
     
     internal enum CodingKeys: CodingKey {

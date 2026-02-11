@@ -30,7 +30,7 @@ class DokuComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testLocalizationWithCustomTableName() throws {
+    func testLocalizationWithCustomTableName() {
         let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(
             tableName: "AdyenUIHost",
             keySeparator: nil
@@ -57,7 +57,7 @@ class DokuComponentTests: XCTestCase {
         XCTAssertEqual(sut.button.title, localizedString(.confirmPurchase, sut.configuration.localizationParameters))
     }
 
-    func testLocalizationWithCustomKeySeparator() throws {
+    func testLocalizationWithCustomKeySeparator() {
         let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(
             tableName: "AdyenUIHostCustomSeparator",
             keySeparator: "_"
@@ -97,16 +97,6 @@ class DokuComponentTests: XCTestCase {
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.DokuComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, self.paymentMethod.name)
-    }
-
-    func testRequiresModalPresentation() {
-        let dokuPaymentMethod = DokuPaymentMethod(type: .dokuWallet, name: "Test name")
-        let sut = DokuComponent(
-            paymentMethod: dokuPaymentMethod,
-            context: context,
-            configuration: DokuComponent.Configuration()
-        )
-        XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
     func testDokuPrefilling() throws {
@@ -166,7 +156,7 @@ class DokuComponentTests: XCTestCase {
         XCTAssertTrue(email.isEmpty)
     }
 
-    func testViewDidLoadShouldSendInitialCall() throws {
+    func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)

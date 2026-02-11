@@ -10,7 +10,7 @@ import XCTest
 class RedirectDetailsTests: XCTestCase {
     
     func testPayloadExtractionFromURL() throws {
-        let url = URL(string: "url://?param1=abc&payload=some&param2=3")!
+        let url = try XCTUnwrap(URL(string: "url://?param1=abc&payload=some&param2=3"))
         let details = try RedirectDetails(returnURL: url)
         XCTAssertEqual(details.payload, "some")
         XCTAssertNil(details.queryString)
@@ -22,7 +22,7 @@ class RedirectDetailsTests: XCTestCase {
     }
     
     func testRedirectResultExtractionFromURL() throws {
-        let url = URL(string: "url://?param1=abc&redirectResult=some&param2=3")!
+        let url = try XCTUnwrap(URL(string: "url://?param1=abc&redirectResult=some&param2=3"))
         let details = try RedirectDetails(returnURL: url)
         XCTAssertEqual(details.redirectResult, "some")
         XCTAssertNil(details.queryString)
@@ -34,7 +34,7 @@ class RedirectDetailsTests: XCTestCase {
     }
     
     func testPaResAndMDExtractionFromURL() throws {
-        let url = URL(string: "url://?param1=abc&PaRes=some&MD=lorem")!
+        let url = try XCTUnwrap(URL(string: "url://?param1=abc&PaRes=some&MD=lorem"))
         let details = try RedirectDetails(returnURL: url)
         XCTAssertEqual(details.paymentResponse, "some")
         XCTAssertEqual(details.merchantData, "lorem")
@@ -46,7 +46,7 @@ class RedirectDetailsTests: XCTestCase {
     }
     
     func testRedirectResultExtractionFromURLWithEncodedParameter() throws {
-        let url = URL(string: "url://?param1=abc&redirectResult=encoded%21%20%40%20%24&param2=3")!
+        let url = try XCTUnwrap(URL(string: "url://?param1=abc&redirectResult=encoded%21%20%40%20%24&param2=3"))
         let details = try RedirectDetails(returnURL: url)
         XCTAssertEqual(details.redirectResult, "encoded! @ $")
         XCTAssertNil(details.queryString)
@@ -58,7 +58,7 @@ class RedirectDetailsTests: XCTestCase {
     }
 
     func testQueryStringExtractionFromURL() throws {
-        let url = URL(string: "url://?param1=abc&pp=H7j5+pwnbNk8uKpS/m67rDp/K+AiJbQ==&param2=3")!
+        let url = try XCTUnwrap(URL(string: "url://?param1=abc&pp=H7j5+pwnbNk8uKpS/m67rDp/K+AiJbQ==&param2=3"))
         let details = try RedirectDetails(returnURL: url)
         XCTAssertEqual(details.queryString, "param1=abc&pp=H7j5+pwnbNk8uKpS/m67rDp/K+AiJbQ==&param2=3")
         XCTAssertNil(details.redirectResult)
@@ -70,7 +70,7 @@ class RedirectDetailsTests: XCTestCase {
     }
 
     func testExtractionFromURLWithoutQuery() throws {
-        let url = URL(string: "url://")!
+        let url = try XCTUnwrap(URL(string: "url://"))
         XCTAssertThrowsError(try RedirectDetails(returnURL: url), "") { error in
             XCTAssertTrue(error is RedirectDetails.Error)
             XCTAssertEqual(error.localizedDescription, "Couldn't find payload, redirectResult or PaRes/md keys in the query parameters.")
@@ -78,7 +78,7 @@ class RedirectDetailsTests: XCTestCase {
     }
 
     func testEncoding() throws {
-        let url = URL(string: "badURL")!
+        let url = try XCTUnwrap(URL(string: "badURL"))
         XCTAssertThrowsError(try RedirectDetails(returnURL: url), "") { error in
             XCTAssertTrue(error is RedirectDetails.Error)
             XCTAssertEqual(error.localizedDescription, "Couldn't find payload, redirectResult or PaRes/md keys in the query parameters.")

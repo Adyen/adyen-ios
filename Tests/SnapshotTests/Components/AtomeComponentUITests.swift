@@ -31,10 +31,10 @@ class AtomeComponentUITests: XCTestCase {
         try super.tearDownWithError()
     }
     
-    func testUIConfiguration() throws {
+    func testUIConfiguration() {
         style.backgroundColor = .green
 
-        /// Footer
+        // Footer
         style.mainButtonItem.button.title.color = .white
         style.mainButtonItem.button.title.backgroundColor = .red
         style.mainButtonItem.button.title.textAlignment = .center
@@ -42,7 +42,7 @@ class AtomeComponentUITests: XCTestCase {
         style.mainButtonItem.button.backgroundColor = .red
         style.mainButtonItem.backgroundColor = .brown
 
-        /// Text field
+        // Text field
         style.textField.text.color = .yellow
         style.textField.text.font = .systemFont(ofSize: 5)
         style.textField.text.textAlignment = .center
@@ -68,7 +68,7 @@ class AtomeComponentUITests: XCTestCase {
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
-    func testAllRequiredTextField_shouldExist() throws {
+    func testAllRequiredTextField_shouldExist() {
         let config = AtomeComponent.Configuration(shopperInformation: shopperInformation)
         let sut = AtomeComponent(
             paymentMethod: paymentMethod,
@@ -128,7 +128,7 @@ class AtomeComponentUITests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testAtome_givenNoShopperInformation_shouldNotPrefill() throws {
+    func testAtome_givenNoShopperInformation_shouldNotPrefill() {
         // Given
         let sut = AtomeComponent(
             paymentMethod: paymentMethod,
@@ -158,7 +158,7 @@ class AtomeComponentUITests: XCTestCase {
 
     private var shopperInformation: PrefilledShopperInformation {
         let billingAddress = PostalAddressMocks.singaporePostalAddress
-        let shopperInformation = PrefilledShopperInformation(
+        return PrefilledShopperInformation(
             shopperName: ShopperName(
                 firstName: "Katrina",
                 lastName: "Del Mar"
@@ -166,6 +166,5 @@ class AtomeComponentUITests: XCTestCase {
             phoneNumber: PhoneNumber(value: "1234567", callingCode: "+1"),
             billingAddress: billingAddress
         )
-        return shopperInformation
     }
 }

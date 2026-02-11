@@ -24,9 +24,9 @@ public final class BoletoComponent: PaymentComponent,
 
     public weak var delegate: PaymentComponentDelegate?
         
-    public var paymentMethod: PaymentMethod { boletoPaymentMethod }
-
-    public let requiresModalPresentation: Bool = true
+    public var paymentMethod: PaymentMethod {
+        boletoPaymentMethod
+    }
     
     /// The Component's configuration.
     public var configuration: Configuration

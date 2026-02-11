@@ -36,10 +36,10 @@ enum TestTheme {
     /// Default distinctive colors for testing
     enum Colors {
         static let primary: UIColor = .systemPink
-        static let container: UIColor = .systemYellow
+        static let container: UIColor = .yellow
         static let containerOutline: UIColor = .init(red: 0.5, green: 0.0, blue: 0.5, alpha: 1.0)
-        static let highlight: UIColor = .systemBlue
-        static let buttonBackground: UIColor = .systemRed
+        static let highlight: UIColor = .blue
+        static let buttonBackground: UIColor = .red
         static let buttonText: UIColor = .white
     }
 

@@ -42,6 +42,7 @@ class FormCardNumberItemViewTests: XCTestCase {
         
         let sut = setupSut(validator: validator)
         sut.isEditing = true
+        sut.item.value = "123456"
         sut.textField.text = "123456"
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
@@ -61,6 +62,7 @@ class FormCardNumberItemViewTests: XCTestCase {
         let sut = setupSut(validator: validator)
         sut.isEditing = true
         sut.textField.text = "5454545454545454"
+        sut.item.value = "5454545454545454"
         sut.textField.delegate?.textFieldDidEndEditing?(sut.textField)
         
         wait(for: [validationExpectation], timeout: 10)
@@ -69,7 +71,7 @@ class FormCardNumberItemViewTests: XCTestCase {
         }
     }
 
-    func testTextFieldSanitizationGivenNonAllowedCharactersShouldSanitizeAndFormatInput() throws {
+    func testTextFieldSanitizationGivenNonAllowedCharactersShouldSanitizeAndFormatInput() {
         // Given
         let cardNumberFormatter = CardNumberFormatter()
         let cardNumberValidator = CardNumberValidator(
@@ -99,7 +101,7 @@ class FormCardNumberItemViewTests: XCTestCase {
         XCTAssertEqual(expectedTextFieldText, sut.textField.text)
     }
 
-    func testTextFieldSanitizationGivenCorrectCardNumberShouldSanitizeAndFormatInput() throws {
+    func testTextFieldSanitizationGivenCorrectCardNumberShouldSanitizeAndFormatInput() {
         // Given
         let cardNumberFormatter = CardNumberFormatter()
         let cardNumberValidator = CardNumberValidator(

@@ -28,8 +28,6 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     public weak var presentationDelegate: PresentationDelegate?
 
     public weak var delegate: ActionComponentDelegate?
-
-    public let requiresModalPresentation: Bool = true
     
     /// The voucher component configurations.
     public struct Configuration {

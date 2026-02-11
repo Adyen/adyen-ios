@@ -13,7 +13,7 @@ import XCTest
 // TODO: DropInComponent tests need be rewritten pretty much from scratch.
 // TODO: All the logic being tested here will be splitted among the different drop-in modules.
 class DropInTests: XCTestCase {
-//
+    ///
     static let paymentMethods =
         """
         {

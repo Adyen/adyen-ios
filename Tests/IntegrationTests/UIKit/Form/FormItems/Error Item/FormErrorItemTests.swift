@@ -10,7 +10,7 @@ import XCTest
 
 class FormErrorItemTests: XCTestCase {
 
-    func testHidingAndShowing() throws {
+    func testHidingAndShowing() {
         let formViewController = FormViewController(style: FormComponentStyle())
 
         formViewController.loadViewIfNeeded()

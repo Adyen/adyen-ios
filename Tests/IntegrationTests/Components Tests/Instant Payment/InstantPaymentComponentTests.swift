@@ -41,7 +41,7 @@ class InstantPaymentComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testCustomPaymentData() throws {
+    func testCustomPaymentData() {
         let delegateExpectation = expectation(description: "expect delegate to be called.")
         delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === self.sut)

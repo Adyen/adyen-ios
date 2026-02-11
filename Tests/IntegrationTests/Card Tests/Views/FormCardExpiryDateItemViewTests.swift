@@ -10,7 +10,7 @@
 import XCTest
 
 class FormCardExpiryDateItemViewTests: XCTestCase {
-//
+    ///
     func testAccessibilityLabelWithEmptyTitle() {
         // Given
         let sut = makeSUT(item: FormCardExpiryDateItem())

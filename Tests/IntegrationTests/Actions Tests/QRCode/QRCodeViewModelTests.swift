@@ -58,7 +58,7 @@ class QRCodeViewModelTests: XCTestCase {
     
     // MARK: - performAction (.copyCode)
     
-    func test_performAction_copyCode_callOnCopyCode() throws {
+    func test_performAction_copyCode_callOnCopyCode() {
         // Given
         let copyCodeExpectation = expectation(description: "copyCode was not called")
         var receivedCode: String?
@@ -102,7 +102,7 @@ class QRCodeViewModelTests: XCTestCase {
         wait(for: [expectation], timeout: 2.5)
     }
     
-    func test_performAction_copyCode_startAnimation() throws {
+    func test_performAction_copyCode_startAnimation() {
         // Given
         let expectedView = UIView()
         let copyCodeExpectation = expectation(description: "copyCode was not called")

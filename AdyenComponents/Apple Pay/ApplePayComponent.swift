@@ -24,7 +24,9 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     public let context: AdyenContext
 
     /// The Apple Pay payment method.
-    public var paymentMethod: PaymentMethod { applePayPaymentMethod }
+    public var paymentMethod: PaymentMethod {
+        applePayPaymentMethod
+    }
 
     internal let configuration: Configuration
 

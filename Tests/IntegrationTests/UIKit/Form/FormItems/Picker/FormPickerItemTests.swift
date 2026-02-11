@@ -57,7 +57,7 @@ class FormPickerItemTests: XCTestCase {
 //        wait(for: [dismissViewControllerExpectation], timeout: 10)
 //    }
     
-    func testAssertions() throws {
+    func testAssertions() {
         
         let formPickerItem = FormPickerItem<FormPickerElement>(
             preselectedValue: nil,

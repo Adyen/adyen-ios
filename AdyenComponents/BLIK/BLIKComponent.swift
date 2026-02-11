@@ -18,7 +18,9 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     @_spi(AdyenInternal)
     public let context: AdyenContext
     
-    public var paymentMethod: PaymentMethod { blikPaymentMethod }
+    public var paymentMethod: PaymentMethod {
+        blikPaymentMethod
+    }
 
     public weak var delegate: PaymentComponentDelegate?
 
@@ -29,8 +31,6 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
     
     /// Component's configuration
     public var configuration: BLIKComponentConfiguration
-
-    public let requiresModalPresentation: Bool = true
 
     private let blikPaymentMethod: BLIKPaymentMethod
 

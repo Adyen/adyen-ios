@@ -13,14 +13,18 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
     
     public let type: PaymentMethodType = .bcmc
     
-    public var name: String { storedCardPaymentMethod.name }
+    public var name: String {
+        storedCardPaymentMethod.name
+    }
     
     public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? {
         get { storedCardPaymentMethod.merchantProvidedDisplayInformation }
         set { storedCardPaymentMethod.merchantProvidedDisplayInformation = newValue }
     }
 
-    public var identifier: String { storedCardPaymentMethod.identifier }
+    public var identifier: String {
+        storedCardPaymentMethod.identifier
+    }
 
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         storedCardPaymentMethod.displayInformation(using: parameters)
@@ -34,16 +38,24 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
     public let brand: String = PaymentMethodType.bcmc.rawValue
     
     /// The last four digits of the card number.
-    public var lastFour: String { storedCardPaymentMethod.lastFour }
+    public var lastFour: String {
+        storedCardPaymentMethod.lastFour
+    }
     
     /// The month the card expires.
-    public var expiryMonth: String { storedCardPaymentMethod.expiryMonth }
+    public var expiryMonth: String {
+        storedCardPaymentMethod.expiryMonth
+    }
     
     /// The year the card expires.
-    public var expiryYear: String { storedCardPaymentMethod.expiryYear }
+    public var expiryYear: String {
+        storedCardPaymentMethod.expiryYear
+    }
     
     /// The name of the cardholder.
-    public var holderName: String? { storedCardPaymentMethod.holderName }
+    public var holderName: String? {
+        storedCardPaymentMethod.holderName
+    }
     
     @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {

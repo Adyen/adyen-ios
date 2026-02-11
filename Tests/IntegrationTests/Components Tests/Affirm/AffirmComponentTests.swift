@@ -39,18 +39,13 @@ class AffirmComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
     
-    func testComponent_shouldPaymentMethodTypeBeAffirm() throws {
+    func testComponent_shouldPaymentMethodTypeBeAffirm() {
         // Given
         let expectedPaymentMethodType: PaymentMethodType = .affirm
         
         // Then
         let paymentMethodType = sut.paymentMethod.type
         XCTAssertEqual(paymentMethodType, expectedPaymentMethodType)
-    }
-    
-    func testComponent_shouldRequireModalPresentation() throws {
-        // Then
-        XCTAssertTrue(sut.requiresModalPresentation)
     }
     
     func testCreatePaymentDetails_withSeparateDeliveryAddressDisabled_shouldCreateDetailsWithSameBillingAndDeliveryAddress() throws {
@@ -179,7 +174,7 @@ class AffirmComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func testGetPhoneExtensions_shouldReturnNonEmptyPhoneExtensionList() throws {
+    func testGetPhoneExtensions_shouldReturnNonEmptyPhoneExtensionList() {
         // When
         let phoneExtensions = sut.phoneExtensions()
         
@@ -321,7 +316,7 @@ class AffirmComponentTests: XCTestCase {
         XCTAssertNil(deliveryAddressView.item.value)
     }
 
-    func testViewDidLoadShouldSendInitialCall() throws {
+    func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
@@ -354,7 +349,7 @@ class AffirmComponentTests: XCTestCase {
     private var shopperInformation: PrefilledShopperInformation {
         let billingAddress = PostalAddressMocks.newYorkPostalAddress
         let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
-        let shopperInformation = PrefilledShopperInformation(
+        return PrefilledShopperInformation(
             shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
             emailAddress: "katrina@mail.com",
             phoneNumber: PhoneNumber(value: "1234567", callingCode: "+1"),
@@ -362,12 +357,11 @@ class AffirmComponentTests: XCTestCase {
             deliveryAddress: deliveryAddress,
             socialSecurityNumber: "78542134370"
         )
-        return shopperInformation
     }
 
     private var shopperInformationNoDeliveryAddress: PrefilledShopperInformation {
         let billingAddress = PostalAddressMocks.newYorkPostalAddress
-        let shopperInformation = PrefilledShopperInformation(
+        return PrefilledShopperInformation(
             shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
             emailAddress: "katrina@mail.com",
             phoneNumber: nil,
@@ -375,7 +369,6 @@ class AffirmComponentTests: XCTestCase {
             deliveryAddress: nil,
             socialSecurityNumber: "78542134370"
         )
-        return shopperInformation
     }
 
 }

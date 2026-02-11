@@ -18,7 +18,7 @@ final class CardScannerViewControllerTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testViewDidLoadShouldCallViewModelRequestCaptureAuthorization() throws {
+    func testViewDidLoadShouldCallViewModelRequestCaptureAuthorization() {
         // Given
         viewModel = CardScannerViewModelMock()
         sut = CardScannerViewController(viewModel: viewModel)
@@ -37,7 +37,7 @@ final class CardScannerViewControllerTests: XCTestCase {
         wait(for: [expectation], timeout: 0.1)
     }
 
-    func testViewWillAppearShouldStartCaptureSession() throws {
+    func testViewWillAppearShouldStartCaptureSession() {
         // Given
         viewModel = CardScannerViewModelMock()
         sut = CardScannerViewController(viewModel: viewModel)
@@ -49,7 +49,7 @@ final class CardScannerViewControllerTests: XCTestCase {
         XCTAssertEqual(viewModel.startCaptureSessionCallsCount, 1)
     }
 
-    func testViewWillDisappearShouldStopCaptureSession() throws {
+    func testViewWillDisappearShouldStopCaptureSession() {
         // Given
         viewModel = CardScannerViewModelMock()
         sut = CardScannerViewController(viewModel: viewModel)
@@ -61,7 +61,7 @@ final class CardScannerViewControllerTests: XCTestCase {
         XCTAssertEqual(viewModel.stopCaptureSessionCallsCount, 1)
     }
 
-    func testViewDidLayoutSubviewsShouldUpdateVideoOrientation() throws {
+    func testViewDidLayoutSubviewsShouldUpdateVideoOrientation() {
         // Given
         viewModel = CardScannerViewModelMock()
         sut = CardScannerViewController(viewModel: viewModel)

@@ -16,19 +16,24 @@ class PayToComponentUITests: XCTestCase {
         type: .payTo,
         name: "payto"
     )
-    private var context: AdyenContext { Dummy.context }
-    private var style: FormComponentStyle { FormComponentStyle() }
+    private var context: AdyenContext {
+        Dummy.context
+    }
+
+    private var style: FormComponentStyle {
+        FormComponentStyle()
+    }
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         BrowserInfo.cachedUserAgent = "some_value"
     }
 
-    func test_UI_configuration() throws {
+    func test_UI_configuration() {
         var style = style
         style.backgroundColor = .green
 
-        /// Footer
+        // Footer
         style.mainButtonItem.button.title.color = .white
         style.mainButtonItem.button.title.backgroundColor = .red
         style.mainButtonItem.button.title.textAlignment = .center
@@ -36,7 +41,7 @@ class PayToComponentUITests: XCTestCase {
         style.mainButtonItem.button.backgroundColor = .red
         style.mainButtonItem.backgroundColor = .brown
 
-        /// Text field
+        // Text field
         style.textField.text.color = .yellow
         style.textField.text.font = .systemFont(ofSize: 5)
         style.textField.text.textAlignment = .left
@@ -70,7 +75,7 @@ class PayToComponentUITests: XCTestCase {
         var style = style
         style.backgroundColor = .green
 
-        /// Footer
+        // Footer
         style.mainButtonItem.button.title.color = .white
         style.mainButtonItem.button.title.backgroundColor = .red
         style.mainButtonItem.button.title.textAlignment = .center
@@ -78,7 +83,7 @@ class PayToComponentUITests: XCTestCase {
         style.mainButtonItem.button.backgroundColor = .red
         style.mainButtonItem.backgroundColor = .brown
 
-        /// Text field
+        // Text field
         style.textField.text.color = .yellow
         style.textField.text.font = .systemFont(ofSize: 5)
         style.textField.text.textAlignment = .center
@@ -94,7 +99,7 @@ class PayToComponentUITests: XCTestCase {
         style.textField.title.textAlignment = .left
         style.textField.backgroundColor = .blue
 
-        /// segmentedControlStyle
+        // segmentedControlStyle
         style.segmentedControlStyle.tintColor = .yellow
         style.segmentedControlStyle.backgroundColor = .blue
         style.segmentedControlStyle.textStyle.backgroundColor = .systemPink

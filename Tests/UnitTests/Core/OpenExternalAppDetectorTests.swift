@@ -49,7 +49,7 @@ class OpenExternalAppDetectorTests: XCTestCase {
         wait(for: [didOpenExpectation], timeout: 1)
     }
     
-    func test_customDetectionDelay() throws {
+    func test_customDetectionDelay() {
         let openAppDetector = OpenExternalAppDetector(detectionDelay: .seconds(0))
         let expectedDate = Date()
         

@@ -57,8 +57,10 @@ public extension EventPublisher {
         }
     }
     
-    // default extension to satisfy lib evolution
-    var eventHandlersLock: NSLock { NSLock() }
+    /// default extension to satisfy lib evolution
+    var eventHandlersLock: NSLock {
+        NSLock()
+    }
 }
 
 /// Alias for a closure that handles an event.

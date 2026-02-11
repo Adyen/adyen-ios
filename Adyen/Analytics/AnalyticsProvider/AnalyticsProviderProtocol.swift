@@ -6,16 +6,14 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public protocol AnyInitialAnalyticsProvider {
-    
+package protocol AnyInitialAnalyticsProvider {
+
     /// Sends the initial data and retrieves the checkout attempt id as a response.
     func sendInitialAnalytics(with flavor: AnalyticsFlavor, additionalFields: AdditionalAnalyticsFields?)
 }
 
-@_spi(AdyenInternal)
-public protocol AnyEventAnalyticsProvider {
-    
+package protocol AnyEventAnalyticsProvider {
+
     var checkoutAttemptId: String? { get set }
     
     /// Adds an info event to be sent.
@@ -28,5 +26,4 @@ public protocol AnyEventAnalyticsProvider {
     func add(error: AnalyticsEventError)
 }
 
-@_spi(AdyenInternal)
-public protocol AnyAnalyticsProvider: AnyInitialAnalyticsProvider, AnyEventAnalyticsProvider {}
+package protocol AnyAnalyticsProvider: AnyInitialAnalyticsProvider, AnyEventAnalyticsProvider {}

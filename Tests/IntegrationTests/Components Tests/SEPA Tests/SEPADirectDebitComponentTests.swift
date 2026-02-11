@@ -38,7 +38,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertTrue(formViewController.requiresKeyboardInput)
     }
     
-    func testLocalizationWithCustomTableName() throws {
+    func testLocalizationWithCustomTableName() {
         let sut = SEPADirectDebitComponent(paymentMethod: method, context: context)
         
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
@@ -53,7 +53,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, sut.configuration.localizationParameters))
     }
 
-    func testLocalizationWithZeroPayment() throws {
+    func testLocalizationWithZeroPayment() {
         let payment = Payment(amount: Amount(value: 0, currencyCode: "EUR"), countryCode: "DE")
         let context = Dummy.context(with: payment)
         let sut = SEPADirectDebitComponent(paymentMethod: method, context: context)
@@ -70,7 +70,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.button.title, localizedString(.confirmPreauthorization, sut.configuration.localizationParameters))
     }
     
-    func testLocalizationWithCustomKeySeparator() throws {
+    func testLocalizationWithCustomKeySeparator() {
         let sut = SEPADirectDebitComponent(paymentMethod: method, context: context)
         
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
@@ -85,7 +85,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, sut.configuration.localizationParameters))
     }
     
-    func testUIConfiguration() {
+    func testUIConfiguration() throws {
         // Given - use TestTheme helper for distinctive, verifiable styling
         var configuration = SEPADirectDebitComponent.Configuration()
         configuration.theme = TestTheme.distinctive()
@@ -103,7 +103,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         // MARK: - Assert text fields use theme styling
 
         let prefix = "AdyenComponents.SEPADirectDebitComponent"
-        sut.viewController.assertTextFieldsUseTheme(
+        try sut.viewController.assertTextFieldsUseTheme(
             [
                 "\(prefix).nameItem",
                 "\(prefix).ibanItem"
@@ -113,7 +113,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
         // MARK: - Assert pay button uses theme styling
 
-        sut.viewController.assertButtonUsesTheme(
+        try sut.viewController.assertButtonUsesTheme(
             "\(prefix).payButtonItem",
             style: TestTheme.expectedButtonStyle
         )
@@ -129,12 +129,6 @@ class SEPADirectDebitComponentTests: XCTestCase {
         
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.Test name"))
         XCTAssertEqual(sut.viewController.title, sepaPaymentMethod.name)
-    }
-    
-    func testRequiresModalPresentation() {
-        let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
-        let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod, context: context)
-        XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
     func testStopLoading() {
@@ -165,12 +159,12 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
-        XCTAssertEqual(nameItemView?.alertLabel.text, "Holder name invalid")
-        XCTAssertEqual(ibanItemView?.alertLabel.text, "Invalid account number")
+        XCTAssertEqual(nameItemView?.footerLabel.text, "Holder name invalid")
+        XCTAssertEqual(ibanItemView?.footerLabel.text, "Invalid account number")
 
     }
 
-    func testSubmission() {
+    func testSubmission() throws {
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod, context: context)
 
@@ -195,15 +189,15 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
         let ibanItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem")
 
-        self.populate(textItemView: ibanItemView!, with: "NL13TEST0123456789")
-        self.populate(textItemView: nameItemView!, with: "A. Klaassen")
+        try self.populate(textItemView: XCTUnwrap(ibanItemView), with: "NL13TEST0123456789")
+        try self.populate(textItemView: XCTUnwrap(nameItemView), with: "A. Klaassen")
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
         
         wait(for: [expectation], timeout: 5)
     }
 
-    func testViewDidLoadShouldSendInitialCall() throws {
+    func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)

@@ -119,9 +119,9 @@ import XCTest
             //  XCTAssertEqual(sut.viewController.view.backgroundColor, .green)
         }
 
-        func testSwitchVisible() {
+        func testSwitchVisible() throws {
             
-            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsStorePaymentMethodField: true)
+            let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")), showsStorePaymentMethodField: true)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
             sut.viewController.loadViewIfNeeded()
@@ -131,9 +131,9 @@ import XCTest
             XCTAssertNotNil(storeDetailsToggleView)
         }
         
-        func testSwitchHidden() {
+        func testSwitchHidden() throws {
             
-            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsStorePaymentMethodField: false)
+            let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")), showsStorePaymentMethodField: false)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
             sut.viewController.loadViewIfNeeded()
@@ -143,8 +143,8 @@ import XCTest
             XCTAssertNil(storeDetailsToggleView)
         }
         
-        func testStopLoading() {
-            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsStorePaymentMethodField: true)
+        func testStopLoading() throws {
+            let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")), showsStorePaymentMethodField: true)
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
             sut.viewController.loadViewIfNeeded()
@@ -165,7 +165,7 @@ import XCTest
                 amount: Dummy.amount,
                 analyticsProvider: analyticsProviderMock
             )
-            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+            let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
             // When
@@ -181,7 +181,7 @@ import XCTest
         func testComponent_ShouldPaymentMethodTypeBeCashAppPay() throws {
             // Given
             let expectedPaymentMethodType: PaymentMethodType = .cashAppPay
-            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+            let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
             // Action
@@ -191,17 +191,8 @@ import XCTest
             XCTAssertEqual(paymentMethodType, expectedPaymentMethodType)
         }
         
-        func testComponent_ShouldRequireModalPresentation() throws {
-            // Given
-            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
-            let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
-            
-            // Assert
-            XCTAssertTrue(sut.requiresModalPresentation)
-        }
-        
-        func testOneTimeSubmitDetails() {
-            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+        func testOneTimeSubmitDetails() throws {
+            let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
             let delegate = PaymentComponentDelegateMock()
@@ -231,8 +222,8 @@ import XCTest
             waitForExpectations(timeout: 10, handler: nil)
         }
         
-        func testOneTimeAndOnFileSubmitDetails() {
-            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+        func testOneTimeAndOnFileSubmitDetails() throws {
+            let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
             
             let delegate = PaymentComponentDelegateMock()
@@ -264,7 +255,7 @@ import XCTest
 
         func testSubmitShouldCallPaymentDelegateDidSubmit() throws {
             // Given
-            let configuration = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+            let configuration = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(
                 paymentMethod: paymentMethod,
                 context: context,
@@ -296,7 +287,7 @@ import XCTest
         
         func testSubmitFailure() throws {
             let analyticsProviderMock = AnalyticsProviderMock()
-            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+            let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(
                 paymentMethod: paymentMethod,
                 context: Dummy.context(with: analyticsProviderMock),
@@ -327,7 +318,7 @@ import XCTest
         
         func testIntegrationError() throws {
             let analyticsProviderMock = AnalyticsProviderMock()
-            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+            let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(
                 paymentMethod: paymentMethod,
                 context: Dummy.context(with: analyticsProviderMock),
@@ -357,7 +348,7 @@ import XCTest
         
         func testApiError() throws {
             let analyticsProviderMock = AnalyticsProviderMock()
-            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+            let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(
                 paymentMethod: paymentMethod,
                 context: Dummy.context(with: analyticsProviderMock),
@@ -387,7 +378,7 @@ import XCTest
         
         func testUnexpectedError() throws {
             let analyticsProviderMock = AnalyticsProviderMock()
-            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+            let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(
                 paymentMethod: paymentMethod,
                 context: Dummy.context(with: analyticsProviderMock),
@@ -417,7 +408,7 @@ import XCTest
         
         func testNetworkError() throws {
             let analyticsProviderMock = AnalyticsProviderMock()
-            let config = CashAppPayConfiguration(redirectURL: URL(string: "test")!)
+            let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(
                 paymentMethod: paymentMethod,
                 context: Dummy.context(with: analyticsProviderMock),
@@ -447,7 +438,7 @@ import XCTest
         
         func testValidateShouldReturnFormViewControllerValidateResult() throws {
             // Given
-            let configuration = CashAppPayConfiguration(redirectURL: URL(string: "test")!, showsSubmitButton: false)
+            let configuration = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")), showsSubmitButton: false)
             let sut = CashAppPayComponent(
                 paymentMethod: paymentMethod,
                 context: context,

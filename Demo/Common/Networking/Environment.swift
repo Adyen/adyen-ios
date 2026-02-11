@@ -38,7 +38,9 @@ internal enum DemoCheckoutAPIEnvironment: String, AnyAPIEnvironment, CaseIterabl
         }
     }
     
-    internal var version: Int { ConfigurationConstants.current.apiVersion }
+    internal var version: Int {
+        ConfigurationConstants.current.apiVersion
+    }
     
 }
 
