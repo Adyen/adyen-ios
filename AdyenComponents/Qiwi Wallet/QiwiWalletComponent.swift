@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -41,7 +41,8 @@ public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
     }
 
     @_spi(AdyenInternal)
-    override public func phoneExtensions() -> [PhoneExtension] { qiwiWalletPaymentMethod.phoneExtensions
+    override public func phoneExtensions() -> [PhoneExtension] {
+        qiwiWalletPaymentMethod.phoneExtensions
     }
 
     @_spi(AdyenInternal)

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,8 +11,8 @@ class LogoURLProviderTests: XCTestCase {
 
     let scale = Int(UIScreen.main.scale)
 
-    func testCardLogo() {
-        let paymentMethod = try! AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
+    func testCardLogo() throws {
+        let paymentMethod = try AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
         let logo = LogoURLProvider.logoURL(
             withName: paymentMethod.displayInformation(using: nil).logoName,
             environment: Dummy.apiContext.environment
@@ -20,8 +20,8 @@ class LogoURLProviderTests: XCTestCase {
         XCTAssertEqual(logo.absoluteString, "https://checkoutshopper-test.adyen.com/checkoutshopper/images/logos/small/card@\(scale)x.png")
     }
 
-    func testSize() {
-        let paymentMethod = try! AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
+    func testSize() throws {
+        let paymentMethod = try AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
         let logo = LogoURLProvider.logoURL(
             withName: paymentMethod.displayInformation(using: nil).logoName,
             environment: Dummy.apiContext.environment,
@@ -44,8 +44,8 @@ class LogoURLProviderTests: XCTestCase {
         XCTAssertEqual(logo3.absoluteString, "https://checkoutshopper-test.adyen.com/checkoutshopper/images/logos/small/card@\(scale)x.png")
     }
 
-    func testGiftCardLogo() {
-        let paymentMethod = try! AdyenCoder.decode(giftCard) as GiftCardPaymentMethod
+    func testGiftCardLogo() throws {
+        let paymentMethod = try AdyenCoder.decode(giftCard) as GiftCardPaymentMethod
         let logo = LogoURLProvider.logoURL(
             withName: paymentMethod.displayInformation(using: nil).logoName,
             environment: Dummy.apiContext.environment

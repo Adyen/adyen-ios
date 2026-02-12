@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,7 +10,7 @@ import XCTest
 class APIContextTests: XCTestCase {
 
     func testCreateValidClientKey() throws {
-        let environment = Environment(baseURL: URL(string: "https://adyen.com")!)
+        let environment = try Environment(baseURL: XCTUnwrap(URL(string: "https://adyen.com")))
         let clientKey = "ttest_keykeykeykey"
         let sut = try APIContext(environment: environment, clientKey: clientKey)
 
@@ -18,8 +18,8 @@ class APIContextTests: XCTestCase {
         XCTAssertEqual(sut.environment.baseURL, environment.baseURL)
     }
     
-    func testCreateInvalidClientKey() {
-        let environment = Environment(baseURL: URL(string: "https://adyen.com")!)
+    func testCreateInvalidClientKey() throws {
+        let environment = try Environment(baseURL: XCTUnwrap(URL(string: "https://adyen.com")))
         let clientKey = "WrongClientKey"
 
         XCTAssertThrowsError(
@@ -38,8 +38,8 @@ class APIContextTests: XCTestCase {
         
         let clientKeyParameter = sut.first
         XCTAssertNotNil(clientKeyParameter)
-        XCTAssertEqual(clientKeyParameter!.name, "clientKey")
-        XCTAssertEqual(clientKeyParameter!.value, Dummy.apiContext.clientKey)
+        XCTAssertEqual(clientKeyParameter?.name, "clientKey")
+        XCTAssertEqual(clientKeyParameter?.value, Dummy.apiContext.clientKey)
     }
     
     func testHeaders() {
@@ -49,8 +49,8 @@ class APIContextTests: XCTestCase {
         
         let contentTypeHeader = sut.first
         XCTAssertNotNil(contentTypeHeader)
-        XCTAssertEqual(contentTypeHeader!.key, "Content-Type")
-        XCTAssertEqual(contentTypeHeader!.value, "application/json")
+        XCTAssertEqual(contentTypeHeader?.key, "Content-Type")
+        XCTAssertEqual(contentTypeHeader?.value, "application/json")
     }
     
 }

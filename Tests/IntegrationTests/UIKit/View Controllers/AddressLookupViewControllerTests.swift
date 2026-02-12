@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -156,11 +156,11 @@ class AddressLookupViewControllerTests: XCTestCase {
         XCTAssertEqual(viewModel.interfaceState, .search)
     }
 
-    func testViewModelInitializationPrefilled() {
+    func testViewModelInitializationPrefilled() throws {
 
         // Given
 
-        let prefillAddress = PostalAddressMocks.all.first!
+        let prefillAddress = try XCTUnwrap(PostalAddressMocks.all.first)
 
         let viewModel = AddressLookupViewController.ViewModel(
             for: .billing,
@@ -180,7 +180,7 @@ class AddressLookupViewControllerTests: XCTestCase {
         XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: prefillAddress))
     }
 
-    func testViewModelInteraction() {
+    func testViewModelInteraction() throws {
 
         // Given
         let expectedSearchTerm = "Test"
@@ -188,7 +188,7 @@ class AddressLookupViewControllerTests: XCTestCase {
             .init(identifier: UUID().uuidString, postalAddress: $0)
         }
         
-        let currentInput = results.last!.postalAddress
+        let currentInput = try XCTUnwrap(results.last?.postalAddress)
         var expectedCompletionHandlerAddress: PostalAddress?
 
         let completionHandlerExpectation = expectation(description: "Completion handler was called on submit")
@@ -251,7 +251,7 @@ class AddressLookupViewControllerTests: XCTestCase {
 
         // Then
 
-        let firstAddressResult = results.first!.postalAddress
+        let firstAddressResult = try XCTUnwrap(results.first?.postalAddress)
 
         XCTAssertEqual(viewModel.interfaceState, .form(prefillAddress: firstAddressResult))
 

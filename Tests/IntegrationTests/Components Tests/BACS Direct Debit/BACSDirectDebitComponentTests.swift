@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -49,7 +49,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testPresentConfirmationShouldAssembleConfirmationScene() throws {
+    func testPresentConfirmationShouldAssembleConfirmationScene() {
         // When
         sut.presentConfirmation(with: bacsDataMock)
 
@@ -65,7 +65,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
             configuration: .init()
         )
 
-        let presenter: BACSInputPresenter = sut.inputPresenter as! BACSInputPresenter
+        let presenter: BACSInputPresenter = try XCTUnwrap(sut.inputPresenter as? BACSInputPresenter)
         let expectedConsentTitle1 = presenter.itemsFactory.createConsentText(with: payment.amount)
         setupRootViewController(sut.viewController)
         wait(for: .milliseconds(200))
@@ -73,7 +73,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(presenter.amountConsentToggleItem?.title, expectedConsentTitle1)
     }
 
-    func testPresentConfirmationShouldCallPresentationDelegatePresent() throws {
+    func testPresentConfirmationShouldCallPresentationDelegatePresent() {
         // When
         sut.presentConfirmation(with: bacsDataMock)
 
@@ -81,7 +81,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(presentationDelegate.presentComponentCallsCount, 1)
     }
 
-    func testConfirmPaymentShouldCallConfirmationPresenterStartLoading() throws {
+    func testConfirmPaymentShouldCallConfirmationPresenterStartLoading() {
         // Given
         sut.confirmationPresenter = confirmationPresenter
 
@@ -92,7 +92,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(confirmationPresenter.startLoadingCallsCount, 1)
     }
 
-    func testConfirmPaymentShouldCallPaymentComponentDelegateDidSubmit() throws {
+    func testConfirmPaymentShouldCallPaymentComponentDelegateDidSubmit() {
         // Given
         let didSubmitExpectation = expectation(description: "Expect delegate.didSubmit() to be called.")
         paymentComponentDelegate.onDidSubmit = { [weak self] data, component in
@@ -114,7 +114,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
         waitForExpectations(timeout: 10)
     }
 
-    func testStopLoadingShouldCallConfirmationPresenterStopLoading() throws {
+    func testStopLoadingShouldCallConfirmationPresenterStopLoading() {
         // Given
         sut.confirmationPresenter = confirmationPresenter
 

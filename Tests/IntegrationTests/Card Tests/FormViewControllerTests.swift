@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -68,7 +68,8 @@ class FormViewControllerTests: XCTestCase {
         // Then
         let scrollView = try XCTUnwrap(
             sut.view.subviews.filter { $0 is UIScrollView
-            }.first)
+            }.first
+        )
         let formView = try XCTUnwrap(scrollView.subviews.filter { $0 is FormView }.first)
         let stackView = try XCTUnwrap(formView.subviews.filter { $0 is UIStackView }.first)
         let cardHolderItemView = try XCTUnwrap(stackView.subviews.last as? FormTextInputItemView)

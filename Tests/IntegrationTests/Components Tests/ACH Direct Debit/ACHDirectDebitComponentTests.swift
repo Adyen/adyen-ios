@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -36,7 +36,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         )
     }
 
-    func testLocalizationWithCustomTableName() throws {
+    func testLocalizationWithCustomTableName() {
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
 
         let config = ACHDirectDebitComponent.Configuration(
@@ -76,7 +76,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testUIConfiguration() {
         var achComponentStyle = FormComponentStyle()
         
-        /// Footer
+        // Footer
         achComponentStyle.mainButtonItem.button.title.color = .white
         achComponentStyle.mainButtonItem.button.title.backgroundColor = .red
         achComponentStyle.mainButtonItem.button.title.textAlignment = .center
@@ -84,10 +84,10 @@ class ACHDirectDebitComponentTests: XCTestCase {
         achComponentStyle.mainButtonItem.button.backgroundColor = .red
         achComponentStyle.mainButtonItem.backgroundColor = .brown
         
-        /// background color
+        // background color
         achComponentStyle.backgroundColor = .red
         
-        /// Text field
+        // Text field
         achComponentStyle.textField.text.color = .red
         achComponentStyle.textField.text.font = .systemFont(ofSize: 13)
         achComponentStyle.textField.text.textAlignment = .right
@@ -129,7 +129,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         
         XCTAssertNotNil(sut.viewController.view.findView(by: "AdyenComponents.ACHDirectDebitComponent.billingAddressItem"))
         
-        /// holder name
+        // holder name
         XCTAssertEqual(nameItemView?.backgroundColor, .red)
         XCTAssertEqual(nameItemViewTitleLabel?.backgroundColor, .blue)
         XCTAssertEqual(nameItemViewTitleLabel?.textAlignment, .center)
@@ -139,7 +139,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(nameItemViewTextField?.textColor, .red)
         XCTAssertEqual(nameItemViewTextField?.font, .systemFont(ofSize: 13))
         
-        /// account number
+        // account number
         XCTAssertEqual(accountNumberItemView?.backgroundColor, .red)
         XCTAssertEqual(accountNumberItemTitleLabel?.backgroundColor, .blue)
         XCTAssertEqual(accountNumberItemTitleLabel?.textAlignment, .center)
@@ -149,7 +149,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(accountNumberItemTextField?.textColor, .red)
         XCTAssertEqual(accountNumberItemTextField?.font, .systemFont(ofSize: 13))
         
-        /// routing number
+        // routing number
         XCTAssertEqual(routingNumberItemView?.backgroundColor, .red)
         XCTAssertEqual(routingNumberItemTitleLabel?.backgroundColor, .blue)
         XCTAssertEqual(routingNumberItemTitleLabel?.textAlignment, .center)
@@ -159,7 +159,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(routingNumberItemTextField?.textColor, .red)
         XCTAssertEqual(routingNumberItemTextField?.font, .systemFont(ofSize: 13))
         
-        /// Test footer
+        // Test footer
         XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
         XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
         XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
@@ -306,7 +306,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         wait(for: [expectation], timeout: 100)
     }
 
-    func testViewDidLoadShouldSendInitialCall() throws {
+    func testViewDidLoadShouldSendInitialCall() {
         
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()

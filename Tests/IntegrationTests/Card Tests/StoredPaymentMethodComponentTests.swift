@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -20,7 +20,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         name: "name"
     )
 
-    func testLocalizationWithCustomTableName() throws {
+    func testLocalizationWithCustomTableName() {
         let localizationParams = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let sut = StoredPaymentMethodComponent(
             paymentMethod: method,
@@ -35,7 +35,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, localizationParams))
     }
 
-    func testLocalizationWithZeroPayment() throws {
+    func testLocalizationWithZeroPayment() {
         let payment = Payment(amount: Amount(value: 0, currencyCode: "EUR"), countryCode: "DE")
         let context = Dummy.context(with: payment)
 
@@ -54,7 +54,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         XCTAssertEqual(viewController?.actions.last?.title, "Confirm preauthorization")
     }
     
-    func testLocalizationWithCustomKeySeparator() throws {
+    func testLocalizationWithCustomKeySeparator() {
         let localizationParams = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         let sut = StoredPaymentMethodComponent(
             paymentMethod: method,
@@ -69,7 +69,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, localizationParams))
     }
 
-    func testUI() throws {
+    func testUI() {
         let sut = StoredPaymentMethodComponent(
             paymentMethod: method,
             context: context,
@@ -149,7 +149,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         XCTAssertEqual(viewController?.title, localizedString(.dropInStoredTitle, nil, paymentMethod.name))
     }
 
-    func testStoredTwintComponent() throws {
+    func testStoredTwintComponent() {
         // Given
         let paymentMethod = StoredTwintPaymentMethod(
             type: .twint,
@@ -169,7 +169,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         XCTAssertEqual(viewController?.title, localizedString(.dropInStoredTitle, nil, paymentMethod.name))
     }
     
-    func test_storedPaymentComponent_matches_payTo() throws {
+    func test_storedPaymentComponent_matches_payTo() {
         // Given
         let paymentMethod = StoredPayToPaymentMethod(
             type: .payTo,
@@ -189,7 +189,7 @@ class StoredPaymentMethodComponentTests: XCTestCase {
         XCTAssertEqual(viewController?.title, localizedString(.dropInStoredTitle, nil, paymentMethod.name))
     }
 
-    func testViewDidLoadShouldSendInitialEvent() throws {
+    func testViewDidLoadShouldSendInitialEvent() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)

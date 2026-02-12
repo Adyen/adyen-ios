@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -48,7 +48,9 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     internal let scanCardHandler: (() -> Void)?
     internal var scanYourCardButtonTitle: String
     
-    internal var supportsCardScanning: Bool { scanCardHandler != nil }
+    internal var supportsCardScanning: Bool {
+        scanCardHandler != nil
+    }
     
     /// Returns the initial brand for single brand cases
     /// or `selectedDualBrand` for dual brand cases

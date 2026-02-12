@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -39,7 +39,9 @@ public class CardComponent: PresentableComponent,
     internal let binInfoProvider: AnyBinInfoProvider
     
     /// The card payment method.
-    public var paymentMethod: PaymentMethod { cardPaymentMethod }
+    public var paymentMethod: PaymentMethod {
+        cardPaymentMethod
+    }
 
     /// The delegate for user activity on card component.
     public weak var cardComponentDelegate: CardComponentDelegate?
@@ -139,7 +141,9 @@ public class CardComponent: PresentableComponent,
         return securedViewController
     }
     
-    public var requiresModalPresentation: Bool { storedCardComponent?.requiresModalPresentation ?? true }
+    public var requiresModalPresentation: Bool {
+        storedCardComponent?.requiresModalPresentation ?? true
+    }
 
     public func stopLoading() {
         // since storedCardComponent is instantiated through this class

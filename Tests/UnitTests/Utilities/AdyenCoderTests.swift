@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,7 +19,7 @@ class AdyenCoderTests: XCTestCase {
     }
     
     func testDecodeWithData() throws {
-        let data = sampleObjectRawString.data(using: .utf8)!
+        let data = try XCTUnwrap(sampleObjectRawString.data(using: .utf8))
         let sampleObject = try AdyenCoder.decode(data) as SampleObject
         
         XCTAssertEqual(sampleObject.string, "someString")

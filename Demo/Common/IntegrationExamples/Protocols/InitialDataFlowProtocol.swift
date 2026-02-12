@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -43,7 +43,7 @@ extension InitialDataFlowProtocol {
     }
 
     private func initializeSession(with sessionId: String, data: String) -> AdyenSession.Configuration {
-        let configuration = AdyenSession.Configuration(
+        AdyenSession.Configuration(
             sessionIdentifier: sessionId,
             initialSessionData: data,
             context: context,
@@ -55,7 +55,6 @@ extension InitialDataFlowProtocol {
                 twint: .init(callbackAppScheme: ConfigurationConstants.returnUrl.scheme!)
             )
         )
-        return configuration
     }
 }
 

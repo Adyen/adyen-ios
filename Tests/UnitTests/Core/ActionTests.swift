@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,7 +9,7 @@ import XCTest
 
 class ActionTests: XCTestCase {
     
-    func testRedirectActionDecoding() {
+    func testRedirectActionDecoding() throws {
         let json =
             """
             {
@@ -19,7 +19,7 @@ class ActionTests: XCTestCase {
             }
             """
         
-        let action = try? JSONDecoder().decode(Action.self, from: json.data(using: .utf8)!)
+        let action = try? JSONDecoder().decode(Action.self, from: try XCTUnwrap(json.data(using: .utf8)))
         
         var redirectAction: RedirectAction?
         if case let .redirect(redirect)? = action {
@@ -31,7 +31,7 @@ class ActionTests: XCTestCase {
         XCTAssertEqual(redirectAction?.paymentData, "example_data")
     }
     
-    func testPixQRCodeActionDecoding() {
+    func testPixQRCodeActionDecoding() throws {
         let json =
             """
             {
@@ -42,7 +42,7 @@ class ActionTests: XCTestCase {
             }
             """
         
-        let action = try? JSONDecoder().decode(Action.self, from: json.data(using: .utf8)!)
+        let action = try? JSONDecoder().decode(Action.self, from: try XCTUnwrap(json.data(using: .utf8)))
         
         var qrCodeAction: QRCodeAction?
         if case let .qrCode(qrCode)? = action {
@@ -54,7 +54,7 @@ class ActionTests: XCTestCase {
         XCTAssertTrue(qrCodeAction?.paymentMethodType == .some(.pix))
     }
 
-    func testQRCodeActionDecoding() {
+    func testQRCodeActionDecoding() throws {
         let json =
             """
             {
@@ -65,7 +65,7 @@ class ActionTests: XCTestCase {
             }
             """
 
-        let action = try? JSONDecoder().decode(Action.self, from: json.data(using: .utf8)!)
+        let action = try? JSONDecoder().decode(Action.self, from: try XCTUnwrap(json.data(using: .utf8)))
 
         var qrCodeAction: QRCodeAction?
         if case let .qrCode(qrCode)? = action {
@@ -77,7 +77,7 @@ class ActionTests: XCTestCase {
         XCTAssertTrue(qrCodeAction?.paymentMethodType == .some(.promptPay))
     }
 
-    func testQRCodeToRedirectActionDecoding() {
+    func testQRCodeToRedirectActionDecoding() throws {
         let json =
             """
             {
@@ -88,7 +88,7 @@ class ActionTests: XCTestCase {
             }
             """
         
-        let action = try? JSONDecoder().decode(Action.self, from: json.data(using: .utf8)!)
+        let action = try? JSONDecoder().decode(Action.self, from: try XCTUnwrap(json.data(using: .utf8)))
         
         var qrToRedirectAction: RedirectAction?
         if case let .redirect(redirect)? = action {
@@ -100,7 +100,7 @@ class ActionTests: XCTestCase {
         XCTAssertEqual(qrToRedirectAction?.paymentData, "example_data")
     }
     
-    func test3DS2FingerprintActionDecoding() {
+    func test3DS2FingerprintActionDecoding() throws {
         let json =
             """
             {
@@ -110,7 +110,7 @@ class ActionTests: XCTestCase {
             }
             """
         
-        let action = try? JSONDecoder().decode(Action.self, from: json.data(using: .utf8)!)
+        let action = try? JSONDecoder().decode(Action.self, from: try XCTUnwrap(json.data(using: .utf8)))
         
         var fingerprintAction: ThreeDS2FingerprintAction?
         if case let .threeDS2Fingerprint(fingerprint)? = action {
@@ -122,7 +122,7 @@ class ActionTests: XCTestCase {
         XCTAssertEqual(fingerprintAction?.paymentData, "example_data")
     }
     
-    func test3DS2ChallengeActionDecoding() {
+    func test3DS2ChallengeActionDecoding() throws {
         let json =
             """
             {
@@ -132,7 +132,7 @@ class ActionTests: XCTestCase {
             }
             """
         
-        let action = try? JSONDecoder().decode(Action.self, from: json.data(using: .utf8)!)
+        let action = try? JSONDecoder().decode(Action.self, from: try XCTUnwrap(json.data(using: .utf8)))
         
         var challengeAction: ThreeDS2ChallengeAction?
         if case let .threeDS2Challenge(challenge)? = action {
@@ -144,9 +144,9 @@ class ActionTests: XCTestCase {
         XCTAssertEqual(challengeAction?.paymentData, "example_data")
     }
     
-    func testInvalidActionDecoding() {
+    func testInvalidActionDecoding() throws {
         let json = "{ \"type\": \"InvalidType\" }"
-        let data = json.data(using: .utf8)!
+        let data = try XCTUnwrap(json.data(using: .utf8))
         
         XCTAssertThrowsError(try JSONDecoder().decode(Action.self, from: data))
     }

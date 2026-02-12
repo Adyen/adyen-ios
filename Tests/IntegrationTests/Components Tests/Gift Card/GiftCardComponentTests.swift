@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -24,7 +24,9 @@ class GiftCardComponentTests: XCTestCase {
 
     var giftCardPaymentMethod: GiftCardPaymentMethod!
 
-    var amountToPay: Amount { Dummy.payment.amount }
+    var amountToPay: Amount {
+        Dummy.payment.amount
+    }
 
     var errorView: FormErrorItemView? {
         sut.viewController.view.findView(with: "AdyenCard.GiftCardComponent.errorItem")
@@ -121,7 +123,7 @@ class GiftCardComponentTests: XCTestCase {
         XCTAssertEqual(securityCodeItemTitleLabel?.text, "Security code", "cvc title changes based on payment method")
     }
 
-    func testMealVoucherDetails() {
+    func testMealVoucherDetails() throws {
 
         // Given
         let paymentMethod = MealVoucherPaymentMethod(type: .mealVoucherSodexo, name: "Sodexo")
@@ -135,9 +137,9 @@ class GiftCardComponentTests: XCTestCase {
         // When
         sut.viewController.loadViewIfNeeded()
 
-        populate(textItemView: numberItemView!, with: "1234 1234 1234 1234")
-        populate(textItemView: securityCodeItemView!, with: "123")
-        populate(textItemView: expiryDateItemView!, with: "1233")
+        try populate(textItemView: XCTUnwrap(numberItemView), with: "1234 1234 1234 1234")
+        try populate(textItemView: XCTUnwrap(securityCodeItemView), with: "123")
+        try populate(textItemView: XCTUnwrap(expiryDateItemView), with: "1233")
         partialPaymentDelegate = PartialPaymentDelegateMock()
         sut.partialPaymentDelegate = partialPaymentDelegate
         let expectation = expectation(description: "Expect delegateMock.onDidSubmit to be called.")
@@ -184,7 +186,7 @@ class GiftCardComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        XCTAssertTrue(errorView!.isHidden)
+        XCTAssertTrue(try XCTUnwrap(errorView?.isHidden))
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
@@ -192,7 +194,7 @@ class GiftCardComponentTests: XCTestCase {
 
         wait(for: .seconds(1))
 
-        XCTAssertFalse(errorView!.isHidden)
+        XCTAssertFalse(try XCTUnwrap(errorView?.isHidden))
         XCTAssertEqual(sut.errorItem.message, "An unknown error occurred")
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -202,7 +204,7 @@ class GiftCardComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        XCTAssertTrue(errorView!.isHidden)
+        XCTAssertTrue(try XCTUnwrap(errorView?.isHidden))
 
         populate(cardNumber: "123456781234567812345678", pin: "73737")
 
@@ -235,7 +237,7 @@ class GiftCardComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        XCTAssertTrue(errorView!.isHidden)
+        XCTAssertTrue(try XCTUnwrap(errorView?.isHidden))
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
@@ -243,7 +245,7 @@ class GiftCardComponentTests: XCTestCase {
 
         wait(for: .seconds(1))
 
-        XCTAssertFalse(errorView!.isHidden)
+        XCTAssertFalse(try XCTUnwrap(errorView?.isHidden))
         XCTAssertEqual(sut.errorItem.message, "Gift cards are only valid in the currency they were issued in")
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -271,7 +273,7 @@ class GiftCardComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        XCTAssertTrue(errorView!.isHidden)
+        XCTAssertTrue(try XCTUnwrap(errorView?.isHidden))
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
@@ -279,7 +281,7 @@ class GiftCardComponentTests: XCTestCase {
 
         wait(for: .seconds(1))
 
-        XCTAssertFalse(errorView!.isHidden)
+        XCTAssertFalse(try XCTUnwrap(errorView?.isHidden))
         XCTAssertEqual(sut.errorItem.message, "Gift cards are only valid in the currency they were issued in")
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -307,7 +309,7 @@ class GiftCardComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        XCTAssertTrue(errorView!.isHidden)
+        XCTAssertTrue(try XCTUnwrap(errorView?.isHidden))
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
@@ -315,7 +317,7 @@ class GiftCardComponentTests: XCTestCase {
 
         wait(for: .seconds(1))
 
-        XCTAssertFalse(errorView!.isHidden)
+        XCTAssertFalse(try XCTUnwrap(errorView?.isHidden))
         XCTAssertEqual(sut.errorItem.message, "This gift card has zero balance")
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -356,7 +358,7 @@ class GiftCardComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        XCTAssertTrue(errorView!.isHidden)
+        XCTAssertTrue(try XCTUnwrap(errorView?.isHidden))
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
@@ -364,7 +366,7 @@ class GiftCardComponentTests: XCTestCase {
 
         wait(for: .seconds(1))
 
-        XCTAssertTrue(errorView!.isHidden)
+        XCTAssertTrue(try XCTUnwrap(errorView?.isHidden))
         XCTAssertNil(sut.errorItem.message)
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -406,7 +408,7 @@ class GiftCardComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        XCTAssertTrue(errorView!.isHidden)
+        XCTAssertTrue(try XCTUnwrap(errorView?.isHidden))
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
@@ -414,7 +416,7 @@ class GiftCardComponentTests: XCTestCase {
 
         wait(for: .seconds(1))
 
-        XCTAssertTrue(errorView!.isHidden)
+        XCTAssertTrue(try XCTUnwrap(errorView?.isHidden))
         XCTAssertNil(sut.errorItem.message)
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -459,7 +461,7 @@ class GiftCardComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        XCTAssertTrue(errorView!.isHidden)
+        XCTAssertTrue(try XCTUnwrap(errorView?.isHidden))
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
@@ -467,7 +469,7 @@ class GiftCardComponentTests: XCTestCase {
 
         wait(for: .seconds(1))
 
-        XCTAssertTrue(errorView!.isHidden)
+        XCTAssertTrue(try XCTUnwrap(errorView?.isHidden))
         XCTAssertNil(sut.errorItem.message)
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -512,7 +514,7 @@ class GiftCardComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        XCTAssertTrue(errorView!.isHidden)
+        XCTAssertTrue(try XCTUnwrap(errorView?.isHidden))
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
@@ -520,7 +522,7 @@ class GiftCardComponentTests: XCTestCase {
 
         wait(for: .seconds(1))
 
-        XCTAssertTrue(errorView!.isHidden)
+        XCTAssertTrue(try XCTUnwrap(errorView?.isHidden))
         XCTAssertNil(sut.errorItem.message)
 
         waitForExpectations(timeout: 10, handler: nil)
@@ -564,7 +566,7 @@ class GiftCardComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        XCTAssertTrue(errorView!.isHidden)
+        XCTAssertTrue(try XCTUnwrap(errorView?.isHidden))
 
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
@@ -572,13 +574,13 @@ class GiftCardComponentTests: XCTestCase {
 
         wait(for: .seconds(1))
 
-        XCTAssertFalse(errorView!.isHidden)
+        XCTAssertFalse(try XCTUnwrap(errorView?.isHidden))
         XCTAssertEqual(sut.errorItem.message, "An unknown error occurred")
 
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func testViewDidLoadShouldSendInitialCall() throws {
+    func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
@@ -602,7 +604,7 @@ class GiftCardComponentTests: XCTestCase {
         XCTAssertEqual(infoType, .rendered)
     }
 
-    func testGiftCardHidingSecurityCodeItemView() throws {
+    func testGiftCardHidingSecurityCodeItemView() {
 
         // Given
         sut = GiftCardComponent(

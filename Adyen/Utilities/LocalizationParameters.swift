@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -14,10 +14,6 @@ internal enum LocalizationMode: Equatable {
 /// The localization parameters to control some aspects of how localized strings are fetched,
 /// like the localization table to use and the separator of the key strings.
 public struct LocalizationParameters: Equatable {
-
-    public static func == (lhs: LocalizationParameters, rhs: LocalizationParameters) -> Bool {
-        lhs.mode == rhs.mode
-    }
 
     internal let mode: LocalizationMode
 

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -34,10 +34,10 @@ class DropInActionsTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testOpenRedirectActionOnDropIn() {
+    func testOpenRedirectActionOnDropIn() throws {
         let config = DropInComponent.Configuration()
 
-        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethods.data(using: .utf8)))
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: context,
@@ -52,13 +52,13 @@ class DropInActionsTests: XCTestCase {
         wait(until: { sut.viewController.adyen.topPresenter is SFSafariViewController })
     }
 
-    func testOpenExternalApp() {
+    func testOpenExternalApp() throws {
         let config = DropInComponent.Configuration()
 
         let waitExpectation = expectation(description: "Expect a callback")
         let mock = DropInDelegateMock()
 
-        let paymenMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        let paymenMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethods.data(using: .utf8)))
         sut = DropInComponent(
             paymentMethods: paymenMethods,
             context: context,

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,7 +9,7 @@ import XCTest
 
 class AddressViewModelTests: XCTestCase {
 
-    func testAddressValidation() throws {
+    func testAddressValidation() {
         
         var address = PostalAddress()
         XCTAssertFalse(address.satisfies(requiredFields: [.postalCode]))
@@ -29,7 +29,7 @@ class AddressViewModelTests: XCTestCase {
         XCTAssertTrue(address.satisfies(requiredFields: Set(AddressField.allCases)))
     }
     
-    func testViewModelRequiredFields() throws {
+    func testViewModelRequiredFields() {
         
         let viewModelBuilder = DefaultAddressViewModelBuilder()
 

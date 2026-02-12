@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -96,7 +96,7 @@ class ComponentManagerTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testClientKeyInjectionAndProtocolConformance() throws {
+    func testClientKeyInjectionAndProtocolConformance() {
         let sut = ComponentManager(
             paymentMethods: paymentMethods,
             context: context,
@@ -183,7 +183,7 @@ class ComponentManagerTests: XCTestCase {
             throw XCTSkip("This test is flaky on iOS 26 beta - so we skip it")
         }
 
-        configuration.cashAppPay = .init(redirectURL: URL(string: "test")!)
+        configuration.cashAppPay = try .init(redirectURL: XCTUnwrap(URL(string: "test")))
         let sut = ComponentManager(
             paymentMethods: paymentMethods,
             context: context,
@@ -204,7 +204,7 @@ class ComponentManagerTests: XCTestCase {
         #endif
     }
 
-    func testTwintShouldSucceedWithConfig() throws {
+    func testTwintShouldSucceedWithConfig() {
         // Given
         let sut = ComponentManager(
             paymentMethods: paymentMethods,
@@ -227,7 +227,7 @@ class ComponentManagerTests: XCTestCase {
         #endif
     }
 
-    func testStoredTwintShouldSucceedWithConfig() throws {
+    func testStoredTwintShouldSucceedWithConfig() {
         // Given
         let sut = ComponentManager(
             paymentMethods: paymentMethods,
@@ -245,7 +245,7 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertNotNil(storedTwintComponent)
     }
     
-    func test_componentManager_contains_payToComponent() throws {
+    func test_componentManager_contains_payToComponent() {
         let sut = ComponentManager(
             paymentMethods: paymentMethods,
             context: context,
@@ -260,7 +260,7 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertNotNil(paymentComponent)
     }
     
-    func test_componentManager_contains_storedPayToComponent() throws {
+    func test_componentManager_contains_storedPayToComponent() {
         // Given
         let sut = ComponentManager(
             paymentMethods: paymentMethods,
@@ -277,7 +277,7 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertNotNil(paymentComponent as? StoredPaymentMethodComponent)
     }
 
-    func testLocalizationWithCustomTableName() throws {
+    func testLocalizationWithCustomTableName() {
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
         let sut = ComponentManager(
@@ -294,7 +294,7 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.storedComponents.compactMap { ($0 as? StoredPaymentMethodComponent)?.configuration.localizationParameters }.filter { $0.tableName == "AdyenUIHost" }.count, 5)
     }
     
-    func testLocalizationWithCustomKeySeparator() throws {
+    func testLocalizationWithCustomKeySeparator() {
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 
         let sut = ComponentManager(
@@ -311,7 +311,7 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.storedComponents.compactMap { ($0 as? StoredPaymentMethodComponent)?.configuration.localizationParameters }.filter { $0.keySeparator == "_" }.count, 5)
     }
 
-    func testOrderInjection() throws {
+    func testOrderInjection() {
         let order = PartialPaymentOrder(pspReference: "test pspRef", orderData: "test order data")
 
         var paymentMethods = paymentMethods
@@ -374,7 +374,7 @@ class ComponentManagerTests: XCTestCase {
         )
 
         // Test Pre-ApplePay
-        let preApplepayComponent = (sut.regularComponents.first(where: { $0.paymentMethod.type == .applePay }) as! PreApplePayComponent)
+        let preApplepayComponent = try (XCTUnwrap(sut.regularComponents.first(where: { $0.paymentMethod.type == .applePay }) as? PreApplePayComponent))
         XCTAssertEqual(preApplepayComponent.amount, order.remainingAmount)
     }
 
@@ -633,7 +633,7 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(achComponent.configuration.billingAddressCountryCodes, ["US", "UK"])
     }
     
-    func testMissingImplementationBuildComponent() throws {
+    func testMissingImplementationBuildComponent() {
         
         struct DummyPaymentMethod: PaymentMethod {
             var type: PaymentMethodType = .achDirectDebit

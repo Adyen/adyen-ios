@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -24,15 +24,15 @@ class SEPADirectDebitComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testRequiresKeyboardInput() {
+    func testRequiresKeyboardInput() throws {
         let sut = SEPADirectDebitComponent(paymentMethod: method, context: context)
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
 
-        XCTAssertTrue((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
+        XCTAssertTrue(try XCTUnwrap((navigationViewController.topViewController as? WrapperViewController)?.requiresKeyboardInput))
     }
     
-    func testLocalizationWithCustomTableName() throws {
+    func testLocalizationWithCustomTableName() {
         let sut = SEPADirectDebitComponent(paymentMethod: method, context: context)
         
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
@@ -47,7 +47,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, sut.configuration.localizationParameters))
     }
 
-    func testLocalizationWithZeroPayment() throws {
+    func testLocalizationWithZeroPayment() {
         let payment = Payment(amount: Amount(value: 0, currencyCode: "EUR"), countryCode: "DE")
         let context = Dummy.context(with: payment)
         let sut = SEPADirectDebitComponent(paymentMethod: method, context: context)
@@ -64,7 +64,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.button.title, localizedString(.confirmPreauthorization, sut.configuration.localizationParameters))
     }
     
-    func testLocalizationWithCustomKeySeparator() throws {
+    func testLocalizationWithCustomKeySeparator() {
         let sut = SEPADirectDebitComponent(paymentMethod: method, context: context)
         
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
@@ -82,7 +82,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
     func testUIConfiguration() {
         var sepaComponentStyle = FormComponentStyle()
         
-        /// Footer
+        // Footer
         sepaComponentStyle.mainButtonItem.button.title.color = .white
         sepaComponentStyle.mainButtonItem.button.title.backgroundColor = .red
         sepaComponentStyle.mainButtonItem.button.title.textAlignment = .center
@@ -90,10 +90,10 @@ class SEPADirectDebitComponentTests: XCTestCase {
         sepaComponentStyle.mainButtonItem.button.backgroundColor = .red
         sepaComponentStyle.mainButtonItem.backgroundColor = .brown
         
-        /// background color
+        // background color
         sepaComponentStyle.backgroundColor = .red
         
-        /// Text field
+        // Text field
         sepaComponentStyle.textField.text.color = .red
         sepaComponentStyle.textField.text.font = .systemFont(ofSize: 13)
         sepaComponentStyle.textField.text.textAlignment = .right
@@ -127,7 +127,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button")
         let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.payButtonItem.button.titleLabel")
         
-        /// Test card number field
+        // Test card number field
         XCTAssertEqual(nameItemView?.backgroundColor, .red)
         XCTAssertEqual(nameItemViewTitleLabel?.textColor, sut.viewController.view.tintColor)
         XCTAssertEqual(nameItemViewTitleLabel?.backgroundColor, .blue)
@@ -138,7 +138,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(nameItemViewTextField?.textColor, .red)
         XCTAssertEqual(nameItemViewTextField?.font, .systemFont(ofSize: 13))
         
-        /// Test IBAN field
+        // Test IBAN field
         XCTAssertEqual(ibanItemView?.backgroundColor, .red)
         XCTAssertEqual(ibanItemTitleLabel?.backgroundColor, .blue)
         XCTAssertEqual(ibanItemTitleLabel?.textAlignment, .center)
@@ -149,7 +149,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(ibanItemTextField?.textColor, .red)
         XCTAssertEqual(ibanItemTextField?.font, .systemFont(ofSize: 13))
         
-        /// Test footer
+        // Test footer
         XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
         XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
         XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
@@ -209,7 +209,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
 
     }
 
-    func testSubmission() {
+    func testSubmission() throws {
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")
         let sut = SEPADirectDebitComponent(paymentMethod: sepaPaymentMethod, context: context)
 
@@ -234,15 +234,15 @@ class SEPADirectDebitComponentTests: XCTestCase {
         let nameItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.nameItem")
         let ibanItemView: FormTextItemView<FormTextInputItem>? = sut.viewController.view.findView(with: "AdyenComponents.SEPADirectDebitComponent.ibanItem")
 
-        self.populate(textItemView: ibanItemView!, with: "NL13TEST0123456789")
-        self.populate(textItemView: nameItemView!, with: "A. Klaassen")
+        try self.populate(textItemView: XCTUnwrap(ibanItemView), with: "NL13TEST0123456789")
+        try self.populate(textItemView: XCTUnwrap(nameItemView), with: "A. Klaassen")
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
         
         wait(for: [expectation], timeout: 5)
     }
 
-    func testViewDidLoadShouldSendInitialCall() throws {
+    func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)

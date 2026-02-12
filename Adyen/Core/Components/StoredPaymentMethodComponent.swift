@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,7 +19,9 @@ public final class StoredPaymentMethodComponent: PaymentComponent,
     public let context: AdyenContext
 
     /// The stored payment method.
-    public var paymentMethod: PaymentMethod { storedPaymentMethod }
+    public var paymentMethod: PaymentMethod {
+        storedPaymentMethod
+    }
 
     public weak var delegate: PaymentComponentDelegate?
     

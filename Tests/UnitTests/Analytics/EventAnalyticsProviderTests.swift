@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -156,13 +156,11 @@ final class EventAnalyticsProviderTests: XCTestCase {
     
     private func createSUT(apiClient: APIClientMock) -> EventAnalyticsProvider {
         
-        let sut = EventAnalyticsProvider(
+        EventAnalyticsProvider(
             apiClient: apiClient,
             context: AnalyticsContext(),
             eventDataSource: eventDataSource
         )
-        
-        return sut
     }
     
     private func createSUTWithSuccessMock(apiClient: APIClientMock) -> EventAnalyticsProvider {

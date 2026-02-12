@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -185,8 +185,8 @@ class CardEncryptorCardTests: XCTestCase {
         }
     }
 
-    func testEncryptBIN() {
-        let encrypted = try! CardEncryptor.encrypt(bin: "55000000", with: Dummy.publicKey)
+    func testEncryptBIN() throws {
+        let encrypted = try CardEncryptor.encrypt(bin: "55000000", with: Dummy.publicKey)
         XCTAssertTrue(encrypted.hasPrefix("eyJhbGciOiJSU0EtT0FFUC0yNTYiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwidmVyc2lvbiI6IjEifQ"))
     }
 }

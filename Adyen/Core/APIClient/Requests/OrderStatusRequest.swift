@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -12,7 +12,9 @@ public struct OrderStatusRequest: APIRequest {
 
     public typealias ResponseType = OrderStatusResponse
 
-    public var path: String { "checkoutshopper/v1/order/status" }
+    public var path: String {
+        "checkoutshopper/v1/order/status"
+    }
 
     public var counter: UInt = 0
     

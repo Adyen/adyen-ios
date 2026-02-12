@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -116,7 +116,9 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Presentable Component Protocol
 
-    public var viewController: UIViewController { navigationController }
+    public var viewController: UIViewController {
+        navigationController
+    }
 
     // MARK: - Handling Actions
 
@@ -333,7 +335,7 @@ public final class DropInComponent: NSObject,
 
 private extension Bundle {
 
-    // Name of the app - title under the icon.
+    /// Name of the app - title under the icon.
     var displayName: String {
         object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ??
             object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""

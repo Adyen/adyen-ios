@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -57,7 +57,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         // Allow setup in viewDidLoad
         setupRootViewController(pickerSearchViewController)
         
-        let searchViewController = pickerSearchViewController.viewControllers.first as! SearchViewController
+        let searchViewController = try XCTUnwrap(pickerSearchViewController.viewControllers.first as? SearchViewController)
         guard case let .showingResults(results) = searchViewController.viewModel.interfaceState else {
             XCTFail("SearchViewController has wrong state \(searchViewController.viewModel.interfaceState)")
             return
@@ -82,7 +82,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         // Allow setup in viewDidLoad
         setupRootViewController(pickerSearchViewController)
         
-        let searchViewController = pickerSearchViewController.viewControllers.first as! SearchViewController
+        let searchViewController = try XCTUnwrap(pickerSearchViewController.viewControllers.first as? SearchViewController)
         
         let searchTerms: [String] = [
             "Title",
@@ -120,7 +120,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         // Allow setup in viewDidLoad
         setupRootViewController(pickerSearchViewController)
         
-        let searchViewController = pickerSearchViewController.viewControllers.first as! SearchViewController
+        let searchViewController = try XCTUnwrap(pickerSearchViewController.viewControllers.first as? SearchViewController)
         
         let searchTerms: [String] = [
             "Titles",

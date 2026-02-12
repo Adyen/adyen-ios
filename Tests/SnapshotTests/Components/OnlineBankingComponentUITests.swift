@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2026 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -32,7 +32,7 @@ class OnlineBankingComponentUITests: XCTestCase {
     func testUIElements() {
         style.backgroundColor = .green
 
-        /// Footer
+        // Footer
         style.mainButtonItem.button.title.color = .white
         style.mainButtonItem.button.title.backgroundColor = .red
         style.mainButtonItem.button.title.textAlignment = .center
@@ -40,7 +40,7 @@ class OnlineBankingComponentUITests: XCTestCase {
         style.mainButtonItem.button.backgroundColor = .red
         style.mainButtonItem.backgroundColor = .brown
 
-        /// Text field
+        // Text field
         style.textField.text.color = .yellow
         style.textField.text.font = .systemFont(ofSize: 5)
         style.textField.text.textAlignment = .center

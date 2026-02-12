@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -28,11 +28,17 @@ internal final class PreselectedPaymentMethodComponent: ComponentLoader,
     private let title: String
     private let defaultComponent: PaymentComponent
     
-    internal var apiContext: APIContext { defaultComponent.context.apiContext }
+    internal var apiContext: APIContext {
+        defaultComponent.context.apiContext
+    }
 
-    internal var context: AdyenContext { defaultComponent.context }
+    internal var context: AdyenContext {
+        defaultComponent.context
+    }
 
-    internal var paymentMethod: PaymentMethod { defaultComponent.paymentMethod }
+    internal var paymentMethod: PaymentMethod {
+        defaultComponent.paymentMethod
+    }
     
     /// Delegate actions.
     internal weak var delegate: PreselectedPaymentMethodComponentDelegate?

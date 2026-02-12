@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -47,15 +47,15 @@ class FormPickerItemTests: XCTestCase {
         
         wait(for: [presentViewControllerExpectation], timeout: 10)
         
-        setupRootViewController(presentedViewController!)
+        try setupRootViewController(XCTUnwrap(presentedViewController))
         
-        let searchViewController = presentedViewController!.viewControllers.first as! SearchViewController
+        let searchViewController = try XCTUnwrap(presentedViewController?.viewControllers.first as? SearchViewController)
         searchViewController.viewModel.interfaceState.results?.first?.selectionHandler?()
         
         wait(for: [dismissViewControllerExpectation], timeout: 10)
     }
     
-    func testAssertions() throws {
+    func testAssertions() {
         
         let formPickerItem = FormPickerItem<FormPickerElement>(
             preselectedValue: nil,

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -17,8 +17,10 @@ internal class PayToIdentifierItem: FormStringPickerItem {
 /// Picker subclass view specific to PayTo with its own logic to prevent opening the picker at initial load.
 internal class PayToFormPickerItemView: BaseFormPickerItemView<FormStringPickerElement> {
     
-    // To prevent this picker to become first responder initially
-    override internal var canBecomeFirstResponder: Bool { false }
+    /// To prevent this picker to become first responder initially
+    override internal var canBecomeFirstResponder: Bool {
+        false
+    }
     
 }
 

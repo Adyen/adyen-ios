@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,6 +13,8 @@ internal func + (lhs: CGSize, rhs: CGSize) -> CGSize {
 
 extension UIEdgeInsets {
     
-    internal var size: CGSize { CGSize(width: left + right, height: top + bottom) }
+    internal var size: CGSize {
+        CGSize(width: left + right, height: top + bottom)
+    }
     
 }

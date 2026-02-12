@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -168,7 +168,7 @@ class FormTextItemViewTests: XCTestCase {
         XCTAssertEqual(sut.titleLabel.textColor.toHexString(), sut.tintColor.toHexString())
     }
 
-    func testTextFieldSanitizationGivenNonAllowedCharactersShouldSanitizeAndFormatInput() throws {
+    func testTextFieldSanitizationGivenNonAllowedCharactersShouldSanitizeAndFormatInput() {
         // Given
         let validator = CardNumberValidator(isLuhnCheckEnabled: false, isEnteredBrandSupported: false)
         let formatter = CardNumberFormatter()

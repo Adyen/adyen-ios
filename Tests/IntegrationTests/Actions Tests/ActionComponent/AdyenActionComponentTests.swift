@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -107,7 +107,7 @@ class AdyenActionComponentTests: XCTestCase {
             XCTFail("delegate.didOpenExternalApplication() must not to be called")
         }
 
-        let action = Action.redirect(RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data"))
+        let action = try Action.redirect(RedirectAction(url: XCTUnwrap(URL(string: "https://www.adyen.com")), paymentData: "test_data"))
         sut.handle(action)
 
         try waitUntilTopPresenter(isOfType: SFSafariViewController.self)
@@ -135,7 +135,7 @@ class AdyenActionComponentTests: XCTestCase {
     }
     
     func testRedirectableAwaitAction() throws {
-        let expectedRedirectUrl = URL(string: "https://adyen.com")!
+        let expectedRedirectUrl = try XCTUnwrap(URL(string: "https://adyen.com"))
         let expectedAppLaunch = expectation(description: "`AppLauncher.openCustomSchemeUrl` was called")
         
         let mockAppLauncher = AppLauncherMock()
@@ -184,7 +184,7 @@ class AdyenActionComponentTests: XCTestCase {
             expectation.fulfill()
         }
 
-        let sdkAction = try JSONDecoder().decode(SDKAction.self, from: weChatActionResponse.data(using: .utf8)!)
+        let sdkAction = try JSONDecoder().decode(SDKAction.self, from: XCTUnwrap(weChatActionResponse.data(using: .utf8)))
         sut.handle(Action.sdk(sdkAction))
 
         waitForExpectations(timeout: 15, handler: nil)
@@ -192,7 +192,7 @@ class AdyenActionComponentTests: XCTestCase {
 
     func test3DSAction() throws {
         let sut = AdyenActionComponent(context: Dummy.context)
-        let action = try JSONDecoder().decode(ThreeDS2Action.self, from: threeDSFingerprintAction.data(using: .utf8)!)
+        let action = try JSONDecoder().decode(ThreeDS2Action.self, from: XCTUnwrap(threeDSFingerprintAction.data(using: .utf8)))
         sut.handle(Action.threeDS2(action))
 
         wait { sut.currentActionComponent is ThreeDS2Component }
@@ -202,7 +202,7 @@ class AdyenActionComponentTests: XCTestCase {
         let sut = AdyenActionComponent(context: Dummy.context)
         sut.presentationDelegate = try UIViewController.topPresenter()
         
-        let action = try JSONDecoder().decode(VoucherAction.self, from: voucherAction.data(using: .utf8)!)
+        let action = try JSONDecoder().decode(VoucherAction.self, from: XCTUnwrap(voucherAction.data(using: .utf8)))
         sut.handle(Action.voucher(action))
         
         let waitExpectation = expectation(description: "Expect VoucherViewController to be presented")
@@ -223,7 +223,7 @@ class AdyenActionComponentTests: XCTestCase {
         let sut = AdyenActionComponent(context: Dummy.context)
         sut.presentationDelegate = try UIViewController.topPresenter()
         
-        let action = try JSONDecoder().decode(QRCodeAction.self, from: qrAction.data(using: .utf8)!)
+        let action = try JSONDecoder().decode(QRCodeAction.self, from: XCTUnwrap(qrAction.data(using: .utf8)))
         sut.handle(Action.qrCode(action))
         
         try waitUntilTopPresenter(isOfType: QRCodeViewController.self)
@@ -234,7 +234,7 @@ class AdyenActionComponentTests: XCTestCase {
         let sut = AdyenActionComponent(context: Dummy.context)
         sut.presentationDelegate = try UIViewController.topPresenter()
         
-        let action = try JSONDecoder().decode(DocumentAction.self, from: documentAction.data(using: .utf8)!)
+        let action = try JSONDecoder().decode(DocumentAction.self, from: XCTUnwrap(documentAction.data(using: .utf8)))
         sut.handle(Action.document(action))
         
         let documentViewController = try waitUntilTopPresenter(isOfType: ADYViewController.self)
@@ -252,7 +252,7 @@ class AdyenActionComponentTests: XCTestCase {
             assertionExpectation.fulfill()
         }
         
-        let action = try JSONDecoder().decode(TwintSDKAction.self, from: twintAction.data(using: .utf8)!)
+        let action = try JSONDecoder().decode(TwintSDKAction.self, from: XCTUnwrap(twintAction.data(using: .utf8)))
         sut.handle(Action.sdk(.twint(action)))
         
         wait(for: [assertionExpectation], timeout: 0.1)
@@ -269,7 +269,7 @@ class AdyenActionComponentTests: XCTestCase {
         #endif
     }
     
-    func testTwintActionConfiguration() throws {
+    func testTwintActionConfiguration() {
         
         let validSchemes = ["scheme"]
         
@@ -300,8 +300,8 @@ class AdyenActionComponentTests: XCTestCase {
         }
     }
     
-    func testHandleRedirectEvent() {
-        let redirectAction = RedirectAction(url: URL(string: "https://www.adyen.com")!, paymentData: "test_data")
+    func testHandleRedirectEvent() throws {
+        let redirectAction = try RedirectAction(url: XCTUnwrap(URL(string: "https://www.adyen.com")), paymentData: "test_data")
         testEvent(for: Action.redirect(redirectAction))
     }
     
@@ -310,28 +310,28 @@ class AdyenActionComponentTests: XCTestCase {
         testEvent(for: Action.await(awaitAction))
     }
     
-    func testHandleSDKActionEvent() {
-        let sdkAction = try! JSONDecoder().decode(SDKAction.self, from: weChatActionResponse.data(using: .utf8)!)
+    func testHandleSDKActionEvent() throws {
+        let sdkAction = try JSONDecoder().decode(SDKAction.self, from: XCTUnwrap(weChatActionResponse.data(using: .utf8)))
         testEvent(for: Action.sdk(sdkAction))
     }
     
-    func testHandleThreeDSEvent() {
-        let threeDSAction = try! JSONDecoder().decode(ThreeDS2Action.self, from: threeDSFingerprintAction.data(using: .utf8)!)
+    func testHandleThreeDSEvent() throws {
+        let threeDSAction = try JSONDecoder().decode(ThreeDS2Action.self, from: XCTUnwrap(threeDSFingerprintAction.data(using: .utf8)))
         testEvent(for: Action.threeDS2(threeDSAction))
     }
     
-    func testHandleVoucherEvent() {
-        let voucherAction = try! JSONDecoder().decode(VoucherAction.self, from: voucherAction.data(using: .utf8)!)
+    func testHandleVoucherEvent() throws {
+        let voucherAction = try JSONDecoder().decode(VoucherAction.self, from: XCTUnwrap(voucherAction.data(using: .utf8)))
         testEvent(for: Action.voucher(voucherAction))
     }
     
-    func testQRCodeActionEvent() {
-        let qrCodeAction = try! JSONDecoder().decode(QRCodeAction.self, from: qrAction.data(using: .utf8)!)
+    func testQRCodeActionEvent() throws {
+        let qrCodeAction = try JSONDecoder().decode(QRCodeAction.self, from: XCTUnwrap(qrAction.data(using: .utf8)))
         testEvent(for: Action.qrCode(qrCodeAction))
     }
     
-    func testDocumentActionEvent() {
-        let documentAction = try! JSONDecoder().decode(DocumentAction.self, from: documentAction.data(using: .utf8)!)
+    func testDocumentActionEvent() throws {
+        let documentAction = try JSONDecoder().decode(DocumentAction.self, from: XCTUnwrap(documentAction.data(using: .utf8)))
         testEvent(for: Action.document(documentAction))
     }
     

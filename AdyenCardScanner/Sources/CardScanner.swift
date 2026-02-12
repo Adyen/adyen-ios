@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -38,11 +38,10 @@ public enum CardScanner {
         completion: @escaping (Result<CardScanDetails, CardScannerError>) -> Void
     ) -> UIViewController? {
         assertCameraUsageDescription()
-        let cardScannerViewController = cardScannerAssembler.resolveCardScannerViewController(
+        return cardScannerAssembler.resolveCardScannerViewController(
             localizationBundle: localizationBundle,
             completion: completion
         )
-        return cardScannerViewController
     }
 
     /// A Boolean value indicating whether card scanning is available on the current device

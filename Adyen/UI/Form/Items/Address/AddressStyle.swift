@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -31,7 +31,9 @@ public struct AddressStyle: FormValueItemStyle {
     public var backgroundColor: UIColor = .clear
 
     /// The color of form view item's separator line.
-    public var separatorColor: UIColor? { textField.separatorColor }
+    public var separatorColor: UIColor? {
+        textField.separatorColor
+    }
     
     /// Initializes the form address item configuration.
     /// - Parameters:

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -62,9 +62,13 @@ public protocol AdyenSessionDelegate: AnyObject {
 /// Provides default empty implementation for ``AdyenSessionDelegate``
 public extension AdyenSessionDelegate {
 
-    func handlerForPayments(in component: PaymentComponent, session: AdyenSession) -> AdyenSessionPaymentsHandler? { nil }
+    func handlerForPayments(in component: PaymentComponent, session: AdyenSession) -> AdyenSessionPaymentsHandler? {
+        nil
+    }
     
-    func handlerForAdditionalDetails(in component: ActionComponent, session: AdyenSession) -> AdyenSessionPaymentDetailsHandler? { nil }
+    func handlerForAdditionalDetails(in component: ActionComponent, session: AdyenSession) -> AdyenSessionPaymentDetailsHandler? {
+        nil
+    }
     
     func didOpenExternalApplication(component: ActionComponent, session: AdyenSession) {}
 }
@@ -122,7 +126,7 @@ public enum SessionPaymentResultCode: String {
     /// Indicates that the response contains additional information that is presented to the shopper.
     case presentToShopper = "PresentToShopper"
     
-    // Internal init to map payment response to only the final codes.
+    /// Internal init to map payment response to only the final codes.
     internal init(paymentResultCode: PaymentsResponse.ResultCode) {
         switch paymentResultCode {
         case .authenticationFinished,

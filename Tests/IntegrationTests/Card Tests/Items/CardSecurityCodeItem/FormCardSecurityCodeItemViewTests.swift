@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -34,7 +34,7 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testTextFieldSanitizationGivenNonAllowedCharactersShouldSanitizeAndFormatInput() throws {
+    func testTextFieldSanitizationGivenNonAllowedCharactersShouldSanitizeAndFormatInput() {
         // Given
         let expectedCVV = "458"
         let expectedFormattedCVV = formatter.formattedValue(for: expectedCVV)
@@ -50,7 +50,7 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         XCTAssertEqual(sut.textField.allowsEditingActions, false)
     }
 
-    func testTextFieldSanitizationGivenCorrectSecurityCodeShouldSanitizeAndFormatInput() throws {
+    func testTextFieldSanitizationGivenCorrectSecurityCodeShouldSanitizeAndFormatInput() {
         // Given
         let expectedCVV = "917"
         let expectedFormattedCVV = formatter.formattedValue(for: expectedCVV)

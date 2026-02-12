@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -23,14 +23,14 @@ class PaymentMethodListComponentTests: XCTestCase {
         }
     }
     
-    func testRequiresKeyboardInput() {
+    func testRequiresKeyboardInput() throws {
         let section = ComponentsSection(components: [storedComponent])
         let sectionedComponents = [section]
         let sut = PaymentMethodListComponent(context: Dummy.context, components: sectionedComponents)
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
 
-        XCTAssertFalse((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
+        XCTAssertFalse(try XCTUnwrap((navigationViewController.topViewController as? WrapperViewController)?.requiresKeyboardInput))
     }
     
     func testLocalizationWithCustomTableName() {
@@ -59,13 +59,13 @@ class PaymentMethodListComponentTests: XCTestCase {
         XCTAssertEqual(listViewController.sections[1].header?.title, "title")
     }
 
-    func testStartStopLoading() {
+    func testStartStopLoading() throws {
         let section = ComponentsSection(components: [storedComponent])
         let sut = PaymentMethodListComponent(context: Dummy.context, components: [section])
 
         setupRootViewController(sut.listViewController)
         
-        let cell = sut.listViewController.tableView.visibleCells[0] as! ListCell
+        let cell = try XCTUnwrap(sut.listViewController.tableView.visibleCells[0] as? ListCell)
         XCTAssertFalse(cell.showsActivityIndicator)
         sut.startLoading(for: self.storedComponent)
         XCTAssertTrue(cell.showsActivityIndicator)

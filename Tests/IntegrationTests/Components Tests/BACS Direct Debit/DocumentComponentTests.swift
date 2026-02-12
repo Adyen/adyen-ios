@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -21,7 +21,7 @@ class DocumentComponentTests: XCTestCase {
         }
     }
     
-    func testUI() {
+    func testUI() throws {
         let style = DocumentComponentStyle()
         let sut = DocumentComponent(context: Dummy.context)
         let presentationDelegate = PresentationDelegateMock()
@@ -51,11 +51,11 @@ class DocumentComponentTests: XCTestCase {
             XCTAssertEqual(logo?.layer.cornerRadius, 8)
         }
         
-        sut.handle(DocumentAction(downloadUrl: URL(string: "www.adyen.com")!, paymentMethodType: .bacs))
+        try sut.handle(DocumentAction(downloadUrl: XCTUnwrap(URL(string: "www.adyen.com")), paymentMethodType: .bacs))
         
     }
     
-    func testMainSecondaryButtons() {
+    func testMainSecondaryButtons() throws {
         let mainButtonExpectation = expectation(description: "Main button tapped")
         
         let delegateMock = DocumentActionViewDelegateMock()
@@ -63,10 +63,10 @@ class DocumentComponentTests: XCTestCase {
             mainButtonExpectation.fulfill()
         }
         
-        let viewModel = DocumentActionViewModel(
+        let viewModel = try DocumentActionViewModel(
             action: action,
             message: "test",
-            logoURL: URL(string: "www.adyen.com")!,
+            logoURL: XCTUnwrap(URL(string: "www.adyen.com")),
             buttonTitle: "pdf"
         )
         let style = DocumentComponentStyle()
