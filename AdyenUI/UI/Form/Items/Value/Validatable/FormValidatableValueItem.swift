@@ -46,7 +46,6 @@ open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueTy
     /// Views observe this property to update their UI reactively.
     @AdyenUIObservable(.initial) package var validationState: ValidationState
     
-    
     /// Closure that is triggered when there is a validation error.
     public var onDidShowValidationError: ((ValidationError) -> Void)?
     
@@ -76,6 +75,20 @@ open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueTy
         if trigger == .focusLost, isEmpty() {
             return
         }
-        validationState = isValid() ? .valid : .invalid(validationFailureMessage ?? "")
+        let newState: ValidationState = isValid() ? .valid : .invalid(validationFailureMessage ?? "")
+        validationState = newState
+
+        notifyOnValidationError(for: newState)
+    }
+
+    // MARK: - Private
+
+    private func notifyOnValidationError(for state: ValidationState) {
+        guard case .invalid = state,
+              let validationStatus = validationStatus(),
+              let error = validationStatus.validationError
+        else { return }
+        
+        onDidShowValidationError?(error)
     }
 }
