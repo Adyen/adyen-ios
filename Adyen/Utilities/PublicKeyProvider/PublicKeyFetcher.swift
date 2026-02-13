@@ -45,10 +45,10 @@ package final class PublicKeyFetcher: PublicKeyFetching {
         }
     }
 
-    public enum PublicKeyFetcherError: Swift.Error, LocalizedError {
+    package enum PublicKeyFetcherError: Swift.Error, LocalizedError {
         case invalidClientKey
 
-        public var errorDescription: String? {
+        package var errorDescription: String? {
             "Client key not found on the selected environment."
         }
     }

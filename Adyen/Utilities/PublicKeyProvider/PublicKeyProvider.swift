@@ -45,7 +45,7 @@ package final class PublicKeyProvider: AnyPublicKeyProvider {
         }
     }
     
-    public convenience init(apiContext: APIContext) {
+    package convenience init(apiContext: APIContext) {
         let scheduler = SimpleScheduler(maximumCount: 2)
         let retryApiClient = APIClient(apiContext: apiContext).retryAPIClient(with: scheduler)
         let retryOnErrorApiClient = retryApiClient.retryOnErrorAPIClient()
@@ -63,7 +63,7 @@ package final class PublicKeyProvider: AnyPublicKeyProvider {
         self.clientKey = clientKey
     }
 
-    public func fetch(completion: @escaping CompletionHandler) {
+    package func fetch(completion: @escaping CompletionHandler) {
         if let publicKey = cachedPublicKey {
             completion(.success(publicKey))
             return
