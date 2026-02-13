@@ -20,6 +20,28 @@ import Foundation
 @testable import AdyenCheckout
 @testable import AdyenDropIn
 
+package class APIClientKeyRequestProtocolMock: APIClientKeyRequestProtocol {
+
+    // MARK: - perform
+
+    package var performRequestCompletionHandlerCallsCount = 0
+    package var performRequestCompletionHandlerCalled: Bool {
+        performRequestCompletionHandlerCallsCount > 0
+    }
+
+    package var performRequestCompletionHandlerReceivedArguments: (request: ClientKeyRequest, completionHandler: (Result<ClientKeyResponse, Error>) -> Void)?
+    package var performRequestCompletionHandlerReceivedInvocations: [(request: ClientKeyRequest, completionHandler: (Result<ClientKeyResponse, Error>) -> Void)] = []
+    package var performRequestCompletionHandlerClosure: ((ClientKeyRequest, @escaping (Result<ClientKeyResponse, Error>) -> Void) -> Void)?
+
+    package func perform(request: ClientKeyRequest, completionHandler: @escaping (Result<ClientKeyResponse, Error>) -> Void) {
+        performRequestCompletionHandlerCallsCount += 1
+        performRequestCompletionHandlerReceivedArguments = (request: request, completionHandler: completionHandler)
+        performRequestCompletionHandlerReceivedInvocations.append((request: request, completionHandler: completionHandler))
+        performRequestCompletionHandlerClosure?(request, completionHandler)
+    }
+
+}
+
 class ActionPresenterMock: ActionPresenter {
 
     // MARK: - present

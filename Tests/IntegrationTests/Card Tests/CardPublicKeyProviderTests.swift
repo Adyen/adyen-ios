@@ -19,8 +19,7 @@ class PublicKeyProviderTests: XCTestCase {
     func testMultipleFetchCallsAndOneRequestDispatched() {
         var baseApiClient = APIClientMock()
         var apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
-        var fetcher = PublicKeyFetcher(apiClient: baseApiClient, clientKey: Dummy.apiContext.clientKey)
-        var sut = PublicKeyProvider(fetcher: fetcher, clientKey: Dummy.apiContext.clientKey, apiClient: apiClient)
+        var sut = PublicKeyProvider(apiClient: apiClient, clientKey: Dummy.apiContext.clientKey)
         PublicKeyProvider.publicKeysCache[Dummy.apiContext.clientKey] = nil
 
         baseApiClient.mockedResults = [.success(ClientKeyResponse(cardPublicKey: "test_public_key"))]
@@ -47,8 +46,7 @@ class PublicKeyProviderTests: XCTestCase {
 
         baseApiClient = APIClientMock()
         apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
-        fetcher = PublicKeyFetcher(apiClient: baseApiClient, clientKey: Dummy.apiContext.clientKey)
-        sut = PublicKeyProvider(fetcher: fetcher, clientKey: Dummy.apiContext.clientKey, apiClient: apiClient)
+        sut = PublicKeyProvider(apiClient: apiClient, clientKey: Dummy.apiContext.clientKey)
 
         let secondFetchExpectation = expectation(description: "second PublicKeyProvider.fetch() completion handler must be called.")
         sut.fetch { result in
@@ -64,15 +62,14 @@ class PublicKeyProviderTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
 
         XCTAssertEqual(baseApiClient.counter, 0)
-        
+
         // Subsequent fetch calls with different
         // clientKey should fetch a new public key and cache it
 
         baseApiClient = APIClientMock()
         apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
-        fetcher = PublicKeyFetcher(apiClient: baseApiClient, clientKey: "different_client_key")
-        sut = PublicKeyProvider(fetcher: fetcher, clientKey: "different_client_key", apiClient: apiClient)
-        
+        sut = PublicKeyProvider(apiClient: apiClient, clientKey: "different_client_key")
+
         baseApiClient.mockedResults = [.success(ClientKeyResponse(cardPublicKey: "another_test_public_key"))]
 
         let thirdFetchExpectation = expectation(description: "second PublicKeyProvider.fetch() completion handler must be called.")

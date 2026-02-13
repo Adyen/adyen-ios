@@ -44,27 +44,20 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
         let scheduler = SimpleScheduler(maximumCount: 2)
         let retryApiClient = APIClient(apiContext: apiContext).retryAPIClient(with: scheduler)
         let retryOnErrorApiClient = retryApiClient.retryOnErrorAPIClient()
-        let uniqueAssetAPIClient = UniqueAssetAPIClient<ClientKeyResponse>(apiClient: retryOnErrorApiClient)
-        
-        let fetcher = PublicKeyFetcher()
         self.init(
-            fetcher: fetcher,
-            clientKey: apiContext.clientKey,
-            apiClient: UniqueAssetAPIClientAdaptor(uniqueAssetAPIClient: uniqueAssetAPIClient)
+            apiClient: retryOnErrorApiClient,
+            clientKey: apiContext.clientKey
         )
     }
 
     /// For testing only
-    internal init(
-        fetcher: PublicKeyFetching,
-        clientKey: String,
-        apiClient: APIClientKeyRequestProtocol
-    ) {
-        self.fetcher = fetcher
+    internal init(apiClient: APIClientProtocol, clientKey: String) {
+        self.fetcher = PublicKeyFetcher()
+        let uniqueAssetAPIClient = UniqueAssetAPIClient<ClientKeyResponse>(apiClient: apiClient)
+        self.apiClient = UniqueAssetAPIClientAdaptor(uniqueAssetAPIClient: uniqueAssetAPIClient)
         self.clientKey = clientKey
-        self.apiClient = apiClient
     }
-    
+
     public func fetch(completion: @escaping CompletionHandler) {
         if let publicKey = cachedPublicKey {
             completion(.success(publicKey))

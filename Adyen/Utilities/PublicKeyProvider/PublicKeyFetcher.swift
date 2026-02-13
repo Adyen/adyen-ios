@@ -11,6 +11,7 @@ package protocol PublicKeyFetching {
     func fetchPublicKey(apiClient: APIClientKeyRequestProtocol, clientKey: String) async throws -> String
 }
 
+// sourcery:AutoMockable
 package protocol APIClientKeyRequestProtocol {
     func perform(request: ClientKeyRequest, completionHandler: @escaping (Result<ClientKeyResponse, Error>) -> Void)
 }
