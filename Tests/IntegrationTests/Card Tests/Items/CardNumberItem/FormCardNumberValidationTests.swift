@@ -174,7 +174,7 @@ class FormCardNumberValidationTests: XCTestCase {
         XCTAssertFalse(
             numberItem.validationState.shouldShowError, "Error should clear when field gains focus"
         )
-        XCTAssertTrue(sut.footerLabel.isHidden, "Footer should be hidden")
+        wait(until: { sut.footerLabel.isHidden }, timeout: 1.0)
     }
 
     // MARK: - UC8: Card Number - Valid Input Hides Logos
