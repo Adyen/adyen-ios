@@ -63,23 +63,15 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
             completion(.success(publicKey))
             return
         }
-        
-        Task { [weak self] in
-            guard let fetcher = self?.fetcher,
-                  let apiClient = self?.apiClient,
-                  let clientKey = self?.clientKey else {
-                return
-            }
-            do {
-                let publicKey = try await fetcher.fetchPublicKey(
-                    apiClient: apiClient,
-                    clientKey: clientKey
-                )
+
+        fetcher.fetchPublicKey(apiClient: apiClient, clientKey: clientKey) { [weak self] result in
+            switch result {
+            case let .success(publicKey):
                 DispatchQueue.main.async {
                     self?.cachedPublicKey = publicKey
                     completion(.success(publicKey))
                 }
-            } catch {
+            case let .failure(error):
                 DispatchQueue.main.async {
                     completion(.failure(error))
                 }

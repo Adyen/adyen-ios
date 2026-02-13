@@ -8,6 +8,7 @@ import AdyenNetworking
 import Foundation
 
 package protocol PublicKeyFetching {
+    func fetchPublicKey(apiClient: APIClientKeyRequestProtocol, clientKey: String, completion: @escaping (Result<String, Error>) -> Void)
     func fetchPublicKey(apiClient: APIClientKeyRequestProtocol, clientKey: String) async throws -> String
 }
 
@@ -19,20 +20,27 @@ package protocol APIClientKeyRequestProtocol {
 package final class PublicKeyFetcher: PublicKeyFetching {
     package init() {}
 
-    package func fetchPublicKey(apiClient: APIClientKeyRequestProtocol, clientKey: String) async throws -> String {
+    package func fetchPublicKey(apiClient: APIClientKeyRequestProtocol, clientKey: String, completion: @escaping (Result<String, Error>) -> Void) {
         let request = ClientKeyRequest(clientKey: clientKey)
-        do {
-            let response: ClientKeyResponse = try await withCheckedThrowingContinuation { continuation in
-                apiClient.perform(request: request) { result in
-                    continuation.resume(with: result)
+        apiClient.perform(request: request) { result in
+            switch result {
+            case let .success(response):
+                completion(.success(response.cardPublicKey))
+            case let .failure(error):
+                if error is DecodingError {
+                    completion(.failure(PublicKeyFetcherError.invalidClientKey))
+                } else {
+                    completion(.failure(error))
                 }
             }
-            return response.cardPublicKey
-        } catch is DecodingError {
-            // Disclaimer: This error check is not 100% reliable. Need to improve the endpoint.
-            throw PublicKeyFetcherError.invalidClientKey
-        } catch {
-            throw error
+        }
+    }
+
+    package func fetchPublicKey(apiClient: APIClientKeyRequestProtocol, clientKey: String) async throws -> String {
+        try await withCheckedThrowingContinuation { continuation in
+            self.fetchPublicKey(apiClient: apiClient, clientKey: clientKey) { result in
+                continuation.resume(with: result)
+            }
         }
     }
 
