@@ -10,7 +10,7 @@ import XCTest
 class PublicKeyFetcherTests: XCTestCase {
 
     func testFetchPublicKeySuccess() async throws {
-        let mockApiClient = APIClientKeyRequestMock()
+        let mockApiClient = APIClientMock()
         mockApiClient.mockedResults = [.success(ClientKeyResponse(cardPublicKey: "test_public_key"))]
 
         let sut = PublicKeyFetcher()
@@ -21,7 +21,7 @@ class PublicKeyFetcherTests: XCTestCase {
     }
 
     func testFetchPublicKeyDecodingErrorThrowsInvalidClientKey() async {
-        let mockApiClient = APIClientKeyRequestMock()
+        let mockApiClient = APIClientMock()
         let decodingError = DecodingError.dataCorrupted(
             .init(codingPath: [], debugDescription: "test decoding error")
         )
@@ -43,7 +43,7 @@ class PublicKeyFetcherTests: XCTestCase {
     }
 
     func testFetchPublicKeyNetworkErrorIsRethrown() async {
-        let mockApiClient = APIClientKeyRequestMock()
+        let mockApiClient = APIClientMock()
         let networkError = NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet)
         mockApiClient.mockedResults = [.failure(networkError)]
 
@@ -58,5 +58,11 @@ class PublicKeyFetcherTests: XCTestCase {
         }
 
         XCTAssertEqual(mockApiClient.counter, 1)
+    }
+}
+
+extension APIClientMock: APIClientKeyRequestProtocol {
+    func perform(request: ClientKeyRequest, completionHandler: @escaping (Result<ClientKeyResponse, Error>) -> Void) {
+        perform(request, completionHandler: completionHandler)
     }
 }
