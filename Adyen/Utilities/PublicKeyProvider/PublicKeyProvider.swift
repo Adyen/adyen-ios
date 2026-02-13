@@ -17,10 +17,15 @@ public protocol AnyPublicKeyProvider: AnyObject {
     func fetch(completion: @escaping CompletionHandler)
 }
 
+// TODO: Robert: This needs to be deleted.
 /// `PublicKeyProvider` is used to fetch the client public key that is needed for encrypting data.
 /// It adds caching and retry logic on top of `PublicKeyFetcher`, using `UniqueAssetAPIClient` for request deduplication.
-@_spi(AdyenInternal)
-public final class PublicKeyProvider: AnyPublicKeyProvider {
+@available(
+    *,
+    deprecated,
+    message: "This needs to be deleted, we now will depend on the public key that is fetched in `CheckoutProvider`"
+)
+package final class PublicKeyProvider: AnyPublicKeyProvider {
 
     private let fetcher: PublicKeyFetching
 
@@ -54,7 +59,7 @@ public final class PublicKeyProvider: AnyPublicKeyProvider {
     internal init(apiClient: APIClientProtocol, clientKey: String) {
         self.fetcher = PublicKeyFetcher()
         let uniqueAssetAPIClient = UniqueAssetAPIClient<ClientKeyResponse>(apiClient: apiClient)
-        self.apiClient = UniqueAssetAPIClientAdaptor(uniqueAssetAPIClient: uniqueAssetAPIClient)
+        self.apiClient = uniqueAssetAPIClient
         self.clientKey = clientKey
     }
 

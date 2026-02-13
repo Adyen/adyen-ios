@@ -8,6 +8,8 @@ import AdyenNetworking
 import Foundation
 
 package protocol PublicKeyFetching {
+    /// Retaining a completion handler interface as this is needed for the PublicKeyProvider to ensure that only one request is being sent through the apiClient even if there are multiple callers.
+    /// We can remove this when we remove `PublicKeyProvider`
     func fetchPublicKey(apiClient: APIClientKeyRequestProtocol, clientKey: String, completion: @escaping (Result<String, Error>) -> Void)
     func fetchPublicKey(apiClient: APIClientKeyRequestProtocol, clientKey: String) async throws -> String
 }
@@ -53,15 +55,9 @@ package final class PublicKeyFetcher: PublicKeyFetching {
     }
 }
 
-internal struct UniqueAssetAPIClientAdaptor: APIClientKeyRequestProtocol {
-    internal func perform(request: ClientKeyRequest, completionHandler: @escaping (Result<ClientKeyResponse, any Error>) -> Void) {
-        apiClient.perform(request, completionHandler: completionHandler)
-    }
-    
-    private let apiClient: UniqueAssetAPIClient<ClientKeyResponse>
-
-    internal init(uniqueAssetAPIClient: UniqueAssetAPIClient<ClientKeyResponse>) {
-        self.apiClient = uniqueAssetAPIClient
+extension UniqueAssetAPIClient: APIClientKeyRequestProtocol where ResponseType == ClientKeyResponse {
+    package func perform(request: ClientKeyRequest, completionHandler: @escaping (Result<ClientKeyResponse, any Error>) -> Void) {
+        self.perform(request, completionHandler: completionHandler)
     }
 }
 
