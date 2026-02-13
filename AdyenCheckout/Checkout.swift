@@ -60,6 +60,9 @@ public final class Checkout: CheckoutProtocol {
     /// This is used primarily for sending Analytic Events. If this doesn't exist then there would not be any analytics sent.
     internal let checkoutAttemptId: String?
 
+    /// The client public key used for encrypting sensitive payment data.
+    internal let publicKey: String?
+
     internal let configuration: CheckoutConfiguration
     internal weak var presentationDelegate: PresentationDelegate?
     
@@ -162,12 +165,14 @@ public final class Checkout: CheckoutProtocol {
         session: SessionProtocol? = nil,
         paymentMethods: PaymentMethods? = nil,
         checkoutAttemptId: String?,
+        publicKey: String? = nil,
         presentationDelegate: PresentationDelegate?
     ) {
         self.configuration = configuration
         self.session = session
         self.paymentMethods = paymentMethods ?? session?.state.paymentMethods
         self.checkoutAttemptId = checkoutAttemptId
+        self.publicKey = publicKey
         self.presentationDelegate = presentationDelegate
         
         self.session?.delegate = self

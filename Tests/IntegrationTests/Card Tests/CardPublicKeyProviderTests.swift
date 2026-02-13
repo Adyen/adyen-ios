@@ -19,7 +19,8 @@ class PublicKeyProviderTests: XCTestCase {
     func testMultipleFetchCallsAndOneRequestDispatched() {
         var baseApiClient = APIClientMock()
         var apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
-        var sut = PublicKeyProvider(apiClient: apiClient, request: ClientKeyRequest(clientKey: Dummy.apiContext.clientKey))
+        var fetcher = PublicKeyFetcher(apiClient: baseApiClient, clientKey: Dummy.apiContext.clientKey)
+        var sut = PublicKeyProvider(fetcher: fetcher, clientKey: Dummy.apiContext.clientKey, apiClient: apiClient)
         PublicKeyProvider.publicKeysCache[Dummy.apiContext.clientKey] = nil
 
         baseApiClient.mockedResults = [.success(ClientKeyResponse(cardPublicKey: "test_public_key"))]
@@ -46,7 +47,8 @@ class PublicKeyProviderTests: XCTestCase {
 
         baseApiClient = APIClientMock()
         apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
-        sut = PublicKeyProvider(apiClient: apiClient, request: ClientKeyRequest(clientKey: Dummy.apiContext.clientKey))
+        fetcher = PublicKeyFetcher(apiClient: baseApiClient, clientKey: Dummy.apiContext.clientKey)
+        sut = PublicKeyProvider(fetcher: fetcher, clientKey: Dummy.apiContext.clientKey, apiClient: apiClient)
 
         let secondFetchExpectation = expectation(description: "second PublicKeyProvider.fetch() completion handler must be called.")
         sut.fetch { result in
@@ -68,7 +70,8 @@ class PublicKeyProviderTests: XCTestCase {
 
         baseApiClient = APIClientMock()
         apiClient = RetryAPIClient(apiClient: baseApiClient, scheduler: SimpleScheduler(maximumCount: 2))
-        sut = PublicKeyProvider(apiClient: apiClient, request: ClientKeyRequest(clientKey: "different_client_key"))
+        fetcher = PublicKeyFetcher(apiClient: baseApiClient, clientKey: "different_client_key")
+        sut = PublicKeyProvider(fetcher: fetcher, clientKey: "different_client_key", apiClient: apiClient)
         
         baseApiClient.mockedResults = [.success(ClientKeyResponse(cardPublicKey: "another_test_public_key"))]
 
