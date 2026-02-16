@@ -44,11 +44,22 @@ open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueTy
 
     /// Single source of truth for validation state.
     /// Views observe this property to update their UI reactively.
-    @AdyenUIObservable(.initial) package var validationState: ValidationState
+    @AdyenObservable(.initial) package var validationState: ValidationState
+    
+    /// Observation manager that automatically cleans up handlers on deinit.
+    private let observationManager = ObservationManager()
     
     /// Closure that is triggered when there is a validation error.
     public var onDidShowValidationError: ((ValidationError) -> Void)?
     
+    override internal init(value: ValueType, style: FormTextItemStyle) {
+        super.init(value: value, style: style)
+
+        _ = observationManager.observe($validationState) { [weak self] newState in
+            self?.notifyOnValidationError(for: newState)
+        }
+    }
+
     public func isValid() -> Bool {
         AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
         return false
@@ -77,12 +88,10 @@ open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueTy
         }
         let newState: ValidationState = isValid() ? .valid : .invalid(validationFailureMessage ?? "")
         validationState = newState
-
-        notifyOnValidationError(for: newState)
     }
 
     // MARK: - Private
-
+    
     private func notifyOnValidationError(for state: ValidationState) {
         guard case .invalid = state,
               let validationStatus = validationStatus(),
