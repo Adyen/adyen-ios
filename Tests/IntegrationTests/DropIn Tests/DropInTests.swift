@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -142,7 +142,7 @@ class DropInTests: XCTestCase {
         }
     }
 
-    func testDropInStyle() throws {
+    func testDropInStyle() {
         var style = DropInComponent.Style(tintColor: .brown)
 
         XCTAssertEqual(style.formComponent.textField.tintColor, .brown)
@@ -185,7 +185,7 @@ class DropInTests: XCTestCase {
         let context = Dummy.context(with: analyticsProviderMock)
         let config = DropInComponent.Configuration(allowPreselectedPaymentView: false)
 
-        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethodsOneClick.data(using: .utf8)))
         _ = DropInComponent(
             paymentMethods: paymentMethods,
             context: context,
@@ -202,7 +202,7 @@ class DropInTests: XCTestCase {
         let context = Dummy.context(with: analyticsProviderMock)
         let config = DropInComponent.Configuration(allowPreselectedPaymentView: false)
 
-        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethodsOneClick.data(using: .utf8)))
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: context,
@@ -231,7 +231,7 @@ class DropInTests: XCTestCase {
         let context = Dummy.context(with: analyticsProviderMock)
         let config = DropInComponent.Configuration(allowPreselectedPaymentView: true)
 
-        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethodsOneClick.data(using: .utf8)))
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: context,
@@ -256,7 +256,7 @@ class DropInTests: XCTestCase {
         let context = Dummy.context(with: analyticsProviderMock)
         let config = DropInComponent.Configuration(allowsSkippingPaymentList: true)
 
-        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleNonInstant.data(using: .utf8)!)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethodsWithSingleNonInstant.data(using: .utf8)))
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: context,
@@ -289,7 +289,7 @@ class DropInTests: XCTestCase {
     func testOpenDropInAsList() throws {
         let config = DropInComponent.Configuration()
 
-        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethods.data(using: .utf8)))
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
@@ -306,7 +306,7 @@ class DropInTests: XCTestCase {
     func testOpenDropInAsOneClickPayment() throws {
         let config = DropInComponent.Configuration()
 
-        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethodsOneClick.data(using: .utf8)))
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
@@ -322,7 +322,7 @@ class DropInTests: XCTestCase {
         let config = DropInComponent.Configuration()
         config.allowPreselectedPaymentView = false
 
-        var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethods.data(using: .utf8)))
         let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
         paymentMethods.stored = [storedPaymentMethod]
 
@@ -358,7 +358,7 @@ class DropInTests: XCTestCase {
         let config = DropInComponent.Configuration()
         config.allowPreselectedPaymentView = false
 
-        var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethods.data(using: .utf8)))
         let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
         paymentMethods.stored = [storedPaymentMethod]
 
@@ -393,7 +393,7 @@ class DropInTests: XCTestCase {
         let config = DropInComponent.Configuration()
         config.allowPreselectedPaymentView = false
 
-        var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethods.data(using: .utf8)))
         let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
         paymentMethods.stored = [storedPaymentMethod]
 
@@ -428,7 +428,7 @@ class DropInTests: XCTestCase {
         let config = DropInComponent.Configuration()
         config.allowPreselectedPaymentView = false
 
-        var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethods.data(using: .utf8)))
         let storedPaymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
         paymentMethods.stored = [storedPaymentMethod]
 
@@ -462,7 +462,7 @@ class DropInTests: XCTestCase {
     func testOpenDropInWithNoOneClickPayment() throws {
         let config = DropInComponent.Configuration(allowPreselectedPaymentView: false)
 
-        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethodsOneClick.data(using: .utf8)))
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
@@ -478,7 +478,7 @@ class DropInTests: XCTestCase {
         let config = DropInComponent.Configuration()
         config.applePay = .init(payment: Dummy.createTestApplePayPayment(), merchantIdentifier: "")
 
-        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethods.data(using: .utf8)))
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
@@ -498,7 +498,7 @@ class DropInTests: XCTestCase {
     func testGiftCard() throws {
         let config = DropInComponent.Configuration()
 
-        var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
+        var paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethods.data(using: .utf8)))
         paymentMethods.paid = [
             OrderPaymentMethod(
                 lastFour: "1234",
@@ -524,13 +524,13 @@ class DropInTests: XCTestCase {
         let topVC = try XCTUnwrap(sut.viewController.findChild(of: ListViewController.self))
         XCTAssertEqual(topVC.sections.count, 2)
         XCTAssertEqual(topVC.sections[0].items.count, 2)
-        XCTAssertTrue(topVC.sections[0].footer!.title.contains("Select payment method for the remaining"))
+        XCTAssertTrue(try XCTUnwrap(topVC.sections[0].footer?.title.contains("Select payment method for the remaining")))
     }
 
     func testSinglePaymentMethodSkippingPaymentList() throws {
         let config = DropInComponent.Configuration(allowsSkippingPaymentList: true)
 
-        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleNonInstant.data(using: .utf8)!)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethodsWithSingleNonInstant.data(using: .utf8)))
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
@@ -547,7 +547,7 @@ class DropInTests: XCTestCase {
     func testSinglePaymentMethodNotSkippingPaymentList() throws {
         let config = DropInComponent.Configuration(allowsSkippingPaymentList: true)
 
-        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)))
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
@@ -565,7 +565,7 @@ class DropInTests: XCTestCase {
     func testFinaliseIfNeededEmptyList() throws {
         let config = DropInComponent.Configuration()
 
-        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)))
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,
@@ -723,7 +723,8 @@ class DropInTests: XCTestCase {
         let delegateMock = DropInDelegateMock(
             didFailHandler: { _, _ in
                 failExpectation.fulfill()
-            })
+            }
+        )
 
         sut.delegate = delegateMock
 

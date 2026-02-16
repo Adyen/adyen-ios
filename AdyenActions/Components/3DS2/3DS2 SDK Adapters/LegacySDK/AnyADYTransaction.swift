@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -16,7 +16,9 @@ internal protocol AnyADYTransaction {
 
 extension ADYTransaction: AnyADYTransaction {
 
-    internal var authenticationParameters: AnyAuthenticationRequestParameters { authenticationRequestParameters }
+    internal var authenticationParameters: AnyAuthenticationRequestParameters {
+        authenticationRequestParameters
+    }
 
     internal func performChallenge(
         with parameters: ADYChallengeParameters,

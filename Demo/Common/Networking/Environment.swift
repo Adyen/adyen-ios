@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -38,7 +38,9 @@ internal enum DemoCheckoutAPIEnvironment: String, AnyAPIEnvironment, CaseIterabl
         }
     }
     
-    internal var version: Int { ConfigurationConstants.current.apiVersion }
+    internal var version: Int {
+        ConfigurationConstants.current.apiVersion
+    }
     
 }
 

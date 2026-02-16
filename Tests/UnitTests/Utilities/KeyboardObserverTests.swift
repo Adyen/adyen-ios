@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,7 +9,7 @@ import XCTest
 
 class KeyboardObserverTests: XCTestCase, AdyenObserver {
     
-    func testKeyboardNotificationHandling() {
+    func testKeyboardNotificationHandling() throws {
         
         let keyboardObserver = KeyboardObserver()
         
@@ -39,10 +39,10 @@ class KeyboardObserverTests: XCTestCase, AdyenObserver {
         
         // Valid Notification
         
-        NotificationCenter.default.post(
+        try NotificationCenter.default.post(
             name: UIResponder.keyboardWillChangeFrameNotification,
             object: nil,
-            userInfo: [UIResponder.keyboardFrameEndUserInfoKey: expectedRects.first!]
+            userInfo: [UIResponder.keyboardFrameEndUserInfoKey: XCTUnwrap(expectedRects.first)]
         )
         
         wait(for: [validExpectation], timeout: 10)

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -11,7 +11,9 @@ import Contacts
 public class DemoAddressLookupProvider: AddressLookupProvider {
     
     private struct AddressCompletionError: LocalizedError {
-        var errorDescription: String? { "Could not complete address" }
+        var errorDescription: String? {
+            "Could not complete address"
+        }
     }
     
     private let minDebounceDelay: TimeInterval = 0.3
@@ -64,7 +66,7 @@ public class DemoAddressLookupProvider: AddressLookupProvider {
         searchTask = searchTask(for: searchTerm, completion: resultHandler)
     }
     
-    // Optional implementation to fetch the full address for an incomplete version
+    /// Optional implementation to fetch the full address for an incomplete version
     public func complete(incompleteAddress: LookupAddressModel, resultHandler: @escaping (Result<PostalAddress, Error>) -> Void) {
         
         var dispatchWorkItem: DispatchWorkItem?

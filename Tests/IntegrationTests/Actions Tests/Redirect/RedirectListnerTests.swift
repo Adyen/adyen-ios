@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,9 +9,9 @@ import XCTest
 
 class RedirectListenerTests: XCTestCase {
 
-    func testRedirectListenerWithoutThrowing() {
+    func testRedirectListenerWithoutThrowing() throws {
         let dummyExpectation = expectation(description: "Dummy Expectation")
-        let sampleUrl = URL(string: "www.google.com")!
+        let sampleUrl = try XCTUnwrap(URL(string: "www.google.com"))
         RedirectListener.registerForURL { url in
 
             XCTAssertEqual(url, sampleUrl)
@@ -22,9 +22,9 @@ class RedirectListenerTests: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
     }
     
-    func testRedirectListenerWithThrowing() {
+    func testRedirectListenerWithThrowing() throws {
         let dummyExpectation = expectation(description: "Dummy Expectation")
-        let sampleUrl = URL(string: "www.google.com")!
+        let sampleUrl = try XCTUnwrap(URL(string: "www.google.com"))
         RedirectListener.registerForURL { url in
 
             XCTAssertEqual(url, sampleUrl)
@@ -36,8 +36,8 @@ class RedirectListenerTests: XCTestCase {
         waitForExpectations(timeout: 5, handler: nil)
     }
 
-    func testUnregisteredRedirectListener() {
-        let sampleUrl = URL(string: "www.google.com")!
+    func testUnregisteredRedirectListener() throws {
+        let sampleUrl = try XCTUnwrap(URL(string: "www.google.com"))
         XCTAssertFalse(try RedirectListener.applicationDidOpen(from: sampleUrl))
     }
 

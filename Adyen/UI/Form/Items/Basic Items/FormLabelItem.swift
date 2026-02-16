@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -45,7 +45,9 @@ public class FormLabelItem: FormItem {
 
 internal class ADYLabel: UILabel, AnyFormItemView {
 
-    public var childItemViews: [AnyFormItemView] { [] }
+    public var childItemViews: [AnyFormItemView] {
+        []
+    }
     
     public func reset() { /* Do nothing */ }
     

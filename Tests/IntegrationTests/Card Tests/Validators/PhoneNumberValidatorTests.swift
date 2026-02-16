@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,7 +9,7 @@ import XCTest
 
 class PhoneNumberValidatorTests: XCTestCase {
 
-    func testValidNumbers() throws {
+    func testValidNumbers() {
         let sut = PhoneNumberValidator()
 
         XCTAssertTrue(sut.isValid("+12 23"))
@@ -26,7 +26,7 @@ class PhoneNumberValidatorTests: XCTestCase {
         XCTAssertTrue(sut.isValid("31633710939633710939"))
     }
 
-    func testinvalidNumbers() throws {
+    func testinvalidNumbers() {
         let sut = PhoneNumberValidator()
 
         XCTAssertFalse(sut.isValid("1"))

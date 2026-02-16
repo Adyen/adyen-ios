@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -225,8 +225,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
                 UIPasteboard.general.string = code
             }
         )
-        let viewController = QRCodeViewController(viewModel: viewModel, style: style)
-        return viewController
+        return QRCodeViewController(viewModel: viewModel, style: style)
     }
     
     private func qrCodeInstructions(for action: QRCodeAction) -> String {

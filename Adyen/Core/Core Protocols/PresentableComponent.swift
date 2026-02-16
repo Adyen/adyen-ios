@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -53,9 +53,13 @@ public protocol PresentableComponent: Component {
 public extension PresentableComponent {
     
     @_spi(AdyenInternal)
-    var requiresModalPresentation: Bool { false }
+    var requiresModalPresentation: Bool {
+        false
+    }
     
     @_spi(AdyenInternal)
-    var navBarType: NavigationBarType { .regular }
+    var navBarType: NavigationBarType {
+        .regular
+    }
     
 }

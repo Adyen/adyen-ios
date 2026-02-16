@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -265,7 +265,7 @@ public final class ThreeDS2Component: ActionComponent {
     }()
 }
 
-// This is for the RedirectComponent inside the ThreeDS2Component
+/// This is for the RedirectComponent inside the ThreeDS2Component
 extension ThreeDS2Component: ActionComponentDelegate {
 
     public func didOpenExternalApplication(component: ActionComponent) {

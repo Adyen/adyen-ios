@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -18,7 +18,6 @@ public protocol Formatter: Sanitizer {
 }
 
 /// Sanitizes (removes any illegal character)  string values.
-
 public protocol Sanitizer {
 
     /// Sanitizes (removes any illegal character) the given value.

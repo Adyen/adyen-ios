@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -8,7 +8,6 @@
 import UIKit
 
 /// Contains the styling customization options for an item in a FormCoBadged card Item.
-
 internal struct FormCoBadgedCardItemStyle: ViewStyle {
 
     /// The title style.

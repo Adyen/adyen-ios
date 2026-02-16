@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2024 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -49,7 +49,7 @@ class OpenExternalAppDetectorTests: XCTestCase {
         wait(for: [didOpenExpectation], timeout: 1)
     }
     
-    func test_customDetectionDelay() throws {
+    func test_customDetectionDelay() {
         let openAppDetector = OpenExternalAppDetector(detectionDelay: .seconds(0))
         let expectedDate = Date()
         

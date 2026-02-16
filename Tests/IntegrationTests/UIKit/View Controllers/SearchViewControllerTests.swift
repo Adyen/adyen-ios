@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -153,7 +153,7 @@ class SearchViewControllerTests: XCTestCase {
         XCTAssertTrue(expectedLookups.isEmpty)
     }
     
-    func testInterfaceStateEmpty() throws {
+    func testInterfaceStateEmpty() {
         
         // Given
         let testSearchTerm = "This is a search"
@@ -181,7 +181,7 @@ class SearchViewControllerTests: XCTestCase {
         XCTAssertEqual(searchViewController.emptyView.searchTerm, testSearchTerm)
     }
     
-    func testInterfaceStateLoading() throws {
+    func testInterfaceStateLoading() {
         
         // Given
         let viewModel = SearchViewController.ViewModel(
@@ -206,7 +206,7 @@ class SearchViewControllerTests: XCTestCase {
         XCTAssertTrue(searchViewController.emptyView.isHidden)
     }
     
-    func testInterfaceStateShowingResults() throws {
+    func testInterfaceStateShowingResults() {
         
         // Given
         let resultItems = [ListItem(title: "Result")]
@@ -230,7 +230,7 @@ class SearchViewControllerTests: XCTestCase {
         // Then
         XCTAssertTrue(searchViewController.loadingView.isHidden)
         XCTAssertFalse(searchViewController.resultsListViewController.view.isHidden)
-        XCTAssertEqual(searchViewController.resultsListViewController.sections.first!.items, resultItems)
+        XCTAssertEqual(searchViewController.resultsListViewController.sections.first?.items, resultItems)
         XCTAssertTrue(searchViewController.emptyView.isHidden)
     }
 }

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -40,10 +40,10 @@ class QiwiWalletComponentTests: XCTestCase {
         XCTAssertEqual(sut.phoneItem?.phonePrefixItem.value?.identifier, "US")
         
         XCTAssertEqual(sut.button.title, localizedString(.continueTo, sut.configuration.localizationParameters, method.name))
-        XCTAssertTrue(sut.button.title!.contains(method.name))
+        XCTAssertTrue(try XCTUnwrap(sut.button.title?.contains(method.name)))
     }
     
-    func testLocalizationWithCustomKeySeparator() throws {
+    func testLocalizationWithCustomKeySeparator() {
         let config = QiwiWalletComponent.Configuration(localizationParameters: LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_"))
         let sut = QiwiWalletComponent(paymentMethod: method, context: context, configuration: config)
         
@@ -62,7 +62,7 @@ class QiwiWalletComponentTests: XCTestCase {
     func testUIConfiguration() {
         var style = FormComponentStyle()
         
-        /// Footer
+        // Footer
         style.mainButtonItem.button.title.color = .white
         style.mainButtonItem.button.title.backgroundColor = .red
         style.mainButtonItem.button.title.textAlignment = .center
@@ -70,10 +70,10 @@ class QiwiWalletComponentTests: XCTestCase {
         style.mainButtonItem.button.backgroundColor = .red
         style.mainButtonItem.backgroundColor = .brown
         
-        /// background color
+        // background color
         style.backgroundColor = .red
         
-        /// Text field
+        // Text field
         style.textField.text.color = .red
         style.textField.text.font = .systemFont(ofSize: 13)
         style.textField.text.textAlignment = .right
@@ -101,7 +101,7 @@ class QiwiWalletComponentTests: XCTestCase {
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.payButtonItem.button")
         let payButtonItemViewButtonTitle: UILabel? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.payButtonItem.button.titleLabel")
         
-        /// Test phone number field
+        // Test phone number field
         XCTAssertEqual(phoneNumberView?.backgroundColor, .red)
         XCTAssertEqual(phoneNumberViewTitleLabel?.textColor, sut.viewController.view.tintColor)
         XCTAssertEqual(phoneNumberViewTitleLabel?.backgroundColor, .blue)
@@ -112,12 +112,12 @@ class QiwiWalletComponentTests: XCTestCase {
         XCTAssertEqual(phoneNumberViewTextField?.textColor, .red)
         XCTAssertEqual(phoneNumberViewTextField?.font, .systemFont(ofSize: 13))
         
-        /// Test phone extension
+        // Test phone extension
         XCTAssertEqual(phoneExtensionViewLabel?.textAlignment, .right)
         XCTAssertEqual(phoneExtensionViewLabel?.textColor, .red)
         XCTAssertEqual(phoneExtensionViewLabel?.font, .systemFont(ofSize: 13))
         
-        /// Test footer
+        // Test footer
         XCTAssertEqual(payButtonItemViewButton?.backgroundColor, .red)
         XCTAssertEqual(payButtonItemViewButtonTitle?.backgroundColor, .red)
         XCTAssertEqual(payButtonItemViewButtonTitle?.textAlignment, .center)
@@ -142,7 +142,7 @@ class QiwiWalletComponentTests: XCTestCase {
         XCTAssertEqual(sut.requiresModalPresentation, true)
     }
 
-    func testSubmit() {
+    func testSubmit() throws {
         let phoneExtensions = [PhoneExtension(value: "+3", countryCode: "UK")]
         let method = QiwiWalletPaymentMethod(type: .qiwiWallet, name: "test_name", phoneExtensions: phoneExtensions)
         let sut = QiwiWalletComponent(paymentMethod: method, context: context, configuration: QiwiWalletComponent.Configuration())
@@ -171,7 +171,7 @@ class QiwiWalletComponentTests: XCTestCase {
 
         let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(with: "AdyenComponents.QiwiWalletComponent.payButtonItem.button")
 
-        self.populate(textItemView: phoneNumberView!, with: "7455573152")
+        try self.populate(textItemView: XCTUnwrap(phoneNumberView), with: "7455573152")
 
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
         
@@ -179,7 +179,7 @@ class QiwiWalletComponentTests: XCTestCase {
 
     }
 
-    func testViewDidLoadShouldSendInitialCall() throws {
+    func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)

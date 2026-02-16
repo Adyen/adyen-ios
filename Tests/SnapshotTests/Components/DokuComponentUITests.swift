@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -31,7 +31,7 @@ final class DokuComponentUITests: XCTestCase {
     }
 
     func testUIConfiguration() {
-        /// Footer
+        // Footer
         style.mainButtonItem.button.title.color = .white
         style.mainButtonItem.button.title.backgroundColor = .red
         style.mainButtonItem.button.title.textAlignment = .center
@@ -39,10 +39,10 @@ final class DokuComponentUITests: XCTestCase {
         style.mainButtonItem.button.backgroundColor = .red
         style.mainButtonItem.backgroundColor = .brown
 
-        /// background color
+        // background color
         style.backgroundColor = .yellow
 
-        /// Text field
+        // Text field
         style.textField.text.color = .brown
         style.textField.text.font = .systemFont(ofSize: 13)
         style.textField.text.textAlignment = .right

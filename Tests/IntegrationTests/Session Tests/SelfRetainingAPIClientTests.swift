@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -20,7 +20,7 @@ extension SessionSetupResponse: Equatable {
 
 class SelfRetainingAPIClientTests: XCTestCase {
 
-    func testSelfRetentionAndDestruction() throws {
+    func testSelfRetentionAndDestruction() {
         let request = SessionSetupRequest(
             sessionId: "id",
             sessionData: "data",
@@ -62,7 +62,7 @@ class SelfRetainingAPIClientTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
     
-    func testSelfRetentionAndDestructionWithMultipleCalls() throws {
+    func testSelfRetentionAndDestructionWithMultipleCalls() {
         let request = SessionSetupRequest(
             sessionId: "id",
             sessionData: "data",

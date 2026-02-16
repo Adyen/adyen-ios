@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -17,7 +17,9 @@ open class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueI
         }
     }
     
-    override internal var accessibilityLabelView: UIView? { selectionButton }
+    override internal var accessibilityLabelView: UIView? {
+        selectionButton
+    }
     
     public required init(item: ItemType) {
         super.init(item: item)

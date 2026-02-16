@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,7 +13,9 @@ public class FormContainerItem<ContentItem: FormItem>: FormItem {
 
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
 
-    public var subitems: [FormItem] { [content] }
+    public var subitems: [FormItem] {
+        [content]
+    }
 
     public var identifier: String?
 

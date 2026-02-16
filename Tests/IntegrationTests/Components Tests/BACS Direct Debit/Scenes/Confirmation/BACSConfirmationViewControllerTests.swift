@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -32,7 +32,7 @@ class BACSConfirmationViewControllerTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testViewDidLoadShouldCallPresenterViewDidLoad() throws {
+    func testViewDidLoadShouldCallPresenterViewDidLoad() {
         // When
         sut.viewDidLoad()
 
@@ -40,7 +40,7 @@ class BACSConfirmationViewControllerTests: XCTestCase {
         XCTAssertTrue(presenter.viewDidLoadCalled)
     }
 
-    func testSetUsetInteractionWhenSetToFalseShouldDisableViewUserInteraction() throws {
+    func testSetUsetInteractionWhenSetToFalseShouldDisableViewUserInteraction() {
         // When
         sut.setUserInteraction(enabled: false)
 
@@ -48,7 +48,7 @@ class BACSConfirmationViewControllerTests: XCTestCase {
         XCTAssertFalse(sut.view.isUserInteractionEnabled)
     }
 
-    func testSetUsetInteractionWhenSetToTrueShouldEnableViewUserInteraction() throws {
+    func testSetUsetInteractionWhenSetToTrueShouldEnableViewUserInteraction() {
         // When
         sut.setUserInteraction(enabled: true)
 

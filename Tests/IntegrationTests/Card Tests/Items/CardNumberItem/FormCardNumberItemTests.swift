@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -178,22 +178,22 @@ class FormCardNumberItemTests: XCTestCase {
         XCTAssertEqual(sut.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_card_numberItem_invalid"), expectedLocalizationParameters))
     }
     
-    func testCursorMovement() throws {
+    func testCursorMovement() {
         
         let textField = UITextField()
         textField.becomeFirstResponder()
         
         let item = FormCardNumberItem(cardTypeLogos: [])
         
-        /// Desired behavior
-        ///
-        /// 1234 56|31 0
-        /// 1234 567|3 10 // Adding 7 -> move 1 to the right
-        /// 1234 5678 |310 // Adding 8 -> move 2 to the right
-        /// 1234 5678 9|310 // Adding 9 -> move 1 to the right
-        /// 1234 5678| 310 // Removing 9 -> move 2 to the left
-        /// 1234 567|3 10 // Removing 8 -> move 1 to the left
-        /// 1234 56|31 0 // Removing 7 -> move 1 to the left
+        // Desired behavior
+        //
+        // 1234 56|31 0
+        // 1234 567|3 10 // Adding 7 -> move 1 to the right
+        // 1234 5678 |310 // Adding 8 -> move 2 to the right
+        // 1234 5678 9|310 // Adding 9 -> move 1 to the right
+        // 1234 5678| 310 // Removing 9 -> move 2 to the left
+        // 1234 567|3 10 // Removing 8 -> move 1 to the left
+        // 1234 56|31 0 // Removing 7 -> move 1 to the left
         
         // Adding a character
         

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2018 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -42,7 +42,9 @@ public final class ListViewController: UITableViewController {
     
     // MARK: - Data Source
     
-    public var sections: [ListSection] { dataSource.sections }
+    public var sections: [ListSection] {
+        dataSource.sections
+    }
     
     private lazy var dataSource: ListViewControllerDataSource = {
         if #available(iOS 13, *) {

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -42,11 +42,17 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
 
     internal var onDidTap: (() -> Void)?
 
-    override internal var inputView: UIView? { customInputView }
+    override internal var inputView: UIView? {
+        customInputView
+    }
     
-    override internal var inputAccessoryView: UIView? { customInputAccessoryView }
+    override internal var inputAccessoryView: UIView? {
+        customInputAccessoryView
+    }
 
-    override internal var canBecomeFirstResponder: Bool { true }
+    override internal var canBecomeFirstResponder: Bool {
+        true
+    }
 
     internal var accessoryImage: UIImage? {
         .init(

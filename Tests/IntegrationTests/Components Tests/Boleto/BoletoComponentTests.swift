@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -38,7 +38,7 @@ class BoletoComponentTests: XCTestCase {
 
         XCTAssertEqual(firstNameField.text, prefilledInformation.shopperName?.firstName)
         XCTAssertEqual(lastNameField.text, prefilledInformation.shopperName?.lastName)
-        let formattedSocialSecurityNumber = brazilSocialSecurityNumberFormatter.formattedValue(for: prefilledInformation.socialSecurityNumber!)
+        let formattedSocialSecurityNumber = try brazilSocialSecurityNumberFormatter.formattedValue(for: XCTUnwrap(prefilledInformation.socialSecurityNumber))
         XCTAssertEqual(socialSecurityNumberField.text, formattedSocialSecurityNumber)
         XCTAssertEqual(emailField.text, prefilledInformation.emailAddress)
         XCTAssertEqual(addressField.item.value, Dummy.dummyAddress)
@@ -91,7 +91,7 @@ class BoletoComponentTests: XCTestCase {
         XCTAssertNil(emailField)
     }
 
-    func testEmailFieldHiding() {
+    func testEmailFieldHiding() throws {
 
         let context = Dummy.context(with: AnalyticsProviderMock())
 
@@ -105,9 +105,9 @@ class BoletoComponentTests: XCTestCase {
 
         setupRootViewController(viewController)
 
-        let emailSwitchItem: FormToggleItemView = viewController.view.findView(by: "sendCopyToEmailItem") as! FormToggleItemView
-        let emailSwitch: UISwitch = emailSwitchItem.findView(by: "sendCopyToEmailItem.switch") as! UISwitch
-        let emailItem: FormItemView = viewController.view.findView(by: "emailItem") as! FormTextItemView<FormTextInputItem>
+        let emailSwitchItem: FormToggleItemView = try XCTUnwrap(viewController.view.findView(by: "sendCopyToEmailItem") as? FormToggleItemView)
+        let emailSwitch: UISwitch = try XCTUnwrap(emailSwitchItem.findView(by: "sendCopyToEmailItem.switch") as? UISwitch)
+        let emailItem: FormItemView = try XCTUnwrap(viewController.view.findView(by: "emailItem") as? FormTextItemView<FormTextInputItem>)
 
         // Test that email switch has false by default
         XCTAssertFalse(emailSwitch.isOn)
@@ -249,7 +249,7 @@ class BoletoComponentTests: XCTestCase {
         XCTAssertEqual(expectedResult, validationResult)
     }
 
-    func testViewDidLoadShouldSendInitialCall() throws {
+    func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)

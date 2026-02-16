@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -274,7 +274,8 @@ public final class AdyenActionComponent: ActionComponent, ActionHandlingComponen
         #if canImport(TwintSDK)
             guard let twintConfiguration = configuration.twint else {
                 AdyenAssertion.assertionFailure(
-                    message: "Twint action configuration instance must not be nil in order to use AdyenTwint")
+                    message: "Twint action configuration instance must not be nil in order to use AdyenTwint"
+                )
                 return
             }
         

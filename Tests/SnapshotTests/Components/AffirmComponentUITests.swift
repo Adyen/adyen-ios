@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,8 +10,13 @@ import XCTest
 
 class AffirmComponentUITests: XCTestCase {
     
-    private var paymentMethod: PaymentMethod { AtomePaymentMethod(type: .atome, name: "Affirm") }
-    private var style: FormComponentStyle { FormComponentStyle() }
+    private var paymentMethod: PaymentMethod {
+        AtomePaymentMethod(type: .atome, name: "Affirm")
+    }
+
+    private var style: FormComponentStyle {
+        FormComponentStyle()
+    }
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -179,7 +184,7 @@ class AffirmComponentUITests: XCTestCase {
     private var shopperInformation: PrefilledShopperInformation {
         let billingAddress = PostalAddressMocks.newYorkPostalAddress
         let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
-        let shopperInformation = PrefilledShopperInformation(
+        return PrefilledShopperInformation(
             shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
             emailAddress: "katrina@mail.com",
             phoneNumber: PhoneNumber(value: "123456677", callingCode: "+1"),
@@ -187,12 +192,11 @@ class AffirmComponentUITests: XCTestCase {
             deliveryAddress: deliveryAddress,
             socialSecurityNumber: "78542134370"
         )
-        return shopperInformation
     }
 
     private var shopperInformationNoDeliveryAddress: PrefilledShopperInformation {
         let billingAddress = PostalAddressMocks.newYorkPostalAddress
-        let shopperInformation = PrefilledShopperInformation(
+        return PrefilledShopperInformation(
             shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
             emailAddress: "katrina@mail.com",
             phoneNumber: PhoneNumber(value: "123456677", callingCode: "+1"),
@@ -200,7 +204,6 @@ class AffirmComponentUITests: XCTestCase {
             deliveryAddress: nil,
             socialSecurityNumber: "78542134370"
         )
-        return shopperInformation
     }
 
 }

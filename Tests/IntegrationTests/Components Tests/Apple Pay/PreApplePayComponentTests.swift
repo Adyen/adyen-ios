@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -148,7 +148,7 @@ class PreApplePayComponentTests: XCTestCase {
         XCTAssertEqual(hintLabel.text, self.applePayPayment.amount.formatted)
     }
 
-    func testSubmitWithAnalyticsEnabledShouldSetCheckoutAttemptIdInPaymentComponentData() throws {
+    func testSubmitWithAnalyticsEnabledShouldSetCheckoutAttemptIdInPaymentComponentData() {
         // Given
         let expectedCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
         analyticsProviderMock._checkoutAttemptId = expectedCheckoutAttemptId
@@ -176,7 +176,7 @@ class PreApplePayComponentTests: XCTestCase {
         }
     }
 
-    func testSubmitWithAnalyticsDisabledShouldNotSetCheckoutAttemptIdInPaymentComponentData() throws {
+    func testSubmitWithAnalyticsDisabledShouldNotSetCheckoutAttemptIdInPaymentComponentData() {
         // Given
         analyticsProviderMock._checkoutAttemptId = nil
         let paymentMethodDetails = ApplePayDetails(

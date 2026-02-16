@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -61,7 +61,9 @@ internal final class PaymentMethodListComponent: ComponentLoader, PresentableCom
     
     // MARK: - View Controller
     
-    internal var viewController: UIViewController { listViewController }
+    internal var viewController: UIViewController {
+        listViewController
+    }
 
     private let brandProtectedComponents: Set<PaymentMethodType> = [.applePay]
     

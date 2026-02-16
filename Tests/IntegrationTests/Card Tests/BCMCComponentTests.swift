@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -36,7 +36,7 @@ class BCMCComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testRequiresKeyboardInput() {
+    func testRequiresKeyboardInput() throws {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.accel])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(
@@ -47,7 +47,7 @@ class BCMCComponentTests: XCTestCase {
 
         let navigationViewController = DropInNavigationController(rootComponent: sut, style: NavigationStyle(), cancelHandler: { _, _ in })
 
-        XCTAssertTrue((navigationViewController.topViewController as! WrapperViewController).requiresKeyboardInput)
+        XCTAssertTrue(try XCTUnwrap((navigationViewController.topViewController as? WrapperViewController)?.requiresKeyboardInput))
     }
     
     func testDefaultConfigAllFieldsArePresent() {
@@ -73,7 +73,7 @@ class BCMCComponentTests: XCTestCase {
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.storeDetailsItem"))
     }
     
-    func testCardLogos() throws {
+    func testCardLogos() {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.chinaUnionPay])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(
@@ -164,15 +164,15 @@ class BCMCComponentTests: XCTestCase {
         setupRootViewController(sut.viewController)
         
         let cardNumberItemView: FormCardNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
-        self.populate(textItemView: cardNumberItemView, with: Dummy.bancontactCard.number!)
+        try self.populate(textItemView: cardNumberItemView, with: XCTUnwrap(Dummy.bancontactCard.number))
         
         XCTAssertEqual(cardNumberItemView.item.cardTypeLogos.count, 1)
-        XCTAssertEqual(cardNumberItemView.item.cardTypeLogos.first?.url, LogoURLProvider.logoURL(withName: brands.first!.rawValue, environment: context.apiContext.environment))
+        XCTAssertEqual(cardNumberItemView.item.cardTypeLogos.first?.url, try LogoURLProvider.logoURL(withName: XCTUnwrap(brands.first?.rawValue), environment: context.apiContext.environment))
 
         wait(for: .aMoment)
     }
     
-    func testInvalidCardTypeDetection() {
+    func testInvalidCardTypeDetection() throws {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.maestro])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(
@@ -185,13 +185,13 @@ class BCMCComponentTests: XCTestCase {
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
         XCTAssertNotNil(cardNumberItemView)
 
-        let cardNumberItem = cardNumberItemView!.item
-        self.populate(textItemView: cardNumberItemView!, with: "00000")
+        let cardNumberItem = try XCTUnwrap(cardNumberItemView?.item)
+        try self.populate(textItemView: XCTUnwrap(cardNumberItemView), with: "00000")
         
         wait(until: cardNumberItem, at: \.detectedBrands.count, is: 0)
     }
     
-    func testSubmitValidPaymentData() {
+    func testSubmitValidPaymentData() throws {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.masterCard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(
@@ -231,7 +231,7 @@ class BCMCComponentTests: XCTestCase {
         // Enter Card Number
         let cardNumberView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
         XCTAssertNotNil(cardNumberView)
-        self.populate(textItemView: cardNumberView!, with: Dummy.bancontactCard.number!)
+        try self.populate(textItemView: XCTUnwrap(cardNumberView), with: XCTUnwrap(Dummy.bancontactCard.number))
         
         // Enter Expiry Date
         let expiryDateItemView: FormTextInputItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem")
@@ -240,7 +240,7 @@ class BCMCComponentTests: XCTestCase {
         let calendar = Calendar(identifier: .gregorian)
         let components = calendar.dateComponents([.month, .year], from: date)
         let expiryDate = "\(String(format: "%02d/%02d", components.month!, components.year! % 100))"
-        self.populate(textItemView: expiryDateItemView!, with: expiryDate)
+        try self.populate(textItemView: XCTUnwrap(expiryDateItemView), with: expiryDate)
         
         // Tap submit button
         tapSubmitButton(on: sut.viewController.view)
@@ -248,7 +248,7 @@ class BCMCComponentTests: XCTestCase {
         wait(for: [didSubmitExpectation], timeout: 10)
     }
     
-    func testDelegateCalledCorrectCard() {
+    func testDelegateCalledCorrectCard() throws {
         let brands: [CardType] = [.bcmc]
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
@@ -274,12 +274,12 @@ class BCMCComponentTests: XCTestCase {
         sut.cardComponentDelegate = delegateMock
         
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
-        self.populate(textItemView: cardNumberItemView!, with: "67034")
+        try self.populate(textItemView: XCTUnwrap(cardNumberItemView), with: "67034")
         
         wait(for: [expectationCardType], timeout: 10)
     }
 
-    func testDelegateCalledCorrectBIN() {
+    func testDelegateCalledCorrectBIN() throws {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.masterCard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(
@@ -306,12 +306,12 @@ class BCMCComponentTests: XCTestCase {
         sut.cardComponentDelegate = delegateMock
         
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
-        populate(textItemView: cardNumberItemView!, with: Dummy.bancontactCard.number!)
+        try populate(textItemView: XCTUnwrap(cardNumberItemView), with: XCTUnwrap(Dummy.bancontactCard.number))
 
         wait(for: [expectationBin], timeout: 10)
     }
     
-    func testOnSubmitLastFourNotCalledUntilCardNumberIsValidAndSubmitted() {
+    func testOnSubmitLastFourNotCalledUntilCardNumberIsValidAndSubmitted() throws {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.masterCard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(
@@ -337,7 +337,7 @@ class BCMCComponentTests: XCTestCase {
         sut.cardComponentDelegate = delegateMock
         
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
-        populate(textItemView: cardNumberItemView!, with: "6703 4444 4444")
+        try populate(textItemView: XCTUnwrap(cardNumberItemView), with: "6703 4444 4444")
 
         wait(for: [expectationBin], timeout: 10)
     }
@@ -480,7 +480,7 @@ class BCMCComponentTests: XCTestCase {
         wait(for: [expectationBin], timeout: 10)
     }
     
-    func testDelegateIncorrectCard() {
+    func testDelegateIncorrectCard() throws {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.argencard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(
@@ -504,12 +504,12 @@ class BCMCComponentTests: XCTestCase {
         sut.cardComponentDelegate = delegateMock
         
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
-        self.populate(textItemView: cardNumberItemView!, with: "32145")
+        try self.populate(textItemView: XCTUnwrap(cardNumberItemView), with: "32145")
         
         wait(for: [expectationCardType], timeout: 10)
     }
     
-    func testSubmitPaymentDataInvalidCardNumber() {
+    func testSubmitPaymentDataInvalidCardNumber() throws {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.maestro])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(
@@ -529,12 +529,12 @@ class BCMCComponentTests: XCTestCase {
         // Enter invalid Card Number
         let cardNumberView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
         XCTAssertNotNil(cardNumberView)
-        self.populate(textItemView: cardNumberView!, with: "123")
+        try self.populate(textItemView: XCTUnwrap(cardNumberView), with: "123")
         
         // Enter Expiry Date
         let expiryDateView = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.expiryDateItem")
         XCTAssertNotNil(expiryDateView as? FormTextInputItemView)
-        let expiryDateItemView = expiryDateView as! FormTextInputItemView
+        let expiryDateItemView = try XCTUnwrap(expiryDateView as? FormTextInputItemView)
         self.populate(textItemView: expiryDateItemView, with: "10/20")
         
         // Tap submit button
@@ -562,7 +562,7 @@ class BCMCComponentTests: XCTestCase {
         XCTAssertEqual(sut.viewController.title, cardPaymentMethod.name)
     }
 
-    func testViewDidLoadShouldSendInitialCall() throws {
+    func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -140,8 +140,5 @@ extension FormCardLogosItem {
             self.type = type
         }
         
-        internal static func == (lhs: FormCardLogosItem.CardTypeLogo, rhs: FormCardLogosItem.CardTypeLogo) -> Bool {
-            lhs.url == rhs.url && lhs.type == rhs.type
-        }
     }
 }

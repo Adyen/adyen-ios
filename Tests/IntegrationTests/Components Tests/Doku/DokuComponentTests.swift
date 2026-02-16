@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -29,7 +29,7 @@ class DokuComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testLocalizationWithCustomTableName() throws {
+    func testLocalizationWithCustomTableName() {
         let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(
             tableName: "AdyenUIHost",
             keySeparator: nil
@@ -56,7 +56,7 @@ class DokuComponentTests: XCTestCase {
         XCTAssertEqual(sut.button.title, localizedString(.confirmPurchase, sut.configuration.localizationParameters))
     }
 
-    func testLocalizationWithCustomKeySeparator() throws {
+    func testLocalizationWithCustomKeySeparator() {
         let config = DokuComponent.Configuration(localizationParameters: LocalizationParameters(
             tableName: "AdyenUIHostCustomSeparator",
             keySeparator: "_"
@@ -165,7 +165,7 @@ class DokuComponentTests: XCTestCase {
         XCTAssertTrue(email.isEmpty)
     }
 
-    func testViewDidLoadShouldSendInitialCall() throws {
+    func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)

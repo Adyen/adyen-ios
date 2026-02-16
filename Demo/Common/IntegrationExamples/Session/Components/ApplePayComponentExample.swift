@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -131,7 +131,7 @@ extension ApplePayComponentExample: AdyenSessionDelegate {
 }
 
 extension ApplePayComponentExample: PresentationDelegate {
-    // The implementation of this delegate method is not needed when using AdyenSession
+    /// The implementation of this delegate method is not needed when using AdyenSession
     internal func present(component: PresentableComponent) {}
 
 }

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -32,8 +32,8 @@ class StoredCardComponentTests: XCTestCase {
 
         presentOnRoot(sut.viewController)
         
-        let alertController = sut.viewController as! UIAlertController
-        let textField: UITextField! = alertController.textFields!.first
+        let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
+        let textField: UITextField! = try XCTUnwrap(alertController.textFields?.first)
         XCTAssertNotNil(textField)
 
         XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
@@ -48,8 +48,8 @@ class StoredCardComponentTests: XCTestCase {
 
         presentOnRoot(sut.viewController)
         
-        let alertController = sut.viewController as! UIAlertController
-        let textField: UITextField! = alertController.textFields!.first
+        let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
+        let textField: UITextField! = try XCTUnwrap(alertController.textFields?.first)
         XCTAssertNotNil(textField)
 
         XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
@@ -90,18 +90,18 @@ class StoredCardComponentTests: XCTestCase {
 
         presentOnRoot(sut.viewController)
         
-        let alertController = sut.viewController as! UIAlertController
-        let textField: UITextField! = alertController.textFields!.first
+        let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
+        let textField: UITextField! = try XCTUnwrap(alertController.textFields?.first)
         XCTAssertNotNil(textField)
 
-        textField!.text = "737"
-        textField!.sendActions(for: .editingChanged)
+        textField?.text = "737"
+        textField?.sendActions(for: .editingChanged)
 
-        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) }!
+        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) })
 
         payAction.tap()
         
-        XCTAssertTrue(textField!.text!.isEmpty)
+        XCTAssertTrue(try XCTUnwrap(textField?.text?.isEmpty))
         XCTAssertFalse(payAction.isEnabled)
 
         alertController.dismiss(animated: false, completion: nil)
@@ -134,14 +134,14 @@ class StoredCardComponentTests: XCTestCase {
 
         presentOnRoot(sut.viewController)
         
-        let alertController = sut.viewController as! UIAlertController
-        let textField: UITextField! = alertController.textFields!.first
+        let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
+        let textField: UITextField! = try XCTUnwrap(alertController.textFields?.first)
         XCTAssertNotNil(textField)
 
         textField.text = "737"
         textField.sendActions(for: .editingChanged)
 
-        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) }!
+        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) })
 
         payAction.tap()
 
@@ -166,9 +166,9 @@ class StoredCardComponentTests: XCTestCase {
 
         presentOnRoot(sut.viewController)
         
-        let alertController = sut.viewController as! UIAlertController
-        let textField: UITextField! = alertController.textFields!.first
-        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) }!
+        let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
+        let textField: UITextField! = try XCTUnwrap(alertController.textFields?.first)
+        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) })
 
         textField.insertText("a")
         textField?.sendActions(for: .editingChanged)
@@ -205,9 +205,9 @@ class StoredCardComponentTests: XCTestCase {
 
         presentOnRoot(sut.viewController)
         
-        let alertController = sut.viewController as! UIAlertController
-        let textField: UITextField! = alertController.textFields!.first
-        let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) }!
+        let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
+        let textField: UITextField! = try XCTUnwrap(alertController.textFields?.first)
+        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) })
 
         textField.insertText("11")
         textField?.sendActions(for: .editingChanged)
@@ -227,7 +227,7 @@ class StoredCardComponentTests: XCTestCase {
         alertController.dismiss(animated: false, completion: nil)
     }
 
-    func testViewDidLoadShouldSendInitialEvent() throws {
+    func testViewDidLoadShouldSendInitialEvent() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)

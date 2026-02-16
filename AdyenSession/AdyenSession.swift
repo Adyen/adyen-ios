@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -205,17 +205,23 @@ public final class AdyenSession {
 @_spi(AdyenInternal)
 extension AdyenSession: AdyenSessionAware {
     
-    public var isSession: Bool { true }
+    public var isSession: Bool {
+        true
+    }
 }
 
 @_spi(AdyenInternal)
 extension AdyenSession: InstallmentConfigurationAware {
     
-    public var installmentConfiguration: InstallmentConfiguration? { sessionContext.configuration.installmentOptions }
+    public var installmentConfiguration: InstallmentConfiguration? {
+        sessionContext.configuration.installmentOptions
+    }
 }
 
 @_spi(AdyenInternal)
 extension AdyenSession: StorePaymentMethodFieldAware {
     
-    public var showStorePaymentMethodField: Bool? { sessionContext.configuration.enableStoreDetails }
+    public var showStorePaymentMethodField: Bool? {
+        sessionContext.configuration.enableStoreDetails
+    }
 }

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -22,7 +22,7 @@ internal final class SessionAPIClient: APIClientProtocol {
         self.session = session
     }
     
-    internal func perform<R>(_ request: R, completionHandler: @escaping CompletionHandler<R.ResponseType>) where R: Request {
+    internal func perform<R: Request>(_ request: R, completionHandler: @escaping CompletionHandler<R.ResponseType>) {
         apiClient.perform(request) { [weak self] result in
             // update session context with data and result code if exist
             if let response = try? result.get() {

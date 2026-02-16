@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -65,7 +65,9 @@ public final class UPIComponent: PaymentComponent,
     public var context: AdyenContext
     
     /// The payment method object for this component.
-    public var paymentMethod: PaymentMethod { upiPaymentMethod }
+    public var paymentMethod: PaymentMethod {
+        upiPaymentMethod
+    }
     
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
@@ -213,8 +215,7 @@ public final class UPIComponent: PaymentComponent,
     internal lazy var upiAppsList: [SelectableFormItem] = {
         guard let apps = upiPaymentMethod.apps, !apps.isEmpty else { return [] }
         
-        var upiAppslist = apps.map { selectableFormItem(from: $0) }
-        return upiAppslist
+        return apps.map { selectableFormItem(from: $0) }
     }()
     
     /// The continue button item.

@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2022 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -21,7 +21,7 @@ class DropInInternalTests: XCTestCase {
     func testFinaliseIfNeededSelectedComponent() throws {
         let config = DropInComponent.Configuration()
 
-        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
+        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: XCTUnwrap(DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)))
         let sut = DropInComponent(
             paymentMethods: paymentMethods,
             context: Dummy.context,

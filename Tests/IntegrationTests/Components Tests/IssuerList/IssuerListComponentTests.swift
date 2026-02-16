@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -37,14 +37,14 @@ class IssuerListComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testSelection() {
+    func testSelection() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
         
         sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
         
-        let searchViewController = sut.viewController as! SearchViewController
+        let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
         let listViewController = searchViewController.resultsListViewController
         let expectedIssuer = paymentMethod.issuers[0]
 
@@ -72,14 +72,14 @@ class IssuerListComponentTests: XCTestCase {
         waitForExpectations(timeout: 10)
     }
     
-    func test_componentSendsInfo_onSearchInput_With_Throttling() {
+    func test_componentSendsInfo_onSearchInput_With_Throttling() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
         
         sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
         
-        let searchViewController = sut.viewController as! SearchViewController
+        let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
         let listViewController = searchViewController.resultsListViewController
         
         setupRootViewController(searchViewController)
@@ -98,7 +98,7 @@ class IssuerListComponentTests: XCTestCase {
         XCTAssertEqual(analyticsProviderMock.infos.count, 2)
     }
 
-    func test_ViewDidLoad_ShouldSend_InitialCall() throws {
+    func test_ViewDidLoad_ShouldSend_InitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)

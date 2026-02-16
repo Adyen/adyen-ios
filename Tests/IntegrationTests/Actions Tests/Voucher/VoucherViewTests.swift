@@ -1,5 +1,5 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2021 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -29,11 +29,11 @@ class VoucherViewTests: XCTestCase {
         
         let sut = try getSut(model: getMockModel(action: action, mainButtonType: .save, style: style))
         
-        check(layer: sut.findView(by: "logo")!.layer, forCornerRounding: style.logoCornerRounding)
-        check(label: sut.findView(by: "amountLabel")!, forStyle: style.amountLabel)
-        check(label: sut.findView(by: "currencyLabel")!, forStyle: style.currencyLabel)
-        check(submitButton: sut.findView(by: "mainButton")! as! SubmitButton, forStyle: style.mainButton)
-        check(button: sut.findView(by: "secondaryButton")!, forStyle: style.secondaryButton)
+        try check(layer: XCTUnwrap(sut.findView(by: "logo")?.layer), forCornerRounding: style.logoCornerRounding)
+        try check(label: XCTUnwrap(sut.findView(by: "amountLabel")), forStyle: style.amountLabel)
+        try check(label: XCTUnwrap(sut.findView(by: "currencyLabel")), forStyle: style.currencyLabel)
+        try check(submitButton: XCTUnwrap(sut.findView(by: "mainButton") as? SubmitButton), forStyle: style.mainButton)
+        try check(button: XCTUnwrap(sut.findView(by: "secondaryButton")), forStyle: style.secondaryButton)
         
     }
     
@@ -60,7 +60,7 @@ class VoucherViewTests: XCTestCase {
         XCTAssertNil(mainButton)
         XCTAssertNotNil(addToAppleWalletButton)
         
-        addToAppleWalletButton!.sendActions(for: .touchUpInside)
+        addToAppleWalletButton?.sendActions(for: .touchUpInside)
         
         waitForExpectations(timeout: 5, handler: nil)
     }
