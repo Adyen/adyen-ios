@@ -10,8 +10,7 @@
 #endif
 import UIKit
 
-// View controller with a custom navigation bar for DropIn.
-
+/// View controller with a custom navigation bar for DropIn.
 internal final class ModalViewController: UIViewController {
     
     internal let style: NavigationStyle

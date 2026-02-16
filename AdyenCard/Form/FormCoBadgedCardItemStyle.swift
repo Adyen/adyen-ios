@@ -7,8 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-// Contains the styling customization options for an item in a FormCoBadged card Item.
-
+/// Contains the styling customization options for an item in a FormCoBadged card Item.
 internal struct FormCoBadgedCardItemStyle: ViewStyle {
 
     /// The title style.
