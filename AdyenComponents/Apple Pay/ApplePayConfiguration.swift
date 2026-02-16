@@ -12,8 +12,7 @@ import PassKit
 
 extension ApplePayComponent {
 
-    // Apple Pay component configuration.
-
+    /// Apple Pay component configuration.
     public struct Configuration {
 
         /// The context of a current payment. Contains
