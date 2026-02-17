@@ -12,8 +12,8 @@ import UIKit
 
 internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem>, UICollectionViewDataSource {
     
-    package let theme: AdyenTheme
-    
+    private let theme: AdyenTheme
+
     private enum Constants {
         static let cardSpacing: CGFloat = 3
         static let rowSpacing: CGFloat = 2
@@ -33,7 +33,7 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem>, UIC
     
     internal lazy var imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
     
-    init(item: FormCardLogosItem, theme: AdyenTheme) {
+    internal init(item: FormCardLogosItem, theme: AdyenTheme) {
         self.theme = theme
         super.init(item: item)
         addSubview(collectionView)
@@ -46,11 +46,11 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem>, UIC
         self.init(item: item, theme: .default)
     }
 
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    package func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         item.cardLogos.count
     }
 
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    package func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardLogoCell.reuseIdentifier, for: indexPath)
         if let cell = cell as? CardLogoCell, let logo = item.cardLogos.adyen[safeIndex: indexPath.row] {
             cell.update(
