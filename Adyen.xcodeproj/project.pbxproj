@@ -86,7 +86,6 @@
 		0019C47A2E6AE01600B0C3A3 /* SearchViewController+InterfaceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81129AE52A4EEF8600E63EBE /* SearchViewController+InterfaceState.swift */; };
 		0019C47B2E6AE02000B0C3A3 /* Dimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E72D9BA926A6E66800FBDA48 /* Dimensions.swift */; };
 		0019C47C2E6AE04000B0C3A3 /* SelectableFormItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BC8F502BF2561900EBE0EB /* SelectableFormItem.swift */; };
-		0019C47D2E6AE04000B0C3A3 /* SelectableFormItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BC8F542BF349FC00EBE0EB /* SelectableFormItemStyle.swift */; };
 		0019C47E2E6AE04000B0C3A3 /* SelectableFormItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BC8F522BF2569200EBE0EB /* SelectableFormItemView.swift */; };
 		0019C47F2E6AE04800B0C3A3 /* FormImageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0067E73C29658CB6005B8D76 /* FormImageItem.swift */; };
 		0019C4802E6AE05000B0C3A3 /* FormSegmentedControlItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002B93072951F120000B93F4 /* FormSegmentedControlItem.swift */; };
@@ -1934,7 +1933,6 @@
 		00A25E5F2A404342001B32B6 /* AdyenSdkVersion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdyenSdkVersion.swift; sourceTree = "<group>"; };
 		00BC8F502BF2561900EBE0EB /* SelectableFormItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableFormItem.swift; sourceTree = "<group>"; };
 		00BC8F522BF2569200EBE0EB /* SelectableFormItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableFormItemView.swift; sourceTree = "<group>"; };
-		00BC8F542BF349FC00EBE0EB /* SelectableFormItemStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableFormItemStyle.swift; sourceTree = "<group>"; };
 		00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsSettingsView.swift; sourceTree = "<group>"; };
 		00C401AA2DB242BC000EDA3C /* FormCoBadgedCardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCoBadgedCardItem.swift; sourceTree = "<group>"; };
 		00C401AC2DB2475E000EDA3C /* FormCoBadgedCardItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCoBadgedCardItemView.swift; sourceTree = "<group>"; };
@@ -3560,7 +3558,6 @@
 			children = (
 				00BC8F502BF2561900EBE0EB /* SelectableFormItem.swift */,
 				00BC8F522BF2569200EBE0EB /* SelectableFormItemView.swift */,
-				00BC8F542BF349FC00EBE0EB /* SelectableFormItemStyle.swift */,
 			);
 			path = SelectableFormItem;
 			sourceTree = "<group>";
@@ -8226,7 +8223,6 @@
 				0019C45A2E6ADFB700B0C3A3 /* CoreListDataSource.swift in Sources */,
 				0019C45B2E6ADFB700B0C3A3 /* ListSectionFooterStyle.swift in Sources */,
 				0019C47C2E6AE04000B0C3A3 /* SelectableFormItem.swift in Sources */,
-				0019C47D2E6AE04000B0C3A3 /* SelectableFormItemStyle.swift in Sources */,
 				0019C47E2E6AE04000B0C3A3 /* SelectableFormItemView.swift in Sources */,
 				0019C4942E6AE0A200B0C3A3 /* FormItemView.swift in Sources */,
 				0019C4952E6AE0A200B0C3A3 /* FormItem.swift in Sources */,
