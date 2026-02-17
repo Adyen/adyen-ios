@@ -272,3 +272,5 @@
 "adyen.card.scanner.camera.access.denied.alert.title" = "Allow camera access";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Access was previously denied. To scan cards, please grant access from Settings.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Open Settings";
+"adyen.preselectedPaymentMethod.subtitle" = "Use %@ to pay %@";
+"adyen.preselectedPaymentMethod.otherOptions" = "Other payment options";

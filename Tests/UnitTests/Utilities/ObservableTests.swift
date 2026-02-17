@@ -149,6 +149,96 @@ class ObservableTests: XCTestCase, AdyenObserver {
         XCTAssertTrue(receiver.observableObject.boolValue)
     }
 
+    // MARK: - Event Handler Token Tests
+
+    func test_addEventHandler_withoutRetainedToken_shouldPersistIndefinitely() {
+        let sut = makeObservable(initialValue: 0)
+        var handlerCallCount = 0
+        
+        // When: Add handler without retaining token
+        addHandler(to: sut) { handlerCallCount += 1 }
+        
+        // Then: Handler should be called for each value change
+        setValue(sut, to: 1)
+        XCTAssertEqual(handlerCallCount, 1, "Handler should be called even without retained token")
+        
+        setValue(sut, to: 2)
+        XCTAssertEqual(handlerCallCount, 2, "Handler should continue to be called")
+        
+        // The handler remains active for the lifetime of the observable
+        // This demonstrates potential memory accumulation if tokens aren't retained
+    }
+    
+    func test_addEventHandler_withRetainedToken_shouldAllowManualRemoval() {
+        let sut = makeObservable(initialValue: 0)
+        var handlerCallCount = 0
+        
+        // When: Add handler and retain the token
+        let token = addHandler(to: sut) { handlerCallCount += 1 }
+        
+        setValue(sut, to: 1)
+        XCTAssertEqual(handlerCallCount, 1, "Handler should be called")
+        
+        // When: Explicitly remove the handler using the token
+        removeHandler(from: sut, with: token)
+        
+        // Then: Handler should no longer be called after removal
+        setValue(sut, to: 2)
+        XCTAssertEqual(handlerCallCount, 1, "Handler should not be called after removal")
+    }
+    
+    func test_addEventHandler_multipleHandlersWithoutTokens_shouldAllPersist() {
+        let sut = makeObservable(initialValue: 0)
+        var handler1CallCount = 0
+        var handler2CallCount = 0
+        var handler3CallCount = 0
+        
+        // When: Add multiple handlers without retaining tokens
+        addHandler(to: sut) { handler1CallCount += 1 }
+        addHandler(to: sut) { handler2CallCount += 1 }
+        addHandler(to: sut) { handler3CallCount += 1 }
+        
+        // Then: All handlers should be called for each value change
+        setValue(sut, to: 1)
+        XCTAssertEqual(handler1CallCount, 1)
+        XCTAssertEqual(handler2CallCount, 1)
+        XCTAssertEqual(handler3CallCount, 1)
+        
+        // All handlers accumulate in memory without cleanup mechanism
+        setValue(sut, to: 2)
+        XCTAssertEqual(handler1CallCount, 2)
+        XCTAssertEqual(handler2CallCount, 2)
+        XCTAssertEqual(handler3CallCount, 2)
+        
+        // This demonstrates that handlers without retained tokens remain active
+        // and can lead to memory accumulation over time
+    }
+    
+    // MARK: - Helper Methods
+    
+    private func makeObservable(initialValue: Int) -> AdyenObservable<Int> {
+        AdyenObservable(initialValue)
+    }
+    
+    @discardableResult
+    private func addHandler(
+        to observable: AdyenObservable<Int>,
+        eventHandler: @escaping () -> Void
+    ) -> EventHandlerToken {
+        observable.addEventHandler { _ in eventHandler() }
+    }
+    
+    private func removeHandler(
+        from observable: AdyenObservable<Int>,
+        with token: EventHandlerToken
+    ) {
+        observable.removeEventHandler(with: token)
+    }
+    
+    private func setValue(_ observable: AdyenObservable<Int>, to value: Int) {
+        observable.wrappedValue = value
+    }
+
     class TestObserver: AdyenObserver {
         var stringValue: String = ""
         var optionalStringValue: String?

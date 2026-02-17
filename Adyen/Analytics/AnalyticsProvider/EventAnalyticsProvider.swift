@@ -15,7 +15,8 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
         static let logLimit = 5
         static let errorLimit = 5
     }
-    
+
+    // TODO: Robert: Remove this, this will be private and not settable. but available during init.
     internal var checkoutAttemptId: String? {
         didSet {
             if checkoutAttemptId != nil {

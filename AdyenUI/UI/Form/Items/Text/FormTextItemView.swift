@@ -272,9 +272,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// Subclasses can override this method to stay notified when the text field resigns its first responder status.
     open func textFieldDidEndEditing(_ textField: UITextField) {
         isEditing = false
+        item.onDidEndEditing?()
         item.triggerValidation(.focusLost)
         updateBorderColor()
-        item.onDidEndEditing?()
     }
     
     /// This method hides validation accessories icons.
