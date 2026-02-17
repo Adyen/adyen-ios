@@ -9,8 +9,9 @@ import Foundation
 /// Provides a placeholder for payment methods that are already paid, just for display.
 @_spi(AdyenInternal)
 public final class AlreadyPaidPaymentComponent: PaymentComponent {
+    public var presentationStyle: ComponentPresentableStyle = .notPresentable
 
-    public lazy var type: ComponentType = .payment(.notPresentable, self)
+    public var paymentInitiationAction: PaymentInitationAction = .presentUI
 
     /// The context object for this component.
     public let context: AdyenContext

@@ -13,6 +13,9 @@ public protocol InitiablePaymentComponent: PaymentComponent {
 
 /// A component that handles payment methods that don't need any payment detail to be filled.
 public final class InstantPaymentComponent: InitiablePaymentComponent {
+    public lazy var paymentInitiationAction: PaymentInitationAction = .action { delegate in
+        self.initiatePayment(delegate: delegate)
+    }
 
     /// The context object for this component.
     @_spi(AdyenInternal)

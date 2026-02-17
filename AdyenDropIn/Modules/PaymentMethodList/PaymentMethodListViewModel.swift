@@ -78,13 +78,13 @@ extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
     ) {
         startLoading(for: component)
 
-        switch component.type {
-        case .payment, .stored:
+        switch component.paymentInitiationAction {
+        case let .action(action):
+            action(self)
+        case .presentUI:
             router?.present(component: component) { [weak self] in
                 self?.stopLoading()
             }
-        case let .initiable(_, initiablePaymentComponent):
-            initiablePaymentComponent.initiatePayment(delegate: self)
         }
     }
 

@@ -17,24 +17,14 @@ public protocol PaymentMethodAware {
 /// A component that handles stored payment methods.
 public protocol StoredPaymentComponent: PaymentComponent, PresentableComponent {}
 
-public enum ComponentType {
-    public enum ComponentPresentableStyle {
-        case presentable(PresentableComponent)
-        case notPresentable
-    }
+public enum ComponentPresentableStyle {
+    case presentable(PresentableComponent)
+    case notPresentable
+}
 
-    case payment(ComponentPresentableStyle, PaymentComponent)
-    case stored(ComponentPresentableStyle, StoredPaymentComponent)
-    case initiable(ComponentPresentableStyle, InitiablePaymentComponent)
-
-    public var componentPresentationStyle: ComponentPresentableStyle {
-        switch self {
-        case let .payment(componentPresentationStyle, _),
-             let .stored(componentPresentationStyle, _),
-             let .initiable(componentPresentationStyle, _):
-            return componentPresentationStyle
-        }
-    }
+public enum PaymentInitationAction {
+    case presentUI
+    case action((PaymentComponentDelegate) -> Void)
 }
 
 /// A component that handles the initial phase of getting payment details to initiate a payment.
@@ -43,28 +33,35 @@ public protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentMe
     /// The delegate of the payment component.
     var delegate: PaymentComponentDelegate? { get set }
 
-    var type: ComponentType { get }
+    var presentationStyle: ComponentPresentableStyle { get }
 
+    var paymentInitiationAction: PaymentInitationAction { get }
 }
 
 public extension PaymentComponent where Self: PresentableComponent {
 
-    var type: ComponentType {
-        .payment(.presentable(self), self)
+    var presentationStyle: ComponentPresentableStyle {
+        .presentable(self)
+    }
+
+    var paymentInitiationAction: PaymentInitationAction {
+        .presentUI
     }
 }
 
 public extension StoredPaymentComponent {
+    var presentationStyle: ComponentPresentableStyle {
+        .notPresentable
+    }
 
-    var type: ComponentType {
-        .stored(.notPresentable, self)
+    var paymentInitiationAction: PaymentInitationAction {
+        .presentUI
     }
 }
 
 public extension InitiablePaymentComponent {
-
-    var type: ComponentType {
-        .initiable(.notPresentable, self)
+    var presentationStyle: ComponentPresentableStyle {
+        .notPresentable
     }
 }
 

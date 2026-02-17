@@ -142,11 +142,11 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     private func startPaymentFlow(for component: PaymentComponent) {
         startLoading(for: component)
 
-        switch component.type {
-        case let .payment(componentPresentationStyle, paymentComponent):
-            switch componentPresentationStyle {
+        switch component.paymentInitiationAction {
+        case .presentUI:
+            switch component.presentationStyle {
             case let .presentable(presentableComponent):
-                router?.present(component: paymentComponent) { [weak self] in
+                router?.present(component: component) { [weak self] in
                     self?.stopLoading()
                 }
 
@@ -154,19 +154,8 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
                 break
             }
 
-        case let .stored(componentPresentationStyle, storedPaymentComponent):
-            switch componentPresentationStyle {
-            case let .presentable(presentableComponent):
-                router?.present(component: storedPaymentComponent) { [weak self] in
-                    self?.stopLoading()
-                }
-
-            case .notPresentable:
-                break
-            }
-
-        case let .initiable(componentPresentationStyle, initiablePaymentComponent):
-            initiablePaymentComponent.initiatePayment(delegate: self)
+        case let .action(action):
+            action(self)
         }
     }
 

@@ -12,6 +12,9 @@ import TwintSDK
 
 /// A component that handles a Twint payment.
 public final class TwintComponent: InitiablePaymentComponent {
+    public lazy var paymentInitiationAction: Adyen.PaymentInitationAction = .action { [weak self] delegate in
+        self?.initiatePayment(delegate: delegate)
+    }
 
     /// Configuration for Twint Component.
     public typealias Configuration = BasicComponentConfiguration

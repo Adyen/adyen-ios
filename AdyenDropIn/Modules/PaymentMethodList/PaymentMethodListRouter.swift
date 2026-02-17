@@ -61,7 +61,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         onCancel: @escaping () -> Void
     ) {
 
-        switch component.type.componentPresentationStyle {
+        switch component.presentationStyle {
         case let .presentable(presentableComponent):
             switch presentableComponent.presentationConfiguration.paymentMethodList {
             case .modal, .supportPushAndModal:
