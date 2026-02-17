@@ -40,7 +40,7 @@ internal class CardImageItem {
     /// - Parameters:
     ///   - imageURL: The URL of the card image to display.
     ///   - sizeMode: The size mode of the card image.
-    ///   - theme: The them to apply
+    ///   - theme: The theme to apply
     internal init(
         imageURL: URL?,
         sizeMode: SizeMode,
@@ -180,7 +180,7 @@ internal final class CardImageView: UIView {
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = Constants.cardImageViewCornerRadius
-        imageView.backgroundColor = item.theme.colors.background
+        imageView.backgroundColor = item.theme.colors.container
         return imageView
     }()
 }
