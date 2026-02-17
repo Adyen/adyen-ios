@@ -11,7 +11,7 @@
 import UIKit
 
 extension UILabel {
-    convenience init(
+    internal convenience init(
         style: TextStyle,
         accessibilityPostfix: String,
         multiline: Bool = false,

@@ -10,14 +10,14 @@ import UIKit
 /// A view representing an error item.
 internal final class FormErrorItemView: FormItemView<FormErrorItem> {
 
-    package let theme: AdyenTheme
+    private let theme: AdyenTheme
 
     /// Initializes the error item view.
     ///
     /// - Parameters:
     ///   - item: The item represented by the view.
     ///   - theme: The theme to use for styling.
-    init(item: FormErrorItem, theme: AdyenTheme) {
+    internal init(item: FormErrorItem, theme: AdyenTheme) {
         self.theme = theme
         super.init(item: item)
         bind(item.$message, to: messageLabel, at: \.text)
@@ -37,7 +37,7 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
         accessibilityValue = messageLabel.accessibilityValue
     }
     
-    required convenience init(item: FormErrorItem) {
+    internal required convenience init(item: FormErrorItem) {
         self.init(item: item, theme: .default)
     }
 

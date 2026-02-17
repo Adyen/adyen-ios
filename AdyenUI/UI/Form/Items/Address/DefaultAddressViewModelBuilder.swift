@@ -85,5 +85,4 @@ public struct DefaultAddressViewModelBuilder: AddressViewModelBuilder {
 
         return viewModel
     }
-    // swiftlint:enable function_body_length explicit_acl
 }

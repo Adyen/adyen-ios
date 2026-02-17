@@ -9,7 +9,7 @@ import UIKit
 
 package final class SelectableFormItemView: FormItemView<SelectableFormItem> {
 
-    package let theme: AdyenTheme
+    private let theme: AdyenTheme
     
     private enum Constants {
         static let upiLogo = "upiLogo"
@@ -152,7 +152,7 @@ package final class SelectableFormItemView: FormItemView<SelectableFormItem> {
         }
     }
     
-    required convenience init(item: SelectableFormItem) {
+    internal required convenience init(item: SelectableFormItem) {
         self.init(item: item, theme: .default)
     }
 

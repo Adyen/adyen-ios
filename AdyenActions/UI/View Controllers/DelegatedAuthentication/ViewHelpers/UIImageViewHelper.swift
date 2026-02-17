@@ -11,7 +11,7 @@
 import UIKit
 
 extension UIImageView {
-    convenience init(infoImageStyle: ImageStyle) {
+    internal convenience init(infoImageStyle: ImageStyle) {
         self.init(style: infoImageStyle)
         self.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "infoImage")
         self.translatesAutoresizingMaskIntoConstraints = false
