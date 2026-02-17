@@ -11,7 +11,7 @@ import UIKit
 @_spi(AdyenInternal)
 public final class FormToggleItemView: FormItemView<FormToggleItem> {
 
-    package let theme: AdyenTheme
+    private let theme: AdyenTheme
 
     // MARK: - UI elements
     

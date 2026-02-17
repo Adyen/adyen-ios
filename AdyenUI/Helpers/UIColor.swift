@@ -22,7 +22,6 @@ public extension UIColor {
         )
     }
     
-    // swiftlint:disable:next explicit_acl
     func withBrightnessMultiple(_ brightnessMultiple: Float) -> UIColor {
         var hue: CGFloat = 1.0
         var saturation: CGFloat = 1.0

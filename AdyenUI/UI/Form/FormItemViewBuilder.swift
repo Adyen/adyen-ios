@@ -26,7 +26,7 @@ public struct FormItemViewBuilder {
 
     /// Builds `FormSplitItemView` from `FormSplitItem`.
     package func build(with item: FormSplitItem) -> FormItemView<FormSplitItem> {
-        FormSplitItemView(item: item)
+        FormSplitItemView(item: item, theme: theme)
     }
 
     /// Builds `PhoneNumberItemView` from `PhoneNumberItem`.
@@ -54,7 +54,7 @@ public struct FormItemViewBuilder {
 
     /// Builds `SelectableFormItemView` from `SelectableFormItem`.
     package func build(with item: SelectableFormItem) -> FormItemView<SelectableFormItem> {
-        SelectableFormItemView(item: item)
+        SelectableFormItemView(item: item, theme: theme)
     }
 
     /// Builds `FormButtonItemView` from `FormButtonItem`.
@@ -74,7 +74,7 @@ public struct FormItemViewBuilder {
 
     /// Builds `FormErrorItemView` from `FormErrorItem`.
     package func build(with item: FormErrorItem) -> FormItemView<FormErrorItem> {
-        FormErrorItemView(item: item)
+        FormErrorItemView(item: item, theme: theme)
     }
 
     /// Builds `FormVerticalStackItemView` from `FormAddressItem`.
@@ -94,7 +94,7 @@ public struct FormItemViewBuilder {
 
     /// Builds `FormSearchButtonItemView` from `FormSearchButtonItem`.
     package func build(with item: FormSearchButtonItem) -> FormItemView<FormSearchButtonItem> {
-        FormSearchButtonItemView(item: item)
+        FormSearchButtonItemView(item: item, theme: theme)
     }
 
     /// Builds `FormAddressPickerItemView` from `FormAddressPickerItem`.
@@ -111,7 +111,7 @@ public struct FormItemViewBuilder {
 
     /// Builds `FormPhoneExtensionPickerItemView` from `FormPhoneExtensionPickerItem`.
     package func build(with item: FormPhoneExtensionPickerItem) -> FormPhoneExtensionPickerItemView {
-        FormPhoneExtensionPickerItemView(item: item)
+        FormPhoneExtensionPickerItemView(item: item, theme: theme)
     }
 
     @_spi(AdyenInternal)

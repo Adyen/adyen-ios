@@ -17,7 +17,7 @@ open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormI
     private var observations: [Observation] = []
 
     /// The theme for styling subitems.
-    package let theme: AdyenTheme
+    private let theme: AdyenTheme
 
     /// Initializes the vertical stack item view with theme.
     ///
