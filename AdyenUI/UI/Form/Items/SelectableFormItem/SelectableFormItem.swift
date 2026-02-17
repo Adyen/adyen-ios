@@ -31,9 +31,6 @@ public class SelectableFormItem: FormItem {
     /// The `accessibilityLabel` to be used on the ``SelectableFormItem``
     public let accessibilityLabel: String
 
-    /// The selectable item style.
-    public let style: SelectableFormItemStyle
-
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
 
     @AdyenObservable(true) public var isSeparatorViewShown: Bool
@@ -53,14 +50,12 @@ public class SelectableFormItem: FormItem {
         imageUrl: URL? = nil,
         isSelected: Bool = false,
         isSeparatorViewShown: Bool = true,
-        style: SelectableFormItemStyle,
         identifier: String? = nil,
         accessibilityLabel: String? = nil,
         selectionHandler: (() -> Void)? = nil
     ) {
         self.title = title
         self.imageUrl = imageUrl
-        self.style = style
         self.identifier = identifier
         self.accessibilityLabel = accessibilityLabel ?? title
         self.selectionHandler = selectionHandler

@@ -90,7 +90,7 @@ extension AdyenLabelStyle {
 }
 
 extension AdyenLabelStyle {
-    var stringAttributes: [NSAttributedString.Key: Any] {
+    internal var stringAttributes: [NSAttributedString.Key: Any] {
         var attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: color,
             .font: font

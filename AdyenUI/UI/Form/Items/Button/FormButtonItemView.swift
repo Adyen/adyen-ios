@@ -11,7 +11,7 @@ import UIKit
 internal final class FormButtonItemView: FormItemView<FormButtonItem> {
 
     /// The theme for styling.
-    package let theme: AdyenTheme
+    private let theme: AdyenTheme
 
     /// Initializes the button item view.
     ///
