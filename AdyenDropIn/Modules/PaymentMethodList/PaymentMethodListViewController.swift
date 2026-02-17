@@ -20,7 +20,12 @@ public struct PaymentMethodListConfiguration {
     public var allowDisablingStoredPaymentMethods: Bool = false
 }
 
-internal class PaymentMethodListViewController: UIViewController, ComponentLoader {
+internal protocol PaymentMethodListViewProtocol: AnyObject {
+    func startLoading(for component: PaymentComponent)
+    func stopLoading()
+}
+
+internal class PaymentMethodListViewController: UIViewController, PaymentMethodListViewProtocol {
 
     // MARK: - UI elements
 
@@ -93,6 +98,23 @@ internal class PaymentMethodListViewController: UIViewController, ComponentLoade
 
     private var localizationParameters: LocalizationParameters? {
         viewModel.localizationParameters
+    }
+
+    // MARK: - PaymentMethodListViewProtocol
+
+    internal func startLoading(for component: PaymentComponent) {
+        let allListItems = listViewController.sections.flatMap(\.items)
+        let allComponents = viewModel.componentSections.map(\.components).flatMap { $0 }
+
+        guard let index = allComponents.firstIndex(where: { $0 === component }) else {
+            return
+        }
+
+        allListItems[index].startLoading()
+    }
+
+    internal func stopLoading() {
+        listViewController.stopLoading()
     }
 
     // MARK: - OLD STUFF
@@ -169,26 +191,6 @@ internal class PaymentMethodListViewController: UIViewController, ComponentLoade
             self.deleteComponent(at: indexPath)
         }
         viewModel.delete(paymentMethod, completion: completion)
-    }
-
-    // MARK: - Loading
-    
-    /// Starts a loading animation next to the list item of the provided component.
-    ///
-    /// - Parameter component: The component for which to start a loading animation.
-    internal func startLoading(for component: PaymentComponent) {
-        let allListItems = listViewController.sections.flatMap(\.items)
-        let allComponents = viewModel.componentSections.map(\.components).flatMap { $0 }
-        
-        guard let index = allComponents.firstIndex(where: { $0 === component }) else {
-            return
-        }
-        
-        allListItems[index].startLoading()
-    }
-    
-    internal func stopLoading() {
-        listViewController.stopLoading()
     }
 }
 

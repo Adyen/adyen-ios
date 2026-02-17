@@ -58,6 +58,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
             listener: delegate,
             componentContainerAssembler: componentContainerAssembler
         )
+        viewModel.view = view
         viewModel.router = router
         return router
     }

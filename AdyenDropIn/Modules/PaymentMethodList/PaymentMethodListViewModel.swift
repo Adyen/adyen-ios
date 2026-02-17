@@ -24,6 +24,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     // MARK: - Properties
 
+    internal weak var view: PaymentMethodListViewProtocol?
     internal let context: AdyenContext
     internal let localizationParameters: LocalizationParameters?
     internal let componentManager: ComponentManager
@@ -78,13 +79,12 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     // MARK: - Private
 
-    // TODO: - Handle loading
     private func startLoading(for component: any PaymentComponent) {
-//        paymentMethodListComponent.startLoading(for: component)
+        view?.startLoading(for: component)
     }
     
     private func stopLoading() {
-//        paymentMethodListComponent.stopLoading()
+        view?.stopLoading()
     }
 }
 
