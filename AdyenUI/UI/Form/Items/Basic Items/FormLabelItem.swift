@@ -53,7 +53,7 @@ public class FormLabelItem: FormItem {
 
 internal final class FormLabelItemView: UILabel, AnyFormItemView {
 
-    package let theme: AdyenTheme
+    private let theme: AdyenTheme
 
     internal init(item: FormLabelItem, theme: AdyenTheme) {
         self.theme = theme
