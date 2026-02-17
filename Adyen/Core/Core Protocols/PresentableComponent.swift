@@ -43,6 +43,28 @@ public protocol PresentableComponent: Component {
     /// Indicates whether Component implements a custom Navigation bar.
     @_spi(AdyenInternal)
     var navBarType: NavigationBarType { get }
+
+    var presentationConfiguration: ComponentPresentationConfiguration { get }
+}
+
+public struct ComponentPresentationConfiguration {
+    public enum Style {
+        case push
+        case modal
+        case supportPushAndModal
+    }
+
+    public let preselectedPaymentMethod: Style
+    public let paymentMethodList: Style
+    
+    public let presentableComponent: PresentableComponent
+
+    ///    public let viewController: ViewController
+    public init(preselectedPaymentMethod: Style, paymentMethodList: Style, presentableComponent: PresentableComponent) {
+        self.preselectedPaymentMethod = preselectedPaymentMethod
+        self.paymentMethodList = paymentMethodList
+        self.presentableComponent = presentableComponent
+    }
 }
 
 /// A component that provides a view controller for the shopper to fill payment details.

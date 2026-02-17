@@ -45,7 +45,7 @@ open class FormValidatableValueItem<ValueType: Equatable>: FormValueItem<ValueTy
     /// Single source of truth for validation state.
     /// Views observe this property to update their UI reactively.
     @AdyenObservable(.initial) package var validationState: ValidationState
-    
+
     /// Observation manager that automatically cleans up handlers on deinit.
     private let observationManager = ObservationManager()
     

@@ -17,7 +17,7 @@ public final class CashAppPayComponent: PaymentComponent,
     PaymentAware,
     PresentableComponent,
     LoadingComponent {
-
+    public lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
     /// The notification to post when returning back to your application from Cash App.
     public static let RedirectNotification = CashAppPay.RedirectNotification
 

@@ -18,7 +18,8 @@ internal final class PreApplePayComponent: PresentableComponent,
     FinalizableComponent,
     PaymentComponent,
     Cancellable {
-    
+    public lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
+
     internal struct Configuration: Localizable {
         
         internal var style: ApplePayStyle

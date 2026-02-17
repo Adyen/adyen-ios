@@ -17,7 +17,8 @@ internal final class PreselectedPaymentMethodComponent:
     PaymentMethodAware,
     Localizable,
     Cancellable {
-    
+    public lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
+
     private let title: String
     private let defaultComponent: PaymentComponent
 
@@ -25,7 +26,9 @@ internal final class PreselectedPaymentMethodComponent:
         defaultComponent.context
     }
 
-    internal var paymentMethod: PaymentMethod { defaultComponent.paymentMethod }
+    internal var paymentMethod: PaymentMethod {
+        defaultComponent.paymentMethod
+    }
 
     /// Describes the component's UI style.
     internal var style: FormComponentStyle

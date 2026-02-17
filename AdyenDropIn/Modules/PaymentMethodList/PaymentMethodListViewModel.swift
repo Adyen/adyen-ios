@@ -77,17 +77,14 @@ extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
         in paymentMethodListComponent: PaymentMethodListComponent
     ) {
         startLoading(for: component)
-        
-        switch component {
-        case let component as PresentableComponent:
-            router?.present(paymentComponent: component) { [weak self] in
+
+        switch component.type {
+        case .payment, .stored:
+            router?.present(component: component) { [weak self] in
                 self?.stopLoading()
             }
-        case let component as PaymentInitiable:
-            (component as? PaymentComponent)?.delegate = self
-            component.initiatePayment()
-        default:
-            break
+        case let .initiable(_, initiablePaymentComponent):
+            initiablePaymentComponent.initiatePayment(delegate: self)
         }
     }
 

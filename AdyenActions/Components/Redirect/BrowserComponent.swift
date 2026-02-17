@@ -18,6 +18,7 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
 
     /// :nodoc
     internal let context: AdyenContext
+    package lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
 
     private let url: URL
     private let style: RedirectComponentStyle?

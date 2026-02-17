@@ -57,7 +57,7 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
         do {
             let component = try instantPaymentComponent(from: paymentMethods)
             instantPaymentComponent = component
-            component.initiatePayment()
+            component.initiatePayment(delegate: self)
         } catch {
             self.presentAlert(with: error)
         }
@@ -71,9 +71,7 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: InstantPaymentMethod.self)
         }
         
-        let component = InstantPaymentComponent(paymentMethod: paymentMethod, context: context, order: nil)
-        component.delegate = self
-        return component
+        return InstantPaymentComponent(paymentMethod: paymentMethod, context: context, order: nil)
     }
 
     // MARK: - Payment response handling

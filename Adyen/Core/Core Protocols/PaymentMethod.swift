@@ -78,7 +78,7 @@ public protocol StoredPaymentMethod: PaymentMethod {
     
     /// A unique identifier of the stored payment method.
     var identifier: String { get }
-    
+
     /// The supported types of shopper interaction.
     var supportedShopperInteractions: [ShopperInteraction] { get }
     

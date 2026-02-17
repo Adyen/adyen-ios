@@ -13,7 +13,8 @@ import UIKit
 
 /// A component that provides a form for BLIK payments.
 public final class BLIKComponent: PaymentComponent, PresentableComponent, PaymentAware, LoadingComponent {
-    
+    public lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
+
     /// The context object for this component.
     @_spi(AdyenInternal)
     public let context: AdyenContext

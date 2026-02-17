@@ -6,14 +6,13 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public protocol PaymentInitiable {
+public protocol InitiablePaymentComponent: PaymentComponent {
     /// Initiate the payment flow
-    func initiatePayment()
+    func initiatePayment(delegate: PaymentComponentDelegate)
 }
 
 /// A component that handles payment methods that don't need any payment detail to be filled.
-public final class InstantPaymentComponent: PaymentComponent {
+public final class InstantPaymentComponent: InitiablePaymentComponent {
 
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -67,15 +66,13 @@ public final class InstantPaymentComponent: PaymentComponent {
     }
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
-    public func initiatePayment() {
+    public func initiatePayment(delegate: PaymentComponentDelegate) {
         // We are not attempting to fetch the checkoutAttemptId as it won't be ready for the payment
         // and we don't want to block it for an analytics call.
+        self.delegate = delegate
         submit(data: paymentData)
     }
 }
-
-@_spi(AdyenInternal)
-extension InstantPaymentComponent: PaymentInitiable {}
 
 /// Describes a payment details that contains nothing but the payment method type name.
 public struct InstantPaymentDetails: PaymentMethodDetails {

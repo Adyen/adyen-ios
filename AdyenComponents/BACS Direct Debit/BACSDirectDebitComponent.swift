@@ -17,6 +17,7 @@ internal protocol BACSDirectDebitRouterProtocol: AnyObject {
 
 /// A component that provides a form for BACS Direct Debit payments.
 public final class BACSDirectDebitComponent: PaymentComponent, PaymentAware, PresentableComponent {
+    public lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
 
     /// Configuration for BACS Direct Debit Component.
     public typealias Configuration = BasicComponentConfiguration

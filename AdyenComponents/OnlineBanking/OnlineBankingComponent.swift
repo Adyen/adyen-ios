@@ -29,6 +29,7 @@ public final class OnlineBankingComponent: PaymentComponent,
 
     /// Configuration for Online Banking Component.
     public typealias Configuration = BasicComponentConfiguration
+    public lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
 
     /// The context object for this component.
     @_spi(AdyenInternal)

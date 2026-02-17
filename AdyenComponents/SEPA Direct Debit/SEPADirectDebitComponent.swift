@@ -13,7 +13,8 @@ import UIKit
 
 /// A component that provides a form for SEPA Direct Debit payments.
 public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, PresentableComponent, LoadingComponent {
-    
+    public lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
+
     /// Configuration for SEPA Direct Debit Component
     public typealias Configuration = BasicComponentConfiguration
     

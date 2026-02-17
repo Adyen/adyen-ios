@@ -29,6 +29,8 @@ package final class PresentableComponentWrapper: PresentableComponent,
 
     package var navBarType: NavigationBarType
 
+    package lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
+
     /// Initializes the wrapper component.
     ///
     /// - Parameter component: The wrapped component.

@@ -13,7 +13,7 @@ import Foundation
 import UIKit
 
 /**
-  A component that provides a form for card payments.
+ A component that provides a form for card payments.
 
  - SeeAlso:
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
@@ -29,18 +29,20 @@ public class CardComponent: PresentableComponent,
         internal static let thresholdBINLength = 11
         internal static let publicPanSuffixLength = 4
     }
-    
+
+    public lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
+
     /// The context object for this component.
     @_spi(AdyenInternal)
     public let context: AdyenContext
-    
+
     internal let cardPaymentMethod: AnyCardPaymentMethod
 
     @_spi(AdyenInternal)
     public let publicKeyProvider: AnyPublicKeyProvider
 
     internal let binInfoProvider: AnyBinInfoProvider
-    
+
     /// The card payment method.
     public var paymentMethod: PaymentMethod {
         cardPaymentMethod
@@ -51,7 +53,7 @@ public class CardComponent: PresentableComponent,
 
     /// Card component configuration.
     public internal(set) var configuration: CardComponentConfiguration
-    
+
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate? {
         didSet {
@@ -61,26 +63,26 @@ public class CardComponent: PresentableComponent,
                installmentAware.isSession {
                 configuration.installmentConfiguration = installmentAware.installmentConfiguration
             }
-            
+
             if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
                storePaymentMethodAware.isSession {
                 configuration.showsStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
             }
         }
     }
-    
+
     /// The partial payment order if any.
     public var order: PartialPaymentOrder? {
         didSet {
             storedCardComponent?.order = order
         }
     }
-    
+
     /// Determines whether the storedCardComponent is active
     private var isStoredCardComponentActive: Bool {
         storedCardComponent != nil
     }
-    
+
     /// Initializes the card component.
     ///
     /// - Parameters:
@@ -107,7 +109,7 @@ public class CardComponent: PresentableComponent,
             binProvider: binInfoProvider
         )
     }
-    
+
     /// Initializes the card component.
     ///
     /// - Parameters:
@@ -131,53 +133,46 @@ public class CardComponent: PresentableComponent,
 
         self.supportedCardTypes = configuration.allowedCardTypes ?? paymentMethod.brands
     }
-    
+
     // MARK: - Presentable Component Protocol
-    
+
     public var viewController: UIViewController {
         if let storedCardComponent {
             return storedCardComponent.viewController
         }
         return securedViewController
     }
-    
+
     public func stopLoading() {
         // since storedCardComponent is instantiated through this class
         // cardViewController should not be accessed when it's the storedCardComponent
         // we should separate stored card component logic into its own
         if isStoredCardComponentActive { return }
-        
+
         cardViewController.stopLoading()
     }
 
     // MARK: - Stored Card
-    
-    internal lazy var storedCardComponent: (PaymentComponent & PresentableComponent)? = {
+
+    package lazy var storedCardComponent: StoredPaymentComponent? = {
         guard let paymentMethod = paymentMethod as? StoredCardPaymentMethod else {
             return nil
         }
         // TODO: FIX StoredCard UI
-        var component: PaymentComponent & PresentableComponent
-        // if configuration.stored.showsSecurityCodeField {
-        let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context)
-        storedComponent.localizationParameters = configuration.localizationParameters
-        component = storedComponent
-        return component
-        // }
-       
-        // else {
-//            let storedConfiguration: StoredPaymentMethodComponent.Configuration
-//            storedConfiguration = .init(localizationParameters: configuration.localizationParameters)
-//            let storedComponent = StoredPaymentMethodComponent(
-//                paymentMethod: paymentMethod,
-//                context: context,
-//                configuration: storedConfiguration
-//            )
-//            component = storedComponent
-//        }
-        
+        if configuration.stored.showsSecurityCodeField {
+            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context)
+            storedComponent.localizationParameters = configuration.localizationParameters
+            return storedComponent
+        } else {
+            let storedComponent = StoredPaymentMethodComponent(
+                paymentMethod: paymentMethod,
+                context: context
+            )
+            storedComponent.localizationParameters = configuration.localizationParameters
+            return storedComponent
+        }
     }()
-    
+
     /// Updates the visibility of the store payment method switch.
     ///
     /// - Parameter isVisible: Indicates whether to show the switch if `true` or to hide it if `false`.
@@ -190,9 +185,9 @@ public class CardComponent: PresentableComponent,
     }
 
     // MARK: - Form Items
-    
+
     private lazy var securedViewController = SecuredViewController(child: cardViewController, style: configuration.style)
-    
+
     internal lazy var cardViewController: CardViewController = {
 
         let formViewController = CardViewController(
@@ -221,10 +216,10 @@ public class CardComponent: PresentableComponent,
 
         return formViewController
     }()
-    
+
     private let panThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
     private let binThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
-    
+
     private func sendInfoEvent(with data: CardViewController.InfoEventData) {
         var infoEvent = AnalyticsEventInfo(
             component: paymentMethod.type.rawValue,
@@ -246,20 +241,20 @@ public class CardComponent: PresentableComponent,
 }
 
 extension CardComponent: CardViewControllerDelegate {
-    
+
     internal func didChange(pan: String) {
         panThrottler.throttle { [weak self] in
             self?.updateBrand(with: pan)
         }
     }
-    
+
     internal func didChange(bin: String) {
         binThrottler.throttle { [weak self] in
             guard let self else { return }
             self.configuration.onBinChange?(bin)
         }
     }
-    
+
     private func updateBrand(with pan: String) {
         binInfoProvider.provide(for: pan, supportedTypes: supportedCardTypes) { [weak self] binInfo in
             guard let self else { return }
@@ -273,16 +268,16 @@ extension CardComponent: CardViewControllerDelegate {
 extension CardComponent: PublicKeyConsumer {}
 
 private extension CardComponent {
-    
+
     private var initialCountryCode: String {
-        
+
         if
             let preferredCountry = configuration.shopperInformation?.billingAddress?.country,
             let supportedCountryCodes = configuration.billingAddress.countryCodes,
             supportedCountryCodes.isEmpty || supportedCountryCodes.contains(preferredCountry) {
             return preferredCountry
         }
-        
+
         return
             configuration.billingAddress.countryCodes?.first ??
             payment?.countryCode ??
@@ -292,14 +287,14 @@ private extension CardComponent {
 }
 
 private extension CardComponentConfiguration {
-    
+
     func addressLookupViewModel(
         with initialCountry: String,
         prefillAddress: PostalAddress?,
         lookupProvider: AddressLookupProvider,
         completionHandler: @escaping (PostalAddress?) -> Void
     ) -> AddressLookupViewController.ViewModel {
-        
+
         .init(
             for: .billing,
             localizationParameters: localizationParameters,
@@ -316,7 +311,7 @@ private extension CardComponentConfiguration {
         prefillAddress: PostalAddress?,
         completionHandler: @escaping (PostalAddress?) -> Void
     ) -> AddressInputFormViewController.ViewModel {
-        
+
         .init(
             for: .billing,
             style: style,

@@ -20,7 +20,7 @@ public final class GiftCardComponent: PresentableComponent,
     AdyenObserver {
 
     internal let amount: Amount
-    
+    public lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
     internal enum PartialPaymentMethodType {
         case giftCard(GiftCardPaymentMethod)
         case mealVoucher(MealVoucherPaymentMethod)

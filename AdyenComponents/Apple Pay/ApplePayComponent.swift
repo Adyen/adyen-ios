@@ -10,6 +10,7 @@ import PassKit
 
 /// A component that handles Apple Pay payments.
 public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, FinalizableComponent {
+    public lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
 
     internal let paymentRequest: PKPaymentRequest
 

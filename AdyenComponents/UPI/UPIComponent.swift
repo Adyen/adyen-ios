@@ -34,7 +34,9 @@ public final class UPIComponent: PaymentComponent,
             }
         }
     }
-        
+
+    public lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
+
     private enum ViewIdentifier {
         static let instructionsItem = "instructionsLabelItem"
         static let upiFlowSelectionItem = "upiFlowSelectionSegmentedControlItem"

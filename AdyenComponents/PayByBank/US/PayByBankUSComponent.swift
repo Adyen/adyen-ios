@@ -20,7 +20,8 @@ public final class PayByBankUSComponent: PaymentComponent, PresentableComponent 
 
     /// The payment method object for this component.
     public let paymentMethod: PaymentMethod
-    
+    public lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
+
     /// The ready to submit payment data.
     public var paymentData: PaymentComponentData {
         let details = InstantPaymentDetails(type: paymentMethod.type)

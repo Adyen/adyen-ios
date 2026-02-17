@@ -25,6 +25,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     public let paymentMethod: PaymentMethod
 
     public weak var delegate: PaymentComponentDelegate?
+    public lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
 
     public lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,

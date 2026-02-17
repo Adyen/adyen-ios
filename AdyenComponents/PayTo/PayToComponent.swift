@@ -12,6 +12,7 @@ import UIKit
 
 /// A component that provides PayTo flows for PayTo component.
 public final class PayToComponent: PaymentComponent, PresentableComponent, AdyenObserver, PaymentAware, LoadingComponent {
+    public lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
 
     /// Configuration for PayTo Component.
     public typealias Configuration = BasicComponentConfiguration

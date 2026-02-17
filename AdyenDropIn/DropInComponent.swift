@@ -31,6 +31,8 @@ public final class DropInComponent: NSObject,
     ActionHandlingComponent,
     LoadingComponent {
 
+    public lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
+
     // MARK: - Properties
 
     internal private(set) lazy var dropInFlowManager: DropInFlowManaging = {

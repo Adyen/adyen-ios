@@ -36,6 +36,8 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         achDirectDebitPaymentMethod
     }
 
+    public lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
+
     package weak var delegate: PaymentComponentDelegate? {
         didSet {
             if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,

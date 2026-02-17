@@ -17,6 +17,7 @@ public final class BoletoComponent: PaymentComponent,
     LoadingComponent,
     PresentableComponent,
     AdyenObserver {
+    public lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
 
     /// The context object for this component.
     @_spi(AdyenInternal)

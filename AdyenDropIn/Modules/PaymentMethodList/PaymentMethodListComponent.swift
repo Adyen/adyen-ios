@@ -22,7 +22,8 @@ public struct PaymentMethodListConfiguration {
 
 /// A component that presents a list of items for each payment method with a component.
 internal final class PaymentMethodListComponent: ComponentLoader, PresentableComponent, Localizable, Cancellable {
-    
+    public lazy var presentationConfiguration: ComponentPresentationConfiguration = .init(preselectedPaymentMethod: .push, paymentMethodList: .push, presentableComponent: self)
+
     internal let context: AdyenContext
     
     /// The components that are displayed in the list.
