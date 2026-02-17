@@ -5,7 +5,9 @@
 //
 
 import Adyen
-import AdyenUI
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import UIKit
 
 internal class CardImageItem {
