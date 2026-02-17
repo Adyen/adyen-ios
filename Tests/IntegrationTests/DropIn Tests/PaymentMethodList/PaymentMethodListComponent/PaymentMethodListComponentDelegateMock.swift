@@ -9,21 +9,21 @@ import Foundation
 
 internal final class PaymentMethodListComponentDelegateMock: PaymentMethodListComponentDelegate {
 
-    var onDidLoad: ((_ paymentMethodListComponent: PaymentMethodListComponent) -> Void)?
+    var onDidLoad: ((_ paymentMethodListComponent: NewPaymentMethodListViewController) -> Void)?
 
-    func didLoad(_ paymentMethodListComponent: PaymentMethodListComponent) {
+    func didLoad(_ paymentMethodListComponent: NewPaymentMethodListViewController) {
         onDidLoad?(paymentMethodListComponent)
     }
     
-    var onDidSelect: ((_ component: PaymentComponent, _ paymentMethodListComponent: PaymentMethodListComponent) -> Void)?
+    var onDidSelect: ((_ component: PaymentComponent, _ paymentMethodListComponent: NewPaymentMethodListViewController) -> Void)?
     
-    func didSelect(_ component: PaymentComponent, in paymentMethodListComponent: PaymentMethodListComponent) {
+    func didSelect(_ component: PaymentComponent, in paymentMethodListComponent: NewPaymentMethodListViewController) {
         onDidSelect?(component, paymentMethodListComponent)
     }
     
-    var onDidDelete: ((_ paymentMethod: StoredPaymentMethod, _ paymentMethodListComponent: PaymentMethodListComponent, _ completion: @escaping Completion<Bool>) -> Void)?
+    var onDidDelete: ((_ paymentMethod: StoredPaymentMethod, _ paymentMethodListComponent: NewPaymentMethodListViewController, _ completion: @escaping Completion<Bool>) -> Void)?
     
-    func didDelete(_ paymentMethod: StoredPaymentMethod, in paymentMethodListComponent: PaymentMethodListComponent, completion: @escaping Completion<Bool>) {
+    func didDelete(_ paymentMethod: StoredPaymentMethod, in paymentMethodListComponent: NewPaymentMethodListViewController, completion: @escaping Completion<Bool>) {
         onDidDelete?(paymentMethod, paymentMethodListComponent, completion)
     }
     
