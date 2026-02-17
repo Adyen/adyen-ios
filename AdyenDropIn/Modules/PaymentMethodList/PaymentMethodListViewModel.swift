@@ -12,7 +12,7 @@ import UIKit
 internal protocol PaymentMethodListViewModelProtocol {
     var context: AdyenContext { get }
     var localizationParameters: LocalizationParameters? { get }
-    var componentSections: [ComponentsSection] { get }
+    var componentSections: [ComponentsSection] { get set }
     func cancel()
 
     func didLoad()
@@ -27,6 +27,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     internal let context: AdyenContext
     internal let localizationParameters: LocalizationParameters?
     internal let componentManager: ComponentManager
+    internal var componentSections: [ComponentsSection]
     internal weak var router: PaymentMethodListRouting?
     private var dropInFlowManager: DropInFlowManaging
 
@@ -42,14 +43,11 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         self.context = context
         self.localizationParameters = localizationParameters
         self.componentManager = componentManager
+        self.componentSections = componentManager.sections
         self.dropInFlowManager = dropInFlowManager
     }
 
     // MARK: - PaymentMethodListViewModelProtocol
-
-    internal var componentSections: [ComponentsSection] {
-        componentManager.sections
-    }
 
     internal func cancel() {
         router?.dismiss(completion: nil)

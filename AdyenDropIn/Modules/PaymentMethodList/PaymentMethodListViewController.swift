@@ -34,10 +34,7 @@ internal class PaymentMethodListViewController: UIViewController, ComponentLoade
 
     // MARK: - Properties
 
-    private let viewModel: PaymentMethodListViewModelProtocol
-
-    /// The components that are displayed in the list.
-    internal private(set) var componentSections: [ComponentsSection]
+    private var viewModel: PaymentMethodListViewModelProtocol
 
     // MARK: - Initializers
 
@@ -45,7 +42,6 @@ internal class PaymentMethodListViewController: UIViewController, ComponentLoade
         viewModel: PaymentMethodListViewModel
     ) {
         self.viewModel = viewModel
-        self.componentSections = viewModel.componentSections
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -102,19 +98,19 @@ internal class PaymentMethodListViewController: UIViewController, ComponentLoade
     // MARK: - OLD STUFF
 
     internal func reload(with components: [ComponentsSection]) {
-        componentSections = components
+        viewModel.componentSections = components
         listViewController.reload(newSections: createListSections())
     }
     
     internal func deleteComponent(at indexPath: IndexPath) {
-        componentSections.deleteItem(at: indexPath)
+        viewModel.componentSections.deleteItem(at: indexPath)
         listViewController.deleteItem(at: indexPath)
     }
 
     private let brandProtectedComponents: Set<PaymentMethodType> = [.applePay]
 
     private func createListSections() -> [ListSection] {
-        componentSections.map { section in
+        viewModel.componentSections.map { section in
             ListSection(
                 header: section.header,
                 items: section.components.map(item(for:)),
@@ -167,7 +163,7 @@ internal class PaymentMethodListViewController: UIViewController, ComponentLoade
             guard success else { return }
             // This is to prevent the merchant calling completion closure multiple times
             guard let self else { return }
-            guard self.componentSections[indexPath.section]
+            guard viewModel.componentSections[indexPath.section]
                 .components[indexPath.item]
                 .paymentMethod == paymentMethod else { return }
             self.deleteComponent(at: indexPath)
@@ -182,7 +178,7 @@ internal class PaymentMethodListViewController: UIViewController, ComponentLoade
     /// - Parameter component: The component for which to start a loading animation.
     internal func startLoading(for component: PaymentComponent) {
         let allListItems = listViewController.sections.flatMap(\.items)
-        let allComponents = componentSections.map(\.components).flatMap { $0 }
+        let allComponents = viewModel.componentSections.map(\.components).flatMap { $0 }
         
         guard let index = allComponents.firstIndex(where: { $0 === component }) else {
             return
