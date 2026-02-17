@@ -45,7 +45,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         // PaymentComponent requirements
         var delegate: PaymentComponentDelegate?
         let paymentMethod: PaymentMethod
-        var type: ComponentType = .undefined
+        var type: PaymentComponentType = .undefined
 
         /// Component requirements (via AdyenContextAware)
         let context: AdyenContext

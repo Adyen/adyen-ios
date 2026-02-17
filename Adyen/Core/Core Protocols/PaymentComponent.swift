@@ -17,7 +17,7 @@ public protocol PaymentMethodAware {
 /// A component that handles stored payment methods.
 public protocol StoredPaymentComponent: PaymentComponent, PresentableComponent {}
 
-public enum ComponentType {
+public enum PaymentComponentType {
     case regular(PaymentComponent & PresentableComponent)
     case stored(StoredPaymentComponent)
     case initiable(InitiablePaymentComponent)
@@ -30,26 +30,26 @@ public protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentMe
     /// The delegate of the payment component.
     var delegate: PaymentComponentDelegate? { get set }
 
-    var type: ComponentType { get }
+    var type: PaymentComponentType { get }
 }
 
 public extension PaymentComponent where Self: PresentableComponent {
 
-    var type: ComponentType {
+    var type: PaymentComponentType {
         .regular(self)
     }
 }
 
 public extension StoredPaymentComponent {
 
-    var type: ComponentType {
+    var type: PaymentComponentType {
         .stored(self)
     }
 }
 
 public extension InitiablePaymentComponent {
 
-    var type: ComponentType {
+    var type: PaymentComponentType {
         .initiable(self)
     }
 }

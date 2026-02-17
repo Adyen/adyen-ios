@@ -8,7 +8,7 @@
 
 class PaymentComponentMock: PaymentComponent {
 
-    var type: ComponentType = .undefined
+    var type: PaymentComponentType = .undefined
 
     var context: AdyenContext = Dummy.context
     
