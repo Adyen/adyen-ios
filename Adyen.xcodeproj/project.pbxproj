@@ -243,6 +243,9 @@
 		210920742F362C4F0014DD55 /* CardImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210920722F362C4F0014DD55 /* CardImageView.swift */; };
 		210920772F362D0F0014DD55 /* PreselectedPaymentMethodIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210920752F362D0F0014DD55 /* PreselectedPaymentMethodIntegrationTests.swift */; };
 		21099B0D2CB7276E0096502C /* PaymentInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21099B0C2CB7276E0096502C /* PaymentInfo.swift */; };
+		2144A4162F3A8D1400CCD7F8 /* AdyenUIImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2144A4152F3A8D1400CCD7F8 /* AdyenUIImages.swift */; };
+		2144A4182F3A8D4D00CCD7F8 /* BundleSPMExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2144A4172F3A8D4D00CCD7F8 /* BundleSPMExtension.swift */; };
+		2144A41B2F3A8F2500CCD7F8 /* AdyenUIAssetsAccessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2144A4192F3A8F2500CCD7F8 /* AdyenUIAssetsAccessTests.swift */; };
 		2159173A2A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215917392A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift */; };
 		2172F8152C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2172F8142C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift */; };
 		2172F8172C20B93400BE0369 /* DAErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2172F8162C20B93400BE0369 /* DAErrorViewController.swift */; };
@@ -1968,6 +1971,9 @@
 		210920722F362C4F0014DD55 /* CardImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImageView.swift; sourceTree = "<group>"; };
 		210920752F362D0F0014DD55 /* PreselectedPaymentMethodIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentMethodIntegrationTests.swift; sourceTree = "<group>"; };
 		21099B0C2CB7276E0096502C /* PaymentInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentInfo.swift; sourceTree = "<group>"; };
+		2144A4152F3A8D1400CCD7F8 /* AdyenUIImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenUIImages.swift; sourceTree = "<group>"; };
+		2144A4172F3A8D4D00CCD7F8 /* BundleSPMExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleSPMExtension.swift; sourceTree = "<group>"; };
+		2144A4192F3A8F2500CCD7F8 /* AdyenUIAssetsAccessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenUIAssetsAccessTests.swift; sourceTree = "<group>"; };
 		215917392A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2PlusDAScreenPresenter.swift; sourceTree = "<group>"; };
 		2159173B2A0D2B6E0004081E /* ThreeDS2DAScreenPresenterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2DAScreenPresenterMock.swift; sourceTree = "<group>"; };
 		2172F8142C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedAuthenticationErrorView.swift; sourceTree = "<group>"; };
@@ -3327,6 +3333,7 @@
 		000A7B022E27CDEC005584F2 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				2144A4152F3A8D1400CCD7F8 /* AdyenUIImages.swift */,
 				B627200A2EBBDAA8009E9149 /* AdyenTheme+Equatable.swift */,
 				000A7B012E27CDEC005584F2 /* UIFont.swift */,
 				0080A7802E423FC300F639DE /* UIColor.swift */,
@@ -3359,6 +3366,7 @@
 		0019C4132E5F2B2F00B0C3A3 /* AdyenUI */ = {
 			isa = PBXGroup;
 			children = (
+				2144A41A2F3A8F2500CCD7F8 /* Assets */,
 				B62F517C2E97A47000610EFD /* Form */,
 				00731C9D2E85899D0019BA29 /* Helpers */,
 			);
@@ -3397,6 +3405,7 @@
 		0019C4D32E6ECF4200B0C3A3 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				2144A4172F3A8D4D00CCD7F8 /* BundleSPMExtension.swift */,
 				F9E441512382A0DD00D3CD48 /* ViewIdentifierBuilder.swift */,
 			);
 			path = Utilities;
@@ -3634,6 +3643,14 @@
 				210920752F362D0F0014DD55 /* PreselectedPaymentMethodIntegrationTests.swift */,
 			);
 			path = PreselectedPaymentMethod;
+			sourceTree = "<group>";
+		};
+		2144A41A2F3A8F2500CCD7F8 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				2144A4192F3A8F2500CCD7F8 /* AdyenUIAssetsAccessTests.swift */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		21B387B72C408A860029101E /* ViewHelpers */ = {
@@ -8225,7 +8242,9 @@
 				0019C4592E6ADFB700B0C3A3 /* ListItem+Icon.swift in Sources */,
 				0019C45A2E6ADFB700B0C3A3 /* CoreListDataSource.swift in Sources */,
 				0019C45B2E6ADFB700B0C3A3 /* ListSectionFooterStyle.swift in Sources */,
+				2144A4162F3A8D1400CCD7F8 /* AdyenUIImages.swift in Sources */,
 				0019C47C2E6AE04000B0C3A3 /* SelectableFormItem.swift in Sources */,
+				2144A4182F3A8D4D00CCD7F8 /* BundleSPMExtension.swift in Sources */,
 				0019C47D2E6AE04000B0C3A3 /* SelectableFormItemStyle.swift in Sources */,
 				0019C47E2E6AE04000B0C3A3 /* SelectableFormItemView.swift in Sources */,
 				0019C4942E6AE0A200B0C3A3 /* FormItemView.swift in Sources */,
@@ -8400,6 +8419,7 @@
 				B6D8080C2BCD147D00F3F5EB /* ImageLoaderTests.swift in Sources */,
 				B6D808142BCD151F00F3F5EB /* ValidatorMock.swift in Sources */,
 				B6D8080A2BCD147D00F3F5EB /* ActionTests.swift in Sources */,
+				2144A41B2F3A8F2500CCD7F8 /* AdyenUIAssetsAccessTests.swift in Sources */,
 				A0E1B6492EABA05F0070B915 /* PaymentComponentFactoryProtocolTests.swift in Sources */,
 				B6D808162BCD151F00F3F5EB /* CardPaymentMethodMock.swift in Sources */,
 				B6D8082E2BCD179400F3F5EB /* XCTestCase+FirstResponder.swift in Sources */,
