@@ -8,6 +8,7 @@
 #if canImport(AdyenUI)
     @_spi(AdyenInternal) import AdyenUI
 #endif
+import Combine
 import Foundation
 import UIKit
 
@@ -20,12 +21,7 @@ public struct PaymentMethodListConfiguration {
     public var allowDisablingStoredPaymentMethods: Bool = false
 }
 
-internal protocol PaymentMethodListViewProtocol: AnyObject {
-    func startLoading(for component: PaymentComponent)
-    func stopLoading()
-}
-
-internal class PaymentMethodListViewController: UIViewController, PaymentMethodListViewProtocol {
+internal class PaymentMethodListViewController: UIViewController {
 
     // MARK: - UI elements
 
@@ -39,7 +35,7 @@ internal class PaymentMethodListViewController: UIViewController, PaymentMethodL
 
     // MARK: - Properties
 
-    private var viewModel: PaymentMethodListViewModelProtocol
+    private var viewModel: PaymentMethodListViewModel
 
     // MARK: - Initializers
 
@@ -63,6 +59,7 @@ internal class PaymentMethodListViewController: UIViewController, PaymentMethodL
         isModalInPresentation = true
         setupNavigationItem()
         setupListViewController()
+        observeState()
     }
 
     // MARK: - Private
@@ -100,9 +97,20 @@ internal class PaymentMethodListViewController: UIViewController, PaymentMethodL
         viewModel.localizationParameters
     }
 
-    // MARK: - PaymentMethodListViewProtocol
+    private var cancellables = Set<AnyCancellable>()
 
-    internal func startLoading(for component: PaymentComponent) {
+    private func observeState() {
+        viewModel.$state.sink { [weak self] state in
+            switch state {
+            case let .loading(component):
+                self?.startLoading(for: component)
+            case .idle:
+                self?.stopLoading()
+            }
+        }.store(in: &cancellables)
+    }
+
+    private func startLoading(for component: PaymentComponent) {
         let allListItems = listViewController.sections.flatMap(\.items)
         let allComponents = viewModel.componentSections.map(\.components).flatMap { $0 }
 
@@ -113,7 +121,7 @@ internal class PaymentMethodListViewController: UIViewController, PaymentMethodL
         allListItems[index].startLoading()
     }
 
-    internal func stopLoading() {
+    private func stopLoading() {
         listViewController.stopLoading()
     }
 

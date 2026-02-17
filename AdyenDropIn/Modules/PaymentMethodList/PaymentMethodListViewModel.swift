@@ -8,6 +8,11 @@ import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
 
+internal enum PaymentMethodListState {
+    case idle
+    case loading(component: PaymentComponent)
+}
+
 // sourcery:AutoMockable
 internal protocol PaymentMethodListViewModelProtocol {
     var context: AdyenContext { get }
@@ -24,13 +29,14 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     // MARK: - Properties
 
-    internal weak var view: PaymentMethodListViewProtocol?
     internal let context: AdyenContext
     internal let localizationParameters: LocalizationParameters?
     internal let componentManager: ComponentManager
     internal var componentSections: [ComponentsSection]
     internal weak var router: PaymentMethodListRouting?
     private var dropInFlowManager: DropInFlowManaging
+
+    @Published internal private(set) var state: PaymentMethodListState = .idle
 
     // MARK: - Initializers
 
@@ -59,12 +65,12 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     internal func select(_ component: PaymentComponent) {
-        startLoading(for: component)
+        state = .loading(component: component)
 
         switch component.type {
         case .regular, .stored:
             router?.present(component: component) { [weak self] in
-                self?.stopLoading()
+                self?.state = .idle
             }
         case let .initiable(initiablePaymentComponent):
             initiablePaymentComponent.initiatePayment(delegate: self)
@@ -75,16 +81,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     internal func delete(_ storedPaymentMethod: StoredPaymentMethod, completion: @escaping Adyen.Completion<Bool>) {
         // TODO: - Logic to delete stored payment method
-    }
-
-    // MARK: - Private
-
-    private func startLoading(for component: any PaymentComponent) {
-        view?.startLoading(for: component)
-    }
-    
-    private func stopLoading() {
-        view?.stopLoading()
     }
 }
 
@@ -103,7 +99,7 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         with error: any Error,
         from component: any PaymentComponent
     ) {
-        defer { stopLoading() }
+        defer { state = .idle }
 
         if case ComponentError.cancelled = error {
             cancel()
@@ -119,11 +115,11 @@ extension PaymentMethodListViewModel: ActionPresenter {
 
     internal func present(actionComponent: any PresentableComponent) {
         router?.present(actionComponent: actionComponent) { [weak self] in
-            self?.stopLoading()
+            self?.state = .idle
         }
     }
 
     internal func didCancel(actionComponent: any ActionComponent) {
-        stopLoading()
+        state = .idle
     }
 }
