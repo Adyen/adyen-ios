@@ -87,10 +87,6 @@ internal final class FormCoBadgedCardItem: FormItem {
                 title: brand.localeBrand ?? brand.type.rawValue,
                 imageUrl: brandLogoURL,
                 isSelected: isSelected,
-                style: .init(
-                    title: style.title,
-                    separatorColor: UIColor.Adyen.componentSeparator
-                ),
                 identifier: brand.type.rawValue
             )
             selectableItem.selectionHandler = { [weak self] in
@@ -132,6 +128,6 @@ internal final class FormCoBadgedCardItem: FormItem {
 
 extension FormItemViewBuilder {
     internal func build(with item: FormCoBadgedCardItem) -> FormItemView<FormCoBadgedCardItem> {
-        FormCoBadgedCardItemView(item: item)
+        FormCoBadgedCardItemView(item: item, theme: theme)
     }
 }

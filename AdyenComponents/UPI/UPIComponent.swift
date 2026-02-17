@@ -244,7 +244,6 @@ public final class UPIComponent: PaymentComponent,
             imageUrl: logoUrl,
             isSelected: false,
             isSeparatorViewShown: true,
-            style: .init(title: configuration.style.textField.title),
             identifier: app.identifier
         )
         selectableItem.selectionHandler = { [weak self, weak selectableItem] in

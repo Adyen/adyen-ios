@@ -11,15 +11,16 @@ internal final class AnalyticsProvider: AnyAnalyticsProvider {
 
     // MARK: - Properties
 
+    // TODO: Robert: This should become required(non optional) and it need not be passed to the eventAnalyticsProvider, and should be available during init. 
     internal var checkoutAttemptId: String? {
         didSet {
             eventAnalyticsProvider?.checkoutAttemptId = checkoutAttemptId
         }
     }
 
+    /// This value is nil when analytics is disabled by configuration provided by the merchant.
     internal var eventAnalyticsProvider: AnyEventAnalyticsProvider?
-    
-    private let uniqueAssetAPIClient: UniqueAssetAPIClient<InitialAnalyticsResponse>
+    private let uniqueAssetAPIClient: UniqueAssetAPIClient<EmptyResponse>
     private let configuration: AnalyticsConfiguration
 
     // MARK: - Initializers
@@ -31,7 +32,7 @@ internal final class AnalyticsProvider: AnyAnalyticsProvider {
     ) {
         self.configuration = configuration
         self.eventAnalyticsProvider = eventAnalyticsProvider
-        self.uniqueAssetAPIClient = UniqueAssetAPIClient<InitialAnalyticsResponse>(apiClient: apiClient)
+        self.uniqueAssetAPIClient = UniqueAssetAPIClient<EmptyResponse>(apiClient: apiClient)
     }
 
     // MARK: - AnyAnalyticsProvider
@@ -40,16 +41,14 @@ internal final class AnalyticsProvider: AnyAnalyticsProvider {
         let analyticsData = AnalyticsData(
             flavor: flavor,
             additionalFields: additionalFields,
-            configuration: configuration
+            configuration: configuration,
+            checkoutAttemptId: checkoutAttemptId
         )
 
         let initialAnalyticsRequest = InitialAnalyticsRequest(data: analyticsData)
-
-        uniqueAssetAPIClient.perform(initialAnalyticsRequest) { [weak self] result in
-            self?.saveCheckoutAttemptId(from: result)
-        }
+        uniqueAssetAPIClient.perform(initialAnalyticsRequest) { _ in }
     }
-    
+
     internal func add(info: AnalyticsEventInfo) {
         eventAnalyticsProvider?.add(info: info)
     }
@@ -60,16 +59,5 @@ internal final class AnalyticsProvider: AnyAnalyticsProvider {
     
     internal func add(error: AnalyticsEventError) {
         eventAnalyticsProvider?.add(error: error)
-    }
-    
-    // MARK: - Private
-    
-    private func saveCheckoutAttemptId(from result: Result<InitialAnalyticsResponse, Error>) {
-        switch result {
-        case let .success(response):
-            checkoutAttemptId = response.checkoutAttemptId
-        case .failure:
-            checkoutAttemptId = nil
-        }
     }
 }

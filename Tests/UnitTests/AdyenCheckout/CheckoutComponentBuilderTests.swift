@@ -83,7 +83,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         checkoutConfiguration = CheckoutConfiguration(context: context)
-        
+
         // When
         let component = CheckoutComponentBuilder.build(
             for: paymentMethod,
@@ -227,7 +227,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         checkoutConfiguration = CheckoutConfiguration(context: context) // No stored config
-        
+
         // When
         let component = CheckoutComponentBuilder.build(
             for: paymentMethod,

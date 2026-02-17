@@ -17,6 +17,7 @@ import Foundation
 #endif
 
 @testable import Adyen
+@testable import AdyenCheckout
 @testable import AdyenDropIn
 
 class ActionPresenterMock: ActionPresenter {

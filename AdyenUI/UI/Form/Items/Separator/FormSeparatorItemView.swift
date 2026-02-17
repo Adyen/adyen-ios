@@ -11,7 +11,7 @@ import UIKit
 internal final class FormSeparatorItemView: FormItemView<FormSeparatorItem> {
 
     /// Theme for styling (accessible to subclasses if needed).
-    package let theme: AdyenTheme
+    private let theme: AdyenTheme
 
     /// Initializes the separator line item view with theme.
     ///

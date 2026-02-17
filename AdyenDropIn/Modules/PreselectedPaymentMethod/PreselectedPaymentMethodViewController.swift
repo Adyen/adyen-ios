@@ -29,11 +29,6 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
         static let buttonsSpacingWithEachOther: CGFloat = 16
     }
 
-    private enum Images {
-        static let bentoLockIcon = "bento-lock"
-        static let systemLockIcon = "lock"
-    }
-
     // MARK: - Properties
 
     private let viewModel: PreselectedPaymentMethodViewModelProtocol
@@ -276,9 +271,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(primaryButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton")
-        // TODO: Robert: Create an interface in AdyenUI to get the bento images. Here it always fallback to the the systemlockIcon.
-        button.leadingImage =
-            (UIImage(named: Images.bentoLockIcon) ?? UIImage(systemName: Images.systemLockIcon))?.withRenderingMode(.alwaysTemplate)
+        button.leadingImage = .adyenLock ?? .systemLock
         return button
     }()
 

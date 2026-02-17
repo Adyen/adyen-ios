@@ -6,4 +6,5 @@ output: ../../Tests/GeneratedMocks
 args:
   autoMockableTestableImports:
     - Adyen
+    - AdyenCheckout
     - AdyenDropIn

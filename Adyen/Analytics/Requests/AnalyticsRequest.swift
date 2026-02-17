@@ -32,7 +32,7 @@ internal struct AnalyticsRequest: APIRequest {
     internal var errors: [AnalyticsEventError] = []
     
     internal init(checkoutAttemptId: String, platform: String) {
-        self.path = "checkoutanalytics/v3/analytics/\(checkoutAttemptId)"
+        self.path = "\(AnalyticsConstants.analyticsRequestPath)/\(checkoutAttemptId)"
         self.platform = platform
     }
     
