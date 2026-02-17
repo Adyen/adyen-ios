@@ -20,7 +20,7 @@ extension FormCardNumberItemView {
             static let placeholderImage = UIImage(named: "ic_card_front", in: .cardInternalResources, compatibleWith: nil)
         }
         
-        private let style: ImageStyle
+        private let separatorColor: UIColor
         private var primaryLogoUrl: URL?
         private var secondaryLogoUrl: URL?
         private let imageLoader: ImageLoading
@@ -46,10 +46,10 @@ extension FormCardNumberItemView {
         }()
 
         internal init(
-            style: ImageStyle,
+            separatorColor: UIColor,
             imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
         ) {
-            self.style = style
+            self.separatorColor = separatorColor
             self.imageLoader = imageLoader
             
             super.init(frame: .zero)
@@ -108,11 +108,11 @@ extension FormCardNumberItemView {
         private func createEmptyImageView() -> UIImageView {
             let imageView = UIImageView()
             imageView.image = Constant.placeholderImage
-            imageView.adyen.round(using: style.cornerRounding)
-            imageView.layer.masksToBounds = style.clipsToBounds
-            imageView.layer.borderWidth = style.borderWidth
-            imageView.layer.borderColor = style.borderColor?.cgColor
-            imageView.backgroundColor = style.backgroundColor
+            imageView.adyen.round(using: .fixed(AdyenUIConstants.imageCornerRadius))
+            imageView.layer.masksToBounds = true
+            imageView.layer.borderWidth = 1.0 / UIScreen.main.nativeScale
+            imageView.layer.borderColor = separatorColor.cgColor
+            imageView.backgroundColor = .clear
             imageView.widthAnchor.constraint(equalToConstant: Constant.iconSize.width).isActive = true
             imageView.heightAnchor.constraint(equalToConstant: Constant.iconSize.height).isActive = true
             return imageView

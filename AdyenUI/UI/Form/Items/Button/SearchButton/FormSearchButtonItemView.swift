@@ -10,15 +10,18 @@ import UIKit
 /// A view representing a button item.
 internal final class FormSearchButtonItemView: FormItemView<FormSearchButtonItem> {
     
+    private let theme: AdyenTheme
+
     /// Initializes the footer item view.
     ///
-    /// - Parameter item: The item represented by the view.
-    internal required init(
-        item: FormSearchButtonItem
-    ) {
+    /// - Parameters:
+    ///   - item: The item represented by the view.
+    ///   - theme: The theme to use for styling.
+    internal init(item: FormSearchButtonItem, theme: AdyenTheme) {
+        self.theme = theme
         super.init(item: item)
         
-        backgroundColor = item.style.backgroundColor
+        backgroundColor = theme.colors.background
         preservesSuperviewLayoutMargins = true
         
         addSubview(searchBar)
@@ -27,13 +30,17 @@ internal final class FormSearchButtonItemView: FormItemView<FormSearchButtonItem
         bind(item.$placeholder, to: searchBar, at: \.placeholder)
     }
     
+    internal required convenience init(item: FormSearchButtonItem) {
+        self.init(item: item, theme: .default)
+    }
+    
     // MARK: - Submit Button
     
     private lazy var searchBar: UISearchBar = {
 
         .prominent(
             placeholder: item.placeholder,
-            backgroundColor: item.style.backgroundColor,
+            backgroundColor: theme.colors.background,
             delegate: self
         )
     }()

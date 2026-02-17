@@ -129,7 +129,7 @@ internal final class FormCardLogosItem: FormItem {
 
 extension FormItemViewBuilder {
     internal func build(with item: FormCardLogosItem) -> FormItemView<FormCardLogosItem> {
-        FormCardLogosItemView(item: item)
+        FormCardLogosItemView(item: item, theme: theme)
     }
     
     internal func build(with item: FormCardNumberContainerItem) -> FormItemView<FormCardNumberContainerItem> {

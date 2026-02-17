@@ -13,14 +13,17 @@ import UIKit
 /// A view representing a FormCoBadged card Item.
 internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem> {
 
+    private let theme: AdyenTheme
+
     private enum Constants {
         static let viewHeight: CGFloat = 220
     }
 
     /// The card brand selection title label item.
     internal lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel(style: item.style.title)
+        let titleLabel = UILabel()
         titleLabel.text = item.title
+        titleLabel.apply(theme.elements.labels.bodyEmphasized)
         titleLabel.accessibilityLabel = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardBadgedCardSelectionTitleLabelItem")
@@ -30,8 +33,9 @@ internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem
 
     ///  The card brand selection subtitle label item.
     internal lazy var subtitleLabel: UILabel = {
-        let subtitleLabel = UILabel(style: item.style.subtitle)
+        let subtitleLabel = UILabel()
         subtitleLabel.text = item.subtitle
+        subtitleLabel.apply(theme.elements.labels.footnote)
         subtitleLabel.numberOfLines = 0
         subtitleLabel.lineBreakMode = .byWordWrapping
         subtitleLabel.accessibilityLabel = ViewIdentifierBuilder.build(
@@ -44,14 +48,15 @@ internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem
     /// The brand type list item view
     internal lazy var brandsListView: [SelectableFormItemView] = {
         item.selectableFormItems.map { item in
-            SelectableFormItemView(item: item)
+            SelectableFormItemView(item: item, theme: theme)
         }
     }()
 
     /// Initializes the CoBadged card Item view.
-    internal required init(item: FormCoBadgedCardItem) {
+    internal init(item: FormCoBadgedCardItem, theme: AdyenTheme) {
+        self.theme = theme
         super.init(item: item)
-        backgroundColor = item.style.backgroundColor
+        backgroundColor = theme.colors.background
         addSubview(contentStackView)
 
         accessibilityIdentifier = item.identifier
@@ -65,10 +70,14 @@ internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem
 
             self.removeBrandsListFromView()
 
-            self.brandsListView = selectableItem.map { item in SelectableFormItemView(item: item) }
+            self.brandsListView = selectableItem.map { item in SelectableFormItemView(item: item, theme: self.theme) }
             self.brandsListView.forEach { self.contentStackView.addArrangedSubview($0) }
             self.configureConstraints()
         }
+    }
+    
+    internal required convenience init(item: FormCoBadgedCardItem) {
+        self.init(item: item, theme: .default)
     }
 
     // MARK: - Content StackView
