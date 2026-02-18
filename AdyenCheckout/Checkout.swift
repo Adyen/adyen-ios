@@ -60,6 +60,7 @@ public final class Checkout: CheckoutProtocol {
     /// This is used primarily for sending Analytic Events. If this doesn't exist then there would not be any analytics sent.
     internal let checkoutAttemptId: String?
 
+    // TODO: Robert: The next task in public key fetching is to ensure that components are passed with this publicKey. and they don't fetch the key themselves.
     /// The client public key used for encrypting sensitive payment data.
     internal let publicKey: String?
 
