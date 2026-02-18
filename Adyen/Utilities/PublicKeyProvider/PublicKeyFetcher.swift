@@ -8,8 +8,8 @@ import AdyenNetworking
 import Foundation
 
 package protocol PublicKeyFetching {
-    /// Retaining a completion handler interface as this is needed for the PublicKeyProvider to ensure that only one request is being sent through the apiClient even if there are multiple callers.
-    /// We can remove this when we remove `PublicKeyProvider`
+    // Retaining a completion handler interface as this is needed for the PublicKeyProvider to ensure that only one request is being sent through the apiClient even if there are multiple callers.
+    // We can remove this when we remove `PublicKeyProvider`
     func fetchPublicKey(apiClient: APIClientKeyRequestProtocol, clientKey: String, completion: @escaping (Result<String, Error>) -> Void)
     func fetchPublicKey(apiClient: APIClientKeyRequestProtocol, clientKey: String) async throws -> String
 }
