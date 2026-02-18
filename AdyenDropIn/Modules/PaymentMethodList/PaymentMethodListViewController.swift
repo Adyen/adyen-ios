@@ -164,10 +164,10 @@ internal class PaymentMethodListViewController: UIViewController {
         listItem.selectionHandler = { [weak self, weak component] in
             guard let self, let component else { return }
             guard !(component is AlreadyPaidPaymentComponent) else { return }
-            viewModel.select(component)
+//            viewModel.select(component)
         }
         listItem.deletionHandler = { [weak self, weak component] indexPath, completion in
-            self?.delete(component: component, at: indexPath, completion: completion)
+//            self?.delete(component: component, at: indexPath, completion: completion)
         }
         
         return listItem

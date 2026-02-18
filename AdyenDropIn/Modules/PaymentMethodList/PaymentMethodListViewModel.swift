@@ -22,8 +22,6 @@ internal protocol PaymentMethodListViewModelProtocol {
     func cancel()
 
     func didLoad()
-    func select(_ component: PaymentComponent)
-    func delete(_ storePaymentMethod: StoredPaymentMethod, completion: @escaping Completion<Bool>)
 }
 
 internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
@@ -69,8 +67,9 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         state = .loaded(sections: paymentMethodSections)
     }
 
-    internal func select(_ component: PaymentComponent) {
-        state = .loading(paymentMethod: component.paymentMethod)
+    internal func select(paymentMethod: PaymentMethod) {
+        guard let component = paymentMethod.buildComponent(using: componentManager) else { return }
+        state = .loading(paymentMethod: paymentMethod)
 
         switch component.type {
         case .regular, .stored:
@@ -82,11 +81,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         case .undefined:
             break
         }
-    }
-
-    internal func select(paymentMethod: PaymentMethod) {
-        // TODO:
-        print("⚠️⚠️⚠️ PAYMENT METHOD SELECTED ⚠️⚠️⚠️")
     }
 
     internal func delete(paymentMethod: PaymentMethod, completion: @escaping Adyen.Completion<Bool>) {
