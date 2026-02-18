@@ -29,7 +29,6 @@ internal class PaymentMethodListViewController: UIViewController {
         let style = ListComponentStyle()
         let listViewController = ListViewController(style: style)
         listViewController.title = localizedString(.paymentMethodsTitle, localizationParameters)
-        listViewController.reload(newSections: createListSections())
         return listViewController
     }()
 
@@ -102,23 +101,26 @@ internal class PaymentMethodListViewController: UIViewController {
     private func observeState() {
         viewModel.$state.sink { [weak self] state in
             switch state {
-            case let .loading(component):
-                self?.startLoading(for: component)
+            case let .loaded(sections):
+                self?.reload(with: sections)
+            case let .loading(paymentMethod):
+                self?.startLoading(for: paymentMethod)
             case .idle:
                 self?.stopLoading()
             }
         }.store(in: &cancellables)
     }
 
-    private func startLoading(for component: PaymentComponent) {
-        let allListItems = listViewController.sections.flatMap(\.items)
-        let allComponents = viewModel.componentSections.map(\.components).flatMap { $0 }
+    private func startLoading(for paymentMethod: PaymentMethod) {
+        let listItems = listViewController.sections.flatMap(\.items)
+        let components = viewModel.componentSections.map(\.components).flatMap { $0 }
+        let paymentMethods: [PaymentMethod] = components.map(\.paymentMethod)
 
-        guard let index = allComponents.firstIndex(where: { $0 === component }) else {
+        guard let index = paymentMethods.firstIndex(where: { $0 == paymentMethod }) else {
             return
         }
 
-        allListItems[index].startLoading()
+        listItems[index].startLoading()
     }
 
     private func stopLoading() {
@@ -127,28 +129,16 @@ internal class PaymentMethodListViewController: UIViewController {
 
     // MARK: - OLD STUFF
 
-    internal func reload(with components: [ComponentsSection]) {
-        viewModel.componentSections = components
-        listViewController.reload(newSections: createListSections())
+    internal func reload(with sections: [ListSection]) {
+        listViewController.reload(newSections: sections)
     }
     
     internal func deleteComponent(at indexPath: IndexPath) {
-        viewModel.componentSections.deleteItem(at: indexPath)
         listViewController.deleteItem(at: indexPath)
     }
 
     private let brandProtectedComponents: Set<PaymentMethodType> = [.applePay]
 
-    private func createListSections() -> [ListSection] {
-        viewModel.componentSections.map { section in
-            ListSection(
-                header: section.header,
-                items: section.components.map(item(for:)),
-                footer: section.footer
-            )
-        }
-    }
-    
     private func item(for component: PaymentComponent) -> ListItem {
         let displayInformation = component.paymentMethod.displayInformation(using: localizationParameters)
         let isProtected = brandProtectedComponents.contains(component.paymentMethod.type)
@@ -184,21 +174,21 @@ internal class PaymentMethodListViewController: UIViewController {
     }
     
     private func delete(component: PaymentComponent?, at indexPath: IndexPath, completion: @escaping Completion<Bool>) {
-        guard let component else { return }
-        guard let paymentMethod = component.paymentMethod as? StoredPaymentMethod else { return }
-        let completion: (Bool) -> Void = { [weak self] success in
-            defer {
-                completion(success)
-            }
-            guard success else { return }
-            // This is to prevent the merchant calling completion closure multiple times
-            guard let self else { return }
-            guard viewModel.componentSections[indexPath.section]
-                .components[indexPath.item]
-                .paymentMethod == paymentMethod else { return }
-            self.deleteComponent(at: indexPath)
-        }
-        viewModel.delete(paymentMethod, completion: completion)
+//        guard let component else { return }
+//        guard let paymentMethod = component.paymentMethod as? StoredPaymentMethod else { return }
+//        let completion: (Bool) -> Void = { [weak self] success in
+//            defer {
+//                completion(success)
+//            }
+//            guard success else { return }
+//            // This is to prevent the merchant calling completion closure multiple times
+//            guard let self else { return }
+//            guard viewModel.componentSections[indexPath.section]
+//                .components[indexPath.item]
+//                .paymentMethod == paymentMethod else { return }
+//            self.deleteComponent(at: indexPath)
+//        }
+//        viewModel.delete(paymentMethod, completion: completion)
     }
 }
 
@@ -206,17 +196,5 @@ private extension [ComponentsSection] {
     mutating func deleteItem(at indexPath: IndexPath) {
         self[indexPath.section].components.remove(at: indexPath.item)
         self = self.filter { $0.components.isEmpty == false }
-    }
-}
-
-private extension DisplayInformation.TrailingInfoType {
-    
-    func forListItem(urlProvider: LogoURLProvider) -> ListItem.TrailingInfoType {
-        switch self {
-        case let .text(string):
-            return .text(string)
-        case let .logos(logoNames, trailingText):
-            return .logos(urls: logoNames.map { urlProvider.logoURL(withName: $0) }, trailingText: trailingText)
-        }
     }
 }
