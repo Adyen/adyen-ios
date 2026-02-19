@@ -65,7 +65,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
             pushComponent(regularComponent, onCancel: onCancel)
         case let .stored(storedComponent):
             presentModalComponent(storedComponent, onCancel: onCancel)
-        case .initiable, .undefined:
+        case .initiable:
             break
         }
     }

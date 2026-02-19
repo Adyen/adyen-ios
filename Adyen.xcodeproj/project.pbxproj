@@ -1263,7 +1263,6 @@
 		F9A53C532549887F009000A7 /* PaymentMethodsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A53C432549887F009000A7 /* PaymentMethodsRequest.swift */; };
 		F9A53C542549887F009000A7 /* PaymentMethodsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A53C432549887F009000A7 /* PaymentMethodsRequest.swift */; };
 		F9A53D6325499B13009000A7 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9620D7A23C36082005209FC /* Configuration.swift */; };
-		F9A6C41D26550B7100D8CD3E /* AlreadyPaidPaymentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A6C41C26550B7100D8CD3E /* AlreadyPaidPaymentComponent.swift */; };
 		F9A6C453265640E000D8CD3E /* InstantPaymentComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A6C452265640E000D8CD3E /* InstantPaymentComponentTests.swift */; };
 		F9A781B02403ED4000E12487 /* NumericStringValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A781AF2403ED4000E12487 /* NumericStringValidatorTests.swift */; };
 		F9AC61BB24374CE00062A00D /* AppLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AC61BA24374CE00062A00D /* AppLauncher.swift */; };
@@ -2954,7 +2953,6 @@
 		F9A53C412549887F009000A7 /* PaymentDetailsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentDetailsRequest.swift; sourceTree = "<group>"; };
 		F9A53C422549887F009000A7 /* PaymentsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentsRequest.swift; sourceTree = "<group>"; };
 		F9A53C432549887F009000A7 /* PaymentMethodsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentMethodsRequest.swift; sourceTree = "<group>"; };
-		F9A6C41C26550B7100D8CD3E /* AlreadyPaidPaymentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlreadyPaidPaymentComponent.swift; sourceTree = "<group>"; };
 		F9A6C452265640E000D8CD3E /* InstantPaymentComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantPaymentComponentTests.swift; sourceTree = "<group>"; };
 		F9A6C4BA2657AFF600D8CD3E /* FormSpacerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSpacerItem.swift; sourceTree = "<group>"; };
 		F9A6C4D02657B0D700D8CD3E /* FormSpacerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSpacerItemView.swift; sourceTree = "<group>"; };
@@ -5135,7 +5133,6 @@
 				E28098B1220DA7910087928F /* Base */,
 				F917308D26491ED900985310 /* InstantPaymentComponent.swift */,
 				E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */,
-				F9A6C41C26550B7100D8CD3E /* AlreadyPaidPaymentComponent.swift */,
 				A06B7A9B2A1CEEAE008FC09D /* AnyCashAppPayConfiguration.swift */,
 			);
 			path = Components;
@@ -8626,7 +8623,6 @@
 				E27BFD9022B114DC00692E0D /* ShopperInteraction.swift in Sources */,
 				00F621C227EB1E3100C04097 /* AtomePaymentMethod.swift in Sources */,
 				5A27AB032636A07900EF6F89 /* LocalizationKey.swift in Sources */,
-				F9A6C41D26550B7100D8CD3E /* AlreadyPaidPaymentComponent.swift in Sources */,
 				F9D644E024D2E4210059CBE3 /* EmailValidator.swift in Sources */,
 				8128977C2CCA660A00275487 /* StoredPayByBankUSPaymentMethod.swift in Sources */,
 				F9639B3324DD96990073F38A /* PaymentStatusRequest.swift in Sources */,

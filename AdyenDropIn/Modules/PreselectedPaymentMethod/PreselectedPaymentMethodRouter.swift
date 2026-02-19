@@ -74,7 +74,7 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
             presentModalComponent(regularComponent, onCancel: onCancel)
         case let .stored(storedComponent):
             presentModalComponent(storedComponent, onCancel: onCancel)
-        case .initiable, .undefined:
+        case .initiable:
             break
         }
     }
