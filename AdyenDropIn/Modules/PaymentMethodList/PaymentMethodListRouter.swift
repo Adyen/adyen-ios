@@ -26,7 +26,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
 
     private let viewController: UIViewController
     private weak var listener: PaymentMethodListRouterListener?
-    private let navigationController = UINavigationController()
+    private let navigationController: UINavigationController
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
     internal private(set) var childRouter: Router?
     
@@ -34,10 +34,12 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
 
     internal init(
         viewController: UIViewController,
+        navigationController: UINavigationController = UINavigationController(),
         listener: PaymentMethodListRouterListener?,
         componentContainerAssembler: ComponentContainerAssemblerProtocol
     ) {
         self.viewController = viewController
+        self.navigationController = navigationController
         self.listener = listener
         self.componentContainerAssembler = componentContainerAssembler
     }

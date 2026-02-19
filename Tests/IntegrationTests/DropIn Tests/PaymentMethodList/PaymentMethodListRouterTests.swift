@@ -122,6 +122,7 @@ struct PaymentMethodListRouterTests {
 
         let sut = PaymentMethodListRouter(
             viewController: viewControllerSpy,
+            navigationController: navigationControllerSpy,
             listener: listenerMock,
             componentContainerAssembler: componentContainerAssemblerMock
         )
