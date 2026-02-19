@@ -31,7 +31,8 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     internal let localizationParameters: LocalizationParameters?
     internal let componentManager: ComponentManaging
     internal weak var router: PaymentMethodListRouting?
-    private var dropInFlowManager: DropInFlowManaging
+    private let dropInFlowManager: DropInFlowManaging
+    private let logoURLProvider: LogoURLProvider
 
     @Published internal private(set) var state: PaymentMethodListState = .idle
     internal let paymentMethodSections: [PaymentMethodsSection]
@@ -44,13 +45,15 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         localizationParameters: LocalizationParameters? = nil,
         componentManager: ComponentManaging,
         configuration: DropInComponent.Configuration,
-        dropInFlowManager: DropInFlowManaging
+        dropInFlowManager: DropInFlowManaging,
+        logoURLProvider: LogoURLProvider
     ) {
         self.context = context
         self.localizationParameters = localizationParameters
         self.componentManager = componentManager
         self.paymentMethodSections = componentManager.sections
         self.dropInFlowManager = dropInFlowManager
+        self.logoURLProvider = logoURLProvider
     }
 
     // MARK: - PaymentMethodListViewModelProtocol
@@ -102,8 +105,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     private func listItem(from paymentMethod: PaymentMethod) -> ListItem {
         let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
         let isProtected = brandProtectedComponents.contains(paymentMethod.type)
-        let logoUrlProvider = LogoURLProvider(environment: context.apiContext.environment)
-        let imageURL = logoUrlProvider.logoURL(withName: displayInformation.logoName)
+        let imageURL = logoURLProvider.logoURL(withName: displayInformation.logoName)
 
         let listItem = ListItem(
             title: displayInformation.title,
@@ -112,7 +114,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
                 url: imageURL,
                 canBeModified: !isProtected
             ),
-            trailingInfo: displayInformation.trailingInfo?.forListItem(urlProvider: logoUrlProvider),
+            trailingInfo: displayInformation.trailingInfo?.forListItem(urlProvider: logoURLProvider),
             style: .init(),
             accessibilityLabel: displayInformation.accessibilityLabel
         )
@@ -121,6 +123,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             postfix: listItem.title
         )
         listItem.selectionHandler = { [weak self] in
+            // TODO: - Handle already paid component selection
 //            guard !(component is AlreadyPaidPaymentComponent) else { return }
             self?.select(paymentMethod: paymentMethod)
         }

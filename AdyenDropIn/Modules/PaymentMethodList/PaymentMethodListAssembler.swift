@@ -46,11 +46,13 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     internal func resolvePaymentMethodListRouter(
         delegate: PaymentMethodListRouterListener?
     ) -> Router {
+        let logoURLProvider = LogoURLProvider(environment: context.apiContext.environment)
         let viewModel = PaymentMethodListViewModel(
             context: context,
             componentManager: componentManager,
             configuration: configuration,
-            dropInFlowManager: dropInFlowManager
+            dropInFlowManager: dropInFlowManager,
+            logoURLProvider: logoURLProvider
         )
         let view = PaymentMethodListViewController(viewModel: viewModel)
         let router = PaymentMethodListRouter(

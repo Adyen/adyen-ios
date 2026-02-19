@@ -35,6 +35,7 @@ internal class PaymentMethodListViewController: UIViewController {
     // MARK: - Properties
 
     private var viewModel: PaymentMethodListViewModel
+    private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Initializers
 
@@ -96,8 +97,6 @@ internal class PaymentMethodListViewController: UIViewController {
         viewModel.localizationParameters
     }
 
-    private var cancellables = Set<AnyCancellable>()
-
     private func observeState() {
         viewModel.$state.sink { [weak self] state in
             switch state {
@@ -126,8 +125,6 @@ internal class PaymentMethodListViewController: UIViewController {
         listViewController.stopLoading()
     }
 
-    // MARK: - OLD STUFF
-
     private func reload(with sections: [ListSection]) {
         listViewController.reload(newSections: sections)
     }
@@ -136,42 +133,7 @@ internal class PaymentMethodListViewController: UIViewController {
         listViewController.deleteItem(at: indexPath)
     }
 
-    private let brandProtectedComponents: Set<PaymentMethodType> = [.applePay]
-
-    private func item(for component: PaymentComponent) -> ListItem {
-        let displayInformation = component.paymentMethod.displayInformation(using: localizationParameters)
-        let isProtected = brandProtectedComponents.contains(component.paymentMethod.type)
-        let context = viewModel.context
-        let logoUrlProvider = LogoURLProvider(environment: context.apiContext.environment)
-        let imageURL = logoUrlProvider.logoURL(withName: displayInformation.logoName)
-        
-        let listItem = ListItem(
-            title: displayInformation.title,
-            subtitle: displayInformation.subtitle,
-            icon: .init(
-                url: imageURL,
-                canBeModified: !isProtected
-            ),
-            trailingInfo: displayInformation.trailingInfo?.forListItem(urlProvider: logoUrlProvider),
-            style: .init(),
-            accessibilityLabel: displayInformation.accessibilityLabel
-        )
-        listItem.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: listItem.title
-        )
-        listItem.selectionHandler = { [weak self, weak component] in
-            guard let self, let component else { return }
-            guard !(component is AlreadyPaidPaymentComponent) else { return }
-//            viewModel.select(component)
-        }
-        listItem.deletionHandler = { [weak self, weak component] indexPath, completion in
-//            self?.delete(component: component, at: indexPath, completion: completion)
-        }
-        
-        return listItem
-    }
-    
+    // TODO: - Handle component deletion logic
     private func delete(component: PaymentComponent?, at indexPath: IndexPath, completion: @escaping Completion<Bool>) {
 //        guard let component else { return }
 //        guard let paymentMethod = component.paymentMethod as? StoredPaymentMethod else { return }
