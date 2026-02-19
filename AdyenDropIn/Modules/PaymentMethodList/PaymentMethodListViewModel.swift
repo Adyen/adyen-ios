@@ -123,8 +123,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             postfix: listItem.title
         )
         listItem.selectionHandler = { [weak self] in
-            // TODO: - Handle already paid component selection
-//            guard !(component is AlreadyPaidPaymentComponent) else { return }
+            guard !(paymentMethod is OrderPaymentMethod) else { return }
             self?.select(paymentMethod: paymentMethod)
         }
         listItem.deletionHandler = { [weak self] _, completion in
