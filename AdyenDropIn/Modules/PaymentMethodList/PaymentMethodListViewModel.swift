@@ -74,7 +74,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     // MARK: - Private
 
     private func select(paymentMethod: PaymentMethod) {
-        guard let component = componentManager.component(for: paymentMethod) else { return }
+        guard let component = componentManager.buildComponent(for: paymentMethod) else { return }
         state = .loading(paymentMethod: paymentMethod)
 
         switch component.type {
