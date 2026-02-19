@@ -18,7 +18,6 @@ internal enum PaymentMethodListState {
 // sourcery:AutoMockable
 internal protocol PaymentMethodListViewModelProtocol {
     var context: AdyenContext { get }
-    var localizationParameters: LocalizationParameters? { get }
     func cancel()
     func didLoad()
 }
@@ -28,7 +27,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     // MARK: - Properties
 
     internal let context: AdyenContext
-    internal let localizationParameters: LocalizationParameters?
+    internal let localizationParameters: LocalizationParameters
     internal let componentManager: ComponentManaging
     internal weak var router: PaymentMethodListRouting?
     private let dropInFlowManager: DropInFlowManaging
@@ -42,7 +41,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     internal init(
         context: AdyenContext,
-        localizationParameters: LocalizationParameters? = nil,
+        localizationParameters: LocalizationParameters,
         componentManager: ComponentManaging,
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging,
@@ -57,6 +56,10 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     // MARK: - PaymentMethodListViewModelProtocol
+
+    internal var title: String {
+        localizedString(.paymentMethodsTitle, localizationParameters)
+    }
 
     internal func cancel() {
         router?.dismiss(completion: nil)

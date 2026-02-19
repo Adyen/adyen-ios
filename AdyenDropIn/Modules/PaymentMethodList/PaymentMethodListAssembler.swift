@@ -19,6 +19,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
     private let componentManager: ComponentManager
     private let context: AdyenContext
+    private let localizationParameters: LocalizationParameters
     private let configuration: DropInComponent.Configuration
     private let dropInFlowManager: DropInFlowManaging
     private let partialPaymentDelegate: PartialPaymentDelegate?
@@ -29,6 +30,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         componentContainerAssembler: ComponentContainerAssemblerProtocol,
         componentManager: ComponentManager,
         context: AdyenContext,
+        localizationParameters: LocalizationParameters,
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging,
         partialPaymentDelegate: PartialPaymentDelegate?
@@ -36,6 +38,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         self.componentContainerAssembler = componentContainerAssembler
         self.componentManager = componentManager
         self.context = context
+        self.localizationParameters = localizationParameters
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
         self.partialPaymentDelegate = partialPaymentDelegate
@@ -49,6 +52,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         let logoURLProvider = LogoURLProvider(environment: context.apiContext.environment)
         let viewModel = PaymentMethodListViewModel(
             context: context,
+            localizationParameters: localizationParameters,
             componentManager: componentManager,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,

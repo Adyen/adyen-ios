@@ -27,9 +27,7 @@ internal class PaymentMethodListViewController: UIViewController {
 
     private lazy var listViewController: ListViewController = {
         let style = ListComponentStyle()
-        let listViewController = ListViewController(style: style)
-        listViewController.title = localizedString(.paymentMethodsTitle, localizationParameters)
-        return listViewController
+        return ListViewController(style: style)
     }()
 
     // MARK: - Properties
@@ -70,6 +68,9 @@ internal class PaymentMethodListViewController: UIViewController {
         view.addSubview(listViewController.view)
         listViewController.didMove(toParent: self)
         listViewController.view.adyen.anchor(inside: view)
+
+        navigationItem.title = viewModel.title
+
     }
 
     private func setupNavigationItem() {
@@ -91,10 +92,6 @@ internal class PaymentMethodListViewController: UIViewController {
 
     @objc private func cancelTapped() {
         viewModel.cancel()
-    }
-
-    private var localizationParameters: LocalizationParameters? {
-        viewModel.localizationParameters
     }
 
     private func observeState() {
