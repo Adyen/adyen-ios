@@ -88,7 +88,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         onCancel: @escaping () -> Void
     ) {
         let componentContainerViewController = componentContainerViewController(for: component, onCancel: onCancel)
-        viewController.navigationController?.pushViewController(componentContainerViewController, animated: true)
+        navigationController.pushViewController(componentContainerViewController, animated: true)
     }
     
     private func presentModalComponent(
