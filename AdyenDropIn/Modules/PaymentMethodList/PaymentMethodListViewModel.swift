@@ -20,7 +20,6 @@ internal protocol PaymentMethodListViewModelProtocol {
     var context: AdyenContext { get }
     var localizationParameters: LocalizationParameters? { get }
     func cancel()
-
     func didLoad()
 }
 
@@ -30,13 +29,12 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     internal let context: AdyenContext
     internal let localizationParameters: LocalizationParameters?
-    internal let componentManager: ComponentManager
+    internal let componentManager: ComponentManaging
     internal weak var router: PaymentMethodListRouting?
     private var dropInFlowManager: DropInFlowManaging
 
     @Published internal private(set) var state: PaymentMethodListState = .idle
-    internal let componentSections: [ComponentsSection]
-    private var paymentMethodSections: [ListSection] = []
+    internal let paymentMethodSections: [PaymentMethodsSection]
     private let brandProtectedComponents: Set<PaymentMethodType> = [.applePay]
 
     // MARK: - Initializers
@@ -44,14 +42,14 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     internal init(
         context: AdyenContext,
         localizationParameters: LocalizationParameters? = nil,
-        componentManager: ComponentManager,
+        componentManager: ComponentManaging,
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging
     ) {
         self.context = context
         self.localizationParameters = localizationParameters
         self.componentManager = componentManager
-        self.componentSections = componentManager.sections
+        self.paymentMethodSections = componentManager.sections
         self.dropInFlowManager = dropInFlowManager
     }
 
@@ -63,12 +61,14 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     internal func didLoad() {
         // TODO: - Handle analytics on list load.
-        paymentMethodSections = getPaymentMethodSections()
-        state = .loaded(sections: paymentMethodSections)
+        let listSections = getListSections()
+        state = .loaded(sections: listSections)
     }
 
-    internal func select(paymentMethod: PaymentMethod) {
-        guard let component = paymentMethod.buildComponent(using: componentManager) else { return }
+    // MARK: - Private
+
+    private func select(paymentMethod: PaymentMethod) {
+        guard let component = componentManager.component(for: paymentMethod) else { return }
         state = .loading(paymentMethod: paymentMethod)
 
         switch component.type {
@@ -83,19 +83,13 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         }
     }
 
-    internal func delete(paymentMethod: PaymentMethod, completion: @escaping Adyen.Completion<Bool>) {
-        // TODO:
-    }
-
-    internal func delete(_ storedPaymentMethod: StoredPaymentMethod, completion: @escaping Adyen.Completion<Bool>) {
+    private func delete(paymentMethod: PaymentMethod, completion: @escaping Adyen.Completion<Bool>) {
         // TODO: - Logic to delete stored payment method
     }
 
-    // MARK: - Private
-
-    private func getPaymentMethodSections() -> [ListSection] {
-        componentSections.map { section in
-            let paymentMethods = section.components.compactMap(\.paymentMethod)
+    private func getListSections() -> [ListSection] {
+        paymentMethodSections.map { section in
+            let paymentMethods = section.paymentMethods
             let paymentMethodItems = paymentMethods.map { listItem(from: $0) }
             return ListSection(
                 header: section.header,

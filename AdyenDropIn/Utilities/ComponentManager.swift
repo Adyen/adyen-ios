@@ -19,20 +19,21 @@
 #endif
 import Foundation
 
-internal final class ComponentManager {
+internal protocol ComponentManaging {
+    var sections: [PaymentMethodsSection] { get }
+    func component(for paymentMethod: PaymentMethod) -> PaymentComponent?
+}
+
+internal final class ComponentManager: ComponentManaging {
+
+    // MARK: - Properties
 
     internal let paymentMethods: PaymentMethods
-    
     internal let configuration: DropInComponent.Configuration
-
     internal let partialPaymentEnabled: Bool
-    
     private let supportsEditingStoredPaymentMethods: Bool
-
     internal let order: PartialPaymentOrder?
-    
     internal let context: AdyenContext
-
     internal weak var presentationDelegate: PresentationDelegate?
     
     internal init(
@@ -60,7 +61,7 @@ internal final class ComponentManager {
     
     // MARK: - Internal
     
-    internal lazy var sections: [ComponentsSection] = {
+    internal lazy var sections: [PaymentMethodsSection] = {
 
         // Paid section
         let amountString: String = order?.remainingAmount.map(\.formatted) ??
@@ -74,7 +75,7 @@ internal final class ComponentManager {
             title: footerTitle,
             style: configuration.style.listComponent.partialPaymentSectionFooter
         )
-        let paidSection = ComponentsSection(
+        let paidSection = PaymentMethodsSection(
             header: .init(
                 title: localizedString(
                     .paymentMethodsPaidMethods,
@@ -82,17 +83,17 @@ internal final class ComponentManager {
                 ),
                 style: configuration.style.listComponent.sectionHeader
             ),
-            components: paidComponents,
+            paymentMethods: paymentMethods.paid,
             footer: paidFooter
         )
 
         // Stored section
-        let storedSection: ComponentsSection
+        let storedSection: PaymentMethodsSection
         
         let allowDeleting = configuration.paymentMethodsList.allowDisablingStoredPaymentMethods
             && supportsEditingStoredPaymentMethods
         let editingStyle: EditingStyle = allowDeleting ? .delete : .none
-        storedSection = ComponentsSection(
+        storedSection = PaymentMethodsSection(
             header: .init(
                 title: localizedString(
                     .paymentMethodsStoredMethods,
@@ -101,20 +102,20 @@ internal final class ComponentManager {
                 editingStyle: editingStyle,
                 style: configuration.style.listComponent.sectionHeader
             ),
-            components: storedComponents,
+            paymentMethods: paymentMethods.stored,
             footer: nil
         )
         
         // Regular section
         let localizedTitle = localizedString(.paymentMethodsOtherMethods, configuration.localizationParameters)
-        let regularSectionTitle = (storedSection.components.isEmpty && paidSection.components.isEmpty) ? nil : localizedTitle
+        let regularSectionTitle = (storedSection.paymentMethods.isEmpty && paidSection.paymentMethods.isEmpty) ? nil : localizedTitle
         let regularHeader: ListSectionHeader? = regularSectionTitle.map {
             ListSectionHeader(title: $0, style: configuration.style.listComponent.sectionHeader)
         }
-        let regularSection = ComponentsSection(header: regularHeader, components: regularComponents, footer: nil)
-        
+        let regularSection = PaymentMethodsSection(header: regularHeader, paymentMethods: paymentMethods.regular, footer: nil)
+
         return [paidSection, storedSection, regularSection].filter {
-            $0.components.isEmpty == false
+            $0.paymentMethods.isEmpty == false
         }
     }()
 
@@ -136,10 +137,8 @@ internal final class ComponentManager {
               let regularComponent = regularComponents.first as? (PaymentComponent & PresentableComponent) else { return nil }
         return regularComponent
     }
-    
-    // MARK: - Private
-    
-    private func component(for paymentMethod: PaymentMethod) -> PaymentComponent? {
+
+    internal func component(for paymentMethod: PaymentMethod) -> PaymentComponent? {
         guard isAllowed(paymentMethod) else {
             AdyenAssertion.assertionFailure(message: """
             For voucher payment methods like \(paymentMethod.name) it is required to add a suitable \
@@ -158,6 +157,8 @@ internal final class ComponentManager {
 
         return paymentComponent
     }
+
+    // MARK: - Private
 
     private func isAllowed(_ paymentMethod: PaymentMethod) -> Bool {
         guard isVoucherPaymentMethod(paymentMethod) || isQRCodePaymentMethod(paymentMethod) else { return true }

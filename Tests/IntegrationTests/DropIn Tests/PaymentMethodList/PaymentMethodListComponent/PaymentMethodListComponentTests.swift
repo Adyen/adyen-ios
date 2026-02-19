@@ -25,9 +25,9 @@ class PaymentMethodListComponentTests: XCTestCase {
     }
         
     func testLocalizationWithCustomTableName() {
-        let storedSection = ComponentsSection(components: [storedComponent])
+        let storedSection = PaymentMethodsSection(components: [storedComponent])
         let regularSectionHeader = ListSectionHeader(title: "title", style: ListSectionHeaderStyle())
-        let regularSection = ComponentsSection(header: regularSectionHeader, components: [regularComponent])
+        let regularSection = PaymentMethodsSection(header: regularSectionHeader, components: [regularComponent])
         let sut = NewPaymentMethodListViewController(context: Dummy.context, components: [storedSection, regularSection])
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
@@ -38,9 +38,9 @@ class PaymentMethodListComponentTests: XCTestCase {
     }
     
     func testLocalizationWithCustomKeySeparator() {
-        let storedSection = ComponentsSection(components: [storedComponent])
+        let storedSection = PaymentMethodsSection(components: [storedComponent])
         let regularSectionHeader = ListSectionHeader(title: "title", style: ListSectionHeaderStyle())
-        let regularSection = ComponentsSection(header: regularSectionHeader, components: [regularComponent])
+        let regularSection = PaymentMethodsSection(header: regularSectionHeader, components: [regularComponent])
         let sut = NewPaymentMethodListViewController(context: Dummy.context, components: [storedSection, regularSection])
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         
@@ -51,7 +51,7 @@ class PaymentMethodListComponentTests: XCTestCase {
     }
 
     func testStartStopLoading() throws {
-        let section = ComponentsSection(components: [storedComponent])
+        let section = PaymentMethodsSection(components: [storedComponent])
         let sut = NewPaymentMethodListViewController(context: Dummy.context, components: [section])
 
         setupRootViewController(sut.listViewController)
@@ -65,7 +65,7 @@ class PaymentMethodListComponentTests: XCTestCase {
     }
     
     func testDeletionSuccess() throws {
-        let section = ComponentsSection(
+        let section = PaymentMethodsSection(
             header: .init(
                 title: "title",
                 editingStyle: .delete,
@@ -74,7 +74,7 @@ class PaymentMethodListComponentTests: XCTestCase {
             components: [storedComponent],
             footer: nil
         )
-        let sut = NewPaymentMethodListViewController(context: Dummy.context, components: [section, ComponentsSection(components: [regularComponent])])
+        let sut = NewPaymentMethodListViewController(context: Dummy.context, components: [section, PaymentMethodsSection(components: [regularComponent])])
 
         setupRootViewController(sut.listViewController)
         
@@ -111,7 +111,7 @@ class PaymentMethodListComponentTests: XCTestCase {
     }
     
     func testDeletionFailure() throws {
-        let section = ComponentsSection(
+        let section = PaymentMethodsSection(
             header: .init(
                 title: "title",
                 editingStyle: .delete,
@@ -120,7 +120,7 @@ class PaymentMethodListComponentTests: XCTestCase {
             components: [storedComponent],
             footer: nil
         )
-        let sut = NewPaymentMethodListViewController(context: Dummy.context, components: [section, ComponentsSection(components: [regularComponent])])
+        let sut = NewPaymentMethodListViewController(context: Dummy.context, components: [section, PaymentMethodsSection(components: [regularComponent])])
 
         setupRootViewController(sut.listViewController)
         

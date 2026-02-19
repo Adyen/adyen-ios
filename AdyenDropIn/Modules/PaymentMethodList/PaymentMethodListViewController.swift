@@ -113,8 +113,7 @@ internal class PaymentMethodListViewController: UIViewController {
 
     private func startLoading(for paymentMethod: PaymentMethod) {
         let listItems = listViewController.sections.flatMap(\.items)
-        let components = viewModel.componentSections.map(\.components).flatMap { $0 }
-        let paymentMethods: [PaymentMethod] = components.map(\.paymentMethod)
+        let paymentMethods = viewModel.paymentMethodSections.flatMap(\.paymentMethods)
 
         guard let index = paymentMethods.firstIndex(where: { $0 == paymentMethod }) else {
             return
@@ -129,7 +128,7 @@ internal class PaymentMethodListViewController: UIViewController {
 
     // MARK: - OLD STUFF
 
-    internal func reload(with sections: [ListSection]) {
+    private func reload(with sections: [ListSection]) {
         listViewController.reload(newSections: sections)
     }
     
@@ -192,9 +191,9 @@ internal class PaymentMethodListViewController: UIViewController {
     }
 }
 
-private extension [ComponentsSection] {
+private extension [PaymentMethodsSection] {
     mutating func deleteItem(at indexPath: IndexPath) {
-        self[indexPath.section].components.remove(at: indexPath.item)
-        self = self.filter { $0.components.isEmpty == false }
+        self[indexPath.section].paymentMethods.remove(at: indexPath.item)
+        self = self.filter { $0.paymentMethods.isEmpty == false }
     }
 }
