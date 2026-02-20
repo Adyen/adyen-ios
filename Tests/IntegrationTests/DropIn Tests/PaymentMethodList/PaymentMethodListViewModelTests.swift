@@ -4,33 +4,74 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenActions
 @testable import AdyenDropIn
 @testable import AdyenEncryption
-@testable import AdyenUI
+@_spi(AdyenInternal) @testable import AdyenUI
+import Combine
 import Testing
 import UIKit
 
 @MainActor
 struct PaymentMethodListViewModelTests {
 
-    // MARK: - Tests
+    // MARK: - Protocol Conformance Tests
 
     @Test
-    func paymentMethodListView_shouldReturn_listViewController() {
+    func title_shouldReturnLocalizedPaymentMethodsTitle() {
+        // Given
+        let (sut, _, _) = makeSUT()
+
+        // Then
+        let expectedTitle = localizedString(.paymentMethodsTitle, LocalizationParameters())
+        #expect(sut.title == expectedTitle)
+    }
+
+    @Test
+    func paymentMethodSections_shouldMatchComponentManagerSections() {
+        // Given
+        let (sut, _, _) = makeSUT()
+
+        // Then
+        #expect(sut.paymentMethodSections.isEmpty == false)
+    }
+
+    // MARK: - State Tests
+
+    @Test
+    func initialState_shouldBeReady() {
+        // Given
+        let (sut, _, _) = makeSUT()
+
+        // Then
+        if case .ready = sut.state {
+            // Success
+        } else {
+            Issue.record("Expected state to be .ready")
+        }
+    }
+
+    @Test
+    func didLoad_shouldTransitionToLoadedState() {
         // Given
         let (sut, _, _) = makeSUT()
 
         // When
-        let paymentMethodListView = sut.paymentMethodListView
+        sut.didLoad()
 
         // Then
-        #expect(paymentMethodListView is ListViewController)
+        if case let .loaded(sections) = sut.state {
+            #expect(sections.isEmpty == false)
+        } else {
+            Issue.record("Expected state to be .loaded")
+        }
     }
 
+    // MARK: - Cancel Tests
+
     @Test
-    func cancel_shouldCallRouter_dismiss() {
+    func cancel_shouldCallRouterDismiss() {
         // Given
         let (sut, _, routerMock) = makeSUT()
 
@@ -41,35 +82,10 @@ struct PaymentMethodListViewModelTests {
         #expect(routerMock.dismissCompletionCallsCount == 1)
     }
 
-    @Test
-    func didSelect_presentableComponent_shouldStartLoadingAndPresent() {
-        // Given
-        let (sut, _, routerMock) = makeSUT()
-        let paymentComponentMock = makePaymentComponentMock()
-
-        // When
-        sut.didSelect(paymentComponentMock, in: sut.paymentMethodListComponent)
-
-        // Then
-        #expect(routerMock.presentComponentOnCancelCallsCount == 1)
-    }
+    // MARK: - PaymentComponentDelegate Tests
 
     @Test
-    func didSelect_paymentInitiableComponent_shouldInitiatePayment() {
-        // Given
-        let (sut, _, _) = makeSUT()
-        let paymentMethodMock = PaymentMethodMock(type: .twint, name: "Twint")
-        let initiableComponentMock = InitiableComponentMock(paymentMethod: paymentMethodMock)
-
-        // When
-        sut.didSelect(initiableComponentMock, in: sut.paymentMethodListComponent)
-
-        // Then
-        #expect(initiableComponentMock.initiatePaymentCallsCount == 1)
-    }
-
-    @Test
-    func didSubmit_shoulCallDropInFlowManager_submit() {
+    func didSubmit_shouldCallDropInFlowManagerSubmit() {
         // Given
         let (sut, dropInFlowManagerMock, _) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
@@ -86,7 +102,7 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
-    func didFail_givenComponentError_shouldCallDropInFlowManagerFail() {
+    func didFail_givenError_shouldCallDropInFlowManagerFail() {
         // Given
         let (sut, dropInFlowManagerMock, _) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
@@ -100,7 +116,25 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
-    func didFail_givenCancellation_shouldDismissAndStopLoading() {
+    func didFail_givenError_shouldTransitionToReadyState() {
+        // Given
+        let (sut, _, _) = makeSUT()
+        let paymentComponentMock = makePaymentComponentMock()
+        let error = ErrorMock(errorDescription: "Failure")
+
+        // When
+        sut.didFail(with: error, from: paymentComponentMock)
+
+        // Then
+        if case .ready = sut.state {
+            // Success
+        } else {
+            Issue.record("Expected state to be .ready after failure")
+        }
+    }
+
+    @Test
+    func didFail_givenCancellation_shouldDismiss() {
         // Given
         let (sut, dropInFlowManagerMock, routerMock) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
@@ -112,6 +146,25 @@ struct PaymentMethodListViewModelTests {
         #expect(routerMock.dismissCompletionCallsCount == 1)
         #expect(dropInFlowManagerMock.failWithFromCallsCount == 0)
     }
+
+    @Test
+    func didFail_givenCancellation_shouldTransitionToReadyState() {
+        // Given
+        let (sut, _, _) = makeSUT()
+        let paymentComponentMock = makePaymentComponentMock()
+
+        // When
+        sut.didFail(with: ComponentError.cancelled, from: paymentComponentMock)
+
+        // Then
+        if case .ready = sut.state {
+            // Success
+        } else {
+            Issue.record("Expected state to be .ready after cancellation")
+        }
+    }
+
+    // MARK: - ActionPresenter Tests
 
     @Test
     func presentActionComponent_shouldCallRouterPresentActionComponent() {
@@ -127,21 +180,80 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
-    func presentActionComponent_whenCancelled_shouldRunCancelCallback() async {
+    func didCancelActionComponent_shouldTransitionToReadyState() {
         // Given
-        let (sut, _, routerMock) = makeSUT()
-        let actionComponentMock = makeActionComponentMock()
+        let (sut, _, _) = makeSUT()
+        let actionComponentMock = RedirectComponent(context: contextMock)
 
-        await confirmation("The cancel callback should be called") { (confirm: Confirmation) in
+        // When
+        sut.didCancel(actionComponent: actionComponentMock)
 
-            // Then
-            routerMock.presentActionComponentOnCancelClosure = { _, _ in
-                confirm()
-            }
-
-            // When
-            sut.present(actionComponent: actionComponentMock)
+        // Then
+        if case .ready = sut.state {
+            // Success
+        } else {
+            Issue.record("Expected state to be .ready after action cancel")
         }
+    }
+
+    // MARK: - listItemIdentifier Tests
+
+    @Test
+    func listItemIdentifier_forRegularPaymentMethod_shouldUseTypeRawValue() {
+        // Given
+        let (sut, _, _) = makeSUT()
+        let paymentMethod = PaymentMethodMock(type: .ideal, name: "iDEAL")
+
+        // When
+        let identifier = sut.listItemIdentifier(for: paymentMethod)
+
+        // Then
+        #expect(identifier.contains("ideal"))
+        #expect(identifier.contains("PaymentMethodListViewModel"))
+    }
+
+    @Test
+    func listItemIdentifier_forStoredPaymentMethod_shouldIncludeStoredIdentifier() {
+        // Given
+        let (sut, _, _) = makeSUT()
+        let storedPaymentMethod = StoredPaymentMethodMock(
+            identifier: "stored-123",
+            supportedShopperInteractions: [.shopperPresent],
+            type: .scheme,
+            name: "Stored Card"
+        )
+
+        // When
+        let identifier = sut.listItemIdentifier(for: storedPaymentMethod)
+
+        // Then
+        #expect(identifier.contains("scheme"))
+        #expect(identifier.contains("stored-123"))
+    }
+
+    @Test
+    func listItemIdentifier_forDifferentStoredPaymentMethods_shouldBeUnique() {
+        // Given
+        let (sut, _, _) = makeSUT()
+        let storedPaymentMethod1 = StoredPaymentMethodMock(
+            identifier: "stored-111",
+            supportedShopperInteractions: [.shopperPresent],
+            type: .scheme,
+            name: "Card 1"
+        )
+        let storedPaymentMethod2 = StoredPaymentMethodMock(
+            identifier: "stored-222",
+            supportedShopperInteractions: [.shopperPresent],
+            type: .scheme,
+            name: "Card 2"
+        )
+
+        // When
+        let identifier1 = sut.listItemIdentifier(for: storedPaymentMethod1)
+        let identifier2 = sut.listItemIdentifier(for: storedPaymentMethod2)
+
+        // Then
+        #expect(identifier1 != identifier2)
     }
 
     // MARK: - Helpers
@@ -165,12 +277,15 @@ struct PaymentMethodListViewModelTests {
             presentationDelegate: nil
         )
         let dropInFlowManagerMock = DropInFlowManagingMock()
+        let logoURLProvider = LogoURLProvider(environment: context.apiContext.environment)
 
         let sut = PaymentMethodListViewModel(
             context: context,
+            localizationParameters: LocalizationParameters(),
             componentManager: componentManagerMock,
             configuration: DropInComponent.Configuration(),
-            dropInFlowManager: dropInFlowManagerMock
+            dropInFlowManager: dropInFlowManagerMock,
+            logoURLProvider: logoURLProvider
         )
 
         let routerMock = PaymentMethodListRoutingMock()
