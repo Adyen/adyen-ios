@@ -18,6 +18,9 @@ internal enum PaymentMethodListState {
 // sourcery:AutoMockable
 internal protocol PaymentMethodListViewModelProtocol {
     var context: AdyenContext { get }
+    var title: String { get }
+    var paymentMethodSections: [PaymentMethodsSection] { get }
+    var statePublisher: Published<PaymentMethodListState>.Publisher { get }
     func cancel()
     func didLoad()
 }
@@ -34,6 +37,10 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     private let logoURLProvider: LogoURLProvider
 
     @Published internal private(set) var state: PaymentMethodListState = .idle
+    internal var statePublisher: Published<PaymentMethodListState>.Publisher {
+        $state
+    }
+
     internal let paymentMethodSections: [PaymentMethodsSection]
     private let brandProtectedComponents: Set<PaymentMethodType> = [.applePay]
 
@@ -119,10 +126,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             style: .init(),
             accessibilityLabel: displayInformation.accessibilityLabel
         )
-        listItem.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: listItem.title
-        )
+        listItem.identifier = Self.listItemIdentifier(for: paymentMethod)
         listItem.selectionHandler = { [weak self] in
             guard !(paymentMethod is OrderPaymentMethod) else { return }
             self?.select(paymentMethod: paymentMethod)
@@ -132,6 +136,13 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         }
 
         return listItem
+    }
+
+    internal static func listItemIdentifier(for paymentMethod: PaymentMethod) -> String {
+        ViewIdentifierBuilder.build(
+            scopeInstance: "PaymentMethodListViewModel",
+            postfix: paymentMethod.type.rawValue
+        )
     }
 }
 

@@ -32,13 +32,13 @@ internal class PaymentMethodListViewController: UIViewController {
 
     // MARK: - Properties
 
-    private var viewModel: PaymentMethodListViewModel
+    private var viewModel: PaymentMethodListViewModelProtocol
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Initializers
 
     internal init(
-        viewModel: PaymentMethodListViewModel
+        viewModel: PaymentMethodListViewModelProtocol
     ) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -68,13 +68,10 @@ internal class PaymentMethodListViewController: UIViewController {
         view.addSubview(listViewController.view)
         listViewController.didMove(toParent: self)
         listViewController.view.adyen.anchor(inside: view)
-
-        navigationItem.title = viewModel.title
-
     }
 
     private func setupNavigationItem() {
-        navigationItem.title = title
+        navigationItem.title = viewModel.title
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
 
@@ -95,27 +92,26 @@ internal class PaymentMethodListViewController: UIViewController {
     }
 
     private func observeState() {
-        viewModel.$state.sink { [weak self] state in
-            switch state {
-            case let .loaded(sections):
-                self?.reload(with: sections)
-            case let .loading(paymentMethod):
-                self?.startLoading(for: paymentMethod)
-            case .idle:
-                self?.stopLoading()
-            }
-        }.store(in: &cancellables)
+        viewModel.statePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                switch state {
+                case let .loaded(sections):
+                    self?.reload(with: sections)
+                case let .loading(paymentMethod):
+                    self?.startLoading(for: paymentMethod)
+                case .idle:
+                    self?.stopLoading()
+                }
+            }.store(in: &cancellables)
     }
 
     private func startLoading(for paymentMethod: PaymentMethod) {
-        let listItems = listViewController.sections.flatMap(\.items)
-        let paymentMethods = viewModel.paymentMethodSections.flatMap(\.paymentMethods)
-
-        guard let index = paymentMethods.firstIndex(where: { $0 == paymentMethod }) else {
-            return
-        }
-
-        listItems[index].startLoading()
+        let expectedIdentifier = PaymentMethodListViewModel.listItemIdentifier(for: paymentMethod)
+        let listItem = listViewController.sections
+            .flatMap(\.items)
+            .first { $0.identifier == expectedIdentifier }
+        listItem?.startLoading()
     }
 
     private func stopLoading() {
