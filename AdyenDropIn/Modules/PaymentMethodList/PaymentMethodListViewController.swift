@@ -100,7 +100,7 @@ internal class PaymentMethodListViewController: UIViewController {
                     self?.reload(with: sections)
                 case let .loading(paymentMethod):
                     self?.startLoading(for: paymentMethod)
-                case .idle:
+                case .ready:
                     self?.stopLoading()
                 }
             }.store(in: &cancellables)

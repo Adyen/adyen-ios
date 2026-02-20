@@ -10,7 +10,7 @@ import UIKit
 @_spi(AdyenInternal) import AdyenUI
 
 internal enum PaymentMethodListState {
-    case idle
+    case ready
     case loaded(sections: [ListSection])
     case loading(paymentMethod: PaymentMethod)
 }
@@ -36,7 +36,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     private let dropInFlowManager: DropInFlowManaging
     private let logoURLProvider: LogoURLProvider
 
-    @Published internal private(set) var state: PaymentMethodListState = .idle
+    @Published internal private(set) var state: PaymentMethodListState = .ready
     internal var statePublisher: Published<PaymentMethodListState>.Publisher {
         $state
     }
@@ -87,7 +87,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         switch component.type {
         case .regular, .stored:
             router?.present(component: component) { [weak self] in
-                self?.state = .idle
+                self?.state = .ready
             }
         case let .initiable(initiablePaymentComponent):
             initiablePaymentComponent.initiatePayment(delegate: self)
@@ -139,9 +139,15 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     internal static func listItemIdentifier(for paymentMethod: PaymentMethod) -> String {
-        ViewIdentifierBuilder.build(
+        let uniqueIdentifier: String
+        if let storedPaymentMethod = paymentMethod as? StoredPaymentMethod {
+            uniqueIdentifier = "\(paymentMethod.type.rawValue).\(storedPaymentMethod.identifier)"
+        } else {
+            uniqueIdentifier = paymentMethod.type.rawValue
+        }
+        return ViewIdentifierBuilder.build(
             scopeInstance: "PaymentMethodListViewModel",
-            postfix: paymentMethod.type.rawValue
+            postfix: uniqueIdentifier
         )
     }
 }
@@ -161,7 +167,7 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         with error: any Error,
         from component: any PaymentComponent
     ) {
-        defer { state = .idle }
+        defer { state = .ready }
 
         if case ComponentError.cancelled = error {
             cancel()
@@ -177,12 +183,12 @@ extension PaymentMethodListViewModel: ActionPresenter {
 
     internal func present(actionComponent: any PresentableComponent) {
         router?.present(actionComponent: actionComponent) { [weak self] in
-            self?.state = .idle
+            self?.state = .ready
         }
     }
 
     internal func didCancel(actionComponent: any ActionComponent) {
-        state = .idle
+        state = .ready
     }
 }
 
