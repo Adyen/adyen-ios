@@ -60,6 +60,30 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     internal var title: String {
         localizedString(.paymentMethodsTitle, localizationParameters)
     }
+    
+    internal var formattedAmount: String {
+        context.payment?.amount.formatted ?? ""
+    }
+    
+    internal var subtitle: String {
+        // TODO: - Add localization key for this string
+        "Select your preferred payment option to complete the payment"
+    }
+    
+    internal var showApplePayButton: Bool {
+        applePayPaymentMethod != nil
+    }
+    
+    private var applePayPaymentMethod: PaymentMethod? {
+        paymentMethodSections
+            .flatMap(\.paymentMethods)
+            .first { $0.type == .applePay }
+    }
+    
+    internal func selectApplePay() {
+        guard let applePay = applePayPaymentMethod else { return }
+        select(paymentMethod: applePay)
+    }
 
     internal func cancel() {
         router?.dismiss(completion: nil)
@@ -73,7 +97,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     // MARK: - Private
 
-    private func select(paymentMethod: PaymentMethod) {
+    internal func select(paymentMethod: PaymentMethod) {
         guard let component = componentManager.buildComponent(for: paymentMethod) else { return }
         state = .loading(paymentMethod: paymentMethod)
 

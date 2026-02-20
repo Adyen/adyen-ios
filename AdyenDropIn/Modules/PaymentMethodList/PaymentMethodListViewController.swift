@@ -23,10 +23,63 @@ public struct PaymentMethodListConfiguration {
 
 internal class PaymentMethodListViewController: UIViewController {
 
-    // MARK: - UI elements
+    // MARK: - UI Elements
+
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
+    }()
+    
+    private lazy var contentStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 0
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    private lazy var headerView: PaymentMethodListHeaderView = {
+        let view = PaymentMethodListHeaderView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
 
     private lazy var listViewController: ListViewController = {
-        let style = ListComponentStyle()
+        var style = ListComponentStyle()
+        
+        style.listItem.title = TextStyle(
+            font: .systemFont(ofSize: 17, weight: .regular),
+            color: .label,
+            textAlignment: .natural
+        )
+        style.listItem.subtitle = TextStyle(
+            font: .systemFont(ofSize: 13, weight: .regular),
+            color: .secondaryLabel,
+            textAlignment: .natural
+        )
+        style.listItem.image = ImageStyle(
+            borderColor: UIColor.separator,
+            borderWidth: 1.0 / UIScreen.main.nativeScale,
+            cornerRadius: 6.0,
+            clipsToBounds: true,
+            contentMode: .scaleAspectFit
+        )
+        
+        style.sectionHeader.title = TextStyle(
+            font: .systemFont(ofSize: 13, weight: .regular),
+            color: .secondaryLabel,
+            textAlignment: .natural
+        )
+        style.sectionHeader.trailingButton = ButtonStyle(
+            title: TextStyle(
+                font: .systemFont(ofSize: 17, weight: .regular),
+                color: UIColor.Adyen.defaultBlue
+            ),
+            cornerRounding: .none,
+            background: .clear
+        )
+        
         return ListViewController(style: style)
     }()
 
@@ -34,6 +87,8 @@ internal class PaymentMethodListViewController: UIViewController {
 
     private var viewModel: PaymentMethodListViewModel
     private var cancellables = Set<AnyCancellable>()
+    private var tableViewHeightConstraint: NSLayoutConstraint?
+    private var tableViewContentSizeObservation: NSKeyValueObservation?
 
     // MARK: - Initializers
 
@@ -53,28 +108,68 @@ internal class PaymentMethodListViewController: UIViewController {
 
     override internal func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
         viewModel.didLoad()
         isModalInPresentation = true
         setupNavigationItem()
+        setupScrollView()
+        setupHeaderView()
         setupListViewController()
         observeState()
     }
 
     // MARK: - Private
 
+    private func setupScrollView() {
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentStackView)
+        
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
+    }
+    
+    private func setupHeaderView() {
+        contentStackView.addArrangedSubview(headerView)
+        
+        let headerViewModel = PaymentMethodListHeaderViewModel(
+            amount: viewModel.formattedAmount,
+            subtitle: viewModel.subtitle,
+            showApplePayButton: viewModel.showApplePayButton,
+            onApplePayTap: { [weak self] in
+                self?.viewModel.selectApplePay()
+            }
+        )
+        headerView.configure(with: headerViewModel)
+    }
+
     private func setupListViewController() {
         listViewController.willMove(toParent: self)
         addChild(listViewController)
-        view.addSubview(listViewController.view)
+        contentStackView.addArrangedSubview(listViewController.view)
         listViewController.didMove(toParent: self)
-        listViewController.view.adyen.anchor(inside: view)
-
-        navigationItem.title = viewModel.title
-
+        
+        listViewController.tableView.isScrollEnabled = false
+        
+        tableViewHeightConstraint = listViewController.view.heightAnchor.constraint(equalToConstant: 0)
+        tableViewHeightConstraint?.isActive = true
+        
+        tableViewContentSizeObservation = listViewController.tableView.observe(\.contentSize, options: [.new]) { [weak self] tableView, _ in
+            self?.tableViewHeightConstraint?.constant = tableView.contentSize.height
+        }
     }
 
     private func setupNavigationItem() {
-        navigationItem.title = title
+        navigationItem.title = viewModel.title
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
 

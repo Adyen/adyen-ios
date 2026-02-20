@@ -159,9 +159,10 @@ private extension ComponentManager {
         let allowDeleting = configuration.paymentMethodsList.allowDisablingStoredPaymentMethods
             && supportsEditingStoredPaymentMethods
         
+        // TODO: - Add localization key for "Favorites"
         return PaymentMethodsSection(
             header: ListSectionHeader(
-                title: localizedString(.paymentMethodsStoredMethods, localizationParameters),
+                title: "Favorites",
                 editingStyle: allowDeleting ? .delete : .none,
                 style: listStyle.sectionHeader
             ),

@@ -44,7 +44,7 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
             scopeInstance: "Adyen.ListHeaderView.\(item.title)",
             postfix: "titleLabel"
         )
-        titleLabel.text = item.title.uppercased()
+        titleLabel.text = item.title
         
         trailingButton.adyen.apply(item.style.trailingButton)
         
@@ -59,9 +59,10 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
     
     private func updateTrailingButtonTitle(with item: ListSectionHeader?) {
         guard let item = headerItem else { return }
-        let localizedEdit = Bundle.Adyen.localizedEditCopy
+        // TODO: - Add localization key for "Manage"
+        let localizedManage = "Manage"
         let localizedDone = Bundle.Adyen.localizedDoneCopy
-        let localizedTitle = isEditing ? localizedDone : localizedEdit
+        let localizedTitle = isEditing ? localizedDone : localizedManage
         switch item.editingStyle {
         case .delete:
             trailingButton.setTitle(localizedTitle, for: .normal)
