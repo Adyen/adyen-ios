@@ -12,15 +12,6 @@ import Combine
 import Foundation
 import UIKit
 
-/// Payment methods list related configurations.
-public struct PaymentMethodListConfiguration {
-    
-    public init() { /* Empty initializer */ }
-    
-    /// Indicates whether to allow shoppers to disable/delete stored payment methods
-    public var allowDisablingStoredPaymentMethods: Bool = false
-}
-
 internal class PaymentMethodListViewController: UIViewController {
 
     // MARK: - UI elements
@@ -32,7 +23,7 @@ internal class PaymentMethodListViewController: UIViewController {
 
     // MARK: - Properties
 
-    private var viewModel: PaymentMethodListViewModelProtocol
+    private let viewModel: PaymentMethodListViewModelProtocol
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Initializers
@@ -107,7 +98,7 @@ internal class PaymentMethodListViewController: UIViewController {
     }
 
     private func startLoading(for paymentMethod: PaymentMethod) {
-        let expectedIdentifier = PaymentMethodListViewModel.listItemIdentifier(for: paymentMethod)
+        let expectedIdentifier = viewModel.listItemIdentifier(for: paymentMethod)
         let listItem = listViewController.sections
             .flatMap(\.items)
             .first { $0.identifier == expectedIdentifier }
@@ -143,12 +134,5 @@ internal class PaymentMethodListViewController: UIViewController {
 //            self.deleteComponent(at: indexPath)
 //        }
 //        viewModel.delete(paymentMethod, completion: completion)
-    }
-}
-
-private extension [PaymentMethodsSection] {
-    mutating func deleteItem(at indexPath: IndexPath) {
-        self[indexPath.section].paymentMethods.remove(at: indexPath.item)
-        self = self.filter { $0.paymentMethods.isEmpty == false }
     }
 }

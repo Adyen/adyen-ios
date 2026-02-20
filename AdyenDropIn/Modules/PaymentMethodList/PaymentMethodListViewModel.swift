@@ -23,6 +23,7 @@ internal protocol PaymentMethodListViewModelProtocol {
     var statePublisher: Published<PaymentMethodListState>.Publisher { get }
     func cancel()
     func didLoad()
+    func listItemIdentifier(for paymentMethod: PaymentMethod) -> String
 }
 
 internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
@@ -126,7 +127,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             style: .init(),
             accessibilityLabel: displayInformation.accessibilityLabel
         )
-        listItem.identifier = Self.listItemIdentifier(for: paymentMethod)
+        listItem.identifier = listItemIdentifier(for: paymentMethod)
         listItem.selectionHandler = { [weak self] in
             guard !(paymentMethod is OrderPaymentMethod) else { return }
             self?.select(paymentMethod: paymentMethod)
@@ -138,7 +139,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         return listItem
     }
 
-    internal static func listItemIdentifier(for paymentMethod: PaymentMethod) -> String {
+    internal func listItemIdentifier(for paymentMethod: PaymentMethod) -> String {
         let uniqueIdentifier: String
         if let storedPaymentMethod = paymentMethod as? StoredPaymentMethod {
             uniqueIdentifier = "\(paymentMethod.type.rawValue).\(storedPaymentMethod.identifier)"
