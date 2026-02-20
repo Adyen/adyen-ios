@@ -14,12 +14,44 @@ public protocol PaymentMethodAware {
     
 }
 
+/// A component that handles stored payment methods.
+public protocol StoredPaymentComponent: PaymentComponent, PresentableComponent {}
+
+public enum PaymentComponentType {
+    case regular(PaymentComponent & PresentableComponent)
+    case stored(StoredPaymentComponent)
+    case initiable(InitiablePaymentComponent)
+    case undefined
+}
+
 /// A component that handles the initial phase of getting payment details to initiate a payment.
 public protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentMethodAware {
     
     /// The delegate of the payment component.
     var delegate: PaymentComponentDelegate? { get set }
-    
+
+    var type: PaymentComponentType { get }
+}
+
+public extension PaymentComponent where Self: PresentableComponent {
+
+    var type: PaymentComponentType {
+        .regular(self)
+    }
+}
+
+public extension StoredPaymentComponent {
+
+    var type: PaymentComponentType {
+        .stored(self)
+    }
+}
+
+public extension InitiablePaymentComponent {
+
+    var type: PaymentComponentType {
+        .initiable(self)
+    }
 }
 
 @_spi(AdyenInternal)

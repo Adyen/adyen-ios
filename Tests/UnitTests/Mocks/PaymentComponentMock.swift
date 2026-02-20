@@ -7,7 +7,9 @@
 @_spi(AdyenInternal) import Adyen
 
 class PaymentComponentMock: PaymentComponent {
-    
+
+    var type: PaymentComponentType = .undefined
+
     var context: AdyenContext = Dummy.context
     
     var paymentMethod: PaymentMethod
@@ -33,6 +35,7 @@ class PresentableComponentMock: PaymentComponentMock, PresentableComponent, Load
     ) {
         self.viewController = viewController
         super.init(paymentMethod: paymentMethod)
+        self.type = .regular(self)
     }
 
     // MARK: - stopLoading
@@ -50,7 +53,12 @@ class PresentableComponentMock: PaymentComponentMock, PresentableComponent, Load
     }
 }
 
-class InitiableComponentMock: PaymentComponentMock, PaymentInitiable {
+class InitiableComponentMock: PaymentComponentMock, InitiablePaymentComponent {
+
+    override init(paymentMethod: PaymentMethod) {
+        super.init(paymentMethod: paymentMethod)
+        self.type = .initiable(self)
+    }
 
     // MARK: - initiatePayment
 
@@ -61,7 +69,7 @@ class InitiableComponentMock: PaymentComponentMock, PaymentInitiable {
 
     var onInitiatePayment: (() -> Void)?
 
-    func initiatePayment() {
+    func initiatePayment(delegate: any PaymentComponentDelegate) {
         initiatePaymentCallsCount += 1
         onInitiatePayment?()
     }

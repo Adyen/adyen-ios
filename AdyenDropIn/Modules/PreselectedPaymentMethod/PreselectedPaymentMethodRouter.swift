@@ -15,7 +15,7 @@ internal protocol PreselectedPaymentMethodRouterListener: AnyObject {
 // sourcery:AutoMockable
 internal protocol PreselectedPaymentMethodRouting: AnyObject {
     func presentPaymentMethodList()
-    func present(paymentComponent: any PresentableComponent, onCancel: @escaping (() -> Void))
+    func present(component: PaymentComponent, onCancel: @escaping () -> Void)
     func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?)
     func dismiss(completion: (() -> Void)?)
 }
@@ -52,7 +52,10 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         rootViewController.present(paymentMethodListRouter.rootViewController, animated: true)
     }
 
-    internal func present(paymentComponent: any PresentableComponent, onCancel: @escaping (() -> Void)) {
+    internal func present(
+        paymentComponent: any PresentableComponent,
+        onCancel: @escaping (() -> Void)
+    ) {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: paymentComponent,
             delegate: self,
@@ -62,7 +65,24 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         rootViewController.present(componentContainerRouter.rootViewController, animated: true)
     }
 
-    internal func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?) {
+    internal func present(
+        component: PaymentComponent,
+        onCancel: @escaping () -> Void
+    ) {
+        switch component.type {
+        case let .regular(regularComponent):
+            presentModalComponent(regularComponent, onCancel: onCancel)
+        case let .stored(storedComponent):
+            presentModalComponent(storedComponent, onCancel: onCancel)
+        case .initiable, .undefined:
+            break
+        }
+    }
+
+    internal func present(
+        actionComponent: any PresentableComponent,
+        onCancel: (() -> Void)?
+    ) {
         let actionViewController = ActionPresentationHelper.viewController(
             for: actionComponent,
             onCancel: onCancel
@@ -75,6 +95,29 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
             self?.childRouter = nil
             self?.listener?.didDismissPreselectedPaymentMethod(completion: completion)
         }
+    }
+
+    // MARK: - Private
+
+    private func presentModalComponent(
+        _ component: PresentableComponent,
+        onCancel: @escaping () -> Void
+    ) {
+        let componentContainerViewController = componentContainerViewController(for: component, onCancel: onCancel)
+        rootViewController.present(componentContainerViewController, animated: true)
+    }
+
+    private func componentContainerViewController(
+        for component: PresentableComponent,
+        onCancel: @escaping () -> Void
+    ) -> UIViewController {
+        let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
+            for: component,
+            delegate: self,
+            onCancel: onCancel
+        )
+        childRouter = componentContainerRouter
+        return componentContainerRouter.rootViewController
     }
 }
 

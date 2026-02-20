@@ -141,16 +141,15 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
 
     private func startPaymentFlow(for component: PaymentComponent) {
         startLoading(for: component)
-        
-        switch component {
-        case let component as PresentableComponent:
-            router?.present(paymentComponent: component) { [weak self] in
+
+        switch component.type {
+        case .regular, .stored:
+            router?.present(component: component) { [weak self] in
                 self?.stopLoading()
             }
-        case let component as PaymentInitiable:
-            (component as? PaymentComponent)?.delegate = self
-            component.initiatePayment()
-        default:
+        case let .initiable(initiablePaymentComponent):
+            initiablePaymentComponent.initiatePayment(delegate: self)
+        case .undefined:
             break
         }
     }

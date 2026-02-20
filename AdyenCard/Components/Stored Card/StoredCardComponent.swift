@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for stored card payments.
-package final class StoredCardComponent: PaymentComponent, PaymentAware, PresentableComponent, Localizable {
-    
+package final class StoredCardComponent: StoredPaymentComponent, PaymentAware, Localizable {
+
     /// The context object for this component.
     package let context: AdyenContext
     

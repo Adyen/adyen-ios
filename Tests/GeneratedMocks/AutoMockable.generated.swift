@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-// Generated using Sourcery 2.3.0 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // swiftlint:disable line_length
 // swiftlint:disable variable_name
@@ -301,20 +301,20 @@ class PaymentMethodListRoutingMock: PaymentMethodListRouting {
 
     // MARK: - present
 
-    var presentPaymentComponentOnCancelCallsCount = 0
-    var presentPaymentComponentOnCancelCalled: Bool {
-        presentPaymentComponentOnCancelCallsCount > 0
+    var presentComponentOnCancelCallsCount = 0
+    var presentComponentOnCancelCalled: Bool {
+        presentComponentOnCancelCallsCount > 0
     }
 
-    var presentPaymentComponentOnCancelReceivedArguments: (paymentComponent: PresentableComponent, onCancel: () -> Void)?
-    var presentPaymentComponentOnCancelReceivedInvocations: [(paymentComponent: PresentableComponent, onCancel: () -> Void)] = []
-    var presentPaymentComponentOnCancelClosure: ((PresentableComponent, @escaping () -> Void) -> Void)?
+    var presentComponentOnCancelReceivedArguments: (component: PaymentComponent, onCancel: () -> Void)?
+    var presentComponentOnCancelReceivedInvocations: [(component: PaymentComponent, onCancel: () -> Void)] = []
+    var presentComponentOnCancelClosure: ((PaymentComponent, @escaping () -> Void) -> Void)?
 
-    func present(paymentComponent: PresentableComponent, onCancel: @escaping () -> Void) {
-        presentPaymentComponentOnCancelCallsCount += 1
-        presentPaymentComponentOnCancelReceivedArguments = (paymentComponent: paymentComponent, onCancel: onCancel)
-        presentPaymentComponentOnCancelReceivedInvocations.append((paymentComponent: paymentComponent, onCancel: onCancel))
-        presentPaymentComponentOnCancelClosure?(paymentComponent, onCancel)
+    func present(component: PaymentComponent, onCancel: @escaping () -> Void) {
+        presentComponentOnCancelCallsCount += 1
+        presentComponentOnCancelReceivedArguments = (component: component, onCancel: onCancel)
+        presentComponentOnCancelReceivedInvocations.append((component: component, onCancel: onCancel))
+        presentComponentOnCancelClosure?(component, onCancel)
     }
 
     // MARK: - present
@@ -417,20 +417,20 @@ class PreselectedPaymentMethodRoutingMock: PreselectedPaymentMethodRouting {
 
     // MARK: - present
 
-    var presentPaymentComponentOnCancelCallsCount = 0
-    var presentPaymentComponentOnCancelCalled: Bool {
-        presentPaymentComponentOnCancelCallsCount > 0
+    var presentComponentOnCancelCallsCount = 0
+    var presentComponentOnCancelCalled: Bool {
+        presentComponentOnCancelCallsCount > 0
     }
 
-    var presentPaymentComponentOnCancelReceivedArguments: (paymentComponent: any PresentableComponent, onCancel: () -> Void)?
-    var presentPaymentComponentOnCancelReceivedInvocations: [(paymentComponent: any PresentableComponent, onCancel: () -> Void)] = []
-    var presentPaymentComponentOnCancelClosure: ((any PresentableComponent, @escaping () -> Void) -> Void)?
+    var presentComponentOnCancelReceivedArguments: (component: PaymentComponent, onCancel: () -> Void)?
+    var presentComponentOnCancelReceivedInvocations: [(component: PaymentComponent, onCancel: () -> Void)] = []
+    var presentComponentOnCancelClosure: ((PaymentComponent, @escaping () -> Void) -> Void)?
 
-    func present(paymentComponent: any PresentableComponent, onCancel: @escaping () -> Void) {
-        presentPaymentComponentOnCancelCallsCount += 1
-        presentPaymentComponentOnCancelReceivedArguments = (paymentComponent: paymentComponent, onCancel: onCancel)
-        presentPaymentComponentOnCancelReceivedInvocations.append((paymentComponent: paymentComponent, onCancel: onCancel))
-        presentPaymentComponentOnCancelClosure?(paymentComponent, onCancel)
+    func present(component: PaymentComponent, onCancel: @escaping () -> Void) {
+        presentComponentOnCancelCallsCount += 1
+        presentComponentOnCancelReceivedArguments = (component: component, onCancel: onCancel)
+        presentComponentOnCancelReceivedInvocations.append((component: component, onCancel: onCancel))
+        presentComponentOnCancelClosure?(component, onCancel)
     }
 
     // MARK: - present
