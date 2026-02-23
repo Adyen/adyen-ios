@@ -65,7 +65,7 @@ internal enum ConfigurationConstants {
         "id": "Item #2"
     ]]
     
-    /// sample mandate object (e.g., for PayTo)
+    // sample mandate object (e.g., for PayTo)
     static let mandate = [
         "amount": "\(current.amount.value)",
         "amountRule": "max",
