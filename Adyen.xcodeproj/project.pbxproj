@@ -272,6 +272,7 @@
 		21CBEF642D8B0A0700178809 /* ThreeDSServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CBEF632D8B0A0500178809 /* ThreeDSServiceProvider.swift */; };
 		21CBEF662D8B6B3A00178809 /* ThreeDSServiceProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CBEF652D8B6B2F00178809 /* ThreeDSServiceProviderTests.swift */; };
 		21D6FC1B2F236EED003811A8 /* AdyenUI.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21D6FC1A2F236EED003811A8 /* AdyenUI.xcassets */; };
+		21E641B72F3F65910087253F /* PublicKeyFetcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E641B62F3F65910087253F /* PublicKeyFetcherTests.swift */; };
 		4D6ACC5A19457F96B7013F0E /* FormAddressPickerItemViewStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A944D9CA552D7C8E2063601 /* FormAddressPickerItemViewStyleTests.swift */; };
 		5A15D589264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */; };
 		5A15D5A1264BE1E500A8E3C7 /* PrefilledShopperInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */; };
@@ -520,6 +521,7 @@
 		A0414C1F278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C1E278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift */; };
 		A0414C21278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C20278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift */; };
 		A0414C29278F2D2900DF3FE9 /* AnyEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C28278F2D2900DF3FE9 /* AnyEncryptor.swift */; };
+		A0414C2B2790420B00DF3FE9 /* PublicKeyFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C2A2790420B00DF3FE9 /* PublicKeyFetcher.swift */; };
 		A0414C2E2790420B00DF3FE9 /* PublicKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C2D2790420B00DF3FE9 /* PublicKeyProvider.swift */; };
 		A0414C302790429A00DF3FE9 /* PublicKeyConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C2F2790429A00DF3FE9 /* PublicKeyConsumer.swift */; };
 		A0414C322791C9BB00DF3FE9 /* BankPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C312791C9BB00DF3FE9 /* BankPayload.swift */; };
@@ -1999,6 +2001,7 @@
 		21CBEF632D8B0A0500178809 /* ThreeDSServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSServiceProvider.swift; sourceTree = "<group>"; };
 		21CBEF652D8B6B2F00178809 /* ThreeDSServiceProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSServiceProviderTests.swift; sourceTree = "<group>"; };
 		21D6FC1A2F236EED003811A8 /* AdyenUI.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdyenUI.xcassets; sourceTree = "<group>"; };
+		21E641B62F3F65910087253F /* PublicKeyFetcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyFetcherTests.swift; sourceTree = "<group>"; };
 		3A944D9CA552D7C8E2063601 /* FormAddressPickerItemViewStyleTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FormAddressPickerItemViewStyleTests.swift; sourceTree = "<group>"; };
 		5A1315C826296B100092366D /* ProgressViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewStyle.swift; sourceTree = "<group>"; };
 		5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoComponentExtensions.swift; sourceTree = "<group>"; };
@@ -2201,6 +2204,7 @@
 		A0414C1E278C27CF00DF3FE9 /* ACHDirectDebitPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitPaymentMethod.swift; sourceTree = "<group>"; };
 		A0414C20278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitDetails.swift; sourceTree = "<group>"; };
 		A0414C28278F2D2900DF3FE9 /* AnyEncryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyEncryptor.swift; sourceTree = "<group>"; };
+		A0414C2A2790420B00DF3FE9 /* PublicKeyFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyFetcher.swift; sourceTree = "<group>"; };
 		A0414C2D2790420B00DF3FE9 /* PublicKeyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyProvider.swift; sourceTree = "<group>"; };
 		A0414C2F2790429A00DF3FE9 /* PublicKeyConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyConsumer.swift; sourceTree = "<group>"; };
 		A0414C312791C9BB00DF3FE9 /* BankPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankPayload.swift; sourceTree = "<group>"; };
@@ -4087,6 +4091,7 @@
 		A0414C2C279041F200DF3FE9 /* PublicKeyProvider */ = {
 			isa = PBXGroup;
 			children = (
+				A0414C2A2790420B00DF3FE9 /* PublicKeyFetcher.swift */,
 				A0414C2D2790420B00DF3FE9 /* PublicKeyProvider.swift */,
 				A0414C2F2790429A00DF3FE9 /* PublicKeyConsumer.swift */,
 			);
@@ -6048,6 +6053,7 @@
 				B6C9DA7A2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift */,
 				F9D57534238291A1009C18B5 /* BCMCComponentTests.swift */,
 				F9EDB78C2395643A00CFB3C9 /* CardComponentTests.swift */,
+				21E641B62F3F65910087253F /* PublicKeyFetcherTests.swift */,
 				A0B4B9B02BC027DE00C99926 /* CardComponentEventTests.swift */,
 				B60FB35B2F33769500F77471 /* CardComponentValidationTests.swift */,
 				F924C071246BEEF0006DDAB8 /* CardDetailsTests.swift */,
@@ -8689,6 +8695,7 @@
 				A06B7A9A2A1CEC59008FC09D /* StoredCashAppPayPaymentMethod.swift in Sources */,
 				A052F5D82DB1250D00C47D3E /* CheckoutComponentType.swift in Sources */,
 				E9093403228EDADA00C9F04B /* Payment.swift in Sources */,
+				A0414C2B2790420B00DF3FE9 /* PublicKeyFetcher.swift in Sources */,
 				A0414C2E2790420B00DF3FE9 /* PublicKeyProvider.swift in Sources */,
 				E216D3CD221AFBB90013CBCF /* Validator.swift in Sources */,
 				F917308E26491ED900985310 /* InstantPaymentComponent.swift in Sources */,
@@ -8793,6 +8800,7 @@
 				E7D189B025D31936006AD3B7 /* DropInActionTests.swift in Sources */,
 				B65F0EB42ED493250015AC41 /* FormButtonItemViewThemeTests.swift in Sources */,
 				C95903DE275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift in Sources */,
+				21E641B72F3F65910087253F /* PublicKeyFetcherTests.swift in Sources */,
 				81DA70882BDA6075006CE5D5 /* TwintSDKActionTests.swift in Sources */,
 				81825CBB2AC59C4000F91912 /* UIViewController+Search.swift in Sources */,
 				F9A781B02403ED4000E12487 /* NumericStringValidatorTests.swift in Sources */,
