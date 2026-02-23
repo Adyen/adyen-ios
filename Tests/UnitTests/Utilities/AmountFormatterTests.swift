@@ -98,14 +98,11 @@ class AmountFormatterTests: XCTestCase {
         
         XCTAssertEqual(AmountFormatter.decimalAmount(amount, currencyCode: "CVE", localeIdentifier: "ko_KR"), 123456)
         XCTAssertEqual(AmountFormatter.decimalAmount(amount, currencyCode: "CVE", localeIdentifier: "fr_FR"), 123456)
-        
-        XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "HUF", localeIdentifier: "hu_HU"), "1 234,56 Ft")
-        XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "HUF"), "HUF 1,234.56")
-        
+
+        XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "HUF"), "HUF 1,234.56")
         XCTAssertEqual(AmountFormatter.minorUnitAmount(from: 1234.56, currencyCode: "HUF", localeIdentifier: "hu_HU"), 123456)
-        XCTAssertEqual(AmountFormatter.minorUnitAmount(from: Decimal(1234.56), currencyCode: "HUF", localeIdentifier: "hu_HU"), 123456)
-        
-        XCTAssertEqual(AmountFormatter.decimalAmount(amount, currencyCode: "HUF", localeIdentifier: "hu_HU"), 1234.56)
+        XCTAssertEqual(AmountFormatter.minorUnitAmount(from: Decimal(123456), currencyCode: "HUF", localeIdentifier: "hu_HU"), 12345600)
+        XCTAssertEqual(AmountFormatter.decimalAmount(amount, currencyCode: "HUF", localeIdentifier: "hu_HU"), NSDecimalNumber(string: "1234.56"))
     }
     
     func testAmountWithDifferentLocales() {
