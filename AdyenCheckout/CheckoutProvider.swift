@@ -16,8 +16,14 @@ internal class CheckoutProvider: CheckoutProviding {
     
     private let checkoutAttemptIdProvider: CheckoutAttemptIdProviding
 
-    internal init(checkoutAttemptIdProvider: CheckoutAttemptIdProviding = CheckoutAttemptIdProvider()) {
+    private let publicKeyProvider: PublicKeyFetching
+
+    internal init(
+        checkoutAttemptIdProvider: CheckoutAttemptIdProviding = CheckoutAttemptIdProvider(),
+        publicKeyProvider: PublicKeyFetching = PublicKeyFetcher()
+    ) {
         self.checkoutAttemptIdProvider = checkoutAttemptIdProvider
+        self.publicKeyProvider = publicKeyProvider
     }
     
     internal static let `default` = CheckoutProvider()
@@ -29,7 +35,7 @@ internal class CheckoutProvider: CheckoutProviding {
     ) async throws -> Checkout {
         
         let apiClient = APIClient(apiContext: configuration.context.apiContext)
-        
+
         // create and store session and payment methods
         async let session = setupSession(
             with: sessionResponse,
@@ -42,13 +48,19 @@ internal class CheckoutProvider: CheckoutProviding {
             with: configuration
         )
 
+        // TODO: Robert: Note here we are using try? do we already want to fail here if in the 0.0001% of the change that there is a failure. (I assume yes?)
+        async let publicKey = try? await publicKeyProvider.fetchPublicKey(
+            apiClient: apiClient,
+            clientKey: configuration.context.apiContext.clientKey
+        )
+
         // TODO: Robert: Create the AdyenContext async. which in turn will create the analytics provider if checkoutAttemptId is available & the configuration flag is true.
-        // TODO: Robert: for the public key fetching we do it async here at this point and pass it down to AdyenContext.
 
         return try await Checkout(
             configuration: configuration,
             session: session,
             checkoutAttemptId: checkoutAttemptId,
+            publicKey: publicKey,
             presentationDelegate: presentationDelegate
         )
     }
@@ -66,14 +78,22 @@ internal class CheckoutProvider: CheckoutProviding {
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
 
-        let checkoutAttemptId = await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
+        async let checkoutAttemptId = checkoutAttemptIdProvider.fetchCheckoutAttemptId(
             with: configuration
         )
-        
-        return Checkout(
+
+        let apiClient = APIClient(apiContext: configuration.context.apiContext)
+
+        async let publicKey = try? await publicKeyProvider.fetchPublicKey(
+            apiClient: apiClient,
+            clientKey: configuration.context.apiContext.clientKey
+        )
+
+        return await Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: checkoutAttemptId,
+            publicKey: publicKey,
             presentationDelegate: presentationDelegate
         )
     }
@@ -87,13 +107,21 @@ internal class CheckoutProvider: CheckoutProviding {
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
 
-        let checkoutAttemptId = await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
+        async let checkoutAttemptId = checkoutAttemptIdProvider.fetchCheckoutAttemptId(
             with: configuration
         )
         
-        return Checkout(
+        let apiClient = APIClient(apiContext: configuration.context.apiContext)
+
+        async let publicKey = try? await publicKeyProvider.fetchPublicKey(
+            apiClient: apiClient,
+            clientKey: configuration.context.apiContext.clientKey
+        )
+
+        return await Checkout(
             configuration: configuration,
             checkoutAttemptId: checkoutAttemptId,
+            publicKey: publicKey,
             presentationDelegate: presentationDelegate
         )
     }
@@ -111,5 +139,4 @@ internal class CheckoutProvider: CheckoutProviding {
             context: configuration.context
         )
     }
-
 }
