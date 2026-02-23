@@ -27,7 +27,9 @@ internal enum ConfigurationConstants {
     
     static let reference = "Test Order Reference - iOS UIHost"
     
-    static var returnUrl: URL { .init(string: "ui-host://payments")! }
+    static var returnUrl: URL {
+        .init(string: "ui-host://payments")!
+    }
     
     static let shopperReference = "iOS Checkout Shopper"
 
@@ -63,7 +65,7 @@ internal enum ConfigurationConstants {
         "id": "Item #2"
     ]]
     
-    // sample mandate object (e.g., for PayTo)
+    /// sample mandate object (e.g., for PayTo)
     static let mandate = [
         "amount": "\(current.amount.value)",
         "amountRule": "max",
@@ -150,8 +152,13 @@ internal struct DemoAppSettings: Codable {
     internal let applePaySettings: ApplePaySettings
     internal let analyticsSettings: AnalyticsSettings
 
-    internal var amount: Amount { Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil) }
-    internal var payment: Payment { Payment(amount: amount, countryCode: countryCode) }
+    internal var amount: Amount {
+        Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil)
+    }
+
+    internal var payment: Payment {
+        Payment(amount: amount, countryCode: countryCode)
+    }
     
     private var installmentConfiguration: InstallmentConfiguration? {
         guard cardSettings.enableInstallments else {
