@@ -7,7 +7,9 @@
 import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
-@_spi(AdyenInternal) import AdyenUI
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 
 internal enum PaymentMethodListState {
     case ready
