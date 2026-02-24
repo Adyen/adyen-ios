@@ -70,8 +70,13 @@ internal struct Configuration: Codable {
     internal let apiVersion: Int
     internal let merchantAccount: String
     
-    internal var amount: Amount { Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil) }
-    internal var payment: Payment { Payment(amount: amount, countryCode: countryCode) }
+    internal var amount: Amount {
+        Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil)
+    }
+
+    internal var payment: Payment {
+        Payment(amount: amount, countryCode: countryCode)
+    }
     
     internal static let defaultConfiguration = Configuration(
         countryCode: "NL",
