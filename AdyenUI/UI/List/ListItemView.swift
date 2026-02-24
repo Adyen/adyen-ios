@@ -32,9 +32,7 @@ package final class ListItemView: UIView, AnyFormItemView {
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    public func reset() { /* Do nothing */ }
-    
+        
     // MARK: - Item
     
     /// The item displayed in the item view.

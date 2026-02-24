@@ -74,8 +74,6 @@ private class FormContainerItemView: UIView, AnyFormItemView {
             )
         }
     }
-    
-    internal func reset() { /* Do nothing */ }
 }
 
 // MARK: - Convenience extension
