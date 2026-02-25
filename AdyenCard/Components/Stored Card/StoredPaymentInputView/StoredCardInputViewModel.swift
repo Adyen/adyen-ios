@@ -8,7 +8,7 @@
     @_spi(AdyenInternal) import AdyenUI
 #endif
 
-internal protocol StoredPaymentInputViewModelProtocol: AnyObject {
+internal protocol StoredCardInputViewModelProtocol: AnyObject {
     var cardImageItem: CardImageItem { get }
     var titleText: String { get }
     var subtitleText: String { get }
@@ -25,7 +25,7 @@ internal protocol StoredPaymentInputViewModelProtocol: AnyObject {
     var theme: AdyenTheme { get }
 }
 
-internal final class StoredPaymentInputViewModel: StoredPaymentInputViewModelProtocol {
+internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol {
     var cardImageItem: AdyenUI.CardImageItem {
         CardImageItem(imageURL: nil, sizeMode: .fixed(CGSizeZero), theme: .init())
     }

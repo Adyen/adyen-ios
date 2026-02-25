@@ -248,7 +248,7 @@
 		2172F8152C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2172F8142C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift */; };
 		2172F8172C20B93400BE0369 /* DAErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2172F8162C20B93400BE0369 /* DAErrorViewController.swift */; };
 		218652572F4F070900B15E57 /* StoredCardInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218652562F4F070100B15E57 /* StoredCardInputViewController.swift */; };
-		218652592F4F071800B15E57 /* StoredCardInputViewMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218652582F4F071000B15E57 /* StoredCardInputViewMode.swift */; };
+		218652592F4F071800B15E57 /* StoredCardInputViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218652582F4F071000B15E57 /* StoredCardInputViewModel.swift */; };
 		2186525C2F4F0F6000B15E57 /* CardImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2186525B2F4F0F6000B15E57 /* CardImageView.swift */; };
 		21B387B62C401C890029101E /* ThreeDS2DAScreenPresenterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2159173B2A0D2B6E0004081E /* ThreeDS2DAScreenPresenterMock.swift */; };
 		21B387B92C408A9C0029101E /* UILabelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B387B82C408A9C0029101E /* UILabelHelper.swift */; };
@@ -1980,7 +1980,7 @@
 		2172F8142C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedAuthenticationErrorView.swift; sourceTree = "<group>"; };
 		2172F8162C20B93400BE0369 /* DAErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DAErrorViewController.swift; sourceTree = "<group>"; };
 		218652562F4F070100B15E57 /* StoredCardInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredCardInputViewController.swift; sourceTree = "<group>"; };
-		218652582F4F071000B15E57 /* StoredCardInputViewMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredCardInputViewMode.swift; sourceTree = "<group>"; };
+		218652582F4F071000B15E57 /* StoredCardInputViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredCardInputViewModel.swift; sourceTree = "<group>"; };
 		2186525B2F4F0F6000B15E57 /* CardImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImageView.swift; sourceTree = "<group>"; };
 		21B387B82C408A9C0029101E /* UILabelHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelHelper.swift; sourceTree = "<group>"; };
 		21B387BA2C408C920029101E /* UIStackViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackViewHelper.swift; sourceTree = "<group>"; };
@@ -3653,7 +3653,7 @@
 		218652552F4F06E000B15E57 /* StoredPaymentInputView */ = {
 			isa = PBXGroup;
 			children = (
-				218652582F4F071000B15E57 /* StoredCardInputViewMode.swift */,
+				218652582F4F071000B15E57 /* StoredCardInputViewModel.swift */,
 				218652562F4F070100B15E57 /* StoredCardInputViewController.swift */,
 			);
 			path = StoredPaymentInputView;
@@ -9049,7 +9049,7 @@
 				F92329D225AD0240002C5BC4 /* CardBrand.swift in Sources */,
 				F9C6BD6026DFBA0600DA7512 /* ThreeDS2SdkVersion.swift in Sources */,
 				E7451A052600EC8D000BDCCF /* CardComponentConfiguration.swift in Sources */,
-				218652592F4F071800B15E57 /* StoredCardInputViewMode.swift in Sources */,
+				218652592F4F071800B15E57 /* StoredCardInputViewModel.swift in Sources */,
 				00C401AB2DB242CD000EDA3C /* FormCoBadgedCardItem.swift in Sources */,
 				F919DF9524E6D7BC0027976E /* CardComponentExtensions.swift in Sources */,
 				E76CAC4E26BC0CC200117953 /* CardViewControllerItemsProvider.swift in Sources */,

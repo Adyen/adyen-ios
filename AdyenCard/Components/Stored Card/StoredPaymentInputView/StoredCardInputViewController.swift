@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2026 Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -37,11 +37,11 @@ internal class StoredCardInputViewController: UIViewController {
 
     // MARK: - Properties
 
-    private let viewModel: StoredPaymentInputViewModelProtocol
+    private let viewModel: StoredCardInputViewModelProtocol
 
     // MARK: - Initializers
 
-    internal init(viewModel: StoredPaymentInputViewModelProtocol) {
+    internal init(viewModel: StoredCardInputViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
