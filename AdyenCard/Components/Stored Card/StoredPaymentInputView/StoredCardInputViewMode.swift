@@ -27,7 +27,7 @@ internal protocol StoredPaymentInputViewModelProtocol: AnyObject {
 
 internal final class StoredPaymentInputViewModel: StoredPaymentInputViewModelProtocol {
     var cardImageItem: AdyenUI.CardImageItem {
-        CardImageItem(imageURL: nil, sizeMode: .fixed(CGSizeZero))
+        CardImageItem(imageURL: nil, sizeMode: .fixed(CGSizeZero), theme: .init())
     }
 
     internal var titleText: String {

@@ -16,4 +16,10 @@ package enum AdyenUIConstants {
     package static let stackViewSpacing = 8.0
     package static let minimumInputHeight = 48.0
     package static let contentInsets = UIEdgeInsets(top: 11, left: 16, bottom: 11, right: 16)
+
+    package static let shadowOffset = CGSize(width: 0, height: 2)
+
+    package static let shadowRadius: CGFloat = 4
+    package static let shadowOpacity: Float = 0.15
+
 }
