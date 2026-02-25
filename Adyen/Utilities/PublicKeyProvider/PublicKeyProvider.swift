@@ -17,79 +17,70 @@ public protocol AnyPublicKeyProvider: AnyObject {
     func fetch(completion: @escaping CompletionHandler)
 }
 
+// TODO: Robert: This needs to be deleted.
 /// `PublicKeyProvider` is used to fetch the client public key that is needed for encrypting data.
-@_spi(AdyenInternal)
-public final class PublicKeyProvider: AnyPublicKeyProvider {
+/// It adds caching and retry logic on top of `PublicKeyFetcher`, using `UniqueAssetAPIClient` for request deduplication.
+@available(
+    *,
+    deprecated,
+    message: "This needs to be deleted, we now will depend on the public key that is fetched in `CheckoutProvider`"
+)
+package final class PublicKeyProvider: AnyPublicKeyProvider {
 
-    private let request: ClientKeyRequest
+    private let fetcher: PublicKeyFetching
 
-    private let retryApiClient: AnyRetryAPIClient
-    
+    private let clientKey: String
+
+    private let apiClient: APIClientKeyRequestProtocol
+
     internal static var publicKeysCache = [String: String]()
     
     private var cachedPublicKey: String? {
         get {
-            Self.publicKeysCache[request.clientKey]
+            Self.publicKeysCache[clientKey]
         }
         
         set {
-            Self.publicKeysCache[request.clientKey] = newValue
+            Self.publicKeysCache[clientKey] = newValue
         }
     }
     
-    public convenience init(apiContext: APIContext) {
+    package convenience init(apiContext: APIContext) {
         let scheduler = SimpleScheduler(maximumCount: 2)
+        let retryApiClient = APIClient(apiContext: apiContext).retryAPIClient(with: scheduler)
+        let retryOnErrorApiClient = retryApiClient.retryOnErrorAPIClient()
         self.init(
-            apiClient: APIClient(apiContext: apiContext).retryAPIClient(with: scheduler),
-            request: ClientKeyRequest(clientKey: apiContext.clientKey)
+            apiClient: retryOnErrorApiClient,
+            clientKey: apiContext.clientKey
         )
     }
 
     /// For testing only
-    internal init(apiClient: AnyRetryAPIClient, request: ClientKeyRequest) {
-        self.retryApiClient = apiClient
-        self.request = request
+    internal init(apiClient: APIClientProtocol, clientKey: String) {
+        self.fetcher = PublicKeyFetcher()
+        let uniqueAssetAPIClient = UniqueAssetAPIClient<ClientKeyResponse>(apiClient: apiClient)
+        self.apiClient = uniqueAssetAPIClient
+        self.clientKey = clientKey
     }
-    
-    public func fetch(completion: @escaping CompletionHandler) {
+
+    package func fetch(completion: @escaping CompletionHandler) {
         if let publicKey = cachedPublicKey {
             completion(.success(publicKey))
             return
         }
-        
-        apiClient.perform(request, completionHandler: { [weak self] result in
-            DispatchQueue.main.async {
-                self?.handle(result, completion: completion)
-            }
-        })
-    }
-    
-    // MARK: - Private
-    
-    private lazy var apiClient: UniqueAssetAPIClient<ClientKeyResponse> = {
-        let retryOnErrorApiClient = retryApiClient.retryOnErrorAPIClient()
-        return UniqueAssetAPIClient<ClientKeyResponse>(apiClient: retryOnErrorApiClient)
-    }()
-    
-    private func handle(_ result: Result<ClientKeyResponse, Swift.Error>, completion: @escaping CompletionHandler) {
-        switch result {
-        case let .success(response):
-            cachedPublicKey = response.cardPublicKey
-            completion(.success(response.cardPublicKey))
-        case let .failure(error):
-            if error is DecodingError {
-                // Disclaimer: This error check is not 100% reliable. Need to improve the endpoint.
-                return completion(.failure(Error.invalidClientKey))
-            }
-            completion(.failure(error))
-        }
-    }
 
-    public enum Error: Swift.Error, LocalizedError {
-        case invalidClientKey
-
-        public var errorDescription: String? {
-            "Client key not found on the selected environment."
+        fetcher.fetchPublicKey(apiClient: apiClient, clientKey: clientKey) { [weak self] result in
+            switch result {
+            case let .success(publicKey):
+                DispatchQueue.main.async {
+                    self?.cachedPublicKey = publicKey
+                    completion(.success(publicKey))
+                }
+            case let .failure(error):
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+            }
         }
     }
 }

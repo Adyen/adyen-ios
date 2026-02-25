@@ -25,7 +25,9 @@ internal final class PreselectedPaymentMethodComponent:
         defaultComponent.context
     }
 
-    internal var paymentMethod: PaymentMethod { defaultComponent.paymentMethod }
+    internal var paymentMethod: PaymentMethod {
+        defaultComponent.paymentMethod
+    }
 
     /// Describes the component's UI style.
     internal var style: FormComponentStyle

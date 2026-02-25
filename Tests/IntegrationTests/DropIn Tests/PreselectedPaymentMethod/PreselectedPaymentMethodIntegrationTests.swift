@@ -53,8 +53,8 @@ struct PreselectedPaymentMethodIntegrationTests {
         try sut.preSelectedViewController.submitPayment()
         
         // Then - verify presentComponent is called
-        #expect(sut.preselectedPaymentMethodRouter.presentPaymentComponentOnCancelCalled)
-        #expect(sut.preselectedPaymentMethodRouter.presentPaymentMethodListCalled == false)
+        #expect(sut.preselectedPaymentMethodRouter.presentComponentOnCancelCallsCount == 1)
+        #expect(sut.preselectedPaymentMethodRouter.presentPaymentMethodListCallsCount == 0)
     }
 
     // MARK: - Show All Payment Methods Tests
@@ -68,8 +68,8 @@ struct PreselectedPaymentMethodIntegrationTests {
         try sut.preSelectedViewController.showAllPaymentMethods()
         
         // Then - verify payment method list is presented
-        #expect(sut.preselectedPaymentMethodRouter.presentPaymentMethodListCalled)
-        #expect(sut.preselectedPaymentMethodRouter.presentPaymentComponentOnCancelCalled == false)
+        #expect(sut.preselectedPaymentMethodRouter.presentPaymentMethodListCallsCount == 1)
+        #expect(sut.preselectedPaymentMethodRouter.presentComponentOnCancelCallsCount == 0)
     }
 
     // MARK: - Cancel Tests
@@ -281,7 +281,8 @@ struct PreselectedPaymentMethodIntegrationTests {
 
 // MARK: - Mocks
 
-internal class InitiablePaymentComponentMock: PaymentComponent, PaymentInitiable {
+internal class InitiablePaymentComponentMock: PaymentComponent, InitiablePaymentComponent {
+
     var context: AdyenContext
     var paymentMethod: PaymentMethod
     weak var delegate: PaymentComponentDelegate?
@@ -292,13 +293,16 @@ internal class InitiablePaymentComponentMock: PaymentComponent, PaymentInitiable
         self.context = context
     }
 
-    func initiatePayment() {
+    func initiatePayment() {}
+
+    func initiatePayment(delegate: PaymentComponentDelegate) {
+        self.delegate = delegate
         let details = StoredPaymentDetails(paymentMethod: paymentMethod as! StoredPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: details,
             amount: context.payment?.amount,
             order: order
         )
-        delegate?.didSubmit(data, from: self)
+        self.delegate?.didSubmit(data, from: self)
     }
 }

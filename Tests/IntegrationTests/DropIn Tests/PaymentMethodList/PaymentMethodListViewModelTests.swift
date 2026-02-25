@@ -51,7 +51,7 @@ struct PaymentMethodListViewModelTests {
         sut.didSelect(paymentComponentMock, in: sut.paymentMethodListComponent)
 
         // Then
-        #expect(routerMock.presentPaymentComponentOnCancelCallsCount == 1)
+        #expect(routerMock.presentComponentOnCancelCallsCount == 1)
     }
 
     @Test
