@@ -35,7 +35,14 @@ package final class StoredCardComponent: StoredPaymentComponent, PaymentAware, L
     }
     
     package var viewController: UIViewController {
-        storedCardAlertManager.alertController
+        let useNewView = true
+        if useNewView {
+            let viewModel = StoredPaymentInputViewModel()
+            return StoredCardInputViewController(viewModel: viewModel)
+        } else {
+            // TODO: Robert: StoredView: Return the correct view from here.
+            storedCardAlertManager.alertController
+        }
     }
     
     internal lazy var storedCardAlertManager: StoredCardAlertManager = {

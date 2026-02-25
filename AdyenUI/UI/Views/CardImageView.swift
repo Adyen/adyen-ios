@@ -4,13 +4,13 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
 import UIKit
+@_spi(AdyenInternal) import Adyen
 
-internal class CardImageItem {
+package class CardImageItem {
 
     /// Configuration for how the image size should be determined.
-    internal enum SizeMode {
+    package enum SizeMode {
         /// Use a fixed size, ignoring the loaded image's actual size.
         case fixed(CGSize)
         /// Use the loaded image's actual size, updating constraints dynamically. You need to provide an initial size.
@@ -28,12 +28,12 @@ internal class CardImageItem {
     }
 
     /// The URL of the card image.
-    internal var imageURL: URL?
+    package var imageURL: URL?
 
-    internal var identifier: String?
+    package var identifier: String?
 
     /// The size mode of the card image.
-    internal var sizeMode: SizeMode
+    package var sizeMode: SizeMode
 
     /// Initializes the form card image item.
     ///
@@ -41,7 +41,7 @@ internal class CardImageItem {
     ///   - imageURL: The URL of the card image to display.
     ///   - sizeMode: The size mode of the card image.
     ///   - identifier: An optional accessibility identifier.
-    internal init(
+    package init(
         imageURL: URL?,
         sizeMode: SizeMode,
         identifier: String? = nil
@@ -53,7 +53,7 @@ internal class CardImageItem {
 }
 
 /// A view that displays a card image with shadow styling.
-internal final class CardImageView: UIView {
+package final class CardImageView: UIView {
 
     // MARK: - Constants
 
@@ -78,14 +78,14 @@ internal final class CardImageView: UIView {
     private var heightConstraint: NSLayoutConstraint?
 
     /// Called when the image has finished loading and constraints have been updated.
-    internal var onImageLoaded: (() -> Void)?
+    package var onImageLoaded: (() -> Void)?
 
     /// Designated initializer: Initializes the form card image item view.
     ///
     /// - Parameters:
     ///   - item: The item represented by the view.
     ///   - imageLoader: The image loader to use for loading the card image.
-    internal init(item: CardImageItem, imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()) {
+    package init(item: CardImageItem, imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()) {
         self.imageLoader = imageLoader
         self.item = item
         super.init(frame: .zero)
@@ -139,7 +139,7 @@ internal final class CardImageView: UIView {
 
     // MARK: - Image Loading
 
-    override internal func didMoveToWindow() {
+    override package func didMoveToWindow() {
         super.didMoveToWindow()
         updateCardImage()
     }
