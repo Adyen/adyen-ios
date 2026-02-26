@@ -47,7 +47,7 @@ package final class StoredCardComponent: StoredPaymentComponent, PaymentAware, L
         viewModel.cardDetailsCompletionHandler = { [weak self] in
             self?.receivedCardDetailsResultToProcessPayment(result: $0)
         }
-        // TODO: Robert: StoredView: Whose responsibility is it to maintain the navigation stack i think it should not be this component at all.
+        // TODO: Robert: StoredView: 🐞 Whose responsibility is it to maintain the navigation stack i think it should not be this component at all.
         return UINavigationController(
             rootViewController: StoredCardInputViewController(viewModel: viewModel)
         )

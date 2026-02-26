@@ -62,7 +62,7 @@ internal class StoredCardInputViewController: UIViewController {
 
     private func setupView() {
         view.backgroundColor = theme.colors.background
-
+        // TODO: Robert: StoredView: 🐞 The scroll view isn't working in this screen. Needs separate investigation.
         view.addSubview(scrollView)
         scrollView.addSubview(contentStackView)
 
@@ -76,14 +76,14 @@ internal class StoredCardInputViewController: UIViewController {
         labelsStackView.addArrangedSubview(titleLabel)
         labelsStackView.addArrangedSubview(subtitleLabel)
 
-        // TODO: Robert: StoredView: Should the buttons be pinned to the keyboard? If i do that it blocks the input field in landscape mode. For now it is part of the content view -> Scroll view.
+        // TODO: Robert: StoredView: 🐞 Should the buttons be pinned to the keyboard? If i do that it blocks the input field in landscape mode. For now it is part of the content view -> Scroll view.
         buttonsStackView.addArrangedSubview(primaryButton)
         buttonsStackView.addArrangedSubview(secondaryButton)
 
         configureConstraints()
         configureContent()
         viewModel.setPayButtonEnabled = { [weak self] enabled in
-            // TODO: Robert: StoredView: disable the Pay button in this screen. Currently the UI doesn't update well. Check FormButton to include a disabled UX?
+            // TODO: Robert: StoredView: 🐞 disable the Pay button in this screen. Currently the UI doesn't update well. Check FormButton to include a disabled UX?
             self?.primaryButton.isEnabled = enabled
         }
         setupNavigationBackButton()
@@ -112,7 +112,7 @@ internal class StoredCardInputViewController: UIViewController {
 
     private func setupNavigationBackButton() {
         let backButton = UIBarButtonItem(
-            // TODO: Robert: StoredView: How in the world should i get the back button here? without using the chevron.left(available iOS 13+)
+            // TODO: Robert: StoredView: 🐞 How in the world should i get the back button here? without using the chevron.left(available iOS 13+)
             image: UIImage(systemName: "chevron.left"),
             style: .plain,
             target: self,
@@ -182,9 +182,6 @@ internal class StoredCardInputViewController: UIViewController {
     private lazy var cardImageView: CardImageView = {
         let imageView = CardImageView(item: viewModel.cardImageItem)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.onImageLoaded = { [weak self] in
-            // TODO: Robert: Do we need to do something here?
-        }
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardShapedImage")
         return imageView
     }()
@@ -217,7 +214,7 @@ internal class StoredCardInputViewController: UIViewController {
     }()
 
     private lazy var securityCodeItemView: FormCardSecurityCodeItemView = {
-        // TODO: Robert: StoredView: There is a bug with FormCardSecurityCodeItemView that when i type more than 3 characters only 3 display but validation happens with 4+ characters and then it fails validation. Needs to be debugged separately.
+        // TODO: Robert: StoredView: 🐞 There is a bug with FormCardSecurityCodeItemView that when i type more than 3 characters only 3 display but validation happens with 4+ characters and then it fails validation. Needs to be debugged separately.
         let view = FormCardSecurityCodeItemView(item: viewModel.securityCodeItem, theme: theme)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "securityCodeItemView")
