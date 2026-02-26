@@ -36,17 +36,20 @@ package final class StoredCardComponent: StoredPaymentComponent, PaymentAware, L
     }
     
     package lazy var viewController: UIViewController = {
-        // TODO: Robert: StoredView: Return the correct view from here.
-        let useNewView = true
-        if useNewView {
-            // TODO: Robert: StoredView: Pass the AdyenTheme from Configuration when creating this Component
-            let viewModel = StoredCardInputViewModel(theme: AdyenTheme(), component: self, localizationParameters: localizationParameters)
-            return StoredCardInputViewController(viewModel: viewModel)
-        } else {
-            return storedCardAlertManager.alertController
+        let viewModel = StoredCardInputViewModel(
+            theme: AdyenTheme(),
+            paymentMethod: storedCardPaymentMethod,
+            apiContext: context.apiContext,
+            analyticsProvider: context.analyticsProvider,
+            localizationParameters: localizationParameters
+        )
+        viewModel.cardDetailsCompletionHandler = { [weak self] in
+            self?.receivedCardDetailsResultToProcessPayment(result: $0)
         }
+        return StoredCardInputViewController(viewModel: viewModel)
     }()
 
+    // TODO: Robert: StoredView: Delete the storedCard Alert Manager
     internal lazy var storedCardAlertManager: StoredCardAlertManager = {
         sendInitialAnalytics()
         sendDidLoadEvent()
@@ -60,21 +63,24 @@ package final class StoredCardComponent: StoredPaymentComponent, PaymentAware, L
         manager.localizationParameters = localizationParameters
         manager.completionHandler = { [weak self] result in
             guard let self else { return }
-            
-            switch result {
-            case let .success(details):
-                self.submit(data: PaymentComponentData(
-                    paymentMethodDetails: details,
-                    amount: self.payment?.amount,
-                    order: self.order
-                ))
-            case let .failure(error):
-                self.delegate?.didFail(with: error, from: self)
-            }
+            receivedCardDetailsResultToProcessPayment(result: result)
         }
         
         return manager
     }()
+
+    private func receivedCardDetailsResultToProcessPayment(result: Result<CardDetails, Error>) {
+        switch result {
+        case let .success(details):
+            self.submit(data: PaymentComponentData(
+                paymentMethodDetails: details,
+                amount: self.payment?.amount,
+                order: self.order
+            ))
+        case let .failure(error):
+            self.delegate?.didFail(with: error, from: self)
+        }
+    }
 }
 
 /// :nodoc:

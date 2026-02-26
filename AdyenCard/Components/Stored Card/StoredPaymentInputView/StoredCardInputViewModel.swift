@@ -8,6 +8,9 @@
 #if canImport(AdyenUI)
     @_spi(AdyenInternal) import AdyenUI
 #endif
+#if canImport(AdyenEncryption)
+    import AdyenEncryption
+#endif
 
 internal protocol StoredCardInputViewModelProtocol: AnyObject {
     var cardImageItem: CardImageItem { get }
@@ -20,11 +23,12 @@ internal protocol StoredCardInputViewModelProtocol: AnyObject {
     var inputFieldSubTitle: String { get }
 
     var submitButtonTitle: String { get }
-    func submitPayment()
+    func submitPayment() async
 
     func returnToPreviousScreen()
 
     var theme: AdyenTheme { get }
+
     var setPayButtonEnabled: ((Bool) -> Void)? { get set }
 }
 
@@ -33,20 +37,31 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         static let cardImageSize = CGSize(width: 80, height: 52)
     }
 
-    private let component: PaymentComponent
     internal let theme: AdyenTheme
     private let localizationParameters: LocalizationParameters?
+    private let paymentMethod: StoredCardPaymentMethod
+    private let apiContext: APIContext
+    private let analyticsProvider: AnyAnalyticsProvider?
 
     internal var setPayButtonEnabled: ((Bool) -> Void)?
 
-    init(
+    /// This informs the status of the payment after submitting the security code.
+    internal var cardDetailsCompletionHandler: Completion<Result<CardDetails, Error>>?
+    internal var publicKeyProvider: AnyPublicKeyProvider
+
+    internal init(
         theme: AdyenTheme,
-        component: PaymentComponent,
+        paymentMethod: StoredCardPaymentMethod,
+        apiContext: APIContext,
+        analyticsProvider: AnyAnalyticsProvider?,
         localizationParameters: LocalizationParameters?
     ) {
         self.theme = theme
-        self.component = component
+        self.paymentMethod = paymentMethod
+        self.apiContext = apiContext
         self.localizationParameters = localizationParameters
+        self.analyticsProvider = analyticsProvider
+        self.publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
 
         securityCodeItem.publisher.addEventHandler { [weak self] value in
             guard let self else { return }
@@ -55,12 +70,11 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     }
 
     internal lazy var cardImageItem: AdyenUI.CardImageItem = {
-        let paymentMethod = component.paymentMethod
         let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
         // TODO: Robert: This will change as we will not rely on DisplayInformation for V6.
         let imageURL = LogoURLProvider.logoURL(
             withName: displayInformation.logoName,
-            environment: component.context.apiContext.environment,
+            environment: apiContext.environment,
             size: .large
         )
         return CardImageItem(
@@ -68,8 +82,6 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
             sizeMode: .fixed(Constants.cardImageSize),
             theme: theme
         )
-
-        CardImageItem(imageURL: nil, sizeMode: .fixed(CGSizeZero), theme: .init())
     }()
 
     internal lazy var securityCodeItem: FormCardSecurityCodeItem = {
@@ -98,10 +110,56 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         "Pay 140"
     }
 
-    internal func submitPayment() {
-        let securityCode: String = securityCodeItem.value
-        print("BOB: securityCode: \(securityCode)")
+    internal func returnToPreviousScreen() {}
+
+    internal func resetSecurityCodeField() {
+        securityCodeItem.value = ""
     }
 
-    internal func returnToPreviousScreen() {}
+    @MainActor
+    internal func submitPayment() async {
+        do {
+            let securityCode: String = securityCodeItem.value
+            let publicKey = try await fetchCardPublicKey()
+            resetSecurityCodeField()
+            let encryptedCardDetails: CardDetails = try {
+                do {
+                    return try encryptCardDetails(securityCode: securityCode, cardPublicKey: publicKey)
+                } catch {
+                    sendEncryptionErrorEvent()
+                    throw error
+                }
+            }()
+            Task { @MainActor in
+                cardDetailsCompletionHandler?(.success(encryptedCardDetails))
+            }
+        } catch {
+            Task { @MainActor in
+                cardDetailsCompletionHandler?(.failure(error))
+            }
+        }
+    }
+
+    private func fetchCardPublicKey() async throws -> String {
+        try await withCheckedThrowingContinuation { continuation in
+            publicKeyProvider.fetch { result in
+                continuation.resume(with: result)
+            }
+        }
+    }
+
+    private func encryptCardDetails(securityCode: String, cardPublicKey: String) throws -> CardDetails {
+        let encryptedSecurityCode = try CardEncryptor.encrypt(securityCode: securityCode, with: cardPublicKey)
+        return CardDetails(paymentMethod: paymentMethod, encryptedSecurityCode: encryptedSecurityCode)
+    }
+
+    private func sendEncryptionErrorEvent() {
+        var errorEvent = AnalyticsEventError(
+            component: paymentMethod.type.rawValue,
+            type: .internal
+        )
+        errorEvent.code = AnalyticsConstants.ErrorCode.encryptionError.stringValue
+        analyticsProvider?.add(error: errorEvent)
+    }
+
 }

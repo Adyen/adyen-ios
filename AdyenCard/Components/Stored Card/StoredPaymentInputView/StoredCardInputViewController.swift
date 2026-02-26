@@ -81,12 +81,11 @@ internal class StoredCardInputViewController: UIViewController {
 
         configureConstraints()
         configureContent()
-
         viewModel.setPayButtonEnabled = { [weak self] enabled in
             // TODO: Robert: StoredView: disable the Pay button in this screen. Currently the UI doesn't update well. Check FormButton to include a disabled UX?
             self?.primaryButton.isEnabled = enabled
         }
-        // setupNavigationBackButton()
+        setupNavigationBackButton()
     }
 
     private func configureConstraints() {
@@ -105,6 +104,7 @@ internal class StoredCardInputViewController: UIViewController {
     }
 
     private func setupNavigationBackButton() {
+        // TODO: Robert: StoredView: Back button is not getting set as this is not wrapped in a navigation controller. Who should create this navigation stack?
         let cancelButton = UIBarButtonItem(
             barButtonSystemItem: .cancel,
             target: self,
@@ -119,10 +119,20 @@ internal class StoredCardInputViewController: UIViewController {
         primaryButton.title = viewModel.submitButtonTitle
     }
 
+    private func updateLoadingState(_ isLoading: Bool) {
+        primaryButton.isUserInteractionEnabled = !isLoading
+        primaryButton.isEnabled = !isLoading
+        primaryButton.showsActivityIndicator = isLoading
+    }
+
     // MARK: - User Actions
 
     @objc private func primaryButtonTapped() {
-        viewModel.submitPayment()
+        updateLoadingState(true)
+        Task { [weak self] in
+            await self?.viewModel.submitPayment()
+            self?.updateLoadingState(false)
+        }
     }
 
     @objc private func backTapped() {
