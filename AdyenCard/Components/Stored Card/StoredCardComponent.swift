@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
+@_spi(AdyenInternal) import AdyenUI
 
 /// A component that provides a form for stored card payments.
 package final class StoredCardComponent: StoredPaymentComponent, PaymentAware, Localizable {
@@ -35,16 +36,17 @@ package final class StoredCardComponent: StoredPaymentComponent, PaymentAware, L
     }
     
     package lazy var viewController: UIViewController = {
+        // TODO: Robert: StoredView: Return the correct view from here.
         let useNewView = true
         if useNewView {
-            let viewModel = StoredCardInputViewModel()
+            // TODO: Robert: StoredView: Pass the AdyenTheme from Configuration when creating this Component
+            let viewModel = StoredCardInputViewModel(theme: AdyenTheme())
             return StoredCardInputViewController(viewModel: viewModel)
         } else {
-            // TODO: Robert: StoredView: Return the correct view from here.
-            storedCardAlertManager.alertController
+            return storedCardAlertManager.alertController
         }
     }()
-    
+
     internal lazy var storedCardAlertManager: StoredCardAlertManager = {
         sendInitialAnalytics()
         sendDidLoadEvent()

@@ -68,6 +68,7 @@ internal class StoredCardInputViewController: UIViewController {
         scrollView.addSubview(contentStackView)
 
         contentStackView.addArrangedSubview(topContentStackView)
+        contentStackView.addArrangedSubview(securityCodeItemView)
         contentStackView.addArrangedSubview(buttonsStackView)
 
         topContentStackView.addArrangedSubview(cardImageView)
@@ -77,10 +78,15 @@ internal class StoredCardInputViewController: UIViewController {
         labelsStackView.addArrangedSubview(subtitleLabel)
 
         buttonsStackView.addArrangedSubview(primaryButton)
-        buttonsStackView.addArrangedSubview(secondaryButton)
 
         configureConstraints()
         configureContent()
+
+        viewModel.setPayButtonEnabled = { [weak self] enabled in
+            // TODO: Robert: StoredView: disable the Pay button in this screen. Currently the UI doesn't update well. Check FormButton to include a disabled UX?
+            self?.primaryButton.isEnabled = enabled
+        }
+        // setupNavigationBackButton()
     }
 
     private func configureConstraints() {
@@ -98,11 +104,19 @@ internal class StoredCardInputViewController: UIViewController {
         ])
     }
 
+    private func setupNavigationBackButton() {
+        let cancelButton = UIBarButtonItem(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(backTapped)
+        )
+        navigationItem.leftBarButtonItem = cancelButton
+    }
+
     private func configureContent() {
         titleLabel.text = viewModel.titleText
         subtitleLabel.text = viewModel.subtitleText
         primaryButton.title = viewModel.submitButtonTitle
-        secondaryButton.title = viewModel.showAllPaymentMethodsButtonTitle
     }
 
     // MARK: - User Actions
@@ -111,8 +125,8 @@ internal class StoredCardInputViewController: UIViewController {
         viewModel.submitPayment()
     }
 
-    @objc private func secondaryButtonTapped() {
-        viewModel.showAllPaymentMethods()
+    @objc private func backTapped() {
+        viewModel.returnToPreviousScreen()
     }
 
     // MARK: - Subviews
@@ -180,6 +194,13 @@ internal class StoredCardInputViewController: UIViewController {
         return label
     }()
 
+    private lazy var securityCodeItemView: FormCardSecurityCodeItemView = {
+        let view = FormCardSecurityCodeItemView(item: viewModel.securityCodeItem, theme: viewModel.theme)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "securityCodeItemView")
+        return view
+    }()
+
     private lazy var buttonsStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -194,14 +215,6 @@ internal class StoredCardInputViewController: UIViewController {
         button.addTarget(self, action: #selector(primaryButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton")
         button.leadingImage = .adyenLock ?? .systemLock
-        return button
-    }()
-
-    private lazy var secondaryButton: FormButton = {
-        let button = FormButton(buttonStyle: viewModel.theme.elements.buttons.secondary)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(secondaryButtonTapped), for: .touchUpInside)
-        button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "secondaryButton")
         return button
     }()
 }
