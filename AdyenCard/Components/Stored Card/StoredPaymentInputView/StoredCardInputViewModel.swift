@@ -22,6 +22,9 @@ internal protocol StoredCardInputViewModelProtocol: AnyObject {
     var submitButtonTitle: String { get }
     func submitPayment() async
 
+    var showAllPaymentMethodsButtonTitle: String { get }
+    func showAllPaymentMethods()
+
     func returnToPreviousScreen()
 
     var theme: AdyenTheme { get }
@@ -29,9 +32,9 @@ internal protocol StoredCardInputViewModelProtocol: AnyObject {
     var setPayButtonEnabled: ((Bool) -> Void)? { get set }
 }
 
-internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol {
+internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol, AdyenObserver {
     private enum Constants {
-        static let cardImageSize = CGSize(width: 80, height: 52)
+        static let cardImageSizeCardArtNotAvailable = CGSize(width: 80, height: 52)
     }
 
     internal let theme: AdyenTheme
@@ -62,7 +65,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         self.analyticsProvider = analyticsProvider
         self.publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
 
-        securityCodeItem.publisher.addEventHandler { [weak self] value in
+        observe(securityCodeItem.publisher) { [weak self] event in
             guard let self else { return }
             setPayButtonEnabled?(securityCodeItem.isValid())
         }
@@ -78,7 +81,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         )
         return CardImageItem(
             imageURL: imageURL,
-            sizeMode: .fixed(Constants.cardImageSize),
+            sizeMode: .fixed(Constants.cardImageSizeCardArtNotAvailable),
             theme: theme
         )
     }()
@@ -93,6 +96,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         localizedString(.cardComponentInputTitle, localizationParameters)
     }
 
+    /// We construct something like - Enter the security code for BOLD[Visa •••• 4556] to complete the payment of BOLD[$140.98]
     internal var subtitleText: NSAttributedString {
         let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
         let paymentMethodTitle = paymentMethod.name + displayInformation.title
@@ -123,11 +127,21 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         localizedString(.submitButtonFormatted, localizationParameters, formattedAmount)
     }
 
-    internal func returnToPreviousScreen() {}
-
-    internal func resetSecurityCodeField() {
-        securityCodeItem.value = ""
+    internal func returnToPreviousScreen() {
+        // TODO: Robert: StoredView: Inform the router to pop me out.
     }
+
+    // MARK: - Other payment options
+
+    internal var showAllPaymentMethodsButtonTitle: String {
+        localizedString(.preselectedPaymentMethodOtherOptions, localizationParameters)
+    }
+
+    internal func showAllPaymentMethods() {
+        // TODO: Robert: StoredView: Inform the router to navigation to the payment list.
+    }
+
+    // MARK: - Submit payment
 
     @MainActor
     internal func submitPayment() async {
@@ -151,6 +165,10 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
                 cardDetailsCompletionHandler?(.failure(error))
             }
         }
+    }
+
+    internal func resetSecurityCodeField() {
+        securityCodeItem.value = ""
     }
 
     private func fetchCardPublicKey() async throws -> String {

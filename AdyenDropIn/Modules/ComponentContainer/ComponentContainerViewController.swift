@@ -33,6 +33,7 @@ internal class ComponentContainerViewController: UIViewController {
         super.viewDidLoad()
         setupComponentView()
         setupNavigationItem()
+        configurePresentationSheet()
     }
     
     override public func viewDidDisappear(_ animated: Bool) {
@@ -48,6 +49,11 @@ internal class ComponentContainerViewController: UIViewController {
     }
     
     // MARK: - Private
+
+    private func configurePresentationSheet() {
+        // Adding this to avoid swiping down to dismiss the controller.
+        isModalInPresentation = true
+    }
 
     private func setupComponentView() {
         componentViewController.willMove(toParent: self)

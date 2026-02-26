@@ -88,7 +88,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     /// 1. Avoid swipe down to dismiss.
     /// 2. to make the screen dynamic sizable.
     private func configurePresentationSheet() {
-        // Adding this to avoid swiping down to dimiss the controller.
+        // Adding this to avoid swiping down to dismiss the controller.
         isModalInPresentation = true
 
         // Adding this to make the controller fit its content height.

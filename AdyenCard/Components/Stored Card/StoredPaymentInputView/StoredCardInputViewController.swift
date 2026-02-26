@@ -27,10 +27,6 @@ internal class StoredCardInputViewController: UIViewController {
         static let distanceBetweenImageAndLabels: CGFloat = 12
         static let distanceFromButtonsToLabels: CGFloat = 24
         static let buttonsBottomPadding: CGFloat = 0
-
-        static let secondaryButtonCornerRadius: CGFloat = 14
-        static let sheetCornerRadius: CGFloat = 16
-
         static let labelsSpacing: CGFloat = 8
         static let buttonsSpacingWithEachOther: CGFloat = 16
     }
@@ -38,6 +34,10 @@ internal class StoredCardInputViewController: UIViewController {
     // MARK: - Properties
 
     private let viewModel: StoredCardInputViewModelProtocol
+
+    private var theme: AdyenTheme {
+        viewModel.theme
+    }
 
     // MARK: - Initializers
 
@@ -61,8 +61,7 @@ internal class StoredCardInputViewController: UIViewController {
     // MARK: - setup & configurations
 
     private func setupView() {
-        // TODO: Robert: Use Adyen Theme
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = theme.colors.background
 
         view.addSubview(scrollView)
         scrollView.addSubview(contentStackView)
@@ -77,7 +76,9 @@ internal class StoredCardInputViewController: UIViewController {
         labelsStackView.addArrangedSubview(titleLabel)
         labelsStackView.addArrangedSubview(subtitleLabel)
 
+        // TODO: Robert: StoredView: Should the buttons be pinned to the keyboard? If i do that it blocks the input field in landscape mode. For now it is part of the content view -> Scroll view.
         buttonsStackView.addArrangedSubview(primaryButton)
+        buttonsStackView.addArrangedSubview(secondaryButton)
 
         configureConstraints()
         configureContent()
@@ -86,6 +87,12 @@ internal class StoredCardInputViewController: UIViewController {
             self?.primaryButton.isEnabled = enabled
         }
         setupNavigationBackButton()
+        configurePresentationSheet()
+    }
+
+    private func configurePresentationSheet() {
+        // Adding this to avoid swiping down to dimiss the controller.
+        isModalInPresentation = true
     }
 
     private func configureConstraints() {
@@ -118,6 +125,7 @@ internal class StoredCardInputViewController: UIViewController {
         titleLabel.text = viewModel.titleText
         subtitleLabel.attributedText = viewModel.subtitleText
         primaryButton.title = viewModel.submitButtonTitle
+        secondaryButton.title = viewModel.showAllPaymentMethodsButtonTitle
     }
 
     private func updateLoadingState(_ isLoading: Bool) {
@@ -134,6 +142,10 @@ internal class StoredCardInputViewController: UIViewController {
             await self?.viewModel.submitPayment()
             self?.updateLoadingState(false)
         }
+    }
+
+    @objc private func secondaryButtonTapped() {
+        viewModel.showAllPaymentMethods()
     }
 
     @objc private func backTapped() {
@@ -189,7 +201,7 @@ internal class StoredCardInputViewController: UIViewController {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.apply(viewModel.theme.elements.labels.title)
+        label.apply(theme.elements.labels.title)
         label.numberOfLines = 0
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
 
@@ -205,7 +217,8 @@ internal class StoredCardInputViewController: UIViewController {
     }()
 
     private lazy var securityCodeItemView: FormCardSecurityCodeItemView = {
-        let view = FormCardSecurityCodeItemView(item: viewModel.securityCodeItem, theme: viewModel.theme)
+        // TODO: Robert: StoredView: There is a bug with FormCardSecurityCodeItemView that when i type more than 3 characters only 3 display but validation happens with 4+ characters and then it fails validation. Needs to be debugged separately.
+        let view = FormCardSecurityCodeItemView(item: viewModel.securityCodeItem, theme: theme)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "securityCodeItemView")
         return view
@@ -220,11 +233,19 @@ internal class StoredCardInputViewController: UIViewController {
     }()
 
     private lazy var primaryButton: FormButton = {
-        let button = FormButton(buttonStyle: viewModel.theme.elements.buttons.primary)
+        let button = FormButton(buttonStyle: theme.elements.buttons.primary)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(primaryButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton")
         button.leadingImage = .adyenLock ?? .systemLock
+        return button
+    }()
+
+    private lazy var secondaryButton: FormButton = {
+        let button = FormButton(buttonStyle: theme.elements.buttons.secondary)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(secondaryButtonTapped), for: .touchUpInside)
+        button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "secondaryButton")
         return button
     }()
 }
