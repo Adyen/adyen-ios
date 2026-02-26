@@ -29,11 +29,24 @@ internal protocol StoredCardInputViewModelProtocol: AnyObject {
 }
 
 internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol {
+    private enum Constants {
+        static let cardImageSize = CGSize(width: 80, height: 52)
+    }
+
+    private let component: PaymentComponent
+    internal let theme: AdyenTheme
+    private let localizationParameters: LocalizationParameters?
 
     internal var setPayButtonEnabled: ((Bool) -> Void)?
 
-    init(theme: AdyenTheme) {
+    init(
+        theme: AdyenTheme,
+        component: PaymentComponent,
+        localizationParameters: LocalizationParameters?
+    ) {
         self.theme = theme
+        self.component = component
+        self.localizationParameters = localizationParameters
 
         securityCodeItem.publisher.addEventHandler { [weak self] value in
             guard let self else { return }
@@ -41,9 +54,23 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         }
     }
 
-    var cardImageItem: AdyenUI.CardImageItem {
+    internal lazy var cardImageItem: AdyenUI.CardImageItem = {
+        let paymentMethod = component.paymentMethod
+        let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
+        // TODO: Robert: This will change as we will not rely on DisplayInformation for V6.
+        let imageURL = LogoURLProvider.logoURL(
+            withName: displayInformation.logoName,
+            environment: component.context.apiContext.environment,
+            size: .large
+        )
+        return CardImageItem(
+            imageURL: imageURL,
+            sizeMode: .fixed(Constants.cardImageSize),
+            theme: theme
+        )
+
         CardImageItem(imageURL: nil, sizeMode: .fixed(CGSizeZero), theme: .init())
-    }
+    }()
 
     internal lazy var securityCodeItem: FormCardSecurityCodeItem = {
         let item = FormCardSecurityCodeItem()
@@ -70,8 +97,6 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     internal var submitButtonTitle: String {
         "Pay 140"
     }
-
-    internal var theme: AdyenTheme = .init()
 
     internal func submitPayment() {
         let securityCode: String = securityCodeItem.value

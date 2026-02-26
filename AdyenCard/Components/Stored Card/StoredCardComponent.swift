@@ -40,7 +40,7 @@ package final class StoredCardComponent: StoredPaymentComponent, PaymentAware, L
         let useNewView = true
         if useNewView {
             // TODO: Robert: StoredView: Pass the AdyenTheme from Configuration when creating this Component
-            let viewModel = StoredCardInputViewModel(theme: AdyenTheme())
+            let viewModel = StoredCardInputViewModel(theme: AdyenTheme(), component: self, localizationParameters: localizationParameters)
             return StoredCardInputViewController(viewModel: viewModel)
         } else {
             return storedCardAlertManager.alertController
