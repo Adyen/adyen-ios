@@ -116,7 +116,7 @@ internal class StoredCardInputViewController: UIViewController {
 
     private func configureContent() {
         titleLabel.text = viewModel.titleText
-        subtitleLabel.text = viewModel.subtitleText
+        subtitleLabel.attributedText = viewModel.subtitleText
         primaryButton.title = viewModel.submitButtonTitle
     }
 
@@ -199,7 +199,6 @@ internal class StoredCardInputViewController: UIViewController {
     private lazy var subtitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.apply(viewModel.theme.elements.labels.body)
         label.numberOfLines = 0
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "subTitle")
         return label

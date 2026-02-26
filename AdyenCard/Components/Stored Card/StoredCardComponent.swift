@@ -40,6 +40,7 @@ package final class StoredCardComponent: StoredPaymentComponent, PaymentAware, L
             theme: AdyenTheme(),
             paymentMethod: storedCardPaymentMethod,
             apiContext: context.apiContext,
+            amount: context.amount,
             analyticsProvider: context.analyticsProvider,
             localizationParameters: localizationParameters
         )

@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
 
-// TODO: Robert: Question: What is the purpose of this ComponentContainerViewController? I see that we simply pass through the viewModel.ComponentViewController which is the component's implementation of the Payment.
+// TODO: Robert: StoredView: Question: What is the purpose of this ComponentContainerViewController? I see that we simply pass through the viewModel.ComponentViewController which is the component's implementation of the Payment.
 internal class ComponentContainerViewController: UIViewController {
     
     // MARK: - Properties

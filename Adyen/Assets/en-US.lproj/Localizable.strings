@@ -33,6 +33,8 @@
 "adyen.card.cvcItem.invalid" = "Invalid CVC / CVV format";
 "adyen.card.cvcItem.title" = "Security code";
 "adyen.card.cvcItem.placeholder" = "123";
+"adyen.card.securityCode.title" = "Enter security code";
+"adyen.card.securityCode.description" = "Enter the security code for %@ to complete the payment of %@";
 "adyen.card.stored.title" = "Verify your card";
 "adyen.card.stored.message" = "Please enter the CVC code for %@";
 "adyen.card.stored.expires" = "Expires %@";
@@ -49,7 +51,7 @@
 "adyen.phoneNumber.invalid" = "Invalid telephone number";
 "adyen.telephonePrefix" = "Prefix";
 "adyen.phoneNumber.placeholder" = "123–456–789";
-"adyen.card.cvcItem.placeholder.digits" = "%@ digits";
+"adyen.card.cvcItem.placeholder.digits" = "%@ digits, back of card";
 "adyen.emailItem.title" = "Email address";
 "adyen.emailItem.placeHolder" = "Email address";
 "adyen.emailItem.invalid" = "Invalid email address";

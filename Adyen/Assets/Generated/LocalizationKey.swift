@@ -76,6 +76,10 @@ public struct LocalizationKey {
     public static let cardCvcItemInvalid = LocalizationKey(key: "adyen.card.cvcItem.invalid")
     /// Security code
     public static let cardCvcItemTitle = LocalizationKey(key: "adyen.card.cvcItem.title")
+    /// Enter security code
+    public static let cardComponentInputTitle = LocalizationKey(key: "adyen.card.securityCode.title")
+    /// Enter the security code for %@ to complete the payment of %@
+    public static let cardComponentInputDescription = LocalizationKey(key: "adyen.card.securityCode.description")
     /// 123
     public static let cardCvcItemPlaceholder = LocalizationKey(key: "adyen.card.cvcItem.placeholder")
     /// Verify your card
@@ -560,7 +564,6 @@ public struct LocalizationKey {
     public static let preselectedPaymentMethodSubtitle = LocalizationKey(key: "adyen.preselectedPaymentMethod.subtitle")
     /// Other payment options
     public static let preselectedPaymentMethodOtherOptions = LocalizationKey(key: "adyen.preselectedPaymentMethod.otherOptions")
-    
     internal let key: String
     
     /// :nodoc:

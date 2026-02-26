@@ -15,12 +15,9 @@
 internal protocol StoredCardInputViewModelProtocol: AnyObject {
     var cardImageItem: CardImageItem { get }
     var titleText: String { get }
-    var subtitleText: String { get }
+    var subtitleText: NSAttributedString { get }
 
     var securityCodeItem: FormCardSecurityCodeItem { get }
-
-    var inputFieldTitle: String { get }
-    var inputFieldSubTitle: String { get }
 
     var submitButtonTitle: String { get }
     func submitPayment() async
@@ -42,7 +39,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     private let paymentMethod: StoredCardPaymentMethod
     private let apiContext: APIContext
     private let analyticsProvider: AnyAnalyticsProvider?
-
+    private let amount: Amount
     internal var setPayButtonEnabled: ((Bool) -> Void)?
 
     /// This informs the status of the payment after submitting the security code.
@@ -53,11 +50,13 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         theme: AdyenTheme,
         paymentMethod: StoredCardPaymentMethod,
         apiContext: APIContext,
+        amount: Amount,
         analyticsProvider: AnyAnalyticsProvider?,
         localizationParameters: LocalizationParameters?
     ) {
         self.theme = theme
         self.paymentMethod = paymentMethod
+        self.amount = amount
         self.apiContext = apiContext
         self.localizationParameters = localizationParameters
         self.analyticsProvider = analyticsProvider
@@ -91,23 +90,37 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     }()
 
     internal var titleText: String {
-        "Enter security code"
+        localizedString(.cardComponentInputTitle, localizationParameters)
     }
 
-    internal var subtitleText: String {
-        "Enter the security code for Visa *** to complete the payment of $140"
+    internal var subtitleText: NSAttributedString {
+        let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
+        let paymentMethodTitle = paymentMethod.name + displayInformation.title
+        let localizedString = localizedString(.cardComponentInputDescription, localizationParameters, paymentMethodTitle, formattedAmount)
+
+        let attributed = NSMutableAttributedString(string: localizedString)
+
+        let range = (localizedString as NSString).range(of: paymentMethodTitle)
+        attributed.addAttribute(.font, value: theme.elements.labels.bodyEmphasized.font, range: range)
+        attributed.addAttribute(.foregroundColor, value: theme.elements.labels.bodyEmphasized.color, range: range)
+
+        let amountRange = (localizedString as NSString).range(of: formattedAmount)
+        attributed.addAttribute(.font, value: theme.elements.labels.bodyEmphasized.font, range: amountRange)
+        attributed.addAttribute(.foregroundColor, value: theme.elements.labels.bodyEmphasized.color, range: amountRange)
+
+        return attributed
     }
 
-    internal var inputFieldTitle: String {
-        "Security Code"
-    }
-
-    internal var inputFieldSubTitle: String {
-        "3 digits, back of card"
+    private var formattedAmount: String {
+        let amount = amount
+        guard let formatted = AmountFormatter.formatted(amount: amount.value, currencyCode: amount.currencyCode) else {
+            return ""
+        }
+        return formatted
     }
 
     internal var submitButtonTitle: String {
-        "Pay 140"
+        localizedString(.submitButtonFormatted, localizationParameters, formattedAmount)
     }
 
     internal func returnToPreviousScreen() {}
