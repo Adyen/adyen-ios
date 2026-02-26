@@ -104,13 +104,14 @@ internal class StoredCardInputViewController: UIViewController {
     }
 
     private func setupNavigationBackButton() {
-        // TODO: Robert: StoredView: Back button is not getting set as this is not wrapped in a navigation controller. Who should create this navigation stack?
-        let cancelButton = UIBarButtonItem(
-            barButtonSystemItem: .cancel,
+        let backButton = UIBarButtonItem(
+            // TODO: Robert: StoredView: How in the world should i get the back button here? without using the chevron.left(available iOS 13+)
+            image: UIImage(systemName: "chevron.left"),
+            style: .plain,
             target: self,
             action: #selector(backTapped)
         )
-        navigationItem.leftBarButtonItem = cancelButton
+        navigationItem.leftBarButtonItem = backButton
     }
 
     private func configureContent() {
