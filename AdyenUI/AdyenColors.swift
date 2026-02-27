@@ -7,53 +7,56 @@
 import UIKit
 
 internal enum DefaultColorsLight {
-    static let backgroundPrimary = UIColor.color(hex: 0xFFFFFF)
-    static let backgroundSecondary = UIColor.color(hex: 0xF7F7F8)
-    static let backgroundQuaternary = UIColor.color(hex: 0x525252)
-    static let backgroundDisabled = UIColor.color(hex: 0xEEEFF1)
-    static let critical = UIColor.color(hex: 0xE22D2D)
-    static let success = UIColor.color(hex: 0x07893C)
-    static let highlight = UIColor.color(hex: 0x0070F5)
-    static let labelPrimary = UIColor.color(hex: 0x00112C)
-    static let labelSecondary = UIColor.color(hex: 0x5C687C)
-    static let labelDisabled = UIColor.color(hex: 0x8D95A3)
-    static let separatorPrimary = UIColor.color(hex: 0xDADDDF)
+    internal static let backgroundPrimary = UIColor.color(hex: 0xFFFFFF)
+    internal static let backgroundSecondary = UIColor.color(hex: 0xF7F7F8)
+    internal static let backgroundQuaternary = UIColor.color(hex: 0x525252)
+    internal static let backgroundDisabled = UIColor.color(hex: 0xEEEFF1)
+    internal static let critical = UIColor.color(hex: 0xE22D2D)
+    internal static let success = UIColor.color(hex: 0x07893C)
+    internal static let highlight = UIColor.color(hex: 0x0070F5)
+    internal static let labelPrimary = UIColor.color(hex: 0x00112C)
+    internal static let labelSecondary = UIColor.color(hex: 0x5C687C)
+    internal static let labelDisabled = UIColor.color(hex: 0x8D95A3)
+    internal static let separatorPrimary = UIColor.color(hex: 0xDADDDF)
+    internal static let supportShadow = UIColor.color(hex: 0x001222)
 }
 
 internal enum DefaultColorsDark {
-    static let backgroundPrimary = UIColor.color(hex: 0x121212)
-    static let backgroundSecondary = UIColor.color(hex: 0x1C1C1E)
-    static let backgroundQuaternary = UIColor.color(hex: 0xC0C5CA)
-    static let backgroundDisabled = UIColor.color(hex: 0xEEEFF1)
-    static let critical = UIColor.color(hex: 0xF99C9C)
-    static let success = UIColor.color(hex: 0x41CD7A)
-    static let highlight = UIColor.color(hex: 0x7DB9FF)
-    static let labelPrimary = UIColor.color(hex: 0xFFFFFF)
-    static let labelSecondary = UIColor.color(hex: 0xA5A5A5)
-    static let labelDisabled = UIColor.color(hex: 0x7E7E7E)
-    static let separatorPrimary = UIColor.color(hex: 0x444444)
+    internal static let backgroundPrimary = UIColor.color(hex: 0x121212)
+    internal static let backgroundSecondary = UIColor.color(hex: 0x1C1C1E)
+    internal static let backgroundQuaternary = UIColor.color(hex: 0xC0C5CA)
+    internal static let backgroundDisabled = UIColor.color(hex: 0xEEEFF1)
+    internal static let critical = UIColor.color(hex: 0xF99C9C)
+    internal static let success = UIColor.color(hex: 0x41CD7A)
+    internal static let highlight = UIColor.color(hex: 0x7DB9FF)
+    internal static let labelPrimary = UIColor.color(hex: 0xFFFFFF)
+    internal static let labelSecondary = UIColor.color(hex: 0xA5A5A5)
+    internal static let labelDisabled = UIColor.color(hex: 0x7E7E7E)
+    internal static let separatorPrimary = UIColor.color(hex: 0x444444)
+    internal static let supportShadow = UIColor.color(hex: 0x070707)
 }
 
-public struct AdyenColors: Equatable {
+package struct AdyenColors: Equatable {
 
-    public var background: UIColor
-    public var container: UIColor
-    public var containerOutline: UIColor
-    public var primary: UIColor
-    public var textOnPrimary: UIColor
-    public var highlight: UIColor
-    public var destructive: UIColor
-    public var success: UIColor
-    public var textOnDestructive: UIColor
-    public var disabled: UIColor
-    public var textOnDisabled: UIColor
-    public var separator: UIColor
-    public var text: UIColor
-    public var textSecondary: UIColor
+    package var background: UIColor
+    package var container: UIColor
+    package var containerOutline: UIColor
+    package var primary: UIColor
+    package var textOnPrimary: UIColor
+    package var highlight: UIColor
+    package var destructive: UIColor
+    package var success: UIColor
+    package var textOnDestructive: UIColor
+    package var disabled: UIColor
+    package var textOnDisabled: UIColor
+    package var separator: UIColor
+    package var text: UIColor
+    package var textSecondary: UIColor
+    package var supportShadow: UIColor
 
     // MARK: - Initializers
 
-    public static var `default`: AdyenColors = .init()
+    package static var `default`: AdyenColors = .init()
 
     private init() {
         self.background = UIColor { traitCollection in
@@ -111,9 +114,12 @@ public struct AdyenColors: Equatable {
         self.textSecondary = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.labelSecondary : DefaultColorsLight.labelSecondary
         }
+        self.supportShadow = UIColor { traitCollection in
+            traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.supportShadow : DefaultColorsLight.supportShadow
+        }
     }
 
-    public init(
+    package init(
         background: UIColor? = nil,
         container: UIColor? = nil,
         containerOutline: UIColor? = nil,
@@ -127,7 +133,8 @@ public struct AdyenColors: Equatable {
         textOnDisabled: UIColor? = nil,
         separator: UIColor? = nil,
         text: UIColor? = nil,
-        textSecondary: UIColor? = nil
+        textSecondary: UIColor? = nil,
+        supportShadow: UIColor? = nil
     ) {
         let defaultScheme = AdyenColors.default
 
@@ -145,5 +152,6 @@ public struct AdyenColors: Equatable {
         self.separator = separator ?? defaultScheme.separator
         self.text = text ?? defaultScheme.text
         self.textSecondary = textSecondary ?? defaultScheme.textSecondary
+        self.supportShadow = supportShadow ?? defaultScheme.supportShadow
     }
 }

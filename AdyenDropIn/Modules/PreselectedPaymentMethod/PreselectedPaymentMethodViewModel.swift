@@ -82,7 +82,11 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
             environment: component.context.apiContext.environment,
             size: .large
         )
-        return CardImageItem(imageURL: imageURL, sizeMode: .fixed(Constants.cardImageSize))
+        return CardImageItem(
+            imageURL: imageURL,
+            sizeMode: .fixed(Constants.cardImageSize),
+            theme: theme
+        )
     }
 
     internal var titleText: String {
