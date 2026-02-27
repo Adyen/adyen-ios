@@ -28,7 +28,7 @@ package struct ACHDirectDebitComponentFactory: PaymentComponentFactory {
         with paymentMethod: ACHDirectDebitPaymentMethod,
         context: AdyenContext,
         configuration: ACHDirectDebitComponentConfiguration,
-        publicKey: String
+        publicKey: PublicKeyFetchingProgramFlow
     ) -> ACHDirectDebitComponent {
         ACHDirectDebitComponent(
             paymentMethod: paymentMethod,

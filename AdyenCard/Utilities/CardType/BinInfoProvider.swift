@@ -20,8 +20,9 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
     private let apiClient: APIClientProtocol
 
     private var binLookupService: AnyBinLookupService?
-    
-    private let publicKey: String
+
+    private let publicKeyProvider: AnyPublicKeyProvider
+    private let publicKey: PublicKeyFetchingProgramFlow
 
     private let fallbackCardTypeProvider: AnyBinInfoProvider
     
@@ -34,12 +35,14 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
     ///   if API not available or BIN too short.
     internal init(
         apiClient: APIClientProtocol,
-        publicKey: String,
+        publicKeyProvider: AnyPublicKeyProvider,
+        publicKey: PublicKeyFetchingProgramFlow,
         fallbackCardTypeProvider: AnyBinInfoProvider = FallbackBinInfoProvider(),
         minBinLength: Int,
         binLookupType: BinLookupRequestType
     ) {
         self.apiClient = apiClient
+        self.publicKeyProvider = publicKeyProvider
         self.publicKey = publicKey
         self.fallbackCardTypeProvider = fallbackCardTypeProvider
         self.minBinLength = minBinLength
@@ -79,9 +82,24 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
         if let service = binLookupService {
             useService(service)
         } else {
-            let service = BinLookupService(publicKey: publicKey, apiClient: self.apiClient, binLookupType: self.binLookupType)
-            self.binLookupService = service
-            useService(service)
+            switch publicKey {
+            case let .prefetched(publicKey):
+                let service = BinLookupService(publicKey: publicKey, apiClient: self.apiClient, binLookupType: self.binLookupType)
+                self.binLookupService = service
+                useService(service)
+            case .notFetched:
+                publicKeyProvider.fetch { [weak self] result in
+                    guard let self else { return }
+                    switch result {
+                    case let .success(publicKey):
+                        let service = BinLookupService(publicKey: publicKey, apiClient: self.apiClient, binLookupType: self.binLookupType)
+                        self.binLookupService = service
+                        useService(service)
+                    case .failure:
+                        fallback()
+                    }
+                }
+            }
         }
     }
 

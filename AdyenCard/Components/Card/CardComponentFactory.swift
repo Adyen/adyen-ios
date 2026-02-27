@@ -30,7 +30,7 @@ package struct CardComponentFactory<CardMethod: AnyCardPaymentMethod>: PaymentCo
         with paymentMethod: CardMethod,
         context: AdyenContext,
         configuration: CardComponentConfiguration,
-        publicKey: String
+        publicKey: PublicKeyFetchingProgramFlow
     ) -> CardComponent {
         CardComponent(
             paymentMethod: paymentMethod,

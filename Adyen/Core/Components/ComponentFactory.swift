@@ -33,7 +33,7 @@ package protocol PaymentComponentFactory {
         with paymentMethod: Method,
         context: AdyenContext,
         configuration: Configuration,
-        publicKey: String
+        publicKey: PublicKeyFetchingProgramFlow
     ) -> Component
     
     /// Creates the default configuration for the component.

@@ -20,7 +20,7 @@ internal enum CheckoutComponentBuilder {
     internal static func build(
         for paymentMethod: PaymentMethod,
         configuration: CheckoutConfiguration,
-        publicKey: String
+        publicKey: PublicKeyFetchingProgramFlow
     ) -> PaymentComponent {
         
         // Assembly layer
@@ -107,7 +107,7 @@ internal enum CheckoutComponentBuilder {
         using factory: Factory,
         paymentMethod: Factory.Method,
         configuration: CheckoutConfiguration,
-        publicKey: String
+        publicKey: PublicKeyFetchingProgramFlow
     ) -> PaymentComponent where Factory.Configuration: CheckoutComponentConfiguration {
         
         var componentConfiguration = configuration.configuration(

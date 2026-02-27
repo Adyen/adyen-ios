@@ -28,7 +28,7 @@ package struct BLIKComponentFactory: PaymentComponentFactory {
         with paymentMethod: BLIKPaymentMethod,
         context: AdyenContext,
         configuration: BLIKComponentConfiguration,
-        publicKey: String
+        publicKey: PublicKeyFetchingProgramFlow
     ) -> BLIKComponent {
         BLIKComponent(
             paymentMethod: paymentMethod,

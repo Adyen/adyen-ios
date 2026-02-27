@@ -30,7 +30,7 @@ public final class CheckoutPaymentComponent {
     
     internal weak var delegate: PaymentComponentDelegate?
 
-    private var publicKey: String
+    private var publicKey: PublicKeyFetchingProgramFlow
 
     /// The view controller of the component.
     public var viewController: UIViewController? {
@@ -43,7 +43,7 @@ public final class CheckoutPaymentComponent {
     package init(
         paymentMethod: PaymentMethod,
         configuration: CheckoutConfiguration,
-        publicKey: String,
+        publicKey: PublicKeyFetchingProgramFlow,
         delegate: PaymentComponentDelegate?
     ) {
         self.configuration = configuration
@@ -57,7 +57,7 @@ public final class CheckoutPaymentComponent {
     package init(
         storedPaymentMethod: StoredPaymentMethod,
         configuration: CheckoutConfiguration,
-        publicKey: String,
+        publicKey: PublicKeyFetchingProgramFlow,
         delegate: PaymentComponentDelegate?
     ) {
         self.configuration = configuration

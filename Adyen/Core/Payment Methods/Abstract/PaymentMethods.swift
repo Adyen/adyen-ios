@@ -6,6 +6,14 @@
 
 import Foundation
 
+/// A temporary type to ensure both the prefetched and the later fetched versions of the Components work.
+/// This will help us gradually migrate all flows to using the prefetched flow. So when notFetched is not used, this type can go.
+/// TODO: This type has to be deleted before release of v6.
+public enum PublicKeyFetchingProgramFlow {
+    case prefetched(String)
+    case notFetched
+}
+
 /**
  A collection of available payment methods.
 

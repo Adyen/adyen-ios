@@ -60,7 +60,7 @@ internal class CheckoutProvider: CheckoutProviding {
             configuration: configuration,
             session: session,
             checkoutAttemptId: checkoutAttemptId,
-            publicKey: publicKey,
+            publicKey: .prefetched(publicKey),
             presentationDelegate: presentationDelegate
         )
     }
@@ -93,7 +93,7 @@ internal class CheckoutProvider: CheckoutProviding {
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: checkoutAttemptId,
-            publicKey: publicKey,
+            publicKey: .prefetched(publicKey),
             presentationDelegate: presentationDelegate
         )
     }
@@ -121,7 +121,7 @@ internal class CheckoutProvider: CheckoutProviding {
         return try await Checkout(
             configuration: configuration,
             checkoutAttemptId: checkoutAttemptId,
-            publicKey: publicKey,
+            publicKey: .prefetched(publicKey),
             presentationDelegate: presentationDelegate
         )
     }
