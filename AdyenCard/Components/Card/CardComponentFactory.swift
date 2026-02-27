@@ -34,6 +34,7 @@ package struct CardComponentFactory<CardMethod: AnyCardPaymentMethod>: PaymentCo
         CardComponent(
             paymentMethod: paymentMethod,
             context: context,
+            publicKey: "BOB",
             configuration: configuration
         )
     }

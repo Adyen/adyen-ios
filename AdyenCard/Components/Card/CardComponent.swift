@@ -36,8 +36,7 @@ public class CardComponent: PresentableComponent,
 
     internal let cardPaymentMethod: AnyCardPaymentMethod
 
-    @_spi(AdyenInternal)
-    public let publicKeyProvider: AnyPublicKeyProvider
+    internal let publicKey: String
 
     internal let binInfoProvider: AnyBinInfoProvider
 
@@ -90,12 +89,12 @@ public class CardComponent: PresentableComponent,
     public convenience init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
+        publicKey: String,
         configuration: CardComponentConfiguration = .init()
     ) {
-        let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
         let binInfoProvider = BinInfoProvider(
             apiClient: APIClient(apiContext: context.apiContext),
-            publicKeyProvider: publicKeyProvider,
+            publicKey: publicKey,
             minBinLength: Constant.thresholdBINLength,
             binLookupType: configuration.binLookupType
         )
@@ -103,7 +102,7 @@ public class CardComponent: PresentableComponent,
             paymentMethod: paymentMethod,
             context: context,
             configuration: configuration,
-            publicKeyProvider: publicKeyProvider,
+            publicKey: publicKey,
             binProvider: binInfoProvider
         )
     }
@@ -120,15 +119,14 @@ public class CardComponent: PresentableComponent,
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
         configuration: CardComponentConfiguration,
-        publicKeyProvider: AnyPublicKeyProvider,
+        publicKey: String,
         binProvider: AnyBinInfoProvider
     ) {
         self.cardPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
-        self.publicKeyProvider = publicKeyProvider
         self.binInfoProvider = binProvider
-
+        self.publicKey = publicKey
         self.supportedCardTypes = configuration.allowedCardTypes ?? paymentMethod.brands
     }
 
@@ -261,9 +259,6 @@ extension CardComponent: CardViewControllerDelegate {
         }
     }
 }
-
-@_spi(AdyenInternal)
-extension CardComponent: PublicKeyConsumer {}
 
 private extension CardComponent {
 

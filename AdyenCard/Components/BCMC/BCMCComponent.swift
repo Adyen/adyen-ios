@@ -20,14 +20,14 @@ public final class BCMCComponent: CardComponent {
     public init(
         paymentMethod: BCMCPaymentMethod,
         context: AdyenContext,
+        publicKey: String,
         configuration: CardComponentConfiguration = .init()
     ) {
         let configuration = configuration.bcmcConfiguration()
         
-        let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
         let binInfoProvider = BinInfoProvider(
             apiClient: APIClient(apiContext: context.apiContext),
-            publicKeyProvider: publicKeyProvider,
+            publicKey: publicKey,
             minBinLength: Constant.thresholdBINLength,
             binLookupType: configuration.binLookupType
         )
@@ -35,7 +35,7 @@ public final class BCMCComponent: CardComponent {
             paymentMethod: paymentMethod,
             context: context,
             configuration: configuration,
-            publicKeyProvider: publicKeyProvider,
+            publicKey: publicKey,
             binProvider: binInfoProvider
         )
     }
@@ -44,7 +44,7 @@ public final class BCMCComponent: CardComponent {
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
         configuration: CardComponentConfiguration,
-        publicKeyProvider: AnyPublicKeyProvider,
+        publicKey: String,
         binProvider: AnyBinInfoProvider
     ) {
         let configuration = configuration.bcmcConfiguration()
@@ -52,7 +52,7 @@ public final class BCMCComponent: CardComponent {
             paymentMethod: paymentMethod,
             context: context,
             configuration: configuration,
-            publicKeyProvider: publicKeyProvider,
+            publicKey: publicKey,
             binProvider: binProvider
         )
     }

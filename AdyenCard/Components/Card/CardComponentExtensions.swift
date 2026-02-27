@@ -21,10 +21,8 @@ extension CardComponent {
         }
         
         cardViewController.startLoading()
+        submitEncryptedCardData(cardPublicKey: publicKey)
 
-        fetchCardPublicKey(notifyingDelegateOnFailure: true) { [weak self] in
-            self?.submitEncryptedCardData(cardPublicKey: $0)
-        }
     }
     
     private func submitEncryptedCardData(cardPublicKey: String) {
@@ -93,7 +91,7 @@ extension CardComponent: ViewControllerDelegate {
         sendInitialAnalytics()
         sendDidLoadEvent()
         // just cache the public key value
-        fetchCardPublicKey(notifyingDelegateOnFailure: false)
+        // fetchCardPublicKey(notifyingDelegateOnFailure: false)
     }
 }
 

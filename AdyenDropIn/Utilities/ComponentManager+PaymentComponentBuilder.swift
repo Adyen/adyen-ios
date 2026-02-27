@@ -317,6 +317,7 @@ private extension ComponentManager {
         return CardComponent(
             paymentMethod: paymentMethod,
             context: context,
+            publicKey: "BOB",
             configuration: cardConfiguration
         )
     }
@@ -330,6 +331,7 @@ private extension ComponentManager {
         return BCMCComponent(
             paymentMethod: paymentMethod,
             context: context,
+            publicKey: "BOB",
             configuration: cardConfiguration
         )
     }
