@@ -36,7 +36,7 @@ public class CardComponent: PresentableComponent,
 
     internal let cardPaymentMethod: AnyCardPaymentMethod
 
-    internal let publicKey: PublicKeyFetchingProgramFlow
+    public let publicKey: PublicKeyFetchingProgramFlow
 
     @_spi(AdyenInternal)
     public let publicKeyProvider: AnyPublicKeyProvider
@@ -164,7 +164,7 @@ public class CardComponent: PresentableComponent,
         }
         // TODO: FIX StoredCard UI
         if configuration.stored.showsSecurityCodeField {
-            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context)
+            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context, publicKey: publicKey)
             storedComponent.localizationParameters = configuration.localizationParameters
             return storedComponent
         } else {

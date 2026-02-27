@@ -33,6 +33,7 @@ package struct ACHDirectDebitComponentFactory: PaymentComponentFactory {
         ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
+            publicKey: .notFetched,
             configuration: configuration
         )
     }

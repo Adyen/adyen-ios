@@ -25,13 +25,16 @@ package final class StoredCardComponent: StoredPaymentComponent, PaymentAware, L
     package var localizationParameters: LocalizationParameters?
         
     private let storedCardPaymentMethod: StoredCardPaymentMethod
-    
+    private let publicKey: PublicKeyFetchingProgramFlow
+
     package init(
         storedCardPaymentMethod: StoredCardPaymentMethod,
-        context: AdyenContext
+        context: AdyenContext,
+        publicKey: PublicKeyFetchingProgramFlow
     ) {
         self.storedCardPaymentMethod = storedCardPaymentMethod
         self.context = context
+        self.publicKey = publicKey
     }
     
     package var viewController: UIViewController {
@@ -45,6 +48,7 @@ package final class StoredCardComponent: StoredPaymentComponent, PaymentAware, L
         let manager = StoredCardAlertManager(
             paymentMethod: storedCardPaymentMethod,
             context: context,
+            publicKey: publicKey,
             amount: payment?.amount
         )
         

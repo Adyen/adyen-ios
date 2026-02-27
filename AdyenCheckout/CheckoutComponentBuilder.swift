@@ -69,7 +69,8 @@ internal enum CheckoutComponentBuilder {
     /// Builds stored payment components.
     internal static func build(
         for storedPaymentMethod: StoredPaymentMethod,
-        configuration: CheckoutConfiguration
+        configuration: CheckoutConfiguration,
+        publicKey: PublicKeyFetchingProgramFlow
     ) -> PaymentComponent {
         
         // TODO: stored components requires no configuration
@@ -81,7 +82,8 @@ internal enum CheckoutComponentBuilder {
             case let storedCard as StoredCardPaymentMethod:
                 StoredCardComponent(
                     storedCardPaymentMethod: storedCard,
-                    context: configuration.context
+                    context: configuration.context,
+                    publicKey: publicKey
                 )
         #endif
             

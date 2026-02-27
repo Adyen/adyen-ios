@@ -8,6 +8,8 @@ import Foundation
 
 @_spi(AdyenInternal)
 public protocol PublicKeyConsumer {
+    
+    var publicKey: PublicKeyFetchingProgramFlow { get }
 
     /// Provider for fetching the public key.
     var publicKeyProvider: AnyPublicKeyProvider { get }

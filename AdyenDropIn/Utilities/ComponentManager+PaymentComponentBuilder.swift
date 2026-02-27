@@ -164,6 +164,7 @@ extension ComponentManager: PaymentComponentBuilder {
             context: context,
             amount: amount,
             style: configuration.style.formComponent,
+            publicKey: .notFetched,
             showsSecurityCodeField: configuration.giftCard.showsSecurityCodeField
         )
     }
@@ -175,6 +176,7 @@ extension ComponentManager: PaymentComponentBuilder {
             context: context,
             amount: amount,
             style: configuration.style.formComponent,
+            publicKey: .notFetched,
             showsSecurityCodeField: configuration.giftCard.showsSecurityCodeField
         )
     }
@@ -408,6 +410,7 @@ private extension ComponentManager {
         return ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
+            publicKey: .notFetched,
             configuration: config
         )
     }

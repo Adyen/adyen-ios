@@ -44,6 +44,8 @@ public final class GiftCardComponent: PresentableComponent,
     @_spi(AdyenInternal)
     public let publicKeyProvider: AnyPublicKeyProvider
 
+    public let publicKey: PublicKeyFetchingProgramFlow
+
     /// The gift card payment method.
     public var paymentMethod: PaymentMethod {
         partialPaymentMethodType.partialPaymentMethod
@@ -86,6 +88,7 @@ public final class GiftCardComponent: PresentableComponent,
         amount: Amount,
         style: FormComponentStyle = FormComponentStyle(),
         showsSubmitButton: Bool = true,
+        publicKey: PublicKeyFetchingProgramFlow,
         showsSecurityCodeField: Bool = true
     ) {
         self.init(
@@ -95,6 +98,7 @@ public final class GiftCardComponent: PresentableComponent,
             style: style,
             showsSubmitButton: showsSubmitButton,
             showsSecurityCodeField: showsSecurityCodeField,
+            publicKey: publicKey,
             publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext)
         )
     }
@@ -114,6 +118,7 @@ public final class GiftCardComponent: PresentableComponent,
         context: AdyenContext,
         amount: Amount,
         style: FormComponentStyle = FormComponentStyle(),
+        publicKey: PublicKeyFetchingProgramFlow,
         showsSubmitButton: Bool = true,
         showsSecurityCodeField: Bool = true
     ) {
@@ -124,6 +129,7 @@ public final class GiftCardComponent: PresentableComponent,
             style: style,
             showsSubmitButton: showsSubmitButton,
             showsSecurityCodeField: showsSecurityCodeField,
+            publicKey: publicKey,
             publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext)
         )
     }
@@ -135,11 +141,13 @@ public final class GiftCardComponent: PresentableComponent,
         style: FormComponentStyle = FormComponentStyle(),
         showsSubmitButton: Bool = true,
         showsSecurityCodeField: Bool = true,
+        publicKey: PublicKeyFetchingProgramFlow,
         publicKeyProvider: AnyPublicKeyProvider
     ) {
         self.partialPaymentMethodType = partialPaymentMethodType
         self.context = context
         self.style = style
+        self.publicKey = publicKey
         self.showsSubmitButton = showsSubmitButton
         self.showsSecurityCodeField = showsSecurityCodeField
         self.publicKeyProvider = publicKeyProvider
@@ -284,12 +292,22 @@ extension GiftCardComponent {
         }
 
         startLoading()
+        switch publicKey {
+        case .notFetched:
+            fetchCardPublicKey(notifyingDelegateOnFailure: true) { [weak self] cardPublicKey in
+                guard let self else { return }
+                self.createPaymentData(
+                    order: self.order,
+                    cardPublicKey: cardPublicKey
+                )
+                .mapError(Error.otherError)
+                .handle(success: self.startFlow(with:), failure: self.handle(error:))
+            }
 
-        fetchCardPublicKey(notifyingDelegateOnFailure: true) { [weak self] cardPublicKey in
-            guard let self else { return }
+        case let .prefetched(publicKey):
             self.createPaymentData(
                 order: self.order,
-                cardPublicKey: cardPublicKey
+                cardPublicKey: publicKey
             )
             .mapError(Error.otherError)
             .handle(success: self.startFlow(with:), failure: self.handle(error:))

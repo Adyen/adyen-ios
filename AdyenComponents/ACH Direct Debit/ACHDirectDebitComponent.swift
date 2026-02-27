@@ -31,7 +31,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     
     /// The context object for this component.
     package let context: AdyenContext
-    
+
     package var paymentMethod: PaymentMethod {
         achDirectDebitPaymentMethod
     }
@@ -54,7 +54,9 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     )
     
     package let publicKeyProvider: AnyPublicKeyProvider
-    
+
+    package let publicKey: PublicKeyFetchingProgramFlow
+
     private var defaultCountryCode: String {
         payment?.countryCode ?? configuration.billingAddressCountryCodes.first ?? "US"
     }
@@ -71,12 +73,14 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     package convenience init(
         paymentMethod: ACHDirectDebitPaymentMethod,
         context: AdyenContext,
+        publicKey: PublicKeyFetchingProgramFlow,
         configuration: ACHDirectDebitComponentConfiguration = .init()
     ) {
         self.init(
             paymentMethod: paymentMethod,
             context: context,
             configuration: configuration,
+            publicKey: publicKey,
             publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext)
         )
     }
@@ -85,11 +89,13 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         paymentMethod: ACHDirectDebitPaymentMethod,
         context: AdyenContext,
         configuration: ACHDirectDebitComponentConfiguration = .init(),
+        publicKey: PublicKeyFetchingProgramFlow,
         publicKeyProvider: AnyPublicKeyProvider
     ) {
         self.configuration = configuration
         self.achDirectDebitPaymentMethod = paymentMethod
         self.context = context
+        self.publicKey = publicKey
         self.configuration = configuration
         self.publicKeyProvider = publicKeyProvider
     }
@@ -108,9 +114,14 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         guard validate() else { return }
         
         startLoading()
-        
-        fetchCardPublicKey(notifyingDelegateOnFailure: true) { [weak self] publicKey in
-            self?.submitEncryptedData(publicKey: publicKey)
+        switch publicKey {
+        case let .prefetched(publicKey):
+            submitEncryptedData(publicKey: publicKey)
+
+        case .notFetched:
+            fetchCardPublicKey(notifyingDelegateOnFailure: true) { [weak self] publicKey in
+                self?.submitEncryptedData(publicKey: publicKey)
+            }
         }
     }
     
@@ -326,8 +337,13 @@ extension ACHDirectDebitComponent: ViewControllerDelegate {
     package func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
         sendDidLoadEvent()
-        // just cache the public key value
-        fetchCardPublicKey(notifyingDelegateOnFailure: false)
+        switch publicKey {
+        case .prefetched:
+            break
+        case .notFetched:
+            // just cache the public key value
+            fetchCardPublicKey(notifyingDelegateOnFailure: false)
+        }
     }
 }
 

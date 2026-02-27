@@ -15,7 +15,7 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Adye
     internal let context: AdyenContext
     private let paymentMethod: StoredCardPaymentMethod
     private let amount: Amount?
-
+    private let publicKey: PublicKeyFetchingProgramFlow
     internal var publicKeyProvider: AnyPublicKeyProvider
     internal var completionHandler: Completion<Result<CardDetails, Error>>?
     internal var localizationParameters: LocalizationParameters?
@@ -23,12 +23,13 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Adye
     internal init(
         paymentMethod: StoredCardPaymentMethod,
         context: AdyenContext,
+        publicKey: PublicKeyFetchingProgramFlow,
         amount: Amount?
     ) {
         self.context = context
         self.paymentMethod = paymentMethod
         self.amount = amount
-        
+        self.publicKey = publicKey
         self.publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
     }
 
@@ -80,10 +81,15 @@ internal final class StoredCardAlertManager: NSObject, UITextFieldDelegate, Adye
         guard let textField = alertController.textFields?.first, let securityCode = textField.text else {
             return
         }
-        
-        fetchCardPublicKey { [weak self] in
-            self?.submit(securityCode: securityCode, cardPublicKey: $0)
-            self?.resetAlertFields()
+        switch publicKey {
+        case let .prefetched(publicKey):
+            submit(securityCode: securityCode, cardPublicKey: publicKey)
+            resetAlertFields()
+        case .notFetched:
+            fetchCardPublicKey { [weak self] in
+                self?.submit(securityCode: securityCode, cardPublicKey: $0)
+                self?.resetAlertFields()
+            }
         }
     }
     
