@@ -27,7 +27,8 @@ package struct BLIKComponentFactory: PaymentComponentFactory {
     package func create(
         with paymentMethod: BLIKPaymentMethod,
         context: AdyenContext,
-        configuration: BLIKComponentConfiguration
+        configuration: BLIKComponentConfiguration,
+        publicKey: String
     ) -> BLIKComponent {
         BLIKComponent(
             paymentMethod: paymentMethod,

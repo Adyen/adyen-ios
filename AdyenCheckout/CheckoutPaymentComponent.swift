@@ -29,7 +29,9 @@ public final class CheckoutPaymentComponent {
     private var configuration: CheckoutConfiguration
     
     internal weak var delegate: PaymentComponentDelegate?
-    
+
+    private var publicKey: String
+
     /// The view controller of the component.
     public var viewController: UIViewController? {
         guard let presentableComponent = paymentComponent as? PresentableComponent else {
@@ -41,24 +43,28 @@ public final class CheckoutPaymentComponent {
     package init(
         paymentMethod: PaymentMethod,
         configuration: CheckoutConfiguration,
+        publicKey: String,
         delegate: PaymentComponentDelegate?
     ) {
         self.configuration = configuration
         self.delegate = delegate
+        self.publicKey = publicKey
         // TODO: Add new v6 style here
-        self.paymentComponent = CheckoutComponentBuilder.build(for: paymentMethod, configuration: configuration)
+        self.paymentComponent = CheckoutComponentBuilder.build(for: paymentMethod, configuration: configuration, publicKey: publicKey)
         self.paymentComponent?.delegate = delegate
     }
     
     package init(
         storedPaymentMethod: StoredPaymentMethod,
         configuration: CheckoutConfiguration,
+        publicKey: String,
         delegate: PaymentComponentDelegate?
     ) {
         self.configuration = configuration
         self.delegate = delegate
+        self.publicKey = publicKey
         // TODO: Add new v6 style here
-        self.paymentComponent = CheckoutComponentBuilder.build(for: storedPaymentMethod, configuration: configuration)
+        self.paymentComponent = CheckoutComponentBuilder.build(for: storedPaymentMethod, configuration: configuration, publicKey: publicKey)
         self.paymentComponent?.delegate = delegate
     }
 }

@@ -29,12 +29,13 @@ package struct CardComponentFactory<CardMethod: AnyCardPaymentMethod>: PaymentCo
     package func create(
         with paymentMethod: CardMethod,
         context: AdyenContext,
-        configuration: CardComponentConfiguration
+        configuration: CardComponentConfiguration,
+        publicKey: String
     ) -> CardComponent {
         CardComponent(
             paymentMethod: paymentMethod,
             context: context,
-            publicKey: "BOB",
+            publicKey: publicKey,
             configuration: configuration
         )
     }

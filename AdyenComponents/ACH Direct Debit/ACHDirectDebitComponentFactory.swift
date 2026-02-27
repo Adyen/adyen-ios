@@ -27,7 +27,8 @@ package struct ACHDirectDebitComponentFactory: PaymentComponentFactory {
     package func create(
         with paymentMethod: ACHDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: ACHDirectDebitComponentConfiguration
+        configuration: ACHDirectDebitComponentConfiguration,
+        publicKey: String
     ) -> ACHDirectDebitComponent {
         ACHDirectDebitComponent(
             paymentMethod: paymentMethod,

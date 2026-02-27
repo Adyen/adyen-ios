@@ -19,7 +19,8 @@ internal enum CheckoutComponentBuilder {
     
     internal static func build(
         for paymentMethod: PaymentMethod,
-        configuration: CheckoutConfiguration
+        configuration: CheckoutConfiguration,
+        publicKey: String
     ) -> PaymentComponent {
         
         // Assembly layer
@@ -31,14 +32,16 @@ internal enum CheckoutComponentBuilder {
                 return createComponent(
                     using: BLIKComponentFactory(),
                     paymentMethod: blikPaymentMethod,
-                    configuration: configuration
+                    configuration: configuration,
+                    publicKey: publicKey
                 )
             
             case let achPaymentMethod as ACHDirectDebitPaymentMethod:
                 return createComponent(
                     using: ACHDirectDebitComponentFactory(),
                     paymentMethod: achPaymentMethod,
-                    configuration: configuration
+                    configuration: configuration,
+                    publicKey: publicKey
                 )
         #endif
             
@@ -48,7 +51,8 @@ internal enum CheckoutComponentBuilder {
                 return createComponent(
                     using: CardComponentFactory(),
                     paymentMethod: cardPaymentMethod,
-                    configuration: configuration
+                    configuration: configuration,
+                    publicKey: publicKey
                 )
                 // TODO: add other card methods like stored or write a generic one.
             
@@ -102,7 +106,8 @@ internal enum CheckoutComponentBuilder {
     private static func createComponent<Factory: PaymentComponentFactory>(
         using factory: Factory,
         paymentMethod: Factory.Method,
-        configuration: CheckoutConfiguration
+        configuration: CheckoutConfiguration,
+        publicKey: String
     ) -> PaymentComponent where Factory.Configuration: CheckoutComponentConfiguration {
         
         var componentConfiguration = configuration.configuration(
@@ -116,7 +121,8 @@ internal enum CheckoutComponentBuilder {
         return factory.create(
             with: paymentMethod,
             context: configuration.context,
-            configuration: componentConfiguration
+            configuration: componentConfiguration,
+            publicKey: publicKey
         )
     }
 }

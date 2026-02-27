@@ -62,7 +62,7 @@ public final class Checkout: CheckoutProtocol {
 
     // TODO: Robert: The next task in public key fetching is to ensure that components are passed with this publicKey. and they don't fetch the key themselves.
     /// The client public key used for encrypting sensitive payment data.
-    internal let publicKey: String?
+    internal let publicKey: String
 
     internal let configuration: CheckoutConfiguration
     internal weak var presentationDelegate: PresentationDelegate?
@@ -166,7 +166,7 @@ public final class Checkout: CheckoutProtocol {
         session: SessionProtocol? = nil,
         paymentMethods: PaymentMethods? = nil,
         checkoutAttemptId: String?,
-        publicKey: String? = nil,
+        publicKey: String,
         presentationDelegate: PresentationDelegate?
     ) {
         self.configuration = configuration
@@ -203,6 +203,7 @@ public extension Checkout {
         return CheckoutPaymentComponent(
             paymentMethod: paymentMethod,
             configuration: configuration,
+            publicKey: publicKey,
             delegate: self
         )
     }
@@ -232,6 +233,7 @@ public extension Checkout {
         return CheckoutPaymentComponent(
             storedPaymentMethod: storedPaymentMethod,
             configuration: configuration,
+            publicKey: publicKey,
             delegate: self
         )
     }

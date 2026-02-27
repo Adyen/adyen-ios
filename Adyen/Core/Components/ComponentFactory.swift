@@ -32,7 +32,8 @@ package protocol PaymentComponentFactory {
     func create(
         with paymentMethod: Method,
         context: AdyenContext,
-        configuration: Configuration
+        configuration: Configuration,
+        publicKey: String
     ) -> Component
     
     /// Creates the default configuration for the component.

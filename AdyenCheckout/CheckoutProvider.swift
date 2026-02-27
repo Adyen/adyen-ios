@@ -49,7 +49,7 @@ internal class CheckoutProvider: CheckoutProviding {
         )
 
         // TODO: Robert: Note here we are using try? do we already want to fail here if in the 0.0001% of the change that there is a failure. (I assume yes?)
-        async let publicKey = try? await publicKeyProvider.fetchPublicKey(
+        async let publicKey = try await publicKeyProvider.fetchPublicKey(
             apiClient: apiClient,
             clientKey: configuration.context.apiContext.clientKey
         )
@@ -84,12 +84,12 @@ internal class CheckoutProvider: CheckoutProviding {
 
         let apiClient = APIClient(apiContext: configuration.context.apiContext)
 
-        async let publicKey = try? await publicKeyProvider.fetchPublicKey(
+        async let publicKey = try await publicKeyProvider.fetchPublicKey(
             apiClient: apiClient,
             clientKey: configuration.context.apiContext.clientKey
         )
 
-        return await Checkout(
+        return try await Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             checkoutAttemptId: checkoutAttemptId,
@@ -113,12 +113,12 @@ internal class CheckoutProvider: CheckoutProviding {
         
         let apiClient = APIClient(apiContext: configuration.context.apiContext)
 
-        async let publicKey = try? await publicKeyProvider.fetchPublicKey(
+        async let publicKey = try await publicKeyProvider.fetchPublicKey(
             apiClient: apiClient,
             clientKey: configuration.context.apiContext.clientKey
         )
 
-        return await Checkout(
+        return try await Checkout(
             configuration: configuration,
             checkoutAttemptId: checkoutAttemptId,
             publicKey: publicKey,
