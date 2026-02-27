@@ -14,7 +14,6 @@ import UIKit
 internal enum PaymentMethodListState {
     case ready
     case loaded(sections: [ListSection])
-    case loading(paymentMethod: PaymentMethod)
 }
 
 // sourcery:AutoMockable
@@ -85,7 +84,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     private func select(paymentMethod: PaymentMethod) {
         guard let component = componentManager.buildComponent(for: paymentMethod) else { return }
-        state = .loading(paymentMethod: paymentMethod)
 
         switch component.type {
         case .regular, .stored:
@@ -93,6 +91,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
                 self?.state = .ready
             }
         case let .initiable(initiablePaymentComponent):
+            listItem(for: paymentMethod)?.startLoading()
             initiablePaymentComponent.initiatePayment(delegate: self)
         }
     }
@@ -152,6 +151,14 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             scopeInstance: "PaymentMethodListViewModel",
             postfix: uniqueIdentifier
         )
+    }
+
+    private func listItem(for paymentMethod: PaymentMethod) -> ListItem? {
+        guard case let .loaded(sections) = state else { return nil }
+        let expectedIdentifier = listItemIdentifier(for: paymentMethod)
+        return sections
+            .flatMap(\.items)
+            .first { $0.identifier == expectedIdentifier }
     }
 }
 
