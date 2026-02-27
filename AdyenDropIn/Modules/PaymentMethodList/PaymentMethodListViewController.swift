@@ -89,7 +89,7 @@ internal class PaymentMethodListViewController: UIViewController {
                 switch state {
                 case let .loaded(sections):
                     self?.reload(with: sections)
-                case .ready:
+                case .idle:
                     self?.stopLoading()
                 }
             }.store(in: &cancellables)
