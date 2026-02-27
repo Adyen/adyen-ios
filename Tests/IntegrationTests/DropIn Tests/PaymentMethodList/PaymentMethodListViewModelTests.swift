@@ -40,15 +40,15 @@ struct PaymentMethodListViewModelTests {
     // MARK: - State Tests
 
     @Test
-    func initialState_shouldBeReady() {
+    func initialState_shouldBeIdle() {
         // Given
         let (sut, _, _) = makeSUT()
 
         // Then
-        if case .ready = sut.state {
+        if case .idle = sut.state {
             // Success
         } else {
-            Issue.record("Expected state to be .ready")
+            Issue.record("Expected state to be .idle")
         }
     }
 
@@ -116,7 +116,7 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
-    func didFail_givenError_shouldTransitionToReadyState() {
+    func didFail_givenError_shouldTransitionToIdleState() {
         // Given
         let (sut, _, _) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
@@ -126,10 +126,10 @@ struct PaymentMethodListViewModelTests {
         sut.didFail(with: error, from: paymentComponentMock)
 
         // Then
-        if case .ready = sut.state {
+        if case .idle = sut.state {
             // Success
         } else {
-            Issue.record("Expected state to be .ready after failure")
+            Issue.record("Expected state to be .idle after failure")
         }
     }
 
@@ -148,7 +148,7 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
-    func didFail_givenCancellation_shouldTransitionToReadyState() {
+    func didFail_givenCancellation_shouldTransitionToIdleState() {
         // Given
         let (sut, _, _) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
@@ -157,10 +157,10 @@ struct PaymentMethodListViewModelTests {
         sut.didFail(with: ComponentError.cancelled, from: paymentComponentMock)
 
         // Then
-        if case .ready = sut.state {
+        if case .idle = sut.state {
             // Success
         } else {
-            Issue.record("Expected state to be .ready after cancellation")
+            Issue.record("Expected state to be .idle after cancellation")
         }
     }
 
@@ -180,7 +180,7 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
-    func didCancelActionComponent_shouldTransitionToReadyState() {
+    func didCancelActionComponent_shouldTransitionToIdleState() {
         // Given
         let (sut, _, _) = makeSUT()
         let actionComponentMock = RedirectComponent(context: contextMock)
@@ -189,10 +189,10 @@ struct PaymentMethodListViewModelTests {
         sut.didCancel(actionComponent: actionComponentMock)
 
         // Then
-        if case .ready = sut.state {
+        if case .idle = sut.state {
             // Success
         } else {
-            Issue.record("Expected state to be .ready after action cancel")
+            Issue.record("Expected state to be .idle after action cancel")
         }
     }
 

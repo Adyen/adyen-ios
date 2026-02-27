@@ -12,7 +12,7 @@ import UIKit
 #endif
 
 internal enum PaymentMethodListState {
-    case ready
+    case idle
     case loaded(sections: [ListSection])
 }
 
@@ -38,7 +38,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     private let dropInFlowManager: DropInFlowManaging
     private let logoURLProvider: LogoURLProvider
 
-    @Published internal private(set) var state: PaymentMethodListState = .ready
+    @Published internal private(set) var state: PaymentMethodListState = .idle
     internal var statePublisher: Published<PaymentMethodListState>.Publisher {
         $state
     }
@@ -88,7 +88,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         switch component.type {
         case .regular, .stored:
             router?.present(component: component) { [weak self] in
-                self?.state = .ready
+                self?.state = .idle
             }
         case let .initiable(initiablePaymentComponent):
             listItem(for: paymentMethod)?.startLoading()
@@ -177,7 +177,7 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         with error: any Error,
         from component: any PaymentComponent
     ) {
-        defer { state = .ready }
+        defer { state = .idle }
 
         if case ComponentError.cancelled = error {
             cancel()
@@ -193,12 +193,12 @@ extension PaymentMethodListViewModel: ActionPresenter {
 
     internal func present(actionComponent: any PresentableComponent) {
         router?.present(actionComponent: actionComponent) { [weak self] in
-            self?.state = .ready
+            self?.state = .idle
         }
     }
 
     internal func didCancel(actionComponent: any ActionComponent) {
-        state = .ready
+        state = .idle
     }
 }
 

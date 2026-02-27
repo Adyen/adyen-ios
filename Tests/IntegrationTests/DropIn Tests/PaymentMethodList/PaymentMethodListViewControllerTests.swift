@@ -150,7 +150,7 @@ struct PaymentMethodListViewControllerTests {
         await Task.yield()
 
         // When
-        viewModelMock.setState(.ready)
+        viewModelMock.setState(.idle)
         await Task.yield()
 
         // Then - stopLoading was called (no crash, state is ready)
@@ -209,7 +209,7 @@ private class TestablePaymentMethodListViewModel: PaymentMethodListViewModelProt
     let title: String
     let paymentMethodSections: [PaymentMethodsSection] = []
 
-    @Published private var state: PaymentMethodListState = .ready
+    @Published private var state: PaymentMethodListState = .idle
     var statePublisher: Published<PaymentMethodListState>.Publisher {
         $state
     }
