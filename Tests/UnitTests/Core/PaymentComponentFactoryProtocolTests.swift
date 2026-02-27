@@ -40,22 +40,26 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         var showsSubmitButton: Bool = true
     }
     
-    class MockComponent: PaymentComponent {
+    class MockComponent: PaymentComponent, PresentableComponent {
 
         // PaymentComponent requirements
         var delegate: PaymentComponentDelegate?
         let paymentMethod: PaymentMethod
-        var type: PaymentComponentType = .undefined
+
+        /// PresentableComponent requirement
+        var viewController: UIViewController {
+            UIViewController()
+        }
 
         /// Component requirements (via AdyenContextAware)
         let context: AdyenContext
-        
+
         /// PartialPaymentOrderAware requirements
         var order: PartialPaymentOrder?
-        
+
         /// Custom property to verify configuration
         let configValue: String
-        
+
         init(paymentMethod: PaymentMethod, context: AdyenContext, configuration: MockConfiguration) {
             self.paymentMethod = paymentMethod
             self.context = context

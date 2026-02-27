@@ -89,10 +89,7 @@ public struct OrderPaymentMethod: PaymentMethod {
 
     @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        AlreadyPaidPaymentComponent(
-            paymentMethod: self,
-            context: builder.context
-        )
+        nil
     }
 
     private enum CodingKeys: String, CodingKey {

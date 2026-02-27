@@ -7,95 +7,158 @@
 import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
+
+internal enum PaymentMethodListState {
+    case idle
+    case loaded(sections: [ListSection])
+}
 
 // sourcery:AutoMockable
 internal protocol PaymentMethodListViewModelProtocol {
-    var paymentMethodListView: UIViewController { get }
+    var context: AdyenContext { get }
+    var title: String { get }
+    var paymentMethodSections: [PaymentMethodsSection] { get }
+    var statePublisher: Published<PaymentMethodListState>.Publisher { get }
     func cancel()
+    func didLoad()
+    func listItemIdentifier(for paymentMethod: PaymentMethod) -> String
 }
 
 internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     // MARK: - Properties
 
+    internal let context: AdyenContext
+    internal let localizationParameters: LocalizationParameters
+    internal let componentManager: ComponentManaging
     internal weak var router: PaymentMethodListRouting?
-    internal let paymentMethodListComponent: PaymentMethodListComponent
-    private var dropInFlowManager: DropInFlowManaging
+    private let dropInFlowManager: DropInFlowManaging
+    private let logoURLProvider: LogoURLProvider
+
+    @Published internal private(set) var state: PaymentMethodListState = .idle
+    internal var statePublisher: Published<PaymentMethodListState>.Publisher {
+        $state
+    }
+
+    internal let paymentMethodSections: [PaymentMethodsSection]
+    private let brandProtectedComponents: Set<PaymentMethodType> = [.applePay]
 
     // MARK: - Initializers
 
     internal init(
         context: AdyenContext,
-        componentManager: ComponentManager,
+        localizationParameters: LocalizationParameters,
+        componentManager: ComponentManaging,
         configuration: DropInComponent.Configuration,
-        dropInFlowManager: DropInFlowManaging
+        dropInFlowManager: DropInFlowManaging,
+        logoURLProvider: LogoURLProvider
     ) {
-        let components = componentManager.sections
-        self.paymentMethodListComponent = PaymentMethodListComponent(
-            context: context,
-            components: components,
-            style: configuration.style.listComponent
-        )
+        self.context = context
+        self.localizationParameters = localizationParameters
+        self.componentManager = componentManager
+        self.paymentMethodSections = componentManager.sections
         self.dropInFlowManager = dropInFlowManager
-        self.paymentMethodListComponent.localizationParameters = configuration.localizationParameters
-        self.paymentMethodListComponent.delegate = self
+        self.logoURLProvider = logoURLProvider
     }
 
     // MARK: - PaymentMethodListViewModelProtocol
 
-    internal var paymentMethodListView: UIViewController {
-        paymentMethodListComponent.viewController
+    internal var title: String {
+        localizedString(.paymentMethodsTitle, localizationParameters)
     }
 
     internal func cancel() {
         router?.dismiss(completion: nil)
     }
 
-    // MARK: - Private
-    
-    private func startLoading(for component: any PaymentComponent) {
-        paymentMethodListComponent.startLoading(for: component)
-    }
-    
-    private func stopLoading() {
-        paymentMethodListComponent.stopLoading()
-    }
-}
-
-extension PaymentMethodListViewModel: PaymentMethodListComponentDelegate {
-
-    // MARK: - PaymentMethodListComponentDelegate
-
-    internal func didLoad(
-        _ paymentMethodListComponent: PaymentMethodListComponent
-    ) {
+    internal func didLoad() {
         // TODO: - Handle analytics on list load.
+        let listSections = getListSections()
+        state = .loaded(sections: listSections)
     }
 
-    internal func didSelect(
-        _ component: any PaymentComponent,
-        in paymentMethodListComponent: PaymentMethodListComponent
-    ) {
-        startLoading(for: component)
-        
+    // MARK: - Private
+
+    private func select(paymentMethod: PaymentMethod) {
+        guard let component = componentManager.buildComponent(for: paymentMethod) else { return }
+
         switch component.type {
         case .regular, .stored:
             router?.present(component: component) { [weak self] in
-                self?.stopLoading()
+                self?.state = .idle
             }
         case let .initiable(initiablePaymentComponent):
+            listItem(for: paymentMethod)?.startLoading()
             initiablePaymentComponent.initiatePayment(delegate: self)
-        case .undefined:
-            break
         }
     }
 
-    internal func didDelete(
-        _ paymentMethod: any StoredPaymentMethod,
-        in paymentMethodListComponent: PaymentMethodListComponent,
-        completion: @escaping Adyen.Completion<Bool>
-    ) {
+    private func delete(paymentMethod: PaymentMethod, completion: @escaping Adyen.Completion<Bool>) {
         // TODO: - Logic to delete stored payment method
+    }
+
+    private func getListSections() -> [ListSection] {
+        paymentMethodSections.map { section in
+            let paymentMethods = section.paymentMethods
+            let paymentMethodItems = paymentMethods.map { listItem(from: $0) }
+            return ListSection(
+                header: section.header,
+                items: paymentMethodItems,
+                footer: section.footer
+            )
+        }
+    }
+
+    private func listItem(from paymentMethod: PaymentMethod) -> ListItem {
+        let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
+        let isProtected = brandProtectedComponents.contains(paymentMethod.type)
+        let imageURL = logoURLProvider.logoURL(withName: displayInformation.logoName)
+
+        let listItem = ListItem(
+            title: displayInformation.title,
+            subtitle: displayInformation.subtitle,
+            icon: .init(
+                url: imageURL,
+                canBeModified: !isProtected
+            ),
+            trailingInfo: displayInformation.trailingInfo?.forListItem(urlProvider: logoURLProvider),
+            style: .init(),
+            accessibilityLabel: displayInformation.accessibilityLabel
+        )
+        listItem.identifier = listItemIdentifier(for: paymentMethod)
+        listItem.selectionHandler = { [weak self] in
+            guard !(paymentMethod is OrderPaymentMethod) else { return }
+            self?.select(paymentMethod: paymentMethod)
+        }
+        listItem.deletionHandler = { [weak self] _, completion in
+            self?.delete(paymentMethod: paymentMethod, completion: completion)
+        }
+
+        return listItem
+    }
+
+    internal func listItemIdentifier(for paymentMethod: PaymentMethod) -> String {
+        let uniqueIdentifier: String
+        if let storedPaymentMethod = paymentMethod as? StoredPaymentMethod {
+            uniqueIdentifier = "\(paymentMethod.type.rawValue).\(storedPaymentMethod.identifier)"
+        } else {
+            uniqueIdentifier = paymentMethod.type.rawValue
+        }
+        return ViewIdentifierBuilder.build(
+            scopeInstance: "PaymentMethodListViewModel",
+            postfix: uniqueIdentifier
+        )
+    }
+
+    private func listItem(for paymentMethod: PaymentMethod) -> ListItem? {
+        guard case let .loaded(sections) = state else { return nil }
+        let expectedIdentifier = listItemIdentifier(for: paymentMethod)
+        return sections
+            .flatMap(\.items)
+            .first { $0.identifier == expectedIdentifier }
     }
 }
 
@@ -114,7 +177,7 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         with error: any Error,
         from component: any PaymentComponent
     ) {
-        defer { stopLoading() }
+        defer { state = .idle }
 
         if case ComponentError.cancelled = error {
             cancel()
@@ -130,11 +193,23 @@ extension PaymentMethodListViewModel: ActionPresenter {
 
     internal func present(actionComponent: any PresentableComponent) {
         router?.present(actionComponent: actionComponent) { [weak self] in
-            self?.stopLoading()
+            self?.state = .idle
         }
     }
 
     internal func didCancel(actionComponent: any ActionComponent) {
-        stopLoading()
+        state = .idle
+    }
+}
+
+internal extension DisplayInformation.TrailingInfoType {
+
+    func forListItem(urlProvider: LogoURLProvider) -> ListItem.TrailingInfoType {
+        switch self {
+        case let .text(string):
+            return .text(string)
+        case let .logos(logoNames, trailingText):
+            return .logos(urls: logoNames.map { urlProvider.logoURL(withName: $0) }, trailingText: trailingText)
+        }
     }
 }

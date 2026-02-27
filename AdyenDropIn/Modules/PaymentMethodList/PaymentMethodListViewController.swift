@@ -4,19 +4,33 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+@_spi(AdyenInternal) import Adyen
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
+import Combine
 import Foundation
 import UIKit
-@_spi(AdyenInternal) import Adyen
 
 internal class PaymentMethodListViewController: UIViewController {
+
+    // MARK: - UI elements
+
+    private lazy var listViewController: ListViewController = {
+        let style = ListComponentStyle()
+        return ListViewController(style: style)
+    }()
 
     // MARK: - Properties
 
     private let viewModel: PaymentMethodListViewModelProtocol
+    private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Initializers
 
-    internal init(viewModel: PaymentMethodListViewModelProtocol) {
+    internal init(
+        viewModel: PaymentMethodListViewModelProtocol
+    ) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -26,35 +40,35 @@ internal class PaymentMethodListViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - View life cycle
+    // MARK: - View lifecycle
 
     override internal func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.didLoad()
         isModalInPresentation = true
         setupNavigationItem()
-        setupPaymentMethodListView()
+        setupListViewController()
+        observeState()
     }
 
     // MARK: - Private
 
-    private func setupPaymentMethodListView() {
-        let paymentMethodListView = viewModel.paymentMethodListView
-
-        paymentMethodListView.willMove(toParent: self)
-        addChild(paymentMethodListView)
-        view.addSubview(paymentMethodListView.view)
-        paymentMethodListView.didMove(toParent: self)
-        paymentMethodListView.view.adyen.anchor(inside: view)
+    private func setupListViewController() {
+        listViewController.willMove(toParent: self)
+        addChild(listViewController)
+        view.addSubview(listViewController.view)
+        listViewController.didMove(toParent: self)
+        listViewController.view.adyen.anchor(inside: view)
     }
 
     private func setupNavigationItem() {
-        navigationItem.title = viewModel.paymentMethodListView.title
+        navigationItem.title = viewModel.title
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
-        
+
         setupCancelButton()
     }
-    
+
     private func setupCancelButton() {
         let cancelButton = UIBarButtonItem(
             barButtonSystemItem: .cancel,
@@ -63,8 +77,52 @@ internal class PaymentMethodListViewController: UIViewController {
         )
         navigationItem.leftBarButtonItem = cancelButton
     }
-    
+
     @objc private func cancelTapped() {
         viewModel.cancel()
+    }
+
+    private func observeState() {
+        viewModel.statePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                switch state {
+                case let .loaded(sections):
+                    self?.reload(with: sections)
+                case .idle:
+                    self?.stopLoading()
+                }
+            }.store(in: &cancellables)
+    }
+
+    private func stopLoading() {
+        listViewController.stopLoading()
+    }
+
+    private func reload(with sections: [ListSection]) {
+        listViewController.reload(newSections: sections)
+    }
+    
+    internal func deleteComponent(at indexPath: IndexPath) {
+        listViewController.deleteItem(at: indexPath)
+    }
+
+    // TODO: - Handle component deletion logic
+    private func delete(component: PaymentComponent?, at indexPath: IndexPath, completion: @escaping Completion<Bool>) {
+//        guard let component else { return }
+//        guard let paymentMethod = component.paymentMethod as? StoredPaymentMethod else { return }
+//        let completion: (Bool) -> Void = { [weak self] success in
+//            defer {
+//                completion(success)
+//            }
+//            guard success else { return }
+//            // This is to prevent the merchant calling completion closure multiple times
+//            guard let self else { return }
+//            guard viewModel.componentSections[indexPath.section]
+//                .components[indexPath.item]
+//                .paymentMethod == paymentMethod else { return }
+//            self.deleteComponent(at: indexPath)
+//        }
+//        viewModel.delete(paymentMethod, completion: completion)
     }
 }
