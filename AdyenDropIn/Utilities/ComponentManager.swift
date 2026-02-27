@@ -119,6 +119,60 @@ internal final class ComponentManager: ComponentManaging {
         
         return component
     }
+
+    // MARK: - Private
+
+    private lazy var paidSection: PaymentMethodsSection = {
+        let amountString = order?.remainingAmount.map(\.formatted)
+            ?? localizedString(.amount, localizationParameters).lowercased()
+
+        let footerTitle = localizedString(
+            .partialPaymentPayRemainingAmount,
+            localizationParameters,
+            amountString
+        )
+
+        return PaymentMethodsSection(
+            header: ListSectionHeader(
+                title: localizedString(.paymentMethodsPaidMethods, localizationParameters),
+                style: listStyle.sectionHeader
+            ),
+            paymentMethods: paymentMethods.paid,
+            footer: ListSectionFooter(title: footerTitle, style: listStyle.partialPaymentSectionFooter)
+        )
+    }()
+
+    private lazy var storedSection: PaymentMethodsSection = {
+        let allowDeleting = configuration.paymentMethodsList.allowDisablingStoredPaymentMethods
+            && supportsEditingStoredPaymentMethods
+
+        return PaymentMethodsSection(
+            header: ListSectionHeader(
+                title: localizedString(.paymentMethodsStoredMethods, localizationParameters),
+                editingStyle: allowDeleting ? .delete : .none,
+                style: listStyle.sectionHeader
+            ),
+            paymentMethods: paymentMethods.stored,
+            footer: nil
+        )
+    }()
+
+    private lazy var regularSection: PaymentMethodsSection = {
+        let needsHeader = !paidSection.paymentMethods.isEmpty || !storedSection.paymentMethods.isEmpty
+
+        let header: ListSectionHeader? = needsHeader
+            ? ListSectionHeader(
+                title: localizedString(.paymentMethodsOtherMethods, localizationParameters),
+                style: listStyle.sectionHeader
+            )
+            : nil
+
+        return PaymentMethodsSection(
+            header: header,
+            paymentMethods: paymentMethods.regular,
+            footer: nil
+        )
+    }()
 }
 
 // MARK: - Private
@@ -131,60 +185,6 @@ private extension ComponentManager {
         
         let updatedPayment = Payment(amount: remainingAmount, countryCode: payment.countryCode)
         context.update(payment: updatedPayment)
-    }
-    
-    // MARK: - Section Builders
-    
-    var paidSection: PaymentMethodsSection {
-        let amountString = order?.remainingAmount.map(\.formatted)
-            ?? localizedString(.amount, localizationParameters).lowercased()
-        
-        let footerTitle = localizedString(
-            .partialPaymentPayRemainingAmount,
-            localizationParameters,
-            amountString
-        )
-        
-        return PaymentMethodsSection(
-            header: ListSectionHeader(
-                title: localizedString(.paymentMethodsPaidMethods, localizationParameters),
-                style: listStyle.sectionHeader
-            ),
-            paymentMethods: paymentMethods.paid,
-            footer: ListSectionFooter(title: footerTitle, style: listStyle.partialPaymentSectionFooter)
-        )
-    }
-    
-    var storedSection: PaymentMethodsSection {
-        let allowDeleting = configuration.paymentMethodsList.allowDisablingStoredPaymentMethods
-            && supportsEditingStoredPaymentMethods
-        
-        return PaymentMethodsSection(
-            header: ListSectionHeader(
-                title: localizedString(.paymentMethodsStoredMethods, localizationParameters),
-                editingStyle: allowDeleting ? .delete : .none,
-                style: listStyle.sectionHeader
-            ),
-            paymentMethods: paymentMethods.stored,
-            footer: nil
-        )
-    }
-    
-    var regularSection: PaymentMethodsSection {
-        let needsHeader = !paidSection.paymentMethods.isEmpty || !storedSection.paymentMethods.isEmpty
-        
-        let header: ListSectionHeader? = needsHeader
-            ? ListSectionHeader(
-                title: localizedString(.paymentMethodsOtherMethods, localizationParameters),
-                style: listStyle.sectionHeader
-            )
-            : nil
-        
-        return PaymentMethodsSection(
-            header: header,
-            paymentMethods: paymentMethods.regular,
-            footer: nil
-        )
     }
     
     // MARK: - Payment Method Validation
