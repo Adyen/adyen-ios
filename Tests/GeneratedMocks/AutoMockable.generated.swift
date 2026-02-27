@@ -349,12 +349,25 @@ class PaymentMethodListRoutingMock: PaymentMethodListRouting {
 
 class PaymentMethodListViewModelProtocolMock: PaymentMethodListViewModelProtocol {
 
-    var paymentMethodListView: UIViewController {
-        get { underlyingPaymentMethodListView }
-        set(value) { underlyingPaymentMethodListView = value }
+    var context: AdyenContext {
+        get { underlyingContext }
+        set(value) { underlyingContext = value }
     }
 
-    var underlyingPaymentMethodListView: UIViewController!
+    var underlyingContext: AdyenContext!
+    var title: String {
+        get { underlyingTitle }
+        set(value) { underlyingTitle = value }
+    }
+
+    var underlyingTitle: String!
+    var paymentMethodSections: [PaymentMethodsSection] = []
+    var statePublisher: Published<PaymentMethodListState>.Publisher {
+        get { underlyingStatePublisher }
+        set(value) { underlyingStatePublisher = value }
+    }
+
+    var underlyingStatePublisher: Published<PaymentMethodListState>.Publisher!
 
     // MARK: - cancel
 
@@ -368,6 +381,43 @@ class PaymentMethodListViewModelProtocolMock: PaymentMethodListViewModelProtocol
     func cancel() {
         cancelCallsCount += 1
         cancelClosure?()
+    }
+
+    // MARK: - didLoad
+
+    var didLoadCallsCount = 0
+    var didLoadCalled: Bool {
+        didLoadCallsCount > 0
+    }
+
+    var didLoadClosure: (() -> Void)?
+
+    func didLoad() {
+        didLoadCallsCount += 1
+        didLoadClosure?()
+    }
+
+    // MARK: - listItemIdentifier
+
+    var listItemIdentifierForCallsCount = 0
+    var listItemIdentifierForCalled: Bool {
+        listItemIdentifierForCallsCount > 0
+    }
+
+    var listItemIdentifierForReceivedPaymentMethod: PaymentMethod?
+    var listItemIdentifierForReceivedInvocations: [PaymentMethod] = []
+    var listItemIdentifierForReturnValue: String!
+    var listItemIdentifierForClosure: ((PaymentMethod) -> String)?
+
+    func listItemIdentifier(for paymentMethod: PaymentMethod) -> String {
+        listItemIdentifierForCallsCount += 1
+        listItemIdentifierForReceivedPaymentMethod = paymentMethod
+        listItemIdentifierForReceivedInvocations.append(paymentMethod)
+        if let listItemIdentifierForClosure {
+            return listItemIdentifierForClosure(paymentMethod)
+        } else {
+            return listItemIdentifierForReturnValue
+        }
     }
 
 }

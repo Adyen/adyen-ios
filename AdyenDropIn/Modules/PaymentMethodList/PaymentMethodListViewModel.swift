@@ -7,19 +7,28 @@
 import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
-@_spi(AdyenInternal) import AdyenUI
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 
 internal enum PaymentMethodListState {
     case idle
     case loaded(sections: [ListSection])
-    case loading(paymentMethod: PaymentMethod)
 }
 
 // sourcery:AutoMockable
 internal protocol PaymentMethodListViewModelProtocol {
     var context: AdyenContext { get }
+    var title: String { get }
+    var paymentMethodSections: [PaymentMethodsSection] { get }
+    var statePublisher: Published<PaymentMethodListState>.Publisher { get }
     func cancel()
     func didLoad()
+
+    var formattedAmount: String { get }
+    var subtitle: String { get }
+    var showApplePayButton: Bool { get }
+    func selectApplePay()
 }
 
 internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
@@ -34,6 +43,10 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     private let logoURLProvider: LogoURLProvider
 
     @Published internal private(set) var state: PaymentMethodListState = .idle
+    internal var statePublisher: Published<PaymentMethodListState>.Publisher {
+        $state
+    }
+
     internal let paymentMethodSections: [PaymentMethodsSection]
     private let brandProtectedComponents: Set<PaymentMethodType> = [.applePay]
 
@@ -99,7 +112,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     internal func select(paymentMethod: PaymentMethod) {
         guard let component = componentManager.buildComponent(for: paymentMethod) else { return }
-        state = .loading(paymentMethod: paymentMethod)
 
         switch component.type {
         case .regular, .stored:
@@ -107,6 +119,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
                 self?.state = .idle
             }
         case let .initiable(initiablePaymentComponent):
+            listItem(for: paymentMethod)?.startLoading()
             initiablePaymentComponent.initiatePayment(delegate: self)
         }
     }
@@ -143,10 +156,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             style: .init(),
             accessibilityLabel: displayInformation.accessibilityLabel
         )
-        listItem.identifier = ViewIdentifierBuilder.build(
-            scopeInstance: self,
-            postfix: listItem.title
-        )
+        listItem.identifier = listItemIdentifier(for: paymentMethod)
         listItem.selectionHandler = { [weak self] in
             guard !(paymentMethod is OrderPaymentMethod) else { return }
             self?.select(paymentMethod: paymentMethod)
@@ -156,6 +166,27 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         }
 
         return listItem
+    }
+
+    private func listItemIdentifier(for paymentMethod: PaymentMethod) -> String {
+        let uniqueIdentifier: String
+        if let storedPaymentMethod = paymentMethod as? StoredPaymentMethod {
+            uniqueIdentifier = "\(paymentMethod.type.rawValue).\(storedPaymentMethod.identifier)"
+        } else {
+            uniqueIdentifier = paymentMethod.type.rawValue
+        }
+        return ViewIdentifierBuilder.build(
+            scopeInstance: "PaymentMethodListViewModel",
+            postfix: uniqueIdentifier
+        )
+    }
+
+    private func listItem(for paymentMethod: PaymentMethod) -> ListItem? {
+        guard case let .loaded(sections) = state else { return nil }
+        let expectedIdentifier = listItemIdentifier(for: paymentMethod)
+        return sections
+            .flatMap(\.items)
+            .first { $0.identifier == expectedIdentifier }
     }
 }
 

@@ -12,15 +12,6 @@ import Combine
 import Foundation
 import UIKit
 
-/// Payment methods list related configurations.
-public struct PaymentMethodListConfiguration {
-    
-    public init() { /* Empty initializer */ }
-    
-    /// Indicates whether to allow shoppers to disable/delete stored payment methods
-    public var allowDisablingStoredPaymentMethods: Bool = false
-}
-
 internal class PaymentMethodListViewController: UIViewController {
 
     // MARK: - UI Elements
@@ -85,7 +76,7 @@ internal class PaymentMethodListViewController: UIViewController {
 
     // MARK: - Properties
 
-    private var viewModel: PaymentMethodListViewModel
+    private let viewModel: PaymentMethodListViewModelProtocol
     private var cancellables = Set<AnyCancellable>()
     private var tableViewHeightConstraint: NSLayoutConstraint?
     private var tableViewContentSizeObservation: NSKeyValueObservation?
@@ -93,7 +84,7 @@ internal class PaymentMethodListViewController: UIViewController {
     // MARK: - Initializers
 
     internal init(
-        viewModel: PaymentMethodListViewModel
+        viewModel: PaymentMethodListViewModelProtocol
     ) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -190,27 +181,16 @@ internal class PaymentMethodListViewController: UIViewController {
     }
 
     private func observeState() {
-        viewModel.$state.sink { [weak self] state in
-            switch state {
-            case let .loaded(sections):
-                self?.reload(with: sections)
-            case let .loading(paymentMethod):
-                self?.startLoading(for: paymentMethod)
-            case .idle:
-                self?.stopLoading()
-            }
-        }.store(in: &cancellables)
-    }
-
-    private func startLoading(for paymentMethod: PaymentMethod) {
-        let listItems = listViewController.sections.flatMap(\.items)
-        let paymentMethods = viewModel.paymentMethodSections.flatMap(\.paymentMethods)
-
-        guard let index = paymentMethods.firstIndex(where: { $0 == paymentMethod }) else {
-            return
-        }
-
-        listItems[index].startLoading()
+        viewModel.statePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                switch state {
+                case let .loaded(sections):
+                    self?.reload(with: sections)
+                case .idle:
+                    self?.stopLoading()
+                }
+            }.store(in: &cancellables)
     }
 
     private func stopLoading() {
@@ -242,12 +222,5 @@ internal class PaymentMethodListViewController: UIViewController {
 //            self.deleteComponent(at: indexPath)
 //        }
 //        viewModel.delete(paymentMethod, completion: completion)
-    }
-}
-
-private extension [PaymentMethodsSection] {
-    mutating func deleteItem(at indexPath: IndexPath) {
-        self[indexPath.section].paymentMethods.remove(at: indexPath.item)
-        self = self.filter { $0.paymentMethods.isEmpty == false }
     }
 }
