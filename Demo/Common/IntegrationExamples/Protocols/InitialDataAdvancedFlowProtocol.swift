@@ -42,12 +42,13 @@ extension InitialDataAdvancedFlowProtocol {
         let analyticsConfiguration = AnalyticsConfiguration(
             isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
         )
+        // TODO: This has to be removed from the demo code. AdyenContext will not be exposed to the merchants in V6
         return AdyenContext(
             apiContext: ConfigurationConstants.apiContext,
             payment: ConfigurationConstants.current.payment,
             amount: ConfigurationConstants.current.amount,
             publicKey: "",
-            checkoutAttemptId: nil, // TODO: Eren: We need to verify if this is the right place to inject the checkoutAttemptID.
+            checkoutAttemptId: nil,
             analyticsAPIContext: nil,
             analyticsConfiguration: analyticsConfiguration
         )

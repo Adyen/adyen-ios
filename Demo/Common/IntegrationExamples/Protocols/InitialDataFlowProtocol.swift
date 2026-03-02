@@ -27,12 +27,14 @@ extension InitialDataFlowProtocol {
         let analyticsConfiguration = AnalyticsConfiguration(
             isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
         )
+
+        // TODO: This has to be removed from the demo code. AdyenContext will not be exposed to the merchants in V6
         return AdyenContext(
             apiContext: ConfigurationConstants.apiContext,
             payment: ConfigurationConstants.current.payment,
             amount: ConfigurationConstants.current.amount,
             publicKey: "",
-            checkoutAttemptId: nil, // TODO: Eren: Here too we need to see if this is a good place to create AdyenContext?
+            checkoutAttemptId: nil,
             analyticsAPIContext: nil,
             analyticsConfiguration: analyticsConfiguration
         )
