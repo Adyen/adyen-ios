@@ -194,6 +194,7 @@ public extension Checkout {
         return CheckoutPaymentComponent(
             paymentMethod: paymentMethod,
             configuration: configuration,
+            context: adyenContext,
             delegate: self
         )
     }
@@ -223,6 +224,7 @@ public extension Checkout {
         return CheckoutPaymentComponent(
             storedPaymentMethod: storedPaymentMethod,
             configuration: configuration,
+            context: adyenContext,
             delegate: self
         )
     }

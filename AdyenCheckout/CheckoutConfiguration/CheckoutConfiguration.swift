@@ -49,10 +49,6 @@ public struct CheckoutConfiguration {
 
     package let apiContext: APIContext
 
-    // TODO: Eren: From Robert: Need to remove this from here, but looks like this is being used in the CheckoutComponentBuilder which i think i shouldn't touch. So keeping this removal for you to have a look when you can.
-    @available(*, deprecated, message: "Dont use this context, the real one lies in Checkout.")
-    package let context: AdyenContext
-
     package var theme: AdyenTheme
 
     package let amount: Amount
@@ -103,7 +99,6 @@ public struct CheckoutConfiguration {
 
         self.init(
             apiContext: apiContext,
-            context: context,
             amount: amount,
             analyticsApiContext: analyticsApiContext,
             analyticsConfiguration: analyticsConfiguration,
@@ -113,14 +108,12 @@ public struct CheckoutConfiguration {
     
     internal init(
         apiContext: APIContext,
-        context: AdyenContext,
         amount: Amount,
         analyticsApiContext: APIContext?,
         analyticsConfiguration: AnalyticsConfiguration,
         configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:],
         theme: AdyenTheme = .default
     ) {
-        self.context = context
         self.analyticsConfiguration = analyticsConfiguration
         self.analyticsApiContext = analyticsApiContext
         self.amount = amount
