@@ -89,20 +89,10 @@ internal class PaymentMethodListViewController: UIViewController {
                 switch state {
                 case let .loaded(sections):
                     self?.reload(with: sections)
-                case let .loading(paymentMethod):
-                    self?.startLoading(for: paymentMethod)
-                case .ready:
+                case .idle:
                     self?.stopLoading()
                 }
             }.store(in: &cancellables)
-    }
-
-    private func startLoading(for paymentMethod: PaymentMethod) {
-        let expectedIdentifier = viewModel.listItemIdentifier(for: paymentMethod)
-        let listItem = listViewController.sections
-            .flatMap(\.items)
-            .first { $0.identifier == expectedIdentifier }
-        listItem?.startLoading()
     }
 
     private func stopLoading() {

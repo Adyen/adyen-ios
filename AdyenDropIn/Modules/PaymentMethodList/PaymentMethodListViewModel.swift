@@ -12,9 +12,8 @@ import UIKit
 #endif
 
 internal enum PaymentMethodListState {
-    case ready
+    case idle
     case loaded(sections: [ListSection])
-    case loading(paymentMethod: PaymentMethod)
 }
 
 // sourcery:AutoMockable
@@ -39,7 +38,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     private let dropInFlowManager: DropInFlowManaging
     private let logoURLProvider: LogoURLProvider
 
-    @Published internal private(set) var state: PaymentMethodListState = .ready
+    @Published internal private(set) var state: PaymentMethodListState = .idle
     internal var statePublisher: Published<PaymentMethodListState>.Publisher {
         $state
     }
@@ -85,14 +84,14 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     private func select(paymentMethod: PaymentMethod) {
         guard let component = componentManager.buildComponent(for: paymentMethod) else { return }
-        state = .loading(paymentMethod: paymentMethod)
 
         switch component.type {
         case .regular, .stored:
             router?.present(component: component) { [weak self] in
-                self?.state = .ready
+                self?.state = .idle
             }
         case let .initiable(initiablePaymentComponent):
+            listItem(for: paymentMethod)?.startLoading()
             initiablePaymentComponent.initiatePayment(delegate: self)
         }
     }
@@ -153,6 +152,14 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             postfix: uniqueIdentifier
         )
     }
+
+    private func listItem(for paymentMethod: PaymentMethod) -> ListItem? {
+        guard case let .loaded(sections) = state else { return nil }
+        let expectedIdentifier = listItemIdentifier(for: paymentMethod)
+        return sections
+            .flatMap(\.items)
+            .first { $0.identifier == expectedIdentifier }
+    }
 }
 
 // MARK: - PaymentComponentDelegate
@@ -170,7 +177,7 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         with error: any Error,
         from component: any PaymentComponent
     ) {
-        defer { state = .ready }
+        defer { state = .idle }
 
         if case ComponentError.cancelled = error {
             cancel()
@@ -186,12 +193,12 @@ extension PaymentMethodListViewModel: ActionPresenter {
 
     internal func present(actionComponent: any PresentableComponent) {
         router?.present(actionComponent: actionComponent) { [weak self] in
-            self?.state = .ready
+            self?.state = .idle
         }
     }
 
     internal func didCancel(actionComponent: any ActionComponent) {
-        state = .ready
+        state = .idle
     }
 }
 

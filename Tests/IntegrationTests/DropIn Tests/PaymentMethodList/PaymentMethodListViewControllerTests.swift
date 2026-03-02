@@ -139,34 +139,6 @@ struct PaymentMethodListViewControllerTests {
     }
 
     @Test
-    func stateLoading_shouldStartLoadingForMatchingItem() async {
-        // Given
-        let (sut, viewModelMock) = makeSUT()
-        sut.loadViewIfNeeded()
-
-        let paymentMethod = PaymentMethodMock(type: .ideal, name: "iDEAL")
-        let listItem = ListItem(title: "iDEAL")
-        listItem.identifier = "ideal"
-        let section = ListSection(items: [listItem])
-
-        // First load the sections
-        viewModelMock.setState(.loaded(sections: [section]))
-        await Task.yield()
-
-        var loadingStarted = false
-        listItem.loadingHandler = { isLoading, _ in
-            if isLoading { loadingStarted = true }
-        }
-
-        // When
-        viewModelMock.setState(.loading(paymentMethod: paymentMethod))
-        await Task.yield()
-
-        // Then
-        #expect(loadingStarted)
-    }
-
-    @Test
     func stateReady_shouldStopLoading() async {
         // Given
         let (sut, viewModelMock) = makeSUT()
@@ -178,7 +150,7 @@ struct PaymentMethodListViewControllerTests {
         await Task.yield()
 
         // When
-        viewModelMock.setState(.ready)
+        viewModelMock.setState(.idle)
         await Task.yield()
 
         // Then - stopLoading was called (no crash, state is ready)
@@ -237,7 +209,7 @@ private class TestablePaymentMethodListViewModel: PaymentMethodListViewModelProt
     let title: String
     let paymentMethodSections: [PaymentMethodsSection] = []
 
-    @Published private var state: PaymentMethodListState = .ready
+    @Published private var state: PaymentMethodListState = .idle
     var statePublisher: Published<PaymentMethodListState>.Publisher {
         $state
     }
