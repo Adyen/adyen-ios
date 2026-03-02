@@ -12,9 +12,11 @@ package protocol AnyInitialAnalyticsProvider {
     func sendInitialAnalytics(with flavor: AnalyticsFlavor, additionalFields: AdditionalAnalyticsFields?)
 }
 
-package protocol AnyEventAnalyticsProvider {
+package protocol AnalyticsCheckoutAttemptIdProvider {
     var checkoutAttemptId: String? { get }
+}
 
+package protocol AnyEventAnalyticsProvider {
     /// Adds an info event to be sent.
     func add(info: AnalyticsEventInfo)
     
@@ -25,4 +27,4 @@ package protocol AnyEventAnalyticsProvider {
     func add(error: AnalyticsEventError)
 }
 
-package protocol AnyAnalyticsProvider: AnyInitialAnalyticsProvider, AnyEventAnalyticsProvider {}
+package protocol AnyAnalyticsProvider: AnyInitialAnalyticsProvider, AnyEventAnalyticsProvider, AnalyticsCheckoutAttemptIdProvider {}

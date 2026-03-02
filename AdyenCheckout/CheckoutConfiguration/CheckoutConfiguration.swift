@@ -47,15 +47,15 @@ public struct CheckoutConfiguration {
     
     package var onComplete: CheckoutSuccessHandler?
 
-    package let apiContext: APIContext
-
     package var theme: AdyenTheme
 
     package let amount: Amount
 
-    package let analyticsConfiguration: AnalyticsConfiguration
+    package let apiContext: APIContext
 
     package let analyticsApiContext: APIContext?
+
+    package let analyticsConfiguration: AnalyticsConfiguration
 
     /// Creates a CheckoutConfiguration instance.
     /// - Parameters:
@@ -74,7 +74,7 @@ public struct CheckoutConfiguration {
     ) throws {
         let apiContext = try APIContext(environment: environment, clientKey: clientKey)
         let analyticsApiContext = Self.createAnalyticsAPIContext(apiContext: apiContext)
-        
+
         var configDictionary: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
         let content = content()
         let configArray = (content as? CompositeCheckoutConfiguration)?.configurations ?? []

@@ -8,9 +8,6 @@ import AdyenNetworking
 import Foundation
 
 internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
-    internal var checkoutAttemptId: String? {
-        _checkoutAttemptId
-    }
 
     private enum Constants {
         static let batchInterval: TimeInterval = 10
@@ -24,7 +21,7 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
     private let context: AnalyticsContext
     private var batchTimer: Timer?
     private let batchInterval: TimeInterval
-    private let _checkoutAttemptId: String
+    private let checkoutAttemptId: String
 
     internal init(
         apiClient: APIClientProtocol,
@@ -37,7 +34,7 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
         self.eventDataSource = eventDataSource
         self.context = context
         self.batchInterval = batchInterval
-        self._checkoutAttemptId = checkoutAttemptId
+        self.checkoutAttemptId = checkoutAttemptId
         startNextTimer()
     }
     
@@ -87,7 +84,7 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
         // limit of each event and discard the older ones
         let platform = context.platform.rawValue
         var request = AnalyticsRequest(
-            checkoutAttemptId: _checkoutAttemptId,
+            checkoutAttemptId: checkoutAttemptId,
             platform: platform
         )
         request.infos = events.infos.suffix(Constants.infoLimit)

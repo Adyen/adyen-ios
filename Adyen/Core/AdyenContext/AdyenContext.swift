@@ -24,6 +24,7 @@ public final class AdyenContext: PaymentAware {
     package var analyticsProvider: AnyAnalyticsProvider?
 
     package let publicKey: String
+
     package let amount: Amount
 
     // MARK: - Initializers
@@ -77,16 +78,15 @@ public final class AdyenContext: PaymentAware {
         self.payment = payment
     }
 
-    // TODO: Robert: this stays here even in the init of the AnalyticalProvider.
     private static func createAnalyticsProvider(
         analyticsApiContext: APIContext?,
         checkoutAttemptId: String?,
         analyticsConfiguration: AnalyticsConfiguration
     ) -> AnyAnalyticsProvider? {
         guard let analyticsApiContext else {
-//            AdyenAssertion.assertionFailure(
-//                message: "AnalyticsProvider couldn't be created as AnalyticsAPIContext is not available."
-//            )
+            AdyenAssertion.assertionFailure(
+                message: "AnalyticsProvider couldn't be created as AnalyticsAPIContext is not available."
+            )
             return nil
         }
         let analyticsApiClient = APIClient(apiContext: analyticsApiContext)
