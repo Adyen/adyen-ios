@@ -10,18 +10,23 @@ import UIKit
 /// A view representing an error item.
 internal final class FormErrorItemView: FormItemView<FormErrorItem> {
 
+    private let theme: AdyenTheme
+
     /// Initializes the error item view.
     ///
-    /// - Parameter item: The item represented by the view.
-    internal required init(item: FormErrorItem) {
+    /// - Parameters:
+    ///   - item: The item represented by the view.
+    ///   - theme: The theme to use for styling.
+    internal init(item: FormErrorItem, theme: AdyenTheme) {
+        self.theme = theme
         super.init(item: item)
         bind(item.$message, to: messageLabel, at: \.text)
         bind(item.$message, to: self, at: \.accessibilityLabel)
         isHidden = item.isHidden.wrappedValue
         addSubview(containerView)
         containerView.adyen.anchor(inside: layoutMarginsGuide, with: UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0))
-        containerView.backgroundColor = item.style.backgroundColor
-        containerView.adyen.round(using: item.style.cornerRounding)
+        containerView.backgroundColor = theme.colors.container
+        containerView.adyen.round(using: CornerRounding.fixed(theme.attributes.cornerRadius))
         backgroundColor = .clear
         preservesSuperviewLayoutMargins = true
         translatesAutoresizingMaskIntoConstraints = false
@@ -30,6 +35,10 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
         accessibilityLabel = item.message
         accessibilityTraits = messageLabel.accessibilityTraits
         accessibilityValue = messageLabel.accessibilityValue
+    }
+    
+    internal required convenience init(item: FormErrorItem) {
+        self.init(item: item, theme: .default)
     }
 
     // MARK: - Stack View
@@ -50,7 +59,8 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
     // MARK: - Message
 
     internal lazy var messageLabel: UILabel = {
-        let messageLabel = UILabel(style: item.style.message)
+        let messageLabel = UILabel()
+        messageLabel.apply(theme.elements.labels.subheadline)
         messageLabel.numberOfLines = 0
         messageLabel.isAccessibilityElement = false
         messageLabel.accessibilityIdentifier = item.identifier.map {

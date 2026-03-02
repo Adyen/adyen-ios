@@ -7,13 +7,18 @@
 @_spi(AdyenInternal) import Adyen
 
 class PaymentComponentMock: PaymentComponent {
-    
+
     var context: AdyenContext = Dummy.context
-    
+
     var paymentMethod: PaymentMethod
-    
+
     var delegate: PaymentComponentDelegate?
-    
+
+    /// Default type - subclasses provide their own implementation
+    var type: PaymentComponentType {
+        fatalError("Subclasses must override type")
+    }
+
     init(paymentMethod: PaymentMethod) {
         self.paymentMethod = paymentMethod
     }
@@ -24,6 +29,10 @@ class PresentableComponentMock: PaymentComponentMock, PresentableComponent, Load
     // MARK: - Properties
 
     var viewController: UIViewController
+
+    override var type: PaymentComponentType {
+        .regular(self)
+    }
 
     // MARK: - Initializers
 
@@ -50,7 +59,15 @@ class PresentableComponentMock: PaymentComponentMock, PresentableComponent, Load
     }
 }
 
-class InitiableComponentMock: PaymentComponentMock, PaymentInitiable {
+class InitiableComponentMock: PaymentComponentMock, InitiablePaymentComponent {
+
+    override var type: PaymentComponentType {
+        .initiable(self)
+    }
+
+    override init(paymentMethod: PaymentMethod) {
+        super.init(paymentMethod: paymentMethod)
+    }
 
     // MARK: - initiatePayment
 
@@ -61,7 +78,7 @@ class InitiableComponentMock: PaymentComponentMock, PaymentInitiable {
 
     var onInitiatePayment: (() -> Void)?
 
-    func initiatePayment() {
+    func initiatePayment(delegate: any PaymentComponentDelegate) {
         initiatePaymentCallsCount += 1
         onInitiatePayment?()
     }

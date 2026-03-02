@@ -9,6 +9,8 @@ import UIKit
 
 package final class SelectableFormItemView: FormItemView<SelectableFormItem> {
 
+    private let theme: AdyenTheme
+    
     private enum Constants {
         static let upiLogo = "upiLogo"
         static let checkmarkIcon = "verification_true"
@@ -41,6 +43,7 @@ package final class SelectableFormItemView: FormItemView<SelectableFormItem> {
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.text = item.title
+        titleLabel.apply(theme.elements.labels.body)
         titleLabel.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel") }
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
@@ -88,13 +91,13 @@ package final class SelectableFormItemView: FormItemView<SelectableFormItem> {
     // MARK: - Separator
 
     private lazy var separator: FormSeparatorItem = {
-        let separator = FormSeparatorItem(color: item.style.separatorColor ?? UIColor.Adyen.componentSeparator)
+        let separator = FormSeparatorItem(color: theme.colors.separator)
         separator.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "separator")
         return separator
     }()
 
     private lazy var separatorView: FormSeparatorItemView = {
-        let separatorView = FormSeparatorItemView(item: separator)
+        let separatorView = FormSeparatorItemView(item: separator, theme: theme)
         separatorView.isHidden = !item.isSeparatorViewShown
         return separatorView
     }()
@@ -120,9 +123,10 @@ package final class SelectableFormItemView: FormItemView<SelectableFormItem> {
     }
 
     /// Initializes the selectable form item view.
-    package required init(item: SelectableFormItem) {
+    package init(item: SelectableFormItem, theme: AdyenTheme) {
+        self.theme = theme
         super.init(item: item)
-        backgroundColor = item.style.backgroundColor
+        backgroundColor = theme.colors.background
 
         addSubview(itemButton)
         addSubview(separatorView)
@@ -132,7 +136,7 @@ package final class SelectableFormItemView: FormItemView<SelectableFormItem> {
         isAccessibilityElement = true
 
         updateIcon()
-        updateImageView(style: item.style)
+        updateImageView()
         configureConstraints()
 
         preservesSuperviewLayoutMargins = true
@@ -147,6 +151,10 @@ package final class SelectableFormItemView: FormItemView<SelectableFormItem> {
             self.separatorView.isHidden = !isShown
         }
     }
+    
+    internal required convenience init(item: SelectableFormItem) {
+        self.init(item: item, theme: .default)
+    }
 
     override package func didMoveToWindow() {
         super.didMoveToWindow()
@@ -155,14 +163,14 @@ package final class SelectableFormItemView: FormItemView<SelectableFormItem> {
 
     override package func layoutSubviews() {
         super.layoutSubviews()
-        imageView.adyen.round(using: item.style.imageStyle.cornerRounding)
+        imageView.adyen.round(using: .fixed(AdyenUIConstants.imageCornerRadius))
     }
 
-    private func updateImageView(style: SelectableFormItemStyle) {
-        imageView.contentMode = style.imageStyle.contentMode
-        imageView.clipsToBounds = style.imageStyle.clipsToBounds
-        imageView.layer.borderWidth = style.imageStyle.borderWidth
-        imageView.layer.borderColor = style.imageStyle.borderColor?.cgColor
+    private func updateImageView() {
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
+        imageView.layer.borderWidth = 1.0 / UIScreen.main.nativeScale
+        imageView.layer.borderColor = theme.colors.separator.cgColor
     }
 
     private func updateIcon() {

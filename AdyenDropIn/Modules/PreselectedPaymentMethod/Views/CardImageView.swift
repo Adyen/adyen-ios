@@ -1,10 +1,13 @@
 //
-// Copyright (c) Adyen N.V.
+// Copyright (c) 2026 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Adyen
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import UIKit
 
 internal class CardImageItem {
@@ -28,27 +31,26 @@ internal class CardImageItem {
     }
 
     /// The URL of the card image.
-    internal var imageURL: URL?
-
-    internal var identifier: String?
+    internal let imageURL: URL?
 
     /// The size mode of the card image.
-    internal var sizeMode: SizeMode
+    internal let sizeMode: SizeMode
 
+    internal let theme: AdyenTheme
     /// Initializes the form card image item.
     ///
     /// - Parameters:
     ///   - imageURL: The URL of the card image to display.
     ///   - sizeMode: The size mode of the card image.
-    ///   - identifier: An optional accessibility identifier.
+    ///   - theme: The theme to apply
     internal init(
         imageURL: URL?,
         sizeMode: SizeMode,
-        identifier: String? = nil
+        theme: AdyenTheme
     ) {
         self.imageURL = imageURL
         self.sizeMode = sizeMode
-        self.identifier = identifier
+        self.theme = theme
     }
 }
 
@@ -60,9 +62,6 @@ internal final class CardImageView: UIView {
     private enum Constants {
         static let topPadding: CGFloat = 40
         static let bottomPadding: CGFloat = 16
-        static let shadowOffsetHeight: CGFloat = 2
-        static let shadowRadius: CGFloat = 4
-        static let shadowOpacity: Float = 0.15
         static let cardImageViewCornerRadius: CGFloat = 5
     }
 
@@ -128,12 +127,11 @@ internal final class CardImageView: UIView {
     // MARK: - Shadow
 
     private func applyShadow() {
-        // TODO: Robert: Use AdyenTheme
-        containerView.backgroundColor = .systemBackground
-        containerView.layer.shadowColor = UIColor.label.cgColor
-        containerView.layer.shadowOffset = CGSize(width: 0, height: Constants.shadowOffsetHeight)
-        containerView.layer.shadowRadius = Constants.shadowRadius
-        containerView.layer.shadowOpacity = Constants.shadowOpacity
+        containerView.backgroundColor = item.theme.colors.background
+        containerView.layer.shadowColor = item.theme.colors.supportShadow.cgColor
+        containerView.layer.shadowOffset = AdyenUIConstants.shadowOffset
+        containerView.layer.shadowRadius = AdyenUIConstants.shadowRadius
+        containerView.layer.shadowOpacity = AdyenUIConstants.shadowOpacity
         containerView.layer.masksToBounds = false
     }
 
@@ -181,7 +179,7 @@ internal final class CardImageView: UIView {
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = Constants.cardImageViewCornerRadius
-        imageView.backgroundColor = .secondarySystemBackground
+        imageView.backgroundColor = item.theme.colors.container
         return imageView
     }()
 }

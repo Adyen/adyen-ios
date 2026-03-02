@@ -4,10 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
+import UIKit
 
-class PaymentComponentSubject: PaymentComponent {
+class PaymentComponentSubject: PaymentComponent, PresentableComponent {
 
     // MARK: - Properties
 
@@ -16,6 +17,11 @@ class PaymentComponentSubject: PaymentComponent {
     var payment: Payment?
     var order: PartialPaymentOrder?
     var paymentMethod: PaymentMethod
+
+    /// PresentableComponent requirement
+    var viewController: UIViewController {
+        UIViewController()
+    }
 
     // MARK: - Initializers
 

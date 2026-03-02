@@ -84,7 +84,6 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     /// Called by form to trigger explicit validation (e.g., Pay button).
     public func showValidation() {
         item.triggerValidation(.explicit)
-        triggerValidationErrorCallbackIfNeeded()
     }
 
     /// Clears validation error state.
@@ -101,14 +100,6 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
         } else {
             accessibilityLabelView?.accessibilityLabel = item.title
         }
-    }
-
-    private func triggerValidationErrorCallbackIfNeeded() {
-        guard item.validationState.shouldShowError,
-              let validationStatus = item.validationStatus(),
-              let error = validationStatus.validationError
-        else { return }
-        item.onDidShowValidationError?(error)
     }
 
     private func updateFooter(text: String?, color: UIColor, visible: Bool, animated: Bool) {

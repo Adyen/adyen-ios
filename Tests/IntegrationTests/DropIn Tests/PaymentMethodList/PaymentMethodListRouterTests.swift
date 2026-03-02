@@ -45,7 +45,7 @@ struct PaymentMethodListRouterTests {
         // Given
         let (sut, _, _, _, _) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
-        sut.present(paymentComponent: paymentComponentMock) {}
+        sut.present(component: paymentComponentMock) {}
         try #require(sut.childRouter != nil)
 
         // When
@@ -64,7 +64,7 @@ struct PaymentMethodListRouterTests {
         let expectedComponentContainerViewController = try #require(componentContainerRouter?.rootViewController)
 
         // When
-        sut.present(paymentComponent: paymentComponent) {}
+        sut.present(component: paymentComponent) {}
 
         // Then
         #expect(navigationControllerSpy.pushViewControllerCallsCount == 1)
@@ -91,7 +91,7 @@ struct PaymentMethodListRouterTests {
         // Given
         let (sut, _, _, _, _) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
-        sut.present(paymentComponent: paymentComponentMock) {}
+        sut.present(component: paymentComponentMock) {}
         try #require(sut.childRouter != nil)
 
         // When
@@ -122,6 +122,7 @@ struct PaymentMethodListRouterTests {
 
         let sut = PaymentMethodListRouter(
             viewController: viewControllerSpy,
+            navigationController: navigationControllerSpy,
             listener: listenerMock,
             componentContainerAssembler: componentContainerAssemblerMock
         )

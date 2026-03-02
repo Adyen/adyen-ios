@@ -9,11 +9,8 @@
     @_spi(AdyenInternal) import AdyenUI
 #endif
 
-internal struct ComponentsSection {
-
+internal struct PaymentMethodsSection {
     internal var header: ListSectionHeader?
-
-    internal var components: [PaymentComponent]
-
+    internal var paymentMethods: [PaymentMethod]
     internal var footer: ListSectionFooter?
 }

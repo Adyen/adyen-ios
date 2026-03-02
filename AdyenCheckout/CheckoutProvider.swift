@@ -16,8 +16,14 @@ internal class CheckoutProvider: CheckoutProviding {
 
     private let checkoutAttemptIdProvider: CheckoutAttemptIdProviding
 
-    internal init(checkoutAttemptIdProvider: CheckoutAttemptIdProviding = CheckoutAttemptIdProvider()) {
+    private let publicKeyProvider: PublicKeyFetching
+
+    internal init(
+        checkoutAttemptIdProvider: CheckoutAttemptIdProviding = CheckoutAttemptIdProvider(),
+        publicKeyProvider: PublicKeyFetching = PublicKeyFetcher()
+    ) {
         self.checkoutAttemptIdProvider = checkoutAttemptIdProvider
+        self.publicKeyProvider = publicKeyProvider
     }
     
     internal static let `default` = CheckoutProvider()
@@ -35,12 +41,16 @@ internal class CheckoutProvider: CheckoutProviding {
             with: configuration.analyticsApiContext
         )
 
-        // TODO: Robert: for the public key fetching we do it async here at this point and pass it down to AdyenContext.
+        async let publicKey = try await publicKeyProvider.fetchPublicKey(
+            apiClient: apiClient,
+            clientKey: configuration.apiContext.clientKey
+        )
 
-        let adyenContext = AdyenContext(
+        let adyenContext = try await AdyenContext(
             apiContext: configuration.apiContext,
             payment: nil,
             amount: configuration.amount,
+            publicKey: publicKey,
             checkoutAttemptId: checkoutAttemptId,
             analyticsAPIContext: configuration.analyticsApiContext,
             analyticsConfiguration: configuration.analyticsConfiguration
@@ -56,7 +66,6 @@ internal class CheckoutProvider: CheckoutProviding {
         return try await Checkout(
             configuration: configuration,
             session: session,
-            checkoutAttemptId: checkoutAttemptId,
             adyenContext: adyenContext,
             presentationDelegate: presentationDelegate
         )
@@ -75,15 +84,22 @@ internal class CheckoutProvider: CheckoutProviding {
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
 
-        // fetch and store checkout attempt id
-        let checkoutAttemptId: String? = await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
-            with: configuration.analyticsApiContext
+        async let checkoutAttemptId = checkoutAttemptIdProvider.fetchCheckoutAttemptId(
+            with: configuration.apiContext
         )
 
-        let adyenContext = AdyenContext(
+        let apiClient = APIClient(apiContext: configuration.apiContext)
+
+        async let publicKey = try await publicKeyProvider.fetchPublicKey(
+            apiClient: apiClient,
+            clientKey: configuration.apiContext.clientKey
+        )
+
+        let adyenContext = try await AdyenContext(
             apiContext: configuration.apiContext,
             payment: nil,
             amount: configuration.amount,
+            publicKey: publicKey,
             checkoutAttemptId: checkoutAttemptId,
             analyticsAPIContext: configuration.analyticsApiContext,
             analyticsConfiguration: configuration.analyticsConfiguration
@@ -92,7 +108,6 @@ internal class CheckoutProvider: CheckoutProviding {
         return Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
-            checkoutAttemptId: checkoutAttemptId,
             adyenContext: adyenContext,
             presentationDelegate: presentationDelegate
         )
@@ -107,16 +122,22 @@ internal class CheckoutProvider: CheckoutProviding {
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
 
-        // fetch and store checkout attempt id
-        // fetch and store checkout attempt id
-        let checkoutAttemptId: String? = await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
-            with: configuration.analyticsApiContext
+        async let checkoutAttemptId = checkoutAttemptIdProvider.fetchCheckoutAttemptId(
+            with: configuration.apiContext
+        )
+        
+        let apiClient = APIClient(apiContext: configuration.apiContext)
+
+        async let publicKey = try await publicKeyProvider.fetchPublicKey(
+            apiClient: apiClient,
+            clientKey: configuration.apiContext.clientKey
         )
 
-        let adyenContext = AdyenContext(
+        let adyenContext = try await AdyenContext(
             apiContext: configuration.apiContext,
             payment: nil,
             amount: configuration.amount,
+            publicKey: publicKey,
             checkoutAttemptId: checkoutAttemptId,
             analyticsAPIContext: configuration.analyticsApiContext,
             analyticsConfiguration: configuration.analyticsConfiguration
@@ -124,7 +145,6 @@ internal class CheckoutProvider: CheckoutProviding {
 
         return Checkout(
             configuration: configuration,
-            checkoutAttemptId: checkoutAttemptId,
             adyenContext: adyenContext,
             presentationDelegate: presentationDelegate
         )
@@ -143,5 +163,4 @@ internal class CheckoutProvider: CheckoutProviding {
             context: adyenContext
         )
     }
-
 }

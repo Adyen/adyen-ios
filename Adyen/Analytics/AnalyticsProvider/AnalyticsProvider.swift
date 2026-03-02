@@ -12,7 +12,7 @@ internal final class AnalyticsProvider: AnyAnalyticsProvider {
     // MARK: - Properties
 
     // TODO: Robert: This should become required(non optional) and it need not be passed to the eventAnalyticsProvider, and should be available during init.
-    internal let checkoutAttemptId: String?
+    internal var checkoutAttemptId: String?
 
     /// This value is nil when analytics is disabled by configuration provided by the merchant.
     internal var eventAnalyticsProvider: AnyEventAnalyticsProvider?

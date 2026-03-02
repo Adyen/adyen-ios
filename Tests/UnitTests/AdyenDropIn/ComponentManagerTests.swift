@@ -340,11 +340,14 @@ class ComponentManagerTests: XCTestCase {
             presentationDelegate: presentationDelegate
         )
 
-        XCTAssertEqual(sut.paidComponents.count, 2)
+        // Paid section should contain the paid payment methods
+        let paidSection = sut.sections.first { $0.paymentMethods.contains { $0 is OrderPaymentMethod } }
+        XCTAssertNotNil(paidSection)
+        XCTAssertEqual(paidSection?.paymentMethods.count, 2)
+
         XCTAssertEqual(sut.storedComponents.count, numberOfExpectedStoredComponent)
         XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
 
-        XCTAssertEqual(sut.paidComponents.filter { $0.order == order }.count, 2)
         XCTAssertEqual(sut.storedComponents.filter { $0.order == order }.count, numberOfExpectedStoredComponent)
         XCTAssertEqual(sut.regularComponents.filter { $0.order == order }.count, numberOfExpectedRegularComponents)
     }

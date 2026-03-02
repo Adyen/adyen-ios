@@ -82,7 +82,11 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
             environment: component.context.apiContext.environment,
             size: .large
         )
-        return CardImageItem(imageURL: imageURL, sizeMode: .fixed(Constants.cardImageSize))
+        return CardImageItem(
+            imageURL: imageURL,
+            sizeMode: .fixed(Constants.cardImageSize),
+            theme: theme
+        )
     }
 
     internal var titleText: String {
@@ -141,17 +145,14 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
 
     private func startPaymentFlow(for component: PaymentComponent) {
         startLoading(for: component)
-        
-        switch component {
-        case let component as PresentableComponent:
-            router?.present(paymentComponent: component) { [weak self] in
+
+        switch component.type {
+        case .regular, .stored:
+            router?.present(component: component) { [weak self] in
                 self?.stopLoading()
             }
-        case let component as PaymentInitiable:
-            (component as? PaymentComponent)?.delegate = self
-            component.initiatePayment()
-        default:
-            break
+        case let .initiable(initiablePaymentComponent):
+            initiablePaymentComponent.initiatePayment(delegate: self)
         }
     }
 

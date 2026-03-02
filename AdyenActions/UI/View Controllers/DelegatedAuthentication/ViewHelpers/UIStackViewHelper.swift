@@ -9,7 +9,7 @@ import UIKit
 @_spi(AdyenInternal) import Adyen
 
 extension UIStackView {
-    convenience init(
+    internal convenience init(
         arrangedSubviews: [UIView],
         axis: NSLayoutConstraint.Axis = .vertical,
         distribution: UIStackView.Distribution = .fill,

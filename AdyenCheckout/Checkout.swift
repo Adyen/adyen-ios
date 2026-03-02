@@ -57,9 +57,6 @@ public final class Checkout: CheckoutProtocol {
     public let paymentMethods: PaymentMethods?
     internal let session: SessionProtocol?
     
-    /// This is used primarily for sending Analytic Events. If this doesn't exist then there would not be any analytics sent.
-    internal let checkoutAttemptId: String?
-
     internal let configuration: CheckoutConfiguration
     internal weak var presentationDelegate: PresentationDelegate?
     internal let adyenContext: AdyenContext
@@ -162,14 +159,12 @@ public final class Checkout: CheckoutProtocol {
         configuration: CheckoutConfiguration,
         session: SessionProtocol? = nil,
         paymentMethods: PaymentMethods? = nil,
-        checkoutAttemptId: String?,
         adyenContext: AdyenContext,
         presentationDelegate: PresentationDelegate?
     ) {
         self.configuration = configuration
         self.session = session
         self.paymentMethods = paymentMethods ?? session?.state.paymentMethods
-        self.checkoutAttemptId = checkoutAttemptId
         self.presentationDelegate = presentationDelegate
         self.adyenContext = adyenContext
         self.session?.delegate = self

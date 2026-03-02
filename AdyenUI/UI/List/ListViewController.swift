@@ -15,7 +15,7 @@ package final class ListViewController: UITableViewController {
 
     /// Delegate to handle different viewController events.
     package weak var delegate: ViewControllerDelegate?
-    
+
     /// Initializes the list view controller.
     ///
     /// - Parameter style: The UI style.
@@ -23,31 +23,27 @@ package final class ListViewController: UITableViewController {
         self.style = style
         super.init(style: .grouped)
     }
-    
+
     @available(*, unavailable)
     package required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Data Source
-    
+
     package var sections: [ListSection] {
         dataSource.sections
     }
-    
+
     private lazy var dataSource: ListViewControllerDataSource = {
-        if #available(iOS 13, *) {
-            return DiffableListDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, _ in
-                self?.dataSource.cell(for: tableView, at: indexPath)
-            })
-        } else {
-            return CoreListDataSource()
-        }
+        DiffableListDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, _ in
+            self?.dataSource.cell(for: tableView, at: indexPath)
+        })
     }()
-    
+
     package func reload(newSections: [ListSection], animated: Bool = false) {
         dataSource.sections.flatMap(\.items).forEach { $0.loadingHandler = nil }
-        
+
         dataSource.reload(newSections: newSections, tableView: tableView, animated: animated)
 
         stopLoading()
@@ -56,7 +52,7 @@ package final class ListViewController: UITableViewController {
             item.loadingHandler = { [weak self] in self?.handleItem($1, isLoading: $0) }
         }
     }
-    
+
     private func handleItem(_ item: ListItem, isLoading: Bool) {
         if isLoading {
             startLoading(for: item)
@@ -64,21 +60,21 @@ package final class ListViewController: UITableViewController {
             stopLoading()
         }
     }
-    
+
     package func deleteItem(at indexPath: IndexPath, animated: Bool = true) {
         dataSource.deleteItem(at: indexPath, tableView: tableView, animated: animated)
     }
-    
+
     // MARK: - View
-    
+
     override package func viewDidLoad() {
         super.viewDidLoad()
-        
+
         view.backgroundColor = style.backgroundColor
         tableView.backgroundColor = style.backgroundColor
         tableView.backgroundView?.backgroundColor = style.backgroundColor
         tableView.isOpaque = false
-        
+
         tableView.separatorColor = .clear
         tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.sectionFooterHeight = 0.0
@@ -95,27 +91,27 @@ package final class ListViewController: UITableViewController {
         super.viewDidAppear(animated)
         delegate?.viewDidAppear(viewController: self)
     }
-    
+
     override package func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         delegate?.viewWillAppear(viewController: self)
     }
-    
+
     // MARK: - UITableViewDelegate
-    
+
     override package func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerItem = sections[section].header else { return nil }
-        
+
         let headerView: ListHeaderView
-        
+
         let reuseIdentifier = ListHeaderView.reuseIdentifier
-        
+
         if let dequeuedView = tableView.dequeueReusableHeaderFooterView(withIdentifier: reuseIdentifier) as? ListHeaderView {
             headerView = dequeuedView
         } else {
             headerView = ListHeaderView(reuseIdentifier: reuseIdentifier)
         }
-        
+
         headerView.headerItem = headerItem
 
         headerView.accessibilityIdentifier = ViewIdentifierBuilder.build(
@@ -128,7 +124,7 @@ package final class ListViewController: UITableViewController {
 
         return headerView
     }
-    
+
     private func toggleEditingMode(_ headerView: ListHeaderView?) {
         var isEditingModeOn = tableView.isEditing
         isEditingModeOn.toggle()
@@ -151,31 +147,31 @@ package final class ListViewController: UITableViewController {
     override package func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         sections[section].footer == nil ? 0 : 55
     }
-    
+
     override package func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         sections[section].header == nil ? 0 : 44.0
     }
-    
+
     override package func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
+
         let item = sections[indexPath.section].items[indexPath.item]
         item.selectionHandler?()
     }
-    
+
     override package func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         sections[indexPath.section].header?.editingStyle.tableViewEditingStyle ?? .none
     }
-    
+
     // MARK: - Item Loading state
-    
+
     /// Starts a loading animation for a given ListItem.
     ///
     /// - Parameter item: The item to be shown as loading.
     private func startLoading(for item: ListItem) {
         dataSource.startLoading(for: item, tableView)
     }
-    
+
     /// Stops all loading animations.
     package func stopLoading() {
         dataSource.stopLoading(tableView)
