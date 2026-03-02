@@ -291,16 +291,26 @@ internal struct DemoAppSettings: Codable {
     }
 
     internal func applePayConfiguration() throws -> ApplePayComponent.Configuration {
-        let applePayPayment = try ApplePayPayment(
-            payment: ConfigurationConstants.current.payment,
-            brand: ConfigurationConstants.appName
+        let payment = ConfigurationConstants.current.payment
+        let decimalAmount = AmountFormatter.decimalAmount(
+            payment.amount.value,
+            currencyCode: payment.amount.currencyCode,
+            localeIdentifier: payment.amount.localeIdentifier
         )
-        var config = ApplePayComponent.Configuration(
-            payment: applePayPayment,
-            merchantIdentifier:
-            ConfigurationConstants.current.applePaySettings.merchantIdentifier
+
+        let paymentRequest = PKPaymentRequest()
+        paymentRequest.merchantIdentifier = ConfigurationConstants.current.applePaySettings.merchantIdentifier
+        paymentRequest.countryCode = payment.countryCode
+        paymentRequest.currencyCode = payment.amount.currencyCode
+        paymentRequest.paymentSummaryItems = [
+            PKPaymentSummaryItem(label: ConfigurationConstants.appName, amount: decimalAmount)
+        ]
+        paymentRequest.merchantCapabilities = .capability3DS
+
+        var config = try ApplePayComponent.Configuration(
+            paymentRequest: paymentRequest,
+            allowOnboarding: applePaySettings.allowOnboarding
         )
-        config.allowOnboarding = applePaySettings.allowOnboarding
         return config
     }
 
