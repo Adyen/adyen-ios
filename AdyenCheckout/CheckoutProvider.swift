@@ -36,11 +36,16 @@ internal class CheckoutProvider: CheckoutProviding {
         
         let apiClient = APIClient(apiContext: configuration.apiContext)
 
-        // fetch and store checkout attempt id
+        // TODO: Improvement: Suggestion: instead of the checkout provider being aware of something as specific as checkoutAttemptId.
+        // - This could be wrapped in something related to Analytics ex: await AnalyticsProvider.init() and internally fetch what is required for analytics.
+        // - At this point, without much context we may ask the question `what is the checkoutAttemptId?`. Alternatively -
+        // - If we read something like `await AnalyticsProvider.init()` then we know that analytics is being setup and internally this attemptId is being fetched.
         let checkoutAttemptId: String? = await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
             with: configuration.analyticsApiContext
         )
 
+        // TODO: Improvement: Suggestion: Instead of fetching the publicKey, which requires a bit of searching to understand that it is being used for encryption ex: card encryption.
+        // if there is a holding type like `await Encryptor.init(clientId:)` then we know that the Encryption is being setup and  key is being used for encryption and it is mapped to the clientId.
         async let publicKey = try await publicKeyProvider.fetchPublicKey(
             apiClient: apiClient,
             clientKey: configuration.apiContext.clientKey
