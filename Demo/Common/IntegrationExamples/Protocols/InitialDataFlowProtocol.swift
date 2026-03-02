@@ -31,6 +31,7 @@ extension InitialDataFlowProtocol {
             apiContext: ConfigurationConstants.apiContext,
             payment: ConfigurationConstants.current.payment,
             amount: ConfigurationConstants.current.amount,
+            publicKey: "",
             checkoutAttemptId: nil, // TODO: Eren: Here too we need to see if this is a good place to create AdyenContext?
             analyticsAPIContext: nil,
             analyticsConfiguration: analyticsConfiguration

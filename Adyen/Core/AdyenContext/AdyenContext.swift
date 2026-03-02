@@ -23,6 +23,7 @@ public final class AdyenContext: PaymentAware {
     
     package var analyticsProvider: AnyAnalyticsProvider?
 
+    package let publicKey: String
     package let amount: Amount
 
     // MARK: - Initializers
@@ -36,11 +37,11 @@ public final class AdyenContext: PaymentAware {
         apiContext: APIContext,
         payment: Payment?,
         amount: Amount,
+        publicKey: String,
         checkoutAttemptId: String?,
         analyticsAPIContext: APIContext?,
         analyticsConfiguration: AnalyticsConfiguration = .init()
     ) {
-        
         let analyticsProvider = Self.createAnalyticsProvider(
             analyticsApiContext: analyticsAPIContext,
             checkoutAttemptId: checkoutAttemptId,
@@ -51,6 +52,7 @@ public final class AdyenContext: PaymentAware {
             apiContext: apiContext,
             payment: payment,
             amount: amount,
+            publicKey: publicKey,
             analyticsProvider: analyticsProvider
         )
     }
@@ -60,8 +62,10 @@ public final class AdyenContext: PaymentAware {
         apiContext: APIContext,
         payment: Payment?,
         amount: Amount,
+        publicKey: String,
         analyticsProvider: AnyAnalyticsProvider?
     ) {
+        self.publicKey = publicKey
         self.apiContext = apiContext
         self.amount = amount
         self.analyticsProvider = analyticsProvider
