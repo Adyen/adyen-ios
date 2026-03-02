@@ -307,7 +307,7 @@ internal struct DemoAppSettings: Codable {
         ]
         paymentRequest.merchantCapabilities = .capability3DS
 
-        var config = try ApplePayComponent.Configuration(
+        let config = try ApplePayComponent.Configuration(
             paymentRequest: paymentRequest,
             allowOnboarding: applePaySettings.allowOnboarding
         )
