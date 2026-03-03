@@ -290,37 +290,9 @@ internal struct DemoAppSettings: Codable {
         return dropInConfig
     }
 
-    internal func applePayPaymentRequest() -> PKPaymentRequest {
-        let payment = ConfigurationConstants.current.payment
-        let decimalAmount = AmountFormatter.decimalAmount(
-            payment.amount.value,
-            currencyCode: payment.amount.currencyCode,
-            localeIdentifier: payment.amount.localeIdentifier
-        )
-
-        let paymentRequest = PKPaymentRequest()
-        paymentRequest.merchantIdentifier = ConfigurationConstants.current.applePaySettings.merchantIdentifier
-        paymentRequest.countryCode = payment.countryCode
-        paymentRequest.currencyCode = payment.amount.currencyCode
-        paymentRequest.paymentSummaryItems = [
-            PKPaymentSummaryItem(label: ConfigurationConstants.appName, amount: decimalAmount)
-        ]
-        paymentRequest.merchantCapabilities = .capability3DS
-        paymentRequest.shippingType = .delivery
-        paymentRequest.requiredShippingContactFields = [.postalAddress]
-        paymentRequest.requiredBillingContactFields = [.postalAddress]
-        paymentRequest.shippingMethods = ConfigurationConstants.shippingMethods
-        if #available(iOS 15.0, *) {
-            paymentRequest.supportsCouponCode = true
-        } else {
-            // Fallback on earlier versions
-        }
-        return paymentRequest
-    }
-
-    internal func applePayConfiguration() throws -> ApplePayComponent.Configuration {
+    internal func applePayConfiguration(using request: PKPaymentRequest) throws -> ApplePayComponent.Configuration {
         try ApplePayComponent.Configuration(
-            paymentRequest: applePayPaymentRequest(),
+            paymentRequest: request,
             allowOnboarding: applePaySettings.allowOnboarding
         )
     }
@@ -361,5 +333,41 @@ private extension DemoAppSettings {
         case .none:
             return .none
         }
+    }
+}
+
+internal extension PKPaymentRequest {
+    
+    static var demo: PKPaymentRequest {
+        let payment = ConfigurationConstants.current.payment
+        let decimalAmount = AmountFormatter.decimalAmount(
+            payment.amount.value,
+            currencyCode: payment.amount.currencyCode,
+            localeIdentifier: payment.amount.localeIdentifier
+        )
+
+        let paymentRequest = PKPaymentRequest()
+        paymentRequest.merchantIdentifier = ConfigurationConstants.current.applePaySettings.merchantIdentifier
+        paymentRequest.countryCode = payment.countryCode
+        paymentRequest.currencyCode = payment.amount.currencyCode
+        paymentRequest.paymentSummaryItems = [
+            PKPaymentSummaryItem(label: ConfigurationConstants.appName, amount: decimalAmount)
+        ]
+        paymentRequest.merchantCapabilities = .capability3DS
+        return paymentRequest
+    }
+    
+    static var demoWithShippingFields: PKPaymentRequest {
+        let paymentRequest = demo
+        paymentRequest.shippingType = .delivery
+        paymentRequest.requiredShippingContactFields = [.postalAddress]
+        paymentRequest.requiredBillingContactFields = [.postalAddress]
+        paymentRequest.shippingMethods = ConfigurationConstants.shippingMethods
+        if #available(iOS 15.0, *) {
+            paymentRequest.supportsCouponCode = true
+        } else {
+            // Fallback on earlier versions
+        }
+        return paymentRequest
     }
 }

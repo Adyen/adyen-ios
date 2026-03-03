@@ -81,7 +81,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
         guard let paymentMethod = paymentMethods.paymentMethod(ofType: ApplePayPaymentMethod.self) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self)
         }
-        let config = try ConfigurationConstants.current.applePayConfiguration()
+        let config = try ConfigurationConstants.current.applePayConfiguration(using: .demoWithShippingFields)
 
         let component = try ApplePayComponent(
             paymentMethod: paymentMethod,
