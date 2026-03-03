@@ -74,6 +74,4 @@ private class LinkTextViewFormItem: LinkTextView, AnyFormItemView {
     public var childItemViews: [AnyFormItemView] {
         []
     }
-    
-    public func reset() {}
 }

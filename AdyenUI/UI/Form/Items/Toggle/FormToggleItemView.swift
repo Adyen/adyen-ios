@@ -81,10 +81,6 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
         return true
     }
 
-    override public func reset() {
-        item.value = false
-    }
-
     // MARK: - Private
 
     /// Configures all styling from theme.
