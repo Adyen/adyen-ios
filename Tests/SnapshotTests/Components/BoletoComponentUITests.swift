@@ -17,6 +17,7 @@ final class BoletoComponentUITests: XCTestCase {
             apiContext: Dummy.apiContext,
             payment: Dummy.payment,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
             analyticsProvider: AnalyticsProviderMock()
         )
     }

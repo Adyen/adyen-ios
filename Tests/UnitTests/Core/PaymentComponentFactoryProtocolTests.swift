@@ -195,7 +195,9 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         let customContext = AdyenContext(
             apiContext: Dummy.apiContext,
             payment: Payment(amount: customAmount, countryCode: "GB"),
-            amount: customAmount
+            amount: customAmount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
         )
         let config = factory.defaultConfiguration()
         

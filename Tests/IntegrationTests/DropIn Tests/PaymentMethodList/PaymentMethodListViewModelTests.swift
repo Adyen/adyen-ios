@@ -266,7 +266,9 @@ struct PaymentMethodListViewModelTests {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             payment: nil,
-            amount: .init(value: 100, currencyCode: "EUR")
+            amount: .init(value: 100, currencyCode: "EUR"),
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
         )
 
         let componentManagerMock = ComponentManager(
@@ -350,6 +352,8 @@ struct PaymentMethodListViewModelTests {
     private let contextMock = AdyenContext(
         apiContext: Dummy.apiContext,
         payment: nil,
-        amount: .init(value: 100, currencyCode: "EUR")
+        amount: .init(value: 100, currencyCode: "EUR"),
+        publicKey: Dummy.publicKey,
+        analyticsProvider: AnalyticsProviderMock()
     )
 }

@@ -26,7 +26,7 @@ internal class CheckoutProviderMock: CheckoutProviding {
     
     func setupSession(
         with sessionResponse: SessionResponse,
-        configuration: CheckoutConfiguration,
+        adyenContext: AdyenContext,
         apiClient: APIClientProtocol
     ) async throws -> SessionProtocol {
         

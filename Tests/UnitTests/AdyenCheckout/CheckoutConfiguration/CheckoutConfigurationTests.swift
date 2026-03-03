@@ -24,7 +24,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         context = nil
         super.tearDown()
     }
-    
+
     // MARK: - Configuration Resolution Tests
     
     func testConfiguration_WithExistingConfiguration_ReturnsStoredConfiguration() throws {
@@ -32,8 +32,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         var blikConfig = BLIKComponentConfiguration()
         blikConfig.showsSubmitButton = false // Custom value
         
-        let checkoutConfig = CheckoutConfiguration(
-            context: context,
+        let checkoutConfig = makeCheckoutConfiguration(
             configurations: [.payment(.blik): blikConfig]
         )
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
@@ -51,7 +50,7 @@ final class CheckoutConfigurationTests: XCTestCase {
     
     func testConfiguration_WithoutExistingConfiguration_ReturnsDefaultValue() throws {
         // Given
-        let checkoutConfig = CheckoutConfiguration(context: context)
+        let checkoutConfig = makeCheckoutConfiguration()
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         var defaultConfig = BLIKComponentConfiguration()
         defaultConfig.showsSubmitButton = false // Custom default
@@ -72,8 +71,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         var blikConfig = BLIKComponentConfiguration()
         blikConfig.showsSubmitButton = false
         
-        let checkoutConfig = CheckoutConfiguration(
-            context: context,
+        let checkoutConfig = makeCheckoutConfiguration(
             configurations: [.payment(.blik): blikConfig]
         )
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
@@ -95,7 +93,7 @@ final class CheckoutConfigurationTests: XCTestCase {
     
     func testConfiguration_AutoclosureEvaluatedWhenConfigMissing() throws {
         // Given
-        let checkoutConfig = CheckoutConfiguration(context: context)
+        let checkoutConfig = makeCheckoutConfiguration()
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         var defaultWasCalled = false
         
@@ -117,8 +115,7 @@ final class CheckoutConfigurationTests: XCTestCase {
     func testComponentConfiguration_WithExistingConfiguration_ReturnsConfiguration() throws {
         // Given
         let blikConfig = BLIKComponentConfiguration()
-        let checkoutConfig = CheckoutConfiguration(
-            context: context,
+        let checkoutConfig = makeCheckoutConfiguration(
             configurations: [.payment(.blik): blikConfig]
         )
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
@@ -140,8 +137,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         let threeDS2Config = try ThreeDS2ActionConfiguration()
             .requestorAppURL(XCTUnwrap(URL(string: "https://example.com")))
         
-        let checkoutConfig = CheckoutConfiguration(
-            context: context,
+        let checkoutConfig = makeCheckoutConfiguration(
             configurations: [.action(.threeDS2): threeDS2Config]
         )
         
@@ -158,7 +154,7 @@ final class CheckoutConfigurationTests: XCTestCase {
     
     func testActionConfiguration_WithDefaultValue_ReturnsDefaultWhenMissing() throws {
         // Given
-        let checkoutConfig = CheckoutConfiguration(context: context)
+        let checkoutConfig = makeCheckoutConfiguration()
         let defaultConfig = try ThreeDS2ActionConfiguration()
             .requestorAppURL(XCTUnwrap(URL(string: "https://default.com")))
         
@@ -178,8 +174,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         let threeDS2Config = try ThreeDS2ActionConfiguration()
             .requestorAppURL(XCTUnwrap(URL(string: "https://example.com")))
         
-        let checkoutConfig = CheckoutConfiguration(
-            context: context,
+        let checkoutConfig = makeCheckoutConfiguration(
             configurations: [.action(.threeDS2): threeDS2Config]
         )
         
@@ -194,9 +189,7 @@ final class CheckoutConfigurationTests: XCTestCase {
     
     func testActionConfiguration_Optional_ReturnsNilWhenMissing() {
         // Given
-        let checkoutConfig = CheckoutConfiguration(
-            context: context
-        )
+        let checkoutConfig = makeCheckoutConfiguration()
 
         // When
         let resolvedConfig: ThreeDS2ActionConfiguration? = checkoutConfig.configuration(for: .threeDS2)
@@ -210,8 +203,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         let twintConfig = TwintActionConfiguration(callbackAppScheme: "my-app")
             .maxIssuerNumber(39)
         
-        let checkoutConfig = CheckoutConfiguration(
-            context: context,
+        let checkoutConfig = makeCheckoutConfiguration(
             configurations: [.action(.twint): twintConfig]
         )
         
@@ -232,8 +224,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         let twintConfig = TwintActionConfiguration(callbackAppScheme: "my-app")
             .maxIssuerNumber(39)
         
-        let checkoutConfig = CheckoutConfiguration(
-            context: context,
+        let checkoutConfig = makeCheckoutConfiguration(
             configurations: [.action(.twint): twintConfig]
         )
         
@@ -250,8 +241,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         // Given
         let threeDS2Config = ThreeDS2ActionConfiguration()
         
-        let checkoutConfig = CheckoutConfiguration(
-            context: context,
+        let checkoutConfig = makeCheckoutConfiguration(
             configurations: [.action(.threeDS2): threeDS2Config]
         )
         var defaultWasCalled = false
@@ -271,7 +261,7 @@ final class CheckoutConfigurationTests: XCTestCase {
     
     func testActionConfiguration_AutoclosureEvaluatedWhenConfigMissing() {
         // Given
-        let checkoutConfig = CheckoutConfiguration(context: context)
+        let checkoutConfig = makeCheckoutConfiguration()
         var defaultWasCalled = false
         
         // When
@@ -295,5 +285,17 @@ final class CheckoutConfigurationTests: XCTestCase {
             "name": "BLIK"
         ]
         return try? AdyenCoder.decode(dict) as BLIKPaymentMethod
+    }
+
+    private func makeCheckoutConfiguration(
+        configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
+    ) -> CheckoutConfiguration {
+        CheckoutConfiguration(
+            apiContext: Dummy.apiContext,
+            amount: Dummy.amount,
+            analyticsApiContext: nil,
+            analyticsConfiguration: .init(),
+            configurations: configurations
+        )
     }
 }

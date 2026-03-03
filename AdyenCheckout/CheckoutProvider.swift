@@ -27,7 +27,7 @@ internal class CheckoutProvider: CheckoutProviding {
     }
     
     internal static let `default` = CheckoutProvider()
-    
+
     internal func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
@@ -36,12 +36,13 @@ internal class CheckoutProvider: CheckoutProviding {
         
         let apiClient = APIClient(apiContext: configuration.apiContext)
 
+        let analyticsApiClient = configuration.analyticsApiContext.flatMap { APIClient(apiContext: $0) }
         // TODO: Improvement: Suggestion: instead of the checkout provider being aware of something as specific as checkoutAttemptId.
         // - This could be wrapped in something related to Analytics ex: await AnalyticsProvider.init() and internally fetch what is required for analytics.
         // - At this point, without much context we may ask the question `what is the checkoutAttemptId?`. Alternatively -
         // - If we read something like `await AnalyticsProvider.init()` then we know that analytics is being setup and internally this attemptId is being fetched.
         let checkoutAttemptId: String? = await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
-            with: configuration.analyticsApiContext
+            with: analyticsApiClient
         )
 
         // TODO: Improvement: Suggestion: Instead of fetching the publicKey, which requires a bit of searching to understand that it is being used for encryption ex: card encryption.
@@ -88,9 +89,10 @@ internal class CheckoutProvider: CheckoutProviding {
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
+        let analyticsApiClient = configuration.analyticsApiContext.flatMap { APIClient(apiContext: $0) }
 
         async let checkoutAttemptId = checkoutAttemptIdProvider.fetchCheckoutAttemptId(
-            with: configuration.apiContext
+            with: analyticsApiClient
         )
 
         let apiClient = APIClient(apiContext: configuration.apiContext)
@@ -126,9 +128,10 @@ internal class CheckoutProvider: CheckoutProviding {
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
+        let analyticsApiClient = configuration.analyticsApiContext.flatMap { APIClient(apiContext: $0) }
 
         async let checkoutAttemptId = checkoutAttemptIdProvider.fetchCheckoutAttemptId(
-            with: configuration.apiContext
+            with: analyticsApiClient
         )
         
         let apiClient = APIClient(apiContext: configuration.apiContext)

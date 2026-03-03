@@ -10,26 +10,21 @@ import Foundation
 
 internal protocol CheckoutAttemptIdProviding {
     func fetchCheckoutAttemptId(
-        with apiContext: APIContext?
+        with apiClient: APIClientProtocol?
     ) async -> String?
 }
 
 /// Default implementation that performs the actual API call to fetch the checkout attempt ID.
-/// Does 2 tasks:
-/// 1. Creates a analytics environment/APIClient to send analytical events using the CheckoutConfiguration.
-/// 2. Sends a `RequestCheckoutAttemptIdRequest` to get the checkoutAttemptId.
 /// Note: If there is any failure in fetching the checkoutAttemptId then we will return nil, as that would imply that there should not be any analytics events sent.
 /// Improvement: This is an edge case and the current success rate of the api is pretty high 99 something so this would rarely ever fail. If this ever becomes a constraint we could add a retying logic to try twice if it failed once. But that is an improvement if needed alone.
-internal class CheckoutAttemptIdProvider: CheckoutAttemptIdProviding {
-
+internal struct CheckoutAttemptIdProvider: CheckoutAttemptIdProviding {
     internal func fetchCheckoutAttemptId(
-        with apiContext: APIContext?
+        with apiClient: APIClientProtocol?
     ) async -> String? {
-        guard let analyticsApiContext = apiContext else {
+        guard let apiClient else {
             return nil
         }
         let request = CheckoutAttemptIdRequest()
-        let apiClient = APIClient(apiContext: analyticsApiContext)
         guard let response = try? await withCheckedThrowingContinuation({ continuation in
             apiClient.perform(request) { result in
                 continuation.resume(with: result)
@@ -40,5 +35,4 @@ internal class CheckoutAttemptIdProvider: CheckoutAttemptIdProviding {
 
         return response.checkoutAttemptId
     }
-
 }

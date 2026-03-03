@@ -129,7 +129,8 @@ public struct CheckoutConfiguration {
         configurations[.action(actionType)] as? T
     }
 
-    package static func createAnalyticsAPIContext(
+    // TODO: Robert: Make public to private, This public is not needed. But currently using this to support providing analyticsAPIContext in the Integration Examples.
+    public static func createAnalyticsAPIContext(
         apiContext: APIContext
     ) -> APIContext? {
         guard

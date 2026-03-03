@@ -21,7 +21,9 @@ final class BLIKComponentUITests: XCTestCase {
         AdyenContext(
             apiContext: Dummy.apiContext,
             payment: payment,
-            amount: Dummy.amount
+            amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
         )
     }
 

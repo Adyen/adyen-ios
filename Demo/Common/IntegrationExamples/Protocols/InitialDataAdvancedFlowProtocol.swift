@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import struct AdyenCheckout.CheckoutConfiguration
 import AdyenNetworking
 import AdyenSession
 
@@ -49,7 +50,7 @@ extension InitialDataAdvancedFlowProtocol {
             amount: ConfigurationConstants.current.amount,
             publicKey: "",
             checkoutAttemptId: nil,
-            analyticsAPIContext: nil,
+            analyticsAPIContext: CheckoutConfiguration.createAnalyticsAPIContext(apiContext: ConfigurationConstants.apiContext),
             analyticsConfiguration: analyticsConfiguration
         )
     }
