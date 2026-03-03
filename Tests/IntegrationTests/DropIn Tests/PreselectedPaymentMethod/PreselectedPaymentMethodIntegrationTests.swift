@@ -72,6 +72,20 @@ struct PreselectedPaymentMethodIntegrationTests {
         #expect(sut.preselectedPaymentMethodRouter.presentComponentOnCancelCallsCount == 0)
     }
 
+    // MARK: - Sending event on didLoad
+
+    @Test("On preselected payment method load - we send an info event on load")
+    func paymentComponent_onLoad_sendsInfoEvent() throws {
+        // Given
+        let sut = SUT_MockedPaymentMethodRouter(type: .visa)
+
+        // Then - verify payment method list is presented
+        #expect(sut.analyticsProviderMock.infos.count == 1)
+        let infoEvent = try #require(sut.analyticsProviderMock.infos.first)
+        #expect(infoEvent.component == "dropin")
+        #expect(infoEvent.type == .rendered)
+    }
+
     // MARK: - Cancel Tests
 
     @Test("PaymentComponent - cancel dismisses and cancels component")
@@ -96,7 +110,7 @@ struct PreselectedPaymentMethodIntegrationTests {
 
         let preSelectedViewController: PreSelectedPaymentViewControllerProxy
         let dropInFlowManagerMock = DropInFlowManagingMock()
-
+        let analyticsProviderMock = AnalyticsProviderMock()
         init(type: PaymentComponentTestData) {
             let routerMock = RouterMock()
             let configuration: DropInComponent.Configuration = .init()
@@ -105,6 +119,8 @@ struct PreselectedPaymentMethodIntegrationTests {
                 component: type.paymentComponent,
                 theme: configuration.theme,
                 localizationParameters: configuration.localizationParameters,
+                analyticsProvider: analyticsProviderMock,
+                dropInAnalyticsConfiguration: DropInAnalyticsConfiguration(configuration: configuration),
                 dropInFlowManager: dropInFlowManagerMock
             )
             let viewController = PreselectedPaymentMethodViewController(viewModel: viewModel)
@@ -138,7 +154,8 @@ struct PreselectedPaymentMethodIntegrationTests {
                 componentContainerAssembler: componentContainerAssemblerMock,
                 configuration: .init(),
                 dropInFlowManager: dropInFlowManager,
-                partialPaymentDelegate: nil
+                partialPaymentDelegate: nil,
+                analyticsProvider: AnalyticsProviderMock()
             )
 
             router = assembler.resolvePreselectedPaymentMethodRouter(
