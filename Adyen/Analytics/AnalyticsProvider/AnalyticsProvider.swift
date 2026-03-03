@@ -14,7 +14,7 @@ internal final class AnalyticsProvider: AnyAnalyticsProvider {
     internal var checkoutAttemptId: String?
 
     /// This value is nil when analytics is disabled by configuration provided by the merchant.
-    private let eventAnalyticsProvider: AnyEventAnalyticsProvider?
+    internal let eventAnalyticsProvider: AnyEventAnalyticsProvider?
     private let uniqueAssetAPIClient: UniqueAssetAPIClient<EmptyResponse>
     private let configuration: AnalyticsConfiguration
 

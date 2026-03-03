@@ -108,6 +108,7 @@ class AdyenContextTests: XCTestCase {
         )
         
         XCTAssertNotNil(context.analyticsProvider)
+        XCTAssertNotNil((context.analyticsProvider as? AnalyticsProvider)?.eventAnalyticsProvider)
     }
     
     func testOnlyAnalyticsProviderShouldBeCreated() {
@@ -125,6 +126,7 @@ class AdyenContextTests: XCTestCase {
         )
         
         XCTAssertNotNil(context.analyticsProvider)
+        XCTAssertNil((context.analyticsProvider as? AnalyticsProvider)?.eventAnalyticsProvider)
     }
 }
 
