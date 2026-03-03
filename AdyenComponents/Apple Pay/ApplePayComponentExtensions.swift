@@ -123,8 +123,12 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     }
 
     private func updatePaymentSummaryItems(from result: some PKPaymentRequestUpdate) {
-        if result.status == .success, !result.paymentSummaryItems.isEmpty {
+        guard result.status == .success, !result.paymentSummaryItems.isEmpty else { return }
+        do {
+            try Configuration.validate(summaryItems: result.paymentSummaryItems)
             paymentRequest.paymentSummaryItems = result.paymentSummaryItems
+        } catch {
+            delegate?.didFail(with: error, from: self)
         }
     }
     

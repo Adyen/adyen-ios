@@ -64,20 +64,24 @@ extension ApplePayComponent {
             guard CurrencyCodeValidator().isValid(paymentRequest.currencyCode) else {
                 throw ApplePayComponent.Error.invalidCurrencyCode
             }
-            guard !paymentRequest.paymentSummaryItems.isEmpty else {
-                throw ApplePayComponent.Error.emptySummaryItems
-            }
-            guard let lastItem = paymentRequest.paymentSummaryItems.last,
-                  lastItem.amount.doubleValue >= 0 else {
-                throw ApplePayComponent.Error.negativeGrandTotal
-            }
-            guard !paymentRequest.paymentSummaryItems.map(\.amount).contains(NSDecimalNumber.notANumber) else {
-                throw ApplePayComponent.Error.invalidSummaryItem
-            }
+            try Self.validate(summaryItems: paymentRequest.paymentSummaryItems)
 
             self.paymentRequest = paymentRequest
             self.allowOnboarding = allowOnboarding
             self.merchantIdentifier = paymentRequest.merchantIdentifier
+        }
+
+        internal static func validate(summaryItems: [PKPaymentSummaryItem]) throws {
+            guard !summaryItems.isEmpty else {
+                throw ApplePayComponent.Error.emptySummaryItems
+            }
+            guard let lastItem = summaryItems.last,
+                  lastItem.amount.doubleValue >= 0 else {
+                throw ApplePayComponent.Error.negativeGrandTotal
+            }
+            guard !summaryItems.map(\.amount).contains(NSDecimalNumber.notANumber) else {
+                throw ApplePayComponent.Error.invalidSummaryItem
+            }
         }
 
         internal mutating func paymentRequest(with supportedNetworks: [PKPaymentNetwork]) -> PKPaymentRequest {
@@ -85,8 +89,7 @@ extension ApplePayComponent {
             return paymentRequest
         }
 
-        @_spi(AdyenInternal)
-        public var currentAmount: Amount? {
+        package var currentAmount: Amount? {
             guard let lastItem = paymentRequest.paymentSummaryItems.last else { return nil }
             let minorUnits = AmountFormatter.minorUnitAmount(
                 from: lastItem.amount.decimalValue,
@@ -95,8 +98,7 @@ extension ApplePayComponent {
             return Amount(value: minorUnits, currencyCode: paymentRequest.currencyCode)
         }
 
-        @_spi(AdyenInternal)
-        public func replacing(amount: Amount) -> Self {
+        package func replacing(amount: Amount) -> Self {
             let newConfig = self
             guard let lastItem = newConfig.paymentRequest.paymentSummaryItems.last else { return newConfig }
 
@@ -110,9 +112,7 @@ extension ApplePayComponent {
             newConfig.paymentRequest.paymentSummaryItems = newItems
             return newConfig
         }
-
     }
-
 }
 
 extension ApplePayPaymentMethod {

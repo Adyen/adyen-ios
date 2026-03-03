@@ -365,8 +365,6 @@ internal extension PKPaymentRequest {
         paymentRequest.shippingMethods = ConfigurationConstants.shippingMethods
         if #available(iOS 15.0, *) {
             paymentRequest.supportsCouponCode = true
-        } else {
-            // Fallback on earlier versions
         }
         return paymentRequest
     }
