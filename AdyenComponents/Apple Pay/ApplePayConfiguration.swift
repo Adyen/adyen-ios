@@ -97,7 +97,7 @@ extension ApplePayComponent {
 
         @_spi(AdyenInternal)
         public func replacing(amount: Amount) -> Self {
-            var newConfig = self
+            let newConfig = self
             guard let lastItem = newConfig.paymentRequest.paymentSummaryItems.last else { return newConfig }
 
             var newItems = Array(newConfig.paymentRequest.paymentSummaryItems.dropLast())
