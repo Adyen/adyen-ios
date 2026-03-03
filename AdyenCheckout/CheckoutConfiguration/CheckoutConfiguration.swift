@@ -130,7 +130,7 @@ public struct CheckoutConfiguration {
     }
 
     // TODO: Robert: Make public to private, This public is not needed. But currently using this to support providing analyticsAPIContext in the Integration Examples.
-    public static func createAnalyticsAPIContext(
+    package static func createAnalyticsAPIContext(
         apiContext: APIContext
     ) -> APIContext? {
         guard
