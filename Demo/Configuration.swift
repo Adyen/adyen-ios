@@ -290,7 +290,7 @@ internal struct DemoAppSettings: Codable {
         return dropInConfig
     }
 
-    internal func applePayConfiguration() throws -> ApplePayComponent.Configuration {
+    internal func applePayPaymentRequest() -> PKPaymentRequest {
         let payment = ConfigurationConstants.current.payment
         let decimalAmount = AmountFormatter.decimalAmount(
             payment.amount.value,
@@ -306,12 +306,23 @@ internal struct DemoAppSettings: Codable {
             PKPaymentSummaryItem(label: ConfigurationConstants.appName, amount: decimalAmount)
         ]
         paymentRequest.merchantCapabilities = .capability3DS
+        paymentRequest.shippingType = .delivery
+        paymentRequest.requiredShippingContactFields = [.postalAddress]
+        paymentRequest.requiredBillingContactFields = [.postalAddress]
+        paymentRequest.shippingMethods = ConfigurationConstants.shippingMethods
+        if #available(iOS 15.0, *) {
+            paymentRequest.supportsCouponCode = true
+        } else {
+            // Fallback on earlier versions
+        }
+        return paymentRequest
+    }
 
-        let config = try ApplePayComponent.Configuration(
-            paymentRequest: paymentRequest,
+    internal func applePayConfiguration() throws -> ApplePayComponent.Configuration {
+        try ApplePayComponent.Configuration(
+            paymentRequest: applePayPaymentRequest(),
             allowOnboarding: applePaySettings.allowOnboarding
         )
-        return config
     }
 
     internal var analyticsConfiguration: AnalyticsConfiguration {
