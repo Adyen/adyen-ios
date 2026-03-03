@@ -27,9 +27,8 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     override func setUp() {
-        let configuration = ApplePayComponent.Configuration(
-            payment: Dummy.createTestApplePayPayment(),
-            merchantIdentifier: "test_id"
+        let configuration = try! ApplePayComponent.Configuration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
         sut = try! ApplePayComponent(
             paymentMethod: paymentMethod,
@@ -54,13 +53,118 @@ class ApplePayComponentTest: XCTestCase {
         setupRootViewController(emptyVC)
     }
 
+    // MARK: - Configuration Validation Tests
+
+    func testConfiguration_givenEmptyMerchantIdentifier_shouldThrowEmptyMerchantIdentifier() {
+        let request = PKPaymentRequest()
+        request.merchantIdentifier = ""
+        request.countryCode = "US"
+        request.currencyCode = "USD"
+        request.paymentSummaryItems = [PKPaymentSummaryItem(label: "Total", amount: 10.0)]
+        request.merchantCapabilities = .capability3DS
+
+        XCTAssertThrowsError(
+            try ApplePayComponent.Configuration(paymentRequest: request)
+        ) { error in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .emptyMerchantIdentifier)
+        }
+    }
+
+    func testConfiguration_givenInvalidCountryCode_shouldThrowInvalidCountryCode() {
+        let request = PKPaymentRequest()
+        request.merchantIdentifier = "test_id"
+        request.countryCode = "INVALID"
+        request.currencyCode = "USD"
+        request.paymentSummaryItems = [PKPaymentSummaryItem(label: "Total", amount: 10.0)]
+        request.merchantCapabilities = .capability3DS
+
+        XCTAssertThrowsError(
+            try ApplePayComponent.Configuration(paymentRequest: request)
+        ) { error in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .invalidCountryCode)
+        }
+    }
+
+    func testConfiguration_givenInvalidCurrencyCode_shouldThrowInvalidCurrencyCode() {
+        let request = PKPaymentRequest()
+        request.merchantIdentifier = "test_id"
+        request.countryCode = "US"
+        request.currencyCode = "INVALID"
+        request.paymentSummaryItems = [PKPaymentSummaryItem(label: "Total", amount: 10.0)]
+        request.merchantCapabilities = .capability3DS
+
+        XCTAssertThrowsError(
+            try ApplePayComponent.Configuration(paymentRequest: request)
+        ) { error in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .invalidCurrencyCode)
+        }
+    }
+
+    func testConfiguration_givenEmptySummaryItems_shouldThrowEmptySummaryItems() {
+        let request = PKPaymentRequest()
+        request.merchantIdentifier = "test_id"
+        request.countryCode = "US"
+        request.currencyCode = "USD"
+        request.paymentSummaryItems = []
+        request.merchantCapabilities = .capability3DS
+
+        XCTAssertThrowsError(
+            try ApplePayComponent.Configuration(paymentRequest: request)
+        ) { error in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .emptySummaryItems)
+        }
+    }
+
+    func testConfiguration_givenNegativeGrandTotal_shouldThrowNegativeGrandTotal() {
+        let request = PKPaymentRequest()
+        request.merchantIdentifier = "test_id"
+        request.countryCode = "US"
+        request.currencyCode = "USD"
+        request.paymentSummaryItems = [PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(value: -1.0))]
+        request.merchantCapabilities = .capability3DS
+
+        XCTAssertThrowsError(
+            try ApplePayComponent.Configuration(paymentRequest: request)
+        ) { error in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .negativeGrandTotal)
+        }
+    }
+
+    func testConfiguration_givenNaNSummaryItem_shouldThrowInvalidSummaryItem() {
+        let request = PKPaymentRequest()
+        request.merchantIdentifier = "test_id"
+        request.countryCode = "US"
+        request.currencyCode = "USD"
+        request.paymentSummaryItems = [
+            PKPaymentSummaryItem(label: "Item", amount: NSDecimalNumber.notANumber),
+            PKPaymentSummaryItem(label: "Total", amount: 10.0)
+        ]
+        request.merchantCapabilities = .capability3DS
+
+        XCTAssertThrowsError(
+            try ApplePayComponent.Configuration(paymentRequest: request)
+        ) { error in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .invalidSummaryItem)
+        }
+    }
+
+    func testConfiguration_givenValidRequest_shouldSucceed() throws {
+        let request = Dummy.createTestApplePayPaymentRequest()
+
+        let config = try ApplePayComponent.Configuration(paymentRequest: request)
+
+        XCTAssertEqual(config.merchantIdentifier, request.merchantIdentifier)
+        XCTAssertFalse(config.allowOnboarding)
+    }
+
+    // MARK: - Component Tests
+
     func testApplePay_givenBrandsIsEmpty_shouldThrowUserCannotMakePayment() throws {
         // Given
         let brands: [String]? = []
         let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: brands)
-        let configuration = ApplePayComponent.Configuration(
-            payment: Dummy.createTestApplePayPayment(),
-            merchantIdentifier: "test_id"
+        let configuration = try ApplePayComponent.Configuration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
 
         // When / Then
@@ -115,13 +219,11 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     func testApplePayShipping() throws {
-        var configuration = ApplePayComponent.Configuration(
-            payment: Dummy.createTestApplePayPayment(),
-            merchantIdentifier: "test_id"
+        let configuration = try ApplePayComponent.Configuration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
         let shippingMethods = [PKShippingMethod(label: "Shipping1", amount: 1.0), PKShippingMethod(label: "Shipping2", amount: 2.0)]
         shippingMethods.forEach { $0.identifier = UUID().uuidString }
-        configuration.shippingMethods = shippingMethods
 
         sut = try ApplePayComponent(
             paymentMethod: paymentMethod,
@@ -140,18 +242,16 @@ class ApplePayComponentTest: XCTestCase {
         let onShippingSelected = expectation(description: "Wait for didFinalize call")
         let selectedShippingMethod: PKShippingMethod? = shippingMethods.first
 
-        XCTAssertEqual(self.sut.applePayPayment.amountMinorUnits, 20000)
-        XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 5)
-        XCTAssertEqual(self.sut.applePayPayment.summaryItems.last?.label, "summary_4")
+        XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.count, 5)
+        XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.last?.label, "summary_4")
 
         try sut.paymentAuthorizationViewController(
             XCTUnwrap(sut?.viewController as? PKPaymentAuthorizationViewController),
             didSelect: XCTUnwrap(selectedShippingMethod)
         ) { update in
             XCTAssertEqual(self.mockApplePayDelegate.shippingMethod, shippingMethods.first)
-            XCTAssertEqual(self.sut.applePayPayment.amountMinorUnits, 222200)
-            XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 2)
-            XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "New Item 2")
+            XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.count, 2)
+            XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.last?.label, "New Item 2")
             onShippingSelected.fulfill()
         }
 
@@ -174,18 +274,16 @@ class ApplePayComponentTest: XCTestCase {
         contact.name?.givenName = "Test"
         contact.name?.familyName = "Testovich"
 
-        XCTAssertEqual(self.sut.applePayPayment.amountMinorUnits, 20000)
-        XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 5)
-        XCTAssertEqual(self.sut.applePayPayment.summaryItems.last?.label, "summary_4")
+        XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.count, 5)
+        XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.last?.label, "summary_4")
         try sut.paymentAuthorizationViewController(
             XCTUnwrap(sut?.viewController as? PKPaymentAuthorizationViewController),
             didSelectShippingContact: contact
         ) { update in
 
             XCTAssertEqual(self.mockApplePayDelegate.contact, contact)
-            XCTAssertEqual(self.sut.applePayPayment.amountMinorUnits, 222200)
-            XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 2)
-            XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "New Item 2")
+            XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.count, 2)
+            XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.last?.label, "New Item 2")
             onContactSelected.fulfill()
         }
 
@@ -209,23 +307,112 @@ class ApplePayComponentTest: XCTestCase {
         wait(for: .seconds(1))
         let onContactSelected = expectation(description: "Wait for didFinalize call")
 
-        XCTAssertEqual(self.sut.applePayPayment.amountMinorUnits, 20000)
-        XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 5)
-        XCTAssertEqual(self.sut.applePayPayment.summaryItems.last?.label, "summary_4")
+        XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.count, 5)
+        XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.last?.label, "summary_4")
         try sut.paymentAuthorizationViewController(
             XCTUnwrap(sut?.viewController as? PKPaymentAuthorizationViewController),
             didChangeCouponCode: "Coupon"
         ) { update in
 
             XCTAssertEqual(self.mockApplePayDelegate.couponCode, "Coupon")
-            XCTAssertEqual(self.sut.applePayPayment.amountMinorUnits, 222200)
-            XCTAssertEqual(self.sut.applePayPayment.summaryItems.count, 2)
-            XCTAssertEqual(self.sut.applePayPayment.summaryItems.last!.label, "New Item 2")
+            XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.count, 2)
+            XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.last?.label, "New Item 2")
             onContactSelected.fulfill()
         }
 
         waitForExpectations(timeout: 10)
     }
+
+    // MARK: - Delegate Invalid Summary Items Tests
+
+    func testApplePayShipping_givenDelegateReturnsNegativeGrandTotal_shouldKeepOriginalItemsAndCallDidFail() throws {
+        sut.delegate = mockDelegate
+        sut.applePayDelegate = mockApplePayDelegate
+        mockApplePayDelegate.onShippingMethodChange = { _, _ in
+            .init(paymentSummaryItems: [
+                PKPaymentSummaryItem(label: "Item", amount: 10.0),
+                PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(value: -1.0))
+            ])
+        }
+
+        wait(for: .seconds(1))
+        let originalItems = sut.paymentRequest.paymentSummaryItems
+        let onShippingSelected = expectation(description: "Wait for shipping method callback")
+        let onDidFail = expectation(description: "Wait for didFail call")
+        mockDelegate.onDidFail = { error, _ in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .negativeGrandTotal)
+            onDidFail.fulfill()
+        }
+        let shippingMethod = PKShippingMethod(label: "Shipping", amount: 5.0)
+
+        try sut.paymentAuthorizationViewController(
+            XCTUnwrap(sut?.viewController as? PKPaymentAuthorizationViewController),
+            didSelect: shippingMethod
+        ) { _ in
+            XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems, originalItems)
+            onShippingSelected.fulfill()
+        }
+
+        waitForExpectations(timeout: 10)
+    }
+
+    func testApplePayShippingContact_givenDelegateReturnsNaNAmount_shouldKeepOriginalItemsAndCallDidFail() throws {
+        sut.delegate = mockDelegate
+        sut.applePayDelegate = mockApplePayDelegate
+        mockApplePayDelegate.onShippingContactChange = { _, _ in
+            .init(paymentSummaryItems: [
+                PKPaymentSummaryItem(label: "Item", amount: NSDecimalNumber.notANumber),
+                PKPaymentSummaryItem(label: "Total", amount: 10.0)
+            ])
+        }
+
+        wait(for: .seconds(1))
+        let originalItems = sut.paymentRequest.paymentSummaryItems
+        let onContactSelected = expectation(description: "Wait for shipping contact callback")
+        let onDidFail = expectation(description: "Wait for didFail call")
+        mockDelegate.onDidFail = { error, _ in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .invalidSummaryItem)
+            onDidFail.fulfill()
+        }
+        let contact = PKContact()
+
+        try sut.paymentAuthorizationViewController(
+            XCTUnwrap(sut?.viewController as? PKPaymentAuthorizationViewController),
+            didSelectShippingContact: contact
+        ) { _ in
+            XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems, originalItems)
+            onContactSelected.fulfill()
+        }
+
+        waitForExpectations(timeout: 10)
+    }
+
+    func testApplePayCoupon_givenDelegateReturnsEmptyItems_shouldKeepOriginalItems() throws {
+        guard #available(iOS 15.0, *) else {
+            throw XCTSkip("Unsupported iOS version")
+        }
+
+        sut.applePayDelegate = mockApplePayDelegate
+        (mockApplePayDelegate as! ApplePayDelegateMockiOS15).onCouponChange = { _, _ in
+            .init(paymentSummaryItems: [])
+        }
+
+        wait(for: .seconds(1))
+        let originalItems = sut.paymentRequest.paymentSummaryItems
+        let onCouponChanged = expectation(description: "Wait for coupon code callback")
+
+        try sut.paymentAuthorizationViewController(
+            XCTUnwrap(sut?.viewController as? PKPaymentAuthorizationViewController),
+            didChangeCouponCode: "INVALID"
+        ) { _ in
+            XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems, originalItems)
+            onCouponChanged.fulfill()
+        }
+
+        waitForExpectations(timeout: 10)
+    }
+
+    // MARK: - Presentation Tests
 
     func testPresentationViewControllerValidPayment() {
         XCTAssertTrue(sut?.viewController is PKPaymentAuthorizationViewController)
@@ -238,16 +425,17 @@ class ApplePayComponentTest: XCTestCase {
         let expectedSummaryItems = Dummy.createTestSummaryItems()
         let expectedRequiredBillingFields = getRandomContactFieldSet()
         let expectedRequiredShippingFields = getRandomContactFieldSet()
-        var configuration = try ApplePayComponent.Configuration(
-            payment: .init(
-                countryCode: countryCode,
-                currencyCode: currencyCode,
-                summaryItems: expectedSummaryItems
-            ),
-            merchantIdentifier: "test_id"
-        )
-        configuration.requiredBillingContactFields = expectedRequiredBillingFields
-        configuration.requiredShippingContactFields = expectedRequiredShippingFields
+
+        let request = PKPaymentRequest()
+        request.merchantIdentifier = "test_id"
+        request.countryCode = countryCode
+        request.currencyCode = currencyCode
+        request.paymentSummaryItems = expectedSummaryItems
+        request.merchantCapabilities = .capability3DS
+        request.requiredBillingContactFields = expectedRequiredBillingFields
+        request.requiredShippingContactFields = expectedRequiredShippingFields
+
+        var configuration = try ApplePayComponent.Configuration(paymentRequest: request)
         let paymentRequest = configuration.paymentRequest(with: paymentMethod.supportedNetworks())
         XCTAssertEqual(paymentRequest.paymentSummaryItems, expectedSummaryItems)
         XCTAssertEqual(paymentRequest.merchantCapabilities, PKMerchantCapability.capability3DS)
@@ -273,12 +461,22 @@ class ApplePayComponentTest: XCTestCase {
         let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: nil)
         let expectedRequiredBillingFields = getRandomContactFieldSet()
         let expectedRequiredShippingFields = getRandomContactFieldSet()
-        var configuration = try ApplePayComponent.Configuration(
-            payment: .init(payment: payment, brand: "TEST"),
-            merchantIdentifier: "test_id"
+        let decimalAmount = AmountFormatter.decimalAmount(
+            payment.amount.value,
+            currencyCode: payment.amount.currencyCode,
+            localeIdentifier: payment.amount.localeIdentifier
         )
-        configuration.requiredBillingContactFields = expectedRequiredBillingFields
-        configuration.requiredShippingContactFields = expectedRequiredShippingFields
+
+        let request = PKPaymentRequest()
+        request.merchantIdentifier = "test_id"
+        request.countryCode = payment.countryCode
+        request.currencyCode = amount.currencyCode
+        request.paymentSummaryItems = [PKPaymentSummaryItem(label: "TEST", amount: decimalAmount)]
+        request.merchantCapabilities = .capability3DS
+        request.requiredBillingContactFields = expectedRequiredBillingFields
+        request.requiredShippingContactFields = expectedRequiredShippingFields
+
+        var configuration = try ApplePayComponent.Configuration(paymentRequest: request)
         let paymentRequest = configuration.paymentRequest(with: paymentMethod.supportedNetworks())
 
         XCTAssertEqual(paymentRequest.paymentSummaryItems.count, 1)
@@ -390,10 +588,9 @@ class ApplePayComponentTest: XCTestCase {
         let sut = config.replacing(amount: testAmount)
 
         // Then
-        XCTAssertEqual(sut.applePayPayment.amount, testAmount)
-        XCTAssertNotNil(sut.paymentRequest?.paymentSummaryItems)
-        XCTAssertEqual(sut.paymentRequest?.paymentSummaryItems.count, 2)
-        let summaryItem = sut.paymentRequest?.paymentSummaryItems.last
+        XCTAssertEqual(sut.currentAmount, testAmount)
+        XCTAssertEqual(sut.paymentRequest.paymentSummaryItems.count, 2)
+        let summaryItem = sut.paymentRequest.paymentSummaryItems.last
         XCTAssertNotNil(summaryItem)
         XCTAssertEqual(summaryItem?.amount, decimalAmount)
     }
@@ -417,26 +614,11 @@ class ApplePayComponentTest: XCTestCase {
         let sut = config.replacing(amount: testAmount)
 
         // Then
-        XCTAssertEqual(sut.applePayPayment.amount, testAmount)
-        XCTAssertNotNil(sut.paymentRequest?.paymentSummaryItems)
-        XCTAssertEqual(sut.paymentRequest?.paymentSummaryItems.count, 2)
-        let summaryItem = sut.paymentRequest?.paymentSummaryItems.last
+        XCTAssertEqual(sut.currentAmount, testAmount)
+        XCTAssertEqual(sut.paymentRequest.paymentSummaryItems.count, 2)
+        let summaryItem = sut.paymentRequest.paymentSummaryItems.last
         XCTAssertNotNil(summaryItem)
         XCTAssertEqual(summaryItem?.amount, decimalAmount)
-    }
-
-    func testReplacingAmountWithPayment() throws {
-        // Given
-        let payment = try ApplePayPayment(payment: Payment(amount: Amount(value: 1050, currencyCode: "USD"), countryCode: "US"), brand: "My Label")
-        let config = ApplePayComponent.Configuration(payment: payment, merchantIdentifier: "")
-        let testAmount = Amount(value: 1000, currencyCode: "USD")
-
-        // When
-        let sut = config.replacing(amount: testAmount)
-
-        // Then
-        XCTAssertEqual(sut.applePayPayment.amount, testAmount)
-        XCTAssertNil(sut.paymentRequest?.paymentSummaryItems)
     }
 
     func testBrandsFiltering() {
@@ -450,9 +632,8 @@ class ApplePayComponentTest: XCTestCase {
     
     func test_DismissesAutomatically_WhenFalse_ShouldCallDidFailImmediately() throws {
         // Given
-        var configuration = ApplePayComponent.Configuration(
-            payment: Dummy.createTestApplePayPayment(),
-            merchantIdentifier: "test_id"
+        var configuration = try ApplePayComponent.Configuration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
         configuration.dismissesAutomatically = false
         
@@ -482,9 +663,8 @@ class ApplePayComponentTest: XCTestCase {
     
     func test_DismissesAutomatically_WhenFalse_ShouldCallFinalizeCompletionImmediately() throws {
         // Given
-        var configuration = ApplePayComponent.Configuration(
-            payment: Dummy.createTestApplePayPayment(),
-            merchantIdentifier: "test_id"
+        var configuration = try ApplePayComponent.Configuration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
         configuration.dismissesAutomatically = false
         
@@ -512,9 +692,8 @@ class ApplePayComponentTest: XCTestCase {
     
     func test_ComponentReuse_WhenCancelledBeforeAuthorization_ShouldAllowReuse() throws {
         // Given
-        var configuration = ApplePayComponent.Configuration(
-            payment: Dummy.createTestApplePayPayment(),
-            merchantIdentifier: "test_id"
+        var configuration = try ApplePayComponent.Configuration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
         configuration.dismissesAutomatically = false
         
@@ -548,9 +727,8 @@ class ApplePayComponentTest: XCTestCase {
         // Given
         wait(for: .seconds(1))
         
-        var configuration = ApplePayComponent.Configuration(
-            payment: Dummy.createTestApplePayPayment(),
-            merchantIdentifier: "test_id"
+        var configuration = try ApplePayComponent.Configuration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
         configuration.dismissesAutomatically = false
         
@@ -592,9 +770,8 @@ class ApplePayComponentTest: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = Dummy.context(with: analyticsProviderMock)
 
-        let configuration = ApplePayComponent.Configuration(
-            payment: Dummy.createTestApplePayPayment(),
-            merchantIdentifier: "test_id"
+        let configuration = try ApplePayComponent.Configuration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
         sut = try ApplePayComponent(
             paymentMethod: paymentMethod,
