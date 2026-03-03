@@ -24,6 +24,7 @@ class OnlineBankingComponentTests: XCTestCase {
             apiContext: Dummy.apiContext,
             payment: nil,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
             analyticsProvider: analyticsProviderMock
         )
         style = FormComponentStyle()

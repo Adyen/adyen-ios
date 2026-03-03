@@ -30,6 +30,7 @@ enum Dummy: Error {
             apiContext: apiContext,
             payment: payment,
             amount: amount,
+            publicKey: publicKey,
             analyticsProvider: AnalyticsProviderMock()
         )
     }
@@ -39,6 +40,7 @@ enum Dummy: Error {
             apiContext: apiContext,
             payment: payment,
             amount: amount,
+            publicKey: publicKey,
             analyticsProvider: AnalyticsProviderMock()
         )
     }

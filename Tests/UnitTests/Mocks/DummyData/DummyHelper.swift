@@ -14,6 +14,7 @@ extension Dummy {
             apiContext: apiContext,
             payment: payment,
             amount: amount,
+            publicKey: publicKey,
             analyticsProvider: analyticsProvider
         )
     }

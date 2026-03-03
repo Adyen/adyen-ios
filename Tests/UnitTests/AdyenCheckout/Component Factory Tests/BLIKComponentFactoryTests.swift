@@ -110,7 +110,9 @@ final class BLIKComponentFactoryTests: XCTestCase {
         let customContext = AdyenContext(
             apiContext: Dummy.apiContext,
             payment: Payment(amount: customAmount, countryCode: "NL"),
-            amount: customAmount
+            amount: customAmount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
         )
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         let configuration = BLIKComponentConfiguration()

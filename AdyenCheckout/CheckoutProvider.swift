@@ -13,7 +13,7 @@ import Foundation
 
 /// Plain static provider layer to create the Checkout object.
 internal class CheckoutProvider: CheckoutProviding {
-    
+
     private let checkoutAttemptIdProvider: CheckoutAttemptIdProviding
 
     private let publicKeyProvider: PublicKeyFetching
@@ -27,40 +27,52 @@ internal class CheckoutProvider: CheckoutProviding {
     }
     
     internal static let `default` = CheckoutProvider()
-    
+
     internal func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
         
-        let apiClient = APIClient(apiContext: configuration.context.apiContext)
+        let apiClient = APIClient(apiContext: configuration.apiContext)
+
+        let analyticsApiClient = configuration.analyticsApiContext.flatMap { APIClient(apiContext: $0) }
+        // TODO: Improvement: Suggestion: instead of the checkout provider being aware of something as specific as checkoutAttemptId.
+        // - This could be wrapped in something related to Analytics ex: await AnalyticsProvider.init() and internally fetch what is required for analytics.
+        // - At this point, without much context we may ask the question `what is the checkoutAttemptId?`. Alternatively -
+        // - If we read something like `await AnalyticsProvider.init()` then we know that analytics is being setup and internally this attemptId is being fetched.
+        let checkoutAttemptId: String? = await checkoutAttemptIdProvider.fetchCheckoutAttemptId(
+            with: analyticsApiClient
+        )
+
+        // TODO: Improvement: Suggestion: Instead of fetching the publicKey, which requires a bit of searching to understand that it is being used for encryption ex: card encryption.
+        // if there is a holding type like `await Encryptor.init(clientId:)` then we know that the Encryption is being setup and  key is being used for encryption and it is mapped to the clientId.
+        async let publicKey = try await publicKeyProvider.fetchPublicKey(
+            apiClient: apiClient,
+            clientKey: configuration.apiContext.clientKey
+        )
+
+        let adyenContext = try await AdyenContext(
+            apiContext: configuration.apiContext,
+            payment: nil,
+            amount: configuration.amount,
+            publicKey: publicKey,
+            checkoutAttemptId: checkoutAttemptId,
+            analyticsAPIContext: configuration.analyticsApiContext,
+            analyticsConfiguration: configuration.analyticsConfiguration
+        )
 
         // create and store session and payment methods
         async let session = setupSession(
             with: sessionResponse,
-            configuration: configuration,
+            adyenContext: adyenContext,
             apiClient: apiClient
         )
-        
-        // fetch and store checkout attempt id
-        async let checkoutAttemptId = checkoutAttemptIdProvider.fetchCheckoutAttemptId(
-            with: configuration
-        )
-
-        // TODO: Robert: Note here we are using try? do we already want to fail here if in the 0.0001% of the change that there is a failure. (I assume yes?)
-        async let publicKey = try? await publicKeyProvider.fetchPublicKey(
-            apiClient: apiClient,
-            clientKey: configuration.context.apiContext.clientKey
-        )
-
-        // TODO: Robert: Create the AdyenContext async. which in turn will create the analytics provider if checkoutAttemptId is available & the configuration flag is true.
 
         return try await Checkout(
             configuration: configuration,
             session: session,
-            checkoutAttemptId: checkoutAttemptId,
-            publicKey: publicKey,
+            adyenContext: adyenContext,
             presentationDelegate: presentationDelegate
         )
     }
@@ -77,23 +89,33 @@ internal class CheckoutProvider: CheckoutProviding {
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
+        let analyticsApiClient = configuration.analyticsApiContext.flatMap { APIClient(apiContext: $0) }
 
         async let checkoutAttemptId = checkoutAttemptIdProvider.fetchCheckoutAttemptId(
-            with: configuration
+            with: analyticsApiClient
         )
 
-        let apiClient = APIClient(apiContext: configuration.context.apiContext)
+        let apiClient = APIClient(apiContext: configuration.apiContext)
 
-        async let publicKey = try? await publicKeyProvider.fetchPublicKey(
+        async let publicKey = try await publicKeyProvider.fetchPublicKey(
             apiClient: apiClient,
-            clientKey: configuration.context.apiContext.clientKey
+            clientKey: configuration.apiContext.clientKey
         )
 
-        return await Checkout(
+        let adyenContext = try await AdyenContext(
+            apiContext: configuration.apiContext,
+            payment: nil,
+            amount: configuration.amount,
+            publicKey: publicKey,
+            checkoutAttemptId: checkoutAttemptId,
+            analyticsAPIContext: configuration.analyticsApiContext,
+            analyticsConfiguration: configuration.analyticsConfiguration
+        )
+
+        return Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
-            checkoutAttemptId: checkoutAttemptId,
-            publicKey: publicKey,
+            adyenContext: adyenContext,
             presentationDelegate: presentationDelegate
         )
     }
@@ -106,22 +128,32 @@ internal class CheckoutProvider: CheckoutProviding {
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate?
     ) async throws -> Checkout {
+        let analyticsApiClient = configuration.analyticsApiContext.flatMap { APIClient(apiContext: $0) }
 
         async let checkoutAttemptId = checkoutAttemptIdProvider.fetchCheckoutAttemptId(
-            with: configuration
+            with: analyticsApiClient
         )
         
-        let apiClient = APIClient(apiContext: configuration.context.apiContext)
+        let apiClient = APIClient(apiContext: configuration.apiContext)
 
-        async let publicKey = try? await publicKeyProvider.fetchPublicKey(
+        async let publicKey = try await publicKeyProvider.fetchPublicKey(
             apiClient: apiClient,
-            clientKey: configuration.context.apiContext.clientKey
+            clientKey: configuration.apiContext.clientKey
         )
 
-        return await Checkout(
-            configuration: configuration,
-            checkoutAttemptId: checkoutAttemptId,
+        let adyenContext = try await AdyenContext(
+            apiContext: configuration.apiContext,
+            payment: nil,
+            amount: configuration.amount,
             publicKey: publicKey,
+            checkoutAttemptId: checkoutAttemptId,
+            analyticsAPIContext: configuration.analyticsApiContext,
+            analyticsConfiguration: configuration.analyticsConfiguration
+        )
+
+        return Checkout(
+            configuration: configuration,
+            adyenContext: adyenContext,
             presentationDelegate: presentationDelegate
         )
     }
@@ -130,13 +162,13 @@ internal class CheckoutProvider: CheckoutProviding {
     
     internal func setupSession(
         with sessionResponse: SessionResponse,
-        configuration: CheckoutConfiguration,
+        adyenContext: AdyenContext,
         apiClient: APIClientProtocol
     ) async throws -> SessionProtocol {
         try await Session.setup(
             with: sessionResponse,
             apiClient: apiClient,
-            context: configuration.context
+            context: adyenContext
         )
     }
 }

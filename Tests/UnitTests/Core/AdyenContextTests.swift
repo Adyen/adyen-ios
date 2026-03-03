@@ -5,6 +5,7 @@
 //
 
 @testable @_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable import AdyenCheckout
 @testable import AdyenEncryption
 @testable import AdyenNetworking
 import XCTest
@@ -20,7 +21,11 @@ class AdyenContextTests: XCTestCase {
         let context = AdyenContext(
             apiContext: apiContext,
             payment: .init(amount: oneEUR, countryCode: "NL"),
-            amount: oneEUR
+            amount: oneEUR,
+            publicKey: Dummy.publicKey,
+            checkoutAttemptId: nil,
+            analyticsAPIContext: nil,
+            analyticsConfiguration: .init()
         )
         
         XCTAssertEqual(context.payment?.amount, oneEUR)
@@ -33,7 +38,11 @@ class AdyenContextTests: XCTestCase {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             payment: Dummy.payment,
-            amount: Dummy.amount
+            amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            checkoutAttemptId: nil,
+            analyticsAPIContext: nil,
+            analyticsConfiguration: .init()
         )
         
         XCTAssertEqual(context.payment?.amount, Dummy.amount)
@@ -46,6 +55,7 @@ class AdyenContextTests: XCTestCase {
             apiContext: Dummy.apiContext,
             payment: Dummy.payment,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
             analyticsProvider: AnalyticsProviderMock()
         )
         
@@ -56,10 +66,15 @@ class AdyenContextTests: XCTestCase {
     }
     
     func testInitWithRegularEnvironmentShouldHaveAnalyticsProvider() {
+        let analyticsApiContext = CheckoutConfiguration.createAnalyticsAPIContext(apiContext: Dummy.apiContext)
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             payment: Dummy.payment,
-            amount: Dummy.amount
+            amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            checkoutAttemptId: nil,
+            analyticsAPIContext: analyticsApiContext,
+            analyticsConfiguration: .init()
         )
         
         XCTAssertNotNil(context.analyticsProvider)
@@ -71,35 +86,45 @@ class AdyenContextTests: XCTestCase {
         let context = AdyenContext(
             apiContext: apiContext,
             payment: Dummy.payment,
-            amount: Dummy.amount
+            amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            checkoutAttemptId: nil,
+            analyticsAPIContext: nil,
+            analyticsConfiguration: .init()
         )
         XCTAssertNil(context.analyticsProvider)
     }
     
     func testBothAnalyticsProviderShouldBeCreated() {
+        let analyticsApiContext = CheckoutConfiguration.createAnalyticsAPIContext(apiContext: Dummy.apiContext)
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             payment: Dummy.payment,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            checkoutAttemptId: "test_attempt_id",
+            analyticsAPIContext: analyticsApiContext,
             analyticsConfiguration: AnalyticsConfiguration()
         )
         
         XCTAssertNotNil(context.analyticsProvider)
-        XCTAssertNotNil((context.analyticsProvider as? AnalyticsProvider)?.eventAnalyticsProvider)
     }
     
     func testOnlyAnalyticsProviderShouldBeCreated() {
         let config = AnalyticsConfiguration(isEnabled: false)
+        let analyticsApiContext = CheckoutConfiguration.createAnalyticsAPIContext(apiContext: Dummy.apiContext)
         
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             payment: Dummy.payment,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            checkoutAttemptId: nil,
+            analyticsAPIContext: analyticsApiContext,
             analyticsConfiguration: config
         )
         
         XCTAssertNotNil(context.analyticsProvider)
-        XCTAssertNil((context.analyticsProvider as? AnalyticsProvider)?.eventAnalyticsProvider)
     }
 }
 

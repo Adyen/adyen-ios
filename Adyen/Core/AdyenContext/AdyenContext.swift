@@ -23,8 +23,10 @@ public final class AdyenContext: PaymentAware {
     
     package var analyticsProvider: AnyAnalyticsProvider?
 
+    package let publicKey: String
+
     package let amount: Amount
-    
+
     // MARK: - Initializers
     
     /// Creates an Adyen context with the provided API context and analytics configuration.
@@ -36,11 +38,14 @@ public final class AdyenContext: PaymentAware {
         apiContext: APIContext,
         payment: Payment?,
         amount: Amount,
+        publicKey: String,
+        checkoutAttemptId: String?,
+        analyticsAPIContext: APIContext?,
         analyticsConfiguration: AnalyticsConfiguration = .init()
     ) {
-        
         let analyticsProvider = Self.createAnalyticsProvider(
-            apiContext: apiContext,
+            analyticsApiContext: analyticsAPIContext,
+            checkoutAttemptId: checkoutAttemptId,
             analyticsConfiguration: analyticsConfiguration
         )
         
@@ -48,6 +53,7 @@ public final class AdyenContext: PaymentAware {
             apiContext: apiContext,
             payment: payment,
             amount: amount,
+            publicKey: publicKey,
             analyticsProvider: analyticsProvider
         )
     }
@@ -57,8 +63,10 @@ public final class AdyenContext: PaymentAware {
         apiContext: APIContext,
         payment: Payment?,
         amount: Amount,
+        publicKey: String,
         analyticsProvider: AnyAnalyticsProvider?
     ) {
+        self.publicKey = publicKey
         self.apiContext = apiContext
         self.amount = amount
         self.analyticsProvider = analyticsProvider
@@ -70,54 +78,37 @@ public final class AdyenContext: PaymentAware {
         self.payment = payment
     }
 
-    /// The API environment for Analytics is different than the APIClient environment that is used for other payment calls.
-    /// // TODO: Robert: Move this to the CheckoutConfiguration
-    package static func createAnalyticsAPIClient(
-        apiContext: APIContext
-    ) -> APIClient? {
-        guard
-            let analyticsEnvironment = (apiContext.environment as? Environment)?.toAnalyticsEnvironment(),
-            let analyticsApiContext = try? APIContext(
-                environment: analyticsEnvironment,
-                clientKey: apiContext.clientKey
-            )
-        else {
-            AdyenAssertion.assertionFailure(
-                message: "APIClient for Analytics couldn't be created. Ensure the used environment is of type `Environment`"
-            )
-            return nil
-        }
-
-        return APIClient(apiContext: analyticsApiContext)
-    }
-
-    // TODO: Robert: this stays here even in the init of the AnalyticalProvider.
     private static func createAnalyticsProvider(
-        apiContext: APIContext,
+        analyticsApiContext: APIContext?,
+        checkoutAttemptId: String?,
         analyticsConfiguration: AnalyticsConfiguration
     ) -> AnyAnalyticsProvider? {
-        guard let apiClient = AdyenContext.createAnalyticsAPIClient(apiContext: apiContext) else {
+        guard let analyticsApiContext else {
             AdyenAssertion.assertionFailure(
-                message: "AnalyticsProvider couldn't be created. Ensure the used environment is of type `Environment`"
+                message: "AnalyticsProvider couldn't be created as AnalyticsAPIContext is not available."
             )
             return nil
         }
+        let analyticsApiClient = APIClient(apiContext: analyticsApiContext)
 
         var eventAnalyticsProvider: AnyEventAnalyticsProvider?
-        // TODO: Robert: If flag is true we create everything. If false, we send the RequestCheckoutAttemptID and Enrichment call with analytical data.
-        if analyticsConfiguration.isEnabled {
+
+        if let checkoutAttemptId,
+           analyticsConfiguration.isEnabled {
             let eventDataSource = AnalyticsEventDataSource()
             let syncEventDataSource = ThreadSafeAnalyticsEventDataSource(dataSource: eventDataSource)
             eventAnalyticsProvider = EventAnalyticsProvider(
-                apiClient: apiClient,
+                apiClient: analyticsApiClient,
                 context: analyticsConfiguration.context,
-                eventDataSource: syncEventDataSource
+                eventDataSource: syncEventDataSource,
+                checkoutAttemptId: checkoutAttemptId
             )
         }
         
         return AnalyticsProvider(
-            apiClient: apiClient,
+            apiClient: analyticsApiClient,
             configuration: analyticsConfiguration,
+            checkoutAttemptId: checkoutAttemptId,
             eventAnalyticsProvider: eventAnalyticsProvider
         )
     }
