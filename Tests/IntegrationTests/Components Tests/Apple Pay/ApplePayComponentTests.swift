@@ -17,7 +17,7 @@ class ApplePayComponentTest: XCTestCase {
     var mockAuthorizationDelegate: ApplePayAuthorizationDelegateMock!
     var sut: ApplePayComponent!
     lazy var amount = Amount(value: 2, currencyCode: "USD")
-    lazy var payment = Payment(amount: amount, countryCode: getRandomCountryCode())
+    lazy var countryCode = getRandomCountryCode()
     let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: ["visa", "amex", "mc"])
 
     private var emptyVC: UIViewController {
@@ -462,14 +462,14 @@ class ApplePayComponentTest: XCTestCase {
         let expectedRequiredBillingFields = getRandomContactFieldSet()
         let expectedRequiredShippingFields = getRandomContactFieldSet()
         let decimalAmount = AmountFormatter.decimalAmount(
-            payment.amount.value,
-            currencyCode: payment.amount.currencyCode,
-            localeIdentifier: payment.amount.localeIdentifier
+            amount.value,
+            currencyCode: amount.currencyCode,
+            localeIdentifier: amount.localeIdentifier
         )
 
         let request = PKPaymentRequest()
         request.merchantIdentifier = "test_id"
-        request.countryCode = payment.countryCode
+        request.countryCode = countryCode
         request.currencyCode = amount.currencyCode
         request.paymentSummaryItems = [PKPaymentSummaryItem(label: "TEST", amount: decimalAmount)]
         request.merchantCapabilities = .capability3DS
@@ -481,12 +481,12 @@ class ApplePayComponentTest: XCTestCase {
 
         XCTAssertEqual(paymentRequest.paymentSummaryItems.count, 1)
         XCTAssertEqual(paymentRequest.paymentSummaryItems[0].label, "TEST")
-        XCTAssertEqual(paymentRequest.paymentSummaryItems[0].amount.description, payment.amount.formattedComponents.formattedValue)
+        XCTAssertEqual(paymentRequest.paymentSummaryItems[0].amount.description, amount.formattedComponents.formattedValue)
 
         XCTAssertEqual(paymentRequest.merchantCapabilities, PKMerchantCapability.capability3DS)
         XCTAssertEqual(paymentRequest.currencyCode, amount.currencyCode)
         XCTAssertEqual(paymentRequest.merchantIdentifier, "test_id")
-        XCTAssertEqual(paymentRequest.countryCode, payment.countryCode)
+        XCTAssertEqual(paymentRequest.countryCode, countryCode)
         XCTAssertEqual(paymentRequest.requiredBillingContactFields, expectedRequiredBillingFields)
         XCTAssertEqual(paymentRequest.requiredShippingContactFields, expectedRequiredShippingFields)
     }

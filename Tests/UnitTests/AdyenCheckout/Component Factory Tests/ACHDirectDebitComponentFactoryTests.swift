@@ -111,7 +111,6 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         let customAmount = Amount(value: 999, currencyCode: "USD")
         let customContext = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Payment(amount: customAmount, countryCode: "US"),
             amount: customAmount
         )
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
@@ -125,8 +124,8 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         )
 
         // Then
-        XCTAssertEqual(component.context.amount.value, 999)
-        XCTAssertEqual(component.context.amount.currencyCode, "USD")
+        XCTAssertEqual(component.context.amount?.value, 999)
+        XCTAssertEqual(component.context.amount?.currencyCode, "USD")
     }
 
     // MARK: - Theme Propagation Tests

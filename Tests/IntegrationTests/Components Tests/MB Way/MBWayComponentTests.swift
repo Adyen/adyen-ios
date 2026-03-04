@@ -13,7 +13,6 @@ class MBWayComponentTests: XCTestCase {
 
     private var context: AdyenContext!
     private var paymentMethod: MBWayPaymentMethod!
-    private var payment: Payment!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -21,13 +20,11 @@ class MBWayComponentTests: XCTestCase {
         context = Dummy.context
 
         paymentMethod = MBWayPaymentMethod(type: .mbWay, name: "test_name")
-        payment = Payment(amount: Amount(value: 2, currencyCode: "EUR"), countryCode: "DE")
     }
 
     override func tearDownWithError() throws {
         context = nil
         paymentMethod = nil
-        payment = nil
         try super.tearDownWithError()
     }
 

@@ -24,7 +24,6 @@ final class CheckoutAttemptIdProviderTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
             analyticsProvider: analyticsProviderMock
         )
@@ -51,7 +50,6 @@ final class CheckoutAttemptIdProviderTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
             analyticsProvider: analyticsProviderMock
         )
@@ -77,7 +75,6 @@ final class CheckoutAttemptIdProviderTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
             analyticsProvider: analyticsProviderMock
         )
@@ -103,7 +100,6 @@ final class CheckoutAttemptIdProviderTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
             analyticsProvider: analyticsProviderMock
         )
@@ -125,7 +121,6 @@ final class CheckoutAttemptIdProviderTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
             analyticsProvider: analyticsProviderMock
         )
@@ -147,7 +142,6 @@ final class CheckoutAttemptIdProviderTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
             analyticsProvider: analyticsProviderMock
         )

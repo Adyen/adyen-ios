@@ -159,10 +159,6 @@ internal struct DemoAppSettings: Codable {
         Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil)
     }
 
-    internal var payment: Payment {
-        Payment(amount: amount, countryCode: countryCode)
-    }
-    
     private var installmentConfiguration: InstallmentConfiguration? {
         guard cardSettings.enableInstallments else {
             return nil
