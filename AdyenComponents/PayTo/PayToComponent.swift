@@ -11,7 +11,7 @@
 import UIKit
 
 /// A component that provides PayTo flows for PayTo component.
-public final class PayToComponent: PaymentComponent, PresentableComponent, AdyenObserver, PaymentAware, LoadingComponent {
+public final class PayToComponent: PaymentComponent, PresentableComponent, AdyenObserver, LoadingComponent {
 
     /// Configuration for PayTo Component.
     public typealias Configuration = BasicComponentConfiguration
@@ -263,7 +263,7 @@ private extension PayToComponent {
         submit(
             data: PaymentComponentData(
                 paymentMethodDetails: details,
-                amount: payment?.amount,
+                amount: context.amount,
                 order: order
             )
         )

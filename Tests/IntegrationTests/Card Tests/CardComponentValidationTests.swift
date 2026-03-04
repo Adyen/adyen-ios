@@ -17,10 +17,6 @@ class CardComponentValidationTests: XCTestCase {
         Dummy.context
     }
 
-    var payment: Payment {
-        Dummy.payment
-    }
-
     var method: CardPaymentMethod {
         .init(
             type: .bcmc,

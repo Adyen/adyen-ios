@@ -162,7 +162,7 @@ internal typealias VoidHandler = () -> Void
                 sdkInput: sdkInput,
                 cardNumber: securedCardNumber(lastFour: token.paymentInfo?.lastFour),
                 cardType: token.paymentInfo?.cardType,
-                amount: token.paymentInfo?.amount ?? context.payment?.amount
+                amount: token.paymentInfo?.amount ?? context.amount
             )
         }
         

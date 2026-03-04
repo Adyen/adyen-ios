@@ -26,7 +26,7 @@ class GiftCardComponentTests: XCTestCase {
     var giftCardPaymentMethod: GiftCardPaymentMethod!
 
     var amountToPay: Amount {
-        Dummy.payment.amount
+        Dummy.amount
     }
 
     var errorView: FormErrorItemView? {

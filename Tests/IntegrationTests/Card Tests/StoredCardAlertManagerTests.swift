@@ -79,11 +79,11 @@ class StoredCardAlertManagerTests: XCTestCase {
     
     func testResetFieldsAfterCancel() throws {
         let method = try AdyenCoder.decode(storedCardDictionary) as StoredCardPaymentMethod
-        let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+        let amount = Amount(value: 174, currencyCode: "EUR")
         let sut = StoredCardAlertManager(
             paymentMethod: method,
             context: Dummy.context,
-            amount: payment.amount
+            amount: amount
         )
         sut.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         
@@ -92,7 +92,7 @@ class StoredCardAlertManagerTests: XCTestCase {
         
         presentOnRoot(alertController)
         
-        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.localizationParameters) })
+        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: amount, style: .immediate, sut.localizationParameters) })
         let cancelAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedString(.cancelButton, sut.localizationParameters) })
         
         textField.text = "111"

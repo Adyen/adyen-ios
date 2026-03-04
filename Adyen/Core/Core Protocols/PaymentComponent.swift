@@ -96,14 +96,6 @@ extension PaymentComponent {
     }
 }
 
-extension AdyenContextAware where Self: PaymentAware {
-
-    public var payment: Payment? {
-        context.payment
-    }
-
-}
-
 /// Describes the methods a delegate of the payment component needs to implement.
 public protocol PaymentComponentDelegate: AnyObject {
     

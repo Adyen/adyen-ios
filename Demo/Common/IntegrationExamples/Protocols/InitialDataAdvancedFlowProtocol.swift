@@ -44,7 +44,6 @@ extension InitialDataAdvancedFlowProtocol {
         )
         return AdyenContext(
             apiContext: ConfigurationConstants.apiContext,
-            payment: ConfigurationConstants.current.payment,
             amount: ConfigurationConstants.current.amount,
             analyticsConfiguration: analyticsConfiguration
         )
