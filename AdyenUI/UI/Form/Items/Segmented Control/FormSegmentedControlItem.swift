@@ -59,6 +59,4 @@ internal class ADYSegmentedControl: UISegmentedControl, AnyFormItemView {
     public var childItemViews: [AnyFormItemView] {
         []
     }
-
-    public func reset() { /* Do nothing */ }
 }

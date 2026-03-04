@@ -299,24 +299,6 @@ class AddressInputFormViewControllerTests: XCTestCase {
         )
     }
     
-    func testClearShouldAssignEmptyStreet() {
-        // Given
-        let viewController = AddressInputFormViewController(
-            viewModel: self.viewModel(
-                initialCountry: "NL",
-                prefillAddress: .init(country: "NL", street: "Singel")
-            )
-        )
-
-        setupRootViewController(viewController)
-        setupRootViewController(UIViewController())
-
-        XCTAssertEqual(
-            viewController.addressItem.value.street,
-            ""
-        )
-    }
-    
     func test_itemSetup() throws {
         
         let viewController = AddressInputFormViewController(

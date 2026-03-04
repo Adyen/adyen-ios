@@ -142,12 +142,6 @@ internal final class FormSectionHeaderItemView: UIView, AnyFormItemView {
             contentContainer.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
-
-    // MARK: - AnyFormItemView
-
-    internal func reset() {
-        childItemViews.forEach { $0.reset() }
-    }
 }
 
 // MARK: - Convenience Extension

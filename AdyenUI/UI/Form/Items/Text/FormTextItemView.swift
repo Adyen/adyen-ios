@@ -96,12 +96,6 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         // Border styling
         updateBorderColor()
     }
-    
-    override public func reset() {
-        textField.text = ""
-        item.value = ""
-        resetValidationStatus()
-    }
 
     /// Delegate text related events.
     public weak var delegate: FormTextItemViewDelegate?
