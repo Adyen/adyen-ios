@@ -27,6 +27,7 @@ public final class AdyenContext {
     /// Creates an Adyen context with the provided API context and analytics configuration.
     /// - Parameters:
     ///   - apiContext: The API context used to retrieve internal resources.
+    ///   - amount: The amount to display.
     ///   - analyticsConfiguration: A configuration object that specifies the behavior for the analytics.
     package convenience init(
         apiContext: APIContext,
