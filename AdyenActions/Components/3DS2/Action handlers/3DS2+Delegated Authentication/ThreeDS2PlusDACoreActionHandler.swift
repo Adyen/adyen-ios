@@ -274,7 +274,7 @@ internal typealias VoidHandler = () -> Void
                     
                     if case let AdyenAuthenticationError.consecutiveCancellationOnApproval(count) = error,
                        count >= Constants.consecutiveCancellationTolerance {
-                        Task { [weak self] in
+                        Task { @MainActor [weak self] in
                             try? await self?.service(cardNumber: nil).reset()
                         }
                     }
@@ -285,7 +285,7 @@ internal typealias VoidHandler = () -> Void
                             completion(.failure(.authenticationServiceFailed(underlyingError: error)))
                         },
                         troubleshootingHandler: { [weak self] in
-                            Task {
+                            Task { @MainActor in
                                 try? await self?.service(cardNumber: cardNumber).reset()
                                 completion(.failure(.authenticationServiceFailed(underlyingError: error)))
                             }
@@ -371,7 +371,8 @@ internal typealias VoidHandler = () -> Void
             cardNumber: String?,
             completion: @escaping (Result<String, Error>) -> Void
         ) {
-            Task { @MainActor in
+            Task { @MainActor [weak self] in
+                guard let self else { return }
                 let service: AuthenticationServiceProtocol = service(cardNumber: cardNumber)
 
                 service.register(withRegistrationInput: delegatedAuthenticationInput) { result in
