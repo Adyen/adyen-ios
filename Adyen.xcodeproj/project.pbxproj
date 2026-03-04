@@ -993,7 +993,6 @@
 		E9021E022264C4C5009CF7F4 /* KeyedDecodingContainerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9021E012264C4C5009CF7F4 /* KeyedDecodingContainerHelpers.swift */; };
 		E90933FF228AFC6600C9F04B /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90933FE228AFC6600C9F04B /* Environment.swift */; };
 		E9093401228C54CD00C9F04B /* LogoURLProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9093400228C54CD00C9F04B /* LogoURLProvider.swift */; };
-		E9093403228EDADA00C9F04B /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9093402228EDADA00C9F04B /* Payment.swift */; };
 		E909342822969AFF00C9F04B /* PaymentComponentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E909342722969AFF00C9F04B /* PaymentComponentData.swift */; };
 		E90934A72297E7C800C9F04B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E909346A2297E33B00C9F04B /* Localizable.strings */; };
 		E9240D6C2265EFE900FB57D0 /* StoredCardAlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9240D6B2265EFE900FB57D0 /* StoredCardAlertManager.swift */; };
@@ -2665,7 +2664,6 @@
 		E9021E032264C55E009CF7F4 /* KeyedDecodingContainerExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyedDecodingContainerExtensionsTests.swift; sourceTree = "<group>"; };
 		E90933FE228AFC6600C9F04B /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		E9093400228C54CD00C9F04B /* LogoURLProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoURLProvider.swift; sourceTree = "<group>"; };
-		E9093402228EDADA00C9F04B /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
 		E909342722969AFF00C9F04B /* PaymentComponentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentData.swift; sourceTree = "<group>"; };
 		E909346B2297E34300C9F04B /* zh-CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-CN"; path = "zh-CN.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E909346C2297E34600C9F04B /* ru-RU */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ru-RU"; path = "ru-RU.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -5649,7 +5647,6 @@
 				F9838D382631AD1900963483 /* Balance.swift */,
 				E909342722969AFF00C9F04B /* PaymentComponentData.swift */,
 				F94F0DF528AB7BCC00C0923D /* DelegatedAuthenticationData.swift */,
-				E9093402228EDADA00C9F04B /* Payment.swift */,
 				E7085A8C2627132B00D0153B /* PostalAddress.swift */,
 				F90FB7BB2446E8C8005BFE0E /* BrowserInfo.swift */,
 				E788A4FA2658034400089448 /* ShopperInformation.swift */,
@@ -8670,7 +8667,6 @@
 				F96F44CD23B257D700871C1F /* Logger.swift in Sources */,
 				A06B7A9A2A1CEC59008FC09D /* StoredCashAppPayPaymentMethod.swift in Sources */,
 				A052F5D82DB1250D00C47D3E /* CheckoutComponentType.swift in Sources */,
-				E9093403228EDADA00C9F04B /* Payment.swift in Sources */,
 				A0414C2B2790420B00DF3FE9 /* PublicKeyFetcher.swift in Sources */,
 				A0414C2E2790420B00DF3FE9 /* PublicKeyProvider.swift in Sources */,
 				E216D3CD221AFBB90013CBCF /* Validator.swift in Sources */,
