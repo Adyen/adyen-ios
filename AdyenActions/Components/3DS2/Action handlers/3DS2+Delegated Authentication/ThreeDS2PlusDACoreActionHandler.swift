@@ -274,7 +274,9 @@ internal typealias VoidHandler = () -> Void
                     
                     if case let AdyenAuthenticationError.consecutiveCancellationOnApproval(count) = error,
                        count >= Constants.consecutiveCancellationTolerance {
-                        try? self.service(cardNumber: nil).reset()
+                        Task { [weak self] in
+                            try? await self?.service(cardNumber: nil).reset()
+                        }
                     }
                     
                     self.presenter.showAuthenticationError(
@@ -283,8 +285,10 @@ internal typealias VoidHandler = () -> Void
                             completion(.failure(.authenticationServiceFailed(underlyingError: error)))
                         },
                         troubleshootingHandler: { [weak self] in
-                            try? self?.service(cardNumber: cardNumber).reset()
-                            completion(.failure(.authenticationServiceFailed(underlyingError: error)))
+                            Task {
+                                try? await self?.service(cardNumber: cardNumber).reset()
+                                completion(.failure(.authenticationServiceFailed(underlyingError: error)))
+                            }
                         }
                     )
                 }
@@ -322,15 +326,19 @@ internal typealias VoidHandler = () -> Void
             authenticatedHandler: @escaping (String) -> Void,
             failedAuthenticationHandler: @escaping (Error) -> Void
         ) {
-            let service: AuthenticationServiceProtocol = service(cardNumber: cardNumber)
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                let service: AuthenticationServiceProtocol = service(cardNumber: cardNumber)
 
-            service.authenticate(withAuthenticationInput: delegatedAuthenticationInput) { result in
-                switch result {
-                case let .success(sdkOutput):
-                    authenticatedHandler(sdkOutput)
-                case let .failure(error):
-                    failedAuthenticationHandler(error)
+                service.authenticate(withAuthenticationInput: delegatedAuthenticationInput) { result in
+                    switch result {
+                    case let .success(sdkOutput):
+                        authenticatedHandler(sdkOutput)
+                    case let .failure(error):
+                        failedAuthenticationHandler(error)
+                    }
                 }
+
             }
         }
         
@@ -338,18 +346,20 @@ internal typealias VoidHandler = () -> Void
             delegatedAuthenticationInput: String,
             handler: @escaping (Bool) -> Void
         ) {
-            
-            let service: AuthenticationServiceProtocol = service(cardNumber: nil)
-            
-            service.isDeviceRegistered(withAuthenticationInput: delegatedAuthenticationInput) { result in
-                switch result {
-                case .failure:
-                    // If there is an error then we assume that the device is not registered and we try registration.
-                    // Improvement: we could alternatively check the individual errors from AuthenticationSDK
-                    // and based on which decide if we would like to call out if it is registered or not.
-                    handler(false)
-                case let .success(isRegistered):
-                    handler(isRegistered)
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                let service: AuthenticationServiceProtocol = service(cardNumber: nil)
+
+                service.isDeviceRegistered(withAuthenticationInput: delegatedAuthenticationInput) { result in
+                    switch result {
+                    case .failure:
+                        // If there is an error then we assume that the device is not registered and we try registration.
+                        // Improvement: we could alternatively check the individual errors from AuthenticationSDK
+                        // and based on which decide if we would like to call out if it is registered or not.
+                        handler(false)
+                    case let .success(isRegistered):
+                        handler(isRegistered)
+                    }
                 }
             }
         }
@@ -361,30 +371,34 @@ internal typealias VoidHandler = () -> Void
             cardNumber: String?,
             completion: @escaping (Result<String, Error>) -> Void
         ) {
-            
-            let service: AuthenticationServiceProtocol = service(cardNumber: cardNumber)
-            
-            service.register(withRegistrationInput: delegatedAuthenticationInput) { result in
-                switch result {
-                case let .success(sdkOutput):
-                    completion(.success(sdkOutput))
-                case let .failure(error):
-                    completion(.failure(error))
+            Task { @MainActor in
+                let service: AuthenticationServiceProtocol = service(cardNumber: cardNumber)
+
+                service.register(withRegistrationInput: delegatedAuthenticationInput) { result in
+                    switch result {
+                    case let .success(sdkOutput):
+                        completion(.success(sdkOutput))
+                    case let .failure(error):
+                        completion(.failure(error))
+                    }
                 }
+
             }
         }
         
+        @MainActor
         internal func service(cardNumber: String?) -> AuthenticationServiceProtocol {
             if let delegatedAuthenticationService {
                 return delegatedAuthenticationService
             }
-            
+            let passkeyConfiguration = PassKeyConfiguration(
+                relyingPartyIdentifier: delegatedAuthenticationConfiguration.relyingPartyIdentifier,
+                displayName: cardNumber ?? Bundle.main.displayName,
+                consecutiveApprovalCancellationsLimit: Constants.consecutiveCancellationTolerance
+            )
+
             return AdyenAuthentication.AuthenticationService(
-                passKeyConfiguration: .init(
-                    relyingPartyIdentifier: delegatedAuthenticationConfiguration.relyingPartyIdentifier,
-                    displayName: cardNumber ?? Bundle.main.displayName,
-                    consecutiveApprovalCancellationsLimit: Constants.consecutiveCancellationTolerance
-                )
+                passKeyConfiguration: passkeyConfiguration
             )
 
         }
