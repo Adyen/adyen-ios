@@ -13,7 +13,6 @@ import UIKit
 
 /// A component that provides a form for Boleto payment.
 public final class BoletoComponent: PaymentComponent,
-    PaymentAware,
     LoadingComponent,
     PresentableComponent,
     AdyenObserver {

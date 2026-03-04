@@ -10,20 +10,17 @@ import Foundation
 // TODO: make non public
 
 /// A class that defines the behavior of the components in a payment flow.
-public final class AdyenContext: PaymentAware {
+public final class AdyenContext {
     
     // MARK: - Properties
     
     /// The API context used to retrieve internal resources.
     public let apiContext: APIContext
     
-    // TODO: get rid of payment
-    /// The payment information.
-    public private(set) var payment: Payment?
-    
     package var analyticsProvider: AnyAnalyticsProvider?
 
-    package let amount: Amount
+    /// The payment amount.
+    public var amount: Amount?
     
     // MARK: - Initializers
     
@@ -31,11 +28,9 @@ public final class AdyenContext: PaymentAware {
     /// - Parameters:
     ///   - apiContext: The API context used to retrieve internal resources.
     ///   - analyticsConfiguration: A configuration object that specifies the behavior for the analytics.
-    ///   - payment: The payment information.
     package convenience init(
         apiContext: APIContext,
-        payment: Payment?,
-        amount: Amount,
+        amount: Amount?,
         analyticsConfiguration: AnalyticsConfiguration = .init()
     ) {
         
@@ -46,7 +41,6 @@ public final class AdyenContext: PaymentAware {
         
         self.init(
             apiContext: apiContext,
-            payment: payment,
             amount: amount,
             analyticsProvider: analyticsProvider
         )
@@ -55,19 +49,12 @@ public final class AdyenContext: PaymentAware {
     /// Internal init for testing only
     internal init(
         apiContext: APIContext,
-        payment: Payment?,
-        amount: Amount,
+        amount: Amount?,
         analyticsProvider: AnyAnalyticsProvider?
     ) {
         self.apiContext = apiContext
         self.amount = amount
         self.analyticsProvider = analyticsProvider
-        self.payment = payment
-    }
-    
-    @_spi(AdyenInternal)
-    public func update(payment: Payment?) {
-        self.payment = payment
     }
 
     /// The API environment for Analytics is different than the APIClient environment that is used for other payment calls.

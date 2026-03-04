@@ -65,7 +65,7 @@ internal final class ComponentManager: ComponentManaging {
         self.supportsEditingStoredPaymentMethods = supportsEditingStoredPaymentMethods
         self.presentationDelegate = presentationDelegate
 
-        updateContextPaymentIfNeeded()
+        updateContextAmountIfNeeded()
     }
     
     // MARK: - ComponentManaging
@@ -179,12 +179,9 @@ internal final class ComponentManager: ComponentManaging {
 
 private extension ComponentManager {
     
-    func updateContextPaymentIfNeeded() {
-        guard let payment = context.payment,
-              let remainingAmount = order?.remainingAmount else { return }
-        
-        let updatedPayment = Payment(amount: remainingAmount, countryCode: payment.countryCode)
-        context.update(payment: updatedPayment)
+    func updateContextAmountIfNeeded() {
+        guard let remainingAmount = order?.remainingAmount else { return }
+        context.amount = remainingAmount
     }
     
     // MARK: - Payment Method Validation

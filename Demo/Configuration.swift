@@ -339,17 +339,17 @@ private extension DemoAppSettings {
 internal extension PKPaymentRequest {
     
     static var demo: PKPaymentRequest {
-        let payment = ConfigurationConstants.current.payment
+        let amount = ConfigurationConstants.current.amount
         let decimalAmount = AmountFormatter.decimalAmount(
-            payment.amount.value,
-            currencyCode: payment.amount.currencyCode,
-            localeIdentifier: payment.amount.localeIdentifier
+            amount.value,
+            currencyCode: amount.currencyCode,
+            localeIdentifier: amount.localeIdentifier
         )
 
         let paymentRequest = PKPaymentRequest()
         paymentRequest.merchantIdentifier = ConfigurationConstants.current.applePaySettings.merchantIdentifier
-        paymentRequest.countryCode = payment.countryCode
-        paymentRequest.currencyCode = payment.amount.currencyCode
+        paymentRequest.countryCode = ConfigurationConstants.current.countryCode
+        paymentRequest.currencyCode = amount.currencyCode
         paymentRequest.paymentSummaryItems = [
             PKPaymentSummaryItem(label: ConfigurationConstants.appName, amount: decimalAmount)
         ]
