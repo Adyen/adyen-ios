@@ -9,10 +9,10 @@ import PassKit
 import UIKit
 
 internal struct PaymentMethodListHeaderViewModel {
-    let amount: String
-    let subtitle: String
-    let showApplePayButton: Bool
-    let onApplePayTap: (() -> Void)?
+    internal let amount: String
+    internal let subtitle: String
+    internal let showApplePayButton: Bool
+    internal let onApplePayTap: (() -> Void)?
 }
 
 internal final class PaymentMethodListHeaderView: UIView {
@@ -40,7 +40,13 @@ internal final class PaymentMethodListHeaderView: UIView {
     }()
     
     private lazy var applePayButton: PKPaymentButton = {
-        let button = PKPaymentButton(paymentButtonType: .plain, paymentButtonStyle: .black)
+        let buttonStyle: PKPaymentButtonStyle
+        if #available(iOS 14.0, *) {
+            buttonStyle = .automatic
+        } else {
+            buttonStyle = .black
+        }
+        let button = PKPaymentButton(paymentButtonType: .plain, paymentButtonStyle: buttonStyle)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(applePayButtonTapped), for: .touchUpInside)
         return button
@@ -57,13 +63,13 @@ internal final class PaymentMethodListHeaderView: UIView {
     
     // MARK: - Initializers
     
-    override init(frame: CGRect) {
+    override internal init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
     }
     
     @available(*, unavailable)
-    required init?(coder: NSCoder) {
+    internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

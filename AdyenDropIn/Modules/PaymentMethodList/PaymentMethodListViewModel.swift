@@ -112,6 +112,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     internal func select(paymentMethod: PaymentMethod) {
         guard let component = componentManager.buildComponent(for: paymentMethod) else { return }
+        component.delegate = self
 
         switch component.type {
         case .regular, .stored:

@@ -106,7 +106,7 @@ extension ComponentManager: PaymentComponentBuilder {
     }
 
     internal func build(paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
-        createPreApplePayComponent(with: paymentMethod)
+        createApplePayComponent(with: paymentMethod)
     }
 
     internal func build(paymentMethod: WeChatPayPaymentMethod) -> PaymentComponent? {
@@ -334,35 +334,28 @@ private extension ComponentManager {
         )
     }
 
-    func createPreApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
-        guard let applePay = configuration.applePay else {
+    func createApplePayComponent(with paymentMethod: ApplePayPaymentMethod) -> PaymentComponent? {
+        guard let applePayConfiguration = configuration.applePay else {
             adyenPrint("Failed to instantiate ApplePayComponent because ApplePayConfiguration is missing")
             return nil
         }
 
-        let preApplePayConfig = PreApplePayComponent.Configuration(
-            style: configuration.style.applePay,
-            localizationParameters: configuration.localizationParameters
-        )
-
         if let amount = order?.remainingAmount {
-            let configuration = applePay.replacing(amount: amount)
-            if let component = try? PreApplePayComponent(
+            let newConfiguration = applePayConfiguration.replacing(amount: amount)
+            if let component = try? ApplePayComponent(
                 paymentMethod: paymentMethod,
                 context: context,
-                configuration: preApplePayConfig,
-                applePayConfiguration: configuration
+                configuration: newConfiguration
             ) {
                 return component
             }
         }
 
         do {
-            return try PreApplePayComponent(
+            return try ApplePayComponent(
                 paymentMethod: paymentMethod,
                 context: context,
-                configuration: preApplePayConfig,
-                applePayConfiguration: applePay
+                configuration: applePayConfiguration
             )
         } catch {
             adyenPrint("Failed to instantiate ApplePayComponent because of error: \(error.localizedDescription)")

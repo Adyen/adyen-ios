@@ -65,7 +65,7 @@ internal final class PreApplePayView: UIView, Localizable {
         addSubview(payButton)
         payButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            payButton.topAnchor.constraint(equalTo: topAnchor, constant: 13.0),
+            payButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 13.0),
             payButton.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
             payButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
             payButton.heightAnchor.constraint(equalToConstant: 48.0)

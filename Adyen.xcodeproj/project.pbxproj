@@ -4784,6 +4784,7 @@
 		C9C22D9B2DE5F9BB0028C23F /* PreApplePay */ = {
 			isa = PBXGroup;
 			children = (
+				5A238C92263AEA0800758FEF /* PreApplePayView.swift */,
 				C9C22D9A2DE5F9BB0028C23F /* PreApplePayComponent.swift */,
 			);
 			path = PreApplePay;
@@ -5619,14 +5620,6 @@
 			path = "DropIn Tests";
 			sourceTree = "<group>";
 		};
-		E767F49925A5E9670077029E /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				5A238C92263AEA0800758FEF /* PreApplePayView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		E76EC683241127B5009C6E2F /* Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -5965,7 +5958,6 @@
 			isa = PBXGroup;
 			children = (
 				C9C22D922DE5F9620028C23F /* Modules */,
-				E767F49925A5E9670077029E /* Views */,
 				E7484C2523B9FDC400CCF74F /* Presentation */,
 				E9B36CC322451C5B00EAA368 /* Utilities */,
 				E9B36CC122451C3000EAA368 /* Models */,

@@ -161,8 +161,8 @@ internal class PaymentMethodListViewController: UIViewController {
 
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
-        navigationItem.largeTitleDisplayMode = .always
-        navigationController?.navigationBar.prefersLargeTitles = true
+//        navigationItem.largeTitleDisplayMode = .always
+//        navigationController?.navigationBar.prefersLargeTitles = true
 
         setupCancelButton()
     }
