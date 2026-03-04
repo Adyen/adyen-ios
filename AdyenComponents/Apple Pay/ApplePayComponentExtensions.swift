@@ -70,15 +70,15 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         handler completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void
     ) {
         guard let applePayDelegate else {
-            return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
+            return completion(.init(paymentSummaryItems: paymentRequest.paymentSummaryItems))
         }
 
         applePayDelegate.didUpdate(
             contact: contact,
-            for: applePayPayment
+            for: paymentRequest.paymentSummaryItems
         ) { [weak self] result in
             guard let self else { return }
-            self.updateApplePayPayment(result)
+            self.updatePaymentSummaryItems(from: result)
             completion(result)
         }
     }
@@ -89,15 +89,15 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         handler completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void
     ) {
         guard let applePayDelegate else {
-            return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
+            return completion(.init(paymentSummaryItems: paymentRequest.paymentSummaryItems))
         }
 
         applePayDelegate.didUpdate(
             shippingMethod: shippingMethod,
-            for: applePayPayment
+            for: paymentRequest.paymentSummaryItems
         ) { [weak self] result in
             guard let self else { return }
-            self.updateApplePayPayment(result)
+            self.updatePaymentSummaryItems(from: result)
             completion(result)
         }
     }
@@ -109,26 +109,26 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         handler completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void
     ) {
         guard let applePayDelegate else {
-            return completion(.init(paymentSummaryItems: applePayPayment.summaryItems))
+            return completion(.init(paymentSummaryItems: paymentRequest.paymentSummaryItems))
         }
 
         applePayDelegate.didUpdate(
             couponCode: couponCode,
-            for: applePayPayment
+            for: paymentRequest.paymentSummaryItems
         ) { [weak self] result in
             guard let self else { return }
-            self.updateApplePayPayment(result)
+            self.updatePaymentSummaryItems(from: result)
             completion(result)
         }
     }
 
-    private func updateApplePayPayment(_ result: some PKPaymentRequestUpdate) {
-        if result.status == .success, result.paymentSummaryItems.count > 0 {
-            do {
-                applePayPayment = try applePayPayment.replacing(summaryItems: result.paymentSummaryItems)
-            } catch {
-                delegate?.didFail(with: error, from: self)
-            }
+    private func updatePaymentSummaryItems(from result: some PKPaymentRequestUpdate) {
+        guard result.status == .success, !result.paymentSummaryItems.isEmpty else { return }
+        do {
+            try Configuration.validate(summaryItems: result.paymentSummaryItems)
+            paymentRequest.paymentSummaryItems = result.paymentSummaryItems
+        } catch {
+            delegate?.didFail(with: error, from: self)
         }
     }
     
@@ -149,6 +149,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
             shippingMethod: payment.shippingMethod
         )
         
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: applePayPayment.amount, order: order))
+        let amount = configuration.currentAmount
+        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: amount, order: order))
     }
 }

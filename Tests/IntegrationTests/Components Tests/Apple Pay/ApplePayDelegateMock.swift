@@ -12,8 +12,8 @@ protocol ApplePayDelegateMock: ApplePayComponentDelegate {
     var shippingMethod: PKShippingMethod? { get }
     var couponCode: String? { get }
 
-    var onShippingContactChange: ((PKContact, ApplePayPayment) -> PKPaymentRequestShippingContactUpdate)? { get set }
-    var onShippingMethodChange: ((PKShippingMethod, ApplePayPayment) -> PKPaymentRequestShippingMethodUpdate)? { get set }
+    var onShippingContactChange: ((PKContact, [PKPaymentSummaryItem]) -> PKPaymentRequestShippingContactUpdate)? { get set }
+    var onShippingMethodChange: ((PKShippingMethod, [PKPaymentSummaryItem]) -> PKPaymentRequestShippingMethodUpdate)? { get set }
 }
 
 final class ApplePayDelegateMockClassic: ApplePayDelegateMock {
@@ -22,23 +22,23 @@ final class ApplePayDelegateMockClassic: ApplePayDelegateMock {
     var shippingMethod: PKShippingMethod?
     var couponCode: String?
 
-    var onShippingContactChange: ((PKContact, ApplePayPayment) -> PKPaymentRequestShippingContactUpdate)?
-    var onShippingMethodChange: ((PKShippingMethod, ApplePayPayment) -> PKPaymentRequestShippingMethodUpdate)?
+    var onShippingContactChange: ((PKContact, [PKPaymentSummaryItem]) -> PKPaymentRequestShippingContactUpdate)?
+    var onShippingMethodChange: ((PKShippingMethod, [PKPaymentSummaryItem]) -> PKPaymentRequestShippingMethodUpdate)?
 
-    func didUpdate(contact: PKContact, for payment: ApplePayPayment, completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void) {
+    func didUpdate(contact: PKContact, for summaryItems: [PKPaymentSummaryItem], completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void) {
         self.contact = contact
-        let result = onShippingContactChange!(contact, payment)
+        let result = onShippingContactChange!(contact, summaryItems)
         completion(result)
     }
 
-    func didUpdate(shippingMethod: PKShippingMethod, for payment: ApplePayPayment, completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void) {
+    func didUpdate(shippingMethod: PKShippingMethod, for summaryItems: [PKPaymentSummaryItem], completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void) {
         self.shippingMethod = shippingMethod
-        let result = onShippingMethodChange!(shippingMethod, payment)
+        let result = onShippingMethodChange!(shippingMethod, summaryItems)
         completion(result)
     }
 
     @available(iOS 15.0, *)
-    func didUpdate(couponCode: String, for payment: ApplePayPayment, completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void) {
+    func didUpdate(couponCode: String, for summaryItems: [PKPaymentSummaryItem], completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void) {
         fatalError("Use ApplePayDelegateMockiOS15")
     }
 }
@@ -50,27 +50,27 @@ final class ApplePayDelegateMockiOS15: ApplePayDelegateMock {
     var shippingMethod: PKShippingMethod?
     var couponCode: String?
 
-    var onShippingContactChange: ((PKContact, ApplePayPayment) -> PKPaymentRequestShippingContactUpdate)?
-    var onShippingMethodChange: ((PKShippingMethod, ApplePayPayment) -> PKPaymentRequestShippingMethodUpdate)?
+    var onShippingContactChange: ((PKContact, [PKPaymentSummaryItem]) -> PKPaymentRequestShippingContactUpdate)?
+    var onShippingMethodChange: ((PKShippingMethod, [PKPaymentSummaryItem]) -> PKPaymentRequestShippingMethodUpdate)?
 
-    var onCouponChange: ((String, ApplePayPayment) -> PKPaymentRequestCouponCodeUpdate)?
+    var onCouponChange: ((String, [PKPaymentSummaryItem]) -> PKPaymentRequestCouponCodeUpdate)?
 
-    func didUpdate(contact: PKContact, for payment: ApplePayPayment, completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void) {
+    func didUpdate(contact: PKContact, for summaryItems: [PKPaymentSummaryItem], completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void) {
         self.contact = contact
-        let result = onShippingContactChange!(contact, payment)
+        let result = onShippingContactChange!(contact, summaryItems)
         completion(result)
     }
 
-    func didUpdate(shippingMethod: PKShippingMethod, for payment: ApplePayPayment, completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void) {
+    func didUpdate(shippingMethod: PKShippingMethod, for summaryItems: [PKPaymentSummaryItem], completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void) {
         self.shippingMethod = shippingMethod
-        let result = onShippingMethodChange!(shippingMethod, payment)
+        let result = onShippingMethodChange!(shippingMethod, summaryItems)
         completion(result)
     }
 
     @available(iOS 15.0, *)
-    func didUpdate(couponCode: String, for payment: ApplePayPayment, completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void) {
+    func didUpdate(couponCode: String, for summaryItems: [PKPaymentSummaryItem], completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void) {
         self.couponCode = couponCode
-        let result = onCouponChange!(couponCode, payment)
+        let result = onCouponChange!(couponCode, summaryItems)
         completion(result)
     }
 }

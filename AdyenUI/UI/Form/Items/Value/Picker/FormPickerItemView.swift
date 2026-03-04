@@ -27,9 +27,4 @@ package class FormPickerItemView<Value: FormPickable>: FormSelectableValueItemVi
             item.presenter?.presentViewController(pickerViewController, animated: true)
         }
     }
-    
-    override package func reset() {
-        item.resetValue()
-        resetValidationStatus()
-    }
 }

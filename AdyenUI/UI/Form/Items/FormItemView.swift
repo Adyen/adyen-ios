@@ -41,9 +41,6 @@ open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView, AdyenObser
     open var childItemViews: [AnyFormItemView] {
         []
     }
-    
-    public func reset() { /* Do nothing */ }
-    
 }
 
 /// A type-erased form item view.
@@ -55,9 +52,6 @@ public protocol AnyFormItemView: UIView {
     
     /// The array of item views embedded in the current item view.
     var childItemViews: [AnyFormItemView] { get }
-    
-    func reset()
-    
 }
 
 @_spi(AdyenInternal)

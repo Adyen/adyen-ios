@@ -13,8 +13,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
     internal let paymentRequest: PKPaymentRequest
 
-    internal var applePayPayment: ApplePayPayment
-
     internal var state: State = .initial
 
     internal let applePayPaymentMethod: ApplePayPaymentMethod
@@ -85,7 +83,6 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         self.context = context
         self.paymentAuthorizationViewController = viewController
         self.applePayPaymentMethod = paymentMethod
-        self.applePayPayment = configuration.applePayPayment
         super.init()
 
         paymentAuthorizationViewController?.delegate = self
@@ -112,7 +109,18 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
             throw ApplePayComponent.Error.negativeGrandTotal
         }
 
-        applePayPayment = try ApplePayPayment(payment: payment, brand: applePayPayment.brand)
+        guard let lastItem = paymentRequest.paymentSummaryItems.last else {
+            throw ApplePayComponent.Error.emptySummaryItems
+        }
+
+        let decimalAmount = AmountFormatter.decimalAmount(
+            payment.amount.value,
+            currencyCode: payment.amount.currencyCode,
+            localeIdentifier: payment.amount.localeIdentifier
+        )
+        var newItems = Array(paymentRequest.paymentSummaryItems.dropLast())
+        newItems.append(PKPaymentSummaryItem(label: lastItem.label, amount: decimalAmount))
+        paymentRequest.paymentSummaryItems = newItems
     }
 
     // MARK: - Private

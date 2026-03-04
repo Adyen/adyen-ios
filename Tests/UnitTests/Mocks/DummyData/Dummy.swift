@@ -85,8 +85,14 @@ enum Dummy: Error {
         holder: nil
     )
 
-    internal static func createTestApplePayPayment() -> ApplePayPayment {
-        try! .init(countryCode: "US", currencyCode: "USD", summaryItems: createTestSummaryItems())
+    internal static func createTestApplePayPaymentRequest() -> PKPaymentRequest {
+        let request = PKPaymentRequest()
+        request.merchantIdentifier = "test_id"
+        request.countryCode = "US"
+        request.currencyCode = "USD"
+        request.paymentSummaryItems = createTestSummaryItems()
+        request.merchantCapabilities = .capability3DS
+        return request
     }
     
     internal static let returnUrl = URL(string: "https://google.com?redirectResult=some")!
