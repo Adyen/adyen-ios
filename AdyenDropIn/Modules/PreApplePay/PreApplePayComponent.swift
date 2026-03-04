@@ -70,7 +70,10 @@ internal final class PreApplePayComponent: PresentableComponent,
         self.context = context
         self.paymentMethod = paymentMethod
         self.configuration = configuration
-        self.amount = applePayConfiguration.applePayPayment.amount
+        guard let amount = applePayConfiguration.currentAmount else {
+            throw ApplePayComponent.Error.emptySummaryItems
+        }
+        self.amount = amount
         self.applePayComponent = try ApplePayComponent(
             paymentMethod: paymentMethod,
             context: context,

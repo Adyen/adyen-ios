@@ -13,14 +13,14 @@ public protocol ApplePayComponentDelegate: AnyObject {
     /// Tells the delegate that the shopper selected a shipping address, and asks for an updated payment request.
     func didUpdate(
         contact: PKContact,
-        for payment: ApplePayPayment,
+        for summaryItems: [PKPaymentSummaryItem],
         completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void
     )
 
     /// Tells the delegate that the shopper selected a shipping method, and asks for an updated payment request.
     func didUpdate(
         shippingMethod: PKShippingMethod,
-        for payment: ApplePayPayment,
+        for summaryItems: [PKPaymentSummaryItem],
         completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void
     )
 
@@ -28,7 +28,7 @@ public protocol ApplePayComponentDelegate: AnyObject {
     @available(iOS 15.0, *)
     func didUpdate(
         couponCode: String,
-        for payment: ApplePayPayment,
+        for summaryItems: [PKPaymentSummaryItem],
         completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void
     )
 }

@@ -116,8 +116,8 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.regularComponents.filter { $0 is FinalizableComponent }.count, 0)
     }
 
-    func testApplePayPaymentMethod() {
-        configuration.applePay = .init(payment: Dummy.createTestApplePayPayment(), merchantIdentifier: "merchant.com.test")
+    func testApplePayPaymentMethod() throws {
+        configuration.applePay = try .init(paymentRequest: Dummy.createTestApplePayPaymentRequest())
         let sut = ComponentManager(
             paymentMethods: paymentMethods,
             context: context,
@@ -353,8 +353,13 @@ class ComponentManagerTests: XCTestCase {
     }
 
     func testOrderInjectionOnApplePay() throws {
-        let payment = Payment(amount: Amount(value: 20, currencyCode: "EUR"), countryCode: "NL")
-        configuration.applePay = try .init(payment: .init(payment: payment, brand: "TEST"), merchantIdentifier: "test_test")
+        let request = PKPaymentRequest()
+        request.merchantIdentifier = "test_test"
+        request.countryCode = "NL"
+        request.currencyCode = "EUR"
+        request.paymentSummaryItems = [PKPaymentSummaryItem(label: "TEST", amount: AmountFormatter.decimalAmount(20, currencyCode: "EUR"))]
+        request.merchantCapabilities = .capability3DS
+        configuration.applePay = try .init(paymentRequest: request)
 
         let order = PartialPaymentOrder(
             pspReference: "test pspRef",
