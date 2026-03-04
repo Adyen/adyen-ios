@@ -125,14 +125,6 @@ open class FormViewController: UIViewController, AdyenObserver {
         resignFirstResponder()
     }
 
-    override open func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-
-        if scrollEnabled {
-            resetForm()
-        }
-    }
-
     override public var preferredContentSize: CGSize {
         get { formView.intrinsicContentSize }
 
@@ -229,10 +221,6 @@ open class FormViewController: UIViewController, AdyenObserver {
 
     private func formRequiresInputView() -> Bool {
         itemManager.flatItems.contains { $0 is InputViewRequiringFormItem }
-    }
-
-    public func resetForm() {
-        itemManager.flatItemViews.forEach { $0.reset() }
     }
 
     public func focusNextInputField() {

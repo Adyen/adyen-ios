@@ -12,9 +12,4 @@ internal class FormAddressPickerItemView: FormSelectableValueItemView<PostalAddr
         super.init(item: item, theme: theme)
         self.numberOfLines = 0
     }
-
-    override internal func reset() {
-        item.value = PostalAddress()
-        resetValidationStatus()
-    }
 }
