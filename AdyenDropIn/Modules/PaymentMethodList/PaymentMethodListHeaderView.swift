@@ -21,6 +21,7 @@ internal final class PaymentMethodListHeaderView: UIView {
     
     private lazy var amountLabel: UILabel = {
         let label = UILabel()
+        label.text = viewModel.amount
         label.font = .systemFont(ofSize: 34, weight: .bold)
         label.textColor = .label
         label.numberOfLines = 1
@@ -31,6 +32,7 @@ internal final class PaymentMethodListHeaderView: UIView {
     
     private lazy var subtitleLabel: UILabel = {
         let label = UILabel()
+        label.text = viewModel.subtitle
         label.font = .systemFont(ofSize: 17, weight: .regular)
         label.textColor = .secondaryLabel
         label.numberOfLines = 0
@@ -49,47 +51,46 @@ internal final class PaymentMethodListHeaderView: UIView {
         let button = PKPaymentButton(paymentButtonType: .plain, paymentButtonStyle: buttonStyle)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(applePayButtonTapped), for: .touchUpInside)
+        button.isHidden = !viewModel.showApplePayButton
         return button
     }()
     
     private lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [amountLabel, subtitleLabel])
+        let stackView = UIStackView(
+            arrangedSubviews: [
+                amountLabel,
+                subtitleLabel,
+                applePayButton
+            ]
+        )
         stackView.axis = .vertical
         stackView.spacing = 4
         stackView.alignment = .leading
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-    
+
+    // MARK: - Properties
+
+    private let viewModel: PaymentMethodListHeaderViewModel
+
     // MARK: - Initializers
-    
-    override internal init(frame: CGRect) {
-        super.init(frame: frame)
+
+    internal init(viewModel: PaymentMethodListHeaderViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
         setupView()
     }
-    
+
     @available(*, unavailable)
     internal required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Properties
-    
-    private var onApplePayTap: (() -> Void)?
-    
-    // MARK: - Configuration
-    
-    internal func configure(with viewModel: PaymentMethodListHeaderViewModel) {
-        amountLabel.text = viewModel.amount
-        subtitleLabel.text = viewModel.subtitle
-        onApplePayTap = viewModel.onApplePayTap
-        applePayButton.isHidden = !viewModel.showApplePayButton
-    }
-    
     // MARK: - Actions
     
     @objc private func applePayButtonTapped() {
-        onApplePayTap?()
+        viewModel.onApplePayTap?()
     }
     
     // MARK: - Private
@@ -98,18 +99,20 @@ internal final class PaymentMethodListHeaderView: UIView {
         layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         
         addSubview(stackView)
-        addSubview(applePayButton)
         
+        if viewModel.showApplePayButton {
+            stackView.setCustomSpacing(24, after: subtitleLabel)
+        }
+
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            
-            applePayButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 24),
-            applePayButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            applePayButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            applePayButton.heightAnchor.constraint(equalToConstant: 48),
-            applePayButton.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
+            stackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
+
+            applePayButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            applePayButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+            applePayButton.heightAnchor.constraint(equalToConstant: 48)
         ])
     }
 }

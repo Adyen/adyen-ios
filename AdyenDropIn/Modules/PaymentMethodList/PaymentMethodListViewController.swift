@@ -31,7 +31,16 @@ internal class PaymentMethodListViewController: UIViewController {
     }()
     
     private lazy var headerView: PaymentMethodListHeaderView = {
-        let view = PaymentMethodListHeaderView()
+        let headerViewModel = PaymentMethodListHeaderViewModel(
+            amount: viewModel.formattedAmount,
+            subtitle: viewModel.subtitle,
+            showApplePayButton: viewModel.isApplePayAvailable,
+            onApplePayTap: { [weak self] in
+                self?.viewModel.startApplePay()
+            }
+        )
+
+        let view = PaymentMethodListHeaderView(viewModel: headerViewModel)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -131,16 +140,7 @@ internal class PaymentMethodListViewController: UIViewController {
     
     private func setupHeaderView() {
         contentStackView.addArrangedSubview(headerView)
-        
-        let headerViewModel = PaymentMethodListHeaderViewModel(
-            amount: viewModel.formattedAmount,
-            subtitle: viewModel.subtitle,
-            showApplePayButton: viewModel.isApplePayAvailable,
-            onApplePayTap: { [weak self] in
-                self?.viewModel.startApplePay()
-            }
-        )
-        headerView.configure(with: headerViewModel)
+        contentStackView.setCustomSpacing(8, after: headerView)
     }
 
     private func setupListViewController() {
@@ -161,9 +161,6 @@ internal class PaymentMethodListViewController: UIViewController {
 
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
-//        navigationItem.largeTitleDisplayMode = .always
-//        navigationController?.navigationBar.prefersLargeTitles = true
-
         setupCancelButton()
     }
 
