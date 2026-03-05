@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for stored card payments.
-package final class StoredCardComponent: StoredPaymentComponent, PaymentAware, Localizable {
+package final class StoredCardComponent: StoredPaymentComponent, Localizable {
 
     /// The context object for this component.
     package let context: AdyenContext
@@ -45,7 +45,7 @@ package final class StoredCardComponent: StoredPaymentComponent, PaymentAware, L
         let manager = StoredCardAlertManager(
             paymentMethod: storedCardPaymentMethod,
             context: context,
-            amount: payment?.amount
+            amount: context.amount
         )
         
         manager.localizationParameters = localizationParameters
@@ -56,7 +56,7 @@ package final class StoredCardComponent: StoredPaymentComponent, PaymentAware, L
             case let .success(details):
                 self.submit(data: PaymentComponentData(
                     paymentMethodDetails: details,
-                    amount: self.payment?.amount,
+                    amount: self.context.amount,
                     order: self.order
                 ))
             case let .failure(error):

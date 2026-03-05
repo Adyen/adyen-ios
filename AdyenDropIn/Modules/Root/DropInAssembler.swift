@@ -90,7 +90,8 @@ internal struct DropInAssembler {
             componentContainerAssembler: componentContainerAssembler,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
-            partialPaymentDelegate: partialPaymentDelegate
+            partialPaymentDelegate: partialPaymentDelegate,
+            analyticsProvider: context.analyticsProvider
         )
     }
 

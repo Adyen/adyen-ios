@@ -14,14 +14,6 @@ public protocol PartialPaymentOrderAware {
 
 }
 
-/// Any component with a payment property.
-public protocol PaymentAware {
-
-    /// The payment information.
-    var payment: Payment? { get }
-
-}
-
 @_spi(AdyenInternal)
 extension PartialPaymentOrderAware {
 
@@ -36,8 +28,6 @@ extension PartialPaymentOrderAware {
 }
 
 private enum AssociatedKeys {
-
-    internal static var payment: Void?
 
     internal static var order: Void?
 }

@@ -265,7 +265,6 @@ struct PaymentMethodListViewModelTests {
     ) {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: nil,
             amount: .init(value: 100, currencyCode: "EUR")
         )
 
@@ -349,7 +348,6 @@ struct PaymentMethodListViewModelTests {
 
     private let contextMock = AdyenContext(
         apiContext: Dummy.apiContext,
-        payment: nil,
         amount: .init(value: 100, currencyCode: "EUR")
     )
 }

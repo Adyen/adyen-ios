@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.author = { 'Adyen' => 'support@adyen.com' }
   s.source = { :git => 'https://github.com/Adyen/adyen-ios.git', :tag => "#{s.version}" }
   s.platform = :ios
-  s.ios.deployment_target = '13.0'
+  s.ios.deployment_target = '15.0'
   s.swift_version = '5.9'
   s.frameworks = 'Foundation'
   s.default_subspecs = 'Checkout'
@@ -117,7 +117,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'DelegatedAuthentication' do |plugin|
     plugin.source_files = 'AdyenDelegatedAuthentication/**/*.swift'
-    plugin.dependency 'AdyenAuthentication', '3.1.0'
+    plugin.dependency 'AdyenAuthentication', '3.2.0'
   end
 
   s.subspec 'CoreUI' do |plugin|

@@ -216,7 +216,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
         let viewModel = QRCodeViewModel(
             action: action,
             instructionText: qrCodeInstructions(for: action),
-            payment: context.payment,
+            amount: context.amount,
             logoUrl: url,
             observedProgress: progress,
             expiration: $expirationText,

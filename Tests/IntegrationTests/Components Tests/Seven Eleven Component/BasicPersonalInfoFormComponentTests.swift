@@ -12,7 +12,6 @@ import XCTest
 class BasicPersonalInfoFormComponentTests: XCTestCase {
 
     lazy var paymentMethod = SevenElevenPaymentMethod(type: .econtextSevenEleven, name: "test_name")
-    let payment = Payment(amount: Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
 
     func testLocalizationWithCustomTableName() {
         let localization = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)

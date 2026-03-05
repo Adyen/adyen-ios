@@ -12,7 +12,7 @@ import UIKit
 #endif
 
 /// A component that provides a form for SEPA Direct Debit payments.
-public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, PresentableComponent, LoadingComponent {
+public final class SEPADirectDebitComponent: PaymentComponent, PresentableComponent, LoadingComponent {
     
     /// Configuration for SEPA Direct Debit Component
     public typealias Configuration = BasicComponentConfiguration
@@ -97,7 +97,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
         
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
+        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order))
     }
     
     // MARK: - Form Items
@@ -137,7 +137,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PaymentAware, Pre
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(
-            with: payment?.amount,
+            with: context.amount,
             style: .immediate,
             configuration.localizationParameters
         )

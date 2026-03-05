@@ -20,7 +20,6 @@ import UIKit
  */
 public class CardComponent: PresentableComponent,
     PaymentMethodAware,
-    PaymentAware,
     LoadingComponent {
 
     internal enum Constant {
@@ -192,7 +191,7 @@ public class CardComponent: PresentableComponent,
             configuration: configuration,
             shopperInformation: configuration.shopperInformation,
             formStyle: configuration.style,
-            payment: payment,
+            amount: context.amount,
             logoProvider: LogoURLProvider(environment: context.apiContext.environment),
             supportedCardTypes: supportedCardTypes,
             initialCountryCode: initialCountryCode,
@@ -278,7 +277,6 @@ private extension CardComponent {
 
         return
             configuration.billingAddress.countryCodes?.first ??
-            payment?.countryCode ??
             Locale.current.regionCode ??
             CardComponent.Constant.defaultCountryCode
     }

@@ -42,13 +42,7 @@ internal final class PaymentMethodListHeaderView: UIView {
     }()
     
     private lazy var applePayButton: PKPaymentButton = {
-        let buttonStyle: PKPaymentButtonStyle
-        if #available(iOS 14.0, *) {
-            buttonStyle = .automatic
-        } else {
-            buttonStyle = .black
-        }
-        let button = PKPaymentButton(paymentButtonType: .plain, paymentButtonStyle: buttonStyle)
+        let button = PKPaymentButton(paymentButtonType: .plain, paymentButtonStyle: .automatic)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(applePayButtonTapped), for: .touchUpInside)
         button.isHidden = !viewModel.showApplePayButton

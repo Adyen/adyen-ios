@@ -75,7 +75,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
     
     internal var formattedAmount: String {
-        context.payment?.amount.formatted ?? ""
+        context.amount?.formatted ?? ""
     }
     
     internal var subtitle: String {

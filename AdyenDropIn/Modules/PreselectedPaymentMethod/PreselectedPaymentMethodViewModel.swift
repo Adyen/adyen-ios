@@ -47,7 +47,8 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     internal let theme: AdyenTheme
     private let localizationParameters: LocalizationParameters?
     private let dropInFlowManager: DropInFlowManaging
-
+    internal let analyticsProvider: AnyAnalyticsProvider?
+    internal let dropInAnalyticsConfiguration: DropInAnalyticsConfiguration
     internal weak var router: PreselectedPaymentMethodRouting?
 
     // TODO: Robert: DropInComponent needs to send an event on the component being loaded.
@@ -63,10 +64,14 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
         component: PaymentComponent,
         theme: AdyenTheme,
         localizationParameters: LocalizationParameters?,
+        analyticsProvider: AnyAnalyticsProvider?,
+        dropInAnalyticsConfiguration: DropInAnalyticsConfiguration,
         dropInFlowManager: DropInFlowManaging
     ) {
         self.component = component
         self.dropInFlowManager = dropInFlowManager
+        self.analyticsProvider = analyticsProvider
+        self.dropInAnalyticsConfiguration = dropInAnalyticsConfiguration
         self.theme = theme
         self.localizationParameters = localizationParameters
     }
@@ -95,8 +100,8 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     }
 
     private var formattedAmount: String {
-        let amount = component.context.amount
-        guard let formatted = AmountFormatter.formatted(amount: amount.value, currencyCode: amount.currencyCode) else {
+        guard let amount = component.context.amount,
+              let formatted = AmountFormatter.formatted(amount: amount.value, currencyCode: amount.currencyCode) else {
             return ""
         }
         return formatted
@@ -124,6 +129,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
 
     internal func viewDidLoad() {
         onDidLoad?()
+        sendDidLoadEvent()
     }
 
     internal func cancel() {
@@ -185,6 +191,12 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         } else {
             dropInFlowManager.fail(with: error, from: component)
         }
+    }
+
+    public func sendDidLoadEvent() {
+        var infoEvent = AnalyticsEventInfo(component: AnalyticsConstants.dropInComponentIdentifier, type: .rendered)
+        infoEvent.configData = dropInAnalyticsConfiguration
+        analyticsProvider?.add(info: infoEvent)
     }
 }
 
