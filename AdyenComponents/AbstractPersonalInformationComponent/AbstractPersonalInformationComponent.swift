@@ -12,7 +12,7 @@ import UIKit
 
 /// An abstract class that needs to be subclassed to abstract away any component
 /// who's form consists of a combination of personal information pieces like first name, last name, phone, email, and billing address.
-open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent, PaymentAware {
+open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent {
 
     public typealias Configuration = PersonalInformationConfiguration
     
@@ -251,7 +251,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     }
 
     private var defaultCountryCode: String {
-        payment?.countryCode ?? Locale.current.regionCode ?? "US"
+        Locale.current.regionCode ?? "US"
     }
     
     @_spi(AdyenInternal)

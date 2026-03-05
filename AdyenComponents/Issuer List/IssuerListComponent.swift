@@ -13,7 +13,7 @@ import UIKit
 
 /// A generic component for "issuer-based" payment methods, such as MOLPay.
 /// This component will provide a list in which the user can select their issuer.
-public final class IssuerListComponent: PaymentComponent, PaymentAware, PresentableComponent, LoadingComponent {
+public final class IssuerListComponent: PaymentComponent, PresentableComponent, LoadingComponent {
     
     private enum Constants {
         static let searchDelay: TimeInterval = 1
@@ -136,7 +136,7 @@ public final class IssuerListComponent: PaymentComponent, PaymentAware, Presenta
                 )
                 self.submit(data: PaymentComponentData(
                     paymentMethodDetails: details,
-                    amount: self.payment?.amount,
+                    amount: self.context.amount,
                     order: self.order
                 ))
                 

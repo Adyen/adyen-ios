@@ -59,7 +59,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
     }
     
     func testUpdatingAmount() throws {
-        let payment = Payment(amount: .init(value: 100, currencyCode: "EUR"), countryCode: "NL")
+        let amount = Amount(value: 100, currencyCode: "EUR")
         sut = BACSDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -67,7 +67,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
         )
 
         let presenter: BACSInputPresenter = try XCTUnwrap(sut.inputPresenter as? BACSInputPresenter)
-        let expectedConsentTitle1 = presenter.itemsFactory.createConsentText(with: payment.amount)
+        let expectedConsentTitle1 = presenter.itemsFactory.createConsentText(with: amount)
         setupRootViewController(sut.viewController)
         wait(for: .milliseconds(200))
         

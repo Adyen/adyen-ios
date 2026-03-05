@@ -214,7 +214,7 @@ class QRCodeViewModelTests: XCTestCase {
         let sut = QRCodeViewModel(
             action: action,
             instructionText: "Test Instruction",
-            payment: nil,
+            amount: nil,
             logoUrl: URL(string: "https://www.adyen.com/")!,
             observedProgress: nil,
             expiration: expiration,

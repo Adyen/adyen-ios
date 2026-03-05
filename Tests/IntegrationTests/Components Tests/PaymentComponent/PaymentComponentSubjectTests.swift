@@ -13,7 +13,6 @@ class PaymentComponentSubjectTests: XCTestCase {
     var analyticsProviderMock: AnalyticsProviderMock!
     var context: AdyenContext!
     var paymentComponentDelegate: PaymentComponentDelegateMock!
-    var payment = Dummy.payment
     var paymentMethod = MBWayPaymentMethod(type: .mbWay, name: "MBWay")
     var sut: PaymentComponentSubject!
 
@@ -26,7 +25,6 @@ class PaymentComponentSubjectTests: XCTestCase {
         sut = PaymentComponentSubject(
             context: context,
             delegate: paymentComponentDelegate,
-            payment: payment,
             order: nil,
             paymentMethod: paymentMethod
         )

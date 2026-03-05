@@ -1055,7 +1055,7 @@ class SessionTests: XCTestCase {
             identifier: "session_id",
             countryCode: "US",
             shopperLocale: "US",
-            amount: context.amount,
+            amount: context.amount!,
             paymentMethods: expectedPaymentMethods,
             responseConfiguration: configuration
         )

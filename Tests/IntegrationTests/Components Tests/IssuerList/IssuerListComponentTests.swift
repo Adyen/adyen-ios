@@ -52,7 +52,7 @@ class IssuerListComponentTests: XCTestCase {
         let expectation = expectation(description: "Call didSubmit")
         let mockDelegate = PaymentComponentDelegateMock()
         mockDelegate.onDidSubmit = { paymentData, paymentComponent in
-            XCTAssertEqual(paymentData.amount, Dummy.payment.amount)
+            XCTAssertEqual(paymentData.amount, Dummy.amount)
             
             XCTAssertTrue(paymentData.paymentMethod is IssuerListDetails)
             let details = paymentData.paymentMethod as! IssuerListDetails

@@ -104,8 +104,8 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         }
     }
 
-    internal func update(payment: Payment?) throws {
-        guard let payment else {
+    internal func update(amount: Amount?) throws {
+        guard let amount else {
             throw ApplePayComponent.Error.negativeGrandTotal
         }
 
@@ -114,9 +114,9 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         }
 
         let decimalAmount = AmountFormatter.decimalAmount(
-            payment.amount.value,
-            currencyCode: payment.amount.currencyCode,
-            localeIdentifier: payment.amount.localeIdentifier
+            amount.value,
+            currencyCode: amount.currencyCode,
+            localeIdentifier: amount.localeIdentifier
         )
         var newItems = Array(paymentRequest.paymentSummaryItems.dropLast())
         newItems.append(PKPaymentSummaryItem(label: lastItem.label, amount: decimalAmount))

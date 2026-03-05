@@ -100,8 +100,8 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     }
 
     private var formattedAmount: String {
-        let amount = component.context.amount
-        guard let formatted = AmountFormatter.formatted(amount: amount.value, currencyCode: amount.currencyCode) else {
+        guard let amount = component.context.amount,
+              let formatted = AmountFormatter.formatted(amount: amount.value, currencyCode: amount.currencyCode) else {
             return ""
         }
         return formatted

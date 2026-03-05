@@ -14,7 +14,6 @@ class PaymentComponentSubject: PaymentComponent, PresentableComponent {
 
     var context: AdyenContext
     var delegate: PaymentComponentDelegate?
-    var payment: Payment?
     var order: PartialPaymentOrder?
     var paymentMethod: PaymentMethod
 
@@ -28,15 +27,12 @@ class PaymentComponentSubject: PaymentComponent, PresentableComponent {
     public init(
         context: AdyenContext,
         delegate: PaymentComponentDelegate,
-        payment: Payment?,
         order: PartialPaymentOrder?,
         paymentMethod: PaymentMethod
     ) {
         self.context = context
         self.delegate = delegate
-        self.payment = payment
         self.order = order
         self.paymentMethod = paymentMethod
-        self.payment = payment
     }
 }
