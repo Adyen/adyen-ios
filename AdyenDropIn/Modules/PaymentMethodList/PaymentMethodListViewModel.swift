@@ -116,12 +116,20 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
         switch component.type {
         case .regular, .stored:
-            router?.present(component: component) { [weak self] in
-                self?.state = .idle
-            }
+            let style = presentationStyle(for: paymentMethod)
+            router?.present(component: component, style: style)
         case let .initiable(initiablePaymentComponent):
             listItem(for: paymentMethod)?.startLoading()
             initiablePaymentComponent.initiatePayment(delegate: self)
+        }
+    }
+    
+    private func presentationStyle(for paymentMethod: PaymentMethod) -> ComponentPresentationStyle {
+        switch paymentMethod.type {
+        case .applePay:
+            return .modalWithoutContainer
+        default:
+            return .push
         }
     }
 
@@ -209,7 +217,7 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         defer { state = .idle }
 
         if case ComponentError.cancelled = error {
-            cancel()
+//            cancel()
         } else {
             dropInFlowManager.fail(with: error, from: component)
         }

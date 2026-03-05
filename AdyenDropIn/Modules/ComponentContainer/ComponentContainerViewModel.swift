@@ -23,7 +23,6 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     private let configuration: DropInComponent.Configuration
     private var dropInFlowManager: DropInFlowManaging
     private weak var partialPaymentDelegate: PartialPaymentDelegate?
-    private let onCancel: (() -> Void)?
 
     // MARK: - Initializers
 
@@ -31,14 +30,12 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         component: PresentableComponent,
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging,
-        partialPaymentDelegate: PartialPaymentDelegate?,
-        onCancel: (() -> Void)? = nil
+        partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.component = component
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
         self.partialPaymentDelegate = partialPaymentDelegate
-        self.onCancel = onCancel
         setupComponent()
     }
 
@@ -54,7 +51,6 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
         }
         
         stopLoading()
-        onCancel?()
         router?.dismiss(completion: nil)
     }
 

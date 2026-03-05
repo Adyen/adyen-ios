@@ -12,8 +12,7 @@ import UIKit
 internal protocol ComponentContainerAssemblerProtocol {
     func resolveComponentContainerRouter(
         for component: PresentableComponent,
-        delegate: ComponentContainerRouterListener,
-        onCancel: (() -> Void)?
+        listener: ComponentContainerRouterListener
     ) -> Router
 }
 
@@ -41,20 +40,18 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
 
     internal func resolveComponentContainerRouter(
         for component: PresentableComponent,
-        delegate: ComponentContainerRouterListener,
-        onCancel: (() -> Void)?
+        listener: ComponentContainerRouterListener
     ) -> Router {
         let viewModel = ComponentContainerViewModel(
             component: component,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
-            partialPaymentDelegate: partialPaymentDelegate,
-            onCancel: onCancel
+            partialPaymentDelegate: partialPaymentDelegate
         )
         let viewController = ComponentContainerViewController(viewModel: viewModel)
         let router = ComponentContainerRouter(
             viewController: viewController,
-            listener: delegate
+            listener: listener
         )
         viewModel.router = router
         return router

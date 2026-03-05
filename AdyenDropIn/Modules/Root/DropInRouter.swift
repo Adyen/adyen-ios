@@ -56,8 +56,7 @@ internal class DropInRouter: DropInRouting {
         case let .component(paymentComponent):
             let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
                 for: paymentComponent,
-                delegate: self,
-                onCancel: nil
+                listener: self
             )
             self.childRouter = componentContainerRouter
             return componentContainerRouter.rootViewController
