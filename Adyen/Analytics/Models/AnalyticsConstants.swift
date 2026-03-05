@@ -12,6 +12,8 @@ package enum AnalyticsConstants {
     public static let fetchCheckoutAttemptIdFailed = "fetch-checkoutAttemptId-failed"
 
     package static let analyticsRequestPath = "checkoutanalytics/v3/analytics"
+    
+    package static let dropInComponentIdentifier = "dropin"
 
     /// Struct to hold error codes as type-safe static variables.
     public struct ErrorCode {

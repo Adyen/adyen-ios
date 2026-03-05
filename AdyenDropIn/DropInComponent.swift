@@ -298,7 +298,7 @@ public final class DropInComponent: NSObject,
     }
 
     private func sendExitEvent() {
-        let logEvent = AnalyticsEventLog(component: "dropin", type: .closed)
+        let logEvent = AnalyticsEventLog(component: AnalyticsConstants.dropInComponentIdentifier, type: .closed)
         context.analyticsProvider?.add(log: logEvent)
     }
 }
