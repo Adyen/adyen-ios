@@ -84,8 +84,6 @@ struct PreselectedPaymentMethodIntegrationTests {
 
     // MARK: - Sending event on didLoad
 
-    // IMPROVEMENT: The comment says "verify payment method list is presented" but this test
-    // actually verifies analytics events. Consider updating the comment to match the assertion.
     @Test("On preselected payment method load - we send an info event on load")
     func paymentComponent_onLoad_sendsInfoEvent() throws {
         // Given
@@ -151,8 +149,6 @@ struct PreselectedPaymentMethodIntegrationTests {
         return (preSelectedViewController, dropInFlowManagerMock, analyticsProviderMock)
     }
 
-    // IMPROVEMENT: Consider also returning the analyticsProvider if you ever need to
-    // verify analytics events for the initiable flow.
     private func makeSUT(
         dropInFlowManager: DropInFlowManagingMock,
         component: PaymentComponent
