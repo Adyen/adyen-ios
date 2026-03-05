@@ -36,7 +36,7 @@ internal class PaymentMethodListViewController: UIViewController {
             subtitle: viewModel.subtitle,
             showApplePayButton: viewModel.isApplePayAvailable,
             onApplePayTap: { [weak self] in
-                self?.viewModel.startApplePay()
+                self?.viewModel.selectApplePay()
             }
         )
 

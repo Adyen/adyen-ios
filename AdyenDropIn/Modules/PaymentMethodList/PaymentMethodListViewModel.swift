@@ -28,7 +28,7 @@ internal protocol PaymentMethodListViewModelProtocol {
     var formattedAmount: String { get }
     var subtitle: String { get }
     var isApplePayAvailable: Bool { get }
-    func startApplePay()
+    func selectApplePay()
 }
 
 internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
@@ -93,9 +93,9 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             .first { $0.type == .applePay }
     }
 
-    var applePayComponent: PaymentComponent?
+    private var applePayComponent: PaymentComponent?
 
-    internal func startApplePay() {
+    internal func selectApplePay() {
         guard applePayComponent == nil else { return }
         guard let applePay = applePayPaymentMethod else { return }
         self.applePayComponent = componentManager.buildComponent(for: applePay)
