@@ -121,8 +121,6 @@ internal class CheckoutProvider: CheckoutProviding {
 
         // TODO: Improvement: Suggestion: instead of the checkout provider being aware of something as specific as checkoutAttemptId.
         // - This could be wrapped in something related to Analytics ex: await AnalyticsProvider.init() and internally fetch what is required for analytics.
-        // - At this point, without much context we may ask the question `what is the checkoutAttemptId?`. Alternatively -
-        // - If we read something like `await AnalyticsProvider.init()` then we know that analytics is being setup and internally this attemptId is being fetched.
         async let checkoutAttemptId = checkoutAttemptIdProvider.fetchCheckoutAttemptId(
             with: analyticsApiClient
         )
@@ -136,7 +134,6 @@ internal class CheckoutProvider: CheckoutProviding {
 
         return try await AdyenContext(
             apiContext: configuration.apiContext,
-            payment: nil,
             amount: configuration.amount,
             publicKey: publicKey,
             checkoutAttemptId: checkoutAttemptId,

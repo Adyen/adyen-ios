@@ -12,7 +12,7 @@ import XCTest
 
 class AdyenContextTests: XCTestCase {
     
-    func testAdditionalFieldsBinding() throws {
+    func testAmountMutability() throws {
 
         let oneEUR = Amount(value: 1, currencyCode: "EUR")
         let twoEUR = Amount(value: 2, currencyCode: "EUR")
@@ -20,7 +20,6 @@ class AdyenContextTests: XCTestCase {
         let apiContext = try APIContext(environment: Environment.test, clientKey: "local_DUMMYKEYFORTESTING")
         let context = AdyenContext(
             apiContext: apiContext,
-            payment: .init(amount: oneEUR, countryCode: "NL"),
             amount: oneEUR,
             publicKey: Dummy.publicKey,
             checkoutAttemptId: nil,
@@ -28,16 +27,14 @@ class AdyenContextTests: XCTestCase {
             analyticsConfiguration: .init()
         )
         
-        XCTAssertEqual(context.payment?.amount, oneEUR)
         XCTAssertEqual(context.amount, oneEUR)
-        context.update(payment: Payment(amount: twoEUR, countryCode: "NL"))
-        XCTAssertEqual(context.payment?.amount, twoEUR)
+        context.amount = twoEUR
+        XCTAssertEqual(context.amount, twoEUR)
     }
     
     func testPublicInit() {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
             checkoutAttemptId: nil,
@@ -45,7 +42,6 @@ class AdyenContextTests: XCTestCase {
             analyticsConfiguration: .init()
         )
         
-        XCTAssertEqual(context.payment?.amount, Dummy.amount)
         XCTAssertEqual(context.amount, Dummy.amount)
         XCTAssertEqual(context.apiContext.clientKey, Dummy.apiContext.clientKey)
     }
@@ -53,13 +49,11 @@ class AdyenContextTests: XCTestCase {
     func testInternalInit() {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
             analyticsProvider: AnalyticsProviderMock()
         )
         
-        XCTAssertEqual(context.payment?.amount, Dummy.amount)
         XCTAssertEqual(context.amount, Dummy.amount)
         XCTAssertEqual(context.apiContext.clientKey, Dummy.apiContext.clientKey)
         XCTAssertNotNil(context.analyticsProvider)
@@ -69,7 +63,6 @@ class AdyenContextTests: XCTestCase {
         let analyticsApiContext = CheckoutConfiguration.createAnalyticsAPIContext(apiContext: Dummy.apiContext)
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
             checkoutAttemptId: nil,
@@ -85,7 +78,6 @@ class AdyenContextTests: XCTestCase {
         
         let context = AdyenContext(
             apiContext: apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
             checkoutAttemptId: nil,
@@ -99,7 +91,6 @@ class AdyenContextTests: XCTestCase {
         let analyticsApiContext = CheckoutConfiguration.createAnalyticsAPIContext(apiContext: Dummy.apiContext)
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
             checkoutAttemptId: "test_attempt_id",
@@ -117,7 +108,6 @@ class AdyenContextTests: XCTestCase {
         
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
             checkoutAttemptId: nil,

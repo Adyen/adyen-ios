@@ -158,7 +158,7 @@ extension ComponentManager: PaymentComponentBuilder {
     }
 
     internal func build(paymentMethod: GiftCardPaymentMethod) -> PaymentComponent? {
-        guard let amount = context.payment?.amount, partialPaymentEnabled else { return nil }
+        guard let amount = context.amount, partialPaymentEnabled else { return nil }
         return GiftCardComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -169,7 +169,7 @@ extension ComponentManager: PaymentComponentBuilder {
     }
 
     internal func build(paymentMethod: MealVoucherPaymentMethod) -> PaymentComponent? {
-        guard let amount = context.payment?.amount, partialPaymentEnabled else { return nil }
+        guard let amount = context.amount, partialPaymentEnabled else { return nil }
         return GiftCardComponent(
             paymentMethod: paymentMethod,
             context: context,

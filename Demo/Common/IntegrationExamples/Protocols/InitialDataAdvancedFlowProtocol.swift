@@ -46,7 +46,6 @@ extension InitialDataAdvancedFlowProtocol {
         // TODO: This has to be removed from the demo code. AdyenContext will not be exposed to the merchants in V6
         return AdyenContext(
             apiContext: ConfigurationConstants.apiContext,
-            payment: ConfigurationConstants.current.payment,
             amount: ConfigurationConstants.current.amount,
             publicKey: "",
             checkoutAttemptId: nil,

@@ -84,7 +84,7 @@ class TwintComponentTests: XCTestCase {
         )
         return PaymentComponentData(
             paymentMethodDetails: details,
-            amount: context.payment?.amount,
+            amount: context.amount,
             order: nil
         )
     }

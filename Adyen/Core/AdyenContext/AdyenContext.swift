@@ -10,34 +10,25 @@ import Foundation
 // TODO: make non public
 
 /// A class that defines the behavior of the components in a payment flow.
-public final class AdyenContext: PaymentAware {
+public final class AdyenContext {
     
     // MARK: - Properties
     
     /// The API context used to retrieve internal resources.
     public let apiContext: APIContext
     
-    // TODO: get rid of payment
-    /// The payment information.
-    public private(set) var payment: Payment?
-    
     package var analyticsProvider: AnyAnalyticsProvider?
 
     package let publicKey: String
 
-    package let amount: Amount
+    /// The payment amount.
+    public var amount: Amount?
 
     // MARK: - Initializers
     
-    /// Creates an Adyen context with the provided API context and analytics configuration.
-    /// - Parameters:
-    ///   - apiContext: The API context used to retrieve internal resources.
-    ///   - analyticsConfiguration: A configuration object that specifies the behavior for the analytics.
-    ///   - payment: The payment information.
     package convenience init(
         apiContext: APIContext,
-        payment: Payment?,
-        amount: Amount,
+        amount: Amount?,
         publicKey: String,
         checkoutAttemptId: String?,
         analyticsAPIContext: APIContext?,
@@ -51,7 +42,6 @@ public final class AdyenContext: PaymentAware {
         
         self.init(
             apiContext: apiContext,
-            payment: payment,
             amount: amount,
             publicKey: publicKey,
             analyticsProvider: analyticsProvider
@@ -61,8 +51,7 @@ public final class AdyenContext: PaymentAware {
     /// Internal init for testing only
     internal init(
         apiContext: APIContext,
-        payment: Payment?,
-        amount: Amount,
+        amount: Amount?,
         publicKey: String,
         analyticsProvider: AnyAnalyticsProvider?
     ) {
@@ -70,12 +59,6 @@ public final class AdyenContext: PaymentAware {
         self.apiContext = apiContext
         self.amount = amount
         self.analyticsProvider = analyticsProvider
-        self.payment = payment
-    }
-    
-    @_spi(AdyenInternal)
-    public func update(payment: Payment?) {
-        self.payment = payment
     }
 
     private static func createAnalyticsProvider(

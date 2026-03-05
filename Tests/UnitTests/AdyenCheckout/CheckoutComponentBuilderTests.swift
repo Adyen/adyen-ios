@@ -104,7 +104,6 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let customAmount = Amount(value: 500, currencyCode: "USD")
         let customContext = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Payment(amount: customAmount, countryCode: "US"),
             amount: customAmount,
             publicKey: Dummy.publicKey,
             analyticsProvider: AnalyticsProviderMock()
@@ -120,8 +119,8 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         )
         
         // Then - Verify context was passed correctly
-        XCTAssertEqual(component.context.amount.value, 500)
-        XCTAssertEqual(component.context.amount.currencyCode, "USD")
+        XCTAssertEqual(component.context.amount?.value, 500)
+        XCTAssertEqual(component.context.amount?.currencyCode, "USD")
     }
     
     func testBuild_WithDifferentPaymentMethods_CreatesCorrectComponentTypes() throws {
@@ -162,7 +161,6 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         // Given
         let customContext = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Payment(amount: Amount(value: 500, currencyCode: "USD"), countryCode: "US"),
             amount: Amount(value: 500, currencyCode: "USD"),
             publicKey: Dummy.publicKey,
             analyticsProvider: AnalyticsProviderMock()
@@ -178,8 +176,8 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         )
         
         // Then - Verify context was passed
-        XCTAssertEqual(component.context.amount.value, 500)
-        XCTAssertEqual(component.context.amount.currencyCode, "USD")
+        XCTAssertEqual(component.context.amount?.value, 500)
+        XCTAssertEqual(component.context.amount?.currencyCode, "USD")
         XCTAssertEqual(component.context.apiContext.clientKey, customContext.apiContext.clientKey)
     }
     
@@ -351,7 +349,6 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let customAmount = Amount(value: 1000, currencyCode: "EUR")
         let customContext = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Payment(amount: customAmount, countryCode: "NL"),
             amount: customAmount,
             publicKey: Dummy.publicKey,
             analyticsProvider: AnalyticsProviderMock()
@@ -367,8 +364,8 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         )
         
         // Then
-        XCTAssertEqual(component.context.amount.value, 1000)
-        XCTAssertEqual(component.context.amount.currencyCode, "EUR")
+        XCTAssertEqual(component.context.amount?.value, 1000)
+        XCTAssertEqual(component.context.amount?.currencyCode, "EUR")
     }
     
     func test_build_withGenericStoredPaymentMethod_returnsStoredPaymentMethodComponent() throws {

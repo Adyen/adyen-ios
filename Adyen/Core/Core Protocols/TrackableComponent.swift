@@ -37,7 +37,7 @@ extension TrackableComponent where Self: Component {
     public func sendInitialAnalytics() {
         // initial call is not needed again if inside dropIn
         guard !_isDropIn else { return }
-        let amount = context.payment?.amount
+        let amount = context.amount
         let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AnalyticsForSession.sessionId)
         context.analyticsProvider?.sendInitialAnalytics(
             with: analyticsFlavor,

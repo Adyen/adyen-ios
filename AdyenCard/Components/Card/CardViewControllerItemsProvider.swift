@@ -40,7 +40,7 @@ extension CardViewController {
         internal init(
             formStyle: FormComponentStyle,
             theme: AdyenTheme,
-            payment: Payment?,
+            amount: Amount?,
             configuration: CardComponentConfiguration,
             shopperInformation: PrefilledShopperInformation?,
             cardLogos: [FormCardLogosItem.CardTypeLogo],
@@ -53,7 +53,7 @@ extension CardViewController {
             scanCardHandler: (() -> Void)?
         ) {
             self.formStyle = formStyle
-            self.amount = payment?.amount
+            self.amount = amount
             self.configuration = configuration
             self.shopperInformation = shopperInformation
             self.cardLogos = cardLogos
