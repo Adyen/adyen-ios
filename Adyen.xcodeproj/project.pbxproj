@@ -847,7 +847,6 @@
 		C9BF0DB327353A2600DCAA1E /* BACSDirectDebitComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BF0DB227353A2600DCAA1E /* BACSDirectDebitComponent.swift */; };
 		C9C21914276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21913276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift */; };
 		C9C22D932DE5F9620028C23F /* ComponentContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22D902DE5F9620028C23F /* ComponentContainerViewModel.swift */; };
-		C9C22D972DE5F9920028C23F /* PreselectedPaymentMethodComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22D952DE5F9920028C23F /* PreselectedPaymentMethodComponent.swift */; };
 		C9C22D9C2DE5F9BB0028C23F /* PreApplePayComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22D9A2DE5F9BB0028C23F /* PreApplePayComponent.swift */; };
 		C9C22D9F2DE5F9BE0028C23F /* PaymentMethodListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22D9D2DE5F9BE0028C23F /* PaymentMethodListViewController.swift */; };
 		C9C22DA12DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22DA02DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift */; };
@@ -2431,7 +2430,6 @@
 		C9C0005D280474DF00CE2EEC /* AnalyticsProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsProviderTests.swift; sourceTree = "<group>"; };
 		C9C21913276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationViewControllerTests.swift; sourceTree = "<group>"; };
 		C9C22D902DE5F9620028C23F /* ComponentContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentContainerViewModel.swift; sourceTree = "<group>"; };
-		C9C22D952DE5F9920028C23F /* PreselectedPaymentMethodComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentMethodComponent.swift; sourceTree = "<group>"; };
 		C9C22D9A2DE5F9BB0028C23F /* PreApplePayComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayComponent.swift; sourceTree = "<group>"; };
 		C9C22D9D2DE5F9BE0028C23F /* PaymentMethodListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListViewController.swift; sourceTree = "<group>"; };
 		C9C22DA02DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentMethodViewModel.swift; sourceTree = "<group>"; };
@@ -4769,7 +4767,6 @@
 			children = (
 				210920732F362C4F0014DD55 /* Views */,
 				C9025A4C2DF31E4700E0D191 /* PreselectedPaymentMethodAssembler.swift */,
-				C9C22D952DE5F9920028C23F /* PreselectedPaymentMethodComponent.swift */,
 				C941A51B2DF9C0B40014AFF1 /* PreselectedPaymentMethodRouter.swift */,
 				C9025A4A2DF3188700E0D191 /* PreselectedPaymentMethodViewController.swift */,
 				C9C22DA02DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift */,
@@ -9102,7 +9099,6 @@
 				C9025A452DF3167900E0D191 /* DropInAssembler.swift in Sources */,
 				C9C22DA12DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift in Sources */,
 				C9174FF92EB3B20B00AA1609 /* ActionWrapperViewController.swift in Sources */,
-				C9C22D972DE5F9920028C23F /* PreselectedPaymentMethodComponent.swift in Sources */,
 				F90E95F02726B625007E382B /* DropInComponentExtensions.swift in Sources */,
 				C9C22D9C2DE5F9BB0028C23F /* PreApplePayComponent.swift in Sources */,
 				C90494562E8FF2CE007C4EB5 /* LoadControllable.swift in Sources */,
