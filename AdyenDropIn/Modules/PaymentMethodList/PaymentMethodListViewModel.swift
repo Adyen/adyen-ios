@@ -96,12 +96,13 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     var applePayComponent: PaymentComponent?
 
     internal func startApplePay() {
+        guard applePayComponent == nil else { return }
         guard let applePay = applePayPaymentMethod else { return }
-        guard let applePayComponent = componentManager.buildComponent(for: applePay) else { return }
-        self.applePayComponent = applePayComponent
-        applePayComponent.delegate = self
-        guard let applePayComponentPresentable = applePayComponent as? PresentableComponent else { return }
-        router?.present(applePayComponent: applePayComponentPresentable)
+        self.applePayComponent = componentManager.buildComponent(for: applePay)
+        applePayComponent?.delegate = self
+
+        guard let applePayViewController = (applePayComponent as? PresentableComponent)?.viewController else { return }
+        router?.present(viewController: applePayViewController)
     }
 
     internal func cancel() {

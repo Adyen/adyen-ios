@@ -31,7 +31,7 @@ internal final class PaymentMethodListHeaderView: UIView {
     
     private lazy var subtitleLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .subheadline)
+        label.font = .systemFont(ofSize: 17, weight: .regular)
         label.textColor = .secondaryLabel
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
@@ -95,19 +95,21 @@ internal final class PaymentMethodListHeaderView: UIView {
     // MARK: - Private
     
     private func setupView() {
+        layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        
         addSubview(stackView)
         addSubview(applePayButton)
         
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            stackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             
-            applePayButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
-            applePayButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            applePayButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            applePayButton.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 24),
+            applePayButton.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+            applePayButton.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             applePayButton.heightAnchor.constraint(equalToConstant: 48),
-            applePayButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
+            applePayButton.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
         ])
     }
 }

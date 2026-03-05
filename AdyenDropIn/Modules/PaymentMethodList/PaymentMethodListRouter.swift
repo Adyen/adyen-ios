@@ -16,7 +16,7 @@ internal protocol PaymentMethodListRouterListener: AnyObject {
 // sourcery:AutoMockable
 internal protocol PaymentMethodListRouting: AnyObject {
     func present(component: PaymentComponent)
-    func present(applePayComponent: PresentableComponent)
+    func present(viewController: UIViewController)
     func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?)
     func dismiss(completion: (() -> Void)?)
 }
@@ -70,8 +70,8 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         }
     }
 
-    internal func present(applePayComponent: PresentableComponent) {
-        viewController.present(applePayComponent.viewController, animated: true)
+    internal func present(viewController: UIViewController) {
+        rootViewController.present(viewController, animated: true)
     }
 
     internal func present(
@@ -82,7 +82,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
             for: actionComponent,
             onCancel: onCancel
         )
-        viewController.present(actionViewController, animated: true)
+        rootViewController.present(actionViewController, animated: true)
     }
 
     // MARK: - Private
@@ -98,7 +98,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         with component: PresentableComponent
     ) {
         let componentContainerViewController = componentContainerViewController(for: component)
-        viewController.present(componentContainerViewController, animated: true)
+        rootViewController.present(componentContainerViewController, animated: true)
     }
 
     private func componentContainerViewController(
