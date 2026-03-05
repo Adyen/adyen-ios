@@ -13,15 +13,10 @@ internal protocol PaymentMethodListRouterListener: AnyObject {
     func didDismissPaymentMethodList(completion: (() -> Void)?)
 }
 
-internal enum ComponentPresentationStyle {
-    case push
-    case modal
-    case modalWithoutContainer
-}
-
 // sourcery:AutoMockable
 internal protocol PaymentMethodListRouting: AnyObject {
-    func present(component: PaymentComponent, style: ComponentPresentationStyle)
+    func present(component: PaymentComponent)
+    func present(applePayComponent: PresentableComponent)
     func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?)
     func dismiss(completion: (() -> Void)?)
 }
@@ -64,25 +59,19 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         listener?.didDismissPaymentMethodList(completion: completion)
     }
 
-    internal func present(
-        component: PaymentComponent,
-        style: ComponentPresentationStyle
-    ) {
+    internal func present(component: PaymentComponent) {
         switch component.type {
         case let .regular(regularComponent):
-            switch style {
-            case .push:
-                pushComponentContainer(with: regularComponent)
-            case .modal:
-                presentComponentContainer(with: regularComponent)
-            case .modalWithoutContainer:
-                presentComponent(regularComponent)
-            }
+            pushComponentContainer(with: regularComponent)
         case let .stored(storedComponent):
             presentComponentContainer(with: storedComponent)
         case .initiable:
             break
         }
+    }
+
+    internal func present(applePayComponent: PresentableComponent) {
+        viewController.present(applePayComponent.viewController, animated: true)
     }
 
     internal func present(
@@ -110,10 +99,6 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     ) {
         let componentContainerViewController = componentContainerViewController(for: component)
         viewController.present(componentContainerViewController, animated: true)
-    }
-    
-    private func presentComponent(_ component: PresentableComponent) {
-        viewController.present(component.viewController, animated: true)
     }
 
     private func componentContainerViewController(

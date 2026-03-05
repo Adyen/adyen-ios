@@ -27,8 +27,8 @@ internal protocol PaymentMethodListViewModelProtocol {
 
     var formattedAmount: String { get }
     var subtitle: String { get }
-    var showApplePayButton: Bool { get }
-    func selectApplePay()
+    var isApplePayAvailable: Bool { get }
+    func startApplePay()
 }
 
 internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
@@ -83,7 +83,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         "Select your preferred payment option to complete the payment"
     }
     
-    internal var showApplePayButton: Bool {
+    internal var isApplePayAvailable: Bool {
         applePayPaymentMethod != nil
     }
     
@@ -92,10 +92,16 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             .flatMap(\.paymentMethods)
             .first { $0.type == .applePay }
     }
-    
-    internal func selectApplePay() {
+
+    var applePayComponent: PaymentComponent?
+
+    internal func startApplePay() {
         guard let applePay = applePayPaymentMethod else { return }
-        select(paymentMethod: applePay)
+        guard let applePayComponent = componentManager.buildComponent(for: applePay) else { return }
+        self.applePayComponent = applePayComponent
+        applePayComponent.delegate = self
+        guard let applePayComponentPresentable = applePayComponent as? PresentableComponent else { return }
+        router?.present(applePayComponent: applePayComponentPresentable)
     }
 
     internal func cancel() {
@@ -112,24 +118,13 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     internal func select(paymentMethod: PaymentMethod) {
         guard let component = componentManager.buildComponent(for: paymentMethod) else { return }
-        component.delegate = self
 
         switch component.type {
         case .regular, .stored:
-            let style = presentationStyle(for: paymentMethod)
-            router?.present(component: component, style: style)
+            router?.present(component: component)
         case let .initiable(initiablePaymentComponent):
             listItem(for: paymentMethod)?.startLoading()
             initiablePaymentComponent.initiatePayment(delegate: self)
-        }
-    }
-    
-    private func presentationStyle(for paymentMethod: PaymentMethod) -> ComponentPresentationStyle {
-        switch paymentMethod.type {
-        case .applePay:
-            return .modalWithoutContainer
-        default:
-            return .push
         }
     }
 
@@ -217,7 +212,7 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         defer { state = .idle }
 
         if case ComponentError.cancelled = error {
-//            cancel()
+            applePayComponent = nil
         } else {
             dropInFlowManager.fail(with: error, from: component)
         }
