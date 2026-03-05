@@ -117,7 +117,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'DelegatedAuthentication' do |plugin|
     plugin.source_files = 'AdyenDelegatedAuthentication/**/*.swift'
-    plugin.dependency 'AdyenAuthentication', '3.1.0'
+    plugin.dependency 'AdyenAuthentication', '3.2.0'
   end
 
   s.subspec 'CoreUI' do |plugin|
