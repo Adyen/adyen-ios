@@ -13,21 +13,18 @@ final class DokuComponentUITests: XCTestCase {
 
     private var context: AdyenContext!
     private var paymentMethod: DokuPaymentMethod!
-    private var payment: Payment!
     private var style: FormComponentStyle!
 
     override func setUpWithError() throws {
         context = Dummy.context
         style = FormComponentStyle()
         paymentMethod = DokuPaymentMethod(type: .dokuAlfamart, name: "test_name")
-        payment = Payment(amount: Amount(value: 2, currencyCode: "IDR"), countryCode: "ID")
         try super.setUpWithError()
     }
 
     override func tearDownWithError() throws {
         context = nil
         paymentMethod = nil
-        payment = nil
         try super.tearDownWithError()
     }
 

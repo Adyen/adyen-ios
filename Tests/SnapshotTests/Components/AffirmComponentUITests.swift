@@ -132,10 +132,7 @@ class AffirmComponentUITests: XCTestCase {
 
     func testAffirm_givenNoShopperInformation_shouldNotPrefill() throws {
         // Given
-        let context = Dummy.context(with: Payment(
-            amount: .init(value: 100, currencyCode: "USD"),
-            countryCode: "US"
-        ))
+        let context = Dummy.context(with: Amount(value: 100, currencyCode: "USD"))
         let sut = AffirmComponent(
             paymentMethod: paymentMethod,
             context: context

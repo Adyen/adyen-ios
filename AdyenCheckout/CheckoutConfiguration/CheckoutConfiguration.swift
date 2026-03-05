@@ -70,7 +70,6 @@ public struct CheckoutConfiguration {
         let apiContext = try APIContext(environment: environment, clientKey: clientKey)
         let context = AdyenContext(
             apiContext: apiContext,
-            payment: nil,
             amount: amount,
             analyticsConfiguration: analyticsConfiguration
         )

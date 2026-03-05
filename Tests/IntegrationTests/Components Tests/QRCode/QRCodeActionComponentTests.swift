@@ -161,7 +161,7 @@ class QRCodeActionComponentTests: XCTestCase {
         let viewModel = QRCodeViewModel(
             action: action,
             instructionText: "",
-            payment: nil,
+            amount: nil,
             logoUrl: logoUrl,
             observedProgress: nil,
             expiration: AdyenObservable(nil),
@@ -211,7 +211,7 @@ class QRCodeActionComponentTests: XCTestCase {
         let viewModel = QRCodeViewModel(
             action: action,
             instructionText: "",
-            payment: nil,
+            amount: nil,
             logoUrl: logoUrl,
             observedProgress: nil,
             expiration: AdyenObservable(nil),
@@ -240,7 +240,7 @@ class QRCodeActionComponentTests: XCTestCase {
         let qrCodeViewModel = QRCodeViewModel(
             action: action,
             instructionText: localizedString(.qrCodeInstructionMessage, sut.configuration.localizationParameters),
-            payment: nil,
+            amount: nil,
             logoUrl: LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment),
             observedProgress: nil,
             expiration: AdyenObservable(nil),
@@ -261,7 +261,7 @@ class QRCodeActionComponentTests: XCTestCase {
         let qrCodeViewModel = QRCodeViewModel(
             action: action,
             instructionText: localizedString(.qrCodeTimerExpirationMessage, sut.configuration.localizationParameters),
-            payment: nil,
+            amount: nil,
             logoUrl: LogoURLProvider.logoURL(withName: action.paymentMethodType.rawValue, environment: context.apiContext.environment),
             observedProgress: nil,
             expiration: AdyenObservable(nil),

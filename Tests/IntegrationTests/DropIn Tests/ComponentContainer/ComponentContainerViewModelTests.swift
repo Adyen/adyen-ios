@@ -123,7 +123,6 @@ struct ComponentContainerViewModelTests {
 
         let contextMock = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: nil,
             amount: .init(value: 100, currencyCode: "EUR")
         )
         let redirectComponent = RedirectComponent(context: contextMock)
@@ -144,7 +143,6 @@ struct ComponentContainerViewModelTests {
 
         let contextMock = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: nil,
             amount: .init(value: 100, currencyCode: "EUR")
         )
         let redirectComponent = RedirectComponent(context: contextMock)
@@ -168,7 +166,6 @@ struct ComponentContainerViewModelTests {
 
         let contextMock = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: nil,
             amount: .init(value: 100, currencyCode: "EUR")
         )
         let redirectComponent = RedirectComponent(context: contextMock)

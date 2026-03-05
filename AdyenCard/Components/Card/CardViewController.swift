@@ -25,7 +25,7 @@ internal class CardViewController: FormViewController {
     private let supportedCardTypes: [CardType]
     private let formStyle: FormComponentStyle
     private var issuingCountryCode: String?
-    private let payment: Payment?
+    private let amount: Amount?
     private let initialCountryCode: String
     private let scope: String
     private let cardLogos: [FormCardLogosItem.CardTypeLogo]
@@ -63,7 +63,7 @@ internal class CardViewController: FormViewController {
         return ItemsProvider(
             formStyle: formStyle,
             theme: theme,
-            payment: payment,
+            amount: amount,
             configuration: configuration,
             shopperInformation: shopperInformation,
             cardLogos: cardLogos,
@@ -84,7 +84,7 @@ internal class CardViewController: FormViewController {
     ///   - configuration: The configurations of the `CardComponent`.
     ///   - shopperInformation: The shopper's information.
     ///   - formStyle: The style of form view controller.
-    ///   - payment: The payment object to visualize payment amount.
+    ///   - amount: The payment amount.
     ///   - logoProvider: The provider for logo image URLs.
     ///   - supportedCardTypes: The list of supported cards.
     ///   - initialCountryCode: The initially used country code for the billing address
@@ -95,7 +95,7 @@ internal class CardViewController: FormViewController {
         configuration: CardComponentConfiguration,
         shopperInformation: PrefilledShopperInformation?,
         formStyle: FormComponentStyle,
-        payment: Payment?,
+        amount: Amount?,
         logoProvider: LogoURLProvider,
         supportedCardTypes: [CardType],
         initialCountryCode: String,
@@ -110,7 +110,7 @@ internal class CardViewController: FormViewController {
         self.formStyle = formStyle
         self.scope = scope
         self.initialCountryCode = initialCountryCode
-        self.payment = payment
+        self.amount = amount
         self.cardScannerAnalyticsHandler = cardScannerAnalyticsHandler
 
         self.cardLogos = supportedCardTypes.map {

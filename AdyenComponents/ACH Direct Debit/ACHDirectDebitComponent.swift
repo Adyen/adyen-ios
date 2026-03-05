@@ -15,7 +15,6 @@ import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.
 package final class ACHDirectDebitComponent: PaymentComponent,
-    PaymentAware,
     PresentableComponent,
     LoadingComponent {
     
@@ -56,7 +55,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     package let publicKeyProvider: AnyPublicKeyProvider
     
     private var defaultCountryCode: String {
-        payment?.countryCode ?? configuration.billingAddressCountryCodes.first ?? "US"
+        configuration.billingAddressCountryCodes.first ?? "US"
     }
     
     private let achDirectDebitPaymentMethod: ACHDirectDebitPaymentMethod
@@ -135,7 +134,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
             
             submit(data: PaymentComponentData(
                 paymentMethodDetails: details,
-                amount: payment?.amount,
+                amount: context.amount,
                 order: order,
                 storePaymentMethod: storePayment
             ))
@@ -270,7 +269,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
             postfix: ViewIdentifier.payButtonItem
         )
         item.title = localizedSubmitButtonTitle(
-            with: payment?.amount,
+            with: context.amount,
             style: .immediate,
             configuration.localizationParameters
         )
