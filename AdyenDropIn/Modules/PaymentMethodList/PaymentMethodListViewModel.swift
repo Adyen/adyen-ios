@@ -13,7 +13,8 @@ import UIKit
 
 internal enum PaymentMethodListState {
     case idle
-    case loaded(sections: [ListSection])
+    case loading
+    case loaded(sections: [PaymentMethodSection])
 }
 
 // sourcery:AutoMockable
@@ -48,7 +49,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     internal let paymentMethodSections: [PaymentMethodsSection]
-    private let brandProtectedComponents: Set<PaymentMethodType> = [.applePay]
 
     // MARK: - Initializers
 
@@ -111,8 +111,8 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     internal func didLoad() {
         // TODO: - Handle analytics on list load.
-        let listSections = getListSections()
-        state = .loaded(sections: listSections)
+        let sections = getSections()
+        state = .loaded(sections: sections)
     }
 
     // MARK: - Private
@@ -124,7 +124,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         case .regular, .stored:
             router?.present(component: component)
         case let .initiable(initiablePaymentComponent):
-            listItem(for: paymentMethod)?.startLoading()
+            state = .loading
             initiablePaymentComponent.initiatePayment(delegate: self)
         }
     }
@@ -133,65 +133,30 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         // TODO: - Logic to delete stored payment method
     }
 
-    private func getListSections() -> [ListSection] {
+    private func getSections() -> [PaymentMethodSection] {
         paymentMethodSections.map { section in
-            let paymentMethods = section.paymentMethods
-            let paymentMethodItems = paymentMethods.map { listItem(from: $0) }
-            return ListSection(
-                header: section.header,
-                items: paymentMethodItems,
-                footer: section.footer
+            let items = section.paymentMethods.map { paymentMethodItem(from: $0) }
+            return PaymentMethodSection(
+                headerTitle: section.header?.title,
+                items: items
             )
         }
     }
 
-    private func listItem(from paymentMethod: PaymentMethod) -> ListItem {
+    private func paymentMethodItem(from paymentMethod: PaymentMethod) -> PaymentMethodItem {
         let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
-        let isProtected = brandProtectedComponents.contains(paymentMethod.type)
         let imageURL = logoURLProvider.logoURL(withName: displayInformation.logoName)
 
-        let listItem = ListItem(
+        return PaymentMethodItem(
             title: displayInformation.title,
             subtitle: displayInformation.subtitle,
-            icon: .init(
-                url: imageURL,
-                canBeModified: !isProtected
-            ),
-            trailingInfo: displayInformation.trailingInfo?.forListItem(urlProvider: logoURLProvider),
-            style: .init(),
-            accessibilityLabel: displayInformation.accessibilityLabel
+            iconURL: imageURL,
+            accessibilityLabel: displayInformation.accessibilityLabel,
+            selectionHandler: { [weak self] in
+                guard !(paymentMethod is OrderPaymentMethod) else { return }
+                self?.select(paymentMethod: paymentMethod)
+            }
         )
-        listItem.identifier = listItemIdentifier(for: paymentMethod)
-        listItem.selectionHandler = { [weak self] in
-            guard !(paymentMethod is OrderPaymentMethod) else { return }
-            self?.select(paymentMethod: paymentMethod)
-        }
-        listItem.deletionHandler = { [weak self] _, completion in
-            self?.delete(paymentMethod: paymentMethod, completion: completion)
-        }
-
-        return listItem
-    }
-
-    private func listItemIdentifier(for paymentMethod: PaymentMethod) -> String {
-        let uniqueIdentifier: String
-        if let storedPaymentMethod = paymentMethod as? StoredPaymentMethod {
-            uniqueIdentifier = "\(paymentMethod.type.rawValue).\(storedPaymentMethod.identifier)"
-        } else {
-            uniqueIdentifier = paymentMethod.type.rawValue
-        }
-        return ViewIdentifierBuilder.build(
-            scopeInstance: "PaymentMethodListViewModel",
-            postfix: uniqueIdentifier
-        )
-    }
-
-    private func listItem(for paymentMethod: PaymentMethod) -> ListItem? {
-        guard case let .loaded(sections) = state else { return nil }
-        let expectedIdentifier = listItemIdentifier(for: paymentMethod)
-        return sections
-            .flatMap(\.items)
-            .first { $0.identifier == expectedIdentifier }
     }
 }
 

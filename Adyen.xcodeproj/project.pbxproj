@@ -826,6 +826,10 @@
 		C981254E2851E9AF006D1374 /* PaymentComponentSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981254C2851E903006D1374 /* PaymentComponentSubject.swift */; };
 		C98125502851E9E4006D1374 /* PaymentComponentSubjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981254F2851E9E4006D1374 /* PaymentComponentSubjectTests.swift */; };
 		C981960C2F5A2059007FE1A1 /* PaymentMethodListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981960A2F5A2059007FE1A1 /* PaymentMethodListHeaderView.swift */; };
+		C98196102F5A4968007FE1A1 /* PaymentMethodItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981960E2F5A4968007FE1A1 /* PaymentMethodItemView.swift */; };
+		C98196112F5A4968007FE1A1 /* PaymentMethodItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981960D2F5A4968007FE1A1 /* PaymentMethodItem.swift */; };
+		C98196182F5A4970007FE1A1 /* PaymentMethodSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98196122F5A4970007FE1A1 /* PaymentMethodSection.swift */; };
+		C981961A2F5A54AC007FE1A1 /* PaymentMethodSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98196192F5A54AC007FE1A1 /* PaymentMethodSectionView.swift */; };
 		C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFD726946F0800AED849 /* AffirmComponent.swift */; };
 		C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */; };
 		C9838D8F2F48A56A00E6A7E9 /* PaymentMethodListConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9838D8E2F48A56A00E6A7E9 /* PaymentMethodListConfiguration.swift */; };
@@ -2402,6 +2406,10 @@
 		C981254C2851E903006D1374 /* PaymentComponentSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentSubject.swift; sourceTree = "<group>"; };
 		C981254F2851E9E4006D1374 /* PaymentComponentSubjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentSubjectTests.swift; sourceTree = "<group>"; };
 		C981960A2F5A2059007FE1A1 /* PaymentMethodListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListHeaderView.swift; sourceTree = "<group>"; };
+		C981960D2F5A4968007FE1A1 /* PaymentMethodItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodItem.swift; sourceTree = "<group>"; };
+		C981960E2F5A4968007FE1A1 /* PaymentMethodItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodItemView.swift; sourceTree = "<group>"; };
+		C98196122F5A4970007FE1A1 /* PaymentMethodSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodSection.swift; sourceTree = "<group>"; };
+		C98196192F5A54AC007FE1A1 /* PaymentMethodSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodSectionView.swift; sourceTree = "<group>"; };
 		C982FFD726946F0800AED849 /* AffirmComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponent.swift; sourceTree = "<group>"; };
 		C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmPaymentMethod.swift; sourceTree = "<group>"; };
 		C9838D8E2F48A56A00E6A7E9 /* PaymentMethodListConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListConfiguration.swift; sourceTree = "<group>"; };
@@ -4641,6 +4649,8 @@
 		C98196082F5A2038007FE1A1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C98196152F5A4970007FE1A1 /* PaymentMethodSection */,
+				C981960F2F5A4968007FE1A1 /* PaymentMethodItem */,
 				C981960B2F5A2059007FE1A1 /* PaymentMethodListHeader */,
 			);
 			path = Views;
@@ -4652,6 +4662,24 @@
 				C981960A2F5A2059007FE1A1 /* PaymentMethodListHeaderView.swift */,
 			);
 			path = PaymentMethodListHeader;
+			sourceTree = "<group>";
+		};
+		C981960F2F5A4968007FE1A1 /* PaymentMethodItem */ = {
+			isa = PBXGroup;
+			children = (
+				C981960D2F5A4968007FE1A1 /* PaymentMethodItem.swift */,
+				C981960E2F5A4968007FE1A1 /* PaymentMethodItemView.swift */,
+			);
+			path = PaymentMethodItem;
+			sourceTree = "<group>";
+		};
+		C98196152F5A4970007FE1A1 /* PaymentMethodSection */ = {
+			isa = PBXGroup;
+			children = (
+				C98196122F5A4970007FE1A1 /* PaymentMethodSection.swift */,
+				C98196192F5A54AC007FE1A1 /* PaymentMethodSectionView.swift */,
+			);
+			path = PaymentMethodSection;
 			sourceTree = "<group>";
 		};
 		C982FFD626945FCE00AED849 /* Affirm */ = {
@@ -9086,6 +9114,7 @@
 				C94E350B2E00561B00B89290 /* DropInRouter.swift in Sources */,
 				C96ECA302E2160B600A86C59 /* DropInRoot.swift in Sources */,
 				A0290DFF2C57DBC1005BE269 /* DropInAnalyticsConfiguration.swift in Sources */,
+				C98196182F5A4970007FE1A1 /* PaymentMethodSection.swift in Sources */,
 				C93DDAEE2E2A789A00B78DED /* ComponentContainerRouter.swift in Sources */,
 				C924FB902ECF6E27009D57EC /* ActionPresentationHelper.swift in Sources */,
 				C9025A452DF3167900E0D191 /* DropInAssembler.swift in Sources */,
@@ -9096,6 +9125,7 @@
 				C9DC5B132EC4BF6A00E75C93 /* DropInFlowManager.swift in Sources */,
 				C9025A4B2DF3188700E0D191 /* PreselectedPaymentMethodViewController.swift in Sources */,
 				C981960C2F5A2059007FE1A1 /* PaymentMethodListHeaderView.swift in Sources */,
+				C981961A2F5A54AC007FE1A1 /* PaymentMethodSectionView.swift in Sources */,
 				C9025A432DF3135700E0D191 /* DropInViewModel.swift in Sources */,
 				E7D418B3286F531500E9A7F4 /* ComponentManager+PaymentComponentBuilder.swift in Sources */,
 				C9C22D9F2DE5F9BE0028C23F /* PaymentMethodListViewController.swift in Sources */,
@@ -9110,6 +9140,8 @@
 				E9B36CC522451C7100EAA368 /* ComponentManager.swift in Sources */,
 				C941A51E2DF9C21F0014AFF1 /* PaymentMethodListRouter.swift in Sources */,
 				C941A51C2DF9C0B40014AFF1 /* PreselectedPaymentMethodRouter.swift in Sources */,
+				C98196102F5A4968007FE1A1 /* PaymentMethodItemView.swift in Sources */,
+				C98196112F5A4968007FE1A1 /* PaymentMethodItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

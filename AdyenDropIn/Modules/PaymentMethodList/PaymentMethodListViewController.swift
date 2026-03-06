@@ -5,9 +5,6 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-#if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
-#endif
 import Combine
 import Foundation
 import UIKit
@@ -25,8 +22,10 @@ internal class PaymentMethodListViewController: UIViewController {
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 0
+        stackView.spacing = 24
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16)
         return stackView
     }()
     
@@ -45,50 +44,38 @@ internal class PaymentMethodListViewController: UIViewController {
         return view
     }()
 
-    private lazy var listViewController: ListViewController = {
-        var style = ListComponentStyle()
-        
-        style.listItem.title = TextStyle(
-            font: .systemFont(ofSize: 17, weight: .regular),
-            color: .label,
-            textAlignment: .natural
-        )
-        style.listItem.subtitle = TextStyle(
-            font: .systemFont(ofSize: 13, weight: .regular),
-            color: .secondaryLabel,
-            textAlignment: .natural
-        )
-        style.listItem.image = ImageStyle(
-            borderColor: UIColor.separator,
-            borderWidth: 1.0 / UIScreen.main.nativeScale,
-            cornerRadius: 6.0,
-            clipsToBounds: true,
-            contentMode: .scaleAspectFit
-        )
-        
-        style.sectionHeader.title = TextStyle(
-            font: .systemFont(ofSize: 13, weight: .regular),
-            color: .secondaryLabel,
-            textAlignment: .natural
-        )
-        style.sectionHeader.trailingButton = ButtonStyle(
-            title: TextStyle(
-                font: .systemFont(ofSize: 17, weight: .regular),
-                color: UIColor.Adyen.defaultBlue
-            ),
-            cornerRounding: .none,
-            background: .clear
-        )
-        
-        return ListViewController(style: style)
+    private lazy var paymentMethodSections: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 24
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
-
+    
+    private lazy var loadingOverlayView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .systemGroupedBackground.withAlphaComponent(0.6)
+        view.alpha = 0
+        view.isUserInteractionEnabled = true
+        
+        let activityIndicator = UIActivityIndicatorView(style: .medium)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.startAnimating()
+        view.addSubview(activityIndicator)
+        
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        
+        return view
+    }()
+    
     // MARK: - Properties
 
     private let viewModel: PaymentMethodListViewModelProtocol
     private var cancellables = Set<AnyCancellable>()
-    private var tableViewHeightConstraint: NSLayoutConstraint?
-    private var tableViewContentSizeObservation: NSKeyValueObservation?
 
     // MARK: - Initializers
 
@@ -108,13 +95,14 @@ internal class PaymentMethodListViewController: UIViewController {
 
     override internal func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .systemGroupedBackground
         viewModel.didLoad()
         isModalInPresentation = true
         setupNavigationItem()
         setupScrollView()
         setupHeaderView()
-        setupListViewController()
+        setupPaymentMethodSections()
+        setupLoadingOverlay()
         observeState()
     }
 
@@ -125,11 +113,11 @@ internal class PaymentMethodListViewController: UIViewController {
         scrollView.addSubview(contentStackView)
         
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+
             contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
@@ -140,27 +128,15 @@ internal class PaymentMethodListViewController: UIViewController {
     
     private func setupHeaderView() {
         contentStackView.addArrangedSubview(headerView)
-        contentStackView.setCustomSpacing(8, after: headerView)
     }
 
-    private func setupListViewController() {
-        listViewController.willMove(toParent: self)
-        addChild(listViewController)
-        contentStackView.addArrangedSubview(listViewController.view)
-        listViewController.didMove(toParent: self)
-        
-        listViewController.tableView.isScrollEnabled = false
-        
-        tableViewHeightConstraint = listViewController.view.heightAnchor.constraint(equalToConstant: 0)
-        tableViewHeightConstraint?.isActive = true
-        
-        tableViewContentSizeObservation = listViewController.tableView.observe(\.contentSize, options: [.new]) { [weak self] tableView, _ in
-            self?.tableViewHeightConstraint?.constant = tableView.contentSize.height
-        }
+    private func setupPaymentMethodSections() {
+        contentStackView.addArrangedSubview(paymentMethodSections)
     }
 
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
+        navigationItem.largeTitleDisplayMode = .never
         setupCancelButton()
     }
 
@@ -185,39 +161,57 @@ internal class PaymentMethodListViewController: UIViewController {
                 case let .loaded(sections):
                     self?.reload(with: sections)
                 case .idle:
-                    self?.stopLoading()
+                    self?.hideLoadingOverlay()
+                case .loading:
+                    self?.showLoadingOverlay()
                 }
             }.store(in: &cancellables)
     }
 
-    private func stopLoading() {
-        listViewController.stopLoading()
-    }
-
-    private func reload(with sections: [ListSection]) {
-        listViewController.reload(newSections: sections)
+    private func reload(with sections: [PaymentMethodSection]) {
+        clearPaymentMethods()
+        populatePaymentMethods(with: sections)
     }
     
-    internal func deleteComponent(at indexPath: IndexPath) {
-        listViewController.deleteItem(at: indexPath)
+    // MARK: - Payment Methods Stack View Management
+    
+    private func clearPaymentMethods() {
+        paymentMethodSections.arrangedSubviews.forEach { view in
+            paymentMethodSections.removeArrangedSubview(view)
+            view.removeFromSuperview()
+        }
     }
-
-    // TODO: - Handle component deletion logic
-    private func delete(component: PaymentComponent?, at indexPath: IndexPath, completion: @escaping Completion<Bool>) {
-//        guard let component else { return }
-//        guard let paymentMethod = component.paymentMethod as? StoredPaymentMethod else { return }
-//        let completion: (Bool) -> Void = { [weak self] success in
-//            defer {
-//                completion(success)
-//            }
-//            guard success else { return }
-//            // This is to prevent the merchant calling completion closure multiple times
-//            guard let self else { return }
-//            guard viewModel.componentSections[indexPath.section]
-//                .components[indexPath.item]
-//                .paymentMethod == paymentMethod else { return }
-//            self.deleteComponent(at: indexPath)
-//        }
-//        viewModel.delete(paymentMethod, completion: completion)
+    
+    private func populatePaymentMethods(with sections: [PaymentMethodSection]) {
+        sections.forEach { section in
+            let sectionView = PaymentMethodSectionView()
+            sectionView.configure(with: section)
+            paymentMethodSections.addArrangedSubview(sectionView)
+        }
+    }
+    
+    // MARK: - Loading Overlay
+    
+    private func setupLoadingOverlay() {
+        view.addSubview(loadingOverlayView)
+        
+        NSLayoutConstraint.activate([
+            loadingOverlayView.topAnchor.constraint(equalTo: view.topAnchor),
+            loadingOverlayView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            loadingOverlayView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            loadingOverlayView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    private func showLoadingOverlay() {
+        UIView.animate(withDuration: 0.2) {
+            self.loadingOverlayView.alpha = 1
+        }
+    }
+    
+    private func hideLoadingOverlay() {
+        UIView.animate(withDuration: 0.2) {
+            self.loadingOverlayView.alpha = 0
+        }
     }
 }
