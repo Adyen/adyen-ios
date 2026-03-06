@@ -21,7 +21,6 @@ public enum PaymentComponentType {
     case regular(PaymentComponent & PresentableComponent)
     case stored(StoredPaymentComponent)
     case initiable(InitiablePaymentComponent)
-    case undefined
 }
 
 /// A component that handles the initial phase of getting payment details to initiate a payment.
@@ -95,14 +94,6 @@ extension PaymentComponent {
         let logEvent = AnalyticsEventLog(component: paymentMethod.type.rawValue, type: .submit)
         context.analyticsProvider?.add(log: logEvent)
     }
-}
-
-extension AdyenContextAware where Self: PaymentAware {
-
-    public var payment: Payment? {
-        context.payment
-    }
-
 }
 
 /// Describes the methods a delegate of the payment component needs to implement.

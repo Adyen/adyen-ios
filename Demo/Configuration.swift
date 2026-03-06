@@ -159,10 +159,6 @@ internal struct DemoAppSettings: Codable {
         Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil)
     }
 
-    internal var payment: Payment {
-        Payment(amount: amount, countryCode: countryCode)
-    }
-    
     private var installmentConfiguration: InstallmentConfiguration? {
         guard cardSettings.enableInstallments else {
             return nil
@@ -290,18 +286,11 @@ internal struct DemoAppSettings: Codable {
         return dropInConfig
     }
 
-    internal func applePayConfiguration() throws -> ApplePayComponent.Configuration {
-        let applePayPayment = try ApplePayPayment(
-            payment: ConfigurationConstants.current.payment,
-            brand: ConfigurationConstants.appName
+    internal func applePayConfiguration(using request: PKPaymentRequest) throws -> ApplePayComponent.Configuration {
+        try ApplePayComponent.Configuration(
+            paymentRequest: request,
+            allowOnboarding: applePaySettings.allowOnboarding
         )
-        var config = ApplePayComponent.Configuration(
-            payment: applePayPayment,
-            merchantIdentifier:
-            ConfigurationConstants.current.applePaySettings.merchantIdentifier
-        )
-        config.allowOnboarding = applePaySettings.allowOnboarding
-        return config
     }
 
     internal var analyticsConfiguration: AnalyticsConfiguration {
@@ -340,5 +329,39 @@ private extension DemoAppSettings {
         case .none:
             return .none
         }
+    }
+}
+
+internal extension PKPaymentRequest {
+    
+    static var demo: PKPaymentRequest {
+        let amount = ConfigurationConstants.current.amount
+        let decimalAmount = AmountFormatter.decimalAmount(
+            amount.value,
+            currencyCode: amount.currencyCode,
+            localeIdentifier: amount.localeIdentifier
+        )
+
+        let paymentRequest = PKPaymentRequest()
+        paymentRequest.merchantIdentifier = ConfigurationConstants.current.applePaySettings.merchantIdentifier
+        paymentRequest.countryCode = ConfigurationConstants.current.countryCode
+        paymentRequest.currencyCode = amount.currencyCode
+        paymentRequest.paymentSummaryItems = [
+            PKPaymentSummaryItem(label: ConfigurationConstants.appName, amount: decimalAmount)
+        ]
+        paymentRequest.merchantCapabilities = .capability3DS
+        return paymentRequest
+    }
+    
+    static var demoWithShippingFields: PKPaymentRequest {
+        let paymentRequest = demo
+        paymentRequest.shippingType = .delivery
+        paymentRequest.requiredShippingContactFields = [.postalAddress]
+        paymentRequest.requiredBillingContactFields = [.postalAddress]
+        paymentRequest.shippingMethods = ConfigurationConstants.shippingMethods
+        if #available(iOS 15.0, *) {
+            paymentRequest.supportsCouponCode = true
+        }
+        return paymentRequest
     }
 }

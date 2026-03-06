@@ -40,22 +40,26 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         var showsSubmitButton: Bool = true
     }
     
-    class MockComponent: PaymentComponent {
+    class MockComponent: PaymentComponent, PresentableComponent {
 
         // PaymentComponent requirements
         var delegate: PaymentComponentDelegate?
         let paymentMethod: PaymentMethod
-        var type: PaymentComponentType = .undefined
+
+        /// PresentableComponent requirement
+        var viewController: UIViewController {
+            UIViewController()
+        }
 
         /// Component requirements (via AdyenContextAware)
         let context: AdyenContext
-        
+
         /// PartialPaymentOrderAware requirements
         var order: PartialPaymentOrder?
-        
+
         /// Custom property to verify configuration
         let configValue: String
-        
+
         init(paymentMethod: PaymentMethod, context: AdyenContext, configuration: MockConfiguration) {
             self.paymentMethod = paymentMethod
             self.context = context
@@ -190,7 +194,6 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         let customAmount = Amount(value: 1234, currencyCode: "GBP")
         let customContext = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Payment(amount: customAmount, countryCode: "GB"),
             amount: customAmount
         )
         let config = factory.defaultConfiguration()
@@ -203,8 +206,8 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         )
         
         // Then
-        XCTAssertEqual(component.context.amount.value, 1234)
-        XCTAssertEqual(component.context.amount.currencyCode, "GBP")
+        XCTAssertEqual(component.context.amount?.value, 1234)
+        XCTAssertEqual(component.context.amount?.currencyCode, "GBP")
     }
     
     func testMockFactory_MultipleComponentsAreIndependent() {

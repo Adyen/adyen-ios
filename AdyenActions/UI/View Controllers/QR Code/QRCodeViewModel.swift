@@ -49,7 +49,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
     internal init(
         action: QRCodeAction,
         instructionText: String,
-        payment: Payment?,
+        amount: Amount?,
         logoUrl: URL,
         observedProgress: Progress?,
         expiration: AdyenObservable<String?>,
@@ -60,7 +60,7 @@ internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
     ) {
         self.action = action
         self.instructionText = instructionText
-        self.amountText = payment?.amount.formatted
+        self.amountText = amount?.formatted
         self.logoUrl = logoUrl
         self.observedProgress = observedProgress
         self.expiration = expiration

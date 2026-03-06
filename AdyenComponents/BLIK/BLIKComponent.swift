@@ -12,7 +12,7 @@ import UIKit
 #endif
 
 /// A component that provides a form for BLIK payments.
-public final class BLIKComponent: PaymentComponent, PresentableComponent, PaymentAware, LoadingComponent {
+public final class BLIKComponent: PaymentComponent, PresentableComponent, LoadingComponent {
     
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -108,7 +108,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Paymen
         let item = FormButtonItem(buttonStyle: buttonStylePrimary)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedSubmitButtonTitle(
-            with: payment?.amount,
+            with: context.amount,
             style: .immediate,
             configuration.localizationParameters
         )

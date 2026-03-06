@@ -27,7 +27,7 @@ public final class PayByBankUSComponent: PaymentComponent, PresentableComponent 
 
         return PaymentComponentData(
             paymentMethodDetails: details,
-            amount: context.payment?.amount,
+            amount: context.amount,
             order: order
         )
     }

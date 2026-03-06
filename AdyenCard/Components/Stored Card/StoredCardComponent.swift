@@ -10,7 +10,7 @@ import UIKit
 @_spi(AdyenInternal) import AdyenUI
 
 /// A component that provides a form for stored card payments.
-package final class StoredCardComponent: StoredPaymentComponent, PaymentAware, Localizable {
+package final class StoredCardComponent: StoredPaymentComponent, Localizable {
 
     /// The context object for this component.
     package let context: AdyenContext
@@ -61,13 +61,12 @@ package final class StoredCardComponent: StoredPaymentComponent, PaymentAware, L
         let manager = StoredCardAlertManager(
             paymentMethod: storedCardPaymentMethod,
             context: context,
-            amount: payment?.amount
+            amount: context.amount
         )
         
         manager.localizationParameters = localizationParameters
-        manager.completionHandler = { [weak self] result in
-            guard let self else { return }
-            receivedCardDetailsResultToProcessPayment(result: result)
+        manager.completionHandler = { [weak self] in
+            self?.receivedCardDetailsResultToProcessPayment(result: $0)
         }
         
         return manager
@@ -76,13 +75,13 @@ package final class StoredCardComponent: StoredPaymentComponent, PaymentAware, L
     private func receivedCardDetailsResultToProcessPayment(result: Result<CardDetails, Error>) {
         switch result {
         case let .success(details):
-            self.submit(data: PaymentComponentData(
+            submit(data: PaymentComponentData(
                 paymentMethodDetails: details,
-                amount: self.payment?.amount,
-                order: self.order
+                amount: context.amount,
+                order: order
             ))
         case let .failure(error):
-            self.delegate?.didFail(with: error, from: self)
+            delegate?.didFail(with: error, from: self)
         }
     }
 }

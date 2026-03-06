@@ -42,7 +42,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
     private let paymentMethod: StoredCardPaymentMethod
     private let apiContext: APIContext
     private let analyticsProvider: AnyAnalyticsProvider?
-    private let amount: Amount
+    private let amount: Amount?
     internal var setPayButtonEnabled: ((Bool) -> Void)?
 
     /// This informs the status of the payment after submitting the security code.
@@ -53,7 +53,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
         theme: AdyenTheme,
         paymentMethod: StoredCardPaymentMethod,
         apiContext: APIContext,
-        amount: Amount,
+        amount: Amount?,
         analyticsProvider: AnyAnalyticsProvider?,
         localizationParameters: LocalizationParameters?
     ) {
@@ -73,7 +73,6 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
 
     internal lazy var cardImageItem: AdyenUI.CardImageItem = {
         let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
-        // TODO: Robert: This will change as we will not rely on DisplayInformation for V6.
         let imageURL = LogoURLProvider.logoURL(
             withName: displayInformation.logoName,
             environment: apiContext.environment,
@@ -116,8 +115,8 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
     }
 
     private var formattedAmount: String {
-        let amount = amount
-        guard let formatted = AmountFormatter.formatted(amount: amount.value, currencyCode: amount.currencyCode) else {
+        guard let amount,
+              let formatted = AmountFormatter.formatted(amount: amount.value, currencyCode: amount.currencyCode) else {
             return ""
         }
         return formatted

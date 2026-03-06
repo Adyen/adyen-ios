@@ -79,13 +79,19 @@ internal struct DropInAssembler {
             .retryOnErrorAPIClient()
     }
 
+    // TODO: - This should be replaced by the future LocalizationProvider
+    private func resolveLocalizationProvider() -> LocalizationParameters {
+        LocalizationParameters()
+    }
+
     private var preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
         PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
-            partialPaymentDelegate: partialPaymentDelegate
+            partialPaymentDelegate: partialPaymentDelegate,
+            analyticsProvider: context.analyticsProvider
         )
     }
 
@@ -94,6 +100,7 @@ internal struct DropInAssembler {
             componentContainerAssembler: componentContainerAssembler,
             componentManager: componentManager,
             context: context,
+            localizationParameters: resolveLocalizationProvider(),
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
             partialPaymentDelegate: partialPaymentDelegate

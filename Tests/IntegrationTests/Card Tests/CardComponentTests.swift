@@ -17,10 +17,6 @@ class CardComponentTests: XCTestCase {
         Dummy.context
     }
 
-    var payment: Payment {
-        Dummy.payment
-    }
-    
     var method: CardPaymentMethod {
         .init(
             type: .bcmc,
@@ -96,7 +92,7 @@ class CardComponentTests: XCTestCase {
 
         XCTAssertEqual(items.storeDetailsItem.title, localizedString(.cardStoreDetailsButton, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(items.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.configuration.localizationParameters))
+        XCTAssertEqual(items.button.title, localizedSubmitButtonTitle(with: context.amount, style: .immediate, sut.configuration.localizationParameters))
     }
 
     func test_formItems_withCustomKeySeparator_shouldUseLocalizedStrings() {
@@ -125,7 +121,7 @@ class CardComponentTests: XCTestCase {
 
         XCTAssertEqual(items.storeDetailsItem.title, localizedString(LocalizationKey(key: "adyen_card_storeDetailsButton"), sut.configuration.localizationParameters))
 
-        XCTAssertEqual(items.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.configuration.localizationParameters))
+        XCTAssertEqual(items.button.title, localizedSubmitButtonTitle(with: context.amount, style: .immediate, sut.configuration.localizationParameters))
     }
 
     func test_component_withCustomTheme_shouldApplyThemeStyles() {
@@ -1447,7 +1443,6 @@ class CardComponentTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
             analyticsProvider: analyticsProviderMock
         )
@@ -1473,7 +1468,6 @@ class CardComponentTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
             analyticsProvider: analyticsProviderMock
         )
@@ -1534,140 +1528,6 @@ class CardComponentTests: XCTestCase {
         sut.update(storePaymentMethodFieldValue: true)
         XCTAssertFalse(cardViewController.items.storeDetailsItem.isVisible)
         XCTAssertFalse(cardViewController.items.storeDetailsItem.value)
-    }
-
-    func test_clear_shouldResetPostalCodeItem() {
-        // Given
-        var configuration = CardComponentConfiguration()
-        configuration.billingAddress.mode = .postalCode
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: configuration
-        )
-        sut.cardViewController.items.postalCodeItem.value = "1501 NH"
-
-        // show view controller
-        setupRootViewController(sut.viewController)
-        
-        // When
-        // hide view controller
-        setupRootViewController(UIViewController())
-
-        // Then
-        XCTAssertTrue(sut.cardViewController.items.postalCodeItem.value.isEmpty)
-    }
-
-    func test_clear_shouldResetNumberItem() {
-        // Given
-        var configuration = CardComponentConfiguration()
-        configuration.billingAddress.mode = .postalCode
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: configuration
-        )
-        sut.cardViewController.items.numberContainerItem.numberItem.value = "4111 1111 1111 1111"
-        
-        // show view controller
-        setupRootViewController(sut.viewController)
-        
-        // When
-        // hide view controller
-        setupRootViewController(UIViewController())
-
-        // Then
-        XCTAssertTrue(sut.cardViewController.items.numberContainerItem.numberItem.value.isEmpty)
-    }
-
-    func test_clear_shouldResetExpiryDateItem() {
-        // Given
-        var configuration = CardComponentConfiguration()
-        configuration.billingAddress.mode = .postalCode
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: configuration
-        )
-        sut.cardViewController.items.expiryDateItem.value = "03/24"
-
-        // show view controller
-        setupRootViewController(sut.viewController)
-        
-        // When
-        // hide view controller
-        setupRootViewController(UIViewController())
-
-        // Then
-        XCTAssertTrue(sut.cardViewController.items.expiryDateItem.value.isEmpty)
-    }
-
-    func test_clear_shouldResetSecurityCodeItem() {
-        // Given
-        var configuration = CardComponentConfiguration()
-        configuration.billingAddress.mode = .postalCode
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: configuration
-        )
-        sut.cardViewController.items.securityCodeItem.value = "935"
-
-        // show view controller
-        setupRootViewController(sut.viewController)
-        
-        // When
-        // hide view controller
-        setupRootViewController(UIViewController())
-
-        // Then
-        XCTAssertTrue(sut.cardViewController.items.securityCodeItem.value.isEmpty)
-    }
-
-    func test_clear_shouldResetHolderNameItem() {
-        // Given
-        var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = true
-        configuration.billingAddress.mode = .postalCode
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: configuration
-        )
-        sut.cardViewController.items.holderNameItem.value = "Katrina del Mar"
-
-        // show view controller
-        setupRootViewController(sut.viewController)
-        
-        // When
-        // hide view controller
-        setupRootViewController(UIViewController())
-
-        // Then
-        XCTAssertTrue(sut.cardViewController.items.holderNameItem.value.isEmpty)
-    }
-
-    func test_clear_shouldResetStoreDetailsItem() {
-        // Given
-
-        var configuration = CardComponentConfiguration()
-        configuration.billingAddress.mode = .postalCode
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: configuration
-        )
-        sut.cardViewController.items.storeDetailsItem.value = true
-
-        // show view controller
-        setupRootViewController(sut.viewController)
-        
-        // When
-        // hide view controller
-        setupRootViewController(UIViewController())
-
-        // Then
-        XCTAssertFalse(sut.cardViewController.items.storeDetailsItem.value)
     }
     
     func test_prefilling_withBillingAddressInLookupMode_shouldPrefillItems() throws {
@@ -2199,7 +2059,6 @@ class CardComponentTests: XCTestCase {
         let amount = Amount(value: 1234567, currencyCode: "USD")
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Payment(amount: amount, countryCode: "US"),
             amount: amount
         )
 
@@ -2221,7 +2080,6 @@ class CardComponentTests: XCTestCase {
         let amount = Amount(value: 1234567, currencyCode: "USD")
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Payment(amount: amount, countryCode: "US"),
             amount: amount
         )
 

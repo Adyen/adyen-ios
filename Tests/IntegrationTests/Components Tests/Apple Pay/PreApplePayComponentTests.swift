@@ -14,13 +14,11 @@ import XCTest
 class PreApplePayComponentTests: XCTestCase {
 
     var analyticsProviderMock: AnalyticsProviderMock!
-    let amount = Dummy.payment.amount
+    let amount = Dummy.amount
     var paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: ["mc", "visa"])
     var context: AdyenContext!
     var paymentComponentDelegate: PaymentComponentDelegateMock!
     var sut: PreApplePayComponent!
-    lazy var applePayPayment = Dummy.createTestApplePayPayment()
-
     override func setUpWithError() throws {
         try super.setUpWithError()
         analyticsProviderMock = AnalyticsProviderMock()
@@ -28,9 +26,20 @@ class PreApplePayComponentTests: XCTestCase {
         context = Dummy.context(with: analyticsProviderMock)
         paymentComponentDelegate = PaymentComponentDelegateMock()
 
-        let configuration = ApplePayComponent.Configuration(
-            payment: applePayPayment,
-            merchantIdentifier: "test_id"
+        let request = PKPaymentRequest()
+        request.merchantIdentifier = "test_id"
+        request.countryCode = "US"
+        request.currencyCode = amount.currencyCode
+        request.merchantCapabilities = .capability3DS
+        request.paymentSummaryItems = [
+            PKPaymentSummaryItem(
+                label: "Test",
+                amount: AmountFormatter.decimalAmount(amount.value, currencyCode: amount.currencyCode)
+            )
+        ]
+
+        let configuration = try ApplePayComponent.Configuration(
+            paymentRequest: request
         )
         var applePayStyle = ApplePayStyle()
         applePayStyle.paymentButtonType = .inStore
@@ -56,9 +65,8 @@ class PreApplePayComponentTests: XCTestCase {
         // Given
         let brands: [String]? = []
         let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: brands)
-        let applePayConfiguration = ApplePayComponent.Configuration(
-            payment: Dummy.createTestApplePayPayment(),
-            merchantIdentifier: "test_id"
+        let applePayConfiguration = try ApplePayComponent.Configuration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
 
         // When / Then
@@ -87,7 +95,7 @@ class PreApplePayComponentTests: XCTestCase {
             )
         )
         let model = PreApplePayView.Model(
-            hint: applePayPayment.amount.formatted,
+            hint: amount.formatted,
             style: applePayStyle
         )
         
@@ -147,7 +155,7 @@ class PreApplePayComponentTests: XCTestCase {
         
         let hintLabel: UILabel = try XCTUnwrap(sut.viewController.view.findView(by: "hintLabel"))
         
-        XCTAssertEqual(hintLabel.text, self.applePayPayment.amount.formatted)
+        XCTAssertEqual(hintLabel.text, self.amount.formatted)
     }
 
     func testSubmitWithAnalyticsEnabledShouldSetCheckoutAttemptIdInPaymentComponentData() {

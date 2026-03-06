@@ -364,7 +364,6 @@ class PayToComponentTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
             analyticsProvider: analyticsProviderMock
         )

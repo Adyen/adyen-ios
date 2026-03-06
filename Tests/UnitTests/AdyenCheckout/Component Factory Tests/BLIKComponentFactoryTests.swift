@@ -109,7 +109,6 @@ final class BLIKComponentFactoryTests: XCTestCase {
         let customAmount = Amount(value: 999, currencyCode: "EUR")
         let customContext = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Payment(amount: customAmount, countryCode: "NL"),
             amount: customAmount
         )
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
@@ -123,8 +122,8 @@ final class BLIKComponentFactoryTests: XCTestCase {
         )
         
         // Then
-        XCTAssertEqual(component.context.amount.value, 999)
-        XCTAssertEqual(component.context.amount.currencyCode, "EUR")
+        XCTAssertEqual(component.context.amount?.value, 999)
+        XCTAssertEqual(component.context.amount?.currencyCode, "EUR")
     }
     
     // MARK: - Type Conformance Tests

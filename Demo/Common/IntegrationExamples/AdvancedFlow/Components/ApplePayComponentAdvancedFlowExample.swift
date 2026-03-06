@@ -61,12 +61,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         else { throw IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self)
         }
         
-        var config = try ConfigurationConstants.current.applePayConfiguration()
-        config.supportsCouponCode = true
-        config.shippingType = .delivery
-        config.requiredShippingContactFields = [.postalAddress]
-        config.requiredBillingContactFields = [.postalAddress]
-        config.shippingMethods = ConfigurationConstants.shippingMethods
+        var config = try ConfigurationConstants.current.applePayConfiguration(using: .demoWithShippingFields)
         config.dismissesAutomatically = true
 
         let component = try ApplePayComponent(
@@ -146,10 +141,10 @@ extension ApplePayComponentAdvancedFlowExample: ApplePayComponentDelegate {
 
     func didUpdate(
         contact: PKContact,
-        for payment: ApplePayPayment,
+        for summaryItems: [PKPaymentSummaryItem],
         completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void
     ) {
-        var items = payment.summaryItems
+        var items = summaryItems
         if let last = items.last {
             items = items.dropLast()
             // Below hard coded values are for testing purpose. Please add your own string and amount if you want to use these.
@@ -165,10 +160,10 @@ extension ApplePayComponentAdvancedFlowExample: ApplePayComponentDelegate {
 
     func didUpdate(
         shippingMethod: PKShippingMethod,
-        for payment: ApplePayPayment,
+        for summaryItems: [PKPaymentSummaryItem],
         completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void
     ) {
-        var items = payment.summaryItems
+        var items = summaryItems
         if let last = items.last {
             items = items.dropLast()
             items.append(shippingMethod)
@@ -183,10 +178,10 @@ extension ApplePayComponentAdvancedFlowExample: ApplePayComponentDelegate {
     @available(iOS 15.0, *)
     func didUpdate(
         couponCode: String,
-        for payment: ApplePayPayment,
+        for summaryItems: [PKPaymentSummaryItem],
         completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void
     ) {
-        var items = payment.summaryItems
+        var items = summaryItems
         if let last = items.last {
             items = items.dropLast()
             // Below hard coded values are for testing purpose. Please add your own string and amount if you want to use these.

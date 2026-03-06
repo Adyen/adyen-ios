@@ -13,8 +13,7 @@ import UIKit
 /// A component that provides a form for Online Banking payment.
 public final class OnlineBankingComponent: PaymentComponent,
     PresentableComponent,
-    LoadingComponent,
-    PaymentAware {
+    LoadingComponent {
 
     private enum ViewIdentifier {
         static let termsAndConditionsLabelItem = "OnlineBankingTermsAndConditionLabel"
@@ -139,7 +138,7 @@ public final class OnlineBankingComponent: PaymentComponent,
         continueButton.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
+        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order))
     }
 
     private lazy var formViewController: FormViewController = {
