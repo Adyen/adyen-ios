@@ -25,7 +25,7 @@ internal final class PaymentMethodItemView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 17, weight: .regular)
+        label.font = .systemFont(ofSize: 17, weight: .semibold)
         label.textColor = .label
         label.textAlignment = .natural
         return label
@@ -34,7 +34,7 @@ internal final class PaymentMethodItemView: UIView {
     private lazy var subtitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 13, weight: .regular)
+        label.font = .systemFont(ofSize: 15, weight: .regular)
         label.textColor = .secondaryLabel
         label.textAlignment = .natural
         return label
@@ -52,7 +52,7 @@ internal final class PaymentMethodItemView: UIView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(systemName: "chevron.forward")
-        imageView.tintColor = .tertiaryLabel
+        imageView.tintColor = .secondaryLabel
         imageView.contentMode = .scaleAspectFit
         imageView.setContentHuggingPriority(.required, for: .horizontal)
         imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -120,8 +120,10 @@ internal final class PaymentMethodItemView: UIView {
     // MARK: - Private
     
     private func setupView() {
-        backgroundColor = .secondarySystemGroupedBackground
-        
+        backgroundColor = UIColor(red: 0.97, green: 0.97, blue: 0.97, alpha: 1.00)
+        layer.cornerRadius = 10
+        layer.masksToBounds = true
+
         addSubview(highlightView)
         addSubview(contentStackView)
         
@@ -137,10 +139,10 @@ internal final class PaymentMethodItemView: UIView {
             chevronImageView.widthAnchor.constraint(equalToConstant: 14),
             chevronImageView.heightAnchor.constraint(equalToConstant: 20),
             
-            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 12),
+            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 14),
             contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12)
+            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -14)
         ])
     }
     

@@ -47,7 +47,7 @@ internal class PaymentMethodListViewController: UIViewController {
     private lazy var paymentMethodSections: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 24
+        stackView.spacing = 32
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -95,7 +95,7 @@ internal class PaymentMethodListViewController: UIViewController {
 
     override internal func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGroupedBackground
+        view.backgroundColor = .white
         viewModel.didLoad()
         isModalInPresentation = true
         setupNavigationItem()

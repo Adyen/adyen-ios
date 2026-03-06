@@ -21,8 +21,8 @@ internal final class PaymentMethodSectionView: UIView {
     private lazy var headerLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 13, weight: .regular)
-        label.textColor = .secondaryLabel
+        label.font = .systemFont(ofSize: 15, weight: .semibold)
+        label.textColor = .label
         label.textAlignment = .natural
         label.accessibilityTraits = .header
         return label
@@ -32,10 +32,7 @@ internal final class PaymentMethodSectionView: UIView {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = 0
-        stackView.layer.cornerRadius = 10
-        stackView.layer.masksToBounds = true
-        stackView.backgroundColor = .secondarySystemGroupedBackground
+        stackView.spacing = 12
         return stackView
     }()
     
@@ -80,8 +77,8 @@ internal final class PaymentMethodSectionView: UIView {
         
         containerStackView.addArrangedSubview(headerLabel)
         containerStackView.addArrangedSubview(itemsContainerView)
-        containerStackView.setCustomSpacing(8, after: headerLabel)
-        
+        containerStackView.setCustomSpacing(16, after: headerLabel)
+
         NSLayoutConstraint.activate([
             containerStackView.topAnchor.constraint(equalTo: topAnchor),
             containerStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -91,7 +88,7 @@ internal final class PaymentMethodSectionView: UIView {
     }
     
     private func configureHeader(with title: String) {
-        headerLabel.text = title.uppercased()
+        headerLabel.text = title.localizedCapitalized
         headerLabel.accessibilityLabel = title
         headerLabel.accessibilityIdentifier = "Adyen.PaymentMethodList.sectionHeader.\(title)"
     }
@@ -104,35 +101,10 @@ internal final class PaymentMethodSectionView: UIView {
     }
     
     private func populateItems(_ items: [PaymentMethodItem]) {
-        for (index, item) in items.enumerated() {
+        items.forEach { item in
             let itemView = PaymentMethodItemView()
             itemView.configure(with: item)
             itemsContainerView.addArrangedSubview(itemView)
-            
-            if index < items.count - 1 {
-                let separator = createSeparatorView()
-                itemsContainerView.addArrangedSubview(separator)
-            }
         }
-    }
-    
-    private func createSeparatorView() -> UIView {
-        let container = UIView()
-        container.backgroundColor = .secondarySystemGroupedBackground
-        
-        let separator = UIView()
-        separator.translatesAutoresizingMaskIntoConstraints = false
-        separator.backgroundColor = .separator
-        container.addSubview(separator)
-        
-        NSLayoutConstraint.activate([
-            separator.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 68),
-            separator.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            separator.topAnchor.constraint(equalTo: container.topAnchor),
-            separator.bottomAnchor.constraint(equalTo: container.bottomAnchor),
-            separator.heightAnchor.constraint(equalToConstant: 1.0 / UIScreen.main.scale)
-        ])
-        
-        return container
     }
 }
