@@ -24,9 +24,7 @@ public class AddressInputFormViewController: FormViewController {
         
         title = viewModel.title
         
-        if #available(iOS 13.0, *) {
-            isModalInPresentation = true
-        }
+        isModalInPresentation = true
         
         if viewModel.shouldShowSearch {
             append(searchButtonItem)

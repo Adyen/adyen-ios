@@ -24,7 +24,6 @@ internal protocol CardScannerViewModelProtocol {
     var cameraAlertCancelButtonTitle: String { get }
 }
 
-@available(iOS 13.0, *)
 internal class CardScannerViewModel: CardScannerViewModelProtocol {
 
     // MARK: - Properties
@@ -173,7 +172,6 @@ internal class CardScannerViewModel: CardScannerViewModelProtocol {
 
 // MARK: - CaptureSessionDelegate
 
-@available(iOS 13.0, *)
 extension CardScannerViewModel: CaptureSessionDelegate {
 
     internal func didCapture(image: CIImage?) {
@@ -192,7 +190,6 @@ extension CardScannerViewModel: CaptureSessionDelegate {
 
 // MARK: - Localization
 
-@available(iOS 13.0, *)
 extension CardScannerViewModel {
 
     private enum LocalizationKey: String {

@@ -6,7 +6,6 @@
 
 import SwiftUI
 
-@available(iOS 13.0.0, *)
 internal struct ApplePaySettingsView: View {
     @ObservedObject internal var viewModel: ConfigurationViewModel
 

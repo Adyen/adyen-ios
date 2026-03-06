@@ -175,7 +175,6 @@ extension ApplePayComponentAdvancedFlowExample: ApplePayComponentDelegate {
         completion(.init(paymentSummaryItems: items))
     }
 
-    @available(iOS 15.0, *)
     func didUpdate(
         couponCode: String,
         for summaryItems: [PKPaymentSummaryItem],

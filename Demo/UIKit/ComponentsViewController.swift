@@ -125,9 +125,7 @@ internal final class ComponentsViewController: UIViewController {
             [ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)]
         ]
         
-        if #available(iOS 13.0.0, *) {
-            addConfigurationButton()
-        }
+        addConfigurationButton()
     }
     
     // MARK: - Private
@@ -253,9 +251,8 @@ extension UIViewController {
     }
 }
 
-// MARK: - Configuration, iOS13+
+// MARK: - Configuration
 
-@available(iOS 13.0.0, *)
 extension ComponentsViewController {
     
     private func addConfigurationButton() {

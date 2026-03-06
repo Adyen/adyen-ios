@@ -7,8 +7,6 @@
 import AdyenCard
 import SwiftUI
 
-@available(iOS 13.0.0, *)
-
 internal final class ConfigurationViewModel: ObservableObject {
     
     @Published internal var countryCode: String = ""

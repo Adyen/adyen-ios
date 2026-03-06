@@ -6,7 +6,6 @@
 
 import SwiftUI
 
-@available(iOS 13.0.0, *)
 internal struct SearchBar: UIViewRepresentable {
 
     @Binding private var searchString: String

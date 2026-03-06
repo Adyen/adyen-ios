@@ -15,8 +15,6 @@ public typealias CardScanDetails = (number: String?, expirationDate: Date?)
 /// Use `createCardScanner(localizationBundle:completion:)` to present the scanner and `isAvailable` to check device support.
 /// Ensure `NSCameraUsageDescription` is set in your `Info.plist`.
 ///
-/// - Availability: iOS 13.0+
-@available(iOS 13.0, *)
 public enum CardScanner {
 
     // MARK: - Properties
