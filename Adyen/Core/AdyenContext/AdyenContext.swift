@@ -76,6 +76,9 @@ public final class AdyenContext {
 
         var eventAnalyticsProvider: AnyEventAnalyticsProvider?
 
+        // TODO: Robert: If checkoutAttemptID is nil then don't create AnalyticsProvider
+        // - checkoutAttemptID will be required in the AnalyticsProvider
+        // - eventAnalyticsProvider will be required in the AnalyticsProvider.
         if let checkoutAttemptId,
            analyticsConfiguration.isEnabled {
             let eventDataSource = AnalyticsEventDataSource()

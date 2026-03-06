@@ -49,7 +49,7 @@ public struct CheckoutConfiguration {
 
     package var theme: AdyenTheme
 
-    package let amount: Amount
+    package let amount: Amount?
 
     package let apiContext: APIContext
 
@@ -67,7 +67,7 @@ public struct CheckoutConfiguration {
     /// - Throws: `ClientKeyError.invalidClientKey` if the client key is invalid.
     public init(
         environment: Environment,
-        amount: Amount,
+        amount: Amount?,
         clientKey: String,
         analyticsConfiguration: AnalyticsConfiguration = .init(),
         @CheckoutConfigurationBuilder content: () -> CheckoutConfigurable
@@ -97,7 +97,7 @@ public struct CheckoutConfiguration {
     
     internal init(
         apiContext: APIContext,
-        amount: Amount,
+        amount: Amount?,
         analyticsApiContext: APIContext?,
         analyticsConfiguration: AnalyticsConfiguration,
         configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:],
