@@ -17,67 +17,35 @@ extension UIColor {
         }
 
         public static var componentBackground: UIColor {
-            if #available(iOS 13.0, *) {
-                return .systemBackground
-            } else {
-                return .white
-            }
+            .systemBackground
         }
         
         public static var secondaryComponentBackground: UIColor {
-            if #available(iOS 13.0, *) {
-                return .secondarySystemBackground
-            } else {
-                return color(hex: 0xF8F9F9)
-            }
+            .secondarySystemBackground
         }
 
         public static var componentLabel: UIColor {
-            if #available(iOS 13.0, *) {
-                return .label
-            } else {
-                return .black
-            }
+            .label
         }
 
         public static var componentSecondaryLabel: UIColor {
-            if #available(iOS 13.0, *) {
-                return .secondaryLabel
-            } else {
-                return .darkGray
-            }
+            .secondaryLabel
         }
 
         public static var componentTertiaryLabel: UIColor {
-            if #available(iOS 13.0, *) {
-                return .tertiaryLabel
-            } else {
-                return .gray
-            }
+            .tertiaryLabel
         }
 
         public static var componentQuaternaryLabel: UIColor {
-            if #available(iOS 13.0, *) {
-                return .quaternaryLabel
-            } else {
-                return .lightGray
-            }
+            .quaternaryLabel
         }
 
         public static var componentPlaceholderText: UIColor {
-            if #available(iOS 13.0, *) {
-                return .placeholderText
-            } else {
-                return .gray
-            }
+            .placeholderText
         }
 
         public static var componentSeparator: UIColor {
-            if #available(iOS 13.0, *) {
-                return .separator
-            } else {
-                return UIColor(white: 0.0, alpha: 0.2)
-            }
+            .separator
         }
 
         public static var componentLoadingMessageColor: UIColor {

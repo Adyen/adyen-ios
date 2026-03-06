@@ -117,8 +117,7 @@ internal protocol CardScannerControlling: CardScannerAvailability {
         }
 
         internal var isScannerAvailable: Bool {
-            guard #available(iOS 13.0, *) else { return false }
-            return availabilityProvider.isScannerAvailable
+            availabilityProvider.isScannerAvailable
         }
 
         internal func openCardScanner() {

@@ -104,11 +104,7 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
     
     private static func createDelegatedAuthenticationData() -> DelegatedAuthenticationData? {
         #if canImport(AdyenAuthentication)
-            if #available(iOS 14.0, *) {
-                return (try? DeviceSupportChecker().checkSupport()).map { DelegatedAuthenticationData.sdkOutput($0) }
-            } else {
-                return nil
-            }
+            return (try? DeviceSupportChecker().checkSupport()).map { DelegatedAuthenticationData.sdkOutput($0) }
         #else
             return nil
         #endif
