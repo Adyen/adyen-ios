@@ -20,11 +20,7 @@ public final class LoadingView: UIControl {
     }()
     
     private var activityIndicatorStyle: UIActivityIndicatorView.Style {
-        if #available(iOS 13.0, *) {
-            return .large
-        } else {
-            return .whiteLarge
-        }
+        .large
     }
 
     private let contentView: UIView

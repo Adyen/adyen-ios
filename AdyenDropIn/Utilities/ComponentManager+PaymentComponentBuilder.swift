@@ -257,23 +257,19 @@ extension ComponentManager: PaymentComponentBuilder {
                 )
                 return nil
             }
-            if #available(iOS 13.0, *) {
-                var cashAppPayConfiguration = CashAppPayConfiguration(
-                    redirectURL: cashAppPayDropInConfig.redirectURL,
-                    referenceId: cashAppPayDropInConfig.referenceId
-                )
-                cashAppPayConfiguration.showsStorePaymentMethodField = cashAppPayDropInConfig.showsStorePaymentMethodField
-                cashAppPayConfiguration.localizationParameters = configuration.localizationParameters
-                cashAppPayConfiguration.style = configuration.style.formComponent
-        
-                return CashAppPayComponent(
-                    paymentMethod: paymentMethod,
-                    context: context,
-                    configuration: cashAppPayConfiguration
-                )
-            } else {
-                return nil
-            }
+            var cashAppPayConfiguration = CashAppPayConfiguration(
+                redirectURL: cashAppPayDropInConfig.redirectURL,
+                referenceId: cashAppPayDropInConfig.referenceId
+            )
+            cashAppPayConfiguration.showsStorePaymentMethodField = cashAppPayDropInConfig.showsStorePaymentMethodField
+            cashAppPayConfiguration.localizationParameters = configuration.localizationParameters
+            cashAppPayConfiguration.style = configuration.style.formComponent
+    
+            return CashAppPayComponent(
+                paymentMethod: paymentMethod,
+                context: context,
+                configuration: cashAppPayConfiguration
+            )
         #else
             return nil
         #endif

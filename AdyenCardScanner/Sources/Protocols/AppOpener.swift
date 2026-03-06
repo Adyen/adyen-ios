@@ -8,11 +8,9 @@ import Foundation
 import UIKit
 
 internal protocol AppOpener {
-    @available(iOS 13.0, *)
     func openSettingsApp() async
 }
 
-@available(iOS 13.0, *)
 extension UIApplication: AppOpener {
     func openSettingsApp() async {
         guard let settingsAppURL = URL(string: UIApplication.openSettingsURLString) else {

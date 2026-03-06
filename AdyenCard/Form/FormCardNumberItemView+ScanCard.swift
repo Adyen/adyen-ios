@@ -23,9 +23,7 @@ extension FormCardNumberItemView {
         scanButton.setTitle(title, for: .normal)
         scanButton.tintColor = .systemBlue
 
-        if #available(iOS 13.0, *) {
-            scanButton.setImage(UIImage(systemName: Constants.imageName), for: .normal)
-        }
+        scanButton.setImage(UIImage(systemName: Constants.imageName), for: .normal)
         
         scanButton.imageView?.contentMode = .scaleAspectFit
         scanButton.contentHorizontalAlignment = .center
