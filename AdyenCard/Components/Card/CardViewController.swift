@@ -32,7 +32,7 @@ internal class CardViewController: FormViewController {
     private let allowedCoBadgedCardTypes: [CardType] = [.carteBancaire, .bcmc, .dankort]
     private let cardScannerAnalyticsHandler: CardScannerAnalyticsHandler
     private lazy var cardScannerController: CardScannerControlling = {
-        var controller: CardScannerControlling = CardScannerController(presenter: self, analyticsHandler: cardScannerAnalyticsHandler)
+        let controller: CardScannerControlling = CardScannerController(presenter: self, analyticsHandler: cardScannerAnalyticsHandler)
         controller.title = localizedString(.cardScanYourCardButton, localizationParameters)
         controller.onScanComplete = { [weak self] result in
             self?.handleCardScanningResult(result)
