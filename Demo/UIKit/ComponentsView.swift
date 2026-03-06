@@ -51,33 +51,17 @@ internal final class ComponentsView: UIView {
     // MARK: - Loading
     
     private lazy var activityIndicator: UIActivityIndicatorView = {
-        let activityIndicator: UIActivityIndicatorView
-        if #available(iOS 13.0, *) {
-            activityIndicator = UIActivityIndicatorView(style: .large)
-        } else {
-            activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
-        }
+        let activityIndicator = UIActivityIndicatorView(style: .large)
         activityIndicator.hidesWhenStopped = true
-        
-        if #available(iOS 13.0, *) {
-            activityIndicator.color = .label
-            activityIndicator.backgroundColor = .systemGroupedBackground.withAlphaComponent(0.7)
-        } else {
-            activityIndicator.backgroundColor = .black.withAlphaComponent(0.3)
-        }
-        
+        activityIndicator.color = .label
+        activityIndicator.backgroundColor = .systemGroupedBackground.withAlphaComponent(0.7)
         return activityIndicator
     }()
     
     // MARK: - Table View
     
     private lazy var tableView: UITableView = {
-        var tableViewStyle = UITableView.Style.grouped
-        if #available(iOS 13.0, *) {
-            tableViewStyle = .insetGrouped
-        }
-        
-        let tableView = UITableView(frame: .zero, style: tableViewStyle)
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.rowHeight = 56.0
@@ -129,18 +113,7 @@ internal final class ComponentsView: UIView {
     }
     
     private func setUpApplePayCell(_ cell: UITableViewCell) {
-        let style: PKPaymentButtonStyle = {
-            if #available(iOS 14.0, *) {
-                return .automatic
-            }
-            
-            switch traitCollection.userInterfaceStyle {
-            case .dark:
-                return .white
-            default:
-                return .black
-            }
-        }()
+        let style: PKPaymentButtonStyle = .automatic
         
         let contentView = cell.contentView
         
@@ -182,9 +155,7 @@ extension ComponentsView: UITableViewDataSource {
             cell.textLabel?.text = item.title
             
             cell.detailTextLabel?.font = .preferredFont(forTextStyle: .caption1)
-            if #available(iOS 13.0, *) {
-                cell.detailTextLabel?.textColor = .secondaryLabel
-            }
+            cell.detailTextLabel?.textColor = .secondaryLabel
             cell.detailTextLabel?.adjustsFontForContentSizeCategory = true
             cell.detailTextLabel?.text = item.subtitle
         } else {

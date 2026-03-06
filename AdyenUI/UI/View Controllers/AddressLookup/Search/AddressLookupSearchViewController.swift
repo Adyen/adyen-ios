@@ -39,9 +39,7 @@ internal class AddressLookupSearchViewController: SearchViewController {
             emptyView: emptyView
         )
         
-        if #available(iOS 13.0, *) {
-            isModalInPresentation = true
-        }
+        isModalInPresentation = true
         
         title = localizedString(.billingAddressSectionTitle, viewModel.localizationParameters)
         

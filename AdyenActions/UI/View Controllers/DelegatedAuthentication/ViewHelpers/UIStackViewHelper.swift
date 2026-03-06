@@ -27,9 +27,7 @@ extension UIStackView {
         
         if withBackground {
             let subView = UIView(frame: view.bounds)
-            if #available(iOS 13.0, *) {
-                subView.backgroundColor = UIColor.secondarySystemBackground
-            }
+            subView.backgroundColor = UIColor.secondarySystemBackground
             subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             self.insertSubview(subView, at: 0)
             subView.layer.cornerRadius = 10.0
