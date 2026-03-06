@@ -3636,13 +3636,13 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
-		218652552F4F06E000B15E57 /* StoredPaymentInputView */ = {
+		218652552F4F06E000B15E57 /* StoredCardInputView */ = {
 			isa = PBXGroup;
 			children = (
 				218652582F4F071000B15E57 /* StoredCardInputViewModel.swift */,
 				218652562F4F070100B15E57 /* StoredCardInputViewController.swift */,
 			);
-			path = StoredPaymentInputView;
+			path = StoredCardInputView;
 			sourceTree = "<group>";
 		};
 		21B387B72C408A860029101E /* ViewHelpers */ = {
@@ -6291,7 +6291,7 @@
 		F919DF9C24EA7B7F0027976E /* Stored Card */ = {
 			isa = PBXGroup;
 			children = (
-				218652552F4F06E000B15E57 /* StoredPaymentInputView */,
+				218652552F4F06E000B15E57 /* StoredCardInputView */,
 				F919DF9624E6E2810027976E /* StoredCardComponent.swift */,
 				E9240D6B2265EFE900FB57D0 /* StoredCardAlertManager.swift */,
 				E7451A102600EDE0000BDCCF /* StoredCardConfiguration.swift */,

@@ -23,6 +23,7 @@ internal class StoredCardInputViewController: UIViewController {
     // MARK: - Constants
 
     private enum Constants {
+        static let leftChevronImage = "chevron.left"
         static let contentPadding: CGFloat = 24
         static let distanceBetweenImageAndLabels: CGFloat = 12
         static let distanceFromButtonsToLabels: CGFloat = 24
@@ -56,6 +57,7 @@ internal class StoredCardInputViewController: UIViewController {
     override internal func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        viewModel.viewDidLoad()
     }
 
     // MARK: - setup & configurations
@@ -112,8 +114,7 @@ internal class StoredCardInputViewController: UIViewController {
 
     private func setupNavigationBackButton() {
         let backButton = UIBarButtonItem(
-            // TODO: Robert: StoredView: 🐞 How in the world should i get the back button here? without using the chevron.left(available iOS 13+)
-            image: UIImage(systemName: "chevron.left"),
+            image: UIImage(systemName: Constants.leftChevronImage),
             style: .plain,
             target: self,
             action: #selector(backTapped)
@@ -215,6 +216,7 @@ internal class StoredCardInputViewController: UIViewController {
 
     private lazy var securityCodeItemView: FormCardSecurityCodeItemView = {
         // TODO: Robert: StoredView: 🐞 There is a bug with FormCardSecurityCodeItemView that when i type more than 3 characters only 3 display but validation happens with 4+ characters and then it fails validation. Needs to be debugged separately.
+        // There is an existing old ticket on this - COSDK-572. But i would say that this is better fixed now. 
         let view = FormCardSecurityCodeItemView(item: viewModel.securityCodeItem, theme: theme)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "securityCodeItemView")

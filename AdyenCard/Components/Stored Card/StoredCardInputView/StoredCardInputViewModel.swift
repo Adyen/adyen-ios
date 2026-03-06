@@ -29,36 +29,41 @@ internal protocol StoredCardInputViewModelProtocol: AnyObject {
 
     var theme: AdyenTheme { get }
 
-    var setPayButtonEnabled: ((Bool) -> Void)? { get set }
+    var setPayButtonEnabled: Completion<Bool>? { get set }
+    func viewDidLoad()
 }
 
 internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol, AdyenObserver {
+
     private enum Constants {
         static let cardImageSizeCardArtNotAvailable = CGSize(width: 80, height: 52)
     }
 
-    internal let theme: AdyenTheme
     private let localizationParameters: LocalizationParameters?
-    private let paymentMethod: StoredCardPaymentMethod
+    private var storedCardPaymentMethod: StoredCardPaymentMethod
     private let apiContext: APIContext
     private let analyticsProvider: AnyAnalyticsProvider?
     private let amount: Amount?
-    internal var setPayButtonEnabled: ((Bool) -> Void)?
+    private let publicKeyProvider: AnyPublicKeyProvider
+
+    internal var setPayButtonEnabled: Completion<Bool>?
+    internal let theme: AdyenTheme
 
     /// This informs the status of the payment after submitting the security code.
     internal var cardDetailsCompletionHandler: Completion<Result<CardDetails, Error>>?
-    internal var publicKeyProvider: AnyPublicKeyProvider
+    internal var otherPaymentOptionsHandler: VoidCompletion?
+    internal var closeHandler: VoidCompletion?
 
     internal init(
         theme: AdyenTheme,
-        paymentMethod: StoredCardPaymentMethod,
+        storedCardPaymentMethod: StoredCardPaymentMethod,
         apiContext: APIContext,
         amount: Amount?,
         analyticsProvider: AnyAnalyticsProvider?,
         localizationParameters: LocalizationParameters?
     ) {
         self.theme = theme
-        self.paymentMethod = paymentMethod
+        self.storedCardPaymentMethod = storedCardPaymentMethod
         self.amount = amount
         self.apiContext = apiContext
         self.localizationParameters = localizationParameters
@@ -72,7 +77,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
     }
 
     internal lazy var cardImageItem: AdyenUI.CardImageItem = {
-        let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
+        let displayInformation = storedCardPaymentMethod.displayInformation(using: localizationParameters)
         let imageURL = LogoURLProvider.logoURL(
             withName: displayInformation.logoName,
             environment: apiContext.environment,
@@ -97,8 +102,8 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
 
     /// We construct something like - Enter the security code for BOLD[Visa •••• 4556] to complete the payment of BOLD[$140.98]
     internal var subtitleText: NSAttributedString {
-        let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
-        let paymentMethodTitle = paymentMethod.name + displayInformation.title
+        let displayInformation = storedCardPaymentMethod.displayInformation(using: localizationParameters)
+        let paymentMethodTitle = storedCardPaymentMethod.name + displayInformation.title
         let localizedString = localizedString(.cardComponentInputDescription, localizationParameters, paymentMethodTitle, formattedAmount)
 
         let attributed = NSMutableAttributedString(string: localizedString)
@@ -126,8 +131,13 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
         localizedString(.submitButtonFormatted, localizationParameters, formattedAmount)
     }
 
+    internal func viewDidLoad() {
+        sendDidLoadEvent()
+    }
+
     internal func returnToPreviousScreen() {
-        // TODO: Robert: StoredView: Inform the router to pop me out.
+        resetSecurityCodeField()
+        closeHandler?()
     }
 
     // MARK: - Other payment options
@@ -137,7 +147,8 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
     }
 
     internal func showAllPaymentMethods() {
-        // TODO: Robert: StoredView: Inform the router to navigation to the payment list.
+        resetSecurityCodeField()
+        otherPaymentOptionsHandler?()
     }
 
     // MARK: - Submit payment
@@ -180,16 +191,24 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
 
     private func encryptCardDetails(securityCode: String, cardPublicKey: String) throws -> CardDetails {
         let encryptedSecurityCode = try CardEncryptor.encrypt(securityCode: securityCode, with: cardPublicKey)
-        return CardDetails(paymentMethod: paymentMethod, encryptedSecurityCode: encryptedSecurityCode)
+        return CardDetails(paymentMethod: storedCardPaymentMethod, encryptedSecurityCode: encryptedSecurityCode)
     }
+
+    // MARK: - Events
 
     private func sendEncryptionErrorEvent() {
         var errorEvent = AnalyticsEventError(
-            component: paymentMethod.type.rawValue,
+            component: storedCardPaymentMethod.type.rawValue,
             type: .internal
         )
         errorEvent.code = AnalyticsConstants.ErrorCode.encryptionError.stringValue
         analyticsProvider?.add(error: errorEvent)
     }
 
+    public func sendDidLoadEvent() {
+        var infoEvent = AnalyticsEventInfo(component: storedCardPaymentMethod.type.rawValue, type: .rendered)
+        infoEvent.isStoredPaymentMethod = true
+        infoEvent.brand = storedCardPaymentMethod.brand.rawValue
+        analyticsProvider?.add(info: infoEvent)
+    }
 }
