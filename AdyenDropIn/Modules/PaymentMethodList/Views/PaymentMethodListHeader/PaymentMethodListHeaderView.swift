@@ -17,10 +17,6 @@ internal struct PaymentMethodListHeaderViewModel {
 
 internal final class PaymentMethodListHeaderView: UIView {
 
-    private enum Layout {
-        static let margins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-    }
-
     // MARK: - UI Elements
     
     private lazy var amountLabel: UILabel = {
@@ -94,7 +90,7 @@ internal final class PaymentMethodListHeaderView: UIView {
     // MARK: - Private
     
     private func setupView() {
-        layoutMargins = Layout.margins
+        layoutMargins = .zero
 
         addSubview(stackView)
         
