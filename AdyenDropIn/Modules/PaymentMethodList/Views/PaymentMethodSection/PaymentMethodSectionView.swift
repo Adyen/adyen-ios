@@ -1,0 +1,138 @@
+//
+// Copyright (c) 2026 Adyen N.V.
+//
+// This file is open source and available under the MIT license. See the LICENSE file for more info.
+//
+
+import UIKit
+
+internal final class PaymentMethodSectionView: UIView {
+    
+    // MARK: - UI Elements
+    
+    private lazy var containerStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 0
+        return stackView
+    }()
+    
+    private lazy var headerLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 13, weight: .regular)
+        label.textColor = .secondaryLabel
+        label.textAlignment = .natural
+        label.accessibilityTraits = .header
+        return label
+    }()
+    
+    private lazy var itemsContainerView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 0
+        stackView.layer.cornerRadius = 10
+        stackView.layer.masksToBounds = true
+        stackView.backgroundColor = .secondarySystemGroupedBackground
+        return stackView
+    }()
+    
+    // MARK: - Initializers
+    
+    internal init() {
+        super.init(frame: .zero)
+        setupView()
+    }
+    
+    @available(*, unavailable)
+    internal required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Configuration
+    
+    internal func configure(with section: PaymentMethodSection) {
+        clearItems()
+        
+        guard !section.items.isEmpty else {
+            isHidden = true
+            return
+        }
+        
+        isHidden = false
+        
+        if let headerTitle = section.headerTitle {
+            configureHeader(with: headerTitle)
+            headerLabel.isHidden = false
+        } else {
+            headerLabel.isHidden = true
+        }
+        
+        populateItems(section.items)
+    }
+    
+    // MARK: - Private
+    
+    private func setupView() {
+        addSubview(containerStackView)
+        
+        containerStackView.addArrangedSubview(headerLabel)
+        containerStackView.addArrangedSubview(itemsContainerView)
+        containerStackView.setCustomSpacing(8, after: headerLabel)
+        
+        NSLayoutConstraint.activate([
+            containerStackView.topAnchor.constraint(equalTo: topAnchor),
+            containerStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            containerStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+    }
+    
+    private func configureHeader(with title: String) {
+        headerLabel.text = title.uppercased()
+        headerLabel.accessibilityLabel = title
+        headerLabel.accessibilityIdentifier = "Adyen.PaymentMethodList.sectionHeader.\(title)"
+    }
+    
+    private func clearItems() {
+        itemsContainerView.arrangedSubviews.forEach { view in
+            itemsContainerView.removeArrangedSubview(view)
+            view.removeFromSuperview()
+        }
+    }
+    
+    private func populateItems(_ items: [PaymentMethodItem]) {
+        for (index, item) in items.enumerated() {
+            let itemView = PaymentMethodItemView()
+            itemView.configure(with: item)
+            itemsContainerView.addArrangedSubview(itemView)
+            
+            if index < items.count - 1 {
+                let separator = createSeparatorView()
+                itemsContainerView.addArrangedSubview(separator)
+            }
+        }
+    }
+    
+    private func createSeparatorView() -> UIView {
+        let container = UIView()
+        container.backgroundColor = .secondarySystemGroupedBackground
+        
+        let separator = UIView()
+        separator.translatesAutoresizingMaskIntoConstraints = false
+        separator.backgroundColor = .separator
+        container.addSubview(separator)
+        
+        NSLayoutConstraint.activate([
+            separator.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 68),
+            separator.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            separator.topAnchor.constraint(equalTo: container.topAnchor),
+            separator.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+            separator.heightAnchor.constraint(equalToConstant: 1.0 / UIScreen.main.scale)
+        ])
+        
+        return container
+    }
+}
