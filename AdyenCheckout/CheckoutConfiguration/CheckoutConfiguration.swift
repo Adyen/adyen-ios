@@ -46,10 +46,16 @@ public struct CheckoutConfiguration {
     package var onError: CheckoutErrorHandler?
     
     package var onComplete: CheckoutSuccessHandler?
-    
-    package let context: AdyenContext
-    
+
     package var theme: AdyenTheme
+
+    package let amount: Amount?
+
+    package let apiContext: APIContext
+
+    package let analyticsApiContext: APIContext?
+
+    package let analyticsConfiguration: AnalyticsConfiguration
 
     /// Creates a CheckoutConfiguration instance.
     /// - Parameters:
@@ -61,19 +67,14 @@ public struct CheckoutConfiguration {
     /// - Throws: `ClientKeyError.invalidClientKey` if the client key is invalid.
     public init(
         environment: Environment,
-        amount: Amount,
+        amount: Amount?,
         clientKey: String,
         analyticsConfiguration: AnalyticsConfiguration = .init(),
         @CheckoutConfigurationBuilder content: () -> CheckoutConfigurable
     ) throws {
-        // TODO: Robert: api context to be a property & to be used when creating the AnalyticalAPIClient from here instead of AdyenContext.
         let apiContext = try APIContext(environment: environment, clientKey: clientKey)
-        let context = AdyenContext(
-            apiContext: apiContext,
-            amount: amount,
-            analyticsConfiguration: analyticsConfiguration
-        )
-        
+        let analyticsApiContext = Self.createAnalyticsAPIContext(apiContext: apiContext)
+
         var configDictionary: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
         let content = content()
         let configArray = (content as? CompositeCheckoutConfiguration)?.configurations ?? []
@@ -84,16 +85,28 @@ public struct CheckoutConfiguration {
             }
         }
         let configurations = configDictionary
-        
-        self.init(context: context, configurations: configurations)
+
+        self.init(
+            apiContext: apiContext,
+            amount: amount,
+            analyticsApiContext: analyticsApiContext,
+            analyticsConfiguration: analyticsConfiguration,
+            configurations: configurations
+        )
     }
     
     internal init(
-        context: AdyenContext,
+        apiContext: APIContext,
+        amount: Amount?,
+        analyticsApiContext: APIContext?,
+        analyticsConfiguration: AnalyticsConfiguration,
         configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:],
         theme: AdyenTheme = .default
     ) {
-        self.context = context
+        self.analyticsConfiguration = analyticsConfiguration
+        self.analyticsApiContext = analyticsApiContext
+        self.amount = amount
+        self.apiContext = apiContext
         self.configurations = configurations
         self.theme = theme
     }
@@ -116,7 +129,25 @@ public struct CheckoutConfiguration {
         configurations[.action(actionType)] as? T
     }
 
-    // TODO: Robert: Create the analytical APIClient.
+    // TODO: Robert: Make public to private, This public is not needed. But currently using this to support providing analyticsAPIContext in the Integration Examples.
+    package static func createAnalyticsAPIContext(
+        apiContext: APIContext
+    ) -> APIContext? {
+        guard
+            let analyticsEnvironment = (apiContext.environment as? Environment)?.toAnalyticsEnvironment(),
+            let analyticsApiContext = try? APIContext(
+                environment: analyticsEnvironment,
+                clientKey: apiContext.clientKey
+            )
+        else {
+            AdyenAssertion.assertionFailure(
+                message: "APIClient for Analytics couldn't be created. Ensure the used environment is of type `Environment`"
+            )
+            return nil
+        }
+
+        return analyticsApiContext
+    }
 }
 
 extension CheckoutConfiguration {

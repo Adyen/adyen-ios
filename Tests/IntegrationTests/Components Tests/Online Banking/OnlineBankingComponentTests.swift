@@ -23,6 +23,7 @@ class OnlineBankingComponentTests: XCTestCase {
         context = AdyenContext(
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
             analyticsProvider: analyticsProviderMock
         )
         style = FormComponentStyle()

@@ -13,6 +13,7 @@ extension Dummy {
         AdyenContext(
             apiContext: apiContext,
             amount: amount,
+            publicKey: publicKey,
             analyticsProvider: analyticsProvider
         )
     }

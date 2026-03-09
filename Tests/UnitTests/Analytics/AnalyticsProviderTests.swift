@@ -15,12 +15,12 @@ class AnalyticsProviderTests: XCTestCase {
         let sut = AnalyticsProvider(
             apiClient: APIClientMock(),
             configuration: AnalyticsConfiguration(),
+            checkoutAttemptId: nil,
             eventAnalyticsProvider: nil
         )
 
         // Then
         XCTAssertNil(sut.checkoutAttemptId)
-        XCTAssertNil(sut.eventAnalyticsProvider)
     }
 
     func testSendInitialAnalyticsShouldTriggerRequest() {
@@ -120,11 +120,13 @@ class AnalyticsProviderTests: XCTestCase {
         let eventAnalyticsProvider = EventAnalyticsProvider(
             apiClient: eventApiClient,
             context: AnalyticsContext(),
-            eventDataSource: AnalyticsEventDataSource()
+            eventDataSource: AnalyticsEventDataSource(),
+            checkoutAttemptId: checkoutAttemptIdMockValue
         )
         let sut = AnalyticsProvider(
             apiClient: APIClientMock(),
             configuration: AnalyticsConfiguration(),
+            checkoutAttemptId: nil,
             eventAnalyticsProvider: eventAnalyticsProvider
         )
         
@@ -196,6 +198,7 @@ class AnalyticsProviderTests: XCTestCase {
         let analyticsProvider = AnalyticsProvider(
             apiClient: apiClient,
             configuration: configuration,
+            checkoutAttemptId: nil,
             eventAnalyticsProvider: nil
         )
         
@@ -260,6 +263,7 @@ class AnalyticsProviderTests: XCTestCase {
         AnalyticsProvider(
             apiClient: apiClient,
             configuration: AnalyticsConfiguration(),
+            checkoutAttemptId: nil,
             eventAnalyticsProvider: nil
         )
     }

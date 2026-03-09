@@ -32,7 +32,12 @@ final class CheckoutTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockProvider = CheckoutProviderMock()
-        configuration = CheckoutConfiguration(context: Dummy.context)
+        configuration = CheckoutConfiguration(
+            apiContext: Dummy.apiContext,
+            amount: Dummy.amount,
+            analyticsApiContext: nil,
+            analyticsConfiguration: .init()
+        )
         paymentMethods = try! AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
     }
 
@@ -50,8 +55,7 @@ final class CheckoutTests: XCTestCase {
         let expectedCheckout = Checkout(
             configuration: configuration,
             session: expectedSession,
-            paymentMethods: nil,
-            checkoutAttemptId: "attemptId",
+            adyenContext: Dummy.context,
             presentationDelegate: nil
         )
         mockProvider.setupWithSessionResult = .success(expectedCheckout)
@@ -66,7 +70,6 @@ final class CheckoutTests: XCTestCase {
             provider: mockProvider
         )
         
-        XCTAssertEqual(checkout.checkoutAttemptId, "attemptId")
         XCTAssertNotNil(checkout.paymentMethods)
         XCTAssertNotNil(checkout.session)
         XCTAssertTrue(checkout.session === expectedSession)
@@ -98,9 +101,8 @@ final class CheckoutTests: XCTestCase {
     func testSetupWithPaymentMethods_Success() async throws {
         let expectedCheckout = Checkout(
             configuration: configuration,
-            session: nil,
             paymentMethods: paymentMethods,
-            checkoutAttemptId: "attemptId2",
+            adyenContext: Dummy.context,
             presentationDelegate: nil
         )
         
@@ -113,7 +115,6 @@ final class CheckoutTests: XCTestCase {
             provider: mockProvider
         )
 
-        XCTAssertEqual(checkout.checkoutAttemptId, "attemptId2")
         XCTAssertNil(checkout.session)
         XCTAssertNotNil(checkout.paymentMethods)
         XCTAssertTrue(mockProvider.setupPaymentMethodsCalled)
@@ -154,7 +155,7 @@ final class CheckoutTests: XCTestCase {
         do {
             let result = try await mockProvider.setupSession(
                 with: response,
-                configuration: configuration,
+                adyenContext: Dummy.context,
                 apiClient: apiClient
             )
             XCTAssertTrue(result === sessionMock)
@@ -192,7 +193,7 @@ final class CheckoutTests: XCTestCase {
         
         let sut = Checkout(
             configuration: configuration,
-            checkoutAttemptId: "attemptId",
+            adyenContext: Dummy.context,
             presentationDelegate: nil
         )
         sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
@@ -208,7 +209,7 @@ final class CheckoutTests: XCTestCase {
         let sut = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
-            checkoutAttemptId: "attemptId",
+            adyenContext: Dummy.context,
             presentationDelegate: nil
         )
         
@@ -225,7 +226,7 @@ final class CheckoutTests: XCTestCase {
         let sut = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
-            checkoutAttemptId: "attemptId",
+            adyenContext: Dummy.context,
             presentationDelegate: nil
         )
         
@@ -240,8 +241,7 @@ final class CheckoutTests: XCTestCase {
         // Given
         let sut = Checkout(
             configuration: configuration,
-            paymentMethods: nil,
-            checkoutAttemptId: "attemptId",
+            adyenContext: Dummy.context,
             presentationDelegate: nil
         )
         
@@ -257,7 +257,7 @@ final class CheckoutTests: XCTestCase {
         let sut = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
-            checkoutAttemptId: "attemptId",
+            adyenContext: Dummy.context,
             presentationDelegate: nil
         )
         
@@ -276,7 +276,7 @@ final class CheckoutTests: XCTestCase {
         let sut = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
-            checkoutAttemptId: "attemptId",
+            adyenContext: Dummy.context,
             presentationDelegate: nil
         )
         let storedMethodIdentifier = try XCTUnwrap(paymentMethods.stored.first?.identifier)
@@ -293,7 +293,7 @@ final class CheckoutTests: XCTestCase {
         let sut = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
-            checkoutAttemptId: "attemptId",
+            adyenContext: Dummy.context,
             presentationDelegate: nil
         )
         
@@ -308,8 +308,7 @@ final class CheckoutTests: XCTestCase {
         // Given
         let sut = Checkout(
             configuration: configuration,
-            paymentMethods: nil,
-            checkoutAttemptId: "attemptId",
+            adyenContext: Dummy.context,
             presentationDelegate: nil
         )
         
@@ -325,7 +324,7 @@ final class CheckoutTests: XCTestCase {
         let sut = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
-            checkoutAttemptId: "attemptId",
+            adyenContext: Dummy.context,
             presentationDelegate: nil
         )
         
@@ -348,7 +347,7 @@ final class CheckoutTests: XCTestCase {
         // Given
         let expectedCheckout = Checkout(
             configuration: configuration,
-            checkoutAttemptId: "attemptId",
+            adyenContext: Dummy.context,
             presentationDelegate: nil
         )
         mockProvider.setupActionOnlyResult = .success(expectedCheckout)
@@ -361,7 +360,6 @@ final class CheckoutTests: XCTestCase {
         )
         
         // Then
-        XCTAssertEqual(checkout.checkoutAttemptId, "attemptId")
         XCTAssertNil(checkout.session)
         XCTAssertNil(checkout.paymentMethods)
         XCTAssertTrue(mockProvider.setupActionOnlyCalled)
@@ -388,7 +386,7 @@ final class CheckoutTests: XCTestCase {
         // Given
         let expectedCheckout = Checkout(
             configuration: configuration,
-            checkoutAttemptId: "attemptId",
+            adyenContext: Dummy.context,
             presentationDelegate: nil
         )
         mockProvider.setupActionOnlyResult = .success(expectedCheckout)

@@ -8,7 +8,7 @@ import AdyenNetworking
 import Foundation
 
 internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
-    
+
     private enum Constants {
         static let batchInterval: TimeInterval = 10
         static let infoLimit = 50
@@ -16,32 +16,27 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
         static let errorLimit = 5
     }
 
-    // TODO: Robert: Remove this, this will be private and not settable. but available during init.
-    internal var checkoutAttemptId: String? {
-        didSet {
-            if checkoutAttemptId != nil {
-                startNextTimer()
-            }
-        }
-    }
-
     internal let apiClient: APIClientProtocol
     internal let eventDataSource: AnyAnalyticsEventDataSource
-    
     private let context: AnalyticsContext
     private var batchTimer: Timer?
     private let batchInterval: TimeInterval
-    
+    private let checkoutAttemptId: String
+
     internal init(
         apiClient: APIClientProtocol,
         context: AnalyticsContext,
         eventDataSource: AnyAnalyticsEventDataSource,
+        checkoutAttemptId: String,
         batchInterval: TimeInterval = Constants.batchInterval
     ) {
         self.apiClient = apiClient
         self.eventDataSource = eventDataSource
         self.context = context
         self.batchInterval = batchInterval
+        self.checkoutAttemptId = checkoutAttemptId
+        // TODO: Robert: Bug: This can be called in a background thread and then the timer will never be scheduled.
+        startNextTimer()
     }
     
     deinit {
@@ -84,9 +79,8 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
     
     /// Checks the event arrays safely and creates the request with them if there is any to send.
     private func requestWithAllEvents() -> AnalyticsRequest? {
-        guard let checkoutAttemptId,
-              let events = eventDataSource.allEvents() else { return nil }
-        
+        guard let events = eventDataSource.allEvents() else { return nil }
+
         // as per this call's limitation, we only send up to the
         // limit of each event and discard the older ones
         let platform = context.platform.rawValue
