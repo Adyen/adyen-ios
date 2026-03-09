@@ -13,7 +13,7 @@ package protocol AnyInitialAnalyticsProvider {
 }
 
 package protocol AnalyticsCheckoutAttemptIdProvider {
-    var checkoutAttemptId: String? { get }
+    var checkoutAttemptId: String { get }
 }
 
 package protocol AnyEventAnalyticsProvider {

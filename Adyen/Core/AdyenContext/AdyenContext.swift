@@ -66,31 +66,22 @@ public final class AdyenContext {
         checkoutAttemptId: String?,
         analyticsConfiguration: AnalyticsConfiguration
     ) -> AnyAnalyticsProvider? {
-        guard let analyticsApiContext else {
-            AdyenAssertion.assertionFailure(
-                message: "AnalyticsProvider couldn't be created as AnalyticsAPIContext is not available."
-            )
+        guard let analyticsApiContext,
+              let checkoutAttemptId,
+              analyticsConfiguration.isEnabled else {
             return nil
         }
+
         let analyticsApiClient = APIClient(apiContext: analyticsApiContext)
+        let eventDataSource = AnalyticsEventDataSource()
+        let syncEventDataSource = ThreadSafeAnalyticsEventDataSource(dataSource: eventDataSource)
+        let eventAnalyticsProvider = EventAnalyticsProvider(
+            apiClient: analyticsApiClient,
+            context: analyticsConfiguration.context,
+            eventDataSource: syncEventDataSource,
+            checkoutAttemptId: checkoutAttemptId
+        )
 
-        var eventAnalyticsProvider: AnyEventAnalyticsProvider?
-
-        // TODO: Robert: If checkoutAttemptID is nil then don't create AnalyticsProvider
-        // - checkoutAttemptID will be required in the AnalyticsProvider
-        // - eventAnalyticsProvider will be required in the AnalyticsProvider.
-        if let checkoutAttemptId,
-           analyticsConfiguration.isEnabled {
-            let eventDataSource = AnalyticsEventDataSource()
-            let syncEventDataSource = ThreadSafeAnalyticsEventDataSource(dataSource: eventDataSource)
-            eventAnalyticsProvider = EventAnalyticsProvider(
-                apiClient: analyticsApiClient,
-                context: analyticsConfiguration.context,
-                eventDataSource: syncEventDataSource,
-                checkoutAttemptId: checkoutAttemptId
-            )
-        }
-        
         return AnalyticsProvider(
             apiClient: analyticsApiClient,
             configuration: analyticsConfiguration,
