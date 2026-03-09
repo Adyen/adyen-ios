@@ -7,6 +7,7 @@
 import Adyen
 import AdyenComponents
 import AdyenSession
+import Contacts
 import PassKit
 
 internal final class ApplePayComponentExample: InitialDataFlowProtocol {
@@ -81,7 +82,18 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
         guard let paymentMethod = paymentMethods.paymentMethod(ofType: ApplePayPaymentMethod.self) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self)
         }
-        let config = try ConfigurationConstants.current.applePayConfiguration(using: .demoWithShippingFields)
+        var config = try ConfigurationConstants.current.applePayConfiguration(using: .demoWithShippingFields)
+        config.onAuthorize = { payment in
+            if ConfigurationConstants.current.applePaySettings.didAuthorizeSuccessful {
+                return PKPaymentAuthorizationResult(status: .success, errors: nil)
+            } else {
+                let postalCodeError = PKPaymentRequest.paymentShippingAddressInvalidError(
+                    withKey: CNPostalAddressPostalCodeKey,
+                    localizedDescription: "Wrong postal code"
+                )
+                return PKPaymentAuthorizationResult(status: .failure, errors: [postalCodeError])
+            }
+        }
 
         let component = try ApplePayComponent(
             paymentMethod: paymentMethod,
@@ -89,7 +101,6 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
             configuration: config
         )
         component.delegate = session
-        component.authorizationDelegate = self
         return component
     }
 
@@ -132,22 +143,4 @@ extension ApplePayComponentExample: PresentationDelegate {
     /// The implementation of this delegate method is not needed when using Session
     internal func present(component: PresentableComponent) {}
 
-}
-
-extension ApplePayComponentExample: ApplePayAuthorizationDelegate {
-    
-    func didAuthorize(
-        payment: PKPayment,
-        completion: @escaping (PKPaymentAuthorizationResult) -> Void
-    ) {
-        if ConfigurationConstants.current.applePaySettings.didAuthorizeSuccessful {
-            completion(.init(status: .success, errors: nil))
-        } else {
-            let postalCodeError = PKPaymentRequest.paymentShippingAddressInvalidError(
-                withKey: CNPostalAddressPostalCodeKey,
-                localizedDescription: "Wrong postal code"
-            )
-            completion(.init(status: .failure, errors: [postalCodeError]))
-        }
-    }
 }

@@ -15,7 +15,9 @@ extension Component {
     /// Finalizes the payment if there is any, after being processed by payment provider.
     /// - Parameter success: The status of the payment.
     /// - Parameter completion: The block to execute after the component finalizes its activity.
-    /// Use of this block is recommended for ApplePayComponent. You may specify nil for this parameter.
+    ///
+    /// - Note: `ApplePayComponent` does not use this method. Its Apple Pay sheet is resolved
+    ///   automatically via `resolve(success:)`, called by the `Checkout` orchestrator.
     public func finalizeIfNeeded(with success: Bool, completion: (() -> Void)?) {
         stopLoading()
         if let finalizable = self as? FinalizableComponent {
@@ -43,7 +45,6 @@ public protocol FinalizableComponent: Component {
     /// Finalizes payment after being processed by payment provider.
     /// - Parameter success: The status of the payment.
     /// - Parameter completion: The block to execute after the component finalizes its activity.
-    /// Use of this block is recommended for ApplePayComponent. You may specify nil for this parameter.
     func didFinalize(with success: Bool, completion: (() -> Void)?)
 }
 

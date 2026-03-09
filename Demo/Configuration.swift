@@ -349,7 +349,7 @@ internal extension PKPaymentRequest {
         paymentRequest.paymentSummaryItems = [
             PKPaymentSummaryItem(label: ConfigurationConstants.appName, amount: decimalAmount)
         ]
-        paymentRequest.merchantCapabilities = .capability3DS
+        paymentRequest.merchantCapabilities = [.capability3DS, .credit, .debit]
         return paymentRequest
     }
     

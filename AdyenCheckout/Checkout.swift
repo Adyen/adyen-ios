@@ -14,6 +14,9 @@
 #if canImport(AdyenActions)
     @_spi(AdyenInternal) import AdyenActions
 #endif
+#if canImport(AdyenComponents)
+    @_spi(AdyenInternal) import AdyenComponents
+#endif
 import AdyenNetworking
 import Foundation
 
@@ -66,6 +69,10 @@ public final class Checkout: CheckoutProtocol {
 
     internal let configuration: CheckoutConfiguration
     internal weak var presentationDelegate: PresentationDelegate?
+
+    /// The component that last called `didSubmit`. Used to forward the backend result
+    /// (e.g. calling `resolve(success:)` on `ApplePayComponent`).
+    internal var activePaymentComponent: (any PaymentComponent)?
     
     internal lazy var actionHandlingComponent: ActionHandlingComponent = {
         let threeDS2Config: ThreeDS2ActionConfiguration = configuration.configuration(
@@ -178,6 +185,19 @@ public final class Checkout: CheckoutProtocol {
         
         self.session?.delegate = self
         self.session?.presentationDelegate = presentationDelegate
+    }
+
+    /// If the active payment component is an `ApplePayComponent`, forwards the
+    /// backend result so the Apple Pay sheet can show the correct animation.
+    internal func resolveApplePayIfNeeded(success: Bool) {
+        #if canImport(AdyenComponents)
+            if let applePayComponent = activePaymentComponent as? ApplePayComponent {
+                Task { @MainActor in
+                    applePayComponent.resolve(success: success)
+                }
+            }
+        #endif
+        activePaymentComponent = nil
     }
 }
 

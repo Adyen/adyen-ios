@@ -15,7 +15,6 @@ import UIKit
 #endif
 
 internal final class PreApplePayComponent: PresentableComponent,
-    FinalizableComponent,
     PaymentComponent,
     Cancellable {
     
@@ -89,8 +88,10 @@ internal final class PreApplePayComponent: PresentableComponent,
         }
     }
 
-    internal func didFinalize(with success: Bool, completion: (() -> Void)?) {
-        applePayComponent.didFinalize(with: success, completion: completion)
+    internal func resolve(success: Bool) {
+        Task { @MainActor in
+            applePayComponent.resolve(success: success)
+        }
     }
     
     private func createModel(with amount: Amount) -> PreApplePayView.Model {
