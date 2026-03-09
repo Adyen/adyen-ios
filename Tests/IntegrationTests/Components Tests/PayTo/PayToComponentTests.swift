@@ -364,8 +364,8 @@ class PayToComponentTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
             analyticsProvider: analyticsProviderMock
         )
         let paymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)

@@ -17,10 +17,6 @@ class CardComponentTests: XCTestCase {
         Dummy.context
     }
 
-    var payment: Payment {
-        Dummy.payment
-    }
-    
     var method: CardPaymentMethod {
         .init(
             type: .bcmc,
@@ -96,7 +92,7 @@ class CardComponentTests: XCTestCase {
 
         XCTAssertEqual(items.storeDetailsItem.title, localizedString(.cardStoreDetailsButton, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(items.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.configuration.localizationParameters))
+        XCTAssertEqual(items.button.title, localizedSubmitButtonTitle(with: context.amount, style: .immediate, sut.configuration.localizationParameters))
     }
 
     func test_formItems_withCustomKeySeparator_shouldUseLocalizedStrings() {
@@ -125,7 +121,7 @@ class CardComponentTests: XCTestCase {
 
         XCTAssertEqual(items.storeDetailsItem.title, localizedString(LocalizationKey(key: "adyen_card_storeDetailsButton"), sut.configuration.localizationParameters))
 
-        XCTAssertEqual(items.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.configuration.localizationParameters))
+        XCTAssertEqual(items.button.title, localizedSubmitButtonTitle(with: context.amount, style: .immediate, sut.configuration.localizationParameters))
     }
 
     func test_component_withCustomTheme_shouldApplyThemeStyles() {
@@ -1447,8 +1443,8 @@ class CardComponentTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
             analyticsProvider: analyticsProviderMock
         )
         let sut = CardComponent(
@@ -1473,8 +1469,8 @@ class CardComponentTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
             analyticsProvider: analyticsProviderMock
         )
         let sut = CardComponent(
@@ -2065,8 +2061,9 @@ class CardComponentTests: XCTestCase {
         let amount = Amount(value: 1234567, currencyCode: "USD")
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Payment(amount: amount, countryCode: "US"),
-            amount: amount
+            amount: amount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
         )
 
         // When
@@ -2087,8 +2084,9 @@ class CardComponentTests: XCTestCase {
         let amount = Amount(value: 1234567, currencyCode: "USD")
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Payment(amount: amount, countryCode: "US"),
-            amount: amount
+            amount: amount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
         )
 
         // When

@@ -12,8 +12,8 @@ extension Dummy {
     internal static func context(with analyticsProvider: AnyAnalyticsProvider) -> AdyenContext {
         AdyenContext(
             apiContext: apiContext,
-            payment: payment,
             amount: amount,
+            publicKey: publicKey,
             analyticsProvider: analyticsProvider
         )
     }

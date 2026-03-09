@@ -194,8 +194,9 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         let customAmount = Amount(value: 1234, currencyCode: "GBP")
         let customContext = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Payment(amount: customAmount, countryCode: "GB"),
-            amount: customAmount
+            amount: customAmount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
         )
         let config = factory.defaultConfiguration()
         
@@ -207,8 +208,8 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         )
         
         // Then
-        XCTAssertEqual(component.context.amount.value, 1234)
-        XCTAssertEqual(component.context.amount.currencyCode, "GBP")
+        XCTAssertEqual(component.context.amount?.value, 1234)
+        XCTAssertEqual(component.context.amount?.currencyCode, "GBP")
     }
     
     func testMockFactory_MultipleComponentsAreIndependent() {

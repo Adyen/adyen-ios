@@ -7,7 +7,6 @@
 import Adyen
 import SwiftUI
 
-@available(iOS 13.0.0, *)
 internal struct ConfigurationView: View {
     
     private enum ConfigurationSection: String, CaseIterable {
@@ -209,7 +208,6 @@ internal struct ConfigurationView: View {
     
 }
 
-@available(iOS 13.0.0, *)
 internal struct TextFieldItemView: View {
 
     internal let title: String
@@ -235,7 +233,6 @@ internal struct TextFieldItemView: View {
     }
 }
 
-@available(iOS 13.0.0, *)
 private struct ListItemView<T: Hashable>: View {
     let viewModel: ViewModel<T>
     
@@ -253,7 +250,6 @@ private struct ListItemView<T: Hashable>: View {
     }
 }
 
-@available(iOS 13.0.0, *)
 extension CountryDisplayInfo {
     fileprivate var toListItemViewModel: ListItemView<String>.ViewModel<String> {
         ListItemView.ViewModel(
@@ -276,7 +272,6 @@ extension CountryDisplayInfo {
     }
 }
 
-@available(iOS 13.0.0, *)
 extension CurrencyDisplayInfo {
     fileprivate var toListItemViewModel: ListItemView<String>.ViewModel<String> {
         ListItemView.ViewModel(title: code, subtitle: symbol, tag: code)
@@ -288,7 +283,6 @@ extension CurrencyDisplayInfo {
     }
 }
 
-@available(iOS 13.0.0, *)
 extension Picker {
     @ViewBuilder
     fileprivate func navigationLinkStyle() -> some View {

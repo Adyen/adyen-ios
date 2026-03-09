@@ -12,31 +12,9 @@ final class EventAnalyticsProviderTests: XCTestCase {
     
     var eventDataSource = AnalyticsEventDataSource()
 
-    func testShouldNotSendEventsWhenNoAttemptId() {
-        let apiClient = APIClientMock()
-        let analyticsResponse = EmptyResponse()
-        let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
-        
-        apiClient.mockedResults = [analyticsResult]
-        
-        let expectation = expectation(description: "should not be called")
-        expectation.isInverted = true
-        
-        apiClient.onExecute = { _ in
-            expectation.fulfill()
-        }
-        
-        let sut = createSUT(apiClient: apiClient)
-
-        sut.sendEventsIfNeeded()
-        
-        wait(for: [expectation], timeout: 0.1)
-    }
-    
     func testShouldNotSendEventsWhenNoEvents() {
         let apiClient = APIClientMock()
-        let sut = createSUT(apiClient: apiClient)
-        sut.checkoutAttemptId = checkoutAttemptIdMockValue
+        let sut = createSUTWithSuccessMock(apiClient: apiClient)
         
         let expectation = expectation(description: "should not be called")
         expectation.isInverted = true
@@ -155,11 +133,11 @@ final class EventAnalyticsProviderTests: XCTestCase {
     }
     
     private func createSUT(apiClient: APIClientMock) -> EventAnalyticsProvider {
-        
         EventAnalyticsProvider(
             apiClient: apiClient,
             context: AnalyticsContext(),
-            eventDataSource: eventDataSource
+            eventDataSource: eventDataSource,
+            checkoutAttemptId: checkoutAttemptIdMockValue
         )
     }
     
@@ -170,8 +148,6 @@ final class EventAnalyticsProviderTests: XCTestCase {
         let analyticsResult: Result<Response, Error> = .success(analyticsResponse)
         
         apiClient.mockedResults = [analyticsResult]
-        
-        sut.checkoutAttemptId = checkoutAttemptIdMockValue
         
         return sut
     }

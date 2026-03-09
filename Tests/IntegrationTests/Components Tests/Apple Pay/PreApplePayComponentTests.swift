@@ -14,7 +14,7 @@ import XCTest
 class PreApplePayComponentTests: XCTestCase {
 
     var analyticsProviderMock: AnalyticsProviderMock!
-    let amount = Dummy.payment.amount
+    let amount = Dummy.amount
     var paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "test_name", brands: ["mc", "visa"])
     var context: AdyenContext!
     var paymentComponentDelegate: PaymentComponentDelegateMock!
@@ -28,7 +28,7 @@ class PreApplePayComponentTests: XCTestCase {
 
         let request = PKPaymentRequest()
         request.merchantIdentifier = "test_id"
-        request.countryCode = Dummy.payment.countryCode
+        request.countryCode = "US"
         request.currencyCode = amount.currencyCode
         request.merchantCapabilities = .capability3DS
         request.paymentSummaryItems = [

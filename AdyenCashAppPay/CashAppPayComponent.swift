@@ -14,7 +14,6 @@ import UIKit
 
 /// A component that handles a Cash App Pay payment.
 public final class CashAppPayComponent: PaymentComponent,
-    PaymentAware,
     PresentableComponent,
     LoadingComponent {
 
@@ -166,7 +165,7 @@ public final class CashAppPayComponent: PaymentComponent,
 
     private func createPaymentActions() -> [PaymentAction] {
         var actions = [PaymentAction]()
-        if let amount = payment?.amount, amount.value > 0 {
+        if let amount = context.amount, amount.value > 0 {
             let moneyAmount = Money(amount: UInt(amount.value), currency: .USD)
             let oneTimeAction = PaymentAction.oneTimePayment(
                 scopeID: cashAppPayPaymentMethod.scopeId,
@@ -212,7 +211,7 @@ public final class CashAppPayComponent: PaymentComponent,
             let details = try cashAppPayDetails(from: grants, customerProfile: profile)
             submit(data: PaymentComponentData(
                 paymentMethodDetails: details,
-                amount: payment?.amount,
+                amount: context.amount,
                 order: order,
                 storePaymentMethod: storePayment
             ))

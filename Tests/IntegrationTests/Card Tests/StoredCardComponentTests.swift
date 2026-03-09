@@ -37,7 +37,7 @@ class StoredCardComponentTests: XCTestCase {
         XCTAssertNotNil(textField)
 
         XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
-        XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) })
+        XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: context.amount, style: .immediate, nil) })
 
         alertController.dismiss(animated: false, completion: nil)
     }
@@ -53,7 +53,7 @@ class StoredCardComponentTests: XCTestCase {
         XCTAssertNotNil(textField)
 
         XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
-        XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) })
+        XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: context.amount, style: .immediate, nil) })
 
         alertController.dismiss(animated: false, completion: nil)
     }
@@ -97,7 +97,7 @@ class StoredCardComponentTests: XCTestCase {
         textField?.text = "737"
         textField?.sendActions(for: .editingChanged)
 
-        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) })
+        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.amount, style: .immediate, nil) })
 
         payAction.tap()
         
@@ -141,7 +141,7 @@ class StoredCardComponentTests: XCTestCase {
         textField.text = "737"
         textField.sendActions(for: .editingChanged)
 
-        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) })
+        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.amount, style: .immediate, nil) })
 
         payAction.tap()
 
@@ -168,7 +168,7 @@ class StoredCardComponentTests: XCTestCase {
         
         let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
         let textField: UITextField! = try XCTUnwrap(alertController.textFields?.first)
-        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) })
+        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.amount, style: .immediate, nil) })
 
         textField.insertText("a")
         textField?.sendActions(for: .editingChanged)
@@ -207,7 +207,7 @@ class StoredCardComponentTests: XCTestCase {
         
         let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
         let textField: UITextField! = try XCTUnwrap(alertController.textFields?.first)
-        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.payment?.amount, style: .immediate, nil) })
+        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.amount, style: .immediate, nil) })
 
         textField.insertText("11")
         textField?.sendActions(for: .editingChanged)

@@ -67,7 +67,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.billingAddressItem.title, localizedString(.addressFieldTitle, sut.configuration.localizationParameters))
 
         XCTAssertEqual(sut.payButton.title, localizedSubmitButtonTitle(
-            with: sut.payment?.amount,
+            with: sut.context.amount,
             style: .immediate,
             sut.configuration.localizationParameters
         ))
@@ -241,8 +241,8 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
             analyticsProvider: analyticsProviderMock
         )
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")

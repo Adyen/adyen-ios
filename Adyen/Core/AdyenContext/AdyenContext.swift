@@ -10,44 +10,40 @@ import Foundation
 // TODO: make non public
 
 /// A class that defines the behavior of the components in a payment flow.
-public final class AdyenContext: PaymentAware {
+public final class AdyenContext {
     
     // MARK: - Properties
     
     /// The API context used to retrieve internal resources.
     public let apiContext: APIContext
     
-    // TODO: get rid of payment
-    /// The payment information.
-    public private(set) var payment: Payment?
-    
     package var analyticsProvider: AnyAnalyticsProvider?
 
-    package let amount: Amount
-    
+    package let publicKey: String
+
+    /// The payment amount.
+    public var amount: Amount?
+
     // MARK: - Initializers
     
-    /// Creates an Adyen context with the provided API context and analytics configuration.
-    /// - Parameters:
-    ///   - apiContext: The API context used to retrieve internal resources.
-    ///   - analyticsConfiguration: A configuration object that specifies the behavior for the analytics.
-    ///   - payment: The payment information.
     package convenience init(
         apiContext: APIContext,
-        payment: Payment?,
-        amount: Amount,
+        amount: Amount?,
+        publicKey: String,
+        checkoutAttemptId: String?,
+        analyticsAPIContext: APIContext?,
         analyticsConfiguration: AnalyticsConfiguration = .init()
     ) {
-        
         let analyticsProvider = Self.createAnalyticsProvider(
-            apiContext: apiContext,
+            analyticsApiContext: analyticsAPIContext,
+            checkoutAttemptId: checkoutAttemptId,
             analyticsConfiguration: analyticsConfiguration
         )
         
         self.init(
             apiContext: apiContext,
-            payment: payment,
             amount: amount,
+            publicKey: publicKey,
             analyticsProvider: analyticsProvider
         )
     }
@@ -55,69 +51,50 @@ public final class AdyenContext: PaymentAware {
     /// Internal init for testing only
     internal init(
         apiContext: APIContext,
-        payment: Payment?,
-        amount: Amount,
+        amount: Amount?,
+        publicKey: String,
         analyticsProvider: AnyAnalyticsProvider?
     ) {
+        self.publicKey = publicKey
         self.apiContext = apiContext
         self.amount = amount
         self.analyticsProvider = analyticsProvider
-        self.payment = payment
-    }
-    
-    @_spi(AdyenInternal)
-    public func update(payment: Payment?) {
-        self.payment = payment
     }
 
-    /// The API environment for Analytics is different than the APIClient environment that is used for other payment calls.
-    /// // TODO: Robert: Move this to the CheckoutConfiguration
-    package static func createAnalyticsAPIClient(
-        apiContext: APIContext
-    ) -> APIClient? {
-        guard
-            let analyticsEnvironment = (apiContext.environment as? Environment)?.toAnalyticsEnvironment(),
-            let analyticsApiContext = try? APIContext(
-                environment: analyticsEnvironment,
-                clientKey: apiContext.clientKey
-            )
-        else {
-            AdyenAssertion.assertionFailure(
-                message: "APIClient for Analytics couldn't be created. Ensure the used environment is of type `Environment`"
-            )
-            return nil
-        }
-
-        return APIClient(apiContext: analyticsApiContext)
-    }
-
-    // TODO: Robert: this stays here even in the init of the AnalyticalProvider.
     private static func createAnalyticsProvider(
-        apiContext: APIContext,
+        analyticsApiContext: APIContext?,
+        checkoutAttemptId: String?,
         analyticsConfiguration: AnalyticsConfiguration
     ) -> AnyAnalyticsProvider? {
-        guard let apiClient = AdyenContext.createAnalyticsAPIClient(apiContext: apiContext) else {
+        guard let analyticsApiContext else {
             AdyenAssertion.assertionFailure(
-                message: "AnalyticsProvider couldn't be created. Ensure the used environment is of type `Environment`"
+                message: "AnalyticsProvider couldn't be created as AnalyticsAPIContext is not available."
             )
             return nil
         }
+        let analyticsApiClient = APIClient(apiContext: analyticsApiContext)
 
         var eventAnalyticsProvider: AnyEventAnalyticsProvider?
-        // TODO: Robert: If flag is true we create everything. If false, we send the RequestCheckoutAttemptID and Enrichment call with analytical data.
-        if analyticsConfiguration.isEnabled {
+
+        // TODO: Robert: If checkoutAttemptID is nil then don't create AnalyticsProvider
+        // - checkoutAttemptID will be required in the AnalyticsProvider
+        // - eventAnalyticsProvider will be required in the AnalyticsProvider.
+        if let checkoutAttemptId,
+           analyticsConfiguration.isEnabled {
             let eventDataSource = AnalyticsEventDataSource()
             let syncEventDataSource = ThreadSafeAnalyticsEventDataSource(dataSource: eventDataSource)
             eventAnalyticsProvider = EventAnalyticsProvider(
-                apiClient: apiClient,
+                apiClient: analyticsApiClient,
                 context: analyticsConfiguration.context,
-                eventDataSource: syncEventDataSource
+                eventDataSource: syncEventDataSource,
+                checkoutAttemptId: checkoutAttemptId
             )
         }
         
         return AnalyticsProvider(
-            apiClient: apiClient,
+            apiClient: analyticsApiClient,
             configuration: analyticsConfiguration,
+            checkoutAttemptId: checkoutAttemptId,
             eventAnalyticsProvider: eventAnalyticsProvider
         )
     }

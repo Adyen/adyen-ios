@@ -16,7 +16,7 @@ internal protocol BACSDirectDebitRouterProtocol: AnyObject {
 }
 
 /// A component that provides a form for BACS Direct Debit payments.
-public final class BACSDirectDebitComponent: PaymentComponent, PaymentAware, PresentableComponent {
+public final class BACSDirectDebitComponent: PaymentComponent, PresentableComponent {
 
     /// Configuration for BACS Direct Debit Component.
     public typealias Configuration = BasicComponentConfiguration
@@ -95,7 +95,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PaymentAware, Pre
             tracker: tracker,
             itemsFactory: itemsFactory
         )
-        inputPresenter?.amount = payment?.amount
+        inputPresenter?.amount = context.amount
         inputFormViewController.presenter = inputPresenter
         
     }
@@ -128,7 +128,7 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
             bankLocationId: data.bankLocationId
         )
         confirmationPresenter?.startLoading()
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
+        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order))
     }
 
     // MARK: - Private

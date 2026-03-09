@@ -38,7 +38,7 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
         // initial call is not needed again if inside dropIn
         guard !isDropIn else { return }
         let flavor: AnalyticsFlavor = .components(type: paymentMethod.type)
-        let amount = context.payment?.amount
+        let amount = context.amount
         let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AnalyticsForSession.sessionId)
         context.analyticsProvider?.sendInitialAnalytics(
             with: flavor,

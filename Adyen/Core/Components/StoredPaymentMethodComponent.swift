@@ -9,7 +9,7 @@ import UIKit
 
 // TODO: Fix Stored PM UI
 ///  A component that handle stored payment methods.
-public final class StoredPaymentMethodComponent: StoredPaymentComponent, PaymentAware {
+public final class StoredPaymentMethodComponent: StoredPaymentComponent {
 
     package var localizationParameters: LocalizationParameters?
 
@@ -64,7 +64,7 @@ public final class StoredPaymentMethodComponent: StoredPaymentComponent, Payment
         alertController.addAction(cancelAction)
 
         let submitActionTitle = localizedSubmitButtonTitle(
-            with: payment?.amount,
+            with: context.amount,
             style: .immediate,
             localizationParameters
         )
@@ -73,7 +73,7 @@ public final class StoredPaymentMethodComponent: StoredPaymentComponent, Payment
             let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
             self.submit(data: PaymentComponentData(
                 paymentMethodDetails: details,
-                amount: self.payment?.amount,
+                amount: self.context.amount,
                 order: self.order
             ))
         }

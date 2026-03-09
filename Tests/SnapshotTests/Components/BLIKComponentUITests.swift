@@ -12,7 +12,6 @@ import XCTest
 
 final class BLIKComponentUITests: XCTestCase {
 
-    private let payment = Payment(amount: Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
     private var paymentMethod: BLIKPaymentMethod {
         BLIKPaymentMethod(type: .blik, name: "test_name")
     }
@@ -20,8 +19,9 @@ final class BLIKComponentUITests: XCTestCase {
     private var context: AdyenContext {
         AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: payment,
-            amount: Dummy.amount
+            amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
         )
     }
 

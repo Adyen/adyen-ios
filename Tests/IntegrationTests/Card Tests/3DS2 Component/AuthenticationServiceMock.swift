@@ -8,7 +8,6 @@ import Foundation
 #if canImport(AdyenAuthentication)
     import AdyenAuthentication
 
-    @available(iOS 14.0, *)
     internal final class AuthenticationServiceMock: AuthenticationServiceProtocol {
         func registeredCredentials(withAuthenticationInput input: String) async throws -> [String] {
             []

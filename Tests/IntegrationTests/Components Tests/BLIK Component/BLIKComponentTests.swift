@@ -12,9 +12,9 @@ import XCTest
 class BLIKComponentTests: XCTestCase {
 
     lazy var paymentMethod = BLIKPaymentMethod(type: .blik, name: "test_name")
-    let payment = Payment(amount: Amount(value: 2, currencyCode: "PLN"), countryCode: "PL")
+    let amount = Amount(value: 2, currencyCode: "PLN")
     var context: AdyenContext {
-        Dummy.context(with: payment)
+        Dummy.context(with: amount)
     }
 
     var sut: BLIKComponent!
@@ -36,12 +36,12 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(sut.codeItem.placeholder, localizedString(.blikPlaceholder, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.codeItem.validationFailureMessage, localizedString(.blikInvalid, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: amount, style: .immediate, sut.configuration.localizationParameters))
     }
 
     func testLocalizationWithZeroPayment() {
-        let payment = Payment(amount: Amount(value: 0, currencyCode: "PLN"), countryCode: "PL")
-        let context: AdyenContext = Dummy.context(with: payment)
+        let zeroAmount = Amount(value: 0, currencyCode: "PLN")
+        let context: AdyenContext = Dummy.context(with: zeroAmount)
         sut = BLIKComponent(paymentMethod: paymentMethod, context: context)
         
         XCTAssertEqual(sut.hintLabelItem.text, localizedString(.blikHelp, sut.configuration.localizationParameters))
@@ -50,10 +50,10 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(sut.codeItem.placeholder, localizedString(.blikPlaceholder, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.codeItem.validationFailureMessage, localizedString(.blikInvalid, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: zeroAmount, style: .immediate, sut.configuration.localizationParameters))
     }
 
-    func testLocalizationWithCustomKeySeparator() {
+    func testLocalizationWithCustomKeySeparator() throws {
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 
         XCTAssertEqual(sut.hintLabelItem.text, localizedString(LocalizationKey(key: "adyen_blik_help"), sut.configuration.localizationParameters))
@@ -62,7 +62,7 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(sut.codeItem.placeholder, localizedString(LocalizationKey(key: "adyen_blik_placeholder"), sut.configuration.localizationParameters))
         XCTAssertEqual(sut.codeItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_blik_invalid"), sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, localizedString(LocalizationKey(key: "adyen_submitButton_formatted"), sut.configuration.localizationParameters, payment.amount.formatted))
+        XCTAssertEqual(sut.button.title, try localizedString(LocalizationKey(key: "adyen_submitButton_formatted"), sut.configuration.localizationParameters, XCTUnwrap(context.amount?.formatted)))
     }
  
     func testVCTitle() {

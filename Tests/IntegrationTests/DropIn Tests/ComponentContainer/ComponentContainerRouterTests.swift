@@ -148,8 +148,9 @@ struct ComponentContainerRouterTests {
     private func makeActionComponent() async -> PresentableComponent {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            payment: nil,
-            amount: .init(value: 100, currencyCode: "EUR")
+            amount: .init(value: 100, currencyCode: "EUR"),
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
         )
         let redirect = RedirectComponent(context: context)
         let viewController = UIViewController()

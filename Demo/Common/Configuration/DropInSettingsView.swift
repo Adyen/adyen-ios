@@ -8,7 +8,6 @@ import Adyen
 import AdyenCard
 import SwiftUI
 
-@available(iOS 13.0.0, *)
 internal struct DropInSettingsView: View {
     @ObservedObject internal var viewModel: ConfigurationViewModel
 

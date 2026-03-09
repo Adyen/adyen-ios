@@ -15,8 +15,8 @@ final class BoletoComponentUITests: XCTestCase {
     private var context: AdyenContext {
         .init(
             apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
             analyticsProvider: AnalyticsProviderMock()
         )
     }
