@@ -65,8 +65,8 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
         XCTAssertEqual(sutWithValue.valueLabel.textColor, expectedColor)
     }
 
-    func test_valueLabel_numberOfLines_shouldBeZeroForMultilineAddress() {
-        let expectedNumberOfLines = 0
+    func test_valueLabel_numberOfLines_shouldBeOneForTruncatedAddress() {
+        let expectedNumberOfLines = 1
         XCTAssertEqual(sut.valueLabel.numberOfLines, expectedNumberOfLines)
     }
 

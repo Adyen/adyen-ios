@@ -10,6 +10,8 @@ internal class FormAddressPickerItemView: FormSelectableValueItemView<PostalAddr
     
     internal required init(item: FormAddressPickerItem, theme: AdyenTheme) {
         super.init(item: item, theme: theme)
-        self.numberOfLines = 0
+        self.numberOfLines = 1
+        valueLabel.apply(theme.elements.textField.text)
     }
+    
 }
