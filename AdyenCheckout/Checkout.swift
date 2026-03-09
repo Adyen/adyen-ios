@@ -57,16 +57,10 @@ public final class Checkout: CheckoutProtocol {
     public let paymentMethods: PaymentMethods?
     internal let session: SessionProtocol?
     
-    /// This is used primarily for sending Analytic Events. If this doesn't exist then there would not be any analytics sent.
-    internal let checkoutAttemptId: String?
-
-    // TODO: Robert: The next task in public key fetching is to ensure that components are passed with this publicKey. and they don't fetch the key themselves.
-    /// The client public key used for encrypting sensitive payment data.
-    internal let publicKey: String?
-
     internal let configuration: CheckoutConfiguration
     internal weak var presentationDelegate: PresentationDelegate?
-    
+    internal let adyenContext: AdyenContext
+
     internal lazy var actionHandlingComponent: ActionHandlingComponent = {
         let threeDS2Config: ThreeDS2ActionConfiguration = configuration.configuration(
             for: .threeDS2,
@@ -81,7 +75,7 @@ public final class Checkout: CheckoutProtocol {
         )
         
         let handler = CheckoutActionComponent(
-            context: configuration.context,
+            context: adyenContext,
             configuration: actionConfig
         )
         handler.delegate = self
@@ -165,17 +159,14 @@ public final class Checkout: CheckoutProtocol {
         configuration: CheckoutConfiguration,
         session: SessionProtocol? = nil,
         paymentMethods: PaymentMethods? = nil,
-        checkoutAttemptId: String?,
-        publicKey: String? = nil,
+        adyenContext: AdyenContext,
         presentationDelegate: PresentationDelegate?
     ) {
         self.configuration = configuration
         self.session = session
         self.paymentMethods = paymentMethods ?? session?.state.paymentMethods
-        self.checkoutAttemptId = checkoutAttemptId
-        self.publicKey = publicKey
         self.presentationDelegate = presentationDelegate
-        
+        self.adyenContext = adyenContext
         self.session?.delegate = self
         self.session?.presentationDelegate = presentationDelegate
     }
@@ -203,6 +194,7 @@ public extension Checkout {
         return CheckoutPaymentComponent(
             paymentMethod: paymentMethod,
             configuration: configuration,
+            context: adyenContext,
             delegate: self
         )
     }
@@ -232,6 +224,7 @@ public extension Checkout {
         return CheckoutPaymentComponent(
             storedPaymentMethod: storedPaymentMethod,
             configuration: configuration,
+            context: adyenContext,
             delegate: self
         )
     }

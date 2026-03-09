@@ -44,7 +44,7 @@ internal protocol CheckoutProviding: AdyenSessionProviding {
 internal protocol AdyenSessionProviding {
     func setupSession(
         with sessionResponse: SessionResponse,
-        configuration: CheckoutConfiguration,
+        adyenContext: AdyenContext,
         apiClient: APIClientProtocol
     ) async throws -> SessionProtocol
 }

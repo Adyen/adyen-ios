@@ -1444,6 +1444,7 @@ class CardComponentTests: XCTestCase {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
             analyticsProvider: analyticsProviderMock
         )
         let sut = CardComponent(
@@ -1469,6 +1470,7 @@ class CardComponentTests: XCTestCase {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
             analyticsProvider: analyticsProviderMock
         )
         let sut = CardComponent(
@@ -2059,7 +2061,9 @@ class CardComponentTests: XCTestCase {
         let amount = Amount(value: 1234567, currencyCode: "USD")
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            amount: amount
+            amount: amount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
         )
 
         // When
@@ -2080,7 +2084,9 @@ class CardComponentTests: XCTestCase {
         let amount = Amount(value: 1234567, currencyCode: "USD")
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            amount: amount
+            amount: amount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
         )
 
         // When

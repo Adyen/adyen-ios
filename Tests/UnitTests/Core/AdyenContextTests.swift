@@ -5,6 +5,7 @@
 //
 
 @testable @_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable import AdyenCheckout
 @testable import AdyenEncryption
 @testable import AdyenNetworking
 import XCTest
@@ -19,7 +20,11 @@ class AdyenContextTests: XCTestCase {
         let apiContext = try APIContext(environment: Environment.test, clientKey: "local_DUMMYKEYFORTESTING")
         let context = AdyenContext(
             apiContext: apiContext,
-            amount: oneEUR
+            amount: oneEUR,
+            publicKey: Dummy.publicKey,
+            checkoutAttemptId: nil,
+            analyticsAPIContext: nil,
+            analyticsConfiguration: .init()
         )
         
         XCTAssertEqual(context.amount, oneEUR)
@@ -30,7 +35,11 @@ class AdyenContextTests: XCTestCase {
     func testPublicInit() {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            amount: Dummy.amount
+            amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            checkoutAttemptId: nil,
+            analyticsAPIContext: nil,
+            analyticsConfiguration: .init()
         )
         
         XCTAssertEqual(context.amount, Dummy.amount)
@@ -41,6 +50,7 @@ class AdyenContextTests: XCTestCase {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
             analyticsProvider: AnalyticsProviderMock()
         )
         
@@ -50,9 +60,14 @@ class AdyenContextTests: XCTestCase {
     }
     
     func testInitWithRegularEnvironmentShouldHaveAnalyticsProvider() {
+        let analyticsApiContext = CheckoutConfiguration.createAnalyticsAPIContext(apiContext: Dummy.apiContext)
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            amount: Dummy.amount
+            amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            checkoutAttemptId: nil,
+            analyticsAPIContext: analyticsApiContext,
+            analyticsConfiguration: .init()
         )
         
         XCTAssertNotNil(context.analyticsProvider)
@@ -63,15 +78,23 @@ class AdyenContextTests: XCTestCase {
         
         let context = AdyenContext(
             apiContext: apiContext,
-            amount: Dummy.amount
+            amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            checkoutAttemptId: nil,
+            analyticsAPIContext: nil,
+            analyticsConfiguration: .init()
         )
         XCTAssertNil(context.analyticsProvider)
     }
     
     func testBothAnalyticsProviderShouldBeCreated() {
+        let analyticsApiContext = CheckoutConfiguration.createAnalyticsAPIContext(apiContext: Dummy.apiContext)
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            checkoutAttemptId: "test_attempt_id",
+            analyticsAPIContext: analyticsApiContext,
             analyticsConfiguration: AnalyticsConfiguration()
         )
         
@@ -81,10 +104,14 @@ class AdyenContextTests: XCTestCase {
     
     func testOnlyAnalyticsProviderShouldBeCreated() {
         let config = AnalyticsConfiguration(isEnabled: false)
+        let analyticsApiContext = CheckoutConfiguration.createAnalyticsAPIContext(apiContext: Dummy.apiContext)
         
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            checkoutAttemptId: nil,
+            analyticsAPIContext: analyticsApiContext,
             analyticsConfiguration: config
         )
         

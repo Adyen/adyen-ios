@@ -22,6 +22,7 @@ class AnalyticsEventTests: XCTestCase {
         sut = AnalyticsProvider(
             apiClient: apiClient,
             configuration: .init(),
+            checkoutAttemptId: nil,
             eventAnalyticsProvider: nil
         )
     }
@@ -41,6 +42,7 @@ class AnalyticsEventTests: XCTestCase {
         sut = AnalyticsProvider(
             apiClient: apiClient,
             configuration: .init(),
+            checkoutAttemptId: nil,
             eventAnalyticsProvider: nil
         )
 
@@ -64,6 +66,7 @@ class AnalyticsEventTests: XCTestCase {
         sut = AnalyticsProvider(
             apiClient: apiClient,
             configuration: .init(),
+            checkoutAttemptId: nil,
             eventAnalyticsProvider: nil
         )
 

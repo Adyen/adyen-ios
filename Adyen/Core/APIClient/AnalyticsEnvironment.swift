@@ -37,7 +37,7 @@ public enum AnalyticsEnvironment: String, AnyAPIEnvironment {
 
 extension Environment {
     
-    internal func toAnalyticsEnvironment() -> AnalyticsEnvironment {
+    package func toAnalyticsEnvironment() -> AnalyticsEnvironment {
         switch self {
         case .beta:
             return .beta
