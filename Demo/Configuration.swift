@@ -354,7 +354,21 @@ internal extension PKPaymentRequest {
     }
     
     static var demoWithShippingFields: PKPaymentRequest {
-        let paymentRequest = demo
+        let amount = ConfigurationConstants.current.amount
+        let decimalAmount = AmountFormatter.decimalAmount(
+            amount.value,
+            currencyCode: amount.currencyCode,
+            localeIdentifier: amount.localeIdentifier
+        )
+
+        let paymentRequest = PKPaymentRequest()
+        paymentRequest.merchantIdentifier = ConfigurationConstants.current.applePaySettings.merchantIdentifier
+        paymentRequest.countryCode = ConfigurationConstants.current.countryCode
+        paymentRequest.currencyCode = amount.currencyCode
+        paymentRequest.paymentSummaryItems = [
+            PKPaymentSummaryItem(label: ConfigurationConstants.appName, amount: decimalAmount)
+        ]
+        paymentRequest.merchantCapabilities = [.capability3DS, .credit, .debit]
         paymentRequest.shippingType = .delivery
         paymentRequest.requiredShippingContactFields = [.postalAddress]
         paymentRequest.requiredBillingContactFields = [.postalAddress]
