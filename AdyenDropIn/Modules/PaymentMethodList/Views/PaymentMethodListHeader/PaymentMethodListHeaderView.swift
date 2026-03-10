@@ -4,16 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import AdyenUI
 import PassKit
 import UIKit
-
-internal struct PaymentMethodListHeaderViewModel {
-    internal let amount: String
-    internal let subtitle: String
-    internal let showApplePayButton: Bool
-    internal let onApplePayTap: (() -> Void)?
-}
 
 internal final class PaymentMethodListHeaderView: UIView {
 
@@ -22,8 +15,7 @@ internal final class PaymentMethodListHeaderView: UIView {
     private lazy var amountLabel: UILabel = {
         let label = UILabel()
         label.text = viewModel.amount
-        label.font = .systemFont(ofSize: 34, weight: .bold)
-        label.textColor = .label
+        label.apply(viewModel.theme.elements.labels.title)
         label.numberOfLines = 1
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -33,8 +25,8 @@ internal final class PaymentMethodListHeaderView: UIView {
     private lazy var subtitleLabel: UILabel = {
         let label = UILabel()
         label.text = viewModel.subtitle
-        label.font = .systemFont(ofSize: 17, weight: .regular)
-        label.textColor = .secondaryLabel
+        label.apply(viewModel.theme.elements.labels.subheadline)
+        label.textColor = viewModel.theme.colors.textSecondary
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false

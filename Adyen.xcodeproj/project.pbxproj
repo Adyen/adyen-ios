@@ -864,6 +864,7 @@
 		C9DA53E12E97F6DE00D83C94 /* QRCodeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53DF2E97F6DE00D83C94 /* QRCodeViewControllerTests.swift */; };
 		C9DA53E32E97F71C00D83C94 /* QRCodeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */; };
 		C9DC5B132EC4BF6A00E75C93 /* DropInFlowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC5B122EC4BF6A00E75C93 /* DropInFlowManager.swift */; };
+		C9E2C7122F6044AA0095AC11 /* PaymentMethodListHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E2C7112F6044AA0095AC11 /* PaymentMethodListHeaderViewModel.swift */; };
 		C9E4DF672ED9A9B5000B6CBE /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */; };
 		C9E4DF682ED9A9B5000B6CBE /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */; };
 		C9E6C5C72F02C5C50030E6C5 /* ComponentContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C993EB632EE056F000353ECA /* ComponentContainerViewModelTests.swift */; };
@@ -2449,6 +2450,7 @@
 		C9DA53DF2E97F6DE00D83C94 /* QRCodeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewControllerTests.swift; sourceTree = "<group>"; };
 		C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewModelTests.swift; sourceTree = "<group>"; };
 		C9DC5B122EC4BF6A00E75C93 /* DropInFlowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInFlowManager.swift; sourceTree = "<group>"; };
+		C9E2C7112F6044AA0095AC11 /* PaymentMethodListHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListHeaderViewModel.swift; sourceTree = "<group>"; };
 		C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoMockable.generated.swift; sourceTree = "<group>"; };
 		C9E914482ED9D37500584184 /* FullScreenViewControllerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewControllerPresenter.swift; sourceTree = "<group>"; };
 		C9E9144A2ED9D37500584184 /* AdyenSwiftUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenSwiftUI.h; sourceTree = "<group>"; };
@@ -4660,6 +4662,7 @@
 			isa = PBXGroup;
 			children = (
 				C981960A2F5A2059007FE1A1 /* PaymentMethodListHeaderView.swift */,
+				C9E2C7112F6044AA0095AC11 /* PaymentMethodListHeaderViewModel.swift */,
 			);
 			path = PaymentMethodListHeader;
 			sourceTree = "<group>";
@@ -9128,6 +9131,7 @@
 				C981961A2F5A54AC007FE1A1 /* PaymentMethodSectionView.swift in Sources */,
 				C9025A432DF3135700E0D191 /* DropInViewModel.swift in Sources */,
 				E7D418B3286F531500E9A7F4 /* ComponentManager+PaymentComponentBuilder.swift in Sources */,
+				C9E2C7122F6044AA0095AC11 /* PaymentMethodListHeaderViewModel.swift in Sources */,
 				C9C22D9F2DE5F9BE0028C23F /* PaymentMethodListViewController.swift in Sources */,
 				C9838D8F2F48A56A00E6A7E9 /* PaymentMethodListConfiguration.swift in Sources */,
 				E9B36CB82243B38A00EAA368 /* DropInComponent.swift in Sources */,
