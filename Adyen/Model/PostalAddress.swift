@@ -193,15 +193,9 @@ extension PostalAddress {
     }
     
     package func formattedSingleLine(using localizationParameters: LocalizationParameters?) -> String {
-        let components = [
-            [street, houseNumberOrName, apartment].compactMap { $0?.adyen.nilIfEmpty }.joined(separator: " "),
-            postalCode,
-            city,
-            stateOrProvince,
-            country.flatMap { countryName(for: $0, using: localizationParameters) }
-        ].compactMap { $0?.adyen.nilIfEmpty }
-        
-        return components.joined(separator: ", ")
+        // Use CNPostalAddressFormatter for locale-aware formatting, then convert to single line
+        return formatted(using: localizationParameters)
+            .replacingOccurrences(of: "\n", with: ", ")
     }
 
     private func countryName(
