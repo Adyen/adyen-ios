@@ -59,10 +59,9 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
     
     private func updateTrailingButtonTitle(with item: ListSectionHeader?) {
         guard let item = headerItem else { return }
-        // TODO: - Add localization key for "Manage"
-        let localizedManage = "Manage"
+        let localizedEdit = Bundle.Adyen.localizedEditCopy
         let localizedDone = Bundle.Adyen.localizedDoneCopy
-        let localizedTitle = isEditing ? localizedDone : localizedManage
+        let localizedTitle = isEditing ? localizedDone : localizedEdit
         switch item.editingStyle {
         case .delete:
             trailingButton.setTitle(localizedTitle, for: .normal)
@@ -71,7 +70,7 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
             trailingButton.isHidden = true
         }
     }
-    
+
     // MARK: - Layout
     
     private func configureConstraints() {
