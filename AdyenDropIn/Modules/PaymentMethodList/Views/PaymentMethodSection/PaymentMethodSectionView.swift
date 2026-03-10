@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenUI
 import UIKit
 
 internal final class PaymentMethodSectionView: UIView {
@@ -21,9 +22,7 @@ internal final class PaymentMethodSectionView: UIView {
     private lazy var headerLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 15, weight: .semibold)
-        label.textColor = .label
-        label.textAlignment = .natural
+        label.apply(section.theme.elements.labels.subtitle)
         label.accessibilityTraits = .header
         return label
     }()

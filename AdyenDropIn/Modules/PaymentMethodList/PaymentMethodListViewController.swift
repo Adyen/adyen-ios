@@ -4,7 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+import AdyenUI
 import Combine
 import Foundation
 import UIKit
@@ -55,7 +56,7 @@ internal class PaymentMethodListViewController: UIViewController {
     private lazy var loadingOverlayView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .systemGroupedBackground.withAlphaComponent(0.6)
+        view.backgroundColor = theme.colors.background.withAlphaComponent(0.6)
         view.alpha = 0
         view.isUserInteractionEnabled = true
         
@@ -76,6 +77,10 @@ internal class PaymentMethodListViewController: UIViewController {
 
     private let viewModel: PaymentMethodListViewModelProtocol
     private var cancellables = Set<AnyCancellable>()
+    
+    private var theme: AdyenTheme {
+        viewModel.theme
+    }
 
     // MARK: - Initializers
 
@@ -95,7 +100,7 @@ internal class PaymentMethodListViewController: UIViewController {
 
     override internal func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = theme.colors.background
         viewModel.didLoad()
         isModalInPresentation = true
         setupNavigationItem()

@@ -23,6 +23,7 @@ internal protocol PaymentMethodListViewModelProtocol {
     var title: String { get }
     var paymentMethodSections: [PaymentMethodsSection] { get }
     var statePublisher: Published<PaymentMethodListState>.Publisher { get }
+    var theme: AdyenTheme { get }
     func cancel()
     func didLoad()
 

@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import AdyenUI
 import UIKit
 
 internal final class PaymentMethodItemView: UIView {
@@ -17,7 +17,7 @@ internal final class PaymentMethodItemView: UIView {
         imageView.contentMode = .scaleAspectFit
         imageView.layer.cornerRadius = 6
         imageView.layer.borderWidth = 1.0 / UIScreen.main.nativeScale
-        imageView.layer.borderColor = UIColor.separator.cgColor
+        imageView.layer.borderColor = item.theme.colors.separator.cgColor
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -25,18 +25,14 @@ internal final class PaymentMethodItemView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 17, weight: .semibold)
-        label.textColor = .label
-        label.textAlignment = .natural
+        label.apply(item.theme.elements.labels.body)
         return label
     }()
     
     private lazy var subtitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 15, weight: .regular)
-        label.textColor = .secondaryLabel
-        label.textAlignment = .natural
+        label.apply(item.theme.elements.labels.footnote)
         return label
     }()
     
@@ -52,7 +48,7 @@ internal final class PaymentMethodItemView: UIView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(systemName: "chevron.forward")
-        imageView.tintColor = .secondaryLabel
+        imageView.tintColor = item.theme.colors.textSecondary
         imageView.contentMode = .scaleAspectFit
         imageView.setContentHuggingPriority(.required, for: .horizontal)
         imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -71,7 +67,7 @@ internal final class PaymentMethodItemView: UIView {
     private lazy var highlightView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .systemGray4
+        view.backgroundColor = item.theme.colors.disabled
         view.alpha = 0
         return view
     }()
@@ -103,8 +99,8 @@ internal final class PaymentMethodItemView: UIView {
     // MARK: - Private
 
     private func setupView() {
-        backgroundColor = UIColor(red: 0.97, green: 0.97, blue: 0.97, alpha: 1.00)
-        layer.cornerRadius = 10
+        backgroundColor = item.theme.colors.container
+        layer.cornerRadius = item.theme.attributes.cornerRadius
         layer.masksToBounds = true
 
         addSubview(highlightView)
