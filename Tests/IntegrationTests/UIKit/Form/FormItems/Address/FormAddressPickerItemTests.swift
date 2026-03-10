@@ -181,122 +181,34 @@ class FormAddressPickerItemTests: XCTestCase {
         addressLookupItem.value = PostalAddress(country: "NL")
         XCTAssertEqual(addressLookupItem.formattedValue, "Netherlands")
     }
-}
-    
+
     // MARK: - PostalAddress formattedSingleLine Tests
-    
-    func testFormattedSingleLine_withAllComponents_shouldJoinWithCommas() {
-        let address = PostalAddress(
-            street: "Professor Van Gogh",
-            houseNumberOrName: "123",
-            apartment: nil,
-            postalCode: "1222aa",
-            city: "Edam",
-            stateOrProvince: "North Holland",
-            country: "NL"
-        )
-        
-        let result = address.formattedSingleLine(using: nil)
-        
-        XCTAssertEqual(result, "Professor Van Gogh 123, 1222aa, Edam, North Holland, Netherlands")
-    }
-    
-    func testFormattedSingleLine_withMinimalComponents_shouldOmitEmptyValues() {
-        let address = PostalAddress(
-            street: "Main Street",
-            houseNumberOrName: "1",
-            apartment: nil,
-            postalCode: "12345",
-            city: "New York",
-            stateOrProvince: nil,
-            country: "US"
-        )
-        
-        let result = address.formattedSingleLine(using: nil)
-        
-        XCTAssertEqual(result, "Main Street 1, 12345, New York, United States")
-    }
-    
-    func testFormattedSingleLine_withApartment_shouldIncludeInStreetPart() {
-        let address = PostalAddress(
-            street: "Oak Avenue",
-            houseNumberOrName: "42",
-            apartment: "Apt 5B",
-            postalCode: "90210",
-            city: "Beverly Hills",
-            stateOrProvince: "CA",
-            country: "US"
-        )
-        
-        let result = address.formattedSingleLine(using: nil)
-        
-        XCTAssertTrue(result.contains("Oak Avenue 42 Apt 5B"))
-        XCTAssertTrue(result.contains("90210"))
-        XCTAssertTrue(result.contains("Beverly Hills"))
-        XCTAssertTrue(result.contains("CA"))
-    }
-    
-    func testFormattedSingleLine_shouldNotContainNewlines() {
-        let address = PostalAddressMocks.newYorkPostalAddress
-        
-        let result = address.formattedSingleLine(using: nil)
-        
-        XCTAssertFalse(result.contains("\n"), "Single line format should not contain newlines")
-        XCTAssertTrue(result.contains(","), "Single line format should use comma separators")
-    }
-}
-    
-    // MARK: - PostalAddress formattedSingleLine Tests
-    
-    func testFormattedSingleLine_usesLocaleAwareFormatting() {
-        // Given - Netherlands address
-        let nlAddress = PostalAddress(
-            street: "Professor Van Gogh",
-            houseNumberOrName: "123",
-            apartment: nil,
-            postalCode: "1222aa",
-            city: "Edam",
-            stateOrProvince: nil,
-            country: "NL"
-        )
+
+    func testFormattedSingleLine_withNetherlandsAddress() {
+        // Given
+        let address = makeNetherlandsAddress()
         
         // When
-        let nlResult = nlAddress.formattedSingleLine(using: nil)
+        let result = address.formattedSingleLine(using: nil)
         
         // Then - CNPostalAddressFormatter formats NL addresses as: Street, PostalCode City, Country
-        XCTAssertEqual(nlResult, "Professor Van Gogh 123, 1222aa Edam, Netherlands")
+        XCTAssertEqual(result, "Professor Van Gogh 123, 1222aa Edam, Netherlands")
     }
     
-    func testFormattedSingleLine_withUSAddress_usesUSFormatting() {
-        // Given - US address
-        let usAddress = PostalAddress(
-            street: "Main Street",
-            houseNumberOrName: "1",
-            apartment: nil,
-            postalCode: "12345",
-            city: "New York",
-            stateOrProvince: "NY",
-            country: "US"
-        )
+    func testFormattedSingleLine_withUSAddress() {
+        // Given
+        let address = makeUSAddress()
         
         // When
-        let usResult = usAddress.formattedSingleLine(using: nil)
+        let result = address.formattedSingleLine(using: nil)
         
         // Then - CNPostalAddressFormatter formats US addresses as: Street, City State PostalCode, Country
-        XCTAssertEqual(usResult, "Main Street 1, New York NY 12345, United States")
+        XCTAssertEqual(result, "Main Street 1, New York NY 12345, United States")
     }
     
-    func testFormattedSingleLine_withApartment_includesInStreetPart() {
+    func testFormattedSingleLine_withApartment() {
         // Given
-        let address = PostalAddress(
-            street: "Oak Avenue",
-            houseNumberOrName: "42",
-            apartment: "Apt 5B",
-            postalCode: "90210",
-            city: "Beverly Hills",
-            stateOrProvince: "CA",
-            country: "US"
-        )
+        let address = makeUSAddressWithApartment()
         
         // When
         let result = address.formattedSingleLine(using: nil)
@@ -318,5 +230,43 @@ class FormAddressPickerItemTests: XCTestCase {
         // Then
         XCTAssertFalse(result.contains("\n"), "Single line format should not contain newlines")
         XCTAssertTrue(result.contains(","), "Single line format should use comma separators")
+    }
+    
+    // MARK: - Test Helpers
+    
+    private func makeNetherlandsAddress() -> PostalAddress {
+        PostalAddress(
+            city: "Edam",
+            country: "NL",
+            houseNumberOrName: "123",
+            postalCode: "1222aa",
+            stateOrProvince: nil,
+            street: "Professor Van Gogh",
+            apartment: nil
+        )
+    }
+    
+    private func makeUSAddress() -> PostalAddress {
+        PostalAddress(
+            city: "New York",
+            country: "US",
+            houseNumberOrName: "1",
+            postalCode: "12345",
+            stateOrProvince: "NY",
+            street: "Main Street",
+            apartment: nil
+        )
+    }
+    
+    private func makeUSAddressWithApartment() -> PostalAddress {
+        PostalAddress(
+            city: "Beverly Hills",
+            country: "US",
+            houseNumberOrName: "42",
+            postalCode: "90210",
+            stateOrProvince: "CA",
+            street: "Oak Avenue",
+            apartment: "Apt 5B"
+        )
     }
 }
