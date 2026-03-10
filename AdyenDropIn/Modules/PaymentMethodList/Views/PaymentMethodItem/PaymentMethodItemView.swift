@@ -78,19 +78,21 @@ internal final class PaymentMethodItemView: UIView {
     
     // MARK: - Properties
     
-    private var item: PaymentMethodItem?
     private var imageLoadingTask: AdyenCancellable? {
         willSet { imageLoadingTask?.cancel() }
     }
-    
+
+    private var item: PaymentMethodItem
     private let imageLoader: ImageLoader
     
     // MARK: - Initializers
     
-    internal init(imageLoader: ImageLoader = ImageLoader()) {
+    internal init(item: PaymentMethodItem, imageLoader: ImageLoader = ImageLoader()) {
+        self.item = item
         self.imageLoader = imageLoader
         super.init(frame: .zero)
         setupView()
+        configure()
     }
     
     @available(*, unavailable)
@@ -98,27 +100,8 @@ internal final class PaymentMethodItemView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Configuration
-    
-    internal func configure(with item: PaymentMethodItem) {
-        self.item = item
-        
-        titleLabel.text = item.title
-        subtitleLabel.text = item.subtitle
-        subtitleLabel.isHidden = item.subtitle == nil
-        
-        accessibilityLabel = item.accessibilityLabel ?? item.title
-        isAccessibilityElement = true
-        accessibilityTraits = .button
-        
-        loadIcon(from: item.iconURL)
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        addGestureRecognizer(tapGesture)
-    }
-    
     // MARK: - Private
-    
+
     private func setupView() {
         backgroundColor = UIColor(red: 0.97, green: 0.97, blue: 0.97, alpha: 1.00)
         layer.cornerRadius = 10
@@ -145,7 +128,22 @@ internal final class PaymentMethodItemView: UIView {
             contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -14)
         ])
     }
-    
+
+    private func configure() {
+        titleLabel.text = item.title
+        subtitleLabel.text = item.subtitle
+        subtitleLabel.isHidden = item.subtitle == nil
+
+        accessibilityLabel = item.accessibilityLabel ?? item.title
+        isAccessibilityElement = true
+        accessibilityTraits = .button
+
+        loadIcon(from: item.iconURL)
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        addGestureRecognizer(tapGesture)
+    }
+
     private func loadIcon(from url: URL?) {
         iconImageView.image = nil
         imageLoadingTask = nil
@@ -158,7 +156,7 @@ internal final class PaymentMethodItemView: UIView {
     }
     
     @objc private func handleTap() {
-        item?.selectionHandler?()
+        item.selectionHandler?()
     }
     
     // MARK: - Touch Handling

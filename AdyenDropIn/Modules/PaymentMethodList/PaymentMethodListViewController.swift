@@ -184,8 +184,7 @@ internal class PaymentMethodListViewController: UIViewController {
     
     private func populatePaymentMethods(with sections: [PaymentMethodSection]) {
         sections.forEach { section in
-            let sectionView = PaymentMethodSectionView()
-            sectionView.configure(with: section)
+            let sectionView = PaymentMethodSectionView(section: section)
             paymentMethodSections.addArrangedSubview(sectionView)
         }
     }

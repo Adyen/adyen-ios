@@ -42,6 +42,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     internal weak var router: PaymentMethodListRouting?
     private let dropInFlowManager: DropInFlowManaging
     private let logoURLProvider: LogoURLProvider
+    internal let theme: AdyenTheme
 
     @Published internal private(set) var state: PaymentMethodListState = .idle
     internal var statePublisher: Published<PaymentMethodListState>.Publisher {
@@ -58,7 +59,8 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         componentManager: ComponentManaging,
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging,
-        logoURLProvider: LogoURLProvider
+        logoURLProvider: LogoURLProvider,
+        theme: AdyenTheme
     ) {
         self.context = context
         self.localizationParameters = localizationParameters
@@ -66,6 +68,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         self.paymentMethodSections = componentManager.sections
         self.dropInFlowManager = dropInFlowManager
         self.logoURLProvider = logoURLProvider
+        self.theme = theme
     }
 
     // MARK: - PaymentMethodListViewModelProtocol
@@ -138,7 +141,8 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             let items = section.paymentMethods.map { paymentMethodItem(from: $0) }
             return PaymentMethodSection(
                 headerTitle: section.header?.title,
-                items: items
+                items: items,
+                theme: theme
             )
         }
     }
@@ -155,7 +159,8 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             selectionHandler: { [weak self] in
                 guard !(paymentMethod is OrderPaymentMethod) else { return }
                 self?.select(paymentMethod: paymentMethod)
-            }
+            },
+            theme: theme
         )
     }
 }

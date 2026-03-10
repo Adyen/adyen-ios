@@ -35,12 +35,18 @@ internal final class PaymentMethodSectionView: UIView {
         stackView.spacing = 12
         return stackView
     }()
-    
+
+    // MARK: - Properties
+
+    private let section: PaymentMethodSection
+
     // MARK: - Initializers
     
-    internal init() {
+    internal init(section: PaymentMethodSection) {
+        self.section = section
         super.init(frame: .zero)
         setupView()
+        configure()
     }
     
     @available(*, unavailable)
@@ -48,30 +54,8 @@ internal final class PaymentMethodSectionView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Configuration
-    
-    internal func configure(with section: PaymentMethodSection) {
-        clearItems()
-        
-        guard !section.items.isEmpty else {
-            isHidden = true
-            return
-        }
-        
-        isHidden = false
-        
-        if let headerTitle = section.headerTitle {
-            configureHeader(with: headerTitle)
-            headerLabel.isHidden = false
-        } else {
-            headerLabel.isHidden = true
-        }
-        
-        populateItems(section.items)
-    }
-    
     // MARK: - Private
-    
+
     private func setupView() {
         addSubview(containerStackView)
         
@@ -86,7 +70,27 @@ internal final class PaymentMethodSectionView: UIView {
             containerStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
-    
+
+    private func configure() {
+        clearItems()
+
+        guard !section.items.isEmpty else {
+            isHidden = true
+            return
+        }
+
+        isHidden = false
+
+        if let headerTitle = section.headerTitle {
+            configureHeader(with: headerTitle)
+            headerLabel.isHidden = false
+        } else {
+            headerLabel.isHidden = true
+        }
+
+        populateItems(section.items)
+    }
+
     private func configureHeader(with title: String) {
         headerLabel.text = title.localizedCapitalized
         headerLabel.accessibilityLabel = title
@@ -102,8 +106,7 @@ internal final class PaymentMethodSectionView: UIView {
     
     private func populateItems(_ items: [PaymentMethodItem]) {
         items.forEach { item in
-            let itemView = PaymentMethodItemView()
-            itemView.configure(with: item)
+            let itemView = PaymentMethodItemView(item: item)
             itemsContainerView.addArrangedSubview(itemView)
         }
     }
