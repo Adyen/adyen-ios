@@ -192,8 +192,7 @@ extension PostalAddress {
             .replacingOccurrences(of: "\n", with: ", ")
     }
     
-    @_spi(AdyenInternal)
-    public func formattedSingleLine(using localizationParameters: LocalizationParameters?) -> String {
+    package func formattedSingleLine(using localizationParameters: LocalizationParameters?) -> String {
         let components = [
             [street, houseNumberOrName, apartment].compactMap { $0?.adyen.nilIfEmpty }.joined(separator: " "),
             postalCode,
