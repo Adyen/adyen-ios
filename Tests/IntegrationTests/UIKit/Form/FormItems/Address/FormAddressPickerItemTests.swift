@@ -182,3 +182,66 @@ class FormAddressPickerItemTests: XCTestCase {
         XCTAssertEqual(addressLookupItem.formattedValue, "Netherlands")
     }
 }
+    
+    // MARK: - PostalAddress formattedSingleLine Tests
+    
+    func testFormattedSingleLine_withAllComponents_shouldJoinWithCommas() {
+        let address = PostalAddress(
+            street: "Professor Van Gogh",
+            houseNumberOrName: "123",
+            apartment: nil,
+            postalCode: "1222aa",
+            city: "Edam",
+            stateOrProvince: "North Holland",
+            country: "NL"
+        )
+        
+        let result = address.formattedSingleLine(using: nil)
+        
+        XCTAssertEqual(result, "Professor Van Gogh 123, 1222aa, Edam, North Holland, Netherlands")
+    }
+    
+    func testFormattedSingleLine_withMinimalComponents_shouldOmitEmptyValues() {
+        let address = PostalAddress(
+            street: "Main Street",
+            houseNumberOrName: "1",
+            apartment: nil,
+            postalCode: "12345",
+            city: "New York",
+            stateOrProvince: nil,
+            country: "US"
+        )
+        
+        let result = address.formattedSingleLine(using: nil)
+        
+        XCTAssertEqual(result, "Main Street 1, 12345, New York, United States")
+    }
+    
+    func testFormattedSingleLine_withApartment_shouldIncludeInStreetPart() {
+        let address = PostalAddress(
+            street: "Oak Avenue",
+            houseNumberOrName: "42",
+            apartment: "Apt 5B",
+            postalCode: "90210",
+            city: "Beverly Hills",
+            stateOrProvince: "CA",
+            country: "US"
+        )
+        
+        let result = address.formattedSingleLine(using: nil)
+        
+        XCTAssertTrue(result.contains("Oak Avenue 42 Apt 5B"))
+        XCTAssertTrue(result.contains("90210"))
+        XCTAssertTrue(result.contains("Beverly Hills"))
+        XCTAssertTrue(result.contains("CA"))
+    }
+    
+    func testFormattedSingleLine_shouldNotContainNewlines() {
+        let address = PostalAddressMocks.newYorkPostalAddress
+        
+        let result = address.formattedSingleLine(using: nil)
+        
+        XCTAssertFalse(result.contains("\n"), "Single line format should not contain newlines")
+        XCTAssertTrue(result.contains(","), "Single line format should use comma separators")
+    }
+}
