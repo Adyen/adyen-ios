@@ -8,15 +8,15 @@
 @_spi(AdyenInternal) @testable import AdyenCheckout
 @testable import AdyenEncryption
 @testable import AdyenNetworking
-import XCTest
+import Testing
 
-class AdyenContextTests: XCTestCase {
-    
-    func testAmountMutability() throws {
+struct AdyenContextTests {
+
+    @Test func amountMutability() throws {
 
         let oneEUR = Amount(value: 1, currencyCode: "EUR")
         let twoEUR = Amount(value: 2, currencyCode: "EUR")
-        
+
         let apiContext = try APIContext(environment: Environment.test, clientKey: "local_DUMMYKEYFORTESTING")
         let context = AdyenContext(
             apiContext: apiContext,
@@ -24,29 +24,29 @@ class AdyenContextTests: XCTestCase {
             publicKey: Dummy.publicKey,
             checkoutAttemptId: nil,
             analyticsAPIContext: nil,
-            analyticsConfiguration: .init()
+            analyticsConfiguration: AnalyticsConfiguration()
         )
         
-        XCTAssertEqual(context.amount, oneEUR)
+        #expect(context.amount == oneEUR)
         context.amount = twoEUR
-        XCTAssertEqual(context.amount, twoEUR)
+        #expect(context.amount == twoEUR)
     }
     
-    func testPublicInit() {
+    @Test func publicInit() {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
             checkoutAttemptId: nil,
             analyticsAPIContext: nil,
-            analyticsConfiguration: .init()
+            analyticsConfiguration: AnalyticsConfiguration()
         )
         
-        XCTAssertEqual(context.amount, Dummy.amount)
-        XCTAssertEqual(context.apiContext.clientKey, Dummy.apiContext.clientKey)
+        #expect(context.amount == Dummy.amount)
+        #expect(context.apiContext.clientKey == Dummy.apiContext.clientKey)
     }
     
-    func testInternalInit() {
+    @Test func internalInit() {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
@@ -54,69 +54,70 @@ class AdyenContextTests: XCTestCase {
             analyticsProvider: AnalyticsProviderMock()
         )
         
-        XCTAssertEqual(context.amount, Dummy.amount)
-        XCTAssertEqual(context.apiContext.clientKey, Dummy.apiContext.clientKey)
-        XCTAssertNotNil(context.analyticsProvider)
+        #expect(context.amount == Dummy.amount)
+        #expect(context.apiContext.clientKey == Dummy.apiContext.clientKey)
+        #expect(context.analyticsProvider != nil)
     }
     
-    func testInitWithRegularEnvironmentShouldHaveAnalyticsProvider() {
+    @Test func initWith_EnvironmentCheckoutAttemptID_shouldCreateAnalyticsProvider() {
         let analyticsApiContext = CheckoutConfiguration.createAnalyticsAPIContext(apiContext: Dummy.apiContext)
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
-            checkoutAttemptId: nil,
+            checkoutAttemptId: AnalyticsProviderMock.testCheckoutAttemptId,
             analyticsAPIContext: analyticsApiContext,
-            analyticsConfiguration: .init()
+            analyticsConfiguration: AnalyticsConfiguration(isEnabled: true)
         )
         
-        XCTAssertNotNil(context.analyticsProvider)
+        #expect(context.analyticsProvider != nil)
     }
     
-    func testInitWithDifferentEnvironmentShouldNotHaveAnalyticsProvider() throws {
+    @Test func initWithNotProvided_Environment_shouldNotCreateAnalyticsProvider() throws {
         let apiContext = try APIContext(environment: TestEnvironment.test, clientKey: "local_DUMMYKEYFORTESTING")
-        
+        let analyticsApiContext = CheckoutConfiguration.createAnalyticsAPIContext(apiContext: Dummy.apiContext)
+
         let context = AdyenContext(
             apiContext: apiContext,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
             checkoutAttemptId: nil,
-            analyticsAPIContext: nil,
-            analyticsConfiguration: .init()
-        )
-        XCTAssertNil(context.analyticsProvider)
-    }
-    
-    func testBothAnalyticsProviderShouldBeCreated() {
-        let analyticsApiContext = CheckoutConfiguration.createAnalyticsAPIContext(apiContext: Dummy.apiContext)
-        let context = AdyenContext(
-            apiContext: Dummy.apiContext,
-            amount: Dummy.amount,
-            publicKey: Dummy.publicKey,
-            checkoutAttemptId: "test_attempt_id",
             analyticsAPIContext: analyticsApiContext,
-            analyticsConfiguration: AnalyticsConfiguration()
+            analyticsConfiguration: AnalyticsConfiguration(isEnabled: true)
         )
-        
-        XCTAssertNotNil(context.analyticsProvider)
-        XCTAssertNotNil((context.analyticsProvider as? AnalyticsProvider)?.eventAnalyticsProvider)
+        #expect(context.analyticsProvider == nil)
     }
-    
-    func testOnlyAnalyticsProviderShouldBeCreated() {
-        let config = AnalyticsConfiguration(isEnabled: false)
+
+    @Test func initWithNotProvided_CheckoutAttemptID_shouldNotCreateAnalyticsProvider() throws {
+        let apiContext = try APIContext(environment: TestEnvironment.test, clientKey: "local_DUMMYKEYFORTESTING")
         let analyticsApiContext = CheckoutConfiguration.createAnalyticsAPIContext(apiContext: Dummy.apiContext)
-        
+
         let context = AdyenContext(
-            apiContext: Dummy.apiContext,
+            apiContext: apiContext,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
             checkoutAttemptId: nil,
             analyticsAPIContext: analyticsApiContext,
-            analyticsConfiguration: config
+            analyticsConfiguration: AnalyticsConfiguration(isEnabled: true)
         )
-        
-        XCTAssertNotNil(context.analyticsProvider)
-        XCTAssertNil((context.analyticsProvider as? AnalyticsProvider)?.eventAnalyticsProvider)
+        #expect(context.analyticsProvider == nil)
+
+    }
+
+    @Test func initWithNotProvided_analyticsDisabled_shouldNotCreateAnalyticsProvider() throws {
+        let apiContext = try APIContext(environment: TestEnvironment.test, clientKey: "local_DUMMYKEYFORTESTING")
+        let analyticsApiContext = CheckoutConfiguration.createAnalyticsAPIContext(apiContext: Dummy.apiContext)
+
+        let context = AdyenContext(
+            apiContext: apiContext,
+            amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            checkoutAttemptId: AnalyticsProviderMock.testCheckoutAttemptId,
+            analyticsAPIContext: analyticsApiContext,
+            analyticsConfiguration: AnalyticsConfiguration(isEnabled: false)
+        )
+
+        #expect(context.analyticsProvider == nil)
     }
 }
 

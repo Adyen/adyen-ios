@@ -40,6 +40,15 @@ class PaymentComponentSubjectTests: XCTestCase {
 
     func test_submit_with_no_attemptId_sets_constant_in_sdkData() {
         // Given
+        let context = Dummy.context(analyticsProvider: nil)
+
+        let sut = PaymentComponentSubject(
+            context: context,
+            delegate: paymentComponentDelegate,
+            order: nil,
+            paymentMethod: paymentMethod
+        )
+
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
 
