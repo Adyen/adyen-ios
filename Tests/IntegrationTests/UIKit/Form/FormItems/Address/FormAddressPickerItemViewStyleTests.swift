@@ -65,8 +65,8 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
         XCTAssertEqual(sutWithValue.valueLabel.textColor, expectedColor)
     }
 
-    func test_valueLabel_numberOfLines_shouldBeZeroForMultilineAddress() {
-        let expectedNumberOfLines = 0
+    func test_valueLabel_numberOfLines_shouldBeOneForTruncatedAddress() {
+        let expectedNumberOfLines = 1
         XCTAssertEqual(sut.valueLabel.numberOfLines, expectedNumberOfLines)
     }
 
@@ -98,7 +98,10 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
     func test_customTheme_valueLabel_shouldUseCustomBodyColor() {
         // Given
         let expectedColor = UIColor.systemGreen
-        let customTheme = AdyenTheme.default.bodyLabel(color: expectedColor)
+        var customElements = AdyenTheme.default.elements
+        customElements.labels.body.color = expectedColor
+        customElements.textField.text.color = expectedColor
+        let customTheme = AdyenTheme(colors: AdyenTheme.default.colors, elements: customElements, attributes: AdyenTheme.default.attributes)
 
         // When
         let sutWithCustomTheme = makeSUT(
