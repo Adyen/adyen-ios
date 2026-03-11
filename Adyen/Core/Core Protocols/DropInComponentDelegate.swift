@@ -7,6 +7,7 @@
 import Foundation
 
 /// Defines the methods a delegate of the drop in component should implement.
+@MainActor
 public protocol DropInComponentDelegate: AnyObject {
     
     /// Invoked when a payment method is selected and the initial details have been filled.

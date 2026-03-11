@@ -70,7 +70,7 @@ internal class CheckoutProvider: CheckoutProviding {
 
         let adyenContext = try await setupAdyenContext(configuration: configuration, apiClient: apiClient)
 
-        return Checkout(
+        return await Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: adyenContext,
@@ -91,7 +91,7 @@ internal class CheckoutProvider: CheckoutProviding {
 
         let adyenContext = try await setupAdyenContext(configuration: configuration, apiClient: apiClient)
 
-        return Checkout(
+        return await Checkout(
             configuration: configuration,
             adyenContext: adyenContext,
             presentationDelegate: presentationDelegate

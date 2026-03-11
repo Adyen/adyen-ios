@@ -8,11 +8,13 @@ import Adyen
 import Foundation
 import UIKit
 
+@MainActor
 internal protocol PreselectedPaymentMethodRouterListener: AnyObject {
     func didDismissPreselectedPaymentMethod(completion: (() -> Void)?)
 }
 
 // sourcery:AutoMockable
+@MainActor
 internal protocol PreselectedPaymentMethodRouting: AnyObject {
     func presentPaymentMethodList()
     func present(component: PaymentComponent, onCancel: @escaping () -> Void)
@@ -20,6 +22,7 @@ internal protocol PreselectedPaymentMethodRouting: AnyObject {
     func dismiss(completion: (() -> Void)?)
 }
 
+@MainActor
 internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodRouting {
 
     // MARK: - Properties

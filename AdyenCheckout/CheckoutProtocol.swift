@@ -13,6 +13,7 @@
 #endif
 import AdyenNetworking
 
+@MainActor
 internal protocol CheckoutProtocol {
     
     func createPaymentComponent(for type: PaymentMethodType) -> CheckoutPaymentComponent?

@@ -22,6 +22,7 @@ import UIKit
 /// ```swift
 /// component.submit()
 /// ```
+@MainActor
 public final class CheckoutPaymentComponent {
     
     internal let paymentComponent: PaymentComponent?
