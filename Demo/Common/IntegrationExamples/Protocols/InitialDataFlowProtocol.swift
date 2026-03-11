@@ -9,6 +9,7 @@ import struct AdyenCheckout.CheckoutConfiguration
 import AdyenNetworking
 import AdyenSession
 
+@MainActor
 internal protocol InitialDataFlowProtocol: AnyObject {
     var context: AdyenContext { get }
     var apiClient: APIClientProtocol { get }
