@@ -15,7 +15,7 @@ final class CardComponentEventTests: XCTestCase {
     func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(with: analyticsProviderMock)
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
@@ -447,7 +447,7 @@ final class CardComponentEventTests: XCTestCase {
         with configuration: CardComponentConfiguration = .init(),
         analyticsProviderMock: AnalyticsProviderMock
     ) -> CardComponent {
-        let context = Dummy.context(with: analyticsProviderMock)
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
         let cardComponent = CardComponent(
             paymentMethod: method,
             context: context,

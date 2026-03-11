@@ -12,15 +12,23 @@ class AnalyticsProviderTests: XCTestCase {
     
     func testAnalyticsProviderIsInitializedWithCorrectDefaultConfigurationValues() {
         // Given
+        let eventApiClient = APIClientMock()
+        let eventAnalyticsProvider = EventAnalyticsProvider(
+            apiClient: eventApiClient,
+            context: AnalyticsContext(),
+            eventDataSource: AnalyticsEventDataSource(),
+            checkoutAttemptId: checkoutAttemptIdMockValue
+        )
+
         let sut = AnalyticsProvider(
             apiClient: APIClientMock(),
             configuration: AnalyticsConfiguration(),
-            checkoutAttemptId: nil,
-            eventAnalyticsProvider: nil
+            checkoutAttemptId: AnalyticsProviderMock.testCheckoutAttemptId,
+            eventAnalyticsProvider: eventAnalyticsProvider
         )
 
         // Then
-        XCTAssertNil(sut.checkoutAttemptId)
+        XCTAssertEqual(sut.checkoutAttemptId, AnalyticsProviderMock.testCheckoutAttemptId)
     }
 
     func testSendInitialAnalyticsShouldTriggerRequest() {
@@ -88,8 +96,6 @@ class AnalyticsProviderTests: XCTestCase {
 
     func testInitialRequest() {
         // Given
-        let checkoutAttemptId = checkoutAttemptIdMockValue
-        
         let analyticsExpectation = expectation(description: "Initial request is triggered")
         
         let apiClient = APIClientMock()
@@ -126,7 +132,7 @@ class AnalyticsProviderTests: XCTestCase {
         let sut = AnalyticsProvider(
             apiClient: APIClientMock(),
             configuration: AnalyticsConfiguration(),
-            checkoutAttemptId: nil,
+            checkoutAttemptId: AnalyticsProviderMock.testCheckoutAttemptId,
             eventAnalyticsProvider: eventAnalyticsProvider
         )
         
@@ -198,8 +204,8 @@ class AnalyticsProviderTests: XCTestCase {
         let analyticsProvider = AnalyticsProvider(
             apiClient: apiClient,
             configuration: configuration,
-            checkoutAttemptId: nil,
-            eventAnalyticsProvider: nil
+            checkoutAttemptId: AnalyticsProviderMock.testCheckoutAttemptId,
+            eventAnalyticsProvider: AnyEventAnalyticsProviderMock()
         )
         
         // When
@@ -260,11 +266,19 @@ class AnalyticsProviderTests: XCTestCase {
     }
     
     private func createSUT(apiClient: APIClientMock) -> AnalyticsProvider {
-        AnalyticsProvider(
+
+        let eventApiClient = APIClientMock()
+        let eventAnalyticsProvider = EventAnalyticsProvider(
+            apiClient: eventApiClient,
+            context: AnalyticsContext(),
+            eventDataSource: AnalyticsEventDataSource(),
+            checkoutAttemptId: checkoutAttemptIdMockValue
+        )
+        return AnalyticsProvider(
             apiClient: apiClient,
             configuration: AnalyticsConfiguration(),
-            checkoutAttemptId: nil,
-            eventAnalyticsProvider: nil
+            checkoutAttemptId: AnalyticsProviderMock.testCheckoutAttemptId,
+            eventAnalyticsProvider: eventAnalyticsProvider
         )
     }
 }

@@ -290,7 +290,7 @@ import XCTest
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(
                 paymentMethod: paymentMethod,
-                context: Dummy.context(with: analyticsProviderMock),
+                context: Dummy.context(analyticsProvider: analyticsProviderMock),
                 configuration: config
             )
             
@@ -321,7 +321,7 @@ import XCTest
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(
                 paymentMethod: paymentMethod,
-                context: Dummy.context(with: analyticsProviderMock),
+                context: Dummy.context(analyticsProvider: analyticsProviderMock),
                 configuration: config
             )
             
@@ -351,7 +351,7 @@ import XCTest
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(
                 paymentMethod: paymentMethod,
-                context: Dummy.context(with: analyticsProviderMock),
+                context: Dummy.context(analyticsProvider: analyticsProviderMock),
                 configuration: config
             )
             
@@ -381,7 +381,7 @@ import XCTest
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(
                 paymentMethod: paymentMethod,
-                context: Dummy.context(with: analyticsProviderMock),
+                context: Dummy.context(analyticsProvider: analyticsProviderMock),
                 configuration: config
             )
             
@@ -411,7 +411,7 @@ import XCTest
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(
                 paymentMethod: paymentMethod,
-                context: Dummy.context(with: analyticsProviderMock),
+                context: Dummy.context(analyticsProvider: analyticsProviderMock),
                 configuration: config
             )
             

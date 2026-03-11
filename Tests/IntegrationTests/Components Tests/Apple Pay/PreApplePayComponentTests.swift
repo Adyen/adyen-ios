@@ -21,9 +21,8 @@ class PreApplePayComponentTests: XCTestCase {
     var sut: PreApplePayComponent!
     override func setUpWithError() throws {
         try super.setUpWithError()
-        analyticsProviderMock = AnalyticsProviderMock()
-        analyticsProviderMock._checkoutAttemptId = "test_attemp_id"
-        context = Dummy.context(with: analyticsProviderMock)
+        analyticsProviderMock = AnalyticsProviderMock(checkoutAttemptId: "test_attemp_id")
+        context = Dummy.context(analyticsProvider: analyticsProviderMock)
         paymentComponentDelegate = PaymentComponentDelegateMock()
 
         let request = PKPaymentRequest()

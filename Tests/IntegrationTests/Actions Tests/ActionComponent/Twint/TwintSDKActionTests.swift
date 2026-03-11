@@ -261,7 +261,7 @@ import XCTest
 
             let twintActionComponent = Self.actionComponent(
                 with: twintSpy,
-                context: Dummy.context(with: analyticsProviderMock),
+                context: Dummy.context(analyticsProvider: analyticsProviderMock),
                 presentationDelegate: presentationDelegate,
                 delegate: nil
             )

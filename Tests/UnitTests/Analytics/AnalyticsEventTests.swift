@@ -22,8 +22,8 @@ class AnalyticsEventTests: XCTestCase {
         sut = AnalyticsProvider(
             apiClient: apiClient,
             configuration: .init(),
-            checkoutAttemptId: nil,
-            eventAnalyticsProvider: nil
+            checkoutAttemptId: AnalyticsProviderMock.testCheckoutAttemptId,
+            eventAnalyticsProvider: AnyEventAnalyticsProviderMock()
         )
     }
 
@@ -42,8 +42,8 @@ class AnalyticsEventTests: XCTestCase {
         sut = AnalyticsProvider(
             apiClient: apiClient,
             configuration: .init(),
-            checkoutAttemptId: nil,
-            eventAnalyticsProvider: nil
+            checkoutAttemptId: AnalyticsProviderMock.testCheckoutAttemptId,
+            eventAnalyticsProvider: AnyEventAnalyticsProviderMock()
         )
 
         let flavor: AnalyticsFlavor = .components(type: .affirm)
@@ -66,8 +66,8 @@ class AnalyticsEventTests: XCTestCase {
         sut = AnalyticsProvider(
             apiClient: apiClient,
             configuration: .init(),
-            checkoutAttemptId: nil,
-            eventAnalyticsProvider: nil
+            checkoutAttemptId: AnalyticsProviderMock.testCheckoutAttemptId,
+            eventAnalyticsProvider: AnyEventAnalyticsProviderMock()
         )
 
         let flavor: AnalyticsFlavor = .dropIn(paymentMethods: ["scheme", "paypal", "affirm"])

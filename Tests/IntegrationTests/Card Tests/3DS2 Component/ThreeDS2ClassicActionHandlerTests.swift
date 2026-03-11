@@ -79,7 +79,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2ClassicActionHandler(
-            context: Dummy.context(with: analyticsProviderMock),
+            context: Dummy.context(analyticsProvider: analyticsProviderMock),
             appearanceConfiguration: ADYAppearanceConfiguration(),
             service: service
         )
@@ -162,7 +162,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2ClassicActionHandler(
-            context: Dummy.context(with: analyticsProviderMock),
+            context: Dummy.context(analyticsProvider: analyticsProviderMock),
             appearanceConfiguration: ADYAppearanceConfiguration(),
             service: service
         )

@@ -19,7 +19,7 @@ class BoletoComponentTests: XCTestCase {
 
         let prefilledInformation = Dummy.dummyFullPrefilledInformation
         let brazilSocialSecurityNumberFormatter = BrazilSocialSecurityNumberFormatter()
-        let context = Dummy.context(with: AnalyticsProviderMock())
+        let context = Dummy.context(analyticsProvider: AnalyticsProviderMock())
 
         let component = BoletoComponent(
             paymentMethod: method,
@@ -47,7 +47,7 @@ class BoletoComponentTests: XCTestCase {
 
     func testNoPrefilledInformation() throws {
 
-        let context = Dummy.context(with: AnalyticsProviderMock())
+        let context = Dummy.context(analyticsProvider: AnalyticsProviderMock())
 
         let component = BoletoComponent(
             paymentMethod: method,
@@ -70,7 +70,7 @@ class BoletoComponentTests: XCTestCase {
 
     func testNoEmailSection() {
 
-        let context = Dummy.context(with: AnalyticsProviderMock())
+        let context = Dummy.context(analyticsProvider: AnalyticsProviderMock())
 
         let component = BoletoComponent(
             paymentMethod: method,
@@ -94,7 +94,7 @@ class BoletoComponentTests: XCTestCase {
 
     func testEmailFieldHiding() throws {
 
-        let context = Dummy.context(with: AnalyticsProviderMock())
+        let context = Dummy.context(analyticsProvider: AnalyticsProviderMock())
 
         let component = BoletoComponent(
             paymentMethod: method,
@@ -126,7 +126,7 @@ class BoletoComponentTests: XCTestCase {
 
     func testSubmitShouldCallPaymentComponentDelegateDidSubmit() throws {
         // Given
-        let context = Dummy.context(with: AnalyticsProviderMock())
+        let context = Dummy.context(analyticsProvider: AnalyticsProviderMock())
         let configuration = BoletoComponent.Configuration(shopperInformation: nil, showEmailAddress: false)
         let sut = BoletoComponent(
             paymentMethod: method,
@@ -176,7 +176,7 @@ class BoletoComponentTests: XCTestCase {
 
     func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
         // Given
-        let context = Dummy.context(with: AnalyticsProviderMock())
+        let context = Dummy.context(analyticsProvider: AnalyticsProviderMock())
         let configuration = BoletoComponent.Configuration(shopperInformation: nil, showEmailAddress: false)
         let sut = BoletoComponent(
             paymentMethod: method,
@@ -222,7 +222,7 @@ class BoletoComponentTests: XCTestCase {
 
     func testValidateGivenInvalidInputShouldReturnFormViewControllerValidateResult() throws {
         // Given
-        let context = Dummy.context(with: AnalyticsProviderMock())
+        let context = Dummy.context(analyticsProvider: AnalyticsProviderMock())
         let configuration = BoletoComponent.Configuration(shopperInformation: nil, showEmailAddress: false)
         let sut = BoletoComponent(
             paymentMethod: method,
@@ -253,7 +253,7 @@ class BoletoComponentTests: XCTestCase {
     func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(with: analyticsProviderMock)
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
 
         let component = BoletoComponent(
             paymentMethod: method,

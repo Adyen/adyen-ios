@@ -80,7 +80,7 @@ class RedirectComponentTests: XCTestCase {
     
     func testOpenCustomSchemeFailure() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
-        let sut = RedirectComponent(context: Dummy.context(with: analyticsProviderMock))
+        let sut = RedirectComponent(context: Dummy.context(analyticsProvider: analyticsProviderMock))
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
         let appLauncher = AppLauncherMock()
@@ -347,7 +347,7 @@ class RedirectComponentTests: XCTestCase {
         let apiClient = APIClientMock()
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = RedirectComponent(
-            context: Dummy.context(with: analyticsProviderMock),
+            context: Dummy.context(analyticsProvider: analyticsProviderMock),
             apiClient: apiClient.retryAPIClient(with: SimpleScheduler(maximumCount: 2))
         )
         apiClient.mockedResults = [.failure(Dummy.error)]

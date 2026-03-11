@@ -755,7 +755,7 @@ class ApplePayComponentTest: XCTestCase {
     func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(with: analyticsProviderMock)
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
 
         let configuration = try ApplePayComponent.Configuration(
             paymentRequest: Dummy.createTestApplePayPaymentRequest()

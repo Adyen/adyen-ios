@@ -319,7 +319,7 @@ class AffirmComponentTests: XCTestCase {
     func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(with: analyticsProviderMock)
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
         sut = AffirmComponent(paymentMethod: paymentMethod, context: context)
         let mockViewController = UIViewController()
 

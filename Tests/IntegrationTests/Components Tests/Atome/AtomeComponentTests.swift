@@ -80,7 +80,7 @@ class AtomeComponentTests: XCTestCase {
     func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(with: analyticsProviderMock)
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
         sut = AtomeComponent(
             paymentMethod: paymentMethod,
             context: context

@@ -339,7 +339,7 @@ class CheckoutActionComponentTests: XCTestCase {
     private func testEvent(for action: Action) {
         
         let analyticsProviderMock = AnalyticsProviderMock()
-        let sut = CheckoutActionComponent(context: Dummy.context(with: analyticsProviderMock))
+        let sut = CheckoutActionComponent(context: Dummy.context(analyticsProvider: analyticsProviderMock))
         
         sut.handle(action)
         
