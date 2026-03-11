@@ -59,65 +59,51 @@ struct AdyenContextTests {
         #expect(context.analyticsProvider != nil)
     }
     
-    @Test func initWith_EnvironmentCheckoutAttemptID_shouldCreateAnalyticsProvider() {
-        let analyticsApiContext = CheckoutConfiguration.createAnalyticsAPIContext(apiContext: Dummy.apiContext)
-        let context = AdyenContext(
-            apiContext: Dummy.apiContext,
-            amount: Dummy.amount,
-            publicKey: Dummy.publicKey,
-            checkoutAttemptId: AnalyticsProviderMock.testCheckoutAttemptId,
-            analyticsAPIContext: analyticsApiContext,
-            analyticsConfiguration: AnalyticsConfiguration(isEnabled: true)
-        )
-        
-        #expect(context.analyticsProvider != nil)
+    struct AnalyticsTestData: CustomTestStringConvertible {
+        let attemptID: String?
+        let analyticsAPIContext: APIContext?
+        let analyticsConfiguration: AnalyticsConfiguration
+
+        var testDescription: String {
+            "attemptID: \(attemptID), Context: \(analyticsAPIContext), Config: \(analyticsConfiguration)"
+        }
+
+        static var allPermutations: [AnalyticsTestData] {
+            let possibleAttemptIds: [String?] = [AnalyticsProviderMock.testCheckoutAttemptId, nil]
+            let possibleContexts: [APIContext?] = [Dummy.apiContext, nil]
+            let possibleAnalyticsConfigurations: [AnalyticsConfiguration] = [AnalyticsConfiguration(isEnabled: true), AnalyticsConfiguration(isEnabled: false)]
+
+            return possibleAttemptIds.flatMap { id in
+                possibleContexts.flatMap { context in
+                    possibleAnalyticsConfigurations.map { config in
+                        AnalyticsTestData(attemptID: id, analyticsAPIContext: context, analyticsConfiguration: config)
+                    }
+                }
+            }
+        }
+
+        var expectedToCreate: Bool {
+            guard attemptID != nil, analyticsAPIContext != nil, analyticsConfiguration.isEnabled else {
+                return false
+            }
+            return true
+        }
     }
-    
-    @Test func initWithNotProvided_Environment_shouldNotCreateAnalyticsProvider() throws {
+
+    @Test(arguments: AnalyticsTestData.allPermutations)
+    func creationOfAnalyticsProvider(testData: AnalyticsTestData) throws {
         let apiContext = try APIContext(environment: TestEnvironment.test, clientKey: "local_DUMMYKEYFORTESTING")
-        let analyticsApiContext = CheckoutConfiguration.createAnalyticsAPIContext(apiContext: Dummy.apiContext)
 
         let context = AdyenContext(
             apiContext: apiContext,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
-            checkoutAttemptId: nil,
-            analyticsAPIContext: analyticsApiContext,
-            analyticsConfiguration: AnalyticsConfiguration(isEnabled: true)
-        )
-        #expect(context.analyticsProvider == nil)
-    }
-
-    @Test func initWithNotProvided_CheckoutAttemptID_shouldNotCreateAnalyticsProvider() throws {
-        let apiContext = try APIContext(environment: TestEnvironment.test, clientKey: "local_DUMMYKEYFORTESTING")
-        let analyticsApiContext = CheckoutConfiguration.createAnalyticsAPIContext(apiContext: Dummy.apiContext)
-
-        let context = AdyenContext(
-            apiContext: apiContext,
-            amount: Dummy.amount,
-            publicKey: Dummy.publicKey,
-            checkoutAttemptId: nil,
-            analyticsAPIContext: analyticsApiContext,
-            analyticsConfiguration: AnalyticsConfiguration(isEnabled: true)
-        )
-        #expect(context.analyticsProvider == nil)
-
-    }
-
-    @Test func initWithNotProvided_analyticsDisabled_shouldNotCreateAnalyticsProvider() throws {
-        let apiContext = try APIContext(environment: TestEnvironment.test, clientKey: "local_DUMMYKEYFORTESTING")
-        let analyticsApiContext = CheckoutConfiguration.createAnalyticsAPIContext(apiContext: Dummy.apiContext)
-
-        let context = AdyenContext(
-            apiContext: apiContext,
-            amount: Dummy.amount,
-            publicKey: Dummy.publicKey,
-            checkoutAttemptId: AnalyticsProviderMock.testCheckoutAttemptId,
-            analyticsAPIContext: analyticsApiContext,
-            analyticsConfiguration: AnalyticsConfiguration(isEnabled: false)
+            checkoutAttemptId: testData.attemptID,
+            analyticsAPIContext: testData.analyticsAPIContext,
+            analyticsConfiguration: testData.analyticsConfiguration
         )
 
-        #expect(context.analyticsProvider == nil)
+        #expect((context.analyticsProvider != nil) == testData.expectedToCreate)
     }
 }
 
