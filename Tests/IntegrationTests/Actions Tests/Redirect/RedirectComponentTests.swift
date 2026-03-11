@@ -10,6 +10,7 @@ import AdyenNetworking
 import SafariServices
 import XCTest
 
+@MainActor
 class RedirectComponentTests: XCTestCase {
     
     override func setUp(completion: @escaping (Error?) -> Void) {

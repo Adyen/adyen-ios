@@ -15,6 +15,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 import XCTest
 
+@MainActor
 final class PaymentComponentFactoryProtocolTests: XCTestCase {
     
     // MARK: - Mock Types for Testing

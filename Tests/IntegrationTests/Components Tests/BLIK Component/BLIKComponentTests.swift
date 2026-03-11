@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class BLIKComponentTests: XCTestCase {
 
     lazy var paymentMethod = BLIKPaymentMethod(type: .blik, name: "test_name")

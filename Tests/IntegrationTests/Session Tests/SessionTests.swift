@@ -13,6 +13,7 @@ import AdyenComponents
 @testable import AdyenDropIn
 import AdyenNetworking
 
+@MainActor
 class SessionTests: XCTestCase {
 
     var analyticsProviderMock: AnalyticsProviderMock!
