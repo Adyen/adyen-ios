@@ -23,6 +23,8 @@ public enum AnalyticsEnvironment: String, AnyAPIEnvironment {
     
     case liveIndia = "https://checkoutanalytics-live-in.adyen.com/"
     
+    case liveNEA = "https://checkoutanalytics-live-nea.adyen.com/"
+    
     @_spi(AdyenInternal)
     case beta = "https://beta.adyen.com/checkoutanalytics/v3/analytics/"
     
@@ -53,6 +55,8 @@ extension Environment {
             return .liveAustralia
         case .liveUnitedStates:
             return .liveUnitedStates
+        case .liveNEA:
+            return .liveNEA
         case .local:
             return .local
         default:
