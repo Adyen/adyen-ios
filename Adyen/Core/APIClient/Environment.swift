@@ -40,8 +40,8 @@ public struct Environment: AnyAPIEnvironment {
     /// Adyen's India live  environment.
     public static let liveIndia = Environment(baseURL: URL(string: "https://checkoutshopper-live-in.adyen.com/")!)
 
-    /// Adyen's NEA live environment.
-    public static let liveNEA = Environment(baseURL: URL(string: "https://checkoutshopper-live-nea.adyen.com/")!)
+    /// Adyen's Nea live environment.
+    public static let liveNea = Environment(baseURL: URL(string: "https://checkoutshopper-live-nea.adyen.com/")!)
     
     /// Determines if the environment is one of Adyen's live environments.
     @_spi(AdyenInternal)
