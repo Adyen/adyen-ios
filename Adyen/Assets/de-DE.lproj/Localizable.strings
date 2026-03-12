@@ -1,5 +1,5 @@
-"adyen.submitButton" = "Zahle";
-"adyen.submitButton.formatted" = "%@ zahlen";
+"adyen.submitButton" = "Kaufen";
+"adyen.submitButton.formatted" = "Kaufen für %@";
 "adyen.cancelButton" = "Abbrechen";
 "adyen.dismissButton" = "OK";
 "adyen.removeButton" = "Entfernen";
