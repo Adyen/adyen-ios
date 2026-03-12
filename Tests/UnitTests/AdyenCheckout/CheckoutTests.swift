@@ -12,6 +12,7 @@
 @_spi(AdyenInternal) @testable import AdyenActions
 import XCTest
 
+@MainActor
 final class CheckoutTests: XCTestCase {
     var mockProvider: CheckoutProviderMock!
     var configuration: CheckoutConfiguration!
@@ -41,7 +42,7 @@ final class CheckoutTests: XCTestCase {
         paymentMethods = try! AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
     }
 
-    @MainActor func testSetupWithSession_Success() async throws {
+    func testSetupWithSession_Success() async throws {
         let expectedSession = AdyenSessionMock(state: .init(
             data: "test_session_data",
             identifier: "test_session_id",
@@ -79,7 +80,7 @@ final class CheckoutTests: XCTestCase {
         XCTAssertTrue(mockProvider.setupSessionCalled)
     }
 
-    @MainActor func testSetupWithSession_Failure() async {
+    func testSetupWithSession_Failure() async {
         mockProvider.setupWithSessionResult = .failure(TestError())
         
         do {
@@ -98,7 +99,7 @@ final class CheckoutTests: XCTestCase {
         }
     }
 
-    @MainActor func testSetupWithPaymentMethods_Success() async throws {
+    func testSetupWithPaymentMethods_Success() async throws {
         let expectedCheckout = Checkout(
             configuration: configuration,
             paymentMethods: paymentMethods,
@@ -120,7 +121,7 @@ final class CheckoutTests: XCTestCase {
         XCTAssertTrue(mockProvider.setupPaymentMethodsCalled)
     }
 
-    @MainActor func testSetupWithPaymentMethods_Failure() async {
+    func testSetupWithPaymentMethods_Failure() async {
         mockProvider.setupWithPaymentMethodsResult = .failure(TestError())
         
         do {
@@ -136,7 +137,7 @@ final class CheckoutTests: XCTestCase {
         }
     }
     
-    @MainActor func testSetupSessionProtocolCall() async {
+    func testSetupSessionProtocolCall() async {
         let sessionMock = AdyenSessionMock(state: .init(
             data: "test_data",
             identifier: "test_id",
@@ -166,7 +167,7 @@ final class CheckoutTests: XCTestCase {
     
     // MARK: - payment component delegate
     
-    @MainActor func test_didSubmit_callsOnSubmit_whenSet() throws {
+    func test_didSubmit_callsOnSubmit_whenSet() throws {
         let expectation = expectation(description: "onSubmit called")
         var didCallSubmit = false
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
@@ -204,7 +205,7 @@ final class CheckoutTests: XCTestCase {
     
     // MARK: - createPaymentComponent(for type:) Tests
     
-    @MainActor func test_createPaymentComponent_forType_returnsComponent_whenPaymentMethodExists() {
+    func test_createPaymentComponent_forType_returnsComponent_whenPaymentMethodExists() {
         // Given
         let sut = Checkout(
             configuration: configuration,
@@ -221,7 +222,7 @@ final class CheckoutTests: XCTestCase {
         XCTAssertNotNil(component?.viewController)
     }
     
-    @MainActor func test_createPaymentComponent_forType_returnsNil_whenPaymentMethodDoesNotExist() {
+    func test_createPaymentComponent_forType_returnsNil_whenPaymentMethodDoesNotExist() {
         // Given
         let sut = Checkout(
             configuration: configuration,
@@ -237,7 +238,7 @@ final class CheckoutTests: XCTestCase {
         XCTAssertNil(component)
     }
     
-    @MainActor func test_createPaymentComponent_forType_returnsNil_whenPaymentMethodsIsNil() {
+    func test_createPaymentComponent_forType_returnsNil_whenPaymentMethodsIsNil() {
         // Given
         let sut = Checkout(
             configuration: configuration,
@@ -252,7 +253,7 @@ final class CheckoutTests: XCTestCase {
         XCTAssertNil(component)
     }
     
-    @MainActor func test_createPaymentComponent_forScheme_returnsCardComponent() {
+    func test_createPaymentComponent_forScheme_returnsCardComponent() {
         // Given
         let sut = Checkout(
             configuration: configuration,
@@ -271,7 +272,7 @@ final class CheckoutTests: XCTestCase {
     
     // MARK: - createPaymentComponent(for identifier:) Tests
     
-    @MainActor func test_createPaymentComponent_forIdentifier_returnsComponent_whenStoredMethodExists() throws {
+    func test_createPaymentComponent_forIdentifier_returnsComponent_whenStoredMethodExists() throws {
         // Given
         let sut = Checkout(
             configuration: configuration,
@@ -288,7 +289,7 @@ final class CheckoutTests: XCTestCase {
         XCTAssertNotNil(component)
     }
     
-    @MainActor func test_createPaymentComponent_forIdentifier_returnsNil_whenStoredMethodDoesNotExist() {
+    func test_createPaymentComponent_forIdentifier_returnsNil_whenStoredMethodDoesNotExist() {
         // Given
         let sut = Checkout(
             configuration: configuration,
@@ -304,7 +305,7 @@ final class CheckoutTests: XCTestCase {
         XCTAssertNil(component)
     }
     
-    @MainActor func test_createPaymentComponent_forIdentifier_returnsNil_whenPaymentMethodsIsNil() {
+    func test_createPaymentComponent_forIdentifier_returnsNil_whenPaymentMethodsIsNil() {
         // Given
         let sut = Checkout(
             configuration: configuration,
@@ -319,7 +320,7 @@ final class CheckoutTests: XCTestCase {
         XCTAssertNil(component)
     }
     
-    @MainActor func test_createPaymentComponent_forIdentifier_returnsCorrectStoredMethod() {
+    func test_createPaymentComponent_forIdentifier_returnsCorrectStoredMethod() {
         // Given
         let sut = Checkout(
             configuration: configuration,
@@ -343,7 +344,7 @@ final class CheckoutTests: XCTestCase {
     
     // MARK: - Action-Only Setup Tests
     
-    @MainActor func testSetupActionOnly_Success() async throws {
+    func testSetupActionOnly_Success() async throws {
         // Given
         let expectedCheckout = Checkout(
             configuration: configuration,
@@ -365,7 +366,7 @@ final class CheckoutTests: XCTestCase {
         XCTAssertTrue(mockProvider.setupActionOnlyCalled)
     }
     
-    @MainActor func testSetupActionOnly_Failure() async {
+    func testSetupActionOnly_Failure() async {
         // Given
         mockProvider.setupActionOnlyResult = .failure(TestError())
         
@@ -382,7 +383,7 @@ final class CheckoutTests: XCTestCase {
         }
     }
     
-    @MainActor func testSetupActionOnly_createPaymentComponent_returnsNil() async throws {
+    func testSetupActionOnly_createPaymentComponent_returnsNil() async throws {
         // Given
         let expectedCheckout = Checkout(
             configuration: configuration,
