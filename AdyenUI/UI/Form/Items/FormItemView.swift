@@ -14,7 +14,8 @@ open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView, AdyenObser
     /// The item represented by the view.
     public let item: ItemType
     
-    /// The primary view within this item designated for accessibility label updates, used for both descriptive text and validation messages.
+    /// The primary view within this item designated for accessibility label updates,
+    /// used for both descriptive text and validation messages.
     internal var accessibilityLabelView: UIView? {
         AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
         return nil
@@ -52,6 +53,18 @@ public protocol AnyFormItemView: UIView {
     
     /// The array of item views embedded in the current item view.
     var childItemViews: [AnyFormItemView] { get }
+}
+
+@_spi(AdyenInternal)
+public protocol AppearanceChangeRefreshable: AnyObject {
+    var appearanceRefresher: ((UITraitCollection) -> Void)? { get }
+}
+
+@_spi(AdyenInternal)
+public extension AppearanceChangeRefreshable {
+    var appearanceRefresher: ((UITraitCollection) -> Void)? {
+        nil
+    }
 }
 
 @_spi(AdyenInternal)

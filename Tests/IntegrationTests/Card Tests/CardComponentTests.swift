@@ -214,6 +214,51 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(storeDetailsToggle, "Store details toggle should be present when configured")
     }
 
+    func test_cardViewController_whenInterfaceStyleChanges_shouldRefreshHolderNameBorderColor() throws {
+        // Given
+        let expectedBorderColor = dynamicColor(light: .systemGreen, dark: .systemBlue)
+        let expectedActiveBorderColor = dynamicColor(light: .orange, dark: .purple)
+
+        var configuration = CardComponentConfiguration()
+        configuration.showsHolderNameField = true
+        configuration.theme = AdyenTheme(
+            colors: AdyenColors(
+                containerOutline: expectedBorderColor,
+                primary: expectedActiveBorderColor
+            )
+        )
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: Dummy.context(with: nil),
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: BinInfoProviderMock()
+        )
+
+        setupRootViewController(sut.cardViewController)
+
+        let holderNameItemView: FormTextInputItemView = try XCTUnwrap(
+            sut.cardViewController.view.findView(with: CardViewIdentifier.holdername)
+        )
+        let holderNameContainer: UIView = try XCTUnwrap(
+            sut.cardViewController.view.findView(with: "\(CardViewIdentifier.holdername).entryTextStackView")
+        )
+
+        // When / Then
+        setInterfaceStyle(.light)
+        XCTAssertEqual(holderNameContainer.layer.borderColor, resolvedBorderColor(for: expectedBorderColor, interfaceStyle: .light))
+
+        triggerEditing(on: holderNameItemView, isEditing: true)
+        XCTAssertEqual(holderNameContainer.layer.borderColor, resolvedBorderColor(for: expectedActiveBorderColor, interfaceStyle: .light))
+
+        setInterfaceStyle(.dark)
+        XCTAssertEqual(holderNameContainer.layer.borderColor, resolvedBorderColor(for: expectedActiveBorderColor, interfaceStyle: .dark))
+
+        triggerEditing(on: holderNameItemView, isEditing: false)
+        XCTAssertEqual(holderNameContainer.layer.borderColor, resolvedBorderColor(for: expectedBorderColor, interfaceStyle: .dark))
+    }
+
     func test_viewController_shouldNotShowBigTitle() {
 
         let sut = CardComponent(
@@ -2425,6 +2470,29 @@ extension CardComponentTests {
         populate(textItemView: cardNumberItemView!, with: card.number ?? "")
         populate(textItemView: expiryDateItemView!, with: "\(card.expiryMonth ?? "") \(card.expiryYear ?? "")")
         populate(textItemView: securityCodeItemView!, with: card.securityCode ?? "")
+    }
+
+    func triggerEditing(on itemView: FormTextInputItemView, isEditing: Bool) {
+        if isEditing {
+            itemView.textField.delegate?.textFieldDidBeginEditing?(itemView.textField)
+        } else {
+            itemView.textField.delegate?.textFieldDidEndEditing?(itemView.textField)
+        }
+    }
+
+    func setInterfaceStyle(_ style: UIUserInterfaceStyle) {
+        UIApplication.shared.adyen.mainKeyWindow?.overrideUserInterfaceStyle = style
+        wait(for: .aMoment)
+    }
+
+    func dynamicColor(light: UIColor, dark: UIColor) -> UIColor {
+        UIColor { traitCollection in
+            traitCollection.userInterfaceStyle == .dark ? dark : light
+        }
+    }
+
+    func resolvedBorderColor(for color: UIColor, interfaceStyle: UIUserInterfaceStyle) -> CGColor {
+        color.resolvedColor(with: UITraitCollection(userInterfaceStyle: interfaceStyle)).cgColor
     }
 
     func tapSubmitButton(on view: UIView) {
