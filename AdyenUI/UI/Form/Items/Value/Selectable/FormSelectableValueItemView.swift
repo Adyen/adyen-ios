@@ -8,7 +8,8 @@
 import UIKit
 
 package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueItem<ValueType?>>:
-    FormValidatableValueItemView<ValueType?, ItemType> {
+    FormValidatableValueItemView<ValueType?, ItemType>,
+    AppearanceChangeRefreshable {
 
     internal var numberOfLines: Int = 1 {
         didSet {
@@ -126,7 +127,7 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
 
         containerView.backgroundColor = style.containerColor
         containerView.layer.borderWidth = style.borderWidth
-        containerView.layer.borderColor = style.borderColor.cgColor
+        adyen.applyLayerBorderColor(style.borderColor, on: containerView.layer)
 
         switch style.cornerRadius {
         case let .fixed(radius):
@@ -139,10 +140,22 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
         valueLabel.apply(theme.elements.labels.body)
     }
 
-    private func updateContainerBorderColor(isValid: Bool) {
+    private func updateContainerBorderColor(
+        isValid: Bool,
+        resolvingWith traitCollection: UITraitCollection? = nil
+    ) {
         let style = theme.elements.textField
         let borderColor = isValid ? style.borderColor : style.errorColor
-        containerView.layer.borderColor = borderColor.cgColor
+        adyen.applyLayerBorderColor(borderColor, on: containerView.layer, resolvingWith: traitCollection)
+    }
+
+    package var appearanceRefresher: ((UITraitCollection) -> Void)? {
+        { [weak self] traitCollection in
+            self?.updateContainerBorderColor(
+                isValid: !(self?.item.validationState.shouldShowError ?? false),
+                resolvingWith: traitCollection
+            )
+        }
     }
 
     // MARK: - Convenience

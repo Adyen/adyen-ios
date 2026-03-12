@@ -259,6 +259,40 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(holderNameContainer.layer.borderColor, resolvedBorderColor(for: expectedBorderColor, interfaceStyle: .dark))
     }
 
+    func test_cardViewController_whenInterfaceStyleChanges_shouldRefreshBillingAddressBorderColor() throws {
+        // Given
+        let expectedBorderColor = dynamicColor(light: .systemGreen, dark: .systemBlue)
+
+        var configuration = CardComponentConfiguration()
+        configuration.billingAddress.mode = .lookup(onAddressLookup: { _ in [] })
+        configuration.theme = AdyenTheme(
+            colors: AdyenColors(
+                containerOutline: expectedBorderColor
+            )
+        )
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: Dummy.context(with: nil),
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: BinInfoProviderMock()
+        )
+
+        setupRootViewController(sut.cardViewController)
+
+        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(
+            sut.cardViewController.view.findView(by: CardViewIdentifier.billingAddress)
+        )
+
+        // When / Then
+        setInterfaceStyle(.light)
+        XCTAssertEqual(billingAddressView.containerView.layer.borderColor, resolvedBorderColor(for: expectedBorderColor, interfaceStyle: .light))
+
+        setInterfaceStyle(.dark)
+        XCTAssertEqual(billingAddressView.containerView.layer.borderColor, resolvedBorderColor(for: expectedBorderColor, interfaceStyle: .dark))
+    }
+
     func test_viewController_shouldNotShowBigTitle() {
 
         let sut = CardComponent(
