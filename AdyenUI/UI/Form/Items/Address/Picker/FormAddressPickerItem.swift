@@ -134,7 +134,7 @@ extension FormAddressPickerItem {
     }
 
     private func updateFormattedValue() {
-        formattedValue = value?.formatted(using: localizationParameters)
+        formattedValue = value?.formattedSingleLine(using: localizationParameters)
     }
 }
 
