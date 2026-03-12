@@ -57,14 +57,7 @@ public protocol AnyFormItemView: UIView {
 
 @_spi(AdyenInternal)
 public protocol AppearanceChangeRefreshable: AnyObject {
-    var appearanceRefresher: ((UITraitCollection) -> Void)? { get }
-}
-
-@_spi(AdyenInternal)
-public extension AppearanceChangeRefreshable {
-    var appearanceRefresher: ((UITraitCollection) -> Void)? {
-        nil
-    }
+    func refreshAppearance(with traitCollection: UITraitCollection)
 }
 
 @_spi(AdyenInternal)

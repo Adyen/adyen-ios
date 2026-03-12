@@ -149,13 +149,11 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
         adyen.applyLayerBorderColor(borderColor, on: containerView.layer, resolvingWith: traitCollection)
     }
 
-    package var appearanceRefresher: ((UITraitCollection) -> Void)? {
-        { [weak self] traitCollection in
-            self?.updateContainerBorderColor(
-                isValid: !(self?.item.validationState.shouldShowError ?? false),
-                resolvingWith: traitCollection
-            )
-        }
+    package func refreshAppearance(with traitCollection: UITraitCollection) {
+        updateContainerBorderColor(
+            isValid: !item.validationState.shouldShowError,
+            resolvingWith: traitCollection
+        )
     }
 
     // MARK: - Convenience

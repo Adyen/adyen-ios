@@ -128,17 +128,12 @@ open class FormViewController: UIViewController, AdyenObserver {
     override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        guard let previousTraitCollection else { return }
-
-        if #available(iOS 13.0, *) {
-            guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
-        } else {
-            guard previousTraitCollection.userInterfaceStyle != traitCollection.userInterfaceStyle else { return }
-        }
+        guard let previousTraitCollection,
+              traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
 
         itemManager.flatItemViews
             .compactMap { $0 as? AppearanceChangeRefreshable }
-            .forEach { $0.appearanceRefresher?(traitCollection) }
+            .forEach { $0.refreshAppearance(with: traitCollection) }
     }
 
     override public var preferredContentSize: CGSize {

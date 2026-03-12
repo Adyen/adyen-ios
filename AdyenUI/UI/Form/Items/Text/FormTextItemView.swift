@@ -353,10 +353,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         adyen.applyLayerBorderColor(borderColor, on: entryTextStackView.layer, resolvingWith: traitCollection)
     }
 
-    public var appearanceRefresher: ((UITraitCollection) -> Void)? {
-        { [weak self] traitCollection in
-            self?.updateBorderColor(state: self?.item.validationState ?? .valid, resolvingWith: traitCollection)
-        }
+    public func refreshAppearance(with traitCollection: UITraitCollection) {
+        updateBorderColor(state: item.validationState, resolvingWith: traitCollection)
     }
 }
 
