@@ -125,6 +125,17 @@ open class FormViewController: UIViewController, AdyenObserver {
         resignFirstResponder()
     }
 
+    override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        guard let previousTraitCollection,
+              traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) else { return }
+
+        itemManager.flatItemViews
+            .compactMap { $0 as? AppearanceChangeRefreshable }
+            .forEach { $0.refreshAppearance(with: traitCollection) }
+    }
+
     override public var preferredContentSize: CGSize {
         get { formView.intrinsicContentSize }
 
