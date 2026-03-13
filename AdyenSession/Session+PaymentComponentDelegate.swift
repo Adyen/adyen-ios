@@ -58,11 +58,12 @@ extension Session {
             sessionData: state.data,
             data: paymentComponentData
         )
-        apiClient.perform(request) { [weak self] in
+        apiClient.perform(request) { @MainActor [weak self] in
             self?.handle(paymentResponseResult: $0, for: component, in: dropInComponent)
         }
     }
     
+    @MainActor
     internal func handle(
         paymentResponseResult: Result<PaymentsResponse, Error>,
         for currentComponent: Component,
@@ -76,6 +77,7 @@ extension Session {
         }
     }
     
+    @MainActor
     private func handle(
         paymentResponse response: PaymentsResponse,
         for currentComponent: Component,
@@ -111,6 +113,7 @@ extension Session {
         }
     }
     
+    @MainActor
     private func handle(
         action: Action,
         for currentComponent: Component,

@@ -11,6 +11,7 @@ import UIKit
 extension RedirectComponent: AnyRedirectComponent {}
 
 /// Handles any redirect Url whether its a web url, an App custom scheme url, or an app universal link.
+@MainActor
 public final class RedirectComponent: ActionComponent {
     
     /// Describes the types of errors that can be returned by the component.

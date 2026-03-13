@@ -60,7 +60,7 @@ extension Session {
             paymentData: actionComponentData.paymentData,
             details: actionComponentData.details
         )
-        apiClient.perform(request) { [weak self] in
+        apiClient.perform(request) { @MainActor [weak self] in
             self?.handle(paymentResponseResult: $0, for: component)
         }
     }
