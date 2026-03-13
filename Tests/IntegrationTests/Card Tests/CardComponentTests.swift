@@ -228,13 +228,7 @@ class CardComponentTests: XCTestCase {
             )
         )
 
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: Dummy.context(with: nil),
-            configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
-            binProvider: BinInfoProviderMock()
-        )
+        let sut = makeSUT(configuration: configuration)
 
         setupRootViewController(sut.cardViewController)
 
@@ -271,13 +265,7 @@ class CardComponentTests: XCTestCase {
             )
         )
 
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: Dummy.context(with: nil),
-            configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
-            binProvider: BinInfoProviderMock()
-        )
+        let sut = makeSUT(configuration: configuration)
 
         setupRootViewController(sut.cardViewController)
 
@@ -2495,6 +2483,16 @@ extension UIView {
 }
 
 extension CardComponentTests {
+
+    private func makeSUT(configuration: CardComponentConfiguration) -> CardComponent {
+        CardComponent(
+            paymentMethod: method,
+            context: Dummy.context(with: nil),
+            configuration: configuration,
+            publicKeyProvider: PublicKeyProviderMock(),
+            binProvider: BinInfoProviderMock()
+        )
+    }
 
     func fillCard(on view: UIView, with card: Card) {
         let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
