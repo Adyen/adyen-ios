@@ -37,6 +37,13 @@ internal protocol PaymentMethodListViewModelProtocol {
 @MainActor
 internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
+    // MARK: - Constants
+    
+    private enum Constants {
+        /// Payment methods that are displayed separately (e.g., in the header) and should be filtered from the main list.
+        internal static let instantPaymentMethods: Set<PaymentMethodType> = [.applePay]
+    }
+
     // MARK: - Properties
 
     internal let context: AdyenContext
@@ -141,7 +148,8 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     private func getSections() -> [PaymentMethodSection] {
         paymentMethodSections.map { section in
-            let items = section.paymentMethods.map { paymentMethodItem(from: $0) }
+            let filteredPaymentMethods = section.paymentMethods.filter { !Constants.instantPaymentMethods.contains($0.type) }
+            let items = filteredPaymentMethods.map { paymentMethodItem(from: $0) }
             return PaymentMethodSection(
                 headerTitle: section.header?.title,
                 items: items,
