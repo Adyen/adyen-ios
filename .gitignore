@@ -50,3 +50,4 @@ Demo/Secrets.*.xcconfig
 /.gemini
 /.windsurf
 /openspec
+.factory

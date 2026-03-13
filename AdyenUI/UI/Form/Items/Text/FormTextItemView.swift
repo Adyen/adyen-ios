@@ -35,7 +35,8 @@ public protocol AnyFormTextItemView: AnyFormItemView {
 @_spi(AdyenInternal)
 open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemView<String, ItemType>,
     UITextFieldDelegate,
-    AnyFormTextItemView {
+    AnyFormTextItemView,
+    AppearanceChangeRefreshable {
     
     override public var accessibilityLabelView: UIView? {
         textField
@@ -336,7 +337,10 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         updateBorderColor(state: item.validationState)
     }
 
-    private func updateBorderColor(state: ValidationState) {
+    private func updateBorderColor(
+        state: ValidationState,
+        resolvingWith traitCollection: UITraitCollection? = nil
+    ) {
         let style = theme.elements.textField
         let borderColor: UIColor
         if isEditing {
@@ -346,7 +350,11 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         } else {
             borderColor = style.borderColor
         }
-        entryTextStackView.layer.borderColor = borderColor.cgColor
+        adyen.applyLayerBorderColor(borderColor, on: entryTextStackView.layer, resolvingWith: traitCollection)
+    }
+
+    public func refreshAppearance(with traitCollection: UITraitCollection) {
+        updateBorderColor(state: item.validationState, resolvingWith: traitCollection)
     }
 }
 

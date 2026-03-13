@@ -101,4 +101,14 @@ extension AdyenScope where Base: UIView {
             verticalFittingPriority: .fittingSizeLevel
         )
     }
+
+    public func applyLayerBorderColor(
+        _ color: UIColor?,
+        on layer: CALayer? = nil,
+        resolvingWith traitCollection: UITraitCollection? = nil
+    ) {
+        let targetLayer = layer ?? base.layer
+        let resolvedTraitCollection = traitCollection ?? base.traitCollection
+        targetLayer.borderColor = color?.resolvedColor(with: resolvedTraitCollection).cgColor
+    }
 }
