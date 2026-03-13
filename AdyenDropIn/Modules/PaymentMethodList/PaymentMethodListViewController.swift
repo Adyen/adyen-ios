@@ -134,6 +134,7 @@ internal class PaymentMethodListViewController: UIViewController {
     
     private func setupHeaderView() {
         contentStackView.addArrangedSubview(headerView)
+        contentStackView.setCustomSpacing(32, after: headerView)
     }
 
     private func setupPaymentMethodSections() {
