@@ -10,6 +10,7 @@ import AdyenDropIn
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class BLIKComponentUITests: XCTestCase {
 
     private var paymentMethod: BLIKPaymentMethod {

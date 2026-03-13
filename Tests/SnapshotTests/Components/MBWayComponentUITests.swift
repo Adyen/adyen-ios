@@ -10,6 +10,7 @@ import AdyenDropIn
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class MBWayComponentUITests: XCTestCase {
 
     private var paymentMethod: MBWayPaymentMethod!

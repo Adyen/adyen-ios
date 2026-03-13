@@ -6,12 +6,14 @@
 
 import Foundation
 
+@MainActor
 public protocol InitiablePaymentComponent: PaymentComponent {
     /// Initiate the payment flow
     func initiatePayment(delegate: PaymentComponentDelegate)
 }
 
 /// A component that handles payment methods that don't need any payment detail to be filled.
+@MainActor
 public final class InstantPaymentComponent: InitiablePaymentComponent {
 
     /// The context object for this component.

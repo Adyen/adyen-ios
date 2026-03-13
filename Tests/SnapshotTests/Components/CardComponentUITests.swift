@@ -9,6 +9,7 @@ import XCTest
 @testable import AdyenCard
 @testable import AdyenComponents
 
+@MainActor
 class CardComponentUITests: XCTestCase {
     
     let paymentMethod = CardPaymentMethod(

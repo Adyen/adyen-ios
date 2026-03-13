@@ -51,6 +51,7 @@ extension AwaitAction: Equatable {
     }
 }
 
+@MainActor
 class AwaitComponentTests: XCTestCase {
 
     func testLocalizationWithCustomTableName() {

@@ -12,6 +12,7 @@ import UIKit
     @_spi(AdyenInternal) import AdyenUI
 #endif
 
+@MainActor
 internal protocol PreselectedPaymentMethodViewModelProtocol: AnyObject {
 
     // To Retrieve what to be displayed
@@ -35,6 +36,7 @@ internal protocol PreselectedPaymentMethodViewModelProtocol: AnyObject {
     func viewDidLoad()
 }
 
+@MainActor
 internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethodViewModelProtocol {
 
     private enum Constants {

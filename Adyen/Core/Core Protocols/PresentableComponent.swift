@@ -35,6 +35,7 @@ public enum NavigationBarType {
 }
 
 /// A component that provides a view controller for the shopper to fill payment details.
+@MainActor
 public protocol PresentableComponent: Component {
     
     /// Returns a view controller that presents the payment details for the shopper to fill.
