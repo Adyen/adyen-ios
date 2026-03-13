@@ -10,6 +10,7 @@ import AdyenUI
 import Foundation
 import UIKit
 
+@MainActor
 internal struct DropInAssembler {
 
     // MARK: - Properties

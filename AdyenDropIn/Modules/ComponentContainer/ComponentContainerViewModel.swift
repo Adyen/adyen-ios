@@ -9,11 +9,13 @@ import Foundation
 import UIKit
 
 // sourcery:AutoMockable
+@MainActor
 internal protocol ComponentContainerViewModelProtocol {
     var componentViewController: UIViewController { get }
     func cancel()
 }
 
+@MainActor
 internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol {
 
     // MARK: - Properties

@@ -12,6 +12,7 @@ import UIKit
 
 internal protocol DropInRouting: Router, AnyObject {}
 
+@MainActor
 internal class DropInRouter: DropInRouting {
     
     // MARK: - Properties

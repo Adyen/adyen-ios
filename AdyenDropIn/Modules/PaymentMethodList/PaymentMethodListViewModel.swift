@@ -18,6 +18,7 @@ internal enum PaymentMethodListState {
 }
 
 // sourcery:AutoMockable
+@MainActor
 internal protocol PaymentMethodListViewModelProtocol {
     var context: AdyenContext { get }
     var title: String { get }
@@ -33,6 +34,7 @@ internal protocol PaymentMethodListViewModelProtocol {
     func selectApplePay()
 }
 
+@MainActor
 internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     // MARK: - Properties

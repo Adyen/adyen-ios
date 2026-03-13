@@ -9,11 +9,13 @@ import Foundation
 import UIKit
 
 // sourcery:AutoMockable
+@MainActor
 internal protocol PaymentMethodListRouterListener: AnyObject {
     func didDismissPaymentMethodList(completion: (() -> Void)?)
 }
 
 // sourcery:AutoMockable
+@MainActor
 internal protocol PaymentMethodListRouting: AnyObject {
     func present(component: PaymentComponent)
     func present(viewController: UIViewController)
@@ -21,6 +23,7 @@ internal protocol PaymentMethodListRouting: AnyObject {
     func dismiss(completion: (() -> Void)?)
 }
 
+@MainActor
 internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
 
     // MARK: - Properties

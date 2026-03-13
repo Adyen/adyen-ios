@@ -11,6 +11,7 @@
 import UIKit
 
 /// A component that provides PayTo flows for PayTo component.
+@MainActor
 public final class PayToComponent: PaymentComponent, PresentableComponent, AdyenObserver, LoadingComponent {
 
     /// Configuration for PayTo Component.

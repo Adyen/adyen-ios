@@ -18,6 +18,7 @@
 import PassKit
 import XCTest
 
+@MainActor
 class ComponentManagerTests: XCTestCase {
 
     var paymentMethods: PaymentMethods {

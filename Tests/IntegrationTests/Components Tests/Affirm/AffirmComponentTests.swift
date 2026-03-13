@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class AffirmComponentTests: XCTestCase {
 
     private var paymentMethod: PaymentMethod {

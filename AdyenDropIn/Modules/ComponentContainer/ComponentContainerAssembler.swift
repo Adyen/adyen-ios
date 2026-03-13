@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 // sourcery:AutoMockable
+@MainActor
 internal protocol ComponentContainerAssemblerProtocol {
     func resolveComponentContainerRouter(
         for component: PresentableComponent,
@@ -16,6 +17,7 @@ internal protocol ComponentContainerAssemblerProtocol {
     ) -> Router
 }
 
+@MainActor
 internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol {
 
     // MARK: - Properties

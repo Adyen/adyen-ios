@@ -12,6 +12,7 @@ import Foundation
 import UIKit
 
 /// A component that handles a Pay by Bank US payment.
+@MainActor
 public final class PayByBankUSComponent: PaymentComponent, PresentableComponent {
 
     /// The context object for this component.

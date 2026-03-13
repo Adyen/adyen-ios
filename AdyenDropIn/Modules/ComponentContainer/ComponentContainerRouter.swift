@@ -9,17 +9,20 @@ import Foundation
 import UIKit
 
 // sourcery:AutoMockable
+@MainActor
 internal protocol ComponentContainerRouterListener: AnyObject {
     func didDismissComponentContainer(completion: (() -> Void)?)
 }
 
 // sourcery:AutoMockable
+@MainActor
 internal protocol ComponentContainerRouting: AnyObject {
     func present(paymentComponent: PresentableComponent)
     func present(actionComponent: PresentableComponent, onCancel: (() -> Void)?)
     func dismiss(completion: (() -> Void)?)
 }
 
+@MainActor
 internal class ComponentContainerRouter: Router, ComponentContainerRouting {
 
     // MARK: - Properties

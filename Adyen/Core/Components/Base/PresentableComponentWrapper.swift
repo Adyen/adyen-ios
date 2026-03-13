@@ -8,6 +8,7 @@ import Foundation
 import UIKit
 
 /// A component that wraps any `Component` to make it a `PresentableComponent`.
+@MainActor
 package final class PresentableComponentWrapper: PresentableComponent,
     Cancellable,
     FinalizableComponent,
@@ -34,7 +35,7 @@ package final class PresentableComponentWrapper: PresentableComponent,
     /// - Parameter component: The wrapped component.
     /// - Parameter viewController: The `ViewController` used as the UI of the `PresentableComponent`.
     /// - Parameter navBarType: Type of the navigation bar to use.
-    package init(
+    package nonisolated init(
         component: Component,
         viewController: UIViewController,
         navBarType: NavigationBarType = .regular

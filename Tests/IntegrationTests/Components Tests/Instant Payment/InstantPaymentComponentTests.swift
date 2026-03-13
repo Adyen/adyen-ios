@@ -8,6 +8,7 @@
 @testable @_spi(AdyenInternal) import AdyenCard
 import XCTest
 
+@MainActor
 class InstantPaymentComponentTests: XCTestCase {
 
     private var paymentMethod: GiftCardPaymentMethod!

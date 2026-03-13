@@ -9,6 +9,7 @@ import XCTest
 @testable @_spi(AdyenInternal) import AdyenComponents
 @_spi(AdyenInternal) @testable import AdyenUI
 
+@MainActor
 class PayByBankUSComponentTests: XCTestCase {
     
     let context = Dummy.context

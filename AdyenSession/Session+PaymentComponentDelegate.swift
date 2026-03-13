@@ -145,19 +145,22 @@ extension Session {
         let localizationParameters = (dropInComponent as? Localizable)?.localizationParameters
         let title = localizedString(.errorTitle, localizationParameters)
         let message = localizedString(.paymentRefusedMessage, localizationParameters)
-        let alertController = UIAlertController(
-            title: title,
-            message: message,
-            preferredStyle: .alert
-        )
         
-        let doneTitle = localizedString(.dismissButton, localizationParameters)
-        let doneAction = UIAlertAction(title: doneTitle, style: .default) { _ in
-            completion()
+        Task { @MainActor in
+            let alertController = UIAlertController(
+                title: title,
+                message: message,
+                preferredStyle: .alert
+            )
+            
+            let doneTitle = localizedString(.dismissButton, localizationParameters)
+            let doneAction = UIAlertAction(title: doneTitle, style: .default) { _ in
+                completion()
+            }
+            alertController.addAction(doneAction)
+            
+            dropInComponent.viewController.present(alertController, animated: true)
         }
-        alertController.addAction(doneAction)
-        
-        dropInComponent.viewController.present(alertController, animated: true)
     }
     
     private func updateDropIn(_ dropInComponent: AnyDropInComponent, with order: PartialPaymentOrder, currentComponent: Component) {

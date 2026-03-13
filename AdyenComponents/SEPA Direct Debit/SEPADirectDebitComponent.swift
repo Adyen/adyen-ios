@@ -12,6 +12,7 @@ import UIKit
 #endif
 
 /// A component that provides a form for SEPA Direct Debit payments.
+@MainActor
 public final class SEPADirectDebitComponent: PaymentComponent, PresentableComponent, LoadingComponent {
     
     /// Configuration for SEPA Direct Debit Component

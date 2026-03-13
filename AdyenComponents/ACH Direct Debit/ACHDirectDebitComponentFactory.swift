@@ -10,6 +10,7 @@
 ///
 /// This factory creates `ACHDirectDebitComponent` instances configured with the
 /// provided ACH payment method and component configuration.
+@MainActor
 package struct ACHDirectDebitComponentFactory: PaymentComponentFactory {
     package typealias Configuration = ACHDirectDebitComponentConfiguration
     package typealias Method = ACHDirectDebitPaymentMethod

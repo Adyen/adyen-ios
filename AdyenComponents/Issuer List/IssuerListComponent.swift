@@ -13,6 +13,7 @@ import UIKit
 
 /// A generic component for "issuer-based" payment methods, such as MOLPay.
 /// This component will provide a list in which the user can select their issuer.
+@MainActor
 public final class IssuerListComponent: PaymentComponent, PresentableComponent, LoadingComponent {
     
     private enum Constants {

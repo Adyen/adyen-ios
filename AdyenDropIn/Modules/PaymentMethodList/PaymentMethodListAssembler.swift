@@ -9,10 +9,12 @@ import AdyenUI
 import Foundation
 
 // sourcery:AutoMockable
+@MainActor
 internal protocol PaymentMethodListAssemblerProtocol {
     func resolvePaymentMethodListRouter(delegate: PaymentMethodListRouterListener?) -> Router
 }
 
+@MainActor
 internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
 
     // MARK: - Properties

@@ -19,12 +19,14 @@
 #endif
 import Foundation
 
+@MainActor
 internal protocol ComponentManaging {
     var sections: [PaymentMethodsSection] { get }
     func buildComponent(for paymentMethod: PaymentMethod) -> PaymentComponent?
 }
 
 // TODO: - The ComponentManager should use the factories that Eren introduced in components.
+@MainActor
 internal final class ComponentManager: ComponentManaging {
 
     // MARK: - Properties

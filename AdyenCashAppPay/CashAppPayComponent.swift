@@ -13,6 +13,7 @@ import PayKitUI
 import UIKit
 
 /// A component that handles a Cash App Pay payment.
+@MainActor
 public final class CashAppPayComponent: PaymentComponent,
     PresentableComponent,
     LoadingComponent {
