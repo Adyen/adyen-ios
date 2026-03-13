@@ -22,7 +22,7 @@ internal final class PaymentMethodSectionView: UIView {
     private lazy var headerLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.apply(section.theme.elements.labels.subtitle)
+        label.apply(section.theme.elements.labels.subheadlineEmphasized)
         label.accessibilityTraits = .header
         return label
     }()
@@ -31,7 +31,7 @@ internal final class PaymentMethodSectionView: UIView {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = 12
+        stackView.spacing = 8
         return stackView
     }()
 

@@ -32,7 +32,8 @@ internal final class PaymentMethodItemView: UIView {
     private lazy var subtitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.apply(item.theme.elements.labels.footnote)
+        label.apply(item.theme.elements.labels.subheadline)
+        label.textColor = item.theme.colors.textSecondary
         return label
     }()
     
@@ -117,12 +118,12 @@ internal final class PaymentMethodItemView: UIView {
             chevronImageView.widthAnchor.constraint(equalToConstant: 14),
             chevronImageView.heightAnchor.constraint(equalToConstant: 20),
             
-            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 14),
-            contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -14),
-            
-            heightAnchor.constraint(greaterThanOrEqualToConstant: 56)
+            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 12),
+            contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+            contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
+            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
+
+            heightAnchor.constraint(greaterThanOrEqualToConstant: 52)
         ])
     }
 
