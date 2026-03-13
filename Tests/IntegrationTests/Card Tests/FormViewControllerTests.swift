@@ -77,4 +77,76 @@ class FormViewControllerTests: XCTestCase {
 
         XCTAssertTrue(cardHolderItemView.isFirstResponder)
     }
+
+    func test_scrollView_whenKeyboardFrameChanges_shouldUpdateBottomInsets() throws {
+        let (sut, scrollView) = try makeSUT()
+
+        postKeyboardFrameChange(to: makeKeyboardFrame(withHeight: 100))
+
+        expectBottomInsets(in: scrollView, toBe: 100)
+
+        postKeyboardFrameChange(to: .zero)
+
+        expectBottomInsets(in: scrollView, toBe: .zero)
+    }
+}
+
+private extension FormViewControllerTests {
+
+    func makeSUT(
+        file: StaticString = #file,
+        line: UInt = #line
+    ) throws -> (sut: FormViewController, scrollView: UIScrollView) {
+        let sut = FormViewController(scrollEnabled: true, style: FormComponentStyle(), localizationParameters: nil)
+
+        sut.loadViewIfNeeded()
+
+        let scrollView = try makeScrollView(from: sut, file: file, line: line)
+        return (sut, scrollView)
+    }
+
+    func makeScrollView(
+        from sut: FormViewController,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) throws -> UIScrollView {
+        try XCTUnwrap(sut.view.subviews.first(where: { $0 is UIScrollView }) as? UIScrollView, file: file, line: line)
+    }
+
+    func makeKeyboardFrame(withHeight height: CGFloat) -> CGRect {
+        CGRect(
+            x: UIScreen.main.bounds.minX,
+            y: UIScreen.main.bounds.maxY - height,
+            width: UIScreen.main.bounds.width,
+            height: height
+        )
+    }
+
+    func postKeyboardFrameChange(to frame: CGRect) {
+        NotificationCenter.default.post(
+            name: UIResponder.keyboardWillChangeFrameNotification,
+            object: nil,
+            userInfo: [UIResponder.keyboardFrameEndUserInfoKey: frame]
+        )
+    }
+
+    func expectBottomInsets(
+        in scrollView: UIScrollView,
+        toBe expectedInset: CGFloat,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) {
+        wait(
+            until: {
+                abs(scrollView.contentInset.bottom - expectedInset) < 0.1
+                    && abs(scrollView.verticalScrollIndicatorInsets.bottom - expectedInset) < 0.1
+            },
+            timeout: 1.0,
+            file: file,
+            line: line
+        )
+
+        XCTAssertEqual(scrollView.contentInset.bottom, expectedInset, accuracy: 0.1, file: file, line: line)
+        XCTAssertEqual(scrollView.verticalScrollIndicatorInsets.bottom, expectedInset, accuracy: 0.1, file: file, line: line)
+    }
 }
