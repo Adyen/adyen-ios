@@ -12,6 +12,7 @@ import UIKit
 
 /// An abstract class that needs to be subclassed to abstract away any component
 /// who's form consists of a combination of personal information pieces like first name, last name, phone, email, and billing address.
+@MainActor
 open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent {
 
     public typealias Configuration = PersonalInformationConfiguration
@@ -287,6 +288,7 @@ extension AbstractPersonalInformationComponent: ViewControllerPresenter {
 
 @_spi(AdyenInternal)
 extension AbstractPersonalInformationComponent: ViewControllerDelegate {
+
     // MARK: - ViewControllerDelegate
 
     public func viewWillAppear(viewController: UIViewController) {

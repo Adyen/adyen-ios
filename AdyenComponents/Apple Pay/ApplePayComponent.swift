@@ -9,6 +9,7 @@ import Foundation
 import PassKit
 
 /// A component that handles Apple Pay payments.
+@MainActor
 public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, FinalizableComponent {
 
     internal let paymentRequest: PKPaymentRequest

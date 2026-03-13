@@ -15,6 +15,7 @@ import UIKit
 
 @MainActor
 struct PreselectedPaymentMethodIntegrationTests {
+
     // MARK: - UI Display Tests
 
     @Test("PaymentComponent - UI fields", arguments: PaymentComponentTestData.allCases)
@@ -263,6 +264,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         /// PaymentInitiable
         case initiableBCMC
 
+        @MainActor
         var paymentComponent: PaymentComponent {
             switch self {
             case .visa:

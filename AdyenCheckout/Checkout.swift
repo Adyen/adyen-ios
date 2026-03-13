@@ -51,6 +51,7 @@ import Foundation
 /// ```swift
 /// let component = checkout.createPaymentComponent(for: .scheme)
 /// ```
+@MainActor
 public final class Checkout: CheckoutProtocol {
     
     /// The available payment methods for this checkout session.

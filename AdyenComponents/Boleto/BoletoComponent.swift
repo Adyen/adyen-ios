@@ -12,6 +12,7 @@ import Foundation
 import UIKit
 
 /// A component that provides a form for Boleto payment.
+@MainActor
 public final class BoletoComponent: PaymentComponent,
     LoadingComponent,
     PresentableComponent,

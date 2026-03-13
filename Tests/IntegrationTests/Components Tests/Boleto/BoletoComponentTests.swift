@@ -10,6 +10,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class BoletoComponentTests: XCTestCase {
 
     private var method = BoletoPaymentMethod(type: .boletoBancarioSantander, name: "Boleto Bancario")

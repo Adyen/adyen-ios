@@ -13,7 +13,7 @@ import XCTest
 #endif
 
 #if canImport(TwintSDK)
-
+    @MainActor
     final class TwintSDKActionTests: XCTestCase {
 
         override func tearDownWithError() throws {

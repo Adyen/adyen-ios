@@ -465,8 +465,6 @@
 		A01DFBBF2BA887BF00205881 /* ThreadSafeAnalyticsEventDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01DFBBE2BA887BF00205881 /* ThreadSafeAnalyticsEventDataSource.swift */; };
 		A01DFBC52BB6F9FA00205881 /* ValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01DFBC42BB6F9FA00205881 /* ValidationError.swift */; };
 		A01DFBC72BB6FBF800205881 /* CardValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01DFBC62BB6FBF800205881 /* CardValidationError.swift */; };
-		A020EC4829E6EC4B0050B2FE /* AdyenCashAppPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A04F8C1E29E5950100F3F62B /* AdyenCashAppPay.framework */; };
-		A020EC4929E6EC4B0050B2FE /* AdyenCashAppPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A04F8C1E29E5950100F3F62B /* AdyenCashAppPay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A020EC4F29E6ECBD0050B2FE /* PayKit in Frameworks */ = {isa = PBXBuildFile; productRef = A020EC4E29E6ECBD0050B2FE /* PayKit */; };
 		A020EC5A29ED33F90050B2FE /* CashAppPayComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A020EC5929ED33F90050B2FE /* CashAppPayComponentTests.swift */; };
 		A023A9B428103C2D004FDCA4 /* session_response.json in Resources */ = {isa = PBXBuildFile; fileRef = A023A9B328103C2D004FDCA4 /* session_response.json */; };
@@ -513,6 +511,8 @@
 		A03056E82E016D9A00ED7014 /* CheckoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056E72E016D9A00ED7014 /* CheckoutTests.swift */; };
 		A03056EA2E1284ED00ED7014 /* SessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056E92E1284E500ED7014 /* SessionProtocol.swift */; };
 		A03056EB2E016DA000ED7014 /* CheckoutAttemptIdProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056EC2E016DA000ED7014 /* CheckoutAttemptIdProviderTests.swift */; };
+		A03EBF3F2F605803008AE601 /* AdyenCashAppPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A04F8C1E29E5950100F3F62B /* AdyenCashAppPay.framework */; };
+		A03EBF402F605803008AE601 /* AdyenCashAppPay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A04F8C1E29E5950100F3F62B /* AdyenCashAppPay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A03EE72F2760A2E300470561 /* DocumentActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE72E2760A2E300470561 /* DocumentActionViewModel.swift */; };
 		A03EE7312761297800470561 /* DocumentComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE7302761297800470561 /* DocumentComponentStyle.swift */; };
 		A03EE73327612BF300470561 /* DocumentActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03EE73227612BF300470561 /* DocumentActionView.swift */; };
@@ -1834,6 +1834,7 @@
 			files = (
 				F9175EEF2593955D00D653BE /* AdyenComponents.framework in Embed Frameworks */,
 				F92327C525A46EF0002C5BC4 /* AdyenEncryption.framework in Embed Frameworks */,
+				A03EBF402F605803008AE601 /* AdyenCashAppPay.framework in Embed Frameworks */,
 				E72375D927AABF400020DCF9 /* AdyenWeChatPay.framework in Embed Frameworks */,
 				F973A91A2791C3B0005AA753 /* AdyenActions.framework in Embed Frameworks */,
 				E2C0E099220B0827008616F6 /* Adyen.framework in Embed Frameworks */,
@@ -1844,7 +1845,6 @@
 				A0F749972D958B3000014A05 /* AdyenCheckout.framework in Embed Frameworks */,
 				E2C0E0AE220B0840008616F6 /* AdyenCard.framework in Embed Frameworks */,
 				F92980AD27CE2B33000CA5CA /* AdyenSession.framework in Embed Frameworks */,
-				A020EC4929E6EC4B0050B2FE /* AdyenCashAppPay.framework in Embed Frameworks */,
 				003BDD222E15200A009177E0 /* AdyenUI.framework in Embed Frameworks */,
 				B605AC122D8D988D0084D583 /* AdyenCardScanner.framework in Embed Frameworks */,
 			);
@@ -3175,10 +3175,10 @@
 				81A91AC22BEC12A2001E00C8 /* TwintSDK.xcframework in Frameworks */,
 				F9A2D01225DBF104008944BE /* PassKit.framework in Frameworks */,
 				F973A9192791C3B0005AA753 /* AdyenActions.framework in Frameworks */,
+				A03EBF3F2F605803008AE601 /* AdyenCashAppPay.framework in Frameworks */,
 				E2C0E098220B0827008616F6 /* Adyen.framework in Frameworks */,
 				F92980AC27CE2B33000CA5CA /* AdyenSession.framework in Frameworks */,
 				F94D65E72B036A450095D61E /* AdyenDelegatedAuthentication.framework in Frameworks */,
-				A020EC4829E6EC4B0050B2FE /* AdyenCashAppPay.framework in Frameworks */,
 				A0F749962D958B3000014A05 /* AdyenCheckout.framework in Frameworks */,
 				81BDD6CE2B21CE6C0022250E /* AdyenAuthentication in Frameworks */,
 				E9B36CB22243B2FF00EAA368 /* AdyenDropIn.framework in Frameworks */,
@@ -10379,7 +10379,7 @@
 				CODE_SIGN_ENTITLEMENTS = Demo/Shared.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 8GDUWCHDXJ;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Demo/UIKit/Info.plist;

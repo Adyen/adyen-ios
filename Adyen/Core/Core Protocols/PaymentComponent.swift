@@ -24,6 +24,7 @@ public enum PaymentComponentType {
 }
 
 /// A component that handles the initial phase of getting payment details to initiate a payment.
+@MainActor
 public protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentMethodAware {
     
     /// The delegate of the payment component.
@@ -97,6 +98,7 @@ extension PaymentComponent {
 }
 
 /// Describes the methods a delegate of the payment component needs to implement.
+@MainActor
 public protocol PaymentComponentDelegate: AnyObject {
     
     /// Invoked when the shopper submits the data needed for the payments call.

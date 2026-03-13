@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class UPIComponentTests: XCTestCase {
     
     func test_init_withApps() throws {

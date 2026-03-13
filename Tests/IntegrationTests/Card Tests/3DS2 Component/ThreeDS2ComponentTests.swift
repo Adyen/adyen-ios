@@ -12,6 +12,7 @@ import Adyen3DS2
 @_spi(AdyenInternal) import AdyenUI
 
 @available(iOS 16.0, *)
+@MainActor
 class ThreeDS2ComponentTests: XCTestCase {
 
     func testFullFlowRedirectSuccess() throws {

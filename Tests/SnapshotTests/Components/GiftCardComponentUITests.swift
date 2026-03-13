@@ -11,6 +11,7 @@ import AdyenDropIn
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class GiftCardUITests: XCTestCase {
     
     func test_checkBalance_failure() throws {

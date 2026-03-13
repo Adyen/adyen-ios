@@ -32,7 +32,10 @@ extension PublicKeyConsumer where Self: PaymentComponent {
                 successHandler?(key)
             case let .failure(error):
                 if notifyingDelegateOnFailure {
-                    self.delegate?.didFail(with: error, from: self)
+                    Task { @MainActor [weak self] in
+                        guard let self else { return }
+                        self.delegate?.didFail(with: error, from: self)
+                    }
                 }
             }
         }

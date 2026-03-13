@@ -12,6 +12,7 @@
 @_spi(AdyenInternal) @testable import AdyenActions
 import XCTest
 
+@MainActor
 final class CheckoutTests: XCTestCase {
     var mockProvider: CheckoutProviderMock!
     var configuration: CheckoutConfiguration!
