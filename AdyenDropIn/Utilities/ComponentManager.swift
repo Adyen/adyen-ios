@@ -147,8 +147,11 @@ internal final class ComponentManager: ComponentManaging {
         let allowDeleting = configuration.paymentMethodsList.allowDisablingStoredPaymentMethods
             && supportsEditingStoredPaymentMethods
 
-        let storedPaymentMethods = paymentMethods.stored
-            .filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
+        let storedPaymentMethods = Array(
+            paymentMethods.stored
+                .filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
+                .prefix(3)
+        )
 
         return PaymentMethodsSection(
             header: ListSectionHeader(

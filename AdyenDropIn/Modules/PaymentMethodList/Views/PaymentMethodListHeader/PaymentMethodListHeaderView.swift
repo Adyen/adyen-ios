@@ -25,7 +25,7 @@ internal final class PaymentMethodListHeaderView: UIView {
     private lazy var subtitleLabel: UILabel = {
         let label = UILabel()
         label.text = viewModel.subtitle
-        label.apply(viewModel.theme.elements.labels.subheadline)
+        label.apply(viewModel.theme.elements.labels.body)
         label.textColor = viewModel.theme.colors.textSecondary
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
@@ -35,6 +35,7 @@ internal final class PaymentMethodListHeaderView: UIView {
     
     private lazy var applePayButton: PKPaymentButton = {
         let button = PKPaymentButton(paymentButtonType: .plain, paymentButtonStyle: .automatic)
+        button.cornerRadius = viewModel.theme.attributes.cornerRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(applePayButtonTapped), for: .touchUpInside)
         button.isHidden = !viewModel.showApplePayButton
