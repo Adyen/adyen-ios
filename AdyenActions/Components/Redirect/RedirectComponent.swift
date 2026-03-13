@@ -60,8 +60,8 @@ public final class RedirectComponent: ActionComponent {
     
     internal var appLauncher: AnyAppLauncher = AppLauncher()
     
-    internal lazy var apiClient: AnyRetryAPIClient = {
-        APIClient(apiContext: context.apiContext).retryAPIClient(with: SimpleScheduler(maximumCount: 2))
+    internal lazy var apiClient: APIClientProtocol = {
+        APIClient(apiContext: context.apiContext)
     }()
     
     private var browserComponent: BrowserComponent?
@@ -81,15 +81,6 @@ public final class RedirectComponent: ActionComponent {
     ) {
         self.context = context
         self.configuration = configuration
-    }
-    
-    internal convenience init(
-        context: AdyenContext,
-        configuration: Configuration = Configuration(),
-        apiClient: AnyRetryAPIClient
-    ) {
-        self.init(context: context, configuration: configuration)
-        self.apiClient = apiClient
     }
     
     /// Handles a redirect action.
