@@ -38,16 +38,18 @@ extension Session: SessionStoredPaymentMethodsDelegate {
         let message = localizedString(.errorUnknown, localizationParameters)
         let doneTitle = localizedString(.dismissButton, localizationParameters)
         
-        let alertController = UIAlertController(
-            title: title,
-            message: message,
-            preferredStyle: .alert
-        )
-        
-        let doneAction = UIAlertAction(title: doneTitle, style: .default)
-        alertController.addAction(doneAction)
-        
-        dropIn.viewController.present(alertController, animated: true)
+        Task { @MainActor in
+            let alertController = UIAlertController(
+                title: title,
+                message: message,
+                preferredStyle: .alert
+            )
+            
+            let doneAction = UIAlertAction(title: doneTitle, style: .default)
+            alertController.addAction(doneAction)
+            
+            dropIn.viewController.present(alertController, animated: true)
+        }
     }
     
     /// empty implementation of the old method

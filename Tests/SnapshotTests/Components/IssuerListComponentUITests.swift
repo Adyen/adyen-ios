@@ -10,6 +10,7 @@
 import SnapshotTesting
 import XCTest
 
+@MainActor
 final class IssuerListComponentUITests: XCTestCase {
 
     private var context: AdyenContext {

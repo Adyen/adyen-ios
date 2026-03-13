@@ -10,6 +10,7 @@ import AdyenDropIn
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class BoletoComponentUITests: XCTestCase {
 
     private var context: AdyenContext {

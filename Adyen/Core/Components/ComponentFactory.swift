@@ -11,6 +11,7 @@ import Foundation
 /// Each factory is responsible for creating a single type of payment component
 /// with its corresponding configuration.
 ///
+@MainActor
 package protocol PaymentComponentFactory {
     
     /// The configuration type required by this factory to create components.

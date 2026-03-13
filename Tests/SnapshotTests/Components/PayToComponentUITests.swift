@@ -10,6 +10,7 @@ import AdyenDropIn
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class PayToComponentUITests: XCTestCase {
 
     private lazy var paymentMethod: PayToPaymentMethod = .init(

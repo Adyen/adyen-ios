@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class BLIKComponentFactoryTests: XCTestCase {
     
     var factory: BLIKComponentFactory!

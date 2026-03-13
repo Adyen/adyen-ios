@@ -19,6 +19,7 @@ excluded:
   - DerivedData
   - TempProject
   - Scripts
+  - build
 
 line_length:
   ignores_function_declarations: true

@@ -10,6 +10,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class ACHDirectDebitComponentTests: XCTestCase {
 
     var context: AdyenContext!

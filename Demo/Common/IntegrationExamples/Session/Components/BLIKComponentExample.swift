@@ -8,6 +8,7 @@ import Adyen
 import AdyenCheckout
 import AdyenComponents
 
+@MainActor
 internal final class BLIKComponentExample: InitialDataFlowProtocol {
     
     internal weak var presenter: PresenterExampleProtocol?
@@ -28,11 +29,11 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
                 let sessionResponse = try await requestSessionInitialInfo()
                 let component = try await self.blikComponent(from: sessionResponse)
                 self.adyenComponent = component
-                await hideLoading()
-                await present(component: component)
+                hideLoading()
+                present(component: component)
             } catch {
-                await hideLoading()
-                await handleError(error)
+                hideLoading()
+                handleError(error)
             }
         }
     }

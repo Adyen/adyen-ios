@@ -11,12 +11,14 @@
 import Foundation
 
 // sourcery:AutoMockable
+@MainActor
 internal protocol ActionPresenter: AnyObject {
     func present(actionComponent: PresentableComponent)
     func didCancel(actionComponent: ActionComponent)
 }
 
 // sourcery:AutoMockable
+@MainActor
 internal protocol DropInFlowManaging {
     func submit(
         _ data: PaymentComponentData,
@@ -28,6 +30,7 @@ internal protocol DropInFlowManaging {
     func handle(action: Action)
 }
 
+@MainActor
 internal class DropInFlowManager: DropInFlowManaging {
 
     // MARK: - Properties

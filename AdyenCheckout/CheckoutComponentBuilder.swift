@@ -17,6 +17,7 @@
 
 internal enum CheckoutComponentBuilder {
     
+    @MainActor
     internal static func build(
         for paymentMethod: PaymentMethod,
         configuration: CheckoutConfiguration,
@@ -35,7 +36,6 @@ internal enum CheckoutComponentBuilder {
                     configuration: configuration,
                     context: context
                 )
-            
             case let achPaymentMethod as ACHDirectDebitPaymentMethod:
                 return createComponent(
                     using: ACHDirectDebitComponentFactory(),
@@ -67,6 +67,7 @@ internal enum CheckoutComponentBuilder {
     }
     
     /// Builds stored payment components.
+    @MainActor
     internal static func build(
         for storedPaymentMethod: StoredPaymentMethod,
         configuration: CheckoutConfiguration,
@@ -104,6 +105,7 @@ internal enum CheckoutComponentBuilder {
     ///   - paymentMethod: The payment method to create a component for.
     ///   - configuration: The checkout configuration.
     /// - Returns: A configured payment component.
+    @MainActor
     private static func createComponent<Factory: PaymentComponentFactory>(
         using factory: Factory,
         paymentMethod: Factory.Method,
