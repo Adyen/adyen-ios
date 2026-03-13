@@ -4,16 +4,44 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+@_spi(AdyenInternal) import Adyen
 import AdyenUI
 import Foundation
 import UIKit
 
 internal struct PaymentMethodItem: Identifiable {
 
+    internal enum TrailingInfoType {
+        case text(String)
+        case logos(urls: [URL], trailingText: String?)
+        
+        internal var accessibilityLabel: String? {
+            switch self {
+            case let .text(text): return text
+            case .logos: return nil
+            }
+        }
+        
+        internal init?(
+            _ displayTrailingInfo: DisplayInformation.TrailingInfoType?,
+            logoURLProvider: LogoURLProvider
+        ) {
+            guard let displayTrailingInfo else { return nil }
+            switch displayTrailingInfo {
+            case let .text(string):
+                self = .text(string)
+            case let .logos(logoNames, trailingText):
+                let urls = logoNames.map { logoURLProvider.logoURL(withName: $0) }
+                self = .logos(urls: urls, trailingText: trailingText)
+            }
+        }
+    }
+
     internal let id = UUID()
     internal let title: String
     internal let subtitle: String?
     internal let iconURL: URL?
+    internal let trailingInfo: TrailingInfoType?
     internal let accessibilityLabel: String?
     internal let selectionHandler: (() -> Void)?
     internal let theme: AdyenTheme
@@ -22,6 +50,8 @@ internal struct PaymentMethodItem: Identifiable {
         title: String,
         subtitle: String? = nil,
         iconURL: URL? = nil,
+        trailingInfo: DisplayInformation.TrailingInfoType? = nil,
+        logoURLProvider: LogoURLProvider,
         accessibilityLabel: String? = nil,
         selectionHandler: (() -> Void)? = nil,
         theme: AdyenTheme
@@ -29,7 +59,12 @@ internal struct PaymentMethodItem: Identifiable {
         self.title = title
         self.subtitle = subtitle
         self.iconURL = iconURL
-        self.accessibilityLabel = accessibilityLabel
+        self.trailingInfo = TrailingInfoType(trailingInfo, logoURLProvider: logoURLProvider)
+        self.accessibilityLabel = accessibilityLabel ?? [
+            title,
+            subtitle,
+            self.trailingInfo?.accessibilityLabel
+        ].compactMap { $0 }.joined(separator: ", ")
         self.selectionHandler = selectionHandler
         self.theme = theme
     }

@@ -36,7 +36,17 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
     }
     
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: "card")
+        let maxLogosToDisplay = 3
+        let trailingInfo: DisplayInformation.TrailingInfoType? = brands.isEmpty ? nil : .logos(
+            named: Array(brands.prefix(maxLogosToDisplay).map(\.rawValue)),
+            trailingText: brands.count > maxLogosToDisplay ? "+" : nil
+        )
+        return DisplayInformation(
+            title: name,
+            subtitle: nil,
+            logoName: "card",
+            trailingInfo: trailingInfo
+        )
     }
     
     internal init(type: PaymentMethodType, name: String, fundingSource: CardFundingSource, brands: [CardType]) {

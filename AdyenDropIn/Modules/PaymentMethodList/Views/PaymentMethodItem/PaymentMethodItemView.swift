@@ -4,7 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import AdyenUI
+@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) import AdyenUI
 import UIKit
 
 internal final class PaymentMethodItemView: UIView {
@@ -45,6 +46,13 @@ internal final class PaymentMethodItemView: UIView {
         return stackView
     }()
     
+    private lazy var trailingInfoView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
+        return view
+    }()
+    
     private lazy var chevronImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -57,7 +65,7 @@ internal final class PaymentMethodItemView: UIView {
     }()
     
     private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [iconImageView, textStackView, chevronImageView])
+        let stackView = UIStackView(arrangedSubviews: [iconImageView, textStackView, trailingInfoView, chevronImageView])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .center
@@ -137,9 +145,38 @@ internal final class PaymentMethodItemView: UIView {
         accessibilityTraits = .button
 
         loadIcon(from: item.iconURL)
+        updateTrailingInfo()
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         addGestureRecognizer(tapGesture)
+    }
+    
+    private func updateTrailingInfo() {
+        trailingInfoView.subviews.forEach { $0.removeFromSuperview() }
+        
+        switch item.trailingInfo {
+        case let .text(string):
+            let label = UILabel()
+            label.translatesAutoresizingMaskIntoConstraints = false
+            label.text = string
+            label.apply(item.theme.elements.labels.footnote)
+            label.setContentHuggingPriority(.required, for: .horizontal)
+            trailingInfoView.addSubview(label)
+            label.adyen.anchor(inside: trailingInfoView)
+            trailingInfoView.isHidden = string.isEmpty
+            
+        case let .logos(urls, trailingText):
+            let logosView = SupportedPaymentMethodLogosView(
+                imageUrls: urls,
+                trailingText: trailingText
+            )
+            trailingInfoView.addSubview(logosView)
+            logosView.adyen.anchor(inside: trailingInfoView)
+            trailingInfoView.isHidden = false
+            
+        case nil:
+            trailingInfoView.isHidden = true
+        }
     }
 
     private func loadIcon(from url: URL?) {
