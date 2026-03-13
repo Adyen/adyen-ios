@@ -22,6 +22,8 @@ internal struct PaymentMethodItem: Identifiable {
             }
         }
         
+        private static let maxLogosToDisplay = 3
+        
         internal init?(
             _ displayTrailingInfo: DisplayInformation.TrailingInfoType?,
             logoURLProvider: LogoURLProvider
@@ -31,8 +33,10 @@ internal struct PaymentMethodItem: Identifiable {
             case let .text(string):
                 self = .text(string)
             case let .logos(logoNames, trailingText):
-                let urls = logoNames.map { logoURLProvider.logoURL(withName: $0) }
-                self = .logos(urls: urls, trailingText: trailingText)
+                let limitedLogoNames = Array(logoNames.prefix(Self.maxLogosToDisplay))
+                let urls = limitedLogoNames.map { logoURLProvider.logoURL(withName: $0) }
+                let effectiveTrailingText = logoNames.count > Self.maxLogosToDisplay ? "+" : trailingText
+                self = .logos(urls: urls, trailingText: effectiveTrailingText)
             }
         }
     }
