@@ -348,7 +348,7 @@ class RedirectComponentTests: XCTestCase {
     func testNativeRedirectEndpointCallFails() throws {
         let apiClient = APIClientMock()
         let analyticsProviderMock = AnalyticsProviderMock()
-        let sut = RedirectComponent(context: Dummy.context(with: analyticsProviderMock))
+        let sut = RedirectComponent(context: Dummy.context(analyticsProvider: analyticsProviderMock))
         sut.apiClient = apiClient
         apiClient.mockedResults = [.failure(Dummy.error)]
         
