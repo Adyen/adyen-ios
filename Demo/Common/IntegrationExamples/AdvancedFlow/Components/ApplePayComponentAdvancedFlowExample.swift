@@ -73,7 +73,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         }
 
         guard let context else {
-            fatalError("AdyenContext wasn't initialized")
+            fatalError("AdyenContext is not initialized")
         }
         var config = try ConfigurationConstants.current.applePayConfiguration(using: .demoWithShippingFields)
         config.dismissesAutomatically = true
