@@ -21,7 +21,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
 
     /// comes from demo app protocol, unused on new structure
-    internal lazy var context: AdyenContext = generateContext()
+    internal var context: AdyenContext?
 
     internal init() {}
 
@@ -30,6 +30,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
         Task {
             do {
+                try await initializeExampleAppAdyenContext()
                 let paymentMethods = try await requestPaymentMethods(order: nil)
                 let component = try await cardComponent(from: paymentMethods)
                 self.adyenComponent = component

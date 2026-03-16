@@ -19,7 +19,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     
-    internal lazy var context: AdyenContext = generateContext()
+    internal var context: AdyenContext?
 
     // MARK: - Initializers
 
@@ -27,19 +27,23 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 
     internal func start() {
         presenter?.showLoadingIndicator()
-        loadSession { [weak self] response in
-            guard let self else { return }
+        Task {
+            try? await initializeExampleAppAdyenContext()
+            loadSession { [weak self] response in
+                guard let self else { return }
 
-            self.presenter?.hideLoadingIndicator()
+                self.presenter?.hideLoadingIndicator()
 
-            switch response {
-            case let .success(session):
-                self.session = session
-                self.presentComponent(with: session)
+                switch response {
+                case let .success(session):
+                    self.session = session
+                    self.presentComponent(with: session)
 
-            case let .failure(error):
-                self.presentAlert(with: error)
+                case let .failure(error):
+                    self.presentAlert(with: error)
+                }
             }
+
         }
     }
 
@@ -80,6 +84,9 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
         let paymentMethods = session.state.paymentMethods
         guard let paymentMethod = paymentMethods.paymentMethod(ofType: ApplePayPaymentMethod.self) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self)
+        }
+        guard let context else {
+            fatalError("AdyenContext is not initialized")
         }
         let config = try ConfigurationConstants.current.applePayConfiguration(using: .demoWithShippingFields)
 

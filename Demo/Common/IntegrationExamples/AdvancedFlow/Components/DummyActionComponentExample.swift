@@ -17,8 +17,8 @@ internal final class DummyActionComponentExample: InitialDataAdvancedFlowProtoco
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     
     /// comes from demo app protocol, unused on new structure
-    internal lazy var context: AdyenContext = generateContext()
-    
+    internal var context: AdyenContext?
+
     internal init() {}
     
     internal func start() {
@@ -26,6 +26,7 @@ internal final class DummyActionComponentExample: InitialDataAdvancedFlowProtoco
         
         Task { @MainActor in
             do {
+                try? await initializeExampleAppAdyenContext()
                 let checkout = try await createCheckout()
                 let actionData = actionString.data(using: .utf8)
                 let action = try JSONDecoder().decode(Action.self, from: actionData!)

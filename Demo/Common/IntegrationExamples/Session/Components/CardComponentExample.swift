@@ -22,7 +22,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     
-    internal lazy var context: AdyenContext = generateContext()
+    internal var context: AdyenContext?
 
     // MARK: - Initializers
 
@@ -33,6 +33,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         
         Task {
             do {
+                try await initializeExampleAppAdyenContext()
                 let sessionResponse = try await requestSessionInitialInfo()
                 let component = try await self.cardComponent(from: sessionResponse)
                 self.adyenComponent = component
