@@ -89,7 +89,6 @@ public class CardComponent: PresentableComponent,
         context: AdyenContext,
         configuration: CardComponentConfiguration = .init()
     ) {
-        let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
         let binInfoProvider = BinInfoProvider(
             apiClient: APIClient(apiContext: context.apiContext),
             adyenContext: context,

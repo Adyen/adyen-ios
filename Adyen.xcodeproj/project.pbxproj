@@ -522,8 +522,6 @@
 		A0414C21278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C20278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift */; };
 		A0414C29278F2D2900DF3FE9 /* AnyEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C28278F2D2900DF3FE9 /* AnyEncryptor.swift */; };
 		A0414C2B2790420B00DF3FE9 /* PublicKeyFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C2A2790420B00DF3FE9 /* PublicKeyFetcher.swift */; };
-		A0414C2E2790420B00DF3FE9 /* PublicKeyProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C2D2790420B00DF3FE9 /* PublicKeyProvider.swift */; };
-		A0414C302790429A00DF3FE9 /* PublicKeyConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C2F2790429A00DF3FE9 /* PublicKeyConsumer.swift */; };
 		A0414C322791C9BB00DF3FE9 /* BankPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C312791C9BB00DF3FE9 /* BankPayload.swift */; };
 		A0414C342791D9EC00DF3FE9 /* BankDetailsEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0414C332791D9EC00DF3FE9 /* BankDetailsEncryptor.swift */; };
 		A04E60CD27DFA2BD0051C72C /* SessionAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E60CC27DFA2BD0051C72C /* SessionAPIClient.swift */; };
@@ -2198,8 +2196,6 @@
 		A0414C20278C2AE400DF3FE9 /* ACHDirectDebitDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitDetails.swift; sourceTree = "<group>"; };
 		A0414C28278F2D2900DF3FE9 /* AnyEncryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyEncryptor.swift; sourceTree = "<group>"; };
 		A0414C2A2790420B00DF3FE9 /* PublicKeyFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyFetcher.swift; sourceTree = "<group>"; };
-		A0414C2D2790420B00DF3FE9 /* PublicKeyProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyProvider.swift; sourceTree = "<group>"; };
-		A0414C2F2790429A00DF3FE9 /* PublicKeyConsumer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyConsumer.swift; sourceTree = "<group>"; };
 		A0414C312791C9BB00DF3FE9 /* BankPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankPayload.swift; sourceTree = "<group>"; };
 		A0414C332791D9EC00DF3FE9 /* BankDetailsEncryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankDetailsEncryptor.swift; sourceTree = "<group>"; };
 		A04E60CC27DFA2BD0051C72C /* SessionAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionAPIClient.swift; sourceTree = "<group>"; };
@@ -4078,8 +4074,6 @@
 			isa = PBXGroup;
 			children = (
 				A0414C2A2790420B00DF3FE9 /* PublicKeyFetcher.swift */,
-				A0414C2D2790420B00DF3FE9 /* PublicKeyProvider.swift */,
-				A0414C2F2790429A00DF3FE9 /* PublicKeyConsumer.swift */,
 			);
 			path = PublicKeyProvider;
 			sourceTree = "<group>";
@@ -8594,7 +8588,6 @@
 				A01DFBC52BB6F9FA00205881 /* ValidationError.swift in Sources */,
 				E270FDEB225CC4C4006C2CD0 /* Observation.swift in Sources */,
 				F9976BA526D654ED00D2D7CE /* Throttler.swift in Sources */,
-				A0414C302790429A00DF3FE9 /* PublicKeyConsumer.swift in Sources */,
 				813EF9F02A6551C300C65D15 /* ViewControllerPresenter.swift in Sources */,
 				E270FDE4225CACB0006C2CD0 /* AdyenObservable.swift in Sources */,
 				E9E3DAFF2225488900697074 /* Completion.swift in Sources */,
@@ -8665,7 +8658,6 @@
 				A06B7A9A2A1CEC59008FC09D /* StoredCashAppPayPaymentMethod.swift in Sources */,
 				A052F5D82DB1250D00C47D3E /* CheckoutComponentType.swift in Sources */,
 				A0414C2B2790420B00DF3FE9 /* PublicKeyFetcher.swift in Sources */,
-				A0414C2E2790420B00DF3FE9 /* PublicKeyProvider.swift in Sources */,
 				E216D3CD221AFBB90013CBCF /* Validator.swift in Sources */,
 				F917308E26491ED900985310 /* InstantPaymentComponent.swift in Sources */,
 				E224088D22B0FD220058923E /* StoredPayPalPaymentMethod.swift in Sources */,
