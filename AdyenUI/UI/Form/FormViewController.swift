@@ -249,16 +249,16 @@ open class FormViewController: UIViewController, AdyenObserver {
     private func setupKeyboardObserver() {
         guard scrollEnabled else { return }
 
-        observe(keyboardObserver.$keyboardRect) { [weak self] in
-            self?.handleKeyboardFrameDidChange($0)
+        observe(keyboardObserver.$keyboardTransition) { [weak self] in
+            self?.handleKeyboardTransitionDidChange($0)
         }
     }
 
-    private func handleKeyboardFrameDidChange(_ keyboardRect: CGRect) {
+    private func handleKeyboardTransitionDidChange(_ transition: KeyboardTransition) {
         let updateInsets: () -> Void = { [weak self] in
             guard let self else { return }
 
-            let bottomInset = self.keyboardOverlap(with: keyboardRect)
+            let bottomInset = self.keyboardOverlap(with: transition.keyboardRect)
 
             var contentInset = self.scrollView.contentInset
             contentInset.bottom = bottomInset
@@ -276,8 +276,8 @@ open class FormViewController: UIViewController, AdyenObserver {
 
         view.adyen.animate(context: AnimationContext(
             animationKey: Animations.keyboardBottomInset,
-            duration: 0.2,
-            options: [.beginFromCurrentState, .curveEaseOut],
+            duration: transition.animationDuration,
+            options: transition.animationOptions.union(.beginFromCurrentState),
             animations: updateInsets
         ))
     }
