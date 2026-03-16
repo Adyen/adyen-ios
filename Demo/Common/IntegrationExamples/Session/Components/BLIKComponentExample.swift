@@ -26,7 +26,6 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
         
         Task {
             do {
-                try await initializeExampleAppAdyenContext()
                 let sessionResponse = try await requestSessionInitialInfo()
                 let component = try await self.blikComponent(from: sessionResponse)
                 self.adyenComponent = component

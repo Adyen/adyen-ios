@@ -30,7 +30,6 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
         Task {
             do {
-                try await initializeExampleAppAdyenContext()
                 let paymentMethods = try await requestPaymentMethods(order: nil)
                 let component = try await blikComponent(from: paymentMethods)
                 self.adyenComponent = component

@@ -30,7 +30,6 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
         Task {
             do {
-                try await initializeExampleAppAdyenContext()
                 let paymentMethods = try await requestPaymentMethods(order: nil)
                 let component = try await cardComponent(from: paymentMethods)
                 self.adyenComponent = component

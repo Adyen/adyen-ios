@@ -33,7 +33,6 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         
         Task {
             do {
-                try await initializeExampleAppAdyenContext()
                 let sessionResponse = try await requestSessionInitialInfo()
                 let component = try await self.cardComponent(from: sessionResponse)
                 self.adyenComponent = component
