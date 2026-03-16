@@ -67,20 +67,23 @@ public final class AdyenContext {
         analyticsConfiguration: AnalyticsConfiguration
     ) -> AnyAnalyticsProvider? {
         guard let analyticsApiContext,
-              let checkoutAttemptId,
-              analyticsConfiguration.isEnabled else {
+              let checkoutAttemptId else {
             return nil
         }
 
         let analyticsApiClient = APIClient(apiContext: analyticsApiContext)
-        let eventDataSource = AnalyticsEventDataSource()
-        let syncEventDataSource = ThreadSafeAnalyticsEventDataSource(dataSource: eventDataSource)
-        let eventAnalyticsProvider = EventAnalyticsProvider(
-            apiClient: analyticsApiClient,
-            context: analyticsConfiguration.context,
-            eventDataSource: syncEventDataSource,
-            checkoutAttemptId: checkoutAttemptId
-        )
+
+        var eventAnalyticsProvider: AnyEventAnalyticsProvider?
+        if analyticsConfiguration.isEnabled {
+            let eventDataSource = AnalyticsEventDataSource()
+            let syncEventDataSource = ThreadSafeAnalyticsEventDataSource(dataSource: eventDataSource)
+            eventAnalyticsProvider = EventAnalyticsProvider(
+                apiClient: analyticsApiClient,
+                context: analyticsConfiguration.context,
+                eventDataSource: syncEventDataSource,
+                checkoutAttemptId: checkoutAttemptId
+            )
+        }
 
         return AnalyticsProvider(
             apiClient: analyticsApiClient,

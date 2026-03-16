@@ -82,7 +82,17 @@ struct AdyenContextTests {
             }
         }
 
-        var expectedToCreate: Bool {
+        /// AnalyticsProvider should not be created when we don't have the checkoutAttemptID available.
+        /// But it should be created irrespective of the configuration set by the merchant in AnalyticsConfiguration.
+        var expectedToCreateAnalyticsProvider: Bool {
+            guard attemptID != nil, analyticsAPIContext != nil else {
+                return false
+            }
+            return true
+        }
+
+        /// The EventsAnalyticsProvider(That which is responsible to send info/log/error events) should be created only when it is enabled by the merchant in AnalyticsConfiguration.
+        var expectedToCreateEventsAnalyticsProvider: Bool {
             guard attemptID != nil, analyticsAPIContext != nil, analyticsConfiguration.isEnabled else {
                 return false
             }
@@ -103,7 +113,8 @@ struct AdyenContextTests {
             analyticsConfiguration: testData.analyticsConfiguration
         )
 
-        #expect((context.analyticsProvider != nil) == testData.expectedToCreate)
+        #expect((context.analyticsProvider != nil) == testData.expectedToCreateAnalyticsProvider)
+        #expect(((context.analyticsProvider as? AnalyticsProvider)?.eventAnalyticsProvider != nil) == testData.expectedToCreateEventsAnalyticsProvider)
     }
 }
 

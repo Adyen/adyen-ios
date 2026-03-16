@@ -12,7 +12,7 @@ internal final class AnalyticsProvider: AnyAnalyticsProvider {
     // MARK: - Properties
 
     internal var checkoutAttemptId: String
-    internal let eventAnalyticsProvider: AnyEventAnalyticsProvider
+    internal let eventAnalyticsProvider: AnyEventAnalyticsProvider?
     private let uniqueAssetAPIClient: UniqueAssetAPIClient<EmptyResponse>
     private let configuration: AnalyticsConfiguration
 
@@ -22,7 +22,7 @@ internal final class AnalyticsProvider: AnyAnalyticsProvider {
         apiClient: APIClientProtocol,
         configuration: AnalyticsConfiguration,
         checkoutAttemptId: String,
-        eventAnalyticsProvider: AnyEventAnalyticsProvider
+        eventAnalyticsProvider: AnyEventAnalyticsProvider?
     ) {
         self.configuration = configuration
         self.eventAnalyticsProvider = eventAnalyticsProvider
@@ -45,14 +45,14 @@ internal final class AnalyticsProvider: AnyAnalyticsProvider {
     }
 
     internal func add(info: AnalyticsEventInfo) {
-        eventAnalyticsProvider.add(info: info)
+        eventAnalyticsProvider?.add(info: info)
     }
     
     internal func add(log: AnalyticsEventLog) {
-        eventAnalyticsProvider.add(log: log)
+        eventAnalyticsProvider?.add(log: log)
     }
     
     internal func add(error: AnalyticsEventError) {
-        eventAnalyticsProvider.add(error: error)
+        eventAnalyticsProvider?.add(error: error)
     }
 }
