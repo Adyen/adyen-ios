@@ -9,6 +9,7 @@ import Adyen3DS2
 import Foundation
 
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
+@MainActor
 internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, ComponentWrapper {
     
     internal let context: AdyenContext

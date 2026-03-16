@@ -42,6 +42,7 @@ public final class Session: SessionProtocol {
         )
     }()
     
+    @MainActor
     internal lazy var actionHandlingComponent: ActionHandlingComponent = {
         let handler = CheckoutActionComponent(
             context: context,
