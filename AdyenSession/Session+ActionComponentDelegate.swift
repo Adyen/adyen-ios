@@ -20,6 +20,7 @@ extension Session: ActionComponentDelegate {
         didComplete(currentComponent: component)
     }
     
+    @MainActor
     internal func didComplete(currentComponent: Component) {
         guard let resultCode = state.resultCode else {
             AdyenAssertion.assertionFailure(message: "Missing resultCode.")
@@ -40,20 +41,21 @@ extension Session: ActionComponentDelegate {
         didOpenExternalApplication(actionComponent: component)
     }
     
+    @MainActor
     internal func didOpenExternalApplication(actionComponent: ActionComponent) {
         delegate?.didOpenExternalApplication(component: actionComponent, session: self)
     }
 }
 
 extension Session {
+    
+    @MainActor
     package func didProvide(
         _ actionComponentData: ActionComponentData,
         from component: ActionComponent,
         dropInComponent: AnyDropInComponent?
     ) {
-        MainActor.assumeIsolated {
-            (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
-        }
+        (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
         let request = PaymentDetailsRequest(
             sessionId: state.identifier,
             sessionData: state.data,
