@@ -7,6 +7,7 @@
 import Foundation
 
 /// Delegates `ViewController`'s presentation.
+@MainActor
 public protocol PresentationDelegate: AnyObject {
     
     /// Asks the delegate to present a `PresentableComponent` as the `delegate` sees fit.

@@ -277,7 +277,8 @@ class RedirectComponentTests: XCTestCase {
     
     func testNativeRedirectHappyScenario() throws {
         let apiClient = APIClientMock()
-        let sut = RedirectComponent(context: Dummy.context, apiClient: apiClient.retryAPIClient(with: SimpleScheduler(maximumCount: 2)))
+        let sut = RedirectComponent(context: Dummy.context)
+        sut.apiClient = apiClient
         apiClient.mockedResults = try [.success(RedirectDetails(returnURL: XCTUnwrap(URL(string: "url://?redirectResult=test_redirectResult"))))]
         
         let appLauncher = AppLauncherMock()
@@ -347,10 +348,8 @@ class RedirectComponentTests: XCTestCase {
     func testNativeRedirectEndpointCallFails() throws {
         let apiClient = APIClientMock()
         let analyticsProviderMock = AnalyticsProviderMock()
-        let sut = RedirectComponent(
-            context: Dummy.context(analyticsProvider: analyticsProviderMock),
-            apiClient: apiClient.retryAPIClient(with: SimpleScheduler(maximumCount: 2))
-        )
+        let sut = RedirectComponent(context: Dummy.context(with: analyticsProviderMock))
+        sut.apiClient = apiClient
         apiClient.mockedResults = [.failure(Dummy.error)]
         
         let appLauncher = AppLauncherMock()
@@ -395,7 +394,8 @@ class RedirectComponentTests: XCTestCase {
     func testNativeRedirectWithNativeRedirectDataNilShouldPerformNativeRedirectResultRequest() throws {
         // Given
         let apiClient = APIClientMock()
-        let sut = RedirectComponent(context: Dummy.context, apiClient: apiClient.retryAPIClient(with: SimpleScheduler(maximumCount: 2)))
+        let sut = RedirectComponent(context: Dummy.context)
+        sut.apiClient = apiClient
         apiClient.mockedResults = try [.success(RedirectDetails(returnURL: XCTUnwrap(URL(string: "url://?redirectResult=test_redirectResult"))))]
 
         let appLauncher = AppLauncherMock()

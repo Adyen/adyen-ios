@@ -9,6 +9,7 @@ import AdyenNetworking
 import Foundation
 
 /// A specific await component thats keeps polling the `/status` endpoint to check the payment status.
+@MainActor
 internal final class PollingComponent: AnyPollingHandler {
     
     private let maxErrorNumber = 1

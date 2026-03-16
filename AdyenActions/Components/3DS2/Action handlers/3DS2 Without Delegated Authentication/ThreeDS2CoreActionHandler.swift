@@ -29,6 +29,7 @@ internal protocol AnyThreeDS2CoreActionHandler: Component {
 internal typealias ThreeDSService = ThreeDSConfigurable & ThreeDSServiceable
 
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
+@MainActor
 internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     private enum Constants {
         static let transStatusWhenError = "U"

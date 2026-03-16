@@ -35,7 +35,7 @@ package final class PresentableComponentWrapper: PresentableComponent,
     /// - Parameter component: The wrapped component.
     /// - Parameter viewController: The `ViewController` used as the UI of the `PresentableComponent`.
     /// - Parameter navBarType: Type of the navigation bar to use.
-    package nonisolated init(
+    package init(
         component: Component,
         viewController: UIViewController,
         navBarType: NavigationBarType = .regular

@@ -12,6 +12,7 @@ import Foundation
 
 #if canImport(TwintSDK)
     /// A component that handles Twint SDK action's.
+    @MainActor
     public final class TwintSDKActionComponent: ActionComponent {
 
         /// The context object for this component.
