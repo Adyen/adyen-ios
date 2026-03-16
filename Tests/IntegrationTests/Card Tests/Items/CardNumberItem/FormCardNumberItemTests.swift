@@ -12,16 +12,14 @@ import XCTest
 class FormCardNumberItemTests: XCTestCase {
 
     var apiClient: APIClientMock!
-    var publicKeyProvider: PublicKeyProviderMock!
     let supportedCardTypes: [CardType] = [.visa, .masterCard, .americanExpress, .chinaUnionPay, .maestro]
     var cardBrandProvider: BinInfoProvider!
 
     override func setUp() {
         apiClient = APIClientMock()
-        publicKeyProvider = PublicKeyProviderMock()
         cardBrandProvider = BinInfoProvider(
             apiClient: apiClient,
-            publicKeyProvider: publicKeyProvider,
+            adyenContext: Dummy.context,
             minBinLength: 11,
             binLookupType: .card
         )
@@ -29,7 +27,6 @@ class FormCardNumberItemTests: XCTestCase {
 
     override func tearDown() {
         apiClient = nil
-        publicKeyProvider = nil
         cardBrandProvider = nil
     }
 
@@ -115,7 +112,6 @@ class FormCardNumberItemTests: XCTestCase {
     }
 
     func testExternalBinLookupHappyFlow() {
-        publicKeyProvider.onFetch = { $0(.success("SOME_PUBLIC_KEY")) }
         let mockedBrands = [CardBrand(type: .masterCard)]
         apiClient.mockedResults = [
             .success(BinLookupResponse(brands: mockedBrands)),
@@ -136,7 +132,6 @@ class FormCardNumberItemTests: XCTestCase {
     }
 
     func testExternalBinLookupFallback() {
-        publicKeyProvider.onFetch = { $0(.success("SOME_PUBLIC_KEY")) }
         apiClient.mockedResults = [.failure(Dummy.error), .failure(Dummy.error)]
 
         let cardTypeLogos = supportedCardTypes.map {
