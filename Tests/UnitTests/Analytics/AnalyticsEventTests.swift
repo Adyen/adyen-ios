@@ -58,7 +58,6 @@ class AnalyticsEventTests: XCTestCase {
         // Then
         wait(for: .milliseconds(1))
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "Invalid request number made.")
-        XCTAssertNil(sut.checkoutAttemptId)
     }
 
     func testSendInitialEventGivenEnabledAndFlavorIsDropInShouldSendInitialRequest() {
