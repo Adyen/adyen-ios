@@ -292,6 +292,10 @@ class SessionTests: XCTestCase {
         sut.didSubmit(data, from: component, in: dropInComponent)
         wait(for: [apiCallsExpectation], timeout: 1)
 
+        let stateUpdatedExpectation = expectation(description: "Expect state to be updated")
+        stateUpdatedExpectation.isInverted = true
+        wait(for: [stateUpdatedExpectation], timeout: 0.5)
+
         XCTAssertEqual(sut.state.amount, expectedAmount)
         XCTAssertEqual(sut.state.countryCode, "EG")
         XCTAssertEqual(sut.state.shopperLocale, "EG")
