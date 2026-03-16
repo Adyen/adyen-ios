@@ -16,7 +16,7 @@ import Foundation
     import AppKit
 #endif
 
-@_spi(AdyenInternal) @testable import Adyen
+@testable import Adyen
 @testable import AdyenCheckout
 @testable import AdyenDropIn
 
