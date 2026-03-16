@@ -720,7 +720,6 @@
 		B6D808232BCD151F00F3F5EB /* ActionHandlingComponentMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B8AF5F27DB4E8700DC0894 /* ActionHandlingComponentMock.swift */; };
 		B6D808252BCD155400F3F5EB /* String+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8107F4832BB1CE8A007745FC /* String+UIImage.swift */; };
 		B6D808262BCD165F00F3F5EB /* DummyPaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79F2397BD8500CFB3C9 /* DummyPaymentMethods.swift */; };
-		B6D808272BCD166D00F3F5EB /* DummyHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CC63D1287EFFC00034108B /* DummyHelper.swift */; };
 		B6D808282BCD166D00F3F5EB /* PostalAddressMocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F6DBD26AFF336004BD516 /* PostalAddressMocks.swift */; };
 		B6D8082C2BCD176E00F3F5EB /* XCTestCase+Coder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBC5288013990082B360 /* XCTestCase+Coder.swift */; };
 		B6D8082D2BCD178B00F3F5EB /* XCTestCase+Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E60D227E0E6280051C72C /* XCTestCase+Result.swift */; };
@@ -974,7 +973,6 @@
 		E7975F982880421600A12C40 /* XCTestCase+Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04E60D227E0E6280051C72C /* XCTestCase+Result.swift */; };
 		E7B3DE9F25A61B9200CA4D2B /* UIViewConstraintsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B3DE9E25A61B9200CA4D2B /* UIViewConstraintsHelper.swift */; };
 		E7B627FD24ED32CC000CEC6E /* BinLookupService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B627FC24ED32CC000CEC6E /* BinLookupService.swift */; };
-		E7CC63D2287EFFC00034108B /* DummyHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7CC63D1287EFFC00034108B /* DummyHelper.swift */; };
 		E7D189B025D31936006AD3B7 /* DropInActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */; };
 		E7D3ED84243B667500E73F59 /* FormCardNumberItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D3ED83243B667500E73F59 /* FormCardNumberItemViewTests.swift */; };
 		E7D418B1286E4C5900E9A7F4 /* PaymentAwareComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D418B0286E4C5900E9A7F4 /* PaymentAwareComponent.swift */; };
@@ -2634,7 +2632,6 @@
 		E79A64802490D98F00368E9F /* CardComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentDelegateMock.swift; sourceTree = "<group>"; };
 		E7B3DE9E25A61B9200CA4D2B /* UIViewConstraintsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewConstraintsHelper.swift; sourceTree = "<group>"; };
 		E7B627FC24ED32CC000CEC6E /* BinLookupService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinLookupService.swift; sourceTree = "<group>"; };
-		E7CC63D1287EFFC00034108B /* DummyHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyHelper.swift; sourceTree = "<group>"; };
 		E7CD107D25544C970057C52D /* FormContainerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormContainerItem.swift; sourceTree = "<group>"; };
 		E7D0DAAD265E66D70013A5F3 /* AddressFormItemInjector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressFormItemInjector.swift; sourceTree = "<group>"; };
 		E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInActionTests.swift; sourceTree = "<group>"; };
@@ -4505,7 +4502,6 @@
 			isa = PBXGroup;
 			children = (
 				5AF8CD4C26691D3A00102339 /* Dummy.swift */,
-				E7CC63D1287EFFC00034108B /* DummyHelper.swift */,
 				F9EDB79F2397BD8500CFB3C9 /* DummyPaymentMethods.swift */,
 			);
 			path = DummyData;
@@ -8388,7 +8384,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6D808372BCD1F8900F3F5EB /* AmountFormatterTests.swift in Sources */,
-				B6D808272BCD166D00F3F5EB /* DummyHelper.swift in Sources */,
 				B6D8080C2BCD147D00F3F5EB /* ImageLoaderTests.swift in Sources */,
 				B6D808142BCD151F00F3F5EB /* ValidatorMock.swift in Sources */,
 				B6D8080A2BCD147D00F3F5EB /* ActionTests.swift in Sources */,
@@ -8849,7 +8844,6 @@
 				C927083927590B7900D15EA0 /* BACSInputPresenterProtocolMock.swift in Sources */,
 				8100F2BD2A4C3407008C09E7 /* FormValidatableItemViewTests.swift in Sources */,
 				C92F6DBE26AFF336004BD516 /* PostalAddressMocks.swift in Sources */,
-				E7CC63D2287EFFC00034108B /* DummyHelper.swift in Sources */,
 				5A988B652653D9370007F4C0 /* BoletoComponentTests.swift in Sources */,
 				F919DFA024EABCC10027976E /* StoredCardComponentTests.swift in Sources */,
 				81BBB34D2A6938A400AF1F9E /* FormAddressPickerItemTests.swift in Sources */,
