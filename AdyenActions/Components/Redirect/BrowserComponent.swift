@@ -39,7 +39,7 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
         return safariViewController
     }()
     
-    internal nonisolated(unsafe) weak var delegate: BrowserComponentDelegate?
+    internal weak var delegate: BrowserComponentDelegate?
     
     @AdyenDependency(\.openAppDetector) private var openAppDetector
     
@@ -48,7 +48,7 @@ internal final class BrowserComponent: NSObject, PresentableComponent {
     /// - Parameter url: The URL to where the user should be redirected
     /// - Parameter context: The context object for this component.
     /// - Parameter style: The component's UI style.
-    internal nonisolated init(
+    internal init(
         url: URL,
         context: AdyenContext,
         style: RedirectComponentStyle? = nil

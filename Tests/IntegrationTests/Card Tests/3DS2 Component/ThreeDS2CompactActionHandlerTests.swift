@@ -10,6 +10,7 @@ import Adyen3DS2
 @testable @_spi(AdyenInternal) import AdyenCard
 import XCTest
 
+@MainActor
 class ThreeDS2CompactActionHandlerTests: XCTestCase {
 
     var authenticationRequestParameters: AnyAuthenticationRequestParameters!
