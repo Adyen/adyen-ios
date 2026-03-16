@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class CardComponentEventTests: XCTestCase {
 
     // EVT-UC9: Component Rendered - Send Initial Event

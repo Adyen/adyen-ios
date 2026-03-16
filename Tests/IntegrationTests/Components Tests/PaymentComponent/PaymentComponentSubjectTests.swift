@@ -8,6 +8,7 @@ import XCTest
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenComponents
 
+@MainActor
 class PaymentComponentSubjectTests: XCTestCase {
 
     var analyticsProviderMock: AnalyticsProviderMock!

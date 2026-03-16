@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class IssuerListComponentTests: XCTestCase {
 
     private var context: AdyenContext!

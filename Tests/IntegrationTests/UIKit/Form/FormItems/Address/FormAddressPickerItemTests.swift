@@ -181,4 +181,92 @@ class FormAddressPickerItemTests: XCTestCase {
         addressLookupItem.value = PostalAddress(country: "NL")
         XCTAssertEqual(addressLookupItem.formattedValue, "Netherlands")
     }
+
+    // MARK: - PostalAddress formattedSingleLine Tests
+
+    func testFormattedSingleLine_withNetherlandsAddress() {
+        // Given
+        let address = makeNetherlandsAddress()
+        
+        // When
+        let result = address.formattedSingleLine(using: nil)
+        
+        // Then - CNPostalAddressFormatter formats NL addresses as: Street, PostalCode City, Country
+        XCTAssertEqual(result, "Professor Van Gogh 123, 1222aa Edam, Netherlands")
+    }
+    
+    func testFormattedSingleLine_withUSAddress() {
+        // Given
+        let address = makeUSAddress()
+        
+        // When
+        let result = address.formattedSingleLine(using: nil)
+        
+        // Then - CNPostalAddressFormatter formats US addresses as: Street, City State PostalCode, Country
+        XCTAssertEqual(result, "Main Street 1, New York NY 12345, United States")
+    }
+    
+    func testFormattedSingleLine_withApartment() {
+        // Given
+        let address = makeUSAddressWithApartment()
+        
+        // When
+        let result = address.formattedSingleLine(using: nil)
+        
+        // Then - Apartment should be included in street portion
+        XCTAssertTrue(result.contains("Oak Avenue 42 Apt 5B"))
+        XCTAssertTrue(result.contains("Beverly Hills"))
+        XCTAssertTrue(result.contains("CA"))
+        XCTAssertTrue(result.contains("90210"))
+    }
+    
+    func testFormattedSingleLine_shouldNotContainNewlines() {
+        // Given
+        let address = PostalAddressMocks.newYorkPostalAddress
+        
+        // When
+        let result = address.formattedSingleLine(using: nil)
+        
+        // Then
+        XCTAssertFalse(result.contains("\n"), "Single line format should not contain newlines")
+        XCTAssertTrue(result.contains(","), "Single line format should use comma separators")
+    }
+    
+    // MARK: - Test Helpers
+    
+    private func makeNetherlandsAddress() -> PostalAddress {
+        PostalAddress(
+            city: "Edam",
+            country: "NL",
+            houseNumberOrName: "123",
+            postalCode: "1222aa",
+            stateOrProvince: nil,
+            street: "Professor Van Gogh",
+            apartment: nil
+        )
+    }
+    
+    private func makeUSAddress() -> PostalAddress {
+        PostalAddress(
+            city: "New York",
+            country: "US",
+            houseNumberOrName: "1",
+            postalCode: "12345",
+            stateOrProvince: "NY",
+            street: "Main Street",
+            apartment: nil
+        )
+    }
+    
+    private func makeUSAddressWithApartment() -> PostalAddress {
+        PostalAddress(
+            city: "Beverly Hills",
+            country: "US",
+            houseNumberOrName: "42",
+            postalCode: "90210",
+            stateOrProvince: "CA",
+            street: "Oak Avenue",
+            apartment: "Apt 5B"
+        )
+    }
 }

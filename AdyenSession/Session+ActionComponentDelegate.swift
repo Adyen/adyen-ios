@@ -51,7 +51,9 @@ extension Session {
         from component: ActionComponent,
         dropInComponent: AnyDropInComponent?
     ) {
-        (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
+        MainActor.assumeIsolated {
+            (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
+        }
         let request = PaymentDetailsRequest(
             sessionId: state.identifier,
             sessionData: state.data,

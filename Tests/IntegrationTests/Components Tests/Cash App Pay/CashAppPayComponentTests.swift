@@ -14,6 +14,7 @@ import XCTest
     @testable import PayKit
     import UIKit
 
+    @MainActor
     final class CashAppPayComponentTests: XCTestCase {
         
         private enum ErrorOption {

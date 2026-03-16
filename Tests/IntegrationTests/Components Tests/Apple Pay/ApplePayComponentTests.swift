@@ -10,6 +10,7 @@ import Contacts
 import PassKit
 import XCTest
 
+@MainActor
 class ApplePayComponentTest: XCTestCase {
 
     var mockDelegate: PaymentComponentDelegateMock!

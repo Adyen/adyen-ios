@@ -11,11 +11,13 @@ import Foundation
     @_spi(AdyenInternal) import AdyenActions
 #endif
 
+@MainActor
 internal protocol DropInViewModelProtocol {
     var root: DropInRoot { get }
     var title: String { get }
 }
 
+@MainActor
 internal class DropInViewModel: DropInViewModelProtocol {
 
     // MARK: - Properties

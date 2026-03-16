@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class DokuComponentTests: XCTestCase {
 
     private var context: AdyenContext!

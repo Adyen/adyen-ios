@@ -11,6 +11,7 @@
 import TwintSDK
 
 /// A component that handles a Twint payment.
+@MainActor
 public final class TwintComponent: InitiablePaymentComponent {
 
     /// Configuration for Twint Component.

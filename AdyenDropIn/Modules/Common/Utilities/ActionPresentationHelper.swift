@@ -10,6 +10,7 @@ import SafariServices
 
 /// A centralized helper to prepare an action `PresentableComponent` for presentation.
 /// Wraps the action component in `ActionWrapperViewController` only if needed.
+@MainActor
 internal enum ActionPresentationHelper {
 
     internal static func viewController(

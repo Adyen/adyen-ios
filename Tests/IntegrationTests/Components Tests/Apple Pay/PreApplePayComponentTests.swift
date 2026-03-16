@@ -11,6 +11,7 @@
 import PassKit
 import XCTest
 
+@MainActor
 class PreApplePayComponentTests: XCTestCase {
 
     var analyticsProviderMock: AnalyticsProviderMock!

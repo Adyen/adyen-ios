@@ -11,6 +11,7 @@
 import UIKit
 
 /// A component that provides a upi flows for UPI component.
+@MainActor
 public final class UPIComponent: PaymentComponent,
     PresentableComponent,
     LoadingComponent {

@@ -51,7 +51,7 @@ jobs:
       - name: Try to download base branch size artifact
         if: ${{ github.event_name == 'pull_request' }}
         continue-on-error: true
-        uses: dawidd6/action-download-artifact@v16
+        uses: dawidd6/action-download-artifact@v17
         with:
           name: sdk-sizes-${{ steps.sanitize.outputs.sanitized_base }}
           repo: ${{ github.repository }}
@@ -89,7 +89,7 @@ jobs:
 
       - name: Post SDK size comment
         if: ${{ github.event_name == 'pull_request' }}
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v3
         with:
           header: sdk-size
           path: comment.txt

@@ -8,6 +8,7 @@
 @testable @_spi(AdyenInternal) import AdyenCard
 import XCTest
 
+@MainActor
 class StoredCardComponentTests: XCTestCase {
 
     private var context = Dummy.context

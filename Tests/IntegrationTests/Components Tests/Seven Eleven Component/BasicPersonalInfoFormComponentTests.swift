@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class BasicPersonalInfoFormComponentTests: XCTestCase {
 
     lazy var paymentMethod = SevenElevenPaymentMethod(type: .econtextSevenEleven, name: "test_name")
