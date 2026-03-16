@@ -26,7 +26,7 @@ internal final class DummyActionComponentExample: InitialDataAdvancedFlowProtoco
         
         Task { @MainActor in
             do {
-                try? await initializeExampleAppAdyenContext()
+                try await initializeExampleAppAdyenContext()
                 let checkout = try await createCheckout()
                 let actionData = actionString.data(using: .utf8)
                 let action = try JSONDecoder().decode(Action.self, from: actionData!)

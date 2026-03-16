@@ -26,19 +26,25 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
     internal func start() {
         presenter?.showLoadingIndicator()
         Task {
-            try? await initializeExampleAppAdyenContext()
-            requestPaymentMethods(order: nil) { [weak self] result in
-                guard let self else { return }
+            do {
+                try await initializeExampleAppAdyenContext()
+                requestPaymentMethods(order: nil) { [weak self] result in
+                    guard let self else { return }
 
-                self.presenter?.hideLoadingIndicator()
+                    self.presenter?.hideLoadingIndicator()
 
-                switch result {
-                case let .success(paymentMethods):
-                    self.presentComponent(with: paymentMethods)
+                    switch result {
+                    case let .success(paymentMethods):
+                        self.presentComponent(with: paymentMethods)
 
-                case let .failure(error):
-                    self.presenter?.presentAlert(with: error, retryHandler: nil)
+                    case let .failure(error):
+                        self.presenter?.presentAlert(with: error, retryHandler: nil)
+                    }
                 }
+
+            } catch {
+                self.presenter?.hideLoadingIndicator()
+                self.presenter?.presentAlert(with: error, retryHandler: nil)
             }
         }
     }

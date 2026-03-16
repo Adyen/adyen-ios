@@ -33,20 +33,26 @@ internal final class DropInExample: InitialDataFlowProtocol {
     internal func start() {
         presenter?.showLoadingIndicator()
         Task {
-            try? await initializeExampleAppAdyenContext()
-            loadSession { [weak self] response in
-                guard let self else { return }
+            do {
+                try await initializeExampleAppAdyenContext()
+                loadSession { [weak self] response in
+                    guard let self else { return }
 
-                self.presenter?.hideLoadingIndicator()
+                    self.presenter?.hideLoadingIndicator()
 
-                switch response {
-                case let .success(session):
-                    self.session = session
-                    self.presentComponent(with: session)
+                    switch response {
+                    case let .success(session):
+                        self.session = session
+                        self.presentComponent(with: session)
 
-                case let .failure(error):
-                    self.presentAlert(with: error)
+                    case let .failure(error):
+                        self.presentAlert(with: error)
+                    }
                 }
+
+            } catch {
+                self.presenter?.hideLoadingIndicator()
+                self.presentAlert(with: error)
             }
 
         }
