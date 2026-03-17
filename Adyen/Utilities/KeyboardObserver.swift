@@ -6,14 +6,13 @@
 
 import UIKit
 
-@_spi(AdyenInternal)
-public struct KeyboardTransition: Equatable {
+package struct KeyboardTransition: Equatable {
     
-    public let keyboardRect: CGRect
-    public let animationDuration: TimeInterval
-    public let animationOptions: UIView.AnimationOptions
+    package let keyboardRect: CGRect
+    package let animationDuration: TimeInterval
+    package let animationOptions: UIView.AnimationOptions
     
-    public init(
+    package init(
         keyboardRect: CGRect = .zero,
         animationDuration: TimeInterval = 0.25,
         animationOptions: UIView.AnimationOptions = .curveEaseInOut
@@ -25,14 +24,13 @@ public struct KeyboardTransition: Equatable {
 }
 
 /// Observe changes to the keyboard frames to update the UI accordingly
-@_spi(AdyenInternal)
-public class KeyboardObserver {
+package class KeyboardObserver {
     
     /// The observable keyboard transition
     @AdyenObservable(.init())
-    public private(set) var keyboardTransition: KeyboardTransition
+    package private(set) var keyboardTransition: KeyboardTransition
     
-    public init() {
+    package init() {
         
         NotificationCenter.default.addObserver(
             self,
