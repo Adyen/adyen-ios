@@ -21,6 +21,7 @@ internal enum QRCodeComponentError: LocalizedError {
 }
 
 /// A component  for QRCode action.
+@MainActor
 public final class QRCodeActionComponent: ActionComponent, Cancellable, ShareableComponent {
     
     /// The context object for this component.
