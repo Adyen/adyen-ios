@@ -19,7 +19,7 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     
-    internal lazy var context: AdyenContext = generateContext()
+    internal var context: AdyenContext?
 
     // MARK: - Initializers
 
@@ -27,17 +27,25 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
 
     internal func start() {
         presenter?.showLoadingIndicator()
-        loadSession { [weak self] response in
-            guard let self else { return }
+        Task {
+            do {
+                try await initializeExampleAppAdyenContext()
+                loadSession { [weak self] response in
+                    guard let self else { return }
 
-            self.presenter?.hideLoadingIndicator()
+                    self.presenter?.hideLoadingIndicator()
 
-            switch response {
-            case let .success(session):
-                self.session = session
-                self.presentComponent(with: session)
+                    switch response {
+                    case let .success(session):
+                        self.session = session
+                        self.presentComponent(with: session)
 
-            case let .failure(error):
+                    case let .failure(error):
+                        self.presentAlert(with: error)
+                    }
+                }
+            } catch {
+                self.presenter?.hideLoadingIndicator()
                 self.presentAlert(with: error)
             }
         }
@@ -84,7 +92,11 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
         guard let paymentMethod = paymentMethods.paymentMethod(ofType: InstantPaymentMethod.self) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: InstantPaymentMethod.self)
         }
-        
+
+        guard let context else {
+            fatalError("AdyenContext not initialized")
+        }
+
         return InstantPaymentComponent(paymentMethod: paymentMethod, context: context, order: nil)
     }
 
