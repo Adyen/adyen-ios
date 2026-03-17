@@ -205,7 +205,6 @@ class BCMCComponentTests: XCTestCase {
             paymentMethod: paymentMethod,
             context: context
         )
-        PublicKeyProvider.publicKeysCache[Dummy.apiContext.clientKey] = Dummy.publicKey
         sut.delegate = delegate
 
         sut.viewController.loadViewIfNeeded()
@@ -321,7 +320,6 @@ class BCMCComponentTests: XCTestCase {
             paymentMethod: paymentMethod,
             context: context,
             configuration: .init(),
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
 
@@ -359,7 +357,6 @@ class BCMCComponentTests: XCTestCase {
             paymentMethod: paymentMethod,
             context: context,
             configuration: .init(),
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
 
