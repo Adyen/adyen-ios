@@ -47,8 +47,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(
             paymentMethod: method,
             context: context,
-            configuration: config,
-            publicKeyProvider: PublicKeyProviderMock()
+            configuration: config
         )
         
         XCTAssertEqual(sut.headerItem.text, localizedString(.achBankAccountTitle, sut.configuration.localizationParameters))
@@ -83,8 +82,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock()
+            configuration: configuration
         )
 
         setupRootViewController(sut.viewController)
@@ -119,8 +117,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(
             paymentMethod: method,
             context: context,
-            configuration: config,
-            publicKeyProvider: PublicKeyProviderMock()
+            configuration: config
         )
         
         setupRootViewController(sut.viewController)
@@ -140,8 +137,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(
             paymentMethod: method,
             context: context,
-            configuration: config,
-            publicKeyProvider: PublicKeyProviderMock()
+            configuration: config
         )
         
         setupRootViewController(sut.viewController)
@@ -157,8 +153,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: config,
-            publicKeyProvider: PublicKeyProviderMock()
+            configuration: config
         )
 
         setupRootViewController(sut.viewController)
@@ -174,8 +169,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let paymentMethod = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "Test name")
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
-            context: context,
-            publicKeyProvider: PublicKeyProviderMock()
+            context: context
         )
 
         setupRootViewController(sut.viewController)
@@ -198,8 +192,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: ACHDirectDebitComponentConfiguration().shopperInformation(shopperInformation).showBillingAddress(false),
-            publicKeyProvider: PublicKeyProviderMock()
+            configuration: ACHDirectDebitComponentConfiguration().shopperInformation(shopperInformation).showBillingAddress(false)
         )
 
         setupRootViewController(sut.viewController)
@@ -250,8 +243,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: ACHDirectDebitComponentConfiguration().showBillingAddress(false),
-            publicKeyProvider: PublicKeyProviderMock()
+            configuration: ACHDirectDebitComponentConfiguration().showBillingAddress(false)
         )
 
         // When
@@ -271,8 +263,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock()
+            configuration: configuration
         )
 
         setupRootViewController(sut.viewController)
@@ -309,8 +300,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock()
+            configuration: configuration
         )
 
         setupRootViewController(sut.viewController)
@@ -341,8 +331,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         let sut = ACHDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock()
+            configuration: configuration
         )
 
         setupRootViewController(sut.viewController)

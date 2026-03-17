@@ -24,27 +24,37 @@ internal final class DropInExample: InitialDataFlowProtocol {
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     
-    internal lazy var context: AdyenContext = generateContext()
-    
+    internal var context: AdyenContext?
+
     // MARK: - Initializers
 
     internal init() {}
 
     internal func start() {
         presenter?.showLoadingIndicator()
-        loadSession { [weak self] response in
-            guard let self else { return }
-            
-            self.presenter?.hideLoadingIndicator()
-            
-            switch response {
-            case let .success(session):
-                self.session = session
-                self.presentComponent(with: session)
-                
-            case let .failure(error):
+        Task {
+            do {
+                try await initializeExampleAppAdyenContext()
+                loadSession { [weak self] response in
+                    guard let self else { return }
+
+                    self.presenter?.hideLoadingIndicator()
+
+                    switch response {
+                    case let .success(session):
+                        self.session = session
+                        self.presentComponent(with: session)
+
+                    case let .failure(error):
+                        self.presentAlert(with: error)
+                    }
+                }
+
+            } catch {
+                self.presenter?.hideLoadingIndicator()
                 self.presentAlert(with: error)
             }
+
         }
     }
     
@@ -78,6 +88,10 @@ internal final class DropInExample: InitialDataFlowProtocol {
     }
 
     private func dropInComponent(from session: Session) -> DropInComponent {
+        guard let context else {
+            fatalError("AdyenContext is not initialized")
+        }
+
         let paymentMethods = session.state.paymentMethods
         let configuration = dropInConfiguration(from: paymentMethods)
         let component = DropInComponent(

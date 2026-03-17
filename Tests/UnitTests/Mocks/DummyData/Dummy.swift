@@ -39,6 +39,15 @@ enum Dummy: Error {
             analyticsProvider: AnalyticsProviderMock()
         )
     }
+    
+    internal static func context(analyticsProvider: AnyAnalyticsProvider?) -> AdyenContext {
+        AdyenContext(
+            apiContext: apiContext,
+            amount: amount,
+            publicKey: publicKey,
+            analyticsProvider: analyticsProvider
+        )
+    }
 
     internal static let visaCard = Card(
         number: "4917 6100 0000 0000",
