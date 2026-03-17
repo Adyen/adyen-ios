@@ -204,7 +204,7 @@ class StoredCardComponentTests: XCTestCase {
     func testViewDidLoadShouldSendInitialEvent() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(with: analyticsProviderMock)
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
         let paymentMethod = storedCardPaymentMethod(brand: .masterCard)
         let sut = StoredCardComponent(
             storedCardPaymentMethod: paymentMethod,

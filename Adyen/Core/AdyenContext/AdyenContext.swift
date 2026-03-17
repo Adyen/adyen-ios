@@ -66,21 +66,15 @@ public final class AdyenContext {
         checkoutAttemptId: String?,
         analyticsConfiguration: AnalyticsConfiguration
     ) -> AnyAnalyticsProvider? {
-        guard let analyticsApiContext else {
-            AdyenAssertion.assertionFailure(
-                message: "AnalyticsProvider couldn't be created as AnalyticsAPIContext is not available."
-            )
+        guard let analyticsApiContext,
+              let checkoutAttemptId else {
             return nil
         }
+
         let analyticsApiClient = APIClient(apiContext: analyticsApiContext)
 
         var eventAnalyticsProvider: AnyEventAnalyticsProvider?
-
-        // TODO: Robert: If checkoutAttemptID is nil then don't create AnalyticsProvider
-        // - checkoutAttemptID will be required in the AnalyticsProvider
-        // - eventAnalyticsProvider will be required in the AnalyticsProvider.
-        if let checkoutAttemptId,
-           analyticsConfiguration.isEnabled {
+        if analyticsConfiguration.isEnabled {
             let eventDataSource = AnalyticsEventDataSource()
             let syncEventDataSource = ThreadSafeAnalyticsEventDataSource(dataSource: eventDataSource)
             eventAnalyticsProvider = EventAnalyticsProvider(
@@ -90,7 +84,7 @@ public final class AdyenContext {
                 checkoutAttemptId: checkoutAttemptId
             )
         }
-        
+
         return AnalyticsProvider(
             apiClient: analyticsApiClient,
             configuration: analyticsConfiguration,
