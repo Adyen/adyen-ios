@@ -8,7 +8,20 @@ import AdyenUI
 import UIKit
 
 internal final class PaymentMethodItemView: UIView {
-    
+
+    private enum Layout {
+        static let itemHeight: CGFloat = 52.0
+        static let sideMargin: CGFloat = 12.0
+        static let iconImageHeight: CGFloat = 40.0
+        static let iconImageWidth: CGFloat = 26.0
+        static let chevronHeight: CGFloat = 14
+        static let chevronWidth: CGFloat = 20
+    }
+
+    private enum Images {
+        static let chevron = "chevron.forward"
+    }
+
     // MARK: - UI Elements
     
     private lazy var iconImageView: UIImageView = {
@@ -48,7 +61,7 @@ internal final class PaymentMethodItemView: UIView {
     private lazy var chevronImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "chevron.forward")
+        imageView.image = UIImage(systemName: Images.chevron)
         imageView.tintColor = item.theme.colors.textSecondary
         imageView.contentMode = .scaleAspectFit
         imageView.setContentHuggingPriority(.required, for: .horizontal)
@@ -112,18 +125,18 @@ internal final class PaymentMethodItemView: UIView {
             highlightView.trailingAnchor.constraint(equalTo: trailingAnchor),
             highlightView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            iconImageView.widthAnchor.constraint(equalToConstant: 40),
-            iconImageView.heightAnchor.constraint(equalToConstant: 26),
-            
-            chevronImageView.widthAnchor.constraint(equalToConstant: 14),
-            chevronImageView.heightAnchor.constraint(equalToConstant: 20),
-            
-            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: 12),
-            contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-            contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
-            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
+            iconImageView.widthAnchor.constraint(equalToConstant: Layout.iconImageWidth),
+            iconImageView.heightAnchor.constraint(equalToConstant: Layout.iconImageHeight),
 
-            heightAnchor.constraint(greaterThanOrEqualToConstant: 52)
+            chevronImageView.widthAnchor.constraint(equalToConstant: Layout.chevronWidth),
+            chevronImageView.heightAnchor.constraint(equalToConstant: Layout.chevronHeight),
+
+            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: Layout.sideMargin),
+            contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Layout.sideMargin),
+
+            heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.itemHeight)
         ])
     }
 

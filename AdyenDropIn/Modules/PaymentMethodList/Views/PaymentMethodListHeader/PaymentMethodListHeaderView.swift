@@ -10,6 +10,11 @@ import UIKit
 
 internal final class PaymentMethodListHeaderView: UIView {
 
+    private enum Layout {
+        static let applePayButtonHeight: CGFloat = 48
+        static let subtitleBottomMargin: CGFloat = 24
+    }
+
     // MARK: - UI Elements
     
     private lazy var amountLabel: UILabel = {
@@ -87,7 +92,7 @@ internal final class PaymentMethodListHeaderView: UIView {
         addSubview(stackView)
         
         if viewModel.showApplePayButton {
-            stackView.setCustomSpacing(24, after: subtitleLabel)
+            stackView.setCustomSpacing(Layout.subtitleBottomMargin, after: subtitleLabel)
         }
 
         NSLayoutConstraint.activate([
@@ -98,7 +103,7 @@ internal final class PaymentMethodListHeaderView: UIView {
 
             applePayButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             applePayButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
-            applePayButton.heightAnchor.constraint(equalToConstant: 48)
+            applePayButton.heightAnchor.constraint(equalToConstant: Layout.applePayButtonHeight)
         ])
     }
 }

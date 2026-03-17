@@ -8,7 +8,11 @@ import AdyenUI
 import UIKit
 
 internal final class PaymentMethodSectionView: UIView {
-    
+
+    private enum Layout {
+        static let headerBottomMargin: CGFloat = 16
+    }
+
     // MARK: - UI Elements
     
     private lazy var containerStackView: UIStackView = {
@@ -60,7 +64,7 @@ internal final class PaymentMethodSectionView: UIView {
         
         containerStackView.addArrangedSubview(headerLabel)
         containerStackView.addArrangedSubview(itemsContainerView)
-        containerStackView.setCustomSpacing(16, after: headerLabel)
+        containerStackView.setCustomSpacing(Layout.headerBottomMargin, after: headerLabel)
 
         NSLayoutConstraint.activate([
             containerStackView.topAnchor.constraint(equalTo: topAnchor),
@@ -87,13 +91,13 @@ internal final class PaymentMethodSectionView: UIView {
             headerLabel.isHidden = true
         }
 
-        populateItems(section.items)
+        populateSection(with: section.items)
     }
 
     private func configureHeader(with title: String) {
         headerLabel.text = title.localizedCapitalized
         headerLabel.accessibilityLabel = title
-        headerLabel.accessibilityIdentifier = "Adyen.PaymentMethodList.sectionHeader.\(title)"
+        headerLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: title)
     }
     
     private func clearItems() {
@@ -103,7 +107,7 @@ internal final class PaymentMethodSectionView: UIView {
         }
     }
     
-    private func populateItems(_ items: [PaymentMethodItem]) {
+    private func populateSection(with items: [PaymentMethodItem]) {
         items.forEach { item in
             let itemView = PaymentMethodItemView(item: item)
             itemsContainerView.addArrangedSubview(itemView)
