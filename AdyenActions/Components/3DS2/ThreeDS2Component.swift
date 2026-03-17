@@ -13,6 +13,7 @@ internal protocol AnyRedirectComponent: ActionComponent {
 }
 
 /// Handles the 3D Secure 2 fingerprint and challenge.
+@MainActor
 public final class ThreeDS2Component: ActionComponent {
     
     /// The context object for this component.

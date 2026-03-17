@@ -8,6 +8,7 @@ import Foundation
 import UIKit
 
 /// Describes the methods a delegate of stored payment methods needs to implement.
+@MainActor
 public protocol StoredPaymentMethodsDelegate: AnyObject {
 
     /// Invoked when shopper wants to delete a stored payment method.

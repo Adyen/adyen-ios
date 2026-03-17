@@ -20,6 +20,7 @@ internal protocol AnyPollingHandlerProvider {
     func handler(for qrPaymentMethodType: QRCodePaymentMethod) -> AnyPollingHandler
 }
 
+@MainActor
 internal struct PollingHandlerProvider: AnyPollingHandlerProvider {
 
     private let context: AdyenContext

@@ -14,6 +14,7 @@ import XCTest
     import AdyenTwint
 #endif
 
+@MainActor
 class CheckoutActionComponentTests: XCTestCase {
 
     let weChatActionResponse = """
