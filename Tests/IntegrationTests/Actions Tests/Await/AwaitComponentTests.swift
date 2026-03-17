@@ -31,6 +31,7 @@ final class PollingHandlerMock: AnyPollingHandler {
     }
 }
 
+@MainActor
 struct AwaitActionHandlerProviderMock: AnyPollingHandlerProvider {
 
     var onAwaitHandler: ((_ paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler)?

@@ -21,7 +21,7 @@ extension Session: SessionStoredPaymentMethodsDelegate {
             sessionData: state.data,
             storedPaymentMethodId: storedPaymentMethod.identifier
         )
-        apiClient.perform(request) { [weak self] result in
+        apiClient.perform(request) { @MainActor [weak self] result in
             switch result {
             case .success:
                 completion(true)
@@ -32,24 +32,23 @@ extension Session: SessionStoredPaymentMethodsDelegate {
         }
     }
     
+    @MainActor
     private func showAlert(with error: Error?, on dropIn: AnyDropInComponent) {
         let localizationParameters = (dropIn as? Localizable)?.localizationParameters
         let title = localizedString(.errorTitle, localizationParameters)
         let message = localizedString(.errorUnknown, localizationParameters)
         let doneTitle = localizedString(.dismissButton, localizationParameters)
         
-        Task { @MainActor in
-            let alertController = UIAlertController(
-                title: title,
-                message: message,
-                preferredStyle: .alert
-            )
-            
-            let doneAction = UIAlertAction(title: doneTitle, style: .default)
-            alertController.addAction(doneAction)
-            
-            dropIn.viewController.present(alertController, animated: true)
-        }
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        let doneAction = UIAlertAction(title: doneTitle, style: .default)
+        alertController.addAction(doneAction)
+        
+        dropIn.viewController.present(alertController, animated: true)
     }
     
     /// empty implementation of the old method
