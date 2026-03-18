@@ -22,11 +22,11 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
         static let fingerprintEvent = "threeDS2Fingerprint"
     }
     
-    private let apiClient: APIClientProtocol
+    private let apiClient: AsyncAPIClientProtocol
     
     private let context: AdyenContext
 
-    internal init(context: AdyenContext, apiClient: APIClientProtocol? = nil) {
+    internal init(context: AdyenContext, apiClient: AsyncAPIClientProtocol? = nil) {
         self.context = context
         self.apiClient = apiClient ?? APIClient(apiContext: context.apiContext)
     }
@@ -43,21 +43,14 @@ internal final class ThreeDS2FingerprintSubmitter: AnyThreeDS2FingerprintSubmitt
             paymentData: paymentData
         )
 
-        apiClient.perform(request, completionHandler: { [weak self] result in
-            self?.handle(result, completionHandler: completionHandler)
-        })
-    }
-
-    private func handle(
-        _ result: Result<Submit3DS2FingerprintResponse, Swift.Error>,
-        completionHandler: (Result<ThreeDSActionHandlerResult, Swift.Error>) -> Void
-    ) {
-        switch result {
-        case let .success(response):
-            completionHandler(.success(response.result))
-        case let .failure(error):
-            sendApiErrorEvent()
-            completionHandler(.failure(error))
+        Task { @MainActor in
+            do {
+                let response: Submit3DS2FingerprintResponse = try await apiClient.performAsync(request)
+                completionHandler(.success(response.result))
+            } catch {
+                sendApiErrorEvent()
+                completionHandler(.failure(error))
+            }
         }
     }
     

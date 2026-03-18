@@ -16,7 +16,7 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
         static let errorLimit = 5
     }
 
-    internal let apiClient: APIClientProtocol
+    internal let apiClient: AsyncAPIClientProtocol
     internal let eventDataSource: AnyAnalyticsEventDataSource
     private let context: AnalyticsContext
     private var batchTimer: Timer?
@@ -24,7 +24,7 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
     private let checkoutAttemptId: String
 
     internal init(
-        apiClient: APIClientProtocol,
+        apiClient: AsyncAPIClientProtocol,
         context: AnalyticsContext,
         eventDataSource: AnyAnalyticsEventDataSource,
         checkoutAttemptId: String,
@@ -40,9 +40,14 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
     }
     
     deinit {
-        // attempt to send remaining events on deallocation
         batchTimer?.invalidate()
-        sendEventsIfNeeded()
+        // fire-and-forget remaining events without capturing self
+        if let request = requestWithAllEvents() {
+            let apiClient = apiClient
+            Task { @MainActor in
+                _ = try? await apiClient.performAsync(request)
+            }
+        }
     }
     
     internal func add(info: AnalyticsEventInfo) {
@@ -62,16 +67,12 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
     internal func sendEventsIfNeeded() {
         guard let request = requestWithAllEvents() else { return }
         
-        apiClient.perform(request) { [weak self] result in
-            guard let self else { return }
-            // clear the sent events on successful send
-            switch result {
-            case .success:
-                self.removeEvents(sentBy: request)
-                self.startNextTimer()
-            case .failure:
-                break
-            }
+        Task { @MainActor in
+            do {
+                _ = try await apiClient.performAsync(request)
+                removeEvents(sentBy: request)
+                startNextTimer()
+            } catch {}
         }
     }
     

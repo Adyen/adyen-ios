@@ -23,13 +23,13 @@ internal final class BinLookupService: AnyBinLookupService {
     
     private let publicKey: String
     
-    private let apiClient: APIClientProtocol
+    private let apiClient: AsyncAPIClientProtocol
 
     private var cache = [String: BinLookupResponse]()
     
     private let binLookupType: BinLookupRequestType
     
-    internal init(publicKey: String, apiClient: APIClientProtocol, binLookupType: BinLookupRequestType) {
+    internal init(publicKey: String, apiClient: AsyncAPIClientProtocol, binLookupType: BinLookupRequestType) {
         self.publicKey = publicKey
         self.apiClient = apiClient
         self.binLookupType = binLookupType
@@ -52,9 +52,14 @@ internal final class BinLookupService: AnyBinLookupService {
         }
         
         let request = BinLookupRequest(encryptedBin: encryptedBin, supportedBrands: supportedCardTypes, type: binLookupType)
-        apiClient.perform(request) { [weak self] result in
-            _ = result.map { self?.cache[bin] = $0 }
-            completion(result)
+        Task { @MainActor in
+            do {
+                let response: BinLookupResponse = try await apiClient.performAsync(request)
+                cache[bin] = response
+                completion(.success(response))
+            } catch {
+                completion(.failure(error))
+            }
         }
     }
 }

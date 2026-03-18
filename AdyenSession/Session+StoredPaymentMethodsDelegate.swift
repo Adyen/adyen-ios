@@ -21,12 +21,12 @@ extension Session: SessionStoredPaymentMethodsDelegate {
             sessionData: state.data,
             storedPaymentMethodId: storedPaymentMethod.identifier
         )
-        apiClient.perform(request) { @MainActor [weak self] result in
-            switch result {
-            case .success:
+        Task {
+            do {
+                _ = try await apiClient.performAsync(request)
                 completion(true)
-            case let .failure(error):
-                self?.showAlert(with: error, on: dropInComponent)
+            } catch {
+                showAlert(with: error, on: dropInComponent)
                 completion(false)
             }
         }

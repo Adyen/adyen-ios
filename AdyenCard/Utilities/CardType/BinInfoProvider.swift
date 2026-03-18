@@ -17,7 +17,7 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
     
     private let minBinLength: Int
 
-    private let apiClient: APIClientProtocol
+    private let apiClient: AsyncAPIClientProtocol
 
     private var binLookupService: AnyBinLookupService?
     
@@ -33,7 +33,7 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
     ///   - fallbackCardTypeProvider: Any instance of `AnyCardBrandProvider` to be used as a fallback
     ///   if API not available or BIN too short.
     internal init(
-        apiClient: APIClientProtocol,
+        apiClient: AsyncAPIClientProtocol,
         publicKeyProvider: AnyPublicKeyProvider,
         fallbackCardTypeProvider: AnyBinInfoProvider = FallbackBinInfoProvider(),
         minBinLength: Int,
