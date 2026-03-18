@@ -12,6 +12,12 @@
     import AdyenEncryption
 #endif
 
+internal enum StoredCardInputViewInstruction: Equatable {
+    case setLoading(Bool)
+    case showSecurityCodeValidation
+}
+
+// sourcery: AutoMockable
 internal protocol StoredCardInputViewModelProtocol: AnyObject {
     var cardImageItem: CardImageItem { get }
     var titleText: String { get }
@@ -20,16 +26,17 @@ internal protocol StoredCardInputViewModelProtocol: AnyObject {
     var securityCodeItem: FormCardSecurityCodeItem { get }
 
     var submitButtonTitle: String { get }
-    func submitPayment() async
+    @MainActor func submit() async
 
     var showAllPaymentMethodsButtonTitle: String { get }
     func showAllPaymentMethods()
 
-    func returnToPreviousScreen()
+    func dismiss()
 
     var theme: AdyenTheme { get }
 
-    var setPayButtonEnabled: Completion<Bool>? { get set }
+    var onViewInstruction: Completion<StoredCardInputViewInstruction>? { get set }
+
     func viewDidLoad()
 }
 
@@ -46,8 +53,8 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
     private let amount: Amount?
     private let publicKeyProvider: AnyPublicKeyProvider
 
-    internal var setPayButtonEnabled: Completion<Bool>?
     internal let theme: AdyenTheme
+    internal var onViewInstruction: Completion<StoredCardInputViewInstruction>?
 
     /// This informs the status of the payment after submitting the security code.
     internal var cardDetailsCompletionHandler: Completion<Result<CardDetails, Error>>?
@@ -60,7 +67,8 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
         apiContext: APIContext,
         amount: Amount?,
         analyticsProvider: AnyAnalyticsProvider?,
-        localizationParameters: LocalizationParameters?
+        localizationParameters: LocalizationParameters?,
+        publicKeyProvider: AnyPublicKeyProvider? = nil
     ) {
         self.theme = theme
         self.storedCardPaymentMethod = storedCardPaymentMethod
@@ -68,12 +76,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
         self.apiContext = apiContext
         self.localizationParameters = localizationParameters
         self.analyticsProvider = analyticsProvider
-        self.publicKeyProvider = PublicKeyProvider(apiContext: apiContext)
-
-        observe(securityCodeItem.publisher) { [weak self] event in
-            guard let self else { return }
-            setPayButtonEnabled?(securityCodeItem.isValid())
-        }
+        self.publicKeyProvider = publicKeyProvider ?? PublicKeyProvider(apiContext: apiContext)
     }
 
     internal lazy var cardImageItem: AdyenUI.CardImageItem = {
@@ -135,7 +138,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
         sendDidLoadEvent()
     }
 
-    internal func returnToPreviousScreen() {
+    internal func dismiss() {
         resetSecurityCodeField()
         closeHandler?()
     }
@@ -153,7 +156,17 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
 
     // MARK: - Submit payment
 
-    @MainActor
+    @MainActor internal func submit() async {
+        guard securityCodeItem.isValid() else {
+            onViewInstruction?(.showSecurityCodeValidation)
+            return
+        }
+
+        onViewInstruction?(.setLoading(true))
+        await submitPayment()
+        onViewInstruction?(.setLoading(false))
+    }
+
     internal func submitPayment() async {
         do {
             let securityCode: String = securityCodeItem.value
@@ -167,13 +180,9 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
                     throw error
                 }
             }()
-            Task { @MainActor in
-                cardDetailsCompletionHandler?(.success(encryptedCardDetails))
-            }
+            cardDetailsCompletionHandler?(.success(encryptedCardDetails))
         } catch {
-            Task { @MainActor in
-                cardDetailsCompletionHandler?(.failure(error))
-            }
+            cardDetailsCompletionHandler?(.failure(error))
         }
     }
 
@@ -205,7 +214,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
         analyticsProvider?.add(error: errorEvent)
     }
 
-    public func sendDidLoadEvent() {
+    private func sendDidLoadEvent() {
         var infoEvent = AnalyticsEventInfo(component: storedCardPaymentMethod.type.rawValue, type: .rendered)
         infoEvent.isStoredPaymentMethod = true
         infoEvent.brand = storedCardPaymentMethod.brand.rawValue
