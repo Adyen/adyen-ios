@@ -159,11 +159,11 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             subtitle: displayInformation.subtitle,
             iconURL: imageURL,
             accessibilityLabel: displayInformation.accessibilityLabel,
+            theme: theme,
             selectionHandler: { [weak self] in
                 guard !(paymentMethod is OrderPaymentMethod) else { return }
                 self?.select(paymentMethod: paymentMethod)
-            },
-            theme: theme
+            }
         )
     }
 }

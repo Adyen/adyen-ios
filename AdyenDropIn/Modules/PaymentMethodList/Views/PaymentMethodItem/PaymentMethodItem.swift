@@ -15,22 +15,22 @@ internal struct PaymentMethodItem: Identifiable {
     internal let subtitle: String?
     internal let iconURL: URL?
     internal let accessibilityLabel: String?
-    internal let selectionHandler: (() -> Void)?
     internal let theme: AdyenTheme
+    internal let selectionHandler: (() -> Void)?
 
     internal init(
         title: String,
         subtitle: String? = nil,
         iconURL: URL? = nil,
         accessibilityLabel: String? = nil,
-        selectionHandler: (() -> Void)? = nil,
-        theme: AdyenTheme
+        theme: AdyenTheme,
+        selectionHandler: (() -> Void)? = nil
     ) {
         self.title = title
         self.subtitle = subtitle
         self.iconURL = iconURL
         self.accessibilityLabel = accessibilityLabel
-        self.selectionHandler = selectionHandler
         self.theme = theme
+        self.selectionHandler = selectionHandler
     }
 }

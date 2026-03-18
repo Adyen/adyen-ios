@@ -12,8 +12,8 @@ internal final class PaymentMethodItemView: UIView {
     private enum Layout {
         static let itemHeight: CGFloat = 52.0
         static let sideMargin: CGFloat = 12.0
-        static let iconImageHeight: CGFloat = 40.0
-        static let iconImageWidth: CGFloat = 26.0
+        static let iconImageHeight: CGFloat = 26.0
+        static let iconImageWidth: CGFloat = 40.0
         static let chevronHeight: CGFloat = 14
         static let chevronWidth: CGFloat = 20
     }
@@ -28,7 +28,7 @@ internal final class PaymentMethodItemView: UIView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 6
+        imageView.layer.cornerRadius = AdyenUIConstants.imageCornerRadius
         imageView.layer.borderWidth = 1.0 / UIScreen.main.nativeScale
         imageView.layer.borderColor = item.theme.colors.separator.cgColor
         imageView.clipsToBounds = true
