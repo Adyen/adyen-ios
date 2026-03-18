@@ -66,7 +66,7 @@ extension Session {
         Task {
             do {
                 let response: PaymentsResponse = try await apiClient.performAsync(request)
-                handle(paymentResponse: response, for: component, in: nil)
+                handle(paymentResponse: response, for: component, in: dropInComponent)
             } catch {
                 finish(with: error, component: component)
             }

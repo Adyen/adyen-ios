@@ -21,7 +21,8 @@ extension Session: SessionStoredPaymentMethodsDelegate {
             sessionData: state.data,
             storedPaymentMethodId: storedPaymentMethod.identifier
         )
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             do {
                 _ = try await apiClient.performAsync(request)
                 completion(true)
