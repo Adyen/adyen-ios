@@ -279,7 +279,7 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2Component(
-            context: Dummy.context(with: analyticsProviderMock),
+            context: Dummy.context(analyticsProvider: analyticsProviderMock),
             threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
             threeDS2ClassicFlowHandler: threeDS2ActionHandler,
             redirectComponent: redirectComponent

@@ -42,9 +42,6 @@ public final class GiftCardComponent: PresentableComponent,
     
     private let partialPaymentMethodType: PartialPaymentMethodType
 
-    @_spi(AdyenInternal)
-    public let publicKeyProvider: AnyPublicKeyProvider
-
     /// The gift card payment method.
     public var paymentMethod: PaymentMethod {
         partialPaymentMethodType.partialPaymentMethod
@@ -95,8 +92,7 @@ public final class GiftCardComponent: PresentableComponent,
             amount: amount,
             style: style,
             showsSubmitButton: showsSubmitButton,
-            showsSecurityCodeField: showsSecurityCodeField,
-            publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext)
+            showsSecurityCodeField: showsSecurityCodeField
         )
     }
     
@@ -124,8 +120,7 @@ public final class GiftCardComponent: PresentableComponent,
             amount: amount,
             style: style,
             showsSubmitButton: showsSubmitButton,
-            showsSecurityCodeField: showsSecurityCodeField,
-            publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext)
+            showsSecurityCodeField: showsSecurityCodeField
         )
     }
     
@@ -135,15 +130,13 @@ public final class GiftCardComponent: PresentableComponent,
         amount: Amount,
         style: FormComponentStyle = FormComponentStyle(),
         showsSubmitButton: Bool = true,
-        showsSecurityCodeField: Bool = true,
-        publicKeyProvider: AnyPublicKeyProvider
+        showsSecurityCodeField: Bool = true
     ) {
         self.partialPaymentMethodType = partialPaymentMethodType
         self.context = context
         self.style = style
         self.showsSubmitButton = showsSubmitButton
         self.showsSecurityCodeField = showsSecurityCodeField
-        self.publicKeyProvider = publicKeyProvider
         self.amount = amount
     }
 
@@ -286,15 +279,12 @@ extension GiftCardComponent {
 
         startLoading()
 
-        fetchCardPublicKey(notifyingDelegateOnFailure: true) { [weak self] cardPublicKey in
-            guard let self else { return }
-            self.createPaymentData(
-                order: self.order,
-                cardPublicKey: cardPublicKey
-            )
-            .mapError(Error.otherError)
-            .handle(success: self.startFlow(with:), failure: self.handle(error:))
-        }
+        self.createPaymentData(
+            order: self.order,
+            cardPublicKey: context.publicKey
+        )
+        .mapError(Error.otherError)
+        .handle(success: self.startFlow(with:), failure: self.handle(error:))
     }
 
     private func startFlow(with paymentData: PaymentComponentData) {
@@ -483,9 +473,6 @@ extension GiftCardComponent {
 
 @_spi(AdyenInternal)
 extension GiftCardComponent: PartialPaymentComponent {}
-
-@_spi(AdyenInternal)
-extension GiftCardComponent: PublicKeyConsumer {}
 
 // MARK: - SubmitCustomizable
 

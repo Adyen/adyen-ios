@@ -361,7 +361,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: CardComponentConfiguration(),
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
 
@@ -512,27 +511,6 @@ class CardComponentTests: XCTestCase {
 //
 //        wait(until: securityCodeItemView, at: \.cardHintView.tintColor, is: .systemYellow)
 //    }
-
-    func test_viewDidLoad_shouldTriggerPublicKeyFetch() {
-        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
-        let publicKeyProvider = PublicKeyProviderMock()
-        publicKeyProvider.onFetch = { completion in
-            publicKeyProviderExpectation.fulfill()
-            completion(.success("key"))
-        }
-        
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: CardComponentConfiguration(),
-            publicKeyProvider: publicKeyProvider,
-            binProvider: BinInfoProviderMock()
-        )
-
-        sut.viewDidLoad(viewController: sut.cardViewController)
-
-        waitForExpectations(timeout: 10, handler: nil)
-    }
 
     func test_storedCard_withNoPaymentAmount_shouldShowGenericPayButton() {
         let context = Dummy.context(with: nil)
@@ -708,7 +686,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: Dummy.context(with: nil),
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: BinInfoProviderMock()
         )
 
@@ -847,7 +824,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: BinInfoProviderMock()
         )
         setupRootViewController(sut.viewController)
@@ -902,7 +878,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         setupRootViewController(sut.viewController)
@@ -963,7 +938,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         setupRootViewController(sut.viewController)
@@ -1215,7 +1189,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         setupRootViewController(sut.viewController)
@@ -1258,7 +1231,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         setupRootViewController(sut.viewController)
@@ -1297,7 +1269,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         setupRootViewController(sut.viewController)
@@ -1349,7 +1320,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         setupRootViewController(sut.viewController)
@@ -1890,7 +1860,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         
@@ -1958,7 +1927,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         
@@ -2014,7 +1982,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         
@@ -2071,7 +2038,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         
@@ -2204,7 +2170,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
 
@@ -2260,7 +2225,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
 
@@ -2322,7 +2286,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
 
@@ -2392,7 +2355,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: Dummy.context(with: nil),
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: BinInfoProviderMock()
         )
 
@@ -2419,7 +2381,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: Dummy.context(with: nil),
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: BinInfoProviderMock()
         )
 
@@ -2490,7 +2451,6 @@ extension CardComponentTests {
             paymentMethod: method,
             context: Dummy.context(with: nil),
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: BinInfoProviderMock()
         )
     }

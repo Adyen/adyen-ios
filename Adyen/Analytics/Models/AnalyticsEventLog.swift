@@ -7,9 +7,8 @@
 import Foundation
 
 /// A log in the analytics scheme represents important checkpoints such as the pay button press, 3ds challenge etc.
-@_spi(AdyenInternal)
-public struct AnalyticsEventLog: AnalyticsEvent {
-    
+package struct AnalyticsEventLog: AnalyticsEvent {
+
     public var id: String = UUID().uuidString
     
     public var timestamp = Int(Date().timeIntervalSince1970 * 1000)

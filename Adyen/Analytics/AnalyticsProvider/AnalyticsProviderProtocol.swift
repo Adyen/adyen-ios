@@ -13,9 +13,10 @@ package protocol AnyInitialAnalyticsProvider {
 }
 
 package protocol AnalyticsCheckoutAttemptIdProvider {
-    var checkoutAttemptId: String? { get }
+    var checkoutAttemptId: String { get }
 }
 
+// sourcery:AutoMockable
 package protocol AnyEventAnalyticsProvider {
     /// Adds an info event to be sent.
     func add(info: AnalyticsEventInfo)

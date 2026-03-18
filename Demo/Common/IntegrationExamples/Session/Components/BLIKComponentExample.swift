@@ -19,8 +19,8 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     
     /// comes from demo app protocol, unused on new structure
-    internal lazy var context: AdyenContext = generateContext()
-    
+    internal var context: AdyenContext?
+
     func start() {
         startLoading()
         

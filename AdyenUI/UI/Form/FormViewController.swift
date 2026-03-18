@@ -98,6 +98,7 @@ open class FormViewController: UIViewController, AdyenObserver {
     override open func viewDidLoad() {
         super.viewDidLoad()
         itemManager.topLevelItemViews.forEach(formView.appendItemView(_:))
+        setupKeyboardObserver()
         delegate?.viewDidLoad(viewController: self)
     }
 
@@ -244,6 +245,49 @@ open class FormViewController: UIViewController, AdyenObserver {
     }
 
     // MARK: - Private
+
+    private func setupKeyboardObserver() {
+        guard scrollEnabled else { return }
+
+        observe(keyboardObserver.$keyboardTransition) { [weak self] in
+            self?.handleKeyboardTransitionDidChange($0)
+        }
+    }
+
+    private func handleKeyboardTransitionDidChange(_ transition: KeyboardTransition) {
+        let updateInsets: () -> Void = { [weak self] in
+            guard let self else { return }
+
+            let bottomInset = self.keyboardOverlap(with: transition.keyboardRect)
+
+            var contentInset = self.scrollView.contentInset
+            contentInset.bottom = bottomInset
+            self.scrollView.contentInset = contentInset
+
+            var scrollIndicatorInsets = self.scrollView.scrollIndicatorInsets
+            scrollIndicatorInsets.bottom = bottomInset
+            self.scrollView.scrollIndicatorInsets = scrollIndicatorInsets
+        }
+
+        guard view.window != nil else {
+            updateInsets()
+            return
+        }
+
+        view.adyen.animate(context: AnimationContext(
+            animationKey: Animations.keyboardBottomInset,
+            duration: transition.animationDuration,
+            options: transition.animationOptions.union(.beginFromCurrentState),
+            animations: updateInsets
+        ))
+    }
+
+    private func keyboardOverlap(with keyboardRect: CGRect) -> CGFloat {
+        guard view.window != nil else { return keyboardRect.height }
+
+        let scrollViewFrame = scrollView.convert(scrollView.bounds, to: nil)
+        return scrollViewFrame.intersection(keyboardRect).height
+    }
 
     private func addSubviews() {
         if scrollEnabled {
