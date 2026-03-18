@@ -453,13 +453,15 @@ class SessionTests: XCTestCase {
                 expectation.fulfill()
             }
         }
+        let completionExpectation = self.expectation(description: "Expect completion to be called")
         sut.checkBalance(with: paymentData, component: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
             let balance = try! result.get()
             XCTAssertEqual(balance.availableAmount.value, 50)
             XCTAssertEqual(balance.transactionLimit!.value, 30)
             XCTAssertEqual(self.sut.state.data, "session_data2")
+            completionExpectation.fulfill()
         }
-        waitForExpectations(timeout: 5, handler: nil)
+        wait(for: [expectation, completionExpectation], timeout: 5)
     }
 
     func testBalanceCheckZeroBalance() throws {
@@ -485,12 +487,14 @@ class SessionTests: XCTestCase {
             expectedPaymentMethods: expectedPaymentMethods,
             apiClient: apiClient
         )
+        let completionExpectation = self.expectation(description: "Expect completion to be called")
         // get .failure
         sut.checkBalance(with: paymentData, component: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
             XCTAssertNotNil(result.failure)
             XCTAssertEqual(self.sut.state.data, "session_data2")
+            completionExpectation.fulfill()
         }
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation, completionExpectation], timeout: 1)
     }
 
     func testBalanceCheckFailure() throws {
@@ -512,12 +516,14 @@ class SessionTests: XCTestCase {
             expectedPaymentMethods: expectedPaymentMethods,
             apiClient: apiClient
         )
+        let completionExpectation = self.expectation(description: "Expect completion to be called")
         // get .failure
         sut.checkBalance(with: paymentData, component: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
             XCTAssertNotNil(result.failure)
             XCTAssertEqual(self.sut.state.data, "session_data_0")
+            completionExpectation.fulfill()
         }
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation, completionExpectation], timeout: 1)
     }
 
     func testRequestOrderSuccess() throws {
@@ -541,13 +547,15 @@ class SessionTests: XCTestCase {
                 expectation.fulfill()
             }
         }
+        let completionExpectation = self.expectation(description: "Expect completion to be called")
         sut.requestOrder(for: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
             let order = try! result.get()
             XCTAssertEqual(order.pspReference, "ref")
             XCTAssertEqual(order.orderData, "data")
             XCTAssertEqual(self.sut.state.data, "session_data2")
+            completionExpectation.fulfill()
         }
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation, completionExpectation], timeout: 1)
     }
 
     func testRequestOrderFailure() throws {
@@ -567,11 +575,13 @@ class SessionTests: XCTestCase {
             expectedPaymentMethods: expectedPaymentMethods,
             apiClient: apiClient
         )
+        let completionExpectation = self.expectation(description: "Expect completion to be called")
         sut.requestOrder(for: PaymentComponentMock(paymentMethod: paymentMethod)) { result in
             XCTAssertNotNil(result.failure)
             XCTAssertEqual(self.sut.state.data, "session_data_0")
+            completionExpectation.fulfill()
         }
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation, completionExpectation], timeout: 1)
     }
 
     func testCancelOrderSuccess() throws {
@@ -633,11 +643,13 @@ class SessionTests: XCTestCase {
             context: context,
             configuration: config
         )
+        let completionExpectation = self.expectation(description: "Expect completion to be called")
         sut.disable(storedPaymentMethod: stored, dropInComponent: dropIn) { success in
             XCTAssertTrue(success)
+            completionExpectation.fulfill()
         }
 
-        wait(for: [deleteExpectation], timeout: 1)
+        wait(for: [deleteExpectation, completionExpectation], timeout: 1)
     }
 
     func testRemoveStoredPaymentMethodFailure() throws {
@@ -663,11 +675,13 @@ class SessionTests: XCTestCase {
             context: context,
             configuration: config
         )
+        let completionExpectation = self.expectation(description: "Expect completion to be called")
         sut.disable(storedPaymentMethod: stored, dropInComponent: dropIn) { success in
             XCTAssertFalse(success)
+            completionExpectation.fulfill()
         }
 
-        wait(for: [deleteExpectation], timeout: 1)
+        wait(for: [deleteExpectation, completionExpectation], timeout: 1)
     }
 
     func testSessionAsDropInDelegate() throws {
