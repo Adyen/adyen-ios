@@ -16,9 +16,13 @@ class KeyboardObserverTests: XCTestCase, AdyenObserver {
         let validExpectation = expectation(description: "Observer was called (valid notification)")
         let invalidExpectation = expectation(description: "Observer was called (invalid notification)")
         
-        var expectedRects: [CGRect] = [
-            .init(origin: .zero, size: .init(width: 100, height: 100)),
-            .zero
+        var expectedTransitions: [KeyboardTransition] = [
+            .init(
+                keyboardRect: .init(origin: .zero, size: .init(width: 100, height: 100)),
+                animationDuration: 0.42,
+                animationOptions: .curveEaseIn
+            ),
+            .init()
         ]
         
         var expectations: [XCTestExpectation] = [
@@ -28,9 +32,11 @@ class KeyboardObserverTests: XCTestCase, AdyenObserver {
         
         // Given
         
-        observe(keyboardObserver.$keyboardRect) { rect in
-            XCTAssertEqual(rect, expectedRects.first)
-            expectedRects = Array(expectedRects.dropFirst())
+        observe(keyboardObserver.$keyboardTransition) { transition in
+            XCTAssertEqual(transition.keyboardRect, expectedTransitions.first?.keyboardRect)
+            XCTAssertEqual(transition.animationDuration, expectedTransitions.first?.animationDuration)
+            XCTAssertEqual(transition.animationOptions.rawValue, expectedTransitions.first?.animationOptions.rawValue)
+            expectedTransitions = Array(expectedTransitions.dropFirst())
             expectations.first!.fulfill()
             expectations = Array(expectations.dropFirst())
         }
@@ -39,10 +45,15 @@ class KeyboardObserverTests: XCTestCase, AdyenObserver {
         
         // Valid Notification
         
+        let validTransition = try XCTUnwrap(expectedTransitions.first)
         try NotificationCenter.default.post(
             name: UIResponder.keyboardWillChangeFrameNotification,
             object: nil,
-            userInfo: [UIResponder.keyboardFrameEndUserInfoKey: XCTUnwrap(expectedRects.first)]
+            userInfo: [
+                UIResponder.keyboardFrameEndUserInfoKey: validTransition.keyboardRect,
+                UIResponder.keyboardAnimationDurationUserInfoKey: validTransition.animationDuration,
+                UIResponder.keyboardAnimationCurveUserInfoKey: UIView.AnimationCurve.easeIn.rawValue
+            ]
         )
         
         wait(for: [validExpectation], timeout: 10)
@@ -57,6 +68,6 @@ class KeyboardObserverTests: XCTestCase, AdyenObserver {
 
         wait(for: [invalidExpectation], timeout: 10)
         
-        XCTAssertEqual(expectedRects.count, 0)
+        XCTAssertEqual(expectedTransitions.count, 0)
     }
 }

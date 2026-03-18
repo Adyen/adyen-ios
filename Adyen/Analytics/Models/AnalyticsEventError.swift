@@ -7,9 +7,8 @@
 import Foundation
 
 /// Represents an error in the analytics scheme that indicates the flow was interrupted due to an error in the SDK.
-@_spi(AdyenInternal)
-public struct AnalyticsEventError: AnalyticsEvent {
-    
+package struct AnalyticsEventError: AnalyticsEvent {
+
     public var id: String = UUID().uuidString
     
     public var timestamp = Int(Date().timeIntervalSince1970 * 1000)

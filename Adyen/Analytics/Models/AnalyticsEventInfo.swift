@@ -8,8 +8,7 @@ import Foundation
 
 /// Represents an info event  in the analytics scheme that can occur
 /// multiple times during the checkout flow, such as input field focus/unfocus etc.
-@_spi(AdyenInternal)
-public struct AnalyticsEventInfo: AnalyticsEvent {
+package struct AnalyticsEventInfo: AnalyticsEvent {
     
     public var id: String = UUID().uuidString
     

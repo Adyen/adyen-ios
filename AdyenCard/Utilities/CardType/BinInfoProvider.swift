@@ -19,28 +19,23 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
 
     private let apiClient: AsyncAPIClientProtocol
 
+    private let adyenContext: AdyenContext
+
     private var binLookupService: AnyBinLookupService?
-    
-    private let publicKeyProvider: AnyPublicKeyProvider
 
     private let fallbackCardTypeProvider: AnyBinInfoProvider
     
     private let binLookupType: BinLookupRequestType
     
-    /// Create a new instance of CardTypeProvider.
-    /// - Parameters:
-    ///   - publicKeyProvider: Any instance of `AnyPublicKeyProvider`.
-    ///   - fallbackCardTypeProvider: Any instance of `AnyCardBrandProvider` to be used as a fallback
-    ///   if API not available or BIN too short.
     internal init(
         apiClient: AsyncAPIClientProtocol,
-        publicKeyProvider: AnyPublicKeyProvider,
+        adyenContext: AdyenContext,
         fallbackCardTypeProvider: AnyBinInfoProvider = FallbackBinInfoProvider(),
         minBinLength: Int,
         binLookupType: BinLookupRequestType
     ) {
         self.apiClient = apiClient
-        self.publicKeyProvider = publicKeyProvider
+        self.adyenContext = adyenContext
         self.fallbackCardTypeProvider = fallbackCardTypeProvider
         self.minBinLength = minBinLength
         self.binLookupType = binLookupType
@@ -79,17 +74,9 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
         if let service = binLookupService {
             useService(service)
         } else {
-            publicKeyProvider.fetch { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case let .success(publicKey):
-                    let service = BinLookupService(publicKey: publicKey, apiClient: self.apiClient, binLookupType: self.binLookupType)
-                    self.binLookupService = service
-                    useService(service)
-                case .failure:
-                    fallback()
-                }
-            }
+            let service = BinLookupService(publicKey: adyenContext.publicKey, apiClient: self.apiClient, binLookupType: self.binLookupType)
+            self.binLookupService = service
+            useService(service)
         }
     }
 
