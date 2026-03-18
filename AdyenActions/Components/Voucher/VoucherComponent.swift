@@ -54,13 +54,6 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     public var configuration: Configuration
 
     internal var voucherShareableViewProvider: AnyVoucherShareableViewProvider
-
-    private lazy var apiClient: APIClientProtocol = {
-        let scheduler = SimpleScheduler(maximumCount: 3)
-        return APIClient(apiContext: context.apiContext)
-            .retryAPIClient(with: scheduler)
-            .retryOnErrorAPIClient()
-    }()
     
     internal func canAddPasses(action: AnyVoucherAction) -> Bool {
         PKAddPassesViewController.canAddPasses() && action.passCreationToken != nil

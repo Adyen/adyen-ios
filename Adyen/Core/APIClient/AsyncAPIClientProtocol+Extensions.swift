@@ -9,6 +9,7 @@ import Foundation
 
 extension AsyncAPIClientProtocol {
 
+    /// Convenience method to match the signature of the response to the non async version.
     package func performAsync<R: Request>(_ request: R) async throws -> R.ResponseType {
         do {
             return try await perform(request).responseBody
