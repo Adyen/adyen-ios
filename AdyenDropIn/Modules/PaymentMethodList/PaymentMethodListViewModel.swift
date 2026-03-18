@@ -13,7 +13,8 @@ import UIKit
 
 internal enum PaymentMethodListState {
     case idle
-    case loaded(sections: [ListSection])
+    case loading
+    case loaded(sections: [PaymentMethodSection])
 }
 
 // sourcery:AutoMockable
@@ -23,9 +24,14 @@ internal protocol PaymentMethodListViewModelProtocol {
     var title: String { get }
     var paymentMethodSections: [PaymentMethodsSection] { get }
     var statePublisher: Published<PaymentMethodListState>.Publisher { get }
+    var theme: AdyenTheme { get }
     func cancel()
     func didLoad()
-    func listItemIdentifier(for paymentMethod: PaymentMethod) -> String
+
+    var formattedAmount: String { get }
+    var subtitle: String { get }
+    var isApplePayAvailable: Bool { get }
+    func selectApplePay()
 }
 
 @MainActor
@@ -39,6 +45,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     internal weak var router: PaymentMethodListRouting?
     private let dropInFlowManager: DropInFlowManaging
     private let logoURLProvider: LogoURLProvider
+    internal let theme: AdyenTheme
 
     @Published internal private(set) var state: PaymentMethodListState = .idle
     internal var statePublisher: Published<PaymentMethodListState>.Publisher {
@@ -46,7 +53,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     internal let paymentMethodSections: [PaymentMethodsSection]
-    private let brandProtectedComponents: Set<PaymentMethodType> = [.applePay]
 
     // MARK: - Initializers
 
@@ -56,7 +62,8 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         componentManager: ComponentManaging,
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging,
-        logoURLProvider: LogoURLProvider
+        logoURLProvider: LogoURLProvider,
+        theme: AdyenTheme
     ) {
         self.context = context
         self.localizationParameters = localizationParameters
@@ -64,12 +71,44 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         self.paymentMethodSections = componentManager.sections
         self.dropInFlowManager = dropInFlowManager
         self.logoURLProvider = logoURLProvider
+        self.theme = theme
     }
 
     // MARK: - PaymentMethodListViewModelProtocol
 
     internal var title: String {
         localizedString(.paymentMethodsTitle, localizationParameters)
+    }
+    
+    internal var formattedAmount: String {
+        context.amount?.formatted ?? ""
+    }
+    
+    internal var subtitle: String {
+        // TODO: - Add localization key for this string
+        "Select your preferred payment option to complete the payment"
+    }
+    
+    internal var isApplePayAvailable: Bool {
+        applePayPaymentMethod != nil
+    }
+    
+    private var applePayPaymentMethod: PaymentMethod? {
+        paymentMethodSections
+            .flatMap(\.paymentMethods)
+            .first { $0.type == .applePay }
+    }
+
+    private var applePayComponent: PaymentComponent?
+
+    internal func selectApplePay() {
+        guard applePayComponent == nil else { return }
+        guard let applePayPaymentMethod else { return }
+        self.applePayComponent = componentManager.buildComponent(for: applePayPaymentMethod)
+        applePayComponent?.delegate = self
+
+        guard let applePayViewController = (applePayComponent as? PresentableComponent)?.viewController else { return }
+        router?.present(viewController: applePayViewController)
     }
 
     internal func cancel() {
@@ -78,22 +117,20 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     internal func didLoad() {
         // TODO: - Handle analytics on list load.
-        let listSections = getListSections()
-        state = .loaded(sections: listSections)
+        let sections = getSections()
+        state = .loaded(sections: sections)
     }
 
     // MARK: - Private
 
-    private func select(paymentMethod: PaymentMethod) {
+    internal func select(paymentMethod: PaymentMethod) {
         guard let component = componentManager.buildComponent(for: paymentMethod) else { return }
 
         switch component.type {
         case .regular, .stored:
-            router?.present(component: component) { [weak self] in
-                self?.state = .idle
-            }
+            router?.present(component: component)
         case let .initiable(initiablePaymentComponent):
-            listItem(for: paymentMethod)?.startLoading()
+            state = .loading
             initiablePaymentComponent.initiatePayment(delegate: self)
         }
     }
@@ -102,65 +139,32 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         // TODO: - Logic to delete stored payment method
     }
 
-    private func getListSections() -> [ListSection] {
+    private func getSections() -> [PaymentMethodSection] {
         paymentMethodSections.map { section in
-            let paymentMethods = section.paymentMethods
-            let paymentMethodItems = paymentMethods.map { listItem(from: $0) }
-            return ListSection(
-                header: section.header,
-                items: paymentMethodItems,
-                footer: section.footer
+            let items = section.paymentMethods.map { paymentMethodItem(from: $0) }
+            return PaymentMethodSection(
+                headerTitle: section.header?.title,
+                items: items,
+                theme: theme
             )
         }
     }
 
-    private func listItem(from paymentMethod: PaymentMethod) -> ListItem {
+    private func paymentMethodItem(from paymentMethod: PaymentMethod) -> PaymentMethodItem {
         let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
-        let isProtected = brandProtectedComponents.contains(paymentMethod.type)
         let imageURL = logoURLProvider.logoURL(withName: displayInformation.logoName)
 
-        let listItem = ListItem(
+        return PaymentMethodItem(
             title: displayInformation.title,
             subtitle: displayInformation.subtitle,
-            icon: .init(
-                url: imageURL,
-                canBeModified: !isProtected
-            ),
-            trailingInfo: displayInformation.trailingInfo?.forListItem(urlProvider: logoURLProvider),
-            style: .init(),
-            accessibilityLabel: displayInformation.accessibilityLabel
+            iconURL: imageURL,
+            accessibilityLabel: displayInformation.accessibilityLabel,
+            theme: theme,
+            selectionHandler: { [weak self] in
+                guard !(paymentMethod is OrderPaymentMethod) else { return }
+                self?.select(paymentMethod: paymentMethod)
+            }
         )
-        listItem.identifier = listItemIdentifier(for: paymentMethod)
-        listItem.selectionHandler = { [weak self] in
-            guard !(paymentMethod is OrderPaymentMethod) else { return }
-            self?.select(paymentMethod: paymentMethod)
-        }
-        listItem.deletionHandler = { [weak self] _, completion in
-            self?.delete(paymentMethod: paymentMethod, completion: completion)
-        }
-
-        return listItem
-    }
-
-    internal func listItemIdentifier(for paymentMethod: PaymentMethod) -> String {
-        let uniqueIdentifier: String
-        if let storedPaymentMethod = paymentMethod as? StoredPaymentMethod {
-            uniqueIdentifier = "\(paymentMethod.type.rawValue).\(storedPaymentMethod.identifier)"
-        } else {
-            uniqueIdentifier = paymentMethod.type.rawValue
-        }
-        return ViewIdentifierBuilder.build(
-            scopeInstance: "PaymentMethodListViewModel",
-            postfix: uniqueIdentifier
-        )
-    }
-
-    private func listItem(for paymentMethod: PaymentMethod) -> ListItem? {
-        guard case let .loaded(sections) = state else { return nil }
-        let expectedIdentifier = listItemIdentifier(for: paymentMethod)
-        return sections
-            .flatMap(\.items)
-            .first { $0.identifier == expectedIdentifier }
     }
 }
 
@@ -182,7 +186,7 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         defer { state = .idle }
 
         if case ComponentError.cancelled = error {
-            cancel()
+            applePayComponent = nil
         } else {
             dropInFlowManager.fail(with: error, from: component)
         }

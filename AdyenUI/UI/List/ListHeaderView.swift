@@ -44,7 +44,7 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
             scopeInstance: "Adyen.ListHeaderView.\(item.title)",
             postfix: "titleLabel"
         )
-        titleLabel.text = item.title.uppercased()
+        titleLabel.text = item.title
         
         trailingButton.adyen.apply(item.style.trailingButton)
         
@@ -70,7 +70,7 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
             trailingButton.isHidden = true
         }
     }
-    
+
     // MARK: - Layout
     
     private func configureConstraints() {

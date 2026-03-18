@@ -278,8 +278,6 @@
 		5A15D5A1264BE1E500A8E3C7 /* PrefilledShopperInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */; };
 		5A22C279262D688600F12D97 /* QRCodeActionComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A22C26D262D686200F12D97 /* QRCodeActionComponentTests.swift */; };
 		5A22C2AD262EF99C00F12D97 /* ExpirationTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A22C2AC262EF99C00F12D97 /* ExpirationTimer.swift */; };
-		5A238C93263AEA0800758FEF /* PreApplePayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A238C92263AEA0800758FEF /* PreApplePayView.swift */; };
-		5A238C9F263BDEA200758FEF /* PreApplePayComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */; };
 		5A27AB032636A07900EF6F89 /* LocalizationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A27AB022636A07900EF6F89 /* LocalizationKey.swift */; };
 		5A2D1951267368580082BCE9 /* ActionComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2D1950267368580082BCE9 /* ActionComponentStyle.swift */; };
 		5A4633AA265FBAEB005FE0D8 /* VoucherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4633A9265FBAEB005FE0D8 /* VoucherView.swift */; };
@@ -822,6 +820,11 @@
 		C978F5EF2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */; };
 		C981254E2851E9AF006D1374 /* PaymentComponentSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981254C2851E903006D1374 /* PaymentComponentSubject.swift */; };
 		C98125502851E9E4006D1374 /* PaymentComponentSubjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981254F2851E9E4006D1374 /* PaymentComponentSubjectTests.swift */; };
+		C981960C2F5A2059007FE1A1 /* PaymentMethodListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981960A2F5A2059007FE1A1 /* PaymentMethodListHeaderView.swift */; };
+		C98196102F5A4968007FE1A1 /* PaymentMethodItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981960E2F5A4968007FE1A1 /* PaymentMethodItemView.swift */; };
+		C98196112F5A4968007FE1A1 /* PaymentMethodItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981960D2F5A4968007FE1A1 /* PaymentMethodItem.swift */; };
+		C98196182F5A4970007FE1A1 /* PaymentMethodSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98196122F5A4970007FE1A1 /* PaymentMethodSection.swift */; };
+		C981961A2F5A54AC007FE1A1 /* PaymentMethodSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98196192F5A54AC007FE1A1 /* PaymentMethodSectionView.swift */; };
 		C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFD726946F0800AED849 /* AffirmComponent.swift */; };
 		C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */; };
 		C9838D8F2F48A56A00E6A7E9 /* PaymentMethodListConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9838D8E2F48A56A00E6A7E9 /* PaymentMethodListConfiguration.swift */; };
@@ -842,7 +845,6 @@
 		C9BF0DB327353A2600DCAA1E /* BACSDirectDebitComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BF0DB227353A2600DCAA1E /* BACSDirectDebitComponent.swift */; };
 		C9C21914276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21913276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift */; };
 		C9C22D932DE5F9620028C23F /* ComponentContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22D902DE5F9620028C23F /* ComponentContainerViewModel.swift */; };
-		C9C22D9C2DE5F9BB0028C23F /* PreApplePayComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22D9A2DE5F9BB0028C23F /* PreApplePayComponent.swift */; };
 		C9C22D9F2DE5F9BE0028C23F /* PaymentMethodListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22D9D2DE5F9BE0028C23F /* PaymentMethodListViewController.swift */; };
 		C9C22DA12DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22DA02DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift */; };
 		C9D5139A2F0E7A5C00F57DD6 /* PaymentMethodListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D513992F0E7A5C00F57DD6 /* PaymentMethodListViewModelTests.swift */; };
@@ -857,6 +859,7 @@
 		C9DA53E12E97F6DE00D83C94 /* QRCodeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53DF2E97F6DE00D83C94 /* QRCodeViewControllerTests.swift */; };
 		C9DA53E32E97F71C00D83C94 /* QRCodeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */; };
 		C9DC5B132EC4BF6A00E75C93 /* DropInFlowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC5B122EC4BF6A00E75C93 /* DropInFlowManager.swift */; };
+		C9E2C7122F6044AA0095AC11 /* PaymentMethodListHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E2C7112F6044AA0095AC11 /* PaymentMethodListHeaderViewModel.swift */; };
 		C9E4DF672ED9A9B5000B6CBE /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */; };
 		C9E4DF682ED9A9B5000B6CBE /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */; };
 		C9E6C5C72F02C5C50030E6C5 /* ComponentContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C993EB632EE056F000353ECA /* ComponentContainerViewModelTests.swift */; };
@@ -1993,8 +1996,6 @@
 		5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefilledShopperInformation.swift; sourceTree = "<group>"; };
 		5A22C26D262D686200F12D97 /* QRCodeActionComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeActionComponentTests.swift; sourceTree = "<group>"; };
 		5A22C2AC262EF99C00F12D97 /* ExpirationTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationTimer.swift; sourceTree = "<group>"; };
-		5A238C92263AEA0800758FEF /* PreApplePayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayView.swift; sourceTree = "<group>"; };
-		5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayComponentTests.swift; sourceTree = "<group>"; };
 		5A27AB022636A07900EF6F89 /* LocalizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
 		5A2D1950267368580082BCE9 /* ActionComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionComponentStyle.swift; sourceTree = "<group>"; };
 		5A4633A9265FBAEB005FE0D8 /* VoucherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherView.swift; sourceTree = "<group>"; };
@@ -2395,6 +2396,11 @@
 		C97C16AB280702B200534419 /* AnalyticsFlavorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsFlavorTests.swift; sourceTree = "<group>"; };
 		C981254C2851E903006D1374 /* PaymentComponentSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentSubject.swift; sourceTree = "<group>"; };
 		C981254F2851E9E4006D1374 /* PaymentComponentSubjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentSubjectTests.swift; sourceTree = "<group>"; };
+		C981960A2F5A2059007FE1A1 /* PaymentMethodListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListHeaderView.swift; sourceTree = "<group>"; };
+		C981960D2F5A4968007FE1A1 /* PaymentMethodItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodItem.swift; sourceTree = "<group>"; };
+		C981960E2F5A4968007FE1A1 /* PaymentMethodItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodItemView.swift; sourceTree = "<group>"; };
+		C98196122F5A4970007FE1A1 /* PaymentMethodSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodSection.swift; sourceTree = "<group>"; };
+		C98196192F5A54AC007FE1A1 /* PaymentMethodSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodSectionView.swift; sourceTree = "<group>"; };
 		C982FFD726946F0800AED849 /* AffirmComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponent.swift; sourceTree = "<group>"; };
 		C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmPaymentMethod.swift; sourceTree = "<group>"; };
 		C9838D8E2F48A56A00E6A7E9 /* PaymentMethodListConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListConfiguration.swift; sourceTree = "<group>"; };
@@ -2420,7 +2426,6 @@
 		C9C0005D280474DF00CE2EEC /* AnalyticsProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsProviderTests.swift; sourceTree = "<group>"; };
 		C9C21913276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationViewControllerTests.swift; sourceTree = "<group>"; };
 		C9C22D902DE5F9620028C23F /* ComponentContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentContainerViewModel.swift; sourceTree = "<group>"; };
-		C9C22D9A2DE5F9BB0028C23F /* PreApplePayComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayComponent.swift; sourceTree = "<group>"; };
 		C9C22D9D2DE5F9BE0028C23F /* PaymentMethodListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListViewController.swift; sourceTree = "<group>"; };
 		C9C22DA02DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentMethodViewModel.swift; sourceTree = "<group>"; };
 		C9D513992F0E7A5C00F57DD6 /* PaymentMethodListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListViewModelTests.swift; sourceTree = "<group>"; };
@@ -2435,6 +2440,7 @@
 		C9DA53DF2E97F6DE00D83C94 /* QRCodeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewControllerTests.swift; sourceTree = "<group>"; };
 		C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewModelTests.swift; sourceTree = "<group>"; };
 		C9DC5B122EC4BF6A00E75C93 /* DropInFlowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInFlowManager.swift; sourceTree = "<group>"; };
+		C9E2C7112F6044AA0095AC11 /* PaymentMethodListHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListHeaderViewModel.swift; sourceTree = "<group>"; };
 		C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoMockable.generated.swift; sourceTree = "<group>"; };
 		C9E914482ED9D37500584184 /* FullScreenViewControllerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewControllerPresenter.swift; sourceTree = "<group>"; };
 		C9E9144A2ED9D37500584184 /* AdyenSwiftUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenSwiftUI.h; sourceTree = "<group>"; };
@@ -4626,6 +4632,43 @@
 			path = PaymentComponent;
 			sourceTree = "<group>";
 		};
+		C98196082F5A2038007FE1A1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C98196152F5A4970007FE1A1 /* PaymentMethodSection */,
+				C981960F2F5A4968007FE1A1 /* PaymentMethodItem */,
+				C981960B2F5A2059007FE1A1 /* PaymentMethodListHeader */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C981960B2F5A2059007FE1A1 /* PaymentMethodListHeader */ = {
+			isa = PBXGroup;
+			children = (
+				C981960A2F5A2059007FE1A1 /* PaymentMethodListHeaderView.swift */,
+				C9E2C7112F6044AA0095AC11 /* PaymentMethodListHeaderViewModel.swift */,
+			);
+			path = PaymentMethodListHeader;
+			sourceTree = "<group>";
+		};
+		C981960F2F5A4968007FE1A1 /* PaymentMethodItem */ = {
+			isa = PBXGroup;
+			children = (
+				C981960D2F5A4968007FE1A1 /* PaymentMethodItem.swift */,
+				C981960E2F5A4968007FE1A1 /* PaymentMethodItemView.swift */,
+			);
+			path = PaymentMethodItem;
+			sourceTree = "<group>";
+		};
+		C98196152F5A4970007FE1A1 /* PaymentMethodSection */ = {
+			isa = PBXGroup;
+			children = (
+				C98196122F5A4970007FE1A1 /* PaymentMethodSection.swift */,
+				C98196192F5A54AC007FE1A1 /* PaymentMethodSectionView.swift */,
+			);
+			path = PaymentMethodSection;
+			sourceTree = "<group>";
+		};
 		C982FFD626945FCE00AED849 /* Affirm */ = {
 			isa = PBXGroup;
 			children = (
@@ -4737,7 +4780,6 @@
 			children = (
 				C90494502E8FE5B4007C4EB5 /* Common */,
 				C9025A422DF3135700E0D191 /* Root */,
-				C9C22D9B2DE5F9BB0028C23F /* PreApplePay */,
 				C9C22D9E2DE5F9BE0028C23F /* PaymentMethodList */,
 				C9C22D962DE5F9920028C23F /* PreselectedPaymentMethod */,
 				C9C22D912DE5F9620028C23F /* ComponentContainer */,
@@ -4758,17 +4800,10 @@
 			path = PreselectedPaymentMethod;
 			sourceTree = "<group>";
 		};
-		C9C22D9B2DE5F9BB0028C23F /* PreApplePay */ = {
-			isa = PBXGroup;
-			children = (
-				C9C22D9A2DE5F9BB0028C23F /* PreApplePayComponent.swift */,
-			);
-			path = PreApplePay;
-			sourceTree = "<group>";
-		};
 		C9C22D9E2DE5F9BE0028C23F /* PaymentMethodList */ = {
 			isa = PBXGroup;
 			children = (
+				C98196082F5A2038007FE1A1 /* Views */,
 				C941A51F2DF9C2C10014AFF1 /* PaymentMethodListAssembler.swift */,
 				C9C22D9D2DE5F9BE0028C23F /* PaymentMethodListViewController.swift */,
 				C941A51D2DF9C21F0014AFF1 /* PaymentMethodListRouter.swift */,
@@ -5595,14 +5630,6 @@
 			path = "DropIn Tests";
 			sourceTree = "<group>";
 		};
-		E767F49925A5E9670077029E /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				5A238C92263AEA0800758FEF /* PreApplePayView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		E76EC683241127B5009C6E2F /* Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -5939,7 +5966,6 @@
 			isa = PBXGroup;
 			children = (
 				C9C22D922DE5F9620028C23F /* Modules */,
-				E767F49925A5E9670077029E /* Views */,
 				E7484C2523B9FDC400CCF74F /* Presentation */,
 				E9B36CC322451C5B00EAA368 /* Utilities */,
 				E9B36CC122451C3000EAA368 /* Models */,
@@ -6521,7 +6547,6 @@
 				C92245B32EE9886000815A51 /* Mocks */,
 				F960FB082371823A00AEF74B /* ApplePayComponentTests.swift */,
 				F96A25462372C39F007DBF0B /* ApplePayDetailsTest.swift */,
-				5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */,
 				E7877802282409FF004A6366 /* ApplePayDelegateMock.swift */,
 				C92245BA2EE98C0C00815A51 /* ApplePayPaymentMethodTests.swift */,
 			);
@@ -8930,7 +8955,6 @@
 				F99F08662383F2D300EBB948 /* FormTextItemViewDelegateMock.swift in Sources */,
 				F926D55523FBF1A800D058D3 /* QiwiWalletComponentTests.swift in Sources */,
 				B643C76C2EF4454600EF8407 /* FormTextItemViewValidationTests.swift in Sources */,
-				5A238C9F263BDEA200758FEF /* PreApplePayComponentTests.swift in Sources */,
 				C927083A27590B7D00D15EA0 /* BACSItemsFactoryProtocolMock.swift in Sources */,
 				4D6ACC5A19457F96B7013F0E /* FormAddressPickerItemViewStyleTests.swift in Sources */,
 			);
@@ -9062,25 +9086,27 @@
 				F96F44CF23BDEC0200871C1F /* DropInComponentStyle.swift in Sources */,
 				C9025A4D2DF31E4700E0D191 /* PreselectedPaymentMethodAssembler.swift in Sources */,
 				E9021DFC2260D626009CF7F4 /* PaymentMethodsSection.swift in Sources */,
-				5A238C93263AEA0800758FEF /* PreApplePayView.swift in Sources */,
 				C941A5262DF9CB790014AFF1 /* ComponentContainerAssembler.swift in Sources */,
 				C9174FF32EB3A89800AA1609 /* Router.swift in Sources */,
 				E9B36CC722451C8300EAA368 /* DropInConfiguration.swift in Sources */,
 				C94E350B2E00561B00B89290 /* DropInRouter.swift in Sources */,
 				C96ECA302E2160B600A86C59 /* DropInRoot.swift in Sources */,
 				A0290DFF2C57DBC1005BE269 /* DropInAnalyticsConfiguration.swift in Sources */,
+				C98196182F5A4970007FE1A1 /* PaymentMethodSection.swift in Sources */,
 				C93DDAEE2E2A789A00B78DED /* ComponentContainerRouter.swift in Sources */,
 				C924FB902ECF6E27009D57EC /* ActionPresentationHelper.swift in Sources */,
 				C9025A452DF3167900E0D191 /* DropInAssembler.swift in Sources */,
 				C9C22DA12DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift in Sources */,
 				C9174FF92EB3B20B00AA1609 /* ActionWrapperViewController.swift in Sources */,
 				F90E95F02726B625007E382B /* DropInComponentExtensions.swift in Sources */,
-				C9C22D9C2DE5F9BB0028C23F /* PreApplePayComponent.swift in Sources */,
 				C90494562E8FF2CE007C4EB5 /* LoadControllable.swift in Sources */,
 				C9DC5B132EC4BF6A00E75C93 /* DropInFlowManager.swift in Sources */,
 				C9025A4B2DF3188700E0D191 /* PreselectedPaymentMethodViewController.swift in Sources */,
+				C981960C2F5A2059007FE1A1 /* PaymentMethodListHeaderView.swift in Sources */,
+				C981961A2F5A54AC007FE1A1 /* PaymentMethodSectionView.swift in Sources */,
 				C9025A432DF3135700E0D191 /* DropInViewModel.swift in Sources */,
 				E7D418B3286F531500E9A7F4 /* ComponentManager+PaymentComponentBuilder.swift in Sources */,
+				C9E2C7122F6044AA0095AC11 /* PaymentMethodListHeaderViewModel.swift in Sources */,
 				C9C22D9F2DE5F9BE0028C23F /* PaymentMethodListViewController.swift in Sources */,
 				C9838D8F2F48A56A00E6A7E9 /* PaymentMethodListConfiguration.swift in Sources */,
 				E9B36CB82243B38A00EAA368 /* DropInComponent.swift in Sources */,
@@ -9093,6 +9119,8 @@
 				E9B36CC522451C7100EAA368 /* ComponentManager.swift in Sources */,
 				C941A51E2DF9C21F0014AFF1 /* PaymentMethodListRouter.swift in Sources */,
 				C941A51C2DF9C0B40014AFF1 /* PreselectedPaymentMethodRouter.swift in Sources */,
+				C98196102F5A4968007FE1A1 /* PaymentMethodItemView.swift in Sources */,
+				C98196112F5A4968007FE1A1 /* PaymentMethodItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
