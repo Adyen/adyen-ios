@@ -740,6 +740,7 @@
 		B6EE0F382BBE9C4500B9810D /* APIClientHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C560525EE8C8D00B57758 /* APIClientHelper.swift */; };
 		B6EE0F392BBE9C4500B9810D /* APIClientHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E73C560525EE8C8D00B57758 /* APIClientHelper.swift */; };
 		B6EE0F3A2BBEA2A800B9810D /* APIClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E757F02525D2ED4C007C813D /* APIClientMock.swift */; };
+		867E3058D1CC3D00964901B6 /* DemoAPIClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F1B74F41FC86BF6808193FD /* DemoAPIClientMock.swift */; };
 		B6EE0F3B2BBEA2A800B9810D /* APIClientMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E757F02525D2ED4C007C813D /* APIClientMock.swift */; };
 		B6EE0F3C2BBEAB4900B9810D /* AnalyticsProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0005B280468E100CE2EEC /* AnalyticsProviderMock.swift */; };
 		B6EE0F3D2BBEBF5100B9810D /* AnalyticsProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0005B280468E100CE2EEC /* AnalyticsProviderMock.swift */; };
@@ -2581,6 +2582,7 @@
 		E7388D9523E08BF9008E62B8 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E73C54E325EBD2DC00B57758 /* BrowserComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowserComponent.swift; sourceTree = "<group>"; };
 		E73C560525EE8C8D00B57758 /* APIClientHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClientHelper.swift; sourceTree = "<group>"; };
+		6F1B74F41FC86BF6808193FD /* DemoAPIClientMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoAPIClientMock.swift; sourceTree = "<group>"; };
 		E73C567E25EFCC4200B57758 /* IssuerListComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuerListComponentTests.swift; sourceTree = "<group>"; };
 		E745175425FB6A59000BDCCF /* CardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
 		E745179825FB8340000BDCCF /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
@@ -5011,6 +5013,7 @@
 			children = (
 				E24FED0C2270915A00A65122 /* CodingHelpers.swift */,
 				E73C560525EE8C8D00B57758 /* APIClientHelper.swift */,
+				6F1B74F41FC86BF6808193FD /* DemoAPIClientMock.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -9040,7 +9043,7 @@
 				B67D1F6C2E4615390000C37F /* CardComponentAdvancedFlowExample.swift in Sources */,
 				F9A53C442549887F009000A7 /* DefaultAPIClient.swift in Sources */,
 				E24FED0D2270915A00A65122 /* CodingHelpers.swift in Sources */,
-				B6EE0F3A2BBEA2A800B9810D /* APIClientMock.swift in Sources */,
+				867E3058D1CC3D00964901B6 /* DemoAPIClientMock.swift in Sources */,
 				81A48DBB2A5709F600242341 /* DemoAddressLookupProvider.swift in Sources */,
 				C9454C37276A340B0086C218 /* BACSDirectDebitPresentationDelegate.swift in Sources */,
 				A09ADA112807142600BF6802 /* SessionRequest.swift in Sources */,
