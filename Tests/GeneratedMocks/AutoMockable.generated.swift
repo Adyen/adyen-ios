@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-// Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.3.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // swiftlint:disable line_length
 // swiftlint:disable variable_name
@@ -56,6 +56,64 @@ class ActionPresenterMock: ActionPresenter {
         didCancelActionComponentReceivedActionComponent = actionComponent
         didCancelActionComponentReceivedInvocations.append(actionComponent)
         didCancelActionComponentClosure?(actionComponent)
+    }
+
+}
+
+package class AnyEventAnalyticsProviderMock: AnyEventAnalyticsProvider {
+
+    // MARK: - add
+
+    package var addInfoCallsCount = 0
+    package var addInfoCalled: Bool {
+        addInfoCallsCount > 0
+    }
+
+    package var addInfoReceivedInfo: AnalyticsEventInfo?
+    package var addInfoReceivedInvocations: [AnalyticsEventInfo] = []
+    package var addInfoClosure: ((AnalyticsEventInfo) -> Void)?
+
+    package func add(info: AnalyticsEventInfo) {
+        addInfoCallsCount += 1
+        addInfoReceivedInfo = info
+        addInfoReceivedInvocations.append(info)
+        addInfoClosure?(info)
+    }
+
+    // MARK: - add
+
+    package var addLogCallsCount = 0
+    package var addLogCalled: Bool {
+        addLogCallsCount > 0
+    }
+
+    package var addLogReceivedLog: AnalyticsEventLog?
+    package var addLogReceivedInvocations: [AnalyticsEventLog] = []
+    package var addLogClosure: ((AnalyticsEventLog) -> Void)?
+
+    package func add(log: AnalyticsEventLog) {
+        addLogCallsCount += 1
+        addLogReceivedLog = log
+        addLogReceivedInvocations.append(log)
+        addLogClosure?(log)
+    }
+
+    // MARK: - add
+
+    package var addErrorCallsCount = 0
+    package var addErrorCalled: Bool {
+        addErrorCallsCount > 0
+    }
+
+    package var addErrorReceivedError: AnalyticsEventError?
+    package var addErrorReceivedInvocations: [AnalyticsEventError] = []
+    package var addErrorClosure: ((AnalyticsEventError) -> Void)?
+
+    package func add(error: AnalyticsEventError) {
+        addErrorCallsCount += 1
+        addErrorReceivedError = error
+        addErrorReceivedInvocations.append(error)
+        addErrorClosure?(error)
     }
 
 }

@@ -136,7 +136,13 @@ This prevents unintended whitespace changes and formatting inconsistencies that 
 
 ### Access Control
 
-Use `@_spi(AdyenInternal)` for internal-but-cross-module APIs. The SDK uses explicit access control levels (`explicit_acl` SwiftLint rule is enabled).
+Prefer `package` access for new internal APIs.
+
+Use `@_spi(AdyenInternal)` only when internal cross-module exposure is truly needed and `package` cannot satisfy the requirement.
+
+When touching nearby existing `@_spi` usage, prefer migrating to `package` where safe.
+
+The SDK uses explicit access control levels (`explicit_acl` SwiftLint rule is enabled).
 
 ## Important Development Notes
 
