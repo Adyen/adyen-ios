@@ -25,7 +25,6 @@ public protocol ApplePayComponentDelegate: AnyObject {
     )
 
     /// Tells the delegate that the shopper entered or updated a coupon code.
-    @available(iOS 15.0, *)
     func didUpdate(
         couponCode: String,
         for summaryItems: [PKPaymentSummaryItem],

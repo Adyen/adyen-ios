@@ -13,7 +13,7 @@ import XCTest
 #endif
 
 #if canImport(TwintSDK)
-
+    @MainActor
     final class TwintSDKActionTests: XCTestCase {
 
         override func tearDownWithError() throws {
@@ -261,7 +261,7 @@ import XCTest
 
             let twintActionComponent = Self.actionComponent(
                 with: twintSpy,
-                context: Dummy.context(with: analyticsProviderMock),
+                context: Dummy.context(analyticsProvider: analyticsProviderMock),
                 presentationDelegate: presentationDelegate,
                 delegate: nil
             )

@@ -10,6 +10,7 @@ import Adyen3DS2
 @testable @_spi(AdyenInternal) import AdyenCard
 import XCTest
 
+@MainActor
 class ThreeDS2CompactActionHandlerTests: XCTestCase {
 
     var authenticationRequestParameters: AnyAuthenticationRequestParameters!
@@ -79,7 +80,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2CompactActionHandler(
-            context: Dummy.context(with: analyticsProviderMock),
+            context: Dummy.context(analyticsProvider: analyticsProviderMock),
             fingerprintSubmitter: submitter,
             appearanceConfiguration: ADYAppearanceConfiguration(),
             service: service
@@ -121,7 +122,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2CompactActionHandler(
-            context: Dummy.context(with: analyticsProviderMock),
+            context: Dummy.context(analyticsProvider: analyticsProviderMock),
             appearanceConfiguration: ADYAppearanceConfiguration(),
             service: service
         )
@@ -172,7 +173,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         service.onResetTransaction = {}
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2CompactActionHandler(
-            context: Dummy.context(with: analyticsProviderMock),
+            context: Dummy.context(analyticsProvider: analyticsProviderMock),
             fingerprintSubmitter: submitter,
             appearanceConfiguration: ADYAppearanceConfiguration(),
             service: service
@@ -227,7 +228,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         service.onResetTransaction = {}
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2CompactActionHandler(
-            context: Dummy.context(with: analyticsProviderMock),
+            context: Dummy.context(analyticsProvider: analyticsProviderMock),
             fingerprintSubmitter: submitter,
             appearanceConfiguration: ADYAppearanceConfiguration(),
             service: service
@@ -264,7 +265,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let service = ThreeDSServiceableMock()
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2CompactActionHandler(
-            context: Dummy.context(with: analyticsProviderMock),
+            context: Dummy.context(analyticsProvider: analyticsProviderMock),
             fingerprintSubmitter: submitter,
             appearanceConfiguration: ADYAppearanceConfiguration(),
             service: service
@@ -324,7 +325,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2CompactActionHandler(
-            context: Dummy.context(with: analyticsProviderMock),
+            context: Dummy.context(analyticsProvider: analyticsProviderMock),
             fingerprintSubmitter: submitter,
             appearanceConfiguration: ADYAppearanceConfiguration(),
             service: service
@@ -368,7 +369,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2CompactActionHandler(
             context: Dummy.context(
-                with: analyticsProviderMock
+                analyticsProvider: analyticsProviderMock
             ),
             fingerprintSubmitter: submitter,
             appearanceConfiguration: ADYAppearanceConfiguration(),
@@ -493,7 +494,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2CompactActionHandler(
             context: Dummy.context(
-                with: analyticsProviderMock
+                analyticsProvider: analyticsProviderMock
             ),
             fingerprintSubmitter: submitter,
             appearanceConfiguration: ADYAppearanceConfiguration(),

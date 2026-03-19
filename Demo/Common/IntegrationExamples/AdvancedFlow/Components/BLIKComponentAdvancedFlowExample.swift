@@ -10,6 +10,7 @@ import AdyenCheckout
 import AdyenComponents
 import AdyenUI
 
+@MainActor
 internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
 
     internal weak var presenter: PresenterExampleProtocol?
@@ -20,7 +21,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
 
     /// comes from demo app protocol, unused on new structure
-    internal lazy var context: AdyenContext = generateContext()
+    internal var context: AdyenContext?
 
     internal init() {}
 
@@ -32,11 +33,11 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 let paymentMethods = try await requestPaymentMethods(order: nil)
                 let component = try await blikComponent(from: paymentMethods)
                 self.adyenComponent = component
-                await hideLoading()
-                await present(component: component)
+                hideLoading()
+                present(component: component)
             } catch {
-                await hideLoading()
-                await handleError(error)
+                hideLoading()
+                handleError(error)
             }
         }
     }
@@ -142,17 +143,14 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         presenter?.showLoadingIndicator()
     }
 
-    @MainActor
     private func handleError(_ error: Error) {
         presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
     }
 
-    @MainActor
     private func hideLoading() {
         presenter?.hideLoadingIndicator()
     }
 
-    @MainActor
     private func present(component: CheckoutPaymentComponent) {
         presenter?.present(viewController: viewController(for: component), completion: nil)
     }

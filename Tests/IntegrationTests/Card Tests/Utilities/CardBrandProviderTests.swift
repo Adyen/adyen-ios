@@ -9,32 +9,25 @@ import XCTest
 
 class CardBrandProviderTests: XCTestCase {
 
-    var publicKeyProvider: PublicKeyProviderMock!
     var apiClientMock: APIClientMock!
     var sut: BinInfoProvider!
 
     override func setUp() {
-        publicKeyProvider = PublicKeyProviderMock()
         apiClientMock = APIClientMock()
         sut = BinInfoProvider(
             apiClient: apiClientMock,
-            publicKeyProvider: publicKeyProvider,
+            adyenContext: Dummy.context,
             minBinLength: 11,
             binLookupType: .card
         )
     }
 
     override func tearDown() {
-        publicKeyProvider = nil
         apiClientMock = nil
         sut = nil
     }
 
     func testLocalCardTypeFetch() {
-        publicKeyProvider.onFetch = {
-            XCTFail("Should not call APIClient")
-            $0(.success(Dummy.publicKey))
-        }
         apiClientMock.onExecute = { _ in
             XCTFail("Should not call APIClient")
         }
@@ -45,7 +38,6 @@ class CardBrandProviderTests: XCTestCase {
     }
 
     func testRemoteCardTypeFetch() {
-        publicKeyProvider.onFetch = { $0(.success(Dummy.publicKey)) }
         let mockedBrands = [CardBrand(type: .solo)]
         apiClientMock.mockedResults = [.success(BinLookupResponse(brands: mockedBrands))]
 
@@ -54,17 +46,8 @@ class CardBrandProviderTests: XCTestCase {
         }
     }
 
-    func testLocalCardTypeFetchWhenPublicKeyFailure() {
-        publicKeyProvider.onFetch = { $0(.failure(Dummy.error)) }
-        apiClientMock.onExecute = { _ in XCTFail("Should not call APIClient") }
-        sut.provide(for: "56", supportedTypes: [.masterCard, .visa, .maestro]) { result in
-            XCTAssertEqual(result.brands!.map(\.type), [.maestro])
-        }
-    }
-
-    func testRemoteCardTypeFetchWhenPublicKeyFailure() {
-        publicKeyProvider.onFetch = { $0(.failure(Dummy.error)) }
-        apiClientMock.onExecute = { _ in XCTFail("Should not call APIClient") }
+    func testRemoteCardTypeFetchWithAPIFailure() {
+        apiClientMock.mockedResults = [.failure(Dummy.error)]
 
         sut.provide(for: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro]) { result in
             XCTAssertEqual(result.brands!.map(\.type), [.maestro])

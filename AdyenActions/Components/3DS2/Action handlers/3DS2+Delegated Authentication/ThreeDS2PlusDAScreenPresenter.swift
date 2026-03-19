@@ -42,6 +42,7 @@ internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
 
 /// This type handles the presenting of the Delegate authentication screens of Register and Approval.
 @available(iOS 16.0, *)
+@MainActor
 internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresenterProtocol {
     private let style: DelegatedAuthenticationComponentStyle
     private let localizedParameters: LocalizationParameters?

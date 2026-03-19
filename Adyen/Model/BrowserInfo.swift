@@ -17,7 +17,7 @@ public struct BrowserInfo: Encodable {
     ///
     /// - Parameters:
     ///   - completion: A call back when the `BrowserInfo` instance is ready or when initialization fails.
-    public static func initialize(completion: @escaping ((_ info: BrowserInfo?) -> Void)) {
+    @MainActor public static func initialize(completion: @escaping ((_ info: BrowserInfo?) -> Void)) {
         guard cachedUserAgent == nil else {
             completion(BrowserInfo(userAgent: cachedUserAgent))
             return

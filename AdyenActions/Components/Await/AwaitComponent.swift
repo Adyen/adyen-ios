@@ -8,6 +8,7 @@
 import Foundation
 
 /// A component that handles Await action's.
+@MainActor
 public final class AwaitComponent: ActionComponent, Cancellable {
     
     /// The context object for this component.

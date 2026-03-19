@@ -51,7 +51,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
     private let apiContext: APIContext
     private let analyticsProvider: AnyAnalyticsProvider?
     private let amount: Amount?
-    private let publicKeyProvider: AnyPublicKeyProvider
+    private let publicKey: String
 
     internal let theme: AdyenTheme
     internal var onViewInstruction: Completion<StoredCardInputViewInstruction>?
@@ -65,18 +65,18 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
         theme: AdyenTheme,
         storedCardPaymentMethod: StoredCardPaymentMethod,
         apiContext: APIContext,
+        publicKey: String,
         amount: Amount?,
         analyticsProvider: AnyAnalyticsProvider?,
-        localizationParameters: LocalizationParameters?,
-        publicKeyProvider: AnyPublicKeyProvider? = nil
+        localizationParameters: LocalizationParameters?
     ) {
         self.theme = theme
         self.storedCardPaymentMethod = storedCardPaymentMethod
         self.amount = amount
         self.apiContext = apiContext
+        self.publicKey = publicKey
         self.localizationParameters = localizationParameters
         self.analyticsProvider = analyticsProvider
-        self.publicKeyProvider = publicKeyProvider ?? PublicKeyProvider(apiContext: apiContext)
     }
 
     internal lazy var cardImageItem: AdyenUI.CardImageItem = {
@@ -124,7 +124,10 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
 
     private var formattedAmount: String {
         guard let amount,
-              let formatted = AmountFormatter.formatted(amount: amount.value, currencyCode: amount.currencyCode) else {
+              let formatted = AmountFormatter.formatted(
+                  amount: amount.value,
+                  currencyCode: amount.currencyCode
+              ) else {
             return ""
         }
         return formatted
@@ -138,7 +141,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
         sendDidLoadEvent()
     }
 
-    internal func dismiss() {
+    @MainActor internal func dismiss() {
         resetSecurityCodeField()
         closeHandler?()
     }
@@ -149,7 +152,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
         localizedString(.preselectedPaymentMethodOtherOptions, localizationParameters)
     }
 
-    internal func showAllPaymentMethods() {
+    @MainActor internal func showAllPaymentMethods() {
         resetSecurityCodeField()
         otherPaymentOptionsHandler?()
     }
@@ -163,18 +166,22 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
         }
 
         onViewInstruction?(.setLoading(true))
-        await submitPayment()
+
+        let securityCode: String = securityCodeItem.value
+        resetSecurityCodeField()
+
+        await submitPayment(securityCode: securityCode)
         onViewInstruction?(.setLoading(false))
     }
 
-    internal func submitPayment() async {
+    internal func submitPayment(securityCode: String) async {
         do {
-            let securityCode: String = securityCodeItem.value
-            let publicKey = try await fetchCardPublicKey()
-            resetSecurityCodeField()
             let encryptedCardDetails: CardDetails = try {
                 do {
-                    return try encryptCardDetails(securityCode: securityCode, cardPublicKey: publicKey)
+                    return try encryptCardDetails(
+                        securityCode: securityCode,
+                        cardPublicKey: publicKey
+                    )
                 } catch {
                     sendEncryptionErrorEvent()
                     throw error
@@ -186,21 +193,22 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
         }
     }
 
-    internal func resetSecurityCodeField() {
+    @MainActor internal func resetSecurityCodeField() {
         securityCodeItem.value = ""
     }
 
-    private func fetchCardPublicKey() async throws -> String {
-        try await withCheckedThrowingContinuation { continuation in
-            publicKeyProvider.fetch { result in
-                continuation.resume(with: result)
-            }
-        }
-    }
-
-    private func encryptCardDetails(securityCode: String, cardPublicKey: String) throws -> CardDetails {
-        let encryptedSecurityCode = try CardEncryptor.encrypt(securityCode: securityCode, with: cardPublicKey)
-        return CardDetails(paymentMethod: storedCardPaymentMethod, encryptedSecurityCode: encryptedSecurityCode)
+    private func encryptCardDetails(
+        securityCode: String,
+        cardPublicKey: String
+    ) throws -> CardDetails {
+        let encryptedSecurityCode = try CardEncryptor.encrypt(
+            securityCode: securityCode,
+            with: cardPublicKey
+        )
+        return CardDetails(
+            paymentMethod: storedCardPaymentMethod,
+            encryptedSecurityCode: encryptedSecurityCode
+        )
     }
 
     // MARK: - Events
@@ -215,7 +223,10 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
     }
 
     private func sendDidLoadEvent() {
-        var infoEvent = AnalyticsEventInfo(component: storedCardPaymentMethod.type.rawValue, type: .rendered)
+        var infoEvent = AnalyticsEventInfo(
+            component: storedCardPaymentMethod.type.rawValue,
+            type: .rendered
+        )
         infoEvent.isStoredPaymentMethod = true
         infoEvent.brand = storedCardPaymentMethod.brand.rawValue
         analyticsProvider?.add(info: infoEvent)

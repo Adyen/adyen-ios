@@ -12,6 +12,7 @@ import UIKit
 #endif
 
 /// A component that provides a form for BLIK payments.
+@MainActor
 public final class BLIKComponent: PaymentComponent, PresentableComponent, LoadingComponent {
     
     /// The context object for this component.

@@ -10,6 +10,7 @@
 ///
 /// This factory creates `BLIKComponent` instances configured with the
 /// provided BLIK payment method and component configuration.
+@MainActor
 package struct BLIKComponentFactory: PaymentComponentFactory {
     package typealias Configuration = BLIKComponentConfiguration
     package typealias Method = BLIKPaymentMethod

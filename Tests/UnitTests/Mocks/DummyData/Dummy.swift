@@ -26,6 +26,7 @@ enum Dummy: Error {
         AdyenContext(
             apiContext: apiContext,
             amount: amount,
+            publicKey: publicKey,
             analyticsProvider: AnalyticsProviderMock()
         )
     }
@@ -34,7 +35,17 @@ enum Dummy: Error {
         AdyenContext(
             apiContext: apiContext,
             amount: amount,
+            publicKey: publicKey,
             analyticsProvider: AnalyticsProviderMock()
+        )
+    }
+    
+    internal static func context(analyticsProvider: AnyAnalyticsProvider?) -> AdyenContext {
+        AdyenContext(
+            apiContext: apiContext,
+            amount: amount,
+            publicKey: publicKey,
+            analyticsProvider: analyticsProvider
         )
     }
 

@@ -11,18 +11,17 @@ import AdyenDropIn
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class GiftCardUITests: XCTestCase {
     
     func test_checkBalance_failure() throws {
 
         let partialPaymentDelegate = PartialPaymentDelegateMock()
-        let publicKeyProvider = PublicKeyProviderMock()
         
         let sut = GiftCardComponent(
             partialPaymentMethodType: .giftCard(.init(type: .giftcard, name: "Giftcard", brand: "Giftcard")),
             context: Dummy.context,
-            amount: .init(value: 1, currencyCode: "EUR"),
-            publicKeyProvider: publicKeyProvider
+            amount: .init(value: 1, currencyCode: "EUR")
         )
         sut.partialPaymentDelegate = partialPaymentDelegate
         sut.viewController.loadViewIfNeeded()

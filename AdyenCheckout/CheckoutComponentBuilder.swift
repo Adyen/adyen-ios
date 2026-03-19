@@ -17,9 +17,11 @@
 
 internal enum CheckoutComponentBuilder {
     
+    @MainActor
     internal static func build(
         for paymentMethod: PaymentMethod,
-        configuration: CheckoutConfiguration
+        configuration: CheckoutConfiguration,
+        context: AdyenContext
     ) -> PaymentComponent {
         
         // Assembly layer
@@ -31,14 +33,15 @@ internal enum CheckoutComponentBuilder {
                 return createComponent(
                     using: BLIKComponentFactory(),
                     paymentMethod: blikPaymentMethod,
-                    configuration: configuration
+                    configuration: configuration,
+                    context: context
                 )
-            
             case let achPaymentMethod as ACHDirectDebitPaymentMethod:
                 return createComponent(
                     using: ACHDirectDebitComponentFactory(),
                     paymentMethod: achPaymentMethod,
-                    configuration: configuration
+                    configuration: configuration,
+                    context: context
                 )
         #endif
             
@@ -48,7 +51,8 @@ internal enum CheckoutComponentBuilder {
                 return createComponent(
                     using: CardComponentFactory(),
                     paymentMethod: cardPaymentMethod,
-                    configuration: configuration
+                    configuration: configuration,
+                    context: context
                 )
                 // TODO: add other card methods like stored or write a generic one.
             
@@ -63,9 +67,11 @@ internal enum CheckoutComponentBuilder {
     }
     
     /// Builds stored payment components.
+    @MainActor
     internal static func build(
         for storedPaymentMethod: StoredPaymentMethod,
-        configuration: CheckoutConfiguration
+        configuration: CheckoutConfiguration,
+        context: AdyenContext
     ) -> PaymentComponent {
         
         // TODO: stored components requires no configuration
@@ -77,14 +83,14 @@ internal enum CheckoutComponentBuilder {
             case let storedCard as StoredCardPaymentMethod:
                 StoredCardComponent(
                     storedCardPaymentMethod: storedCard,
-                    context: configuration.context
+                    context: context
                 )
         #endif
             
         default:
             StoredPaymentMethodComponent(
                 paymentMethod: storedPaymentMethod,
-                context: configuration.context
+                context: context
             )
         }
     }
@@ -99,10 +105,12 @@ internal enum CheckoutComponentBuilder {
     ///   - paymentMethod: The payment method to create a component for.
     ///   - configuration: The checkout configuration.
     /// - Returns: A configured payment component.
+    @MainActor
     private static func createComponent<Factory: PaymentComponentFactory>(
         using factory: Factory,
         paymentMethod: Factory.Method,
-        configuration: CheckoutConfiguration
+        configuration: CheckoutConfiguration,
+        context: AdyenContext
     ) -> PaymentComponent where Factory.Configuration: CheckoutComponentConfiguration {
         
         var componentConfiguration = configuration.configuration(
@@ -115,7 +123,7 @@ internal enum CheckoutComponentBuilder {
         
         return factory.create(
             with: paymentMethod,
-            context: configuration.context,
+            context: context,
             configuration: componentConfiguration
         )
     }

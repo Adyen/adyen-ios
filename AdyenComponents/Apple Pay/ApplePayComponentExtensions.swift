@@ -102,7 +102,6 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         }
     }
 
-    @available(iOS 15.0, *)
     public func paymentAuthorizationViewController(
         _ controller: PKPaymentAuthorizationViewController,
         didChangeCouponCode couponCode: String,

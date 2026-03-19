@@ -29,16 +29,7 @@ internal final class PreApplePayView: UIView, Localizable {
     
     /// Creates PKPaymentButtonStyle based on Dark or Light Mode.
     private var paymentButtonStyleAuto: PKPaymentButtonStyle {
-        if #available(iOS 14.0, *) {
-            return .automatic
-        }
-        
-        switch traitCollection.userInterfaceStyle {
-        case .dark:
-            return .white
-        default:
-            return .black
-        }
+        .automatic
     }
     
     internal init(model: Model) {

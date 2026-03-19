@@ -52,6 +52,7 @@ extension ComponentWrapper {
     }
 }
 
+@MainActor
 internal func createDefaultThreeDS2CoreActionHandler(
     context: AdyenContext,
     service: ThreeDSService,

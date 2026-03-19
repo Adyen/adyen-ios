@@ -15,7 +15,6 @@ internal protocol CardScannerAssembling {
     ) -> UIViewController?
 }
 
-@available(iOS 13.0, *)
 internal class CardScannerAssembler: CardScannerAssembling {
 
     // MARK: - Initializers

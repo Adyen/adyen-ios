@@ -10,6 +10,7 @@ import UIKit
 @_spi(AdyenInternal) import AdyenUI
 
 /// A component that provides a form for stored card payments.
+@MainActor
 package final class StoredCardComponent: StoredPaymentComponent, Localizable {
 
     /// The context object for this component.
@@ -40,6 +41,7 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
             theme: AdyenTheme(),
             storedCardPaymentMethod: storedCardPaymentMethod,
             apiContext: context.apiContext,
+            publicKey: context.publicKey,
             amount: context.amount,
             analyticsProvider: context.analyticsProvider,
             localizationParameters: localizationParameters

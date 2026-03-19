@@ -235,7 +235,7 @@ internal class StoredCardInputViewController: UIViewController {
     // MARK: - User Actions
 
     @objc private func primaryButtonTapped() {
-        Task { [weak self] in
+        Task { @MainActor [weak self] in
             await self?.viewModel.submit()
         }
     }

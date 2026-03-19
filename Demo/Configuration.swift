@@ -359,9 +359,7 @@ internal extension PKPaymentRequest {
         paymentRequest.requiredShippingContactFields = [.postalAddress]
         paymentRequest.requiredBillingContactFields = [.postalAddress]
         paymentRequest.shippingMethods = ConfigurationConstants.shippingMethods
-        if #available(iOS 15.0, *) {
-            paymentRequest.supportsCouponCode = true
-        }
+        paymentRequest.supportsCouponCode = true
         return paymentRequest
     }
 }

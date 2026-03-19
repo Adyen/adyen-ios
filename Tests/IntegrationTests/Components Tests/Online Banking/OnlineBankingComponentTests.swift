@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class OnlineBankingComponentTests: XCTestCase {
 
     private var context: AdyenContext!
@@ -23,6 +24,7 @@ class OnlineBankingComponentTests: XCTestCase {
         context = AdyenContext(
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
             analyticsProvider: analyticsProviderMock
         )
         style = FormComponentStyle()

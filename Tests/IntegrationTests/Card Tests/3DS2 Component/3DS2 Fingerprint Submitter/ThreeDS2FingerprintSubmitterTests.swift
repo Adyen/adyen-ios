@@ -126,7 +126,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
     func testFailure() {
         let apiClient = APIClientMock()
         let analyticsProviderMock = AnalyticsProviderMock()
-        let sut = ThreeDS2FingerprintSubmitter(context: Dummy.context(with: analyticsProviderMock), apiClient: apiClient)
+        let sut = ThreeDS2FingerprintSubmitter(context: Dummy.context(analyticsProvider: analyticsProviderMock), apiClient: apiClient)
 
         apiClient.mockedResults = [.failure(Dummy.error)]
 

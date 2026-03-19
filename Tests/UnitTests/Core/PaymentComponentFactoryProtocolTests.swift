@@ -15,6 +15,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 import XCTest
 
+@MainActor
 final class PaymentComponentFactoryProtocolTests: XCTestCase {
     
     // MARK: - Mock Types for Testing
@@ -194,7 +195,9 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         let customAmount = Amount(value: 1234, currencyCode: "GBP")
         let customContext = AdyenContext(
             apiContext: Dummy.apiContext,
-            amount: customAmount
+            amount: customAmount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
         )
         let config = factory.defaultConfiguration()
         

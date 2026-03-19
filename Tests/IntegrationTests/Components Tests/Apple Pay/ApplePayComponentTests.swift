@@ -10,6 +10,7 @@ import Contacts
 import PassKit
 import XCTest
 
+@MainActor
 class ApplePayComponentTest: XCTestCase {
 
     var mockDelegate: PaymentComponentDelegateMock!
@@ -36,11 +37,7 @@ class ApplePayComponentTest: XCTestCase {
             configuration: configuration
         )
         mockDelegate = PaymentComponentDelegateMock()
-        if #available(iOS 15.0, *) {
-            mockApplePayDelegate = ApplePayDelegateMockiOS15()
-        } else {
-            mockApplePayDelegate = ApplePayDelegateMockClassic()
-        }
+        mockApplePayDelegate = ApplePayDelegateMock()
         mockAuthorizationDelegate = ApplePayAuthorizationDelegateMock()
     }
 
@@ -291,13 +288,8 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     func testApplePayCoupon() throws {
-        guard #available(iOS 15.0, *) else {
-            // XCTestCase does not respect @available so we have to skip the test like this
-            throw XCTSkip("Unsupported iOS version")
-        }
-
         sut.applePayDelegate = mockApplePayDelegate
-        (mockApplePayDelegate as! ApplePayDelegateMockiOS15).onCouponChange = { coupon, payment in
+        mockApplePayDelegate.onCouponChange = { coupon, payment in
             .init(paymentSummaryItems: [
                 PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
                 PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
@@ -388,12 +380,8 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     func testApplePayCoupon_givenDelegateReturnsEmptyItems_shouldKeepOriginalItems() throws {
-        guard #available(iOS 15.0, *) else {
-            throw XCTSkip("Unsupported iOS version")
-        }
-
         sut.applePayDelegate = mockApplePayDelegate
-        (mockApplePayDelegate as! ApplePayDelegateMockiOS15).onCouponChange = { _, _ in
+        mockApplePayDelegate.onCouponChange = { _, _ in
             .init(paymentSummaryItems: [])
         }
 
@@ -768,7 +756,7 @@ class ApplePayComponentTest: XCTestCase {
     func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(with: analyticsProviderMock)
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
 
         let configuration = try ApplePayComponent.Configuration(
             paymentRequest: Dummy.createTestApplePayPaymentRequest()

@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class MBWayComponentTests: XCTestCase {
 
     private var context: AdyenContext!
@@ -117,7 +118,7 @@ class MBWayComponentTests: XCTestCase {
     func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(with: analyticsProviderMock)
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
         let sut = MBWayComponent(
             paymentMethod: paymentMethod,
             context: context,

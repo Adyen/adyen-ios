@@ -14,6 +14,7 @@
 import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.
+@MainActor
 package final class ACHDirectDebitComponent: PaymentComponent,
     PresentableComponent,
     LoadingComponent {
@@ -51,9 +52,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         child: formViewController,
         style: configuration.style
     )
-    
-    package let publicKeyProvider: AnyPublicKeyProvider
-    
+
     private var defaultCountryCode: String {
         configuration.billingAddressCountryCodes.first ?? "US"
     }
@@ -67,32 +66,17 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     ///   - paymentMethod: The ACH Direct Debit payment method.
     ///   - context: The context object for this component.
     ///   - configuration: Configuration for the component.
-    package convenience init(
+    package init(
         paymentMethod: ACHDirectDebitPaymentMethod,
         context: AdyenContext,
         configuration: ACHDirectDebitComponentConfiguration = .init()
-    ) {
-        self.init(
-            paymentMethod: paymentMethod,
-            context: context,
-            configuration: configuration,
-            publicKeyProvider: PublicKeyProvider(apiContext: context.apiContext)
-        )
-    }
-    
-    internal init(
-        paymentMethod: ACHDirectDebitPaymentMethod,
-        context: AdyenContext,
-        configuration: ACHDirectDebitComponentConfiguration = .init(),
-        publicKeyProvider: AnyPublicKeyProvider
     ) {
         self.configuration = configuration
         self.achDirectDebitPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
-        self.publicKeyProvider = publicKeyProvider
     }
-    
+
     package func stopLoading() {
         payButton.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
@@ -107,10 +91,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         guard validate() else { return }
         
         startLoading()
-        
-        fetchCardPublicKey(notifyingDelegateOnFailure: true) { [weak self] publicKey in
-            self?.submitEncryptedData(publicKey: publicKey)
-        }
+        submitEncryptedData(publicKey: context.publicKey)
     }
     
     private func submitEncryptedData(publicKey: String) {
@@ -325,8 +306,6 @@ extension ACHDirectDebitComponent: ViewControllerDelegate {
     package func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
         sendDidLoadEvent()
-        // just cache the public key value
-        fetchCardPublicKey(notifyingDelegateOnFailure: false)
     }
 }
 
@@ -340,8 +319,6 @@ extension ACHDirectDebitComponent: ViewControllerPresenter {
         self.viewController.dismissViewController(animated: animated)
     }
 }
-
-extension ACHDirectDebitComponent: PublicKeyConsumer {}
 
 // MARK: - SubmitCustomizable
 

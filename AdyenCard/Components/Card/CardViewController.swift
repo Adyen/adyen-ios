@@ -32,12 +32,7 @@ internal class CardViewController: FormViewController {
     private let allowedCoBadgedCardTypes: [CardType] = [.carteBancaire, .bcmc, .dankort]
     private let cardScannerAnalyticsHandler: CardScannerAnalyticsHandler
     private lazy var cardScannerController: CardScannerControlling = {
-        var controller: CardScannerControlling
-        if #available(iOS 13.0, *) {
-            controller = CardScannerController(presenter: self, analyticsHandler: cardScannerAnalyticsHandler)
-        } else {
-            controller = DummyCardScannerController(presenter: self, analyticsHandler: cardScannerAnalyticsHandler)
-        }
+        var controller: CardScannerControlling = CardScannerController(presenter: self, analyticsHandler: cardScannerAnalyticsHandler)
         controller.title = localizedString(.cardScanYourCardButton, localizationParameters)
         controller.onScanComplete = { [weak self] result in
             self?.handleCardScanningResult(result)
@@ -372,9 +367,7 @@ extension CardViewController {
         case .lookup, .full:
             guard let pickerItem = items.billingAddressPickerItem else { return nil }
             return pickerItem.withSectionHeader(
-                title: localizedString(.billingAddressSectionTitle, localizationParameters),
-                // TODO: Localize subtitle after aligning on i18n cases with Android
-                subtitle: "Enter the billing address that is linked to the card"
+                title: localizedString(.billingAddressSectionTitle, localizationParameters)
             )
 
         case .postalCode:

@@ -8,6 +8,7 @@ import Adyen
 import AdyenComponents
 import Foundation
 
+@MainActor
 internal class BACSDirectDebitPresentationDelegate: PresentationDelegate {
 
     // MARK: - Properties

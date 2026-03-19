@@ -189,11 +189,7 @@ public final class FormButton: UIControl {
     }()
     
     private var activityIndicatorStyle: UIActivityIndicatorView.Style {
-        if #available(iOS 13.0, *) {
-            return .medium
-        } else {
-            return .white
-        }
+        .medium
     }
     
     // MARK: - Layout

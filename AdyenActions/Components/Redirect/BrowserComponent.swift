@@ -14,6 +14,7 @@ internal protocol BrowserComponentDelegate: AnyObject {
 }
 
 /// A component that opens a URL in web browsed and presents it.
+@MainActor
 internal final class BrowserComponent: NSObject, PresentableComponent {
 
     /// :nodoc

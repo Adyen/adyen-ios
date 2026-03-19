@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class IssuerListComponentTests: XCTestCase {
 
     private var context: AdyenContext!
@@ -41,8 +42,8 @@ class IssuerListComponentTests: XCTestCase {
     func testSelection() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(with: analyticsProviderMock)
-        
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
+
         sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
         
         let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
@@ -76,8 +77,8 @@ class IssuerListComponentTests: XCTestCase {
     func test_componentSendsInfo_onSearchInput_With_Throttling() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(with: analyticsProviderMock)
-        
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
+
         sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
         
         let searchViewController = try XCTUnwrap(sut.viewController as? SearchViewController)
@@ -102,7 +103,7 @@ class IssuerListComponentTests: XCTestCase {
     func test_ViewDidLoad_ShouldSend_InitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(with: analyticsProviderMock)
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
 
         sut = IssuerListComponent(paymentMethod: paymentMethod, context: context)
         let mockViewController = UIViewController()

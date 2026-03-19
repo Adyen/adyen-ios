@@ -13,6 +13,7 @@ import AdyenComponents
 @testable import AdyenDropIn
 import AdyenNetworking
 
+@MainActor
 class SessionTests: XCTestCase {
 
     var analyticsProviderMock: AnalyticsProviderMock!
@@ -31,9 +32,8 @@ class SessionTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        analyticsProviderMock = AnalyticsProviderMock()
-        analyticsProviderMock._checkoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
-        context = Dummy.context(with: analyticsProviderMock)
+        analyticsProviderMock = AnalyticsProviderMock(checkoutAttemptId: "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda")
+        context = Dummy.context(analyticsProvider: analyticsProviderMock)
 
         expectedPaymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
         sutDelegate = SessionDelegateMock()
@@ -290,6 +290,10 @@ class SessionTests: XCTestCase {
         )
         sut.didSubmit(data, from: component, in: dropInComponent)
         wait(for: [apiCallsExpectation], timeout: 1)
+
+        let stateUpdatedExpectation = expectation(description: "Expect state to be updated")
+        stateUpdatedExpectation.isInverted = true
+        wait(for: [stateUpdatedExpectation], timeout: 0.5)
 
         XCTAssertEqual(sut.state.amount, expectedAmount)
         XCTAssertEqual(sut.state.countryCode, "EG")

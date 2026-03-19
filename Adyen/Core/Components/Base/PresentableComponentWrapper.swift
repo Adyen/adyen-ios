@@ -8,6 +8,7 @@ import Foundation
 import UIKit
 
 /// A component that wraps any `Component` to make it a `PresentableComponent`.
+@MainActor
 package final class PresentableComponentWrapper: PresentableComponent,
     Cancellable,
     FinalizableComponent,

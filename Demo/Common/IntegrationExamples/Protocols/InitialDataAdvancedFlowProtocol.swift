@@ -5,18 +5,21 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import struct AdyenCheckout.CheckoutConfiguration
 import AdyenNetworking
 import AdyenSession
 
+@MainActor
 internal protocol InitialDataAdvancedFlowProtocol: AnyObject {
-    var context: AdyenContext { get }
+    var context: AdyenContext? { get set }
+
     var apiClient: APIClientProtocol { get }
     func requestPaymentMethods(
         order: PartialPaymentOrder?,
         amount: Amount,
         completion: @escaping (Result<PaymentMethods, Error>) -> Void
     )
-    func generateContext() -> AdyenContext
+
     func start()
 }
 
@@ -38,13 +41,23 @@ extension InitialDataAdvancedFlowProtocol {
         }
     }
     
-    func generateContext() -> AdyenContext {
+    func initializeExampleAppAdyenContext() async throws {
         let analyticsConfiguration = AnalyticsConfiguration(
             isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
         )
-        return AdyenContext(
+
+        let publicKey = try await PublicKeyFetcher().fetchPublicKey(
+            apiClient: APIClient(apiContext: ConfigurationConstants.apiContext),
+            clientKey: ConfigurationConstants.apiContext.clientKey
+        )
+
+        // TODO: This has to be removed from the demo code. AdyenContext will not be exposed to the merchants in V6
+        self.context = AdyenContext(
             apiContext: ConfigurationConstants.apiContext,
             amount: ConfigurationConstants.current.amount,
+            publicKey: publicKey,
+            checkoutAttemptId: nil,
+            analyticsAPIContext: CheckoutConfiguration.createAnalyticsAPIContext(apiContext: ConfigurationConstants.apiContext),
             analyticsConfiguration: analyticsConfiguration
         )
     }

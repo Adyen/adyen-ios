@@ -21,7 +21,7 @@ extension Session: SessionStoredPaymentMethodsDelegate {
             sessionData: state.data,
             storedPaymentMethodId: storedPaymentMethod.identifier
         )
-        apiClient.perform(request) { [weak self] result in
+        apiClient.perform(request) { @MainActor [weak self] result in
             switch result {
             case .success:
                 completion(true)
@@ -32,6 +32,7 @@ extension Session: SessionStoredPaymentMethodsDelegate {
         }
     }
     
+    @MainActor
     private func showAlert(with error: Error?, on dropIn: AnyDropInComponent) {
         let localizationParameters = (dropIn as? Localizable)?.localizationParameters
         let title = localizedString(.errorTitle, localizationParameters)

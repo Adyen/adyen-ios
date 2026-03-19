@@ -9,6 +9,7 @@ import Adyen3DS2
 import Foundation
 
 /// Handles the 3D Secure 2 fingerprint and challenge in one call using a `fingerprintSubmitter`.
+@MainActor
 internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, ComponentWrapper {
     
     // MARK: - Private

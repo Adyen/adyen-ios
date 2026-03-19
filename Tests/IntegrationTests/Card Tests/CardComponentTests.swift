@@ -11,6 +11,7 @@
 @testable import AdyenEncryption
 import XCTest
 
+@MainActor
 class CardComponentTests: XCTestCase {
 
     var context: AdyenContext {
@@ -214,6 +215,73 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(storeDetailsToggle, "Store details toggle should be present when configured")
     }
 
+    func test_cardViewController_whenInterfaceStyleChanges_shouldRefreshHolderNameBorderColor() throws {
+        // Given
+        let expectedBorderColor = dynamicColor(light: .systemGreen, dark: .systemBlue)
+        let expectedActiveBorderColor = dynamicColor(light: .orange, dark: .purple)
+
+        var configuration = CardComponentConfiguration()
+        configuration.showsHolderNameField = true
+        configuration.theme = AdyenTheme(
+            colors: AdyenColors(
+                containerOutline: expectedBorderColor,
+                primary: expectedActiveBorderColor
+            )
+        )
+
+        let sut = makeSUT(configuration: configuration)
+
+        setupRootViewController(sut.cardViewController)
+
+        let holderNameItemView: FormTextInputItemView = try XCTUnwrap(
+            sut.cardViewController.view.findView(with: CardViewIdentifier.holdername)
+        )
+        let holderNameContainer: UIView = try XCTUnwrap(
+            sut.cardViewController.view.findView(with: "\(CardViewIdentifier.holdername).entryTextStackView")
+        )
+
+        // When / Then
+        setInterfaceStyle(.light)
+        XCTAssertEqual(holderNameContainer.layer.borderColor, resolvedBorderColor(for: expectedBorderColor, interfaceStyle: .light))
+
+        triggerEditing(on: holderNameItemView, isEditing: true)
+        XCTAssertEqual(holderNameContainer.layer.borderColor, resolvedBorderColor(for: expectedActiveBorderColor, interfaceStyle: .light))
+
+        setInterfaceStyle(.dark)
+        XCTAssertEqual(holderNameContainer.layer.borderColor, resolvedBorderColor(for: expectedActiveBorderColor, interfaceStyle: .dark))
+
+        triggerEditing(on: holderNameItemView, isEditing: false)
+        XCTAssertEqual(holderNameContainer.layer.borderColor, resolvedBorderColor(for: expectedBorderColor, interfaceStyle: .dark))
+    }
+
+    func test_cardViewController_whenInterfaceStyleChanges_shouldRefreshBillingAddressBorderColor() throws {
+        // Given
+        let expectedBorderColor = dynamicColor(light: .systemGreen, dark: .systemBlue)
+
+        var configuration = CardComponentConfiguration()
+        configuration.billingAddress.mode = .lookup(onAddressLookup: { _ in [] })
+        configuration.theme = AdyenTheme(
+            colors: AdyenColors(
+                containerOutline: expectedBorderColor
+            )
+        )
+
+        let sut = makeSUT(configuration: configuration)
+
+        setupRootViewController(sut.cardViewController)
+
+        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(
+            sut.cardViewController.view.findView(by: CardViewIdentifier.billingAddress)
+        )
+
+        // When / Then
+        setInterfaceStyle(.light)
+        XCTAssertEqual(billingAddressView.containerView.layer.borderColor, resolvedBorderColor(for: expectedBorderColor, interfaceStyle: .light))
+
+        setInterfaceStyle(.dark)
+        XCTAssertEqual(billingAddressView.containerView.layer.borderColor, resolvedBorderColor(for: expectedBorderColor, interfaceStyle: .dark))
+    }
+
     func test_viewController_shouldNotShowBigTitle() {
 
         let sut = CardComponent(
@@ -293,7 +361,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: CardComponentConfiguration(),
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
 
@@ -444,27 +511,6 @@ class CardComponentTests: XCTestCase {
 //
 //        wait(until: securityCodeItemView, at: \.cardHintView.tintColor, is: .systemYellow)
 //    }
-
-    func test_viewDidLoad_shouldTriggerPublicKeyFetch() {
-        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
-        let publicKeyProvider = PublicKeyProviderMock()
-        publicKeyProvider.onFetch = { completion in
-            publicKeyProviderExpectation.fulfill()
-            completion(.success("key"))
-        }
-        
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: CardComponentConfiguration(),
-            publicKeyProvider: publicKeyProvider,
-            binProvider: BinInfoProviderMock()
-        )
-
-        sut.viewDidLoad(viewController: sut.cardViewController)
-
-        waitForExpectations(timeout: 10, handler: nil)
-    }
 
     func test_storedCard_withNoPaymentAmount_shouldShowGenericPayButton() {
         let context = Dummy.context(with: nil)
@@ -640,7 +686,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: Dummy.context(with: nil),
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: BinInfoProviderMock()
         )
 
@@ -779,7 +824,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: BinInfoProviderMock()
         )
         setupRootViewController(sut.viewController)
@@ -834,7 +878,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         setupRootViewController(sut.viewController)
@@ -895,7 +938,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         setupRootViewController(sut.viewController)
@@ -1147,7 +1189,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         setupRootViewController(sut.viewController)
@@ -1190,7 +1231,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         setupRootViewController(sut.viewController)
@@ -1229,7 +1269,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         setupRootViewController(sut.viewController)
@@ -1281,7 +1320,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         setupRootViewController(sut.viewController)
@@ -1444,6 +1482,7 @@ class CardComponentTests: XCTestCase {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
             analyticsProvider: analyticsProviderMock
         )
         let sut = CardComponent(
@@ -1469,6 +1508,7 @@ class CardComponentTests: XCTestCase {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
             analyticsProvider: analyticsProviderMock
         )
         let sut = CardComponent(
@@ -1820,7 +1860,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         
@@ -1888,7 +1927,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         
@@ -1944,7 +1982,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         
@@ -2001,7 +2038,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
         
@@ -2059,7 +2095,9 @@ class CardComponentTests: XCTestCase {
         let amount = Amount(value: 1234567, currencyCode: "USD")
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            amount: amount
+            amount: amount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
         )
 
         // When
@@ -2080,7 +2118,9 @@ class CardComponentTests: XCTestCase {
         let amount = Amount(value: 1234567, currencyCode: "USD")
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            amount: amount
+            amount: amount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
         )
 
         // When
@@ -2130,7 +2170,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
 
@@ -2186,7 +2225,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
 
@@ -2248,7 +2286,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: cardTypeProviderMock
         )
 
@@ -2318,7 +2355,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: Dummy.context(with: nil),
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: BinInfoProviderMock()
         )
 
@@ -2345,7 +2381,6 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: Dummy.context(with: nil),
             configuration: configuration,
-            publicKeyProvider: PublicKeyProviderMock(),
             binProvider: BinInfoProviderMock()
         )
 
@@ -2411,6 +2446,15 @@ extension UIView {
 
 extension CardComponentTests {
 
+    private func makeSUT(configuration: CardComponentConfiguration) -> CardComponent {
+        CardComponent(
+            paymentMethod: method,
+            context: Dummy.context(with: nil),
+            configuration: configuration,
+            binProvider: BinInfoProviderMock()
+        )
+    }
+
     func fillCard(on view: UIView, with card: Card) {
         let cardNumberItemView: FormTextItemView<FormCardNumberItem>? = view.findView(with: "AdyenCard.FormCardNumberContainerItem.numberItem")
         let expiryDateItemView: FormTextInputItemView? = view.findView(with: "AdyenCard.CardComponent.expiryDateItem")
@@ -2419,6 +2463,29 @@ extension CardComponentTests {
         populate(textItemView: cardNumberItemView!, with: card.number ?? "")
         populate(textItemView: expiryDateItemView!, with: "\(card.expiryMonth ?? "") \(card.expiryYear ?? "")")
         populate(textItemView: securityCodeItemView!, with: card.securityCode ?? "")
+    }
+
+    func triggerEditing(on itemView: FormTextInputItemView, isEditing: Bool) {
+        if isEditing {
+            itemView.textField.delegate?.textFieldDidBeginEditing?(itemView.textField)
+        } else {
+            itemView.textField.delegate?.textFieldDidEndEditing?(itemView.textField)
+        }
+    }
+
+    func setInterfaceStyle(_ style: UIUserInterfaceStyle) {
+        UIApplication.shared.adyen.mainKeyWindow?.overrideUserInterfaceStyle = style
+        wait(for: .aMoment)
+    }
+
+    func dynamicColor(light: UIColor, dark: UIColor) -> UIColor {
+        UIColor { traitCollection in
+            traitCollection.userInterfaceStyle == .dark ? dark : light
+        }
+    }
+
+    func resolvedBorderColor(for color: UIColor, interfaceStyle: UIUserInterfaceStyle) -> CGColor {
+        color.resolvedColor(with: UITraitCollection(userInterfaceStyle: interfaceStyle)).cgColor
     }
 
     func tapSubmitButton(on view: UIView) {

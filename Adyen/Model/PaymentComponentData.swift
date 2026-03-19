@@ -156,15 +156,17 @@ public struct PaymentComponentData {
     /// - Parameters:
     ///   - completion: The completion closure that is called with the new `PaymentComponentData` instance.
     package func dataByAddingBrowserInfo(completion: @escaping ((_ newData: PaymentComponentData) -> Void)) {
-        BrowserInfo.initialize {
-            completion(PaymentComponentData(
-                paymentMethodDetails: paymentMethod,
-                amount: amount,
-                order: order,
-                storePaymentMethod: storePaymentMethod,
-                browserInfo: $0,
-                installments: installments
-            ))
+        Task { @MainActor in
+            BrowserInfo.initialize {
+                completion(PaymentComponentData(
+                    paymentMethodDetails: paymentMethod,
+                    amount: amount,
+                    order: order,
+                    storePaymentMethod: storePaymentMethod,
+                    browserInfo: $0,
+                    installments: installments
+                ))
+            }
         }
     }
     

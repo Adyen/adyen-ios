@@ -12,6 +12,7 @@ import Adyen3DS2
 @_spi(AdyenInternal) import AdyenUI
 
 @available(iOS 16.0, *)
+@MainActor
 class ThreeDS2ComponentTests: XCTestCase {
 
     func testFullFlowRedirectSuccess() throws {
@@ -278,7 +279,7 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2Component(
-            context: Dummy.context(with: analyticsProviderMock),
+            context: Dummy.context(analyticsProvider: analyticsProviderMock),
             threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
             threeDS2ClassicFlowHandler: threeDS2ActionHandler,
             redirectComponent: redirectComponent

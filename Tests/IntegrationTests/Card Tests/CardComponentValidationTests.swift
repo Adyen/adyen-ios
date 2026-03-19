@@ -11,6 +11,7 @@ import XCTest
 @testable import AdyenDropIn
 @testable import AdyenEncryption
 
+@MainActor
 class CardComponentValidationTests: XCTestCase {
 
     var context: AdyenContext {
