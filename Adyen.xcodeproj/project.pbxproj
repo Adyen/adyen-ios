@@ -239,7 +239,6 @@
 		00FAE54E2B21CE1B0059A6F5 /* TwintDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FAE54D2B21CE1B0059A6F5 /* TwintDetails.swift */; };
 		00FFD8F02A865BFB008D4A5A /* ApplePaySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FFD8EF2A865BFB008D4A5A /* ApplePaySettingsView.swift */; };
 		00FFD8F12A865BFB008D4A5A /* ApplePaySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00FFD8EF2A865BFB008D4A5A /* ApplePaySettingsView.swift */; };
-		210920742F362C4F0014DD55 /* CardImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210920722F362C4F0014DD55 /* CardImageView.swift */; };
 		210920772F362D0F0014DD55 /* PreselectedPaymentMethodIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210920752F362D0F0014DD55 /* PreselectedPaymentMethodIntegrationTests.swift */; };
 		21099B0D2CB7276E0096502C /* PaymentInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21099B0C2CB7276E0096502C /* PaymentInfo.swift */; };
 		211BBD662F6C4F6700EF2172 /* CardImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211BBD652F6C4F6700EF2172 /* CardImageView.swift */; };
@@ -1957,7 +1956,6 @@
 		00FFD8EF2A865BFB008D4A5A /* ApplePaySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePaySettingsView.swift; sourceTree = "<group>"; };
 		0172FC60FB362E959E0E8A57 /* PerformAsyncTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PerformAsyncTests.swift; sourceTree = "<group>"; };
 		15EA5EE423D460DD2E5D65A1 /* ACHDirectDebitComponentConfiguration.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ACHDirectDebitComponentConfiguration.swift; sourceTree = "<group>"; };
-		210920722F362C4F0014DD55 /* CardImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImageView.swift; sourceTree = "<group>"; };
 		210920752F362D0F0014DD55 /* PreselectedPaymentMethodIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentMethodIntegrationTests.swift; sourceTree = "<group>"; };
 		21099B0C2CB7276E0096502C /* PaymentInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentInfo.swift; sourceTree = "<group>"; };
 		211BBD652F6C4F6700EF2172 /* CardImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImageView.swift; sourceTree = "<group>"; };
@@ -3616,14 +3614,6 @@
 			path = Atome;
 			sourceTree = "<group>";
 		};
-		210920732F362C4F0014DD55 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				210920722F362C4F0014DD55 /* CardImageView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		210920762F362D0F0014DD55 /* PreselectedPaymentMethod */ = {
 			isa = PBXGroup;
 			children = (
@@ -4762,7 +4752,6 @@
 		C9C22D962DE5F9920028C23F /* PreselectedPaymentMethod */ = {
 			isa = PBXGroup;
 			children = (
-				210920732F362C4F0014DD55 /* Views */,
 				C9025A4C2DF31E4700E0D191 /* PreselectedPaymentMethodAssembler.swift */,
 				C941A51B2DF9C0B40014AFF1 /* PreselectedPaymentMethodRouter.swift */,
 				C9025A4A2DF3188700E0D191 /* PreselectedPaymentMethodViewController.swift */,
@@ -9116,7 +9105,6 @@
 				C941A5202DF9C2C10014AFF1 /* PaymentMethodListAssembler.swift in Sources */,
 				C9C22D932DE5F9620028C23F /* ComponentContainerViewModel.swift in Sources */,
 				E7DE050627F7243000CB5F83 /* NavigationDelegate.swift in Sources */,
-				210920742F362C4F0014DD55 /* CardImageView.swift in Sources */,
 				C941A5242DF9CB350014AFF1 /* ComponentContainerViewController.swift in Sources */,
 				E9B36CC522451C7100EAA368 /* ComponentManager.swift in Sources */,
 				C941A51E2DF9C21F0014AFF1 /* PaymentMethodListRouter.swift in Sources */,
