@@ -78,7 +78,14 @@ internal final class PaymentMethodItemView: UIView {
     }()
     
     private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [iconImageView, textStackView, trailingInfoView, chevronImageView])
+        let stackView = UIStackView(
+            arrangedSubviews: [
+                iconImageView,
+                textStackView,
+                trailingInfoView,
+                chevronImageView
+            ]
+        )
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .center

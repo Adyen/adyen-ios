@@ -40,7 +40,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     // MARK: - Constants
     
     private enum Constants {
-        /// Payment methods that are displayed separately (e.g., in the header) and should be filtered from the main list.
+        // Payment methods that are displayed separately (e.g., in the header) and should be filtered from the main list.
         internal static let instantPaymentMethods: Set<PaymentMethodType> = [.applePay]
     }
 
