@@ -11,6 +11,7 @@
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
+import Foundation
 
 // sourcery: AutoMockable
 internal protocol StoredCardInputViewModelProtocol: AnyObject {

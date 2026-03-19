@@ -243,6 +243,7 @@
 		21099B0D2CB7276E0096502C /* PaymentInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21099B0C2CB7276E0096502C /* PaymentInfo.swift */; };
 		211BBD662F6C4F6700EF2172 /* CardImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211BBD652F6C4F6700EF2172 /* CardImageView.swift */; };
 		211BBD712F6C4FDD00EF2172 /* StoredCardInputViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211BBD702F6C4FDD00EF2172 /* StoredCardInputViewModelTests.swift */; };
+		211BBD732F6C905100EF2172 /* StoredCardInputViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211BBD722F6C904800EF2172 /* StoredCardInputViewControllerTests.swift */; };
 		2144A4162F3A8D1400CCD7F8 /* AdyenUIImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2144A4152F3A8D1400CCD7F8 /* AdyenUIImages.swift */; };
 		2144A4182F3A8D4D00CCD7F8 /* BundleSPMExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2144A4172F3A8D4D00CCD7F8 /* BundleSPMExtension.swift */; };
 		2144A41B2F3A8F2500CCD7F8 /* AdyenUIAssetsAccessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2144A4192F3A8F2500CCD7F8 /* AdyenUIAssetsAccessTests.swift */; };
@@ -1960,6 +1961,7 @@
 		21099B0C2CB7276E0096502C /* PaymentInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentInfo.swift; sourceTree = "<group>"; };
 		211BBD652F6C4F6700EF2172 /* CardImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImageView.swift; sourceTree = "<group>"; };
 		211BBD702F6C4FDD00EF2172 /* StoredCardInputViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredCardInputViewModelTests.swift; sourceTree = "<group>"; };
+		211BBD722F6C904800EF2172 /* StoredCardInputViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredCardInputViewControllerTests.swift; sourceTree = "<group>"; };
 		2144A4152F3A8D1400CCD7F8 /* AdyenUIImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenUIImages.swift; sourceTree = "<group>"; };
 		2144A4172F3A8D4D00CCD7F8 /* BundleSPMExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleSPMExtension.swift; sourceTree = "<group>"; };
 		2144A4192F3A8F2500CCD7F8 /* AdyenUIAssetsAccessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenUIAssetsAccessTests.swift; sourceTree = "<group>"; };
@@ -6013,6 +6015,7 @@
 				E9E3DAC7221EDDAF00697074 /* CardNumbers.swift */,
 				B6C9DA7A2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift */,
 				F9D57534238291A1009C18B5 /* BCMCComponentTests.swift */,
+				211BBD722F6C904800EF2172 /* StoredCardInputViewControllerTests.swift */,
 				211BBD702F6C4FDD00EF2172 /* StoredCardInputViewModelTests.swift */,
 				F9EDB78C2395643A00CFB3C9 /* CardComponentTests.swift */,
 				21E641B62F3F65910087253F /* PublicKeyFetcherTests.swift */,
@@ -8760,6 +8763,7 @@
 				E9E3DAB2221D79C800697074 /* CardNumberFormatterTests.swift in Sources */,
 				F9EDB796239663F800CFB3C9 /* PaymentComponentMock.swift in Sources */,
 				F9B9F625295485A2008C2E49 /* ThreeDSResultExtension.swift in Sources */,
+				211BBD732F6C905100EF2172 /* StoredCardInputViewControllerTests.swift in Sources */,
 				E7D189B025D31936006AD3B7 /* DropInActionTests.swift in Sources */,
 				B65F0EB42ED493250015AC41 /* FormButtonItemViewThemeTests.swift in Sources */,
 				C95903DE275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift in Sources */,
