@@ -1063,7 +1063,7 @@ class SessionTests: XCTestCase {
         XCTAssertFalse(cardComponent.configuration.showsStorePaymentMethodField)
     }
 
-    func testPaymentsRequestEncodesInstallments() throws {
+    func test_paymentsRequest_withInstallments_shouldEncodeInstallments() throws {
         // Given
         let cardDetails = makeTestCardDetails()
         let installments = Installments(totalMonths: 3, plan: .regular)
@@ -1089,7 +1089,7 @@ class SessionTests: XCTestCase {
         XCTAssertEqual(installmentsJson["plan"] as? String, "regular")
     }
 
-    func testPaymentsRequestOmitsInstallmentsWhenNil() throws {
+    func test_paymentsRequest_withNilInstallments_shouldOmitInstallments() throws {
         // Given
         let cardDetails = makeTestCardDetails()
         let data = PaymentComponentData(
