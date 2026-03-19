@@ -11,6 +11,7 @@ import XCTest
 @testable import AdyenCard
 import AdyenComponents
 @testable import AdyenDropIn
+@testable import AdyenEncryption
 import AdyenNetworking
 
 @MainActor
@@ -1060,6 +1061,54 @@ class SessionTests: XCTestCase {
 
         XCTAssertNil(cardComponent.viewController.view.findView(with: "AdyenCard.CardComponent.storeDetailsItem"))
         XCTAssertFalse(cardComponent.configuration.showsStorePaymentMethodField)
+    }
+
+    func testPaymentsRequestEncodesInstallments() throws {
+        let paymentMethod = CardPaymentMethodMock(fundingSource: .credit, type: .other("test_type"), name: "test name", brands: [.visa, .bcmc])
+        let encryptedCard = EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year")
+        let cardDetails = CardDetails(paymentMethod: paymentMethod, encryptedCard: encryptedCard)
+        let installments = Installments(totalMonths: 3, plan: .regular)
+        let data = PaymentComponentData(
+            paymentMethodDetails: cardDetails,
+            amount: nil,
+            order: nil,
+            installments: installments
+        )
+
+        let request = PaymentsRequest(
+            sessionId: "session_id",
+            sessionData: "session_data",
+            data: data
+        )
+
+        let encodedData = try JSONEncoder().encode(request)
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedData) as? [String: Any])
+
+        let installmentsJson = try XCTUnwrap(json["installments"] as? [String: Any])
+        XCTAssertEqual(installmentsJson["value"] as? Int, 3)
+        XCTAssertEqual(installmentsJson["plan"] as? String, "regular")
+    }
+
+    func testPaymentsRequestOmitsInstallmentsWhenNil() throws {
+        let paymentMethod = CardPaymentMethodMock(fundingSource: .credit, type: .other("test_type"), name: "test name", brands: [.visa, .bcmc])
+        let encryptedCard = EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year")
+        let cardDetails = CardDetails(paymentMethod: paymentMethod, encryptedCard: encryptedCard)
+        let data = PaymentComponentData(
+            paymentMethodDetails: cardDetails,
+            amount: nil,
+            order: nil
+        )
+
+        let request = PaymentsRequest(
+            sessionId: "session_id",
+            sessionData: "session_data",
+            data: data
+        )
+
+        let encodedData = try JSONEncoder().encode(request)
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedData) as? [String: Any])
+
+        XCTAssertNil(json["installments"])
     }
 
     private func initializeSession(
