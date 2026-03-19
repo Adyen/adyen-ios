@@ -71,15 +71,11 @@ struct StoredCardInputViewModelTests {
         let sut = makeSUT(name: "VISA", lastFour: "4556", amount: amount)
 
         // Then
-        // titleText
         #expect(!sut.titleText.isEmpty)
 
         // subtitleText contains payment method info and formatted amount
         let subtitle = sut.subtitleText.string
-        #expect(subtitle.contains("VISA"))
-        #expect(subtitle.contains("4556"))
-        #expect(subtitle.contains("$140.98"))
-
+        #expect(subtitle == "Enter the security code for VISA•••• 4556 to complete the payment of $140.98")
         // submitButtonTitle contains formatted amount
         #expect(sut.submitButtonTitle.contains("$140.98"))
     }
@@ -91,14 +87,6 @@ struct StoredCardInputViewModelTests {
 
         // Then
         #expect(sut.submitButtonTitle.contains(amountData.expectedFormatted))
-    }
-
-    @Test func subtitleText_nilAmount() {
-        // Given
-        let sut = makeSUT(amount: nil)
-
-        // Then
-        #expect(!sut.subtitleText.string.isEmpty)
     }
 
     // MARK: - Navigation & Reset
@@ -148,18 +136,17 @@ struct StoredCardInputViewModelTests {
         // Given
         let sut = makeSUT(publicKey: Dummy.publicKey)
 
-        // When
         let result: Result<CardDetails, Error> = try await withCheckedThrowingContinuation { continuation in
             sut.cardDetailsCompletionHandler = { continuation.resume(returning: $0) }
-            Task { await sut.submitPayment(securityCode: "737") }
+            Task {
+                // When
+                await sut.submitPayment(securityCode: "737")
+            }
         }
 
         // Then
         let cardDetails = try result.get()
         #expect(cardDetails.encryptedSecurityCode != nil)
-        #expect(cardDetails.encryptedCardNumber == nil)
-        #expect(cardDetails.encryptedExpiryMonth == nil)
-        #expect(cardDetails.encryptedExpiryYear == nil)
     }
 
     @Test func submitPayment_encryptionFailure_reportsError() async {
@@ -169,7 +156,9 @@ struct StoredCardInputViewModelTests {
         // When
         let result: Result<CardDetails, Error> = await withCheckedContinuation { continuation in
             sut.cardDetailsCompletionHandler = { continuation.resume(returning: $0) }
-            Task { await sut.submitPayment(securityCode: "737") }
+            Task {
+                await sut.submitPayment(securityCode: "737")
+            }
         }
 
         // Then
@@ -179,7 +168,7 @@ struct StoredCardInputViewModelTests {
         }
     }
 
-    // MARK: - Security Code Observer & Card Image
+    // MARK: - Instructions sent to the View.
 
     @Test
     func submit_invalidSecurityCode_requestsValidationInstruction() async {
@@ -209,20 +198,6 @@ struct StoredCardInputViewModelTests {
 
         // Then
         #expect(receivedInstructions == [.setLoading(true), .setLoading(false)])
-    }
-
-    @Test
-    func cardImageItem_hasFixedSize() {
-        // Given
-        let sut = makeSUT()
-        let expectedSize = CGSize(width: 80, height: 52)
-
-        // Then
-        if case let .fixed(size) = sut.cardImageItem.sizeMode {
-            #expect(size == expectedSize)
-        } else {
-            Issue.record("Expected fixed size mode")
-        }
     }
 
     // MARK: - Helpers

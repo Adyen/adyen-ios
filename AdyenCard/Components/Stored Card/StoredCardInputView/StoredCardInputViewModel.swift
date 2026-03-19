@@ -100,6 +100,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
     }
 
     /// We construct something like - Enter the security code for BOLD[Visa •••• 4556] to complete the payment of BOLD[$140.98]
+    // TODO: Robert: StoredView: This & the pay button title needs to change according to the amount.
     internal var subtitleText: NSAttributedString {
         let displayInformation = storedCardPaymentMethod.displayInformation(using: localizationParameters)
         let paymentMethodTitle = storedCardPaymentMethod.name + displayInformation.title
