@@ -61,7 +61,7 @@ public final class RedirectComponent: ActionComponent {
     
     internal var appLauncher: AnyAppLauncher = AppLauncher()
     
-    internal lazy var apiClient: APIClientProtocol = {
+    internal lazy var apiClient: AsyncAPIClientProtocol = {
         APIClient(apiContext: context.apiContext)
     }()
     
@@ -190,14 +190,13 @@ public final class RedirectComponent: ActionComponent {
             redirectData: redirectStateData,
             returnQueryString: queryString
         )
-        apiClient.perform(request) { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case let .failure(error):
-                self.sendErrorEvent(.apiErrorNativeRedirect, type: .api)
-                self.delegate?.didFail(with: error, from: self)
-            case let .success(response):
-                self.notifyDelegateDidProvide(redirectDetails: response, action)
+        Task {
+            do {
+                let response = try await apiClient.performAsync(request)
+                notifyDelegateDidProvide(redirectDetails: response, action)
+            } catch {
+                sendErrorEvent(.apiErrorNativeRedirect, type: .api)
+                delegate?.didFail(with: error, from: self)
             }
         }
     }

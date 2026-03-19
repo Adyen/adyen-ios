@@ -65,27 +65,18 @@ extension Session {
             sessionData: state.data,
             data: paymentComponentData
         )
-        apiClient.perform(request) { @MainActor [weak self] in
-            self?.handle(paymentResponseResult: $0, for: component, in: dropInComponent)
+        Task {
+            do {
+                let response: PaymentsResponse = try await apiClient.performAsync(request)
+                handle(paymentResponse: response, for: component, in: dropInComponent)
+            } catch {
+                finish(with: error, component: component)
+            }
         }
     }
     
     @MainActor
     internal func handle(
-        paymentResponseResult: Result<PaymentsResponse, Error>,
-        for currentComponent: Component,
-        in dropInComponent: AnyDropInComponent? = nil
-    ) {
-        switch paymentResponseResult {
-        case let .success(response):
-            handle(paymentResponse: response, for: currentComponent, in: dropInComponent)
-        case let .failure(error):
-            finish(with: error, component: currentComponent)
-        }
-    }
-    
-    @MainActor
-    private func handle(
         paymentResponse response: PaymentsResponse,
         for currentComponent: Component,
         in dropInComponent: AnyDropInComponent?

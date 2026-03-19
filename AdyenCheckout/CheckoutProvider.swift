@@ -103,7 +103,7 @@ internal class CheckoutProvider: CheckoutProviding {
     internal func setupSession(
         with sessionResponse: SessionResponse,
         adyenContext: AdyenContext,
-        apiClient: APIClientProtocol
+        apiClient: AsyncAPIClientProtocol
     ) async throws -> SessionProtocol {
         try await Session.setup(
             with: sessionResponse,
