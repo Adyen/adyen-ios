@@ -24,7 +24,7 @@ internal class DropInViewModel: DropInViewModelProtocol {
 
     internal let title: String
     private let componentManager: ComponentManager
-    private let apiClient: APIClientProtocol
+    private let apiClient: AsyncAPIClientProtocol
     private let paymentMethods: PaymentMethods
     private let context: AdyenContext
     private let configuration: DropInComponent.Configuration
@@ -34,7 +34,7 @@ internal class DropInViewModel: DropInViewModelProtocol {
     internal init(
         title: String,
         componentManager: ComponentManager,
-        apiClient: APIClientProtocol,
+        apiClient: AsyncAPIClientProtocol,
         paymentMethods: PaymentMethods,
         context: AdyenContext,
         configuration: DropInComponent.Configuration

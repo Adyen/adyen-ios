@@ -17,7 +17,7 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
     
     private let minBinLength: Int
 
-    private let apiClient: APIClientProtocol
+    private let apiClient: AsyncAPIClientProtocol
 
     private let adyenContext: AdyenContext
 
@@ -27,12 +27,8 @@ internal final class BinInfoProvider: AnyBinInfoProvider {
     
     private let binLookupType: BinLookupRequestType
     
-    /// Create a new instance of CardTypeProvider.
-    /// - Parameters:
-    ///   - fallbackCardTypeProvider: Any instance of `AnyCardBrandProvider` to be used as a fallback
-    ///   if API not available or BIN too short.
     internal init(
-        apiClient: APIClientProtocol,
+        apiClient: AsyncAPIClientProtocol,
         adyenContext: AdyenContext,
         fallbackCardTypeProvider: AnyBinInfoProvider = FallbackBinInfoProvider(),
         minBinLength: Int,

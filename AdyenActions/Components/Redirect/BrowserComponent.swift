@@ -8,6 +8,7 @@
 import SafariServices
 import UIKit
 
+@MainActor
 internal protocol BrowserComponentDelegate: AnyObject {
     func didCancel()
     func didOpenExternalApplication()

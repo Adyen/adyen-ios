@@ -56,14 +56,20 @@ extension Session {
         dropInComponent: AnyDropInComponent?
     ) {
         (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
+        
         let request = PaymentDetailsRequest(
             sessionId: state.identifier,
             sessionData: state.data,
             paymentData: actionComponentData.paymentData,
             details: actionComponentData.details
         )
-        apiClient.perform(request) { @MainActor [weak self] in
-            self?.handle(paymentResponseResult: $0, for: component)
+        Task {
+            do {
+                let response: PaymentsResponse = try await apiClient.performAsync(request)
+                handle(paymentResponse: response, for: component, in: dropInComponent)
+            } catch {
+                finish(with: error, component: component)
+            }
         }
     }
 }
