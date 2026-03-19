@@ -104,7 +104,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
     // TODO: Robert: StoredView: This & the pay button title needs to change according to the amount.
     internal var subtitleText: NSAttributedString {
         let displayInformation = storedCardPaymentMethod.displayInformation(using: localizationParameters)
-        let paymentMethodTitle = storedCardPaymentMethod.name + displayInformation.title
+        let paymentMethodTitle = storedCardPaymentMethod.name + " " + displayInformation.title
         let localizedString = localizedString(.cardComponentInputDescription, localizationParameters, paymentMethodTitle, formattedAmount)
 
         let attributed = NSMutableAttributedString(string: localizedString)

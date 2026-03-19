@@ -75,7 +75,7 @@ struct StoredCardInputViewModelTests {
 
         // subtitleText contains payment method info and formatted amount
         let subtitle = sut.subtitleText.string
-        #expect(subtitle == "Enter the security code for VISA•••• 4556 to complete the payment of $140.98")
+        #expect(subtitle == "Enter the security code for VISA •••• 4556 to complete the payment of $140.98")
         // submitButtonTitle contains formatted amount
         #expect(sut.submitButtonTitle.contains("$140.98"))
     }
