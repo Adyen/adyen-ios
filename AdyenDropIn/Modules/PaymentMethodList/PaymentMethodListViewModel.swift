@@ -110,8 +110,8 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     internal func selectApplePay() {
         guard applePayComponent == nil else { return }
-        guard let applePay = applePayPaymentMethod else { return }
-        self.applePayComponent = componentManager.buildComponent(for: applePay)
+        guard let applePayPaymentMethod else { return }
+        self.applePayComponent = componentManager.buildComponent(for: applePayPaymentMethod)
         applePayComponent?.delegate = self
 
         guard let applePayViewController = (applePayComponent as? PresentableComponent)?.viewController else { return }
@@ -169,11 +169,11 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             trailingInfo: displayInformation.trailingInfo,
             logoURLProvider: logoURLProvider,
             accessibilityLabel: displayInformation.accessibilityLabel,
+            theme: theme,
             selectionHandler: { [weak self] in
                 guard !(paymentMethod is OrderPaymentMethod) else { return }
                 self?.select(paymentMethod: paymentMethod)
-            },
-            theme: theme
+            }
         )
     }
 }

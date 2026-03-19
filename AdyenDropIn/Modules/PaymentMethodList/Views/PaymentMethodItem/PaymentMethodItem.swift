@@ -47,8 +47,8 @@ internal struct PaymentMethodItem: Identifiable {
     internal let iconURL: URL?
     internal let trailingInfo: TrailingInfoType?
     internal let accessibilityLabel: String?
-    internal let selectionHandler: (() -> Void)?
     internal let theme: AdyenTheme
+    internal let selectionHandler: (() -> Void)?
 
     internal init(
         title: String,
@@ -57,8 +57,8 @@ internal struct PaymentMethodItem: Identifiable {
         trailingInfo: DisplayInformation.TrailingInfoType? = nil,
         logoURLProvider: LogoURLProvider,
         accessibilityLabel: String? = nil,
-        selectionHandler: (() -> Void)? = nil,
-        theme: AdyenTheme
+        theme: AdyenTheme,
+        selectionHandler: (() -> Void)? = nil
     ) {
         self.title = title
         self.subtitle = subtitle
@@ -69,7 +69,7 @@ internal struct PaymentMethodItem: Identifiable {
             subtitle,
             self.trailingInfo?.accessibilityLabel
         ].compactMap { $0 }.joined(separator: ", ")
-        self.selectionHandler = selectionHandler
         self.theme = theme
+        self.selectionHandler = selectionHandler
     }
 }

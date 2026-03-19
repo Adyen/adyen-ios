@@ -46,7 +46,7 @@ internal class PaymentMethodListViewController: UIViewController {
         return view
     }()
 
-    private lazy var paymentMethodSections: UIStackView = {
+    private lazy var paymentMethodSectionsStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = 32
@@ -107,7 +107,7 @@ internal class PaymentMethodListViewController: UIViewController {
         setupNavigationItem()
         setupScrollView()
         setupHeaderView()
-        setupPaymentMethodSections()
+        setupPaymentMethodSectionsStackView()
         setupLoadingOverlay()
         observeState()
     }
@@ -137,8 +137,8 @@ internal class PaymentMethodListViewController: UIViewController {
         contentStackView.setCustomSpacing(32, after: headerView)
     }
 
-    private func setupPaymentMethodSections() {
-        contentStackView.addArrangedSubview(paymentMethodSections)
+    private func setupPaymentMethodSectionsStackView() {
+        contentStackView.addArrangedSubview(paymentMethodSectionsStackView)
     }
 
     private func setupNavigationItem() {
@@ -176,23 +176,23 @@ internal class PaymentMethodListViewController: UIViewController {
     }
 
     private func reload(with sections: [PaymentMethodSection]) {
-        clearPaymentMethods()
-        populatePaymentMethods(with: sections)
+        clearList()
+        populateList(with: sections)
     }
     
     // MARK: - Payment Methods Stack View Management
     
-    private func clearPaymentMethods() {
-        paymentMethodSections.arrangedSubviews.forEach { view in
-            paymentMethodSections.removeArrangedSubview(view)
+    private func clearList() {
+        paymentMethodSectionsStackView.arrangedSubviews.forEach { view in
+            paymentMethodSectionsStackView.removeArrangedSubview(view)
             view.removeFromSuperview()
         }
     }
     
-    private func populatePaymentMethods(with sections: [PaymentMethodSection]) {
+    private func populateList(with sections: [PaymentMethodSection]) {
         sections.forEach { section in
             let sectionView = PaymentMethodSectionView(section: section)
-            paymentMethodSections.addArrangedSubview(sectionView)
+            paymentMethodSectionsStackView.addArrangedSubview(sectionView)
         }
     }
     

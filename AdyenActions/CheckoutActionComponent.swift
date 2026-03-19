@@ -13,6 +13,7 @@ import UIKit
 /**
  An action handler component to perform any supported action out of the box.
  */
+@MainActor
 public final class CheckoutActionComponent: ActionComponent, ActionHandlingComponent {
     
     /// :nodoc:

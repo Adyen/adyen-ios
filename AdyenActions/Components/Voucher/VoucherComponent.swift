@@ -18,6 +18,7 @@ internal protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
 }
 
 /// A component that handles voucher action.
+@MainActor
 public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent {
 
     /// The context object for this component.

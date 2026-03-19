@@ -16,7 +16,8 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
 
-    internal lazy var context: AdyenContext = generateContext()
+    /// comes from demo app protocol, unused on new structure
+    internal var context: AdyenContext?
 
     // MARK: - Initializers
 
@@ -24,16 +25,25 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
 
     internal func start() {
         presenter?.showLoadingIndicator()
-        requestPaymentMethods(order: nil) { [weak self] result in
-            guard let self else { return }
+        Task {
+            do {
+                try await initializeExampleAppAdyenContext()
+                requestPaymentMethods(order: nil) { [weak self] result in
+                    guard let self else { return }
 
-            self.presenter?.hideLoadingIndicator()
+                    self.presenter?.hideLoadingIndicator()
 
-            switch result {
-            case let .success(paymentMethods):
-                self.presentComponent(with: paymentMethods)
+                    switch result {
+                    case let .success(paymentMethods):
+                        self.presentComponent(with: paymentMethods)
 
-            case let .failure(error):
+                    case let .failure(error):
+                        self.presenter?.presentAlert(with: error, retryHandler: nil)
+                    }
+                }
+
+            } catch {
+                self.presenter?.hideLoadingIndicator()
                 self.presenter?.presentAlert(with: error, retryHandler: nil)
             }
         }
@@ -49,6 +59,9 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
 
     private func dropInComponent(from paymentMethods: PaymentMethods) -> DropInComponent {
         let configuration = dropInConfiguration(from: paymentMethods)
+        guard let context else {
+            fatalError("AdyenContext not initialized")
+        }
         let component = DropInComponent(
             paymentMethods: paymentMethods,
             context: context,

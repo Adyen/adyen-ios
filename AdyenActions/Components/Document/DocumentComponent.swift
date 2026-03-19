@@ -12,6 +12,7 @@ import AdyenNetworking
 import UIKit
 
 /// A component that handles document actions.
+@MainActor
 public final class DocumentComponent: ActionComponent, ShareableComponent {
 
     /// The context object for this component.

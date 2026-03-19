@@ -9,6 +9,7 @@
 import AdyenNetworking
 import XCTest
 
+@MainActor
 class PollingComponentTests: XCTestCase {
 
     func testRetryWhenResultIsReceived() {

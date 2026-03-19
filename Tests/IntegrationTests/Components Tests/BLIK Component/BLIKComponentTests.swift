@@ -77,7 +77,7 @@ class BLIKComponentTests: XCTestCase {
     func testViewDidLoadShouldSendInitialCall() {
         // When
         let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(with: analyticsProviderMock)
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
         sut = BLIKComponent(paymentMethod: paymentMethod, context: context)
         sut.viewDidLoad(viewController: sut.viewController)
 

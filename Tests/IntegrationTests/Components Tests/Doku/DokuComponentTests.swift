@@ -157,7 +157,7 @@ class DokuComponentTests: XCTestCase {
     func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(with: analyticsProviderMock)
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
         let sut = DokuComponent(
             paymentMethod: paymentMethod,
             context: context,
