@@ -44,7 +44,7 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
         // fire-and-forget remaining events without capturing self
         if let request = requestWithAllEvents() {
             let apiClient = apiClient
-            Task { @MainActor in
+            Task {
                 _ = try? await apiClient.performAsync(request)
             }
         }

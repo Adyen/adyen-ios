@@ -16,15 +16,15 @@ internal final class SessionAPIClient: AsyncAPIClientProtocol {
     private let apiClient: AsyncAPIClientProtocol
     
     /// Closure that is called after a session related API call, to update the session data with the new value.
-    private var onSessionDataUpdate: (@MainActor @Sendable (SessionDataAware) -> Void)?
+    private var onSessionDataUpdate: ((SessionDataAware) -> Void)?
     
     /// Closure that is called after a session related API call, to update the session result with the new values.
-    private var onSessionResultUpdate: (@MainActor @Sendable (SessionResultAware) -> Void)?
+    private var onSessionResultUpdate: ((SessionResultAware) -> Void)?
     
     internal init(
         apiClient: AsyncAPIClientProtocol,
-        onSessionDataUpdate: (@MainActor @Sendable (SessionDataAware) -> Void)? = nil,
-        onSessionResultUpdate: (@MainActor @Sendable (SessionResultAware) -> Void)? = nil
+        onSessionDataUpdate: ((SessionDataAware) -> Void)? = nil,
+        onSessionResultUpdate: ((SessionResultAware) -> Void)? = nil
     ) {
         self.apiClient = apiClient
         self.onSessionDataUpdate = onSessionDataUpdate
@@ -33,7 +33,7 @@ internal final class SessionAPIClient: AsyncAPIClientProtocol {
     
     internal func perform<R: Request>(_ request: R) async throws -> HTTPResponse<R.ResponseType> {
         let response = try await apiClient.perform(request)
-        await updateSession(with: response.responseBody)
+        updateSession(with: response.responseBody)
         return response
     }
     
@@ -41,12 +41,12 @@ internal final class SessionAPIClient: AsyncAPIClientProtocol {
         try await apiClient.perform(request)
     }
     
-    private func updateSession(with response: Any) async {
+    private func updateSession(with response: Any) {
         if let response = response as? SessionDataAware {
-            await onSessionDataUpdate?(response)
+            onSessionDataUpdate?(response)
         }
         if let response = response as? SessionResultAware {
-            await onSessionResultUpdate?(response)
+            onSessionResultUpdate?(response)
         }
     }
 }

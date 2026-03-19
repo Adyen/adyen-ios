@@ -29,7 +29,11 @@ internal final class BinLookupService: AnyBinLookupService {
     
     private let binLookupType: BinLookupRequestType
     
-    internal init(publicKey: String, apiClient: AsyncAPIClientProtocol, binLookupType: BinLookupRequestType) {
+    internal init(
+        publicKey: String,
+        apiClient: AsyncAPIClientProtocol,
+        binLookupType: BinLookupRequestType
+    ) {
         self.publicKey = publicKey
         self.apiClient = apiClient
         self.binLookupType = binLookupType
