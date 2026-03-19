@@ -76,7 +76,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
         self.analyticsProvider = analyticsProvider
     }
 
-    internal lazy var cardImageItem: AdyenUI.CardImageItem = {
+    internal lazy var cardImageItem: CardImageItem = {
         let displayInformation = storedCardPaymentMethod.displayInformation(using: localizationParameters)
         let imageURL = LogoURLProvider.logoURL(
             withName: displayInformation.logoName,
