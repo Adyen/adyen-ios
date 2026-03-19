@@ -12,11 +12,6 @@
     import AdyenEncryption
 #endif
 
-internal enum StoredCardInputViewInstruction: Equatable {
-    case setLoading(Bool)
-    case showSecurityCodeValidation
-}
-
 // sourcery: AutoMockable
 internal protocol StoredCardInputViewModelProtocol: AnyObject {
     var cardImageItem: CardImageItem { get }
@@ -28,14 +23,17 @@ internal protocol StoredCardInputViewModelProtocol: AnyObject {
     var submitButtonTitle: String { get }
     @MainActor func submit() async
 
-    var showAllPaymentMethodsButtonTitle: String { get }
-    @MainActor func showAllPaymentMethods()
-
     @MainActor func dismiss()
 
     var theme: AdyenTheme { get }
     var onViewInstruction: Completion<StoredCardInputViewInstruction>? { get set }
     func viewDidLoad()
+}
+
+/// Instructions that are sent to the View form the view model
+internal enum StoredCardInputViewInstruction: Equatable {
+    case setLoading(Bool)
+    case showSecurityCodeValidation
 }
 
 internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol, AdyenObserver {
@@ -142,17 +140,6 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
     @MainActor internal func dismiss() {
         resetSecurityCodeField()
         closeHandler?()
-    }
-
-    // MARK: - Other payment options
-
-    internal var showAllPaymentMethodsButtonTitle: String {
-        localizedString(.preselectedPaymentMethodOtherOptions, localizationParameters)
-    }
-
-    @MainActor internal func showAllPaymentMethods() {
-        resetSecurityCodeField()
-        otherPaymentOptionsHandler?()
     }
 
     // MARK: - Submit payment

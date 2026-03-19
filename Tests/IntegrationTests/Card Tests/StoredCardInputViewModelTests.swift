@@ -82,9 +82,6 @@ struct StoredCardInputViewModelTests {
 
         // submitButtonTitle contains formatted amount
         #expect(sut.submitButtonTitle.contains("$140.98"))
-
-        // showAllPaymentMethodsButtonTitle
-        #expect(!sut.showAllPaymentMethodsButtonTitle.isEmpty)
     }
 
     @Test(arguments: StoredCardTestData.amounts)
@@ -121,23 +118,7 @@ struct StoredCardInputViewModelTests {
         #expect(sut.securityCodeItem.value == "")
     }
 
-    @Test func showAllPaymentMethods_invokesHandlerAndResets() {
-        // Given
-        let sut = makeSUT()
-        sut.securityCodeItem.value = "123"
-        var handlerCalled = false
-        sut.otherPaymentOptionsHandler = { handlerCalled = true }
-
-        // When
-        sut.showAllPaymentMethods()
-
-        // Then
-        #expect(handlerCalled)
-        #expect(sut.securityCodeItem.value == "")
-    }
-
-    @Test(arguments: NavigationAction.allCases)
-    func navigatingAway_resetsSecurityCode(action: NavigationAction) {
+    func navigatingAway_resetsSecurityCode() {
         // Given
         let sut = makeSUT()
         sut.securityCodeItem.value = "999"
@@ -145,13 +126,10 @@ struct StoredCardInputViewModelTests {
         sut.otherPaymentOptionsHandler = {}
 
         // When
-        switch action {
-        case .dismiss: sut.dismiss()
-        case .showAllPaymentMethods: sut.showAllPaymentMethods()
-        }
+        sut.dismiss()
 
         // Then
-        #expect(sut.securityCodeItem.value == "", "Security code should be cleared after \(action)")
+        #expect(sut.securityCodeItem.value == "", "Security code should be cleared after dismiss")
     }
 
     @Test func navigation_withoutHandlers_doesNotCrash() {
@@ -162,7 +140,6 @@ struct StoredCardInputViewModelTests {
 
         // When / Then - no crash
         sut.dismiss()
-        sut.showAllPaymentMethods()
     }
 
     // MARK: - Submit Payment
@@ -285,21 +262,9 @@ struct StoredCardInputViewModelTests {
 
 // MARK: - Test Data
 
-enum NavigationAction: CaseIterable, CustomTestStringConvertible {
-    case dismiss
-    case showAllPaymentMethods
-
-    var testDescription: String {
-        switch self {
-        case .dismiss: "dismiss"
-        case .showAllPaymentMethods: "showAllPaymentMethods"
-        }
-    }
-}
-
 enum StoredCardTestData {
 
-    static let allBrands: [CardType] = [.visa, .masterCard, .americanExpress]
+    static let allBrands: [CardType] = [.visa, .masterCard, .americanExpress, .other(named: "abcdef")]
 
     struct AmountData: CustomTestStringConvertible {
         let amount: Amount

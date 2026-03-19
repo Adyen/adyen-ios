@@ -112,14 +112,6 @@ internal class StoredCardInputViewController: UIViewController {
         return button
     }()
 
-    private lazy var secondaryButton: FormButton = {
-        let button = FormButton(buttonStyle: theme.elements.buttons.secondary)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(secondaryButtonTapped), for: .touchUpInside)
-        button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "secondaryButton")
-        return button
-    }()
-
     // MARK: - Properties
 
     private let viewModel: StoredCardInputViewModelProtocol
@@ -168,7 +160,6 @@ internal class StoredCardInputViewController: UIViewController {
         labelsStackView.addArrangedSubview(subtitleLabel)
 
         buttonsStackView.addArrangedSubview(primaryButton)
-        buttonsStackView.addArrangedSubview(secondaryButton)
 
         configureConstraints()
         configureContent()
@@ -210,7 +201,6 @@ internal class StoredCardInputViewController: UIViewController {
         titleLabel.text = viewModel.titleText
         subtitleLabel.attributedText = viewModel.subtitleText
         primaryButton.title = viewModel.submitButtonTitle
-        secondaryButton.title = viewModel.showAllPaymentMethodsButtonTitle
     }
 
     private func updateLoadingState(_ isLoading: Bool) {
@@ -240,12 +230,7 @@ internal class StoredCardInputViewController: UIViewController {
         }
     }
 
-    @objc private func secondaryButtonTapped() {
-        viewModel.showAllPaymentMethods()
-    }
-
     @objc private func backTapped() {
         viewModel.dismiss()
     }
-
 }
