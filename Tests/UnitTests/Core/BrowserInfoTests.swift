@@ -8,7 +8,7 @@
 import XCTest
 
 class BrowserInfoTests: XCTestCase {
-    
+    @MainActor
     func testBrowserInfoInitialize() {
         let browserInfoExpectation = expectation(description: "Expect the BrowserInfo.initialize() to return a valid instance")
         BrowserInfo.initialize { info in

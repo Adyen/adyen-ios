@@ -29,14 +29,12 @@ internal protocol StoredCardInputViewModelProtocol: AnyObject {
     @MainActor func submit() async
 
     var showAllPaymentMethodsButtonTitle: String { get }
-    func showAllPaymentMethods()
+    @MainActor func showAllPaymentMethods()
 
-    func dismiss()
+    @MainActor func dismiss()
 
     var theme: AdyenTheme { get }
-
     var onViewInstruction: Completion<StoredCardInputViewInstruction>? { get set }
-
     func viewDidLoad()
 }
 

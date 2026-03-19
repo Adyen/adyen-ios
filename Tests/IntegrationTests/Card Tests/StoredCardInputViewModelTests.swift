@@ -46,16 +46,14 @@ struct StoredCardInputViewModelTests {
     @Test
     func submitPayment_encryptionFailure_sendsErrorEvent() async throws {
         // Given
-        let publicKeyProviderMock = PublicKeyProviderMock()
-        publicKeyProviderMock.onFetch = { $0(.success("invalid_public_key")) }
         let analyticsProviderMock = AnalyticsProviderMock()
-        let sut = makeSUT(analyticsProvider: analyticsProviderMock, publicKeyProvider: publicKeyProviderMock)
+        let sut = makeSUT(publicKey: "invalid_public_key", analyticsProvider: analyticsProviderMock)
         sut.securityCodeItem.value = "737"
 
         // When
         await withCheckedContinuation { continuation in
             sut.cardDetailsCompletionHandler = { _ in continuation.resume() }
-            Task { await sut.submitPayment() }
+            Task { await sut.submitPayment(securityCode: "737") }
         }
 
         // Then
@@ -171,15 +169,12 @@ struct StoredCardInputViewModelTests {
 
     @Test func submitPayment_success() async throws {
         // Given
-        let publicKeyProviderMock = PublicKeyProviderMock()
-        publicKeyProviderMock.onFetch = { $0(.success(Dummy.publicKey)) }
-        let sut = makeSUT(publicKeyProvider: publicKeyProviderMock)
-        sut.securityCodeItem.value = "737"
+        let sut = makeSUT(publicKey: Dummy.publicKey)
 
         // When
         let result: Result<CardDetails, Error> = try await withCheckedThrowingContinuation { continuation in
             sut.cardDetailsCompletionHandler = { continuation.resume(returning: $0) }
-            Task { await sut.submitPayment() }
+            Task { await sut.submitPayment(securityCode: "737") }
         }
 
         // Then
@@ -188,20 +183,16 @@ struct StoredCardInputViewModelTests {
         #expect(cardDetails.encryptedCardNumber == nil)
         #expect(cardDetails.encryptedExpiryMonth == nil)
         #expect(cardDetails.encryptedExpiryYear == nil)
-        #expect(sut.securityCodeItem.value == "", "Security code should be reset after submit")
     }
 
-    @Test func submitPayment_publicKeyFailure() async {
+    @Test func submitPayment_encryptionFailure_reportsError() async {
         // Given
-        let publicKeyProviderMock = PublicKeyProviderMock()
-        publicKeyProviderMock.onFetch = { $0(.failure(Dummy.error)) }
-        let sut = makeSUT(publicKeyProvider: publicKeyProviderMock)
-        sut.securityCodeItem.value = "737"
+        let sut = makeSUT(publicKey: "invalid_key")
 
         // When
         let result: Result<CardDetails, Error> = await withCheckedContinuation { continuation in
             sut.cardDetailsCompletionHandler = { continuation.resume(returning: $0) }
-            Task { await sut.submitPayment() }
+            Task { await sut.submitPayment(securityCode: "737") }
         }
 
         // Then
@@ -231,9 +222,7 @@ struct StoredCardInputViewModelTests {
     @Test
     func submit_validSecurityCode_togglesLoadingInstructions() async {
         // Given
-        let publicKeyProviderMock = PublicKeyProviderMock()
-        publicKeyProviderMock.onFetch = { $0(.success(Dummy.publicKey)) }
-        let sut = makeSUT(publicKeyProvider: publicKeyProviderMock)
+        let sut = makeSUT(publicKey: Dummy.publicKey)
         var receivedInstructions: [StoredCardInputViewInstruction] = []
         sut.onViewInstruction = { receivedInstructions.append($0) }
 
@@ -266,8 +255,8 @@ struct StoredCardInputViewModelTests {
         lastFour: String = "1111",
         brand: CardType = .visa,
         amount: Amount? = Amount(value: 100, currencyCode: "EUR"),
-        analyticsProvider: AnyAnalyticsProvider? = AnalyticsProviderMock(),
-        publicKeyProvider: PublicKeyProviderMock? = nil
+        publicKey: String = Dummy.publicKey,
+        analyticsProvider: AnyAnalyticsProvider? = AnalyticsProviderMock()
     ) -> StoredCardInputViewModel {
         let storedCardPaymentMethod = StoredCardPaymentMethod(
             type: .card,
@@ -286,10 +275,10 @@ struct StoredCardInputViewModelTests {
             theme: .default,
             storedCardPaymentMethod: storedCardPaymentMethod,
             apiContext: Dummy.apiContext,
+            publicKey: publicKey,
             amount: amount,
             analyticsProvider: analyticsProvider,
-            localizationParameters: nil,
-            publicKeyProvider: publicKeyProvider
+            localizationParameters: nil
         )
     }
 }
@@ -552,5 +541,120 @@ struct StoredCardInputViewControllerProxy {
     func tapBackButton() {
         let backButton = viewController.navigationItem.leftBarButtonItem
         _ = backButton?.target?.perform(backButton?.action)
+    }
+}
+
+// MARK: - StoredCardInputViewModelProtocolMock
+
+class StoredCardInputViewModelProtocolMock: StoredCardInputViewModelProtocol {
+
+    var cardImageItem: CardImageItem {
+        get { underlyingCardImageItem }
+        set(value) { underlyingCardImageItem = value }
+    }
+
+    var underlyingCardImageItem: CardImageItem!
+
+    var titleText: String {
+        get { underlyingTitleText }
+        set(value) { underlyingTitleText = value }
+    }
+
+    var underlyingTitleText: String! = ""
+
+    var subtitleText: NSAttributedString {
+        get { underlyingSubtitleText }
+        set(value) { underlyingSubtitleText = value }
+    }
+
+    var underlyingSubtitleText: NSAttributedString! = NSAttributedString()
+
+    var securityCodeItem: FormCardSecurityCodeItem {
+        get { underlyingSecurityCodeItem }
+        set(value) { underlyingSecurityCodeItem = value }
+    }
+
+    var underlyingSecurityCodeItem: FormCardSecurityCodeItem! = FormCardSecurityCodeItem()
+
+    var submitButtonTitle: String {
+        get { underlyingSubmitButtonTitle }
+        set(value) { underlyingSubmitButtonTitle = value }
+    }
+
+    var underlyingSubmitButtonTitle: String! = ""
+
+    var showAllPaymentMethodsButtonTitle: String {
+        get { underlyingShowAllPaymentMethodsButtonTitle }
+        set(value) { underlyingShowAllPaymentMethodsButtonTitle = value }
+    }
+
+    var underlyingShowAllPaymentMethodsButtonTitle: String! = ""
+
+    var theme: AdyenTheme {
+        get { underlyingTheme }
+        set(value) { underlyingTheme = value }
+    }
+
+    var underlyingTheme: AdyenTheme! = .default
+
+    var onViewInstruction: ((StoredCardInputViewInstruction) -> Void)?
+
+    // MARK: - submit
+
+    var submitCallsCount = 0
+    var submitCalled: Bool {
+        submitCallsCount > 0
+    }
+
+    var submitClosure: (() async -> Void)?
+
+    @MainActor
+    func submit() async {
+        submitCallsCount += 1
+        await submitClosure?()
+    }
+
+    // MARK: - showAllPaymentMethods
+
+    var showAllPaymentMethodsCallsCount = 0
+    var showAllPaymentMethodsCalled: Bool {
+        showAllPaymentMethodsCallsCount > 0
+    }
+
+    var showAllPaymentMethodsClosure: (() -> Void)?
+
+    @MainActor
+    func showAllPaymentMethods() {
+        showAllPaymentMethodsCallsCount += 1
+        showAllPaymentMethodsClosure?()
+    }
+
+    // MARK: - dismiss
+
+    var dismissCallsCount = 0
+    var dismissCalled: Bool {
+        dismissCallsCount > 0
+    }
+
+    var dismissClosure: (() -> Void)?
+
+    @MainActor
+    func dismiss() {
+        dismissCallsCount += 1
+        dismissClosure?()
+    }
+
+    // MARK: - viewDidLoad
+
+    var viewDidLoadCallsCount = 0
+    var viewDidLoadCalled: Bool {
+        viewDidLoadCallsCount > 0
+    }
+
+    var viewDidLoadClosure: (() -> Void)?
+
+    func viewDidLoad() {
+        viewDidLoadCallsCount += 1
+        viewDidLoadClosure?()
     }
 }
