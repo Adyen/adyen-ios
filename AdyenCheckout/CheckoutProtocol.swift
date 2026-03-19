@@ -46,6 +46,6 @@ internal protocol AdyenSessionProviding {
     func setupSession(
         with sessionResponse: SessionResponse,
         adyenContext: AdyenContext,
-        apiClient: APIClientProtocol
+        apiClient: AsyncAPIClientProtocol
     ) async throws -> SessionProtocol
 }

@@ -19,7 +19,7 @@ internal enum ApiClientHelper {
               let sessionResponse = try? JSONDecoder().decode(SessionResponse.self, from: sessionData)
         else { return DefaultAPIClient() }
         
-        let apiClient = APIClientMock()
+        let apiClient = DemoAPIClientMock()
         apiClient.mockedResults = [.success(paymentMethodsResponse), .success(sessionResponse)]
         return apiClient
     }

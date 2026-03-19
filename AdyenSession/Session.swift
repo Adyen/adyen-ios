@@ -57,11 +57,11 @@ public final class Session: SessionProtocol {
     }()
     
     /// The injected API client to be used by the session's API client.
-    private let baseAPIClient: APIClientProtocol
+    private let baseAPIClient: AsyncAPIClientProtocol
     
     internal init(
         state: Session.State,
-        baseAPIClient: APIClientProtocol,
+        baseAPIClient: AsyncAPIClientProtocol,
         context: AdyenContext,
         delegate: SessionDelegate? = nil,
         presentationDelegate: PresentationDelegate? = nil
@@ -81,7 +81,7 @@ public final class Session: SessionProtocol {
     /// - Throws: An error if the session setup fails.
     package static func setup(
         with sessionResponse: SessionResponse,
-        apiClient: APIClientProtocol,
+        apiClient: AsyncAPIClientProtocol,
         context: AdyenContext
     ) async throws -> Session {
         
@@ -101,7 +101,7 @@ public final class Session: SessionProtocol {
     
     internal static func makeSetupCall(
         with sessionResponse: SessionResponse,
-        baseAPIClient: APIClientProtocol,
+        baseAPIClient: AsyncAPIClientProtocol,
         order: PartialPaymentOrder? = nil
     ) async throws -> State {
         
@@ -114,11 +114,7 @@ public final class Session: SessionProtocol {
             order: order
         )
         
-        let response = try await withCheckedThrowingContinuation { continuation in
-            baseAPIClient.perform(request) { result in
-                continuation.resume(with: result)
-            }
-        }
+        let response: SessionSetupResponse = try await baseAPIClient.performAsync(request)
         
         return State(
             data: response.sessionData,

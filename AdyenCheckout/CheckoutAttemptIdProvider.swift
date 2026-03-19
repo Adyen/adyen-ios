@@ -10,29 +10,26 @@ import Foundation
 
 internal protocol CheckoutAttemptIdProviding {
     func fetchCheckoutAttemptId(
-        with apiClient: APIClientProtocol?
+        with apiClient: AsyncAPIClientProtocol?
     ) async -> String?
 }
 
 /// Default implementation that performs the actual API call to fetch the checkout attempt ID.
-/// Note: If there is any failure in fetching the checkoutAttemptId then we will return nil, as that would imply that there should not be any analytics events sent.
-/// Improvement: This is an edge case and the current success rate of the api is pretty high 99 something so this would rarely ever fail. If this ever becomes a constraint we could add a retying logic to try twice if it failed once. But that is an improvement if needed alone.
+/// Note: If there is any failure in fetching the checkoutAttemptId then we will return nil,
+/// as that would imply that there should not be any analytics events sent.
+/// Improvement: This is an edge case and the current success rate of the api is pretty high 99 something so this would rarely ever fail.
+/// If this ever becomes a constraint we could add a retying logic to try twice if it failed once. But that is an improvement if needed.
 internal struct CheckoutAttemptIdProvider: CheckoutAttemptIdProviding {
     internal func fetchCheckoutAttemptId(
-        with apiClient: APIClientProtocol?
+        with apiClient: AsyncAPIClientProtocol?
     ) async -> String? {
         guard let apiClient else {
             return nil
         }
         let request = CheckoutAttemptIdRequest()
-        guard let response = try? await withCheckedThrowingContinuation({ continuation in
-            apiClient.perform(request) { result in
-                continuation.resume(with: result)
-            }
-        }) else {
+        guard let response: CheckoutAttemptIdResponse = try? await apiClient.performAsync(request) else {
             return nil
         }
-
         return response.checkoutAttemptId
     }
 }

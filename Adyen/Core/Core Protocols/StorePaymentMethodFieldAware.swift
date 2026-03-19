@@ -12,6 +12,7 @@ package protocol StorePaymentMethodFieldAware: AdyenSessionAware {
 }
 
 /// Describes whether it is possible to allow for session to remove stored payment methods.
+@MainActor
 package protocol SessionStoredPaymentMethodsDelegate: AdyenSessionAware, StoredPaymentMethodsDelegate {
     
     var showRemovePaymentMethodButton: Bool { get }

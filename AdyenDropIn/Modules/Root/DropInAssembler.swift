@@ -74,11 +74,8 @@ internal struct DropInAssembler {
 
     // MARK: - Private
 
-    private func resolveAPIClient() -> APIClientProtocol {
-        let scheduler = SimpleScheduler(maximumCount: 3)
-        return APIClient(apiContext: context.apiContext)
-            .retryAPIClient(with: scheduler)
-            .retryOnErrorAPIClient()
+    private func resolveAPIClient() -> AsyncAPIClientProtocol {
+        APIClient(apiContext: context.apiContext)
     }
 
     // TODO: - This should be replaced by the future LocalizationProvider
