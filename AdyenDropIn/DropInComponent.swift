@@ -177,9 +177,10 @@ public final class DropInComponent: NSObject,
     ) throws {
         guard let orderData = order.orderData else { throw PartialPaymentError.missingOrderData }
         let request = OrderStatusRequest(orderData: orderData)
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             do {
-                let response: OrderStatusResponse = try await apiClient.performAsync(request)
+                let response: OrderStatusResponse = try await self.apiClient.performAsync(request)
                 self.paymentMethods = paymentMethods
                 self.handle(response, order)
             } catch {

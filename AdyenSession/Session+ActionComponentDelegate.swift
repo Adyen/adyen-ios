@@ -63,7 +63,8 @@ extension Session {
             paymentData: actionComponentData.paymentData,
             details: actionComponentData.details
         )
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             do {
                 let response: PaymentsResponse = try await apiClient.performAsync(request)
                 handle(paymentResponse: response, for: component, in: dropInComponent)

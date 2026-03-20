@@ -67,11 +67,11 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
     internal func sendEventsIfNeeded() {
         guard let request = requestWithAllEvents() else { return }
         
-        Task { @MainActor in
+        Task {
             do {
                 _ = try await apiClient.performAsync(request)
                 removeEvents(sentBy: request)
-                startNextTimer()
+                await MainActor.run { startNextTimer() }
             } catch {}
         }
     }
