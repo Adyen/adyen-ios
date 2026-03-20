@@ -23,7 +23,7 @@ extension Session: PartialPaymentDelegate {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let response: BalanceCheckResponse = try await self.apiClient.performAsync(request)
+                let response: BalanceCheckResponse = try await apiClient.performAsync(request)
                 guard let availableAmount = response.balance else {
                     completion(.failure(BalanceChecker.Error.zeroBalance))
                     return
@@ -44,7 +44,7 @@ extension Session: PartialPaymentDelegate {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let response: CreateOrderResponse = try await self.apiClient.performAsync(request)
+                let response: CreateOrderResponse = try await apiClient.performAsync(request)
                 completion(.success(response.order))
             } catch {
                 completion(.failure(error))

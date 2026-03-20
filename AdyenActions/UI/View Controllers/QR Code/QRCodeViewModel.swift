@@ -22,6 +22,7 @@ internal protocol QRCodeViewModelProtocol {
     func performAction(qrCodeImage: UIImage?, from: UIView)
 }
 
+@MainActor
 internal class QRCodeViewModel: QRCodeViewModelProtocol, Localizable {
     
     private enum Constants {
