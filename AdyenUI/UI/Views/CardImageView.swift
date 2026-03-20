@@ -125,11 +125,23 @@ package final class CardImageView: UIView {
 
     private func applyShadow() {
         containerView.backgroundColor = item.theme.colors.background
-        containerView.layer.shadowColor = item.theme.colors.supportShadow.cgColor
         containerView.layer.shadowOffset = AdyenUIConstants.shadowOffset
         containerView.layer.shadowRadius = AdyenUIConstants.shadowRadius
         containerView.layer.shadowOpacity = AdyenUIConstants.shadowOpacity
         containerView.layer.masksToBounds = false
+        applyShadowColor()
+    }
+
+    /// This is to handle an edge case that if the user switches to dark/light mode while the screen has already been rendered.
+    /// The layer's color doesn't operate on colors which are dynamic by default based on the current trait.
+    /// Which is why the view needs to monitor any trait changes and update the color manually.
+    private func applyShadowColor() {
+        containerView.layer.shadowColor = item.theme.colors.supportShadow.resolvedColor(with: traitCollection).cgColor
+    }
+
+    override package func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        applyShadowColor()
     }
 
     // MARK: - Image Loading
