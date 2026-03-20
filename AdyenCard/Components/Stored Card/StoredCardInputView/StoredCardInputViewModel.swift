@@ -40,7 +40,7 @@ internal enum StoredCardInputViewInstruction: Equatable {
 internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol, AdyenObserver {
 
     private enum Constants {
-        static let cardImageSizeCardArtNotAvailable = CGSize(width: 80, height: 52)
+        static let cardImageSize = CGSize(width: 80, height: 52)
     }
 
     private let localizationParameters: LocalizationParameters?
@@ -85,7 +85,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
         )
         return CardImageItem(
             imageURL: imageURL,
-            sizeMode: .fixed(Constants.cardImageSizeCardArtNotAvailable),
+            sizeMode: .fixed(Constants.cardImageSize),
             theme: theme
         )
     }()
