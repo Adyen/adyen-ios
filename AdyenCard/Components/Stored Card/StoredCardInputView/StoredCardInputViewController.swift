@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2026 Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -17,7 +17,7 @@ internal class StoredCardInputViewController: UIViewController {
     // MARK: - Constants
 
     private enum Constants {
-        static let leftChevronImage = "chevron.left"
+        static let chevronBackwardImage = "chevron.backward"
         static let contentPadding: CGFloat = 24
         static let distanceBetweenImageAndLabels: CGFloat = 12
         static let distanceFromButtonsToLabels: CGFloat = 24
@@ -189,7 +189,7 @@ internal class StoredCardInputViewController: UIViewController {
 
     private func setupNavigationBackButton() {
         let backButton = UIBarButtonItem(
-            image: UIImage(systemName: Constants.leftChevronImage),
+            image: UIImage(systemName: Constants.chevronBackwardImage),
             style: .plain,
             target: self,
             action: #selector(backTapped)
@@ -204,7 +204,6 @@ internal class StoredCardInputViewController: UIViewController {
     }
 
     private func updateLoadingState(_ isLoading: Bool) {
-        primaryButton.isUserInteractionEnabled = !isLoading
         primaryButton.isEnabled = !isLoading
         primaryButton.showsActivityIndicator = isLoading
     }
