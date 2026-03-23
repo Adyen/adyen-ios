@@ -11,6 +11,7 @@
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
+import Combine
 import Foundation
 
 // sourcery: AutoMockable
@@ -27,17 +28,13 @@ internal protocol StoredCardInputViewModelProtocol: AnyObject {
     @MainActor func dismiss()
 
     var theme: AdyenTheme { get }
-    var onViewInstruction: Completion<StoredCardInputViewInstruction>? { get set }
+
+    var onSecurityCodeValidationRequested: VoidCompletion? { get set }
+    var inProgressPublisher: Published<Bool>.Publisher { get }
     func viewDidLoad()
 }
 
-/// Instructions that are sent to the View form the view model
-internal enum StoredCardInputViewInstruction: Equatable {
-    case setLoading(Bool)
-    case showSecurityCodeValidation
-}
-
-internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol, AdyenObserver {
+internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol {
 
     private enum Constants {
         static let cardImageSize = CGSize(width: 80, height: 52)
@@ -51,7 +48,12 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
     private let publicKey: String
 
     internal let theme: AdyenTheme
-    internal var onViewInstruction: Completion<StoredCardInputViewInstruction>?
+    internal var onSecurityCodeValidationRequested: VoidCompletion?
+
+    @Published internal var inProgress: Bool = false
+    internal var inProgressPublisher: Published<Bool>.Publisher {
+        $inProgress
+    }
 
     /// This informs the status of the payment after submitting the security code.
     internal var cardDetailsCompletionHandler: Completion<Result<CardDetails, Error>>?
@@ -148,17 +150,16 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol,
 
     @MainActor internal func submit() async {
         guard securityCodeItem.isValid() else {
-            onViewInstruction?(.showSecurityCodeValidation)
+            onSecurityCodeValidationRequested?()
             return
         }
 
-        onViewInstruction?(.setLoading(true))
-
+        inProgress = true
         let securityCode: String = securityCodeItem.value
         resetSecurityCodeField()
 
         await submitPayment(securityCode: securityCode)
-        onViewInstruction?(.setLoading(false))
+        inProgress = false
     }
 
     internal func submitPayment(securityCode: String) async {

@@ -623,7 +623,13 @@ class StoredCardInputViewModelProtocolMock: StoredCardInputViewModelProtocol {
     }
 
     var underlyingTheme: AdyenTheme!
-    var onViewInstruction: Completion<StoredCardInputViewInstruction>?
+    var onSecurityCodeValidationRequested: VoidCompletion?
+    var inProgressPublisher: Published<Bool>.Publisher {
+        get { underlyingInProgressPublisher }
+        set(value) { underlyingInProgressPublisher = value }
+    }
+
+    var underlyingInProgressPublisher: Published<Bool>.Publisher!
 
     // MARK: - submit
 

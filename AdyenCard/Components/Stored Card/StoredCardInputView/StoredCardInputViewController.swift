@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Combine
 import Foundation
 import UIKit
 @_spi(AdyenInternal) import Adyen
@@ -115,6 +116,7 @@ internal class StoredCardInputViewController: UIViewController {
     // MARK: - Properties
 
     private let viewModel: StoredCardInputViewModelProtocol
+    private var cancellables = Set<AnyCancellable>()
 
     private var theme: AdyenTheme {
         viewModel.theme
@@ -125,7 +127,6 @@ internal class StoredCardInputViewController: UIViewController {
     internal init(viewModel: StoredCardInputViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        setupViewInstructionHandler()
     }
 
     @available(*, unavailable)
@@ -163,6 +164,7 @@ internal class StoredCardInputViewController: UIViewController {
 
         configureConstraints()
         configureContent()
+        setupBindings()
         setupNavigationBackButton()
         disableSwipeDownToDismissScreen()
     }
@@ -206,16 +208,18 @@ internal class StoredCardInputViewController: UIViewController {
         primaryButton.showsActivityIndicator = isLoading
     }
 
-    private func setupViewInstructionHandler() {
-        viewModel.onViewInstruction = { [weak self] instruction in
-            guard let self else { return }
-            switch instruction {
-            case let .setLoading(isLoading):
-                updateLoadingState(isLoading)
-            case .showSecurityCodeValidation:
-                securityCodeItemView.resignFirstResponder()
-                securityCodeItemView.showValidation()
+    private func setupBindings() {
+        viewModel.inProgressPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLoading in
+                self?.updateLoadingState(isLoading)
             }
+            .store(in: &cancellables)
+
+        viewModel.onSecurityCodeValidationRequested = { [weak self] in
+            self?.securityCodeItemView.resignFirstResponder()
+            // Triggers explicit validation
+            self?.securityCodeItemView.showValidation()
         }
     }
 

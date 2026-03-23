@@ -8,6 +8,7 @@
 @testable @_spi(AdyenInternal) import AdyenCard
 @testable import AdyenEncryption
 @_spi(AdyenInternal) @testable import AdyenUI
+import Combine
 import Testing
 import UIKit
 
@@ -106,7 +107,8 @@ struct StoredCardInputViewModelTests {
         #expect(sut.securityCodeItem.value == "")
     }
 
-    func navigatingAway_resetsSecurityCode() {
+    @Test
+    func dismiss_resetsSecurityCode() {
         // Given
         let sut = makeSUT()
         sut.securityCodeItem.value = "999"
@@ -168,36 +170,56 @@ struct StoredCardInputViewModelTests {
         }
     }
 
-    // MARK: - Instructions sent to the View.
+    // MARK: - View callbacks
 
     @Test
-    func submit_invalidSecurityCode_requestsValidationInstruction() async {
+    func submit_invalidSecurityCode_requestsSecurityCodeValidation() async {
         // Given
         let sut = makeSUT()
-        var receivedInstructions: [StoredCardInputViewInstruction] = []
-        sut.onViewInstruction = { receivedInstructions.append($0) }
+        var showValidationCallsCount = 0
+        sut.onSecurityCodeValidationRequested = { showValidationCallsCount += 1 }
 
         // When
         sut.securityCodeItem.value = ""
         await sut.submit()
 
         // Then
-        #expect(receivedInstructions == [.showSecurityCodeValidation])
+        #expect(showValidationCallsCount == 1)
+        #expect(!sut.inProgress)
     }
 
     @Test
-    func submit_validSecurityCode_togglesLoadingInstructions() async {
+    func submit_validSecurityCode_doesNotRequestSecurityCodeValidation() async {
         // Given
         let sut = makeSUT(publicKey: Dummy.publicKey)
-        var receivedInstructions: [StoredCardInputViewInstruction] = []
-        sut.onViewInstruction = { receivedInstructions.append($0) }
+        var showValidationCallsCount = 0
+        sut.onSecurityCodeValidationRequested = { showValidationCallsCount += 1 }
 
         // When
         sut.securityCodeItem.value = "737"
         await sut.submit()
 
         // Then
-        #expect(receivedInstructions == [.setLoading(true), .setLoading(false)])
+        #expect(showValidationCallsCount == 0)
+    }
+
+    @Test
+    func submit_validSecurityCode_togglesInProgressPublisher() async {
+        // Given
+        let sut = makeSUT(publicKey: Dummy.publicKey)
+        var receivedProgress: [Bool] = []
+        let cancellable = sut.inProgressPublisher
+            .dropFirst()
+            .sink { receivedProgress.append($0) }
+        defer { cancellable.cancel() }
+
+        // When
+        sut.securityCodeItem.value = "737"
+        await sut.submit()
+
+        // Then
+        #expect(receivedProgress == [true, false])
+        #expect(!sut.inProgress)
     }
 
     // MARK: - Helpers

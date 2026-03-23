@@ -8,6 +8,7 @@
 @testable @_spi(AdyenInternal) import AdyenCard
 @testable import AdyenEncryption
 @_spi(AdyenInternal) @testable import AdyenUI
+import Combine
 import Testing
 import UIKit
 
@@ -72,45 +73,53 @@ struct StoredCardInputViewControllerTests {
         #expect(viewModel.submitCallsCount == 1)
     }
 
-    // MARK: - C: View instructions → UI
+    // MARK: - C: View model callbacks → UI
 
     @Test
-    func viewInstruction_setLoadingTrue_disablesButtonAndShowsSpinner() throws {
-        let (proxy, viewModel) = makeSUT()
+    func inProgressPublisher_updatesPrimaryButtonState() async throws {
+        let inProgressSource = StoredCardInputInProgressSource()
+        let (proxy, _) = makeSUT(inProgressPublisher: inProgressSource.$isInProgress)
         proxy.load()
 
-        viewModel.onViewInstruction?(.setLoading(true))
-
         let button = try proxy.primaryButton()
+        #expect(!button.showsActivityIndicator)
+        #expect(button.isEnabled)
+
+        inProgressSource.isInProgress = true
+        await Task.yield()
+
         #expect(button.showsActivityIndicator)
         #expect(!button.isEnabled)
-    }
 
-    @Test
-    func viewInstruction_setLoadingFalse_enablesButtonAndHidesSpinner() throws {
-        let (proxy, viewModel) = makeSUT()
-        proxy.load()
+        inProgressSource.isInProgress = false
+        await Task.yield()
 
-        viewModel.onViewInstruction?(.setLoading(true))
-        viewModel.onViewInstruction?(.setLoading(false))
-
-        let button = try proxy.primaryButton()
         #expect(!button.showsActivityIndicator)
         #expect(button.isEnabled)
     }
 
     @Test
-    func viewInstruction_showSecurityCodeValidation_setsInvalidStateOnItem() {
+    func onSecurityCodeValidationRequested_setsInvalidStateOnItem() {
         let (proxy, viewModel) = makeSUT()
         proxy.load()
 
-        viewModel.onViewInstruction?(.showSecurityCodeValidation)
+        viewModel.onSecurityCodeValidationRequested?()
 
         if case .invalid = viewModel.securityCodeItem.validationState {
             // pass
         } else {
-            Issue.record("Expected validationState to be .invalid after showSecurityCodeValidation instruction")
+            Issue.record("Expected validationState to be .invalid after onSecurityCodeValidationRequested callback")
         }
+    }
+
+    @Test
+    func viewDidLoad_assignsOnSecurityCodeValidationRequestedCallback() {
+        let (proxy, viewModel) = makeSUT()
+        #expect(viewModel.onSecurityCodeValidationRequested == nil)
+
+        proxy.load()
+
+        #expect(viewModel.onSecurityCodeValidationRequested != nil)
     }
 
     // MARK: - D: Secondary button and back button
@@ -130,13 +139,15 @@ struct StoredCardInputViewControllerTests {
     private func makeSUT(
         titleText: String = "Enter security code",
         subtitleText: String = "Use your Visa card",
-        submitButtonTitle: String = "Pay €1.00"
+        submitButtonTitle: String = "Pay €1.00",
+        inProgressPublisher: Published<Bool>.Publisher? = nil
     ) -> (proxy: StoredCardInputViewControllerProxy, viewModel: StoredCardInputViewModelProtocolMock) {
         let viewModel = StoredCardInputViewModelProtocolMock()
         viewModel.underlyingTitleText = titleText
         viewModel.underlyingSubtitleText = NSAttributedString(string: subtitleText)
         viewModel.underlyingSubmitButtonTitle = submitButtonTitle
         viewModel.underlyingTheme = .default
+        viewModel.underlyingInProgressPublisher = inProgressPublisher ?? StoredCardInputInProgressSource().$isInProgress
         viewModel.underlyingSecurityCodeItem = FormCardSecurityCodeItem()
         viewModel.underlyingCardImageItem = CardImageItem(
             imageURL: nil,
@@ -201,4 +212,9 @@ struct StoredCardInputViewControllerProxy {
         let backButton = viewController.navigationItem.leftBarButtonItem
         _ = backButton?.target?.perform(backButton?.action)
     }
+}
+
+@MainActor
+private final class StoredCardInputInProgressSource {
+    @Published var isInProgress: Bool = false
 }
