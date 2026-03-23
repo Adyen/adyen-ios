@@ -11,6 +11,7 @@ import XCTest
 @testable import AdyenCard
 import AdyenComponents
 @testable import AdyenDropIn
+@testable import AdyenEncryption
 import AdyenNetworking
 
 @MainActor
@@ -1062,6 +1063,54 @@ class SessionTests: XCTestCase {
         XCTAssertFalse(cardComponent.configuration.showsStorePaymentMethodField)
     }
 
+    func test_paymentsRequest_withInstallments_shouldEncodeInstallments() throws {
+        // Given
+        let cardDetails = makeTestCardDetails()
+        let installments = Installments(totalMonths: 3, plan: .regular)
+        let data = PaymentComponentData(
+            paymentMethodDetails: cardDetails,
+            amount: nil,
+            order: nil,
+            installments: installments
+        )
+
+        // When
+        let request = PaymentsRequest(
+            sessionId: "session_id",
+            sessionData: "session_data",
+            data: data
+        )
+        let encodedData = try JSONEncoder().encode(request)
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedData) as? [String: Any])
+
+        // Then
+        let installmentsJson = try XCTUnwrap(json["installments"] as? [String: Any])
+        XCTAssertEqual(installmentsJson["value"] as? Int, 3)
+        XCTAssertEqual(installmentsJson["plan"] as? String, "regular")
+    }
+
+    func test_paymentsRequest_withNilInstallments_shouldOmitInstallments() throws {
+        // Given
+        let cardDetails = makeTestCardDetails()
+        let data = PaymentComponentData(
+            paymentMethodDetails: cardDetails,
+            amount: nil,
+            order: nil
+        )
+
+        // When
+        let request = PaymentsRequest(
+            sessionId: "session_id",
+            sessionData: "session_data",
+            data: data
+        )
+        let encodedData = try JSONEncoder().encode(request)
+        let json = try XCTUnwrap(JSONSerialization.jsonObject(with: encodedData) as? [String: Any])
+
+        // Then
+        XCTAssertNil(json["installments"])
+    }
+
     private func initializeSession(
         expectedPaymentMethods: PaymentMethods,
         apiClient: APIClientMock = APIClientMock(),
@@ -1083,6 +1132,12 @@ class SessionTests: XCTestCase {
             context: context,
             delegate: delegate
         )
+    }
+    
+    private func makeTestCardDetails() -> CardDetails {
+        let paymentMethod = CardPaymentMethodMock(fundingSource: .credit, type: .other("test_type"), name: "test name", brands: [.visa, .bcmc])
+        let encryptedCard = EncryptedCard(number: "number", securityCode: "code", expiryMonth: "month", expiryYear: "year")
+        return CardDetails(paymentMethod: paymentMethod, encryptedCard: encryptedCard)
     }
 }
 
