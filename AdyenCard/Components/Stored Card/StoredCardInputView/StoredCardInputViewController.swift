@@ -4,10 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Combine
 import Foundation
 import UIKit
-@_spi(AdyenInternal) import Adyen
 
 #if canImport(AdyenUI)
     @_spi(AdyenInternal) import AdyenUI
@@ -150,15 +150,26 @@ internal class StoredCardInputViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentStackView)
 
-        contentStackView.addArrangedSubview(topContentStackView)
-        contentStackView.addArrangedSubview(securityCodeItemView)
-        contentStackView.addArrangedSubview(buttonsStackView)
+        [
+            topContentStackView,
+            securityCodeItemView,
+            buttonsStackView
+        ].forEach(contentStackView.addArrangedSubview)
 
-        topContentStackView.addArrangedSubview(cardImageView)
-        topContentStackView.addArrangedSubview(labelsStackView)
+        [
+            cardImageView,
+            labelsStackView
+        ].forEach(topContentStackView.addArrangedSubview)
 
-        labelsStackView.addArrangedSubview(titleLabel)
-        labelsStackView.addArrangedSubview(subtitleLabel)
+        [
+            titleLabel,
+            subtitleLabel
+        ].forEach(labelsStackView.addArrangedSubview)
+
+        [
+            titleLabel,
+            subtitleLabel
+        ].forEach(labelsStackView.addArrangedSubview)
 
         buttonsStackView.addArrangedSubview(primaryButton)
 

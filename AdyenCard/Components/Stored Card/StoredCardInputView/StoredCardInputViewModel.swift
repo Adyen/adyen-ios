@@ -23,13 +23,13 @@ internal protocol StoredCardInputViewModelProtocol: AnyObject {
     var securityCodeItem: FormCardSecurityCodeItem { get }
 
     var submitButtonTitle: String { get }
-    @MainActor func submit() async
 
+    @MainActor func submit() async
     @MainActor func dismiss()
 
     var theme: AdyenTheme { get }
 
-    var onSecurityCodeValidationRequested: VoidCompletion? { get set }
+    @MainActor var onSecurityCodeValidationRequested: VoidCompletion? { get set }
     var inProgressPublisher: Published<Bool>.Publisher { get }
     func viewDidLoad()
 }
