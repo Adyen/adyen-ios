@@ -164,11 +164,10 @@ internal class StoredCardInputViewController: UIViewController {
         configureConstraints()
         configureContent()
         setupNavigationBackButton()
-        configurePresentationSheet()
+        disableSwipeDownToDismissScreen()
     }
 
-    private func configurePresentationSheet() {
-        // Adding this to avoid swiping down to dismiss the controller.
+    private func disableSwipeDownToDismissScreen() {
         isModalInPresentation = true
     }
 
