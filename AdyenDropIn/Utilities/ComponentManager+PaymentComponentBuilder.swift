@@ -257,6 +257,7 @@ extension ComponentManager: PaymentComponentBuilder {
                     referenceId: cashAppPayDropInConfig.referenceId
                 )
                 cashAppPayConfiguration.showsStorePaymentMethodField = cashAppPayDropInConfig.showsStorePaymentMethodField
+                cashAppPayConfiguration.storePaymentMethod = cashAppPayDropInConfig.storePaymentMethod
                 cashAppPayConfiguration.localizationParameters = configuration.localizationParameters
                 cashAppPayConfiguration.style = configuration.style.formComponent
         
