@@ -35,8 +35,8 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
         self.context = context
         self.batchInterval = batchInterval
         self.checkoutAttemptId = checkoutAttemptId
-        // TODO: Robert: Bug: This can be called in a background thread and then the timer will never be scheduled.
-        startNextTimer()
+        
+        Task { await startNextTimer() }
     }
     
     deinit {
@@ -67,11 +67,11 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
     internal func sendEventsIfNeeded() {
         guard let request = requestWithAllEvents() else { return }
         
-        Task { @MainActor in
+        Task {
             do {
                 _ = try await apiClient.performAsync(request)
                 removeEvents(sentBy: request)
-                startNextTimer()
+                await startNextTimer()
             } catch {}
         }
     }
@@ -104,6 +104,7 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
         eventDataSource.removeEvents(matching: collection)
     }
     
+    @MainActor
     private func startNextTimer() {
         batchTimer?.invalidate()
         batchTimer = Timer.scheduledTimer(withTimeInterval: batchInterval, repeats: true) { [weak self] _ in
