@@ -50,7 +50,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     internal let theme: AdyenTheme
     internal var onSecurityCodeValidationRequested: VoidCompletion?
 
-    @Published internal var inProgress: Bool = false
+    @MainActor @Published internal var inProgress: Bool = false
     internal var inProgressPublisher: Published<Bool>.Publisher {
         $inProgress
     }
