@@ -26,6 +26,7 @@ import UIKit
  - SeeAlso:
  [Implementation Reference](https://docs.adyen.com/online-payments/ios/drop-in)
  */
+@MainActor
 public final class DropInComponent: NSObject,
     AnyDropInComponent,
     ActionHandlingComponent,
@@ -177,7 +178,8 @@ public final class DropInComponent: NSObject,
     ) throws {
         guard let orderData = order.orderData else { throw PartialPaymentError.missingOrderData }
         let request = OrderStatusRequest(orderData: orderData)
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             do {
                 let response: OrderStatusResponse = try await apiClient.performAsync(request)
                 self.paymentMethods = paymentMethods
