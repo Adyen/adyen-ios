@@ -65,7 +65,8 @@ extension Session {
             sessionData: state.data,
             data: paymentComponentData
         )
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             do {
                 let response: PaymentsResponse = try await apiClient.performAsync(request)
                 handle(paymentResponse: response, for: component, in: dropInComponent)
@@ -170,7 +171,8 @@ extension Session {
             id: state.identifier,
             sessionData: state.data
         )
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             do {
                 let newState = try await Self.makeSetupCall(
                     with: initialInfo,
@@ -186,7 +188,6 @@ extension Session {
                     currentComponent: currentComponent
                 )
             } catch {
-                // Handle error
                 finish(with: error, component: currentComponent)
             }
         }

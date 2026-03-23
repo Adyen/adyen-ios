@@ -20,7 +20,8 @@ extension Session: PartialPaymentDelegate {
             sessionData: state.data,
             data: data
         )
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             do {
                 let response: BalanceCheckResponse = try await apiClient.performAsync(request)
                 guard let availableAmount = response.balance else {
@@ -40,7 +41,8 @@ extension Session: PartialPaymentDelegate {
             sessionId: state.identifier,
             sessionData: state.data
         )
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             do {
                 let response: CreateOrderResponse = try await apiClient.performAsync(request)
                 completion(.success(response.order))
@@ -58,7 +60,7 @@ extension Session: PartialPaymentDelegate {
         )
         // no feedback needed from cancelOrder as the delegate will be called
         // when cancel button in dropIn is pressed
-        Task { _ = try? await apiClient.performAsync(request) }
+        Task { [weak self] in _ = try? await self?.apiClient.performAsync(request) }
     }
     
 }
