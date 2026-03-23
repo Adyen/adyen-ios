@@ -99,7 +99,8 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     }()
 
     internal var titleText: String {
-        localizedString(.cardComponentInputTitle, localizationParameters)
+        // TODO: Robert: StoredView: The keys will change when we get the localization. So the keys will need to be updated.
+        localizedString(.cardSecurityCodeTitle, localizationParameters)
     }
 
     /// We construct something like - Enter the security code for BOLD[Visa •••• 4556] to complete the payment of BOLD[$140.98]
@@ -107,7 +108,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     internal var subtitleText: NSAttributedString {
         let displayInformation = storedCardPaymentMethod.displayInformation(using: localizationParameters)
         let paymentMethodTitle = storedCardPaymentMethod.name + " " + displayInformation.title
-        let localizedString = localizedString(.cardComponentInputDescription, localizationParameters, paymentMethodTitle, formattedAmount)
+        let localizedString = localizedString(.cardSecurityCodeDescription, localizationParameters, paymentMethodTitle, formattedAmount)
 
         let attributed = NSMutableAttributedString(string: localizedString)
 
