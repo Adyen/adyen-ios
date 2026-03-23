@@ -2,7 +2,7 @@
 
 This file provides guidance to LLMs when working with code in this repository.
 
-**IMPORTANT:** This is the v6 major version branch. All v6 development PRs should target `v6_base`.
+**IMPORTANT:** This is the v6 major version branch. All v6 development PRs should target `develop`.
 
 ## Project Overview
 
@@ -13,7 +13,7 @@ Adyen iOS is a modular payment SDK providing both Drop-in (all-in-one) and Compo
 - Xcode 15.0+
 - Swift 5.7+
 
-**Main Branch for v6 PRs:** `v6_base`
+**Main Branch for v6 PRs:** `develop`
 
 ## Architecture
 

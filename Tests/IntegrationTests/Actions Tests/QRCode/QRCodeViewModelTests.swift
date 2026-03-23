@@ -9,6 +9,7 @@ import UIKit
 import XCTest
 @_spi(AdyenInternal) @testable import Adyen
 
+@MainActor
 class QRCodeViewModelTests: XCTestCase {
     
     // MARK: - Flow Type
