@@ -43,7 +43,9 @@ internal final class PaymentMethodListHeaderView: UIView {
         button.cornerRadius = viewModel.theme.attributes.cornerRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(applePayButtonTapped), for: .touchUpInside)
-        button.isHidden = !viewModel.showApplePayButton
+        if case .hidden = viewModel.applePayButtonState {
+            button.isHidden = true
+        }
         return button
     }()
     
@@ -82,7 +84,9 @@ internal final class PaymentMethodListHeaderView: UIView {
     // MARK: - Actions
     
     @objc private func applePayButtonTapped() {
-        viewModel.onApplePayTap?()
+        if case let .visible(onTap) = viewModel.applePayButtonState {
+            onTap()
+        }
     }
     
     // MARK: - Private
@@ -92,7 +96,7 @@ internal final class PaymentMethodListHeaderView: UIView {
 
         addSubview(stackView)
         
-        if viewModel.showApplePayButton {
+        if case .visible = viewModel.applePayButtonState {
             stackView.setCustomSpacing(Layout.subtitleBottomMargin, after: subtitleLabel)
         }
 

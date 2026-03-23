@@ -7,10 +7,14 @@
 import AdyenUI
 import Foundation
 
+internal enum ApplePayButtonState {
+    case hidden
+    case visible(onTap: () -> Void)
+}
+
 internal struct PaymentMethodListHeaderViewModel {
     internal let amount: String
     internal let subtitle: String
-    internal let showApplePayButton: Bool
-    internal let onApplePayTap: (() -> Void)?
+    internal let applePayButtonState: ApplePayButtonState
     internal let theme: AdyenTheme
 }

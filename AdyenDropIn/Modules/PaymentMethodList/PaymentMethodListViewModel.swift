@@ -30,7 +30,7 @@ internal protocol PaymentMethodListViewModelProtocol {
 
     var formattedAmount: String { get }
     var subtitle: String { get }
-    var isApplePayAvailable: Bool { get }
+    func makeApplePayButtonState(onTap: @escaping () -> Void) -> ApplePayButtonState
     func selectApplePay()
 }
 
@@ -40,7 +40,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     // MARK: - Constants
     
     private enum Constants {
-        // Payment methods that are displayed separately (e.g., in the header) and should be filtered from the main list.
+        /// Payment methods that are displayed separately (e.g., in the header) and should be filtered from the main list.
         internal static let instantPaymentMethods: Set<PaymentMethodType> = [.applePay]
     }
 
@@ -96,8 +96,9 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         "Select your preferred payment option to complete the payment"
     }
     
-    internal var isApplePayAvailable: Bool {
-        applePayPaymentMethod != nil
+    internal func makeApplePayButtonState(onTap: @escaping () -> Void) -> ApplePayButtonState {
+        guard applePayPaymentMethod != nil else { return .hidden }
+        return .visible(onTap: onTap)
     }
     
     private var applePayPaymentMethod: PaymentMethod? {
