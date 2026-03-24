@@ -30,8 +30,7 @@ internal protocol PaymentMethodListViewModelProtocol {
 
     var formattedAmount: String { get }
     var subtitle: String { get }
-    func makeApplePayButtonState(onTap: @escaping () -> Void) -> ApplePayButtonState
-    func selectApplePay()
+    var applePayButtonState: ApplePayButtonState { get }
 }
 
 @MainActor
@@ -96,9 +95,11 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         "Select your preferred payment option to complete the payment"
     }
     
-    internal func makeApplePayButtonState(onTap: @escaping () -> Void) -> ApplePayButtonState {
+    internal var applePayButtonState: ApplePayButtonState {
         guard applePayPaymentMethod != nil else { return .hidden }
-        return .visible(onTap: onTap)
+        return .visible { [weak self] in
+            self?.startApplePay()
+        }
     }
     
     private var applePayPaymentMethod: PaymentMethod? {
@@ -108,16 +109,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     private var applePayComponent: PaymentComponent?
-
-    internal func selectApplePay() {
-        guard applePayComponent == nil else { return }
-        guard let applePayPaymentMethod else { return }
-        self.applePayComponent = componentManager.buildComponent(for: applePayPaymentMethod)
-        applePayComponent?.delegate = self
-
-        guard let applePayViewController = (applePayComponent as? PresentableComponent)?.viewController else { return }
-        router?.present(viewController: applePayViewController)
-    }
 
     internal func cancel() {
         router?.dismiss(completion: nil)
@@ -130,6 +121,16 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     // MARK: - Private
+
+    private func startApplePay() {
+        guard applePayComponent == nil else { return }
+        guard let applePayPaymentMethod else { return }
+        self.applePayComponent = componentManager.buildComponent(for: applePayPaymentMethod)
+        applePayComponent?.delegate = self
+
+        guard let applePayViewController = (applePayComponent as? PresentableComponent)?.viewController else { return }
+        router?.present(viewController: applePayViewController)
+    }
 
     internal func select(paymentMethod: PaymentMethod) {
         guard let component = componentManager.buildComponent(for: paymentMethod) else { return }
