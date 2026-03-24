@@ -61,8 +61,10 @@ public final class CashAppPayComponent: PaymentComponent,
 
     private let cashAppPayPaymentMethod: CashAppPayPaymentMethod
 
-    private var storePayment: Bool? {
-        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : nil
+    private var shouldStorePayment: Bool {
+        // if the toggle is visible, check its value
+        // if it's hidden, check the second flag's value
+        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : configuration.storePaymentMethod
     }
 
     private lazy var cashAppPay: CashAppPay = {
@@ -175,7 +177,8 @@ public final class CashAppPayComponent: PaymentComponent,
             actions.append(oneTimeAction)
         }
     
-        if storePayment == true {
+        // onFile action is needed for /payments to tokenize the payment
+        if shouldStorePayment {
             let onFileAction = PaymentAction.onFilePayment(
                 scopeID: cashAppPayPaymentMethod.scopeId,
                 accountReferenceID: nil
@@ -214,7 +217,7 @@ public final class CashAppPayComponent: PaymentComponent,
                 paymentMethodDetails: details,
                 amount: payment?.amount,
                 order: order,
-                storePaymentMethod: storePayment
+                storePaymentMethod: shouldStorePayment
             ))
         } catch {
             fail(with: error, message: error.localizedDescription)

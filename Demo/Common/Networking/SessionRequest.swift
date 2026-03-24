@@ -58,7 +58,7 @@ internal struct SessionRequest: APIRequest {
                 message: "API version should be v70 or above to apply card component's store payment method field",
                 condition: ConfigurationConstants.current.apiVersion < 70
             )
-            try container.encode("enabled", forKey: .storePaymentMethodMode)
+            try container.encode("askForConsent", forKey: .storePaymentMethodMode)
             try container.encode(ConfigurationConstants.recurringProcessingModel, forKey: .recurringProcessingModel)
         }
         
