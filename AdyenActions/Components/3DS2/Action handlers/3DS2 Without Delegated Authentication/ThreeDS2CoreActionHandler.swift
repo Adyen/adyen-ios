@@ -5,7 +5,6 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import Adyen3DS2
 import AdyenUI
 import Foundation
 
@@ -28,10 +27,6 @@ internal protocol AnyThreeDS2CoreActionHandler: Component {
 }
 
 internal typealias ThreeDSService = ThreeDSConfigurable & ThreeDSServiceable
-
-func appearanceConfigurationFromAdyenTheme(adyenTheme: AdyenTheme) -> ADYAppearanceConfiguration {
-    ADYAppearanceConfiguration()
-}
 
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
 @MainActor
@@ -90,7 +85,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                 directoryServerPublicKey: token.directoryServerPublicKey,
                 directoryServerRootCertificates: token.directoryServerRootCertificates,
                 deviceExcludedParameters: nil,
-                appearanceConfiguration: appearanceConfigurationFromAdyenTheme(adyenTheme: theme),
+                theme: theme,
                 threeDSMessageVersion: token.threeDSMessageVersion
             )
             service.configuration = token.configuration

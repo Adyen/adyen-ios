@@ -45,13 +45,13 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
     }
     
     func testSettingThreeDSRequestorAppURL() {
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, service: ThreeDSServiceableMock(), appearanceConfiguration: ADYAppearanceConfiguration(), delegatedAuthenticationConfiguration: nil)
+        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, theme: .default, service: ThreeDSServiceableMock(), delegatedAuthenticationConfiguration: nil)
         sut.threeDSRequestorAppURL = URL(string: "https://google.com")
         XCTAssertEqual(sut.coreActionHandler.threeDSRequestorAppURL, URL(string: "https://google.com"))
     }
 
     func testWrappedComponent() {
-        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, service: ThreeDSServiceableMock(), appearanceConfiguration: ADYAppearanceConfiguration(), delegatedAuthenticationConfiguration: nil)
+        let sut = ThreeDS2CompactActionHandler(context: Dummy.context, theme: .default, service: ThreeDSServiceableMock(), delegatedAuthenticationConfiguration: nil)
         XCTAssertEqual(sut.wrappedComponent.context.apiContext.clientKey, Dummy.apiContext.clientKey)
         XCTAssertEqual(sut.wrappedComponent.context.apiContext.environment.baseURL, Dummy.apiContext.environment.baseURL)
 
@@ -82,7 +82,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let sut = ThreeDS2CompactActionHandler(
             context: Dummy.context(analyticsProvider: analyticsProviderMock),
             fingerprintSubmitter: submitter,
-            appearanceConfiguration: ADYAppearanceConfiguration(),
+            theme: .default,
             service: service
         )
         sut.handle(fingerprintAction) { result in
@@ -123,7 +123,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2CompactActionHandler(
             context: Dummy.context(analyticsProvider: analyticsProviderMock),
-            appearanceConfiguration: ADYAppearanceConfiguration(),
+            theme: .default,
             service: service
         )
         sut.threeDSRequestorAppURL = URL(string: "https://google.com")
@@ -175,7 +175,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let sut = ThreeDS2CompactActionHandler(
             context: Dummy.context(analyticsProvider: analyticsProviderMock),
             fingerprintSubmitter: submitter,
-            appearanceConfiguration: ADYAppearanceConfiguration(),
+            theme: .default,
             service: service
         )
 
@@ -230,7 +230,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let sut = ThreeDS2CompactActionHandler(
             context: Dummy.context(analyticsProvider: analyticsProviderMock),
             fingerprintSubmitter: submitter,
-            appearanceConfiguration: ADYAppearanceConfiguration(),
+            theme: .default,
             service: service
         )
 
@@ -267,7 +267,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let sut = ThreeDS2CompactActionHandler(
             context: Dummy.context(analyticsProvider: analyticsProviderMock),
             fingerprintSubmitter: submitter,
-            appearanceConfiguration: ADYAppearanceConfiguration(),
+            theme: .default,
             service: service
         )
         service.onPerformChallenge = { $1(.failure(.transactionNotInitialized)) }
@@ -327,7 +327,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let sut = ThreeDS2CompactActionHandler(
             context: Dummy.context(analyticsProvider: analyticsProviderMock),
             fingerprintSubmitter: submitter,
-            appearanceConfiguration: ADYAppearanceConfiguration(),
+            theme: .default,
             service: service
         )
         sut.handle(fingerprintAction) { result in
@@ -372,7 +372,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
                 analyticsProvider: analyticsProviderMock
             ),
             fingerprintSubmitter: submitter,
-            appearanceConfiguration: ADYAppearanceConfiguration(),
+            theme: .default,
             service: service
         )
         sut.handle(fingerprintAction) { result in
@@ -420,7 +420,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let sut = ThreeDS2CompactActionHandler(
             context: Dummy.context,
             fingerprintSubmitter: submitter,
-            appearanceConfiguration: ADYAppearanceConfiguration(),
+            theme: .default,
             service: service
         )
         sut.handle(fingerprintAction) { result in
@@ -458,7 +458,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let sut = ThreeDS2CompactActionHandler(
             context: Dummy.context,
             fingerprintSubmitter: submitter,
-            appearanceConfiguration: ADYAppearanceConfiguration(),
+            theme: .default,
             service: service
         )
         sut.handle(fingerprintAction) { result in
@@ -497,7 +497,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
                 analyticsProvider: analyticsProviderMock
             ),
             fingerprintSubmitter: submitter,
-            appearanceConfiguration: ADYAppearanceConfiguration(),
+            theme: .default,
             service: service
         )
         sut.handle(fingerprintAction) { result in

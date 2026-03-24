@@ -60,7 +60,7 @@ import XCTest
             let sut = ThreeDS2PlusDACoreActionHandler(
                 context: Dummy.context,
                 service: ThreeDSServiceableMock(),
-                appearanceConfiguration: ADYAppearanceConfiguration(),
+                theme: .default,
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations
             )
             sut.threeDSRequestorAppURL = URL(string: "https://google.com")
@@ -71,7 +71,7 @@ import XCTest
             let sut = ThreeDS2PlusDACoreActionHandler(
                 context: Dummy.context,
                 service: ThreeDSServiceableMock(),
-                appearanceConfiguration: ADYAppearanceConfiguration(),
+                theme: .default,
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations
             )
             XCTAssertEqual(sut.context.apiContext.clientKey, Dummy.apiContext.clientKey)
