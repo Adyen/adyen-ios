@@ -12,6 +12,10 @@ import UIKit
 
 internal class PaymentMethodListViewController: UIViewController {
 
+    private enum Layout {
+        static let headerViewBottomMargin: CGFloat = 32
+    }
+
     // MARK: - UI Elements
 
     private lazy var scrollView: UIScrollView = {
@@ -133,7 +137,7 @@ internal class PaymentMethodListViewController: UIViewController {
     
     private func setupHeaderView() {
         contentStackView.addArrangedSubview(headerView)
-        contentStackView.setCustomSpacing(32, after: headerView)
+        contentStackView.setCustomSpacing(Layout.headerViewBottomMargin, after: headerView)
     }
 
     private func setupPaymentMethodSectionsStackView() {

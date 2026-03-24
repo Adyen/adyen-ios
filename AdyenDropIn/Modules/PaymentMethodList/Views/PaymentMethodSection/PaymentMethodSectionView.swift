@@ -10,7 +10,7 @@ import UIKit
 internal final class PaymentMethodSectionView: UIView {
 
     private enum Layout {
-        static let headerBottomMargin: CGFloat = 16
+        static let headerLabelBottomMargin: CGFloat = 16
     }
 
     // MARK: - UI Elements
@@ -64,7 +64,7 @@ internal final class PaymentMethodSectionView: UIView {
         
         containerStackView.addArrangedSubview(headerLabel)
         containerStackView.addArrangedSubview(itemsContainerView)
-        containerStackView.setCustomSpacing(Layout.headerBottomMargin, after: headerLabel)
+        containerStackView.setCustomSpacing(Layout.headerLabelBottomMargin, after: headerLabel)
 
         NSLayoutConstraint.activate([
             containerStackView.topAnchor.constraint(equalTo: topAnchor),
