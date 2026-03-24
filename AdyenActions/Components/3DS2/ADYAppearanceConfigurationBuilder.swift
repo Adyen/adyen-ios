@@ -198,8 +198,8 @@ internal struct ADYAppearanceConfigurationBuilder {
         infoAppearance.textColor = labels.body.color
         
         // ADYInfoAppearance specific properties
-        infoAppearance.headingFont = labels.title.font
-        infoAppearance.headingTextColor = labels.title.color
+        infoAppearance.headingFont = labels.body.font
+        infoAppearance.headingTextColor = labels.body.color
         infoAppearance.borderColor = colors.containerOutline
         infoAppearance.selectionIndicatorTintColor = colors.primary
     }
