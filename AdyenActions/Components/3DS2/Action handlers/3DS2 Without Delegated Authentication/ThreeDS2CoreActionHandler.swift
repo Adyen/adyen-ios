@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) import Adyen
 import Adyen3DS2
+import AdyenUI
 import Foundation
 
 internal protocol AnyThreeDS2CoreActionHandler: Component {
@@ -28,6 +29,10 @@ internal protocol AnyThreeDS2CoreActionHandler: Component {
 
 internal typealias ThreeDSService = ThreeDSConfigurable & ThreeDSServiceable
 
+func appearanceConfigurationFromAdyenTheme(adyenTheme: AdyenTheme) -> ADYAppearanceConfiguration {
+    ADYAppearanceConfiguration()
+}
+
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
 @MainActor
 internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
@@ -39,9 +44,8 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     
     internal let context: AdyenContext
 
-    /// The appearance configuration of the 3D Secure 2 challenge UI.
-    internal let appearanceConfiguration: ADYAppearanceConfiguration
-    
+    internal let theme: AdyenTheme
+
     private var service: ThreeDSService
     
     internal weak var presentationDelegate: PresentationDelegate?
@@ -57,10 +61,10 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     internal init(
         context: AdyenContext,
         service: ThreeDSService,
-        appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()
+        theme: AdyenTheme
     ) {
         self.context = context
-        self.appearanceConfiguration = appearanceConfiguration
+        self.theme = theme
         self.service = service
     }
 
@@ -86,7 +90,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                 directoryServerPublicKey: token.directoryServerPublicKey,
                 directoryServerRootCertificates: token.directoryServerRootCertificates,
                 deviceExcludedParameters: nil,
-                appearanceConfiguration: appearanceConfiguration,
+                appearanceConfiguration: appearanceConfigurationFromAdyenTheme(adyenTheme: theme),
                 threeDSMessageVersion: token.threeDSMessageVersion
             )
             service.configuration = token.configuration

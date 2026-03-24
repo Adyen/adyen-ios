@@ -12,6 +12,7 @@ internal typealias VoidHandler = () -> Void
     @_spi(AdyenInternal) import Adyen
     import Adyen3DS2
     import AdyenAuthentication
+    import AdyenUI
     import Foundation
     import UIKit
     
@@ -44,7 +45,7 @@ internal typealias VoidHandler = () -> Void
         internal convenience init(
             context: AdyenContext,
             service: ThreeDSService,
-            appearanceConfiguration: ADYAppearanceConfiguration,
+            theme: AdyenTheme,
             delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication
         ) {
             self.init(
@@ -55,7 +56,7 @@ internal typealias VoidHandler = () -> Void
                     localizedParameters: delegatedAuthenticationConfiguration.localizationParameters,
                     context: context
                 ),
-                appearanceConfiguration: appearanceConfiguration,
+                theme: theme,
                 style: delegatedAuthenticationConfiguration.style,
                 delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
             )
@@ -74,7 +75,7 @@ internal typealias VoidHandler = () -> Void
             context: AdyenContext,
             service: ThreeDSService,
             presenter: ThreeDS2PlusDAScreenPresenterProtocol,
-            appearanceConfiguration: ADYAppearanceConfiguration = .init(),
+            theme: AdyenTheme,
             style: DelegatedAuthenticationComponentStyle = .init(),
             delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication,
             delegatedAuthenticationService: AuthenticationServiceProtocol? = nil,
@@ -84,7 +85,7 @@ internal typealias VoidHandler = () -> Void
             self.deviceSupportCheckerService = deviceSupportCheckerService
             self.presenter = presenter
             self.delegatedAuthenticationService = delegatedAuthenticationService
-            super.init(context: context, service: service, appearanceConfiguration: appearanceConfiguration)
+            super.init(context: context, service: service, theme: theme)
             self.presenter.presentationDelegate = self
         }
         

@@ -28,10 +28,7 @@ public struct ThreeDS2ActionConfiguration: CheckoutComponentConfiguration {
     
     /// The configuration for Delegated Authentication.
     package var delegatedAuthentication: DelegatedAuthentication?
-    
-    /// ThreeDS2Component UI configuration.
-    package var appearanceConfiguration: ADYAppearanceConfiguration
-    
+
     /// Configuration for Delegated Authentication in 3D Secure 2.
     public struct DelegatedAuthentication {
         
@@ -60,7 +57,6 @@ public struct ThreeDS2ActionConfiguration: CheckoutComponentConfiguration {
     public init() {
         self.theme = .default
         self.showsSubmitButton = false
-        self.appearanceConfiguration = .init()
     }
 }
 

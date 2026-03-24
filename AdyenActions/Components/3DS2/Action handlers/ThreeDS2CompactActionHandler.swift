@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import Adyen3DS2
+import AdyenUI
 import Foundation
 
 /// Handles the 3D Secure 2 fingerprint and challenge in one call using a `fingerprintSubmitter`.
@@ -55,7 +55,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     internal init(
         context: AdyenContext,
         fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter? = nil,
-        appearanceConfiguration: ADYAppearanceConfiguration,
+        theme: AdyenTheme,
         service: ThreeDSService,
         coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
         delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication? = nil
@@ -64,7 +64,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
         self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
             context: context,
             service: service,
-            appearanceConfiguration: appearanceConfiguration,
+            theme: theme,
             delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
         )
         self.fingerprintSubmitter = fingerprintSubmitter ?? ThreeDS2FingerprintSubmitter(context: context)

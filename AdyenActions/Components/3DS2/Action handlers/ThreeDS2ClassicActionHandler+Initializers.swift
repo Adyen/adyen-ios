@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import Adyen3DS2
+import AdyenUI
 import Foundation
 #if canImport(AdyenAuthentication)
     import AdyenAuthentication
@@ -17,18 +17,18 @@ extension ThreeDS2ClassicActionHandler {
     internal convenience init(
         context: AdyenContext,
         service: ThreeDSService,
-        appearanceConfiguration: ADYAppearanceConfiguration,
+        theme: AdyenTheme,
         delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication?
     ) {
         let defaultHandler = createDefaultThreeDS2CoreActionHandler(
             context: context,
             service: service,
-            appearanceConfiguration: appearanceConfiguration,
+            theme: theme,
             delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
         )
         self.init(
             context: context,
-            appearanceConfiguration: appearanceConfiguration,
+            theme: theme,
             service: service,
             coreActionHandler: defaultHandler,
             delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration

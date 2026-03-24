@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import Adyen3DS2
+import AdyenUI
 import Foundation
 
 internal protocol AnyThreeDS2ActionHandler {
@@ -56,7 +56,7 @@ extension ComponentWrapper {
 internal func createDefaultThreeDS2CoreActionHandler(
     context: AdyenContext,
     service: ThreeDSService,
-    appearanceConfiguration: ADYAppearanceConfiguration,
+    theme: AdyenTheme,
     delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication?
 ) -> AnyThreeDS2CoreActionHandler {
     #if canImport(AdyenAuthentication)
@@ -64,21 +64,21 @@ internal func createDefaultThreeDS2CoreActionHandler(
             return ThreeDS2PlusDACoreActionHandler(
                 context: context,
                 service: service,
-                appearanceConfiguration: appearanceConfiguration,
+                theme: theme,
                 delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
             )
         } else {
             return ThreeDS2CoreActionHandler(
                 context: context,
                 service: service,
-                appearanceConfiguration: appearanceConfiguration
+                theme: theme
             )
         }
     #else
         return ThreeDS2CoreActionHandler(
             context: context,
             service: service,
-            appearanceConfiguration: appearanceConfiguration
+            theme: theme
         )
     #endif
 }
