@@ -5,7 +5,9 @@
 //
 
 import Adyen3DS2
-import AdyenUI
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 import Foundation
 
 /// Builds an `Adyen3DS2.ADYAppearanceConfiguration` from an `AdyenTheme`.
@@ -24,7 +26,6 @@ internal struct ADYAppearanceConfigurationBuilder {
         configureTextFieldAppearance(config.textFieldAppearance)
         configureButtonAppearances(config)
         configureSwitchAppearance(config.switchAppearance)
-        configureNavigationBarAppearance(config.navigationBarAppearance)
         configureSelectAppearance(config.selectAppearance)
         configureInfoAppearance(config.infoAppearance)
         return config
@@ -106,14 +107,7 @@ internal struct ADYAppearanceConfigurationBuilder {
             switchAppearance.switchTintColor = tintColor
         }
     }
-    
-    // MARK: - Navigation Bar Appearance
-    
-    private func configureNavigationBarAppearance(_ navigationBarAppearance: ADYNavigationBarAppearance) {
-//        let colors = theme.colors
-//        navigationBarAppearance.textColor = colors.
-    }
-    
+        
     // MARK: - Select Appearance
     
     private func configureSelectAppearance(_ selectAppearance: ADYSelectAppearance) {

@@ -3663,6 +3663,7 @@
 			children = (
 				21C7110C2D67F86700A08111 /* ThreeDSServiceLegacy.swift */,
 				21C7111F2D6D388700A08111 /* AnyADYTransaction.swift */,
+				21ED843A2F72C34000568BDE /* ADYAppearanceConfigurationBuilder.swift */,
 				21C7111D2D6D386F00A08111 /* ADYServiceAdapter.swift */,
 			);
 			path = LegacySDK;
@@ -5001,7 +5002,6 @@
 				F957A9F825514ED30099AD73 /* Fingerprint Submitter */,
 				F957A9E125514A590099AD73 /* API */,
 				E2345C01229BCC7D000F2C94 /* ThreeDS2Component.swift */,
-				21ED843A2F72C34000568BDE /* ADYAppearanceConfigurationBuilder.swift */,
 				A0CB497C2F336B6E00372021 /* ThreeDS2ActionConfiguration.swift */,
 				E2345C05229BDA3C000F2C94 /* ThreeDS2ComponentFingerprintToken.swift */,
 				21CBEF4E2D88CA1600178809 /* ThreeDS2ComponentThreeDSConfiguration.swift */,
