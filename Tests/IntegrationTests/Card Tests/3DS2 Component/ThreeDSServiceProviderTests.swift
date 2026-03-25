@@ -136,7 +136,7 @@ private extension FingerprintServiceParameters {
         directoryServerPublicKey: "",
         directoryServerRootCertificates: "",
         deviceExcludedParameters: nil,
-        appearanceConfiguration: ADYAppearanceConfiguration(),
+        theme: .default,
         threeDSMessageVersion: ""
     )
 }

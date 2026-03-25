@@ -102,6 +102,7 @@ import XCTest
                 context: Dummy.context,
                 service: service,
                 presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
+                theme: .default,
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock
             )
@@ -136,6 +137,7 @@ import XCTest
                 context: Dummy.context,
                 service: service,
                 presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
+                theme: .default,
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock
             )
@@ -176,6 +178,7 @@ import XCTest
                 context: Dummy.context,
                 service: service,
                 presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .register, showApprovalScreenReturnState: .fallback),
+                theme: .default,
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock,
                 deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
@@ -225,6 +228,7 @@ import XCTest
                 context: Dummy.context,
                 service: service,
                 presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .register, showApprovalScreenReturnState: .fallback),
+                theme: .default,
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock,
                 deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
@@ -255,6 +259,7 @@ import XCTest
                 context: Dummy.context,
                 service: service,
                 presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
+                theme: .default,
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock
             )
@@ -286,6 +291,7 @@ import XCTest
                 context: Dummy.context,
                 service: ThreeDSServiceProvider(),
                 presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
+                theme: .default,
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock
             )
@@ -322,6 +328,7 @@ import XCTest
                 context: Dummy.context,
                 service: service,
                 presenter: ThreeDS2DAScreenPresenterMock(showRegistrationReturnState: .fallback, showApprovalScreenReturnState: .fallback),
+                theme: .default,
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock
             )
@@ -381,6 +388,7 @@ import XCTest
                 context: Dummy.context,
                 service: service,
                 presenter: presenterMock,
+                theme: .default,
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock
             )
@@ -431,6 +439,7 @@ import XCTest
                     showRegistrationReturnState: .fallback,
                     showApprovalScreenReturnState: .approve
                 ),
+                theme: .default,
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock
             )
@@ -478,6 +487,7 @@ import XCTest
                     showRegistrationReturnState: .fallback,
                     showApprovalScreenReturnState: .fallback
                 ),
+                theme: .default,
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock
             )
@@ -535,6 +545,7 @@ import XCTest
                     showRegistrationReturnState: .fallback,
                     showApprovalScreenReturnState: .removeCredentials
                 ),
+                theme: .default,
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock
             )
@@ -586,6 +597,7 @@ import XCTest
                     showRegistrationReturnState: .fallback,
                     showApprovalScreenReturnState: .fallback
                 ),
+                theme: .default,
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock,
                 deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
@@ -638,6 +650,7 @@ import XCTest
                 context: Dummy.context,
                 service: service,
                 presenter: presenterMock,
+                theme: .default,
                 delegatedAuthenticationConfiguration: Self.delegatedAuthenticationConfigurations,
                 delegatedAuthenticationService: authenticationServiceMock,
                 deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)

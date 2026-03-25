@@ -27,7 +27,7 @@ final class ThreeDS2ServiceLegacyTests: XCTestCase {
             directoryServerPublicKey: "",
             directoryServerRootCertificates: "",
             deviceExcludedParameters: nil,
-            appearanceConfiguration: ADYAppearanceConfiguration(),
+            theme: .default,
             threeDSMessageVersion: ""
         )
         let expectationFingerprintCreated = expectation(description: "expectationFingerprintCreated")
@@ -57,7 +57,7 @@ final class ThreeDS2ServiceLegacyTests: XCTestCase {
             directoryServerPublicKey: "",
             directoryServerRootCertificates: "",
             deviceExcludedParameters: nil,
-            appearanceConfiguration: ADYAppearanceConfiguration(),
+            theme: .default,
             threeDSMessageVersion: "threeDSMessageVersion"
         )
         let expectationFingerprintCreated = expectation(description: "expectationFingerprintCreated")
@@ -102,7 +102,7 @@ final class ThreeDS2ServiceLegacyTests: XCTestCase {
             directoryServerPublicKey: "",
             directoryServerRootCertificates: "",
             deviceExcludedParameters: nil,
-            appearanceConfiguration: ADYAppearanceConfiguration(),
+            theme: .default,
             threeDSMessageVersion: ""
         )
         let challengeToken = ThreeDS2Component.ChallengeToken(acsReferenceNumber: "", acsSignedContent: "", acsTransactionIdentifier: "", serverTransactionIdentifier: "", threeDSRequestorAppURL: nil, delegatedAuthenticationSDKInput: nil, paymentInfo: nil)
@@ -152,7 +152,7 @@ final class ThreeDS2ServiceLegacyTests: XCTestCase {
             directoryServerPublicKey: "",
             directoryServerRootCertificates: "",
             deviceExcludedParameters: nil,
-            appearanceConfiguration: ADYAppearanceConfiguration(),
+            theme: .default,
             threeDSMessageVersion: ""
         )
         let challengeToken = ThreeDS2Component.ChallengeToken(acsReferenceNumber: "", acsSignedContent: "", acsTransactionIdentifier: "", serverTransactionIdentifier: "", threeDSRequestorAppURL: nil, delegatedAuthenticationSDKInput: nil, paymentInfo: nil)
@@ -206,7 +206,7 @@ final class ThreeDS2ServiceLegacyTests: XCTestCase {
             directoryServerPublicKey: "",
             directoryServerRootCertificates: "",
             deviceExcludedParameters: nil,
-            appearanceConfiguration: ADYAppearanceConfiguration(),
+            theme: .default,
             threeDSMessageVersion: ""
         )
         let challengeToken = ThreeDS2Component.ChallengeToken(acsReferenceNumber: "", acsSignedContent: "", acsTransactionIdentifier: "", serverTransactionIdentifier: "", threeDSRequestorAppURL: nil, delegatedAuthenticationSDKInput: nil, paymentInfo: nil)

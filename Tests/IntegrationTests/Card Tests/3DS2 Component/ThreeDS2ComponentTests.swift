@@ -491,6 +491,7 @@ class ThreeDS2ComponentTests: XCTestCase {
                     localizedParameters: nil,
                     context: Dummy.context
                 ),
+                theme: .default,
                 delegatedAuthenticationConfiguration: .init(relyingPartyIdentifier: ""),
                 delegatedAuthenticationService: authenticationServiceMock,
                 deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
@@ -498,7 +499,7 @@ class ThreeDS2ComponentTests: XCTestCase {
                 
             let classicActionHandler = ThreeDS2ClassicActionHandler(
                 context: Dummy.context,
-                appearanceConfiguration: ADYAppearanceConfiguration(),
+                theme: .default,
                 service: mockService,
                 coreActionHandler: threeDS2ActionHandler
             )
@@ -602,6 +603,7 @@ class ThreeDS2ComponentTests: XCTestCase {
                     localizedParameters: nil,
                     context: Dummy.context
                 ),
+                theme: .default,
                 delegatedAuthenticationConfiguration: .init(relyingPartyIdentifier: ""),
                 delegatedAuthenticationService: authenticationServiceMock,
                 deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
@@ -609,7 +611,7 @@ class ThreeDS2ComponentTests: XCTestCase {
                 
             let classicActionHandler = ThreeDS2ClassicActionHandler(
                 context: Dummy.context,
-                appearanceConfiguration: ADYAppearanceConfiguration(),
+                theme: .default,
                 service: mockService,
                 coreActionHandler: threeDS2ActionHandler
             )
@@ -731,6 +733,7 @@ class ThreeDS2ComponentTests: XCTestCase {
                     localizedParameters: nil,
                     context: Dummy.context
                 ),
+                theme: .default,
                 delegatedAuthenticationConfiguration: .init(relyingPartyIdentifier: ""),
                 delegatedAuthenticationService: authenticationServiceMock,
                 deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
@@ -738,7 +741,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             threeDS2ActionHandler.delegatedAuthenticationState.attemptRegistration = true
             let classicActionHandler = ThreeDS2ClassicActionHandler(
                 context: Dummy.context,
-                appearanceConfiguration: ADYAppearanceConfiguration(),
+                theme: .default,
                 service: mockService,
                 coreActionHandler: threeDS2ActionHandler
             )
@@ -836,6 +839,7 @@ class ThreeDS2ComponentTests: XCTestCase {
                     localizedParameters: nil,
                     context: Dummy.context
                 ),
+                theme: .default,
                 delegatedAuthenticationConfiguration: .init(relyingPartyIdentifier: ""),
                 delegatedAuthenticationService: authenticationServiceMock,
                 deviceSupportCheckerService: DeviceSupportCheckerMock(isDeviceSupported: true)
@@ -843,7 +847,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             threeDS2ActionHandler.delegatedAuthenticationState.attemptRegistration = true
             let classicActionHandler = ThreeDS2ClassicActionHandler(
                 context: Dummy.context,
-                appearanceConfiguration: ADYAppearanceConfiguration(),
+                theme: .default,
                 service: mockService,
                 coreActionHandler: threeDS2ActionHandler
             )
