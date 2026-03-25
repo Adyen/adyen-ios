@@ -54,8 +54,8 @@ public struct ThreeDS2ActionConfiguration: CheckoutComponentConfiguration {
     }
     
     /// Initializes a new instance of ThreeDS2ActionConfiguration
-    public init() {
-        self.theme = .default
+    public init(theme: AdyenTheme = .default) {
+        self.theme = theme
         self.showsSubmitButton = false
     }
 }
