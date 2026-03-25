@@ -19,7 +19,6 @@ internal struct ADYAppearanceConfigurationBuilder {
     
     internal func build() -> ADYAppearanceConfiguration {
         let config = ADYAppearanceConfiguration()
-        
         configureGlobalColors(config)
         configureLabelAppearance(config.labelAppearance)
         configureTextFieldAppearance(config.textFieldAppearance)
@@ -42,7 +41,6 @@ internal struct ADYAppearanceConfigurationBuilder {
     
     private func configureLabelAppearance(_ labelAppearance: ADYLabelAppearance) {
         let labels = theme.elements.labels
-        let colors = theme.colors
         labelAppearance.textColor = labels.body.color
         labelAppearance.headingTextColor = labels.title.color
         labelAppearance.subheadingTextColor = labels.subtitle.color
@@ -109,9 +107,8 @@ internal struct ADYAppearanceConfigurationBuilder {
     // MARK: - Navigation Bar Appearance
     
     private func configureNavigationBarAppearance(_ navigationBarAppearance: ADYNavigationBarAppearance) {
-        let labels = theme.elements.labels
         let colors = theme.colors
-        navigationBarAppearance.textColor = colors.text // All platforms map this
+        navigationBarAppearance.textColor = colors.text
     }
     
     // MARK: - Select Appearance
