@@ -124,7 +124,7 @@ internal enum ExampleAppTheme: String, CaseIterable {
                 disabled: ExampleColors.gray,
                 textOnDisabled: ExampleColors.gray2,
                 separator: ExampleColors.white.withAlphaComponent(0.1),
-                text: ExampleColors.white,
+                text: ExampleColors.purple,
                 textSecondary: ExampleColors.gray
             )
         )
@@ -158,7 +158,7 @@ internal enum ExampleAppTheme: String, CaseIterable {
                 disabled: ExampleColors.gray2,
                 textOnDisabled: ExampleColors.gray,
                 separator: ExampleColors.orange.withAlphaComponent(0.2),
-                text: ExampleColors.darkBackground,
+                text: ExampleColors.orange,
                 textSecondary: ExampleColors.gray
             )
         )
