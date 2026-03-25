@@ -125,6 +125,36 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(items.button.title, localizedSubmitButtonTitle(with: context.amount, style: .immediate, sut.configuration.localizationParameters))
     }
 
+    func test_cardComponent_withLegacyLocalizationParameters_shouldRenderLocalizedTitles() {
+        var configuration = CardComponentConfiguration()
+        configuration.showsHolderNameField = true
+        configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+        let items = sut.cardViewController.items
+
+        XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(.cardExpiryItemPlaceholder, configuration.localizationParameters))
+        XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardCvcItemTitle, configuration.localizationParameters))
+        XCTAssertEqual(items.holderNameItem.title, localizedString(.cardNameItemTitle, configuration.localizationParameters))
+    }
+
+    func test_cardComponent_withLegacyLocalizationParameters_shouldRenderLocalizedSubmitButton() {
+        var configuration = CardComponentConfiguration()
+        configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+
+        XCTAssertEqual(sut.cardViewController.items.button.title, "Test-Pay €1.00")
+    }
+
     func test_component_withCustomTheme_shouldApplyThemeStyles() {
         // Given - custom theme with distinctive colors and button styling
         let colorToTest = UIColor.blue
