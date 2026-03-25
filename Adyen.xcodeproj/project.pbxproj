@@ -648,6 +648,8 @@
 		B643C7682EEC53E200EF8407 /* FormItemView+ValidationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B643C7652EEC53E200EF8407 /* FormItemView+ValidationState.swift */; };
 		B643C76A2EF444DF00EF8407 /* FormCardNumberValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B643C7692EF444DF00EF8407 /* FormCardNumberValidationTests.swift */; };
 		B643C76C2EF4454600EF8407 /* FormTextItemViewValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B643C76B2EF4454600EF8407 /* FormTextItemViewValidationTests.swift */; };
+		B64744262F74467800DD4A81 /* LocalizationTableCompletenessValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64744202F74467800DD4A81 /* LocalizationTableCompletenessValidatorTests.swift */; };
+		B64744272F74467800DD4A81 /* LocalizationTableCompletenessValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B647441F2F74467800DD4A81 /* LocalizationTableCompletenessValidator.swift */; };
 		B65F0EB42ED493250015AC41 /* FormButtonItemViewThemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65F0EB32ED493250015AC41 /* FormButtonItemViewThemeTests.swift */; };
 		B65F0EBA2ED89EC00015AC41 /* TestTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65F0EB92ED89EC00015AC41 /* TestTheme.swift */; };
 		B65F0EBB2ED89EC00015AC41 /* TestTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65F0EB92ED89EC00015AC41 /* TestTheme.swift */; };
@@ -2301,6 +2303,8 @@
 		B643C7652EEC53E200EF8407 /* FormItemView+ValidationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormItemView+ValidationState.swift"; sourceTree = "<group>"; };
 		B643C7692EF444DF00EF8407 /* FormCardNumberValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardNumberValidationTests.swift; sourceTree = "<group>"; };
 		B643C76B2EF4454600EF8407 /* FormTextItemViewValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextItemViewValidationTests.swift; sourceTree = "<group>"; };
+		B647441F2F74467800DD4A81 /* LocalizationTableCompletenessValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTableCompletenessValidator.swift; sourceTree = "<group>"; };
+		B64744202F74467800DD4A81 /* LocalizationTableCompletenessValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTableCompletenessValidatorTests.swift; sourceTree = "<group>"; };
 		B65F0EB32ED493250015AC41 /* FormButtonItemViewThemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormButtonItemViewThemeTests.swift; sourceTree = "<group>"; };
 		B65F0EB92ED89EC00015AC41 /* TestTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTheme.swift; sourceTree = "<group>"; };
 		B65F0EBD2ED89EC60015AC41 /* FormViewExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormViewExtractor.swift; sourceTree = "<group>"; };
@@ -4206,6 +4210,7 @@
 				E7CC63D5288016080034108B /* Mocks */,
 				E9E3DB042226B3A100697074 /* Utilities */,
 				0019C4132E5F2B2F00B0C3A3 /* AdyenUI */,
+				B64744212F74467800DD4A81 /* Localization */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -4224,6 +4229,15 @@
 				B643C7622EEAD2CF00EF8407 /* FormSectionHeaderItem.swift */,
 			);
 			path = SectionHeader;
+			sourceTree = "<group>";
+		};
+		B64744212F74467800DD4A81 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				B647441F2F74467800DD4A81 /* LocalizationTableCompletenessValidator.swift */,
+				B64744202F74467800DD4A81 /* LocalizationTableCompletenessValidatorTests.swift */,
+			);
+			path = Localization;
 			sourceTree = "<group>";
 		};
 		B67D1F572E4615390000C37F /* Components */ = {
@@ -8430,6 +8444,8 @@
 				B6D808072BCD147600F3F5EB /* TimeIntervalExtensionsTests.swift in Sources */,
 				B6D808082BCD147600F3F5EB /* URLExtensionsTest.swift in Sources */,
 				B6D8080E2BCD147D00F3F5EB /* APIContextTests.swift in Sources */,
+				B64744262F74467800DD4A81 /* LocalizationTableCompletenessValidatorTests.swift in Sources */,
+				B64744272F74467800DD4A81 /* LocalizationTableCompletenessValidator.swift in Sources */,
 				B6D808212BCD151F00F3F5EB /* URLProtocolMock.swift in Sources */,
 				B6D8081B2BCD151F00F3F5EB /* StoredPaymentMethodMock.swift in Sources */,
 				A0E1B6422EAB9D0E0070B915 /* BLIKComponentFactoryTests.swift in Sources */,
