@@ -8,10 +8,7 @@ import Adyen3DS2
 import AdyenUI
 import Foundation
 
-/// Builds an `ADYAppearanceConfiguration` from an `AdyenTheme`.
-///
-/// This struct transforms the Adyen SDK's theming system into the 3DS2 SDK's appearance configuration,
-/// mapping colors, fonts, and styles from `AdyenTheme` to the corresponding `ADYAppearanceConfiguration` properties.
+/// Builds an `Adyen3DS2.ADYAppearanceConfiguration` from an `AdyenTheme`.
 internal struct ADYAppearanceConfigurationBuilder {
     
     private let theme: AdyenTheme
@@ -20,7 +17,6 @@ internal struct ADYAppearanceConfigurationBuilder {
         self.theme = theme
     }
     
-    /// Builds and returns an `ADYAppearanceConfiguration` based on the provided `AdyenTheme`.
     internal func build() -> ADYAppearanceConfiguration {
         let config = ADYAppearanceConfiguration()
         
@@ -32,10 +28,6 @@ internal struct ADYAppearanceConfigurationBuilder {
         configureNavigationBarAppearance(config.navigationBarAppearance)
         configureSelectAppearance(config.selectAppearance)
         configureInfoAppearance(config.infoAppearance)
-        
-        // TODO: config.statusBarStyle - no direct mapping in AdyenTheme (system-level setting)
-        // TODO: config.modalPresentationStyle - no direct mapping in AdyenTheme (presentation-level setting)
-        
         return config
     }
     
@@ -43,11 +35,7 @@ internal struct ADYAppearanceConfigurationBuilder {
     
     private func configureGlobalColors(_ config: ADYAppearanceConfiguration) {
         let colors = theme.colors
-        
         config.backgroundColor = colors.background
-        config.textColor = colors.text
-        config.borderColor = colors.containerOutline
-        config.tintColor = colors.primary
     }
     
     // MARK: - Label Appearance
@@ -55,37 +43,19 @@ internal struct ADYAppearanceConfigurationBuilder {
     private func configureLabelAppearance(_ labelAppearance: ADYLabelAppearance) {
         let labels = theme.elements.labels
         let colors = theme.colors
-        
-        // ADYAppearance base properties (inherited)
-        labelAppearance.font = labels.body.font
         labelAppearance.textColor = labels.body.color
-        
-        // ADYLabelAppearance specific properties
-        labelAppearance.headingFont = labels.title.font
         labelAppearance.headingTextColor = labels.title.color
-        labelAppearance.subheadingFont = labels.subtitle.font
         labelAppearance.subheadingTextColor = labels.subtitle.color
-        labelAppearance.errorTextColor = colors.destructive
-        
-        // TODO: labelAppearance.headingLineHeight - no direct mapping in AdyenTheme (line height not exposed)
-        // TODO: labelAppearance.lineHeight - no direct mapping in AdyenTheme (line height not exposed)
     }
     
     // MARK: - Text Field Appearance
     
     private func configureTextFieldAppearance(_ textFieldAppearance: ADYTextFieldAppearance) {
         let textField = theme.elements.textField
-        
-        // ADYAppearance base properties (inherited)
-        textFieldAppearance.font = textField.text.font
         textFieldAppearance.textColor = textField.text.color
-        
-        // ADYTextFieldAppearance specific properties
         textFieldAppearance.borderWidth = textField.borderWidth
         textFieldAppearance.borderColor = textField.borderColor
         textFieldAppearance.cornerRadius = textField.cornerRadius.cgFloatValue
-        
-        // TODO: textFieldAppearance.keyboardAppearance - no direct mapping in AdyenTheme (keyboard style not exposed)
     }
     
     // MARK: - Button Appearances
@@ -93,9 +63,8 @@ internal struct ADYAppearanceConfigurationBuilder {
     private func configureButtonAppearances(_ config: ADYAppearanceConfiguration) {
         let buttons = theme.elements.buttons
         let defaultCornerRadius = theme.attributes.cornerRadius
-        
-        // Submit, Continue, Next, OOB buttons use primary style
-        let primaryButtonTypes: [ADYAppearanceButtonType] = [.submit, .continue, .next, .OOB]
+
+        let primaryButtonTypes: [ADYAppearanceButtonType] = [.submit, .continue, .next]
         for buttonType in primaryButtonTypes {
             configureButtonAppearance(
                 config.buttonAppearance(for: buttonType),
@@ -103,20 +72,15 @@ internal struct ADYAppearanceConfigurationBuilder {
                 defaultCornerRadius: defaultCornerRadius
             )
         }
-        
-        // Cancel button uses destructive style
-        configureButtonAppearance(
-            config.buttonAppearance(for: .cancel),
-            with: buttons.destructive,
-            defaultCornerRadius: defaultCornerRadius
-        )
-        
-        // Resend button uses secondary style
-        configureButtonAppearance(
-            config.buttonAppearance(for: .resend),
-            with: buttons.secondary,
-            defaultCornerRadius: defaultCornerRadius
-        )
+
+        let secondaryButtonTypes: [ADYAppearanceButtonType] = [.OOB, .cancel, .resend]
+        for buttonType in secondaryButtonTypes {
+            configureButtonAppearance(
+                config.buttonAppearance(for: buttonType),
+                with: buttons.secondary,
+                defaultCornerRadius: defaultCornerRadius
+            )
+        }
     }
     
     private func configureButtonAppearance(
@@ -124,31 +88,19 @@ internal struct ADYAppearanceConfigurationBuilder {
         with style: AdyenButtonStyle,
         defaultCornerRadius: CGFloat
     ) {
-        // ADYAppearance base properties (inherited)
-        // TODO: buttonAppearance.font - no direct mapping in AdyenTheme (AdyenButtonStyle doesn't expose font)
-        // TODO: buttonAppearance.textColor is set below as ADYButtonAppearance overrides it
-        
-        // ADYButtonAppearance specific properties
         buttonAppearance.backgroundColor = style.backgroundColor
         buttonAppearance.textColor = style.textColor
         buttonAppearance.disabledBackgroundColor = style.disabledBackgroundColor
         buttonAppearance.disabledTextColor = style.disabledTextColor
         buttonAppearance.cornerRadius = style.cornerRadius?.cgFloatValue ?? defaultCornerRadius
-        
-        // TODO: buttonAppearance.highlightedBackgroundColor - no direct mapping in AdyenTheme (highlighted state not exposed)
-        // TODO: buttonAppearance.textTransform - no direct mapping in AdyenTheme (text transform not exposed)
     }
     
     // MARK: - Switch Appearance
     
     private func configureSwitchAppearance(_ switchAppearance: ADYSwitchAppearance) {
         let switchStyle = theme.elements.switch
-        
-        // ADYAppearance base properties (inherited)
         switchAppearance.font = switchStyle.title.font
         switchAppearance.textColor = switchStyle.title.color
-        
-        // ADYSwitchAppearance specific properties
         if let tintColor = switchStyle.tintColor {
             switchAppearance.switchTintColor = tintColor
         }
@@ -159,15 +111,7 @@ internal struct ADYAppearanceConfigurationBuilder {
     private func configureNavigationBarAppearance(_ navigationBarAppearance: ADYNavigationBarAppearance) {
         let labels = theme.elements.labels
         let colors = theme.colors
-        
-        // ADYAppearance base properties (inherited)
-        navigationBarAppearance.font = labels.subtitle.font
-        navigationBarAppearance.textColor = colors.text
-        
-        // ADYNavigationBarAppearance specific properties
-        // TODO: navigationBarAppearance.title - no direct mapping in AdyenTheme (app-specific, set by merchant)
-        // TODO: navigationBarAppearance.cancelButtonTitle - no direct mapping in AdyenTheme (app-specific, set by merchant)
-        // Note: navigationBarAppearance.backgroundColor is deprecated for iOS 26+
+        navigationBarAppearance.textColor = colors.text // All platforms map this
     }
     
     // MARK: - Select Appearance
@@ -175,16 +119,9 @@ internal struct ADYAppearanceConfigurationBuilder {
     private func configureSelectAppearance(_ selectAppearance: ADYSelectAppearance) {
         let colors = theme.colors
         let labels = theme.elements.labels
-        
-        // ADYAppearance base properties (inherited)
-        selectAppearance.font = labels.body.font
         selectAppearance.textColor = labels.body.color
-        
-        // ADYSelectAppearance specific properties
-        selectAppearance.borderColor = colors.containerOutline
+        selectAppearance.borderColor = colors.separator
         selectAppearance.selectionIndicatorTintColor = colors.primary
-        
-        // TODO: selectAppearance.highlightedBackgroundColor - no direct mapping in AdyenTheme (highlighted state not exposed)
     }
     
     // MARK: - Info Appearance
@@ -192,15 +129,10 @@ internal struct ADYAppearanceConfigurationBuilder {
     private func configureInfoAppearance(_ infoAppearance: ADYInfoAppearance) {
         let colors = theme.colors
         let labels = theme.elements.labels
-        
-        // ADYAppearance base properties (inherited)
-        infoAppearance.font = labels.body.font
+
         infoAppearance.textColor = labels.body.color
-        
-        // ADYInfoAppearance specific properties
-        infoAppearance.headingFont = labels.body.font
-        infoAppearance.headingTextColor = labels.body.color
-        infoAppearance.borderColor = colors.containerOutline
+        infoAppearance.headingTextColor = theme.colors.textSecondary
+        infoAppearance.borderColor = colors.separator
         infoAppearance.selectionIndicatorTintColor = colors.primary
     }
 }
@@ -208,7 +140,6 @@ internal struct ADYAppearanceConfigurationBuilder {
 // MARK: - CornerRounding Extension
 
 private extension CornerRounding {
-    /// Converts the `CornerRounding` enum to a `CGFloat` value suitable for the 3DS2 SDK.
     var cgFloatValue: CGFloat {
         switch self {
         case .none:
@@ -216,9 +147,8 @@ private extension CornerRounding {
         case let .fixed(value):
             return value
         case let .percent(value):
-            // For percent-based rounding, use a reasonable default since we don't have view dimensions.
-            // The 3DS2 SDK expects a fixed CGFloat value.
             // Using a multiplier to approximate a reasonable corner radius.
+            // TODO: Robert: What is a percent CornerRounding? How does it translate to something that is static.
             return value * 100
         }
     }
