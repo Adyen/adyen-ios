@@ -22,6 +22,8 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     /// comes from demo app protocol, unused on new structure
     internal var context: AdyenContext?
+    
+    internal var selectedTheme: ExampleAppTheme = .forest
 
     internal init() {}
 
@@ -70,21 +72,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                     print("Bin lookup response \(brands)")
                 }
         }
-        .theme(
-            AdyenTheme(
-                colors:
-                .default
-//                AdyenColors(primary: .systemPurple)
-            )
-            .bodyLabel(font: AdyenFonts.default.bodyEmphasized)
-            .destructiveButton(
-                backgroundColor: .systemRed,
-                textColor: .white,
-                disabledBackgroundColor: .systemGray,
-                disabledTextColor: .lightGray
-            )
-            .cornerRadius(8.0)
-        )
+        .theme(selectedTheme.theme)
         .onSubmit { [weak self] data, handler in
             self?.callPayments(with: data, completion: handler)
         }

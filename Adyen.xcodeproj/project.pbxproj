@@ -256,6 +256,8 @@
 		21B3A71529CA720C00F48386 /* DARegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B3A71429CA720C00F48386 /* DARegistrationViewController.swift */; };
 		21B3A71729CA721F00F48386 /* DAApprovalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B3A71629CA721F00F48386 /* DAApprovalViewController.swift */; };
 		21B3A71929CA780200F48386 /* DelegatedAuthenticationComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B3A71829CA780200F48386 /* DelegatedAuthenticationComponentStyle.swift */; };
+		21BF4C202F73E2D80063B13C /* ExampleAppThemes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BF4C1F2F73E2D80063B13C /* ExampleAppThemes.swift */; };
+		21BF4C212F73E2D80063B13C /* ExampleAppThemes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BF4C1F2F73E2D80063B13C /* ExampleAppThemes.swift */; };
 		21C7110E2D67F86700A08111 /* ThreeDSServiceLegacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C7110C2D67F86700A08111 /* ThreeDSServiceLegacy.swift */; };
 		21C7110F2D67F86700A08111 /* ThreeDSServiceable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C7110D2D67F86700A08111 /* ThreeDSServiceable.swift */; };
 		21C711112D67FE6B00A08111 /* ThreeDSServiceChallengeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C711102D67FE6B00A08111 /* ThreeDSServiceChallengeError.swift */; };
@@ -1973,6 +1975,7 @@
 		21B3A71429CA720C00F48386 /* DARegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DARegistrationViewController.swift; sourceTree = "<group>"; };
 		21B3A71629CA721F00F48386 /* DAApprovalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DAApprovalViewController.swift; sourceTree = "<group>"; };
 		21B3A71829CA780200F48386 /* DelegatedAuthenticationComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedAuthenticationComponentStyle.swift; sourceTree = "<group>"; };
+		21BF4C1F2F73E2D80063B13C /* ExampleAppThemes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleAppThemes.swift; sourceTree = "<group>"; };
 		21C7110C2D67F86700A08111 /* ThreeDSServiceLegacy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSServiceLegacy.swift; sourceTree = "<group>"; };
 		21C7110D2D67F86700A08111 /* ThreeDSServiceable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSServiceable.swift; sourceTree = "<group>"; };
 		21C711102D67FE6B00A08111 /* ThreeDSServiceChallengeError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSServiceChallengeError.swift; sourceTree = "<group>"; };
@@ -3715,6 +3718,7 @@
 		5A67461E264262CF00E9184D /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				21BF4C1F2F73E2D80063B13C /* ExampleAppThemes.swift */,
 				5A67461F264262F000E9184D /* ConfigurationView.swift */,
 				00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */,
 				001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */,
@@ -9041,6 +9045,7 @@
 				B67D1F682E4615390000C37F /* ApplePayComponentAdvancedFlowExample.swift in Sources */,
 				B67D1F692E4615390000C37F /* InstantPaymentComponentAdvancedFlowExample.swift in Sources */,
 				B67D1F6A2E4615390000C37F /* ApplePayComponentExample.swift in Sources */,
+				21BF4C212F73E2D80063B13C /* ExampleAppThemes.swift in Sources */,
 				B67D1F6B2E4615390000C37F /* IssuerListComponentExample.swift in Sources */,
 				B67D1F6C2E4615390000C37F /* CardComponentAdvancedFlowExample.swift in Sources */,
 				F9A53C442549887F009000A7 /* DefaultAPIClient.swift in Sources */,
@@ -9381,6 +9386,7 @@
 				B67D1F702E4615390000C37F /* CardComponentExample.swift in Sources */,
 				B67D1F712E4615390000C37F /* InstantPaymentComponentExample.swift in Sources */,
 				B67D1F722E4615390000C37F /* ApplePayComponentAdvancedFlowExample.swift in Sources */,
+				21BF4C202F73E2D80063B13C /* ExampleAppThemes.swift in Sources */,
 				B67D1F732E4615390000C37F /* InstantPaymentComponentAdvancedFlowExample.swift in Sources */,
 				B67D1F742E4615390000C37F /* ApplePayComponentExample.swift in Sources */,
 				B67D1F752E4615390000C37F /* IssuerListComponentExample.swift in Sources */,
