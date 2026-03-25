@@ -71,7 +71,7 @@ internal struct ADYAppearanceConfigurationBuilder {
             )
         }
 
-        let secondaryButtonTypes: [ADYAppearanceButtonType] = [.OOB, .cancel, .resend]
+        let secondaryButtonTypes: [ADYAppearanceButtonType] = [.OOB, .resend]
         for buttonType in secondaryButtonTypes {
             configureButtonAppearance(
                 config.buttonAppearance(for: buttonType),
@@ -79,6 +79,9 @@ internal struct ADYAppearanceConfigurationBuilder {
                 defaultCornerRadius: defaultCornerRadius
             )
         }
+
+        let cancelButtonAppearance = config.buttonAppearance(for: .cancel)
+        cancelButtonAppearance.textColor = theme.colors.primary
     }
     
     private func configureButtonAppearance(
@@ -107,8 +110,8 @@ internal struct ADYAppearanceConfigurationBuilder {
     // MARK: - Navigation Bar Appearance
     
     private func configureNavigationBarAppearance(_ navigationBarAppearance: ADYNavigationBarAppearance) {
-        let colors = theme.colors
-        navigationBarAppearance.textColor = colors.text
+//        let colors = theme.colors
+//        navigationBarAppearance.textColor = colors.
     }
     
     // MARK: - Select Appearance
