@@ -4,7 +4,6 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen3DS2
 @_spi(AdyenInternal) @testable import AdyenActions
 @testable @_spi(AdyenInternal) import AdyenCard
 import XCTest

@@ -5,7 +5,6 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-import Adyen3DS2
 @_spi(AdyenInternal) @testable import AdyenActions
 @testable @_spi(AdyenInternal) import AdyenCard
 import XCTest

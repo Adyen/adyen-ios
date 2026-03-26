@@ -8,7 +8,6 @@
 @testable @_spi(AdyenInternal) import AdyenCard
 import XCTest
 @_spi(AdyenInternal) import Adyen
-import Adyen3DS2
 @_spi(AdyenInternal) import AdyenUI
 
 @available(iOS 16.0, *)
