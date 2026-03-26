@@ -5,7 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import AdyenUI
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import Foundation
 
 /// Handles the 3D Secure 2 fingerprint and challenge in one call using a `fingerprintSubmitter`.

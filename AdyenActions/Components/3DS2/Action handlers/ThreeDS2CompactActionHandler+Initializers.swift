@@ -5,7 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import AdyenUI
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import Foundation
 #if canImport(AdyenAuthentication)
     import AdyenAuthentication

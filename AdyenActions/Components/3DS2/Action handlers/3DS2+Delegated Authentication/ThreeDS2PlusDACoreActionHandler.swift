@@ -12,7 +12,9 @@ internal typealias VoidHandler = () -> Void
     @_spi(AdyenInternal) import Adyen
     import Adyen3DS2
     import AdyenAuthentication
-    import AdyenUI
+    #if canImport(AdyenUI)
+        import AdyenUI
+    #endif
     import Foundation
     import UIKit
     

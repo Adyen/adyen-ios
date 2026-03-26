@@ -5,7 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import AdyenUI
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import Foundation
 
 internal protocol AnyThreeDS2CoreActionHandler: Component {

@@ -6,7 +6,7 @@
 
 @_spi(AdyenInternal) import Adyen
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
 #endif
 import Adyen3DS2
 
