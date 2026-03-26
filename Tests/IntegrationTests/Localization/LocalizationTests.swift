@@ -84,6 +84,34 @@ class LocalizationTests: XCTestCase {
         XCTAssertEqual(localizedString(.submitButton, parameters), "Pay")
     }
 
+    func test_localizedString_withNilParameters_shouldReturnSDKDefault() {
+        XCTAssertEqual(localizedString(.cardStoredTitle, nil), "Verify your card")
+    }
+
+    func test_localizedString_withFormattedKeyAndArguments_shouldFormatString() {
+        XCTAssertEqual(localizedString(.dropInStoredTitle, nil, "test"), "Confirm test payment")
+    }
+
+    func test_localizedString_withFormattedKeyAndMissingTranslation_shouldFallbackToEnglish() {
+        let parameters = LocalizationParameters(
+            bundle: Bundle(for: LocalizationTests.self),
+            tableName: "EnforceLocaleTests",
+            keySeparator: "-"
+        )
+
+        XCTAssertEqual(localizedString(.submitButtonFormatted, parameters, "€1.00"), "Pay €1.00")
+    }
+
+    func test_localizedString_withUnsupportedEnforcedLocaleAndPartialCustomCoverage_shouldMixCustomAndEnglishFallback() {
+        let parameters = LocalizationParameters(
+            enforcedLocale: "hi",
+            bundle: Bundle(for: LocalizationTests.self)
+        )
+
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - HI")
+        XCTAssertEqual(localizedString(.submitButton, parameters), "Pay")
+    }
+
     // MARK: - Button title
 
     func testLocalizationWitZeroPayment() {
