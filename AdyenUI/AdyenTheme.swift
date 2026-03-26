@@ -7,6 +7,7 @@
 import Adyen
 import UIKit
 
+// TODO: Robert: Theming: Rename this to CheckoutTheme same as Android.
 public struct AdyenTheme {
 
     package private(set) var colors: AdyenColors
@@ -62,17 +63,15 @@ extension AdyenTheme {
             attributes: AdyenAttributes(cornerRadius: cornerRadius)
         )
     }
-    
-    /// Returns a new theme with the specified attributes.
-    /// - Parameter attributes: The UI attributes to apply.
-    /// - Returns: A new `AdyenTheme` instance.
-    public func attributes(_ attributes: AdyenAttributes) -> AdyenTheme {
-        AdyenTheme(
-            colors: colors,
-            elements: elements,
-            attributes: attributes
-        )
-    }
+
+    // TODO: Robert: Do we even need this method for some reason? Would be easier to read if this file was what was public, without any convienience init stuff.
+//    internal func attributes(_ attributes: AdyenAttributes) -> AdyenTheme {
+//        AdyenTheme(
+//            colors: colors,
+//            elements: elements,
+//            attributes: attributes
+//        )
+//    }
     
     /// Customizes the body label style using UIKit primitives.
     ///

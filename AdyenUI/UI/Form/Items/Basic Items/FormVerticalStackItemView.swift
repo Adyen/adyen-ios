@@ -49,7 +49,7 @@ open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormI
     ///   - itemSpacing: Spacing among the child views of the stack.
     ///   - theme: The theme to use for styling subitems. Defaults to `.default`.
     ///   :nodoc:
-    public convenience init(item: FormItemType, itemSpacing: CGFloat, theme: AdyenTheme = .default) {
+    package convenience init(item: FormItemType, itemSpacing: CGFloat, theme: AdyenTheme = .default) {
         self.init(item: item, theme: theme)
         stackView.spacing = itemSpacing
     }
