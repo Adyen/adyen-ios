@@ -11,44 +11,31 @@ import UIKit
 
 internal struct PaymentMethodItem: Identifiable {
 
-    internal enum TrailingInfoType {
-        case text(String)
-        case logos(urls: [URL], trailingText: String?)
-        
-        internal var accessibilityLabel: String? {
-            switch self {
-            case let .text(text): return text
-            case .logos: return nil
-            }
-        }
-        
-        private static let maxLogosToDisplay = 3
-        
-        internal init?(
-            _ displayTrailingInfo: DisplayInformation.TrailingInfoType?,
-            logoURLProvider: LogoURLProvider
-        ) {
-            guard let displayTrailingInfo else { return nil }
-            switch displayTrailingInfo {
-            case let .text(string):
-                self = .text(string)
-            case let .logos(logoNames, trailingText):
-                let limitedLogoNames = Array(logoNames.prefix(Self.maxLogosToDisplay))
-                let urls = limitedLogoNames.map { logoURLProvider.logoURL(withName: $0) }
-                let effectiveTrailingText = logoNames.count > Self.maxLogosToDisplay ? "+" : trailingText
-                self = .logos(urls: urls, trailingText: effectiveTrailingText)
-            }
-        }
+    internal struct TrailingInfoData {
+        internal let logoUrls: [URL]
+        internal let text: String?
+
+
     }
+
+    private enum Constants {
+        static let maxLogosCount = 3
+        static let additionalLogosText = "+"
+    }
+
+    // MARK: - Properties
 
     internal let id = UUID()
     internal let title: String
     internal let subtitle: String?
     internal let iconURL: URL?
-    internal let trailingInfo: TrailingInfoType?
+    private let trailingInfo: DisplayInformation.TrailingInfoType?
+    private let logoURLProvider: LogoURLProvider
     internal let accessibilityLabel: String?
     internal let theme: AdyenTheme
     internal let selectionHandler: (() -> Void)?
+
+    // MARK: - Initializers
 
     internal init(
         title: String,
@@ -63,7 +50,8 @@ internal struct PaymentMethodItem: Identifiable {
         self.title = title
         self.subtitle = subtitle
         self.iconURL = iconURL
-        self.trailingInfo = TrailingInfoType(trailingInfo, logoURLProvider: logoURLProvider)
+        self.trailingInfo = trailingInfo
+        self.logoURLProvider = logoURLProvider
         self.accessibilityLabel = accessibilityLabel ?? [
             title,
             subtitle,
@@ -71,5 +59,19 @@ internal struct PaymentMethodItem: Identifiable {
         ].compactMap { $0 }.joined(separator: ", ")
         self.theme = theme
         self.selectionHandler = selectionHandler
+    }
+
+    // MARK: - Internal
+
+    internal var trailingInfoData: TrailingInfoData? {
+        guard case let .logos(names, _) = trailingInfo else {
+            return nil
+        }
+
+        let logoUrls = Array(names.prefix(Constants.maxLogosCount))
+            .map { logoURLProvider.logoURL(withName: $0) }
+
+        let text = names.count > Constants.maxLogosCount ? Constants.additionalLogosText : nil
+        return TrailingInfoData(logoUrls: logoUrls, text: text)
     }
 }

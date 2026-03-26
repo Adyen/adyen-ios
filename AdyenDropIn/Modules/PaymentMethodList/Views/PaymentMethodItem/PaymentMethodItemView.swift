@@ -115,7 +115,7 @@ internal final class PaymentMethodItemView: UIView {
         self.imageLoader = imageLoader
         super.init(frame: .zero)
         setupView()
-        configure()
+        configureView()
     }
 
     @available(*, unavailable)
@@ -152,7 +152,7 @@ internal final class PaymentMethodItemView: UIView {
         ])
     }
 
-    private func configure() {
+    private func configureView() {
         titleLabel.text = item.title
         subtitleLabel.text = item.subtitle
         subtitleLabel.isHidden = item.subtitle == nil
@@ -162,38 +162,22 @@ internal final class PaymentMethodItemView: UIView {
         accessibilityTraits = .button
 
         loadIcon(from: item.iconURL)
-        updateTrailingInfo()
+        setupTrailingInfoView()
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         addGestureRecognizer(tapGesture)
     }
 
-    private func updateTrailingInfo() {
-        trailingInfoView.subviews.forEach { $0.removeFromSuperview() }
+    private func setupTrailingInfoView() {
+        guard let trailingInfoData = item.trailingInfoData else { return }
 
-        switch item.trailingInfo {
-        case let .text(string):
-            let label = UILabel()
-            label.translatesAutoresizingMaskIntoConstraints = false
-            label.text = string
-            label.apply(item.theme.elements.labels.footnote)
-            label.setContentHuggingPriority(.required, for: .horizontal)
-            trailingInfoView.addSubview(label)
-            label.adyen.anchor(inside: trailingInfoView)
-            trailingInfoView.isHidden = string.isEmpty
-
-        case let .logos(urls, trailingText):
-            let logosView = SupportedPaymentMethodLogosView(
-                imageUrls: urls,
-                trailingText: trailingText
-            )
-            trailingInfoView.addSubview(logosView)
-            logosView.adyen.anchor(inside: trailingInfoView)
-            trailingInfoView.isHidden = false
-
-        case nil:
-            trailingInfoView.isHidden = true
-        }
+        let logosView = SupportedPaymentMethodLogosView(
+            imageUrls: trailingInfoData.logoUrls,
+            trailingText: trailingInfoData.text
+        )
+        trailingInfoView.addSubview(logosView)
+        logosView.adyen.anchor(inside: trailingInfoView)
+        trailingInfoView.isHidden = false
     }
 
     private func loadIcon(from url: URL?) {
