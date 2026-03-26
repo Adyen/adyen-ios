@@ -19,7 +19,7 @@ public struct AdyenTheme {
     /// Initializes the theme with optional color overrides.
     ///
     /// - Parameter colors: The color scheme. Defaults to `.default`.
-    package init(colors: AdyenColors = .default) {
+    public init(colors: AdyenColors = .default) {
         self.colors = colors
         self.attributes = .default
         self.elements = AdyenElements(colors: colors)
@@ -44,7 +44,7 @@ extension AdyenTheme {
     /// Returns a new theme with the specified colors.
     /// - Parameter colors: The color scheme to apply.
     /// - Returns: A new `AdyenTheme` instance.
-    package func colors(_ colors: AdyenColors) -> AdyenTheme {
+    public func colors(_ colors: AdyenColors) -> AdyenTheme {
         AdyenTheme(
             colors: colors,
             elements: elements,
@@ -55,7 +55,7 @@ extension AdyenTheme {
     /// Returns a new theme with the specified corner radius.
     /// - Parameter cornerRadius: The corner radius to apply to UI elements.
     /// - Returns: A new `AdyenTheme` instance.
-    package func cornerRadius(_ cornerRadius: CGFloat) -> AdyenTheme {
+    public func cornerRadius(_ cornerRadius: CGFloat) -> AdyenTheme {
         AdyenTheme(
             colors: colors,
             elements: elements,
@@ -66,7 +66,7 @@ extension AdyenTheme {
     /// Returns a new theme with the specified attributes.
     /// - Parameter attributes: The UI attributes to apply.
     /// - Returns: A new `AdyenTheme` instance.
-    internal func attributes(_ attributes: AdyenAttributes) -> AdyenTheme {
+    public func attributes(_ attributes: AdyenAttributes) -> AdyenTheme {
         AdyenTheme(
             colors: colors,
             elements: elements,

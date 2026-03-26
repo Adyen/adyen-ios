@@ -52,6 +52,8 @@ package struct AdyenColors: Equatable {
     package var separator: UIColor
     package var text: UIColor
     package var textSecondary: UIColor
+
+    // TODO: Robert: Theming: support shadow needs to be discussed with Arjen if we can use any existing colors. This should not be public anyway.
     package var supportShadow: UIColor
 
     // MARK: - Initializers
@@ -119,7 +121,9 @@ package struct AdyenColors: Equatable {
         }
     }
 
-    package init(
+    // TODO: Robert: Theming: Improvement: Add some documentation here to be explicit to the merchant what the specific color is used for.
+    // For example, i don't understand what container is for, what is highlight, success(not available in android). 
+    public init(
         background: UIColor? = nil,
         container: UIColor? = nil,
         containerOutline: UIColor? = nil,
@@ -134,7 +138,6 @@ package struct AdyenColors: Equatable {
         separator: UIColor? = nil,
         text: UIColor? = nil,
         textSecondary: UIColor? = nil,
-        supportShadow: UIColor? = nil
     ) {
         let defaultScheme = AdyenColors.default
 
@@ -152,6 +155,7 @@ package struct AdyenColors: Equatable {
         self.separator = separator ?? defaultScheme.separator
         self.text = text ?? defaultScheme.text
         self.textSecondary = textSecondary ?? defaultScheme.textSecondary
-        self.supportShadow = supportShadow ?? defaultScheme.supportShadow
+
+        self.supportShadow = defaultScheme.supportShadow
     }
 }
