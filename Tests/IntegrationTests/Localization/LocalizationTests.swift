@@ -9,6 +9,15 @@ import XCTest
 
 class LocalizationTests: XCTestCase {
 
+    func testResolvedLocalizedStringIfAvailableIgnoresDebugPlaceholder() {
+        XCTAssertNil(resolvedLocalizedStringIfAvailable("adyen.submitButton.formatted", forKey: "adyen.submitButton.formatted"))
+        XCTAssertNil(resolvedLocalizedStringIfAvailable("ADYEN.SUBMITBUTTON.FORMATTED", forKey: "adyen.submitButton.formatted"))
+        XCTAssertEqual(
+            resolvedLocalizedStringIfAvailable("Confirm %@ payment", forKey: "adyen.submitButton.formatted"),
+            "Confirm %@ payment"
+        )
+    }
+
     // MARK: - Enforced translation
 
     func testEnforcedLocalization() {
