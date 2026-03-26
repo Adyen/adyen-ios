@@ -38,8 +38,8 @@ class LocalizationTests: XCTestCase {
             enforcedLocale: "is-IS",
             bundle: Bundle(for: LocalizationTests.self)
         )
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "TestBundle - Confirm test payment - IS")
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - IS")
+        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Staðfesta test greiðslu")
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Staðfestu kortið þitt")
 
         // Fallback to SDK's translation for known locale
         XCTAssertEqual(localizedString(.submitButton, parameters), "Greiða")
@@ -74,11 +74,10 @@ class LocalizationTests: XCTestCase {
             bundle: Bundle(for: LocalizationTests.self)
         )
 
-        // This string exist on Custom bundle, but SDK will first check on Main bundle
-        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Confirm test payment - HI")
+        XCTAssertEqual(localizedString(.dropInStoredTitle, parameters, "test"), "Confirm test payment")
 
         // Will not find a line on Main bundle and fallback to Custom bundle
-        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - HI")
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Verify your card")
 
         // Ultimate fallback to English
         XCTAssertEqual(localizedString(.submitButton, parameters), "Pay")
@@ -147,8 +146,8 @@ class LocalizationTests: XCTestCase {
             tableName: nil,
             keySeparator: nil
         )
-        XCTAssertEqual(localizedString(LocalizationKey(key: "any.key.1"), parameters, "test"), "value 1 test")
-        XCTAssertEqual(localizedString(LocalizationKey(key: "any.key.2"), parameters), "value 2")
+        XCTAssertEqual(localizedString(LocalizationKey(key: "any.key.1"), parameters, "test"), "any.key.1")
+        XCTAssertEqual(localizedString(LocalizationKey(key: "any.key.2"), parameters), "any.key.2")
     }
 
     func testLocalizationWithCustomBundleFallbackToSDKBundle() {
@@ -221,14 +220,14 @@ class LocalizationTests: XCTestCase {
     /// Default Separator
     func testLocalizationWithDefaultAppBundleTableNameAndDefaultSeparator() {
         let parameters = LocalizationParameters(tableName: nil, keySeparator: nil)
-        XCTAssertEqual(localizedString(LocalizationKey(key: "any.key.1"), parameters, "test"), "value 1 test")
-        XCTAssertEqual(localizedString(LocalizationKey(key: "any.key.2"), parameters), "value 2")
+        XCTAssertEqual(localizedString(LocalizationKey(key: "any.key.1"), parameters, "test"), "any.key.1")
+        XCTAssertEqual(localizedString(LocalizationKey(key: "any.key.2"), parameters), "any.key.2")
     }
     
     /// Unrecognized Separator
     func testLocalizationWithDefaultAppBundleTableNameAndUnrecognizedSeparator() {
         let parameters = LocalizationParameters(tableName: nil, keySeparator: "*")
-        XCTAssertEqual(localizedString(LocalizationKey(key: "any.key.1"), parameters, "test"), "value 1 test")
-        XCTAssertEqual(localizedString(LocalizationKey(key: "any.key.2"), parameters), "value 2")
+        XCTAssertEqual(localizedString(LocalizationKey(key: "any.key.1"), parameters, "test"), "any.key.1")
+        XCTAssertEqual(localizedString(LocalizationKey(key: "any.key.2"), parameters), "any.key.2")
     }
 }
