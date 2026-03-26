@@ -8,6 +8,7 @@
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
+import Foundation
 
 /// Configuration for 3D Secure 2 action handling.
 public struct ThreeDS2ActionConfiguration: CheckoutComponentConfiguration {
