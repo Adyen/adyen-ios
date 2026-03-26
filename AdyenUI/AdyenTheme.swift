@@ -64,7 +64,7 @@ extension AdyenTheme {
         )
     }
 
-    // TODO: Robert: Do we even need this method for some reason? Would be easier to read if this file was what was public, without any convienience init stuff.
+    // TODO: Robert: Do we even need this method for some reason? Would be easier to read if this file was what was public, without any convenience init stuff.
 //    internal func attributes(_ attributes: AdyenAttributes) -> AdyenTheme {
 //        AdyenTheme(
 //            colors: colors,

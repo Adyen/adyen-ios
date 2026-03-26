@@ -77,7 +77,7 @@ public struct AdyenColors: Equatable {
     package var text: UIColor
     package var textSecondary: UIColor
 
-    // TODO: Robert: Theming: support shadow needs to be discussed with Arjen if we can use any existing colors. This should not be public anyway.
+    // TODO: Robert: Theming: support shadow needs to be discussed with design team if we can use any existing colors. This should not be public anyway.
     package var supportShadow: UIColor
 
     // MARK: - Initializers
