@@ -158,6 +158,7 @@ internal final class PaymentMethodItemView: UIView {
         subtitleLabel.isHidden = item.subtitle == nil
 
         accessibilityLabel = item.accessibilityLabel ?? item.title
+        accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: item.title)
         isAccessibilityElement = true
         accessibilityTraits = .button
 

@@ -15,7 +15,6 @@ internal struct PaymentMethodItem: Identifiable {
         internal let logoUrls: [URL]
         internal let text: String?
 
-
     }
 
     private enum Constants {
@@ -54,8 +53,7 @@ internal struct PaymentMethodItem: Identifiable {
         self.logoURLProvider = logoURLProvider
         self.accessibilityLabel = accessibilityLabel ?? [
             title,
-            subtitle,
-            self.trailingInfo?.accessibilityLabel
+            subtitle
         ].compactMap { $0 }.joined(separator: ", ")
         self.theme = theme
         self.selectionHandler = selectionHandler

@@ -14,7 +14,7 @@ public struct DisplayInformation: Equatable {
         case text(String)
         case logos(named: [String], trailingText: String?)
         
-        public var accessibilityLabel: String? {
+        internal var accessibilityLabel: String? {
             switch self {
             case let .text(text): return text
             case .logos: return nil
