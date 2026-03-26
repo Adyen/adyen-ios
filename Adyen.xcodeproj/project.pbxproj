@@ -929,8 +929,6 @@
 		E7166A5624EAD99F007CCDEF /* BinInfoProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7166A5524EAD99F007CCDEF /* BinInfoProvider.swift */; };
 		E71C32872DC22BAB003D45F4 /* EnforceLocaleTests.strings in Resources */ = {isa = PBXBuildFile; fileRef = E71C32862DC22BAB003D45F4 /* EnforceLocaleTests.strings */; };
 		E71C328F2DC3B706003D45F4 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = E71C328E2DC3B706003D45F4 /* Localizable.xcstrings */; };
-		E71C32922DC50E15003D45F4 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = E71C32912DC50E15003D45F4 /* Localizable.xcstrings */; };
-		E71C32932DC50E15003D45F4 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = E71C32912DC50E15003D45F4 /* Localizable.xcstrings */; };
 		E71E8F3E257921D10054B03D /* StoredBLIKPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */; };
 		E72375D327AAB90D0020DCF9 /* AdyenActions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9175F8C2594986900D653BE /* AdyenActions.framework */; };
 		E72375D827AABF400020DCF9 /* AdyenWeChatPay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */; };
@@ -2573,7 +2571,6 @@
 		E71C328C2DC3AA1C003D45F4 /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		E71C328E2DC3B706003D45F4 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		E71C32902DC4FEF7003D45F4 /* ro-RO */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ro-RO"; path = "ro-RO.lproj/EnforceLocaleTests.strings"; sourceTree = "<group>"; };
-		E71C32912DC50E15003D45F4 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		E71E8F3D257921D10054B03D /* StoredBLIKPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredBLIKPaymentMethod.swift; sourceTree = "<group>"; };
 		E72521ED25517EB100533E35 /* BLIKComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentTests.swift; sourceTree = "<group>"; };
 		E7275BF8255012F600907CF9 /* FormLabelItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabelItem.swift; sourceTree = "<group>"; };
@@ -6975,7 +6972,6 @@
 				A023A9B328103C2D004FDCA4 /* session_response.json */,
 				F9EDB78823955ABF00CFB3C9 /* AdyenUIHost.strings */,
 				F96F44DE23BF453800871C1F /* AdyenUIHostCustomSeparator.strings */,
-				E71C32912DC50E15003D45F4 /* Localizable.xcstrings */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -7955,7 +7951,6 @@
 				002D4BFD2C009D8F00DBBD45 /* action_response.json in Resources */,
 				E97B970C2297ED0D00505476 /* LaunchScreen.storyboard in Resources */,
 				A023A9B428103C2D004FDCA4 /* session_response.json in Resources */,
-				E71C32932DC50E15003D45F4 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8018,7 +8013,6 @@
 				F95B6DA425274551002C9062 /* LaunchScreen.storyboard in Resources */,
 				F94E37B82818138900617382 /* session_response.json in Resources */,
 				F95B6DA125274551002C9062 /* Preview Assets.xcassets in Resources */,
-				E71C32922DC50E15003D45F4 /* Localizable.xcstrings in Resources */,
 				C92988582EE6F15800BD9DD7 /* README.md in Resources */,
 				F95B6D9E25274551002C9062 /* Assets.xcassets in Resources */,
 			);
