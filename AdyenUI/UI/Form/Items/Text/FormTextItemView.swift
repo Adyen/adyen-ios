@@ -83,7 +83,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         textField.textAlignment = style.text.textAlignment
 
         // Container
-        entryTextStackView.backgroundColor = style.containerColor
+        // TODO: - Temporary fix to test it out. Needs to be properly set.
+//        entryTextStackView.backgroundColor = // style.containerColor
         entryTextStackView.layer.borderWidth = style.borderWidth
 
         // Corner radius
@@ -150,7 +151,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         textField.returnKeyType = .next
         textField.delegate = self
         textField.textContentType = item.contentType
-        
+        // TODO: - Temporary fix to test it out. Needs to be properly set.
+        textField.tintColor = theme.colors.primary
+
         textField.addTarget(self, action: #selector(textDidChange(textField:)), for: .editingChanged)
         textField.accessibilityIdentifier = item.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "textField") }
         
@@ -337,6 +340,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         updateBorderColor(state: item.validationState)
     }
 
+    // TODO: - Temporary fix to test it out. Needs to be properly set.
     private func updateBorderColor(
         state: ValidationState,
         resolvingWith traitCollection: UITraitCollection? = nil
@@ -345,10 +349,13 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         let borderColor: UIColor
         if isEditing {
             borderColor = style.borderActiveColor
+            entryTextStackView.layer.borderWidth = 2
         } else if state.shouldShowError {
             borderColor = style.errorColor
+            entryTextStackView.layer.borderWidth = 2
         } else {
-            borderColor = style.borderColor
+            borderColor = UIColor(red: 0.55, green: 0.58, blue: 0.62, alpha: 1.00) // style.borderColor
+            entryTextStackView.layer.borderWidth = 1
         }
         adyen.applyLayerBorderColor(borderColor, on: entryTextStackView.layer, resolvingWith: traitCollection)
     }
