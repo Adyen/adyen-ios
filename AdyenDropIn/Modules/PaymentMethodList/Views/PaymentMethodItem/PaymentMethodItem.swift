@@ -11,15 +11,8 @@ import UIKit
 
 internal struct PaymentMethodItem: Identifiable {
 
-    internal struct TrailingInfoData {
-        internal let logoUrls: [URL]
-        internal let text: String?
-
-    }
-
     private enum Constants {
         static let maxLogosCount = 3
-        static let additionalLogosText = "+"
     }
 
     // MARK: - Properties
@@ -66,10 +59,7 @@ internal struct PaymentMethodItem: Identifiable {
             return nil
         }
 
-        let logoUrls = Array(names.prefix(Constants.maxLogosCount))
-            .map { logoURLProvider.logoURL(withName: $0) }
-
-        let text = names.count > Constants.maxLogosCount ? Constants.additionalLogosText : nil
-        return TrailingInfoData(logoUrls: logoUrls, text: text)
+        let logoUrls = names.map { logoURLProvider.logoURL(withName: $0) }
+        return TrailingInfoData(logoUrls: logoUrls, maxLogosCount: Constants.maxLogosCount)
     }
 }
