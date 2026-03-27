@@ -8,3 +8,5 @@ args:
     - Adyen
     - AdyenCheckout
     - AdyenDropIn
+    - AdyenCard
+    - AdyenUI

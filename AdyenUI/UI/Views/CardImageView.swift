@@ -4,16 +4,13 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 import UIKit
+@_spi(AdyenInternal) import Adyen
 
-internal class CardImageItem {
+package class CardImageItem {
 
     /// Configuration for how the image size should be determined.
-    internal enum SizeMode {
+    package enum SizeMode {
         /// Use a fixed size, ignoring the loaded image's actual size.
         case fixed(CGSize)
         /// Use the loaded image's actual size, updating constraints dynamically. You need to provide an initial size.
@@ -43,7 +40,7 @@ internal class CardImageItem {
     ///   - imageURL: The URL of the card image to display.
     ///   - sizeMode: The size mode of the card image.
     ///   - theme: The theme to apply
-    internal init(
+    package init(
         imageURL: URL?,
         sizeMode: SizeMode,
         theme: AdyenTheme
@@ -55,7 +52,7 @@ internal class CardImageItem {
 }
 
 /// A view that displays a card image with shadow styling.
-internal final class CardImageView: UIView {
+package final class CardImageView: UIView {
 
     // MARK: - Constants
 
@@ -77,14 +74,14 @@ internal final class CardImageView: UIView {
     private var heightConstraint: NSLayoutConstraint?
 
     /// Called when the image has finished loading and constraints have been updated.
-    internal var onImageLoaded: (() -> Void)?
+    package var onImageLoaded: (() -> Void)?
 
     /// Designated initializer: Initializes the form card image item view.
     ///
     /// - Parameters:
     ///   - item: The item represented by the view.
     ///   - imageLoader: The image loader to use for loading the card image.
-    internal init(item: CardImageItem, imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()) {
+    package init(item: CardImageItem, imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()) {
         self.imageLoader = imageLoader
         self.item = item
         super.init(frame: .zero)
@@ -128,16 +125,28 @@ internal final class CardImageView: UIView {
 
     private func applyShadow() {
         containerView.backgroundColor = item.theme.colors.background
-        containerView.layer.shadowColor = item.theme.colors.supportShadow.cgColor
         containerView.layer.shadowOffset = AdyenUIConstants.shadowOffset
         containerView.layer.shadowRadius = AdyenUIConstants.shadowRadius
         containerView.layer.shadowOpacity = AdyenUIConstants.shadowOpacity
         containerView.layer.masksToBounds = false
+        applyShadowColor()
+    }
+
+    /// This is to handle an edge case that if the user switches to dark/light mode while the screen has already been rendered.
+    /// The layer's color doesn't operate on colors which are dynamic by default based on the current trait.
+    /// Which is why the view needs to monitor any trait changes and update the color manually.
+    private func applyShadowColor() {
+        containerView.layer.shadowColor = item.theme.colors.supportShadow.resolvedColor(with: traitCollection).cgColor
+    }
+
+    override package func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        applyShadowColor()
     }
 
     // MARK: - Image Loading
 
-    override internal func didMoveToWindow() {
+    override package func didMoveToWindow() {
         super.didMoveToWindow()
         updateCardImage()
     }
