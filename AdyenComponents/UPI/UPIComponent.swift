@@ -214,8 +214,23 @@ public final class UPIComponent: PaymentComponent,
         )
         return item.padding()
     }()
-    
-    /// The UPI app list item.
+
+    /// The UPI apps list title item.
+    internal lazy var appsListTitleItem: FormContainerItem<FormLabelItem> = {
+        // TODO: - Replace with localization keys
+        let title = localUPIAppsAvailable ? "On your device" : "Options"
+        let item = FormLabelItem(
+            text: title,
+            style: configuration.style.sectionHeader
+        )
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.vpaInputTitleItem
+        )
+        return item.padding()
+    }()
+
+    /// The UPI apps list item.
     internal lazy var upiAppsList: [SelectableFormItem] = {
         guard let apps = upiPaymentMethod.apps, !apps.isEmpty else { return [] }
         let availableUPIApps = availableUPI(apps: apps)
@@ -286,6 +301,7 @@ public final class UPIComponent: PaymentComponent,
             formViewController.append(upiFlowSelectionItem.padding())
             formViewController.append(FormSpacerItem(numberOfSpaces: 1))
             formViewController.append(intentInstructionsLabelItem)
+            formViewController.append(appsListTitleItem)
             formViewController.append(errorItem)
             upiAppsList.forEach { formViewController.append($0) }
         }
@@ -425,6 +441,11 @@ private extension UPIComponent {
             return false
         }
         return UIApplication.shared.canOpenURL(url)
+    }
+
+    var localUPIAppsAvailable: Bool {
+        guard let apps = upiPaymentMethod.apps, !apps.isEmpty else { return false }
+        return apps.contains { isAppInstalled(scheme: $0.appIdentifier.scheme) }
     }
 
     func availableUPI(apps: [UPIApp]) -> [UPIApp] {
