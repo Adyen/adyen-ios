@@ -64,8 +64,7 @@ public struct OrderPaymentMethod: PaymentMethod {
         self.amount = amount
     }
 
-    @_spi(AdyenInternal)
-    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let disclosureText = AmountFormatter.formatted(
             amount: -amount.value,
             currencyCode: amount.currencyCode,
@@ -99,3 +98,5 @@ public struct OrderPaymentMethod: PaymentMethod {
         case type
     }
 }
+
+extension OrderPaymentMethod: LocalizedPaymentMethod {}

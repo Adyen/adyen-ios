@@ -20,7 +20,7 @@ public struct MealVoucherPaymentMethod: PartialPaymentMethod {
         builder.build(paymentMethod: self)
     }
 
-    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
     }
 
@@ -30,5 +30,6 @@ public struct MealVoucherPaymentMethod: PartialPaymentMethod {
         case type
         case name
     }
-
 }
+
+extension MealVoucherPaymentMethod: LocalizedPaymentMethod {}

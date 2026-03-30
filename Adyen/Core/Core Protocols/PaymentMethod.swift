@@ -19,13 +19,6 @@ public protocol PaymentMethod: Codable {
     /// and if not `nil`, will override the default display information.
     var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? { get set }
     
-    /// Display information for the payment method, adapted for displaying in a list.
-    ///
-    /// - Parameters:
-    ///   - using: The localization parameters.
-    @_spi(AdyenInternal)
-    func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation
-    
     @_spi(AdyenInternal)
     func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent?
 }
@@ -48,11 +41,20 @@ public extension PaymentMethod {
 /// A protocol to define any partial payment method such as gift cards, `MealVoucher` etc.
 public protocol PartialPaymentMethod: PaymentMethod {}
 
-@_spi(AdyenInternal)
-public extension PaymentMethod {
+package protocol LocalizedPaymentMethod: PaymentMethod {
+    func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation
+}
+
+package extension PaymentMethod {
     
     func displayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        let defaultDisplayInformation = defaultDisplayInformation(using: parameters)
+        let defaultDisplayInformation: DisplayInformation
+        if let localizedPaymentMethod = self as? any LocalizedPaymentMethod {
+            defaultDisplayInformation = localizedPaymentMethod.defaultDisplayInformation(using: parameters)
+        } else {
+            defaultDisplayInformation = DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
+        }
+
         if let merchantProvidedDisplayInformation {
             let subtitle = merchantProvidedDisplayInformation.subtitle ?? defaultDisplayInformation.subtitle
             return DisplayInformation(
@@ -65,12 +67,6 @@ public extension PaymentMethod {
         }
         return defaultDisplayInformation
     }
-
-    @_spi(AdyenInternal)
-    func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
-    }
-    
 }
 
 /// A payment method that has been stored for later use.

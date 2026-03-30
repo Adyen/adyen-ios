@@ -13,13 +13,13 @@ internal enum LocalizationMode: Equatable {
 
 /// The localization parameters to control some aspects of how localized strings are fetched,
 /// like the localization table to use and the separator of the key strings.
-public struct LocalizationParameters: Equatable {
+package struct LocalizationParameters: Equatable {
 
     internal let mode: LocalizationMode
 
     /// The locale identifier for external resources and numeric formats.
     /// By default current locale is used.
-    public var locale: String? {
+    package var locale: String? {
         switch mode {
         case let .natural(_, _, _, locale: locale):
             return locale
@@ -30,7 +30,7 @@ public struct LocalizationParameters: Equatable {
 
     /// The string table to search. If tableName is nil or is an empty string,
     /// the Localizable.strings is used instead.
-    public var tableName: String? {
+    package var tableName: String? {
         switch mode {
         case let .natural(_, tableName: tableName, _, _):
             return tableName
@@ -41,7 +41,7 @@ public struct LocalizationParameters: Equatable {
 
     /// Indicates the key separator string, set it if you want the localization keys to have a different separator other than ".",
     /// otherwise a "." is used.
-    public var keySeparator: String? {
+    package var keySeparator: String? {
         switch mode {
         case let .natural(_, _, keySeparator: keySeparator, _):
             return keySeparator
@@ -53,7 +53,7 @@ public struct LocalizationParameters: Equatable {
     /// Indicates the `Bundle` in which to look for translations,
     /// if `nil`, then the SDK try to fetch the translations from the `Bundle.main`,
     /// if not found, then the internal SDK bundle is used.
-    public var bundle: Bundle? {
+    package var bundle: Bundle? {
         switch mode {
         case let .natural(bundle: bundle, _, _, _):
             return bundle
@@ -72,7 +72,7 @@ public struct LocalizationParameters: Equatable {
     ///   - tableName: The string table to search.
     ///   - keySeparator: The key separator string.
     ///   - locale: The locale for external resources and formatting of monetary values..
-    public init(bundle: Bundle? = nil, tableName: String? = nil, keySeparator: String? = nil, locale: String? = nil) {
+    package init(bundle: Bundle? = nil, tableName: String? = nil, keySeparator: String? = nil, locale: String? = nil) {
         mode = .natural(bundle: bundle, tableName: tableName, keySeparator: keySeparator, locale: locale)
     }
 
@@ -84,7 +84,7 @@ public struct LocalizationParameters: Equatable {
     ///   `Bundle.main` takes precedence over the custom bundle provided.
     ///   - tableName: The string table to search.
     ///   - keySeparator: The key separator string.
-    public init(enforcedLocale: String, bundle: Bundle? = nil, tableName: String? = nil, keySeparator: String? = nil) {
+    package init(enforcedLocale: String, bundle: Bundle? = nil, tableName: String? = nil, keySeparator: String? = nil) {
         mode = .enforced(bundle: bundle, tableName: tableName, keySeparator: keySeparator, locale: enforcedLocale)
     }
 }

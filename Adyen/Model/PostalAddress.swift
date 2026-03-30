@@ -149,8 +149,7 @@ public struct AddressLookupResult {
 extension PostalAddress {
     
     /// Multi line mailing address
-    @_spi(AdyenInternal)
-    public func formatted(using localizationParameters: LocalizationParameters?) -> String {
+    package func formatted(using localizationParameters: LocalizationParameters?) -> String {
         let address = CNMutablePostalAddress()
         city.map { address.city = $0 }
         country.map {
@@ -177,8 +176,7 @@ extension PostalAddress {
             .replacingOccurrences(of: "\n", with: ", ")
     }
     
-    @_spi(AdyenInternal)
-    public func formattedLocation(using localizationParameters: LocalizationParameters?) -> String {
+    package func formattedLocation(using localizationParameters: LocalizationParameters?) -> String {
         let address = CNMutablePostalAddress()
         city.map { address.city = $0 }
         country.map {
@@ -194,7 +192,7 @@ extension PostalAddress {
     
     package func formattedSingleLine(using localizationParameters: LocalizationParameters?) -> String {
         // Use CNPostalAddressFormatter for locale-aware formatting, then convert to single line
-        return formatted(using: localizationParameters)
+        formatted(using: localizationParameters)
             .replacingOccurrences(of: "\n", with: ", ")
     }
 
