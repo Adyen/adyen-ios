@@ -5,12 +5,18 @@
 //
 
 import Adyen
-import AdyenUI
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import Combine
 import Foundation
 import UIKit
 
 internal class PaymentMethodListViewController: UIViewController {
+
+    private enum Layout {
+        static let headerViewBottomMargin: CGFloat = 32
+    }
 
     // MARK: - UI Elements
 
@@ -34,10 +40,7 @@ internal class PaymentMethodListViewController: UIViewController {
         let headerViewModel = PaymentMethodListHeaderViewModel(
             amount: viewModel.formattedAmount,
             subtitle: viewModel.subtitle,
-            showApplePayButton: viewModel.isApplePayAvailable,
-            onApplePayTap: { [weak self] in
-                self?.viewModel.selectApplePay()
-            },
+            applePayButtonState: viewModel.applePayButtonState,
             theme: viewModel.theme
         )
 
@@ -53,7 +56,10 @@ internal class PaymentMethodListViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-    
+
+    // TODO: -
+    // - Temporary loading view until the actual loading screen is developed.
+    // - This overlay should be removed.
     private lazy var loadingOverlayView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -101,7 +107,6 @@ internal class PaymentMethodListViewController: UIViewController {
 
     override internal func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = theme.colors.background
         viewModel.didLoad()
         isModalInPresentation = true
         setupNavigationItem()
@@ -109,6 +114,7 @@ internal class PaymentMethodListViewController: UIViewController {
         setupHeaderView()
         setupPaymentMethodSectionsStackView()
         setupLoadingOverlay()
+        applyTheme()
         observeState()
     }
 
@@ -131,9 +137,14 @@ internal class PaymentMethodListViewController: UIViewController {
             contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
     }
-    
+
+    private func applyTheme() {
+        view.backgroundColor = theme.colors.background
+    }
+
     private func setupHeaderView() {
         contentStackView.addArrangedSubview(headerView)
+        contentStackView.setCustomSpacing(Layout.headerViewBottomMargin, after: headerView)
     }
 
     private func setupPaymentMethodSectionsStackView() {

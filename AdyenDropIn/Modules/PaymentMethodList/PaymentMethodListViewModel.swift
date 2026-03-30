@@ -30,12 +30,18 @@ internal protocol PaymentMethodListViewModelProtocol {
 
     var formattedAmount: String { get }
     var subtitle: String { get }
-    var isApplePayAvailable: Bool { get }
-    func selectApplePay()
+    var applePayButtonState: PaymentMethodListHeaderViewModel.ApplePayButtonState { get }
 }
 
 @MainActor
 internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
+
+    // MARK: - Constants
+
+    private enum Constants {
+        /// Payment methods that are displayed separately (e.g., in the header) and should be filtered from the main list.
+        internal static let instantPaymentMethods: Set<PaymentMethodType> = [.applePay]
+    }
 
     // MARK: - Properties
 
@@ -79,20 +85,23 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     internal var title: String {
         localizedString(.paymentMethodsTitle, localizationParameters)
     }
-    
+
     internal var formattedAmount: String {
         context.amount?.formatted ?? ""
     }
-    
+
     internal var subtitle: String {
         // TODO: - Add localization key for this string
         "Select your preferred payment option to complete the payment"
     }
-    
-    internal var isApplePayAvailable: Bool {
-        applePayPaymentMethod != nil
+
+    internal var applePayButtonState: PaymentMethodListHeaderViewModel.ApplePayButtonState {
+        guard applePayPaymentMethod != nil else { return .hidden }
+        return .visible { [weak self] in
+            self?.startApplePay()
+        }
     }
-    
+
     private var applePayPaymentMethod: PaymentMethod? {
         paymentMethodSections
             .flatMap(\.paymentMethods)
@@ -100,16 +109,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     private var applePayComponent: PaymentComponent?
-
-    internal func selectApplePay() {
-        guard applePayComponent == nil else { return }
-        guard let applePayPaymentMethod else { return }
-        self.applePayComponent = componentManager.buildComponent(for: applePayPaymentMethod)
-        applePayComponent?.delegate = self
-
-        guard let applePayViewController = (applePayComponent as? PresentableComponent)?.viewController else { return }
-        router?.present(viewController: applePayViewController)
-    }
 
     internal func cancel() {
         router?.dismiss(completion: nil)
@@ -122,6 +121,15 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     // MARK: - Private
+
+    private func startApplePay() {
+        guard applePayComponent == nil, let applePayPaymentMethod else { return }
+        self.applePayComponent = componentManager.buildComponent(for: applePayPaymentMethod)
+        applePayComponent?.delegate = self
+
+        guard let applePayViewController = (applePayComponent as? PresentableComponent)?.viewController else { return }
+        router?.present(viewController: applePayViewController)
+    }
 
     internal func select(paymentMethod: PaymentMethod) {
         guard let component = componentManager.buildComponent(for: paymentMethod) else { return }
@@ -141,7 +149,9 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     private func getSections() -> [PaymentMethodSection] {
         paymentMethodSections.map { section in
-            let items = section.paymentMethods.map { paymentMethodItem(from: $0) }
+            let items = section.paymentMethods.filter {
+                !Constants.instantPaymentMethods.contains($0.type)
+            }.map(paymentMethodItem(from:))
             return PaymentMethodSection(
                 headerTitle: section.header?.title,
                 items: items,
@@ -158,6 +168,8 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             title: displayInformation.title,
             subtitle: displayInformation.subtitle,
             iconURL: imageURL,
+            trailingInfo: displayInformation.trailingInfo,
+            logoURLProvider: logoURLProvider,
             accessibilityLabel: displayInformation.accessibilityLabel,
             theme: theme,
             selectionHandler: { [weak self] in
@@ -171,14 +183,14 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 // MARK: - PaymentComponentDelegate
 
 extension PaymentMethodListViewModel: PaymentComponentDelegate {
-    
+
     internal func didSubmit(
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
         dropInFlowManager.submit(data, from: component, actionPresenter: self)
     }
-    
+
     internal func didFail(
         with error: any Error,
         from component: any PaymentComponent
@@ -205,17 +217,5 @@ extension PaymentMethodListViewModel: ActionPresenter {
 
     internal func didCancel(actionComponent: any ActionComponent) {
         state = .idle
-    }
-}
-
-internal extension DisplayInformation.TrailingInfoType {
-
-    func forListItem(urlProvider: LogoURLProvider) -> ListItem.TrailingInfoType {
-        switch self {
-        case let .text(string):
-            return .text(string)
-        case let .logos(logoNames, trailingText):
-            return .logos(urls: logoNames.map { urlProvider.logoURL(withName: $0) }, trailingText: trailingText)
-        }
     }
 }

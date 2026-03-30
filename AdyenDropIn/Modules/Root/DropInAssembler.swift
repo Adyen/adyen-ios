@@ -6,7 +6,9 @@
 
 import Adyen
 import AdyenNetworking
-import AdyenUI
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import Foundation
 import UIKit
 

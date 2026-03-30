@@ -4,7 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import AdyenUI
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import PassKit
 import UIKit
 
@@ -20,7 +22,6 @@ internal final class PaymentMethodListHeaderView: UIView {
     private lazy var amountLabel: UILabel = {
         let label = UILabel()
         label.text = viewModel.amount
-        label.apply(viewModel.theme.elements.labels.title)
         label.numberOfLines = 1
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -30,8 +31,6 @@ internal final class PaymentMethodListHeaderView: UIView {
     private lazy var subtitleLabel: UILabel = {
         let label = UILabel()
         label.text = viewModel.subtitle
-        label.apply(viewModel.theme.elements.labels.subheadline)
-        label.textColor = viewModel.theme.colors.textSecondary
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +41,9 @@ internal final class PaymentMethodListHeaderView: UIView {
         let button = PKPaymentButton(paymentButtonType: .plain, paymentButtonStyle: .automatic)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(applePayButtonTapped), for: .touchUpInside)
-        button.isHidden = !viewModel.showApplePayButton
+        if case .hidden = viewModel.applePayButtonState {
+            button.isHidden = true
+        }
         return button
     }()
     
@@ -81,7 +82,9 @@ internal final class PaymentMethodListHeaderView: UIView {
     // MARK: - Actions
     
     @objc private func applePayButtonTapped() {
-        viewModel.onApplePayTap?()
+        if case let .visible(onTap) = viewModel.applePayButtonState {
+            onTap()
+        }
     }
     
     // MARK: - Private
@@ -91,7 +94,7 @@ internal final class PaymentMethodListHeaderView: UIView {
 
         addSubview(stackView)
         
-        if viewModel.showApplePayButton {
+        if case .visible = viewModel.applePayButtonState {
             stackView.setCustomSpacing(Layout.subtitleBottomMargin, after: subtitleLabel)
         }
 
@@ -105,5 +108,19 @@ internal final class PaymentMethodListHeaderView: UIView {
             applePayButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
             applePayButton.heightAnchor.constraint(equalToConstant: Layout.applePayButtonHeight)
         ])
+
+        applyTheme()
+    }
+
+    private func applyTheme() {
+        // Amount Label
+        amountLabel.apply(viewModel.theme.elements.labels.title)
+
+        // Subtitle Label
+        subtitleLabel.textColor = viewModel.theme.colors.textSecondary
+        subtitleLabel.apply(viewModel.theme.elements.labels.body)
+
+        // ApplePay Button
+        applePayButton.cornerRadius = viewModel.theme.attributes.cornerRadius
     }
 }
