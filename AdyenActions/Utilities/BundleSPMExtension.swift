@@ -18,7 +18,7 @@ internal extension Bundle {
     static let actions: Bundle = .init(for: RedirectComponent.self)
 
     /// The bundle in which the framework's resources are located.
-    static let actionsInternalResources: Bundle = .module
+    static let actionsInternalResources: Bundle = actions
 
     // swiftlint:enable explicit_acl
 }
