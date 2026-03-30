@@ -19,7 +19,7 @@ internal class StoredCardInputViewController: UIViewController {
 
     private enum Constants {
         static let chevronBackwardImage = "chevron.backward"
-        static let contentPadding: CGFloat = 24
+        static let contentPadding: CGFloat = 16
         static let distanceBetweenImageAndLabels: CGFloat = 12
         static let distanceFromButtonsToLabels: CGFloat = 24
         static let buttonsBottomPadding: CGFloat = 0
@@ -166,11 +166,6 @@ internal class StoredCardInputViewController: UIViewController {
             subtitleLabel
         ].forEach(labelsStackView.addArrangedSubview)
 
-        [
-            titleLabel,
-            subtitleLabel
-        ].forEach(labelsStackView.addArrangedSubview)
-
         buttonsStackView.addArrangedSubview(primaryButton)
 
         configureConstraints()
@@ -185,6 +180,7 @@ internal class StoredCardInputViewController: UIViewController {
     }
 
     private func configureConstraints() {
+        // TODO: Robert: StoredView: Autolayout Constraints breaks. This needs a separate investigation as this involves the FormCardSecurityCodeItemView
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -193,8 +189,8 @@ internal class StoredCardInputViewController: UIViewController {
 
             contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: Constants.contentPadding),
-            contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -Constants.contentPadding),
-            contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -Constants.buttonsBottomPadding)
+            contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -Constants.buttonsBottomPadding),
+            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -2 * Constants.contentPadding)
         ])
     }
 
