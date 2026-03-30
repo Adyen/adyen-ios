@@ -8,6 +8,7 @@
 import Foundation
 
 class ExpirationDateFormattingMock: ExpirationDateFormatting {
+
     // MARK: - date(from:)
 
     var dateCallsCount = 0

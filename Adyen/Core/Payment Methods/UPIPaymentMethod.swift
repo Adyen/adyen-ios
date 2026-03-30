@@ -32,3 +32,47 @@ public struct UPIPaymentMethod: PaymentMethod {
     }
 
 }
+
+// "apps": [
+//  {
+//    "id": "gpay",
+//    "name": "Google Pay",
+//    "appIdentifierInfo": {
+//      "iosScheme": "gpay",
+//      "androidPackageId": "com.gpay.app"
+//    }
+//  },
+//  {
+//    "id": "phonepe",
+//    "name": "PhonePe",
+//    "appIdentifierInfo": {
+//      "iosScheme": "phonepe",
+//      "androidPackageId": "com.phonepe.app"
+//    }
+//  }
+// ]
+
+internal struct UPIApp: Codable {
+
+    internal struct AppIdentifier: Codable {
+        internal let scheme: String
+
+        enum CodingKeys: String, CodingKey {
+            case scheme = "iosScheme"
+        }
+    }
+
+    internal let identifier: String
+    internal let name: String
+    internal let appIdentifier: AppIdentifier
+
+    // MARK: - CodingKeys
+
+    internal enum CodingKeys: String, CodingKey {
+        case identifier = "id"
+        case name
+        case appIdentifier = "appIdentifierInfo"
+    }
+}
+
+
