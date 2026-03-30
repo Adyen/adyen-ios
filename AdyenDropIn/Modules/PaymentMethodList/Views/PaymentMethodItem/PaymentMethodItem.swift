@@ -13,10 +13,6 @@ import UIKit
 
 internal struct PaymentMethodItem: Identifiable {
 
-    private enum Constants {
-        static let maxLogosCount = 3
-    }
-
     // MARK: - Properties
 
     internal let id = UUID()
@@ -62,6 +58,6 @@ internal struct PaymentMethodItem: Identifiable {
         }
 
         let logoUrls = names.map { logoURLProvider.logoURL(withName: $0) }
-        return TrailingInfoData(logoUrls: logoUrls, maxLogosCount: Constants.maxLogosCount)
+        return TrailingInfoData(logoUrls: logoUrls)
     }
 }
