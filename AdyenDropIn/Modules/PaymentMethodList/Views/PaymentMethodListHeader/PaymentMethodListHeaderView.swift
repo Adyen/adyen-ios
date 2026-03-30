@@ -22,7 +22,6 @@ internal final class PaymentMethodListHeaderView: UIView {
     private lazy var amountLabel: UILabel = {
         let label = UILabel()
         label.text = viewModel.amount
-        label.apply(viewModel.theme.elements.labels.title)
         label.numberOfLines = 1
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -32,8 +31,6 @@ internal final class PaymentMethodListHeaderView: UIView {
     private lazy var subtitleLabel: UILabel = {
         let label = UILabel()
         label.text = viewModel.subtitle
-        label.apply(viewModel.theme.elements.labels.body)
-        label.textColor = viewModel.theme.colors.textSecondary
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +39,6 @@ internal final class PaymentMethodListHeaderView: UIView {
     
     private lazy var applePayButton: PKPaymentButton = {
         let button = PKPaymentButton(paymentButtonType: .plain, paymentButtonStyle: .automatic)
-        button.cornerRadius = viewModel.theme.attributes.cornerRadius
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(applePayButtonTapped), for: .touchUpInside)
         if case .hidden = viewModel.applePayButtonState {
@@ -112,5 +108,19 @@ internal final class PaymentMethodListHeaderView: UIView {
             applePayButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
             applePayButton.heightAnchor.constraint(equalToConstant: Layout.applePayButtonHeight)
         ])
+
+        applyTheme()
+    }
+
+    private func applyTheme() {
+        // Amount Label
+        amountLabel.apply(viewModel.theme.elements.labels.title)
+
+        // Subtitle Label
+        subtitleLabel.textColor = viewModel.theme.colors.textSecondary
+        subtitleLabel.apply(viewModel.theme.elements.labels.body)
+
+        // ApplePay Button
+        applePayButton.cornerRadius = viewModel.theme.attributes.cornerRadius
     }
 }

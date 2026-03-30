@@ -31,7 +31,6 @@ internal final class PaymentMethodItemView: UIView {
         imageView.contentMode = .scaleAspectFit
         imageView.layer.cornerRadius = AdyenUIConstants.imageCornerRadius
         imageView.layer.borderWidth = 1.0 / UIScreen.main.nativeScale
-        imageView.layer.borderColor = item.theme.colors.separator.cgColor
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -39,15 +38,12 @@ internal final class PaymentMethodItemView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.apply(item.theme.elements.labels.bodyEmphasized)
         return label
     }()
 
     private lazy var subtitleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.apply(item.theme.elements.labels.subheadline)
-        label.textColor = item.theme.colors.textSecondary
         return label
     }()
 
@@ -73,7 +69,6 @@ internal final class PaymentMethodItemView: UIView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(systemName: Images.chevron)
-        imageView.tintColor = item.theme.colors.textSecondary
         imageView.contentMode = .scaleAspectFit
         imageView.setContentHuggingPriority(.required, for: .horizontal)
         imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -98,7 +93,6 @@ internal final class PaymentMethodItemView: UIView {
     private lazy var highlightView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = item.theme.colors.disabled
         view.alpha = 0
         return view
     }()
@@ -130,9 +124,6 @@ internal final class PaymentMethodItemView: UIView {
     // MARK: - Private
 
     private func setupView() {
-        layer.cornerRadius = item.theme.attributes.cornerRadius
-        layer.masksToBounds = true
-
         addSubview(highlightView)
         addSubview(contentStackView)
 
@@ -154,6 +145,8 @@ internal final class PaymentMethodItemView: UIView {
 
             heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.itemHeight)
         ])
+
+        applyTheme()
     }
 
     private func configureView() {
@@ -170,6 +163,27 @@ internal final class PaymentMethodItemView: UIView {
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         addGestureRecognizer(tapGesture)
+    }
+
+    private func applyTheme() {
+        layer.cornerRadius = item.theme.attributes.cornerRadius
+        layer.masksToBounds = true
+
+        // Icon ImageView
+        iconImageView.layer.borderColor = item.theme.colors.separator.cgColor
+
+        // Title Label
+        titleLabel.apply(item.theme.elements.labels.bodyEmphasized)
+
+        // Subtitle Label
+        subtitleLabel.apply(item.theme.elements.labels.subheadline)
+        subtitleLabel.textColor = item.theme.colors.textSecondary
+
+        // Chevron ImageView
+        chevronImageView.tintColor = item.theme.colors.textSecondary
+
+        // Highlight view
+        highlightView.backgroundColor = item.theme.colors.disabled
     }
 
     private func loadIcon(from url: URL?) {
