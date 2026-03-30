@@ -245,7 +245,7 @@ public final class UPIComponent: PaymentComponent,
     
     // MARK: - Private
     
-    private func selectableFormItem(from app: Issuer) -> SelectableFormItem {
+    private func selectableFormItem(from app: UPIApp) -> SelectableFormItem {
         let logoUrl = LogoURLProvider.logoURL(
             withName: "upi/\(app.identifier)",
             environment: context.apiContext.environment,

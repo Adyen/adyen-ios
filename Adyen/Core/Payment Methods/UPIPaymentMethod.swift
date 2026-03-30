@@ -9,12 +9,51 @@ import Foundation
 /// UPI  payment method.
 public struct UPIPaymentMethod: PaymentMethod {
 
+    // ============================= MOCK =============================
+
+    private static let appsResponse =
+        """
+        {
+            "apps": [
+              {
+                "id": "gpay",
+                "name": "Google Pay",
+                "appIdentifierInfo": {
+                  "iosScheme": "gpay",
+                  "androidPackageId": "com.gpay.app"
+                }
+              },
+              {
+                "id": "phonepe",
+                "name": "PhonePe",
+                "appIdentifierInfo": {
+                  "iosScheme": "phonepe",
+                  "androidPackageId": "com.phonepe.app"
+                }
+              }
+            ]
+        }
+        """
+
+    internal struct AppsResponse: Codable {
+        internal let apps: [UPIApp]
+    }
+
+    private static var appsMock: [UPIApp]? {
+        let data = Data(Self.appsResponse.utf8)
+        let decoder = JSONDecoder()
+        let response = try? decoder.decode(AppsResponse.self, from: data)
+        return response?.apps
+    }
+
+    // ============================= MOCK =============================
+
     public let type: PaymentMethodType
 
     public let name: String
 
     /// The available UPI apps.
-    public let apps: [Issuer]?
+    public let apps: [UPIApp]? = Self.appsMock
 
     public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
@@ -28,51 +67,29 @@ public struct UPIPaymentMethod: PaymentMethod {
     private enum CodingKeys: String, CodingKey {
         case type
         case name
-        case apps
+//        case apps
     }
-
 }
 
-// "apps": [
-//  {
-//    "id": "gpay",
-//    "name": "Google Pay",
-//    "appIdentifierInfo": {
-//      "iosScheme": "gpay",
-//      "androidPackageId": "com.gpay.app"
-//    }
-//  },
-//  {
-//    "id": "phonepe",
-//    "name": "PhonePe",
-//    "appIdentifierInfo": {
-//      "iosScheme": "phonepe",
-//      "androidPackageId": "com.phonepe.app"
-//    }
-//  }
-// ]
+public struct UPIApp: Codable {
 
-internal struct UPIApp: Codable {
+    public struct AppIdentifier: Codable {
+        public let scheme: String
 
-    internal struct AppIdentifier: Codable {
-        internal let scheme: String
-
-        enum CodingKeys: String, CodingKey {
+        public enum CodingKeys: String, CodingKey {
             case scheme = "iosScheme"
         }
     }
 
-    internal let identifier: String
-    internal let name: String
-    internal let appIdentifier: AppIdentifier
+    public let identifier: String
+    public let name: String
+    public let appIdentifier: AppIdentifier
 
     // MARK: - CodingKeys
 
-    internal enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case identifier = "id"
         case name
         case appIdentifier = "appIdentifierInfo"
     }
 }
-
-
