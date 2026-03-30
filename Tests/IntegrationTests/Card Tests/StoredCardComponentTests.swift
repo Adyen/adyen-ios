@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable @_spi(AdyenInternal) import AdyenCard
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 @MainActor
@@ -29,7 +30,7 @@ class StoredCardComponentTests: XCTestCase {
     // let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
 
     func testUIWithClientKey() throws {
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context, theme: AdyenTheme())
 
         presentOnRoot(sut.viewController)
         
@@ -44,7 +45,7 @@ class StoredCardComponentTests: XCTestCase {
     }
 
     func testPaymentSubmitWithValidPublicKey() throws {
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context, theme: AdyenTheme())
 
         let delegateExpectation = expectation(description: "expect delegate to be called.")
         let delegate = PaymentComponentDelegateMock()
@@ -93,7 +94,7 @@ class StoredCardComponentTests: XCTestCase {
             publicKey: "invalid_key",
             analyticsProvider: AnalyticsProviderMock()
         )
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: contextWithInvalidKey)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: contextWithInvalidKey, theme: AdyenTheme())
 
         let delegate = PaymentComponentDelegateMock()
         delegate.onDidSubmit = { _, _ in
@@ -136,7 +137,7 @@ class StoredCardComponentTests: XCTestCase {
             expiryYear: "22",
             holderName: "holderName"
         )
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context, theme: AdyenTheme())
 
         presentOnRoot(sut.viewController)
         
@@ -175,7 +176,7 @@ class StoredCardComponentTests: XCTestCase {
     }
 
     func testCVCLimitForNonAMEX() throws {
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
+        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context, theme: AdyenTheme())
 
         presentOnRoot(sut.viewController)
         
@@ -208,7 +209,8 @@ class StoredCardComponentTests: XCTestCase {
         let paymentMethod = storedCardPaymentMethod(brand: .masterCard)
         let sut = StoredCardComponent(
             storedCardPaymentMethod: paymentMethod,
-            context: context
+            context: context,
+            theme: AdyenTheme()
         )
 
         // When
