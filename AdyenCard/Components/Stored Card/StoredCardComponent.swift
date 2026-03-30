@@ -7,6 +7,10 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 import UIKit
+@_spi(AdyenInternal) import AdyenUI
+#if canImport(AdyenUI)
+    @_spi(AdyenInternal) import AdyenUI
+#endif
 
 /// A component that provides a form for stored card payments.
 @MainActor
@@ -14,59 +18,75 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
 
     /// The context object for this component.
     package let context: AdyenContext
-    
+
     /// The card payment method.
     package var paymentMethod: PaymentMethod {
         storedCardPaymentMethod
     }
-    
+
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
-    
+
     package var localizationParameters: LocalizationParameters?
-        
+
     private let storedCardPaymentMethod: StoredCardPaymentMethod
-    
+    private let theme: AdyenTheme
+
     package init(
         storedCardPaymentMethod: StoredCardPaymentMethod,
-        context: AdyenContext
+        context: AdyenContext,
+        theme: AdyenTheme
     ) {
         self.storedCardPaymentMethod = storedCardPaymentMethod
         self.context = context
+        self.theme = theme
     }
-    
-    package var viewController: UIViewController {
-        storedCardAlertManager.alertController
-    }
-    
-    internal lazy var storedCardAlertManager: StoredCardAlertManager = {
-        sendInitialAnalytics()
-        sendDidLoadEvent()
-        
-        let manager = StoredCardAlertManager(
-            paymentMethod: storedCardPaymentMethod,
-            context: context,
-            amount: context.amount
+
+    package lazy var viewController: UIViewController = {
+        let viewModel = StoredCardInputViewModel(
+            theme: theme,
+            storedCardPaymentMethod: storedCardPaymentMethod,
+            apiContext: context.apiContext,
+            publicKey: context.publicKey,
+            amount: context.amount,
+            analyticsProvider: context.analyticsProvider,
+            localizationParameters: localizationParameters
         )
-        
-        manager.localizationParameters = localizationParameters
-        manager.completionHandler = { [weak self] result in
-            guard let self else { return }
-            
-            switch result {
-            case let .success(details):
-                self.submit(data: PaymentComponentData(
-                    paymentMethodDetails: details,
-                    amount: self.context.amount,
-                    order: self.order
-                ))
-            case let .failure(error):
-                self.delegate?.didFail(with: error, from: self)
-            }
+
+        viewModel.cardDetailsCompletionHandler = { [weak self] in
+            self?.receivedCardDetailsResultToProcessPayment(result: $0)
         }
-        
-        return manager
+
+        viewModel.closeHandler = { [weak self] in
+            self?.viewController.dismiss(animated: true)
+        }
+
+        viewModel.otherPaymentOptionsHandler = { [weak self] in
+            // TODO: Robert: StoredView: Inform the router to navigation to the payment list.
+            self?.viewController.dismiss(animated: true)
+        }
+
+        // TODO: Robert: This doesn't seem to a right place to trigger initialAnalytics(). As this is a lazy var. Maybe this could be moved elsewhere? - I don't know where as of yet.
+        self.sendInitialAnalytics()
+
+        // TODO: Robert: StoredView: 🐞 Whose responsibility is it to maintain the navigation stack i think it should not be this component at all.
+        return UINavigationController(
+            rootViewController: StoredCardInputViewController(viewModel: viewModel)
+        )
     }()
+
+    private func receivedCardDetailsResultToProcessPayment(result: Result<CardDetails, Error>) {
+        switch result {
+        case let .success(details):
+            submit(data: PaymentComponentData(
+                paymentMethodDetails: details,
+                amount: context.amount,
+                order: order
+            ))
+        case let .failure(error):
+            delegate?.didFail(with: error, from: self)
+        }
+    }
 }
 
 /// :nodoc:
