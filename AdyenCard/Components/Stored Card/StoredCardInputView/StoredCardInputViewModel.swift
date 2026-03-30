@@ -103,20 +103,21 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         localizedString(.cardSecurityCodeTitle, localizationParameters)
     }
 
-    /// We construct something like - Enter the security code for BOLD[Visa •••• 4556] to complete the payment of BOLD[$140.98]
+    // We construct something like - Enter the security code for BOLD[Visa •••• 4556] to complete the payment of BOLD[$140.98]
     // TODO: Robert: StoredView: This & the pay button title needs to change according to the amount.
     internal var subtitleText: NSAttributedString {
         let displayInformation = storedCardPaymentMethod.displayInformation(using: localizationParameters)
         let paymentMethodTitle = storedCardPaymentMethod.name + " " + displayInformation.title
-        let localizedString = localizedString(.cardSecurityCodeDescription, localizationParameters, paymentMethodTitle, formattedAmount)
+        // TODO: Replace hardcoded English subtitle with finalized localization before release.
+        let subtitle = "Enter the security code for \(paymentMethodTitle) to complete the payment of \(formattedAmount)"
 
-        let attributed = NSMutableAttributedString(string: localizedString)
+        let attributed = NSMutableAttributedString(string: subtitle)
 
-        let range = (localizedString as NSString).range(of: paymentMethodTitle)
+        let range = (subtitle as NSString).range(of: paymentMethodTitle)
         attributed.addAttribute(.font, value: theme.elements.labels.bodyEmphasized.font, range: range)
         attributed.addAttribute(.foregroundColor, value: theme.elements.labels.bodyEmphasized.color, range: range)
 
-        let amountRange = (localizedString as NSString).range(of: formattedAmount)
+        let amountRange = (subtitle as NSString).range(of: formattedAmount)
         attributed.addAttribute(.font, value: theme.elements.labels.bodyEmphasized.font, range: amountRange)
         attributed.addAttribute(.foregroundColor, value: theme.elements.labels.bodyEmphasized.color, range: amountRange)
 

@@ -110,7 +110,8 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     }
 
     internal var subtitleText: String {
-        localizedString(.preselectedPaymentMethodSubtitle, localizationParameters, component.paymentMethod.name, formattedAmount)
+        // TODO: Replace hardcoded English subtitle with finalized localization before release.
+        "Use \(component.paymentMethod.name) to pay \(formattedAmount)"
     }
 
     internal var submitButtonTitle: String {
@@ -122,7 +123,8 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     }
 
     internal var showAllPaymentMethodsButtonTitle: String {
-        localizedString(.preselectedPaymentMethodOtherOptions, localizationParameters)
+        // TODO: Replace hardcoded English button title with finalized localization before release.
+        "Other payment options"
     }
 
     internal func showAllPaymentMethods() {
