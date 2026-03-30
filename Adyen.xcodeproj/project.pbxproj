@@ -7928,9 +7928,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6D808422BCD29E500F3F5EB /* AdyenTests.strings in Resources */,
-				E71C328F2DC3B706003D45F4 /* Localizable.xcstrings in Resources */,
 				B6D808412BCD29E500F3F5EB /* AdyenTestsCustomSeparator.strings in Resources */,
 				E71C32872DC22BAB003D45F4 /* EnforceLocaleTests.strings in Resources */,
+				E71C328F2DC3B706003D45F4 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

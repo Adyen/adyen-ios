@@ -16,32 +16,32 @@ private struct LocalizationInput {
     
 }
 
-/// Returns a localized string for the given key, and optionally uses it as a template
-/// in which the remaining argument values are substituted.
-/// This method will try first to get the string from main bundle.
-/// If no localization is available on main bundle, it'll return from internal one.
+/// Resolves a localized string for the given key and optionally formats it with arguments.
 ///
+/// Current lookup order:
+/// - natural mode: `Bundle.main`, then `LocalizationParameters.bundle`, then SDK resources for the active locale
+/// - enforced mode: enforced locale in `Bundle.main`, then `LocalizationParameters.bundle`, then SDK resources
+/// - final fallback: SDK English (`en-US`), then the raw key
 ///
 /// - Parameters:
 ///   - key: The key used to identify the localized string.
 ///   - parameters: The localization parameters.
 ///   - arguments: The arguments to substitute in the templated localized string.
 /// - Returns: The localized string for the given key, or the key itself if the localized string could not be found.
-@_spi(AdyenInternal)
-public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
-    var translationAttempt: String?
+package func localizedString(_ key: LocalizationKey, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
+    var resolvedTranslation: String?
 
-    var possibleInputs = buildPossibleInputs(key.key, parameters)
+    var candidateInputs = buildLookupCandidates(key.key, parameters)
     switch parameters?.mode {
     case .enforced:
-        possibleInputs.appendPossibleInputs(for: Bundle.coreInternalResources, key.key, nil)
-        translationAttempt = attempt(possibleInputs, locale: parameters?.locale)
+        candidateInputs.appendLookupCandidates(for: Bundle.coreInternalResources, key.key, nil)
+        resolvedTranslation = resolveLocalizedString(from: candidateInputs, locale: parameters?.locale)
     case .natural, .none:
-        translationAttempt = attempt(possibleInputs)
+        resolvedTranslation = resolveLocalizedString(from: candidateInputs)
     }
 
     // Use fallback in case attempt result is nil or empty
-    let result = translationAttempt.flatMap(\.adyen.nilIfEmpty) ?? fallbackLocalizedString(key: key.key)
+    let result = resolvedTranslation.flatMap(\.adyen.nilIfEmpty) ?? fallbackLocalizedString(key: key.key)
     
     guard !arguments.isEmpty else {
         return result
@@ -50,82 +50,129 @@ public func localizedString(_ key: LocalizationKey, _ parameters: LocalizationPa
     return String(format: result, arguments: arguments)
 }
 
+/// Resolves the SDK-owned fallback layers that run after app/custom bundle lookup is exhausted.
+///
+/// Current lookup order in this helper:
+/// - SDK resources using the runtime-selected locale
+/// - SDK English resources (`en-US`)
+/// - raw localization key
 private func fallbackLocalizedString(key: String) -> String {
-    let localizedFallback = NSLocalizedString(key, tableName: nil, bundle: Bundle.coreInternalResources, comment: "")
-    
-    if localizedFallback != key, localizedFallback.isEmpty == false {
-        return localizedFallback
+    let fallbackTranslation = NSLocalizedString(key, tableName: nil, bundle: Bundle.coreInternalResources, comment: "")
+
+    if let fallbackTranslation = resolvedLocalizedStringIfAvailable(fallbackTranslation, forKey: key) {
+        return fallbackTranslation
     } else {
         // Fallback to en-US
         return Bundle.coreInternalResources.path(forResource: "en-US", ofType: "lproj")
             .flatMap(Bundle.init(path:))
-            .map { NSLocalizedString(key, tableName: nil, bundle: $0, comment: "") } ?? key
+            .flatMap {
+                resolvedLocalizedStringIfAvailable(
+                    NSLocalizedString(key, tableName: nil, bundle: $0, comment: ""),
+                    forKey: key
+                )
+            } ?? key
     }
 }
 
-private func buildPossibleInputs(
+/// Builds the bundle lookup candidates for the merchant-controlled layers we support today.
+///
+/// Current lookup order in this helper:
+/// - `Bundle.main`
+/// - `LocalizationParameters.bundle` when provided
+private func buildLookupCandidates(
     _ key: String,
     _ parameters: LocalizationParameters?
 ) -> [LocalizationInput] {
-    var possibleInputs = [LocalizationInput]()
-    possibleInputs.appendPossibleInputs(for: Bundle.main, key, parameters)
+    var candidateInputs = [LocalizationInput]()
+    candidateInputs.appendLookupCandidates(for: Bundle.main, key, parameters)
 
     if let customBundle = parameters?.bundle {
-        possibleInputs.appendPossibleInputs(for: customBundle, key, parameters)
+        candidateInputs.appendLookupCandidates(for: customBundle, key, parameters)
     }
 
-    return possibleInputs
+    return candidateInputs
 }
 
-private func updated(_ key: String, withSeparator separator: String?) -> String? {
+/// Rewrites the dotted localization key when a custom separator is configured.
+///
+/// This keeps the current legacy behavior where we first try the merchant's custom separator
+/// and then fall back to the original dotted key in the same bundle.
+private func keyByReplacingDots(in key: String, with separator: String?) -> String? {
     guard let separator else { return nil }
     return key.replacingOccurrences(of: ".", with: separator)
 }
 
-private func attempt(_ inputs: [LocalizationInput], locale: String? = nil) -> String? {
+/// Resolves the first matching translation from the provided bundle candidates.
+///
+/// Current lookup behavior:
+/// - without `locale`: ask each bundle to resolve using its natural localization behavior
+/// - with `locale`: look inside that exact `.lproj` for each bundle before moving to the next candidate
+private func resolveLocalizedString(from inputs: [LocalizationInput], locale: String? = nil) -> String? {
     if let locale {
-        return inputs.compactMap { attemptEnforce(locale: locale, $0) }.first
+        return inputs.compactMap { resolveLocalizedString(forEnforcedLocale: locale, from: $0) }.first
     }
-    return inputs.compactMap { attempt($0) }.first
+    return inputs.compactMap(resolveLocalizedString).first
 }
 
-private func attempt(_ input: LocalizationInput) -> String? {
+/// Resolves one bundle candidate using the bundle's natural localization behavior.
+///
+/// This is the current path for:
+/// - `Bundle.main`
+/// - `LocalizationParameters.bundle`
+/// - SDK resources when we fall back without an enforced locale
+private func resolveLocalizedString(_ input: LocalizationInput) -> String? {
     let localizedString = NSLocalizedString(input.key, tableName: input.table, bundle: input.bundle, comment: "")
-    
-    if localizedString != input.key {
-        return localizedString
-    }
-    
-    return nil
+
+    return resolvedLocalizedStringIfAvailable(localizedString, forKey: input.key)
 }
 
-/// This method encapsulate individual file into own Bundle and uses it as a source for NSLocalizedString
-private func attemptEnforce(locale: String, _ input: LocalizationInput) -> String? {
+/// Resolves one bundle candidate for an enforced locale by reading the matching `.lproj` bundle directly.
+///
+/// This is the current path for enforced-locale lookup in:
+/// - `Bundle.main`
+/// - `LocalizationParameters.bundle`
+/// - SDK resources
+private func resolveLocalizedString(forEnforcedLocale locale: String, from input: LocalizationInput) -> String? {
     let localizedString = input.bundle.path(forResource: locale, ofType: "lproj")
         .flatMap(Bundle.init(path:))
         .map { NSLocalizedString(input.key, tableName: input.table, bundle: $0, comment: "") }
 
-    if localizedString != input.key {
-        return localizedString
-    }
-    return nil
+    return resolvedLocalizedStringIfAvailable(localizedString, forKey: input.key)
 }
 
-@_spi(AdyenInternal)
-public enum PaymentStyle {
+/// Normalizes `NSLocalizedString` output into "usable translation" or "keep falling back".
+///
+/// Current values treated as missing:
+/// - `nil`
+/// - empty strings
+/// - the original raw key
+/// - the uppercased key produced by Xcode's debug option "Show non-localized strings"
+/// Xcode's debug option "Show non-localized strings" returns the missing key uppercased.
+/// Treat that value the same as a missing translation so we keep searching fallbacks.
+internal func resolvedLocalizedStringIfAvailable(_ localizedString: String?, forKey key: String) -> String? {
+    guard let localizedString = localizedString?.adyen.nilIfEmpty else {
+        return nil
+    }
+
+    guard localizedString != key, localizedString != key.uppercased() else {
+        return nil
+    }
+
+    return localizedString
+}
+
+package enum PaymentStyle {
     case needsRedirectToThirdParty(String)
 
     case immediate
 }
 
-/// Helper function to create a localized submit button title. Optionally, the button title can include the given amount.
-///
+/// Builds the localized submit button title using the same fallback chain as `localizedString(_:_:_:)`.
 ///
 /// - Parameter amount: The amount to include in the submit button title.
 /// - Parameter paymentMethodName: The payment method name.
 /// - Parameter parameters: The localization parameters.
-@_spi(AdyenInternal)
-public func localizedSubmitButtonTitle(
+package func localizedSubmitButtonTitle(
     with amount: Amount?,
     style: PaymentStyle,
     _ parameters: LocalizationParameters?
@@ -143,6 +190,7 @@ public func localizedSubmitButtonTitle(
     return localizedString(.submitButtonFormatted, parameters, tempAmount.formatted)
 }
 
+/// Handles the zero-amount submit button variants while keeping the same localization fallback chain.
 private func localizedZeroPaymentAuthorisationButtonTitle(
     style: PaymentStyle,
     _ parameters: LocalizationParameters?
@@ -157,12 +205,17 @@ private func localizedZeroPaymentAuthorisationButtonTitle(
 
 extension [LocalizationInput] {
 
-    fileprivate mutating func appendPossibleInputs(
+    /// Appends the key variants we currently support for a single bundle candidate.
+    ///
+    /// Current lookup order in a bundle:
+    /// - custom-separator key when `LocalizationParameters.keySeparator` is configured
+    /// - original dotted key
+    fileprivate mutating func appendLookupCandidates(
         for bundle: Bundle,
         _ key: String,
         _ parameters: LocalizationParameters?
     ) {
-        if let customKey = updated(key, withSeparator: parameters?.keySeparator) {
+        if let customKey = keyByReplacingDots(in: key, with: parameters?.keySeparator) {
             self.append(LocalizationInput(key: customKey, table: parameters?.tableName, bundle: bundle))
         }
         self.append(LocalizationInput(key: key, table: parameters?.tableName, bundle: bundle))
