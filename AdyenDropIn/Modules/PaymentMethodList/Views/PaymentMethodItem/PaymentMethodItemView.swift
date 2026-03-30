@@ -57,11 +57,14 @@ internal final class PaymentMethodItemView: UIView {
         return stackView
     }()
 
-    private lazy var trailingInfoView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.isHidden = true
-        return view
+    private lazy var trailingInfoView: UIView? = {
+        guard let trailingInfoData = item.trailingInfoData else { return nil }
+        let logosView = SupportedPaymentMethodLogosView(
+            imageUrls: trailingInfoData.logoUrls,
+            trailingText: trailingInfoData.text
+        )
+        logosView.translatesAutoresizingMaskIntoConstraints = false
+        return logosView
     }()
 
     private lazy var chevronImageView: UIImageView = {
@@ -76,14 +79,13 @@ internal final class PaymentMethodItemView: UIView {
     }()
 
     private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(
-            arrangedSubviews: [
-                iconImageView,
-                textStackView,
-                trailingInfoView,
-                chevronImageView
-            ]
-        )
+        let subviews = [
+            iconImageView,
+            textStackView,
+            trailingInfoView,
+            chevronImageView
+        ].compactMap { $0 }
+        let stackView = UIStackView(arrangedSubviews: subviews)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .center
@@ -163,22 +165,9 @@ internal final class PaymentMethodItemView: UIView {
         accessibilityTraits = .button
 
         loadIcon(from: item.iconURL)
-        setupTrailingInfoView()
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         addGestureRecognizer(tapGesture)
-    }
-
-    private func setupTrailingInfoView() {
-        guard let trailingInfoData = item.trailingInfoData else { return }
-
-        let logosView = SupportedPaymentMethodLogosView(
-            imageUrls: trailingInfoData.logoUrls,
-            trailingText: trailingInfoData.text
-        )
-        trailingInfoView.addSubview(logosView)
-        logosView.adyen.anchor(inside: trailingInfoView)
-        trailingInfoView.isHidden = false
     }
 
     private func loadIcon(from url: URL?) {
