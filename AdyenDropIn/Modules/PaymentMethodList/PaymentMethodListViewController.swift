@@ -5,7 +5,9 @@
 //
 
 import Adyen
-import AdyenUI
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import Combine
 import Foundation
 import UIKit
