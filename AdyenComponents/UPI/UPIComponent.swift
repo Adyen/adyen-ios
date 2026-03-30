@@ -56,7 +56,11 @@ public final class UPIComponent: PaymentComponent,
     internal enum Images {
         internal static let errorIcon = "error"
     }
-    
+
+    private enum Constants {
+        static let schemeSuffix = "://"
+    }
+
     /// Configuration for UPI Component.
     public typealias Configuration = BasicComponentConfiguration
     
@@ -214,8 +218,9 @@ public final class UPIComponent: PaymentComponent,
     /// The UPI app list item.
     internal lazy var upiAppsList: [SelectableFormItem] = {
         guard let apps = upiPaymentMethod.apps, !apps.isEmpty else { return [] }
-        
-        return apps.map { selectableFormItem(from: $0) }
+        let availableUPIApps = availableUPI(apps: apps)
+
+        return availableUPIApps.map { selectableFormItem(from: $0) }
     }()
     
     /// The continue button item.
@@ -333,25 +338,25 @@ extension UPIComponent {
 // MARK: - Private
 
 private extension UPIComponent {
-    
+
     var firstSegmentTitle: String {
         localizedString(
             .upiModePayByAnyUpi,
             configuration.localizationParameters
         )
     }
-    
+
     func updateSelection() {
         upiAppsList.forEach { $0.isSelected = false }
         upiAppsList.forEach { $0.isSeparatorViewShown = true }
-        
+
         if let currentSelectedItemIdentifier {
             upiAppsList.first(where: { $0.identifier == currentSelectedItemIdentifier })?.isSelected = true
         }
-        
+
         hideError()
     }
-    
+
     func updateInterface() {
         switch selectedUPIFlow {
         case .upiIntent, .upiApps:
@@ -367,14 +372,14 @@ private extension UPIComponent {
             vpaInputItem.isVisible = true
             focusVpaInput()
         }
-        
+
         hideError()
     }
-    
+
     func focusVpaInput() {
         vpaInputItem.focus()
     }
-    
+
     func showError() {
         errorItem.isHidden.wrappedValue = false
         UIAccessibility.post(
@@ -382,11 +387,11 @@ private extension UPIComponent {
             argument: "\(localizedString(.errorTitle, configuration.localizationParameters)): \(errorItem.message ?? "")"
         )
     }
-    
+
     func hideError() {
         errorItem.isHidden.wrappedValue = true
     }
-    
+
     func canSubmit() -> Bool {
         switch selectedUPIFlow {
         case .upiIntent, .upiApps:
@@ -395,7 +400,7 @@ private extension UPIComponent {
             return vpaInputItem.isValid()
         }
     }
-    
+
     func submitPayment() {
         switch selectedUPIFlow {
         case .upiIntent, .upiApps:
@@ -413,6 +418,20 @@ private extension UPIComponent {
             )
             submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
         }
+    }
+
+    func isAppInstalled(scheme: String) -> Bool {
+        guard let url = URL(string: scheme + Constants.schemeSuffix) else {
+            return false
+        }
+        return UIApplication.shared.canOpenURL(url)
+    }
+
+    func availableUPI(apps: [UPIApp]) -> [UPIApp] {
+        let installedApps = apps.filter { isAppInstalled(scheme: $0.appIdentifier.scheme) }
+
+        // If no UPI apps are installed in the device, show all apps from the response.
+        return installedApps.isEmpty ? apps : installedApps
     }
 }
 

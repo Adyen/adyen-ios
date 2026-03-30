@@ -9,6 +9,8 @@ import Foundation
 /// UPI  payment method.
 public struct UPIPaymentMethod: PaymentMethod {
 
+    // TODO: - We mock the response for testing purposes until the backend changes are done.
+    // Backend Ticket: https://youtrack.is.adyen.com/issue/APIG-105/paymentMethods-upi-app-list-enhancement
     // ============================= MOCK =============================
 
     private static let appsResponse =
