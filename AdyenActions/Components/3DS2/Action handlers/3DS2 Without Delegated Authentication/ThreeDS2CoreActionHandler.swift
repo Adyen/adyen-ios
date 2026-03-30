@@ -5,7 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import Adyen3DS2
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import Foundation
 
 internal protocol AnyThreeDS2CoreActionHandler: Component {
@@ -39,9 +41,8 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     
     internal let context: AdyenContext
 
-    /// The appearance configuration of the 3D Secure 2 challenge UI.
-    internal let appearanceConfiguration: ADYAppearanceConfiguration
-    
+    internal let theme: AdyenTheme
+
     private var service: ThreeDSService
     
     internal weak var presentationDelegate: PresentationDelegate?
@@ -57,10 +58,10 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     internal init(
         context: AdyenContext,
         service: ThreeDSService,
-        appearanceConfiguration: ADYAppearanceConfiguration = ADYAppearanceConfiguration()
+        theme: AdyenTheme
     ) {
         self.context = context
-        self.appearanceConfiguration = appearanceConfiguration
+        self.theme = theme
         self.service = service
     }
 
@@ -86,7 +87,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                 directoryServerPublicKey: token.directoryServerPublicKey,
                 directoryServerRootCertificates: token.directoryServerRootCertificates,
                 deviceExcludedParameters: nil,
-                appearanceConfiguration: appearanceConfiguration,
+                theme: theme,
                 threeDSMessageVersion: token.threeDSMessageVersion
             )
             service.configuration = token.configuration
