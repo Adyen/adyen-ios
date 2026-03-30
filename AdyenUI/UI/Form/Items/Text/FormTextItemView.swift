@@ -46,7 +46,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     /// - Parameters:
     ///   - item: The item represented by the view.
     ///   - theme: The theme to use for styling.
-    public required init(item: ItemType, theme: AdyenTheme) {
+    public required init(item: ItemType, theme: CheckoutTheme) {
         super.init(item: item, theme: theme)
 
         observe(item.$formattedValue) { [weak self] newValue in

@@ -58,7 +58,7 @@ extension ComponentWrapper {
 internal func createDefaultThreeDS2CoreActionHandler(
     context: AdyenContext,
     service: ThreeDSService,
-    theme: AdyenTheme,
+    theme: CheckoutTheme,
     delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication?
 ) -> AnyThreeDS2CoreActionHandler {
     #if canImport(AdyenAuthentication)

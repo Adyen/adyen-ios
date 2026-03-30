@@ -14,6 +14,6 @@ internal struct FingerprintServiceParameters {
     internal let directoryServerPublicKey: String
     internal let directoryServerRootCertificates: String
     internal let deviceExcludedParameters: [String: Any]?
-    internal let theme: AdyenTheme
+    internal let theme: CheckoutTheme
     internal let threeDSMessageVersion: String
 }

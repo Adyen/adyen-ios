@@ -23,7 +23,7 @@ public struct BasicComponentConfiguration {
     public var style: FormComponentStyle
 
     /// The theming to apply to the component's UI.
-    package var theme: AdyenTheme = .init()
+    package var theme: CheckoutTheme = .init()
 
     /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
     @_spi(AdyenInternal)
@@ -58,7 +58,7 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
     public var style: FormComponentStyle
 
     /// The theming to apply to the component's UI.
-    package var theme: AdyenTheme = .init()
+    package var theme: CheckoutTheme = .init()
 
     /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
     @_spi(AdyenInternal)

@@ -9,7 +9,7 @@ import UIKit
 
 package final class SelectableFormItemView: FormItemView<SelectableFormItem> {
 
-    private let theme: AdyenTheme
+    private let theme: CheckoutTheme
     
     private enum Constants {
         static let upiLogo = "upiLogo"
@@ -123,7 +123,7 @@ package final class SelectableFormItemView: FormItemView<SelectableFormItem> {
     }
 
     /// Initializes the selectable form item view.
-    package init(item: SelectableFormItem, theme: AdyenTheme) {
+    package init(item: SelectableFormItem, theme: CheckoutTheme) {
         self.theme = theme
         super.init(item: item)
         backgroundColor = theme.colors.background

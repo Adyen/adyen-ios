@@ -10,14 +10,14 @@ import UIKit
 /// A view representing a button item.
 internal final class FormSearchButtonItemView: FormItemView<FormSearchButtonItem> {
     
-    private let theme: AdyenTheme
+    private let theme: CheckoutTheme
 
     /// Initializes the footer item view.
     ///
     /// - Parameters:
     ///   - item: The item represented by the view.
     ///   - theme: The theme to use for styling.
-    internal init(item: FormSearchButtonItem, theme: AdyenTheme) {
+    internal init(item: FormSearchButtonItem, theme: CheckoutTheme) {
         self.theme = theme
         super.init(item: item)
         

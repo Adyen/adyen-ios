@@ -13,7 +13,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     FormItemView<ItemType>,
     AnyFormValueItemView {
 
-    package let theme: AdyenTheme
+    package let theme: CheckoutTheme
 
     // MARK: - Title Label
 
@@ -34,7 +34,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
     /// - Parameters:
     ///   - item: The item represented by the view.
     ///   - theme: The theme to apply to the view.
-    public required init(item: ItemType, theme: AdyenTheme) {
+    public required init(item: ItemType, theme: CheckoutTheme) {
         self.theme = theme
         super.init(item: item)
 

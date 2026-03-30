@@ -19,7 +19,7 @@ final class FormButtonItemViewThemeTests: XCTestCase {
             primary: expectedBackgroundColor,
             textOnPrimary: expectedTextColor
         )
-        let customTheme = AdyenTheme(colors: customColors)
+        let customTheme = CheckoutTheme(colors: customColors)
 
         // When - create view with theme
         let item = FormButtonItem()

@@ -52,14 +52,14 @@ enum TestTheme {
     // MARK: - Theme Creation
 
     /// Creates a distinctive theme for UI testing with easily verifiable colors.
-    static func distinctive() -> AdyenTheme {
+    static func distinctive() -> CheckoutTheme {
         let colors = AdyenColors(
             container: Colors.container,
             containerOutline: Colors.containerOutline,
             primary: Colors.primary,
             highlight: Colors.highlight
         )
-        return AdyenTheme(colors: colors)
+        return CheckoutTheme(colors: colors)
             .primaryButton(
                 backgroundColor: Colors.buttonBackground,
                 textColor: Colors.buttonText,

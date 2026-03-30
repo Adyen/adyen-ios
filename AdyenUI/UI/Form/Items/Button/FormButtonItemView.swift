@@ -11,14 +11,14 @@ import UIKit
 internal final class FormButtonItemView: FormItemView<FormButtonItem> {
 
     /// The theme for styling.
-    private let theme: AdyenTheme
+    private let theme: CheckoutTheme
 
     /// Initializes the button item view.
     ///
     /// - Parameters:
     ///   - item: The item represented by the view.
     ///   - theme: The theme to use for styling.
-    internal init(item: FormButtonItem, theme: AdyenTheme) {
+    internal init(item: FormButtonItem, theme: CheckoutTheme) {
         self.theme = theme
         super.init(item: item)
 

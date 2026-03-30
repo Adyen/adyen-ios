@@ -17,7 +17,7 @@ public struct ThreeDS2ActionConfiguration: CheckoutComponentConfiguration {
     
     package var showsSubmitButton: Bool // TODO: get rid of this
     
-    package var theme: AdyenTheme
+    package var theme: CheckoutTheme
     
     package var localizationParameters: LocalizationParameters?
     
@@ -54,7 +54,7 @@ public struct ThreeDS2ActionConfiguration: CheckoutComponentConfiguration {
     }
     
     /// Initializes a new instance of ThreeDS2ActionConfiguration
-    public init(theme: AdyenTheme = .default) {
+    public init(theme: CheckoutTheme = .default) {
         self.theme = theme
         self.showsSubmitButton = false
     }

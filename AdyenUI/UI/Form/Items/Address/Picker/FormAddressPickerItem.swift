@@ -15,7 +15,7 @@ package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress
     }
     
     private var initialCountry: String
-    private let theme: AdyenTheme
+    private let theme: CheckoutTheme
     private var context: AddressViewModelBuilderContext
     private let localizationParameters: LocalizationParameters?
     private let addressViewModelBuilder: AddressViewModelBuilder
@@ -38,7 +38,7 @@ package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress
         initialCountry: String,
         supportedCountryCodes: [String]?,
         prefillAddress: PostalAddress?,
-        theme: AdyenTheme = .default,
+        theme: CheckoutTheme = .default,
         style: FormComponentStyle,
         localizationParameters: LocalizationParameters? = nil,
         identifier: String? = nil,
@@ -146,7 +146,7 @@ extension FormAddressPickerItem {
     private func didSelectAddressPicker(
         for addressType: FormAddressPickerItem.AddressType,
         with prefillAddress: PostalAddress?,
-        theme: AdyenTheme = .default,
+        theme: CheckoutTheme = .default,
         initialCountry: String,
         supportedCountryCodes: [String]?,
         lookupProvider: AddressLookupProvider?,
@@ -179,7 +179,7 @@ extension FormAddressPickerItem {
     private func addressPickerViewController(
         for addressType: FormAddressPickerItem.AddressType,
         with prefillAddress: PostalAddress?,
-        theme: AdyenTheme = .default,
+        theme: CheckoutTheme = .default,
         initialCountry: String,
         supportedCountryCodes: [String]?,
         lookupProvider: AddressLookupProvider?,

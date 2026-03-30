@@ -41,7 +41,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     
     internal let context: AdyenContext
 
-    internal let theme: AdyenTheme
+    internal let theme: CheckoutTheme
 
     private var service: ThreeDSService
     
@@ -58,7 +58,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
     internal init(
         context: AdyenContext,
         service: ThreeDSService,
-        theme: AdyenTheme
+        theme: CheckoutTheme
     ) {
         self.context = context
         self.theme = theme

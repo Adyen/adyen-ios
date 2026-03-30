@@ -49,7 +49,7 @@ package final class FormSectionHeaderItem<ContentItem: FormItem>: FormItem {
 internal final class FormSectionHeaderItemView: UIView, AnyFormItemView {
 
     internal var childItemViews: [AnyFormItemView] = []
-    private let theme: AdyenTheme
+    private let theme: CheckoutTheme
 
     // MARK: - Subviews
 
@@ -89,7 +89,7 @@ internal final class FormSectionHeaderItemView: UIView, AnyFormItemView {
         title: String,
         subtitle: String?,
         contentView: AnyFormItemView,
-        theme: AdyenTheme
+        theme: CheckoutTheme
     ) {
         self.theme = theme
         super.init(frame: .zero)

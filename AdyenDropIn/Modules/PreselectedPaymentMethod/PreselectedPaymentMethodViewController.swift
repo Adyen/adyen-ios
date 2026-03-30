@@ -33,7 +33,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
 
     private let viewModel: PreselectedPaymentMethodViewModelProtocol
 
-    private var theme: AdyenTheme {
+    private var theme: CheckoutTheme {
         viewModel.theme
     }
 

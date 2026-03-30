@@ -87,8 +87,8 @@ internal enum ExampleAppTheme: String, CaseIterable {
     
     internal static let defaultOption = ExampleAppTheme.defaultTheme
     
-    /// Returns the corresponding AdyenTheme for this appearance style.
-    internal var theme: AdyenTheme {
+    /// Returns the corresponding CheckoutTheme for this appearance style.
+    internal var theme: CheckoutTheme {
         switch self {
         case .defaultTheme:
             return defaultAppTheme
@@ -104,13 +104,13 @@ internal enum ExampleAppTheme: String, CaseIterable {
     // MARK: - Theme Definitions
     
     /// Default theme - SDK defaults
-    private var defaultAppTheme: AdyenTheme {
-        AdyenTheme.default
+    private var defaultAppTheme: CheckoutTheme {
+        CheckoutTheme.default
     }
     
     /// Midnight theme - Dark purple accent (Dynamic)
-    private var midnightTheme: AdyenTheme {
-        AdyenTheme(
+    private var midnightTheme: CheckoutTheme {
+        CheckoutTheme(
             colors: AdyenColors(
                 background: ExampleColors.darkBackground,
                 container: ExampleColors.darkContainer,
@@ -144,8 +144,8 @@ internal enum ExampleAppTheme: String, CaseIterable {
     }
     
     /// Sunset theme - Warm orange tones (Dynamic)
-    private var sunsetTheme: AdyenTheme {
-        AdyenTheme(
+    private var sunsetTheme: CheckoutTheme {
+        CheckoutTheme(
             colors: AdyenColors(
                 background: ExampleColors.gray6,
                 container: ExampleColors.secondaryBackground,
@@ -178,7 +178,7 @@ internal enum ExampleAppTheme: String, CaseIterable {
     }
 
     /// Static Brand theme - Non-dynamic colors (does NOT adapt to dark mode)
-    private var staticBrandTheme: AdyenTheme {
+    private var staticBrandTheme: CheckoutTheme {
         let brandPrimary = UIColor(red: 0.0, green: 0.48, blue: 1.0, alpha: 1.0) // #007AFF
         let brandAccent = UIColor(red: 1.0, green: 0.58, blue: 0.0, alpha: 1.0) // #FF9500
         let brandBackground = UIColor(red: 0.98, green: 0.98, blue: 0.99, alpha: 1.0) // #FAFAFC
@@ -187,7 +187,7 @@ internal enum ExampleAppTheme: String, CaseIterable {
         let brandTextSecondary = UIColor(red: 0.4, green: 0.4, blue: 0.45, alpha: 1.0) // #666673
         let brandDestructive = UIColor(red: 1.0, green: 0.23, blue: 0.19, alpha: 1.0) // #FF3B30
         
-        return AdyenTheme(
+        return CheckoutTheme(
             colors: AdyenColors(
                 background: brandBackground,
                 container: brandContainer,
