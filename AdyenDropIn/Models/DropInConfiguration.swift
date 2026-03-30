@@ -42,7 +42,7 @@ public extension DropInComponent {
         public var shopperInformation: PrefilledShopperInformation?
         
         /// Indicates the localization parameters, leave it nil to use the default parameters.
-        public var localizationParameters: LocalizationParameters?
+        package var localizationParameters: LocalizationParameters?
         
         /// Determines whether to enable skipping payment list step
         /// when there is only one non-instant payment method.

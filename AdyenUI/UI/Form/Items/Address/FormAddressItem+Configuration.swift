@@ -30,6 +30,19 @@ public extension FormAddressItem {
         ///   - showsHeader: Whether to show a title header.
         public init(
             style: AddressStyle = AddressStyle(),
+            supportedCountryCodes: [String]? = nil,
+            showsHeader: Bool = true
+        ) {
+            self.init(
+                style: style,
+                localizationParameters: nil,
+                supportedCountryCodes: supportedCountryCodes,
+                showsHeader: showsHeader
+            )
+        }
+
+        package init(
+            style: AddressStyle = AddressStyle(),
             localizationParameters: LocalizationParameters? = nil,
             supportedCountryCodes: [String]? = nil,
             showsHeader: Bool = true

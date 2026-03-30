@@ -16,7 +16,7 @@ extension PayByBankUSComponent {
         /// The UI style of the component.
         public var style: PayByBankUSComponent.Style
         
-        public var localizationParameters: LocalizationParameters?
+        package var localizationParameters: LocalizationParameters?
         
         /// Initializes a new instance of `PayByBankUSComponent.Configuration`
         ///
@@ -24,6 +24,12 @@ extension PayByBankUSComponent {
         ///   - style: The form style.
         ///   - localizationParameters: The localization parameters.
         public init(
+            style: PayByBankUSComponent.Style = .init()
+        ) {
+            self.init(style: style, localizationParameters: nil)
+        }
+
+        package init(
             style: PayByBankUSComponent.Style = .init(),
             localizationParameters: LocalizationParameters? = nil
         ) {

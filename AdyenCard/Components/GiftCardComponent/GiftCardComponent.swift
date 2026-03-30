@@ -63,7 +63,7 @@ public final class GiftCardComponent: PresentableComponent,
     public weak var readyToSubmitComponentDelegate: ReadyToSubmitPaymentComponentDelegate?
 
     /// The localization parameters.
-    public var localizationParameters: LocalizationParameters?
+    package var localizationParameters: LocalizationParameters?
 
     /// Indicates whether to show the security code field at all.
     internal let showsSecurityCodeField: Bool
