@@ -4,8 +4,8 @@ Adyen Components for iOS are available through either CocoaPods or Swift Package
 
 ### Minimum Requirements
 
-- iOS 12.0
-- Xcode 14.0
+- iOS 16.0
+- Xcode 15.0
 - Swift 5.7
 
 @TabNavigator {

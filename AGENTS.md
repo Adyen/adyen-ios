@@ -9,7 +9,7 @@ This file provides guidance to LLMs when working with code in this repository.
 Adyen iOS is a modular payment SDK providing both Drop-in (all-in-one) and Components (individual payment methods) integration options. The SDK handles payment method selection, details entry, 3DS authentication, and various payment actions.
 
 **Minimum Requirements:**
-- iOS 12.0+
+- iOS 16.0+
 - Xcode 15.0+
 - Swift 5.7+
 
