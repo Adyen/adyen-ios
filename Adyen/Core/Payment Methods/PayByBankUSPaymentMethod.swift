@@ -42,5 +42,3 @@ public struct PayByBankUSPaymentMethod: PaymentMethod {
         case name
     }
 }
-
-extension PayByBankUSPaymentMethod: LocalizedPaymentMethod {}

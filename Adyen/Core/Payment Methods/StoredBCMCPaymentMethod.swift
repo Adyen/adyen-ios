@@ -73,5 +73,3 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
     }
     
 }
-
-extension StoredBCMCPaymentMethod: LocalizedPaymentMethod {}

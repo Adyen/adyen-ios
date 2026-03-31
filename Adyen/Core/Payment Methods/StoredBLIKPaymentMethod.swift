@@ -36,6 +36,5 @@ public struct StoredBLIKPaymentMethod: StoredPaymentMethod {
         case identifier = "id"
         case supportedShopperInteractions
     }
-}
 
-extension StoredBLIKPaymentMethod: LocalizedPaymentMethod {}
+}

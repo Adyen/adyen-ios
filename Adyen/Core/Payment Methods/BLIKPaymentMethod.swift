@@ -29,5 +29,3 @@ public struct BLIKPaymentMethod: PaymentMethod {
         case name
     }
 }
-
-extension BLIKPaymentMethod: LocalizedPaymentMethod {}

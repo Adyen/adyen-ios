@@ -30,6 +30,5 @@ public struct MealVoucherPaymentMethod: PartialPaymentMethod {
         case type
         case name
     }
-}
 
-extension MealVoucherPaymentMethod: LocalizedPaymentMethod {}
+}

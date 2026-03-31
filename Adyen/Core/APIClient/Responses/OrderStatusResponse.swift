@@ -98,5 +98,3 @@ public struct OrderPaymentMethod: PaymentMethod {
         case type
     }
 }
-
-extension OrderPaymentMethod: LocalizedPaymentMethod {}

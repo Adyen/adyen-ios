@@ -79,7 +79,3 @@ public struct StoredACHDirectDebitPaymentMethod: StoredPaymentMethod {
         case bankAccountNumber
     }
 }
-
-extension ACHDirectDebitPaymentMethod: LocalizedPaymentMethod {}
-
-extension StoredACHDirectDebitPaymentMethod: LocalizedPaymentMethod {}

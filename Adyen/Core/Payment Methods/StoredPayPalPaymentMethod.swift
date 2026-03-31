@@ -40,6 +40,5 @@ public struct StoredPayPalPaymentMethod: StoredPaymentMethod {
         case emailAddress = "shopperEmail"
         case supportedShopperInteractions
     }
+    
 }
-
-extension StoredPayPalPaymentMethod: LocalizedPaymentMethod {}

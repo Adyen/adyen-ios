@@ -40,5 +40,3 @@ public struct StoredTwintPaymentMethod: StoredPaymentMethod {
 
     }
 }
-
-extension StoredTwintPaymentMethod: LocalizedPaymentMethod {}
