@@ -47,6 +47,7 @@ public final class UPIComponent: PaymentComponent,
     private enum ViewIdentifier {
         static let instructionsItem = "instructionsLabelItem"
         static let upiFlowSelectionItem = "upiFlowSelectionSegmentedControlItem"
+        static let appsListTitleItem = "appsListTitleItem"
         static let continueButtonItem = "continueButton"
         static let errorItem = "errorItem"
         static let vpaInputTitleItem = "vpaInputTitleItem"
@@ -230,7 +231,7 @@ public final class UPIComponent: PaymentComponent,
         )
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
-            postfix: ViewIdentifier.vpaInputTitleItem
+            postfix: ViewIdentifier.appsListTitleItem
         )
         return item.padding()
     }()
