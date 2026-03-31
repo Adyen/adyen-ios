@@ -18,7 +18,7 @@ extension AddressInputFormViewController {
         internal let prefillAddress: PostalAddress?
         internal let initialCountry: String
         internal let style: FormComponentStyle
-        internal let theme: AdyenTheme
+        internal let theme: CheckoutTheme
         internal let addressViewModelBuilder: AddressViewModelBuilder
         internal let localizationParameters: LocalizationParameters?
         
@@ -45,7 +45,7 @@ extension AddressInputFormViewController {
         package init(
             for addressType: FormAddressPickerItem.AddressType,
             style: FormComponentStyle,
-            theme: AdyenTheme = .default,
+            theme: CheckoutTheme = .default,
             localizationParameters: LocalizationParameters?,
             initialCountry: String,
             prefillAddress: PostalAddress?,

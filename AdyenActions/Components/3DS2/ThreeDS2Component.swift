@@ -5,7 +5,6 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import Adyen3DS2
 import Foundation
 
 internal protocol AnyRedirectComponent: ActionComponent {
@@ -167,7 +166,7 @@ public final class ThreeDS2Component: ActionComponent {
         let handler = ThreeDS2CompactActionHandler(
             context: context,
             service: ThreeDSServiceProvider(),
-            appearanceConfiguration: configuration.appearanceConfiguration,
+            theme: configuration.theme,
             delegatedAuthenticationConfiguration: configuration.delegatedAuthentication
         )
         handler.presentationDelegate = presentationDelegate
@@ -181,7 +180,7 @@ public final class ThreeDS2Component: ActionComponent {
         let handler = ThreeDS2ClassicActionHandler(
             context: context,
             service: ThreeDSServiceProvider(),
-            appearanceConfiguration: configuration.appearanceConfiguration,
+            theme: configuration.theme,
             delegatedAuthenticationConfiguration: configuration.delegatedAuthentication
         )
         handler.presentationDelegate = presentationDelegate

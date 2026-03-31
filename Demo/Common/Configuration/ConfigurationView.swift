@@ -17,6 +17,7 @@ internal struct ConfigurationView: View {
         case components = "Components"
         case authentication = "Authentication"
         case dropIn = "DropIn"
+        case themes = "Themes"
     }
     
     @ObservedObject internal var viewModel: ConfigurationViewModel
@@ -52,6 +53,7 @@ internal struct ConfigurationView: View {
                 wrapInSection(view: dropInSection, section: .dropIn)
                 wrapInSection(view: componentsSection, section: .components)
                 wrapInSection(view: authenticationSection, section: .authentication)
+                wrapInSection(view: themesSection, section: .themes)
             }.navigationBarTitle("Configuration", displayMode: .inline)
                 .navigationBarItems(
                     leading: Button("Default", action: viewModel.defaultTapped),
@@ -180,6 +182,14 @@ internal struct ConfigurationView: View {
                 Text("Analytics")
             }
         }
+    }
+    
+    private var themesSection: some View {
+        Picker("Theme", selection: $viewModel.selectedTheme) {
+            ForEach(ExampleAppTheme.allCases, id: \.self) { theme in
+                Text(theme.rawValue).tag(theme)
+            }
+        }.navigationLinkStyle()
     }
 
     private func pickerWithSearchBar<T: Hashable>(

@@ -13,7 +13,7 @@ The `AdyenCheckout` module provides a unified way to configure and create paymen
 ```
 CheckoutConfiguration (public API)
     │
-    ├── theme: AdyenTheme
+    ├── theme: CheckoutTheme
     ├── configurations: [ComponentType: Configuration]
     │
     └── CheckoutComponentBuilder.build(for: paymentMethod)
@@ -82,7 +82,7 @@ public struct YourComponentConfiguration: AnyXXXConfiguration, CheckoutComponent
 
     package let componentType: CheckoutComponentType = .payment(.yourPaymentType)
     package var style: FormComponentStyle
-    package var theme: AdyenTheme = .init()
+    package var theme: CheckoutTheme = .init()
     package var showsSubmitButton: Bool
     package var shopperInformation: PrefilledShopperInformation?
     package var localizationParameters: LocalizationParameters?
@@ -374,7 +374,7 @@ func test_build_withYourComponentAndCustomConfiguration_appliesConfiguration() t
 
 ---
 
-## Part 3: AdyenTheme Testing
+## Part 3: CheckoutTheme Testing
 
 ### Theme Propagation Tests
 
@@ -384,7 +384,7 @@ Test that theme flows from `CheckoutConfiguration` to your component:
 func test_build_withCustomTheme_propagatesThemeToYourComponent() throws {
     // Given
     let paymentMethod = try XCTUnwrap(createYourPaymentMethod())
-    let customTheme = AdyenTheme()
+    let customTheme = CheckoutTheme()
         .colors(AdyenColors(primary: .systemPink))
 
     checkoutConfiguration = CheckoutConfiguration(context: context)
@@ -431,8 +431,8 @@ enum TestTheme {
 
     static let cornerRadius: CGFloat = 12
 
-    static func distinctive() -> AdyenTheme {
-        AdyenTheme()
+    static func distinctive() -> CheckoutTheme {
+        CheckoutTheme()
             .colors(AdyenColors(primary: Colors.primary, container: Colors.container))
             .cornerRadius(cornerRadius)
             .primaryButton(backgroundColor: Colors.buttonBackground, textColor: Colors.buttonText)

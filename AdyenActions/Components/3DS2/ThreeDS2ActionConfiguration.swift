@@ -6,9 +6,9 @@
 
 @_spi(AdyenInternal) import Adyen
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
 #endif
-import Adyen3DS2
+import Foundation
 
 /// Configuration for 3D Secure 2 action handling.
 public struct ThreeDS2ActionConfiguration: CheckoutComponentConfiguration {
@@ -17,7 +17,7 @@ public struct ThreeDS2ActionConfiguration: CheckoutComponentConfiguration {
     
     package var showsSubmitButton: Bool // TODO: get rid of this
     
-    package var theme: AdyenTheme
+    package var theme: CheckoutTheme
     
     package var localizationParameters: LocalizationParameters?
     
@@ -28,10 +28,7 @@ public struct ThreeDS2ActionConfiguration: CheckoutComponentConfiguration {
     
     /// The configuration for Delegated Authentication.
     package var delegatedAuthentication: DelegatedAuthentication?
-    
-    /// ThreeDS2Component UI configuration.
-    package var appearanceConfiguration: ADYAppearanceConfiguration
-    
+
     /// Configuration for Delegated Authentication in 3D Secure 2.
     public struct DelegatedAuthentication {
         
@@ -57,10 +54,9 @@ public struct ThreeDS2ActionConfiguration: CheckoutComponentConfiguration {
     }
     
     /// Initializes a new instance of ThreeDS2ActionConfiguration
-    public init() {
-        self.theme = .default
+    public init(theme: CheckoutTheme = .default) {
+        self.theme = theme
         self.showsSubmitButton = false
-        self.appearanceConfiguration = .init()
     }
 }
 

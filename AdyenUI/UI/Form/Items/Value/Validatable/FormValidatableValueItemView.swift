@@ -13,7 +13,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
     FormValueItemView<ValueType, FormTextItemStyle, ItemType>,
     AnyFormValidatableValueItemView {
 
-    public required init(item: ItemType, theme: AdyenTheme) {
+    public required init(item: ItemType, theme: CheckoutTheme) {
         super.init(item: item, theme: theme)
         setupValidationObserver()
         updateFooterDisplay(state: item.validationState, animated: false)

@@ -5,7 +5,6 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import Adyen3DS2
 import Foundation
 import UIKit
 

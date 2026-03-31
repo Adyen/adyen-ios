@@ -24,7 +24,7 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     var localizationParameters: LocalizationParameters? { get }
     //  var style: FormComponentStyle { get }
 
-    var theme: AdyenTheme { get set }
+    var theme: CheckoutTheme { get set }
 }
 
 public extension CheckoutConfigurable {

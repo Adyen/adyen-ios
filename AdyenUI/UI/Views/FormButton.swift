@@ -42,7 +42,7 @@ public final class FormButton: UIControl {
     /// - Parameter buttonStyle: The  new `FormButton` UI style.
     /// - Parameter style: The  old `FormButton` UI style.
     public init(
-        theme: AdyenTheme,
+        theme: CheckoutTheme,
         style: ButtonStyle = .init(title: .init(font: .preferredFont(forTextStyle: .body), color: .red))
     ) {
         self.buttonStyle = theme.elements.buttons.primary

@@ -32,7 +32,7 @@ internal final class ThreeDSServiceLegacy: ThreeDSServiceable {
         )
         service.service(
             with: serviceParameters,
-            appearanceConfiguration: parameters.appearanceConfiguration
+            appearanceConfiguration: ADYAppearanceConfigurationBuilder(theme: parameters.theme).build()
         ) { [weak self] service in
             guard let self else { return }
             do {

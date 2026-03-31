@@ -274,7 +274,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
     func test_build_withCustomTheme_propagatesThemeToACHComponent() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
-        let customTheme = AdyenTheme()
+        let customTheme = CheckoutTheme()
             .colors(AdyenColors(primary: .yellow))
 
         checkoutConfiguration = makeCheckoutConfiguration()
@@ -302,7 +302,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
     func test_build_withCustomTheme_propagatesThemeToBLIKComponent() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
-        let customTheme = AdyenTheme()
+        let customTheme = CheckoutTheme()
             .colors(AdyenColors(primary: .yellow))
 
         checkoutConfiguration = makeCheckoutConfiguration()

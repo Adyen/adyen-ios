@@ -11,7 +11,7 @@ import UIKit
 /// A view representing a split item.
 internal final class FormSplitItemView: FormItemView<FormSplitItem> {
 
-    private let theme: AdyenTheme
+    private let theme: CheckoutTheme
     private let views: [AnyFormItemView]
     
     /// Initializes the split item view.
@@ -19,7 +19,7 @@ internal final class FormSplitItemView: FormItemView<FormSplitItem> {
     /// - Parameters:
     ///   - item: The item represented by the view.
     ///   - theme: The theme to use for styling.
-    internal init(item: FormSplitItem, theme: AdyenTheme) {
+    internal init(item: FormSplitItem, theme: CheckoutTheme) {
         self.theme = theme
         views = item.subitems.map { FormSplitItemView.build($0, theme: theme) }
         super.init(item: item)
@@ -48,7 +48,7 @@ internal final class FormSplitItemView: FormItemView<FormSplitItem> {
         return stackView
     }()
 
-    private static func build(_ item: FormItem, theme: AdyenTheme) -> AnyFormItemView {
+    private static func build(_ item: FormItem, theme: CheckoutTheme) -> AnyFormItemView {
         let itemView = item.build(with: FormItemViewBuilder(theme: theme))
         itemView.preservesSuperviewLayoutMargins = true
         return itemView

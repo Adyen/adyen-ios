@@ -5,7 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import Adyen3DS2
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import Foundation
 
 /// Handles the 3D Secure 2 fingerprint and challenge actions separately.
@@ -39,7 +41,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     
     internal init(
         context: AdyenContext,
-        appearanceConfiguration: ADYAppearanceConfiguration,
+        theme: CheckoutTheme,
         service: ThreeDSService,
         coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
         delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication? = nil
@@ -47,7 +49,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
         self.coreActionHandler = coreActionHandler ?? createDefaultThreeDS2CoreActionHandler(
             context: context,
             service: service,
-            appearanceConfiguration: appearanceConfiguration,
+            theme: theme,
             delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
         )
         self.context = context

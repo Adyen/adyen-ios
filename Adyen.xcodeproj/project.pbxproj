@@ -27,7 +27,7 @@
 		000888822D510414009C03E1 /* PayToComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000888812D510412009C03E1 /* PayToComponentUITests.swift */; };
 		000888832D510414009C03E1 /* PayToComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000888812D510412009C03E1 /* PayToComponentUITests.swift */; };
 		000A7B092E27CDEC005584F2 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000A7B012E27CDEC005584F2 /* UIFont.swift */; };
-		000A7B0A2E27CDEC005584F2 /* AdyenTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000A7B032E27CDEC005584F2 /* AdyenTheme.swift */; };
+		000A7B0A2E27CDEC005584F2 /* CheckoutTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000A7B032E27CDEC005584F2 /* CheckoutTheme.swift */; };
 		000A7B0B2E27CDEC005584F2 /* AdyenUI.docc in Sources */ = {isa = PBXBuildFile; fileRef = 000A7B042E27CDEC005584F2 /* AdyenUI.docc */; };
 		000A7B0C2E27CDEC005584F2 /* AdyenColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000A7B052E27CDEC005584F2 /* AdyenColors.swift */; };
 		000A7B0D2E27CDEC005584F2 /* AdyenFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000A7B062E27CDEC005584F2 /* AdyenFonts.swift */; };
@@ -258,6 +258,8 @@
 		21B3A71529CA720C00F48386 /* DARegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B3A71429CA720C00F48386 /* DARegistrationViewController.swift */; };
 		21B3A71729CA721F00F48386 /* DAApprovalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B3A71629CA721F00F48386 /* DAApprovalViewController.swift */; };
 		21B3A71929CA780200F48386 /* DelegatedAuthenticationComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B3A71829CA780200F48386 /* DelegatedAuthenticationComponentStyle.swift */; };
+		21BF4C202F73E2D80063B13C /* ExampleAppThemes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BF4C1F2F73E2D80063B13C /* ExampleAppThemes.swift */; };
+		21BF4C212F73E2D80063B13C /* ExampleAppThemes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BF4C1F2F73E2D80063B13C /* ExampleAppThemes.swift */; };
 		21C7110E2D67F86700A08111 /* ThreeDSServiceLegacy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C7110C2D67F86700A08111 /* ThreeDSServiceLegacy.swift */; };
 		21C7110F2D67F86700A08111 /* ThreeDSServiceable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C7110D2D67F86700A08111 /* ThreeDSServiceable.swift */; };
 		21C711112D67FE6B00A08111 /* ThreeDSServiceChallengeError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C711102D67FE6B00A08111 /* ThreeDSServiceChallengeError.swift */; };
@@ -275,6 +277,7 @@
 		21CBEF662D8B6B3A00178809 /* ThreeDSServiceProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CBEF652D8B6B2F00178809 /* ThreeDSServiceProviderTests.swift */; };
 		21D6FC1B2F236EED003811A8 /* AdyenUI.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21D6FC1A2F236EED003811A8 /* AdyenUI.xcassets */; };
 		21E641B72F3F65910087253F /* PublicKeyFetcherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E641B62F3F65910087253F /* PublicKeyFetcherTests.swift */; };
+		21ED843B2F72C34000568BDE /* ADYAppearanceConfigurationBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21ED843A2F72C34000568BDE /* ADYAppearanceConfigurationBuilder.swift */; };
 		4D6ACC5A19457F96B7013F0E /* FormAddressPickerItemViewStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A944D9CA552D7C8E2063601 /* FormAddressPickerItemViewStyleTests.swift */; };
 		5A15D589264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */; };
 		5A15D5A1264BE1E500A8E3C7 /* PrefilledShopperInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */; };
@@ -628,7 +631,7 @@
 		B6271FF82EBA3497009E9149 /* AdyenElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6271FF72EBA3497009E9149 /* AdyenElements.swift */; };
 		B6271FFA2EBA36DD009E9149 /* AdyenAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6271FF92EBA36DD009E9149 /* AdyenAttributes.swift */; };
 		B6271FFC2EBB643E009E9149 /* AdyenButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6271FFB2EBB643E009E9149 /* AdyenButtonStyle.swift */; };
-		B627200B2EBBDAA8009E9149 /* AdyenTheme+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B627200A2EBBDAA8009E9149 /* AdyenTheme+Equatable.swift */; };
+		B627200B2EBBDAA8009E9149 /* CheckoutTheme+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B627200A2EBBDAA8009E9149 /* CheckoutTheme+Equatable.swift */; };
 		B62A075C2D71FB43006072E7 /* FormCardNumberItemView+ScanCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62A075B2D71FB43006072E7 /* FormCardNumberItemView+ScanCard.swift */; };
 		B62D48B42BBE8DBE001EF01A /* AnalyticsFlavorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16AB280702B200534419 /* AnalyticsFlavorTests.swift */; };
 		B62D48B52BBE8DBE001EF01A /* AnalyticsEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C16A928059A5A00534419 /* AnalyticsEventTests.swift */; };
@@ -1882,7 +1885,7 @@
 		0008887A2D4CFA67009C03E1 /* PayToComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToComponentTests.swift; sourceTree = "<group>"; };
 		000888812D510412009C03E1 /* PayToComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToComponentUITests.swift; sourceTree = "<group>"; };
 		000A7B012E27CDEC005584F2 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
-		000A7B032E27CDEC005584F2 /* AdyenTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenTheme.swift; sourceTree = "<group>"; };
+		000A7B032E27CDEC005584F2 /* CheckoutTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutTheme.swift; sourceTree = "<group>"; };
 		000A7B042E27CDEC005584F2 /* AdyenUI.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = AdyenUI.docc; sourceTree = "<group>"; };
 		000A7B052E27CDEC005584F2 /* AdyenColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenColors.swift; sourceTree = "<group>"; };
 		000A7B062E27CDEC005584F2 /* AdyenFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenFonts.swift; sourceTree = "<group>"; };
@@ -1980,6 +1983,7 @@
 		21B3A71429CA720C00F48386 /* DARegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DARegistrationViewController.swift; sourceTree = "<group>"; };
 		21B3A71629CA721F00F48386 /* DAApprovalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DAApprovalViewController.swift; sourceTree = "<group>"; };
 		21B3A71829CA780200F48386 /* DelegatedAuthenticationComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedAuthenticationComponentStyle.swift; sourceTree = "<group>"; };
+		21BF4C1F2F73E2D80063B13C /* ExampleAppThemes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleAppThemes.swift; sourceTree = "<group>"; };
 		21C7110C2D67F86700A08111 /* ThreeDSServiceLegacy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSServiceLegacy.swift; sourceTree = "<group>"; };
 		21C7110D2D67F86700A08111 /* ThreeDSServiceable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSServiceable.swift; sourceTree = "<group>"; };
 		21C711102D67FE6B00A08111 /* ThreeDSServiceChallengeError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSServiceChallengeError.swift; sourceTree = "<group>"; };
@@ -1997,6 +2001,7 @@
 		21CBEF652D8B6B2F00178809 /* ThreeDSServiceProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSServiceProviderTests.swift; sourceTree = "<group>"; };
 		21D6FC1A2F236EED003811A8 /* AdyenUI.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdyenUI.xcassets; sourceTree = "<group>"; };
 		21E641B62F3F65910087253F /* PublicKeyFetcherTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicKeyFetcherTests.swift; sourceTree = "<group>"; };
+		21ED843A2F72C34000568BDE /* ADYAppearanceConfigurationBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADYAppearanceConfigurationBuilder.swift; sourceTree = "<group>"; };
 		3A944D9CA552D7C8E2063601 /* FormAddressPickerItemViewStyleTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FormAddressPickerItemViewStyleTests.swift; sourceTree = "<group>"; };
 		5A1315C826296B100092366D /* ProgressViewStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewStyle.swift; sourceTree = "<group>"; };
 		5A15D588264BB0BD00A8E3C7 /* BoletoComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoComponentExtensions.swift; sourceTree = "<group>"; };
@@ -2292,7 +2297,7 @@
 		B6271FF72EBA3497009E9149 /* AdyenElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenElements.swift; sourceTree = "<group>"; };
 		B6271FF92EBA36DD009E9149 /* AdyenAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenAttributes.swift; sourceTree = "<group>"; };
 		B6271FFB2EBB643E009E9149 /* AdyenButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenButtonStyle.swift; sourceTree = "<group>"; };
-		B627200A2EBBDAA8009E9149 /* AdyenTheme+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AdyenTheme+Equatable.swift"; sourceTree = "<group>"; };
+		B627200A2EBBDAA8009E9149 /* CheckoutTheme+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CheckoutTheme+Equatable.swift"; sourceTree = "<group>"; };
 		B62A075B2D71FB43006072E7 /* FormCardNumberItemView+ScanCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormCardNumberItemView+ScanCard.swift"; sourceTree = "<group>"; };
 		B62D48AC2BBE8D79001EF01A /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B62D48C22BBE8ED6001EF01A /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
@@ -3329,7 +3334,7 @@
 			isa = PBXGroup;
 			children = (
 				2144A4152F3A8D1400CCD7F8 /* AdyenUIImages.swift */,
-				B627200A2EBBDAA8009E9149 /* AdyenTheme+Equatable.swift */,
+				B627200A2EBBDAA8009E9149 /* CheckoutTheme+Equatable.swift */,
 				000A7B012E27CDEC005584F2 /* UIFont.swift */,
 				0080A7802E423FC300F639DE /* UIColor.swift */,
 			);
@@ -3346,7 +3351,7 @@
 				000A7B022E27CDEC005584F2 /* Helpers */,
 				004758102E379397009E3802 /* Styles */,
 				000A7B042E27CDEC005584F2 /* AdyenUI.docc */,
-				000A7B032E27CDEC005584F2 /* AdyenTheme.swift */,
+				000A7B032E27CDEC005584F2 /* CheckoutTheme.swift */,
 				000A7B052E27CDEC005584F2 /* AdyenColors.swift */,
 				B6271FF72EBA3497009E9149 /* AdyenElements.swift */,
 				B6271FF92EBA36DD009E9149 /* AdyenAttributes.swift */,
@@ -3668,6 +3673,7 @@
 			children = (
 				21C7110C2D67F86700A08111 /* ThreeDSServiceLegacy.swift */,
 				21C7111F2D6D388700A08111 /* AnyADYTransaction.swift */,
+				21ED843A2F72C34000568BDE /* ADYAppearanceConfigurationBuilder.swift */,
 				21C7111D2D6D386F00A08111 /* ADYServiceAdapter.swift */,
 			);
 			path = LegacySDK;
@@ -3723,6 +3729,7 @@
 		5A67461E264262CF00E9184D /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				21BF4C1F2F73E2D80063B13C /* ExampleAppThemes.swift */,
 				5A67461F264262F000E9184D /* ConfigurationView.swift */,
 				00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */,
 				001BFF412A6E74BD007B2A46 /* DropInSettingsView.swift */,
@@ -8178,7 +8185,7 @@
 			files = (
 				000A7B092E27CDEC005584F2 /* UIFont.swift in Sources */,
 				00262C8C2E82804600DDDFA4 /* CheckoutConfigurable.swift in Sources */,
-				000A7B0A2E27CDEC005584F2 /* AdyenTheme.swift in Sources */,
+				000A7B0A2E27CDEC005584F2 /* CheckoutTheme.swift in Sources */,
 				000A7B0B2E27CDEC005584F2 /* AdyenUI.docc in Sources */,
 				004758112E379410009E3802 /* CornerRadiusStyle.swift in Sources */,
 				0019C4092E5F24AC00B0C3A3 /* AdyenSwitchStyle.swift in Sources */,
@@ -8261,7 +8268,7 @@
 				0019C45E2E6ADFB700B0C3A3 /* ListCell.swift in Sources */,
 				0019C45F2E6ADFB700B0C3A3 /* ListViewController.swift in Sources */,
 				0019C4602E6ADFB700B0C3A3 /* ListItem.swift in Sources */,
-				B627200B2EBBDAA8009E9149 /* AdyenTheme+Equatable.swift in Sources */,
+				B627200B2EBBDAA8009E9149 /* CheckoutTheme+Equatable.swift in Sources */,
 				0019C4A02E6AE0E300B0C3A3 /* FormTextItemStyle.swift in Sources */,
 				0019C4A12E6AE0E300B0C3A3 /* FormTextItemView.swift in Sources */,
 				0019C4A22E6AE0E300B0C3A3 /* FormTextItem.swift in Sources */,
@@ -9087,6 +9094,7 @@
 				B67D1F682E4615390000C37F /* ApplePayComponentAdvancedFlowExample.swift in Sources */,
 				B67D1F692E4615390000C37F /* InstantPaymentComponentAdvancedFlowExample.swift in Sources */,
 				B67D1F6A2E4615390000C37F /* ApplePayComponentExample.swift in Sources */,
+				21BF4C212F73E2D80063B13C /* ExampleAppThemes.swift in Sources */,
 				B67D1F6B2E4615390000C37F /* IssuerListComponentExample.swift in Sources */,
 				B67D1F6C2E4615390000C37F /* CardComponentAdvancedFlowExample.swift in Sources */,
 				F9A53C442549887F009000A7 /* DefaultAPIClient.swift in Sources */,
@@ -9237,6 +9245,7 @@
 				F9175FD02594999600D653BE /* RedirectDetails.swift in Sources */,
 				81A6B4E32AD53E3300A089A1 /* OpenExternalAppDetector.swift in Sources */,
 				F917613625A30B5700D653BE /* ThreeDS2ComponentChallengeToken.swift in Sources */,
+				21ED843B2F72C34000568BDE /* ADYAppearanceConfigurationBuilder.swift in Sources */,
 				0058691928B6451000B65A19 /* QRCodeViewModel.swift in Sources */,
 				0042EBC32B8364ED001B1F6C /* TwintSDKActionComponent.swift in Sources */,
 				F93E534C289A86A800BB6580 /* NativeRedirectResultRequest.swift in Sources */,
@@ -9430,6 +9439,7 @@
 				B67D1F702E4615390000C37F /* CardComponentExample.swift in Sources */,
 				B67D1F712E4615390000C37F /* InstantPaymentComponentExample.swift in Sources */,
 				B67D1F722E4615390000C37F /* ApplePayComponentAdvancedFlowExample.swift in Sources */,
+				21BF4C202F73E2D80063B13C /* ExampleAppThemes.swift in Sources */,
 				B67D1F732E4615390000C37F /* InstantPaymentComponentAdvancedFlowExample.swift in Sources */,
 				B67D1F742E4615390000C37F /* ApplePayComponentExample.swift in Sources */,
 				B67D1F752E4615390000C37F /* IssuerListComponentExample.swift in Sources */,

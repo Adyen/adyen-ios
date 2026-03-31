@@ -26,7 +26,7 @@ internal protocol PreselectedPaymentMethodViewModelProtocol: AnyObject {
     var showAllPaymentMethodsButtonTitle: String { get }
     func showAllPaymentMethods()
     /// Theming
-    var theme: AdyenTheme { get }
+    var theme: CheckoutTheme { get }
 
     /// Loading state
     var onLoadingStateChange: ((_ isLoading: Bool) -> Void)? { get set }
@@ -46,7 +46,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     // MARK: - Properties
 
     private let component: PaymentComponent
-    internal let theme: AdyenTheme
+    internal let theme: CheckoutTheme
     private let localizationParameters: LocalizationParameters?
     private let dropInFlowManager: DropInFlowManaging
     internal let analyticsProvider: AnyAnalyticsProvider?
@@ -64,7 +64,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
 
     internal init(
         component: PaymentComponent,
-        theme: AdyenTheme,
+        theme: CheckoutTheme,
         localizationParameters: LocalizationParameters?,
         analyticsProvider: AnyAnalyticsProvider?,
         dropInAnalyticsConfiguration: DropInAnalyticsConfiguration,

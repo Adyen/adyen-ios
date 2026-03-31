@@ -65,7 +65,7 @@ public final class Checkout: CheckoutProtocol {
     internal lazy var actionHandlingComponent: ActionHandlingComponent = {
         let threeDS2Config: ThreeDS2ActionConfiguration = configuration.configuration(
             for: .threeDS2,
-            defaultValue: ThreeDS2ActionConfiguration()
+            defaultValue: ThreeDS2ActionConfiguration(theme: configuration.theme)
         )
         
         let twintConfig: TwintActionConfiguration? = configuration.configuration(for: .twint)
