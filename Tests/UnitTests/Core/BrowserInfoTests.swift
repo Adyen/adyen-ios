@@ -4,21 +4,27 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@testable import Adyen
 import Testing
 
-/// Making this test serialized as BrowserInfo deals with some static vars and hence cannot be run in parallel.
-@Suite(.serialized)
 struct BrowserInfoTests {
 
-    @Test func browserInfoInitialize() async {
-        let browserInfo = await BrowserInfo.initialize()
+    @Test @MainActor func browserInfoInitialize() async {
+        let browserInfo = await BrowserInfo()
         #expect(browserInfo?.userAgent != nil)
+        #expect(browserInfo?.webView == nil)
     }
     
     @Test func paymentComponentDataBrowserInfo() async {
         let data = PaymentComponentData(paymentMethodDetails: InstantPaymentDetails(type: .payPal), amount: nil, order: nil)
-        let updatedPaymentComponentData = await data.replacing(browserInfo: BrowserInfo.initialize())
+        let updatedPaymentComponentData = await data.replacing(browserInfo: BrowserInfo())
         #expect(updatedPaymentComponentData.browserInfo?.userAgent != nil)
+    }
+
+    @Test func initialization_whenCached() async {
+        let mockedCachedUserAgent = "testValue"
+        BrowserInfo.cachedUserAgent = mockedCachedUserAgent
+        let browserInfo = await BrowserInfo()
+        #expect(browserInfo?.userAgent == mockedCachedUserAgent)
     }
 }

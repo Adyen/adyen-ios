@@ -86,7 +86,7 @@ extension PaymentComponent {
         return await data
             .replacing(checkoutAttemptId: checkoutAttemptId)
             .replacing(sdkData: sdkData)
-            .replacing(browserInfo: BrowserInfo.initialize())
+            .replacing(browserInfo: BrowserInfo())
     }
     
     private func sendSubmitEvent() {

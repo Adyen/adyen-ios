@@ -9,29 +9,44 @@ import WebKit
 
 /// Provides the device default browser info.
 public struct BrowserInfo: Encodable {
-    
+
+    internal static var cachedUserAgent: String?
+
     /// The device default user-agent.
-    public var userAgent: String?
-    
-    @MainActor public static func initialize() async -> BrowserInfo? {
-        guard cachedUserAgent == nil else {
-            return BrowserInfo(userAgent: cachedUserAgent)
+    public var userAgent: String
+
+    @MainActor internal var webView: WKWebView?
+
+    private enum CodingKeys: CodingKey {
+        case userAgent
+    }
+
+    @MainActor public init?() async {
+        if let cached = Self.cachedUserAgent {
+            self.userAgent = cached
+            return
         }
-        return await withCheckedContinuation { continuation in
-            webView = WKWebView()
-            webView?.evaluateJavaScript("navigator.userAgent") { result, _ in
-                webView = nil
+
+        self.webView = WKWebView()
+
+        let userAgent: String? = await withCheckedContinuation { [webView] continuation in
+            guard let webView else { return }
+            webView.evaluateJavaScript("navigator.userAgent") { result, _ in
                 guard let result = result as? String else {
                     continuation.resume(returning: nil)
                     return
                 }
-                BrowserInfo.cachedUserAgent = result
-                continuation.resume(returning: BrowserInfo(userAgent: result))
+                continuation.resume(returning: result)
             }
         }
+
+        self.webView = nil
+
+        if let userAgent {
+            self.userAgent = userAgent
+            BrowserInfo.cachedUserAgent = userAgent
+        } else {
+            return nil
+        }
     }
-    
-    private static var webView: WKWebView?
-    
-    internal static var cachedUserAgent: String?
 }
