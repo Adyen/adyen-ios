@@ -11,11 +11,11 @@ import Foundation
 public struct FormItemViewBuilder {
 
     /// The theme to use for building views.
-    package let theme: AdyenTheme
+    package let theme: CheckoutTheme
 
     /// Initializes the form item view builder.
     /// - Parameter theme: The theme to use for building views. Defaults to `.default`.
-    package init(theme: AdyenTheme = .default) {
+    package init(theme: CheckoutTheme = .default) {
         self.theme = theme
     }
 

@@ -19,7 +19,7 @@ extension ThreeDS2CompactActionHandler {
     internal convenience init(
         context: AdyenContext,
         service: ThreeDSService,
-        theme: AdyenTheme,
+        theme: CheckoutTheme,
         delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication?
     ) {
         

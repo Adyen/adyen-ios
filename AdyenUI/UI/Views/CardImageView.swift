@@ -33,7 +33,7 @@ package class CardImageItem {
     /// The size mode of the card image.
     internal let sizeMode: SizeMode
 
-    internal let theme: AdyenTheme
+    internal let theme: CheckoutTheme
     /// Initializes the form card image item.
     ///
     /// - Parameters:
@@ -43,7 +43,7 @@ package class CardImageItem {
     package init(
         imageURL: URL?,
         sizeMode: SizeMode,
-        theme: AdyenTheme
+        theme: CheckoutTheme
     ) {
         self.imageURL = imageURL
         self.sizeMode = sizeMode

@@ -10,14 +10,14 @@ import UIKit
 /// A view representing an error item.
 internal final class FormErrorItemView: FormItemView<FormErrorItem> {
 
-    private let theme: AdyenTheme
+    private let theme: CheckoutTheme
 
     /// Initializes the error item view.
     ///
     /// - Parameters:
     ///   - item: The item represented by the view.
     ///   - theme: The theme to use for styling.
-    internal init(item: FormErrorItem, theme: AdyenTheme) {
+    internal init(item: FormErrorItem, theme: CheckoutTheme) {
         self.theme = theme
         super.init(item: item)
         bind(item.$message, to: messageLabel, at: \.text)

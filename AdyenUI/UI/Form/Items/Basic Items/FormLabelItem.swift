@@ -53,9 +53,9 @@ public class FormLabelItem: FormItem {
 
 internal final class FormLabelItemView: UILabel, AnyFormItemView {
 
-    private let theme: AdyenTheme
+    private let theme: CheckoutTheme
 
-    internal init(item: FormLabelItem, theme: AdyenTheme) {
+    internal init(item: FormLabelItem, theme: CheckoutTheme) {
         self.theme = theme
         super.init(frame: .zero)
         configure(with: item)

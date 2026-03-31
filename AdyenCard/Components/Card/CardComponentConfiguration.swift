@@ -14,7 +14,7 @@ public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPer
     
     package let componentType: Adyen.CheckoutComponentType = .payment(.scheme)
     
-    package var theme: AdyenTheme
+    package var theme: CheckoutTheme
     
     /// Describes the component's UI style.
     package var style: FormComponentStyle

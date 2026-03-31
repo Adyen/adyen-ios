@@ -46,7 +46,7 @@ public struct FormTextItemStyle: FormValueItemStyle {
     public var backgroundColor: UIColor = .clear
     
     /// The accent color for warnings and error messages.
-    public var errorColor = AdyenTheme().colors.destructive
+    public var errorColor = CheckoutTheme().colors.destructive
     
     /// The color for separator element.
     /// If value is nil, the default color would be used.

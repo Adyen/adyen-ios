@@ -17,7 +17,7 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
     /// - Parameters:
     ///   - item: The item represented by the view.
     ///   - theme: The theme to use for styling.
-    internal required init(item: FormCardSecurityCodeItem, theme: AdyenTheme) {
+    internal required init(item: FormCardSecurityCodeItem, theme: CheckoutTheme) {
         super.init(item: item, theme: theme)
         accessory = .customView(cardHintView)
         textField.allowsEditingActions = false

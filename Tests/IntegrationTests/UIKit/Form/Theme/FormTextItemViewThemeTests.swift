@@ -123,7 +123,7 @@ final class FormTextItemViewThemeTests: XCTestCase {
         item: FormTextInputItem = FormTextInputItem(),
         colors: AdyenColors = .default
     ) -> FormTextInputItemView {
-        let theme = AdyenTheme(colors: colors)
+        let theme = CheckoutTheme(colors: colors)
         return FormTextInputItemView(item: item, theme: theme)
     }
 

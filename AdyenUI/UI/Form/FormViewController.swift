@@ -41,7 +41,7 @@ open class FormViewController: UIViewController, AdyenObserver {
     public var style: ViewStyle = FormComponentStyle()
 
     /// Indicates the `FormViewController` UI styling theme.
-    package var theme: AdyenTheme = .init()
+    package var theme: CheckoutTheme = .init()
 
     /// Delegate to handle different viewController events.
     public weak var delegate: ViewControllerDelegate?
@@ -73,7 +73,7 @@ open class FormViewController: UIViewController, AdyenObserver {
     package init(
         scrollEnabled: Bool,
         localizationParameters: LocalizationParameters?,
-        theme: AdyenTheme
+        theme: CheckoutTheme
     ) {
         self.scrollEnabled = scrollEnabled
         self.localizationParameters = localizationParameters

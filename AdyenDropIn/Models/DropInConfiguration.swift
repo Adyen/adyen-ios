@@ -57,7 +57,7 @@ public extension DropInComponent {
         public var style: DropInComponent.Style
 
         /// Indicates the UI style configuration of the drop in component.
-        public var theme: AdyenTheme = .default
+        public var theme: CheckoutTheme = .default
 
         /// Boleto component configuration.
         public var boleto: Boleto = .init()
@@ -78,7 +78,7 @@ public extension DropInComponent {
         ///   - allowPreselectedPaymentView: Boolean to enable the preselected stored payment method view step.
         public init(
             style: Style = Style(),
-            theme: AdyenTheme = .default,
+            theme: CheckoutTheme = .default,
             allowsSkippingPaymentList: Bool = false,
             allowPreselectedPaymentView: Bool = true
         ) {

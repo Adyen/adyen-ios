@@ -10,12 +10,12 @@ import Adyen3DS2
 #endif
 import Foundation
 
-/// Builds an `Adyen3DS2.ADYAppearanceConfiguration` from an `AdyenTheme`.
+/// Builds an `Adyen3DS2.ADYAppearanceConfiguration` from an `CheckoutTheme`.
 internal struct ADYAppearanceConfigurationBuilder {
     
-    private let theme: AdyenTheme
+    private let theme: CheckoutTheme
     
-    internal init(theme: AdyenTheme) {
+    internal init(theme: CheckoutTheme) {
         self.theme = theme
     }
     
