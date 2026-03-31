@@ -18,18 +18,7 @@ struct BrowserInfoTests {
     
     @Test func paymentComponentDataBrowserInfo() async {
         let data = PaymentComponentData(paymentMethodDetails: InstantPaymentDetails(type: .payPal), amount: nil, order: nil)
-
-        var updatedPaymentComponentData: PaymentComponentData? = nil
-        await confirmation("onImageLoaded called") { confirm in
-            await withCheckedContinuation { continuation in
-                data.dataByAddingBrowserInfo {
-                    updatedPaymentComponentData = $0
-                    confirm()
-                    continuation.resume()
-                }
-            }
-        }
-
-        #expect(updatedPaymentComponentData?.browserInfo?.userAgent != nil)
+        let updatedPaymentComponentData = await data.replacing(browserInfo: BrowserInfo.initialize())
+        #expect(updatedPaymentComponentData.browserInfo?.userAgent != nil)
     }
 }

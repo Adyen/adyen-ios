@@ -59,9 +59,10 @@ class IssuerListComponentTests: XCTestCase {
             let details = paymentData.paymentMethod as! IssuerListDetails
             XCTAssertEqual(details.issuer, expectedIssuer.identifier)
             
-            XCTAssertEqual(analyticsProviderMock.infos.count, 1)
+            XCTAssertEqual(analyticsProviderMock.infos.count, 2)
             let infoType = analyticsProviderMock.infos.first?.type
             XCTAssertEqual(infoType, .rendered)
+            XCTAssertEqual(analyticsProviderMock.infos[1].type, .selected)
 
             expectation.fulfill()
         }

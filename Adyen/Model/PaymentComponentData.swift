@@ -149,26 +149,15 @@ public struct PaymentComponentData {
             installments: installments
         )
     }
-    
-    /// Creates a new `PaymentComponentData` by populating the `browserInfo`,
-    /// in case the browser info like the user-agent is needed, but its not needed for mobile payments.
-    ///
-    /// - Parameters:
-    ///   - completion: The completion closure that is called with the new `PaymentComponentData` instance.
-    package func dataByAddingBrowserInfo(completion: @escaping ((_ newData: PaymentComponentData) -> Void)) {
-        Task { @MainActor in
-            let browserInfo = await BrowserInfo.initialize()
-            completion(
-                PaymentComponentData(
-                    paymentMethodDetails: paymentMethod,
-                    amount: amount,
-                    order: order,
-                    storePaymentMethod: storePaymentMethod,
-                    browserInfo: browserInfo,
-                    installments: installments
-                )
-            )
-        }
+
+    package func replacing(browserInfo: BrowserInfo?) -> PaymentComponentData {
+        PaymentComponentData(
+            paymentMethodDetails: paymentMethod,
+            amount: amount,
+            order: order,
+            storePaymentMethod: storePaymentMethod,
+            browserInfo: browserInfo,
+            installments: installments
+        )
     }
-    
 }
