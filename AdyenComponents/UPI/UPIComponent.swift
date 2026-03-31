@@ -61,6 +61,11 @@ public final class UPIComponent: PaymentComponent,
         static let schemeSuffix = "://"
     }
 
+    private enum Localization {
+        static let localAppListTitle = "On your device"
+        static let noLocalAppListTitle = "Options"
+    }
+
     /// Configuration for UPI Component.
     public typealias Configuration = BasicComponentConfiguration
     
@@ -218,7 +223,7 @@ public final class UPIComponent: PaymentComponent,
     /// The UPI apps list title item.
     internal lazy var appsListTitleItem: FormContainerItem<FormLabelItem> = {
         // TODO: - Replace with localization keys
-        let title = localUPIAppsAvailable ? "On your device" : "Options"
+        let title = localUPIAppsAvailable ? Localization.localAppListTitle : Localization.noLocalAppListTitle
         let item = FormLabelItem(
             text: title,
             style: configuration.style.sectionHeader

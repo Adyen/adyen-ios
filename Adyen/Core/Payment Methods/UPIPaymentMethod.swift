@@ -32,6 +32,118 @@ public struct UPIPaymentMethod: PaymentMethod {
                   "iosScheme": "phonepe",
                   "androidPackageId": "com.phonepe.app"
                 }
+              },
+              {
+                "id": "phonepe",
+                "name": "PhonePe",
+                "appIdentifierInfo": {
+                  "iosScheme": "phonepe",
+                  "androidPackageId": "com.phonepe.app"
+                }
+              },
+              {
+                "id": "phonepe",
+                "name": "PhonePe",
+                "appIdentifierInfo": {
+                  "iosScheme": "phonepe",
+                  "androidPackageId": "com.phonepe.app"
+                }
+              },
+              {
+                "id": "phonepe",
+                "name": "PhonePe",
+                "appIdentifierInfo": {
+                  "iosScheme": "phonepe",
+                  "androidPackageId": "com.phonepe.app"
+                }
+              },
+              {
+                "id": "phonepe",
+                "name": "PhonePe",
+                "appIdentifierInfo": {
+                  "iosScheme": "phonepe",
+                  "androidPackageId": "com.phonepe.app"
+                }
+              },
+              {
+                "id": "phonepe",
+                "name": "PhonePe",
+                "appIdentifierInfo": {
+                  "iosScheme": "phonepe",
+                  "androidPackageId": "com.phonepe.app"
+                }
+              },
+              {
+                "id": "phonepe",
+                "name": "PhonePe",
+                "appIdentifierInfo": {
+                  "iosScheme": "phonepe",
+                  "androidPackageId": "com.phonepe.app"
+                }
+              },
+              {
+                "id": "phonepe",
+                "name": "PhonePe",
+                "appIdentifierInfo": {
+                  "iosScheme": "phonepe",
+                  "androidPackageId": "com.phonepe.app"
+                }
+              },
+              {
+                "id": "phonepe",
+                "name": "PhonePe",
+                "appIdentifierInfo": {
+                  "iosScheme": "phonepe",
+                  "androidPackageId": "com.phonepe.app"
+                }
+              },
+              {
+                "id": "phonepe",
+                "name": "PhonePe",
+                "appIdentifierInfo": {
+                  "iosScheme": "phonepe",
+                  "androidPackageId": "com.phonepe.app"
+                }
+              },
+              {
+                "id": "phonepe",
+                "name": "PhonePe",
+                "appIdentifierInfo": {
+                  "iosScheme": "phonepe",
+                  "androidPackageId": "com.phonepe.app"
+                }
+              },
+              {
+                "id": "phonepe",
+                "name": "PhonePe",
+                "appIdentifierInfo": {
+                  "iosScheme": "phonepe",
+                  "androidPackageId": "com.phonepe.app"
+                }
+              },
+              {
+                "id": "phonepe",
+                "name": "PhonePe",
+                "appIdentifierInfo": {
+                  "iosScheme": "phonepe",
+                  "androidPackageId": "com.phonepe.app"
+                }
+              },
+              {
+                "id": "phonepe",
+                "name": "PhonePe",
+                "appIdentifierInfo": {
+                  "iosScheme": "phonepe",
+                  "androidPackageId": "com.phonepe.app"
+                }
+              },
+              {
+                "id": "phonepe",
+                "name": "PhonePe",
+                "appIdentifierInfo": {
+                  "iosScheme": "phonepe",
+                  "androidPackageId": "com.phonepe.app"
+                }
               }
             ]
         }
@@ -69,7 +181,7 @@ public struct UPIPaymentMethod: PaymentMethod {
     private enum CodingKeys: String, CodingKey {
         case type
         case name
-//        case apps
+        //        case apps
     }
 }
 
