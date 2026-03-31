@@ -16,136 +16,176 @@ public struct UPIPaymentMethod: PaymentMethod {
     private static let appsResponse =
         """
         {
-            "apps": [
-              {
-                "id": "gpay",
-                "name": "Google Pay",
-                "appIdentifierInfo": {
-                  "iosScheme": "gpay",
-                  "androidPackageId": "com.gpay.app"
-                }
+          "apps": [
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "com.google.android.apps.nbu.paisa.user",
+                "iosScheme": "tez"
               },
-              {
-                "id": "phonepe",
-                "name": "PhonePe",
-                "appIdentifierInfo": {
-                  "iosScheme": "phonepe",
-                  "androidPackageId": "com.phonepe.app"
-                }
+              "id": "gpay",
+              "name": "Google Pay"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "com.phonepe.app",
+                "iosScheme": "phonepe"
               },
-              {
-                "id": "phonepe",
-                "name": "PhonePe",
-                "appIdentifierInfo": {
-                  "iosScheme": "phonepe",
-                  "androidPackageId": "com.phonepe.app"
-                }
+              "id": "phonepe",
+              "name": "PhonePe"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "net.one97.paytm",
+                "iosScheme": "paytmmp"
               },
-              {
-                "id": "phonepe",
-                "name": "PhonePe",
-                "appIdentifierInfo": {
-                  "iosScheme": "phonepe",
-                  "androidPackageId": "com.phonepe.app"
-                }
+              "id": "paytm",
+              "name": "Paytm"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "in.org.npci.upiapp",
+                "iosScheme": "bhim"
               },
-              {
-                "id": "phonepe",
-                "name": "PhonePe",
-                "appIdentifierInfo": {
-                  "iosScheme": "phonepe",
-                  "androidPackageId": "com.phonepe.app"
-                }
+              "id": "bhim",
+              "name": "BHIM"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "com.dreamplug.androidapp",
+                "iosScheme": "credpay"
               },
-              {
-                "id": "phonepe",
-                "name": "PhonePe",
-                "appIdentifierInfo": {
-                  "iosScheme": "phonepe",
-                  "androidPackageId": "com.phonepe.app"
-                }
+              "id": "cred",
+              "name": "CRED"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "com.mobikwik_new",
+                "iosScheme": "mobikwik"
               },
-              {
-                "id": "phonepe",
-                "name": "PhonePe",
-                "appIdentifierInfo": {
-                  "iosScheme": "phonepe",
-                  "androidPackageId": "com.phonepe.app"
-                }
+              "id": "mobikwik",
+              "name": "MobiKwik"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "com.naviapp",
+                "iosScheme": "navi"
               },
-              {
-                "id": "phonepe",
-                "name": "PhonePe",
-                "appIdentifierInfo": {
-                  "iosScheme": "phonepe",
-                  "androidPackageId": "com.phonepe.app"
-                }
+              "id": "navi",
+              "name": "Navi"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "in.amazon.mShop.android.shopping",
+                "iosScheme": "amazonpay"
               },
-              {
-                "id": "phonepe",
-                "name": "PhonePe",
-                "appIdentifierInfo": {
-                  "iosScheme": "phonepe",
-                  "androidPackageId": "com.phonepe.app"
-                }
+              "id": "amazonpay",
+              "name": "Amazon Pay"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "com.whatsapp",
+                "iosScheme": "whatsapp"
               },
-              {
-                "id": "phonepe",
-                "name": "PhonePe",
-                "appIdentifierInfo": {
-                  "iosScheme": "phonepe",
-                  "androidPackageId": "com.phonepe.app"
-                }
+              "id": "wapay",
+              "name": "WhatsApp Pay"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "indwin.c3.shareapp",
+                "iosScheme": "slice-upi"
               },
-              {
-                "id": "phonepe",
-                "name": "PhonePe",
-                "appIdentifierInfo": {
-                  "iosScheme": "phonepe",
-                  "androidPackageId": "com.phonepe.app"
-                }
+              "id": "slice",
+              "name": "Slice UPI"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "com.epifi.paisa",
+                "iosScheme": "fi"
               },
-              {
-                "id": "phonepe",
-                "name": "PhonePe",
-                "appIdentifierInfo": {
-                  "iosScheme": "phonepe",
-                  "androidPackageId": "com.phonepe.app"
-                }
+              "id": "fimoney",
+              "name": "Fi Money"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "money.jupiter",
+                "iosScheme": "jupiter"
               },
-              {
-                "id": "phonepe",
-                "name": "PhonePe",
-                "appIdentifierInfo": {
-                  "iosScheme": "phonepe",
-                  "androidPackageId": "com.phonepe.app"
-                }
+              "id": "jupiter",
+              "name": "Jupiter"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "money.super.payments",
+                "iosScheme": "supermoney"
               },
-              {
-                "id": "phonepe",
-                "name": "PhonePe",
-                "appIdentifierInfo": {
-                  "iosScheme": "phonepe",
-                  "androidPackageId": "com.phonepe.app"
-                }
+              "id": "supermoney",
+              "name": "Super.money"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "com.hdfcbank.payzapp",
+                "iosScheme": "payzapp"
               },
-              {
-                "id": "phonepe",
-                "name": "PhonePe",
-                "appIdentifierInfo": {
-                  "iosScheme": "phonepe",
-                  "androidPackageId": "com.phonepe.app"
-                }
+              "id": "payzapp",
+              "name": "PayZapp"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "com.freecharge.android",
+                "iosScheme": "freecharge"
               },
-              {
-                "id": "phonepe",
-                "name": "PhonePe",
-                "appIdentifierInfo": {
-                  "iosScheme": "phonepe",
-                  "androidPackageId": "com.phonepe.app"
-                }
-              }
-            ]
+              "id": "freecharge",
+              "name": "Freecharge"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "com.tatadigital.tcp",
+                "iosScheme": "tataneu"
+              },
+              "id": "tataneu",
+              "name": "Tata Neu"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "com.csam.icici.bank.imobile",
+                "iosScheme": "icici"
+              },
+              "id": "imobile",
+              "name": "ICICI Bank iMobile"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "com.axis.mobile",
+                "iosScheme": "axismobile"
+              },
+              "id": "axisbank",
+              "name": "Axis Bank"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "com.YesBank",
+                "iosScheme": "yespay"
+              },
+              "id": "yesbank",
+              "name": "Yes Bank"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "com.snapwork.hdfc",
+                "iosScheme": "hdfcbank"
+              },
+              "id": "hdfcbank",
+              "name": "HDFC Bank"
+            },
+            {
+              "appIdentifierInfo": {
+                "androidPackageId": "com.whizdm.moneyview.loans",
+                "iosScheme": "moneyview"
+              },
+              "id": "moneyview",
+              "name": "MoneyView"
+            }
+          ]
         }
         """
 
@@ -181,7 +221,7 @@ public struct UPIPaymentMethod: PaymentMethod {
     private enum CodingKeys: String, CodingKey {
         case type
         case name
-        //        case apps
+//        case apps
     }
 }
 
