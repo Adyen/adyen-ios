@@ -4,27 +4,32 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import Adyen
-import XCTest
+import Adyen
+import Testing
 
-class BrowserInfoTests: XCTestCase {
-    
-    func testBrowserInfoInitialize() {
-        let browserInfoExpectation = expectation(description: "Expect the BrowserInfo.initialize() to return a valid instance")
-        BrowserInfo.initialize { info in
-            XCTAssertNotNil(info?.userAgent)
-            browserInfoExpectation.fulfill()
-        }
-        waitForExpectations(timeout: 120, handler: nil)
+/// Making this test serialized as BrowserInfo deals with some static vars and hence cannot be run in parallel.
+@Suite(.serialized)
+struct BrowserInfoTests {
+
+    @Test func browserInfoInitialize() async {
+        let browserInfo = await BrowserInfo.initialize()
+        #expect(browserInfo?.userAgent != nil)
     }
     
-    func testPaymentComponentDataBrowserInfo() {
-        let browserInfoExpectation = expectation(description: "Expect the BrowserInfo.initialize() to return a valid instance")
+    @Test func paymentComponentDataBrowserInfo() async {
         let data = PaymentComponentData(paymentMethodDetails: InstantPaymentDetails(type: .payPal), amount: nil, order: nil)
-        data.dataByAddingBrowserInfo {
-            XCTAssertNotNil($0.browserInfo?.userAgent)
-            browserInfoExpectation.fulfill()
+
+        var updatedPaymentComponentData: PaymentComponentData? = nil
+        await confirmation("onImageLoaded called") { confirm in
+            await withCheckedContinuation { continuation in
+                data.dataByAddingBrowserInfo {
+                    updatedPaymentComponentData = $0
+                    confirm()
+                    continuation.resume()
+                }
+            }
         }
-        waitForExpectations(timeout: 120, handler: nil)
+
+        #expect(updatedPaymentComponentData?.browserInfo?.userAgent != nil)
     }
 }
