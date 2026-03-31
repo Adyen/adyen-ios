@@ -8,6 +8,7 @@
 import CoreImage
 
 class CardImageParsingMock: CardImageParsing {
+
     // MARK: - parse
 
     var parseCallsCount = 0
