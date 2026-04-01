@@ -28,25 +28,12 @@ public struct BrowserInfo: Encodable {
         }
 
         self.webView = WKWebView()
-
-        let userAgent: String? = await withCheckedContinuation { [webView] continuation in
-            guard let webView else { return }
-            webView.evaluateJavaScript("navigator.userAgent") { result, _ in
-                guard let result = result as? String else {
-                    continuation.resume(returning: nil)
-                    return
-                }
-                continuation.resume(returning: result)
-            }
-        }
-
-        self.webView = nil
-
-        if let userAgent {
-            self.userAgent = userAgent
-            BrowserInfo.cachedUserAgent = userAgent
-        } else {
+        guard let userAgent = try? await webView?.evaluateJavaScript("navigator.userAgent") as? String else {
             return nil
         }
+        self.webView = nil
+        
+        self.userAgent = userAgent
+        BrowserInfo.cachedUserAgent = userAgent
     }
 }
