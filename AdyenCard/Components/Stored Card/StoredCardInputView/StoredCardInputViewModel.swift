@@ -57,7 +57,6 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
 
     /// This informs the status of the payment after submitting the security code.
     internal var cardDetailsCompletionHandler: Completion<Result<CardDetails, Error>>?
-    internal var otherPaymentOptionsHandler: VoidCompletion?
     internal var closeHandler: VoidCompletion?
 
     internal init(
@@ -160,7 +159,6 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         resetSecurityCodeField()
 
         await submitPayment(securityCode: securityCode)
-        inProgress = false
     }
 
     internal func submitPayment(securityCode: String) async {

@@ -61,18 +61,11 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
             self?.viewController.dismiss(animated: true)
         }
 
-        viewModel.otherPaymentOptionsHandler = { [weak self] in
-            // TODO: Robert: StoredView: Inform the router to navigation to the payment list.
-            self?.viewController.dismiss(animated: true)
-        }
-
         // TODO: Robert: This doesn't seem to a right place to trigger initialAnalytics(). As this is a lazy var. Maybe this could be moved elsewhere? - I don't know where as of yet.
         self.sendInitialAnalytics()
 
-        // TODO: Robert: StoredView: 🐞 Whose responsibility is it to maintain the navigation stack i think it should not be this component at all.
-        return UINavigationController(
-            rootViewController: StoredCardInputViewController(viewModel: viewModel)
-        )
+        let storedCardInputController = StoredCardInputViewController(viewModel: viewModel)
+        return UINavigationController(rootViewController: storedCardInputController)
     }()
 
     private func receivedCardDetailsResultToProcessPayment(result: Result<CardDetails, Error>) {
