@@ -14,6 +14,7 @@ public enum FontSize: CGFloat {
     case footnote = 13.0
 }
 
+// TODO: Robert: CheckoutTheme: Why is this exposed? are we giving an option to customize fonts in general?
 public struct AdyenFonts {
 
     public var title: UIFont
