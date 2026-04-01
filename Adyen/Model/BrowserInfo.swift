@@ -13,7 +13,7 @@ public struct BrowserInfo: Encodable {
     internal static var cachedUserAgent: String?
 
     /// The device default user-agent.
-    public var userAgent: String
+    public let userAgent: String
 
     @MainActor internal var webView: WKWebView?
 
