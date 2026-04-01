@@ -27,7 +27,7 @@ internal protocol StoredCardInputViewModelProtocol: AnyObject {
     @MainActor func submit() async
     @MainActor func dismiss()
 
-    var theme: AdyenTheme { get }
+    var theme: CheckoutTheme { get }
 
     @MainActor var onSecurityCodeValidationRequested: VoidCompletion? { get set }
     var inProgressPublisher: Published<Bool>.Publisher { get }
@@ -47,7 +47,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     private let amount: Amount?
     private let publicKey: String
 
-    internal let theme: AdyenTheme
+    internal let theme: CheckoutTheme
     internal var onSecurityCodeValidationRequested: VoidCompletion?
 
     @MainActor @Published internal var inProgress: Bool = false
@@ -60,7 +60,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     internal var closeHandler: VoidCompletion?
 
     internal init(
-        theme: AdyenTheme,
+        theme: CheckoutTheme,
         storedCardPaymentMethod: StoredCardPaymentMethod,
         apiContext: APIContext,
         publicKey: String,

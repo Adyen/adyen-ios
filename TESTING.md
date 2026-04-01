@@ -27,7 +27,7 @@ This file provides guidance for writing tests in the Adyen iOS SDK.
 ```swift
 // ❌ Avoid during migrations - tests API surface
 func test_themeInitialization_withCustomColors() {
-    let theme = AdyenTheme(colors: AdyenColors(primary: .red))
+    let theme = CheckoutTheme(colors: AdyenColors(primary: .red))
     XCTAssertEqual(theme.colors.primary, .red)
 }
 
@@ -35,7 +35,7 @@ func test_themeInitialization_withCustomColors() {
 func test_formTextField_appliesCustomThemeColors() {
     var customElements = AdyenElements(colors: .default)
     customElements.textField.borderColor = .systemPink
-    let theme = AdyenTheme(elements: customElements)
+    let theme = CheckoutTheme(elements: customElements)
 
     let sut = FormTextItemView(item: FormTextInputItem(), theme: theme)
 
@@ -213,7 +213,7 @@ Form view tests should follow these established patterns to maximize readability
 Create `makeSUT()` functions with overloads for different configurations:
 
 ```swift
-private func makeSUT(with theme: AdyenTheme = .default) -> FormTextItemView<FormTextInputItem> {
+private func makeSUT(with theme: CheckoutTheme = .default) -> FormTextItemView<FormTextInputItem> {
     FormTextItemView(item: FormTextInputItem(), theme: theme)
 }
 
@@ -224,7 +224,7 @@ private func makeSUT(
     var style = AdyenTextFieldStyle()
     style.borderColor = borderColor
     style.borderActiveColor = borderActiveColor
-    let theme = AdyenTheme(elements: AdyenElements(textField: style))
+    let theme = CheckoutTheme(elements: AdyenElements(textField: style))
     return FormTextItemView(item: FormTextInputItem(), theme: theme)
 }
 ```

@@ -21,7 +21,7 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
         selectionButton
     }
 
-    package required init(item: ItemType, theme: AdyenTheme) {
+    package required init(item: ItemType, theme: CheckoutTheme) {
         super.init(item: item, theme: theme)
 
         addSubview(selectionButton)
@@ -122,7 +122,7 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
 
     // MARK: - Styling
 
-    private func apply(_ theme: AdyenTheme) {
+    private func apply(_ theme: CheckoutTheme) {
         let style = theme.elements.textField
 
         containerView.backgroundColor = style.containerColor

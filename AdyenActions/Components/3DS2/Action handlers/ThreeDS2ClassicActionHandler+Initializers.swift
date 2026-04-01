@@ -19,7 +19,7 @@ extension ThreeDS2ClassicActionHandler {
     internal convenience init(
         context: AdyenContext,
         service: ThreeDSService,
-        theme: AdyenTheme,
+        theme: CheckoutTheme,
         delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication?
     ) {
         let defaultHandler = createDefaultThreeDS2CoreActionHandler(

@@ -118,7 +118,7 @@ internal class StoredCardInputViewController: UIViewController {
     private let viewModel: StoredCardInputViewModelProtocol
     private var cancellables = Set<AnyCancellable>()
 
-    private var theme: AdyenTheme {
+    private var theme: CheckoutTheme {
         viewModel.theme
     }
 

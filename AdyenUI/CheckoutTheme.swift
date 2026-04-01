@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Adyen N.V.
+// Copyright (c) 2026 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,14 +7,14 @@
 import Adyen
 import UIKit
 
-public struct AdyenTheme {
+public struct CheckoutTheme {
 
     package private(set) var colors: AdyenColors
     package private(set) var attributes: AdyenAttributes
     package private(set) var elements: AdyenElements
 
-    /// A default instance of AdyenTheme.
-    public static let `default` = AdyenTheme()
+    /// A default instance of CheckoutTheme.
+    public static let `default` = CheckoutTheme()
 
     /// Initializes the theme with optional color overrides.
     ///
@@ -39,13 +39,13 @@ public struct AdyenTheme {
 
 // MARK: - Builder Methods
 
-extension AdyenTheme {
+extension CheckoutTheme {
     
     /// Returns a new theme with the specified colors.
     /// - Parameter colors: The color scheme to apply.
-    /// - Returns: A new `AdyenTheme` instance.
-    package func colors(_ colors: AdyenColors) -> AdyenTheme {
-        AdyenTheme(
+    /// - Returns: A new `CheckoutTheme` instance.
+    package func colors(_ colors: AdyenColors) -> CheckoutTheme {
+        CheckoutTheme(
             colors: colors,
             elements: elements,
             attributes: attributes
@@ -54,9 +54,9 @@ extension AdyenTheme {
     
     /// Returns a new theme with the specified corner radius.
     /// - Parameter cornerRadius: The corner radius to apply to UI elements.
-    /// - Returns: A new `AdyenTheme` instance.
-    package func cornerRadius(_ cornerRadius: CGFloat) -> AdyenTheme {
-        AdyenTheme(
+    /// - Returns: A new `CheckoutTheme` instance.
+    package func cornerRadius(_ cornerRadius: CGFloat) -> CheckoutTheme {
+        CheckoutTheme(
             colors: colors,
             elements: elements,
             attributes: AdyenAttributes(cornerRadius: cornerRadius)
@@ -65,9 +65,9 @@ extension AdyenTheme {
     
     /// Returns a new theme with the specified attributes.
     /// - Parameter attributes: The UI attributes to apply.
-    /// - Returns: A new `AdyenTheme` instance.
-    internal func attributes(_ attributes: AdyenAttributes) -> AdyenTheme {
-        AdyenTheme(
+    /// - Returns: A new `CheckoutTheme` instance.
+    internal func attributes(_ attributes: AdyenAttributes) -> CheckoutTheme {
+        CheckoutTheme(
             colors: colors,
             elements: elements,
             attributes: attributes
@@ -84,20 +84,20 @@ extension AdyenTheme {
     ///   - color: The text color. Defaults to current value.
     ///   - disabledColor: The disabled text color. Defaults to current value.
     ///   - textAlignment: The text alignment. Defaults to current value.
-    /// - Returns: A new `AdyenTheme` instance with the updated body label style.
+    /// - Returns: A new `CheckoutTheme` instance with the updated body label style.
     public func bodyLabel(
         font: UIFont? = nil,
         color: UIColor? = nil,
         disabledColor: UIColor? = nil,
         textAlignment: NSTextAlignment? = nil
-    ) -> AdyenTheme {
+    ) -> CheckoutTheme {
         var newElements = elements
         newElements.labels.body.font = font ?? newElements.labels.body.font
         newElements.labels.body.color = color ?? newElements.labels.body.color
         newElements.labels.body.disabledColor = disabledColor ?? newElements.labels.body.disabledColor
         newElements.labels.body.textAlignment = textAlignment ?? newElements.labels.body.textAlignment
         
-        return AdyenTheme(
+        return CheckoutTheme(
             colors: colors,
             elements: newElements,
             attributes: attributes
@@ -115,14 +115,14 @@ extension AdyenTheme {
     ///   - disabledBackgroundColor: The disabled background color. Defaults to current value.
     ///   - disabledTextColor: The disabled text color. Defaults to current value.
     ///   - cornerRadius: The corner radius. Defaults to current value.
-    /// - Returns: A new `AdyenTheme` instance with the updated primary button style.
+    /// - Returns: A new `CheckoutTheme` instance with the updated primary button style.
     public func primaryButton(
         backgroundColor: UIColor? = nil,
         textColor: UIColor? = nil,
         disabledBackgroundColor: UIColor? = nil,
         disabledTextColor: UIColor? = nil,
         cornerRadius: CGFloat? = nil
-    ) -> AdyenTheme {
+    ) -> CheckoutTheme {
         var newElements = elements
         newElements.buttons.primary.backgroundColor = backgroundColor ?? newElements.buttons.primary.backgroundColor
         newElements.buttons.primary.textColor = textColor ?? newElements.buttons.primary.textColor
@@ -133,14 +133,14 @@ extension AdyenTheme {
             newElements.buttons.primary.cornerRadius = .fixed(cornerRadius)
         }
         
-        return AdyenTheme(
+        return CheckoutTheme(
             colors: colors,
             elements: newElements,
             attributes: attributes
         )
     }
 
-    // TODO: Robert: AdyenTheme: Do we need to expose something like secondaryButton? similar to textSecondary
+    // TODO: Robert: CheckoutTheme: Do we need to expose something like secondaryButton? similar to textSecondary
     /// Customizes the destructive button style using UIKit primitives.
     ///
     /// All parameters are optional and use smart merging - only the specified values are changed,
@@ -152,14 +152,14 @@ extension AdyenTheme {
     ///   - disabledBackgroundColor: The disabled background color. Defaults to current value.
     ///   - disabledTextColor: The disabled text color. Defaults to current value.
     ///   - cornerRadius: The corner radius. Defaults to current value.
-    /// - Returns: A new `AdyenTheme` instance with the updated destructive button style.
+    /// - Returns: A new `CheckoutTheme` instance with the updated destructive button style.
     public func destructiveButton(
         backgroundColor: UIColor? = nil,
         textColor: UIColor? = nil,
         disabledBackgroundColor: UIColor? = nil,
         disabledTextColor: UIColor? = nil,
         cornerRadius: CGFloat? = nil
-    ) -> AdyenTheme {
+    ) -> CheckoutTheme {
         var newElements = elements
         newElements.buttons.destructive.backgroundColor = backgroundColor ?? newElements.buttons.destructive.backgroundColor
         newElements.buttons.destructive.textColor = textColor ?? newElements.buttons.destructive.textColor
@@ -170,7 +170,7 @@ extension AdyenTheme {
             newElements.buttons.destructive.cornerRadius = .fixed(cornerRadius)
         }
         
-        return AdyenTheme(
+        return CheckoutTheme(
             colors: colors,
             elements: newElements,
             attributes: attributes

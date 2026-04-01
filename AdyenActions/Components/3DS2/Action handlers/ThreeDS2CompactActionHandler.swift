@@ -57,7 +57,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     internal init(
         context: AdyenContext,
         fingerprintSubmitter: AnyThreeDS2FingerprintSubmitter? = nil,
-        theme: AdyenTheme,
+        theme: CheckoutTheme,
         service: ThreeDSService,
         coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
         delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication? = nil

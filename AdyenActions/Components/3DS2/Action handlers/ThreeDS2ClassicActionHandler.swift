@@ -41,7 +41,7 @@ internal class ThreeDS2ClassicActionHandler: AnyThreeDS2ActionHandler, Component
     
     internal init(
         context: AdyenContext,
-        theme: AdyenTheme,
+        theme: CheckoutTheme,
         service: ThreeDSService,
         coreActionHandler: AnyThreeDS2CoreActionHandler? = nil,
         delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication? = nil

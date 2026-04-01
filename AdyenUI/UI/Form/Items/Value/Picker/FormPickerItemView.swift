@@ -9,7 +9,7 @@ import UIKit
 
 package class FormPickerItemView<Value: FormPickable>: FormSelectableValueItemView<Value, FormPickerItem<Value>> {
 
-    internal required init(item: FormPickerItem<Value>, theme: AdyenTheme) {
+    internal required init(item: FormPickerItem<Value>, theme: CheckoutTheme) {
         super.init(item: item, theme: theme)
         item.selectionHandler = { [weak self] in
             

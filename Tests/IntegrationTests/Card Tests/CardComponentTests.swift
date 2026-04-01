@@ -138,7 +138,7 @@ class CardComponentTests: XCTestCase {
         var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
         configuration.showsStorePaymentMethodField = true
-        configuration.theme = AdyenTheme(colors: customColors)
+        configuration.theme = CheckoutTheme(colors: customColors)
             .primaryButton(backgroundColor: .red, textColor: .white, cornerRadius: 12)
             .cornerRadius(8)
 
@@ -222,7 +222,7 @@ class CardComponentTests: XCTestCase {
 
         var configuration = CardComponentConfiguration()
         configuration.showsHolderNameField = true
-        configuration.theme = AdyenTheme(
+        configuration.theme = CheckoutTheme(
             colors: AdyenColors(
                 containerOutline: expectedBorderColor,
                 primary: expectedActiveBorderColor
@@ -260,7 +260,7 @@ class CardComponentTests: XCTestCase {
 
         var configuration = CardComponentConfiguration()
         configuration.billingAddress.mode = .lookup(onAddressLookup: { _ in [] })
-        configuration.theme = AdyenTheme(
+        configuration.theme = CheckoutTheme(
             colors: AdyenColors(
                 containerOutline: expectedBorderColor
             )
@@ -460,7 +460,7 @@ class CardComponentTests: XCTestCase {
 
         let tintColor = UIColor.black
         
-        configuration.theme = AdyenTheme(colors: AdyenColors(primary: tintColor))
+        configuration.theme = CheckoutTheme(colors: AdyenColors(primary: tintColor))
 
         let component = CardComponent(
             paymentMethod: method,

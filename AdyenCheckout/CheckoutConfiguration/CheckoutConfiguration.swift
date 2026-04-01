@@ -47,7 +47,7 @@ public struct CheckoutConfiguration {
     
     package var onComplete: CheckoutSuccessHandler?
 
-    package var theme: AdyenTheme
+    package var theme: CheckoutTheme
 
     package let amount: Amount?
 
@@ -101,7 +101,7 @@ public struct CheckoutConfiguration {
         analyticsApiContext: APIContext?,
         analyticsConfiguration: AnalyticsConfiguration,
         configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:],
-        theme: AdyenTheme = .default
+        theme: CheckoutTheme = .default
     ) {
         self.analyticsConfiguration = analyticsConfiguration
         self.analyticsApiContext = analyticsApiContext
@@ -160,11 +160,11 @@ extension CheckoutConfiguration {
 
     /// Sets the theme for the checkout configuration.
     ///
-    /// Use `AdyenTheme` builder methods to customize colors, attributes, and elements:
+    /// Use `CheckoutTheme` builder methods to customize colors, attributes, and elements:
     ///
-    /// - Parameter theme: The AdyenTheme to apply to the checkout configuration.
+    /// - Parameter theme: The CheckoutTheme to apply to the checkout configuration.
     /// - Returns: A modified CheckoutConfiguration with the specified theme.
-    public func theme(_ theme: AdyenTheme) -> Self {
+    public func theme(_ theme: CheckoutTheme) -> Self {
         var copy = self
         copy.theme = theme
         return copy

@@ -46,7 +46,7 @@ internal typealias VoidHandler = () -> Void
         internal convenience init(
             context: AdyenContext,
             service: ThreeDSService,
-            theme: AdyenTheme,
+            theme: CheckoutTheme,
             delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication
         ) {
             self.init(
@@ -76,7 +76,7 @@ internal typealias VoidHandler = () -> Void
             context: AdyenContext,
             service: ThreeDSService,
             presenter: ThreeDS2PlusDAScreenPresenterProtocol,
-            theme: AdyenTheme,
+            theme: CheckoutTheme,
             style: DelegatedAuthenticationComponentStyle = .init(),
             delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication,
             delegatedAuthenticationService: AuthenticationServiceProtocol? = nil,

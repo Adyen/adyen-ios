@@ -617,12 +617,12 @@ class StoredCardInputViewModelProtocolMock: StoredCardInputViewModelProtocol {
     }
 
     var underlyingSubmitButtonTitle: String!
-    var theme: AdyenTheme {
+    var theme: CheckoutTheme {
         get { underlyingTheme }
         set(value) { underlyingTheme = value }
     }
 
-    var underlyingTheme: AdyenTheme!
+    var underlyingTheme: CheckoutTheme!
     var onSecurityCodeValidationRequested: VoidCompletion?
     var inProgressPublisher: Published<Bool>.Publisher {
         get { underlyingInProgressPublisher }
