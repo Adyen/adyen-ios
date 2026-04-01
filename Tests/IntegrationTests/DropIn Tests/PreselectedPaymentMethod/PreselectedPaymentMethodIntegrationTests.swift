@@ -272,7 +272,7 @@ struct PreselectedPaymentMethodIntegrationTests {
                 return StoredCardComponent(
                     storedCardPaymentMethod: storedCardPaymentMethod,
                     context: Dummy.context,
-                    theme: AdyenTheme()
+                    theme: CheckoutTheme()
                 )
             case .bcmc:
                 let paymentMethod = try! AdyenCoder.decode(storedBcmcDictionary) as StoredBCMCPaymentMethod

@@ -113,7 +113,6 @@ struct StoredCardInputViewModelTests {
         let sut = makeSUT()
         sut.securityCodeItem.value = "999"
         sut.closeHandler = {}
-        sut.otherPaymentOptionsHandler = {}
 
         // When
         sut.dismiss()
@@ -126,7 +125,6 @@ struct StoredCardInputViewModelTests {
         // Given
         let sut = makeSUT()
         sut.closeHandler = nil
-        sut.otherPaymentOptionsHandler = nil
 
         // When / Then - no crash
         sut.dismiss()
