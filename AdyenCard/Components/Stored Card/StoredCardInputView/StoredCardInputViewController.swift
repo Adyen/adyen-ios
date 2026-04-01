@@ -180,7 +180,7 @@ internal class StoredCardInputViewController: UIViewController {
     }
 
     private func configureConstraints() {
-        // TODO: Robert: StoredView: Autolayout Constraints breaks. This needs a separate investigation as this involves the FormCardSecurityCodeItemView
+        // TODO: Robert: StoredView: Auto layout Constraints breaks. This needs a separate investigation as this involves the FormCardSecurityCodeItemView
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
