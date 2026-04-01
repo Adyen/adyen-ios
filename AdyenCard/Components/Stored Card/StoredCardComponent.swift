@@ -30,12 +30,12 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
     package var localizationParameters: LocalizationParameters?
 
     private let storedCardPaymentMethod: StoredCardPaymentMethod
-    private let theme: AdyenTheme
+    private let theme: CheckoutTheme
 
     package init(
         storedCardPaymentMethod: StoredCardPaymentMethod,
         context: AdyenContext,
-        theme: AdyenTheme
+        theme: CheckoutTheme
     ) {
         self.storedCardPaymentMethod = storedCardPaymentMethod
         self.context = context
@@ -65,6 +65,8 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
         self.sendInitialAnalytics()
 
         let storedCardInputController = StoredCardInputViewController(viewModel: viewModel)
+
+        // TODO: Robert: StoredView: I assume here is the right place to wrap it in a navigation. As StoredCardComponent can be used separately by the merchant. If this is not, where else should this be?
         return UINavigationController(rootViewController: storedCardInputController)
     }()
 
