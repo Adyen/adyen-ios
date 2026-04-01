@@ -21,16 +21,16 @@ internal protocol AnyThreeDS2ActionHandler {
         _ challengeAction: ThreeDS2ChallengeAction,
         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void
     )
-    
+
     var threeDSRequestorAppURL: URL? { get set }
-    
+
     var presentationDelegate: PresentationDelegate? { get set }
 }
 
 internal protocol ComponentWrapper: Component {
 
     var wrappedComponent: Component { get }
-    
+
 }
 
 extension ComponentWrapper {
@@ -62,7 +62,7 @@ internal func createDefaultThreeDS2CoreActionHandler(
     delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication?
 ) -> AnyThreeDS2CoreActionHandler {
     #if canImport(AdyenAuthentication)
-        if #available(iOS 16.0, *), let delegatedAuthenticationConfiguration {
+        if let delegatedAuthenticationConfiguration {
             return ThreeDS2PlusDACoreActionHandler(
                 context: context,
                 service: service,

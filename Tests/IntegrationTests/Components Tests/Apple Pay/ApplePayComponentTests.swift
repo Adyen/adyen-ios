@@ -480,11 +480,6 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     func testNewInitSuccess() throws {
-        guard #available(iOS 16.0, *) else {
-            // XCTestCase does not respect @available so we have to skip the test like this
-            throw XCTSkip("Unsupported iOS version")
-        }
-
         let request = PKPaymentRequest()
         request.merchantIdentifier = "test_id"
         request.countryCode = getRandomCountryCode()
