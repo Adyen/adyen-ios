@@ -19,13 +19,6 @@ public protocol PaymentMethod: Codable {
     /// and if not `nil`, will override the default display information.
     var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? { get set }
     
-    /// Display information for the payment method, adapted for displaying in a list.
-    ///
-    /// - Parameters:
-    ///   - using: The localization parameters.
-    @_spi(AdyenInternal)
-    func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation
-    
     @_spi(AdyenInternal)
     func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent?
 }
@@ -48,8 +41,7 @@ public extension PaymentMethod {
 /// A protocol to define any partial payment method such as gift cards, `MealVoucher` etc.
 public protocol PartialPaymentMethod: PaymentMethod {}
 
-@_spi(AdyenInternal)
-public extension PaymentMethod {
+package extension PaymentMethod {
     
     func displayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let defaultDisplayInformation = defaultDisplayInformation(using: parameters)
@@ -66,9 +58,44 @@ public extension PaymentMethod {
         return defaultDisplayInformation
     }
 
-    @_spi(AdyenInternal)
+    // swiftlint:disable:next cyclomatic_complexity
     func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
+        switch self {
+        case let cardPaymentMethod as CardPaymentMethod:
+            return cardPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let storedCardPaymentMethod as StoredCardPaymentMethod:
+            return storedCardPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let storedBCMCPaymentMethod as StoredBCMCPaymentMethod:
+            return storedBCMCPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let storedPayPalPaymentMethod as StoredPayPalPaymentMethod:
+            return storedPayPalPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let achDirectDebitPaymentMethod as ACHDirectDebitPaymentMethod:
+            return achDirectDebitPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let storedACHDirectDebitPaymentMethod as StoredACHDirectDebitPaymentMethod:
+            return storedACHDirectDebitPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let storedTwintPaymentMethod as StoredTwintPaymentMethod:
+            return storedTwintPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let blikPaymentMethod as BLIKPaymentMethod:
+            return blikPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let storedBLIKPaymentMethod as StoredBLIKPaymentMethod:
+            return storedBLIKPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let storedCashAppPayPaymentMethod as StoredCashAppPayPaymentMethod:
+            return storedCashAppPayPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let mealVoucherPaymentMethod as MealVoucherPaymentMethod:
+            return mealVoucherPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let payByBankUSPaymentMethod as PayByBankUSPaymentMethod:
+            return payByBankUSPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let storedPayByBankUSPaymentMethod as StoredPayByBankUSPaymentMethod:
+            return storedPayByBankUSPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let giftCardPaymentMethod as GiftCardPaymentMethod:
+            return giftCardPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let storedPayToPaymentMethod as StoredPayToPaymentMethod:
+            return storedPayToPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let orderPaymentMethod as OrderPaymentMethod:
+            return orderPaymentMethod.defaultDisplayInformation(using: parameters)
+        default:
+            return DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
+        }
     }
     
 }

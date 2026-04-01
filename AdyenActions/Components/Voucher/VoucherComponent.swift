@@ -37,14 +37,18 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
         public var style: VoucherComponentStyle = .init()
         
         /// The localization parameters, leave it nil to use the default parameters.
-        public var localizationParameters: LocalizationParameters?
+        package var localizationParameters: LocalizationParameters?
         
         /// Initializes an instance of `Configuration`
         ///
         /// - Parameters:
         ///   - style: The Component UI style.
         ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
-        public init(style: VoucherComponentStyle = VoucherComponentStyle(), localizationParameters: LocalizationParameters? = nil) {
+        public init(style: VoucherComponentStyle = VoucherComponentStyle()) {
+            self.init(style: style, localizationParameters: nil)
+        }
+
+        package init(style: VoucherComponentStyle = VoucherComponentStyle(), localizationParameters: LocalizationParameters? = nil) {
             self.style = style
             self.localizationParameters = localizationParameters
         }

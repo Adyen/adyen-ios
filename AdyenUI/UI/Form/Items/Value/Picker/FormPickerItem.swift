@@ -46,7 +46,7 @@ public struct FormPickerElement: FormPickable {
 @_spi(AdyenInternal)
 open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> {
     
-    public let localizationParameters: LocalizationParameters?
+    package let localizationParameters: LocalizationParameters?
     public private(set) var isOptional: Bool = false
     internal private(set) weak var presenter: ViewControllerPresenter?
     
@@ -69,7 +69,28 @@ open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> 
     ///   - style: The `FormTextItemStyle` UI style.
     ///   - localizationParameters: The localization parameters.
     ///   - identifier: The item identifier
-    public init(
+    public convenience init(
+        preselectedValue: Value?,
+        selectableValues: [Value],
+        title: String,
+        placeholder: String,
+        style: FormTextItemStyle,
+        presenter: ViewControllerPresenter?,
+        identifier: String? = nil
+    ) {
+        self.init(
+            preselectedValue: preselectedValue,
+            selectableValues: selectableValues,
+            title: title,
+            placeholder: placeholder,
+            style: style,
+            presenter: presenter,
+            localizationParameters: nil,
+            identifier: identifier
+        )
+    }
+
+    package init(
         preselectedValue: Value?,
         selectableValues: [Value],
         title: String,

@@ -30,7 +30,7 @@ public struct BasicComponentConfiguration {
     public private(set) var showsSubmitButton: Bool
 
     /// Indicates the localization parameters, leave it nil to use the default parameters.
-    public var localizationParameters: LocalizationParameters?
+    package var localizationParameters: LocalizationParameters?
 
     /// Initializes a new instance of `BasicComponentConfiguration`
     ///
@@ -40,6 +40,17 @@ public struct BasicComponentConfiguration {
     ///   Defaults to `true`.
     ///   - localizationParameters: The localization parameters.
     public init(
+        style: FormComponentStyle = FormComponentStyle(),
+        showsSubmitButton: Bool = true
+    ) {
+        self.init(
+            style: style,
+            showsSubmitButton: showsSubmitButton,
+            localizationParameters: nil
+        )
+    }
+
+    package init(
         style: FormComponentStyle = FormComponentStyle(),
         showsSubmitButton: Bool = true,
         localizationParameters: LocalizationParameters? = nil
@@ -66,7 +77,7 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
 
     public var shopperInformation: PrefilledShopperInformation?
     
-    public var localizationParameters: LocalizationParameters?
+    package var localizationParameters: LocalizationParameters?
 
     /// Initializes a new instance of `PersonalInformationConfiguration`
     ///
@@ -77,6 +88,19 @@ public struct PersonalInformationConfiguration: AnyPersonalInformationConfigurat
     ///   - shopperInformation: The shopper information to be prefilled.
     ///   - localizationParameters: The localization parameters.
     public init(
+        style: FormComponentStyle = FormComponentStyle(),
+        showsSubmitButton: Bool = true,
+        shopperInformation: PrefilledShopperInformation? = nil
+    ) {
+        self.init(
+            style: style,
+            showsSubmitButton: showsSubmitButton,
+            shopperInformation: shopperInformation,
+            localizationParameters: nil
+        )
+    }
+
+    package init(
         style: FormComponentStyle = FormComponentStyle(),
         showsSubmitButton: Bool = true,
         shopperInformation: PrefilledShopperInformation? = nil,

@@ -33,7 +33,7 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
     public struct Configuration: Localizable {
         
         /// Localization parameters.
-        public var localizationParameters: LocalizationParameters?
+        package var localizationParameters: LocalizationParameters?
         
         /// The UI style configurations.
         public var style: ActionComponentStyle = .init()
@@ -52,6 +52,19 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
         ///   - threeDS: Three DS configurations.
         ///   - twint: Twint configurations.
         public init(
+            style: ActionComponentStyle = .init(),
+            threeDS: ThreeDS2ActionConfiguration = .init(),
+            twint: TwintActionConfiguration? = nil
+        ) {
+            self.init(
+                localizationParameters: nil,
+                style: style,
+                threeDS: threeDS,
+                twint: twint
+            )
+        }
+
+        package init(
             localizationParameters: LocalizationParameters? = nil,
             style: ActionComponentStyle = .init(),
             threeDS: ThreeDS2ActionConfiguration = .init(),

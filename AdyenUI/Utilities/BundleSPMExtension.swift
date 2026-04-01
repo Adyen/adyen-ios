@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2026 Adyen N.V.
+// Copyright (c) 2020 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,10 +10,11 @@ internal extension Bundle {
     static let adyenUI: Bundle = .init(for: FormButton.self)
 
     #if SWIFT_PACKAGE
-        /// The bundle in which the framework's resources are located. This will be available when using swift packages, open the Package.swift file and see.
+        /// The bundle in which the framework's resources are located.
+        /// This will be available when using swift packages, open the `Package.swift` file and see.
         static let adyenUIInternalResources: Bundle = .module
     #else
-        internal static let adyenUIInternalResources: Bundle = {
+        static let adyenUIInternalResources: Bundle = {
             let url = adyenUI.url(forResource: "AdyenUI", withExtension: "bundle")
             let bundle = url.flatMap { Bundle(url: $0) }
             return bundle ?? adyenUI

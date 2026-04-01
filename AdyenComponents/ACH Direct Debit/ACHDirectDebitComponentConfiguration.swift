@@ -59,7 +59,7 @@ extension ACHDirectDebitComponentConfiguration {
     /// Sets the localization parameters.
     /// - Parameter localizationParameters: The localization parameters to use.
     /// - Returns: A modified configuration with the updated localization parameters.
-    public func localizationParameters(_ localizationParameters: LocalizationParameters?) -> Self {
+    package func localizationParameters(_ localizationParameters: LocalizationParameters?) -> Self {
         var config = self
         config.localizationParameters = localizationParameters
         return config

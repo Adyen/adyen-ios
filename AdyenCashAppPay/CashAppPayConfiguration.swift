@@ -33,7 +33,7 @@ public struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
     internal let showsSubmitButton: Bool
 
     /// The localization parameters, leave it nil to use the default parameters.
-    public var localizationParameters: LocalizationParameters?
+    package var localizationParameters: LocalizationParameters?
 
     /// Initializes an instance of `CashAppPayComponent.Configuration`
     ///
@@ -48,6 +48,25 @@ public struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
     ///   Defaults to `true`.
     ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
     public init(
+        redirectURL: URL,
+        referenceId: String? = nil,
+        showsStorePaymentMethodField: Bool = true,
+        storePaymentMethod: Bool = false,
+        style: FormComponentStyle = FormComponentStyle(),
+        showsSubmitButton: Bool = true
+    ) {
+        self.init(
+            redirectURL: redirectURL,
+            referenceId: referenceId,
+            showsStorePaymentMethodField: showsStorePaymentMethodField,
+            storePaymentMethod: storePaymentMethod,
+            style: style,
+            showsSubmitButton: showsSubmitButton,
+            localizationParameters: nil
+        )
+    }
+
+    package init(
         redirectURL: URL,
         referenceId: String? = nil,
         showsStorePaymentMethodField: Bool = true,
