@@ -21,6 +21,9 @@ public struct BrowserInfo: Encodable {
         case userAgent
     }
 
+    /// Initializes a `BrowserInfo` instance asynchronously by retrieving the device's user agent.
+    ///
+    /// - Returns: A `BrowserInfo` instance if the user agent was successfully retrieved, or `nil` if the evaluation failed.
     @MainActor public init?() async {
         if let cached = Self.cachedUserAgent {
             self.userAgent = cached
