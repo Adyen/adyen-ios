@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "Adyen",
     defaultLocalization: "en-us",
-    platforms: [.iOS(.v15)],
+    platforms: [.iOS(.v16)],
     products: [
         .library(
             name: "Adyen",
