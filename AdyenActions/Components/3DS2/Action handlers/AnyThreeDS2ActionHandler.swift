@@ -5,7 +5,9 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import Adyen3DS2
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import Foundation
 
 internal protocol AnyThreeDS2ActionHandler {
@@ -19,16 +21,16 @@ internal protocol AnyThreeDS2ActionHandler {
         _ challengeAction: ThreeDS2ChallengeAction,
         completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void
     )
-    
+
     var threeDSRequestorAppURL: URL? { get set }
-    
+
     var presentationDelegate: PresentationDelegate? { get set }
 }
 
 internal protocol ComponentWrapper: Component {
 
     var wrappedComponent: Component { get }
-    
+
 }
 
 extension ComponentWrapper {
@@ -56,29 +58,29 @@ extension ComponentWrapper {
 internal func createDefaultThreeDS2CoreActionHandler(
     context: AdyenContext,
     service: ThreeDSService,
-    appearanceConfiguration: ADYAppearanceConfiguration,
+    theme: CheckoutTheme,
     delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication?
 ) -> AnyThreeDS2CoreActionHandler {
     #if canImport(AdyenAuthentication)
-        if #available(iOS 16.0, *), let delegatedAuthenticationConfiguration {
+        if let delegatedAuthenticationConfiguration {
             return ThreeDS2PlusDACoreActionHandler(
                 context: context,
                 service: service,
-                appearanceConfiguration: appearanceConfiguration,
+                theme: theme,
                 delegatedAuthenticationConfiguration: delegatedAuthenticationConfiguration
             )
         } else {
             return ThreeDS2CoreActionHandler(
                 context: context,
                 service: service,
-                appearanceConfiguration: appearanceConfiguration
+                theme: theme
             )
         }
     #else
         return ThreeDS2CoreActionHandler(
             context: context,
             service: service,
-            appearanceConfiguration: appearanceConfiguration
+            theme: theme
         )
     #endif
 }

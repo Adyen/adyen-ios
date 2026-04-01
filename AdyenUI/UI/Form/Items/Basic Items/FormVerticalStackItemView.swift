@@ -17,14 +17,14 @@ open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormI
     private var observations: [Observation] = []
 
     /// The theme for styling subitems.
-    private let theme: AdyenTheme
+    private let theme: CheckoutTheme
 
     /// Initializes the vertical stack item view with theme.
     ///
     /// - Parameters:
     ///   - item: The item represented by the view.
     ///   - theme: The theme to use for styling subitems.
-    public init(item: FormItemType, theme: AdyenTheme) {
+    public init(item: FormItemType, theme: CheckoutTheme) {
         self.theme = theme
         super.init(item: item)
 
@@ -49,7 +49,7 @@ open class FormVerticalStackItemView<FormItemType: FormItem>: FormItemView<FormI
     ///   - itemSpacing: Spacing among the child views of the stack.
     ///   - theme: The theme to use for styling subitems. Defaults to `.default`.
     ///   :nodoc:
-    package convenience init(item: FormItemType, itemSpacing: CGFloat, theme: AdyenTheme = .default) {
+    public convenience init(item: FormItemType, itemSpacing: CGFloat, theme: CheckoutTheme = .default) {
         self.init(item: item, theme: theme)
         stackView.spacing = itemSpacing
     }

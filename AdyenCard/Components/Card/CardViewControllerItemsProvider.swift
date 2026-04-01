@@ -21,7 +21,7 @@ extension CardViewController {
 
     internal final class ItemsProvider {
         private let formStyle: FormComponentStyle
-        private let theme: AdyenTheme
+        private let theme: CheckoutTheme
         private let amount: Amount?
         private var localizationParameters: LocalizationParameters?
         private let configuration: CardComponentConfiguration
@@ -39,7 +39,7 @@ extension CardViewController {
 
         internal init(
             formStyle: FormComponentStyle,
-            theme: AdyenTheme,
+            theme: CheckoutTheme,
             amount: Amount?,
             configuration: CardComponentConfiguration,
             shopperInformation: PrefilledShopperInformation?,

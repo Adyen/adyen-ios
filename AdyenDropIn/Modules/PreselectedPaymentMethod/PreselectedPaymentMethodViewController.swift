@@ -33,7 +33,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
 
     private let viewModel: PreselectedPaymentMethodViewModelProtocol
 
-    private var theme: AdyenTheme {
+    private var theme: CheckoutTheme {
         viewModel.theme
     }
 
@@ -92,19 +92,14 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
         isModalInPresentation = true
 
         // Adding this to make the controller fit its content height.
-        // TODO: Robert: Need to see if there a solution for iOS15 and lesser. But if not maybe just use full screen for below iOS 15 not much traffic there anyway. I would address lower OS's as a separate task.
-        // iOS 16+: Custom detent to fit content exactly This works really well.
-        // iOS 15 & lower - using full screen. From my initial check this gets a bit complicated.
-        if #available(iOS 16.0, *) {
-            if let sheet = sheetPresentationController {
-                sheet.detents = [
-                    .custom { [weak self] _ in
-                        self?.calculateContentHeight()
-                    }
-                ]
-                sheet.prefersGrabberVisible = false
-                sheet.preferredCornerRadius = Constants.sheetCornerRadius
-            }
+        if let sheet = sheetPresentationController {
+            sheet.detents = [
+                .custom { [weak self] _ in
+                    self?.calculateContentHeight()
+                }
+            ]
+            sheet.prefersGrabberVisible = false
+            sheet.preferredCornerRadius = Constants.sheetCornerRadius
         }
     }
 
@@ -190,9 +185,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     /// Call this when any subview resizes itself.
     /// That will allow this screen to redraw and then we can compute the dynamic heigh tof the screen.
     private func invalidateSheetDetent() {
-        if #available(iOS 16.0, *) {
-            sheetPresentationController?.invalidateDetents()
-        }
+        sheetPresentationController?.invalidateDetents()
     }
 
     private lazy var scrollView: UIScrollView = {

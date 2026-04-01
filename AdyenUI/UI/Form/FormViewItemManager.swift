@@ -11,7 +11,7 @@ internal final class FormViewItemManager {
     
     // MARK: - Properties
     
-    private let theme: AdyenTheme
+    private let theme: CheckoutTheme
     
     // MARK: - Items
 
@@ -24,7 +24,7 @@ internal final class FormViewItemManager {
 
     /// Initializes the FormViewItemManager with a theme.
     /// - Parameter theme: The theme to use for styling views.
-    internal init(theme: AdyenTheme) {
+    internal init(theme: CheckoutTheme) {
         self.theme = theme
     }
     

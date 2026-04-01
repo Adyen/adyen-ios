@@ -88,7 +88,7 @@ import XCTest
         }
         
         // TODO: Re-enable after theme injection is complete
-        // This test uses deprecated `FormComponentStyle.toggle` which will be replaced with `AdyenTheme`
+        // This test uses deprecated `FormComponentStyle.toggle` which will be replaced with `CheckoutTheme`
         // The test requires `FormToggleItemView` to accept and use theme parameter instead of hardcoded default
         func DISABLED_testUIConfiguration() {
             var componentStyle = FormComponentStyle()

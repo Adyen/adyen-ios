@@ -12,7 +12,7 @@ import UIKit
 
 internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem>, UICollectionViewDataSource {
     
-    private let theme: AdyenTheme
+    private let theme: CheckoutTheme
 
     private enum Constants {
         static let cardSpacing: CGFloat = 3
@@ -33,7 +33,7 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem>, UIC
     
     internal lazy var imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
     
-    internal init(item: FormCardLogosItem, theme: AdyenTheme) {
+    internal init(item: FormCardLogosItem, theme: CheckoutTheme) {
         self.theme = theme
         super.init(item: item)
         addSubview(collectionView)

@@ -5,7 +5,6 @@
 //
 
 import Adyen
-import Adyen3DS2
 import Foundation
 
 internal extension ThreeDS2Component {

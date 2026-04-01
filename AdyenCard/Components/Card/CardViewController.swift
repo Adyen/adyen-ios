@@ -96,7 +96,7 @@ internal class CardViewController: FormViewController {
         initialCountryCode: String,
         scope: String,
         localizationParameters: LocalizationParameters?,
-        theme: AdyenTheme,
+        theme: CheckoutTheme,
         cardScannerAnalyticsHandler: @escaping CardScannerAnalyticsHandler
     ) {
         self.configuration = configuration

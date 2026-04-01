@@ -11,7 +11,7 @@ import UIKit
 @_spi(AdyenInternal)
 public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExtensionPickerItem> {
     
-    private let theme: AdyenTheme
+    private let theme: CheckoutTheme
     
     private enum Constants {
         static let chevronImageName = "chevron_down"
@@ -50,7 +50,7 @@ public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExten
         }
     }
     
-    internal init(item: FormPhoneExtensionPickerItem, theme: AdyenTheme) {
+    internal init(item: FormPhoneExtensionPickerItem, theme: CheckoutTheme) {
         self.theme = theme
         super.init(item: item)
         setupView()
