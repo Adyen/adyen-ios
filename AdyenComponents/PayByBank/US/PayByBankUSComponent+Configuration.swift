@@ -23,9 +23,7 @@ extension PayByBankUSComponent {
         /// - Parameters:
         ///   - style: The form style.
         ///   - localizationParameters: The localization parameters.
-        public init(
-            style: PayByBankUSComponent.Style = .init()
-        ) {
+        public init(style: PayByBankUSComponent.Style = .init()) {
             self.init(style: style, localizationParameters: nil)
         }
 

@@ -18,9 +18,7 @@ public final class FormPostalCodeItem: FormTextItem {
     internal var localizationParameters: LocalizationParameters?
 
     /// Initializes the form postal code item.
-    override public init(
-        style: FormTextItemStyle = FormTextItemStyle()
-    ) {
+    override public init(style: FormTextItemStyle = FormTextItemStyle()) {
         self.localizationParameters = nil
         super.init(style: style)
         setup()
