@@ -109,6 +109,22 @@ final class CheckoutConfigurationTests: XCTestCase {
         // Then - Default should be evaluated since no config exists
         XCTAssertTrue(defaultWasCalled, "Autoclosure should be evaluated when config is missing")
     }
+
+    func test_checkoutConfiguration_withLocalizationProvider_shouldStoreProvider() {
+        // Given
+        let provider = CheckoutLocalizationProviderMock()
+
+        // When
+        let checkoutConfig = makeCheckoutConfiguration().localizationProvider(provider)
+
+        // Then
+        guard let storedProvider = checkoutConfig.localizationProvider as? CheckoutLocalizationProviderMock else {
+            XCTFail("Localization provider should be stored on checkout configuration")
+            return
+        }
+
+        XCTAssertTrue(storedProvider === provider)
+    }
     
     // MARK: - Legacy componentConfiguration Tests
     
@@ -297,5 +313,11 @@ final class CheckoutConfigurationTests: XCTestCase {
             analyticsConfiguration: .init(),
             configurations: configurations
         )
+    }
+}
+
+private final class CheckoutLocalizationProviderMock: CheckoutLocalizationProvider {
+    func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String? {
+        nil
     }
 }
