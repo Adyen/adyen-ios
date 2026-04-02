@@ -14,12 +14,12 @@ internal struct PaymentMethodSection: Identifiable {
     internal let id = UUID()
     internal let headerTitle: String?
     internal let items: [PaymentMethodItem]
-    internal let theme: AdyenTheme
+    internal let theme: CheckoutTheme
 
     internal init(
         headerTitle: String? = nil,
         items: [PaymentMethodItem],
-        theme: AdyenTheme
+        theme: CheckoutTheme
     ) {
         self.headerTitle = headerTitle
         self.items = items

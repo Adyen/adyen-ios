@@ -19,5 +19,5 @@ internal struct PaymentMethodListHeaderViewModel {
     internal let amount: String
     internal let subtitle: String
     internal let applePayButtonState: ApplePayButtonState
-    internal let theme: AdyenTheme
+    internal let theme: CheckoutTheme
 }

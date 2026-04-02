@@ -85,8 +85,8 @@ internal struct DropInAssembler {
         LocalizationParameters()
     }
 
-    private func resolveAdyenTheme() -> AdyenTheme {
-        AdyenTheme.default
+    private func resolveCheckoutTheme() -> CheckoutTheme {
+        CheckoutTheme.default
     }
 
     private var preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
@@ -108,7 +108,7 @@ internal struct DropInAssembler {
             localizationParameters: resolveLocalizationProvider(),
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
-            theme: resolveAdyenTheme(),
+            theme: resolveCheckoutTheme(),
             partialPaymentDelegate: partialPaymentDelegate
         )
     }

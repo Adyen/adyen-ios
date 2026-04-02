@@ -22,7 +22,7 @@ internal struct PaymentMethodItem: Identifiable {
     private let trailingInfo: DisplayInformation.TrailingInfoType?
     private let logoURLProvider: LogoURLProvider
     internal let accessibilityLabel: String?
-    internal let theme: AdyenTheme
+    internal let theme: CheckoutTheme
     internal let selectionHandler: (() -> Void)?
 
     // MARK: - Initializers
@@ -34,7 +34,7 @@ internal struct PaymentMethodItem: Identifiable {
         trailingInfo: DisplayInformation.TrailingInfoType? = nil,
         logoURLProvider: LogoURLProvider,
         accessibilityLabel: String? = nil,
-        theme: AdyenTheme,
+        theme: CheckoutTheme,
         selectionHandler: (() -> Void)? = nil
     ) {
         self.title = title

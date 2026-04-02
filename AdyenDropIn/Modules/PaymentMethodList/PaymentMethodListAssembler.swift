@@ -27,7 +27,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     private let localizationParameters: LocalizationParameters
     private let configuration: DropInComponent.Configuration
     private let dropInFlowManager: DropInFlowManaging
-    private let theme: AdyenTheme
+    private let theme: CheckoutTheme
     private let partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
@@ -39,7 +39,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         localizationParameters: LocalizationParameters,
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging,
-        theme: AdyenTheme,
+        theme: CheckoutTheme,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.componentContainerAssembler = componentContainerAssembler

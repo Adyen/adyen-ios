@@ -85,7 +85,7 @@ internal class PaymentMethodListViewController: UIViewController {
     private let viewModel: PaymentMethodListViewModelProtocol
     private var cancellables = Set<AnyCancellable>()
     
-    private var theme: AdyenTheme {
+    private var theme: CheckoutTheme {
         viewModel.theme
     }
 

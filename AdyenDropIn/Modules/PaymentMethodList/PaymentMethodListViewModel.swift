@@ -24,7 +24,7 @@ internal protocol PaymentMethodListViewModelProtocol {
     var title: String { get }
     var paymentMethodSections: [PaymentMethodsSection] { get }
     var statePublisher: Published<PaymentMethodListState>.Publisher { get }
-    var theme: AdyenTheme { get }
+    var theme: CheckoutTheme { get }
     func cancel()
     func didLoad()
 
@@ -51,7 +51,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     internal weak var router: PaymentMethodListRouting?
     private let dropInFlowManager: DropInFlowManaging
     private let logoURLProvider: LogoURLProvider
-    internal let theme: AdyenTheme
+    internal let theme: CheckoutTheme
 
     @Published internal private(set) var state: PaymentMethodListState = .idle
     internal var statePublisher: Published<PaymentMethodListState>.Publisher {
@@ -69,7 +69,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging,
         logoURLProvider: LogoURLProvider,
-        theme: AdyenTheme
+        theme: CheckoutTheme
     ) {
         self.context = context
         self.localizationParameters = localizationParameters
