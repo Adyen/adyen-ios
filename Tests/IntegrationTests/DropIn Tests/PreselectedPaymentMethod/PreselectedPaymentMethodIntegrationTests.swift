@@ -274,21 +274,24 @@ struct PreselectedPaymentMethodIntegrationTests {
                 let storedCardPaymentMethod = try! AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
                 return StoredCardComponent(
                     storedCardPaymentMethod: storedCardPaymentMethod,
-                    context: Dummy.context(with: Amount(value: 100, currencyCode: "EUR"))
+                    context: Dummy.context(with: Amount(value: 100, currencyCode: "EUR")),
+                    theme: CheckoutTheme()
                 )
 
             case .visaWithoutAmount:
                 let storedCardPaymentMethod = try! AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
                 return StoredCardComponent(
                     storedCardPaymentMethod: storedCardPaymentMethod,
-                    context: Dummy.context(with: nil)
+                    context: Dummy.context(with: nil),
+                    theme: CheckoutTheme()
                 )
 
             case .visaWithZeroAmount:
                 let storedCardPaymentMethod = try! AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
                 return StoredCardComponent(
                     storedCardPaymentMethod: storedCardPaymentMethod,
-                    context: Dummy.context(with: Amount(value: 0, currencyCode: "EUR"))
+                    context: Dummy.context(with: Amount(value: 0, currencyCode: "EUR")),
+                    theme: CheckoutTheme()
                 )
 
             case .bcmc:
