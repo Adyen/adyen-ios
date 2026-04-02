@@ -110,7 +110,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     }
 
     internal var subtitleText: String {
-        localizedString(.preselectedPaymentMethodSubtitle, localizationParameters, component.paymentMethod.name, formattedAmount)
+        localizedString(.preselectedPaymentMethodSubtitle, localizationParameters, component.paymentMethod.name)
     }
 
     internal var submitButtonTitle: String {
