@@ -294,12 +294,7 @@ extension CurrencyDisplayInfo {
 }
 
 extension Picker {
-    @ViewBuilder
     fileprivate func navigationLinkStyle() -> some View {
-        if #available(iOS 16.0.0, *) {
-            self.pickerStyle(NavigationLinkPickerStyle())
-        } else {
-            self
-        }
+        self.pickerStyle(NavigationLinkPickerStyle())
     }
 }

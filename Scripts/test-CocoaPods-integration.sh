@@ -83,7 +83,7 @@ xcodegen generate
 
 if [ "$INCLUDE_WECHAT" == false ]
 then
-  echo "platform :ios, '15.0'
+  echo "platform :ios, '16.0'
 
   target '$PROJECT_NAME' do
     use_frameworks!
@@ -108,7 +108,7 @@ then
    end
   " >> Podfile
 else
-  echo "platform :ios, '15.0'
+  echo "platform :ios, '16.0'
 
   target '$PROJECT_NAME' do
     use_frameworks!
