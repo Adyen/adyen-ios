@@ -138,7 +138,7 @@ internal class DualBrandAccessoryView: UIView {
         
         NSLayoutConstraint.activate(
             [
-                // stackview top not connected to clip through
+                // stack view top not connected to clip through
                 stackView.leadingAnchor.constraint(
                     equalTo: leadingAnchor,
                     constant: Constants.containerPadding
