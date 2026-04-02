@@ -388,7 +388,7 @@ private extension UPIComponent {
             appsListTitleItem.isVisible = true
             collectInstructionsLabelItem.isVisible = false
             vpaInputItem.isVisible = false
-            focusVpaInput()
+            formViewController.resignFirstResponder()
         case .upiCollect, .qrCode:
             upiAppsList.forEach { $0.isHidden.wrappedValue = true }
             intentInstructionsLabelItem.isVisible = false
@@ -399,7 +399,6 @@ private extension UPIComponent {
         }
 
         hideError()
-        formViewController.resignFirstResponder()
     }
 
     func focusVpaInput() {
