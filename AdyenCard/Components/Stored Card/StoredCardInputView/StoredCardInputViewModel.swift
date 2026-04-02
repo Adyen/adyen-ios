@@ -103,22 +103,18 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         localizedString(.cardSecurityCodeTitle, localizationParameters)
     }
 
-    /// We construct something like - Enter the security code for BOLD[Visa •••• 4556] to complete the payment of BOLD[$140.98]
+    /// We construct something like - Enter the security code for BOLD[Visa •••• 4556]
     // TODO: Robert: StoredView: This & the pay button title needs to change according to the amount.
     internal var subtitleText: NSAttributedString {
         let displayInformation = storedCardPaymentMethod.displayInformation(using: localizationParameters)
         let paymentMethodTitle = storedCardPaymentMethod.name + " " + displayInformation.title
-        let localizedString = localizedString(.cardSecurityCodeDescription, localizationParameters, paymentMethodTitle, formattedAmount)
+        let localizedString = localizedString(.cardSecurityCodeDescription, localizationParameters, paymentMethodTitle)
 
         let attributed = NSMutableAttributedString(string: localizedString)
 
         let range = (localizedString as NSString).range(of: paymentMethodTitle)
         attributed.addAttribute(.font, value: theme.elements.labels.bodyEmphasized.font, range: range)
         attributed.addAttribute(.foregroundColor, value: theme.elements.labels.bodyEmphasized.color, range: range)
-
-        let amountRange = (localizedString as NSString).range(of: formattedAmount)
-        attributed.addAttribute(.font, value: theme.elements.labels.bodyEmphasized.font, range: amountRange)
-        attributed.addAttribute(.foregroundColor, value: theme.elements.labels.bodyEmphasized.color, range: amountRange)
 
         return attributed
     }
@@ -135,7 +131,11 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     }
 
     internal var submitButtonTitle: String {
-        localizedString(.submitButtonFormatted, localizationParameters, formattedAmount)
+        localizedSubmitButtonTitle(
+            with: amount,
+            style: .immediate,
+            localizationParameters
+        )
     }
 
     internal func viewDidLoad() {

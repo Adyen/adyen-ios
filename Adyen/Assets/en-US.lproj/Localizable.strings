@@ -33,7 +33,7 @@
 "adyen.card.cvcItem.invalid" = "Invalid CVC / CVV format";
 "adyen.card.cvcItem.title" = "Security code";
 "adyen.card.cvcItem.placeholder" = "123";
-"adyen.card.securityCode.description" = "Enter the security code for %@ to complete the payment of %@";
+"adyen.card.securityCode.description" = "Enter the security code for %@";
 "adyen.card.stored.title" = "Verify your card";
 "adyen.card.stored.message" = "Please enter the CVC code for %@";
 "adyen.card.stored.expires" = "Expires %@";
@@ -273,5 +273,5 @@
 "adyen.card.scanner.camera.access.denied.alert.title" = "Allow camera access";
 "adyen.card.scanner.camera.access.denied.alert.message" = "Access was previously denied. To scan cards, please grant access from Settings.";
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Open Settings";
-"adyen.preselectedPaymentMethod.subtitle" = "Use %@ to pay %@";
+"adyen.preselectedPaymentMethod.subtitle" = "Use %@";
 "adyen.preselectedPaymentMethod.otherOptions" = "Other payment options";
