@@ -27,6 +27,8 @@ public struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfig
 
     package var localizationParameters: LocalizationParameters?
 
+    package var localizationProvider: (any AnyCheckoutLocalizationProvider)?
+
     package var showStorePaymentMethodField: Bool
 
     package var showBillingAddress: Bool
