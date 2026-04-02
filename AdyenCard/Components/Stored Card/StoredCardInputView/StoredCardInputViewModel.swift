@@ -57,7 +57,6 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
 
     /// This informs the status of the payment after submitting the security code.
     internal var cardDetailsCompletionHandler: Completion<Result<CardDetails, Error>>?
-    internal var otherPaymentOptionsHandler: VoidCompletion?
     internal var closeHandler: VoidCompletion?
 
     internal init(
@@ -108,7 +107,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     internal var subtitleText: NSAttributedString {
         let displayInformation = storedCardPaymentMethod.displayInformation(using: localizationParameters)
         let paymentMethodTitle = storedCardPaymentMethod.name + " " + displayInformation.title
-        let localizedString = localizedString(.cardSecurityCodeDescription, localizationParameters, paymentMethodTitle)
+        let localizedString = localizedString(.cardSecurityCodeDescription, localizationParameters, paymentMethodTitle, formattedAmount)
 
         let attributed = NSMutableAttributedString(string: localizedString)
 
