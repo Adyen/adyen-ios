@@ -58,10 +58,6 @@ public final class UPIComponent: PaymentComponent,
         internal static let errorIcon = "error"
     }
 
-    private enum Constants {
-        static let schemeSuffix = "://"
-    }
-
     private enum Localization {
         static let localAppListTitle = "On your device"
         static let noLocalAppListTitle = "Options"
@@ -98,6 +94,8 @@ public final class UPIComponent: PaymentComponent,
     
     internal private(set) var currentSelectedItemIdentifier: String?
     
+    internal let urlSchemeChecker: URLSchemeChecking
+    
     /// Represents the selected UPI (Unified Payments Interface) flow for the payment component.
     /// Determines the specific UPI transaction process to follow.
     @AdyenObservable(.upiIntent) public private(set) var selectedUPIFlow: UPIFlowType
@@ -115,6 +113,22 @@ public final class UPIComponent: PaymentComponent,
         self.upiPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
+        self.urlSchemeChecker = DefaultURLSchemeChecker()
+        
+        selectedUPIFlow = upiAppsList.isEmpty ? .upiCollect : .upiIntent
+    }
+    
+    /// Internal initializer for testing purposes.
+    internal init(
+        paymentMethod: UPIPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init(),
+        urlSchemeChecker: URLSchemeChecking
+    ) {
+        self.upiPaymentMethod = paymentMethod
+        self.context = context
+        self.configuration = configuration
+        self.urlSchemeChecker = urlSchemeChecker
         
         selectedUPIFlow = upiAppsList.isEmpty ? .upiCollect : .upiIntent
     }
@@ -358,6 +372,27 @@ extension UPIComponent {
     }
 }
 
+// MARK: - Internal (for testing)
+
+internal extension UPIComponent {
+
+    func isAppInstalled(scheme: String) -> Bool {
+        urlSchemeChecker.canOpen(scheme: scheme)
+    }
+
+    var localUPIAppsAvailable: Bool {
+        guard let apps = upiPaymentMethod.apps, !apps.isEmpty else { return false }
+        return apps.contains { isAppInstalled(scheme: $0.appIdentifier.scheme) }
+    }
+
+    func availableUPI(apps: [UPIApp]) -> [UPIApp] {
+        let installedApps = apps.filter { isAppInstalled(scheme: $0.appIdentifier.scheme) }
+
+        // If no UPI apps are installed in the device, show all apps from the response.
+        return installedApps.isEmpty ? apps : installedApps
+    }
+}
+
 // MARK: - Private
 
 private extension UPIComponent {
@@ -443,25 +478,6 @@ private extension UPIComponent {
             )
             submit(data: PaymentComponentData(paymentMethodDetails: details, amount: payment?.amount, order: order))
         }
-    }
-
-    func isAppInstalled(scheme: String) -> Bool {
-        guard let url = URL(string: scheme + Constants.schemeSuffix) else {
-            return false
-        }
-        return UIApplication.shared.canOpenURL(url)
-    }
-
-    var localUPIAppsAvailable: Bool {
-        guard let apps = upiPaymentMethod.apps, !apps.isEmpty else { return false }
-        return apps.contains { isAppInstalled(scheme: $0.appIdentifier.scheme) }
-    }
-
-    func availableUPI(apps: [UPIApp]) -> [UPIApp] {
-        let installedApps = apps.filter { isAppInstalled(scheme: $0.appIdentifier.scheme) }
-
-        // If no UPI apps are installed in the device, show all apps from the response.
-        return installedApps.isEmpty ? apps : installedApps
     }
 }
 
