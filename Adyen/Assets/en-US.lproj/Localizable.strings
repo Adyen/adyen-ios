@@ -33,6 +33,7 @@
 "adyen.card.cvcItem.invalid" = "Invalid CVC / CVV format";
 "adyen.card.cvcItem.title" = "Security code";
 "adyen.card.cvcItem.placeholder" = "123";
+"adyen.card.securityCode.title" = "Enter security code";
 "adyen.card.securityCode.description" = "Enter the security code for %@";
 "adyen.card.stored.title" = "Verify your card";
 "adyen.card.stored.message" = "Please enter the CVC code for %@";

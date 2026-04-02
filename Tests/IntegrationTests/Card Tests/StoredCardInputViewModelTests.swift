@@ -66,19 +66,50 @@ struct StoredCardInputViewModelTests {
     // MARK: - UI Text
 
     @Test
-    func textProperties() {
+    func textUI_WhenAmountIsAvailable() {
         // Given
         let amount = Amount(value: 14098, currencyCode: "USD")
         let sut = makeSUT(name: "VISA", lastFour: "4556", amount: amount)
 
         // Then
-        #expect(!sut.titleText.isEmpty)
 
-        // subtitleText contains payment method info and formatted amount
+        #expect(sut.titleText == "Enter security code")
+        // subtitleText contains payment method info
         let subtitle = sut.subtitleText.string
-        #expect(subtitle == "Enter the security code for VISA •••• 4556 to complete the payment of $140.98")
+        #expect(subtitle == "Enter the security code for VISA •••• 4556")
         // submitButtonTitle contains formatted amount
-        #expect(sut.submitButtonTitle.contains("$140.98"))
+        #expect(sut.submitButtonTitle == "Pay $140.98")
+    }
+
+    @Test
+    func textUI_WhenAmountIsZero() {
+        // Given
+        let amount = Amount(value: 0, currencyCode: "USD")
+        let sut = makeSUT(name: "VISA", lastFour: "4556", amount: amount)
+
+        // Then
+
+        #expect(sut.titleText == "Enter security code")
+        // subtitleText contains payment method info
+        let subtitle = sut.subtitleText.string
+        #expect(subtitle == "Enter the security code for VISA •••• 4556")
+        // submitButtonTitle contains formatted amount
+        #expect(sut.submitButtonTitle == "Confirm preauthorization")
+    }
+
+    @Test
+    func textUI_WhenAmountIsNil() {
+        // Given
+        let sut = makeSUT(name: "VISA", lastFour: "4556", amount: nil)
+
+        // Then
+
+        #expect(sut.titleText == "Enter security code")
+        // subtitleText contains payment method info
+        let subtitle = sut.subtitleText.string
+        #expect(subtitle == "Enter the security code for VISA •••• 4556")
+        // submitButtonTitle contains formatted amount
+        #expect(sut.submitButtonTitle == "Pay")
     }
 
     @Test(arguments: StoredCardTestData.amounts)
@@ -274,7 +305,6 @@ enum StoredCardTestData {
 
     static let amounts: [AmountData] = [
         AmountData(amount: Amount(value: 100, currencyCode: "EUR"), expectedFormatted: "€1.00"),
-        AmountData(amount: Amount(value: 14098, currencyCode: "USD"), expectedFormatted: "$140.98"),
-        AmountData(amount: Amount(value: 0, currencyCode: "GBP"), expectedFormatted: "£0.00")
+        AmountData(amount: Amount(value: 14098, currencyCode: "USD"), expectedFormatted: "$140.98")
     ]
 }

@@ -28,8 +28,8 @@ struct PreselectedPaymentMethodIntegrationTests {
 
         // TODO: Robert: This is a strange failure, it never seems to match even if the strings are the same.
         // try #expect(preSelectedViewController.primaryTitleText == testData.expectedTitle, "Card number")
-        try #expect(preSelectedViewController.subTitleText == testData.expectedSubTitleText, "Use payment.method to pay amount")
-        try #expect(preSelectedViewController.submitButtonText == testData.submitButtonText, "Pay amount")
+        try #expect(preSelectedViewController.subTitleText == testData.expectedSubTitleText, "Use payment.method")
+        try #expect(preSelectedViewController.submitButtonText == testData.submitButtonText, "Pay button title is incorrect")
         try #expect(preSelectedViewController.showAllPaymentMethodsButtonText == testData.showAllPaymentMethodsButtonText, "Other Payment methods")
     }
     
@@ -259,6 +259,9 @@ struct PreselectedPaymentMethodIntegrationTests {
     enum PaymentComponentTestData: CaseIterable {
         // PrsentableComponent
         case visa
+        case visaWithoutAmount
+        case visaWithZeroAmount
+
         case bcmc
 
         /// PaymentInitiable
@@ -271,14 +274,30 @@ struct PreselectedPaymentMethodIntegrationTests {
                 let storedCardPaymentMethod = try! AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
                 return StoredCardComponent(
                     storedCardPaymentMethod: storedCardPaymentMethod,
-                    context: Dummy.context
+                    context: Dummy.context(with: Amount(value: 100, currencyCode: "EUR"))
                 )
+
+            case .visaWithoutAmount:
+                let storedCardPaymentMethod = try! AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
+                return StoredCardComponent(
+                    storedCardPaymentMethod: storedCardPaymentMethod,
+                    context: Dummy.context(with: nil)
+                )
+
+            case .visaWithZeroAmount:
+                let storedCardPaymentMethod = try! AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
+                return StoredCardComponent(
+                    storedCardPaymentMethod: storedCardPaymentMethod,
+                    context: Dummy.context(with: Amount(value: 0, currencyCode: "EUR"))
+                )
+
             case .bcmc:
                 let paymentMethod = try! AdyenCoder.decode(storedBcmcDictionary) as StoredBCMCPaymentMethod
                 return StoredPaymentMethodComponent(
                     paymentMethod: paymentMethod,
                     context: Dummy.context
                 )
+
             case .initiableBCMC:
                 let paymentMethod = try! AdyenCoder.decode(storedBcmcDictionary) as StoredBCMCPaymentMethod
                 // Need to create a Mock Component that implements both PaymentComponent and PaymentInitiable
@@ -289,20 +308,24 @@ struct PreselectedPaymentMethodIntegrationTests {
 
         var expectedTitle: String {
             switch self {
-            case .visa: "•••• 1111"
+            case .visa, .visaWithoutAmount, .visaWithZeroAmount: "•••• 1111"
             case .bcmc, .initiableBCMC: "•••• 4449"
             }
         }
 
         var expectedSubTitleText: String {
             switch self {
-            case .visa: "Use VISA to pay €1.00"
-            case .bcmc, .initiableBCMC: "Use Maestro to pay €1.00"
+            case .visa, .visaWithoutAmount, .visaWithZeroAmount: "Use VISA"
+            case .bcmc, .initiableBCMC: "Use Maestro"
             }
         }
 
         var submitButtonText: String {
-            "Pay €1.00"
+            switch self {
+            case .visa, .bcmc, .initiableBCMC: "Pay €1.00"
+            case .visaWithoutAmount: "Pay"
+            case .visaWithZeroAmount: "Confirm preauthorization"
+            }
         }
 
         var showAllPaymentMethodsButtonText: String {
