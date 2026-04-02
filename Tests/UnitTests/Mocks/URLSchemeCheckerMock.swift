@@ -7,6 +7,8 @@
 @_spi(AdyenInternal) @testable import Adyen
 import Foundation
 
+// MARK: - Mock
+
 class URLSchemeCheckerMock: URLSchemeChecking {
     var openableSchemes: Set<String> = []
 

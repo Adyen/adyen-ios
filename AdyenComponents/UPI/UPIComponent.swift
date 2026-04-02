@@ -12,9 +12,9 @@ public final class UPIComponent: PaymentComponent,
     PresentableComponent,
     PaymentAware,
     LoadingComponent {
-        
-    // MARK: - Constants
     
+    // MARK: - Constants
+        
     private enum ViewIdentifier {
         static let instructionsItem = "instructionsLabelItem"
         static let upiFlowSelectionItem = "upiFlowSelectionSegmentedControlItem"
@@ -311,7 +311,7 @@ public final class UPIComponent: PaymentComponent,
             formViewController.append(continueButton)
         }
         formViewController.append(FormSpacerItem(numberOfSpaces: 4))
-
+        
         return formViewController
     }()
 }
