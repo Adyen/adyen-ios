@@ -70,6 +70,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                     print("Bin lookup response \(brands)")
                 }
         }
+        .localizationProvider(DemoLocalizationProvider())
         .theme(
             AdyenTheme(
                 colors:
@@ -198,6 +199,29 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         presenter?.dismiss(completion: nil)
     }
 
+}
+
+// MARK: - DemoLocalizationProvider
+
+/// NOTE: The overrides below are wired through CheckoutConfiguration → CheckoutComponentBuilder →
+/// CardComponentConfiguration but are not yet applied to card UI strings. Phase 3 will wire the
+/// provider into the card component's string resolution. Until then, overrides have no visible effect.
+/// This code now only esures compile-time checks for the SDK access modifiers to be exposed properly.
+private struct DemoLocalizationProvider: CheckoutLocalizationProvider {
+
+    private static let overrides: [String: [CheckoutLocalizationKey: String]] = [
+        "en": [
+            .cardNumber: "Custom Card Number (EN)"
+        ],
+        "nl": [
+            .cardNumber: "Kaartnummer (Aangepast)"
+        ]
+    ]
+
+    func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String? {
+        let languageCode = locale.languageCode ?? ""
+        return Self.overrides[languageCode]?[key]
+    }
 }
 
 extension CardComponentAdvancedFlowExample: PresentationDelegate {
