@@ -79,14 +79,6 @@ extension UIColor {
             }
         }
 
-        public static var componentSegmentedBackground: UIColor {
-            if #available(iOS 13.0, *) {
-                return .tertiarySystemFill
-            } else {
-                return color(hex: 0x767680).withAlphaComponent(0.12)
-            }
-        }
-
         public static var componentLoadingMessageColor: UIColor {
             UIColor(
                 named: "awaitLoadingMessageColor",

@@ -108,8 +108,9 @@ final class DualBrandAccessoryViewTests: XCTestCase {
         ]
         sut.updateCurrentLogos(dualBrandLogos)
         
-        XCTAssertNotNil(sut.backgroundColor, "Container should have a background color")
-        XCTAssertEqual(sut.layer.cornerRadius, 8, "Container should have corner radius")
+        let backgroundView = sut.subviews.first { $0.layer.cornerRadius == 8 }
+        XCTAssertNotNil(backgroundView, "Segmented background should exist")
+        XCTAssertFalse(backgroundView?.isHidden ?? true, "Segmented background should be visible")
     }
     
     func testSingleBrand_noSegmentedPickerAppearance() throws {
@@ -118,8 +119,8 @@ final class DualBrandAccessoryViewTests: XCTestCase {
         ]
         sut.updateCurrentLogos(singleBrandLogo)
         
-        XCTAssertEqual(sut.backgroundColor, .clear, "Container should have no background for single brand")
-        XCTAssertEqual(sut.layer.cornerRadius, 0, "Container should have no corner radius for single brand")
+        let backgroundView = sut.subviews.first { $0.layer.cornerRadius == 8 }
+        XCTAssertTrue(backgroundView?.isHidden ?? true, "Segmented background should be hidden for single brand")
         XCTAssertTrue(sut.primaryLogoView.superview?.gestureRecognizers?.isEmpty ?? true, "Single brand should have no gesture recognizers")
     }
     
