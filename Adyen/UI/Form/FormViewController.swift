@@ -142,6 +142,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     public func willUpdatePreferredContentSize() { /* Empty implementation */ }
 
     public func didUpdatePreferredContentSize() {
+        formView.invalidateIntrinsicContentSize()
         let bottomInset: CGFloat = keyboardObserver.keyboardRect.height - view.safeAreaInsets.bottom
         let context = AnimationContext(
             animationKey: Animations.keyboardBottomInset,
@@ -149,6 +150,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
             options: [.beginFromCurrentState, .layoutSubviews],
             animations: { [weak self] in
                 self?.scrollView.contentInset.bottom = bottomInset
+                self?.view.layoutIfNeeded()
             }
         )
         view.adyen.animate(context: context)
