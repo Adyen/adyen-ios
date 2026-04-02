@@ -12,38 +12,9 @@ public final class UPIComponent: PaymentComponent,
     PresentableComponent,
     PaymentAware,
     LoadingComponent {
-    
-    /// The flow types for UPI component.
-    public enum UPIFlowType: Int {
-        /// Transaction handled through UPI-enabled apps.
-        @available(*, deprecated, renamed: "upiIntent", message: "Use `.upiIntent` instead.")
-        case upiApps = -1 // Old placeholder value
-
-        /// Transaction initiated by scanning a QR code.
-        @available(
-            *,
-            deprecated,
-            renamed: "upiCollect",
-            message: "The `.qrCode` is deprecated and not available any more. Use, `.upiIntent` instead."
-        )
-        case qrCode = -2 // Old placeholder value
-
-        /// Transaction handled through UPI-enabled apps.
-        case upiIntent = 0
-
-        /// Transaction initiated by a UPI ID.
-        case upiCollect = 1
-
-        internal var value: String {
-            switch self {
-            case .upiIntent, .upiApps:
-                return "upi_intent"
-            case .upiCollect, .qrCode:
-                return "upi_collect"
-            }
-        }
-    }
         
+    // MARK: - Constants
+    
     private enum ViewIdentifier {
         static let instructionsItem = "instructionsLabelItem"
         static let upiFlowSelectionItem = "upiFlowSelectionSegmentedControlItem"
@@ -62,6 +33,8 @@ public final class UPIComponent: PaymentComponent,
         static let localAppListTitle = "On your device"
         static let noLocalAppListTitle = "Options"
     }
+    
+    // MARK: - Properties
 
     /// Configuration for UPI Component.
     public typealias Configuration = BasicComponentConfiguration
@@ -99,6 +72,8 @@ public final class UPIComponent: PaymentComponent,
     /// Represents the selected UPI (Unified Payments Interface) flow for the payment component.
     /// Determines the specific UPI transaction process to follow.
     @AdyenObservable(.upiIntent) public private(set) var selectedUPIFlow: UPIFlowType
+    
+    // MARK: - Initialization
     
     /// Initializes the UPI  component.
     ///
@@ -140,7 +115,7 @@ public final class UPIComponent: PaymentComponent,
         formViewController.view.isUserInteractionEnabled = true
     }
     
-    // MARK: - Items
+    // MARK: - Form Items
     
     /// The upi based payment instructions label item.
     internal lazy var modeInstructionsLabelItem: FormLabelItem = {
@@ -372,7 +347,7 @@ extension UPIComponent {
     }
 }
 
-// MARK: - Internal (for testing)
+// MARK: - UPI App Detection
 
 internal extension UPIComponent {
 
@@ -393,7 +368,7 @@ internal extension UPIComponent {
     }
 }
 
-// MARK: - Private
+// MARK: - UI State Management
 
 private extension UPIComponent {
 
@@ -405,8 +380,10 @@ private extension UPIComponent {
     }
 
     func updateSelection() {
-        upiAppsList.forEach { $0.isSelected = false }
-        upiAppsList.forEach { $0.isSeparatorViewShown = true }
+        upiAppsList.forEach {
+            $0.isSelected = false
+            $0.isSeparatorViewShown = true
+        }
 
         if let currentSelectedItemIdentifier {
             upiAppsList.first(where: { $0.identifier == currentSelectedItemIdentifier })?.isSelected = true
