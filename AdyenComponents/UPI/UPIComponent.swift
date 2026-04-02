@@ -321,7 +321,8 @@ public final class UPIComponent: PaymentComponent,
             formViewController.append(FormSpacerItem(numberOfSpaces: 2))
             formViewController.append(continueButton)
         }
-        
+        formViewController.append(FormSpacerItem(numberOfSpaces: 4))
+
         return formViewController
     }()
 }
