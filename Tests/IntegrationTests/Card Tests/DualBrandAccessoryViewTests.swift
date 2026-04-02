@@ -65,13 +65,13 @@ final class DualBrandAccessoryViewTests: XCTestCase {
             
         XCTAssertEqual(sut.primaryLogoView.image, visaImage, "Primary logo should show visa image")
         XCTAssertEqual(sut.secondaryLogoView.image, bcmcImage, "Secondary logo should show bcmc image")
-        XCTAssertFalse(sut.secondaryLogoView.superview?.isHidden ?? true, "Secondary option should be visible")
+        XCTAssertFalse(sut.secondaryLogoView.isHidden, "Secondary option should be visible")
 
         sut.updateCurrentLogos([])
             
         XCTAssertEqual(sut.primaryLogoView.image, placeholderImage, "Primary logo should show placeholder")
         XCTAssertEqual(sut.primaryLogoView.alpha, 1.0, "Primary logo should have full opacity")
-        XCTAssertTrue(sut.secondaryLogoView.superview?.isHidden ?? true, "Secondary option should be hidden")
+        XCTAssertTrue(sut.secondaryLogoView.isHidden, "Secondary option should be hidden")
     }
 
     func testUpdateCurrentLogos_changingFromDualToSingle_resetsAndShowsSingleBrand() throws {
@@ -86,7 +86,7 @@ final class DualBrandAccessoryViewTests: XCTestCase {
         ]
         sut.updateCurrentLogos(singleBrandLogo)
         
-        XCTAssertTrue(sut.secondaryLogoView.superview?.isHidden ?? true, "Secondary option should be hidden")
+        XCTAssertTrue(sut.secondaryLogoView.isHidden, "Secondary option should be hidden")
     }
     
     // MARK: - Selection Tests

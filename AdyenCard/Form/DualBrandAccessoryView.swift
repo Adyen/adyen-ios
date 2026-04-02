@@ -75,6 +75,7 @@ internal class DualBrandAccessoryView: UIView {
     private lazy var secondaryOptionView: UIView = {
         let view = createOptionView(with: secondaryLogoView)
         view.isHidden = true
+        secondaryLogoView.isHidden = true
         return view
     }()
     
@@ -215,6 +216,7 @@ internal class DualBrandAccessoryView: UIView {
         secondaryOptionView.removeGestureRecognizer(secondaryTapGesture)
         segmentedBackground.isHidden = true
         secondaryOptionView.isHidden = true
+        secondaryLogoView.isHidden = true
         applySelectionStyle(to: primaryOptionView, selected: false)
     }
     
@@ -237,6 +239,7 @@ internal class DualBrandAccessoryView: UIView {
             segmentedBackground.backgroundColor = Constants.segmentedBackgroundColor
             segmentedBackground.isHidden = false
             secondaryOptionView.isHidden = false
+            secondaryLogoView.isHidden = false
             
             primaryOptionView.addGestureRecognizer(primaryTapGesture)
             secondaryOptionView.addGestureRecognizer(secondaryTapGesture)
