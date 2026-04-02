@@ -107,7 +107,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     internal var subtitleText: NSAttributedString {
         let displayInformation = storedCardPaymentMethod.displayInformation(using: localizationParameters)
         let paymentMethodTitle = storedCardPaymentMethod.name + " " + displayInformation.title
-        let localizedString = localizedString(.cardSecurityCodeDescription, localizationParameters, paymentMethodTitle, formattedAmount)
+        let localizedString = localizedString(.cardSecurityCodeDescription, localizationParameters, paymentMethodTitle)
 
         let attributed = NSMutableAttributedString(string: localizedString)
 
