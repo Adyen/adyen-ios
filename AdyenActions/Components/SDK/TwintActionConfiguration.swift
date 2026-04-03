@@ -21,7 +21,7 @@ public struct TwintActionConfiguration: CheckoutComponentConfiguration {
     
     package var localizationParameters: LocalizationParameters?
 
-    package var localizationProvider: (any AnyCheckoutLocalizationProvider)?
+    package var localizationProvider: (any CheckoutLocalizationProvider)?
     
     package var callbackAppScheme: String
     

@@ -24,7 +24,7 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
 
     package var localizationParameters: LocalizationParameters?
 
-    package var localizationProvider: (any AnyCheckoutLocalizationProvider)?
+    package var localizationProvider: (any CheckoutLocalizationProvider)?
     
     public init(style: FormComponentStyle) {
         self.init(style: style, localizationParameters: nil)

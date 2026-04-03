@@ -24,7 +24,7 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     var localizationParameters: LocalizationParameters? { get }
 
     // TODO: Consider non-optional with a no-op default once Phase 3 call sites are written.
-    var localizationProvider: (any AnyCheckoutLocalizationProvider)? { get set }
+    var localizationProvider: (any CheckoutLocalizationProvider)? { get set }
 
     //  var style: FormComponentStyle { get }
 

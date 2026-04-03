@@ -125,7 +125,7 @@ final class CheckoutConfigurationTests: XCTestCase {
 
         XCTAssertTrue(storedProvider === provider)
     }
-    
+
     // MARK: - Legacy componentConfiguration Tests
     
     func testComponentConfiguration_WithExistingConfiguration_ReturnsConfiguration() throws {

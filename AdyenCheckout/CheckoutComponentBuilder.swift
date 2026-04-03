@@ -120,7 +120,7 @@ internal enum CheckoutComponentBuilder {
         
         componentConfiguration.showsSubmitButton = configuration.showsSubmitButton
         componentConfiguration.theme = configuration.theme
-        componentConfiguration.localizationProvider = configuration.localizationProvider.map(CheckoutLocalizationProviderAdapter.init)
+        componentConfiguration.localizationProvider = configuration.localizationProvider
         
         return factory.create(
             with: paymentMethod,

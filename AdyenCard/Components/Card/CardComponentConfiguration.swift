@@ -28,7 +28,7 @@ public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPer
     package var localizationParameters: LocalizationParameters?
 
     // TODO: Phase 3 - wire this into CardComponent's string resolution to replace LocalizationParameters lookups.
-    package var localizationProvider: (any AnyCheckoutLocalizationProvider)?
+    package var localizationProvider: (any CheckoutLocalizationProvider)?
 
     /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
     internal var showsHolderNameField: Bool

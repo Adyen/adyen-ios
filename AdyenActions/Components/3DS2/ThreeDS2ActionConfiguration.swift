@@ -21,7 +21,7 @@ public struct ThreeDS2ActionConfiguration: CheckoutComponentConfiguration {
     
     package var localizationParameters: LocalizationParameters?
     
-    package var localizationProvider: (any AnyCheckoutLocalizationProvider)?
+    package var localizationProvider: (any CheckoutLocalizationProvider)?
 
     package var redirectComponentStyle: RedirectComponentStyle?
     
