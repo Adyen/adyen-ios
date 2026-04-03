@@ -213,7 +213,7 @@ public final class UPIComponent: PaymentComponent,
     /// The UPI apps list title item.
     internal lazy var appsListTitleItem: FormContainerItem<FormLabelItem> = {
         // TODO: - Replace with localization keys
-        let title = localUPIAppsAvailable ? Localization.localAppListTitle : Localization.noLocalAppListTitle
+        let title = installedUPIApps.isEmpty ? Localization.noLocalAppListTitle : Localization.localAppListTitle
         let item = FormLabelItem(
             text: title,
             style: configuration.style.sectionHeader
@@ -227,10 +227,7 @@ public final class UPIComponent: PaymentComponent,
 
     /// The UPI apps list item.
     internal lazy var upiAppsList: [SelectableFormItem] = {
-        guard let apps = upiPaymentMethod.apps, !apps.isEmpty else { return [] }
-        let availableUPIApps = availableUPI(apps: apps)
-
-        return availableUPIApps.map { selectableFormItem(from: $0) }
+        availableUPIApps.map { selectableFormItem(from: $0) }
     }()
     
     /// The continue button item.
@@ -355,16 +352,16 @@ internal extension UPIComponent {
         urlSchemeChecker.canOpen(scheme: scheme)
     }
 
-    var localUPIAppsAvailable: Bool {
-        guard let apps = upiPaymentMethod.apps, !apps.isEmpty else { return false }
-        return apps.contains { isAppInstalled(scheme: $0.appIdentifier.scheme) }
+    var installedUPIApps: [UPIApp] {
+        guard let apps = upiPaymentMethod.apps else { return [] }
+        return apps.filter { isAppInstalled(scheme: $0.appIdentifier.scheme) }
     }
 
-    func availableUPI(apps: [UPIApp]) -> [UPIApp] {
-        let installedApps = apps.filter { isAppInstalled(scheme: $0.appIdentifier.scheme) }
+    var availableUPIApps: [UPIApp] {
+        guard let apps = upiPaymentMethod.apps else { return [] }
 
         // If no UPI apps are installed in the device, show all apps from the response.
-        return installedApps.isEmpty ? apps : installedApps
+        return installedUPIApps.isEmpty ? apps : installedUPIApps
     }
 }
 
