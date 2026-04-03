@@ -8,6 +8,7 @@
 import Foundation
 
 class CardScannerPresentingMock: CardScannerPresenting {
+
     // MARK: - dismiss
 
     var dismissCallsCount = 0

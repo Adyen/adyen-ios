@@ -7,141 +7,359 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-extension FormCardNumberItemView {
+/// A segmented picker view housing up to 2 brand logos with selection support for dual-branded cards.
+internal class DualBrandAccessoryView: UIView {
     
-    /// Custom view housing up to 2 sub views for brand logos.
-    internal class DualBrandAccessoryView: UIView {
+    internal enum BrandSelection {
+        case primary
+        case secondary
+    }
+    
+    private enum Constants {
+        static let iconSize = CGSize(width: 27, height: 18)
+        static let placeholderImage = UIImage(named: "ic_card_front", in: .cardInternalResources, compatibleWith: nil)
+        static let containerCornerRadius: CGFloat = 8
+        static let optionCornerRadius: CGFloat = 7
+        static let optionPadding: CGFloat = 5
+        static let containerPadding: CGFloat = 2
+        static let stackSpacing: CGFloat = 2
+        static let selectedBorderWidth: CGFloat = 1
+        static let selectedBorderColor = UIColor.Adyen.componentTertiaryLabel.withAlphaComponent(0.2)
+        static let selectedShadowRadius: CGFloat = 8
+        static let selectedShadowOffset = CGSize(width: 0, height: 3)
+        static let selectedShadowOpacity: Float = 0.12
+        static let segmentedBackgroundColor = UIColor.Adyen.secondaryComponentBackground
+        static let animationDuration: TimeInterval = 0.2
+    }
+    
+    private let style: ImageStyle
+    private var primaryLogoUrl: URL?
+    private var secondaryLogoUrl: URL?
+    private let imageLoader: ImageLoading
+    private var imageLoadingTasks = [AdyenCancellable]()
+    
+    internal let childItemViews: [any AnyFormItemView] = []
+    
+    internal private(set) var selectedBrand: BrandSelection = .primary
+    
+    internal var onBrandSelection: ((BrandSelection) -> Void)?
+    
+    private var isSegmentedPickerActive: Bool {
+        !secondaryOptionView.isHidden
+    }
+    
+    // MARK: - Subviews
+    
+    private lazy var segmentedBackground: UIView = {
+        let view = UIView()
+        view.layer.cornerRadius = Constants.containerCornerRadius
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [primaryOptionView, secondaryOptionView])
+        stackView.axis = .horizontal
+        stackView.spacing = Constants.stackSpacing
+        stackView.distribution = .fillEqually
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    internal private(set) lazy var primaryLogoView: UIImageView = createEmptyImageView()
+    
+    internal private(set) lazy var secondaryLogoView: UIImageView = createEmptyImageView()
+    
+    private lazy var primaryOptionView: UIView = createOptionView(with: primaryLogoView)
+    
+    private lazy var secondaryOptionView: UIView = {
+        let view = createOptionView(with: secondaryLogoView)
+        view.isHidden = true
+        secondaryLogoView.isHidden = true
+        return view
+    }()
+    
+    private lazy var primaryTapGesture = UITapGestureRecognizer(target: self, action: #selector(primaryOptionTapped))
+    private lazy var secondaryTapGesture = UITapGestureRecognizer(target: self, action: #selector(secondaryOptionTapped))
+    
+    private var singleBrandConstraints: [NSLayoutConstraint] = []
+    private var dualBrandConstraints: [NSLayoutConstraint] = []
+    private var optionPaddingConstraints: [NSLayoutConstraint] = []
+    
+    // MARK: - Init
+    
+    internal init(
+        style: ImageStyle,
+        imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
+    ) {
+        self.style = style
+        self.imageLoader = imageLoader
         
-        private enum Constant {
-            static let iconSize = CGSize(width: 24, height: 16)
-            static let placeholderImage = UIImage(named: "ic_card_front", in: .cardInternalResources, compatibleWith: nil)
-        }
+        super.init(frame: .zero)
+        clipsToBounds = false
+        setupViews()
+        setupConstraints()
+    }
+    
+    @available(*, unavailable)
+    internal required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Public API
+    
+    internal func updateCurrentLogos(_ logos: [FormCardLogosItem.CardTypeLogo]) {
+        resetState()
+        guard !logos.isEmpty else { return }
+        setupLogoViews(from: logos)
+    }
+    
+    internal func overflowHitTest(point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard isSegmentedPickerActive else { return nil }
         
-        private let style: ImageStyle
-        private var primaryLogoUrl: URL?
-        private var secondaryLogoUrl: URL?
-        private let imageLoader: ImageLoading
-        private var imageLoadingTasks = [AdyenCancellable]()
-
-        internal let childItemViews: [any AnyFormItemView] = []
-
-        private lazy var stackView: UIStackView = {
-            let stackView = UIStackView(arrangedSubviews: [primaryLogoView, secondaryLogoView])
-            stackView.axis = .horizontal
-            stackView.spacing = 4
-            return stackView
-        }()
+        let visualBounds = segmentedBackground.frame
+        guard visualBounds.contains(point) else { return nil }
         
-        /// First view to display the current brand or the placeholder image.
-        internal private(set) lazy var primaryLogoView: UIImageView = createEmptyImageView()
-        
-        /// View to display the second brand for dual-branded cards. Hidden otherwise.
-        internal private(set) lazy var secondaryLogoView: UIImageView = {
-            let imageView = createEmptyImageView()
-            imageView.isHidden = true
-            return imageView
-        }()
-
-        internal init(
-            style: ImageStyle,
-            imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
-        ) {
-            self.style = style
-            self.imageLoader = imageLoader
-            
-            super.init(frame: .zero)
-            addSubview(stackView)
-            stackView.adyen.anchor(inside: self)
-            setPlaceholderView()
-        }
-        
-        @available(*, unavailable)
-        internal required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-        
-        private func setPlaceholderView() {
-            primaryLogoView.image = Constant.placeholderImage
-        }
-        
-        internal func updateCurrentLogos(_ logos: [FormCardLogosItem.CardTypeLogo]) {
-            resetLogos()
-            guard !logos.isEmpty else {
-                setPlaceholderView()
-                return
+        for subview in subviews.reversed() {
+            let subviewPoint = subview.convert(point, from: self)
+            if let hitView = subview.hitTest(subviewPoint, with: event) {
+                return hitView
             }
-            setupLogoViews(from: logos)
         }
         
-        private func setupLogoViews(from logos: [FormCardLogosItem.CardTypeLogo]) {
-            guard let firstLogo = logos.first else { return }
-            let secondLogo = logos.adyen[safeIndex: 1]
-            
-            primaryLogoUrl = firstLogo.url
-            secondaryLogoUrl = secondLogo?.url
-
-            primaryLogoView.accessibilityValue = firstLogo.type.name
-            primaryLogoView.isAccessibilityElement = true
-
-            if let secondLogo {
-                secondaryLogoView.accessibilityValue = secondLogo.type.name
-                secondaryLogoView.isHidden = false
-            }
-            
-            secondaryLogoView.isAccessibilityElement = !secondaryLogoView.isHidden
-            
-            updateLogos()
+        return self
+    }
+    
+    // MARK: - Layout
+    
+    override public var intrinsicContentSize: CGSize {
+        if isSegmentedPickerActive {
+            return CGSize(width: UIView.noIntrinsicMetric, height: Constants.iconSize.height)
+        }
+        return super.intrinsicContentSize
+    }
+    
+    // MARK: - Appearance
+    
+    override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        guard isSegmentedPickerActive else { return }
+        updateSelectionAppearance()
+    }
+    
+    // MARK: - Mode Switching
+    
+    private func activateDualBrandMode() {
+        NSLayoutConstraint.deactivate(singleBrandConstraints)
+        NSLayoutConstraint.activate(dualBrandConstraints)
+        setOptionPadding(Constants.optionPadding)
+        
+        segmentedBackground.backgroundColor = Constants.segmentedBackgroundColor
+        segmentedBackground.isHidden = false
+        setSecondaryVisible(true)
+        
+        primaryOptionView.addGestureRecognizer(primaryTapGesture)
+        secondaryOptionView.addGestureRecognizer(secondaryTapGesture)
+        
+        selectedBrand = .primary
+        updateSelectionAppearance()
+        invalidateIntrinsicContentSize()
+    }
+    
+    private func deactivateDualBrandMode() {
+        NSLayoutConstraint.deactivate(dualBrandConstraints)
+        NSLayoutConstraint.activate(singleBrandConstraints)
+        setOptionPadding(0)
+        
+        primaryOptionView.removeGestureRecognizer(primaryTapGesture)
+        secondaryOptionView.removeGestureRecognizer(secondaryTapGesture)
+        
+        segmentedBackground.isHidden = true
+        setSecondaryVisible(false)
+        applySelectionStyle(to: primaryOptionView, selected: false)
+        invalidateIntrinsicContentSize()
+    }
+    
+    private func setSecondaryVisible(_ visible: Bool) {
+        secondaryOptionView.isHidden = !visible
+        secondaryLogoView.isHidden = !visible
+    }
+    
+    private func setOptionPadding(_ padding: CGFloat) {
+        optionPaddingConstraints.forEach { $0.constant = padding }
+    }
+    
+    // MARK: - Selection
+    
+    @objc private func primaryOptionTapped() {
+        select(.primary)
+    }
+    
+    @objc private func secondaryOptionTapped() {
+        select(.secondary)
+    }
+    
+    private func select(_ brand: BrandSelection) {
+        guard selectedBrand != brand else { return }
+        selectedBrand = brand
+        UIView.animate(withDuration: Constants.animationDuration) { self.updateSelectionAppearance() }
+        onBrandSelection?(brand)
+    }
+    
+    private func updateSelectionAppearance() {
+        applySelectionStyle(to: primaryOptionView, selected: selectedBrand == .primary)
+        applySelectionStyle(to: secondaryOptionView, selected: selectedBrand == .secondary)
+    }
+    
+    private func applySelectionStyle(to view: UIView, selected: Bool) {
+        if selected {
+            view.backgroundColor = UIColor.Adyen.componentBackground
+            view.layer.shadowColor = UIColor.black.cgColor
+            view.layer.shadowOffset = Constants.selectedShadowOffset
+            view.layer.shadowRadius = Constants.selectedShadowRadius
+            view.layer.shadowOpacity = Constants.selectedShadowOpacity
+            view.layer.borderWidth = Constants.selectedBorderWidth
+            view.layer.borderColor = Constants.selectedBorderColor.cgColor
+        } else {
+            view.backgroundColor = .clear
+            view.layer.shadowOpacity = 0
+            view.layer.borderWidth = 0
+        }
+    }
+    
+    // MARK: - State Management
+    
+    private func resetState() {
+        primaryLogoUrl = nil
+        secondaryLogoUrl = nil
+        selectedBrand = .primary
+        
+        primaryLogoView.image = Constants.placeholderImage
+        secondaryLogoView.image = Constants.placeholderImage
+        
+        deactivateDualBrandMode()
+    }
+    
+    // MARK: - Logo Setup
+    
+    private func setupLogoViews(from logos: [FormCardLogosItem.CardTypeLogo]) {
+        guard let firstLogo = logos.first else { return }
+        let secondLogo = logos.adyen[safeIndex: 1]
+        
+        primaryLogoUrl = firstLogo.url
+        secondaryLogoUrl = secondLogo?.url
+        
+        primaryLogoView.accessibilityValue = firstLogo.type.name
+        primaryLogoView.isAccessibilityElement = true
+        
+        if let secondLogo {
+            secondaryLogoView.accessibilityValue = secondLogo.type.name
+            activateDualBrandMode()
         }
         
-        private func resetLogos() {
-            primaryLogoUrl = nil
-            secondaryLogoUrl = nil
-
-            primaryLogoView.image = Constant.placeholderImage
-            secondaryLogoView.image = Constant.placeholderImage
-            secondaryLogoView.isHidden = true
-        }
+        secondaryLogoView.isAccessibilityElement = secondLogo != nil
         
-        private func createEmptyImageView() -> UIImageView {
-            let imageView = UIImageView()
-            imageView.image = Constant.placeholderImage
-            imageView.adyen.round(using: style.cornerRounding)
-            imageView.layer.masksToBounds = style.clipsToBounds
-            imageView.layer.borderWidth = style.borderWidth
-            imageView.layer.borderColor = style.borderColor?.cgColor
-            imageView.backgroundColor = style.backgroundColor
-            imageView.widthAnchor.constraint(equalToConstant: Constant.iconSize.width).isActive = true
-            imageView.heightAnchor.constraint(equalToConstant: Constant.iconSize.height).isActive = true
-            return imageView
-        }
+        updateLogos()
+    }
+    
+    // MARK: - View Creation
+    
+    private func setupViews() {
+        addSubview(segmentedBackground)
+        addSubview(stackView)
+    }
+    
+    private func setupConstraints() {
+        singleBrandConstraints = [
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ]
         
-        override public func didMoveToWindow() {
-            super.didMoveToWindow()
-            updateLogos()
-        }
+        dualBrandConstraints = [
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.containerPadding),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.containerPadding),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.containerPadding),
+            
+            segmentedBackground.topAnchor.constraint(equalTo: stackView.topAnchor, constant: -Constants.containerPadding),
+            segmentedBackground.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: -Constants.containerPadding),
+            segmentedBackground.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: Constants.containerPadding),
+            segmentedBackground.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: Constants.containerPadding)
+        ]
         
-        private func updateLogos() {
-            imageLoadingTasks.forEach { $0.cancel() }
-            
-            guard let primaryLogoUrl else { return }
-            
-            var imageLoadingTasks = [primaryLogoView.load(
-                url: primaryLogoUrl,
-                using: imageLoader,
-                placeholder: Constant.placeholderImage
-            )]
-            
-            if let secondaryLogoUrl {
-                imageLoadingTasks.append(
-                    secondaryLogoView.load(
-                        url: secondaryLogoUrl,
-                        using: imageLoader,
-                        placeholder: Constant.placeholderImage
-                    )
+        optionPaddingConstraints = [
+            primaryLogoView.topAnchor.constraint(equalTo: primaryOptionView.topAnchor),
+            primaryLogoView.leadingAnchor.constraint(equalTo: primaryOptionView.leadingAnchor),
+            primaryOptionView.trailingAnchor.constraint(equalTo: primaryLogoView.trailingAnchor),
+            primaryOptionView.bottomAnchor.constraint(equalTo: primaryLogoView.bottomAnchor),
+            secondaryLogoView.topAnchor.constraint(equalTo: secondaryOptionView.topAnchor),
+            secondaryLogoView.leadingAnchor.constraint(equalTo: secondaryOptionView.leadingAnchor),
+            secondaryOptionView.trailingAnchor.constraint(equalTo: secondaryLogoView.trailingAnchor),
+            secondaryOptionView.bottomAnchor.constraint(equalTo: secondaryLogoView.bottomAnchor)
+        ]
+        
+        NSLayoutConstraint.activate(optionPaddingConstraints)
+        NSLayoutConstraint.activate(singleBrandConstraints)
+    }
+    
+    // MARK: - Image Loading
+    
+    override public func didMoveToWindow() {
+        super.didMoveToWindow()
+        updateLogos()
+    }
+    
+    private func updateLogos() {
+        imageLoadingTasks.forEach { $0.cancel() }
+        
+        guard let primaryLogoUrl else { return }
+        
+        var imageLoadingTasks = [primaryLogoView.load(
+            url: primaryLogoUrl,
+            using: imageLoader,
+            placeholder: Constants.placeholderImage
+        )]
+        
+        if let secondaryLogoUrl {
+            imageLoadingTasks.append(
+                secondaryLogoView.load(
+                    url: secondaryLogoUrl,
+                    using: imageLoader,
+                    placeholder: Constants.placeholderImage
                 )
-            }
-            
-            self.imageLoadingTasks = imageLoadingTasks
+            )
         }
+        
+        self.imageLoadingTasks = imageLoadingTasks
+    }
+}
+
+extension DualBrandAccessoryView {
+    
+    private func createOptionView(with imageView: UIImageView) -> UIView {
+        let wrapper = UIView()
+        wrapper.layer.cornerRadius = Constants.optionCornerRadius
+        wrapper.clipsToBounds = false
+        wrapper.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        wrapper.addSubview(imageView)
+        
+        return wrapper
+    }
+    
+    private func createEmptyImageView() -> UIImageView {
+        let imageView = UIImageView()
+        imageView.image = Constants.placeholderImage
+        imageView.adyen.round(using: style.cornerRounding)
+        imageView.layer.masksToBounds = style.clipsToBounds
+        imageView.layer.borderWidth = style.borderWidth
+        imageView.layer.borderColor = style.borderColor?.cgColor
+        imageView.backgroundColor = style.backgroundColor
+        imageView.widthAnchor.constraint(equalToConstant: Constants.iconSize.width).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: Constants.iconSize.height).isActive = true
+        return imageView
     }
 }

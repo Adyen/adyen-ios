@@ -91,6 +91,15 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         item.isActive = false
     }
     
+    // overridden to detect the touches on the clipped part of the dual brand view 
+    override internal func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let convertedPoint = convert(point, to: detectedBrandsView)
+        if let hitView = detectedBrandsView.overflowHitTest(point: convertedPoint, with: event) {
+            return hitView
+        }
+        return super.hitTest(point, with: event)
+    }
+    
     // MARK: - Card Type Logos View
     
     /// Logo view for the brand(s) icons and selection for dual-branded cards.
