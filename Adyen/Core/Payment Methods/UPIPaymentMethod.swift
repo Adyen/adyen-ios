@@ -221,7 +221,7 @@ public struct UPIPaymentMethod: PaymentMethod {
     private enum CodingKeys: String, CodingKey {
         case type
         case name
-//        case apps
+        case apps
     }
 }
 
