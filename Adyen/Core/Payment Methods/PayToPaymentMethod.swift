@@ -71,5 +71,3 @@ public struct StoredPayToPaymentMethod: StoredPaymentMethod {
         case supportedShopperInteractions
     }
 }
-
-extension StoredPayToPaymentMethod: LocalizedPaymentMethod {}

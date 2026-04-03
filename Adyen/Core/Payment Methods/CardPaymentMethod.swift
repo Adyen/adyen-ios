@@ -129,7 +129,3 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
     }
     
 }
-
-extension CardPaymentMethod: LocalizedPaymentMethod {}
-
-extension StoredCardPaymentMethod: LocalizedPaymentMethod {}

@@ -48,5 +48,3 @@ public struct StoredCashAppPayPaymentMethod: StoredPaymentMethod {
 
     }
 }
-
-extension StoredCashAppPayPaymentMethod: LocalizedPaymentMethod {}

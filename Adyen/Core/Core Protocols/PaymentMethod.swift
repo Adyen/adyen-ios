@@ -41,20 +41,10 @@ public extension PaymentMethod {
 /// A protocol to define any partial payment method such as gift cards, `MealVoucher` etc.
 public protocol PartialPaymentMethod: PaymentMethod {}
 
-package protocol LocalizedPaymentMethod: PaymentMethod {
-    func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation
-}
-
 package extension PaymentMethod {
     
     func displayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        let defaultDisplayInformation: DisplayInformation
-        if let localizedPaymentMethod = self as? any LocalizedPaymentMethod {
-            defaultDisplayInformation = localizedPaymentMethod.defaultDisplayInformation(using: parameters)
-        } else {
-            defaultDisplayInformation = DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
-        }
-
+        let defaultDisplayInformation = defaultDisplayInformation(using: parameters)
         if let merchantProvidedDisplayInformation {
             let subtitle = merchantProvidedDisplayInformation.subtitle ?? defaultDisplayInformation.subtitle
             return DisplayInformation(
@@ -67,6 +57,47 @@ package extension PaymentMethod {
         }
         return defaultDisplayInformation
     }
+
+    // swiftlint:disable:next cyclomatic_complexity
+    func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        switch self {
+        case let cardPaymentMethod as CardPaymentMethod:
+            return cardPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let storedCardPaymentMethod as StoredCardPaymentMethod:
+            return storedCardPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let storedBCMCPaymentMethod as StoredBCMCPaymentMethod:
+            return storedBCMCPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let storedPayPalPaymentMethod as StoredPayPalPaymentMethod:
+            return storedPayPalPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let achDirectDebitPaymentMethod as ACHDirectDebitPaymentMethod:
+            return achDirectDebitPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let storedACHDirectDebitPaymentMethod as StoredACHDirectDebitPaymentMethod:
+            return storedACHDirectDebitPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let storedTwintPaymentMethod as StoredTwintPaymentMethod:
+            return storedTwintPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let blikPaymentMethod as BLIKPaymentMethod:
+            return blikPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let storedBLIKPaymentMethod as StoredBLIKPaymentMethod:
+            return storedBLIKPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let storedCashAppPayPaymentMethod as StoredCashAppPayPaymentMethod:
+            return storedCashAppPayPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let mealVoucherPaymentMethod as MealVoucherPaymentMethod:
+            return mealVoucherPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let payByBankUSPaymentMethod as PayByBankUSPaymentMethod:
+            return payByBankUSPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let storedPayByBankUSPaymentMethod as StoredPayByBankUSPaymentMethod:
+            return storedPayByBankUSPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let giftCardPaymentMethod as GiftCardPaymentMethod:
+            return giftCardPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let storedPayToPaymentMethod as StoredPayToPaymentMethod:
+            return storedPayToPaymentMethod.defaultDisplayInformation(using: parameters)
+        case let orderPaymentMethod as OrderPaymentMethod:
+            return orderPaymentMethod.defaultDisplayInformation(using: parameters)
+        default:
+            return DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
+        }
+    }
+    
 }
 
 /// A payment method that has been stored for later use.

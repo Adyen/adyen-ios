@@ -34,6 +34,5 @@ public struct GiftCardPaymentMethod: PartialPaymentMethod {
         case name
         case brand
     }
-}
 
-extension GiftCardPaymentMethod: LocalizedPaymentMethod {}
+}

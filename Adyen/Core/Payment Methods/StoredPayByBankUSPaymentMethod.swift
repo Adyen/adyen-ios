@@ -50,6 +50,5 @@ public struct StoredPayByBankUSPaymentMethod: StoredPaymentMethod {
         case identifier = "id"
         case supportedShopperInteractions
     }
-}
 
-extension StoredPayByBankUSPaymentMethod: LocalizedPaymentMethod {}
+}
