@@ -23,8 +23,8 @@ internal class DualBrandAccessoryView: UIView {
         static let optionPadding: CGFloat = 5
         static let containerPadding: CGFloat = 2
         static let stackSpacing: CGFloat = 2
-        static let selectedBorderWidth: CGFloat = 0.5
-        static let selectedBorderColor = UIColor.black.withAlphaComponent(0.04)
+        static let selectedBorderWidth: CGFloat = 1
+        static let selectedBorderColor = UIColor.Adyen.componentTertiaryLabel.withAlphaComponent(0.2)
         static let selectedShadowRadius: CGFloat = 8
         static let selectedShadowOffset = CGSize(width: 0, height: 3)
         static let selectedShadowOpacity: Float = 0.12
@@ -109,6 +109,25 @@ internal class DualBrandAccessoryView: UIView {
         setupLogoViews(from: logos)
     }
     
+    /// To notify the parent view if a touch was made on a clipped part in dual brand selection
+    internal func overflowHitTest(point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard isSegmentedPickerActive else { return nil }
+        
+        // The visual bounds = segmentedBackground frame (matches the full rendered area)
+        let visualBounds = segmentedBackground.frame
+        guard visualBounds.contains(point) else { return nil }
+        
+        // Forward to subviews (stack → option wrappers → gesture recognizers)
+        for subview in subviews.reversed() {
+            let subviewPoint = subview.convert(point, from: self)
+            if let hitView = subview.hitTest(subviewPoint, with: event) {
+                return hitView
+            }
+        }
+        
+        return self
+    }
+    
     // MARK: - Layout
     
     override public var intrinsicContentSize: CGSize {
@@ -139,7 +158,7 @@ internal class DualBrandAccessoryView: UIView {
         
         NSLayoutConstraint.activate(
             [
-                // stack view top not connected to clip through
+                // stack view top not connected so it clips through
                 stackView.leadingAnchor.constraint(
                     equalTo: leadingAnchor,
                     constant: Constants.containerPadding
