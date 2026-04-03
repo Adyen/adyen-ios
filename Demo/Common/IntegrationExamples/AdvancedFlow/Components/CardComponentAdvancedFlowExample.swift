@@ -219,7 +219,7 @@ private struct DemoLocalizationProvider: CheckoutLocalizationProvider {
     ]
 
     func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String? {
-        let languageCode = locale.languageCode ?? ""
+        guard let languageCode = locale.languageCode else { return nil }
         return Self.overrides[languageCode]?[key]
     }
 }

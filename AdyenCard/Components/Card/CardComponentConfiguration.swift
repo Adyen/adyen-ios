@@ -205,6 +205,9 @@ extension CardComponentConfiguration {
     }
     
     // TODO: find out if this field is needed. doesn't seem used
+//    /// Sets the requirement policy for billing address.
+//    /// - Parameter policy: The requirement policy (required, optional, or optional for specific card types).
+//    /// - Returns: A modified copy of the configuration.
 //    public func billingAddressRequirementPolicy(_ policy: BillingAddressConfiguration.RequirementPolicy) -> Self {
 //        var copy = self
 //        copy.billingAddress.requirementPolicy = policy
