@@ -29,7 +29,7 @@ internal class DualBrandAccessoryView: UIView {
         static let selectedShadowOffset = CGSize(width: 0, height: 3)
         static let selectedShadowOpacity: Float = 0.12
         static let segmentedBackgroundColor = UIColor.Adyen.secondaryComponentBackground
-        static let animationDuration: CGFloat = 0.2
+        static let animationDuration: TimeInterval = 0.2
     }
     
     private let style: ImageStyle
@@ -63,6 +63,7 @@ internal class DualBrandAccessoryView: UIView {
         stackView.axis = .horizontal
         stackView.spacing = Constants.stackSpacing
         stackView.distribution = .fillEqually
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
     
@@ -82,6 +83,10 @@ internal class DualBrandAccessoryView: UIView {
     private lazy var primaryTapGesture = UITapGestureRecognizer(target: self, action: #selector(primaryOptionTapped))
     private lazy var secondaryTapGesture = UITapGestureRecognizer(target: self, action: #selector(secondaryOptionTapped))
     
+    private var singleBrandConstraints: [NSLayoutConstraint] = []
+    private var dualBrandConstraints: [NSLayoutConstraint] = []
+    private var optionPaddingConstraints: [NSLayoutConstraint] = []
+    
     // MARK: - Init
     
     internal init(
@@ -94,6 +99,7 @@ internal class DualBrandAccessoryView: UIView {
         super.init(frame: .zero)
         clipsToBounds = false
         setupViews()
+        setupConstraints()
     }
     
     @available(*, unavailable)
@@ -109,15 +115,12 @@ internal class DualBrandAccessoryView: UIView {
         setupLogoViews(from: logos)
     }
     
-    /// To notify the parent view if a touch was made on a clipped part in dual brand selection
     internal func overflowHitTest(point: CGPoint, with event: UIEvent?) -> UIView? {
         guard isSegmentedPickerActive else { return nil }
         
-        // The visual bounds = segmentedBackground frame (matches the full rendered area)
         let visualBounds = segmentedBackground.frame
         guard visualBounds.contains(point) else { return nil }
         
-        // Forward to subviews (stack → option wrappers → gesture recognizers)
         for subview in subviews.reversed() {
             let subviewPoint = subview.convert(point, from: self)
             if let hitView = subview.hitTest(subviewPoint, with: event) {
@@ -131,14 +134,60 @@ internal class DualBrandAccessoryView: UIView {
     // MARK: - Layout
     
     override public var intrinsicContentSize: CGSize {
-        // needed to return a calculated size since the stack view top is not constrained
-        CGSize(width: UIView.noIntrinsicMetric, height: Constants.iconSize.height)
+        if isSegmentedPickerActive {
+            return CGSize(width: UIView.noIntrinsicMetric, height: Constants.iconSize.height)
+        }
+        return super.intrinsicContentSize
     }
+    
+    // MARK: - Appearance
     
     override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         guard isSegmentedPickerActive else { return }
         updateSelectionAppearance()
+    }
+    
+    // MARK: - Mode Switching
+    
+    private func activateDualBrandMode() {
+        NSLayoutConstraint.deactivate(singleBrandConstraints)
+        NSLayoutConstraint.activate(dualBrandConstraints)
+        setOptionPadding(Constants.optionPadding)
+        
+        segmentedBackground.backgroundColor = Constants.segmentedBackgroundColor
+        segmentedBackground.isHidden = false
+        setSecondaryVisible(true)
+        
+        primaryOptionView.addGestureRecognizer(primaryTapGesture)
+        secondaryOptionView.addGestureRecognizer(secondaryTapGesture)
+        
+        selectedBrand = .primary
+        updateSelectionAppearance()
+        invalidateIntrinsicContentSize()
+    }
+    
+    private func deactivateDualBrandMode() {
+        NSLayoutConstraint.deactivate(dualBrandConstraints)
+        NSLayoutConstraint.activate(singleBrandConstraints)
+        setOptionPadding(0)
+        
+        primaryOptionView.removeGestureRecognizer(primaryTapGesture)
+        secondaryOptionView.removeGestureRecognizer(secondaryTapGesture)
+        
+        segmentedBackground.isHidden = true
+        setSecondaryVisible(false)
+        applySelectionStyle(to: primaryOptionView, selected: false)
+        invalidateIntrinsicContentSize()
+    }
+    
+    private func setSecondaryVisible(_ visible: Bool) {
+        secondaryOptionView.isHidden = !visible
+        secondaryLogoView.isHidden = !visible
+    }
+    
+    private func setOptionPadding(_ padding: CGFloat) {
+        optionPaddingConstraints.forEach { $0.constant = padding }
     }
     
     // MARK: - Selection
@@ -149,48 +198,6 @@ internal class DualBrandAccessoryView: UIView {
     
     @objc private func secondaryOptionTapped() {
         select(.secondary)
-    }
-    
-    private func setupViews() {
-        addSubview(segmentedBackground)
-        addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate(
-            [
-                // stack view top not connected so it clips through
-                stackView.leadingAnchor.constraint(
-                    equalTo: leadingAnchor,
-                    constant: Constants.containerPadding
-                ),
-                stackView.trailingAnchor.constraint(
-                    equalTo: trailingAnchor,
-                    constant: -Constants.containerPadding
-                ),
-                stackView.bottomAnchor.constraint(
-                    equalTo: bottomAnchor,
-                    constant: -Constants.containerPadding
-                ),
-                
-                segmentedBackground.topAnchor.constraint(
-                    equalTo: stackView.topAnchor,
-                    constant: -Constants.containerPadding
-                ),
-                segmentedBackground.leadingAnchor.constraint(
-                    equalTo: stackView.leadingAnchor,
-                    constant: -Constants.containerPadding
-                ),
-                segmentedBackground.trailingAnchor.constraint(
-                    equalTo: stackView.trailingAnchor,
-                    constant: Constants.containerPadding
-                ),
-                segmentedBackground.bottomAnchor.constraint(
-                    equalTo: stackView.bottomAnchor,
-                    constant: Constants.containerPadding
-                )
-            ]
-        )
-        primaryLogoView.image = Constants.placeholderImage
     }
     
     private func select(_ brand: BrandSelection) {
@@ -231,12 +238,7 @@ internal class DualBrandAccessoryView: UIView {
         primaryLogoView.image = Constants.placeholderImage
         secondaryLogoView.image = Constants.placeholderImage
         
-        primaryOptionView.removeGestureRecognizer(primaryTapGesture)
-        secondaryOptionView.removeGestureRecognizer(secondaryTapGesture)
-        segmentedBackground.isHidden = true
-        secondaryOptionView.isHidden = true
-        secondaryLogoView.isHidden = true
-        applySelectionStyle(to: primaryOptionView, selected: false)
+        deactivateDualBrandMode()
     }
     
     // MARK: - Logo Setup
@@ -253,18 +255,7 @@ internal class DualBrandAccessoryView: UIView {
         
         if let secondLogo {
             secondaryLogoView.accessibilityValue = secondLogo.type.name
-            
-            // un-hide the second logo view and enable tapping
-            segmentedBackground.backgroundColor = Constants.segmentedBackgroundColor
-            segmentedBackground.isHidden = false
-            secondaryOptionView.isHidden = false
-            secondaryLogoView.isHidden = false
-            
-            primaryOptionView.addGestureRecognizer(primaryTapGesture)
-            secondaryOptionView.addGestureRecognizer(secondaryTapGesture)
-            
-            selectedBrand = .primary
-            updateSelectionAppearance()
+            activateDualBrandMode()
         }
         
         secondaryLogoView.isAccessibilityElement = secondLogo != nil
@@ -274,38 +265,43 @@ internal class DualBrandAccessoryView: UIView {
     
     // MARK: - View Creation
     
-    private func createOptionView(with imageView: UIImageView) -> UIView {
-        let wrapper = UIView()
-        wrapper.layer.cornerRadius = Constants.optionCornerRadius
-        wrapper.clipsToBounds = false
-        wrapper.translatesAutoresizingMaskIntoConstraints = false
-        
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        wrapper.addSubview(imageView)
-        imageView.adyen.anchor(
-            inside: wrapper,
-            with: .init(
-                top: Constants.optionPadding,
-                left: Constants.optionPadding,
-                bottom: Constants.optionPadding,
-                right: Constants.optionPadding
-            )
-        )
-        
-        return wrapper
+    private func setupViews() {
+        addSubview(segmentedBackground)
+        addSubview(stackView)
     }
     
-    private func createEmptyImageView() -> UIImageView {
-        let imageView = UIImageView()
-        imageView.image = Constants.placeholderImage
-        imageView.adyen.round(using: style.cornerRounding)
-        imageView.layer.masksToBounds = style.clipsToBounds
-        imageView.layer.borderWidth = style.borderWidth
-        imageView.layer.borderColor = style.borderColor?.cgColor
-        imageView.backgroundColor = style.backgroundColor
-        imageView.widthAnchor.constraint(equalToConstant: Constants.iconSize.width).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: Constants.iconSize.height).isActive = true
-        return imageView
+    private func setupConstraints() {
+        singleBrandConstraints = [
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ]
+        
+        dualBrandConstraints = [
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.containerPadding),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.containerPadding),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.containerPadding),
+            
+            segmentedBackground.topAnchor.constraint(equalTo: stackView.topAnchor, constant: -Constants.containerPadding),
+            segmentedBackground.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: -Constants.containerPadding),
+            segmentedBackground.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: Constants.containerPadding),
+            segmentedBackground.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: Constants.containerPadding)
+        ]
+        
+        optionPaddingConstraints = [
+            primaryLogoView.topAnchor.constraint(equalTo: primaryOptionView.topAnchor),
+            primaryLogoView.leadingAnchor.constraint(equalTo: primaryOptionView.leadingAnchor),
+            primaryOptionView.trailingAnchor.constraint(equalTo: primaryLogoView.trailingAnchor),
+            primaryOptionView.bottomAnchor.constraint(equalTo: primaryLogoView.bottomAnchor),
+            secondaryLogoView.topAnchor.constraint(equalTo: secondaryOptionView.topAnchor),
+            secondaryLogoView.leadingAnchor.constraint(equalTo: secondaryOptionView.leadingAnchor),
+            secondaryOptionView.trailingAnchor.constraint(equalTo: secondaryLogoView.trailingAnchor),
+            secondaryOptionView.bottomAnchor.constraint(equalTo: secondaryLogoView.bottomAnchor)
+        ]
+        
+        NSLayoutConstraint.activate(optionPaddingConstraints)
+        NSLayoutConstraint.activate(singleBrandConstraints)
     }
     
     // MARK: - Image Loading
@@ -337,5 +333,33 @@ internal class DualBrandAccessoryView: UIView {
         }
         
         self.imageLoadingTasks = imageLoadingTasks
+    }
+}
+
+extension DualBrandAccessoryView {
+    
+    private func createOptionView(with imageView: UIImageView) -> UIView {
+        let wrapper = UIView()
+        wrapper.layer.cornerRadius = Constants.optionCornerRadius
+        wrapper.clipsToBounds = false
+        wrapper.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        wrapper.addSubview(imageView)
+        
+        return wrapper
+    }
+    
+    private func createEmptyImageView() -> UIImageView {
+        let imageView = UIImageView()
+        imageView.image = Constants.placeholderImage
+        imageView.adyen.round(using: style.cornerRounding)
+        imageView.layer.masksToBounds = style.clipsToBounds
+        imageView.layer.borderWidth = style.borderWidth
+        imageView.layer.borderColor = style.borderColor?.cgColor
+        imageView.backgroundColor = style.backgroundColor
+        imageView.widthAnchor.constraint(equalToConstant: Constants.iconSize.width).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: Constants.iconSize.height).isActive = true
+        return imageView
     }
 }
