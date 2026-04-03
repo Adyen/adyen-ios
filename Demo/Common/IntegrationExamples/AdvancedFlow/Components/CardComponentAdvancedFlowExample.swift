@@ -206,7 +206,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 /// NOTE: The overrides below are wired through CheckoutConfiguration → CheckoutComponentBuilder →
 /// CardComponentConfiguration but are not yet applied to card UI strings. Phase 3 will wire the
 /// provider into the card component's string resolution. Until then, overrides have no visible effect.
-/// This code now only esures compile-time checks for the SDK access modifiers to be exposed properly.
+/// This code now only ensures compile-time checks for the SDK access modifiers to be exposed properly.
 private struct DemoLocalizationProvider: CheckoutLocalizationProvider {
 
     private static let overrides: [String: [CheckoutLocalizationKey: String]] = [
