@@ -401,7 +401,7 @@ private extension UPIComponent {
             appsListTitleItem.isVisible = true
             collectInstructionsLabelItem.isVisible = false
             vpaInputItem.isVisible = false
-            formViewController.resignFirstResponder()
+            formViewController.view.endEditing(true)
         case .upiCollect, .qrCode:
             upiAppsList.forEach { $0.isHidden.wrappedValue = true }
             intentInstructionsLabelItem.isVisible = false
