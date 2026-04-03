@@ -151,22 +151,22 @@ internal class StoredCardInputViewController: UIViewController {
         scrollView.addSubview(contentStackView)
 
         [
-            topContentStackView,
-            securityCodeItemView,
-            buttonsStackView
-        ].forEach(contentStackView.addArrangedSubview)
+            titleLabel,
+            subtitleLabel
+        ].forEach(labelsStackView.addArrangedSubview)
 
         [
             cardImageView,
             labelsStackView
         ].forEach(topContentStackView.addArrangedSubview)
 
-        [
-            titleLabel,
-            subtitleLabel
-        ].forEach(labelsStackView.addArrangedSubview)
-
         buttonsStackView.addArrangedSubview(primaryButton)
+
+        [
+            topContentStackView,
+            securityCodeItemView,
+            buttonsStackView
+        ].forEach(contentStackView.addArrangedSubview)
 
         configureConstraints()
         configureContent()
@@ -189,7 +189,6 @@ internal class StoredCardInputViewController: UIViewController {
 
             contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: Constants.contentPadding),
-            contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -Constants.contentPadding),
             contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -Constants.buttonsBottomPadding),
             contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -2 * Constants.contentPadding)
         ])
