@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Protocol for checking if a URL scheme can be opened on the device.
 @_spi(AdyenInternal)

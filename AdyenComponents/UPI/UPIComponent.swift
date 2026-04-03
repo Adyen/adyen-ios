@@ -38,7 +38,7 @@ public final class UPIComponent: PaymentComponent,
 
     /// Configuration for UPI Component.
     public typealias Configuration = BasicComponentConfiguration
-    
+
     /// The context object for this component.
     @_spi(AdyenInternal)
     public var context: AdyenContext
@@ -257,7 +257,7 @@ public final class UPIComponent: PaymentComponent,
     
     // MARK: - Private
     
-    private func selectableFormItem(from app: UPIApp) -> SelectableFormItem {
+    private func selectableFormItem(from app: Issuer) -> SelectableFormItem {
         let logoUrl = LogoURLProvider.logoURL(
             withName: "upi/\(app.identifier)",
             environment: context.apiContext.environment,
@@ -348,20 +348,24 @@ extension UPIComponent {
 
 internal extension UPIComponent {
 
-    func isAppInstalled(scheme: String) -> Bool {
-        urlSchemeChecker.canOpen(scheme: scheme)
+    func isAppInstalled(scheme: String?) -> Bool {
+        guard let scheme else { return false }
+        return urlSchemeChecker.canOpen(scheme: scheme)
     }
 
-    var installedUPIApps: [UPIApp] {
-        guard let apps = upiPaymentMethod.apps else { return [] }
-        return apps.filter { isAppInstalled(scheme: $0.appIdentifier.scheme) }
+    var installedUPIApps: [Issuer] {
+        upiApps.filter { isAppInstalled(scheme: $0.appIdentifier?.scheme) }
     }
 
-    var availableUPIApps: [UPIApp] {
-        guard let apps = upiPaymentMethod.apps else { return [] }
-
+    var availableUPIApps: [Issuer] {
         // If no UPI apps are installed in the device, show all apps from the response.
-        return installedUPIApps.isEmpty ? apps : installedUPIApps
+        installedUPIApps.isEmpty ? upiApps : installedUPIApps
+    }
+
+    // TODO: - Remove mock response when backend changes are ready.
+    private var upiApps: [Issuer] {
+//        return upiPaymentMethod.apps ?? []
+        UPIAppsResponseMock().apps ?? []
     }
 }
 

@@ -605,6 +605,7 @@
 		C9ADC51B2F7EA9C200418EE9 /* UPIFlowType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9ADC51A2F7EA9C200418EE9 /* UPIFlowType.swift */; };
 		C9ADC51D2F7EB68900418EE9 /* URLSchemeCheckerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9ADC51C2F7EB68900418EE9 /* URLSchemeCheckerMock.swift */; };
 		C9ADC51E2F7EB68900418EE9 /* URLSchemeCheckerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9ADC51C2F7EB68900418EE9 /* URLSchemeCheckerMock.swift */; };
+		C9ADC5222F80115500418EE9 /* UPIAppResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9ADC5212F80115500418EE9 /* UPIAppResponseMock.swift */; };
 		C9B6683527C7CB7A006950B9 /* AnalyticsFlavor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B6683427C7CB7A006950B9 /* AnalyticsFlavor.swift */; };
 		C9B6683727C8D7FB006950B9 /* AnalyticsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B6683627C8D7FB006950B9 /* AnalyticsData.swift */; };
 		C9B6683927C903FE006950B9 /* AdyenContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B6683827C903FE006950B9 /* AdyenContext.swift */; };
@@ -2080,6 +2081,7 @@
 		C9ADC5182F7EA75100418EE9 /* URLSchemeChecking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSchemeChecking.swift; sourceTree = "<group>"; };
 		C9ADC51A2F7EA9C200418EE9 /* UPIFlowType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIFlowType.swift; sourceTree = "<group>"; };
 		C9ADC51C2F7EB68900418EE9 /* URLSchemeCheckerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSchemeCheckerMock.swift; sourceTree = "<group>"; };
+		C9ADC5212F80115500418EE9 /* UPIAppResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIAppResponseMock.swift; sourceTree = "<group>"; };
 		C9B6683427C7CB7A006950B9 /* AnalyticsFlavor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsFlavor.swift; sourceTree = "<group>"; };
 		C9B6683627C8D7FB006950B9 /* AnalyticsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsData.swift; sourceTree = "<group>"; };
 		C9B6683827C903FE006950B9 /* AdyenContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenContext.swift; sourceTree = "<group>"; };
@@ -2972,6 +2974,7 @@
 			isa = PBXGroup;
 			children = (
 				002B92F2294B2857000B93F4 /* UPIComponent.swift */,
+				C9ADC5212F80115500418EE9 /* UPIAppResponseMock.swift */,
 				002B92F4294B6987000B93F4 /* UPIComponentDetails.swift */,
 				C9ADC51A2F7EA9C200418EE9 /* UPIFlowType.swift */,
 			);
@@ -8150,6 +8153,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9ADC5222F80115500418EE9 /* UPIAppResponseMock.swift in Sources */,
 				00F621BE27EB132500C04097 /* AtomeComponent.swift in Sources */,
 				F9B017252604F49C001F23FC /* BasicPersonalInfoFormDetails.swift in Sources */,
 				F9175EC22593950D00D653BE /* QiwiWalletComponent.swift in Sources */,
