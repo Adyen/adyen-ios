@@ -118,17 +118,6 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         return attributed
     }
 
-    private var formattedAmount: String {
-        guard let amount,
-              let formatted = AmountFormatter.formatted(
-                  amount: amount.value,
-                  currencyCode: amount.currencyCode
-              ) else {
-            return ""
-        }
-        return formatted
-    }
-
     internal var submitButtonTitle: String {
         localizedSubmitButtonTitle(
             with: amount,
