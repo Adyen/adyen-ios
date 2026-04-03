@@ -4,27 +4,27 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import Adyen
-import XCTest
+@testable import Adyen
+import Testing
 
-class BrowserInfoTests: XCTestCase {
-    
-    func testBrowserInfoInitialize() {
-        let browserInfoExpectation = expectation(description: "Expect the BrowserInfo.initialize() to return a valid instance")
-        BrowserInfo.initialize { info in
-            XCTAssertNotNil(info?.userAgent)
-            browserInfoExpectation.fulfill()
-        }
-        waitForExpectations(timeout: 120, handler: nil)
+struct BrowserInfoTests {
+
+    @Test @MainActor func browserInfoInitialize() async {
+        let browserInfo = await BrowserInfo()
+        #expect(browserInfo?.userAgent != nil)
+        #expect(browserInfo?.webView == nil)
     }
     
-    func testPaymentComponentDataBrowserInfo() {
-        let browserInfoExpectation = expectation(description: "Expect the BrowserInfo.initialize() to return a valid instance")
+    @Test func paymentComponentDataBrowserInfo() async {
         let data = PaymentComponentData(paymentMethodDetails: InstantPaymentDetails(type: .payPal), amount: nil, order: nil)
-        data.dataByAddingBrowserInfo {
-            XCTAssertNotNil($0.browserInfo?.userAgent)
-            browserInfoExpectation.fulfill()
-        }
-        waitForExpectations(timeout: 120, handler: nil)
+        let updatedPaymentComponentData = await data.replacing(browserInfo: BrowserInfo())
+        #expect(updatedPaymentComponentData.browserInfo?.userAgent != nil)
+    }
+
+    @Test func initialization_whenCached() async {
+        let mockedCachedUserAgent = "testValue"
+        BrowserInfo.cachedUserAgent = mockedCachedUserAgent
+        let browserInfo = await BrowserInfo()
+        #expect(browserInfo?.userAgent == mockedCachedUserAgent)
     }
 }

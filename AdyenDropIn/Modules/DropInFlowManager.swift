@@ -75,11 +75,11 @@ internal class DropInFlowManager: DropInFlowManaging {
         from component: PaymentComponent,
         actionPresenter: ActionPresenter
     ) {
-        guard let dropInComponent else { return }
-        self.actionPresenter = actionPresenter
-
-        component.prepareSubmitData(from: data) { [weak self] updatedData in
-            self?.dropInComponentDelegate?.didSubmit(updatedData, from: component, in: dropInComponent)
+        Task { [weak self] in
+            guard let self, let dropInComponent else { return }
+            self.actionPresenter = actionPresenter
+            let updatedData = await component.prepareSubmitData(from: data)
+            dropInComponentDelegate?.didSubmit(updatedData, from: component, in: dropInComponent)
         }
     }
 
