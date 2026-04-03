@@ -33,4 +33,4 @@ identifier_name:
   min_length:
     warning: 2
   max_length:
-    warning: 40
+    warning: 60
