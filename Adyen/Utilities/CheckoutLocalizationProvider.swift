@@ -6,6 +6,7 @@
 
 import Foundation
 
+// swiftlint:disable identifier_name
 // Key set mirrors the Android SDK `CheckoutLocalizationKey` enum for cross-platform alignment.
 // Android: https://github.com/Adyen/adyen-android/blob/main/core/src/main/java/com/adyen/checkout/core/common/localization/CheckoutLocalizationKey.kt
 /// A localization key supported by the custom localization provider `CheckoutLocalizationProvider`.
@@ -66,6 +67,8 @@ public enum CheckoutLocalizationKey: String, CaseIterable, Equatable {
     case blikCodeInvalid
     case blikHelperText
 }
+
+// swiftlint:enable identifier_name
 
 /// Interface to provide custom localized strings for Adyen Checkout UI
 public protocol CheckoutLocalizationProvider {
