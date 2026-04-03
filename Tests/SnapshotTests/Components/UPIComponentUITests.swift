@@ -11,10 +11,11 @@ import XCTest
 
 class UPIComponentUITests: XCTestCase {
 
+    // TODO: - Revert this change once the UPI apps response is not mocked.
     private lazy var paymentMethod: UPIPaymentMethod = .init(
         type: .upi,
-        name: "upi",
-        apps: upiApps
+        name: "upi"
+//        apps: upiApps
     )
     private var context: AdyenContext {
         Dummy.context
