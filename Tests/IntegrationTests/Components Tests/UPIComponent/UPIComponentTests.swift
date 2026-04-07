@@ -10,7 +10,6 @@ import XCTest
 
 // MARK: - UPIComponentTests
 
-// TODO: - Update tests once the backend response is ready
 class UPIComponentTests: XCTestCase {
     
     // MARK: - UPI App List Title Tests
@@ -59,7 +58,7 @@ class UPIComponentTests: XCTestCase {
         )
         
         // Then - should only show installed apps
-        XCTAssertEqual(sut.upiAppsList.count, 3)
+        XCTAssertEqual(sut.upiAppsList.count, 1)
         XCTAssertEqual(sut.upiAppsList.first?.identifier, "gpay")
     }
     
@@ -170,17 +169,16 @@ class UPIComponentTests: XCTestCase {
         XCTAssertTrue(sut.installedUPIApps.isEmpty)
     }
 
-    // TODO: - Enable this test when the mock response is removed
-//    func test_availableUPIApps_withNilApps_shouldBeEmpty() throws {
-//        // Given - upi has no apps property
-//        let sut = try UPIComponent(
-//            paymentMethod: AdyenCoder.decode(upi),
-//            context: Dummy.context
-//        )
-//
-//        // Then
-//        XCTAssertTrue(sut.availableUPIApps.isEmpty)
-//    }
+    func test_availableUPIApps_withNilApps_shouldBeEmpty() throws {
+        // Given - upi has no apps property
+        let sut = try UPIComponent(
+            paymentMethod: AdyenCoder.decode(upi),
+            context: Dummy.context
+        )
+
+        // Then
+        XCTAssertTrue(sut.availableUPIApps.isEmpty)
+    }
     
     func test_installedUPIApps_withMultipleInstalledApps_shouldReturnAllMatching() throws {
         // Given - tez (gpay) and phonepe are installed
