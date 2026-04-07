@@ -284,6 +284,7 @@ public final class UPIComponent: PaymentComponent,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
+        formViewController.delegate = self
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
 
@@ -321,8 +322,8 @@ extension UPIComponent {
         self.currentSelectedItemIdentifier = item?.identifier
         self.updateSelection()
 
-        let selectedApp = availableUPIApps.first { $0.identifier == item?.identifier }
-        sendSelectionEvent(for: selectedApp)
+        let selectedUPIApp = availableUPIApps.first { $0.identifier == item?.identifier }
+        sendSelectionEvent(for: selectedUPIApp)
     }
 
     private func didSelectContinueButton() {
@@ -378,7 +379,7 @@ private extension UPIComponent {
         static let upiIntentComponent = "upi_intent"
     }
 
-    func sendAppsDisplayedEvent() {
+    func sendUPIAppsDisplayedEvent() {
         var eventInfo = AnalyticsEventInfo(
             component: Analytics.upiIntentComponent,
             type: .displayed
@@ -503,5 +504,22 @@ extension UPIComponent: SubmittableComponent {
 
     public func validate() -> Bool {
         formViewController.validate()
+    }
+}
+
+// MARK: - TrackableComponent
+
+@_spi(AdyenInternal)
+extension UPIComponent: TrackableComponent {}
+
+// MARK: - ViewControllerDelegate
+
+@_spi(AdyenInternal)
+extension UPIComponent: ViewControllerDelegate {
+
+    public func viewDidLoad(viewController: UIViewController) {
+        sendInitialAnalytics()
+        sendDidLoadEvent()
+        sendUPIAppsDisplayedEvent()
     }
 }
