@@ -17,20 +17,33 @@ public class CheckoutPlatformParams {
         case flutter
     }
 
+    // MARK: - Global shared instance
+
+    public static let shared = CheckoutPlatformParams()
+
     // MARK: - Properties
 
     public private(set) var version: String = adyenSdkVersion
     public private(set) var platform: Platform = .ios
     public let channel: String = "ios"
 
-    // MARK: - Methods
+    // MARK: - Initializers
 
+    private init() {}
+
+    // MARK: - Mutation (restricted)
+
+    private let lock = NSLock()
+
+    @_spi(AdyenInternal)
     public func override(version: String, platform: Platform) {
+        lock.lock()
+        defer { lock.unlock() }
+
         self.version = version
         self.platform = platform
     }
 }
 
 @_spi(AdyenInternal)
-public let checkoutPlatformParams = CheckoutPlatformParams()
-
+public let checkoutPlatformParams = CheckoutPlatformParams.shared

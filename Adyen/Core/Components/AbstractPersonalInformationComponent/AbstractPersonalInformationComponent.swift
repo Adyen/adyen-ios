@@ -288,6 +288,7 @@ extension AbstractPersonalInformationComponent: ViewControllerPresenter {
 
 @_spi(AdyenInternal)
 extension AbstractPersonalInformationComponent: ViewControllerDelegate {
+
     // MARK: - ViewControllerDelegate
 
     public func viewWillAppear(viewController: UIViewController) {

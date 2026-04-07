@@ -596,6 +596,7 @@
 		C982FFD826946F0800AED849 /* AffirmComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFD726946F0800AED849 /* AffirmComponent.swift */; };
 		C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */; };
 		C98FF6672C5A793A00B0050D /* StoredTwintPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98FF6662C5A793A00B0050D /* StoredTwintPaymentMethod.swift */; };
+		C991A62D2F855B6500601613 /* CheckoutPlatformParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = C991A62C2F855B6500601613 /* CheckoutPlatformParams.swift */; };
 		C99AA1422D6DF6480043AA96 /* CardScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99AA1412D6DF6480043AA96 /* CardScanner.swift */; };
 		C99FF2BB2D50E872007179C5 /* CardScannerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99FF2B22D50E872007179C5 /* CardScannerError.swift */; };
 		C99FF2BC2D50E872007179C5 /* CreditCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99FF2B32D50E872007179C5 /* CreditCard.swift */; };
@@ -2068,6 +2069,7 @@
 		C982FFD726946F0800AED849 /* AffirmComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponent.swift; sourceTree = "<group>"; };
 		C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmPaymentMethod.swift; sourceTree = "<group>"; };
 		C98FF6662C5A793A00B0050D /* StoredTwintPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredTwintPaymentMethod.swift; sourceTree = "<group>"; };
+		C991A62C2F855B6500601613 /* CheckoutPlatformParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPlatformParams.swift; sourceTree = "<group>"; };
 		C99AA1412D6DF6480043AA96 /* CardScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScanner.swift; sourceTree = "<group>"; };
 		C99FF2B22D50E872007179C5 /* CardScannerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerError.swift; sourceTree = "<group>"; };
 		C99FF2B32D50E872007179C5 /* CreditCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCard.swift; sourceTree = "<group>"; };
@@ -4605,6 +4607,7 @@
 				A06B7AA62A274A83008FC09D /* ResultHelpers.swift */,
 				81EE958B2BB1D73C006B21CB /* ImageLoader */,
 				81FC2C882BB17E53007F1316 /* AdyenCancellable.swift */,
+				C991A62C2F855B6500601613 /* CheckoutPlatformParams.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -7607,6 +7610,7 @@
 				8128977C2CCA660A00275487 /* StoredPayByBankUSPaymentMethod.swift in Sources */,
 				F9639B3324DD96990073F38A /* PaymentStatusRequest.swift in Sources */,
 				A0DB48662AFD020400348C83 /* AnalyticsRequest.swift in Sources */,
+				C991A62D2F855B6500601613 /* CheckoutPlatformParams.swift in Sources */,
 				5AD40E75262F04440090E01C /* UIProgressViewHelpers.swift in Sources */,
 				F91664F023E41D7300C10738 /* AnyEncodable.swift in Sources */,
 				E7D531192446F525000046B4 /* FormSeparatorItemView.swift in Sources */,
