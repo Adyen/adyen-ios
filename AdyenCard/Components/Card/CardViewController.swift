@@ -225,10 +225,14 @@ internal class CardViewController: FormViewController {
     
     internal func update(binInfo: BinLookupResponse) {
         var brands: [CardBrand] = []
+        
+        items.numberContainerItem.numberItem.isLocalBrand = binInfo.isCreatedLocally
 
         // no dual branding if response is from regex (fallback)
-        if binInfo.isCreatedLocally, let firstBrand = binInfo.brands?.first {
-            brands = [firstBrand]
+        if binInfo.isCreatedLocally {
+            if let firstBrand = binInfo.brands?.first {
+                brands = [firstBrand]
+            }
             items.numberContainerItem.numberItem.brandDisplayMode = .single
             items.coBadgedCardItem.isHidden.wrappedValue = true
             items.coBadgedCardItem.resetItems()
@@ -285,13 +289,7 @@ extension CardViewController {
     
     /// Observe the brand changes to update all other fields.
     private func observeNumberItem() {
-        // `initialBrand` is updated in cardNumberItem after binlookup response
-        observe(items.numberContainerItem.numberItem.$initialBrand) { [weak self] newBrand in
-            self?.updateFields(from: newBrand)
-        }
-        
-        // `selectedDualBrand` is updated in `FormCardNumberItemView` with dual brand selection
-        observe(items.numberContainerItem.numberItem.$selectedDualBrand) { [weak self] newBrand in
+        observe(items.numberContainerItem.numberItem.$selectedBrand) { [weak self] newBrand in
             self?.updateFields(from: newBrand)
         }
     }

@@ -257,7 +257,7 @@ class FormCardNumberItemTests: XCTestCase {
         sut.update(brands: [visa])
         sut.brandDisplayMode = .single
         
-        XCTAssertEqual(sut.currentBrand?.type, .visa, "Single mode should return initialBrand")
+        XCTAssertEqual(sut.currentBrand?.type, .visa, "Single mode should return selectedBrand")
     }
     
     func testCurrentBrand_dualDisplay_returnsNil() {
@@ -283,7 +283,7 @@ class FormCardNumberItemTests: XCTestCase {
         XCTAssertEqual(sut.currentBrand?.type, .bcmc, "dualSelectable mode should return the user-selected brand")
     }
     
-    func testCurrentBrand_dualSelectable_beforeSelection_returnsNil() {
+    func testCurrentBrand_dualSelectable_autoSelectsFirstBrand() {
         let sut = FormCardNumberItem(cardTypeLogos: [])
         let visa = CardBrand(type: .visa)
         let bcmc = CardBrand(type: .bcmc)
@@ -291,7 +291,19 @@ class FormCardNumberItemTests: XCTestCase {
         sut.update(brands: [visa, bcmc])
         sut.brandDisplayMode = .dualSelectable
         
-        XCTAssertNil(sut.currentBrand, "dualSelectable with no selection should return nil")
+        XCTAssertEqual(sut.currentBrand?.type, .visa, "dualSelectable should auto-select the first supported brand")
+    }
+    
+    func testCurrentBrand_localBrand_returnsNil() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        
+        sut.update(brands: [visa])
+        sut.brandDisplayMode = .single
+        sut.isLocalBrand = true
+        
+        XCTAssertNil(sut.currentBrand, "Local (regex) brand should not be included in payment request")
+        XCTAssertEqual(sut.selectedBrand?.type, .visa, "selectedBrand should still be set for validation/logo display")
     }
     
 }
