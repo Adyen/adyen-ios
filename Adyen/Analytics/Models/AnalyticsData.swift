@@ -14,7 +14,7 @@ internal struct AnalyticsData: Encodable {
     /// The version of the SDK
     internal let version: String
 
-    internal let channel: String = "iOS"
+    internal let channel: String = "ios"
     
     /// The platform the SDK is running on (e.g. ios, flutter, react-native)
     internal let platform: String
@@ -74,7 +74,7 @@ internal struct AnalyticsData: Encodable {
         
         self.version = checkoutPlatformParams.version
         self.platform = checkoutPlatformParams.platform.rawValue
-        
+
         self.level = configuration.analyticsLevel
 
         switch flavor {

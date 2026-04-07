@@ -21,7 +21,7 @@ internal struct AnalyticsRequest: APIRequest {
 
     internal let method: HTTPMethod = .post
     
-    internal var channel: String = "iOS"
+    internal var channel: String = "ios"
     
     internal var platform: String
     

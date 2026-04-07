@@ -101,7 +101,7 @@ class AnalyticsProviderTests: XCTestCase {
             if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
                 XCTAssertNil(initialAnalyticsdRequest.amount)
                 XCTAssertEqual(initialAnalyticsdRequest.version, adyenSdkVersion)
-                XCTAssertEqual(initialAnalyticsdRequest.platform, "iOS")
+                XCTAssertEqual(initialAnalyticsdRequest.platform, "ios")
                 XCTAssertEqual(initialAnalyticsdRequest.level, "all")
                 analyticsExpectation.fulfill()
             }
@@ -236,7 +236,7 @@ class AnalyticsProviderTests: XCTestCase {
             "platform": "flutter",
             "component": "ach",
             "flavor": "components",
-            "channel": "iOS",
+            "channel": "ios",
             "systemVersion": analyticsData.systemVersion,
             "screenWidth": analyticsData.screenWidth,
             "referrer": analyticsData.referrer,
