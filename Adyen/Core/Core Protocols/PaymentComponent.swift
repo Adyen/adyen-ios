@@ -46,9 +46,14 @@ extension PaymentComponent {
     
     /// Adds SDK related info to payment data object and returns the final data in the completion.
     public func prepareSubmitData(from data: PaymentComponentData, completion: @escaping (PaymentComponentData) -> Void) {
-        
+        let isInstantPaymentComponent = self is InstantPaymentComponent
+        let paymentMethodBehavior: SDKData.PaymentMethodBehavior = isInstantPaymentComponent
+            ? .genericComponent
+            : .nativeComponent
+
         let sdkData = SDKData(
             checkoutAttemptId: checkoutAttemptId,
+            paymentMethodBehavior: paymentMethodBehavior,
             authenticationProvider: data.paymentMethod as? SDKDataAuthenticationProvider
         )
         
