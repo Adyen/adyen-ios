@@ -9,9 +9,9 @@ import UIKit
 
 /// A component that provides a upi flows for UPI component.
 public final class UPIComponent: PaymentComponent,
-                                 PresentableComponent,
-                                 PaymentAware,
-                                 LoadingComponent {
+    PresentableComponent,
+    PaymentAware,
+    LoadingComponent {
 
     // MARK: - Constants
 
@@ -371,17 +371,17 @@ internal extension UPIComponent {
     }
 }
 
-// MARK: -  Analytics
+// MARK: - Analytics
 
 private extension UPIComponent {
 
     enum Analytics {
-        static let upiIntentComponent = "upi_intent"
+        static let upiAppsComponent = "upi_intent"
     }
 
     func sendUPIAppsDisplayedEvent() {
         var eventInfo = AnalyticsEventInfo(
-            component: Analytics.upiIntentComponent,
+            component: Analytics.upiAppsComponent,
             type: .displayed
         )
         eventInfo.target = installedUPIApps.isEmpty ? .issuerList : .listDetected
@@ -392,7 +392,7 @@ private extension UPIComponent {
     func sendSelectionEvent(for issuer: Issuer?) {
         guard let issuer else { return }
         var eventInfo = AnalyticsEventInfo(
-            component: Analytics.upiIntentComponent,
+            component: Analytics.upiAppsComponent,
             type: .selected
         )
         eventInfo.target = installedUPIApps.isEmpty ? .issuerList : .listDetected
@@ -434,6 +434,7 @@ private extension UPIComponent {
             collectInstructionsLabelItem.isVisible = false
             vpaInputItem.isVisible = false
             formViewController.view.endEditing(true)
+            sendUPIAppsDisplayedEvent()
         case .upiCollect, .qrCode:
             upiAppsList.forEach { $0.isHidden.wrappedValue = true }
             intentInstructionsLabelItem.isVisible = false
@@ -520,6 +521,9 @@ extension UPIComponent: ViewControllerDelegate {
     public func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
         sendDidLoadEvent()
+    }
+
+    public func viewDidAppear(viewController: UIViewController) {
         sendUPIAppsDisplayedEvent()
     }
 }
