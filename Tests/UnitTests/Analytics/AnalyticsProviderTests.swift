@@ -124,7 +124,6 @@ class AnalyticsProviderTests: XCTestCase {
         
         let eventAnalyticsProvider = EventAnalyticsProvider(
             apiClient: eventApiClient,
-            context: AnalyticsContext(),
             eventDataSource: AnalyticsEventDataSource()
         )
         let sut = AnalyticsProvider(
@@ -193,14 +192,13 @@ class AnalyticsProviderTests: XCTestCase {
         apiClient.onExecute = { request in
             if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
                 XCTAssertEqual(initialAnalyticsdRequest.amount, amount)
-                XCTAssertEqual(initialAnalyticsdRequest.version, "version")
+                XCTAssertEqual(initialAnalyticsdRequest.version)
                 XCTAssertEqual(initialAnalyticsdRequest.platform, "react-native")
                 analyticsExpectation.fulfill()
             }
         }
         
-        var configuration = AnalyticsConfiguration()
-        configuration.context = AnalyticsContext(version: "version", platform: .reactNative)
+        let configuration = AnalyticsConfiguration()
         let analyticsProvider = AnalyticsProvider(
             apiClient: apiClient,
             configuration: configuration,
@@ -216,9 +214,8 @@ class AnalyticsProviderTests: XCTestCase {
     
     func testInitialRequestEncoding() throws {
         
-        var configuration = AnalyticsConfiguration()
-        configuration.context = AnalyticsContext(version: "version", platform: .flutter)
-        
+        let configuration = AnalyticsConfiguration()
+
         let analyticsData = AnalyticsData(
             flavor: .components(type: .achDirectDebit),
             additionalFields: AdditionalAnalyticsFields(amount: .init(value: 1, currencyCode: "EUR"), sessionId: "test_session_id"),
