@@ -362,10 +362,8 @@ internal extension UPIComponent {
         installedUPIApps.isEmpty ? upiApps : installedUPIApps
     }
 
-    // TODO: - Remove mock response when backend changes are ready.
     private var upiApps: [Issuer] {
-//        return upiPaymentMethod.apps ?? []
-        UPIAppsResponseMock().apps ?? []
+        upiPaymentMethod.apps ?? []
     }
 }
 
