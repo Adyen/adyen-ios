@@ -68,7 +68,9 @@ internal struct PaymentsRequest: APIRequest {
         try container.encodeIfPresent(data.installments, forKey: .installments)
         try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
         try container.encode(ConfigurationConstants.recurringProcessingModel, forKey: .recurringProcessingModel)
-        try container.encode(ConfigurationConstants.mandate, forKey: .mandate)
+
+        // We disable the mandate as it is not accepted in every single PM. Used to test PayTo
+        // try container.encode(ConfigurationConstants.mandate, forKey: .mandate)
     }
     
     private struct AdditionalData: Encodable {
