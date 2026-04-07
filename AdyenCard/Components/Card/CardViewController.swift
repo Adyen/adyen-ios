@@ -229,6 +229,7 @@ internal class CardViewController: FormViewController {
         // no dual branding if response is from regex (fallback)
         if binInfo.isCreatedLocally, let firstBrand = binInfo.brands?.first {
             brands = [firstBrand]
+            items.numberContainerItem.numberItem.brandDisplayMode = .single
             items.coBadgedCardItem.isHidden.wrappedValue = true
             items.coBadgedCardItem.resetItems()
         } else {
@@ -249,11 +250,18 @@ internal class CardViewController: FormViewController {
     }
 
     internal func showCoBadgedCardsUI(for brands: [CardBrand]) {
+        let isDualBranded = brands.count == 2 && brands.allSatisfy(\.isSupported)
         let coBadgedBrands = brands.filter { brand in
             allowedCoBadgedCardTypes.contains(brand.type)
         }
-        if !coBadgedBrands.isEmpty { // Check if there are any co-badged brands
+        
+        if isDualBranded, !coBadgedBrands.isEmpty {
+            items.numberContainerItem.numberItem.brandDisplayMode = .dualSelectable
             items.coBadgedCardItem.updateItems(brands, cardLogos: cardLogos)
+        } else if isDualBranded {
+            items.numberContainerItem.numberItem.brandDisplayMode = .dualDisplay
+        } else {
+            items.numberContainerItem.numberItem.brandDisplayMode = .single
         }
     }
 }

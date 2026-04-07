@@ -52,13 +52,26 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         scanCardHandler != nil
     }
     
-    /// Returns the initial brand for single brand cases
-    /// or `selectedDualBrand` for dual brand cases
-    internal var currentBrand: CardBrand? {
-        isDualBranded ? selectedDualBrand : initialBrand
+    internal enum BrandDisplayMode: Equatable {
+        case single
+        case dualDisplay
+        case dualSelectable
     }
     
-    internal var isDualBranded: Bool = false
+    /// Returns the selected brand for selectable dual-brand cases,
+    /// or the initial brand otherwise.
+    internal var currentBrand: CardBrand? {
+        switch brandDisplayMode {
+        case .single:
+            initialBrand
+        case .dualDisplay:
+            nil
+        case .dualSelectable:
+            selectedDualBrand
+        }
+    }
+    
+    internal var brandDisplayMode: BrandDisplayMode = .single
 
     /// Initializes the form card number item.
     internal init(
@@ -182,8 +195,6 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
             update(initialBrand: nil)
         }
         
-        isDualBranded = brands.count == 2 && brands.allSatisfy(\.isSupported)
-        
         detectedBrandLogos = brands.filter(\.isSupported)
             .compactMap { brand in
                 cardTypeLogos.first { $0.type == brand.type }
@@ -195,6 +206,11 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     internal func selectBrand(cardBrand: CardBrand) {
         updateValidation(for: cardBrand)
         self.selectedDualBrand = cardBrand
+    }
+    
+    internal func selectBrand(from selection: DualBrandAccessoryView.BrandSelection) {
+        guard let brand = detectedBrands.adyen[safeIndex: selection.rawValue] else { return }
+        selectBrand(cardBrand: brand)
     }
 
     /// Updates the initial brand and the related validation checks.

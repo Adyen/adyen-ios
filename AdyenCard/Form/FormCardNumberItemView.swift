@@ -36,7 +36,8 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         }
         
         observe(item.$detectedBrandLogos) { [weak self] newValue in
-            self?.detectedBrandsView.updateCurrentLogos(newValue)
+            guard let self else { return }
+            self.detectedBrandsView.updateCurrentLogos(newValue, mode: self.item.brandDisplayMode)
         }
     }
     
@@ -91,8 +92,8 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         item.isActive = false
     }
     
-    // overridden to detect the touches on the clipped part of the dual brand view 
     override internal func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        // overridden to detect the touches on the clipped part of the dual brand view
         let convertedPoint = convert(point, to: detectedBrandsView)
         if let hitView = detectedBrandsView.overflowHitTest(point: convertedPoint, with: event) {
             return hitView
@@ -106,6 +107,9 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     internal lazy var detectedBrandsView: DualBrandAccessoryView = {
         let cardTypeLogosView = DualBrandAccessoryView(style: item.style.icon)
         cardTypeLogosView.backgroundColor = item.style.backgroundColor
+        cardTypeLogosView.onBrandSelection = { [weak self] selection in
+            self?.item.selectBrand(from: selection)
+        }
         return cardTypeLogosView
     }()
     

@@ -59,7 +59,7 @@ final class DualBrandAccessoryViewTests: XCTestCase {
             FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), type: .bcmc)
         ]
             
-        sut.updateCurrentLogos(dualBrandLogos)
+        sut.updateCurrentLogos(dualBrandLogos, mode: .dualSelectable)
         
         wait(for: [expectation], timeout: 0.1)
             
@@ -79,7 +79,7 @@ final class DualBrandAccessoryViewTests: XCTestCase {
             FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa),
             FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), type: .bcmc)
         ]
-        sut.updateCurrentLogos(dualBrandLogos)
+        sut.updateCurrentLogos(dualBrandLogos, mode: .dualSelectable)
         
         let singleBrandLogo = try [
             FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/amex.png")), type: .americanExpress)
@@ -96,7 +96,7 @@ final class DualBrandAccessoryViewTests: XCTestCase {
             FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa),
             FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), type: .bcmc)
         ]
-        sut.updateCurrentLogos(dualBrandLogos)
+        sut.updateCurrentLogos(dualBrandLogos, mode: .dualSelectable)
         
         XCTAssertEqual(sut.selectedBrand, .primary, "Default selection should be primary")
     }
@@ -106,7 +106,7 @@ final class DualBrandAccessoryViewTests: XCTestCase {
             FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa),
             FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), type: .bcmc)
         ]
-        sut.updateCurrentLogos(dualBrandLogos)
+        sut.updateCurrentLogos(dualBrandLogos, mode: .dualSelectable)
         
         let backgroundView = sut.subviews.first { $0.layer.cornerRadius == 8 }
         XCTAssertNotNil(backgroundView, "Segmented background should exist")
@@ -129,7 +129,7 @@ final class DualBrandAccessoryViewTests: XCTestCase {
             FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa),
             FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), type: .bcmc)
         ]
-        sut.updateCurrentLogos(dualBrandLogos)
+        sut.updateCurrentLogos(dualBrandLogos, mode: .dualSelectable)
         
         XCTAssertEqual(sut.primaryLogoView.superview?.gestureRecognizers?.count, 1, "Primary option should have a tap gesture")
         XCTAssertEqual(sut.secondaryLogoView.superview?.gestureRecognizers?.count, 1, "Secondary option should have a tap gesture")
@@ -140,7 +140,7 @@ final class DualBrandAccessoryViewTests: XCTestCase {
             FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa),
             FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), type: .bcmc)
         ]
-        sut.updateCurrentLogos(dualBrandLogos)
+        sut.updateCurrentLogos(dualBrandLogos, mode: .dualSelectable)
         XCTAssertEqual(sut.primaryLogoView.superview?.gestureRecognizers?.count, 1)
         
         let singleBrandLogo = try [
@@ -149,6 +149,74 @@ final class DualBrandAccessoryViewTests: XCTestCase {
         sut.updateCurrentLogos(singleBrandLogo)
         
         XCTAssertTrue(sut.primaryLogoView.superview?.gestureRecognizers?.isEmpty ?? true, "Gesture recognizers should be removed after switching to single brand")
+    }
+    
+    // MARK: - Display Mode Tests
+    
+    func testDualDisplay_showsBothLogos_noGestures_noBackground() throws {
+        let dualBrandLogos = try [
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa),
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), type: .bcmc)
+        ]
+        sut.updateCurrentLogos(dualBrandLogos, mode: .dualDisplay)
+        
+        XCTAssertFalse(sut.secondaryLogoView.isHidden, "Secondary logo should be visible in dualDisplay")
+        
+        let backgroundView = sut.subviews.first { $0.layer.cornerRadius == 8 }
+        XCTAssertTrue(backgroundView?.isHidden ?? true, "Segmented background should be hidden in dualDisplay")
+        
+        XCTAssertTrue(sut.primaryLogoView.superview?.gestureRecognizers?.isEmpty ?? true, "No gesture recognizers in dualDisplay")
+        XCTAssertTrue(sut.secondaryLogoView.superview?.gestureRecognizers?.isEmpty ?? true, "No gesture recognizers in dualDisplay")
+    }
+    
+    func testSingleMode_showsOnlyPrimaryLogo() throws {
+        let singleBrandLogo = try [
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa)
+        ]
+        sut.updateCurrentLogos(singleBrandLogo, mode: .single)
+        
+        XCTAssertTrue(sut.secondaryLogoView.isHidden, "Secondary logo should be hidden in single mode")
+        
+        let backgroundView = sut.subviews.first { $0.layer.cornerRadius == 8 }
+        XCTAssertTrue(backgroundView?.isHidden ?? true, "Segmented background should be hidden in single mode")
+        
+        XCTAssertTrue(sut.primaryLogoView.superview?.gestureRecognizers?.isEmpty ?? true, "No gesture recognizers in single mode")
+    }
+    
+    // MARK: - Mode Transition Tests
+    
+    func testTransition_dualSelectableToDualDisplay_removesInteraction() throws {
+        let dualBrandLogos = try [
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa),
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), type: .bcmc)
+        ]
+        sut.updateCurrentLogos(dualBrandLogos, mode: .dualSelectable)
+        XCTAssertEqual(sut.primaryLogoView.superview?.gestureRecognizers?.count, 1)
+        
+        let backgroundView = sut.subviews.first { $0.layer.cornerRadius == 8 }
+        XCTAssertFalse(backgroundView?.isHidden ?? true, "Background should be visible in dualSelectable")
+        
+        sut.updateCurrentLogos(dualBrandLogos, mode: .dualDisplay)
+        
+        XCTAssertTrue(sut.primaryLogoView.superview?.gestureRecognizers?.isEmpty ?? true, "Gestures should be removed after switching to dualDisplay")
+        XCTAssertTrue(backgroundView?.isHidden ?? true, "Background should be hidden after switching to dualDisplay")
+        XCTAssertFalse(sut.secondaryLogoView.isHidden, "Secondary logo should still be visible in dualDisplay")
+    }
+    
+    func testTransition_dualDisplayToSingle_hidesSecondary() throws {
+        let dualBrandLogos = try [
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa),
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), type: .bcmc)
+        ]
+        sut.updateCurrentLogos(dualBrandLogos, mode: .dualDisplay)
+        XCTAssertFalse(sut.secondaryLogoView.isHidden)
+        
+        let singleBrandLogo = try [
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/amex.png")), type: .americanExpress)
+        ]
+        sut.updateCurrentLogos(singleBrandLogo, mode: .single)
+        
+        XCTAssertTrue(sut.secondaryLogoView.isHidden, "Secondary should be hidden after switching to single")
     }
     
     private var brandImageStyle: ImageStyle = .init(

@@ -248,6 +248,52 @@ class FormCardNumberItemTests: XCTestCase {
         XCTAssertEqual(textField.selectedTextRange, UITextRange.textRange(startOffset: 4, in: textField))
     }
     
+    // MARK: - currentBrand per BrandDisplayMode
+    
+    func testCurrentBrand_singleMode_returnsInitialBrand() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        
+        sut.update(brands: [visa])
+        sut.brandDisplayMode = .single
+        
+        XCTAssertEqual(sut.currentBrand?.type, .visa, "Single mode should return initialBrand")
+    }
+    
+    func testCurrentBrand_dualDisplay_returnsNil() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        let bcmc = CardBrand(type: .bcmc)
+        
+        sut.update(brands: [visa, bcmc])
+        sut.brandDisplayMode = .dualDisplay
+        
+        XCTAssertNil(sut.currentBrand, "dualDisplay mode should return nil per spec")
+    }
+    
+    func testCurrentBrand_dualSelectable_returnsSelectedBrand() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        let bcmc = CardBrand(type: .bcmc)
+        
+        sut.update(brands: [visa, bcmc])
+        sut.brandDisplayMode = .dualSelectable
+        sut.selectBrand(cardBrand: bcmc)
+        
+        XCTAssertEqual(sut.currentBrand?.type, .bcmc, "dualSelectable mode should return the user-selected brand")
+    }
+    
+    func testCurrentBrand_dualSelectable_beforeSelection_returnsNil() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        let bcmc = CardBrand(type: .bcmc)
+        
+        sut.update(brands: [visa, bcmc])
+        sut.brandDisplayMode = .dualSelectable
+        
+        XCTAssertNil(sut.currentBrand, "dualSelectable with no selection should return nil")
+    }
+    
 }
 
 // MARK: - Helper Extensions

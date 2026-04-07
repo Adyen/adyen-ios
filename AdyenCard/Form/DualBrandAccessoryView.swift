@@ -10,8 +10,8 @@ import UIKit
 /// A segmented picker view housing up to 2 brand logos with selection support for dual-branded cards.
 internal class DualBrandAccessoryView: UIView {
     
-    internal enum BrandSelection {
-        case primary
+    internal enum BrandSelection: Int {
+        case primary = 0
         case secondary
     }
     
@@ -44,8 +44,11 @@ internal class DualBrandAccessoryView: UIView {
     
     internal var onBrandSelection: ((BrandSelection) -> Void)?
     
-    private var isSegmentedPickerActive: Bool {
-        !secondaryOptionView.isHidden
+    private var displayMode: FormCardNumberItem.BrandDisplayMode = .single {
+        didSet {
+            guard displayMode != oldValue else { return }
+            applyDisplayMode()
+        }
     }
     
     // MARK: - Subviews
@@ -109,14 +112,17 @@ internal class DualBrandAccessoryView: UIView {
     
     // MARK: - Public API
     
-    internal func updateCurrentLogos(_ logos: [FormCardLogosItem.CardTypeLogo]) {
+    internal func updateCurrentLogos(
+        _ logos: [FormCardLogosItem.CardTypeLogo],
+        mode: FormCardNumberItem.BrandDisplayMode = .single
+    ) {
         resetState()
         guard !logos.isEmpty else { return }
-        setupLogoViews(from: logos)
+        setupLogoViews(from: logos, mode: mode)
     }
     
     internal func overflowHitTest(point: CGPoint, with event: UIEvent?) -> UIView? {
-        guard isSegmentedPickerActive else { return nil }
+        guard displayMode == .dualSelectable else { return nil }
         
         let visualBounds = segmentedBackground.frame
         guard visualBounds.contains(point) else { return nil }
@@ -134,7 +140,7 @@ internal class DualBrandAccessoryView: UIView {
     // MARK: - Layout
     
     override public var intrinsicContentSize: CGSize {
-        if isSegmentedPickerActive {
+        if displayMode == .dualSelectable {
             return CGSize(width: UIView.noIntrinsicMetric, height: Constants.iconSize.height)
         }
         return super.intrinsicContentSize
@@ -144,40 +150,45 @@ internal class DualBrandAccessoryView: UIView {
     
     override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        guard isSegmentedPickerActive else { return }
+        guard displayMode == .dualSelectable else { return }
         updateSelectionAppearance()
     }
     
-    // MARK: - Mode Switching
+    // MARK: - Display Mode
     
-    private func activateDualBrandMode() {
-        NSLayoutConstraint.deactivate(singleBrandConstraints)
-        NSLayoutConstraint.activate(dualBrandConstraints)
-        setOptionPadding(Constants.optionPadding)
-        
-        segmentedBackground.backgroundColor = Constants.segmentedBackgroundColor
-        segmentedBackground.isHidden = false
-        setSecondaryVisible(true)
-        
-        primaryOptionView.addGestureRecognizer(primaryTapGesture)
-        secondaryOptionView.addGestureRecognizer(secondaryTapGesture)
-        
-        selectedBrand = .primary
-        updateSelectionAppearance()
-        invalidateIntrinsicContentSize()
-    }
-    
-    private func deactivateDualBrandMode() {
+    private func applyDisplayMode() {
+        // Reset to baseline
         NSLayoutConstraint.deactivate(dualBrandConstraints)
-        NSLayoutConstraint.activate(singleBrandConstraints)
-        setOptionPadding(0)
-        
+        NSLayoutConstraint.deactivate(singleBrandConstraints)
         primaryOptionView.removeGestureRecognizer(primaryTapGesture)
         secondaryOptionView.removeGestureRecognizer(secondaryTapGesture)
-        
         segmentedBackground.isHidden = true
-        setSecondaryVisible(false)
         applySelectionStyle(to: primaryOptionView, selected: false)
+        applySelectionStyle(to: secondaryOptionView, selected: false)
+        
+        switch displayMode {
+        case .single:
+            NSLayoutConstraint.activate(singleBrandConstraints)
+            setOptionPadding(0)
+            setSecondaryVisible(false)
+            
+        case .dualDisplay:
+            NSLayoutConstraint.activate(singleBrandConstraints)
+            setOptionPadding(0)
+            setSecondaryVisible(true)
+            
+        case .dualSelectable:
+            NSLayoutConstraint.activate(dualBrandConstraints)
+            setOptionPadding(Constants.optionPadding)
+            setSecondaryVisible(true)
+            segmentedBackground.backgroundColor = Constants.segmentedBackgroundColor
+            segmentedBackground.isHidden = false
+            primaryOptionView.addGestureRecognizer(primaryTapGesture)
+            secondaryOptionView.addGestureRecognizer(secondaryTapGesture)
+            selectedBrand = .primary
+            updateSelectionAppearance()
+        }
+        
         invalidateIntrinsicContentSize()
     }
     
@@ -238,12 +249,12 @@ internal class DualBrandAccessoryView: UIView {
         primaryLogoView.image = Constants.placeholderImage
         secondaryLogoView.image = Constants.placeholderImage
         
-        deactivateDualBrandMode()
+        displayMode = .single
     }
     
     // MARK: - Logo Setup
     
-    private func setupLogoViews(from logos: [FormCardLogosItem.CardTypeLogo]) {
+    private func setupLogoViews(from logos: [FormCardLogosItem.CardTypeLogo], mode: FormCardNumberItem.BrandDisplayMode) {
         guard let firstLogo = logos.first else { return }
         let secondLogo = logos.adyen[safeIndex: 1]
         
@@ -253,13 +264,12 @@ internal class DualBrandAccessoryView: UIView {
         primaryLogoView.accessibilityValue = firstLogo.type.name
         primaryLogoView.isAccessibilityElement = true
         
-        if let secondLogo {
-            secondaryLogoView.accessibilityValue = secondLogo.type.name
-            activateDualBrandMode()
+        if secondLogo != nil {
+            secondaryLogoView.accessibilityValue = secondLogo?.type.name
         }
-        
         secondaryLogoView.isAccessibilityElement = secondLogo != nil
         
+        displayMode = mode
         updateLogos()
     }
     
@@ -335,6 +345,8 @@ internal class DualBrandAccessoryView: UIView {
         self.imageLoadingTasks = imageLoadingTasks
     }
 }
+
+// MARK: - View Factory
 
 extension DualBrandAccessoryView {
     
