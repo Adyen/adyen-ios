@@ -192,8 +192,8 @@ class AnalyticsProviderTests: XCTestCase {
         apiClient.onExecute = { request in
             if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
                 XCTAssertEqual(initialAnalyticsdRequest.amount, amount)
-                XCTAssertEqual(initialAnalyticsdRequest.version)
-                XCTAssertEqual(initialAnalyticsdRequest.platform, "react-native")
+                XCTAssertEqual(initialAnalyticsdRequest.version, adyenSdkVersion)
+                XCTAssertEqual(initialAnalyticsdRequest.platform, "ios")
                 analyticsExpectation.fulfill()
             }
         }
@@ -230,7 +230,7 @@ class AnalyticsProviderTests: XCTestCase {
         let expectedDecodedRequest = [
             "locale": "en_US",
             "paymentMethods": analyticsData.paymentMethods,
-            "platform": "flutter",
+            "platform": "ios",
             "component": "ach",
             "flavor": "components",
             "channel": "ios",
@@ -245,7 +245,7 @@ class AnalyticsProviderTests: XCTestCase {
                 "value": 1
             ] as [String: Any],
             "sessionId": "test_session_id",
-            "version": "version"
+            "version": adyenSdkVersion
         ] as [String: Any]
         
         XCTAssertEqual(
