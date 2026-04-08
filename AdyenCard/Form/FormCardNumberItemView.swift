@@ -29,9 +29,10 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         textField.returnKeyType = .default
         textField.allowsEditingActions = false
         
-        item.onValidationUpdate = { [weak self] in
-            self?.updateValidationStatus(forced: true)
-            self?.notifyDelegateOfMaxLengthIfNeeded()
+        observe(item.$initialBrand) { [weak self] _ in
+            guard let self else { return }
+            self.updateValidationStatus(forced: true)
+            self.notifyDelegateOfMaxLengthIfNeeded()
         }
         
         observe(item.$detectedBrandLogos) { [weak self] newValue in
@@ -77,7 +78,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
     override internal func textFieldDidBeginEditing(_ text: UITextField) {
         super.textFieldDidBeginEditing(text)
         // change accessory back only if brand is supported or empty
-        if item.selectedBrand?.isSupported ?? true {
+        if item.initialBrand?.isSupported ?? true {
             accessory = .customView(detectedBrandsView)
         }
         item.isActive = true

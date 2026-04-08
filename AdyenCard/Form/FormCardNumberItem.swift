@@ -28,8 +28,11 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     /// Reported with every entered digit.
     @AdyenObservable("") internal var binValue: String
     
-    /// The active brand — set from BIN detection or user selection in dual-brand mode.
-    @AdyenObservable(nil) internal private(set) var selectedBrand: CardBrand?
+    /// Brand set from BIN detection. Observed by the view for validation updates.
+    @AdyenObservable(nil) internal private(set) var initialBrand: CardBrand?
+    
+    /// Brand selected by user in dual-brand segmented picker.
+    @AdyenObservable(nil) internal private(set) var selectedDualBrand: CardBrand?
     
     /// Detected brand logo(s) for the entered bin.
     @AdyenObservable([]) internal private(set) var detectedBrandLogos: [FormCardLogosItem.CardTypeLogo]
@@ -59,7 +62,11 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     /// Returns `nil` for local (regex) brands and `.dualDisplay` mode.
     internal var currentBrand: CardBrand? {
         guard !isLocalBrand else { return nil }
-        return brandDisplayMode == .dualDisplay ? nil : selectedBrand
+        switch brandDisplayMode {
+        case .single: return initialBrand
+        case .dualDisplay: return nil
+        case .dualSelectable: return selectedDualBrand
+        }
     }
     
     internal var brandDisplayMode: BrandDisplayMode = .single
@@ -68,9 +75,6 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     internal var isLocalBrand = false
     
     internal var onUserBrandSelection: ((CardBrand) -> Void)?
-    
-    /// Called when validation rules change from BIN detection (e.g. unsupported brand detected).
-    internal var onValidationUpdate: (() -> Void)?
 
     /// Initializes the form card number item.
     internal init(
@@ -177,21 +181,22 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     }
     
     /// Updates the item with the detected brands.
-    /// Sets the first supported one as `selectedBrand`.
+    /// Sets the first supported one as `initialBrand`.
     internal func update(brands: [CardBrand]) {
         detectedBrands = brands
         
         switch (brands.count, brands.first(where: \.isSupported)) {
         case (1, _):
-            updateSelectedBrand(brands.first)
+            updateInitialBrand(brands.first)
         case let (2, .some(firstSupportedBrand)):
-            updateSelectedBrand(firstSupportedBrand)
+            updateInitialBrand(firstSupportedBrand)
+            if brandDisplayMode == .dualSelectable {
+                selectedDualBrand = firstSupportedBrand
+            }
         case (2, nil):
-            // if there are 2 brands and neither is supported,
-            // need to show unsupported text
-            updateSelectedBrand(nil, defaultSupportedValue: false)
+            updateInitialBrand(nil, defaultSupportedValue: false)
         default:
-            updateSelectedBrand(nil)
+            updateInitialBrand(nil)
         }
         
         detectedBrandLogos = brands.filter(\.isSupported)
@@ -204,15 +209,15 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     internal func selectBrand(from selection: DualBrandAccessoryView.BrandSelection) {
         guard let brand = detectedBrands.adyen[safeIndex: selection.rawValue] else { return }
         updateValidation(for: brand)
-        self.selectedBrand = brand
+        self.selectedDualBrand = brand
         onUserBrandSelection?(brand)
     }
 
-    private func updateSelectedBrand(_ brand: CardBrand?, defaultSupportedValue: Bool = true) {
+    private func updateInitialBrand(_ brand: CardBrand?, defaultSupportedValue: Bool = true) {
         updateValidation(for: brand, defaultSupportedValue: defaultSupportedValue)
-        self.selectedBrand = brand
+        self.initialBrand = brand
+        self.selectedDualBrand = nil
         updateBINIfNeeded()
-        onValidationUpdate?()
     }
     
     private func updateValidation(for brand: CardBrand?, defaultSupportedValue: Bool = true) {
