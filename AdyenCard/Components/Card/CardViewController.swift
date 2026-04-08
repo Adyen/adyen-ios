@@ -45,6 +45,10 @@ internal class CardViewController: FormViewController {
     private var isCardScannerAvailable: Bool {
         cardScannerController.isScannerAvailable
     }
+    
+    private var cardNumberItem: FormCardNumberItem {
+        items.numberContainerItem.numberItem
+    }
 
     internal lazy var items = {
         
@@ -124,10 +128,6 @@ internal class CardViewController: FormViewController {
         setupView()
         setupViewRelations()
         observeNumberItem()
-        observeCoBadgedCardItem()
-        items.coBadgedCardItem.onCardBrandSelection = { [weak self] cardBrand in
-            self?.handleSelection(cardBrand)
-        }
         super.viewDidLoad()
     }
 
@@ -145,7 +145,7 @@ internal class CardViewController: FormViewController {
         let expiryYear = items.expiryDateItem.expiryYear
         
         return Card(
-            number: items.numberContainerItem.numberItem.value,
+            number: cardNumberItem.value,
             securityCode: configuration.showsSecurityCodeField ? items.securityCodeItem.nonEmptyValue : nil,
             expiryMonth: expiryMonth,
             expiryYear: expiryYear,
@@ -154,11 +154,11 @@ internal class CardViewController: FormViewController {
     }
     
     internal var selectedBrand: String? {
-        items.numberContainerItem.numberItem.currentBrand?.type.rawValue
+        cardNumberItem.currentBrand?.type.rawValue
     }
     
     internal var cardBIN: String {
-        items.numberContainerItem.numberItem.binValue
+        cardNumberItem.binValue
     }
 
     internal var validAddress: PostalAddress? {
@@ -223,49 +223,47 @@ internal class CardViewController: FormViewController {
         view.isUserInteractionEnabled = false
     }
     
-    internal func update(binInfo: BinLookupResponse) {
-        var brands: [CardBrand] = []
-        
-        items.numberContainerItem.numberItem.isLocalBrand = binInfo.isCreatedLocally
-
-        // no dual branding if response is from regex (fallback)
-        if binInfo.isCreatedLocally {
-            if let firstBrand = binInfo.brands?.first {
-                brands = [firstBrand]
-            }
-            items.numberContainerItem.numberItem.brandDisplayMode = .single
-            items.coBadgedCardItem.isHidden.wrappedValue = true
-            items.coBadgedCardItem.resetItems()
+    internal func handleBinLookupResponse(_ response: BinLookupResponse) {
+        let brands: [CardBrand]
+        if response.isCreatedLocally {
+            // no dual branding on regex response, get the 1st element
+            brands = Array(response.brands?.prefix(1) ?? [])
         } else {
-            brands = binInfo.brands ?? []
-            showCoBadgedCardsUI(for: brands)
+            brands = response.brands ?? []
         }
-        issuingCountryCode = binInfo.issuingCountryCode
+        
+        cardNumberItem.isLocalBrand = response.isCreatedLocally
+        updateBrandDisplayMode(for: brands, isLocal: response.isCreatedLocally)
+        
+        issuingCountryCode = response.issuingCountryCode
         items.numberContainerItem.update(brands: brands)
         
         updateBillingAddressOptionalStatus(brands: brands)
     }
 
-    internal func handleSelection(_ selectedBrand: CardBrand) {
-        items.coBadgedCardItem.updateSelection(selectedBrand)
-        items.numberContainerItem.numberItem.selectBrand(cardBrand: selectedBrand)
-
-        items.triggerInfoEvent(of: .selected, target: .dualBrandButton, brands: [selectedBrand])
+    internal func triggerBrandEvent(
+        of type: AnalyticsEventInfo.InfoType,
+        brands: [CardBrand]
+    ) {
+        items.triggerInfoEvent(of: type, target: .dualBrandButton, brands: brands)
     }
 
-    internal func showCoBadgedCardsUI(for brands: [CardBrand]) {
-        let isDualBranded = brands.count == 2 && brands.allSatisfy(\.isSupported)
-        let coBadgedBrands = brands.filter { brand in
-            allowedCoBadgedCardTypes.contains(brand.type)
+    private func updateBrandDisplayMode(for brands: [CardBrand], isLocal: Bool) {
+        guard !isLocal else {
+            cardNumberItem.brandDisplayMode = .single
+            return
         }
         
-        if isDualBranded, !coBadgedBrands.isEmpty {
-            items.numberContainerItem.numberItem.brandDisplayMode = .dualSelectable
-            items.coBadgedCardItem.updateItems(brands, cardLogos: cardLogos)
+        let isDualBranded = brands.count == 2 && brands.allSatisfy(\.isSupported)
+        let containsAllowedBrands = brands.contains { allowedCoBadgedCardTypes.contains($0.type) }
+        
+        if isDualBranded, containsAllowedBrands {
+            cardNumberItem.brandDisplayMode = .dualSelectable
+            triggerBrandEvent(of: .displayed, brands: brands)
         } else if isDualBranded {
-            items.numberContainerItem.numberItem.brandDisplayMode = .dualDisplay
+            cardNumberItem.brandDisplayMode = .dualDisplay
         } else {
-            items.numberContainerItem.numberItem.brandDisplayMode = .single
+            cardNumberItem.brandDisplayMode = .single
         }
     }
 }
@@ -289,22 +287,12 @@ extension CardViewController {
     
     /// Observe the brand changes to update all other fields.
     private func observeNumberItem() {
-        observe(items.numberContainerItem.numberItem.$selectedBrand) { [weak self] newBrand in
-            self?.updateFields(from: newBrand)
+        observe(cardNumberItem.$selectedBrand) { [weak self] newBrand in
+            guard let self else { return }
+            self.updateFields(from: newBrand)
         }
-    }
-
-    private func observeCoBadgedCardItem() {
-        observe(items.coBadgedCardItem.$updatedCardBrands) { [weak self] brands in
-            guard let brands, brands.count > 0 else {
-                return
-            }
-            self?.items.triggerInfoEvent(
-                of: .displayed,
-                target: .dualBrandButton,
-                brands: brands
-            )
-
+        cardNumberItem.onUserBrandSelection = { [weak self] selectedBrand in
+            self?.triggerBrandEvent(of: .selected, brands: [selectedBrand])
         }
     }
 
@@ -335,8 +323,6 @@ extension CardViewController {
         if configuration.showsHolderNameField {
             append(items.holderNameItem)
         }
-
-        append(items.coBadgedCardItem)
 
         if configuration.koreanAuthenticationMode != .hide {
             append(items.additionalAuthCodeItem)
@@ -396,8 +382,8 @@ extension CardViewController {
     }
     
     private func setupViewRelations() {
-        observe(items.numberContainerItem.numberItem.publisher) { [weak self] in self?.didChange(pan: $0) }
-        observe(items.numberContainerItem.numberItem.$binValue) { [weak self] in self?.didChange(bin: $0) }
+        observe(cardNumberItem.publisher) { [weak self] in self?.didChange(pan: $0) }
+        observe(cardNumberItem.$binValue) { [weak self] in self?.didChange(bin: $0) }
         
         items.button.buttonSelectionHandler = { [weak cardDelegate] in
             cardDelegate?.didSelectSubmitButton()

@@ -64,7 +64,10 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     
     internal var brandDisplayMode: BrandDisplayMode = .single
     
+    /// Boolean value to determine whether the detected brand is local, from regex.
     internal var isLocalBrand = false
+    
+    internal var onUserBrandSelection: ((CardBrand) -> Void)?
 
     /// Initializes the form card number item.
     internal init(
@@ -194,17 +197,15 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
             }
     }
 
-    /// Changes the selected brand to trigger updates for the observing objects.
-    internal func selectBrand(cardBrand: CardBrand) {
-        updateValidation(for: cardBrand)
-        self.selectedBrand = cardBrand
-    }
-    
+    /// Selects a brand from the segmented picker by index.
     internal func selectBrand(from selection: DualBrandAccessoryView.BrandSelection) {
         guard let brand = detectedBrands.adyen[safeIndex: selection.rawValue] else { return }
-        selectBrand(cardBrand: brand)
+        updateValidation(for: brand)
+        self.selectedBrand = brand
+        onUserBrandSelection?(brand)
     }
 
+    /// Updates the selected brand without user selection.
     private func updateSelectedBrand(_ brand: CardBrand?, defaultSupportedValue: Bool = true) {
         updateValidation(for: brand, defaultSupportedValue: defaultSupportedValue)
         self.selectedBrand = brand

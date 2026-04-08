@@ -278,9 +278,31 @@ class FormCardNumberItemTests: XCTestCase {
         
         sut.update(brands: [visa, bcmc])
         sut.brandDisplayMode = .dualSelectable
-        sut.selectBrand(cardBrand: bcmc)
+        sut.selectBrand(from: .secondary)
         
         XCTAssertEqual(sut.currentBrand?.type, .bcmc, "dualSelectable mode should return the user-selected brand")
+    }
+    
+    func testSelectBrand_fromPrimary_setsFirstBrand() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        let bcmc = CardBrand(type: .bcmc)
+        
+        sut.update(brands: [visa, bcmc])
+        sut.selectBrand(from: .primary)
+        
+        XCTAssertEqual(sut.selectedBrand?.type, .visa)
+    }
+    
+    func testSelectBrand_fromSecondary_setsSecondBrand() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        let bcmc = CardBrand(type: .bcmc)
+        
+        sut.update(brands: [visa, bcmc])
+        sut.selectBrand(from: .secondary)
+        
+        XCTAssertEqual(sut.selectedBrand?.type, .bcmc)
     }
     
     func testCurrentBrand_dualSelectable_autoSelectsFirstBrand() {

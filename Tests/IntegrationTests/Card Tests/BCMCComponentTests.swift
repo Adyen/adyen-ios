@@ -96,7 +96,7 @@ class BCMCComponentTests: XCTestCase {
         fillCard(on: sut.viewController.view, with: Dummy.bancontactCard)
         
         let binResponse = BinLookupResponse(brands: [CardBrand(type: .bcmc, isSupported: true)])
-        sut.cardViewController.update(binInfo: binResponse)
+        sut.cardViewController.handleBinLookupResponse(binResponse)
 
         wait(for: .milliseconds(30))
         
@@ -226,7 +226,7 @@ class BCMCComponentTests: XCTestCase {
         }
         
         let binResponse = BinLookupResponse(brands: [CardBrand(type: .bcmc, isSupported: true, cvcPolicy: .optional)])
-        sut.cardViewController.update(binInfo: binResponse)
+        sut.cardViewController.handleBinLookupResponse(binResponse)
         
         // Enter Card Number
         let cardNumberView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
