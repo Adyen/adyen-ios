@@ -300,6 +300,41 @@ class PaymentComponentSubjectTests: XCTestCase {
         wait(for: [didSubmitExpectation], timeout: 3)
     }
 
+    func test_submit_sets_genericComponent_behavior_for_generic_component() {
+        // Given
+        analyticsProviderMock.checkoutAttemptId = "test-checkout-attempt-id"
+
+        let instantPaymentMethod = InstantPaymentMethod(type: .other("test"), name: "Test")
+        let instantPaymentDetails = InstantPaymentDetails(type: .other("test"))
+        let paymentData = PaymentComponentData(paymentMethodDetails: instantPaymentDetails, amount: nil, order: nil)
+
+        let instantComponent = InstantPaymentComponent(
+            paymentMethod: instantPaymentMethod,
+            context: context,
+            paymentData: paymentData
+        )
+        instantComponent.delegate = paymentComponentDelegate
+
+        let didSubmitExpectation = expectation(description: "didSubmit should get called")
+
+        // Then
+        paymentComponentDelegate.onDidSubmit = { data, _ in
+            guard let sdkDataString = data.paymentMethod.sdkData,
+                  let decodedData = Data(base64Encoded: sdkDataString),
+                  let jsonString = String(data: decodedData, encoding: .utf8) else {
+                XCTFail("SDKData should be present and decodable to a string")
+                return
+            }
+
+            XCTAssertTrue(jsonString.contains("\"paymentMethodBehavior\":\"genericComponent\""), "InstantPaymentComponent should use genericComponent behavior")
+            didSubmitExpectation.fulfill()
+        }
+
+        instantComponent.initiatePayment()
+
+        wait(for: [didSubmitExpectation], timeout: 3)
+    }
+
     private func sdkData(from sdkDataString: String?) -> SDKData? {
         guard let sdkDataString,
               let sdkDataDecoded: SDKData = try? AdyenCoder.decodeBase64(sdkDataString) else {
