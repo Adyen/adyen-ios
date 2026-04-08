@@ -288,8 +288,7 @@ extension CardViewController {
     /// Observe the brand changes to update all other fields.
     private func observeNumberItem() {
         observe(cardNumberItem.$selectedBrand) { [weak self] newBrand in
-            guard let self else { return }
-            self.updateFields(from: newBrand)
+            self?.updateFields(from: newBrand)
         }
         cardNumberItem.onUserBrandSelection = { [weak self] selectedBrand in
             self?.triggerBrandEvent(of: .selected, brands: [selectedBrand])

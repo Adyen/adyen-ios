@@ -68,6 +68,9 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     internal var isLocalBrand = false
     
     internal var onUserBrandSelection: ((CardBrand) -> Void)?
+    
+    /// Called when validation rules change from BIN detection (e.g. unsupported brand detected).
+    internal var onValidationUpdate: (() -> Void)?
 
     /// Initializes the form card number item.
     internal init(
@@ -205,11 +208,11 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         onUserBrandSelection?(brand)
     }
 
-    /// Updates the selected brand without user selection.
     private func updateSelectedBrand(_ brand: CardBrand?, defaultSupportedValue: Bool = true) {
         updateValidation(for: brand, defaultSupportedValue: defaultSupportedValue)
         self.selectedBrand = brand
         updateBINIfNeeded()
+        onValidationUpdate?()
     }
     
     private func updateValidation(for brand: CardBrand?, defaultSupportedValue: Bool = true) {

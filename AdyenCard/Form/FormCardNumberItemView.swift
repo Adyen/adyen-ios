@@ -29,10 +29,9 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         textField.returnKeyType = .default
         textField.allowsEditingActions = false
         
-        observe(item.$selectedBrand) { [weak self] _ in
-            guard let self else { return }
-            self.updateValidationStatus(forced: true)
-            self.notifyDelegateOfMaxLengthIfNeeded()
+        item.onValidationUpdate = { [weak self] in
+            self?.updateValidationStatus(forced: true)
+            self?.notifyDelegateOfMaxLengthIfNeeded()
         }
         
         observe(item.$detectedBrandLogos) { [weak self] newValue in
