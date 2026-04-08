@@ -289,9 +289,13 @@ class PaymentComponentSubjectTests: XCTestCase {
                 return
             }
 
-            XCTAssertTrue(jsonString.contains("\"channel\":\"ios\""), "SDKData should contain channel field")
-            XCTAssertTrue(jsonString.contains("\"platform\""), "SDKData should contain platform field")
-            XCTAssertTrue(jsonString.contains("\"sdkVersion\""), "SDKData should contain sdkVersion field")
+            let expectedChannel = "\"channel\":\"\(checkoutPlatformParams.channel)\""
+            let expectedPlatform = "\"platform\":\"\(checkoutPlatformParams.platform.rawValue)\""
+            let expectedSdkVersion = "\"sdkVersion\":\"\(checkoutPlatformParams.version)\""
+
+            XCTAssertTrue(jsonString.contains(expectedChannel), "SDKData should contain channel: \(checkoutPlatformParams.channel)")
+            XCTAssertTrue(jsonString.contains(expectedPlatform), "SDKData should contain platform: \(checkoutPlatformParams.platform.rawValue)")
+            XCTAssertTrue(jsonString.contains(expectedSdkVersion), "SDKData should contain sdkVersion: \(checkoutPlatformParams.version)")
             didSubmitExpectation.fulfill()
         }
 
@@ -318,15 +322,22 @@ class PaymentComponentSubjectTests: XCTestCase {
         let didSubmitExpectation = expectation(description: "didSubmit should get called")
 
         // Then
-        paymentComponentDelegate.onDidSubmit = { data, _ in
+        paymentComponentDelegate.onDidSubmit = {
+            data,
+            _ in
             guard let sdkDataString = data.paymentMethod.sdkData,
                   let decodedData = Data(base64Encoded: sdkDataString),
                   let jsonString = String(data: decodedData, encoding: .utf8) else {
                 XCTFail("SDKData should be present and decodable to a string")
                 return
             }
-
-            XCTAssertTrue(jsonString.contains("\"paymentMethodBehavior\":\"genericComponent\""), "InstantPaymentComponent should use genericComponent behavior")
+            
+            XCTAssertTrue(
+                jsonString.contains(
+                    "\"paymentMethodBehavior\":\"genericComponent\""
+                ),
+                "InstantPaymentComponent should use genericComponent behavior"
+            )
             didSubmitExpectation.fulfill()
         }
 
