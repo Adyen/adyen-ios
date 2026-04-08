@@ -22,7 +22,11 @@ public struct SDKData: Codable {
     }
 
     internal enum PaymentMethodBehavior: String, Codable {
+        /// Indicates that the SDK has a specific component for this payment method.
         case nativeComponent
+
+        /// Indicates that the SDK does not have native component support for this payment method
+        /// and will handle it through the Instant Payment Component.
         case genericComponent
     }
 
