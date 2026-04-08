@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
 #endif
 
 /// A component that provides a form for stored card payments.
