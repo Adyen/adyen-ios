@@ -164,7 +164,14 @@ extension CheckoutConfiguration {
         return copy
     }
 
-    /// Sets the localization provider for checkout components.
+    /// Sets a custom localization provider for programmatic string overrides.
+    ///
+    /// The provider is called for each string the SDK renders. Return a non-`nil` value
+    /// to override the default, or return `nil` to let the SDK's standard localization
+    /// fallback chain handle the key (app bundle → SDK bundle → English).
+    ///
+    /// - Note: To add support for a *completely new language*, place a `.strings` or
+    ///   `.xcstrings` file with `adyen.*` keys in your app bundle instead of using this provider.
     public func localizationProvider(_ localizationProvider: any CheckoutLocalizationProvider) -> Self {
         var copy = self
         copy.localizationProvider = localizationProvider

@@ -70,7 +70,19 @@ public enum CheckoutLocalizationKey: String, CaseIterable, Equatable {
 
 // swiftlint:enable identifier_name
 
-/// Interface to provide custom localized strings for Adyen Checkout UI
+/// An interface for providing selective programmatic overrides of Adyen Checkout UI strings.
+///
+/// Use this provider when you need to override a small number of strings.
+/// Return a non-`nil` value only for the keys you want to override;
+/// returning `nil` will let the SDK apply its normal localization fallback chain.
+///
+/// ## Adding support for a completely new language
+/// This protocol is not the recommended path for adding a language that the SDK does not ship.
+/// Instead, place a `.strings` or `.xcstrings` file in your app bundle with the `adyen.*` keys
+/// translated into the target language. The SDK resolves strings from `Bundle.main` first,
+/// so your translations are picked up automatically with no provider required.
+///
+// TODO: Provide reference doc/link to the file with all SDK keys
 public protocol CheckoutLocalizationProvider {
     func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String?
 }

@@ -268,4 +268,24 @@ class LocalizationTests: XCTestCase {
         XCTAssertEqual(localizedString(LocalizationKey(key: "any.key.1"), parameters, "test"), "value 1 test")
         XCTAssertEqual(localizedString(LocalizationKey(key: "any.key.2"), parameters), "value 2")
     }
+
+    // MARK: - New language support via merchant app bundle
+
+    /// Validates the recommended path for adding a language the SDK does not ship:
+    /// merchants place `.strings` or `.xcstrings` with `adyen.*` keys in their app bundle
+    /// and the SDK resolves them automatically — no `CheckoutLocalizationProvider` is required.
+    func test_newLanguageSupport_usingMerchantBundle_shouldResolveFromBundleWithoutProvider() {
+        // Simulates a merchant app bundle that provides Hindi translations.
+        // Hindi is not shipped by the SDK, so it represents any newly added language.
+        let parameters = LocalizationParameters(
+            enforcedLocale: "hi",
+            bundle: Bundle(for: LocalizationTests.self)
+        )
+
+        // Keys present in the merchant bundle resolve to the merchant's translations.
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "TestBundle - Verify your card - HI")
+
+        // Keys absent from the merchant bundle fall back to the SDK's English strings.
+        XCTAssertEqual(localizedString(.submitButton, parameters), "Pay")
+    }
 }
