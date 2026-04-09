@@ -98,7 +98,7 @@ final class DualBrandAccessoryViewTests: XCTestCase {
         ]
         sut.updateCurrentLogos(dualBrandLogos, mode: .dualSelectable)
         
-        XCTAssertEqual(sut.selectedBrand, .primary, "Default selection should be primary")
+        XCTAssertEqual(sut.currentSelection, .primary, "Default selection should be primary")
     }
     
     func testDualBrand_segmentedPickerAppearance() throws {
