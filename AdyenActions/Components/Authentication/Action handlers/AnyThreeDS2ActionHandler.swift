@@ -59,7 +59,7 @@ internal func createDefaultThreeDS2CoreActionHandler(
     context: AdyenContext,
     service: ThreeDSService,
     theme: CheckoutTheme,
-    delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication?
+    delegatedAuthenticationConfiguration: AuthenticationConfiguration.DelegatedAuthentication?
 ) -> AnyThreeDS2CoreActionHandler {
     #if canImport(AdyenAuthentication)
         if let delegatedAuthenticationConfiguration {

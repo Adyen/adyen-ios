@@ -38,7 +38,7 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
         public var style: ActionComponentStyle = .init()
         
         /// Three DS configuration.
-        public var threeDS: ThreeDS2ActionConfiguration
+        public var threeDS: AuthenticationConfiguration
         
         /// Twint configuration.
         public var twint: TwintActionConfiguration?
@@ -53,7 +53,7 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
         public init(
             localizationParameters: LocalizationParameters? = nil,
             style: ActionComponentStyle = .init(),
-            threeDS: ThreeDS2ActionConfiguration = .init(),
+            threeDS: AuthenticationConfiguration = .init(),
             twint: TwintActionConfiguration? = nil
         ) {
             self.localizationParameters = localizationParameters

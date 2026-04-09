@@ -20,7 +20,7 @@ extension ThreeDS2CompactActionHandler {
         context: AdyenContext,
         service: ThreeDSService,
         theme: CheckoutTheme,
-        delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication?
+        delegatedAuthenticationConfiguration: AuthenticationConfiguration.DelegatedAuthentication?
     ) {
         
         let fingerprintSubmitter = ThreeDS2FingerprintSubmitter(context: context)

@@ -10,43 +10,43 @@ import XCTest
 
 final class ActionConfigurationTests: XCTestCase {
     
-    // MARK: - ThreeDS2ActionConfiguration Tests
+    // MARK: - AuthenticationConfiguration Tests
     
-    func testThreeDS2ActionConfigurationDefaultInitialization() {
-        let config = ThreeDS2ActionConfiguration()
+    func testAuthenticationConfigurationDefaultInitialization() {
+        let config = AuthenticationConfiguration()
         
         XCTAssertNil(config.requestorAppURL)
         XCTAssertNil(config.delegatedAuthentication)
     }
     
-    func testThreeDS2ActionConfigurationRequestorAppURLBuilder() throws {
+    func testAuthenticationConfigurationRequestorAppURLBuilder() throws {
         let expectedURL = try XCTUnwrap(URL(string: "https://example.com"))
         
-        let config = ThreeDS2ActionConfiguration()
+        let config = AuthenticationConfiguration()
             .requestorAppURL(expectedURL)
         
         XCTAssertEqual(config.requestorAppURL, expectedURL)
     }
     
-    func testThreeDS2ActionConfigurationDelegatedAuthenticationBuilder() {
-        let delegatedAuth = ThreeDS2ActionConfiguration.DelegatedAuthentication(
+    func testAuthenticationConfigurationDelegatedAuthenticationBuilder() {
+        let delegatedAuth = AuthenticationConfiguration.DelegatedAuthentication(
             relyingPartyIdentifier: "example.com"
         )
         
-        let config = ThreeDS2ActionConfiguration()
+        let config = AuthenticationConfiguration()
             .delegatedAuthentication(delegatedAuth)
         
         XCTAssertNotNil(config.delegatedAuthentication)
         XCTAssertEqual(config.delegatedAuthentication?.relyingPartyIdentifier, "example.com")
     }
     
-    func testThreeDS2ActionConfigurationChainedBuilders() throws {
+    func testAuthenticationConfigurationChainedBuilders() throws {
         let expectedURL = try XCTUnwrap(URL(string: "https://example.com"))
-        let delegatedAuth = ThreeDS2ActionConfiguration.DelegatedAuthentication(
+        let delegatedAuth = AuthenticationConfiguration.DelegatedAuthentication(
             relyingPartyIdentifier: "example.com"
         )
         
-        let config = ThreeDS2ActionConfiguration()
+        let config = AuthenticationConfiguration()
             .requestorAppURL(expectedURL)
             .delegatedAuthentication(delegatedAuth)
         
@@ -56,7 +56,7 @@ final class ActionConfigurationTests: XCTestCase {
     }
     
     func testDelegatedAuthenticationInitialization() {
-        let delegatedAuth = ThreeDS2ActionConfiguration.DelegatedAuthentication(
+        let delegatedAuth = AuthenticationConfiguration.DelegatedAuthentication(
             relyingPartyIdentifier: "test.example.com"
         )
         

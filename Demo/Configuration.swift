@@ -77,7 +77,7 @@ internal enum ConfigurationConstants {
         "remarks": "Remark on mandate"
     ]
     
-    static var delegatedAuthenticationConfigurations: ThreeDS2ActionConfiguration.DelegatedAuthentication {
+    static var delegatedAuthenticationConfigurations: AuthenticationConfiguration.DelegatedAuthentication {
         .init(relyingPartyIdentifier: "test-authentication-adyen.netlify.app")
     }
 
