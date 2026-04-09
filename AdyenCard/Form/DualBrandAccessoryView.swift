@@ -40,7 +40,7 @@ internal class DualBrandAccessoryView: UIView {
     
     internal let childItemViews: [any AnyFormItemView] = []
     
-    internal private(set) var selectedBrand: BrandSelection = .primary
+    internal private(set) var currentSelection: BrandSelection = .primary
     
     internal var onBrandSelection: ((BrandSelection) -> Void)?
     
@@ -185,7 +185,7 @@ internal class DualBrandAccessoryView: UIView {
             segmentedBackground.isHidden = false
             primaryOptionView.addGestureRecognizer(primaryTapGesture)
             secondaryOptionView.addGestureRecognizer(secondaryTapGesture)
-            selectedBrand = .primary
+            currentSelection = .primary
             updateSelectionAppearance()
         }
         
@@ -212,31 +212,15 @@ internal class DualBrandAccessoryView: UIView {
     }
     
     private func select(_ brand: BrandSelection) {
-        guard selectedBrand != brand else { return }
-        selectedBrand = brand
+        guard currentSelection != brand else { return }
+        currentSelection = brand
         UIView.animate(withDuration: Constants.animationDuration) { self.updateSelectionAppearance() }
         onBrandSelection?(brand)
     }
     
     private func updateSelectionAppearance() {
-        applySelectionStyle(to: primaryOptionView, selected: selectedBrand == .primary)
-        applySelectionStyle(to: secondaryOptionView, selected: selectedBrand == .secondary)
-    }
-    
-    private func applySelectionStyle(to view: UIView, selected: Bool) {
-        if selected {
-            view.backgroundColor = UIColor.Adyen.componentBackground
-            view.layer.shadowColor = UIColor.black.cgColor
-            view.layer.shadowOffset = Constants.selectedShadowOffset
-            view.layer.shadowRadius = Constants.selectedShadowRadius
-            view.layer.shadowOpacity = Constants.selectedShadowOpacity
-            view.layer.borderWidth = Constants.selectedBorderWidth
-            view.layer.borderColor = Constants.selectedBorderColor.cgColor
-        } else {
-            view.backgroundColor = .clear
-            view.layer.shadowOpacity = 0
-            view.layer.borderWidth = 0
-        }
+        applySelectionStyle(to: primaryOptionView, selected: currentSelection == .primary)
+        applySelectionStyle(to: secondaryOptionView, selected: currentSelection == .secondary)
     }
     
     // MARK: - State Management
@@ -244,7 +228,7 @@ internal class DualBrandAccessoryView: UIView {
     private func resetState() {
         primaryLogoUrl = nil
         secondaryLogoUrl = nil
-        selectedBrand = .primary
+        currentSelection = .primary
         
         primaryLogoView.image = Constants.placeholderImage
         secondaryLogoView.image = Constants.placeholderImage
@@ -373,5 +357,21 @@ extension DualBrandAccessoryView {
         imageView.widthAnchor.constraint(equalToConstant: Constants.iconSize.width).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: Constants.iconSize.height).isActive = true
         return imageView
+    }
+    
+    private func applySelectionStyle(to view: UIView, selected: Bool) {
+        if selected {
+            view.backgroundColor = UIColor.Adyen.componentBackground
+            view.layer.shadowColor = UIColor.black.cgColor
+            view.layer.shadowOffset = Constants.selectedShadowOffset
+            view.layer.shadowRadius = Constants.selectedShadowRadius
+            view.layer.shadowOpacity = Constants.selectedShadowOpacity
+            view.layer.borderWidth = Constants.selectedBorderWidth
+            view.layer.borderColor = Constants.selectedBorderColor.cgColor
+        } else {
+            view.backgroundColor = .clear
+            view.layer.shadowOpacity = 0
+            view.layer.borderWidth = 0
+        }
     }
 }
