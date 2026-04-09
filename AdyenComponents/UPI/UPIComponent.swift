@@ -323,7 +323,7 @@ extension UPIComponent {
         self.updateSelection()
 
         let selectedUPIApp = availableUPIApps.first { $0.identifier == item?.identifier }
-        sendSelectionEvent(for: selectedUPIApp)
+        sendUPIIntentAppSelectionEvent(for: selectedUPIApp)
     }
 
     private func didSelectContinueButton() {
@@ -375,13 +375,20 @@ internal extension UPIComponent {
 
 private extension UPIComponent {
 
-    enum Analytics {
-        static let upiAppsComponent = "upi_intent"
+    func sendDisplayedEventForCurrentFlow() {
+        switch selectedUPIFlow {
+        case .upiIntent, .upiApps:
+            sendUPIIntentDisplayedEvent()
+        case .upiCollect:
+            sendUPICollectDisplayedEvent()
+        default:
+            break
+        }
     }
 
-    func sendUPIAppsDisplayedEvent() {
+    func sendUPIIntentDisplayedEvent() {
         var eventInfo = AnalyticsEventInfo(
-            component: Analytics.upiAppsComponent,
+            component: UPIFlowType.upiIntent.value,
             type: .displayed
         )
         eventInfo.target = installedUPIApps.isEmpty ? .issuerList : .listDetected
@@ -389,14 +396,22 @@ private extension UPIComponent {
         context.analyticsProvider?.add(info: eventInfo)
     }
 
-    func sendSelectionEvent(for issuer: Issuer?) {
+    func sendUPIIntentAppSelectionEvent(for issuer: Issuer?) {
         guard let issuer else { return }
         var eventInfo = AnalyticsEventInfo(
-            component: Analytics.upiAppsComponent,
+            component: UPIFlowType.upiIntent.value,
             type: .selected
         )
         eventInfo.target = installedUPIApps.isEmpty ? .issuerList : .listDetected
         eventInfo.issuer = issuer.identifier
+        context.analyticsProvider?.add(info: eventInfo)
+    }
+
+    func sendUPICollectDisplayedEvent() {
+        let eventInfo = AnalyticsEventInfo(
+            component: UPIFlowType.upiCollect.value,
+            type: .displayed
+        )
         context.analyticsProvider?.add(info: eventInfo)
     }
 }
@@ -434,7 +449,6 @@ private extension UPIComponent {
             collectInstructionsLabelItem.isVisible = false
             vpaInputItem.isVisible = false
             formViewController.view.endEditing(true)
-            sendUPIAppsDisplayedEvent()
         case .upiCollect, .qrCode:
             upiAppsList.forEach { $0.isHidden.wrappedValue = true }
             intentInstructionsLabelItem.isVisible = false
@@ -445,6 +459,7 @@ private extension UPIComponent {
         }
 
         hideError()
+        sendDisplayedEventForCurrentFlow()
     }
 
     func focusVpaInput() {
@@ -524,6 +539,6 @@ extension UPIComponent: ViewControllerDelegate {
     }
 
     public func viewDidAppear(viewController: UIViewController) {
-        sendUPIAppsDisplayedEvent()
+        updateInterface()
     }
 }
