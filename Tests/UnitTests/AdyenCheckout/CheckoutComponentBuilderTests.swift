@@ -272,10 +272,10 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         }
 
         let locale = Locale(identifier: "nl-NL")
-        XCTAssertEqual(localizationProvider.localizedString(.cardNumber, locale: locale), "Localized card number")
+        XCTAssertEqual(localizationProvider.localizedString(CheckoutLocalizationKey.cardNumber, locale: locale), "Localized card number")
         XCTAssertEqual(provider.recordedCalls.count, 1)
         XCTAssertEqual(provider.recordedCalls.first?.locale.identifier, locale.identifier)
-        XCTAssertEqual(provider.recordedCalls.first?.key, .cardNumber)
+        XCTAssertEqual(provider.recordedCalls.first?.key, CheckoutLocalizationKey.cardNumber)
     }
     
     // MARK: - ACH Direct Debit Component Tests

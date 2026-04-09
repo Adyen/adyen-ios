@@ -201,23 +201,53 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
 }
 
-// MARK: - DemoLocalizationProvider
+// MARK: - Localization Provider Examples
 
-/// Demonstrates selective string overrides via `CheckoutLocalizationProvider`.
-///
-/// This is the recommended pattern when you need to replace a small number of
-/// strings programmatically (e.g. from a remote config or translation pipeline).
-///
-/// To add support for a *completely new language*, place a `.strings` or `.xcstrings` file
-/// with the `adyen.*` keys in your app bundle instead — no provider needed.
+// Two grouping patterns for ``CheckoutLocalizationProvider``.
+// Choose the one that best fits your data source.
+//
+// To add support for a *completely new language*, place a `.strings` or `.xcstrings` file
+// with the `adyen.*` keys in your app bundle instead — no provider needed.
+
+/// Pattern 1 (active): group by key — co-locates all locale variants for each string.
+/// Natural when you maintain a small, curated list of overrides.
 private struct DemoLocalizationProvider: CheckoutLocalizationProvider {
 
+    private let overrides: [CheckoutLocalizationKey: [String: String]] = [
+        .cardNumber: [
+            "en": "Custom Card Number",
+            "nl": "Kaartnummer (Aangepast)"
+        ],
+        .cardHolderName: [
+            "en": "Name on card",
+            "nl": "Naam op kaart"
+        ]
+    ]
+
     func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String? {
-        switch (key, locale.languageCode) {
-        case (.cardNumber, "en"): return "Custom Card Number (EN)"
-        case (.cardNumber, "nl"): return "Kaartnummer (Aangepast)"
-        default: return nil
-        }
+        guard let languageCode = locale.languageCode else { return nil }
+        return overrides[key]?[languageCode]
+    }
+}
+
+/// Pattern 2: group by locale — co-locates all keys for each language.
+/// Natural when you fetch a full locale bundle from a remote config system.
+private struct DemoLocaleGroupedProvider: CheckoutLocalizationProvider {
+
+    private let overrides: [String: [CheckoutLocalizationKey: String]] = [
+        "en": [
+            .cardNumber: "Custom Card Number",
+            .cardHolderName: "Name on card"
+        ],
+        "nl": [
+            .cardNumber: "Kaartnummer (Aangepast)",
+            .cardHolderName: "Naam op kaart"
+        ]
+    ]
+
+    func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String? {
+        guard let languageCode = locale.languageCode else { return nil }
+        return overrides[languageCode]?[key]
     }
 }
 
