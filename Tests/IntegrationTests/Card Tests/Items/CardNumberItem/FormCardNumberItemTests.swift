@@ -260,15 +260,15 @@ class FormCardNumberItemTests: XCTestCase {
         XCTAssertEqual(sut.currentBrand?.type, .visa, "Single mode should return selectedBrand")
     }
     
-    func testCurrentBrand_dualDisplay_returnsNil() {
+    func testCurrentBrand_dualUnselectable_returnsNil() {
         let sut = FormCardNumberItem(cardTypeLogos: [])
         let visa = CardBrand(type: .visa)
         let bcmc = CardBrand(type: .bcmc)
         
         sut.update(brands: [visa, bcmc])
-        sut.brandDisplayMode = .dualDisplay
+        sut.brandDisplayMode = .dualUnselectable
         
-        XCTAssertNil(sut.currentBrand, "dualDisplay mode should return nil per spec")
+        XCTAssertNil(sut.currentBrand, "dualUnselectable mode should return nil per spec")
     }
     
     func testCurrentBrand_dualSelectable_returnsSelectedBrand() {
@@ -322,7 +322,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         sut.update(brands: [visa])
         sut.brandDisplayMode = .single
-        sut.isLocalBrand = true
+        sut.isBrandDetectedLocally = true
         
         XCTAssertNil(sut.currentBrand, "Local (regex) brand should not be included in payment request")
         XCTAssertEqual(sut.selectedBrand?.type, .visa, "selectedBrand should still be set for validation/logo display")
@@ -364,15 +364,15 @@ class FormCardNumberContainerItemTests: XCTestCase {
         XCTAssertTrue(sut.brandDescriptionItem.isHidden.wrappedValue, "Brand description should be hidden in single mode")
     }
     
-    func testBrandDescription_dualDisplay_staysHidden() {
+    func testBrandDescription_dualUnselectable_staysHidden() {
         let sut = makeContainerItem()
         let visa = makeSupportedBrand(.visa)
         let bcmc = makeSupportedBrand(.bcmc)
         
-        sut.numberItem.brandDisplayMode = .dualDisplay
+        sut.numberItem.brandDisplayMode = .dualUnselectable
         sut.update(brands: [visa, bcmc])
         
-        XCTAssertTrue(sut.brandDescriptionItem.isHidden.wrappedValue, "Brand description should be hidden in dualDisplay mode")
+        XCTAssertTrue(sut.brandDescriptionItem.isHidden.wrappedValue, "Brand description should be hidden in dualUnselectable mode")
     }
     
     func testBrandDescription_dualSelectable_inactive_invalidNumber_staysHidden() {

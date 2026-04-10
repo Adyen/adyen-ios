@@ -172,7 +172,7 @@ internal class DualBrandAccessoryView: UIView {
             setOptionPadding(0)
             setSecondaryVisible(false)
             
-        case .dualDisplay:
+        case .dualUnselectable:
             NSLayoutConstraint.activate(singleBrandConstraints)
             setOptionPadding(0)
             setSecondaryVisible(true)

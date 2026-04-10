@@ -232,7 +232,7 @@ internal class CardViewController: FormViewController {
             brands = response.brands ?? []
         }
         
-        cardNumberItem.isLocalBrand = response.isCreatedLocally
+        cardNumberItem.isBrandDetectedLocally = response.isCreatedLocally
         updateBrandDisplayMode(for: brands, isLocal: response.isCreatedLocally)
         
         issuingCountryCode = response.issuingCountryCode
@@ -261,7 +261,7 @@ internal class CardViewController: FormViewController {
             cardNumberItem.brandDisplayMode = .dualSelectable
             triggerBrandEvent(of: .displayed, brands: brands)
         } else if isDualBranded {
-            cardNumberItem.brandDisplayMode = .dualDisplay
+            cardNumberItem.brandDisplayMode = .dualUnselectable
         } else {
             cardNumberItem.brandDisplayMode = .single
         }

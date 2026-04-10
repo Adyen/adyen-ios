@@ -158,15 +158,15 @@ final class DualBrandAccessoryViewTests: XCTestCase {
             FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa),
             FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), type: .bcmc)
         ]
-        sut.updateCurrentLogos(dualBrandLogos, mode: .dualDisplay)
+        sut.updateCurrentLogos(dualBrandLogos, mode: .dualUnselectable)
         
-        XCTAssertFalse(sut.secondaryLogoView.isHidden, "Secondary logo should be visible in dualDisplay")
+        XCTAssertFalse(sut.secondaryLogoView.isHidden, "Secondary logo should be visible in dualUnselectable")
         
         let backgroundView = sut.subviews.first { $0.layer.cornerRadius == 8 }
-        XCTAssertTrue(backgroundView?.isHidden ?? true, "Segmented background should be hidden in dualDisplay")
+        XCTAssertTrue(backgroundView?.isHidden ?? true, "Segmented background should be hidden in dualUnselectable")
         
-        XCTAssertTrue(sut.primaryLogoView.superview?.gestureRecognizers?.isEmpty ?? true, "No gesture recognizers in dualDisplay")
-        XCTAssertTrue(sut.secondaryLogoView.superview?.gestureRecognizers?.isEmpty ?? true, "No gesture recognizers in dualDisplay")
+        XCTAssertTrue(sut.primaryLogoView.superview?.gestureRecognizers?.isEmpty ?? true, "No gesture recognizers in dualUnselectable")
+        XCTAssertTrue(sut.secondaryLogoView.superview?.gestureRecognizers?.isEmpty ?? true, "No gesture recognizers in dualUnselectable")
     }
     
     func testSingleMode_showsOnlyPrimaryLogo() throws {
@@ -196,19 +196,19 @@ final class DualBrandAccessoryViewTests: XCTestCase {
         let backgroundView = sut.subviews.first { $0.layer.cornerRadius == 8 }
         XCTAssertFalse(backgroundView?.isHidden ?? true, "Background should be visible in dualSelectable")
         
-        sut.updateCurrentLogos(dualBrandLogos, mode: .dualDisplay)
+        sut.updateCurrentLogos(dualBrandLogos, mode: .dualUnselectable)
         
-        XCTAssertTrue(sut.primaryLogoView.superview?.gestureRecognizers?.isEmpty ?? true, "Gestures should be removed after switching to dualDisplay")
-        XCTAssertTrue(backgroundView?.isHidden ?? true, "Background should be hidden after switching to dualDisplay")
-        XCTAssertFalse(sut.secondaryLogoView.isHidden, "Secondary logo should still be visible in dualDisplay")
+        XCTAssertTrue(sut.primaryLogoView.superview?.gestureRecognizers?.isEmpty ?? true, "Gestures should be removed after switching to dualUnselectable")
+        XCTAssertTrue(backgroundView?.isHidden ?? true, "Background should be hidden after switching to dualUnselectable")
+        XCTAssertFalse(sut.secondaryLogoView.isHidden, "Secondary logo should still be visible in dualUnselectable")
     }
     
-    func testTransition_dualDisplayToSingle_hidesSecondary() throws {
+    func testTransition_dualUnselectableToSingle_hidesSecondary() throws {
         let dualBrandLogos = try [
             FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa),
             FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), type: .bcmc)
         ]
-        sut.updateCurrentLogos(dualBrandLogos, mode: .dualDisplay)
+        sut.updateCurrentLogos(dualBrandLogos, mode: .dualUnselectable)
         XCTAssertFalse(sut.secondaryLogoView.isHidden)
         
         let singleBrandLogo = try [

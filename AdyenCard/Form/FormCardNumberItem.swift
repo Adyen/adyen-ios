@@ -51,21 +51,21 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     
     internal enum BrandDisplayMode: Equatable {
         case single
-        case dualDisplay
+        case dualUnselectable
         case dualSelectable
     }
     
     /// Returns the brand to include in the payment request.
-    /// Returns `nil` for local (regex) brands and `.dualDisplay` mode.
+    /// Returns `nil` for locally detected brands and `.dualUnselectable` mode.
     internal var currentBrand: CardBrand? {
-        guard !isLocalBrand else { return nil }
-        return brandDisplayMode == .dualDisplay ? nil : selectedBrand
+        guard !isBrandDetectedLocally else { return nil }
+        return brandDisplayMode == .dualUnselectable ? nil : selectedBrand
     }
     
     internal var brandDisplayMode: BrandDisplayMode = .single
     
-    /// Boolean value to determine whether the detected brand is local, from regex.
-    internal var isLocalBrand = false
+    /// Whether the detected brand came from local (regex) detection rather than a server BIN lookup.
+    internal var isBrandDetectedLocally = false
     
     internal var onUserBrandSelection: ((CardBrand) -> Void)?
 
