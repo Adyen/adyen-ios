@@ -123,7 +123,10 @@ let package = Package(
                 .product(name: "Adyen3DS2", package: "adyen-3ds2-ios")
             ],
             path: "AdyenActions",
-            exclude: ["Info.plist"]
+            exclude: [
+                "Info.plist",
+                "Utilities/Non SPM Bundle Extension" // This is to exclude `BundleExtension.swift` file, since swift packages has different code to access internal resources.
+            ]
         ),
         .target(
             name: "AdyenCard",
