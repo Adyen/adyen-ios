@@ -48,7 +48,7 @@ jobs:
         echo "$PR_BODY" >> "${{ github.workspace }}/release_content.md"
         
     - name: Create Release
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
         body_path: "${{ github.workspace }}/release_content.md"
         draft: true
