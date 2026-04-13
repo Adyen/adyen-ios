@@ -37,9 +37,9 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
         /// The UI style configurations.
         public var style: ActionComponentStyle = .init()
         
-        /// Three DS configuration.
-        public var threeDS: ThreeDS2ActionConfiguration
-        
+        /// Authentication configuration.
+        public var authentication: AuthenticationConfiguration
+
         /// Twint configuration.
         public var twint: TwintActionConfiguration?
         
@@ -48,17 +48,17 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
         /// - Parameters:
         ///   - localizationParameters: Localization parameters.
         ///   - style: The UI style configurations.
-        ///   - threeDS: Three DS configurations.
+        ///   - authentication: Authentication configuration.
         ///   - twint: Twint configurations.
         public init(
             localizationParameters: LocalizationParameters? = nil,
             style: ActionComponentStyle = .init(),
-            threeDS: ThreeDS2ActionConfiguration = .init(),
+            authentication: AuthenticationConfiguration = .init(),
             twint: TwintActionConfiguration? = nil
         ) {
             self.localizationParameters = localizationParameters
             self.style = style
-            self.threeDS = threeDS
+            self.authentication = authentication
             self.twint = twint
         }
     }
@@ -148,7 +148,7 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
     private func createThreeDS2Component() -> ThreeDS2Component {
         let component = ThreeDS2Component(
             context: context,
-            configuration: configuration.threeDS
+            configuration: configuration.authentication
         )
         component._isDropIn = _isDropIn
         component.delegate = delegate

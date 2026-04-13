@@ -63,7 +63,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
                 .onBinLookup { brands in
                     print("Bin lookup response \(brands)")
                 }
-            ThreeDS2ActionConfiguration()
+            AuthenticationConfiguration()
                 .requestorAppURL(ConfigurationConstants.returnUrl)
         }
         .onComplete { [weak self] result in

@@ -95,8 +95,8 @@ public extension DropInComponent {
         public init() { /* Empty initializer */ }
         
         /// Three DS configurations
-        public var threeDS: ThreeDS2ActionConfiguration = .init()
-        
+        public var authentication: AuthenticationConfiguration = .init()
+
         /// Twint configurations
         public var twint: TwintActionConfiguration?
     }

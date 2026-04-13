@@ -10,8 +10,8 @@
 #endif
 import Foundation
 
-/// Configuration for 3D Secure 2 action handling.
-public struct ThreeDS2ActionConfiguration: CheckoutComponentConfiguration {
+/// Configuration for Authentication related actions, such as 3D Secure 2.
+public struct AuthenticationConfiguration: CheckoutComponentConfiguration {
     
     package let componentType: CheckoutComponentType = .action(.threeDS2)
     
@@ -30,8 +30,8 @@ public struct ThreeDS2ActionConfiguration: CheckoutComponentConfiguration {
     package var delegatedAuthentication: DelegatedAuthentication?
 
     /// Configuration for Delegated Authentication in 3D Secure 2.
-    public struct DelegatedAuthentication {
-        
+    package struct DelegatedAuthentication {
+
         /// The relying party identifier that is used for PassKeys.
         /// See: https://developer.apple.com/documentation/xcode/supporting-associated-domains
         /// See: https://developer.apple.com/documentation/authenticationservices/public-private_key_authentication/supporting_passkeys
@@ -47,20 +47,20 @@ public struct ThreeDS2ActionConfiguration: CheckoutComponentConfiguration {
         ///
         /// - Parameters:
         ///   - relyingPartyIdentifier: The relying party identifier that is used for PassKeys.
-        public init(relyingPartyIdentifier: String) {
+        package init(relyingPartyIdentifier: String) {
             self.relyingPartyIdentifier = relyingPartyIdentifier
             self.style = DelegatedAuthenticationComponentStyle()
         }
     }
     
-    /// Initializes a new instance of ThreeDS2ActionConfiguration
+    /// Initializes a new instance of AuthenticationConfiguration
     public init(theme: CheckoutTheme = .default) {
         self.theme = theme
         self.showsSubmitButton = false
     }
 }
 
-extension ThreeDS2ActionConfiguration {
+extension AuthenticationConfiguration {
     
     /// Sets the `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges.
     /// - Parameter requestorAppURL: The requestor app URL.
@@ -70,11 +70,12 @@ extension ThreeDS2ActionConfiguration {
         copy.requestorAppURL = requestorAppURL
         return copy
     }
-    
+
+    // TODO: Robert: ThreeDSComponent: This can be removed from the public interface and can be introduced later.
     /// Sets the configuration for Delegated Authentication.
     /// - Parameter delegatedAuthentication: The delegated authentication configuration.
     /// - Returns: A modified copy of the configuration.
-    public func delegatedAuthentication(_ delegatedAuthentication: DelegatedAuthentication) -> Self {
+    package func delegatedAuthentication(_ delegatedAuthentication: DelegatedAuthentication) -> Self {
         var copy = self
         copy.delegatedAuthentication = delegatedAuthentication
         return copy
