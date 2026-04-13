@@ -39,6 +39,7 @@ public class FormLabelItem: FormItem {
         label.textAlignment = style.textAlignment
         label.backgroundColor = style.backgroundColor
         label.adyen.round(using: style.cornerRounding)
+        label.isHidden = isHidden.wrappedValue
         return label
     }
 }

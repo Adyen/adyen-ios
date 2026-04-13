@@ -750,7 +750,7 @@ class CardComponentTests: XCTestCase {
         // no focus change without panglength till max (19)
         
         var newResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress)])
-        sut.cardViewController.update(binInfo: newResponse)
+        sut.cardViewController.handleBinLookupResponse(newResponse)
         cardNumberItemView.becomeFirstResponder()
         
         XCTAssertTrue(cardNumberItemView.isFirstResponder)
@@ -762,7 +762,7 @@ class CardComponentTests: XCTestCase {
         
         // focus should change with pan length set
         newResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress, panLength: 15)])
-        sut.cardViewController.update(binInfo: newResponse)
+        sut.cardViewController.handleBinLookupResponse(newResponse)
         cardNumberItemView.becomeFirstResponder()
         
         wait(until: cardNumberItemView, at: \.isFirstResponder, is: true)
@@ -774,7 +774,7 @@ class CardComponentTests: XCTestCase {
 
         // focus should also change when reaching default max length 19
         newResponse = BinLookupResponse(brands: [CardBrand(type: .maestro)])
-        sut.cardViewController.update(binInfo: newResponse)
+        sut.cardViewController.handleBinLookupResponse(newResponse)
         cardNumberItemView.becomeFirstResponder()
         
         wait(until: cardNumberItemView, at: \.isFirstResponder, is: true)
@@ -973,7 +973,7 @@ class CardComponentTests: XCTestCase {
         tapSubmitButton(on: sut.viewController.view)
         
         let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: false)])
-        sut.cardViewController.update(binInfo: newResponse)
+        sut.cardViewController.handleBinLookupResponse(newResponse)
 
         wait(until: brazilSSNItemView, at: \.isHidden, is: true)
 
@@ -995,7 +995,7 @@ class CardComponentTests: XCTestCase {
         
         // config is always hide, so item is not added to view
         let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: true)])
-        sut.cardViewController.update(binInfo: newResponse)
+        sut.cardViewController.handleBinLookupResponse(newResponse)
         
         XCTAssertNil(brazilSSNItemView)
     }
@@ -1017,12 +1017,12 @@ class CardComponentTests: XCTestCase {
         
         // config is always show, so bin response is ignored
         let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: false)])
-        sut.cardViewController.update(binInfo: newResponse)
+        sut.cardViewController.handleBinLookupResponse(newResponse)
         
         XCTAssertFalse(try XCTUnwrap(brazilSSNItemView?.isHidden))
     }
 
-    func testLuhnCheck() throws {
+    func testLuhnCheck() {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
@@ -1041,7 +1041,7 @@ class CardComponentTests: XCTestCase {
         cardNumberItem.value = "4111 1111 1111 1111"
         XCTAssertTrue(cardNumberItem.isValid())
 
-        try cardNumberItem.selectBrand(cardBrand: XCTUnwrap(brands.last))
+        cardNumberItem.selectBrand(from: .secondary)
         XCTAssertTrue(cardNumberItem.isValid())
         cardNumberItem.value = "4111 1111 1111"
         XCTAssertTrue(cardNumberItem.isValid())
@@ -1069,7 +1069,7 @@ class CardComponentTests: XCTestCase {
         fillCard(on: sut.viewController.view, with: Dummy.visaCard)
         
         let binResponse = BinLookupResponse(brands: [CardBrand(type: .visa, isSupported: true)])
-        sut.cardViewController.update(binInfo: binResponse)
+        sut.cardViewController.handleBinLookupResponse(binResponse)
 
         wait(until: supportedCardLogosItem, at: \.isHidden, is: true)
     }
@@ -1403,141 +1403,6 @@ class CardComponentTests: XCTestCase {
         numberItem.isActive = false
         wait(for: .aMoment) // Logo item view should still be hidden after waiting a bit
         XCTAssertFalse(logoItemView.isHidden)
-    }
-
-    func testCoBadgedCardsSelectionUIVisibilityForEU() throws {
-        // Given
-
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: CardComponent.Configuration()
-        )
-
-        sut.viewController.loadViewIfNeeded()
-
-        let newResponse = BinLookupResponse(brands: [CardBrand(type: .visa), CardBrand(type: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
-
-        try sut.cardViewController.showCoBadgedCardsUI(for: XCTUnwrap(newResponse.brands))
-
-        wait(for: .aMoment)
-
-        // Then
-        XCTAssertFalse(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
-    }
-
-    func testCoBadgedCardsSelectionUIHiddenForAU() throws {
-        // Given
-
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: CardComponent.Configuration()
-        )
-
-        sut.viewController.loadViewIfNeeded()
-
-        let newResponse = BinLookupResponse(brands: [CardBrand(type: .masterCard), CardBrand(type: .other(named: "eftpos_australia"))], issuingCountryCode: "AU", isCreatedLocally: false)
-
-        try sut.cardViewController.showCoBadgedCardsUI(for: XCTUnwrap(newResponse.brands))
-
-        wait(for: .aMoment)
-
-        // Then
-        XCTAssertTrue(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
-    }
-
-    func testCoBadgedCardsNameOnSelectionUI() {
-        // Given
-
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: CardComponent.Configuration()
-        )
-
-        sut.viewController.loadViewIfNeeded()
-
-        let newResponse = BinLookupResponse(
-            brands: [
-                CardBrand(
-                    type: .bcmc,
-                    localeBrand: "Bancontact card"
-                ),
-                CardBrand(
-                    type: .maestro,
-                    localeBrand: nil
-                )
-            ],
-            issuingCountryCode: "BE",
-            isCreatedLocally: false
-        )
-
-        sut.cardViewController.update(binInfo: newResponse)
-
-        wait(for: .aMoment)
-
-        // Then
-        XCTAssertFalse(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
-        XCTAssertEqual(sut.cardViewController.items.coBadgedCardItem.selectableFormItems[0].title, newResponse.brands?[0].localeBrand)
-        XCTAssertEqual(sut.cardViewController.items.coBadgedCardItem.selectableFormItems[1].title, newResponse.brands?[1].type.rawValue)
-    }
-
-    func testCoBadgedCardsShouldSendDisplayedAnalyticsInfo() {
-        // Given
-        let analyticsProviderMock = AnalyticsProviderMock()
-        let context = AdyenContext(
-            apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
-            analyticsProvider: analyticsProviderMock
-        )
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: CardComponent.Configuration()
-        )
-
-        let brands = [CardBrand(type: .visa), CardBrand(type: .carteBancaire)]
-        sut.viewController.loadViewIfNeeded()
-
-        sut.cardViewController.items.coBadgedCardItem.updatedCardBrands = brands
-        let dualBrandDisplayedCalled = analyticsProviderMock.infos.filter { $0.type == .displayed }.first
-        XCTAssertNotNil(dualBrandDisplayedCalled)
-        XCTAssertEqual(dualBrandDisplayedCalled?.target, .dualBrandButton)
-        XCTAssertNotNil(dualBrandDisplayedCalled?.configData)
-        XCTAssertNotNil(dualBrandDisplayedCalled?.brand)
-    }
-
-    func testCoBadgedCardsShouldSendSelectedAnalyticsInfo() {
-        // Given
-        let analyticsProviderMock = AnalyticsProviderMock()
-        let context = AdyenContext(
-            apiContext: Dummy.apiContext,
-            payment: Dummy.payment,
-            analyticsProvider: analyticsProviderMock
-        )
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: CardComponent.Configuration()
-        )
-
-        setupRootViewController(sut.viewController)
-
-        let newResponse = BinLookupResponse(brands: [CardBrand(type: .visa), CardBrand(type: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
-
-        sut.cardViewController.update(binInfo: newResponse)
-        sut.cardViewController.items.coBadgedCardItem.selectableFormItems.first?.selectionHandler?()
-
-        wait(for: .aMoment)
-
-        // Then
-        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
-        let dualBrandSelectedCalled = analyticsProviderMock.infos.filter { $0.type == .selected }.first
-        XCTAssertNotNil(dualBrandSelectedCalled)
-        XCTAssertEqual(dualBrandSelectedCalled?.brand, newResponse.brands?.first?.type.rawValue)
-        XCTAssertEqual(dualBrandSelectedCalled?.target, .dualBrandButton)
-        XCTAssertNil(dualBrandSelectedCalled?.configData)
     }
 
     func testStorePaymentMethodFieldVisibility() {

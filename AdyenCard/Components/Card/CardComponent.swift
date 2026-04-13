@@ -23,7 +23,7 @@ public class CardComponent: PresentableComponent,
     internal enum Constant {
         internal static let defaultCountryCode = "US"
         internal static let secondsThrottlingDelay = 0.5
-        internal static let thresholdBINLength = 11
+        internal static let thresholdBINLength = 8
         internal static let publicPanSuffixLength = 4
     }
     
@@ -260,10 +260,10 @@ extension CardComponent: CardViewControllerDelegate {
     }
     
     private func updateBrand(with pan: String) {
-        binInfoProvider.provide(for: pan, supportedTypes: supportedCardTypes) { [weak self] binInfo in
+        binInfoProvider.provide(for: pan, supportedTypes: supportedCardTypes) { [weak self] response in
             guard let self else { return }
-            self.cardViewController.update(binInfo: binInfo)
-            self.cardComponentDelegate?.didChangeCardBrand(binInfo.brands ?? [], component: self)
+            self.cardViewController.handleBinLookupResponse(response)
+            self.cardComponentDelegate?.didChangeCardBrand(response.brands ?? [], component: self)
         }
     }
 }

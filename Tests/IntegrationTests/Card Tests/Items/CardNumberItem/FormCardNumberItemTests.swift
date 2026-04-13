@@ -248,6 +248,270 @@ class FormCardNumberItemTests: XCTestCase {
         XCTAssertEqual(textField.selectedTextRange, UITextRange.textRange(startOffset: 4, in: textField))
     }
     
+    // MARK: - currentBrand per BrandDisplayMode
+    
+    func testCurrentBrand_singleMode_returnsInitialBrand() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        
+        sut.update(brands: [visa])
+        sut.brandDisplayMode = .single
+        
+        XCTAssertEqual(sut.currentBrand?.type, .visa, "Single mode should return selectedBrand")
+    }
+    
+    func testCurrentBrand_dualUnselectable_returnsNil() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        let bcmc = CardBrand(type: .bcmc)
+        
+        sut.update(brands: [visa, bcmc])
+        sut.brandDisplayMode = .dualUnselectable
+        
+        XCTAssertNil(sut.currentBrand, "dualUnselectable mode should return nil per spec")
+    }
+    
+    func testCurrentBrand_dualSelectable_returnsSelectedBrand() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        let bcmc = CardBrand(type: .bcmc)
+        
+        sut.update(brands: [visa, bcmc])
+        sut.brandDisplayMode = .dualSelectable
+        sut.selectBrand(from: .secondary)
+        
+        XCTAssertEqual(sut.currentBrand?.type, .bcmc, "dualSelectable mode should return the user-selected brand")
+    }
+    
+    func testSelectBrand_fromPrimary_setsFirstBrand() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        let bcmc = CardBrand(type: .bcmc)
+        
+        sut.update(brands: [visa, bcmc])
+        sut.selectBrand(from: .primary)
+        
+        XCTAssertEqual(sut.selectedBrand?.type, .visa)
+    }
+    
+    func testSelectBrand_fromSecondary_setsSecondBrand() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        let bcmc = CardBrand(type: .bcmc)
+        
+        sut.update(brands: [visa, bcmc])
+        sut.selectBrand(from: .secondary)
+        
+        XCTAssertEqual(sut.selectedBrand?.type, .bcmc)
+    }
+    
+    func testCurrentBrand_dualSelectable_autoSelectsFirstBrand() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        let bcmc = CardBrand(type: .bcmc)
+        
+        sut.update(brands: [visa, bcmc])
+        sut.brandDisplayMode = .dualSelectable
+        
+        XCTAssertEqual(sut.currentBrand?.type, .visa, "dualSelectable should auto-select the first supported brand")
+    }
+    
+    func testCurrentBrand_localBrand_returnsNil() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        
+        sut.update(brands: [visa])
+        sut.brandDisplayMode = .single
+        sut.isBrandDetectedLocally = true
+        
+        XCTAssertNil(sut.currentBrand, "Local (regex) brand should not be included in payment request")
+        XCTAssertEqual(sut.selectedBrand?.type, .visa, "selectedBrand should still be set for validation/logo display")
+    }
+    
+}
+
+// MARK: - Brand Description Tests
+
+class FormCardNumberContainerItemTests: XCTestCase {
+    
+    private func makeContainerItem() -> FormCardNumberContainerItem {
+        FormCardNumberContainerItem(
+            cardTypeLogos: [],
+            showsSupportedCardLogos: false,
+            style: FormTextItemStyle(),
+            localizationParameters: nil,
+            scanCardHandler: nil
+        )
+    }
+    
+    private func makeSupportedBrand(_ type: CardType) -> CardBrand {
+        CardBrand(type: type)
+    }
+    
+    func testBrandDescription_initiallyHidden() {
+        let sut = makeContainerItem()
+        
+        XCTAssertTrue(sut.brandDescriptionItem.isHidden.wrappedValue, "Brand description should be hidden by default")
+    }
+    
+    func testBrandDescription_singleMode_staysHidden() {
+        let sut = makeContainerItem()
+        let visa = makeSupportedBrand(.visa)
+        
+        sut.numberItem.brandDisplayMode = .single
+        sut.update(brands: [visa])
+        
+        XCTAssertTrue(sut.brandDescriptionItem.isHidden.wrappedValue, "Brand description should be hidden in single mode")
+    }
+    
+    func testBrandDescription_dualUnselectable_staysHidden() {
+        let sut = makeContainerItem()
+        let visa = makeSupportedBrand(.visa)
+        let bcmc = makeSupportedBrand(.bcmc)
+        
+        sut.numberItem.brandDisplayMode = .dualUnselectable
+        sut.update(brands: [visa, bcmc])
+        
+        XCTAssertTrue(sut.brandDescriptionItem.isHidden.wrappedValue, "Brand description should be hidden in dualUnselectable mode")
+    }
+    
+    func testBrandDescription_dualSelectable_inactive_invalidNumber_staysHidden() {
+        let sut = makeContainerItem()
+        let visa = makeSupportedBrand(.visa)
+        let bcmc = makeSupportedBrand(.bcmc)
+        
+        sut.numberItem.brandDisplayMode = .dualSelectable
+        sut.update(brands: [visa, bcmc])
+        
+        XCTAssertTrue(
+            sut.brandDescriptionItem.isHidden.wrappedValue,
+            "Brand description should be hidden when inactive and card number is invalid"
+        )
+    }
+    
+    func testBrandDescription_dualSelectable_active_showsRegardlessOfValidity() {
+        let sut = makeContainerItem()
+        let visa = makeSupportedBrand(.visa)
+        let bcmc = makeSupportedBrand(.bcmc)
+        
+        sut.numberItem.brandDisplayMode = .dualSelectable
+        sut.update(brands: [visa, bcmc])
+        sut.numberItem.isActive = true
+        
+        XCTAssertFalse(
+            sut.brandDescriptionItem.isHidden.wrappedValue,
+            "Brand description should be visible when active and dualSelectable, even with invalid number"
+        )
+    }
+    
+    func testBrandDescription_active_singleMode_staysHidden() {
+        let sut = makeContainerItem()
+        let visa = makeSupportedBrand(.visa)
+        
+        sut.numberItem.brandDisplayMode = .single
+        sut.update(brands: [visa])
+        sut.numberItem.isActive = true
+        
+        XCTAssertTrue(
+            sut.brandDescriptionItem.isHidden.wrappedValue,
+            "Brand description should be hidden in single mode even when active"
+        )
+    }
+    
+    func testBrandDescription_dualSelectable_becomesInactive_hidesWhenInvalid() {
+        let sut = makeContainerItem()
+        let visa = makeSupportedBrand(.visa)
+        let bcmc = makeSupportedBrand(.bcmc)
+        
+        sut.numberItem.brandDisplayMode = .dualSelectable
+        sut.update(brands: [visa, bcmc])
+        sut.numberItem.isActive = true
+        
+        XCTAssertFalse(sut.brandDescriptionItem.isHidden.wrappedValue, "Should be visible when active")
+        
+        sut.numberItem.isActive = false
+        
+        XCTAssertTrue(
+            sut.brandDescriptionItem.isHidden.wrappedValue,
+            "Brand description should hide when field becomes inactive with invalid number"
+        )
+    }
+    
+    func testBrandDescription_dualSelectable_withUnsupportedBrands_staysHidden() {
+        let sut = makeContainerItem()
+        let visa = CardBrand(type: .visa, isSupported: false)
+        let bcmc = CardBrand(type: .bcmc, isSupported: false)
+        
+        sut.numberItem.brandDisplayMode = .dualSelectable
+        sut.update(brands: [visa, bcmc])
+        
+        XCTAssertTrue(
+            sut.brandDescriptionItem.isHidden.wrappedValue,
+            "Brand description should be hidden when brands are unsupported"
+        )
+    }
+    
+    func testBrandDescription_modeChangeToDualSelectable_updatesVisibility() {
+        let sut = makeContainerItem()
+        let visa = makeSupportedBrand(.visa)
+        let bcmc = makeSupportedBrand(.bcmc)
+        
+        // Start in single mode
+        sut.numberItem.brandDisplayMode = .single
+        sut.update(brands: [visa])
+        XCTAssertTrue(sut.brandDescriptionItem.isHidden.wrappedValue)
+        
+        // Switch to dualSelectable
+        sut.numberItem.brandDisplayMode = .dualSelectable
+        sut.update(brands: [visa, bcmc])
+        
+        // Still hidden because field is inactive and card number is empty (invalid)
+        XCTAssertTrue(sut.brandDescriptionItem.isHidden.wrappedValue)
+    }
+    
+    func testBrandDescription_isIncludedInSubitems() {
+        let sut = makeContainerItem()
+        
+        let containsDescription = sut.subitems.contains { $0 === sut.brandDescriptionItem }
+        XCTAssertTrue(containsDescription, "brandDescriptionItem should be in subitems")
+    }
+}
+
+// MARK: - FormLabelItem Tests
+
+class FormLabelItemTests: XCTestCase {
+    
+    func testBuild_defaultVisibility_viewIsVisible() {
+        let style = TextStyle(font: .preferredFont(forTextStyle: .body), color: .black)
+        let sut = FormLabelItem(text: "Test", style: style)
+        
+        let view = sut.build(with: FormItemViewBuilder()) as UIView
+        
+        XCTAssertFalse(view.isHidden, "Built view should be visible by default")
+    }
+    
+    func testBuild_hiddenBeforeBuild_viewStartsHidden() {
+        let style = TextStyle(font: .preferredFont(forTextStyle: .body), color: .black)
+        let sut = FormLabelItem(text: "Test", style: style)
+        sut.isHidden.wrappedValue = true
+        
+        let view = sut.build(with: FormItemViewBuilder()) as UIView
+        
+        XCTAssertTrue(view.isHidden, "Built view should respect isHidden set before build")
+    }
+    
+    func testBuild_setsTextAndStyle() {
+        let style = TextStyle(font: .preferredFont(forTextStyle: .footnote), color: .red)
+        let sut = FormLabelItem(text: "Hello", style: style, identifier: "testLabel")
+        
+        let view = sut.build(with: FormItemViewBuilder()) as UIView
+        let label = view as? UILabel
+        
+        XCTAssertNotNil(label)
+        XCTAssertEqual(label?.text, "Hello")
+        XCTAssertEqual(label?.textColor, .red)
+        XCTAssertEqual(label?.accessibilityIdentifier, "testLabel")
+    }
 }
 
 // MARK: - Helper Extensions
