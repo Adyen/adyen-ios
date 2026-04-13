@@ -10,7 +10,7 @@
 #endif
 import Foundation
 
-/// Configuration for Authentication related actions for example 3ds2.
+/// Configuration for Authentication related actions, such as 3D Secure 2.
 public struct AuthenticationConfiguration: CheckoutComponentConfiguration {
     
     package let componentType: CheckoutComponentType = .action(.threeDS2)
