@@ -69,47 +69,44 @@ struct StoredCardInputViewModelTests {
     func textUI_WhenAmountIsAvailable() {
         // Given
         let amount = Amount(value: 14098, currencyCode: "USD")
+        let expectedTitle = "Enter security code"
+        let expectedSubTitle = "Enter the security code for VISA •••• 4556"
+        let expectedButtonTitle = "Pay $140.98"
         let sut = makeSUT(name: "VISA", lastFour: "4556", amount: amount)
 
         // Then
-
-        #expect(sut.titleText == "Enter security code")
-        // subtitleText contains payment method info
-        let subtitle = sut.subtitleText.string
-        #expect(subtitle == "Enter the security code for VISA •••• 4556")
-        // submitButtonTitle contains formatted amount
-        #expect(sut.submitButtonTitle == "Pay $140.98")
+        #expect(sut.titleText == expectedTitle)
+        #expect(sut.subtitleText.string == expectedSubTitle)
+        #expect(sut.submitButtonTitle == expectedButtonTitle)
     }
 
     @Test
     func textUI_WhenAmountIsZero() {
         // Given
         let amount = Amount(value: 0, currencyCode: "USD")
+        let expectedTitle = "Enter security code"
+        let expectedSubTitle = "Enter the security code for VISA •••• 4556"
+        let expectedButtonTitle = "Confirm preauthorization"
         let sut = makeSUT(name: "VISA", lastFour: "4556", amount: amount)
 
         // Then
-
-        #expect(sut.titleText == "Enter security code")
-        // subtitleText contains payment method info
-        let subtitle = sut.subtitleText.string
-        #expect(subtitle == "Enter the security code for VISA •••• 4556")
-        // submitButtonTitle contains formatted amount
-        #expect(sut.submitButtonTitle == "Confirm preauthorization")
+        #expect(sut.titleText == expectedTitle)
+        #expect(sut.subtitleText.string == expectedSubTitle)
+        #expect(sut.submitButtonTitle == expectedButtonTitle)
     }
 
     @Test
     func textUI_WhenAmountIsNil() {
         // Given
+        let expectedTitle = "Enter security code"
+        let expectedSubTitle = "Enter the security code for VISA •••• 4556"
+        let expectedButtonTitle = "Pay"
         let sut = makeSUT(name: "VISA", lastFour: "4556", amount: nil)
 
         // Then
-
-        #expect(sut.titleText == "Enter security code")
-        // subtitleText contains payment method info
-        let subtitle = sut.subtitleText.string
-        #expect(subtitle == "Enter the security code for VISA •••• 4556")
-        // submitButtonTitle contains formatted amount
-        #expect(sut.submitButtonTitle == "Pay")
+        #expect(sut.titleText == expectedTitle)
+        #expect(sut.subtitleText.string == expectedSubTitle)
+        #expect(sut.submitButtonTitle == expectedButtonTitle)
     }
 
     @Test(arguments: StoredCardTestData.amounts)
@@ -135,7 +132,7 @@ struct StoredCardInputViewModelTests {
 
         // Then
         #expect(closeHandlerCalled)
-        #expect(sut.securityCodeItem.value == "")
+        #expect(sut.securityCodeItem.value.isEmpty)
     }
 
     @Test
@@ -149,7 +146,7 @@ struct StoredCardInputViewModelTests {
         sut.dismiss()
 
         // Then
-        #expect(sut.securityCodeItem.value == "", "Security code should be cleared after dismiss")
+        #expect(sut.securityCodeItem.value.isEmpty, "Security code should be cleared after dismiss")
     }
 
     @Test func navigation_withoutHandlers_doesNotCrash() {
