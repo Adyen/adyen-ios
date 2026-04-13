@@ -223,3 +223,4 @@ whiteList:
   - adhoc
   - sourcery
   - nonisolated
+  - xcstrings
