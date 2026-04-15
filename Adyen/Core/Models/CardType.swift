@@ -308,7 +308,7 @@ extension CardType {
         case .argencard:
             return "^(50)(1)\\d*$"
         case .bcmc:
-            return "^((6703)[0-9]{0,15}|(479658|606005)[0-9]{0,13})$"
+            return "^[4-6][0-9]{0,18}$"
         case .bijenkorfCard:
             return "^(5100081)[0-9]{0,9}$"
         case .cabal:
@@ -320,7 +320,7 @@ extension CardType {
         case .chinaUnionPay:
             return "^(62|81)[0-9]{0,17}$"
         case .dankort:
-            return "^(5019)[0-9]{0,12}$"
+            return "^(5|50|501|5019[0-9]{0,12}|4|45|457|4571[0-9]{0,12}|3|35|357|3571[0-9]{0,12})$"
         case .dankortVISA:
             return "^(4571)[0-9]{0,12}$"
         case .diners:
