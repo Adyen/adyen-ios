@@ -150,7 +150,7 @@ public class CardComponent: PresentableComponent,
         }
         // TODO: FIX StoredCard UI
         if configuration.stored.showsSecurityCodeField {
-            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context)
+            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context, theme: configuration.theme)
             storedComponent.localizationParameters = configuration.localizationParameters
             return storedComponent
         } else {

@@ -83,7 +83,8 @@ internal enum CheckoutComponentBuilder {
             case let storedCard as StoredCardPaymentMethod:
                 StoredCardComponent(
                     storedCardPaymentMethod: storedCard,
-                    context: context
+                    context: context,
+                    theme: configuration.theme
                 )
         #endif
             
