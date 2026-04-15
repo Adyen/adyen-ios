@@ -387,32 +387,32 @@ private extension UPIComponent {
     }
 
     func sendUPIIntentDisplayedEvent() {
-        var eventInfo = AnalyticsEventInfo(
+        var infoEvent = AnalyticsEventInfo(
             component: UPIFlowType.upiIntent.value,
             type: .displayed
         )
-        eventInfo.target = installedUPIApps.isEmpty ? .issuerList : .listDetected
-        eventInfo.presentedValues = availableUPIApps.map(\.identifier)
-        context.analyticsProvider?.add(info: eventInfo)
+        infoEvent.target = installedUPIApps.isEmpty ? .issuerList : .listDetected
+        infoEvent.presentedValues = availableUPIApps.map(\.identifier)
+        context.analyticsProvider?.add(info: infoEvent)
     }
 
     func sendUPIIntentAppSelectionEvent(for issuer: Issuer?) {
         guard let issuer else { return }
-        var eventInfo = AnalyticsEventInfo(
+        var infoEvent = AnalyticsEventInfo(
             component: UPIFlowType.upiIntent.value,
             type: .selected
         )
-        eventInfo.target = installedUPIApps.isEmpty ? .issuerList : .listDetected
-        eventInfo.issuer = issuer.identifier
-        context.analyticsProvider?.add(info: eventInfo)
+        infoEvent.target = installedUPIApps.isEmpty ? .issuerList : .listDetected
+        infoEvent.issuer = issuer.identifier
+        context.analyticsProvider?.add(info: infoEvent)
     }
 
     func sendUPICollectDisplayedEvent() {
-        let eventInfo = AnalyticsEventInfo(
+        let infoEvent = AnalyticsEventInfo(
             component: UPIFlowType.upiCollect.value,
             type: .displayed
         )
-        context.analyticsProvider?.add(info: eventInfo)
+        context.analyticsProvider?.add(info: infoEvent)
     }
 }
 
