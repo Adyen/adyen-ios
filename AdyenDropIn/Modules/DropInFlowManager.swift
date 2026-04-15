@@ -63,7 +63,7 @@ internal class DropInFlowManager: DropInFlowManaging {
         actionComponent.presentationDelegate = self
         actionComponent.configuration.style = configuration.style.actionComponent
         actionComponent.configuration.localizationParameters = configuration.localizationParameters
-        actionComponent.configuration.threeDS = configuration.actionComponent.threeDS
+        actionComponent.configuration.authentication = configuration.actionComponent.authentication
         actionComponent.configuration.twint = configuration.actionComponent.twint
         return actionComponent
     }()

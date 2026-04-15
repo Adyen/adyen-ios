@@ -63,15 +63,15 @@ public final class Checkout: CheckoutProtocol {
     internal let adyenContext: AdyenContext
 
     internal lazy var actionHandlingComponent: ActionHandlingComponent = {
-        let threeDS2Config: ThreeDS2ActionConfiguration = configuration.configuration(
+        let authenticationConfiguration: AuthenticationConfiguration = configuration.configuration(
             for: .threeDS2,
-            defaultValue: ThreeDS2ActionConfiguration(theme: configuration.theme)
+            defaultValue: AuthenticationConfiguration(theme: configuration.theme)
         )
         
         let twintConfig: TwintActionConfiguration? = configuration.configuration(for: .twint)
         
         let actionConfig = CheckoutActionComponent.Configuration(
-            threeDS: threeDS2Config,
+            authentication: authenticationConfiguration,
             twint: twintConfig
         )
         

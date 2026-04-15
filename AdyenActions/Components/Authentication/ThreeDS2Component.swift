@@ -13,17 +13,16 @@ internal protocol AnyRedirectComponent: ActionComponent {
 
 /// Handles the 3D Secure 2 fingerprint and challenge.
 @MainActor
-public final class ThreeDS2Component: ActionComponent {
-    
+package final class ThreeDS2Component: ActionComponent {
+
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
-    
+    package let context: AdyenContext
+
     /// The delegate of the component.
-    public weak var delegate: ActionComponentDelegate?
+    package weak var delegate: ActionComponentDelegate?
 
     /// Delegates `PresentableComponent`'s presentation.  This property must be set if you wish to use delegated authentication.
-    public weak var presentationDelegate: PresentationDelegate? {
+    package weak var presentationDelegate: PresentationDelegate? {
         didSet {
             threeDS2ClassicFlowHandler.presentationDelegate = presentationDelegate
             threeDS2CompactFlowHandler.presentationDelegate = presentationDelegate
@@ -31,7 +30,7 @@ public final class ThreeDS2Component: ActionComponent {
     }
     
     /// Three DS2 component configurations.
-    public var configuration: ThreeDS2ActionConfiguration {
+    package var configuration: AuthenticationConfiguration {
         didSet {
             updateConfiguration()
         }
@@ -41,9 +40,9 @@ public final class ThreeDS2Component: ActionComponent {
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component's configuration.
-    public init(
+    package init(
         context: AdyenContext,
-        configuration: ThreeDS2ActionConfiguration = .init()
+        configuration: AuthenticationConfiguration = .init()
     ) {
         self.context = context
         self.configuration = configuration
@@ -64,7 +63,7 @@ public final class ThreeDS2Component: ActionComponent {
         threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
         threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
         redirectComponent: AnyRedirectComponent,
-        configuration: ThreeDS2ActionConfiguration = .init()
+        configuration: AuthenticationConfiguration = .init()
     ) {
         self.init(
             context: context,
@@ -87,7 +86,7 @@ public final class ThreeDS2Component: ActionComponent {
     /// Handles the 3D Secure 2 action.
     ///
     /// - Parameter threeDS2Action: The 3D Secure 2 action as received from the Checkout API.
-    public func handle(_ threeDS2Action: ThreeDS2Action) {
+    package func handle(_ threeDS2Action: ThreeDS2Action) {
         switch threeDS2Action {
         case let .fingerprint(fingerprintAction):
             threeDS2CompactFlowHandler.handle(fingerprintAction) { [weak self] result in
@@ -105,7 +104,7 @@ public final class ThreeDS2Component: ActionComponent {
     /// Handles the 3D Secure 2 fingerprint action.
     ///
     /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
-    public func handle(_ fingerprintAction: ThreeDS2FingerprintAction) {
+    package func handle(_ fingerprintAction: ThreeDS2FingerprintAction) {
         threeDS2ClassicFlowHandler.handle(fingerprintAction) { [weak self] result in
             self?.didReceive(result, paymentData: fingerprintAction.paymentData)
         }
@@ -116,7 +115,7 @@ public final class ThreeDS2Component: ActionComponent {
     /// Handles the 3D Secure 2 challenge action.
     ///
     /// - Parameter challengeAction: The challenge action as received from the Checkout API.
-    public func handle(_ challengeAction: ThreeDS2ChallengeAction) {
+    package func handle(_ challengeAction: ThreeDS2ChallengeAction) {
         threeDS2ClassicFlowHandler.handle(challengeAction) { [weak self] result in
             self?.didReceive(result, paymentData: challengeAction.paymentData)
         }

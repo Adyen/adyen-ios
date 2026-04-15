@@ -28,7 +28,7 @@ internal typealias VoidHandler = () -> Void
             internal var attemptRegistration: Bool = false
         }
         
-        private let delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication
+        private let delegatedAuthenticationConfiguration: AuthenticationConfiguration.DelegatedAuthentication
         private var delegatedAuthenticationService: AuthenticationServiceProtocol?
         private let deviceSupportCheckerService: AdyenAuthentication.DeviceSupportCheckerProtocol
         private var presenter: ThreeDS2PlusDAScreenPresenterProtocol
@@ -47,7 +47,7 @@ internal typealias VoidHandler = () -> Void
             context: AdyenContext,
             service: ThreeDSService,
             theme: CheckoutTheme,
-            delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication
+            delegatedAuthenticationConfiguration: AuthenticationConfiguration.DelegatedAuthentication
         ) {
             self.init(
                 context: context,
@@ -78,7 +78,7 @@ internal typealias VoidHandler = () -> Void
             presenter: ThreeDS2PlusDAScreenPresenterProtocol,
             theme: CheckoutTheme,
             style: DelegatedAuthenticationComponentStyle = .init(),
-            delegatedAuthenticationConfiguration: ThreeDS2ActionConfiguration.DelegatedAuthentication,
+            delegatedAuthenticationConfiguration: AuthenticationConfiguration.DelegatedAuthentication,
             delegatedAuthenticationService: AuthenticationServiceProtocol? = nil,
             deviceSupportCheckerService: AdyenAuthentication.DeviceSupportCheckerProtocol = DeviceSupportChecker()
         ) {
