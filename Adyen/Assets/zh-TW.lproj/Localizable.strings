@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "系統不支援所輸入的卡片品牌";
 "adyen.card.scanYourCardButton" = "掃描您的卡片";
 "adyen.creditCard.dualBrand.title" = "卡品牌";
-"adyen.creditCard.dualBrand.description" = "選擇首選付款卡品牌。這是可選項。";
+"adyen.creditCard.dualBrand.description" = "可以選取首選付款卡品牌。這是可選項。";
 "adyen.dropIn.stored.title" = "確認 %@ 付款";
 "adyen.dropIn.preselected.openAll.title" = "變更付款方式";
 "adyen.continueTo" = "繼續前往 %@";
@@ -78,12 +78,12 @@
 "adyen.button.copy" = "複製";
 "adyen.voucher.introduction" = "多謝惠顧，請使用以下資訊完成付款。";
 "adyen.voucher.readInstructions" = "閱覽說明";
+"adyen.voucher.code.copy.label" = "複製代碼";
+"adyen.voucher.code.copied.label" = "已將代碼複製到剪貼簿";
 "adyen.amount" = "金額";
 "adyen.voucher.entity" = "實體";
 "adyen.pix.instructions" = "使用您的銀行帳戶應用程式來掃描 QR 碼，或是複製下列的 PIX 代碼以完成付款。";
 "adyen.pix.expirationLabel" = "您有 %@ 可以支付";
-"adyen.pix.copyButton" = "複製代碼";
-"adyen.pix.instructions.copiedMessage" = "已將代碼複製到剪貼簿";
 "adyen.pix.code.copy.label" = "複製 PIX 代碼";
 "adyen.pix.code.copied.label" = "已複製 PIX 代碼";
 "adyen.billingAddressSection.title" = "帳單地址";

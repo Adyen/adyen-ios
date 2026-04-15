@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Ievadītais kartes zīmols netiek atbalstīts";
 "adyen.card.scanYourCardButton" = "Skenējiet savu karti";
 "adyen.creditCard.dualBrand.title" = "Kartes zīmols";
-"adyen.creditCard.dualBrand.description" = "Atlasiet kartes zīmolu, ar kuru vēlaties maksāt. Tas nav obligāti.";
+"adyen.creditCard.dualBrand.description" = "Jūs varat izvēlēties kartes zīmolu, ar kuru vēlaties norēķināties. Tas nav obligāti.";
 "adyen.dropIn.stored.title" = "Apstipriniet %@ maksājumu";
 "adyen.dropIn.preselected.openAll.title" = "Mainīt samaksas veidu";
 "adyen.continueTo" = "Turpināt ar %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "Lūdzu, izlasiet instrukcijas.";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "Kopēt kodu";
+"adyen.voucher.code.copied.label" = "Kods ir nokopēts starpliktuvē";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Summa";
 "adyen.voucher.entity" = "Vienība";
 "adyen.pix.instructions" = "Izmantojiet savu bankas lietotni, lai skenētu kvadrātkodu vai nokopētu zemāk esošo PIX kodu un pabeigtu maksājumu.";
 "adyen.pix.expirationLabel" = "Jums ir jāmaksā %@";
-"adyen.pix.copyButton" = "Kopēt kodu";
-"adyen.pix.instructions.copiedMessage" = "Kods ir nokopēts starpliktuvē";
 "adyen.pix.code.copy.label" = "Kopēt PIX kodu";
 "adyen.pix.code.copied.label" = "PIX kods nokopēts";
 "adyen.billingAddressSection.title" = "Norēķinu adrese";
@@ -183,7 +183,7 @@
 "adyen.payByBankAISDD.submit" = "Turpināt maksāt ar bankas starpniecību";
 "adyen.payByBankAISDD.more" = "+ vairāk";
 "adyen.upi.modeSelection" = "Kā vēlaties izmantot UPI?";
-"adyen.upi.mode.payByAnyUpi" = "UPI lietotne";
+"adyen.upi.mode.payByAnyUpi" = "UPI lietotnes";
 "adyen.upi.intent.instruction" = "Izvēlieties savu vēlamo UPI lietotni";
 "adyen.upi.error.noAppSelected" = "Lai turpinātu, atlasiet vēlamo UPI lietotni.";
 "adyen.upi.collect.field.label" = "UPI ID";

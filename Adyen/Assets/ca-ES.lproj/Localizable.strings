@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "La marca de la targeta introduïda no és compatible";
 "adyen.card.scanYourCardButton" = "Escanegeu la vostra targeta";
 "adyen.creditCard.dualBrand.title" = "Marca de targeta";
-"adyen.creditCard.dualBrand.description" = "Seleccioneu la marca de la targeta amb la qual preferiu pagar. Això és opcional.";
+"adyen.creditCard.dualBrand.description" = "Podeu seleccionar la marca de targeta amb què preferiu pagar. Això és opcional.";
 "adyen.dropIn.stored.title" = "Confirmació del pagament de %@";
 "adyen.dropIn.preselected.openAll.title" = "Canvieu el mètode de pagament";
 "adyen.continueTo" = "Continua a %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "Llegiu les instruccions";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "Copiar el codi";
+"adyen.voucher.code.copied.label" = "Codi copiat al porta-retalls";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Import";
 "adyen.voucher.entity" = "Entitat";
 "adyen.pix.instructions" = "Utilitzeu la vostra aplicació bancària per escanejar el codi QR o copiar el codi PIX següent per tal de completar el pagament.";
 "adyen.pix.expirationLabel" = "Teniu %@ per pagar";
-"adyen.pix.copyButton" = "Copiar el codi";
-"adyen.pix.instructions.copiedMessage" = "Codi copiat al porta-retalls";
 "adyen.pix.code.copy.label" = "Copiar el codi PIX";
 "adyen.pix.code.copied.label" = "Codi PIX copiat";
 "adyen.billingAddressSection.title" = "Adreça de facturació";
@@ -183,7 +183,7 @@
 "adyen.payByBankAISDD.submit" = "Continua a pagament per banc";
 "adyen.payByBankAISDD.more" = "+ més";
 "adyen.upi.modeSelection" = "Com us agradaria utilitzar UPI?";
-"adyen.upi.mode.payByAnyUpi" = "Aplicació UPI";
+"adyen.upi.mode.payByAnyUpi" = "Aplicacions UPI";
 "adyen.upi.intent.instruction" = "Selecciona la teva aplicació UPI preferida";
 "adyen.upi.error.noAppSelected" = "Selecciona la teva aplicació UPI preferida per continuar";
 "adyen.upi.collect.field.label" = "Identificador d'UPI";
