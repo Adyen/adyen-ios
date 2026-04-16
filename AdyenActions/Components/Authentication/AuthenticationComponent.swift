@@ -29,17 +29,12 @@ package final class AuthenticationComponent: ActionComponent {
         }
     }
     
-    /// Three DS2 component configurations.
     package var configuration: AuthenticationConfiguration {
         didSet {
             updateConfiguration()
         }
     }
     
-    /// Initializes the 3D Secure 2 component.
-    ///
-    /// - Parameter context: The context object for this component.
-    /// - Parameter configuration: The component's configuration.
     package init(
         context: AdyenContext,
         configuration: AuthenticationConfiguration = .init()
@@ -50,14 +45,6 @@ package final class AuthenticationComponent: ActionComponent {
         self.updateConfiguration()
     }
     
-    /// Initializes the 3D Secure 2 component.
-    ///
-    /// - Parameters:
-    ///   - context: The  Adyen context.
-    ///   - threeDS2CompactFlowHandler: The internal `AnyThreeDS2ActionHandler` for the compact flow.
-    ///   - threeDS2ClassicFlowHandler: The internal `AnyThreeDS2ActionHandler` for the classic flow.
-    ///   - redirectComponent: The redirect component.
-    ///   - redirectComponentStyle: `RedirectComponent` style.
     internal convenience init(
         context: AdyenContext,
         threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
@@ -104,6 +91,7 @@ package final class AuthenticationComponent: ActionComponent {
     /// Handles the 3D Secure 2 fingerprint action.
     ///
     /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
+    // TODO: Robert: AuthenticationComponent: Delete this action handling for classic and all related Classic flow handling types
     package func handle(_ fingerprintAction: ThreeDS2FingerprintAction) {
         threeDS2ClassicFlowHandler.handle(fingerprintAction) { [weak self] result in
             self?.didReceive(result, paymentData: fingerprintAction.paymentData)
@@ -115,6 +103,7 @@ package final class AuthenticationComponent: ActionComponent {
     /// Handles the 3D Secure 2 challenge action.
     ///
     /// - Parameter challengeAction: The challenge action as received from the Checkout API.
+    // TODO: Robert: AuthenticationComponent: Delete this action handling for classic and all related Classic flow handling types
     package func handle(_ challengeAction: ThreeDS2ChallengeAction) {
         threeDS2ClassicFlowHandler.handle(challengeAction) { [weak self] result in
             self?.didReceive(result, paymentData: challengeAction.paymentData)
@@ -224,6 +213,7 @@ extension AuthenticationComponent: ActionComponentDelegate {
 extension AuthenticationComponent {
 
     /// An error that occurred during the use of the 3D Secure 2 component.
+    // TODO: Robert: AuthenticationComponent: This shouldn't be public, instead made as part of the Checkout objects error handling.
     public enum Error: Swift.Error {
 
         /// Indicates that the challenge action was provided while no 3D Secure transaction was active.
