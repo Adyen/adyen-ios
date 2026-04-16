@@ -115,15 +115,16 @@ class PayToComponentUITests: XCTestCase {
         )
 
         sut.viewController.loadViewIfNeeded()
-        self.wait(for: .aMoment)
 
         let segmentedControl: UISegmentedControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.flowSelectionSegmentedControl"))
         segmentedControl.selectedSegmentIndex = 1
         segmentedControl.sendActions(for: .valueChanged)
 
-        self.wait(for: .aMoment)
+        sut.viewController.view.setNeedsLayout()
+        sut.viewController.view.layoutIfNeeded()
+        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.5))
 
-        assertViewControllerImage(matching: sut.viewController, named: "UI_configuration_segment_One")
+        verifyViewControllerImage(matching: sut.viewController, named: "UI_configuration_segment_One")
     }
 
     // MARK: - PayId flow tests
