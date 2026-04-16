@@ -18,7 +18,6 @@ internal class StoredCardInputViewController: UIViewController {
     // MARK: - Constants
 
     private enum Constants {
-        static let chevronBackwardImage = "chevron.backward"
         static let contentPadding: CGFloat = 16
         static let distanceBetweenImageAndLabels: CGFloat = 12
         static let distanceFromButtonsToLabels: CGFloat = 24
@@ -171,7 +170,6 @@ internal class StoredCardInputViewController: UIViewController {
         configureConstraints()
         configureContent()
         setupBindings()
-        setupNavigationBackButton()
         disableSwipeDownToDismissScreen()
     }
 
@@ -192,16 +190,6 @@ internal class StoredCardInputViewController: UIViewController {
             contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -Constants.buttonsBottomPadding),
             contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -2 * Constants.contentPadding)
         ])
-    }
-
-    private func setupNavigationBackButton() {
-        let backButton = UIBarButtonItem(
-            image: UIImage(systemName: Constants.chevronBackwardImage),
-            style: .plain,
-            target: self,
-            action: #selector(backTapped)
-        )
-        navigationItem.leftBarButtonItem = backButton
     }
 
     private func configureContent() {
@@ -236,9 +224,5 @@ internal class StoredCardInputViewController: UIViewController {
         Task { @MainActor [weak self] in
             await self?.viewModel.submit()
         }
-    }
-
-    @objc private func backTapped() {
-        viewModel.dismiss()
     }
 }
