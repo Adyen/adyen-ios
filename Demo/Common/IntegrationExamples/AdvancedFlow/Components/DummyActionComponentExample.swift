@@ -49,8 +49,8 @@ internal final class DummyActionComponentExample: InitialDataAdvancedFlowProtoco
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
             )
         ) {}
-            .onAdditionalDetails { [weak self] data, handler in
-                self?.callDetails(with: data, completion: handler)
+            .onAdditionalDetails { [weak self] data in
+                await self?.callDetails(with: data) ?? CheckoutPaymentsResponse(resultCode: .refused)
             }
             .onError { [weak self] error in
                 self?.dismissAndShowAlert(false, error.localizedDescription)
@@ -62,23 +62,22 @@ internal final class DummyActionComponentExample: InitialDataAdvancedFlowProtoco
         )
     }
     
-    private func callDetails(with data: ActionComponentData, completion: PaymentsResponseHandler?) {
+    private func callDetails(with data: ActionComponentData) async -> CheckoutPaymentsResponse {
         let request = PaymentDetailsRequest(
             details: data.details,
             paymentData: data.paymentData,
             merchantAccount: ConfigurationConstants.current.merchantAccount
         )
-        apiClient.perform(request) { result in
-            switch result {
-            case let .success(response):
-                completion?(
-                    CheckoutPaymentsResponse(
+        return await withCheckedContinuation { continuation in
+            apiClient.perform(request) { result in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: CheckoutPaymentsResponse(
                         resultCode: response.resultCode, action: response.action
-                    )
-                )
-            case let .failure(error):
-                // TODO: add error handling but maybe after async callbacks
-                break
+                    ))
+                case .failure:
+                    continuation.resume(returning: CheckoutPaymentsResponse(resultCode: .refused))
+                }
             }
         }
     }

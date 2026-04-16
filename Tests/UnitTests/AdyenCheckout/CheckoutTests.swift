@@ -167,7 +167,7 @@ final class CheckoutTests: XCTestCase {
     
     // MARK: - payment component delegate
     
-    func test_didSubmit_callsOnSubmit_whenSet() throws {
+    func test_didSubmit_callsOnSubmit_whenSet() async throws {
         let expectation = expectation(description: "onSubmit called")
         var didCallSubmit = false
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
@@ -181,7 +181,7 @@ final class CheckoutTests: XCTestCase {
             order: nil
         )
         
-        configuration.onSubmit = { data, completion in
+        configuration.onSubmit = { data in
             didCallSubmit = true
             XCTAssertEqual(data.paymentMethod.sdkData, paymentData.paymentMethod.sdkData)
             let details = data.paymentMethod as! BLIKDetails
@@ -189,7 +189,7 @@ final class CheckoutTests: XCTestCase {
             XCTAssertEqual(details.blikCode, blikDetails.blikCode)
             expectation.fulfill()
             
-            completion?(CheckoutPaymentsResponse(resultCode: .authorised))
+            return CheckoutPaymentsResponse(resultCode: .authorised)
         }
         
         let sut = Checkout(
@@ -198,7 +198,7 @@ final class CheckoutTests: XCTestCase {
             presentationDelegate: nil
         )
         sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
-        waitForExpectations(timeout: 1)
+        await fulfillment(of: [expectation], timeout: 1)
         
         XCTAssertTrue(didCallSubmit)
     }

@@ -75,11 +75,11 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 }
         }
         .theme(selectedTheme.theme)
-        .onSubmit { [weak self] data, handler in
-            self?.callPayments(with: data, completion: handler)
+        .onSubmit { [weak self] data in
+            await self?.callPayments(with: data) ?? CheckoutPaymentsResponse(resultCode: .refused)
         }
-        .onAdditionalDetails { [weak self] data, handler in
-            self?.callDetails(with: data, completion: handler)
+        .onAdditionalDetails { [weak self] data in
+            await self?.callDetails(with: data) ?? CheckoutPaymentsResponse(resultCode: .refused)
         }
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
@@ -108,40 +108,38 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     // MARK: - Payment response handling
 
-    private func callPayments(with data: PaymentComponentData, completion: PaymentsResponseHandler?) {
+    private func callPayments(with data: PaymentComponentData) async -> CheckoutPaymentsResponse {
         let request = PaymentsRequest(data: data)
-        apiClient.perform(request) { result in
-            switch result {
-            case let .success(response):
-                completion?(
-                    CheckoutPaymentsResponse(
+        return await withCheckedContinuation { continuation in
+            apiClient.perform(request) { result in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: CheckoutPaymentsResponse(
                         resultCode: response.resultCode, action: response.action
-                    )
-                )
-            case let .failure(error):
-                // TODO: change last parameter to accept error as well Result<CheckoutCallbackResult, Error>
-                break
+                    ))
+                case .failure:
+                    continuation.resume(returning: CheckoutPaymentsResponse(resultCode: .refused))
+                }
             }
         }
     }
 
-    private func callDetails(with data: ActionComponentData, completion: PaymentsResponseHandler?) {
+    private func callDetails(with data: ActionComponentData) async -> CheckoutPaymentsResponse {
         let request = PaymentDetailsRequest(
             details: data.details,
             paymentData: data.paymentData,
             merchantAccount: ConfigurationConstants.current.merchantAccount
         )
-        apiClient.perform(request) { result in
-            switch result {
-            case let .success(response):
-                completion?(
-                    CheckoutPaymentsResponse(
+        return await withCheckedContinuation { continuation in
+            apiClient.perform(request) { result in
+                switch result {
+                case let .success(response):
+                    continuation.resume(returning: CheckoutPaymentsResponse(
                         resultCode: response.resultCode, action: response.action
-                    )
-                )
-            case let .failure(error):
-                // TODO: add error handling but maybe after async callbacks
-                break
+                    ))
+                case .failure:
+                    continuation.resume(returning: CheckoutPaymentsResponse(resultCode: .refused))
+                }
             }
         }
     }

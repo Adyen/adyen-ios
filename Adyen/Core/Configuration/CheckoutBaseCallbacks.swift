@@ -6,10 +6,8 @@
 
 import Foundation
 
-// TODO: Finalize all the parameters of the callbacks
-public typealias PaymentsResponseHandler = (_ response: CheckoutPaymentsResponse) -> Void
-public typealias SubmitHandler = (_ data: PaymentComponentData, _ handler: PaymentsResponseHandler?) -> Void
-public typealias AdditionalDetailsHandler = (_ data: ActionComponentData, _ handler: PaymentsResponseHandler?) -> Void
+public typealias SubmitHandler = @MainActor @Sendable (_ data: PaymentComponentData) async -> CheckoutPaymentsResponse
+public typealias AdditionalDetailsHandler = @MainActor @Sendable (_ data: ActionComponentData) async -> CheckoutPaymentsResponse
 public typealias CheckoutErrorHandler = (_ error: Error) -> Void
 public typealias CheckoutSuccessHandler = (_ result: CheckoutResult) -> Void
 
