@@ -82,9 +82,13 @@ public struct LocalizationKey {
     public static let cardSecurityCodeDescription = LocalizationKey(key: "adyen.card.securityCode.description")
     /// 123
     public static let cardCvcItemPlaceholder = LocalizationKey(key: "adyen.card.cvcItem.placeholder")
+    // TODO: Delete cardStoredTitle - no longer used after StoredCardAlertManager removal for v6
     /// Verify your card
+    @available(*, deprecated, message: "No longer used - will be removed in a future version, retaining for v5 compatibility")
     public static let cardStoredTitle = LocalizationKey(key: "adyen.card.stored.title")
+    // TODO: Delete cardStoredMessage - no longer used after StoredCardAlertManager removal for v6
     /// Please enter the CVC code for %@
+    @available(*, deprecated, message: "No longer used - will be removed in a future version, retaining for v5 compatibility")
     public static let cardStoredMessage = LocalizationKey(key: "adyen.card.stored.message")
     /// Expires %@
     public static let cardStoredExpires = LocalizationKey(key: "adyen.card.stored.expires")

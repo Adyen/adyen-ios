@@ -99,7 +99,7 @@ struct StoredCardInputViewModelTests {
     func textUI_WhenAmountIsNil() {
         // Given
         let expectedTitle = "Enter security code"
-        let expectedSubTitle = "Enter the security code for VISA •••• 4556"
+        let expectedSubTitle = "Enter the security code for VISA •••• 4556"
         let expectedButtonTitle = "Pay"
         let sut = makeSUT(name: "VISA", lastFour: "4556", amount: nil)
 
@@ -116,6 +116,64 @@ struct StoredCardInputViewModelTests {
 
         // Then
         #expect(sut.submitButtonTitle.contains(amountData.expectedFormatted))
+    }
+
+    // MARK: - Custom Localization
+
+    /// Verifies that the view model correctly uses custom localization strings when a custom table name is provided.
+    ///
+    /// This test ensures merchants can override the default SDK strings by providing their own `.strings` file.
+    /// The test uses `AdyenUIHost.strings` which contains custom translations prefixed with "Test-".
+    @Test
+    func localizationWithCustomTableName() {
+        // Given
+        let localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
+        let amount = Amount(value: 300, currencyCode: "EUR")
+        let sut = makeSUT(
+            name: "VISA",
+            lastFour: "1111",
+            amount: amount,
+            localizationParameters: localizationParameters
+        )
+
+        let expectedTitleText = "Test-Enter security code"
+        let expectedSubtitleText = "Test-Enter the security code for VISA •••• 1111"
+        let expectedSubmitButtonTitle = "Test-Pay €3.00"
+
+        // Then
+        #expect(sut.titleText == expectedTitleText)
+        #expect(sut.subtitleText.string == expectedSubtitleText)
+        #expect(sut.submitButtonTitle == expectedSubmitButtonTitle)
+    }
+
+    /// Verifies that the view model correctly handles custom key separators in localization keys.
+    ///
+    /// This test ensures the SDK supports alternative key formats where dots (`.`) are replaced with
+    /// underscores (`_`) or other separators. This is useful for merchants whose localization systems
+    /// don't support dots in key names.
+    ///
+    /// The test uses `AdyenUIHostCustomSeparator.strings` where keys use underscores instead of dots
+    /// (e.g., `adyen_card_securityCode_title` instead of `adyen.card.securityCode.title`).
+    @Test
+    func localizationWithCustomKeySeparator() {
+        // Given
+        let localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
+        let amount = Amount(value: 300, currencyCode: "EUR")
+        let sut = makeSUT(
+            name: "VISA",
+            lastFour: "1111",
+            amount: amount,
+            localizationParameters: localizationParameters
+        )
+
+        let expectedTitleText = "Test-Enter security code"
+        let expectedSubtitleText = "Test-Enter the security code for VISA •••• 1111"
+        let expectedSubmitButtonTitle = "Test-Pay €3.00"
+
+        // Then
+        #expect(sut.titleText == expectedTitleText)
+        #expect(sut.subtitleText.string == expectedSubtitleText)
+        #expect(sut.submitButtonTitle == expectedSubmitButtonTitle)
     }
 
     // MARK: - Navigation & Reset
@@ -256,7 +314,8 @@ struct StoredCardInputViewModelTests {
         brand: CardType = .visa,
         amount: Amount? = Amount(value: 100, currencyCode: "EUR"),
         publicKey: String = Dummy.publicKey,
-        analyticsProvider: AnyAnalyticsProvider? = AnalyticsProviderMock()
+        analyticsProvider: AnyAnalyticsProvider? = AnalyticsProviderMock(),
+        localizationParameters: LocalizationParameters? = nil
     ) -> StoredCardInputViewModel {
         let storedCardPaymentMethod = StoredCardPaymentMethod(
             type: .card,
@@ -278,8 +337,21 @@ struct StoredCardInputViewModelTests {
             publicKey: publicKey,
             amount: amount,
             analyticsProvider: analyticsProvider,
-            localizationParameters: nil
+            localizationParameters: localizationParameters
         )
+    }
+}
+
+// MARK: - StoredCardInputViewModel Test Extension
+
+extension StoredCardInputViewModel {
+    var storedCardPaymentMethodForTesting: StoredCardPaymentMethod {
+        // Access the private property via Mirror for testing purposes
+        let mirror = Mirror(reflecting: self)
+        guard let paymentMethod = mirror.children.first(where: { $0.label == "storedCardPaymentMethod" })?.value as? StoredCardPaymentMethod else {
+            fatalError("Could not access storedCardPaymentMethod for testing")
+        }
+        return paymentMethod
     }
 }
 
