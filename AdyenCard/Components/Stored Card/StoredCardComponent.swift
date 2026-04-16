@@ -42,38 +42,44 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
         self.theme = theme
     }
     
-    package var viewController: UIViewController {
-        storedCardAlertManager.alertController
-    }
-    
-    internal lazy var storedCardAlertManager: StoredCardAlertManager = {
-        sendInitialAnalytics()
-        sendDidLoadEvent()
-        
-        let manager = StoredCardAlertManager(
-            paymentMethod: storedCardPaymentMethod,
-            context: context,
-            amount: context.amount
+    package lazy var viewController: UIViewController = {
+        let viewModel = StoredCardInputViewModel(
+            theme: theme,
+            storedCardPaymentMethod: storedCardPaymentMethod,
+            apiContext: context.apiContext,
+            publicKey: context.publicKey,
+            amount: context.amount,
+            analyticsProvider: context.analyticsProvider,
+            localizationParameters: localizationParameters
         )
-        
-        manager.localizationParameters = localizationParameters
-        manager.completionHandler = { [weak self] result in
-            guard let self else { return }
-            
-            switch result {
-            case let .success(details):
-                self.submit(data: PaymentComponentData(
-                    paymentMethodDetails: details,
-                    amount: self.context.amount,
-                    order: self.order
-                ))
-            case let .failure(error):
-                self.delegate?.didFail(with: error, from: self)
-            }
+
+        viewModel.cardDetailsCompletionHandler = { [weak self] in
+            self?.onReceivedCardDetailsResultToProcessPayment(result: $0)
         }
-        
-        return manager
+
+        viewModel.closeHandler = { [weak self] in
+            self?.viewController.dismiss(animated: true)
+        }
+
+        self.sendInitialAnalytics()
+
+        return StoredCardInputViewController(viewModel: viewModel)
     }()
+
+    private func onReceivedCardDetailsResultToProcessPayment(result: Result<CardDetails, Error>) {
+        switch result {
+        case let .success(details):
+            submit(
+                data: PaymentComponentData(
+                    paymentMethodDetails: details,
+                    amount: context.amount,
+                    order: order
+                )
+            )
+        case let .failure(error):
+            delegate?.didFail(with: error, from: self)
+        }
+    }
 }
 
 /// :nodoc:
