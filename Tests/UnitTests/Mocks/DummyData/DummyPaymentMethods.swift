@@ -596,15 +596,24 @@ let upiWithApps = [
     "apps": [
         [
             "id": "bhim",
-            "name": "BHIM"
+            "name": "BHIM",
+            "appIdentifierInfo": [
+                "iosScheme": "bhim"
+            ]
         ],
         [
             "id": "gpay",
-            "name": "Google Pay"
+            "name": "Google Pay",
+            "appIdentifierInfo": [
+                "iosScheme": "tez"
+            ]
         ],
         [
             "id": "phonepe",
-            "name": "PhonePe"
+            "name": "PhonePe",
+            "appIdentifierInfo": [
+                "iosScheme": "phonepe"
+            ]
         ]
     ]
 ] as [String: Any]

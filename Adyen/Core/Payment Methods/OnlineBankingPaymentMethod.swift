@@ -9,11 +9,22 @@ import Foundation
 /// An issuer (typically a bank) in an issuer list payment method.
 public struct Issuer: Codable, CustomStringConvertible, Equatable {
 
+    public struct AppIdentifier: Codable, Equatable {
+        public let scheme: String
+
+        public enum CodingKeys: String, CodingKey {
+            case scheme = "iosScheme"
+        }
+    }
+
     /// The unique identifier of the issuer.
     public let identifier: String
 
     /// The name of the issuer.
     public let name: String
+
+    /// The app identifier of the issuer.
+    public let appIdentifier: AppIdentifier?
 
     public var description: String {
         name
@@ -24,8 +35,8 @@ public struct Issuer: Codable, CustomStringConvertible, Equatable {
     private enum CodingKeys: String, CodingKey {
         case identifier = "id"
         case name
+        case appIdentifier = "appIdentifierInfo"
     }
-
 }
 
 /// Online Banking  payment method.
