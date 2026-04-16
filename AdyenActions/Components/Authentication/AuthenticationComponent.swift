@@ -13,7 +13,7 @@ internal protocol AnyRedirectComponent: ActionComponent {
 
 /// Handles the 3D Secure 2 fingerprint and challenge.
 @MainActor
-package final class ThreeDS2Component: ActionComponent {
+package final class AuthenticationComponent: ActionComponent {
 
     /// The context object for this component.
     package let context: AdyenContext
@@ -200,8 +200,8 @@ package final class ThreeDS2Component: ActionComponent {
     }()
 }
 
-/// This is for the RedirectComponent inside the ThreeDS2Component
-extension ThreeDS2Component: ActionComponentDelegate {
+/// This is for the RedirectComponent inside the AuthenticationComponent
+extension AuthenticationComponent: ActionComponentDelegate {
 
     public func didOpenExternalApplication(component: ActionComponent) {
         delegate?.didOpenExternalApplication(component: self)
@@ -221,7 +221,7 @@ extension ThreeDS2Component: ActionComponentDelegate {
 
 }
 
-extension ThreeDS2Component {
+extension AuthenticationComponent {
 
     /// An error that occurred during the use of the 3D Secure 2 component.
     public enum Error: Swift.Error {

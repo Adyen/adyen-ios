@@ -142,7 +142,7 @@ private extension FingerprintServiceParameters {
 
 private extension ChallengeParameters {
     static let mock = ChallengeParameters(
-        challengeToken: ThreeDS2Component.ChallengeToken(
+        challengeToken: AuthenticationComponent.ChallengeToken(
             acsReferenceNumber: "",
             acsSignedContent: "",
             acsTransactionIdentifier: "",

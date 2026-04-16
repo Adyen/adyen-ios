@@ -285,7 +285,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
                     AnalyticsConstants.ErrorCode.threeDS2TransactionMissing.stringValue
                 )
                 
-                let decodingError = error as? ThreeDS2Component.Error
+                let decodingError = error as? AuthenticationComponent.Error
                 switch decodingError {
                 case .missingTransaction?: ()
                 default:
@@ -479,7 +479,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         let errorPayload = "Error Payload"
         
         submitter.onSubmitFingerprint = { fingerprint, paymentData, completion in
-            let fingerprint: ThreeDS2Component.Fingerprint? = try? AdyenCoder.decodeBase64(fingerprint)
+            let fingerprint: AuthenticationComponent.Fingerprint? = try? AdyenCoder.decodeBase64(fingerprint)
             XCTAssertNotNil(fingerprint, "Should be able to decode the fingerprint successfully")
             XCTAssertEqual(fingerprint?.threeDS2SDKError, errorPayload)
             completion(.failure(Dummy.error))
