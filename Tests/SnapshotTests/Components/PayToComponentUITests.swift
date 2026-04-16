@@ -114,6 +114,9 @@ class PayToComponentUITests: XCTestCase {
             configuration: config
         )
 
+        sut.viewController.loadViewIfNeeded()
+        self.wait(for: .aMoment)
+
         let segmentedControl: UISegmentedControl = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.PayToComponent.flowSelectionSegmentedControl"))
         segmentedControl.selectedSegmentIndex = 1
         segmentedControl.sendActions(for: .valueChanged)
