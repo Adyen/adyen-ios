@@ -342,19 +342,6 @@ struct StoredCardInputViewModelTests {
     }
 }
 
-// MARK: - StoredCardInputViewModel Test Extension
-
-extension StoredCardInputViewModel {
-    var storedCardPaymentMethodForTesting: StoredCardPaymentMethod {
-        // Access the private property via Mirror for testing purposes
-        let mirror = Mirror(reflecting: self)
-        guard let paymentMethod = mirror.children.first(where: { $0.label == "storedCardPaymentMethod" })?.value as? StoredCardPaymentMethod else {
-            fatalError("Could not access storedCardPaymentMethod for testing")
-        }
-        return paymentMethod
-    }
-}
-
 // MARK: - Test Data
 
 enum StoredCardTestData {
