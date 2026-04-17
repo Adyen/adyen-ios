@@ -213,7 +213,7 @@ extension AuthenticationComponent: ActionComponentDelegate {
 extension AuthenticationComponent {
 
     /// An error that occurred during the use of the 3D Secure 2 component.
-    // TODO: Robert: AuthenticationComponent: This shouldn't be public, instead made as part of the Checkout objects error handling.
+    // TODO: Robert: AuthenticationComponent: This should not be public, instead made as part of the Checkout objects error handling.
     public enum Error: Swift.Error {
 
         /// Indicates that the challenge action was provided while no 3D Secure transaction was active.
