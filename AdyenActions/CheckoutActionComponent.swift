@@ -158,13 +158,13 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
     }
     
     private func handle(_ action: ThreeDS2ChallengeAction) {
-        guard let threeDS2Component = currentActionComponent as? AuthenticationComponent else {
+        guard let authenticationComponent = currentActionComponent as? AuthenticationComponent else {
             AdyenAssertion.assertionFailure( // swiftlint:disable:next line_length
                 message: "AuthenticationComponent is nil. There must be a ThreeDS2FingerprintAction action preceding a ThreeDS2ChallengeAction action"
             )
             return
         }
-        threeDS2Component.handle(action)
+        authenticationComponent.handle(action)
     }
     
     private func handle(_ sdkAction: SDKAction) {
