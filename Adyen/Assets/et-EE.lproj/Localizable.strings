@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Sisestatud kaardi kaubamärki ei toetata";
 "adyen.card.scanYourCardButton" = "Skannige oma kaart";
 "adyen.creditCard.dualBrand.title" = "Kaardi bränd";
-"adyen.creditCard.dualBrand.description" = "Valige kaardibränd, millega eelistate maksta. See on valikuline.";
+"adyen.creditCard.dualBrand.description" = "Saate valida kaardibrändi, millega eelistate maksta. See on valikuline.";
 "adyen.dropIn.stored.title" = "Kinnitage makse (%@)";
 "adyen.dropIn.preselected.openAll.title" = "Muuda makseviisi";
 "adyen.continueTo" = "Jätka: %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "Lugege juhiseid";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "Kopeeri kood";
+"adyen.voucher.code.copied.label" = "Kood kopeeriti lõikelauale";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Summa";
 "adyen.voucher.entity" = "Ettevõte";
 "adyen.pix.instructions" = "Makse lõpuleviimiseks skannige oma pangarakenduse abil QR-kood või kopeerige allolev PIX-kood.";
 "adyen.pix.expirationLabel" = "Teil on maksmiseks %@";
-"adyen.pix.copyButton" = "Kopeeri kood";
-"adyen.pix.instructions.copiedMessage" = "Kood kopeeriti lõikelauale";
 "adyen.pix.code.copy.label" = "Kopeeri PIX-kood";
 "adyen.pix.code.copied.label" = "PIX-kood kopeeritud";
 "adyen.billingAddressSection.title" = "Arveldusaadress";
@@ -183,7 +183,7 @@
 "adyen.payByBankAISDD.submit" = "Jätkake pangaga maksmist";
 "adyen.payByBankAISDD.more" = "+ veel";
 "adyen.upi.modeSelection" = "Kuidas soovite UPI-d kasutada?";
-"adyen.upi.mode.payByAnyUpi" = "UPI rakendus";
+"adyen.upi.mode.payByAnyUpi" = "UPI rakendused";
 "adyen.upi.intent.instruction" = "Valige oma eelistatud UPI rakendus";
 "adyen.upi.error.noAppSelected" = "Valige jätkamiseks oma eelistatud UPI rakendus";
 "adyen.upi.collect.field.label" = "UPI ID";

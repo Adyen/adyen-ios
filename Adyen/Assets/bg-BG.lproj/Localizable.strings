@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Въведената марка на картата не се поддържа";
 "adyen.card.scanYourCardButton" = "Сканирайте Вашата карта";
 "adyen.creditCard.dualBrand.title" = "Марка на картата";
-"adyen.creditCard.dualBrand.description" = "Изберете марката на картата, с която предпочитате да плащате. Това не е задължително.";
+"adyen.creditCard.dualBrand.description" = "Можете да изберете марката на картата, с която предпочитате да плащате. Това не е задължително.";
 "adyen.dropIn.stored.title" = "Потвърди %@ плащането";
 "adyen.dropIn.preselected.openAll.title" = "Промяна на начина на плащане";
 "adyen.continueTo" = "Продължете към %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "Прочетете инструкциите";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "Копиране на кода";
+"adyen.voucher.code.copied.label" = "Код, копиран в клипборда";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Сума";
 "adyen.voucher.entity" = "Обект";
 "adyen.pix.instructions" = "Използвайте банковото си приложение, за да сканирате QR кода, или копирайте PIX кода по-долу, за да завършите плащането.";
 "adyen.pix.expirationLabel" = "Имате %@ за плащане";
-"adyen.pix.copyButton" = "Копиране на кода";
-"adyen.pix.instructions.copiedMessage" = "Код, копиран в клипборда";
 "adyen.pix.code.copy.label" = "Копирайте PIX кода";
 "adyen.pix.code.copied.label" = "PIX кодът е копиран";
 "adyen.billingAddressSection.title" = "Адрес за фактуриране";
@@ -183,7 +183,7 @@
 "adyen.payByBankAISDD.submit" = "Продължете към Pay by Bank";
 "adyen.payByBankAISDD.more" = "+ още";
 "adyen.upi.modeSelection" = "Как бихте искали да използвате UPI?";
-"adyen.upi.mode.payByAnyUpi" = "Приложение UPI";
+"adyen.upi.mode.payByAnyUpi" = "UPI приложения";
 "adyen.upi.intent.instruction" = "Изберете предпочитаното приложение UPI";
 "adyen.upi.error.noAppSelected" = "Изберете предпочитаното приложение UPI, за да продължите";
 "adyen.upi.collect.field.label" = "UPI ID";

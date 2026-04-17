@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "入力されたカードブランドはサポートされていません";
 "adyen.card.scanYourCardButton" = "カードをスキャンしてください";
 "adyen.creditCard.dualBrand.title" = "カードブランド";
-"adyen.creditCard.dualBrand.description" = "お支払いに使用するカードブランドをお選びください。これは任意です。";
+"adyen.creditCard.dualBrand.description" = "お支払いに使用するカードブランドを選択できます。これは任意です。";
 "adyen.dropIn.stored.title" = "%@のお支払いをご確認下さい";
 "adyen.dropIn.preselected.openAll.title" = "お支払方法を変更する";
 "adyen.continueTo" = "次へ進む：%@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "手順を参照してください";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "コードをコピー";
+"adyen.voucher.code.copied.label" = "コードをクリップボードにコピーしました";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "金額";
 "adyen.voucher.entity" = "エンティティ";
 "adyen.pix.instructions" = "銀行アプリを使用してQRコードをスキャンするか、以下のPIXコードをコピーして支払いを完了してください。";
 "adyen.pix.expirationLabel" = "%@をお支払い下さい。";
-"adyen.pix.copyButton" = "コードをコピー";
-"adyen.pix.instructions.copiedMessage" = "コードをクリップボードにコピーしました";
 "adyen.pix.code.copy.label" = "PIXコードをコピーしてください";
 "adyen.pix.code.copied.label" = "PIXコードがコピーされました";
 "adyen.billingAddressSection.title" = "ご請求住所";

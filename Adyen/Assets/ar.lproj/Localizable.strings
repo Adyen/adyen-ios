@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "العلامة التجارية للبطاقة التي تم إدخالها غير مدعومة";
 "adyen.card.scanYourCardButton" = "امسح بطاقتك ضوئيًا";
 "adyen.creditCard.dualBrand.title" = "العلامة التجارية للبطاقة";
-"adyen.creditCard.dualBrand.description" = "اختر العلامة التجارية للبطاقة التي تفضل الدفع بها. هذا البيان اختياري.";
+"adyen.creditCard.dualBrand.description" = "يمكنك اختيار العلامة التجارية للبطاقة التي تفضل الدفع بها. هذا اختياري.";
 "adyen.dropIn.stored.title" = "تأكيد الدفع باستخدام %@";
 "adyen.dropIn.preselected.openAll.title" = "تغيير طريقة الدفع";
 "adyen.continueTo" = "متابعة إلى %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "قراءة التعليمات";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "نسخ الرمز";
+"adyen.voucher.code.copied.label" = "تم نسخ الرمز إلى الحافظة";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "المبلغ";
 "adyen.voucher.entity" = "الكيان";
 "adyen.pix.instructions" = "استخدم تطبيق الخدمات البنكية لمسح رمز الاستجابة السريعة أو انسخ رمز PIX أدناه لإتمام عملية الدفع.";
 "adyen.pix.expirationLabel" = "لديك %@ للدفع";
-"adyen.pix.copyButton" = "نسخ الرمز";
-"adyen.pix.instructions.copiedMessage" = "تم نسخ الرمز إلى الحافظة";
 "adyen.pix.code.copy.label" = "انسخ رمز PIX";
 "adyen.pix.code.copied.label" = "تم نسخ رمز PIX";
 "adyen.billingAddressSection.title" = "عنوان الفواتير";
@@ -183,7 +183,7 @@
 "adyen.payByBankAISDD.submit" = "المضي قُدمًا والدفع عن طريق البنك";
 "adyen.payByBankAISDD.more" = "+ المزيد";
 "adyen.upi.modeSelection" = "كيف تود استخدام معرف واجهة المدفوعات الموحدة (UPI)؟";
-"adyen.upi.mode.payByAnyUpi" = "تطبيق UPI";
+"adyen.upi.mode.payByAnyUpi" = "تطبيقات UPI";
 "adyen.upi.intent.instruction" = "حدد تطبيق UPI المفضل لديك";
 "adyen.upi.error.noAppSelected" = "للمتابعة؛ حدد تطبيق UPI المفضّل لديك";
 "adyen.upi.collect.field.label" = "معرف UPI";
