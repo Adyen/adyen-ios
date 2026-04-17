@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Het ingevoerde kaartmerk wordt niet ondersteund";
 "adyen.card.scanYourCardButton" = "Scan uw kaart";
 "adyen.creditCard.dualBrand.title" = "Merk van kaart";
-"adyen.creditCard.dualBrand.description" = "Selecteer het merk van de kaart waarmee u het liefst wilt betalen. Dit is optioneel.";
+"adyen.creditCard.dualBrand.description" = "U kunt het merk van de kaart selecteren waarmee u het liefst wilt betalen. Dit is optioneel.";
 "adyen.dropIn.stored.title" = "Bevestig %@ betaling";
 "adyen.dropIn.preselected.openAll.title" = "Betalingsmethode wijzigen";
 "adyen.continueTo" = "Doorgaan naar %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "Instructies lezen";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "Code kopiëren";
+"adyen.voucher.code.copied.label" = "De code is naar het klembord gekopieerd";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Bedrag";
 "adyen.voucher.entity" = "Entiteit";
 "adyen.pix.instructions" = "Gebruik uw bank-app om de QR-code te scannen of kopieer de PIX-code hieronder om uw betaling af te ronden.";
 "adyen.pix.expirationLabel" = "U heeft %@ om te betalen";
-"adyen.pix.copyButton" = "Code kopiëren";
-"adyen.pix.instructions.copiedMessage" = "De code is naar het klembord gekopieerd";
 "adyen.pix.code.copy.label" = "PIX-code kopiëren";
 "adyen.pix.code.copied.label" = "PIX-code gekopieerd";
 "adyen.billingAddressSection.title" = "Factuuradres";
@@ -183,7 +183,7 @@
 "adyen.payByBankAISDD.submit" = "Doorgaan met betalen via de bank";
 "adyen.payByBankAISDD.more" = "+ meer";
 "adyen.upi.modeSelection" = "Hoe wilt u UPI gebruiken?";
-"adyen.upi.mode.payByAnyUpi" = "UPI-app";
+"adyen.upi.mode.payByAnyUpi" = "UPI-apps";
 "adyen.upi.intent.instruction" = "Selecteer uw gewenste UPI-app";
 "adyen.upi.error.noAppSelected" = "Selecteer uw gewenste UPI-app om door te gaan.";
 "adyen.upi.collect.field.label" = "UPI-ID";
