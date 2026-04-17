@@ -20,8 +20,12 @@ extension Checkout: PaymentComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         if let onSubmit = configuration.onSubmit {
             Task { [weak self] in
-                let response = await onSubmit(data)
-                self?.handle(response)
+                do {
+                    let response = try await onSubmit(data)
+                    self?.handle(response)
+                } catch {
+                    self?.finish(with: error)
+                }
             }
         } else if let session {
             session.didSubmit(
@@ -52,8 +56,12 @@ extension Checkout: ActionComponentDelegate {
     public func didProvide(_ data: Adyen.ActionComponentData, from component: any Adyen.ActionComponent) {
         if let onAdditionalDetails = configuration.onAdditionalDetails {
             Task { [weak self] in
-                let response = await onAdditionalDetails(data)
-                self?.handle(response)
+                do {
+                    let response = try await onAdditionalDetails(data)
+                    self?.handle(response)
+                } catch {
+                    self?.finish(with: error)
+                }
             }
         } else if let session {
             session.didProvide(

@@ -6,8 +6,8 @@
 
 import Foundation
 
-public typealias SubmitHandler = @MainActor @Sendable (_ data: PaymentComponentData) async -> CheckoutPaymentsResponse
-public typealias AdditionalDetailsHandler = @MainActor @Sendable (_ data: ActionComponentData) async -> CheckoutPaymentsResponse
+public typealias SubmitHandler = @MainActor @Sendable (_ data: PaymentComponentData) async throws -> CheckoutPaymentsResponse
+public typealias AdditionalDetailsHandler = @MainActor @Sendable (_ data: ActionComponentData) async throws -> CheckoutPaymentsResponse
 public typealias CheckoutErrorHandler = (_ error: Error) -> Void
 public typealias CheckoutSuccessHandler = (_ result: CheckoutResult) -> Void
 

@@ -15,6 +15,7 @@ internal final class DummyActionComponentExample: InitialDataAdvancedFlowProtoco
     private var checkout: Checkout?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
+    private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
     
     /// comes from demo app protocol, unused on new structure
     internal var context: AdyenContext?
@@ -50,7 +51,8 @@ internal final class DummyActionComponentExample: InitialDataAdvancedFlowProtoco
             )
         ) {}
             .onAdditionalDetails { [weak self] data in
-                await self?.callDetails(with: data) ?? CheckoutPaymentsResponse(resultCode: .refused)
+                guard let self else { throw CancellationError() }
+                return try await self.callDetails(with: data)
             }
             .onError { [weak self] error in
                 self?.dismissAndShowAlert(false, error.localizedDescription)
@@ -62,24 +64,14 @@ internal final class DummyActionComponentExample: InitialDataAdvancedFlowProtoco
         )
     }
     
-    private func callDetails(with data: ActionComponentData) async -> CheckoutPaymentsResponse {
+    private func callDetails(with data: ActionComponentData) async throws -> CheckoutPaymentsResponse {
         let request = PaymentDetailsRequest(
             details: data.details,
             paymentData: data.paymentData,
             merchantAccount: ConfigurationConstants.current.merchantAccount
         )
-        return await withCheckedContinuation { continuation in
-            apiClient.perform(request) { result in
-                switch result {
-                case let .success(response):
-                    continuation.resume(returning: CheckoutPaymentsResponse(
-                        resultCode: response.resultCode, action: response.action
-                    ))
-                case .failure:
-                    continuation.resume(returning: CheckoutPaymentsResponse(resultCode: .refused))
-                }
-            }
-        }
+        let response = try await asyncApiClient.performAsync(request)
+        return CheckoutPaymentsResponse(resultCode: response.resultCode, action: response.action)
     }
     
     private func startLoading() {
