@@ -84,6 +84,9 @@ public final class Checkout: CheckoutProtocol {
         return handler
     }()
     
+    internal var submitTask: Task<Void, Never>?
+    internal var additionalDetailsTask: Task<Void, Never>?
+    
     // MARK: - Public
     
     /// Sets up checkout for the session flow.
@@ -170,6 +173,11 @@ public final class Checkout: CheckoutProtocol {
         self.adyenContext = adyenContext
         self.session?.delegate = self
         self.session?.presentationDelegate = presentationDelegate
+    }
+    
+    deinit {
+        submitTask?.cancel()
+        additionalDetailsTask?.cancel()
     }
 }
 
