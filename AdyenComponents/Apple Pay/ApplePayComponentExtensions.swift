@@ -9,7 +9,7 @@ import Foundation
 import PassKit
 
 @_spi(AdyenInternal)
-extension ApplePayComponent: @MainActor PKPaymentAuthorizationViewControllerDelegate {
+extension ApplePayComponent: @preconcurrency PKPaymentAuthorizationViewControllerDelegate {
 
     // MARK: - Did Finish
 

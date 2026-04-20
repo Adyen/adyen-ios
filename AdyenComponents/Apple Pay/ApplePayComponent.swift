@@ -10,7 +10,7 @@ import PassKit
 
 /// A component that handles Apple Pay payments.
 @MainActor
-public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent {
+public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, FinalizableComponent {
 
     internal let paymentRequest: PKPaymentRequest
 
@@ -124,13 +124,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         guard !networks.isEmpty else { return false }
         return PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: networks)
     }
-}
-
-@_spi(AdyenInternal)
-extension ApplePayComponent: TrackableComponent {}
-
-extension ApplePayComponent: @MainActor FinalizableComponent {
-
+    
     /// Resumes the suspended Apple Pay authorization so the sheet shows a success/failure animation
     /// and dismisses. Called by the Checkout layer once the backend payment result is known.
     ///
@@ -142,3 +136,6 @@ extension ApplePayComponent: @MainActor FinalizableComponent {
         completion?()
     }
 }
+
+@_spi(AdyenInternal)
+extension ApplePayComponent: TrackableComponent {}
