@@ -15,14 +15,14 @@ final class AnyThreeDS2ActionHandlerMock: AnyThreeDS2ActionHandler {
 
     var mockedFingerprintResult: Result<ThreeDSActionHandlerResult, Error>?
 
-    func handle(_ action: ThreeDS2FingerprintAction, completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+    func handle(_ action: ThreeDS2Action.FingerprintData, completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         guard let result = mockedFingerprintResult else { assertionFailure(); return }
         completionHandler(result)
     }
 
     var mockedChallengeResult: Result<ThreeDSActionHandlerResult, Error>?
 
-    func handle(_ action: ThreeDS2ChallengeAction, completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
+    func handle(_ action: ThreeDS2Action.ChallengeData, completionHandler: @escaping (Result<ThreeDSActionHandlerResult, Error>) -> Void) {
         guard let result = mockedChallengeResult else { assertionFailure(); return }
         completionHandler(result)
     }

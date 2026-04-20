@@ -92,10 +92,6 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
         switch action {
         case let .redirect(redirectAction):
             handle(redirectAction)
-        case let .threeDS2Fingerprint(fingerprintAction):
-            handle(fingerprintAction)
-        case let .threeDS2Challenge(challengeAction):
-            handle(challengeAction)
         case let .threeDS2(threeDS2Action):
             handle(threeDS2Action)
         case let .sdk(sdkAction):
@@ -138,13 +134,6 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
         component.handle(action)
     }
     
-    private func handle(_ action: ThreeDS2FingerprintAction) {
-        let component = createAuthenticationComponent()
-        currentActionComponent = component
-        
-        component.handle(action)
-    }
-    
     private func createAuthenticationComponent() -> AuthenticationComponent {
         let component = AuthenticationComponent(
             context: context,
@@ -156,17 +145,7 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
         
         return component
     }
-    
-    private func handle(_ action: ThreeDS2ChallengeAction) {
-        guard let authenticationComponent = currentActionComponent as? AuthenticationComponent else {
-            AdyenAssertion.assertionFailure( // swiftlint:disable:next line_length
-                message: "AuthenticationComponent is nil. There must be a ThreeDS2FingerprintAction action preceding a ThreeDS2ChallengeAction action"
-            )
-            return
-        }
-        authenticationComponent.handle(action)
-    }
-    
+
     private func handle(_ sdkAction: SDKAction) {
         switch sdkAction {
         case let .weChatPay(weChatPaySDKAction):
@@ -283,10 +262,6 @@ private extension Action {
             return "redirect"
         case .sdk:
             return "sdk"
-        case .threeDS2Fingerprint:
-            return "threeDS2Fingerprint"
-        case .threeDS2Challenge:
-            return "threeDS2Challenge"
         case .threeDS2:
             return "threeDS2"
         case .await, .redirectableAwait:

@@ -8,8 +8,8 @@
 import Foundation
 
 /// Holds the results of the 3D Secure 2 component.
-public enum ThreeDS2Details: AdditionalDetails {
-    
+internal enum ThreeDS2Details: AdditionalDetails {
+
     /// When a fingerprint was taken, this case contains the generated 3D Secure 2 fingerprint.
     case fingerprint(String)
     
@@ -21,7 +21,7 @@ public enum ThreeDS2Details: AdditionalDetails {
 
     // MARK: - Encoding
     
-    public func encode(to encoder: Encoder) throws {
+    internal func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         switch self {
