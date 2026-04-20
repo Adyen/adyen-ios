@@ -21,6 +21,8 @@ public struct ThreeDS2ActionConfiguration: CheckoutComponentConfiguration {
     
     package var localizationParameters: LocalizationParameters?
     
+    package var localizationProvider: (any CheckoutLocalizationProvider)?
+
     package var redirectComponentStyle: RedirectComponentStyle?
     
     /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges.

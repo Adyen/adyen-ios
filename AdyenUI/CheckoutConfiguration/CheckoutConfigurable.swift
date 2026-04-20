@@ -22,6 +22,10 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     // to be changed with new styling/localization
 
     var localizationParameters: LocalizationParameters? { get }
+
+    // TODO: Consider non-optional with a no-op default once Phase 3 call sites are written.
+    var localizationProvider: (any CheckoutLocalizationProvider)? { get set }
+
     //  var style: FormComponentStyle { get }
 
     var theme: AdyenTheme { get set }

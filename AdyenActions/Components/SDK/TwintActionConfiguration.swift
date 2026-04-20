@@ -20,6 +20,8 @@ public struct TwintActionConfiguration: CheckoutComponentConfiguration {
     package var theme: AdyenTheme = .default
     
     package var localizationParameters: LocalizationParameters?
+
+    package var localizationProvider: (any CheckoutLocalizationProvider)?
     
     package var callbackAppScheme: String
     
