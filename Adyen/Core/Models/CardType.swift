@@ -308,7 +308,7 @@ extension CardType {
         case .argencard:
             return "^(50)(1)\\d*$"
         case .bcmc:
-            return "^[4-6][0-9]{0,18}$"
+             return "^((6703)[0-9]{0,15}|(479658|606005)[0-9]{0,13})$"
         case .bijenkorfCard:
             return "^(5100081)[0-9]{0,9}$"
         case .cabal:
