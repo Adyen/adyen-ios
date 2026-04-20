@@ -506,60 +506,17 @@ class CardComponentTests: XCTestCase {
 //        let securityCodeItemView: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
 //
 //       XCTAssertEqual(securityCodeItemView.titleLabel.textColor, .gray)
-//
-//        populate(textItemView: securityCodeItemView, with: "123")
-//
-//        wait(until: securityCodeItemView, at: \.cardHintView.tintColor, is: .systemYellow)
 //    }
 
-    func test_storedCard_withNoPaymentAmount_shouldShowGenericPayButton() {
-        let context = Dummy.context(with: nil)
+    func test_storedCard_createsStoredCardInputViewController() {
         let sut = CardComponent(
             paymentMethod: storedMethod,
             context: context
         )
-        XCTAssertNotNil(sut.storedCardComponent)
-        XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
-        XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
-        let vc = sut.viewController as? UIAlertController
-        XCTAssertEqual(vc?.message, "Please enter the CVC code for •••• 1234")
-        XCTAssertEqual(vc?.title, "Verify your card")
-        XCTAssertEqual(vc?.actions[0].title, "Cancel")
-        XCTAssertEqual(vc?.actions[1].title, "Pay")
-    }
-
-    func test_storedCard_withPaymentAmount_shouldShowAmountInPayButton() {
-        let sut = CardComponent(
-            paymentMethod: storedMethod,
-            context: context
-        )
-        XCTAssertNotNil(sut.storedCardComponent)
-        XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
-        XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
-        let vc = sut.viewController as? UIAlertController
-        XCTAssertEqual(vc?.message, "Please enter the CVC code for •••• 1234")
-        XCTAssertEqual(vc?.title, "Verify your card")
-        XCTAssertEqual(vc?.actions[0].title, "Cancel")
-        XCTAssertEqual(vc?.actions[1].title, "Pay €1.00")
-    }
-
-    func test_storedCard_withCustomLocalization_shouldUseLocalizedStrings() {
-        var configuration = CardComponentConfiguration()
-        configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-        let sut = CardComponent(
-            paymentMethod: storedMethod,
-            context: context,
-            configuration: configuration
-        )
 
         XCTAssertNotNil(sut.storedCardComponent)
         XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
-        XCTAssertTrue(sut.storedCardComponent?.viewController is UIAlertController)
-        let vc = sut.viewController as? UIAlertController
-        XCTAssertEqual(vc?.message, "Test-Please enter the CVC code for •••• 1234")
-        XCTAssertEqual(vc?.title, "Test-Verify your card")
-        XCTAssertEqual(vc?.actions[0].title, "Test-Cancel")
-        XCTAssertEqual(vc?.actions[1].title, "Test-Pay €1.00")
+        XCTAssertTrue(sut.storedCardComponent?.viewController is StoredCardInputViewController)
     }
 
     // TODO: FIX ME
