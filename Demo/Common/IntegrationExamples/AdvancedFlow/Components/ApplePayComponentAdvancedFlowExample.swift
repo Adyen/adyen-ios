@@ -167,7 +167,9 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         Task { @MainActor in
             applePayComponent?.didFinalize(with: success, completion: nil)
         }
-        showAlert(success, message)
+        // TODO: re-enable the alert once ApplePayComponent migrates to v6 and adds this hook.
+        // See also: Checkout+DelegateCallbacks.finish(...) has the same race for v6 users.
+//        showAlert(success, message)
     }
 
     internal func showAlert(_ success: Bool, _ message: String) {

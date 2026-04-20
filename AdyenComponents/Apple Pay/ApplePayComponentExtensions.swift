@@ -31,7 +31,7 @@ extension ApplePayComponent: @MainActor PKPaymentAuthorizationViewControllerDele
         _ controller: PKPaymentAuthorizationViewController,
         didAuthorizePayment payment: PKPayment
     ) async -> PKPaymentAuthorizationResult {
-        await handleDidAuthorize(payment: payment)
+        await handleAuthorize(payment: payment)
     }
 
     // MARK: - Shipping Contact (async)
@@ -66,7 +66,7 @@ extension ApplePayComponent: @MainActor PKPaymentAuthorizationViewControllerDele
 
 extension ApplePayComponent {
 
-    private func handleDidAuthorize(payment: PKPayment) async -> PKPaymentAuthorizationResult {
+    private func handleAuthorize(payment: PKPayment) async -> PKPaymentAuthorizationResult {
         guard !payment.token.paymentData.isEmpty else {
             authorizationHandled = true
             delegate?.didFail(with: Error.invalidToken, from: self)

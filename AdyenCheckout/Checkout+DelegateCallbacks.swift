@@ -117,6 +117,17 @@ private extension Checkout {
         }
     }
 
+    // TODO: `onComplete` / `onError` currently fire synchronously right after `finalize`,
+    // which for Apple Pay means they fire while PK is still animating its success/failure
+    // result and has not yet dismissed the sheet. If a merchant's callback presents any
+    // UI (alert, navigation, etc.), that presentation wedges UIKit's transition machinery
+    // and the PK sheet never dismisses — same bug the advanced-flow demo hit.
+    //
+    // Proper fix: make `FinalizableComponent.didFinalize` async (or fire its completion
+    // after the sheet has left the window hierarchy) and await it here before invoking
+    // the integrator callbacks. Then every final path below — normal success/failure,
+    // invalid-token in handleDidAuthorize, action-component errors, session errors — is
+    // trivially correct with no per-path special casing.
     func finish(with result: CheckoutResult, from component: (any PaymentComponent)?) {
         finalize(component, success: result.resultCode.isSuccessful)
         configuration.onComplete?(result)
