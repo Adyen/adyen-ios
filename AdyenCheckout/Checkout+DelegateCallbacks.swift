@@ -5,9 +5,6 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-#if canImport(AdyenComponents)
-    @_spi(AdyenInternal) import AdyenComponents
-#endif
 #if canImport(AdyenSession)
     @_spi(AdyenInternal) import AdyenSession
 #endif
@@ -21,7 +18,6 @@
 extension Checkout: PaymentComponentDelegate {
     
     public func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
-        activePaymentComponent = component
         if let onSubmit = configuration.onSubmit {
             submitTask?.cancel()
             submitTask = Task { [weak self] in
@@ -105,13 +101,12 @@ extension Checkout: SessionDelegate {
     }
     
     private func finish(with result: CheckoutResult) {
-        let success = result.resultCode == .authorised || result.resultCode == .received
-        resolveApplePayIfNeeded(success: success)
+        // TODO: add resolve plumbing for ApplePay by threading component through callback chain
         configuration.onComplete?(result)
     }
     
     private func finish(with error: Error) {
-        resolveApplePayIfNeeded(success: false)
+        // TODO: add resolve plumbing for ApplePay by threading component through callback chain
         configuration.onError?(CheckoutError(error: error))
     }
 }
