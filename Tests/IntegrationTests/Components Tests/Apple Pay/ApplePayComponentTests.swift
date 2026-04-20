@@ -721,7 +721,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertNotNil(receivedPayment)
 
         // Resolve the continuation so the async method can return
-        await sut.resolve(success: true)
+        await sut.didFinalize(with: true, completion: nil)
         let result = await resultTask.value
         XCTAssertEqual(result.status, .success)
     }
@@ -788,7 +788,7 @@ class ApplePayComponentTest: XCTestCase {
         await fulfillment(of: [didSubmitExpectation], timeout: 5)
 
         // Resolve so the async method finishes
-        await sut.resolve(success: true)
+        await sut.didFinalize(with: true, completion: nil)
         let result = await resultTask.value
         XCTAssertEqual(result.status, .success)
     }
@@ -856,7 +856,7 @@ class ApplePayComponentTest: XCTestCase {
         await fulfillment(of: [didSubmitExpectation], timeout: 5)
 
         // When
-        await sut.resolve(success: true)
+        await sut.didFinalize(with: true, completion: nil)
 
         // Then
         let result = await resultTask.value
@@ -884,7 +884,7 @@ class ApplePayComponentTest: XCTestCase {
         await fulfillment(of: [didSubmitExpectation], timeout: 5)
 
         // When
-        await sut.resolve(success: false)
+        await sut.didFinalize(with: false, completion: nil)
 
         // Then
         let result = await resultTask.value

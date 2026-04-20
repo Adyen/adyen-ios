@@ -42,17 +42,17 @@ extension ApplePayComponent {
         ///
         /// Return an updated `PKPaymentRequestShippingContactUpdate` with revised summary items
         /// and optionally updated shipping methods or errors.
-        public var onShippingContactChange: ((PKContact, [PKPaymentSummaryItem]) async -> PKPaymentRequestShippingContactUpdate)?
+        public var onShippingContactChange: (@MainActor (PKContact, [PKPaymentSummaryItem]) async -> PKPaymentRequestShippingContactUpdate)?
 
         /// Called when the shopper selects a shipping method.
         ///
         /// Return an updated `PKPaymentRequestShippingMethodUpdate` with revised summary items.
-        public var onShippingMethodChange: ((PKShippingMethod, [PKPaymentSummaryItem]) async -> PKPaymentRequestShippingMethodUpdate)?
+        public var onShippingMethodChange: (@MainActor (PKShippingMethod, [PKPaymentSummaryItem]) async -> PKPaymentRequestShippingMethodUpdate)?
 
         /// Called when the shopper enters or updates a coupon code.
         ///
         /// Return an updated `PKPaymentRequestCouponCodeUpdate` with revised summary items.
-        public var onCouponCodeChange: ((String, [PKPaymentSummaryItem]) async -> PKPaymentRequestCouponCodeUpdate)?
+        public var onCouponCodeChange: (@MainActor (String, [PKPaymentSummaryItem]) async -> PKPaymentRequestCouponCodeUpdate)?
 
         /// The payment request object needed for Apple Pay. Must contain all the required fields
         /// such as `merchantIdentifier`, `summaryItems`, `currencyCode`, and `countryCode`.

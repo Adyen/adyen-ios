@@ -165,7 +165,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
 
     private func finalize(_ success: Bool, _ message: String) {
         Task { @MainActor in
-            applePayComponent?.resolve(success: success)
+            applePayComponent?.didFinalize(with: success, completion: nil)
         }
         showAlert(success, message)
     }

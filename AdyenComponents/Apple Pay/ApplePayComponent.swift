@@ -17,7 +17,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     internal let applePayPaymentMethod: ApplePayPaymentMethod
 
     /// The continuation that bridges the gap between `submit(data:)` (fire-and-forget)
-    /// and the backend result delivered via `resolve(success:)`.
+    /// and the backend result delivered via `didFinalize(with:completion:)`.
     /// While suspended, the Apple Pay sheet stays on screen waiting for a `PKPaymentAuthorizationResult`.
     internal var paymentResultContinuation: CheckedContinuation<Bool, Never>?
 
@@ -46,7 +46,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// Initializes the component.
     ///
     /// After the shopper authorizes payment, the component suspends the Apple Pay sheet
-    /// until `resolve(success:)` is called with the backend result.
+    /// until `didFinalize(with:completion:)` is called with the backend result.
     /// The sheet then shows a success or failure animation and dismisses automatically.
     ///
     /// - Note: Do not reuse this component after a payment is authorized. It can be re-presented if the user cancels before authorizing.
@@ -89,43 +89,31 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         sendInitialAnalytics()
     }
 
-    /// Returns the existing payment authorization view controller, or lazily recreates one
-    /// after the user cancelled and `didFinish` cleared the previous instance.
+    /// Returns the payment authorization view controller created during initialization.
     ///
-    /// - Note: First access after recreation sends an analytics event.
+    /// - Important: Do not access this property after the component has been used and dismissed.
+    ///   Create a new `ApplePayComponent` instance for each payment attempt.
     public var viewController: UIViewController {
-        if paymentAuthorizationViewController == nil {
-            let controller = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest)
-            controller?.delegate = self
-            paymentAuthorizationViewController = controller
-        }
-        if let controller = paymentAuthorizationViewController, !controller.isViewLoaded {
-            sendDidLoadEvent()
-        }
         guard let controller = paymentAuthorizationViewController else {
-            preconditionFailure("PKPaymentAuthorizationViewController could not be created from a previously validated payment request.")
+            preconditionFailure(
+                "The Apple Pay view controller is no longer available. "
+                    + "Create a new ApplePayComponent instance for each payment attempt."
+            )
+        }
+        if !controller.isViewLoaded {
+            sendDidLoadEvent()
         }
         return controller
     }
 
-    /// Called to finalize the component when the backend payment result is known.
-    ///
-    /// Resumes the suspended Apple Pay delegate method so the sheet shows a success/failure animation.
-    /// - Parameter success: `true` if the payment succeeded, `false` otherwise.
-    @MainActor
-    package func resolve(success: Bool) {
-        resumeContinuation(returning: success)
-    }
-
     /// Cancels a pending authorization when the user dismisses the Apple Pay sheet
     /// before the async `didAuthorizePayment` flow has completed.
-    @MainActor
     internal func cancelPendingAuthorization() {
         resumeContinuation(returning: false)
     }
 
-    /// Atomically extracts and resumes the continuation, guaranteeing exactly-once delivery.
-    @MainActor
+    /// Extracts and resumes the continuation, guaranteeing exactly-once delivery
+    /// via MainActor serialization.
     private func resumeContinuation(returning success: Bool) {
         let continuation = paymentResultContinuation
         paymentResultContinuation = nil
@@ -140,3 +128,17 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
 
 @_spi(AdyenInternal)
 extension ApplePayComponent: TrackableComponent {}
+
+extension ApplePayComponent: @MainActor FinalizableComponent {
+
+    /// Resumes the suspended Apple Pay authorization so the sheet shows a success/failure animation
+    /// and dismisses. Called by the Checkout layer once the backend payment result is known.
+    ///
+    /// - Parameters:
+    ///   - success: `true` if the payment succeeded, `false` otherwise.
+    ///   - completion: Invoked once the continuation has been resumed.
+    public func didFinalize(with success: Bool, completion: (() -> Void)?) {
+        resumeContinuation(returning: success)
+        completion?()
+    }
+}

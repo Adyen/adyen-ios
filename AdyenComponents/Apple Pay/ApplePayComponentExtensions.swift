@@ -9,27 +9,18 @@ import Foundation
 import PassKit
 
 @_spi(AdyenInternal)
-extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
+extension ApplePayComponent: @MainActor PKPaymentAuthorizationViewControllerDelegate {
 
     // MARK: - Did Finish
 
     public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
         controller.dismiss(animated: true) { [weak self] in
-            guard let self else { return }
-            Task { @MainActor in
-                let wasCancelled = !self.authorizationHandled
+            MainActor.assumeIsolated {
+                guard let self, !self.authorizationHandled else { return }
 
-                // If the continuation is still pending, the user dismissed before authorization completed.
-                // Cancel it so the async didAuthorizePayment can return a failure.
+                // Either user cancelled, or dismissed mid-authorization. Cancel current.
                 self.cancelPendingAuthorization()
-
-                // Reset state for potential component reuse
-                self.paymentAuthorizationViewController = nil
-                self.authorizationHandled = false
-
-                if wasCancelled {
-                    self.delegate?.didFail(with: ComponentError.cancelled, from: self)
-                }
+                self.delegate?.didFail(with: ComponentError.cancelled, from: self)
             }
         }
     }
@@ -71,17 +62,10 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
     }
 }
 
-// MARK: - @MainActor Helpers
-
-//
-// The async PKPaymentAuthorizationViewControllerDelegate methods run on the cooperative
-// thread pool, not the main thread. All property access on ApplePayComponent (paymentRequest,
-// paymentResultContinuation, delegate, configuration, submit, etc.) touches UIKit objects or
-// mutable state that must be accessed on the main thread. These helpers ensure that.
+// MARK: - Private Helpers
 
 extension ApplePayComponent {
 
-    @MainActor
     private func handleDidAuthorize(payment: PKPayment) async -> PKPaymentAuthorizationResult {
         guard !payment.token.paymentData.isEmpty else {
             authorizationHandled = true
@@ -92,7 +76,8 @@ extension ApplePayComponent {
         // Optional merchant validation via configuration closure
         if let onAuthorize = configuration.onAuthorize {
             let result = await onAuthorize(payment)
-            guard result.status == .success else {
+            if result.status == .failure {
+                // Error returned from merchant — pass back to Apple Pay sheet
                 authorizationHandled = true
                 return result
             }
@@ -125,35 +110,32 @@ extension ApplePayComponent {
         return PKPaymentAuthorizationResult(status: success ? .success : .failure, errors: nil)
     }
 
-    @MainActor
     private func handleShippingContactChange(_ contact: PKContact) async -> PKPaymentRequestShippingContactUpdate {
         guard let onShippingContactChange = configuration.onShippingContactChange else {
             return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
         }
 
-        var result = await onShippingContactChange(contact, paymentRequest.paymentSummaryItems)
+        let result = await onShippingContactChange(contact, paymentRequest.paymentSummaryItems)
         result.paymentSummaryItems = validatedPaymentSummaryItems(from: result)
         return result
     }
 
-    @MainActor
     private func handleShippingMethodChange(_ shippingMethod: PKShippingMethod) async -> PKPaymentRequestShippingMethodUpdate {
         guard let onShippingMethodChange = configuration.onShippingMethodChange else {
             return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
         }
 
-        var result = await onShippingMethodChange(shippingMethod, paymentRequest.paymentSummaryItems)
+        let result = await onShippingMethodChange(shippingMethod, paymentRequest.paymentSummaryItems)
         result.paymentSummaryItems = validatedPaymentSummaryItems(from: result)
         return result
     }
 
-    @MainActor
     private func handleCouponCodeChange(_ couponCode: String) async -> PKPaymentRequestCouponCodeUpdate {
         guard let onCouponCodeChange = configuration.onCouponCodeChange else {
             return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
         }
 
-        var result = await onCouponCodeChange(couponCode, paymentRequest.paymentSummaryItems)
+        let result = await onCouponCodeChange(couponCode, paymentRequest.paymentSummaryItems)
         result.paymentSummaryItems = validatedPaymentSummaryItems(from: result)
         return result
     }
@@ -167,7 +149,6 @@ extension ApplePayComponent {
     /// previous valid summary items to keep the Apple Pay sheet in a consistent state.
     ///
     /// Otherwise the new items are accepted and stored on `paymentRequest`.
-    @MainActor
     private func validatedPaymentSummaryItems(from result: some PKPaymentRequestUpdate) -> [PKPaymentSummaryItem] {
         guard result.status == .success, !result.paymentSummaryItems.isEmpty else {
             return paymentRequest.paymentSummaryItems
@@ -178,7 +159,7 @@ extension ApplePayComponent {
             return result.paymentSummaryItems
         } catch {
             AdyenAssertion.assertionFailure(
-                message: "Invalid payment summary items returned by merchant callback — \(error.localizedDescription). Falling back to previous valid items."
+                message: "Invalid payment summary items returned by merchant callback. Falling back to previous valid items."
             )
             return paymentRequest.paymentSummaryItems
         }

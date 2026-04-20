@@ -143,7 +143,7 @@ class PreApplePayComponentTests: XCTestCase {
         XCTAssertTrue(UIApplication.shared.adyen.mainKeyWindow?.rootViewController?.presentedViewController is PKPaymentAuthorizationViewController)
         UIApplication.shared.adyen.mainKeyWindow?.rootViewController?.presentedViewController?.dismiss(animated: false, completion: nil)
 
-        sut.resolve(success: false)
+        sut.didFinalize(with: false, completion: nil)
         dismissExpectation.fulfill()
 
         waitForExpectations(timeout: 10, handler: nil)

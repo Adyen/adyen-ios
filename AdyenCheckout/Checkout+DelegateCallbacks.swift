@@ -9,26 +9,24 @@
     @_spi(AdyenInternal) import AdyenSession
 #endif
 
-// This is where the main flow checking/forwarding happens.
-// Through conforming to the delegates, Checkout will be the bridge.
-// If there is a callback, regardless of session, we call it first.
-// If not, we check session and pass the work to it.
-// Finally if neither, we will fail/assert/show error.
+// MARK: - PaymentComponentDelegate
 
 extension Checkout: PaymentComponentDelegate {
-    
+
     public func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
+        pendingPaymentComponent = component
+
         if let onSubmit = configuration.onSubmit {
             submitTask?.cancel()
             submitTask = Task { [weak self] in
                 do {
                     let response = try await onSubmit(data)
                     guard !Task.isCancelled else { return }
-                    self?.handle(response)
+                    self?.handle(response, from: component)
                 } catch {
                     // Ignore if this was a cancellation (task superseded or Checkout torn down).
                     guard !(error is CancellationError), !Task.isCancelled else { return }
-                    self?.finish(with: error)
+                    self?.finish(with: error, from: component)
                 }
             }
         } else if let session {
@@ -41,22 +39,16 @@ extension Checkout: PaymentComponentDelegate {
             // TODO: throw/assert to inform missing callbacks
         }
     }
-    
+
     public func didFail(with error: any Error, from component: any PaymentComponent) {
-        finish(with: error)
-    }
-    
-    private func handle(_ paymentsResponse: CheckoutPaymentsResponse) {
-        if let action = paymentsResponse.action {
-            actionHandlingComponent.handle(action)
-        } else {
-            // TODO: check for error cases here
-            finish(with: CheckoutResult(resultCode: paymentsResponse.resultCode))
-        }
+        finish(with: error, from: component)
     }
 }
 
+// MARK: - ActionComponentDelegate
+
 extension Checkout: ActionComponentDelegate {
+
     public func didProvide(_ data: Adyen.ActionComponentData, from component: any Adyen.ActionComponent) {
         if let onAdditionalDetails = configuration.onAdditionalDetails {
             additionalDetailsTask?.cancel()
@@ -64,11 +56,11 @@ extension Checkout: ActionComponentDelegate {
                 do {
                     let response = try await onAdditionalDetails(data)
                     guard !Task.isCancelled else { return }
-                    self?.handle(response)
+                    self?.handle(response, from: self?.pendingPaymentComponent)
                 } catch {
                     // Ignore if this was a cancellation (task superseded or Checkout torn down).
                     guard !(error is CancellationError), !Task.isCancelled else { return }
-                    self?.finish(with: error)
+                    self?.finish(with: error, from: self?.pendingPaymentComponent)
                 }
             }
         } else if let session {
@@ -81,32 +73,64 @@ extension Checkout: ActionComponentDelegate {
             // TODO: throw/assert to inform missing callbacks
         }
     }
-    
+
     public func didComplete(from component: any Adyen.ActionComponent) {
         // TODO: need a result code here, refactor this function to contain it or create on here?
     }
-    
+
     public func didFail(with error: any Error, from component: any Adyen.ActionComponent) {
-        finish(with: error)
+        // Route back to the payment component that started this flow so any UI
+        // it's still holding open (e.g. the Apple Pay sheet) can dismiss.
+        finish(with: error, from: pendingPaymentComponent)
     }
 }
 
+// MARK: - SessionDelegate
+
 extension Checkout: SessionDelegate {
+
     public func didComplete(with result: CheckoutResult, component: any Component, session: Session) {
-        finish(with: result)
+        finish(with: result, from: component as? (any PaymentComponent))
     }
-    
+
     public func didFail(with error: any Error, from component: any Component, session: Session) {
-        finish(with: error)
+        finish(with: error, from: component as? (any PaymentComponent))
     }
-    
-    private func finish(with result: CheckoutResult) {
-        // TODO: add resolve plumbing for ApplePay by threading component through callback chain
+}
+
+// MARK: - Private Helpers
+
+private extension Checkout {
+
+    /// If the response carries an action, dispatch it and keep `pendingPaymentComponent`
+    /// set so the final result (arriving later via `didProvide`) can still finalize
+    /// the component that originally submitted.
+    func handle(_ paymentsResponse: CheckoutPaymentsResponse, from component: (any PaymentComponent)?) {
+        if let action = paymentsResponse.action {
+            actionHandlingComponent.handle(action)
+        } else {
+            // TODO: check for error cases here
+            finish(
+                with: CheckoutResult(resultCode: paymentsResponse.resultCode),
+                from: component
+            )
+        }
+    }
+
+    func finish(with result: CheckoutResult, from component: (any PaymentComponent)?) {
+        finalize(component, success: result.resultCode.isSuccessful)
         configuration.onComplete?(result)
     }
-    
-    private func finish(with error: Error) {
-        // TODO: add resolve plumbing for ApplePay by threading component through callback chain
+
+    func finish(with error: Error, from component: (any PaymentComponent)?) {
+        finalize(component, success: false)
         configuration.onError?(CheckoutError(error: error))
+    }
+
+    /// Resumes the originating component if it needs finalization (e.g. Apple Pay sheet)
+    /// and clears the pending reference so a new flow can start clean.
+    func finalize(_ component: (any PaymentComponent)?, success: Bool) {
+        (component as? any FinalizableComponent)?.didFinalize(with: success, completion: nil)
+        pendingPaymentComponent = nil
     }
 }
