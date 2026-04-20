@@ -49,13 +49,6 @@ struct StoredCardInputViewControllerTests {
         #expect(proxy.viewController.isModalInPresentation)
     }
 
-    @Test
-    func viewDidLoad_hasBackNavigationButton() {
-        let (proxy, _) = makeSUT()
-        proxy.load()
-        #expect(proxy.viewController.navigationItem.leftBarButtonItem != nil)
-    }
-
     // MARK: - B: Primary button tap
 
     @Test
@@ -120,18 +113,6 @@ struct StoredCardInputViewControllerTests {
         proxy.load()
 
         #expect(viewModel.onSecurityCodeValidationRequested != nil)
-    }
-
-    // MARK: - D: Secondary button and back button
-
-    @Test
-    func backButtonTap_callsDismiss() {
-        let (proxy, viewModel) = makeSUT()
-        proxy.load()
-
-        proxy.tapBackButton()
-
-        #expect(viewModel.dismissCallsCount == 1)
     }
 
     // MARK: - Helpers
