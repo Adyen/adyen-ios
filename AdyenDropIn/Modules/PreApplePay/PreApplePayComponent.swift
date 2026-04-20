@@ -89,7 +89,7 @@ internal final class PreApplePayComponent: PresentableComponent,
         }
     }
 
-    internal func resolve(success: Bool) {
+    internal func didFinalize(with success: Bool, completion: (() -> Void)?) {
         Task { @MainActor in
             applePayComponent.didFinalize(with: success, completion: nil)
         }
