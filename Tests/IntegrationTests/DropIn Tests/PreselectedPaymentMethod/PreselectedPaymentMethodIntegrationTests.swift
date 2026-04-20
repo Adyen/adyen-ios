@@ -26,8 +26,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         preSelectedViewController.load()
         // Expected in the UI
 
-        // TODO: Robert: This is a strange failure, it never seems to match even if the strings are the same.
-        // try #expect(preSelectedViewController.primaryTitleText == testData.expectedTitle, "Card number")
+        try #expect(preSelectedViewController.primaryTitleText == testData.expectedTitle, "Card number")
         try #expect(preSelectedViewController.subTitleText == testData.expectedSubTitleText, "Use payment.method")
         try #expect(preSelectedViewController.submitButtonText == testData.submitButtonText, "Pay button title is incorrect")
         try #expect(preSelectedViewController.showAllPaymentMethodsButtonText == testData.showAllPaymentMethodsButtonText, "Other Payment methods")
@@ -311,8 +310,8 @@ struct PreselectedPaymentMethodIntegrationTests {
 
         var expectedTitle: String {
             switch self {
-            case .visa, .visaWithoutAmount, .visaWithZeroAmount: "•••• 1111"
-            case .bcmc, .initiableBCMC: "•••• 4449"
+            case .visa, .visaWithoutAmount, .visaWithZeroAmount: "\(String.Adyen.securedString)1111"
+            case .bcmc, .initiableBCMC: "\(String.Adyen.securedString)4449"
             }
         }
 
