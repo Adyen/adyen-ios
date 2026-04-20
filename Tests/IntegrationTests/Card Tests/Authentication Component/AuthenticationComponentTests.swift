@@ -12,7 +12,7 @@ import XCTest
 
 @available(iOS 16.0, *)
 @MainActor
-class ThreeDS2ComponentTests: XCTestCase {
+class AuthenticationComponentTests: XCTestCase {
 
     func testFullFlowRedirectSuccess() throws {
 
@@ -33,7 +33,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             redirectComponent.delegate?.didProvide(mockedData, from: redirectComponent)
         }
 
-        let sut = ThreeDS2Component(
+        let sut = AuthenticationComponent(
             context: Dummy.context,
             threeDS2CompactFlowHandler: threeDSActionHandler,
             threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
@@ -74,7 +74,7 @@ class ThreeDS2ComponentTests: XCTestCase {
 
         }
 
-        let sut = ThreeDS2Component(
+        let sut = AuthenticationComponent(
             context: Dummy.context,
             threeDS2CompactFlowHandler: threeDS2ActionHandler,
             threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
@@ -116,7 +116,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(
+        let sut = AuthenticationComponent(
             context: Dummy.context,
             threeDS2CompactFlowHandler: threeDS2ActionHandler,
             threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
@@ -159,7 +159,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(
+        let sut = AuthenticationComponent(
             context: Dummy.context,
             threeDS2CompactFlowHandler: threeDS2ActionHandler,
             threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
@@ -175,7 +175,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         delegate.onDidFail = { error, component in
             XCTAssertTrue(component === sut)
 
-            switch error as? ThreeDS2Component.Error {
+            switch error as? AuthenticationComponent.Error {
             case .unexpectedAction:
                 break
             default:
@@ -207,7 +207,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(
+        let sut = AuthenticationComponent(
             context: Dummy.context,
             threeDS2CompactFlowHandler: threeDS2ActionHandler,
             threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
@@ -240,7 +240,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(
+        let sut = AuthenticationComponent(
             context: Dummy.context,
             threeDS2CompactFlowHandler: threeDS2ActionHandler,
             threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
@@ -277,7 +277,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         }
 
         let analyticsProviderMock = AnalyticsProviderMock()
-        let sut = ThreeDS2Component(
+        let sut = AuthenticationComponent(
             context: Dummy.context(analyticsProvider: analyticsProviderMock),
             threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
             threeDS2ClassicFlowHandler: threeDS2ActionHandler,
@@ -310,7 +310,7 @@ class ThreeDS2ComponentTests: XCTestCase {
     }
     
     func testSettingRequestorAppURL() {
-        let sut = ThreeDS2Component(context: Dummy.context)
+        let sut = AuthenticationComponent(context: Dummy.context)
         sut.configuration.requestorAppURL = URL(string: "https://google.com")
         XCTAssertEqual(sut.threeDS2CompactFlowHandler.threeDSRequestorAppURL, URL(string: "https://google.com"))
         XCTAssertEqual(sut.threeDS2ClassicFlowHandler.threeDSRequestorAppURL, URL(string: "https://google.com"))
@@ -319,7 +319,7 @@ class ThreeDS2ComponentTests: XCTestCase {
     func testSettingRequestorAppURLWithInitializer() throws {
         let configuration = try AuthenticationConfiguration()
             .requestorAppURL(XCTUnwrap(URL(string: "https://google.com")))
-        let sut = ThreeDS2Component(
+        let sut = AuthenticationComponent(
             context: Dummy.context,
             configuration: configuration
         )
@@ -333,7 +333,7 @@ class ThreeDS2ComponentTests: XCTestCase {
         let redirectComponent = AnyRedirectComponentMock()
         let configuration = try AuthenticationConfiguration()
             .requestorAppURL(XCTUnwrap(URL(string: "https://google.com")))
-        let sut = ThreeDS2Component(
+        let sut = AuthenticationComponent(
             context: Dummy.context,
             threeDS2CompactFlowHandler: threeDS2CompactFlowHandler,
             threeDS2ClassicFlowHandler: threeDS2ClassicFlowHandler,
@@ -357,7 +357,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(
+        let sut = AuthenticationComponent(
             context: Dummy.context,
             threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
             threeDS2ClassicFlowHandler: threeDS2ActionHandler,
@@ -404,7 +404,7 @@ class ThreeDS2ComponentTests: XCTestCase {
             XCTFail("RedirectComponent should never be invoked.")
         }
 
-        let sut = ThreeDS2Component(
+        let sut = AuthenticationComponent(
             context: Dummy.context,
             threeDS2CompactFlowHandler: threeDS2ActionHandler,
             threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandlerMock(),
@@ -503,7 +503,7 @@ class ThreeDS2ComponentTests: XCTestCase {
                 coreActionHandler: threeDS2ActionHandler
             )
         
-            let sut = ThreeDS2Component(
+            let sut = AuthenticationComponent(
                 context: Dummy.context,
                 threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
                 threeDS2ClassicFlowHandler: classicActionHandler,
@@ -615,7 +615,7 @@ class ThreeDS2ComponentTests: XCTestCase {
                 coreActionHandler: threeDS2ActionHandler
             )
         
-            let sut = ThreeDS2Component(
+            let sut = AuthenticationComponent(
                 context: Dummy.context,
                 threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
                 threeDS2ClassicFlowHandler: classicActionHandler,
@@ -745,7 +745,7 @@ class ThreeDS2ComponentTests: XCTestCase {
                 coreActionHandler: threeDS2ActionHandler
             )
             mockService.onPerformChallenge = { $1(.success(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y"))) }
-            let sut = ThreeDS2Component(
+            let sut = AuthenticationComponent(
                 context: Dummy.context,
                 threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
                 threeDS2ClassicFlowHandler: classicActionHandler,
@@ -851,7 +851,7 @@ class ThreeDS2ComponentTests: XCTestCase {
                 coreActionHandler: threeDS2ActionHandler
             )
             mockService.onPerformChallenge = { $1(.success(AnyChallengeResultMock(sdkTransactionIdentifier: "sdkTxId", transactionStatus: "Y"))) }
-            let sut = ThreeDS2Component(
+            let sut = AuthenticationComponent(
                 context: Dummy.context,
                 threeDS2CompactFlowHandler: AnyThreeDS2ActionHandlerMock(),
                 threeDS2ClassicFlowHandler: classicActionHandler,

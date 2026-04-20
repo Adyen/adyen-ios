@@ -7,6 +7,6 @@
 import Foundation
 
 internal struct ChallengeParameters {
-    internal let challengeToken: ThreeDS2Component.ChallengeToken
+    internal let challengeToken: AuthenticationComponent.ChallengeToken
     internal let threeDSRequestorAppURL: URL?
 }

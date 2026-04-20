@@ -7,7 +7,7 @@
 import Adyen
 import Foundation
 
-internal extension ThreeDS2Component {
+internal extension AuthenticationComponent {
     
     struct Fingerprint: Codable, Equatable { // swiftlint:disable:this explicit_acl
         internal let deviceInformation: String?
@@ -23,7 +23,7 @@ internal extension ThreeDS2Component {
 
         internal init(
             deviceInformation: String?,
-            sdkEphemeralPublicKey: ThreeDS2Component.Fingerprint.EphemeralPublicKey?,
+            sdkEphemeralPublicKey: AuthenticationComponent.Fingerprint.EphemeralPublicKey?,
             sdkReferenceNumber: String?,
             sdkApplicationIdentifier: String?,
             sdkTransactionIdentifier: String?,
@@ -101,7 +101,7 @@ internal extension ThreeDS2Component {
     
 }
 
-extension ThreeDS2Component.Fingerprint {
+extension AuthenticationComponent.Fingerprint {
     
     internal struct EphemeralPublicKey: Codable, Equatable {
         

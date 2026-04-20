@@ -42,7 +42,7 @@ TempProject/
 .tmp
 
 # Configuration files with secrets
-Demo/Secrets.*.xcconfig
+Secrets.*.xcconfig
 
 # AI assistant configurations
 /.claude

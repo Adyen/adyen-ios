@@ -68,7 +68,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         service.onResetTransaction = {}
         service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
 
-        let fingerprint = try ThreeDS2Component.Fingerprint(
+        let fingerprint = try AuthenticationComponent.Fingerprint(
             authenticationRequestParameters: authenticationRequestParameters,
             delegatedAuthenticationSDKOutput: nil,
             deleteDelegatedAuthenticationCredential: nil
@@ -252,7 +252,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
             case .success:
                 XCTFail()
             case let .failure(error):
-                let componentError = error as? ThreeDS2Component.Error
+                let componentError = error as? AuthenticationComponent.Error
                 switch componentError {
                 case .missingTransaction?: ()
                 default:

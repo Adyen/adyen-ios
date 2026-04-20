@@ -7,7 +7,7 @@
 import Adyen
 import Foundation
 
-internal extension ThreeDS2Component {
+internal extension AuthenticationComponent {
     
     struct ChallengeToken: Decodable { // swiftlint:disable:this explicit_acl
         

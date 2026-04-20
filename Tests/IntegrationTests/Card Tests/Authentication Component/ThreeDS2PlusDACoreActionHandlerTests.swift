@@ -88,7 +88,7 @@ import XCTest
             let service = ThreeDSServiceableMock()
             service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
         
-            let expectedFingerprint = try ThreeDS2Component.Fingerprint(
+            let expectedFingerprint = try AuthenticationComponent.Fingerprint(
                 authenticationRequestParameters: authenticationRequestParameters,
                 delegatedAuthenticationSDKOutput: nil,
                 deleteDelegatedAuthenticationCredential: nil
@@ -108,7 +108,7 @@ import XCTest
             sut.handle(fingerprintAction, event: analyticsEvent) { fingerprintResult in
                 switch fingerprintResult {
                 case let .success(fingerprintString):
-                    let fingerprint: ThreeDS2Component.Fingerprint = try! AdyenCoder.decodeBase64(fingerprintString)
+                    let fingerprint: AuthenticationComponent.Fingerprint = try! AdyenCoder.decodeBase64(fingerprintString)
                     XCTAssertEqual(fingerprint, expectedFingerprint)
                 case .failure:
                     XCTFail()
@@ -301,7 +301,7 @@ import XCTest
                 case .success:
                     XCTFail()
                 case let .failure(error):
-                    let componentError = error as? ThreeDS2Component.Error
+                    let componentError = error as? AuthenticationComponent.Error
                     switch componentError {
                     case .missingTransaction?: ()
                     default:

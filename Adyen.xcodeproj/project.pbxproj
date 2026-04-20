@@ -250,6 +250,13 @@
 		2159173A2A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215917392A0D161B0004081E /* ThreeDS2PlusDAScreenPresenter.swift */; };
 		2172F8152C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2172F8142C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift */; };
 		2172F8172C20B93400BE0369 /* DAErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2172F8162C20B93400BE0369 /* DAErrorViewController.swift */; };
+		21ABF8012F91913200DC9E2B /* AuthenticationComponent+FingerprintTokenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21ABF7FF2F91913200DC9E2B /* AuthenticationComponent+FingerprintTokenTests.swift */; };
+		21ABF8022F91913200DC9E2B /* AuthenticationComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21ABF8002F91913200DC9E2B /* AuthenticationComponentTests.swift */; };
+		21ABF8142F9191F100DC9E2B /* AuthenticationComponent+Fingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21ABF8112F9191F100DC9E2B /* AuthenticationComponent+Fingerprint.swift */; };
+		21ABF8152F9191F100DC9E2B /* AuthenticationComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21ABF80F2F9191F100DC9E2B /* AuthenticationComponent.swift */; };
+		21ABF8162F9191F100DC9E2B /* AuthenticationComponent+ChallengeToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21ABF8102F9191F100DC9E2B /* AuthenticationComponent+ChallengeToken.swift */; };
+		21ABF8172F9191F100DC9E2B /* AuthenticationComponent+FingerprintToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21ABF8122F9191F100DC9E2B /* AuthenticationComponent+FingerprintToken.swift */; };
+		21ABF8182F9191F100DC9E2B /* AuthenticationComponent+ThreeDSConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21ABF8132F9191F100DC9E2B /* AuthenticationComponent+ThreeDSConfiguration.swift */; };
 		21B387B62C401C890029101E /* ThreeDS2DAScreenPresenterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2159173B2A0D2B6E0004081E /* ThreeDS2DAScreenPresenterMock.swift */; };
 		21B387B92C408A9C0029101E /* UILabelHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B387B82C408A9C0029101E /* UILabelHelper.swift */; };
 		21B387BB2C408C920029101E /* UIStackViewHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B387BA2C408C920029101E /* UIStackViewHelper.swift */; };
@@ -271,8 +278,6 @@
 		21C7111E2D6D386F00A08111 /* ADYServiceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C7111D2D6D386F00A08111 /* ADYServiceAdapter.swift */; };
 		21C711202D6D388700A08111 /* AnyADYTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C7111F2D6D388700A08111 /* AnyADYTransaction.swift */; };
 		21C711242D6D3B2500A08111 /* ThreeDSServiceableMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C711232D6D3B2100A08111 /* ThreeDSServiceableMock.swift */; };
-		21CBEF4D2D88768700178809 /* ThreeDS2Component+FingerprintTokenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CBEF4C2D88766D00178809 /* ThreeDS2Component+FingerprintTokenTests.swift */; };
-		21CBEF4F2D88CA2300178809 /* ThreeDS2ComponentThreeDSConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CBEF4E2D88CA1600178809 /* ThreeDS2ComponentThreeDSConfiguration.swift */; };
 		21CBEF642D8B0A0700178809 /* ThreeDSServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CBEF632D8B0A0500178809 /* ThreeDSServiceProvider.swift */; };
 		21CBEF662D8B6B3A00178809 /* ThreeDSServiceProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CBEF652D8B6B2F00178809 /* ThreeDSServiceProviderTests.swift */; };
 		21D6FC1B2F236EED003811A8 /* AdyenUI.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21D6FC1A2F236EED003811A8 /* AdyenUI.xcassets */; };
@@ -1069,12 +1074,8 @@
 		F91760632594A0E300D653BE /* ActionsBundleExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91760622594A0E300D653BE /* ActionsBundleExtension.swift */; };
 		F91760812594B1F400D653BE /* RedirectComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B798D223ACF10800A2103C /* RedirectComponentStyle.swift */; };
 		F91760822594B1F400D653BE /* AwaitComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B1F24DBEB990073F38A /* AwaitComponentStyle.swift */; };
-		F917613425A30B5700D653BE /* ThreeDS2Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2345C01229BCC7D000F2C94 /* ThreeDS2Component.swift */; };
 		F917613525A30B5700D653BE /* ThreeDS2Details.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2345C0D229BDD2D000F2C94 /* ThreeDS2Details.swift */; };
-		F917613625A30B5700D653BE /* ThreeDS2ComponentChallengeToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2345C07229BDA46000F2C94 /* ThreeDS2ComponentChallengeToken.swift */; };
 		F917613725A30B5700D653BE /* ThreeDSResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9842C58256D72B60063CE5A /* ThreeDSResult.swift */; };
-		F917613825A30B5700D653BE /* ThreeDS2ComponentFingerprint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2345C09229BDA70000F2C94 /* ThreeDS2ComponentFingerprint.swift */; };
-		F917613925A30B5700D653BE /* ThreeDS2ComponentFingerprintToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2345C05229BDA3C000F2C94 /* ThreeDS2ComponentFingerprintToken.swift */; };
 		F917614A25A30B5E00D653BE /* ThreeDS2FingerprintSubmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957A9F925514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift */; };
 		F917615B25A30B6400D653BE /* AnyAuthenticationRequestParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7AC5A2554066300012EBC /* AnyAuthenticationRequestParameters.swift */; };
 		F917615C25A30B6400D653BE /* AnyChallengeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A7AC622554068D00012EBC /* AnyChallengeResult.swift */; };
@@ -1144,7 +1145,6 @@
 		F94F0DF628AB7BCC00C0923D /* DelegatedAuthenticationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F94F0DF528AB7BCC00C0923D /* DelegatedAuthenticationData.swift */; };
 		F957A9CE255051130099AD73 /* StoredPaymentMethodComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2D05BF12285B98900EC279A /* StoredPaymentMethodComponent.swift */; };
 		F957AA462552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA452552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift */; };
-		F957AA5A2552D8BB0099AD73 /* ThreeDS2ComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA592552D8BB0099AD73 /* ThreeDS2ComponentTests.swift */; };
 		F957AA622552D8D20099AD73 /* AnyThreeDS2ActionHandlerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA612552D8D20099AD73 /* AnyThreeDS2ActionHandlerMock.swift */; };
 		F957AA6A2552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA692552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift */; };
 		F957AA722552DBC80099AD73 /* AnyRedirectComponentMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F957AA712552DBC80099AD73 /* AnyRedirectComponentMock.swift */; };
@@ -1970,6 +1970,13 @@
 		2159173B2A0D2B6E0004081E /* ThreeDS2DAScreenPresenterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2DAScreenPresenterMock.swift; sourceTree = "<group>"; };
 		2172F8142C20B91400BE0369 /* DelegatedAuthenticationErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatedAuthenticationErrorView.swift; sourceTree = "<group>"; };
 		2172F8162C20B93400BE0369 /* DAErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DAErrorViewController.swift; sourceTree = "<group>"; };
+		21ABF7FF2F91913200DC9E2B /* AuthenticationComponent+FingerprintTokenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthenticationComponent+FingerprintTokenTests.swift"; sourceTree = "<group>"; };
+		21ABF8002F91913200DC9E2B /* AuthenticationComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationComponentTests.swift; sourceTree = "<group>"; };
+		21ABF80F2F9191F100DC9E2B /* AuthenticationComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationComponent.swift; sourceTree = "<group>"; };
+		21ABF8102F9191F100DC9E2B /* AuthenticationComponent+ChallengeToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthenticationComponent+ChallengeToken.swift"; sourceTree = "<group>"; };
+		21ABF8112F9191F100DC9E2B /* AuthenticationComponent+Fingerprint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthenticationComponent+Fingerprint.swift"; sourceTree = "<group>"; };
+		21ABF8122F9191F100DC9E2B /* AuthenticationComponent+FingerprintToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthenticationComponent+FingerprintToken.swift"; sourceTree = "<group>"; };
+		21ABF8132F9191F100DC9E2B /* AuthenticationComponent+ThreeDSConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthenticationComponent+ThreeDSConfiguration.swift"; sourceTree = "<group>"; };
 		21B387B82C408A9C0029101E /* UILabelHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelHelper.swift; sourceTree = "<group>"; };
 		21B387BA2C408C920029101E /* UIStackViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStackViewHelper.swift; sourceTree = "<group>"; };
 		21B387BC2C408CA90029101E /* UIImageViewHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewHelper.swift; sourceTree = "<group>"; };
@@ -1989,8 +1996,6 @@
 		21C7111D2D6D386F00A08111 /* ADYServiceAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADYServiceAdapter.swift; sourceTree = "<group>"; };
 		21C7111F2D6D388700A08111 /* AnyADYTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyADYTransaction.swift; sourceTree = "<group>"; };
 		21C711232D6D3B2100A08111 /* ThreeDSServiceableMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSServiceableMock.swift; sourceTree = "<group>"; };
-		21CBEF4C2D88766D00178809 /* ThreeDS2Component+FingerprintTokenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThreeDS2Component+FingerprintTokenTests.swift"; sourceTree = "<group>"; };
-		21CBEF4E2D88CA1600178809 /* ThreeDS2ComponentThreeDSConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ComponentThreeDSConfiguration.swift; sourceTree = "<group>"; };
 		21CBEF632D8B0A0500178809 /* ThreeDSServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSServiceProvider.swift; sourceTree = "<group>"; };
 		21CBEF652D8B6B2F00178809 /* ThreeDSServiceProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDSServiceProviderTests.swift; sourceTree = "<group>"; };
 		21D6FC1A2F236EED003811A8 /* AdyenUI.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AdyenUI.xcassets; sourceTree = "<group>"; };
@@ -2479,10 +2484,6 @@
 		E226F5462296BE250013A463 /* Adyen3DS2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Adyen3DS2.framework; path = Carthage/Build/iOS/Adyen3DS2.framework; sourceTree = "<group>"; };
 		E226F54A229803130013A463 /* DropInComponentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInComponentDelegate.swift; sourceTree = "<group>"; };
 		E2289B3B23D0BBB1002844BF /* ListSectionHeaderStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSectionHeaderStyle.swift; sourceTree = "<group>"; };
-		E2345C01229BCC7D000F2C94 /* ThreeDS2Component.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2Component.swift; sourceTree = "<group>"; };
-		E2345C05229BDA3C000F2C94 /* ThreeDS2ComponentFingerprintToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ComponentFingerprintToken.swift; sourceTree = "<group>"; };
-		E2345C07229BDA46000F2C94 /* ThreeDS2ComponentChallengeToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ComponentChallengeToken.swift; sourceTree = "<group>"; };
-		E2345C09229BDA70000F2C94 /* ThreeDS2ComponentFingerprint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ComponentFingerprint.swift; sourceTree = "<group>"; };
 		E2345C0D229BDD2D000F2C94 /* ThreeDS2Details.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2Details.swift; sourceTree = "<group>"; };
 		E24FECF4226EF9AB00A65122 /* ComponentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentsViewController.swift; sourceTree = "<group>"; };
 		E24FECF6226EF9D800A65122 /* ComponentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentsView.swift; sourceTree = "<group>"; };
@@ -2790,7 +2791,6 @@
 		F957A9F925514EEA0099AD73 /* ThreeDS2FingerprintSubmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2FingerprintSubmitter.swift; sourceTree = "<group>"; };
 		F957AA2B2551829F0099AD73 /* ThreeDS2CompactActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2CompactActionHandler.swift; sourceTree = "<group>"; };
 		F957AA452552C3D20099AD73 /* ThreeDS2FingerprintSubmitterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2FingerprintSubmitterTests.swift; sourceTree = "<group>"; };
-		F957AA592552D8BB0099AD73 /* ThreeDS2ComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2ComponentTests.swift; sourceTree = "<group>"; };
 		F957AA612552D8D20099AD73 /* AnyThreeDS2ActionHandlerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyThreeDS2ActionHandlerMock.swift; sourceTree = "<group>"; };
 		F957AA692552D98E0099AD73 /* AnyThreeDS2FingerprintSubmitterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyThreeDS2FingerprintSubmitterMock.swift; sourceTree = "<group>"; };
 		F957AA712552DBC80099AD73 /* AnyRedirectComponentMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyRedirectComponentMock.swift; sourceTree = "<group>"; };
@@ -4998,12 +4998,12 @@
 				F9A7AC592554062400012EBC /* 3DS2 SDK Adapters */,
 				F957A9F825514ED30099AD73 /* Fingerprint Submitter */,
 				F957A9E125514A590099AD73 /* API */,
-				E2345C01229BCC7D000F2C94 /* ThreeDS2Component.swift */,
 				A0CB497C2F336B6E00372021 /* AuthenticationConfiguration.swift */,
-				E2345C05229BDA3C000F2C94 /* ThreeDS2ComponentFingerprintToken.swift */,
-				21CBEF4E2D88CA1600178809 /* ThreeDS2ComponentThreeDSConfiguration.swift */,
-				E2345C09229BDA70000F2C94 /* ThreeDS2ComponentFingerprint.swift */,
-				E2345C07229BDA46000F2C94 /* ThreeDS2ComponentChallengeToken.swift */,
+				21ABF80F2F9191F100DC9E2B /* AuthenticationComponent.swift */,
+				21ABF8102F9191F100DC9E2B /* AuthenticationComponent+ChallengeToken.swift */,
+				21ABF8112F9191F100DC9E2B /* AuthenticationComponent+Fingerprint.swift */,
+				21ABF8122F9191F100DC9E2B /* AuthenticationComponent+FingerprintToken.swift */,
+				21ABF8132F9191F100DC9E2B /* AuthenticationComponent+ThreeDSConfiguration.swift */,
 				E2345C0D229BDD2D000F2C94 /* ThreeDS2Details.swift */,
 				F9842C58256D72B60063CE5A /* ThreeDSResult.swift */,
 				21099B0C2CB7276E0096502C /* PaymentInfo.swift */,
@@ -6008,7 +6008,7 @@
 			isa = PBXGroup;
 			children = (
 				B686B6512DEEE21A0071AFCA /* Views */,
-				F957AA432552C3A90099AD73 /* 3DS2 Component */,
+				F957AA432552C3A90099AD73 /* Authentication Component */,
 				E7E8343A24F3C7ED00EC3844 /* Mocks */,
 				E2B317AA22660FAA00C1BB30 /* Items */,
 				E9E3DAC9221EDDD900697074 /* Utilities */,
@@ -6472,14 +6472,14 @@
 			path = "Fingerprint Submitter";
 			sourceTree = "<group>";
 		};
-		F957AA432552C3A90099AD73 /* 3DS2 Component */ = {
+		F957AA432552C3A90099AD73 /* Authentication Component */ = {
 			isa = PBXGroup;
 			children = (
-				21CBEF4C2D88766D00178809 /* ThreeDS2Component+FingerprintTokenTests.swift */,
+				21ABF7FF2F91913200DC9E2B /* AuthenticationComponent+FingerprintTokenTests.swift */,
+				21ABF8002F91913200DC9E2B /* AuthenticationComponentTests.swift */,
 				21CBEF652D8B6B2F00178809 /* ThreeDSServiceProviderTests.swift */,
 				21C7111B2D6D36A400A08111 /* ThreeDS2ServiceLegacyTests.swift */,
 				F957AA442552C3BB0099AD73 /* 3DS2 Fingerprint Submitter */,
-				F957AA592552D8BB0099AD73 /* ThreeDS2ComponentTests.swift */,
 				F957AAA52552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift */,
 				F9842CCF25710BF00063CE5A /* ThreeDS2ClassicActionHandlerTests.swift */,
 				F9E4725E28CF1A2100FF9550 /* ThreeDS2PlusDACoreActionHandlerTests.swift */,
@@ -6493,7 +6493,7 @@
 				F9B9F624295485A2008C2E49 /* ThreeDSResultExtension.swift */,
 				2159173B2A0D2B6E0004081E /* ThreeDS2DAScreenPresenterMock.swift */,
 			);
-			path = "3DS2 Component";
+			path = "Authentication Component";
 			sourceTree = "<group>";
 		};
 		F957AA442552C3BB0099AD73 /* 3DS2 Fingerprint Submitter */ = {
@@ -8817,7 +8817,6 @@
 				F9D57535238291A1009C18B5 /* BCMCComponentTests.swift in Sources */,
 				F9D57526237C3576009C18B5 /* RandomStringGenerator.swift in Sources */,
 				C9E6C5C92F02C5D80030E6C5 /* ComponentContainerViewControllerTests.swift in Sources */,
-				F957AA5A2552D8BB0099AD73 /* ThreeDS2ComponentTests.swift in Sources */,
 				B6EE0F3F2BBEBF7400B9810D /* APIClientMock.swift in Sources */,
 				5A56E15326B6DB9C00744CA0 /* VoucherViewTests.swift in Sources */,
 				81DC5A592A79287400DBF2D1 /* AddressInputFormViewControllerTests.swift in Sources */,
@@ -8866,6 +8865,8 @@
 				F9EDB78F23964FC000CFB3C9 /* StoredCardAlertManagerTests.swift in Sources */,
 				E7F563EA28B7758D00082D4C /* DropInTestInternal.swift in Sources */,
 				F97BC2CE2668EB4500F1D242 /* VoucherViewDelegateMock.swift in Sources */,
+				21ABF8012F91913200DC9E2B /* AuthenticationComponent+FingerprintTokenTests.swift in Sources */,
+				21ABF8022F91913200DC9E2B /* AuthenticationComponentTests.swift in Sources */,
 				F9AC61C2243751A70062A00D /* ActionComponentDelegateMock.swift in Sources */,
 				81DA70902BDA60F6006CE5D5 /* TwintComponentTests.swift in Sources */,
 				8122B9BD2B9A0FF3002FC4D6 /* ErrorMock.swift in Sources */,
@@ -8939,7 +8940,6 @@
 				5A56E15526B6DEF800744CA0 /* XCTestCase+Style.swift in Sources */,
 				B6C9DA7B2D102C91005D65C7 /* DualBrandAccessoryViewTests.swift in Sources */,
 				F9E4726228CF1D4300FF9550 /* AuthenticationServiceMock.swift in Sources */,
-				21CBEF4D2D88768700178809 /* ThreeDS2Component+FingerprintTokenTests.swift in Sources */,
 				E767F4DC25A603A50077029E /* ModalToolbarTests.swift in Sources */,
 				E7D3ED84243B667500E73F59 /* FormCardNumberItemViewTests.swift in Sources */,
 				F957AAA62552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift in Sources */,
@@ -9196,7 +9196,6 @@
 			files = (
 				F9175FD02594999600D653BE /* RedirectDetails.swift in Sources */,
 				81A6B4E32AD53E3300A089A1 /* OpenExternalAppDetector.swift in Sources */,
-				F917613625A30B5700D653BE /* ThreeDS2ComponentChallengeToken.swift in Sources */,
 				21ED843B2F72C34000568BDE /* ADYAppearanceConfigurationBuilder.swift in Sources */,
 				0058691928B6451000B65A19 /* QRCodeViewModel.swift in Sources */,
 				0042EBC32B8364ED001B1F6C /* TwintSDKActionComponent.swift in Sources */,
@@ -9213,7 +9212,11 @@
 				F9175FE32594999C00D653BE /* PollingComponent.swift in Sources */,
 				F917617325A30B6A00D653BE /* ThreeDS2ClassicActionHandler.swift in Sources */,
 				5A4633B6265FBE88005FE0D8 /* VoucherViewModel.swift in Sources */,
-				21CBEF4F2D88CA2300178809 /* ThreeDS2ComponentThreeDSConfiguration.swift in Sources */,
+				21ABF8142F9191F100DC9E2B /* AuthenticationComponent+Fingerprint.swift in Sources */,
+				21ABF8152F9191F100DC9E2B /* AuthenticationComponent.swift in Sources */,
+				21ABF8162F9191F100DC9E2B /* AuthenticationComponent+ChallengeToken.swift in Sources */,
+				21ABF8172F9191F100DC9E2B /* AuthenticationComponent+FingerprintToken.swift in Sources */,
+				21ABF8182F9191F100DC9E2B /* AuthenticationComponent+ThreeDSConfiguration.swift in Sources */,
 				F97C855A25C1ABD700D7F85C /* VoucherCardView.swift in Sources */,
 				5A4633AA265FBAEB005FE0D8 /* VoucherView.swift in Sources */,
 				5A64573F2626D2E2001824F0 /* QRCodeComponentStyle.swift in Sources */,
@@ -9265,7 +9268,6 @@
 				F97BC22C2667768B00F1D242 /* AppleWalletPassProvider.swift in Sources */,
 				F917618525A30B8500D653BE /* Submit3DS2FingerprintRequest.swift in Sources */,
 				F9175FE52594999C00D653BE /* PollingHandlerProvider.swift in Sources */,
-				F917613425A30B5700D653BE /* ThreeDS2Component.swift in Sources */,
 				F917617025A30B6A00D653BE /* ThreeDS2CoreActionHandler.swift in Sources */,
 				F917615B25A30B6400D653BE /* AnyAuthenticationRequestParameters.swift in Sources */,
 				F9237D3B28CB467D004F9929 /* ThreeDS2CompactActionHandler+Initializers.swift in Sources */,
@@ -9281,11 +9283,9 @@
 				F94F0DEB28AA3FB400C0923D /* ThreeDS2PlusDACoreActionHandler.swift in Sources */,
 				21C711132D67FE8300A08111 /* ThreeDSServiceFingerprintError.swift in Sources */,
 				21099B0D2CB7276E0096502C /* PaymentInfo.swift in Sources */,
-				F917613825A30B5700D653BE /* ThreeDS2ComponentFingerprint.swift in Sources */,
 				C923A8232E900165004AC234 /* QRCodeViewStyle.swift in Sources */,
 				A0CB497F2F33729D00372021 /* TwintActionConfiguration.swift in Sources */,
 				F970143925D139BE007E74D9 /* VoucherComponentStyle.swift in Sources */,
-				F917613925A30B5700D653BE /* ThreeDS2ComponentFingerprintToken.swift in Sources */,
 				21C711202D6D388700A08111 /* AnyADYTransaction.swift in Sources */,
 				5A2D1951267368580082BCE9 /* ActionComponentStyle.swift in Sources */,
 			);
