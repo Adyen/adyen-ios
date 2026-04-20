@@ -194,9 +194,6 @@ class StoredCardComponentTests: XCTestCase {
 
 // MARK: - StoredCardComponentProxy
 
-/// A test proxy that abstracts the UI implementation details of StoredCardComponent.
-/// This allows tests to be agnostic to whether the component uses UIAlertController
-/// or StoredCardInputViewController underneath.
 @MainActor
 final class StoredCardComponentProxy {
 
