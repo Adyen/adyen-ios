@@ -70,7 +70,7 @@ struct StoredCardInputViewModelTests {
         // Given
         let amount = Amount(value: 14098, currencyCode: "USD")
         let expectedTitle = "Enter security code"
-        let expectedSubTitle = "Enter the security code for VISA •••• 4556"
+        let expectedSubTitle = "Enter the security code for VISA \(String.Adyen.securedString)4556"
         let expectedButtonTitle = "Pay $140.98"
         let sut = makeSUT(name: "VISA", lastFour: "4556", amount: amount)
 
@@ -85,7 +85,7 @@ struct StoredCardInputViewModelTests {
         // Given
         let amount = Amount(value: 0, currencyCode: "USD")
         let expectedTitle = "Enter security code"
-        let expectedSubTitle = "Enter the security code for VISA •••• 4556"
+        let expectedSubTitle = "Enter the security code for VISA \(String.Adyen.securedString)4556"
         let expectedButtonTitle = "Confirm preauthorization"
         let sut = makeSUT(name: "VISA", lastFour: "4556", amount: amount)
 
@@ -99,7 +99,7 @@ struct StoredCardInputViewModelTests {
     func textUI_WhenAmountIsNil() {
         // Given
         let expectedTitle = "Enter security code"
-        let expectedSubTitle = "Enter the security code for VISA •••• 4556"
+        let expectedSubTitle = "Enter the security code for VISA \(String.Adyen.securedString)4556"
         let expectedButtonTitle = "Pay"
         let sut = makeSUT(name: "VISA", lastFour: "4556", amount: nil)
 
@@ -137,7 +137,7 @@ struct StoredCardInputViewModelTests {
         )
 
         let expectedTitleText = "Test-Enter security code"
-        let expectedSubtitleText = "Test-Enter the security code for VISA •••• 1111"
+        let expectedSubtitleText = "Test-Enter the security code for VISA \(String.Adyen.securedString)1111"
         let expectedSubmitButtonTitle = "Test-Pay €3.00"
 
         // Then
@@ -167,7 +167,7 @@ struct StoredCardInputViewModelTests {
         )
 
         let expectedTitleText = "Test-Enter security code"
-        let expectedSubtitleText = "Test-Enter the security code for VISA •••• 1111"
+        let expectedSubtitleText = "Test-Enter the security code for VISA \(String.Adyen.securedString)1111"
         let expectedSubmitButtonTitle = "Test-Pay €3.00"
 
         // Then
