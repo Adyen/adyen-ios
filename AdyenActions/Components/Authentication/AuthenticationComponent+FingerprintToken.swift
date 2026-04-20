@@ -6,7 +6,7 @@
 
 import Foundation
 
-internal extension ThreeDS2Component {
+internal extension AuthenticationComponent {
     
     struct FingerprintToken: Decodable { // swiftlint:disable:this explicit_acl
         
