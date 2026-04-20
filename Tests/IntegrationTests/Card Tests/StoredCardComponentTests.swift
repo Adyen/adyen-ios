@@ -17,10 +17,11 @@ class StoredCardComponentTests: XCTestCase {
     /// Verifies that the component displays a security code field, cancel button, and pay button.
     func testUIWithClientKey() {
         // Given
-        let proxy = makeSUT()
+        let sut = makeSUT()
+        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
 
         // When
-        proxy.present(on: self)
+        proxy.present()
 
         // Then
         XCTAssertNotNil(proxy.securityCodeText)
@@ -33,16 +34,17 @@ class StoredCardComponentTests: XCTestCase {
     /// Verifies that submitting a valid security code encrypts and submits card details to the delegate.
     func testPaymentSubmitWithValidPublicKey() throws {
         // Given
-        let proxy = makeSUT()
+        let sut = makeSUT()
+        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
         let delegate = PaymentComponentDelegateMock()
-        proxy.component.delegate = delegate
+        sut.delegate = delegate
 
         let submitExpectation = expectation(description: "Expect didSubmit to be called")
         delegate.onDidSubmit = { _, _ in submitExpectation.fulfill() }
         delegate.onDidFail = { _, _ in XCTFail("didFail should not be called") }
 
         // When
-        proxy.present(on: self)
+        proxy.present()
         proxy.enterSecurityCode("737")
         proxy.tapPayButton()
 
@@ -50,7 +52,7 @@ class StoredCardComponentTests: XCTestCase {
         waitForExpectations(timeout: 1)
 
         let args = try XCTUnwrap(delegate.didSubmitReceivedArguments)
-        XCTAssertTrue(args.component === proxy.component)
+        XCTAssertTrue(args.component === sut)
 
         let cardDetails = try XCTUnwrap(args.data.paymentMethod as? CardDetails)
         XCTAssertNotNil(cardDetails.encryptedSecurityCode)
@@ -65,16 +67,17 @@ class StoredCardComponentTests: XCTestCase {
     /// Verifies that encryption failure with an invalid public key calls didFail on the delegate.
     func testPaymentSubmitWithInvalidPublicKey() throws {
         // Given
-        let proxy = makeSUT(publicKey: "invalid_key")
+        let sut = makeSUT(publicKey: "invalid_key")
+        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
         let delegate = PaymentComponentDelegateMock()
-        proxy.component.delegate = delegate
+        sut.delegate = delegate
 
         let failExpectation = expectation(description: "Expect didFail to be called")
         delegate.onDidSubmit = { _, _ in XCTFail("didSubmit should not be called") }
         delegate.onDidFail = { _, _ in failExpectation.fulfill() }
 
         // When
-        proxy.present(on: self)
+        proxy.present()
         proxy.enterSecurityCode("737")
         proxy.tapPayButton()
 
@@ -82,7 +85,7 @@ class StoredCardComponentTests: XCTestCase {
         waitForExpectations(timeout: 1)
 
         let args = try XCTUnwrap(delegate.didFailReceivedArguments)
-        XCTAssertTrue(args.component === proxy.component)
+        XCTAssertTrue(args.component === sut)
     }
 
     // MARK: - CVC Validation
@@ -90,8 +93,9 @@ class StoredCardComponentTests: XCTestCase {
     /// Verifies that AMEX cards require exactly 4 digits for the security code.
     func testCVCLimitForAMEX() {
         // Given
-        let proxy = makeSUT(brand: .americanExpress)
-        proxy.present(on: self)
+        let sut = makeSUT(brand: .americanExpress)
+        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
+        proxy.present()
 
         // When / Then - non-numeric characters are filtered
         proxy.enterSecurityCode("a")
@@ -120,8 +124,9 @@ class StoredCardComponentTests: XCTestCase {
     /// Verifies that non-AMEX cards require exactly 3 digits for the security code.
     func testCVCLimitForNonAMEX() {
         // Given
-        let proxy = makeSUT(brand: .visa)
-        proxy.present(on: self)
+        let sut = makeSUT(brand: .visa)
+        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
+        proxy.present()
 
         // When / Then - build up to 3 digits
         proxy.enterSecurityCode("11")
@@ -143,10 +148,10 @@ class StoredCardComponentTests: XCTestCase {
     func testViewDidLoadShouldSendInitialEvent() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
-        let proxy = makeSUT(analyticsProvider: analyticsProviderMock)
+        let sut = makeSUT(analyticsProvider: analyticsProviderMock)
 
         // When
-        _ = proxy.component.viewController
+        _ = sut.viewController
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
@@ -158,7 +163,7 @@ class StoredCardComponentTests: XCTestCase {
         brand: CardType = .visa,
         publicKey: String = Dummy.publicKey,
         analyticsProvider: AnyAnalyticsProvider? = nil
-    ) -> StoredCardComponentProxy {
+    ) -> StoredCardComponent {
         let paymentMethod = StoredCardPaymentMethod(
             type: .card,
             name: "name",
@@ -179,13 +184,11 @@ class StoredCardComponentTests: XCTestCase {
             analyticsProvider: analyticsProvider ?? AnalyticsProviderMock()
         )
 
-        let component = StoredCardComponent(
+        return StoredCardComponent(
             storedCardPaymentMethod: paymentMethod,
             context: context,
             theme: CheckoutTheme()
         )
-
-        return StoredCardComponentProxy(component: component, context: context)
     }
 }
 
@@ -198,16 +201,16 @@ class StoredCardComponentTests: XCTestCase {
 final class StoredCardComponentProxy {
 
     let component: StoredCardComponent
-    let context: AdyenContext
+    private let testCase: XCTestCase
 
-    init(component: StoredCardComponent, context: AdyenContext) {
+    init(component: StoredCardComponent, testCase: XCTestCase) {
         self.component = component
-        self.context = context
+        self.testCase = testCase
     }
 
     // MARK: - Presentation
 
-    func present(on testCase: XCTestCase) {
+    func present() {
         testCase.presentOnRoot(component.viewController)
     }
 
@@ -252,7 +255,7 @@ final class StoredCardComponentProxy {
     }
 
     private var payAction: UIAlertAction? {
-        let buttonTitle = localizedSubmitButtonTitle(with: context.amount, style: .immediate, nil)
+        let buttonTitle = localizedSubmitButtonTitle(with: component.context.amount, style: .immediate, nil)
         return alertController?.actions.first { $0.title == buttonTitle }
     }
 }
