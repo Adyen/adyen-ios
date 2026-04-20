@@ -94,6 +94,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     internal lazy var securityCodeItem: FormCardSecurityCodeItem = {
         let item = FormCardSecurityCodeItem()
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "securityCodeItem")
+        // TODO: Robert: StoredCardComponent: For the CVC Code, it should be 3 for Non Amex and 4 for Amex card. So we need to set the card brand to the CVV field. Corresponding test - testCVCLimitForAMEX().
         return item
     }()
 
