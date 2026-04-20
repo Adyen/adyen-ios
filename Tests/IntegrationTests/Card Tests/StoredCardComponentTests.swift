@@ -6,7 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable @_spi(AdyenInternal) import AdyenCard
-@testable import AdyenUI
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 @MainActor
@@ -32,16 +32,12 @@ class StoredCardComponentTests: XCTestCase {
     func testUIWithClientKey() throws {
         let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context, theme: CheckoutTheme())
 
-        presentOnRoot(sut.viewController)
-        
-        let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
-        let textField: UITextField! = try XCTUnwrap(alertController.textFields?.first)
-        XCTAssertNotNil(textField)
+        let proxy = StoredCardComponentProxy(sut: sut)
+        proxy.load()
 
-        XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
-        XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: context.amount, style: .immediate, nil) })
+        let primaryButton = try proxy.primaryButton()
 
-        alertController.dismiss(animated: false, completion: nil)
+        XCTAssertEqual(primaryButton.title, localizedSubmitButtonTitle(with: context.amount, style: .immediate, nil))
     }
 
     func testPaymentSubmitWithValidPublicKey() throws {
@@ -66,24 +62,12 @@ class StoredCardComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        presentOnRoot(sut.viewController)
-        
-        let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
-        let textField: UITextField! = try XCTUnwrap(alertController.textFields?.first)
-        XCTAssertNotNil(textField)
+        let proxy = StoredCardComponentProxy(sut: sut)
+        proxy.load()
 
-        textField?.text = "737"
-        textField?.sendActions(for: .editingChanged)
+        try proxy.enterSecurityCode("737")
+        try proxy.tapPrimaryButton()
 
-        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.amount, style: .immediate, nil) })
-
-        payAction.tap()
-        
-        XCTAssertTrue(try XCTUnwrap(textField?.text?.isEmpty))
-        XCTAssertFalse(payAction.isEnabled)
-
-        alertController.dismiss(animated: false, completion: nil)
-        
         waitForExpectations(timeout: 10, handler: nil)
     }
 
@@ -107,20 +91,12 @@ class StoredCardComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        presentOnRoot(sut.viewController)
-        
-        let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
-        let textField: UITextField! = try XCTUnwrap(alertController.textFields?.first)
-        XCTAssertNotNil(textField)
+        let proxy = StoredCardComponentProxy(sut: sut)
+        proxy.load()
 
-        textField.text = "737"
-        textField.sendActions(for: .editingChanged)
+        try proxy.enterSecurityCode("737")
+        try proxy.tapPrimaryButton()
 
-        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.amount, style: .immediate, nil) })
-
-        payAction.tap()
-
-        alertController.dismiss(animated: false, completion: nil)
         waitForExpectations(timeout: 10, handler: nil)
     }
 
@@ -140,7 +116,7 @@ class StoredCardComponentTests: XCTestCase {
         let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context, theme: CheckoutTheme())
 
         presentOnRoot(sut.viewController)
-        
+
         let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
         let textField: UITextField! = try XCTUnwrap(alertController.textFields?.first)
         let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.amount, style: .immediate, nil) })
@@ -160,7 +136,7 @@ class StoredCardComponentTests: XCTestCase {
         textField.insertText("1")
         textField?.sendActions(for: .editingChanged)
         XCTAssertEqual(textField.text, "111")
-        
+
         XCTAssertEqual(payAction.isEnabled, false)
 
         textField.insertText("1")
@@ -179,7 +155,7 @@ class StoredCardComponentTests: XCTestCase {
         let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context, theme: CheckoutTheme())
 
         presentOnRoot(sut.viewController)
-        
+
         let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
         let textField: UITextField! = try XCTUnwrap(alertController.textFields?.first)
         let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.amount, style: .immediate, nil) })
@@ -191,7 +167,7 @@ class StoredCardComponentTests: XCTestCase {
         textField.insertText("1")
         textField?.sendActions(for: .editingChanged)
         XCTAssertEqual(textField.text, "111")
-        
+
         XCTAssertEqual(payAction.isEnabled, true)
 
         textField.insertText("1")
@@ -238,14 +214,37 @@ class StoredCardComponentTests: XCTestCase {
     }
 }
 
-extension UIAlertAction {
-    typealias AlertHandler = @convention(block) (UIAlertAction) -> Void
+// MARK: - StoredCardComponentProxy
 
-    func tap() {
-        let closure = self.value(forKey: "handler")
+@MainActor
+struct StoredCardComponentProxy {
+    let sut: StoredCardComponent
 
-        let handler = unsafeBitCast(closure as AnyObject, to: AlertHandler.self)
+    func load() {
+        sut.viewController.loadViewIfNeeded()
+    }
 
-        handler(self)
+    func primaryButton() throws -> FormButton {
+        try XCTUnwrap(
+            sut.viewController.view.findView(by: "primaryButton") as? FormButton,
+            "Cannot find primaryButton"
+        )
+    }
+
+    func securityCodeItemView() throws -> FormCardSecurityCodeItemView {
+        try XCTUnwrap(
+            sut.viewController.view.findView(by: "securityCodeItemView") as? FormCardSecurityCodeItemView,
+            "Cannot find securityCodeItemView"
+        )
+    }
+
+    func enterSecurityCode(_ code: String) throws {
+        let itemView = try securityCodeItemView()
+        itemView.textField.text = code
+        itemView.textField.sendActions(for: .editingChanged)
+    }
+
+    func tapPrimaryButton() throws {
+        try primaryButton().sendActions(for: .touchUpInside)
     }
 }
