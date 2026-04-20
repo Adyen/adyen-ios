@@ -142,7 +142,9 @@ struct PaymentMethodListRouterTests {
     private func makeActionComponent() -> PresentableComponent {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            amount: .init(value: 100, currencyCode: "EUR")
+            amount: .init(value: 100, currencyCode: "EUR"),
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
         )
         let redirect = RedirectComponent(context: context)
         let viewController = UIViewController()

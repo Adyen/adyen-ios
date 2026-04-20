@@ -22,7 +22,8 @@ class AnalyticsEventTests: XCTestCase {
         sut = AnalyticsProvider(
             apiClient: apiClient,
             configuration: .init(),
-            eventAnalyticsProvider: nil
+            checkoutAttemptId: AnalyticsProviderMock.testCheckoutAttemptId,
+            eventAnalyticsProvider: AnyEventAnalyticsProviderMock()
         )
     }
 
@@ -41,7 +42,8 @@ class AnalyticsEventTests: XCTestCase {
         sut = AnalyticsProvider(
             apiClient: apiClient,
             configuration: .init(),
-            eventAnalyticsProvider: nil
+            checkoutAttemptId: AnalyticsProviderMock.testCheckoutAttemptId,
+            eventAnalyticsProvider: AnyEventAnalyticsProviderMock()
         )
 
         let flavor: AnalyticsFlavor = .components(type: .affirm)
@@ -56,7 +58,6 @@ class AnalyticsEventTests: XCTestCase {
         // Then
         wait(for: .milliseconds(1))
         XCTAssertEqual(expectedRequestCalls, apiClient.counter, "Invalid request number made.")
-        XCTAssertNil(sut.checkoutAttemptId)
     }
 
     func testSendInitialEventGivenEnabledAndFlavorIsDropInShouldSendInitialRequest() {
@@ -64,7 +65,8 @@ class AnalyticsEventTests: XCTestCase {
         sut = AnalyticsProvider(
             apiClient: apiClient,
             configuration: .init(),
-            eventAnalyticsProvider: nil
+            checkoutAttemptId: AnalyticsProviderMock.testCheckoutAttemptId,
+            eventAnalyticsProvider: AnyEventAnalyticsProviderMock()
         )
 
         let flavor: AnalyticsFlavor = .dropIn(paymentMethods: ["scheme", "paypal", "affirm"])

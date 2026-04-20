@@ -24,6 +24,7 @@ public enum PaymentComponentType {
 }
 
 /// A component that handles the initial phase of getting payment details to initiate a payment.
+@MainActor
 public protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentMethodAware {
     
     /// The delegate of the payment component.
@@ -61,12 +62,11 @@ extension PaymentComponent {
     ///   - data: The Payment data to be submitted
     ///   - component: The component from which the payment originates.
     public func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
-        sendSubmitEvent()
-        
-        let component = component ?? self
-        
-        prepareSubmitData(from: data) { [weak self] updatedData in
+        Task { [weak self] in
             guard let self else { return }
+            sendSubmitEvent()
+            let component = component ?? self
+            let updatedData = await prepareSubmitData(from: data)
             self.delegate?.didSubmit(updatedData, from: component)
         }
     }
@@ -76,18 +76,17 @@ extension PaymentComponent {
     }
     
     /// Adds SDK related info to payment data object and returns the final data in the completion.
-    public func prepareSubmitData(from data: PaymentComponentData, completion: @escaping (PaymentComponentData) -> Void) {
-        
+    public func prepareSubmitData(from data: PaymentComponentData) async -> PaymentComponentData {
+
         let sdkData = SDKData(
             checkoutAttemptId: checkoutAttemptId,
             authenticationProvider: data.paymentMethod as? SDKDataAuthenticationProvider
         )
         
-        let updatedData = data
+        return await data
             .replacing(checkoutAttemptId: checkoutAttemptId)
             .replacing(sdkData: sdkData)
-        
-        updatedData.dataByAddingBrowserInfo(completion: completion)
+            .replacing(browserInfo: BrowserInfo())
     }
     
     private func sendSubmitEvent() {
@@ -97,6 +96,7 @@ extension PaymentComponent {
 }
 
 /// Describes the methods a delegate of the payment component needs to implement.
+@MainActor
 public protocol PaymentComponentDelegate: AnyObject {
     
     /// Invoked when the shopper submits the data needed for the payments call.

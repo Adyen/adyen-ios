@@ -9,6 +9,7 @@
 @testable @_spi(AdyenInternal) import AdyenTwint
 import XCTest
 
+@MainActor
 class TwintComponentTests: XCTestCase {
 
     private var paymentMethod: TwintPaymentMethod!

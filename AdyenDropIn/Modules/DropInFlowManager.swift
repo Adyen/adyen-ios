@@ -11,12 +11,14 @@
 import Foundation
 
 // sourcery:AutoMockable
+@MainActor
 internal protocol ActionPresenter: AnyObject {
     func present(actionComponent: PresentableComponent)
     func didCancel(actionComponent: ActionComponent)
 }
 
 // sourcery:AutoMockable
+@MainActor
 internal protocol DropInFlowManaging {
     func submit(
         _ data: PaymentComponentData,
@@ -28,6 +30,7 @@ internal protocol DropInFlowManaging {
     func handle(action: Action)
 }
 
+@MainActor
 internal class DropInFlowManager: DropInFlowManaging {
 
     // MARK: - Properties
@@ -60,7 +63,7 @@ internal class DropInFlowManager: DropInFlowManaging {
         actionComponent.presentationDelegate = self
         actionComponent.configuration.style = configuration.style.actionComponent
         actionComponent.configuration.localizationParameters = configuration.localizationParameters
-        actionComponent.configuration.threeDS = configuration.actionComponent.threeDS
+        actionComponent.configuration.authentication = configuration.actionComponent.authentication
         actionComponent.configuration.twint = configuration.actionComponent.twint
         return actionComponent
     }()
@@ -72,11 +75,11 @@ internal class DropInFlowManager: DropInFlowManaging {
         from component: PaymentComponent,
         actionPresenter: ActionPresenter
     ) {
-        guard let dropInComponent else { return }
-        self.actionPresenter = actionPresenter
-
-        component.prepareSubmitData(from: data) { [weak self] updatedData in
-            self?.dropInComponentDelegate?.didSubmit(updatedData, from: component, in: dropInComponent)
+        Task { [weak self] in
+            guard let self, let dropInComponent else { return }
+            self.actionPresenter = actionPresenter
+            let updatedData = await component.prepareSubmitData(from: data)
+            dropInComponentDelegate?.didSubmit(updatedData, from: component, in: dropInComponent)
         }
     }
 

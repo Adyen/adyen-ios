@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class BLIKComponentFactoryTests: XCTestCase {
     
     var factory: BLIKComponentFactory!
@@ -109,7 +110,9 @@ final class BLIKComponentFactoryTests: XCTestCase {
         let customAmount = Amount(value: 999, currencyCode: "EUR")
         let customContext = AdyenContext(
             apiContext: Dummy.apiContext,
-            amount: customAmount
+            amount: customAmount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
         )
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         let configuration = BLIKComponentConfiguration()

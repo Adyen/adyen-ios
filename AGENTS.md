@@ -2,18 +2,18 @@
 
 This file provides guidance to LLMs when working with code in this repository.
 
-**IMPORTANT:** This is the v6 major version branch. All v6 development PRs should target `v6_base`.
+**IMPORTANT:** This is the v6 major version branch. All v6 development PRs should target `develop`.
 
 ## Project Overview
 
 Adyen iOS is a modular payment SDK providing both Drop-in (all-in-one) and Components (individual payment methods) integration options. The SDK handles payment method selection, details entry, 3DS authentication, and various payment actions.
 
 **Minimum Requirements:**
-- iOS 12.0+
+- iOS 16.0+
 - Xcode 15.0+
 - Swift 5.7+
 
-**Main Branch for v6 PRs:** `v6_base`
+**Main Branch for v6 PRs:** `develop`
 
 ## Architecture
 
@@ -136,7 +136,13 @@ This prevents unintended whitespace changes and formatting inconsistencies that 
 
 ### Access Control
 
-Use `@_spi(AdyenInternal)` for internal-but-cross-module APIs. The SDK uses explicit access control levels (`explicit_acl` SwiftLint rule is enabled).
+Prefer `package` access for new internal APIs.
+
+Use `@_spi(AdyenInternal)` only when internal cross-module exposure is truly needed and `package` cannot satisfy the requirement.
+
+When touching nearby existing `@_spi` usage, prefer migrating to `package` where safe.
+
+The SDK uses explicit access control levels (`explicit_acl` SwiftLint rule is enabled).
 
 ## Important Development Notes
 

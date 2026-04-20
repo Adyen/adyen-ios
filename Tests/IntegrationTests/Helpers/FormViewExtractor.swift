@@ -10,7 +10,7 @@ import XCTest
 // MARK: - Theme Assertion Helpers
 
 /// Extension providing theme assertion helpers for UI tests.
-/// These methods verify that AdyenTheme styling is correctly applied to form elements.
+/// These methods verify that CheckoutTheme styling is correctly applied to form elements.
 extension UIViewController {
 
     /// Asserts that all specified text fields use the expected theme styling.

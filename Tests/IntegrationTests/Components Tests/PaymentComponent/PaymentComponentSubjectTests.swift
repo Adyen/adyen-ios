@@ -8,6 +8,7 @@ import XCTest
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenComponents
 
+@MainActor
 class PaymentComponentSubjectTests: XCTestCase {
 
     var analyticsProviderMock: AnalyticsProviderMock!
@@ -19,8 +20,8 @@ class PaymentComponentSubjectTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        analyticsProviderMock = AnalyticsProviderMock()
-        context = Dummy.context(with: analyticsProviderMock)
+        analyticsProviderMock = AnalyticsProviderMock(checkoutAttemptId: AnalyticsProviderMock.testCheckoutAttemptId)
+        context = Dummy.context(analyticsProvider: analyticsProviderMock)
         paymentComponentDelegate = PaymentComponentDelegateMock()
         sut = PaymentComponentSubject(
             context: context,
@@ -40,7 +41,15 @@ class PaymentComponentSubjectTests: XCTestCase {
 
     func test_submit_with_no_attemptId_sets_constant_in_sdkData() {
         // Given
-        analyticsProviderMock.checkoutAttemptId = nil
+        let context = Dummy.context(analyticsProvider: nil)
+
+        let sut = PaymentComponentSubject(
+            context: context,
+            delegate: paymentComponentDelegate,
+            order: nil,
+            paymentMethod: paymentMethod
+        )
+
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
 
@@ -89,8 +98,6 @@ class PaymentComponentSubjectTests: XCTestCase {
     }
     
     func test_submit_event() {
-        let expectedCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
-        analyticsProviderMock._checkoutAttemptId = expectedCheckoutAttemptId
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
         
@@ -111,8 +118,7 @@ class PaymentComponentSubjectTests: XCTestCase {
     
     func test_submit_creates_sdkData_with_analytics() {
         // Given
-        let expectedCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
-        analyticsProviderMock.checkoutAttemptId = expectedCheckoutAttemptId
+        let expectedCheckoutAttemptId = AnalyticsProviderMock.testCheckoutAttemptId
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
         let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
 
@@ -143,9 +149,6 @@ class PaymentComponentSubjectTests: XCTestCase {
     
     func test_submit_with_authenticationProvider_includes_authentication_in_sdkData() {
         // Given
-        let expectedCheckoutAttemptId = "test-checkout-attempt-id"
-        analyticsProviderMock.checkoutAttemptId = expectedCheckoutAttemptId
-        
         // Create a mock payment method that provides authentication
         let mockAuthProvider = MockSDKDataAuthenticationProvider()
         let paymentMethodDetails = MockAuthenticationPaymentDetails(authProvider: mockAuthProvider)
@@ -175,8 +178,7 @@ class PaymentComponentSubjectTests: XCTestCase {
     
     func test_submit_without_authenticationProvider_includes_only_analytics_in_sdkData() {
         // Given
-        let expectedCheckoutAttemptId = "test-checkout-attempt-id"
-        analyticsProviderMock.checkoutAttemptId = expectedCheckoutAttemptId
+        let expectedCheckoutAttemptId = AnalyticsProviderMock.testCheckoutAttemptId
         
         // Use a payment method that doesn't provide authentication
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")

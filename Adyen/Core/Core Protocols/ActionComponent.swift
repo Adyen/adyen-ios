@@ -7,6 +7,7 @@
 import Foundation
 
 /// A component that handles an action to complete a payment.
+@MainActor
 public protocol ActionComponent: Component {
     
     /// The delegate of the action component.
@@ -15,6 +16,7 @@ public protocol ActionComponent: Component {
 }
 
 /// Describes the methods a delegate of the action component needs to implement.
+@MainActor
 public protocol ActionComponentDelegate: AnyObject {
     
     /// Invoked when the action component opens a third party application outside the scope of the Adyen checkout,

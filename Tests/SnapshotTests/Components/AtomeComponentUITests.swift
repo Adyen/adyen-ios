@@ -9,6 +9,7 @@ import XCTest
 @testable import AdyenComponents
 @_spi(AdyenInternal) @testable import AdyenUI
 
+@MainActor
 class AtomeComponentUITests: XCTestCase {
 
     private var paymentMethod: PaymentMethod!

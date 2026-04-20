@@ -9,31 +9,34 @@ import WebKit
 
 /// Provides the device default browser info.
 public struct BrowserInfo: Encodable {
-    
+
+    internal static var cachedUserAgent: String?
+
     /// The device default user-agent.
-    public var userAgent: String?
-    
-    /// Initializes a `BrowserInfo` instance asynchronously.
+    public let userAgent: String
+
+    @MainActor internal var webView: WKWebView?
+
+    private enum CodingKeys: CodingKey {
+        case userAgent
+    }
+
+    /// Initializes a `BrowserInfo` instance asynchronously by retrieving the device's user agent.
     ///
-    /// - Parameters:
-    ///   - completion: A call back when the `BrowserInfo` instance is ready or when initialization fails.
-    public static func initialize(completion: @escaping ((_ info: BrowserInfo?) -> Void)) {
-        guard cachedUserAgent == nil else {
-            completion(BrowserInfo(userAgent: cachedUserAgent))
+    /// - Returns: A `BrowserInfo` instance if the user agent was successfully retrieved, or `nil` if the evaluation failed.
+    @MainActor public init?() async {
+        if let cached = Self.cachedUserAgent {
+            self.userAgent = cached
             return
         }
-        webView = WKWebView()
-        webView?.evaluateJavaScript("navigator.userAgent") { result, _ in
-            webView = nil
-            guard let result = result as? String else {
-                return completion(nil)
-            }
-            BrowserInfo.cachedUserAgent = result
-            completion(BrowserInfo(userAgent: cachedUserAgent))
+
+        self.webView = WKWebView()
+        guard let userAgent = try? await webView?.evaluateJavaScript("navigator.userAgent") as? String else {
+            return nil
         }
+        self.webView = nil
+        
+        self.userAgent = userAgent
+        BrowserInfo.cachedUserAgent = userAgent
     }
-    
-    private static var webView: WKWebView?
-    
-    internal static var cachedUserAgent: String?
 }

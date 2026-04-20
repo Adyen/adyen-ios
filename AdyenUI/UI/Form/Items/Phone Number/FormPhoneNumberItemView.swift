@@ -13,7 +13,7 @@ internal final class FormPhoneNumberItemView: FormTextItemView<FormPhoneNumberIt
     /// - Parameters:
     ///   - item: The item represented by the view.
     ///   - theme: The theme to use for styling.
-    internal required init(item: FormPhoneNumberItem, theme: AdyenTheme) {
+    internal required init(item: FormPhoneNumberItem, theme: CheckoutTheme) {
         super.init(item: item, theme: theme)
         applyTextFieldLeftAccessoryView(textField: textField)
         textField.textContentType = .telephoneNumber

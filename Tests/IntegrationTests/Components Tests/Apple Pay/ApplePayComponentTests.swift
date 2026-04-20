@@ -10,6 +10,7 @@ import Contacts
 import PassKit
 import XCTest
 
+@MainActor
 class ApplePayComponentTest: XCTestCase {
 
     var mockDelegate: PaymentComponentDelegateMock!
@@ -479,11 +480,6 @@ class ApplePayComponentTest: XCTestCase {
     }
 
     func testNewInitSuccess() throws {
-        guard #available(iOS 16.0, *) else {
-            // XCTestCase does not respect @available so we have to skip the test like this
-            throw XCTSkip("Unsupported iOS version")
-        }
-
         let request = PKPaymentRequest()
         request.merchantIdentifier = "test_id"
         request.countryCode = getRandomCountryCode()
@@ -652,7 +648,7 @@ class ApplePayComponentTest: XCTestCase {
     func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(with: analyticsProviderMock)
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
 
         let configuration = try ApplePayComponent.Configuration(
             paymentRequest: Dummy.createTestApplePayPaymentRequest()

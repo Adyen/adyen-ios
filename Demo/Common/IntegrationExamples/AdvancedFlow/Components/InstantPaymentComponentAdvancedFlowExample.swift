@@ -19,11 +19,15 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     
-    internal lazy var context: AdyenContext = generateContext()
+    /// comes from demo app protocol, unused on new structure
+    internal var context: AdyenContext?
 
     // MARK: - Action Handling
 
     private lazy var actionComponent: CheckoutActionComponent = {
+        guard let context else {
+            fatalError("Context not initialized")
+        }
         let handler = CheckoutActionComponent(context: context)
         handler.delegate = self
         handler.presentationDelegate = self
@@ -36,18 +40,27 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
 
     internal func start() {
         presenter?.showLoadingIndicator()
-        requestPaymentMethods(order: nil) { [weak self] result in
-            guard let self else { return }
-            
-            self.presenter?.hideLoadingIndicator()
-            
-            switch result {
-            case let .success(paymentMethods):
-                self.presentComponent(with: paymentMethods)
-                
-            case let .failure(error):
+        Task {
+            do {
+                try await initializeExampleAppAdyenContext()
+                requestPaymentMethods(order: nil) { [weak self] result in
+                    guard let self else { return }
+
+                    self.presenter?.hideLoadingIndicator()
+
+                    switch result {
+                    case let .success(paymentMethods):
+                        self.presentComponent(with: paymentMethods)
+
+                    case let .failure(error):
+                        self.presentAlert(with: error)
+                    }
+                }
+            } catch {
+                self.presenter?.hideLoadingIndicator()
                 self.presentAlert(with: error)
             }
+
         }
     }
     
@@ -69,6 +82,9 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
         // In this example the first supported `InstantPaymentMethod` is chosen
         guard let paymentMethod = paymentMethods.paymentMethod(ofType: InstantPaymentMethod.self) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: InstantPaymentMethod.self)
+        }
+        guard let context else {
+            fatalError("AdyenContext not initialized")
         }
         
         return InstantPaymentComponent(paymentMethod: paymentMethod, context: context, order: nil)

@@ -8,12 +8,14 @@
 import SafariServices
 import UIKit
 
+@MainActor
 internal protocol BrowserComponentDelegate: AnyObject {
     func didCancel()
     func didOpenExternalApplication()
 }
 
 /// A component that opens a URL in web browsed and presents it.
+@MainActor
 internal final class BrowserComponent: NSObject, PresentableComponent {
 
     /// :nodoc

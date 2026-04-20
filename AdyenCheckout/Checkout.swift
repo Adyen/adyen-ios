@@ -54,47 +54,41 @@ import Foundation
 /// ```swift
 /// let component = checkout.createPaymentComponent(for: .scheme)
 /// ```
+@MainActor
 public final class Checkout: CheckoutProtocol {
     
     /// The available payment methods for this checkout session.
     public let paymentMethods: PaymentMethods?
     internal let session: SessionProtocol?
     
-    /// This is used primarily for sending Analytic Events. If this doesn't exist then there would not be any analytics sent.
-    internal let checkoutAttemptId: String?
-
-    // TODO: Robert: The next task in public key fetching is to ensure that components are passed with this publicKey. and they don't fetch the key themselves.
-    /// The client public key used for encrypting sensitive payment data.
-    internal let publicKey: String?
-
     internal let configuration: CheckoutConfiguration
     internal weak var presentationDelegate: PresentationDelegate?
+    internal let adyenContext: AdyenContext
 
-    /// The component that last called `didSubmit`. Used to forward the backend result
-    /// (e.g. calling `resolve(success:)` on `ApplePayComponent`).
-    internal var activePaymentComponent: (any PaymentComponent)?
-    
     internal lazy var actionHandlingComponent: ActionHandlingComponent = {
-        let threeDS2Config: ThreeDS2ActionConfiguration = configuration.configuration(
+        let authenticationConfiguration: AuthenticationConfiguration = configuration.configuration(
             for: .threeDS2,
-            defaultValue: ThreeDS2ActionConfiguration()
+            defaultValue: AuthenticationConfiguration(theme: configuration.theme)
         )
         
         let twintConfig: TwintActionConfiguration? = configuration.configuration(for: .twint)
         
         let actionConfig = CheckoutActionComponent.Configuration(
-            threeDS: threeDS2Config,
+            authentication: authenticationConfiguration,
             twint: twintConfig
         )
         
         let handler = CheckoutActionComponent(
-            context: configuration.context,
+            context: adyenContext,
             configuration: actionConfig
         )
         handler.delegate = self
         handler.presentationDelegate = presentationDelegate
         return handler
     }()
+    
+    internal var submitTask: Task<Void, Never>?
+    internal var additionalDetailsTask: Task<Void, Never>?
     
     // MARK: - Public
     
@@ -172,32 +166,21 @@ public final class Checkout: CheckoutProtocol {
         configuration: CheckoutConfiguration,
         session: SessionProtocol? = nil,
         paymentMethods: PaymentMethods? = nil,
-        checkoutAttemptId: String?,
-        publicKey: String? = nil,
+        adyenContext: AdyenContext,
         presentationDelegate: PresentationDelegate?
     ) {
         self.configuration = configuration
         self.session = session
         self.paymentMethods = paymentMethods ?? session?.state.paymentMethods
-        self.checkoutAttemptId = checkoutAttemptId
-        self.publicKey = publicKey
         self.presentationDelegate = presentationDelegate
-        
+        self.adyenContext = adyenContext
         self.session?.delegate = self
         self.session?.presentationDelegate = presentationDelegate
     }
-
-    /// If the active payment component is an `ApplePayComponent`, forwards the
-    /// backend result so the Apple Pay sheet can show the correct animation.
-    internal func resolveApplePayIfNeeded(success: Bool) {
-        #if canImport(AdyenComponents)
-            if let applePayComponent = activePaymentComponent as? ApplePayComponent {
-                Task { @MainActor in
-                    applePayComponent.resolve(success: success)
-                }
-            }
-        #endif
-        activePaymentComponent = nil
+    
+    deinit {
+        submitTask?.cancel()
+        additionalDetailsTask?.cancel()
     }
 }
 
@@ -223,6 +206,7 @@ public extension Checkout {
         return CheckoutPaymentComponent(
             paymentMethod: paymentMethod,
             configuration: configuration,
+            context: adyenContext,
             delegate: self
         )
     }
@@ -252,6 +236,7 @@ public extension Checkout {
         return CheckoutPaymentComponent(
             storedPaymentMethod: storedPaymentMethod,
             configuration: configuration,
+            context: adyenContext,
             delegate: self
         )
     }

@@ -8,8 +8,10 @@ import Adyen
 
 internal class FormAddressPickerItemView: FormSelectableValueItemView<PostalAddress, FormAddressPickerItem> {
     
-    internal required init(item: FormAddressPickerItem, theme: AdyenTheme) {
+    internal required init(item: FormAddressPickerItem, theme: CheckoutTheme) {
         super.init(item: item, theme: theme)
-        self.numberOfLines = 0
+        self.numberOfLines = 1
+        valueLabel.apply(theme.elements.textField.text)
     }
+    
 }

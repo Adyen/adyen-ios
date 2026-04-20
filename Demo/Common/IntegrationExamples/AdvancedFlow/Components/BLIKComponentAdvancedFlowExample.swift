@@ -10,6 +10,7 @@ import AdyenCheckout
 import AdyenComponents
 import AdyenUI
 
+@MainActor
 internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
 
     internal weak var presenter: PresenterExampleProtocol?
@@ -18,9 +19,10 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     private var adyenComponent: CheckoutPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
+    private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
 
     /// comes from demo app protocol, unused on new structure
-    internal lazy var context: AdyenContext = generateContext()
+    internal var context: AdyenContext?
 
     internal init() {}
 
@@ -32,11 +34,11 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 let paymentMethods = try await requestPaymentMethods(order: nil)
                 let component = try await blikComponent(from: paymentMethods)
                 self.adyenComponent = component
-                await hideLoading()
-                await present(component: component)
+                hideLoading()
+                present(component: component)
             } catch {
-                await hideLoading()
-                await handleError(error)
+                hideLoading()
+                handleError(error)
             }
         }
     }
@@ -55,7 +57,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             BLIKComponentConfiguration()
         }
         .theme(
-            AdyenTheme(colors: AdyenColors(primary: .systemBlue))
+            CheckoutTheme(colors: AdyenColors(primary: .systemBlue))
                 .bodyLabel(font: AdyenFonts.default.bodyEmphasized)
                 .destructiveButton(
                     backgroundColor: .systemRed,
@@ -65,11 +67,13 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 )
                 .cornerRadius(8.0)
         )
-        .onSubmit { [weak self] data, handler in
-            self?.callPayments(with: data, completion: handler)
+        .onSubmit { [weak self] data in
+            guard let self else { throw CancellationError() }
+            return try await self.callPayments(with: data)
         }
-        .onAdditionalDetails { [weak self] data, handler in
-            self?.callDetails(with: data, completion: handler)
+        .onAdditionalDetails { [weak self] data in
+            guard let self else { throw CancellationError() }
+            return try await self.callDetails(with: data)
         }
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
@@ -98,42 +102,20 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     // MARK: - Backend calls
 
-    private func callPayments(with data: PaymentComponentData, completion: PaymentsResponseHandler?) {
+    private func callPayments(with data: PaymentComponentData) async throws -> CheckoutPaymentsResponse {
         let request = PaymentsRequest(data: data)
-        apiClient.perform(request) { result in
-            switch result {
-            case let .success(response):
-                completion?(
-                    CheckoutPaymentsResponse(
-                        resultCode: response.resultCode, action: response.action
-                    )
-                )
-            case let .failure(error):
-                // TODO: change last parameter to accept error as well Result<CheckoutCallbackResult, Error>
-                break
-            }
-        }
+        let response = try await asyncApiClient.performAsync(request)
+        return CheckoutPaymentsResponse(resultCode: response.resultCode, action: response.action)
     }
 
-    private func callDetails(with data: ActionComponentData, completion: PaymentsResponseHandler?) {
+    private func callDetails(with data: ActionComponentData) async throws -> CheckoutPaymentsResponse {
         let request = PaymentDetailsRequest(
             details: data.details,
             paymentData: data.paymentData,
             merchantAccount: ConfigurationConstants.current.merchantAccount
         )
-        apiClient.perform(request) { result in
-            switch result {
-            case let .success(response):
-                completion?(
-                    CheckoutPaymentsResponse(
-                        resultCode: response.resultCode, action: response.action
-                    )
-                )
-            case let .failure(error):
-                // TODO: add error handling but maybe after async callbacks
-                break
-            }
-        }
+        let response = try await asyncApiClient.performAsync(request)
+        return CheckoutPaymentsResponse(resultCode: response.resultCode, action: response.action)
     }
 
     // MARK: - Private
@@ -142,17 +124,14 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         presenter?.showLoadingIndicator()
     }
 
-    @MainActor
     private func handleError(_ error: Error) {
         presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
     }
 
-    @MainActor
     private func hideLoading() {
         presenter?.hideLoadingIndicator()
     }
 
-    @MainActor
     private func present(component: CheckoutPaymentComponent) {
         presenter?.present(viewController: viewController(for: component), completion: nil)
     }

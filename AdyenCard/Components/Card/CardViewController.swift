@@ -96,7 +96,7 @@ internal class CardViewController: FormViewController {
         initialCountryCode: String,
         scope: String,
         localizationParameters: LocalizationParameters?,
-        theme: AdyenTheme,
+        theme: CheckoutTheme,
         cardScannerAnalyticsHandler: @escaping CardScannerAnalyticsHandler
     ) {
         self.configuration = configuration
@@ -367,9 +367,7 @@ extension CardViewController {
         case .lookup, .full:
             guard let pickerItem = items.billingAddressPickerItem else { return nil }
             return pickerItem.withSectionHeader(
-                title: localizedString(.billingAddressSectionTitle, localizationParameters),
-                // TODO: Localize subtitle after aligning on i18n cases with Android
-                subtitle: "Enter the billing address that is linked to the card"
+                title: localizedString(.billingAddressSectionTitle, localizationParameters)
             )
 
         case .postalCode:

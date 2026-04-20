@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 // sourcery:AutoMockable
+@MainActor
 internal protocol PreselectedPaymentMethodAssemblerProtocol {
     func resolvePreselectedPaymentMethodRouter(
         delegate: PreselectedPaymentMethodRouterListener?,
@@ -17,6 +18,7 @@ internal protocol PreselectedPaymentMethodAssemblerProtocol {
     ) -> Router
 }
 
+@MainActor
 internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
     
     // MARK: - Properties

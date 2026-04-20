@@ -14,6 +14,7 @@ import UIKit
     @_spi(AdyenInternal) import AdyenComponents
 #endif
 
+@MainActor
 internal final class PreApplePayComponent: PresentableComponent,
     PaymentComponent,
     Cancellable {

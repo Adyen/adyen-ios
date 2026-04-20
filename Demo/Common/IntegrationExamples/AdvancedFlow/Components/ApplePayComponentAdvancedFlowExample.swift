@@ -20,26 +20,37 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     
-    internal lazy var context: AdyenContext = generateContext()
-    
+    /// comes from demo app protocol, unused on new structure
+    internal var context: AdyenContext?
+
     // MARK: - Initializers
 
     internal init() {}
 
     internal func start() {
         presenter?.showLoadingIndicator()
-        requestPaymentMethods(order: nil) { [weak self] result in
-            guard let self else { return }
+        Task {
+            do {
+                try await initializeExampleAppAdyenContext()
+                requestPaymentMethods(order: nil) { [weak self] result in
+                    guard let self else { return }
 
-            self.presenter?.hideLoadingIndicator()
+                    self.presenter?.hideLoadingIndicator()
 
-            switch result {
-            case let .success(paymentMethods):
-                self.presentComponent(with: paymentMethods)
+                    switch result {
+                    case let .success(paymentMethods):
+                        self.presentComponent(with: paymentMethods)
 
-            case let .failure(error):
+                    case let .failure(error):
+                        self.presentAlert(with: error)
+                    }
+                }
+
+            } catch {
+                self.presenter?.hideLoadingIndicator()
                 self.presentAlert(with: error)
             }
+
         }
     }
 
@@ -61,7 +72,10 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
             let paymentMethod = paymentMethods?.paymentMethod(ofType: ApplePayPaymentMethod.self)
         else { throw IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self)
         }
-        
+
+        guard let context else {
+            fatalError("AdyenContext is not initialized")
+        }
         var config = try ConfigurationConstants.current.applePayConfiguration(using: .demoWithShippingFields)
 
         config.onAuthorize = { payment in

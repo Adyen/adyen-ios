@@ -31,6 +31,7 @@ final class PollingHandlerMock: AnyPollingHandler {
     }
 }
 
+@MainActor
 struct AwaitActionHandlerProviderMock: AnyPollingHandlerProvider {
 
     var onAwaitHandler: ((_ paymentMethodType: AwaitPaymentMethod) -> AnyPollingHandler)?
@@ -51,6 +52,7 @@ extension AwaitAction: Equatable {
     }
 }
 
+@MainActor
 class AwaitComponentTests: XCTestCase {
 
     func testLocalizationWithCustomTableName() {

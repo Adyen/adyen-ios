@@ -92,8 +92,8 @@ public class SearchViewController: UIViewController, AdyenObserver {
         
         setupConstraints()
         
-        observe(keyboardObserver.$keyboardRect) { [weak self] in
-            self?.handleKeyboardHeightDidChange(keyboardHeight: $0.height)
+        observe(keyboardObserver.$keyboardTransition) { [weak self] in
+            self?.handleKeyboardTransitionDidChange($0)
         }
         
         updateInterface(with: viewModel.interfaceState)
@@ -170,10 +170,10 @@ public class SearchViewController: UIViewController, AdyenObserver {
         }
     }
     
-    private func handleKeyboardHeightDidChange(keyboardHeight: CGFloat) {
+    private func handleKeyboardTransitionDidChange(_ transition: KeyboardTransition) {
         
         let updateConstraint: () -> Void = {
-            self.emptyViewBottomConstraint?.constant = -keyboardHeight
+            self.emptyViewBottomConstraint?.constant = -transition.keyboardRect.height
         }
         
         guard view.window != nil else {
@@ -182,10 +182,16 @@ public class SearchViewController: UIViewController, AdyenObserver {
         }
         
         self.view.setNeedsLayout()
-        UIView.animate(withDuration: 0.2) {
-            updateConstraint()
-            self.view.layoutIfNeeded()
-        }
+        UIView.animate(
+            withDuration: transition.animationDuration,
+            delay: 0,
+            options: transition.animationOptions.union(.beginFromCurrentState),
+            animations: {
+                updateConstraint()
+                self.view.layoutIfNeeded()
+            },
+            completion: nil
+        )
     }
 
     override public var preferredContentSize: CGSize {

@@ -5,11 +5,11 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-import Adyen3DS2
 @_spi(AdyenInternal) @testable import AdyenActions
 @testable @_spi(AdyenInternal) import AdyenCard
 import XCTest
 
+@MainActor
 class ThreeDS2ClassicActionHandlerTests: XCTestCase {
 
     var authenticationRequestParameters: AnyAuthenticationRequestParameters!
@@ -44,13 +44,13 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
     }
     
     func testSettingThreeDSRequestorAppURL() {
-        let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration(), service: ThreeDSServiceableMock())
+        let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, theme: .default, service: ThreeDSServiceableMock())
         sut.threeDSRequestorAppURL = URL(string: "https://google.com")
         XCTAssertEqual(sut.coreActionHandler.threeDSRequestorAppURL, URL(string: "https://google.com"))
     }
 
     func testWrappedComponent() {
-        let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration(), service: ThreeDSServiceableMock())
+        let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, theme: .default, service: ThreeDSServiceableMock())
         XCTAssertEqual(sut.wrappedComponent.context.apiContext.clientKey, Dummy.apiContext.clientKey)
         
         XCTAssertEqual(sut.wrappedComponent.context.apiContext.environment.baseURL, Dummy.apiContext.environment.baseURL)
@@ -79,8 +79,8 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2ClassicActionHandler(
-            context: Dummy.context(with: analyticsProviderMock),
-            appearanceConfiguration: ADYAppearanceConfiguration(),
+            context: Dummy.context(analyticsProvider: analyticsProviderMock),
+            theme: .default,
             service: service
         )
         sut.handle(fingerprintAction) { fingerprintResult in
@@ -132,7 +132,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         )
 
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
-        let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration(), service: service)
+        let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, theme: .default, service: service)
         sut.handle(fingerprintAction) { result in
             switch result {
             case .success:
@@ -162,8 +162,8 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = ThreeDS2ClassicActionHandler(
-            context: Dummy.context(with: analyticsProviderMock),
-            appearanceConfiguration: ADYAppearanceConfiguration(),
+            context: Dummy.context(analyticsProvider: analyticsProviderMock),
+            theme: .default,
             service: service
         )
         sut.threeDSRequestorAppURL = URL(string: "https://google.com")
@@ -210,7 +210,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         service.onPerformFingerprint = { $1(.success(self.authenticationRequestParameters)) }
         service.onPerformChallenge = { $1(.failure(.challengeError(errorPayload: ""))) }
         service.onResetTransaction = {}
-        let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration(), service: service)
+        let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, theme: .default, service: service)
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
 
         sut.handle(challengeAction) { result in
@@ -243,7 +243,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
 
     func testChallengeFlowMissingTransaction() {
         let service = ThreeDSServiceableMock()
-        let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration(), service: service)
+        let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, theme: .default, service: service)
         service.onPerformChallenge = { $1(.failure(.transactionNotInitialized)) }
         service.onResetTransaction = {}
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
@@ -272,7 +272,7 @@ class ThreeDS2ClassicActionHandlerTests: XCTestCase {
         service.onPerformChallenge = { parameters, completion in
             XCTFail()
         }
-        let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, appearanceConfiguration: ADYAppearanceConfiguration(), service: service)
+        let sut = ThreeDS2ClassicActionHandler(context: Dummy.context, theme: .default, service: service)
         let resultExpectation = expectation(description: "Expect ThreeDS2ActionHandler completion closure to be called.")
 
         let challengeAction = ThreeDS2ChallengeAction(challengeToken: "Invalid-token", authorisationToken: "AuthToken", paymentData: "paymentData")

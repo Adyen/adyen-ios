@@ -8,7 +8,8 @@
 import UIKit
 
 package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableValueItem<ValueType?>>:
-    FormValidatableValueItemView<ValueType?, ItemType> {
+    FormValidatableValueItemView<ValueType?, ItemType>,
+    AppearanceChangeRefreshable {
 
     internal var numberOfLines: Int = 1 {
         didSet {
@@ -20,7 +21,7 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
         selectionButton
     }
 
-    package required init(item: ItemType, theme: AdyenTheme) {
+    package required init(item: ItemType, theme: CheckoutTheme) {
         super.init(item: item, theme: theme)
 
         addSubview(selectionButton)
@@ -121,12 +122,12 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
 
     // MARK: - Styling
 
-    private func apply(_ theme: AdyenTheme) {
+    private func apply(_ theme: CheckoutTheme) {
         let style = theme.elements.textField
 
         containerView.backgroundColor = style.containerColor
         containerView.layer.borderWidth = style.borderWidth
-        containerView.layer.borderColor = style.borderColor.cgColor
+        adyen.applyLayerBorderColor(style.borderColor, on: containerView.layer)
 
         switch style.cornerRadius {
         case let .fixed(radius):
@@ -139,10 +140,20 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
         valueLabel.apply(theme.elements.labels.body)
     }
 
-    private func updateContainerBorderColor(isValid: Bool) {
+    private func updateContainerBorderColor(
+        isValid: Bool,
+        resolvingWith traitCollection: UITraitCollection? = nil
+    ) {
         let style = theme.elements.textField
         let borderColor = isValid ? style.borderColor : style.errorColor
-        containerView.layer.borderColor = borderColor.cgColor
+        adyen.applyLayerBorderColor(borderColor, on: containerView.layer, resolvingWith: traitCollection)
+    }
+
+    package func refreshAppearance(with traitCollection: UITraitCollection) {
+        updateContainerBorderColor(
+            isValid: !item.validationState.shouldShowError,
+            resolvingWith: traitCollection
+        )
     }
 
     // MARK: - Convenience

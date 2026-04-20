@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class BLIKComponentTests: XCTestCase {
 
     lazy var paymentMethod = BLIKPaymentMethod(type: .blik, name: "test_name")
@@ -76,7 +77,7 @@ class BLIKComponentTests: XCTestCase {
     func testViewDidLoadShouldSendInitialCall() {
         // When
         let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(with: analyticsProviderMock)
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
         sut = BLIKComponent(paymentMethod: paymentMethod, context: context)
         sut.viewDidLoad(viewController: sut.viewController)
 

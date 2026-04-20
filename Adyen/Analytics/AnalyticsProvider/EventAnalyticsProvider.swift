@@ -8,7 +8,7 @@ import AdyenNetworking
 import Foundation
 
 internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
-    
+
     private enum Constants {
         static let batchInterval: TimeInterval = 10
         static let infoLimit = 50
@@ -16,38 +16,38 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
         static let errorLimit = 5
     }
 
-    // TODO: Robert: Remove this, this will be private and not settable. but available during init.
-    internal var checkoutAttemptId: String? {
-        didSet {
-            if checkoutAttemptId != nil {
-                startNextTimer()
-            }
-        }
-    }
-
-    internal let apiClient: APIClientProtocol
+    internal let apiClient: AsyncAPIClientProtocol
     internal let eventDataSource: AnyAnalyticsEventDataSource
-    
     private let context: AnalyticsContext
     private var batchTimer: Timer?
     private let batchInterval: TimeInterval
-    
+    private let checkoutAttemptId: String
+
     internal init(
-        apiClient: APIClientProtocol,
+        apiClient: AsyncAPIClientProtocol,
         context: AnalyticsContext,
         eventDataSource: AnyAnalyticsEventDataSource,
+        checkoutAttemptId: String,
         batchInterval: TimeInterval = Constants.batchInterval
     ) {
         self.apiClient = apiClient
         self.eventDataSource = eventDataSource
         self.context = context
         self.batchInterval = batchInterval
+        self.checkoutAttemptId = checkoutAttemptId
+        
+        Task { await startNextTimer() }
     }
     
     deinit {
-        // attempt to send remaining events on deallocation
         batchTimer?.invalidate()
-        sendEventsIfNeeded()
+        // fire-and-forget remaining events without capturing self
+        if let request = requestWithAllEvents() {
+            let apiClient = apiClient
+            Task {
+                _ = try? await apiClient.performAsync(request)
+            }
+        }
     }
     
     internal func add(info: AnalyticsEventInfo) {
@@ -67,16 +67,12 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
     internal func sendEventsIfNeeded() {
         guard let request = requestWithAllEvents() else { return }
         
-        apiClient.perform(request) { [weak self] result in
-            guard let self else { return }
-            // clear the sent events on successful send
-            switch result {
-            case .success:
-                self.removeEvents(sentBy: request)
-                self.startNextTimer()
-            case .failure:
-                break
-            }
+        Task {
+            do {
+                _ = try await apiClient.performAsync(request)
+                removeEvents(sentBy: request)
+                await startNextTimer()
+            } catch {}
         }
     }
     
@@ -84,9 +80,8 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
     
     /// Checks the event arrays safely and creates the request with them if there is any to send.
     private func requestWithAllEvents() -> AnalyticsRequest? {
-        guard let checkoutAttemptId,
-              let events = eventDataSource.allEvents() else { return nil }
-        
+        guard let events = eventDataSource.allEvents() else { return nil }
+
         // as per this call's limitation, we only send up to the
         // limit of each event and discard the older ones
         let platform = context.platform.rawValue
@@ -109,6 +104,7 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
         eventDataSource.removeEvents(matching: collection)
     }
     
+    @MainActor
     private func startNextTimer() {
         batchTimer?.invalidate()
         batchTimer = Timer.scheduledTimer(withTimeInterval: batchInterval, repeats: true) { [weak self] _ in

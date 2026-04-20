@@ -17,7 +17,7 @@ public struct TwintActionConfiguration: CheckoutComponentConfiguration {
     
     package var showsSubmitButton: Bool = false
     
-    package var theme: AdyenTheme = .default
+    package var theme: CheckoutTheme = .default
     
     package var localizationParameters: LocalizationParameters?
     

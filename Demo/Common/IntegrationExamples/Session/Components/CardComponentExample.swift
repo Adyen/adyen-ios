@@ -10,6 +10,7 @@ import AdyenCard
 import AdyenCheckout
 import AdyenComponents
 
+@MainActor
 internal final class CardComponentExample: InitialDataFlowProtocol {
 
     // MARK: - Properties
@@ -21,7 +22,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     
-    internal lazy var context: AdyenContext = generateContext()
+    internal var context: AdyenContext?
 
     // MARK: - Initializers
 
@@ -35,11 +36,11 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
                 let sessionResponse = try await requestSessionInitialInfo()
                 let component = try await self.cardComponent(from: sessionResponse)
                 self.adyenComponent = component
-                await hideLoading()
-                await present(component: component)
+                hideLoading()
+                present(component: component)
             } catch {
-                await hideLoading()
-                await handleError(error)
+                hideLoading()
+                handleError(error)
             }
         }
     }
@@ -56,29 +57,13 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
             )
         ) {
             ConfigurationConstants.current.cardConfiguration
-                .installmentConfiguration(
-                    InstallmentConfiguration(
-                        defaultOptions: .init(
-                            monthValues: [3, 5, 7],
-                            includesRevolving: false
-                        )
-                    )
-                )
-                .billingAddressMode(
-                    .lookup(
-                        onAddressLookup: { searchTerm in
-                            await MapkitAddressLookupProvider().searchAsync(searchTerm)
-                        }
-                    )
-                )
                 .onBinChange { bin in
                     print("Here is the bin \(bin)")
                 }
                 .onBinLookup { brands in
                     print("Bin lookup response \(brands)")
                 }
-                .showsSecurityCodeField(false)
-            ThreeDS2ActionConfiguration()
+            AuthenticationConfiguration()
                 .requestorAppURL(ConfigurationConstants.returnUrl)
         }
         .onComplete { [weak self] result in

@@ -26,6 +26,7 @@ import UIKit
  - SeeAlso:
  [Implementation Reference](https://docs.adyen.com/online-payments/ios/drop-in)
  */
+@MainActor
 public final class DropInComponent: NSObject,
     AnyDropInComponent,
     ActionHandlingComponent,
@@ -93,10 +94,7 @@ public final class DropInComponent: NSObject,
         self.context = context
         self.paymentMethods = paymentMethods
 
-        let scheduler = SimpleScheduler(maximumCount: 3)
         self.apiClient = APIClient(apiContext: context.apiContext)
-            .retryAPIClient(with: scheduler)
-            .retryOnErrorAPIClient()
         super.init()
         
         sendInitialAnalytics()
@@ -154,7 +152,7 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Handling Partial Payments
 
-    private var apiClient: APIClientProtocol
+    private var apiClient: AsyncAPIClientProtocol
 
     internal func reloadComponentManager() {
         componentManager = createComponentManager(order: componentManager.order)
@@ -180,14 +178,13 @@ public final class DropInComponent: NSObject,
     ) throws {
         guard let orderData = order.orderData else { throw PartialPaymentError.missingOrderData }
         let request = OrderStatusRequest(orderData: orderData)
-        apiClient.perform(request) { [weak self] result in
+        Task { [weak self] in
             guard let self else { return }
-
-            switch result {
-            case let .success(orderResponse):
+            do {
+                let response: OrderStatusResponse = try await apiClient.performAsync(request)
                 self.paymentMethods = paymentMethods
-                self.handle(orderResponse, order)
-            case let .failure(error):
+                self.handle(response, order)
+            } catch {
                 self.delegate?.didFail(with: error, from: self)
             }
         }

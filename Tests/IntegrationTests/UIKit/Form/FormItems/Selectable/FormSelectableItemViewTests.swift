@@ -152,7 +152,7 @@ class FormPickerItemViewStyleTests: XCTestCase {
 
     func test_titleLabel_shouldUseThemeBodyEmphasizedStyle() {
         // Then - titleLabel is styled by theme (already migrated in FormValueItemView)
-        let expectedFont = AdyenTheme.default.elements.labels.bodyEmphasized.font
+        let expectedFont = CheckoutTheme.default.elements.labels.bodyEmphasized.font
         XCTAssertEqual(sut.titleLabel.font, expectedFont)
     }
 
@@ -175,7 +175,7 @@ class FormPickerItemViewStyleTests: XCTestCase {
 
         // Then - Now uses theme.elements.labels.body.color
         XCTAssertEqual(
-            customSut.valueLabel.textColor, AdyenTheme.default.elements.labels.body.color
+            customSut.valueLabel.textColor, CheckoutTheme.default.elements.labels.body.color
         )
     }
 
@@ -188,7 +188,7 @@ class FormPickerItemViewStyleTests: XCTestCase {
         let customSut = FormPickerItemView(item: customItem)
 
         // Then - Now uses theme.colors.textSecondary
-        XCTAssertEqual(customSut.footerLabel.textColor, AdyenTheme.default.colors.textSecondary)
+        XCTAssertEqual(customSut.footerLabel.textColor, CheckoutTheme.default.colors.textSecondary)
     }
 
     func test_valueLabel_whenFormattedValueChanges_shouldUpdateColorToThemeBodyColor() {
@@ -196,14 +196,14 @@ class FormPickerItemViewStyleTests: XCTestCase {
         let customItem = TestFormPickerItem()
         customItem.formattedValue = nil
         let customSut = FormPickerItemView(item: customItem)
-        XCTAssertEqual(customSut.footerLabel.textColor, AdyenTheme.default.colors.textSecondary) // placeholder color
+        XCTAssertEqual(customSut.footerLabel.textColor, CheckoutTheme.default.colors.textSecondary) // placeholder color
 
         // When
         customItem.formattedValue = "New Value"
 
         // Then - Now uses theme.elements.labels.body.color
         XCTAssertEqual(
-            customSut.valueLabel.textColor, AdyenTheme.default.elements.labels.body.color
+            customSut.valueLabel.textColor, CheckoutTheme.default.elements.labels.body.color
         )
     }
 
@@ -216,7 +216,7 @@ class FormPickerItemViewStyleTests: XCTestCase {
 
     func test_titleLabel_color_shouldUseThemeBodyEmphasizedColor() {
         // Then - titleLabel color is styled by theme (already migrated in FormValueItemView)
-        let expectedColor = AdyenTheme.default.elements.labels.bodyEmphasized.color
+        let expectedColor = CheckoutTheme.default.elements.labels.bodyEmphasized.color
         XCTAssertEqual(sut.titleLabel.textColor, expectedColor)
     }
 
@@ -224,7 +224,7 @@ class FormPickerItemViewStyleTests: XCTestCase {
 
     func test_valueLabel_font_shouldUseThemeBodyFont() {
         // Then - Now uses theme.elements.labels.body.font
-        XCTAssertEqual(sut.valueLabel.font, AdyenTheme.default.elements.labels.body.font)
+        XCTAssertEqual(sut.valueLabel.font, CheckoutTheme.default.elements.labels.body.font)
     }
 
     // MARK: - FooterLabel Style Tests
@@ -234,7 +234,7 @@ class FormPickerItemViewStyleTests: XCTestCase {
         sut.showValidation()
         
         // Then - footerLabel uses destructive color when showing error
-        let expectedColor = AdyenTheme.default.colors.destructive
+        let expectedColor = CheckoutTheme.default.colors.destructive
         XCTAssertEqual(
             sut.footerLabel.textColor?.resolvedColor(
                 with: UITraitCollection(userInterfaceStyle: .light)
@@ -245,7 +245,7 @@ class FormPickerItemViewStyleTests: XCTestCase {
 
     func test_footerLabel_font_shouldUseThemeSubheadlineStyle() {
         // Then - footerLabel font is styled by theme
-        let expectedFont = AdyenTheme.default.elements.labels.subheadline.font
+        let expectedFont = CheckoutTheme.default.elements.labels.subheadline.font
         XCTAssertEqual(sut.footerLabel.font, expectedFont)
     }
 

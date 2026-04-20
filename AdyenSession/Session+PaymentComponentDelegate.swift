@@ -13,10 +13,16 @@ import UIKit
 
 @_spi(AdyenInternal)
 extension Session: PaymentComponentDelegate {
+    
     public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         didSubmit(data, from: component, dropInComponent: nil)
     }
     
+    public func didFail(with error: Error, from component: PaymentComponent) {
+        failWithError(error, component)
+    }
+    
+    @MainActor
     internal func finish(with result: CheckoutResult, component: Component) {
         let success = result.resultCode == .authorised
             || result.resultCode == .received
@@ -27,18 +33,17 @@ extension Session: PaymentComponentDelegate {
         }
     }
     
+    @MainActor
     internal func finish(with error: Error, component: Component) {
         failWithError(error, component)
     }
-
-    public func didFail(with error: Error, from component: PaymentComponent) {
-        failWithError(error, component)
-    }
     
+    @MainActor
     internal func didFail(with error: Error, currentComponent: Component) {
         failWithError(error, currentComponent)
     }
 
+    @MainActor
     internal func failWithError(_ error: Error, _ component: Component) {
         component.finalizeIfNeeded(with: false) { [weak self] in
             guard let self else { return }
@@ -48,6 +53,8 @@ extension Session: PaymentComponentDelegate {
 }
 
 extension Session {
+    
+    @MainActor
     package func didSubmit(
         _ paymentComponentData: PaymentComponentData,
         from component: PaymentComponent,
@@ -58,25 +65,19 @@ extension Session {
             sessionData: state.data,
             data: paymentComponentData
         )
-        apiClient.perform(request) { [weak self] in
-            self?.handle(paymentResponseResult: $0, for: component, in: dropInComponent)
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let response: PaymentsResponse = try await apiClient.performAsync(request)
+                handle(paymentResponse: response, for: component, in: dropInComponent)
+            } catch {
+                finish(with: error, component: component)
+            }
         }
     }
     
+    @MainActor
     internal func handle(
-        paymentResponseResult: Result<PaymentsResponse, Error>,
-        for currentComponent: Component,
-        in dropInComponent: AnyDropInComponent? = nil
-    ) {
-        switch paymentResponseResult {
-        case let .success(response):
-            handle(paymentResponse: response, for: currentComponent, in: dropInComponent)
-        case let .failure(error):
-            finish(with: error, component: currentComponent)
-        }
-    }
-    
-    private func handle(
         paymentResponse response: PaymentsResponse,
         for currentComponent: Component,
         in dropInComponent: AnyDropInComponent?
@@ -111,6 +112,7 @@ extension Session {
         }
     }
     
+    @MainActor
     private func handle(
         action: Action,
         for currentComponent: Component,
@@ -123,6 +125,7 @@ extension Session {
         }
     }
     
+    @MainActor
     private func handle(
         order: PartialPaymentOrder,
         resultCode: CheckoutResultCode,
@@ -141,10 +144,12 @@ extension Session {
         }
     }
     
+    @MainActor
     private func showPaymentFailedAlert(on dropInComponent: AnyDropInComponent, completion: @escaping (() -> Void)) {
         let localizationParameters = (dropInComponent as? Localizable)?.localizationParameters
         let title = localizedString(.errorTitle, localizationParameters)
         let message = localizedString(.paymentRefusedMessage, localizationParameters)
+        
         let alertController = UIAlertController(
             title: title,
             message: message,
@@ -160,12 +165,14 @@ extension Session {
         dropInComponent.viewController.present(alertController, animated: true)
     }
     
+    @MainActor
     private func updateDropIn(_ dropInComponent: AnyDropInComponent, with order: PartialPaymentOrder, currentComponent: Component) {
         let initialInfo = SessionResponse(
             id: state.identifier,
             sessionData: state.data
         )
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             do {
                 let newState = try await Self.makeSetupCall(
                     with: initialInfo,
@@ -181,12 +188,12 @@ extension Session {
                     currentComponent: currentComponent
                 )
             } catch {
-                // Handle error
                 finish(with: error, component: currentComponent)
             }
         }
     }
     
+    @MainActor
     private func reload(
         dropInComponent: AnyDropInComponent,
         with order: PartialPaymentOrder,

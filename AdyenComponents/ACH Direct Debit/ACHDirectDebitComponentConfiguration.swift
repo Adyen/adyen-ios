@@ -19,7 +19,7 @@ public struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfig
 
     package var style: FormComponentStyle
 
-    package var theme: AdyenTheme
+    package var theme: CheckoutTheme
 
     package var showsSubmitButton: Bool
 

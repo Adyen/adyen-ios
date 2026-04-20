@@ -19,7 +19,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
 
     private var style: ViewStyle
 
-    private var theme: AdyenTheme = .init()
+    private var theme: CheckoutTheme = .init()
 
     private var blurConstraints: [NSLayoutConstraint]?
 
@@ -60,7 +60,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
     package init(
         child: ChildViewController,
         style: ViewStyle = FormComponentStyle(),
-        theme: AdyenTheme
+        theme: CheckoutTheme
     ) {
         self.childViewController = child
         self.style = style
@@ -158,8 +158,8 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
                 self?.blurEffectView.removeFromSuperview()
                 self?.$blurEffectView.reset()
                 
-                if let adyenTheme = self?.theme as? AdyenTheme {
-                    self?.view.backgroundColor = adyenTheme.colors.background
+                if let theme = self?.theme as? CheckoutTheme {
+                    self?.view.backgroundColor = theme.colors.background
                 }
             }
         )

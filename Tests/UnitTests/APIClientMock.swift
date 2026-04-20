@@ -5,11 +5,11 @@
 //
 
 import Adyen
-import AdyenNetworking
+@testable import AdyenNetworking
 
 internal typealias MockedResult = Result<Response, Error>
 
-internal final class APIClientMock: APIClientProtocol {
+internal final class APIClientMock: APIClientProtocol, AsyncAPIClientProtocol {
 
     internal var mockedResults: [MockedResult] = []
     internal var onExecute: ((any Request) -> Void)?
@@ -34,6 +34,28 @@ internal final class APIClientMock: APIClientProtocol {
                 completionHandler(.failure(error))
             }
         }
+    }
+
+    internal func perform<R: Request>(_ request: R) async throws -> HTTPResponse<R.ResponseType> {
+        counter += 1
+        let nextResult = self.mockedResults.removeFirst()
+        onExecute?(request)
+        switch nextResult {
+        case let .success(response):
+            guard let response = response as? R.ResponseType else {
+                fatalError("""
+                The provided Response "\(response.self)" does not match \
+                the ResponseType of the Request "\(R.ResponseType.self)"
+                """)
+            }
+            return HTTPResponse(headers: [:], statusCode: 200, responseBody: response)
+        case let .failure(error):
+            throw error
+        }
+    }
+
+    internal func perform<R: Request>(_ request: R) async throws -> HTTPResponse<R.ResponseType> where R.ResponseType == DownloadResponse {
+        fatalError("Download not supported in mock")
     }
 
 }

@@ -22,6 +22,7 @@ import UIKit
 /// ```swift
 /// component.submit()
 /// ```
+@MainActor
 public final class CheckoutPaymentComponent {
     
     internal let paymentComponent: PaymentComponent?
@@ -41,24 +42,26 @@ public final class CheckoutPaymentComponent {
     package init(
         paymentMethod: PaymentMethod,
         configuration: CheckoutConfiguration,
+        context: AdyenContext,
         delegate: PaymentComponentDelegate?
     ) {
         self.configuration = configuration
         self.delegate = delegate
         // TODO: Add new v6 style here
-        self.paymentComponent = CheckoutComponentBuilder.build(for: paymentMethod, configuration: configuration)
+        self.paymentComponent = CheckoutComponentBuilder.build(for: paymentMethod, configuration: configuration, context: context)
         self.paymentComponent?.delegate = delegate
     }
     
     package init(
         storedPaymentMethod: StoredPaymentMethod,
         configuration: CheckoutConfiguration,
+        context: AdyenContext,
         delegate: PaymentComponentDelegate?
     ) {
         self.configuration = configuration
         self.delegate = delegate
         // TODO: Add new v6 style here
-        self.paymentComponent = CheckoutComponentBuilder.build(for: storedPaymentMethod, configuration: configuration)
+        self.paymentComponent = CheckoutComponentBuilder.build(for: storedPaymentMethod, configuration: configuration, context: context)
         self.paymentComponent?.delegate = delegate
     }
 }

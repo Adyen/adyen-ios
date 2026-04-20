@@ -8,7 +8,6 @@ import Foundation
 
 #if canImport(AdyenAuthentication)
     @_spi(AdyenInternal) @testable import Adyen
-    import Adyen3DS2
     @_spi(AdyenInternal) @testable import AdyenActions
     import AdyenAuthentication
     import Foundation

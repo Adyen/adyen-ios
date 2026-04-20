@@ -16,6 +16,7 @@ import Foundation
     import AdyenWeChatPayInternal
 
     /// Action component to handle WeChat Pay SDK action.
+    @MainActor
     public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
 
         private static let universalLink = "https://www.adyen.com/"
@@ -110,6 +111,7 @@ import Foundation
 #else
 
     /// Action component to handle WeChat Pay SDK action.
+    @MainActor
     public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
 
         @_spi(AdyenInternal)

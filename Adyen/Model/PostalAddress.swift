@@ -192,6 +192,12 @@ extension PostalAddress {
             .replacingOccurrences(of: "\n", with: ", ")
     }
     
+    package func formattedSingleLine(using localizationParameters: LocalizationParameters?) -> String {
+        // Use CNPostalAddressFormatter for locale-aware formatting, then convert to single line
+        formatted(using: localizationParameters)
+            .replacingOccurrences(of: "\n", with: ", ")
+    }
+
     private func countryName(
         for countryCode: String,
         using localizationParameters: LocalizationParameters?

@@ -26,12 +26,12 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
     // MARK: - TitleLabel Style Tests
 
     func test_titleLabel_font_shouldUseThemeBodyEmphasizedFont() {
-        let expectedFont = AdyenTheme.default.elements.labels.bodyEmphasized.font
+        let expectedFont = CheckoutTheme.default.elements.labels.bodyEmphasized.font
         XCTAssertEqual(sut.titleLabel.font, expectedFont)
     }
 
     func test_titleLabel_color_shouldUseThemeBodyEmphasizedColor() {
-        let expectedColor = AdyenTheme.default.elements.labels.bodyEmphasized.color
+        let expectedColor = CheckoutTheme.default.elements.labels.bodyEmphasized.color
         XCTAssertEqual(sut.titleLabel.textColor, expectedColor)
     }
 
@@ -43,7 +43,7 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
     // MARK: - ValueLabel Style Tests
 
     func test_valueLabel_font_shouldUseThemeBodyFont() {
-        let expectedFont = AdyenTheme.default.elements.labels.body.font
+        let expectedFont = CheckoutTheme.default.elements.labels.body.font
         XCTAssertEqual(sut.valueLabel.font, expectedFont)
     }
 
@@ -52,7 +52,7 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
         XCTAssertNil(item.formattedValue)
 
         // Then
-        let expectedColor = AdyenTheme.default.colors.textSecondary
+        let expectedColor = CheckoutTheme.default.colors.textSecondary
         XCTAssertEqual(sut.footerLabel.textColor, expectedColor)
     }
 
@@ -61,19 +61,19 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
         let sutWithValue = makeSUT(prefillAddress: PostalAddressMocks.newYorkPostalAddress)
 
         // Then
-        let expectedColor = AdyenTheme.default.elements.labels.body.color
+        let expectedColor = CheckoutTheme.default.elements.labels.body.color
         XCTAssertEqual(sutWithValue.valueLabel.textColor, expectedColor)
     }
 
-    func test_valueLabel_numberOfLines_shouldBeZeroForMultilineAddress() {
-        let expectedNumberOfLines = 0
+    func test_valueLabel_numberOfLines_shouldBeOneForTruncatedAddress() {
+        let expectedNumberOfLines = 1
         XCTAssertEqual(sut.valueLabel.numberOfLines, expectedNumberOfLines)
     }
 
     // MARK: - FooterLabel Style Tests
 
     func test_footerLabel_font_shouldUseThemeSubheadlineFont() {
-        let expectedFont = AdyenTheme.default.elements.labels.subheadline.font
+        let expectedFont = CheckoutTheme.default.elements.labels.subheadline.font
         XCTAssertEqual(sut.footerLabel.font, expectedFont)
     }
 
@@ -82,7 +82,7 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
         sut.showValidation()
         
         // Then
-        let expectedColor = AdyenTheme.default.colors.destructive
+        let expectedColor = CheckoutTheme.default.colors.destructive
         XCTAssertEqual(sut.footerLabel.textColor, expectedColor)
     }
 
@@ -98,7 +98,10 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
     func test_customTheme_valueLabel_shouldUseCustomBodyColor() {
         // Given
         let expectedColor = UIColor.systemGreen
-        let customTheme = AdyenTheme.default.bodyLabel(color: expectedColor)
+        var customElements = CheckoutTheme.default.elements
+        customElements.labels.body.color = expectedColor
+        customElements.textField.text.color = expectedColor
+        let customTheme = CheckoutTheme(colors: CheckoutTheme.default.colors, elements: customElements, attributes: CheckoutTheme.default.attributes)
 
         // When
         let sutWithCustomTheme = makeSUT(
@@ -115,7 +118,7 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
         let expectedColor = UIColor.systemPurple
         var customColors = AdyenColors()
         customColors.destructive = expectedColor
-        let customTheme = AdyenTheme(colors: customColors)
+        let customTheme = CheckoutTheme(colors: customColors)
 
         // When
         let sutWithCustomTheme = makeSUT(theme: customTheme)
@@ -143,7 +146,7 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
     private func makeSUT(
         item: FormAddressPickerItem? = nil,
         prefillAddress: PostalAddress? = nil,
-        theme: AdyenTheme = .default
+        theme: CheckoutTheme = .default
     ) -> FormAddressPickerItemView {
         let resolvedItem = item ?? makeMockItem(prefillAddress: prefillAddress)
         return FormAddressPickerItemView(item: resolvedItem, theme: theme)

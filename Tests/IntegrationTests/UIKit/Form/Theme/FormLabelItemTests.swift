@@ -11,7 +11,7 @@ import XCTest
 final class FormLabelItemTests: XCTestCase {
 
     func test_formLabelItem_shouldApplyThemeAttributes() {
-        let customTheme = AdyenTheme()
+        let customTheme = CheckoutTheme()
             .bodyLabel(
                 font: UIFont.systemFont(ofSize: 24, weight: .bold),
                 color: .red,
@@ -49,7 +49,7 @@ final class FormLabelItemTests: XCTestCase {
             text: "Test",
             style: TextStyle(font: .systemFont(ofSize: 16), color: .black)
         )
-        let defaultTheme = AdyenTheme.default
+        let defaultTheme = CheckoutTheme.default
         let sut = FormLabelItemView(item: item, theme: defaultTheme)
 
         XCTAssertEqual(sut.textColor, defaultTheme.elements.labels.body.color)
@@ -60,7 +60,7 @@ final class FormLabelItemTests: XCTestCase {
 
     private func makeSUT(
         text: String = "Test Label",
-        theme: AdyenTheme = .default,
+        theme: CheckoutTheme = .default,
         identifier: String? = "testLabel"
     ) -> UILabel {
         let item = FormLabelItem(text: text, style: TextStyle(font: .systemFont(ofSize: 16), color: .black), identifier: identifier)

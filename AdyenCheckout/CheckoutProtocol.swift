@@ -13,6 +13,7 @@
 #endif
 import AdyenNetworking
 
+@MainActor
 internal protocol CheckoutProtocol {
     
     func createPaymentComponent(for type: PaymentMethodType) -> CheckoutPaymentComponent?
@@ -44,7 +45,7 @@ internal protocol CheckoutProviding: AdyenSessionProviding {
 internal protocol AdyenSessionProviding {
     func setupSession(
         with sessionResponse: SessionResponse,
-        configuration: CheckoutConfiguration,
-        apiClient: APIClientProtocol
+        adyenContext: AdyenContext,
+        apiClient: AsyncAPIClientProtocol
     ) async throws -> SessionProtocol
 }

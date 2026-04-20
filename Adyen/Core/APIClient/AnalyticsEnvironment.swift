@@ -23,6 +23,8 @@ public enum AnalyticsEnvironment: String, AnyAPIEnvironment {
     
     case liveIndia = "https://checkoutanalytics-live-in.adyen.com/"
     
+    case liveNea = "https://checkoutanalytics-live-nea.adyen.com/"
+    
     @_spi(AdyenInternal)
     case beta = "https://beta.adyen.com/checkoutanalytics/v3/analytics/"
     
@@ -37,7 +39,7 @@ public enum AnalyticsEnvironment: String, AnyAPIEnvironment {
 
 extension Environment {
     
-    internal func toAnalyticsEnvironment() -> AnalyticsEnvironment {
+    package func toAnalyticsEnvironment() -> AnalyticsEnvironment {
         switch self {
         case .beta:
             return .beta
@@ -53,6 +55,8 @@ extension Environment {
             return .liveAustralia
         case .liveUnitedStates:
             return .liveUnitedStates
+        case .liveNea:
+            return .liveNea
         case .local:
             return .local
         default:

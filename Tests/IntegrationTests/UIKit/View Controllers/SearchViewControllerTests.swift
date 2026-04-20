@@ -234,4 +234,72 @@ class SearchViewControllerTests: XCTestCase {
         XCTAssertEqual(searchViewController.resultsListViewController.sections.first?.items, resultItems)
         XCTAssertTrue(searchViewController.emptyView.isHidden)
     }
+    
+    func testKeyboardFrameChangeUpdatesEmptyViewBottomConstraint() throws {
+        let viewModel = SearchViewController.ViewModel(
+            style: DummyStyle()
+        ) { _, handler in
+            handler([])
+        }
+        
+        let searchViewController = SearchViewController(
+            viewModel: viewModel,
+            emptyView: emptyView
+        )
+        
+        searchViewController.loadViewIfNeeded()
+        
+        let bottomConstraint = try emptyViewBottomConstraint(from: searchViewController)
+        postKeyboardFrameChange(to: makeKeyboardFrame(withHeight: 100))
+        
+        wait(
+            until: { abs(bottomConstraint.constant + 100) < 0.1 },
+            timeout: 1.0,
+            file: #file,
+            line: #line
+        )
+        
+        XCTAssertEqual(bottomConstraint.constant, -100, accuracy: 0.1)
+    }
+}
+
+private extension SearchViewControllerTests {
+    
+    func emptyViewBottomConstraint(
+        from searchViewController: SearchViewController,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) throws -> NSLayoutConstraint {
+        try XCTUnwrap(
+            searchViewController.view.constraints.first(where: {
+                ($0.firstItem as AnyObject?) === searchViewController.emptyView
+                    && $0.firstAttribute == .bottom
+                    && ($0.secondItem as AnyObject?) === searchViewController.view
+                    && $0.secondAttribute == .bottom
+            }),
+            file: file,
+            line: line
+        )
+    }
+    
+    func makeKeyboardFrame(withHeight height: CGFloat) -> CGRect {
+        CGRect(
+            x: UIScreen.main.bounds.minX,
+            y: UIScreen.main.bounds.maxY - height,
+            width: UIScreen.main.bounds.width,
+            height: height
+        )
+    }
+    
+    func postKeyboardFrameChange(to frame: CGRect) {
+        NotificationCenter.default.post(
+            name: UIResponder.keyboardWillChangeFrameNotification,
+            object: nil,
+            userInfo: [
+                UIResponder.keyboardFrameEndUserInfoKey: frame,
+                UIResponder.keyboardAnimationDurationUserInfoKey: 0.25,
+                UIResponder.keyboardAnimationCurveUserInfoKey: UIView.AnimationCurve.easeInOut.rawValue
+            ]
+        )
+    }
 }

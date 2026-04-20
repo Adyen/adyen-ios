@@ -23,9 +23,17 @@ extension Checkout: PaymentComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         activePaymentComponent = component
         if let onSubmit = configuration.onSubmit {
-            onSubmit(data) { [weak self] response in
-                guard let self else { return }
-                self.handle(response)
+            submitTask?.cancel()
+            submitTask = Task { [weak self] in
+                do {
+                    let response = try await onSubmit(data)
+                    guard !Task.isCancelled else { return }
+                    self?.handle(response)
+                } catch {
+                    // Ignore if this was a cancellation (task superseded or Checkout torn down).
+                    guard !(error is CancellationError), !Task.isCancelled else { return }
+                    self?.finish(with: error)
+                }
             }
         } else if let session {
             session.didSubmit(
@@ -55,9 +63,17 @@ extension Checkout: PaymentComponentDelegate {
 extension Checkout: ActionComponentDelegate {
     public func didProvide(_ data: Adyen.ActionComponentData, from component: any Adyen.ActionComponent) {
         if let onAdditionalDetails = configuration.onAdditionalDetails {
-            onAdditionalDetails(data) { [weak self] response in
-                guard let self else { return }
-                self.handle(response)
+            additionalDetailsTask?.cancel()
+            additionalDetailsTask = Task { [weak self] in
+                do {
+                    let response = try await onAdditionalDetails(data)
+                    guard !Task.isCancelled else { return }
+                    self?.handle(response)
+                } catch {
+                    // Ignore if this was a cancellation (task superseded or Checkout torn down).
+                    guard !(error is CancellationError), !Task.isCancelled else { return }
+                    self?.finish(with: error)
+                }
             }
         } else if let session {
             session.didProvide(

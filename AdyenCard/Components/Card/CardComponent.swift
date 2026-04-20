@@ -18,6 +18,7 @@ import UIKit
  - SeeAlso:
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
+@MainActor
 public class CardComponent: PresentableComponent,
     PaymentMethodAware,
     LoadingComponent {
@@ -34,9 +35,6 @@ public class CardComponent: PresentableComponent,
     public let context: AdyenContext
 
     internal let cardPaymentMethod: AnyCardPaymentMethod
-
-    @_spi(AdyenInternal)
-    public let publicKeyProvider: AnyPublicKeyProvider
 
     internal let binInfoProvider: AnyBinInfoProvider
 
@@ -91,10 +89,9 @@ public class CardComponent: PresentableComponent,
         context: AdyenContext,
         configuration: CardComponentConfiguration = .init()
     ) {
-        let publicKeyProvider = PublicKeyProvider(apiContext: context.apiContext)
         let binInfoProvider = BinInfoProvider(
             apiClient: APIClient(apiContext: context.apiContext),
-            publicKeyProvider: publicKeyProvider,
+            adyenContext: context,
             minBinLength: Constant.thresholdBINLength,
             binLookupType: configuration.binLookupType
         )
@@ -102,7 +99,6 @@ public class CardComponent: PresentableComponent,
             paymentMethod: paymentMethod,
             context: context,
             configuration: configuration,
-            publicKeyProvider: publicKeyProvider,
             binProvider: binInfoProvider
         )
     }
@@ -113,19 +109,16 @@ public class CardComponent: PresentableComponent,
     ///   - paymentMethod: The card payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The Card component configuration.
-    ///   - publicKeyProvider: The public key provider
     ///   - binProvider: Any object capable to provide a BinInfo.
     internal init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
         configuration: CardComponentConfiguration,
-        publicKeyProvider: AnyPublicKeyProvider,
         binProvider: AnyBinInfoProvider
     ) {
         self.cardPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
-        self.publicKeyProvider = publicKeyProvider
         self.binInfoProvider = binProvider
 
         self.supportedCardTypes = configuration.allowedCardTypes ?? paymentMethod.brands
@@ -157,7 +150,7 @@ public class CardComponent: PresentableComponent,
         }
         // TODO: FIX StoredCard UI
         if configuration.stored.showsSecurityCodeField {
-            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context)
+            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context, theme: configuration.theme)
             storedComponent.localizationParameters = configuration.localizationParameters
             return storedComponent
         } else {
@@ -260,9 +253,6 @@ extension CardComponent: CardViewControllerDelegate {
         }
     }
 }
-
-@_spi(AdyenInternal)
-extension CardComponent: PublicKeyConsumer {}
 
 private extension CardComponent {
 

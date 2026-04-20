@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
+@MainActor
 class GiftCardComponentTests: XCTestCase {
 
     var partialPaymentDelegate: PartialPaymentDelegateMock!
@@ -16,8 +17,6 @@ class GiftCardComponentTests: XCTestCase {
     var readyToSubmitPaymentComponentDelegate: ReadyToSubmitPaymentComponentDelegateMock!
 
     var delegateMock: PaymentComponentDelegateMock!
-
-    var publicKeyProvider: PublicKeyProviderMock!
 
     var context: AdyenContext!
 
@@ -56,15 +55,12 @@ class GiftCardComponentTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         giftCardPaymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "testName", brand: "testBrand")
-        publicKeyProvider = PublicKeyProviderMock()
-
         context = Dummy.context
 
         sut = GiftCardComponent(
             partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
             context: context,
-            amount: amountToPay,
-            publicKeyProvider: publicKeyProvider
+            amount: amountToPay
         )
         delegateMock = PaymentComponentDelegateMock()
         sut.delegate = delegateMock
@@ -76,7 +72,6 @@ class GiftCardComponentTests: XCTestCase {
 
     override func tearDownWithError() throws {
         giftCardPaymentMethod = nil
-        publicKeyProvider = nil
         context = nil
         delegateMock = nil
         partialPaymentDelegate = nil
@@ -91,8 +86,7 @@ class GiftCardComponentTests: XCTestCase {
         sut = GiftCardComponent(
             partialPaymentMethodType: .giftCard(paymentMethod),
             context: context,
-            amount: amountToPay,
-            publicKeyProvider: publicKeyProvider
+            amount: amountToPay
         )
         
         // When
@@ -111,8 +105,7 @@ class GiftCardComponentTests: XCTestCase {
         sut = GiftCardComponent(
             partialPaymentMethodType: .mealVoucher(paymentMethod),
             context: context,
-            amount: amountToPay,
-            publicKeyProvider: publicKeyProvider
+            amount: amountToPay
         )
         
         // When
@@ -131,8 +124,7 @@ class GiftCardComponentTests: XCTestCase {
         sut = GiftCardComponent(
             partialPaymentMethodType: .mealVoucher(paymentMethod),
             context: context,
-            amount: amountToPay,
-            publicKeyProvider: publicKeyProvider
+            amount: amountToPay
         )
 
         // When
@@ -162,13 +154,6 @@ class GiftCardComponentTests: XCTestCase {
     }
 
     func testCheckBalanceFailure() throws {
-
-        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
-        publicKeyProviderExpectation.expectedFulfillmentCount = 2
-        publicKeyProvider.onFetch = { completion in
-            publicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.publicKey))
-        }
 
         let didFailExpectation = expectation(description: "Expect delegateMock.onDidFail to be called.")
         didFailExpectation.assertForOverFulfill = true
@@ -218,13 +203,6 @@ class GiftCardComponentTests: XCTestCase {
 
     func testBalanceAndTransactionLimitCurrencyMismatch() throws {
 
-        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
-        publicKeyProviderExpectation.expectedFulfillmentCount = 2
-        publicKeyProvider.onFetch = { completion in
-            publicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.publicKey))
-        }
-
         delegateMock.onDidFail = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
         }
@@ -253,13 +231,6 @@ class GiftCardComponentTests: XCTestCase {
     }
 
     func testPaymentAndBalanceCurrencyMissmatch() throws {
-
-        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
-        publicKeyProviderExpectation.expectedFulfillmentCount = 2
-        publicKeyProvider.onFetch = { completion in
-            publicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.publicKey))
-        }
 
         delegateMock.onDidFail = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
@@ -290,13 +261,6 @@ class GiftCardComponentTests: XCTestCase {
 
     func testZeroBalance() throws {
 
-        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
-        publicKeyProviderExpectation.expectedFulfillmentCount = 2
-        publicKeyProvider.onFetch = { completion in
-            publicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.publicKey))
-        }
-
         delegateMock.onDidFail = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
         }
@@ -325,13 +289,6 @@ class GiftCardComponentTests: XCTestCase {
     }
 
     func testEnoughBalanceIsAvailableWithNilReadyToSubmitDelegate() throws {
-
-        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
-        publicKeyProviderExpectation.expectedFulfillmentCount = 2
-        publicKeyProvider.onFetch = { completion in
-            publicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.publicKey))
-        }
 
         sut.readyToSubmitComponentDelegate = nil
 
@@ -375,13 +332,6 @@ class GiftCardComponentTests: XCTestCase {
 
     func testEnoughBalanceIsAvailableWithReadyToSubmitDelegate() throws {
 
-        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
-        publicKeyProviderExpectation.expectedFulfillmentCount = 2
-        publicKeyProvider.onFetch = { completion in
-            publicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.publicKey))
-        }
-
         delegateMock.onDidFail = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
         }
@@ -424,13 +374,6 @@ class GiftCardComponentTests: XCTestCase {
     }
 
     func testNotAvailableBalanceRequestOrderSuccess() throws {
-
-        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
-        publicKeyProviderExpectation.expectedFulfillmentCount = 2
-        publicKeyProvider.onFetch = { completion in
-            publicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.publicKey))
-        }
 
         delegateMock.onDidFail = { error, component in
             XCTFail("delegateMock.onDidFail shouldn't be reported back to merchant.")
@@ -478,13 +421,6 @@ class GiftCardComponentTests: XCTestCase {
 
     func testNotAvailableBalanceOrderAlreadyExists() throws {
 
-        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
-        publicKeyProviderExpectation.expectedFulfillmentCount = 2
-        publicKeyProvider.onFetch = { completion in
-            publicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.publicKey))
-        }
-
         sut.order = PartialPaymentOrder(pspReference: "pspreference", orderData: "data")
 
         delegateMock.onDidFail = { error, component in
@@ -530,13 +466,6 @@ class GiftCardComponentTests: XCTestCase {
     }
 
     func testNotAvailableBalanceRequestOrderFailure() throws {
-
-        let publicKeyProviderExpectation = expectation(description: "Expect publicKeyProvider to be called.")
-        publicKeyProviderExpectation.expectedFulfillmentCount = 2
-        publicKeyProvider.onFetch = { completion in
-            publicKeyProviderExpectation.fulfill()
-            completion(.success(Dummy.publicKey))
-        }
 
         let onDidFailExpectation = expectation(description: "Expect delegateMock.onDidFail to be called.")
         delegateMock.onDidFail = { error, component in
@@ -584,13 +513,12 @@ class GiftCardComponentTests: XCTestCase {
     func testViewDidLoadShouldSendInitialCall() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(with: analyticsProviderMock)
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
 
         sut = GiftCardComponent(
             partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
             context: context,
-            amount: amountToPay,
-            publicKeyProvider: publicKeyProvider
+            amount: amountToPay
         )
 
         let mockViewController = UIViewController()
@@ -612,8 +540,7 @@ class GiftCardComponentTests: XCTestCase {
             partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
             context: context,
             amount: amountToPay,
-            showsSecurityCodeField: false,
-            publicKeyProvider: publicKeyProvider
+            showsSecurityCodeField: false
         )
 
         // When
@@ -633,8 +560,7 @@ class GiftCardComponentTests: XCTestCase {
             partialPaymentMethodType: .mealVoucher(paymentMethod),
             context: context,
             amount: amountToPay,
-            showsSecurityCodeField: false,
-            publicKeyProvider: publicKeyProvider
+            showsSecurityCodeField: false
         )
         
         // When
@@ -694,8 +620,7 @@ class GiftCardComponentTests: XCTestCase {
         sut = GiftCardComponent(
             partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
             context: context,
-            amount: amountToPay,
-            publicKeyProvider: publicKeyProvider
+            amount: amountToPay
         )
         populate(cardNumber: "60643650100000000000", pin: "73737")
 
@@ -715,8 +640,7 @@ class GiftCardComponentTests: XCTestCase {
         sut = GiftCardComponent(
             partialPaymentMethodType: .giftCard(giftCardPaymentMethod),
             context: context,
-            amount: amountToPay,
-            publicKeyProvider: publicKeyProvider
+            amount: amountToPay
         )
 
         let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)

@@ -222,3 +222,4 @@ whiteList:
   - xcconfig
   - adhoc
   - sourcery
+  - nonisolated
