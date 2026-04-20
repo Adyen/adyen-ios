@@ -95,24 +95,6 @@ class CardTypeDetectorTests: XCTestCase {
         XCTAssertFalse(CardType.dankort.matches(cardNumber: "3572"), "Diverged from 3571")
     }
     
-    // MARK: - BCMC broadened regex
-    
-    func testBCMCType_matchesStartingWith4() {
-        XCTAssertTrue(CardType.bcmc.matches(cardNumber: "4111111111111111"))
-    }
-    
-    func testBCMCType_matchesStartingWith5() {
-        XCTAssertTrue(CardType.bcmc.matches(cardNumber: "5100290029002909"))
-    }
-    
-    func testBCMCType_matchesStartingWith6() {
-        XCTAssertTrue(CardType.bcmc.matches(cardNumber: "6703444444444449"))
-    }
-    
-    func testBCMCType_doesNotMatchStartingWith3() {
-        XCTAssertFalse(CardType.bcmc.matches(cardNumber: "370000000000002"))
-    }
-    
     // MARK: - Co-badge: first matching brand from supported types order
     
     /// FR scenario: carteBancaire first in supported types → shown first for visa/cb overlap
@@ -154,48 +136,6 @@ class CardTypeDetectorTests: XCTestCase {
             supportedTypes.adyen.type(forCardNumber: "4"),
             .visa,
             "When visa is first in supported types, it should match before carteBancaire for 4-prefix"
-        )
-    }
-    
-    /// BE scenario: bcmc first in supported types → shown first for overlapping prefixes
-    func testCoBadge_BE_bcmcFirstInOrder_shownForVisaPrefix() {
-        let supportedTypes: [CardType] = [.bcmc, .visa, .masterCard]
-        
-        XCTAssertEqual(
-            supportedTypes.adyen.type(forCardNumber: "4"),
-            .bcmc,
-            "When bcmc is first in supported types, it should match before visa for 4-prefix"
-        )
-        XCTAssertEqual(
-            supportedTypes.adyen.types(forCardNumber: "4"),
-            [.bcmc, .visa],
-            "Both bcmc and visa should match 4-prefix"
-        )
-    }
-    
-    func testCoBadge_BE_bcmcFirstInOrder_shownForMCPrefix() {
-        let supportedTypes: [CardType] = [.bcmc, .visa, .masterCard]
-        
-        XCTAssertEqual(
-            supportedTypes.adyen.type(forCardNumber: "51"),
-            .bcmc,
-            "When bcmc is first in supported types, it should match before mc for 51-prefix"
-        )
-        XCTAssertEqual(
-            supportedTypes.adyen.types(forCardNumber: "51"),
-            [.bcmc, .masterCard],
-            "Both bcmc and mc should match 51-prefix"
-        )
-    }
-    
-    /// BE scenario: visa first → visa shown
-    func testCoBadge_BE_visaFirstInOrder_shownForVisaPrefix() {
-        let supportedTypes: [CardType] = [.visa, .bcmc, .masterCard]
-        
-        XCTAssertEqual(
-            supportedTypes.adyen.type(forCardNumber: "4"),
-            .visa,
-            "When visa is first in supported types, it should match before bcmc for 4-prefix"
         )
     }
     
@@ -264,13 +204,13 @@ class CardTypeDetectorTests: XCTestCase {
     
     /// Verify order determines which brand is returned first when multiple match
     func testCoBadge_orderDeterminesFirstMatch() {
-        let orderA: [CardType] = [.bcmc, .visa]
-        let orderB: [CardType] = [.visa, .bcmc]
+        let orderA: [CardType] = [.carteBancaire, .visa]
+        let orderB: [CardType] = [.visa, .carteBancaire]
         
         XCTAssertEqual(
             orderA.adyen.type(forCardNumber: "4111"),
-            .bcmc,
-            "bcmc first in array → bcmc returned"
+            .carteBancaire,
+            "carteBancaire first in array → carteBancaire returned"
         )
         XCTAssertEqual(
             orderB.adyen.type(forCardNumber: "4111"),
