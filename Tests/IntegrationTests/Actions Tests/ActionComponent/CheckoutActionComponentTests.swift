@@ -197,7 +197,7 @@ class CheckoutActionComponentTests: XCTestCase {
         let action = try JSONDecoder().decode(ThreeDS2Action.self, from: XCTUnwrap(threeDSFingerprintAction.data(using: .utf8)))
         sut.handle(Action.threeDS2(action))
 
-        wait { sut.currentActionComponent is ThreeDS2Component }
+        wait { sut.currentActionComponent is AuthenticationComponent }
     }
 
     func testVoucherAction() throws {

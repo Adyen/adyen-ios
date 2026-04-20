@@ -156,7 +156,7 @@ internal typealias VoidHandler = () -> Void
         private func daPayload(
             _ fingerprintAction: ThreeDS2FingerprintAction
         ) -> ApprovalPayload? {
-            guard let token: ThreeDS2Component.FingerprintToken = try? AdyenCoder.decodeBase64(fingerprintAction.fingerprintToken),
+            guard let token: AuthenticationComponent.FingerprintToken = try? AdyenCoder.decodeBase64(fingerprintAction.fingerprintToken),
                   let sdkInput = token.delegatedAuthenticationSDKInput else {
                 return nil
             }
@@ -175,7 +175,7 @@ internal typealias VoidHandler = () -> Void
             threeDSFingerPrint: String,
             deleteDelegatedAuthenticationCredential: Bool?
         ) throws -> String {
-            var fingerprintResult: ThreeDS2Component.Fingerprint = try AdyenCoder.decodeBase64(threeDSFingerPrint)
+            var fingerprintResult: AuthenticationComponent.Fingerprint = try AdyenCoder.decodeBase64(threeDSFingerPrint)
             fingerprintResult = fingerprintResult.withDelegatedAuthenticationSDKOutput(
                 delegatedAuthenticationSDKOutput: authenticationSDKOutput,
                 deleteDelegatedAuthenticationCredential: deleteDelegatedAuthenticationCredential
@@ -519,7 +519,7 @@ internal typealias VoidHandler = () -> Void
         }
         
         private func daPayload(_ challengeAction: ThreeDS2ChallengeAction) -> RegistrationPayload? {
-            guard let token: ThreeDS2Component.ChallengeToken = try? AdyenCoder.decodeBase64(challengeAction.challengeToken),
+            guard let token: AuthenticationComponent.ChallengeToken = try? AdyenCoder.decodeBase64(challengeAction.challengeToken),
                   let sdkInput = token.delegatedAuthenticationSDKInput else {
                 return nil
             }

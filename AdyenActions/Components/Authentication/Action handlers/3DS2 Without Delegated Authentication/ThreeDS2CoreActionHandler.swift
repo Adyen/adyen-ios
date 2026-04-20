@@ -81,7 +81,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         sendLogEvent(.fingerprintSent, for: Constants.fingerprintEvent)
         
         do {
-            let token = try AdyenCoder.decodeBase64(fingerprintAction.fingerprintToken) as ThreeDS2Component.FingerprintToken
+            let token = try AdyenCoder.decodeBase64(fingerprintAction.fingerprintToken) as AuthenticationComponent.FingerprintToken
             let serviceParameters = FingerprintServiceParameters(
                 directoryServerIdentifier: token.directoryServerIdentifier,
                 directoryServerPublicKey: token.directoryServerPublicKey,
@@ -128,7 +128,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         
         do {
             let encodedError = try AdyenCoder.encodeBase64(
-                ThreeDS2Component.Fingerprint(
+                AuthenticationComponent.Fingerprint(
                     threeDS2SDKError: errorPayload
                 )
             )
@@ -144,7 +144,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         completionHandler: @escaping (Result<String, Error>) -> Void
     ) {
         do {
-            let encodedFingerprint = try AdyenCoder.encodeBase64(ThreeDS2Component.Fingerprint(
+            let encodedFingerprint = try AdyenCoder.encodeBase64(AuthenticationComponent.Fingerprint(
                 authenticationRequestParameters: authenticationRequestParameters,
                 delegatedAuthenticationSDKOutput: nil,
                 deleteDelegatedAuthenticationCredential: nil
@@ -172,9 +172,9 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
         
         sendLogEvent(.challengeDataSent, for: Constants.challengeEvent)
 
-        let token: ThreeDS2Component.ChallengeToken
+        let token: AuthenticationComponent.ChallengeToken
         do {
-            token = try AdyenCoder.decodeBase64(challengeAction.challengeToken) as ThreeDS2Component.ChallengeToken
+            token = try AdyenCoder.decodeBase64(challengeAction.challengeToken) as AuthenticationComponent.ChallengeToken
         } catch {
             sendErrorEvent(.threeDS2DecodingFailed, for: Constants.challengeEvent)
             return didFail(with: error, completionHandler: completionHandler)
@@ -232,7 +232,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
                 .threeDS2TransactionMissing,
                 for: Constants.challengeEvent
             )
-            return didFail(with: ThreeDS2Component.Error.missingTransaction, completionHandler: completionHandler)
+            return didFail(with: AuthenticationComponent.Error.missingTransaction, completionHandler: completionHandler)
 
         case let .challengeError(errorPayload),
              let .errorAndResultAreNil(errorPayload):

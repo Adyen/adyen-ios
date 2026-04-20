@@ -105,7 +105,7 @@ final class ThreeDS2ServiceLegacyTests: XCTestCase {
             theme: .default,
             threeDSMessageVersion: ""
         )
-        let challengeToken = ThreeDS2Component.ChallengeToken(acsReferenceNumber: "", acsSignedContent: "", acsTransactionIdentifier: "", serverTransactionIdentifier: "", threeDSRequestorAppURL: nil, delegatedAuthenticationSDKInput: nil, paymentInfo: nil)
+        let challengeToken = AuthenticationComponent.ChallengeToken(acsReferenceNumber: "", acsSignedContent: "", acsTransactionIdentifier: "", serverTransactionIdentifier: "", threeDSRequestorAppURL: nil, delegatedAuthenticationSDKInput: nil, paymentInfo: nil)
         let expectationFingerprintCreated = expectation(description: "expectationFingerprintCreated")
         sut.performFingerprint(
             parameters: fingerprintParameters
@@ -155,7 +155,7 @@ final class ThreeDS2ServiceLegacyTests: XCTestCase {
             theme: .default,
             threeDSMessageVersion: ""
         )
-        let challengeToken = ThreeDS2Component.ChallengeToken(acsReferenceNumber: "", acsSignedContent: "", acsTransactionIdentifier: "", serverTransactionIdentifier: "", threeDSRequestorAppURL: nil, delegatedAuthenticationSDKInput: nil, paymentInfo: nil)
+        let challengeToken = AuthenticationComponent.ChallengeToken(acsReferenceNumber: "", acsSignedContent: "", acsTransactionIdentifier: "", serverTransactionIdentifier: "", threeDSRequestorAppURL: nil, delegatedAuthenticationSDKInput: nil, paymentInfo: nil)
         let expectationFingerprintCreated = expectation(description: "expectationFingerprintCreated")
         sut.performFingerprint(
             parameters: fingerprintParameters
@@ -209,7 +209,7 @@ final class ThreeDS2ServiceLegacyTests: XCTestCase {
             theme: .default,
             threeDSMessageVersion: ""
         )
-        let challengeToken = ThreeDS2Component.ChallengeToken(acsReferenceNumber: "", acsSignedContent: "", acsTransactionIdentifier: "", serverTransactionIdentifier: "", threeDSRequestorAppURL: nil, delegatedAuthenticationSDKInput: nil, paymentInfo: nil)
+        let challengeToken = AuthenticationComponent.ChallengeToken(acsReferenceNumber: "", acsSignedContent: "", acsTransactionIdentifier: "", serverTransactionIdentifier: "", threeDSRequestorAppURL: nil, delegatedAuthenticationSDKInput: nil, paymentInfo: nil)
         let expectationFingerprintCreated = expectation(description: "expectationFingerprintCreated")
         sut.performFingerprint(
             parameters: fingerprintParameters

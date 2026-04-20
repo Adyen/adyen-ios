@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-internal extension ThreeDS2Component {
+internal extension AuthenticationComponent {
     struct ThreeDSConfiguration: Decodable, ThreeDSFeatureChecker {
         private let version: String
         internal let featureFlags: [String: Bool]?
