@@ -45,7 +45,7 @@ class StoredCardComponentTests: XCTestCase {
 
         // When
         proxy.present()
-        proxy.enterSecurityCode("737")
+        proxy.enterText("737")
         proxy.tapPayButton()
 
         // Then
@@ -78,7 +78,7 @@ class StoredCardComponentTests: XCTestCase {
 
         // When
         proxy.present()
-        proxy.enterSecurityCode("737")
+        proxy.enterText("737")
         proxy.tapPayButton()
 
         // Then
@@ -98,26 +98,26 @@ class StoredCardComponentTests: XCTestCase {
         proxy.present()
 
         // When / Then - non-numeric characters are filtered
-        proxy.enterSecurityCode("a")
+        proxy.enterText("a")
         XCTAssertEqual(proxy.securityCodeText, "")
 
         // When / Then - build up to 4 digits
-        proxy.enterSecurityCode("1")
+        proxy.enterText("1")
         XCTAssertEqual(proxy.securityCodeText, "1")
 
-        proxy.enterSecurityCode("11")
+        proxy.enterText("1")
         XCTAssertEqual(proxy.securityCodeText, "11")
 
-        proxy.enterSecurityCode("111")
+        proxy.enterText("1")
         XCTAssertEqual(proxy.securityCodeText, "111")
         XCTAssertFalse(proxy.isPayButtonEnabled)
 
-        proxy.enterSecurityCode("1111")
+        proxy.enterText("1")
         XCTAssertEqual(proxy.securityCodeText, "1111")
         XCTAssertTrue(proxy.isPayButtonEnabled)
 
         // When / Then - cannot exceed 4 digits
-        proxy.enterSecurityCode("11111")
+        proxy.enterText("1")
         XCTAssertEqual(proxy.securityCodeText, "1111")
     }
 
@@ -129,15 +129,15 @@ class StoredCardComponentTests: XCTestCase {
         proxy.present()
 
         // When / Then - build up to 3 digits
-        proxy.enterSecurityCode("11")
+        proxy.enterText("11")
         XCTAssertEqual(proxy.securityCodeText, "11")
 
-        proxy.enterSecurityCode("111")
+        proxy.enterText("1")
         XCTAssertEqual(proxy.securityCodeText, "111")
         XCTAssertTrue(proxy.isPayButtonEnabled)
 
         // When / Then - cannot exceed 3 digits
-        proxy.enterSecurityCode("1111")
+        proxy.enterText("1")
         XCTAssertEqual(proxy.securityCodeText, "111")
         XCTAssertTrue(proxy.isPayButtonEnabled)
     }
@@ -217,16 +217,16 @@ final class StoredCardComponentProxy {
         alertTextField?.text
     }
 
-    func enterSecurityCode(_ code: String) {
+    func enterText(_ code: String) {
         guard let textField = alertTextField else { return }
-        textField.text = code
+        code.forEach { textField.insertText(String($0)) }
         textField.sendActions(for: .editingChanged)
     }
 
     // MARK: - Buttons
 
     var hasCancelButton: Bool {
-        alertController?.actions.contains { $0.title == localizedString(.cancelButton, nil) } ?? false
+        alertController?.actions.contains { $0.title == localizedString(.cancelButton, component.localizationParameters) } ?? false
     }
 
     var hasPayButton: Bool {
@@ -252,7 +252,7 @@ final class StoredCardComponentProxy {
     }
 
     private var payAction: UIAlertAction? {
-        let buttonTitle = localizedSubmitButtonTitle(with: component.context.amount, style: .immediate, nil)
+        let buttonTitle = localizedSubmitButtonTitle(with: component.context.amount, style: .immediate, component.localizationParameters)
         return alertController?.actions.first { $0.title == buttonTitle }
     }
 }
