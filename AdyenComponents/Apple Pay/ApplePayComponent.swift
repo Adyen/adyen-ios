@@ -49,7 +49,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// until `didFinalize(with:completion:)` is called with the backend result.
     /// The sheet then shows a success or failure animation and dismisses automatically.
     ///
-    /// - Note: Do not reuse this component after a payment is authorized. It can be re-presented if the user cancels before authorizing.
+    /// - Note: Do not reuse this component. Create a fresh instance per payment attempt.
     ///
     /// - Parameter paymentMethod: The Apple Pay payment method. Must include country code.
     /// - Parameter context: The context object for this component.

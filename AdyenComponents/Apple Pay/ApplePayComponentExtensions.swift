@@ -145,7 +145,7 @@ extension ApplePayComponent {
     /// If the result indicates failure or has empty items, the current `paymentRequest.paymentSummaryItems`
     /// are returned unchanged.
     ///
-    /// If validation fails, triggers an assertion failure and falls back to the
+    /// If validation fails, notifies the delegate via `didFail` and falls back to the
     /// previous valid summary items to keep the Apple Pay sheet in a consistent state.
     ///
     /// Otherwise the new items are accepted and stored on `paymentRequest`.
@@ -158,9 +158,7 @@ extension ApplePayComponent {
             paymentRequest.paymentSummaryItems = result.paymentSummaryItems
             return result.paymentSummaryItems
         } catch {
-            AdyenAssertion.assertionFailure(
-                message: "Invalid payment summary items returned by merchant callback. Falling back to previous valid items."
-            )
+            delegate?.didFail(with: error, from: self)
             return paymentRequest.paymentSummaryItems
         }
     }

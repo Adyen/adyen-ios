@@ -192,9 +192,6 @@ class ApplePayComponentTest: XCTestCase {
         try self.sut.paymentAuthorizationViewControllerDidFinish(XCTUnwrap(viewController as? PKPaymentAuthorizationViewController))
 
         waitForExpectations(timeout: 10)
-        
-        // After cancel, component should be reusable with a new view controller
-        XCTAssertTrue(viewController !== self.sut.viewController)
     }
 
     func testApplePayShipping() async throws {
@@ -219,7 +216,7 @@ class ApplePayComponentTest: XCTestCase {
             configuration: configuration
         )
 
-        wait(for: .seconds(1))
+        try await Task.sleep(for: .seconds(1))
 
         XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.count, 5)
         XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.last?.label, "summary_4")
@@ -254,7 +251,7 @@ class ApplePayComponentTest: XCTestCase {
             configuration: configuration
         )
 
-        wait(for: .seconds(1))
+        try await Task.sleep(for: .seconds(1))
         let contact = PKContact()
         contact.name = PersonNameComponents()
         contact.name?.givenName = "Test"
@@ -291,7 +288,7 @@ class ApplePayComponentTest: XCTestCase {
             configuration: configuration
         )
 
-        wait(for: .seconds(1))
+        try await Task.sleep(for: .seconds(1))
 
         XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.count, 5)
         XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.last?.label, "summary_4")
@@ -325,7 +322,7 @@ class ApplePayComponentTest: XCTestCase {
         )
         sut.delegate = mockDelegate
 
-        wait(for: .seconds(1))
+        try await Task.sleep(for: .seconds(1))
         let originalItems = sut.paymentRequest.paymentSummaryItems
         let onDidFail = expectation(description: "Wait for didFail call")
         mockDelegate.onDidFail = { error, _ in
@@ -360,7 +357,7 @@ class ApplePayComponentTest: XCTestCase {
         )
         sut.delegate = mockDelegate
 
-        wait(for: .seconds(1))
+        try await Task.sleep(for: .seconds(1))
         let originalItems = sut.paymentRequest.paymentSummaryItems
         let onDidFail = expectation(description: "Wait for didFail call")
         mockDelegate.onDidFail = { error, _ in
@@ -391,7 +388,7 @@ class ApplePayComponentTest: XCTestCase {
             configuration: configuration
         )
 
-        wait(for: .seconds(1))
+        try await Task.sleep(for: .seconds(1))
         let originalItems = sut.paymentRequest.paymentSummaryItems
 
         let controller = try XCTUnwrap(sut.paymentAuthorizationViewController)
@@ -611,40 +608,6 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertTrue(compareCollections(supportedNetworks, [.masterCard, .elo]))
     }
 
-    // MARK: - Component Reuse Tests
-
-    func test_ComponentReuse_WhenCancelledBeforeAuthorization_ShouldAllowReuse() throws {
-        // Given
-        let configuration = try ApplePayComponent.Configuration(
-            paymentRequest: Dummy.createTestApplePayPaymentRequest()
-        )
-
-        sut = try ApplePayComponent(
-            paymentMethod: paymentMethod,
-            context: Dummy.context,
-            configuration: configuration
-        )
-        sut.delegate = mockDelegate
-
-        let firstViewController = sut.viewController
-
-        let onDidFailExpectation = expectation(description: "didFail should be called")
-        mockDelegate.onDidFail = { _, _ in
-            onDidFailExpectation.fulfill()
-        }
-
-        firstViewController.loadViewIfNeeded()
-
-        // When - user cancels before authorization
-        try sut.paymentAuthorizationViewControllerDidFinish(XCTUnwrap(firstViewController as? PKPaymentAuthorizationViewController))
-
-        waitForExpectations(timeout: 2)
-
-        // Then - component should be reusable with a new view controller
-        let secondViewController = sut.viewController
-        XCTAssertTrue(firstViewController !== secondViewController, "A new view controller should be created after cancel")
-    }
-
     func testViewDidLoadShouldSendInitialCall() throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
@@ -684,7 +647,7 @@ class ApplePayComponentTest: XCTestCase {
 
     func test_didAuthorizeSuccess_shouldTriggerDidSubmit() async throws {
         // Given
-        wait(for: .seconds(1))
+        try await Task.sleep(for: .seconds(1))
 
         var receivedPayment: PKPayment?
         var configuration = try ApplePayComponent.Configuration(
@@ -728,7 +691,7 @@ class ApplePayComponentTest: XCTestCase {
 
     func test_didAuthorizeFailure_shouldNotTriggerDidSubmit() async throws {
         // Given
-        wait(for: .seconds(1))
+        try await Task.sleep(for: .seconds(1))
 
         var configuration = try ApplePayComponent.Configuration(
             paymentRequest: Dummy.createTestApplePayPaymentRequest()
@@ -767,7 +730,7 @@ class ApplePayComponentTest: XCTestCase {
 
     func test_didAuthorizeWithoutOnAuthorize_shouldAutoApproveAndSubmit() async throws {
         // Given — no onAuthorize closure set
-        wait(for: .seconds(1))
+        try await Task.sleep(for: .seconds(1))
 
         sut.delegate = mockDelegate
 
@@ -795,7 +758,7 @@ class ApplePayComponentTest: XCTestCase {
 
     func test_didAuthorizeWithEmptyToken_shouldFailImmediately() async throws {
         // Given
-        wait(for: .seconds(1))
+        try await Task.sleep(for: .seconds(1))
 
         sut.delegate = mockDelegate
 
@@ -837,7 +800,7 @@ class ApplePayComponentTest: XCTestCase {
 
     func test_resolve_success_shouldResumeWithSuccess() async throws {
         // Given
-        wait(for: .seconds(1))
+        try await Task.sleep(for: .seconds(1))
 
         sut.delegate = mockDelegate
 
@@ -865,7 +828,7 @@ class ApplePayComponentTest: XCTestCase {
 
     func test_resolve_failure_shouldResumeWithFailure() async throws {
         // Given
-        wait(for: .seconds(1))
+        try await Task.sleep(for: .seconds(1))
 
         sut.delegate = mockDelegate
 

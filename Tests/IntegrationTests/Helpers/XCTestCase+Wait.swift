@@ -18,7 +18,7 @@ extension XCTestCase {
             dummyExpectation.fulfill()
         }
         
-        wait(for: [dummyExpectation], timeout: 1000)
+        wait(for: [dummyExpectation], timeout: 10)
     }
     
     /// Waits until  a certain condition is met
