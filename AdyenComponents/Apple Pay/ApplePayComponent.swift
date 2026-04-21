@@ -81,7 +81,8 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         let controller = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest)
         guard let controller else {
             throw UnknownError(
-                errorDescription: "Failed to instantiate PKPaymentAuthorizationViewController because of unknown error"
+                errorDescription: "Failed to instantiate PKPaymentAuthorizationViewController. "
+                    + "This usually indicates the payment request is missing required fields or contains invalid values."
             )
         }
         controller.delegate = self
@@ -109,12 +110,12 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// Cancels a pending authorization when the user dismisses the Apple Pay sheet
     /// before the async `didAuthorizePayment` flow has completed.
     internal func cancelPendingAuthorization() {
-        resumeContinuation(returning: false)
+        resumeContinuation(success: false)
     }
 
     /// Extracts and resumes the continuation, guaranteeing exactly-once delivery
     /// via MainActor serialization.
-    private func resumeContinuation(returning success: Bool) {
+    private func resumeContinuation(success: Bool) {
         let continuation = paymentResultContinuation
         paymentResultContinuation = nil
         continuation?.resume(returning: success)
@@ -132,7 +133,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     ///   - success: `true` if the payment succeeded, `false` otherwise.
     ///   - completion: Invoked once the continuation has been resumed.
     public func didFinalize(with success: Bool, completion: (() -> Void)?) {
-        resumeContinuation(returning: success)
+        resumeContinuation(success: success)
         completion?()
     }
 }

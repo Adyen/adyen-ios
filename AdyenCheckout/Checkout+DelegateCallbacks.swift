@@ -14,6 +14,10 @@
 extension Checkout: PaymentComponentDelegate {
 
     public func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
+        AdyenAssertion.assert(
+            message: "A new payment component submitted while another flow is still pending.",
+            condition: pendingPaymentComponent == nil
+        )
         pendingPaymentComponent = component
 
         if let onSubmit = configuration.onSubmit {
@@ -26,7 +30,7 @@ extension Checkout: PaymentComponentDelegate {
                 } catch {
                     // Ignore if this was a cancellation (task superseded or Checkout torn down).
                     guard !(error is CancellationError), !Task.isCancelled else { return }
-                    self?.finish(with: error, from: component)
+                    self?.handle(error, from: component)
                 }
             }
         } else if let session {
@@ -41,7 +45,7 @@ extension Checkout: PaymentComponentDelegate {
     }
 
     public func didFail(with error: any Error, from component: any PaymentComponent) {
-        finish(with: error, from: component)
+        handle(error, from: component)
     }
 }
 
@@ -60,7 +64,7 @@ extension Checkout: ActionComponentDelegate {
                 } catch {
                     // Ignore if this was a cancellation (task superseded or Checkout torn down).
                     guard !(error is CancellationError), !Task.isCancelled else { return }
-                    self?.finish(with: error, from: self?.pendingPaymentComponent)
+                    self?.handle(error, from: self?.pendingPaymentComponent)
                 }
             }
         } else if let session {
@@ -81,7 +85,7 @@ extension Checkout: ActionComponentDelegate {
     public func didFail(with error: any Error, from component: any Adyen.ActionComponent) {
         // Route back to the payment component that started this flow so any UI
         // it's still holding open (e.g. the Apple Pay sheet) can dismiss.
-        finish(with: error, from: pendingPaymentComponent)
+        handle(error, from: pendingPaymentComponent)
     }
 }
 
@@ -94,7 +98,7 @@ extension Checkout: SessionDelegate {
     }
 
     public func didFail(with error: any Error, from component: any Component, session: Session) {
-        finish(with: error, from: component as? (any PaymentComponent))
+        handle(error, from: component as? (any PaymentComponent))
     }
 }
 
@@ -102,9 +106,9 @@ extension Checkout: SessionDelegate {
 
 private extension Checkout {
 
-    /// If the response carries an action, dispatch it and keep `pendingPaymentComponent`
-    /// set so the final result (arriving later via `didProvide`) can still finalize
-    /// the component that originally submitted.
+    /// Response entry point. If the response carries an action, dispatch it and keep
+    /// `pendingPaymentComponent` set so the final result (arriving later via `didProvide`)
+    /// can still finalize the component that originally submitted.
     func handle(_ paymentsResponse: CheckoutPaymentsResponse, from component: (any PaymentComponent)?) {
         if let action = paymentsResponse.action {
             actionHandlingComponent.handle(action)
@@ -117,7 +121,14 @@ private extension Checkout {
         }
     }
 
-    // TODO: `onComplete` / `onError` currently fire synchronously right after `finalize`,
+    /// Error entry point. Consolidates every error path (onSubmit, onAdditionalDetails,
+    /// component/action/session failures) into a single place so finalization and merchant
+    /// notification stay in lockstep.
+    func handle(_ error: Error, from component: (any PaymentComponent)?) {
+        finish(with: error, from: component)
+    }
+
+    // TODO: `onComplete` / `onError` currently fire synchronously right after finalization,
     // which for Apple Pay means they fire while PK is still animating its success/failure
     // result and has not yet dismissed the sheet. If a merchant's callback presents any
     // UI (alert, navigation, etc.), that presentation wedges UIKit's transition machinery
@@ -129,19 +140,14 @@ private extension Checkout {
     // invalid-token in handleDidAuthorize, action-component errors, session errors — is
     // trivially correct with no per-path special casing.
     func finish(with result: CheckoutResult, from component: (any PaymentComponent)?) {
-        finalize(component, success: result.resultCode.isSuccessful)
+        (component as? any FinalizableComponent)?.didFinalize(with: result.resultCode.isSuccessful, completion: nil)
+        pendingPaymentComponent = nil
         configuration.onComplete?(result)
     }
 
     func finish(with error: Error, from component: (any PaymentComponent)?) {
-        finalize(component, success: false)
-        configuration.onError?(CheckoutError(error: error))
-    }
-
-    /// Resumes the originating component if it needs finalization (e.g. Apple Pay sheet)
-    /// and clears the pending reference so a new flow can start clean.
-    func finalize(_ component: (any PaymentComponent)?, success: Bool) {
-        (component as? any FinalizableComponent)?.didFinalize(with: success, completion: nil)
+        (component as? any FinalizableComponent)?.didFinalize(with: false, completion: nil)
         pendingPaymentComponent = nil
+        configuration.onError?(CheckoutError(error: error))
     }
 }
