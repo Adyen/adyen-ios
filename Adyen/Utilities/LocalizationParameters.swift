@@ -17,6 +17,11 @@ package struct LocalizationParameters: Equatable {
 
     internal let mode: LocalizationMode
 
+    /// Optional merchant-provided string resolver consulted before the bundle chain.
+    ///
+    /// Set on a copy via `withProvider(_:)`.
+    internal var provider: (any CheckoutLocalizationProvider)?
+
     /// The locale identifier for external resources and numeric formats.
     /// By default current locale is used.
     package var locale: String? {
@@ -86,5 +91,35 @@ package struct LocalizationParameters: Equatable {
     ///   - keySeparator: The key separator string.
     package init(enforcedLocale: String, bundle: Bundle? = nil, tableName: String? = nil, keySeparator: String? = nil) {
         mode = .enforced(bundle: bundle, tableName: tableName, keySeparator: keySeparator, locale: enforcedLocale)
+    }
+}
+
+extension LocalizationParameters {
+
+    /// Resolved `Locale` passed to ``CheckoutLocalizationProvider``.
+    ///
+    /// - For enforced-locale parameters, the enforced locale identifier is used.
+    /// - For natural parameters with an explicit locale, that locale is used.
+    /// - Otherwise, `Locale.current`.
+    package var resolvedLocale: Locale {
+        if let identifier = locale {
+            return Locale(identifier: identifier)
+        }
+        return .current
+    }
+
+    /// Returns a copy with the given provider attached.
+    ///
+    /// Passing `nil` returns a copy with the provider cleared.
+    package func withProvider(_ provider: (any CheckoutLocalizationProvider)?) -> LocalizationParameters {
+        var copy = self
+        copy.provider = provider
+        return copy
+    }
+
+    /// Equality ignores ``provider`` — providers are reference-like and have no meaningful
+    /// value identity. Only the bundle/table/key-separator/locale configuration is compared.
+    package static func == (lhs: LocalizationParameters, rhs: LocalizationParameters) -> Bool {
+        lhs.mode == rhs.mode
     }
 }

@@ -29,15 +29,17 @@ private struct LocalizationInput {
 ///   - arguments: The arguments to substitute in the templated localized string.
 /// - Returns: The localized string for the given key, or the key itself if the localized string could not be found.
 package func localizedString(_ key: LocalizationKey, _ parameters: LocalizationParameters?, _ arguments: CVarArg...) -> String {
-    var resolvedTranslation: String?
+    var resolvedTranslation: String? = resolveFromProvider(key: key, parameters: parameters)
 
-    var candidateInputs = buildLookupCandidates(key.key, parameters)
-    switch parameters?.mode {
-    case .enforced:
-        candidateInputs.appendLookupCandidates(for: Bundle.coreInternalResources, key.key, nil)
-        resolvedTranslation = resolveLocalizedString(from: candidateInputs, locale: parameters?.locale)
-    case .natural, .none:
-        resolvedTranslation = resolveLocalizedString(from: candidateInputs)
+    if resolvedTranslation == nil {
+        var candidateInputs = buildLookupCandidates(key.key, parameters)
+        switch parameters?.mode {
+        case .enforced:
+            candidateInputs.appendLookupCandidates(for: Bundle.coreInternalResources, key.key, nil)
+            resolvedTranslation = resolveLocalizedString(from: candidateInputs, locale: parameters?.locale)
+        case .natural, .none:
+            resolvedTranslation = resolveLocalizedString(from: candidateInputs)
+        }
     }
 
     // Use fallback in case attempt result is nil or empty
@@ -48,6 +50,19 @@ package func localizedString(_ key: LocalizationKey, _ parameters: LocalizationP
     }
     
     return String(format: result, arguments: arguments)
+}
+
+/// Consults the merchant-provided ``CheckoutLocalizationProvider`` when one is attached
+/// to the supplied ``LocalizationParameters``.
+///
+/// Returns `nil` if:
+/// - no provider is configured,
+/// - the ``LocalizationKey`` has no matching ``CheckoutLocalizationKey`` public entry, or
+/// - the provider itself returns `nil` or an empty string for the key.
+private func resolveFromProvider(key: LocalizationKey, parameters: LocalizationParameters?) -> String? {
+    guard let parameters, let provider = parameters.provider else { return nil }
+    guard let checkoutKey = CheckoutLocalizationKey.byLocalizationKey[key.key] else { return nil }
+    return provider.localizedString(checkoutKey, locale: parameters.resolvedLocale)?.adyen.nilIfEmpty
 }
 
 /// Resolves the SDK-owned fallback layers that run after app/custom bundle lookup is exhausted.
