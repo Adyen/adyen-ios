@@ -14,6 +14,7 @@ import UIKit
     @_spi(AdyenInternal) import AdyenComponents
 #endif
 
+// TODO: preapplepay is being removed
 @MainActor
 internal final class PreApplePayComponent: PresentableComponent,
     FinalizableComponent,
@@ -91,7 +92,7 @@ internal final class PreApplePayComponent: PresentableComponent,
     }
 
     internal func didFinalize(with success: Bool, completion: (() -> Void)?) {
-        applePayComponent.didFinalize(with: success, completion: completion)
+        applePayComponent.didFinalize(with: success, completion: nil)
     }
     
     private func createModel(with amount: Amount) -> PreApplePayView.Model {

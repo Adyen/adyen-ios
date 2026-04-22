@@ -25,13 +25,34 @@ extension ApplePayComponent {
         /// Default is false.
         public var allowOnboarding: Bool = false
 
-        /// When `true`, the component automatically dismisses the `PKPaymentAuthorizationViewController`
-        /// when the payment flow completes or is cancelled. When `false` (default), you are
-        /// responsible for dismissing the view controller within the `finalizeIfNeeded(with:completion:)` completion block.
+        /// Called when the shopper authorizes the payment, before `onSubmit`.
         ///
-        /// - Note: Apple recommends dismissing the controller in `paymentAuthorizationViewControllerDidFinish`.
-        ///   Setting this to `true` follows Apple's guidance.
-        public var dismissesAutomatically: Bool = false
+        /// Use this closure to validate the shopper's payment information (e.g., billing/shipping address)
+        /// before the payment is submitted. You can perform synchronous or asynchronous validation,
+        /// including backend calls if needed.
+        ///
+        /// Return `.success` to proceed with submission, or `.failure` with errors to let the shopper retry.
+        ///
+        /// - Note: Return `.failure` with non-empty `errors` to keep the sheet open for correction.
+        ///   Use `PKPaymentRequest.paymentBillingAddressInvalidError(withKey:localizedDescription:)` or similar
+        ///   factory methods to create field-specific errors.
+        public var onAuthorize: (@MainActor (PKPayment) async -> PKPaymentAuthorizationResult)?
+
+        /// Called when the shopper selects a shipping contact.
+        ///
+        /// Return an updated `PKPaymentRequestShippingContactUpdate` with revised summary items
+        /// and optionally updated shipping methods or errors.
+        public var onShippingContactChange: (@MainActor (PKContact, [PKPaymentSummaryItem]) async -> PKPaymentRequestShippingContactUpdate)?
+
+        /// Called when the shopper selects a shipping method.
+        ///
+        /// Return an updated `PKPaymentRequestShippingMethodUpdate` with revised summary items.
+        public var onShippingMethodChange: (@MainActor (PKShippingMethod, [PKPaymentSummaryItem]) async -> PKPaymentRequestShippingMethodUpdate)?
+
+        /// Called when the shopper enters or updates a coupon code.
+        ///
+        /// Return an updated `PKPaymentRequestCouponCodeUpdate` with revised summary items.
+        public var onCouponCodeChange: (@MainActor (String, [PKPaymentSummaryItem]) async -> PKPaymentRequestCouponCodeUpdate)?
 
         /// The payment request object needed for Apple Pay. Must contain all the required fields
         /// such as `merchantIdentifier`, `summaryItems`, `currencyCode`, and `countryCode`.

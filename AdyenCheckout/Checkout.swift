@@ -14,6 +14,9 @@
 #if canImport(AdyenActions)
     @_spi(AdyenInternal) import AdyenActions
 #endif
+#if canImport(AdyenComponents)
+    @_spi(AdyenInternal) import AdyenComponents
+#endif
 import AdyenNetworking
 import Foundation
 
@@ -86,6 +89,12 @@ public final class Checkout: CheckoutProtocol {
     
     internal var submitTask: Task<Void, Never>?
     internal var additionalDetailsTask: Task<Void, Never>?
+
+    /// The payment component that submitted the current flow.
+    /// Kept around so that when a final result comes back through the action path
+    /// (e.g. after 3DS), we can still finalize the original component — for example,
+    /// dismissing the Apple Pay sheet that is still waiting for a response.
+    internal weak var pendingPaymentComponent: (any PaymentComponent)?
     
     // MARK: - Public
     

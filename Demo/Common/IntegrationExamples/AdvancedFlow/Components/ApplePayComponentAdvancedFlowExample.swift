@@ -7,6 +7,7 @@
 import Adyen
 import AdyenActions
 import AdyenComponents
+import Contacts
 import PassKit
 
 internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
@@ -76,7 +77,55 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
             fatalError("AdyenContext is not initialized")
         }
         var config = try ConfigurationConstants.current.applePayConfiguration(using: .demoWithShippingFields)
-        config.dismissesAutomatically = true
+
+        config.onAuthorize = { payment in
+            if ConfigurationConstants.current.applePaySettings.didAuthorizeSuccessful {
+                return PKPaymentAuthorizationResult(status: .success, errors: nil)
+            } else {
+                let postalCodeError = PKPaymentRequest.paymentShippingAddressInvalidError(
+                    withKey: CNPostalAddressPostalCodeKey,
+                    localizedDescription: "Wrong postal code"
+                )
+                return PKPaymentAuthorizationResult(status: .failure, errors: [postalCodeError])
+            }
+        }
+
+        config.onShippingContactChange = { contact, summaryItems in
+            var items = summaryItems
+            if let last = items.last {
+                items = items.dropLast()
+                let cityLabel = contact.postalAddress?.city ?? "Somewhere"
+                items.append(.init(
+                    label: "Shipping \(cityLabel)",
+                    amount: NSDecimalNumber(value: 5.0)
+                ))
+                items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue + 5.0)))
+            }
+            return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: items)
+        }
+
+        config.onShippingMethodChange = { shippingMethod, summaryItems in
+            var items = summaryItems
+            if let last = items.last {
+                items = items.dropLast()
+                items.append(shippingMethod)
+                items.append(.init(
+                    label: last.label,
+                    amount: NSDecimalNumber(value: last.amount.floatValue + shippingMethod.amount.floatValue)
+                ))
+            }
+            return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: items)
+        }
+
+        config.onCouponCodeChange = { couponCode, summaryItems in
+            var items = summaryItems
+            if let last = items.last {
+                items = items.dropLast()
+                items.append(.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0)))
+                items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue - 5.0)))
+            }
+            return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: items)
+        }
 
         let component = try ApplePayComponent(
             paymentMethod: paymentMethod,
@@ -84,8 +133,6 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
             configuration: config
         )
         component.delegate = self
-        component.applePayDelegate = self
-        component.authorizationDelegate = self
         return component
     }
 
@@ -117,11 +164,12 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
     }
 
     private func finalize(_ success: Bool, _ message: String) {
-        applePayComponent?.finalizeIfNeeded(with: success) { [weak self] in
-            guard let self else { return }
-            // no dismiss as the auto dismiss flag is true
-            self.showAlert(success, message)
+        Task { @MainActor in
+            applePayComponent?.didFinalize(with: success, completion: nil)
         }
+        // TODO: re-enable the alert once ApplePayComponent migrates to v6 and adds this hook.
+        // See also: Checkout+DelegateCallbacks.finish(...) has the same race for v6 users.
+//        showAlert(success, message)
     }
 
     internal func showAlert(_ success: Bool, _ message: String) {
@@ -149,77 +197,4 @@ extension ApplePayComponentAdvancedFlowExample: PaymentComponentDelegate {
         finish(with: error)
     }
 
-}
-
-extension ApplePayComponentAdvancedFlowExample: ApplePayComponentDelegate {
-
-    func didUpdate(
-        contact: PKContact,
-        for summaryItems: [PKPaymentSummaryItem],
-        completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void
-    ) {
-        var items = summaryItems
-        if let last = items.last {
-            items = items.dropLast()
-            // Below hard coded values are for testing purpose. Please add your own string and amount if you want to use these.
-            let cityLabel = contact.postalAddress?.city ?? "Somewhere"
-            items.append(.init(
-                label: "Shipping \(cityLabel)",
-                amount: NSDecimalNumber(value: 5.0)
-            ))
-            items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue + 5.0)))
-        }
-        completion(.init(paymentSummaryItems: items))
-    }
-
-    func didUpdate(
-        shippingMethod: PKShippingMethod,
-        for summaryItems: [PKPaymentSummaryItem],
-        completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void
-    ) {
-        var items = summaryItems
-        if let last = items.last {
-            items = items.dropLast()
-            items.append(shippingMethod)
-            items.append(.init(
-                label: last.label,
-                amount: NSDecimalNumber(value: last.amount.floatValue + shippingMethod.amount.floatValue)
-            ))
-        }
-        completion(.init(paymentSummaryItems: items))
-    }
-
-    func didUpdate(
-        couponCode: String,
-        for summaryItems: [PKPaymentSummaryItem],
-        completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void
-    ) {
-        var items = summaryItems
-        if let last = items.last {
-            items = items.dropLast()
-            // Below hard coded values are for testing purpose. Please add your own string and amount if you want to use these.
-            items.append(.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0)))
-            items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue - 5.0)))
-        }
-        completion(.init(paymentSummaryItems: items))
-    }
-
-}
-
-extension ApplePayComponentAdvancedFlowExample: ApplePayAuthorizationDelegate {
-    
-    func didAuthorize(
-        payment: PKPayment,
-        completion: @escaping (PKPaymentAuthorizationResult) -> Void
-    ) {
-        if ConfigurationConstants.current.applePaySettings.didAuthorizeSuccessful {
-            completion(.init(status: .success, errors: nil))
-        } else {
-            let postalCodeError = PKPaymentRequest.paymentShippingAddressInvalidError(
-                withKey: CNPostalAddressPostalCodeKey,
-                localizedDescription: "Wrong postal code"
-            )
-            completion(.init(status: .failure, errors: [postalCodeError]))
-        }
-    }
 }
