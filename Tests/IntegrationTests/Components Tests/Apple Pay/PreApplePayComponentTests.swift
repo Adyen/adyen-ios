@@ -28,7 +28,7 @@ class PreApplePayComponentTests: XCTestCase {
 
         let request = PKPaymentRequest()
         request.merchantIdentifier = "test_id"
-        request.countryCode = "US"
+        request.countryCode = "NL"
         request.currencyCode = amount.currencyCode
         request.merchantCapabilities = .capability3DS
         request.paymentSummaryItems = [
@@ -143,9 +143,8 @@ class PreApplePayComponentTests: XCTestCase {
         XCTAssertTrue(UIApplication.shared.adyen.mainKeyWindow?.rootViewController?.presentedViewController is PKPaymentAuthorizationViewController)
         UIApplication.shared.adyen.mainKeyWindow?.rootViewController?.presentedViewController?.dismiss(animated: false, completion: nil)
 
-        sut.finalizeIfNeeded(with: false) {
-            dismissExpectation.fulfill()
-        }
+        sut.didFinalize(with: false, completion: nil)
+        dismissExpectation.fulfill()
 
         waitForExpectations(timeout: 10, handler: nil)
     }

@@ -223,3 +223,5 @@ whiteList:
   - adhoc
   - sourcery
   - nonisolated
+  - preconcurrency
+  - preapplepay
