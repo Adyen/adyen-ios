@@ -224,3 +224,4 @@ whiteList:
   - sourcery
   - nonisolated
   - preconcurrency
+  - preapplepay
