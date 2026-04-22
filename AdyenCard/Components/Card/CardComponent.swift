@@ -129,7 +129,17 @@ public class CardComponent: PresentableComponent,
         self.publicKeyProvider = publicKeyProvider
         self.binInfoProvider = binProvider
 
-        self.supportedCardTypes = configuration.allowedCardTypes ?? paymentMethod.brands
+        // these 4 US debit brands are not to be displayed
+        // but should be supported so it's done here for now
+        // we moved this hardcoded filter from FormCardNumberItem to here
+        // but it's still just a workaround and better done on backend
+        let supportedCartTypes = configuration.allowedCardTypes ?? paymentMethod.brands
+        self.supportedCardTypes = supportedCartTypes.filter {
+            $0 != .accel &&
+                $0 != .pulse &&
+                $0 != .star &&
+                $0 != .nyce
+        }
     }
     
     // MARK: - Presentable Component Protocol
