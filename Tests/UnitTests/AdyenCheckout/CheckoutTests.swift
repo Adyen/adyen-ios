@@ -189,7 +189,7 @@ final class CheckoutTests: XCTestCase {
             XCTAssertEqual(details.blikCode, blikDetails.blikCode)
             expectation.fulfill()
             
-            return CheckoutPaymentsResponse(resultCode: .authorised)
+            return .finished(resultCode: CheckoutResultCode.authorised.rawValue)
         }
         
         let sut = Checkout(
@@ -416,7 +416,7 @@ final class CheckoutTests: XCTestCase {
         
         configuration.onSubmit = { _ in
             onSubmitExpectation.fulfill()
-            return CheckoutPaymentsResponse(resultCode: .authorised)
+            return .finished(resultCode: CheckoutResultCode.authorised.rawValue)
         }
         configuration.onComplete = { result in
             XCTAssertEqual(result.resultCode, .authorised)
@@ -496,7 +496,7 @@ final class CheckoutTests: XCTestCase {
             XCTAssertEqual(data.paymentData, "data")
             XCTAssertNotNil(data.details as? AwaitActionDetails)
             expectation.fulfill()
-            return CheckoutPaymentsResponse(resultCode: .authorised)
+            return .finished(resultCode: CheckoutResultCode.authorised.rawValue)
         }
         
         let sut = Checkout(
@@ -506,6 +506,100 @@ final class CheckoutTests: XCTestCase {
         )
         sut.didProvide(actionData, from: ActionComponentMock())
         await fulfillment(of: [expectation], timeout: 1)
+    }
+    
+    func test_didSubmit_returnsErrorBranch_callsOnError() async throws {
+        let onErrorExpectation = expectation(description: "onError called")
+        let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
+        let paymentData = PaymentComponentData(
+            paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
+            amount: nil,
+            order: nil
+        )
+        
+        configuration.onSubmit = { _ in
+            .error(TestError())
+        }
+        configuration.onError = { _ in
+            onErrorExpectation.fulfill()
+        }
+        
+        let sut = Checkout(
+            configuration: configuration,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
+        await fulfillment(of: [onErrorExpectation], timeout: 1)
+    }
+    
+    func test_didProvide_returnsFinished_callsOnComplete() async {
+        let onAdditionalDetailsExpectation = expectation(description: "onAdditionalDetails called")
+        let onCompleteExpectation = expectation(description: "onComplete called")
+        let actionData = ActionComponentData(
+            details: AwaitActionDetails(payload: "payload"),
+            paymentData: "data"
+        )
+        
+        configuration.onAdditionalDetails = { _ in
+            onAdditionalDetailsExpectation.fulfill()
+            return .finished(resultCode: CheckoutResultCode.authorised.rawValue)
+        }
+        configuration.onComplete = { result in
+            XCTAssertEqual(result.resultCode, .authorised)
+            onCompleteExpectation.fulfill()
+        }
+        
+        let sut = Checkout(
+            configuration: configuration,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        sut.didProvide(actionData, from: ActionComponentMock())
+        await fulfillment(of: [onAdditionalDetailsExpectation, onCompleteExpectation], timeout: 1)
+    }
+    
+    func test_didProvide_returnsErrorBranch_callsOnError() async {
+        let onErrorExpectation = expectation(description: "onError called")
+        let actionData = ActionComponentData(
+            details: AwaitActionDetails(payload: "payload"),
+            paymentData: "data"
+        )
+        
+        configuration.onAdditionalDetails = { _ in
+            .error(TestError())
+        }
+        configuration.onError = { _ in
+            onErrorExpectation.fulfill()
+        }
+        
+        let sut = Checkout(
+            configuration: configuration,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        sut.didProvide(actionData, from: ActionComponentMock())
+        await fulfillment(of: [onErrorExpectation], timeout: 1)
+    }
+    
+    func test_didComplete_emitsFinishedWithEmptyResultCode_callsOnComplete() async {
+        let onCompleteExpectation = expectation(description: "onComplete called with empty-string fallback")
+        
+        configuration.onComplete = { result in
+            // Phase 3 / Plan Key Design Decision #7: the non-session didComplete(from:) path
+            // emits AdditionalDetailsResult.finished(resultCode: ""), which the SDK folds into a
+            // CheckoutResult with CheckoutResultCode.other("").
+            XCTAssertEqual(result.resultCode, .other(""))
+            onCompleteExpectation.fulfill()
+        }
+        
+        let sut = Checkout(
+            configuration: configuration,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        sut.didComplete(from: ActionComponentMock())
+        await fulfillment(of: [onCompleteExpectation], timeout: 1)
     }
     
     func test_didProvide_errorThrown_callsOnError() async {

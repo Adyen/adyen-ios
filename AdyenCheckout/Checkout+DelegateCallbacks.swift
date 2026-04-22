@@ -21,15 +21,16 @@ extension Checkout: PaymentComponentDelegate {
         if let onSubmit = configuration.onSubmit {
             submitTask?.cancel()
             submitTask = Task { [weak self] in
+                let result: SubmitResult
                 do {
-                    let response = try await onSubmit(data)
-                    guard !Task.isCancelled else { return }
-                    self?.handle(response)
+                    result = try await onSubmit(data)
                 } catch {
                     // Ignore if this was a cancellation (task superseded or Checkout torn down).
                     guard !(error is CancellationError), !Task.isCancelled else { return }
-                    self?.finish(with: error)
+                    result = .error(error)
                 }
+                guard !Task.isCancelled else { return }
+                self?.handle(submitResult: result)
             }
         } else if let session {
             session.didSubmit(
@@ -46,12 +47,24 @@ extension Checkout: PaymentComponentDelegate {
         finish(with: error)
     }
     
-    private func handle(_ paymentsResponse: CheckoutPaymentsResponse) {
-        if let action = paymentsResponse.action {
+    private func handle(submitResult: SubmitResult) {
+        switch submitResult {
+        case let .action(action):
             actionHandlingComponent.handle(action)
-        } else {
-            // TODO: check for error cases here
-            finish(with: CheckoutResult(resultCode: paymentsResponse.resultCode))
+        case let .finished(resultCode):
+            finish(with: CheckoutResult(resultCode: CheckoutResultCode(rawValue: resultCode)))
+        case let .error(error):
+            finish(with: error)
+        case .partialPayment:
+            // Partial payment is not supported on the Checkout (component) surface today.
+            // Session is the only path that can drive the continuation flow.
+            AdyenAssertion.assertionFailure(
+                message: "SubmitResult.partialPayment is not supported on Checkout; ignored."
+            )
+        @unknown default:
+            AdyenAssertion.assertionFailure(
+                message: "Unhandled SubmitResult branch; ignored."
+            )
         }
     }
 }
@@ -61,15 +74,16 @@ extension Checkout: ActionComponentDelegate {
         if let onAdditionalDetails = configuration.onAdditionalDetails {
             additionalDetailsTask?.cancel()
             additionalDetailsTask = Task { [weak self] in
+                let result: AdditionalDetailsResult
                 do {
-                    let response = try await onAdditionalDetails(data)
-                    guard !Task.isCancelled else { return }
-                    self?.handle(response)
+                    result = try await onAdditionalDetails(data)
                 } catch {
                     // Ignore if this was a cancellation (task superseded or Checkout torn down).
                     guard !(error is CancellationError), !Task.isCancelled else { return }
-                    self?.finish(with: error)
+                    result = .error(error)
                 }
+                guard !Task.isCancelled else { return }
+                self?.handle(additionalDetailsResult: result)
             }
         } else if let session {
             session.didProvide(
@@ -83,11 +97,26 @@ extension Checkout: ActionComponentDelegate {
     }
     
     public func didComplete(from component: any Adyen.ActionComponent) {
-        // TODO: need a result code here, refactor this function to contain it or create on here?
+        // No resultCode is available from this delegate signature in the advanced (non-session) flow.
+        // Emit an empty-string fallback to keep `AdditionalDetailsResult.finished` non-optional.
+        handle(additionalDetailsResult: .finished(resultCode: ""))
     }
     
     public func didFail(with error: any Error, from component: any Adyen.ActionComponent) {
         finish(with: error)
+    }
+    
+    private func handle(additionalDetailsResult: AdditionalDetailsResult) {
+        switch additionalDetailsResult {
+        case let .finished(resultCode):
+            finish(with: CheckoutResult(resultCode: CheckoutResultCode(rawValue: resultCode)))
+        case let .error(error):
+            finish(with: error)
+        @unknown default:
+            AdyenAssertion.assertionFailure(
+                message: "Unhandled AdditionalDetailsResult branch; ignored."
+            )
+        }
     }
 }
 

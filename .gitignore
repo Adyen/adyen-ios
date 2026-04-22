@@ -48,6 +48,7 @@ Secrets.*.xcconfig
 /.claude
 /.cascade-rules.md
 /.gemini
+/.idea
 /.windsurf
 /openspec
 .factory

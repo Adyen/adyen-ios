@@ -64,14 +64,14 @@ internal final class DummyActionComponentExample: InitialDataAdvancedFlowProtoco
         )
     }
     
-    private func callDetails(with data: ActionComponentData) async throws -> CheckoutPaymentsResponse {
+    private func callDetails(with data: ActionComponentData) async throws -> AdditionalDetailsResult {
         let request = PaymentDetailsRequest(
             details: data.details,
             paymentData: data.paymentData,
             merchantAccount: ConfigurationConstants.current.merchantAccount
         )
         let response = try await asyncApiClient.performAsync(request)
-        return CheckoutPaymentsResponse(resultCode: response.resultCode, action: response.action)
+        return .finished(resultCode: response.resultCode.rawValue)
     }
     
     private func startLoading() {
