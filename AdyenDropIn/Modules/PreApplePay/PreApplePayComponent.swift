@@ -92,9 +92,7 @@ internal final class PreApplePayComponent: PresentableComponent,
     }
 
     internal func didFinalize(with success: Bool, completion: (() -> Void)?) {
-        Task {
-            applePayComponent.didFinalize(with: success, completion: nil)
-        }
+        applePayComponent.didFinalize(with: success, completion: nil)
     }
     
     private func createModel(with amount: Amount) -> PreApplePayView.Model {
