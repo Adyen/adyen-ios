@@ -10,11 +10,22 @@ import Foundation
 public struct Issuer: Codable, CustomStringConvertible, Equatable {
 
     public struct AppIdentifier: Codable, Equatable {
+        
+        public init(scheme: String) {
+            self.scheme = scheme
+        }
+        
         public let scheme: String
 
         public enum CodingKeys: String, CodingKey {
             case scheme = "iosScheme"
         }
+    }
+    
+    public init(identifier: String, name: String, appIdentifier: AppIdentifier?) {
+        self.identifier = identifier
+        self.name = name
+        self.appIdentifier = appIdentifier
     }
 
     /// The unique identifier of the issuer.

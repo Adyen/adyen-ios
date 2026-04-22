@@ -367,7 +367,19 @@ internal extension UPIComponent {
     }
 
     private var upiApps: [Issuer] {
-        upiPaymentMethod.apps ?? []
+        upiPaymentMethod.apps?.map({ issuer in
+            if (issuer.identifier == "tataneu") {
+                Issuer(
+                    identifier: "tataneu",
+                    name: "Tata Neu",
+                    appIdentifier: Issuer.AppIdentifier(
+                        scheme: "tnupi"
+                    )
+                )
+            } else {
+                issuer
+            }
+        }) ?? []
     }
 }
 

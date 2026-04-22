@@ -85,27 +85,27 @@
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-        <string>tez</string>
-        <string>phonepe</string>
-        <string>paytmmp</string>
-        <string>bhim</string>
-        <string>credpay</string>
-        <string>mobikwik</string>
-        <string>navi</string>
-        <string>amazonpay</string>
-        <string>whatsapp</string>
-        <string>slice-upi</string>
-        <string>fi</string>
-        <string>jupiter</string>
-        <string>supermoney</string>
-        <string>payzapp</string>
-        <string>freecharge</string>
-        <string>tataneu</string>
-        <string>icici</string>
-        <string>axismobile</string>
-        <string>yespay</string>
-        <string>hdfcbank</string>
-        <string>moneyview</string>
+		<string>tez</string>
+		<string>phonepe</string>
+		<string>paytmmp</string>
+		<string>bhim</string>
+		<string>credpay</string>
+		<string>mobikwik</string>
+		<string>navi</string>
+		<string>amazonpay</string>
+		<string>whatsapp</string>
+		<string>slice-upi</string>
+		<string>fi</string>
+		<string>jupiter</string>
+		<string>supermoney</string>
+		<string>payzapp</string>
+		<string>freecharge</string>
+		<string>tnupi</string>
+		<string>icici</string>
+		<string>axismobile</string>
+		<string>yespay</string>
+		<string>hdfcbank</string>
+		<string>moneyview</string>
 		<string>twint-issuer50</string>
 		<string>twint-issuer49</string>
 		<string>twint-issuer48</string>
