@@ -61,7 +61,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
         let sut = ThreeDS2FingerprintSubmitter(context: Dummy.context, apiClient: apiClient)
 
         let mockedChallengeAction = ThreeDS2ChallengeAction(challengeToken: "token", authorisationToken: "authToken", paymentData: "data")
-        let mockedAction = Action.threeDS2Challenge(mockedChallengeAction)
+        let mockedAction = Action.threeDS2(.challenge(mockedChallengeAction))
         let mockedResponse = Submit3DS2FingerprintResponse(result: .action(mockedAction))
         apiClient.mockedResults = [.success(mockedResponse)]
 
@@ -75,7 +75,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
                 switch result {
                 case let .action(action):
                     switch action {
-                    case let .threeDS2Challenge(challengeAction):
+                    case let .threeDS2(.challenge(challengeAction)):
                         XCTAssertEqual(challengeAction, mockedChallengeAction)
                     default:
                         XCTFail()

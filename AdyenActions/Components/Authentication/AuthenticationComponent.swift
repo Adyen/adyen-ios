@@ -24,7 +24,6 @@ package final class AuthenticationComponent: ActionComponent {
     /// Delegates `PresentableComponent`'s presentation.  This property must be set if you wish to use delegated authentication.
     package weak var presentationDelegate: PresentationDelegate? {
         didSet {
-            threeDS2ClassicFlowHandler.presentationDelegate = presentationDelegate
             threeDS2CompactFlowHandler.presentationDelegate = presentationDelegate
         }
     }
@@ -48,7 +47,6 @@ package final class AuthenticationComponent: ActionComponent {
     internal convenience init(
         context: AdyenContext,
         threeDS2CompactFlowHandler: AnyThreeDS2ActionHandler,
-        threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler,
         redirectComponent: AnyRedirectComponent,
         configuration: AuthenticationConfiguration = .init()
     ) {
@@ -57,14 +55,12 @@ package final class AuthenticationComponent: ActionComponent {
             configuration: configuration
         )
         self.threeDS2CompactFlowHandler = threeDS2CompactFlowHandler
-        self.threeDS2ClassicFlowHandler = threeDS2ClassicFlowHandler
         self.redirectComponent = redirectComponent
         self.updateConfiguration()
     }
     
     private func updateConfiguration() {
         let threeDSRequestorAppURL = configuration.requestorAppURL
-        threeDS2ClassicFlowHandler.threeDSRequestorAppURL = threeDSRequestorAppURL
         threeDS2CompactFlowHandler.threeDSRequestorAppURL = threeDSRequestorAppURL
     }
 
@@ -86,30 +82,6 @@ package final class AuthenticationComponent: ActionComponent {
         }
     }
 
-    // MARK: - Fingerprint
-
-    /// Handles the 3D Secure 2 fingerprint action.
-    ///
-    /// - Parameter fingerprintAction: The fingerprint action as received from the Checkout API.
-    // TODO: Robert: AuthenticationComponent: Delete this action handling for classic and all related Classic flow handling types
-    package func handle(_ fingerprintAction: ThreeDS2FingerprintAction) {
-        threeDS2ClassicFlowHandler.handle(fingerprintAction) { [weak self] result in
-            self?.didReceive(result, paymentData: fingerprintAction.paymentData)
-        }
-    }
-    
-    // MARK: - Challenge
-    
-    /// Handles the 3D Secure 2 challenge action.
-    ///
-    /// - Parameter challengeAction: The challenge action as received from the Checkout API.
-    // TODO: Robert: AuthenticationComponent: Delete this action handling for classic and all related Classic flow handling types
-    package func handle(_ challengeAction: ThreeDS2ChallengeAction) {
-        threeDS2ClassicFlowHandler.handle(challengeAction) { [weak self] result in
-            self?.didReceive(result, paymentData: challengeAction.paymentData)
-        }
-    }
-    
     // MARK: - Private
 
     private func didReceive(_ result: Result<ThreeDSActionHandlerResult, Swift.Error>, paymentData: String?) {
@@ -164,19 +136,6 @@ package final class AuthenticationComponent: ActionComponent {
         return handler
     }()
 
-    internal lazy var threeDS2ClassicFlowHandler: AnyThreeDS2ActionHandler = {
-        let handler = ThreeDS2ClassicActionHandler(
-            context: context,
-            service: ThreeDSServiceProvider(),
-            theme: configuration.theme,
-            delegatedAuthenticationConfiguration: configuration.delegatedAuthentication
-        )
-        handler.presentationDelegate = presentationDelegate
-        handler._isDropIn = _isDropIn
-        handler.threeDSRequestorAppURL = configuration.requestorAppURL
-        return handler
-    }()
-
     private lazy var redirectComponent: AnyRedirectComponent = {
         let component = RedirectComponent(context: context)
         component.configuration.style = configuration.redirectComponentStyle
@@ -192,19 +151,19 @@ package final class AuthenticationComponent: ActionComponent {
 /// This is for the RedirectComponent inside the AuthenticationComponent
 extension AuthenticationComponent: ActionComponentDelegate {
 
-    public func didOpenExternalApplication(component: ActionComponent) {
+    package func didOpenExternalApplication(component: ActionComponent) {
         delegate?.didOpenExternalApplication(component: self)
     }
 
-    public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
+    package func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         delegate?.didProvide(data, from: self)
     }
 
-    public func didComplete(from component: ActionComponent) {
+    package func didComplete(from component: ActionComponent) {
         delegate?.didComplete(from: self)
     }
 
-    public func didFail(with error: Swift.Error, from component: ActionComponent) {
+    package func didFail(with error: Swift.Error, from component: ActionComponent) {
         delegate?.didFail(with: error, from: self)
     }
 
@@ -214,7 +173,7 @@ extension AuthenticationComponent {
 
     /// An error that occurred during the use of the 3D Secure 2 component.
     // TODO: Robert: AuthenticationComponent: This should not be public, instead made as part of the Checkout objects error handling.
-    public enum Error: Swift.Error {
+    package enum Error: Swift.Error {
 
         /// Indicates that the challenge action was provided while no 3D Secure transaction was active.
         /// This is likely the result of calling handle(_:) with a challenge action after the challenge was already completed,
