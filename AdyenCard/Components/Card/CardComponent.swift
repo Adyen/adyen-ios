@@ -133,8 +133,8 @@ public class CardComponent: PresentableComponent,
         // but should be supported so it's done here for now
         // we moved this hardcoded filter from FormCardNumberItem to here
         // but it's still just a workaround and better done on backend
-        let supportedCartTypes = configuration.allowedCardTypes ?? paymentMethod.brands
-        self.supportedCardTypes = supportedCartTypes.filter {
+        let supportedCardTypes = configuration.allowedCardTypes ?? paymentMethod.brands
+        self.supportedCardTypes = supportedCardTypes.filter {
             $0 != .accel &&
                 $0 != .pulse &&
                 $0 != .star &&

@@ -59,11 +59,11 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
             style: style
         )
         
-        let brandDescriptionItem = item.padding(Constants.brandDescriptionInsets)
-        brandDescriptionItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "brandDescriptionItem")
-        brandDescriptionItem.isHidden.wrappedValue = true
+        let containerItem = item.padding(Constants.brandDescriptionInsets)
+        containerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "brandDescriptionItem")
+        containerItem.isHidden.wrappedValue = true
         
-        return brandDescriptionItem
+        return containerItem
     }()
     
     internal lazy var supportedCardLogosItem: FormCardLogosItem = {
