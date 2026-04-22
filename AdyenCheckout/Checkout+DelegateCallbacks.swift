@@ -32,7 +32,7 @@ extension Checkout: PaymentComponentDelegate {
                     result = .error(error)
                 }
                 guard !Task.isCancelled else { return }
-                self?.handle(submitResult: result)
+                self?.handle(submitResult: result, from: component)
             }
         } else if let session {
             session.didSubmit(
@@ -49,14 +49,15 @@ extension Checkout: PaymentComponentDelegate {
         handle(error, from: component)
     }
 
-    private func handle(submitResult: SubmitResult) {
+    @MainActor
+    private func handle(submitResult: SubmitResult, from component: (any PaymentComponent)?) {
         switch submitResult {
         case let .action(action):
             actionHandlingComponent.handle(action)
         case let .finished(resultCode):
-            finish(with: CheckoutResult(resultCode: CheckoutResultCode(rawValue: resultCode)))
+            finish(with: CheckoutResult(resultCode: CheckoutResultCode(rawValue: resultCode)), from: component)
         case let .error(error):
-            finish(with: error)
+            finish(with: error, from: component)
         case .partialPayment:
             // Components (advanced flow): the SDK intentionally performs no work here.
             // The merchant owns the continuation — they decide whether to instantiate a new
@@ -89,7 +90,7 @@ extension Checkout: ActionComponentDelegate {
                     result = .error(error)
                 }
                 guard !Task.isCancelled else { return }
-                self?.handle(additionalDetailsResult: result)
+                self?.handle(additionalDetailsResult: result, from: self?.pendingPaymentComponent)
             }
         } else if let session {
             session.didProvide(
@@ -112,12 +113,13 @@ extension Checkout: ActionComponentDelegate {
         handle(error, from: pendingPaymentComponent)
     }
 
-    private func handle(additionalDetailsResult: AdditionalDetailsResult) {
+    @MainActor
+    private func handle(additionalDetailsResult: AdditionalDetailsResult, from component: (any PaymentComponent)?) {
         switch additionalDetailsResult {
         case let .finished(resultCode):
-            finish(with: CheckoutResult(resultCode: CheckoutResultCode(rawValue: resultCode)))
+            finish(with: CheckoutResult(resultCode: CheckoutResultCode(rawValue: resultCode)), from: component)
         case let .error(error):
-            finish(with: error)
+            finish(with: error, from: component)
         @unknown default:
             AdyenAssertion.assertionFailure(
                 message: "Unhandled AdditionalDetailsResult branch; ignored."
@@ -142,21 +144,6 @@ extension Checkout: SessionDelegate {
 // MARK: - Private Helpers
 
 private extension Checkout {
-
-    /// Response entry point. If the response carries an action, dispatch it and keep
-    /// `pendingPaymentComponent` set so the final result (arriving later via `didProvide`)
-    /// can still finalize the component that originally submitted.
-    func handle(_ paymentsResponse: CheckoutPaymentsResponse, from component: (any PaymentComponent)?) {
-        if let action = paymentsResponse.action {
-            actionHandlingComponent.handle(action)
-        } else {
-            // TODO: check for error cases here
-            finish(
-                with: CheckoutResult(resultCode: paymentsResponse.resultCode),
-                from: component
-            )
-        }
-    }
 
     /// Error entry point. Consolidates every error path (onSubmit, onAdditionalDetails,
     /// component/action/session failures) into a single place so finalization and merchant
