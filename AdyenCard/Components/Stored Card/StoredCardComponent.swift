@@ -50,7 +50,8 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
             publicKey: context.publicKey,
             amount: context.amount,
             analyticsProvider: context.analyticsProvider,
-            localizationParameters: localizationParameters
+            localizationParameters: localizationParameters,
+            cardBrand: storedCardPaymentMethod.brand
         )
 
         viewModel.cardDetailsCompletionHandler = { [weak self] in

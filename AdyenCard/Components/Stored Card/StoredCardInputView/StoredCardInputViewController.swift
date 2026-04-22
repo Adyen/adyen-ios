@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Combine
 import Foundation
 import UIKit
@@ -13,7 +13,7 @@ import UIKit
     @_spi(AdyenInternal) import AdyenUI
 #endif
 
-internal class StoredCardInputViewController: UIViewController {
+internal class StoredCardInputViewController: UIViewController, AdyenObserver {
 
     // MARK: - Constants
 
@@ -199,7 +199,6 @@ internal class StoredCardInputViewController: UIViewController {
     }
 
     private func updateLoadingState(_ isLoading: Bool) {
-        primaryButton.isEnabled = !isLoading
         primaryButton.showsActivityIndicator = isLoading
     }
 

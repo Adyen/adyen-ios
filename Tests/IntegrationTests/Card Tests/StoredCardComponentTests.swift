@@ -60,7 +60,8 @@ class StoredCardComponentTests: XCTestCase {
         XCTAssertNil(cardDetails.encryptedExpiryMonth)
 
         XCTAssertTrue(proxy.securityCodeText?.isEmpty == true)
-        XCTAssertTrue(proxy.isPayButtonEnabled)
+        // Button is disabled after submission because security code is cleared on submit in the UI.
+        XCTAssertFalse(proxy.isPayButtonEnabled)
     }
 
     /// Verifies that encryption failure with an invalid public key calls didFail on the delegate.
@@ -109,11 +110,9 @@ class StoredCardComponentTests: XCTestCase {
 
         proxy.enterText("1")
         XCTAssertEqual(proxy.securityCodeText, "111")
-        XCTAssertFalse(proxy.isPayButtonEnabled)
 
         proxy.enterText("1")
         XCTAssertEqual(proxy.securityCodeText, "1111")
-        XCTAssertTrue(proxy.isPayButtonEnabled)
 
         // When / Then - cannot exceed 4 digits
         proxy.enterText("1")

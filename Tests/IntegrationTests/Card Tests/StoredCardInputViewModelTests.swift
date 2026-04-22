@@ -337,7 +337,8 @@ struct StoredCardInputViewModelTests {
             publicKey: publicKey,
             amount: amount,
             analyticsProvider: analyticsProvider,
-            localizationParameters: localizationParameters
+            localizationParameters: localizationParameters,
+            cardBrand: brand
         )
     }
 }

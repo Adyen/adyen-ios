@@ -37,16 +37,24 @@ internal final class FormCardSecurityCodeItem: FormTextInputItem {
 
     /// Initializes the form security code item.
     internal init(
+        cardType: CardType? = nil,
         style: FormTextItemStyle = FormTextItemStyle(),
         localizationParameters: LocalizationParameters? = nil
     ) {
         self.localizationParameters = localizationParameters
         super.init(style: style)
+
+        // TODO: Robert: StoredCardComponent: See if there is a better way to do this.
+        if let cardType {
+            self.selectedCard = cardType
+            validator = CardSecurityCodeValidator(cardType: cardType)
+            formatter = CardSecurityCodeFormatter(cardType: cardType)
+        } else {
+            validator = securityCodeValidator
+            formatter = securityCodeFormatter
+        }
         
         title = localizedString(.cardCvcItemTitle, localizationParameters)
-        validator = securityCodeValidator
-        formatter = securityCodeFormatter
-        
         validationFailureMessage = localizedString(.cardCvcItemInvalid, localizationParameters)
         keyboardType = .numberPad
     }
