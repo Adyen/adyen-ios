@@ -121,13 +121,14 @@ final class CheckoutConfigurationTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         
         // When
-        let resolvedConfig = checkoutConfig.configuration(for: paymentMethod, defaultValue: BLIKComponentConfiguration())
+        let resolvedConfig: BLIKComponentConfiguration? = checkoutConfig.configuration(
+            for: paymentMethod,
+            defaultValue: BLIKComponentConfiguration()
+        )
         
         // Then
-        XCTAssertNotNil(resolvedConfig)
-        
-        XCTAssertNotNil(resolvedConfig, "Should be BLIKComponentConfiguration")
-        XCTAssertEqual(resolvedConfig.componentType, .payment(.blik))
+        let unwrapped = try XCTUnwrap(resolvedConfig, "Should be BLIKComponentConfiguration")
+        XCTAssertEqual(unwrapped.componentType, .payment(.blik))
     }
     
     // MARK: - Action Configuration Tests

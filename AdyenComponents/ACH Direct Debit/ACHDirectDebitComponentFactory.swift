@@ -37,7 +37,7 @@ package struct ACHDirectDebitComponentFactory: PaymentComponentFactory {
         )
     }
 
-    package func defaultConfiguration() -> ACHDirectDebitComponentConfiguration {
+    package func defaultConfiguration() -> ACHDirectDebitComponentConfiguration? {
         ACHDirectDebitComponentConfiguration()
     }
 }

@@ -27,10 +27,6 @@ public final class CheckoutPaymentComponent {
     
     internal let paymentComponent: PaymentComponent?
     
-    private var configuration: CheckoutConfiguration
-    
-    internal weak var delegate: PaymentComponentDelegate?
-    
     /// The view controller of the component.
     public var viewController: UIViewController? {
         guard let presentableComponent = paymentComponent as? PresentableComponent else {
@@ -45,23 +41,46 @@ public final class CheckoutPaymentComponent {
         context: AdyenContext,
         delegate: PaymentComponentDelegate?
     ) {
-        self.configuration = configuration
-        self.delegate = delegate
         // TODO: Add new v6 style here
-        self.paymentComponent = CheckoutComponentBuilder.build(for: paymentMethod, configuration: configuration, context: context)
+        self.paymentComponent = Self.component(
+            for: paymentMethod,
+            configuration: configuration,
+            context: context
+        )
         self.paymentComponent?.delegate = delegate
     }
-    
+
     package init(
         storedPaymentMethod: StoredPaymentMethod,
         configuration: CheckoutConfiguration,
         context: AdyenContext,
         delegate: PaymentComponentDelegate?
     ) {
-        self.configuration = configuration
-        self.delegate = delegate
         // TODO: Add new v6 style here
-        self.paymentComponent = CheckoutComponentBuilder.build(for: storedPaymentMethod, configuration: configuration, context: context)
+        self.paymentComponent = CheckoutComponentBuilder.build(
+            for: storedPaymentMethod,
+            configuration: configuration,
+            context: context
+        )
         self.paymentComponent?.delegate = delegate
+    }
+
+    private static func component(
+        for paymentMethod: PaymentMethod,
+        configuration: CheckoutConfiguration,
+        context: AdyenContext
+    ) -> PaymentComponent? {
+        do {
+            return try CheckoutComponentBuilder.build(
+                for: paymentMethod,
+                configuration: configuration,
+                context: context
+            )
+        } catch {
+            AdyenAssertion.assertionFailure(
+                message: "Failed to build payment component for \(paymentMethod.type.rawValue): \(error)"
+            )
+            return nil
+        }
     }
 }

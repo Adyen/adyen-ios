@@ -34,9 +34,9 @@ package protocol PaymentComponentFactory {
         with paymentMethod: Method,
         context: AdyenContext,
         configuration: Configuration
-    ) -> Component
+    ) throws -> Component
     
     /// Creates the default configuration for the component.
-    /// - Returns: A new configuration instance for the component.
-    func defaultConfiguration() -> Configuration
+    /// - Returns: A new configuration instance, or `nil` if no valid default exists.
+    func defaultConfiguration() -> Configuration?
 }

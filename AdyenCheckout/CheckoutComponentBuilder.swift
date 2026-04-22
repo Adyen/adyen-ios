@@ -22,7 +22,7 @@ internal enum CheckoutComponentBuilder {
         for paymentMethod: PaymentMethod,
         configuration: CheckoutConfiguration,
         context: AdyenContext
-    ) -> PaymentComponent {
+    ) throws -> PaymentComponent {
         
         // Assembly layer
         switch paymentMethod {
@@ -30,14 +30,14 @@ internal enum CheckoutComponentBuilder {
         // components module
         #if canImport(AdyenComponents)
             case let blikPaymentMethod as BLIKPaymentMethod:
-                return createComponent(
+                return try createComponent(
                     using: BLIKComponentFactory(),
                     paymentMethod: blikPaymentMethod,
                     configuration: configuration,
                     context: context
                 )
             case let achPaymentMethod as ACHDirectDebitPaymentMethod:
-                return createComponent(
+                return try createComponent(
                     using: ACHDirectDebitComponentFactory(),
                     paymentMethod: achPaymentMethod,
                     configuration: configuration,
@@ -48,7 +48,7 @@ internal enum CheckoutComponentBuilder {
         // card module
         #if canImport(AdyenCard)
             case let cardPaymentMethod as CardPaymentMethod:
-                return createComponent(
+                return try createComponent(
                     using: CardComponentFactory(),
                     paymentMethod: cardPaymentMethod,
                     configuration: configuration,
@@ -112,17 +112,25 @@ internal enum CheckoutComponentBuilder {
         paymentMethod: Factory.Method,
         configuration: CheckoutConfiguration,
         context: AdyenContext
-    ) -> PaymentComponent where Factory.Configuration: CheckoutComponentConfiguration {
-        
-        var componentConfiguration = configuration.configuration(
+    ) throws -> PaymentComponent where Factory.Configuration: CheckoutComponentConfiguration {
+
+        guard var componentConfiguration = configuration.configuration(
             for: paymentMethod,
             defaultValue: factory.defaultConfiguration()
-        )
-        
+        ) else {
+            // No merchant-provided configuration and no usable default — the integrator
+            // must provide one for this payment method (e.g., Apple Pay).
+            // TODO: turn this error into CheckoutError with a type
+            throw UnknownError(
+                errorDescription: "Missing required configuration for payment method \(paymentMethod.type.rawValue). "
+                    + "Provide a configuration via CheckoutConfiguration to use this payment method."
+            )
+        }
+
         componentConfiguration.showsSubmitButton = configuration.showsSubmitButton
         componentConfiguration.theme = configuration.theme
-        
-        return factory.create(
+
+        return try factory.create(
             with: paymentMethod,
             context: context,
             configuration: componentConfiguration

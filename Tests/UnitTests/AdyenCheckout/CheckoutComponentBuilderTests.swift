@@ -36,7 +36,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -62,7 +62,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         )
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -87,7 +87,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         checkoutConfiguration = makeCheckoutConfiguration()
 
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -113,7 +113,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
             context: customContext
@@ -129,7 +129,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let blikPaymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         
         // When
-        let blikComponent = CheckoutComponentBuilder.build(
+        let blikComponent = try CheckoutComponentBuilder.build(
             for: blikPaymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -147,7 +147,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -170,7 +170,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
             context: customContext
@@ -196,7 +196,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         checkoutConfiguration.showsSubmitButton = false // Global override
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -222,7 +222,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         )
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -238,7 +238,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         checkoutConfiguration = makeCheckoutConfiguration() // No stored config
 
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -255,7 +255,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
 
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -281,7 +281,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         checkoutConfiguration.theme = customTheme
 
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -309,7 +309,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         checkoutConfiguration.theme = customTheme
 
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -334,7 +334,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let storedPaymentMethod = try XCTUnwrap(createStoredCardPaymentMethod())
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -358,7 +358,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let storedPaymentMethod = try XCTUnwrap(createStoredCardPaymentMethod())
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
             context: customContext
@@ -374,7 +374,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let storedPaymentMethod = try XCTUnwrap(createStoredPayPalPaymentMethod())
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -390,7 +390,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let storedPaymentMethod = try XCTUnwrap(createStoredBCMCPaymentMethod())
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
             context: context

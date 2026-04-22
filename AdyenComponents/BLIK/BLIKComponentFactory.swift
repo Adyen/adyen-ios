@@ -37,7 +37,7 @@ package struct BLIKComponentFactory: PaymentComponentFactory {
         )
     }
     
-    package func defaultConfiguration() -> BLIKComponentConfiguration {
+    package func defaultConfiguration() -> BLIKComponentConfiguration? {
         BLIKComponentConfiguration()
     }
 }
