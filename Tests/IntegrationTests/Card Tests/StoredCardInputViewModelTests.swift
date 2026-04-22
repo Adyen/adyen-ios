@@ -244,8 +244,8 @@ struct StoredCardInputViewModelTests {
         await sut.submit()
 
         // Then
-        #expect(receivedProgress == [true, false])
-        #expect(!sut.inProgress)
+        #expect(receivedProgress == [true])
+        #expect(sut.inProgress)
     }
 
     // MARK: - Custom Localization
