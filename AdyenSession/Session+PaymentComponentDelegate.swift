@@ -96,11 +96,11 @@ extension Session {
                 )
                 return
             }
-            // ⚠️ BEHAVIOR REGRESSION (v6, intentional — Android parity):
+            // ⚠️ BEHAVIOR REGRESSION R1 (v6, intentional — Android parity).
             // Pre-v6 Session showed a "Payment refused" UIAlertController here whenever the
             // `/payments` response had `resultCode == .refused` and a non-zero
             // `order.remainingAmount` (e.g. gift card declined mid-flow). That alert is now
-            // removed to match Android's SessionInteractor, which routes the same condition
+            // removed to match Android's `SessionInteractor`, which routes the same condition
             // (`RefusedPartialPayment`) through its `onFinished(...)` callback without
             // showing UI.
             //

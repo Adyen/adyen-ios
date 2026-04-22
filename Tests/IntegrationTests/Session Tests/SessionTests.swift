@@ -1111,6 +1111,189 @@ class SessionTests: XCTestCase {
         XCTAssertNil(json["installments"])
     }
 
+    // MARK: - Mapper tests (S3)
+    
+    func testMapToSubmitResult_withAction_returnsAction() throws {
+        sut = initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let expectedAction = try RedirectAction(
+            url: XCTUnwrap(URL(string: "https://adyen.com")),
+            paymentData: "payment_data"
+        )
+        let response = PaymentsResponse(
+            resultCode: .redirectShopper,
+            action: .redirect(expectedAction),
+            order: nil,
+            sessionData: "session_data",
+            sessionResult: "sessionResultString"
+        )
+        
+        let result = sut.mapToSubmitResult(response)
+        
+        guard case let .action(action) = result,
+              case let .redirect(redirect) = action else {
+            XCTFail("Expected .action(.redirect) but got \(result)")
+            return
+        }
+        XCTAssertEqual(redirect.paymentData, expectedAction.paymentData)
+        XCTAssertEqual(redirect.url, expectedAction.url)
+    }
+    
+    func testMapToSubmitResult_withPartialPaymentOrder_returnsPartialPayment() {
+        sut = initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let expectedOrder = PartialPaymentOrder(
+            pspReference: "pspReference",
+            orderData: "order_data",
+            reference: "reference",
+            amount: .init(value: 220, currencyCode: "USD", localeIdentifier: nil),
+            remainingAmount: .init(value: 20, currencyCode: "USD", localeIdentifier: nil),
+            expiresAt: Date()
+        )
+        let response = PaymentsResponse(
+            resultCode: .refused,
+            action: nil,
+            order: expectedOrder,
+            sessionData: "session_data",
+            sessionResult: "sessionResultString"
+        )
+        
+        let result = sut.mapToSubmitResult(response)
+        
+        guard case let .partialPayment(payload) = result else {
+            XCTFail("Expected .partialPayment but got \(result)")
+            return
+        }
+        XCTAssertEqual(payload.order.pspReference, expectedOrder.pspReference)
+        XCTAssertEqual(payload.order.remainingAmount?.value, 20)
+        XCTAssertNil(payload.paymentMethodsUpdate)
+    }
+    
+    func testMapToSubmitResult_withOrderButZeroRemaining_fallsThroughToFinished() {
+        sut = initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let orderWithZeroRemaining = PartialPaymentOrder(
+            pspReference: "pspReference",
+            orderData: "order_data",
+            reference: "reference",
+            amount: .init(value: 220, currencyCode: "USD", localeIdentifier: nil),
+            remainingAmount: .init(value: 0, currencyCode: "USD", localeIdentifier: nil),
+            expiresAt: Date()
+        )
+        let response = PaymentsResponse(
+            resultCode: .authorised,
+            action: nil,
+            order: orderWithZeroRemaining,
+            sessionData: "session_data",
+            sessionResult: "sessionResultString"
+        )
+        
+        let result = sut.mapToSubmitResult(response)
+        
+        guard case let .finished(resultCode) = result else {
+            XCTFail("Expected .finished but got \(result)")
+            return
+        }
+        XCTAssertEqual(resultCode, CheckoutResultCode.authorised.rawValue)
+    }
+    
+    func testMapToSubmitResult_withOrderButNilRemaining_fallsThroughToFinished() {
+        sut = initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let orderWithoutRemaining = PartialPaymentOrder(
+            pspReference: "pspReference",
+            orderData: "order_data",
+            reference: "reference",
+            amount: .init(value: 220, currencyCode: "USD", localeIdentifier: nil),
+            remainingAmount: nil,
+            expiresAt: Date()
+        )
+        let response = PaymentsResponse(
+            resultCode: .authorised,
+            action: nil,
+            order: orderWithoutRemaining,
+            sessionData: "session_data",
+            sessionResult: "sessionResultString"
+        )
+        
+        let result = sut.mapToSubmitResult(response)
+        
+        guard case let .finished(resultCode) = result else {
+            XCTFail("Expected .finished but got \(result)")
+            return
+        }
+        XCTAssertEqual(resultCode, CheckoutResultCode.authorised.rawValue)
+    }
+    
+    func testMapToSubmitResult_withoutActionOrOrder_returnsFinished() {
+        sut = initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let response = PaymentsResponse(
+            resultCode: .authorised,
+            action: nil,
+            order: nil,
+            sessionData: "session_data",
+            sessionResult: "sessionResultString"
+        )
+        
+        let result = sut.mapToSubmitResult(response)
+        
+        guard case let .finished(resultCode) = result else {
+            XCTFail("Expected .finished but got \(result)")
+            return
+        }
+        XCTAssertEqual(resultCode, CheckoutResultCode.authorised.rawValue)
+    }
+    
+    func testMapToAdditionalDetailsResult_withoutAction_returnsFinished() {
+        sut = initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let response = PaymentsResponse(
+            resultCode: .authorised,
+            action: nil,
+            order: nil,
+            sessionData: "session_data",
+            sessionResult: "sessionResultString"
+        )
+        
+        let result = sut.mapToAdditionalDetailsResult(response)
+        
+        guard case let .finished(resultCode) = result else {
+            XCTFail("Expected .finished but got \(result)")
+            return
+        }
+        XCTAssertEqual(resultCode, CheckoutResultCode.authorised.rawValue)
+    }
+    
+    /// Pins Behavioral Regression R2: an action on `/payments/details` fires an assertion in
+    /// debug but still returns `.finished(resultCode:)` in release. See
+    /// `mapToAdditionalDetailsResult` comment in `Session+ActionComponentDelegate.swift`.
+    func testMapToAdditionalDetailsResult_withActionPresent_assertsAndReturnsFinished() throws {
+        sut = initializeSession(expectedPaymentMethods: expectedPaymentMethods)
+        let action = try RedirectAction(
+            url: XCTUnwrap(URL(string: "https://adyen.com")),
+            paymentData: "payment_data"
+        )
+        let response = PaymentsResponse(
+            resultCode: .challengeShopper,
+            action: .redirect(action),
+            order: nil,
+            sessionData: "session_data",
+            sessionResult: "sessionResultString"
+        )
+        
+        let assertionExpectation = expectation(description: "Expect debug assertion on action-on-details")
+        AdyenAssertion.listener = { message in
+            XCTAssertTrue(message.contains("Unexpected action on /payments/details response"))
+            assertionExpectation.fulfill()
+        }
+        
+        let result = sut.mapToAdditionalDetailsResult(response)
+        
+        wait(for: [assertionExpectation], timeout: 1)
+        AdyenAssertion.listener = nil
+        
+        guard case let .finished(resultCode) = result else {
+            XCTFail("Expected .finished but got \(result)")
+            return
+        }
+        XCTAssertEqual(resultCode, CheckoutResultCode.challengeShopper.rawValue)
+    }
+    
     private func initializeSession(
         expectedPaymentMethods: PaymentMethods,
         apiClient: APIClientMock = APIClientMock(),

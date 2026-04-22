@@ -14,6 +14,10 @@ import XCTest
 
 @MainActor
 final class CheckoutTests: XCTestCase {
+    /// Sentinel used when the advanced (non-session) action flow has no server-provided
+    /// resultCode to report — see `Checkout.didComplete(from:)`.
+    private static let missingResultCode = ""
+    
     var mockProvider: CheckoutProviderMock!
     var configuration: CheckoutConfiguration!
     var paymentMethods: PaymentMethods!
@@ -589,7 +593,7 @@ final class CheckoutTests: XCTestCase {
             // Phase 3 / Plan Key Design Decision #7: the non-session didComplete(from:) path
             // emits AdditionalDetailsResult.finished(resultCode: ""), which the SDK folds into a
             // CheckoutResult with CheckoutResultCode.other("").
-            XCTAssertEqual(result.resultCode, .other(""))
+            XCTAssertEqual(result.resultCode, .other(Self.missingResultCode))
             onCompleteExpectation.fulfill()
         }
         

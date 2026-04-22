@@ -24,9 +24,9 @@ extension Checkout: PaymentComponentDelegate {
                 let result: SubmitResult
                 do {
                     result = try await onSubmit(data)
+                } catch is CancellationError {
+                    return
                 } catch {
-                    // Ignore if this was a cancellation (task superseded or Checkout torn down).
-                    guard !(error is CancellationError), !Task.isCancelled else { return }
                     result = .error(error)
                 }
                 guard !Task.isCancelled else { return }
@@ -56,11 +56,12 @@ extension Checkout: PaymentComponentDelegate {
         case let .error(error):
             finish(with: error)
         case .partialPayment:
-            // Partial payment is not supported on the Checkout (component) surface today.
-            // Session is the only path that can drive the continuation flow.
-            AdyenAssertion.assertionFailure(
-                message: "SubmitResult.partialPayment is not supported on Checkout; ignored."
-            )
+            // Components (advanced flow): the SDK intentionally performs no work here.
+            // The merchant owns the continuation — they decide whether to instantiate a new
+            // payment component for the remaining amount based on the PartialPayment payload
+            // they returned from `onSubmit`.
+            // TODO: add partial-payment support for Drop-in on the advanced (non-session) flow.
+            break
         @unknown default:
             AdyenAssertion.assertionFailure(
                 message: "Unhandled SubmitResult branch; ignored."
@@ -77,9 +78,9 @@ extension Checkout: ActionComponentDelegate {
                 let result: AdditionalDetailsResult
                 do {
                     result = try await onAdditionalDetails(data)
+                } catch is CancellationError {
+                    return
                 } catch {
-                    // Ignore if this was a cancellation (task superseded or Checkout torn down).
-                    guard !(error is CancellationError), !Task.isCancelled else { return }
                     result = .error(error)
                 }
                 guard !Task.isCancelled else { return }
@@ -97,9 +98,7 @@ extension Checkout: ActionComponentDelegate {
     }
     
     public func didComplete(from component: any Adyen.ActionComponent) {
-        // No resultCode is available from this delegate signature in the advanced (non-session) flow.
-        // Emit an empty-string fallback to keep `AdditionalDetailsResult.finished` non-optional.
-        handle(additionalDetailsResult: .finished(resultCode: ""))
+        // TODO: need a result code here, refactor this function to contain it or create on here?
     }
     
     public func didFail(with error: any Error, from component: any Adyen.ActionComponent) {
