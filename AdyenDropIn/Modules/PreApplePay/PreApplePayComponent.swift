@@ -14,8 +14,10 @@ import UIKit
     @_spi(AdyenInternal) import AdyenComponents
 #endif
 
+// TODO: preapplepay is being removed
 @MainActor
 internal final class PreApplePayComponent: PresentableComponent,
+    FinalizableComponent,
     PaymentComponent,
     Cancellable {
     
@@ -90,7 +92,7 @@ internal final class PreApplePayComponent: PresentableComponent,
     }
 
     internal func didFinalize(with success: Bool, completion: (() -> Void)?) {
-        Task { @MainActor in
+        Task {
             applePayComponent.didFinalize(with: success, completion: nil)
         }
     }
