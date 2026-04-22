@@ -23,7 +23,7 @@ public class CardComponent: PresentableComponent,
     internal enum Constant {
         internal static let defaultCountryCode = "US"
         internal static let secondsThrottlingDelay = 0.5
-        internal static let thresholdBINLength = 8
+        internal static let thresholdBINLength = 11
         internal static let publicPanSuffixLength = 4
     }
     
