@@ -8,11 +8,11 @@
 import Foundation
 
 /// Contains the result of a 3DS transaction.
-public struct ThreeDSResult: Decodable {
+internal struct ThreeDSResult: Decodable {
 
     /// The payload to submit to verify the authentication.
-    public let payload: String
-    
+    internal let payload: String
+
     private struct Payload: Codable {
         internal let authorisationToken: String?
         internal let delegatedAuthenticationSDKOutput: String?
@@ -50,7 +50,7 @@ public struct ThreeDSResult: Decodable {
         self.payload = try AdyenCoder.encode(payload).base64EncodedString()
     }
 
-    public init(from decoder: Decoder) throws {
+    internal init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.payload = try container.decode(String.self, forKey: .payload)
     }
