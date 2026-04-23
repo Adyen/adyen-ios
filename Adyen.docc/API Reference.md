@@ -128,7 +128,6 @@ The Adyen DropIn/Components SDK API Reference.
 ## 3D Secure 2
 
 - ``ThreeDS2Component``
-- ``ThreeDS2Details``
 - ``ThreeDS2Action``
 - ``ThreeDS2FingerprintAction``
 - ``ThreeDS2ChallengeAction``

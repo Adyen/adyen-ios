@@ -103,7 +103,7 @@ class AuthenticationComponentTests: XCTestCase {
             paymentData: "data"
         )
 
-        let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
+        let mockedDetails = ThreeDSResult(payload: "payload")
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
         threeDS2ActionHandler.mockedFingerprintResult = .success(.action(.threeDS2(.challenge(mockedAction))))
@@ -126,7 +126,7 @@ class AuthenticationComponentTests: XCTestCase {
         delegate.onDidProvide = { data, component in
             XCTAssertTrue(component === sut)
             XCTAssertNil(data.paymentData)
-            XCTAssertNotNil(data.details as? ThreeDS2Details)
+            XCTAssertNotNil(data.details as? ThreeDSResult)
 
             delegateExpectation.fulfill()
         }
@@ -257,7 +257,7 @@ class AuthenticationComponentTests: XCTestCase {
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
 
-        let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
+        let mockedDetails = ThreeDSResult(payload: "payload")
         threeDS2ActionHandler.mockedFingerprintResult = .success(.details(mockedDetails))
 
         let redirectComponent = AnyRedirectComponentMock()
@@ -277,12 +277,8 @@ class AuthenticationComponentTests: XCTestCase {
         let delegateExpectation = expectation(description: "Expect delegate didProvide(_:from:) function to be called.")
         delegate.onDidProvide = { data, component in
             XCTAssertTrue(component === sut)
-            let threeDS2Details = data.details as! ThreeDS2Details
-
-            switch threeDS2Details {
-            case let .completed(result):
-                XCTAssertEqual(result.payload, "payload")
-            }
+            let threeDSResult = data.details as! ThreeDSResult
+            XCTAssertEqual(threeDSResult.payload, "payload")
 
             delegateExpectation.fulfill()
         }
@@ -328,8 +324,7 @@ class AuthenticationComponentTests: XCTestCase {
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
 
         let mockedResult = try ThreeDSResult(authenticated: true, authorizationToken: "AuthToken")
-        let mockedDetails = ThreeDS2Details.completed(mockedResult)
-        threeDS2ActionHandler.mockedChallengeResult = .success(.details(mockedDetails))
+        threeDS2ActionHandler.mockedChallengeResult = .success(.details(mockedResult))
 
         let redirectComponent = AnyRedirectComponentMock()
         redirectComponent.onHandle = { action in
@@ -349,17 +344,12 @@ class AuthenticationComponentTests: XCTestCase {
             XCTAssertTrue(component === sut)
             XCTAssertNil(data.paymentData)
 
-            let threeDS2Details = data.details as! ThreeDS2Details
+            let threeDSResult = data.details as! ThreeDSResult
 
-            switch threeDS2Details {
-            case let .completed(result):
-                let data = Data(base64Encoded: result.payload)
-                let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: String]
-                XCTAssertEqual(json?["transStatus"], "Y")
-                XCTAssertEqual(json?["authorisationToken"], "AuthToken")
-            default:
-                XCTFail()
-            }
+            let data = Data(base64Encoded: threeDSResult.payload)
+            let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: String]
+            XCTAssertEqual(json?["transStatus"], "Y")
+            XCTAssertEqual(json?["authorisationToken"], "AuthToken")
 
             delegateExpectation.fulfill()
         }
@@ -374,7 +364,7 @@ class AuthenticationComponentTests: XCTestCase {
 
         let threeDS2ActionHandler = AnyThreeDS2ActionHandlerMock()
 
-        let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
+        let mockedDetails = ThreeDSResult(payload: "payload")
         threeDS2ActionHandler.mockedFingerprintResult = .success(.details(mockedDetails))
 
         let redirectComponent = AnyRedirectComponentMock()
@@ -394,15 +384,8 @@ class AuthenticationComponentTests: XCTestCase {
         delegate.onDidProvide = { data, component in
             XCTAssertTrue(component === sut)
 
-            let details = data.details as! ThreeDS2Details
-
-            switch details {
-            case let .completed(result):
-                XCTAssertEqual(result, ThreeDSResult(payload: "payload"))
-            default:
-                XCTFail("Any other type of ThreeDS2Details should never happen.")
-            }
-
+            let details = data.details as! ThreeDSResult
+            XCTAssertEqual(details, ThreeDSResult(payload: "payload"))
             delegateExpectation.fulfill()
         }
         sut.delegate = delegate
@@ -475,7 +458,7 @@ class AuthenticationComponentTests: XCTestCase {
             
             let fingerprintSubmitterMock = AnyThreeDS2FingerprintSubmitterMock()
             fingerprintSubmitterMock.onSubmitFingerprint = { fingerprint, paymentData, completionHandler in
-                let details = ThreeDS2Details.completed(ThreeDSResult(payload: fingerprint))
+                let details = ThreeDSResult(payload: fingerprint)
                 completionHandler(.success(.details(details)))
             }
             
@@ -499,14 +482,11 @@ class AuthenticationComponentTests: XCTestCase {
                 XCTAssertTrue(component === sut)
                 XCTAssertNil(data.paymentData)
 
-                let threeDS2Details = data.details as! ThreeDS2Details
+                let threeDSResult = data.details as! ThreeDSResult
 
-                switch threeDS2Details {
-                case let .completed(result):
-                    let data = Data(base64Encoded: result.payload)
-                    let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: AnyObject]
-                    XCTAssertEqual(json?["delegatedAuthenticationSDKOutput"] as! String, "onAuthenticate-Return") // Should be the same one returned by the AuthenticationSDK
-                }
+                let data = Data(base64Encoded: threeDSResult.payload)
+                let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: AnyObject]
+                XCTAssertEqual(json?["delegatedAuthenticationSDKOutput"] as! String, "onAuthenticate-Return") // Should be the same one returned by the AuthenticationSDK
 
                 delegateExpectation.fulfill()
             }
@@ -592,7 +572,7 @@ class AuthenticationComponentTests: XCTestCase {
             
             let fingerprintSubmitterMock = AnyThreeDS2FingerprintSubmitterMock()
             fingerprintSubmitterMock.onSubmitFingerprint = { fingerprint, paymentData, completionHandler in
-                let details = ThreeDS2Details.completed(ThreeDSResult(payload: fingerprint))
+                let details = ThreeDSResult(payload: fingerprint)
                 completionHandler(.success(.details(details)))
             }
             
@@ -616,14 +596,11 @@ class AuthenticationComponentTests: XCTestCase {
                 XCTAssertTrue(component === sut)
                 XCTAssertNil(data.paymentData)
 
-                let threeDS2Details = data.details as! ThreeDS2Details
+                let threeDSResult = data.details as! ThreeDSResult
 
-                switch threeDS2Details {
-                case let .completed(result):
-                    let data = Data(base64Encoded: result.payload)
-                    let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: AnyObject]
-                    XCTAssertNil(json?["delegatedAuthenticationSDKOutput"])
-                }
+                let data = Data(base64Encoded: threeDSResult.payload)
+                let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: AnyObject]
+                XCTAssertNil(json?["delegatedAuthenticationSDKOutput"])
 
                 delegateExpectation.fulfill()
             }
@@ -747,15 +724,9 @@ class AuthenticationComponentTests: XCTestCase {
                 XCTAssertTrue(component === sut)
                 XCTAssertNil(data.paymentData)
 
-                let threeDS2Details = data.details as! ThreeDS2Details
+                let threeDSResult = data.details as! ThreeDSResult
 
-                switch threeDS2Details {
-                case let .completed(result):
-                    // Check if the result has transStatus Y, and delegatedAuthenticationSDKOutput":"onRegister-Return"
-                    XCTAssertEqual(result.payload, "eyJhdXRob3Jpc2F0aW9uVG9rZW4iOiJhdXRoVG9rZW4iLCJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES091dHB1dCI6Im9uUmVnaXN0ZXItUmV0dXJuIiwidHJhbnNTdGF0dXMiOiJZIn0=")
-                default:
-                    XCTFail()
-                }
+                XCTAssertEqual(threeDSResult.payload, "eyJhdXRob3Jpc2F0aW9uVG9rZW4iOiJhdXRoVG9rZW4iLCJkZWxlZ2F0ZWRBdXRoZW50aWNhdGlvblNES091dHB1dCI6Im9uUmVnaXN0ZXItUmV0dXJuIiwidHJhbnNTdGF0dXMiOiJZIn0=")
 
                 delegateExpectation.fulfill()
             }
@@ -855,15 +826,9 @@ class AuthenticationComponentTests: XCTestCase {
                 XCTAssertTrue(component === sut)
                 XCTAssertNil(data.paymentData)
 
-                let threeDS2Details = data.details as! ThreeDS2Details
+                let threeDSResult = data.details as! ThreeDSResult
 
-                switch threeDS2Details {
-                case let .completed(result):
-                    // Check if the result has transStatus Y, and doesn't contain delegatedAuthenticationSDKOutput
-                    XCTAssertEqual(result.payload, "eyJhdXRob3Jpc2F0aW9uVG9rZW4iOiJhdXRoVG9rZW4iLCJ0cmFuc1N0YXR1cyI6IlkifQ==")
-                default:
-                    XCTFail()
-                }
+                XCTAssertEqual(threeDSResult.payload, "eyJhdXRob3Jpc2F0aW9uVG9rZW4iOiJhdXRoVG9rZW4iLCJ0cmFuc1N0YXR1cyI6IlkifQ==")
 
                 delegateExpectation.fulfill()
             }
