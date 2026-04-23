@@ -25,9 +25,16 @@ public struct CheckoutResult {
 /// Wrapper type to contain checkout related errors.
 public struct CheckoutError: Error {
     
-    private let error: Error
+    public let error: Error
     
     public init(error: Error) {
         self.error = error
+    }
+}
+
+extension CheckoutError: LocalizedError {
+    
+    public var errorDescription: String? {
+        error.localizedDescription
     }
 }
