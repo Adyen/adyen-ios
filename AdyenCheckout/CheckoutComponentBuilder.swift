@@ -43,6 +43,13 @@ internal enum CheckoutComponentBuilder {
                     configuration: configuration,
                     context: context
                 )
+            case let applePayPaymentMethod as ApplePayPaymentMethod:
+                return try createComponent(
+                    using: ApplePayComponentFactory(),
+                    paymentMethod: applePayPaymentMethod,
+                    configuration: configuration,
+                    context: context
+                )
         #endif
             
         // card module

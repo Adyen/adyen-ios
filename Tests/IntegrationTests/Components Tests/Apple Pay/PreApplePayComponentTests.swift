@@ -38,7 +38,7 @@ class PreApplePayComponentTests: XCTestCase {
             )
         ]
 
-        let configuration = try ApplePayComponent.Configuration(
+        let configuration = try ApplePayConfiguration(
             paymentRequest: request
         )
         var applePayStyle = ApplePayStyle()
@@ -65,7 +65,7 @@ class PreApplePayComponentTests: XCTestCase {
         // Given
         let brands: [String]? = []
         let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: brands)
-        let applePayConfiguration = try ApplePayComponent.Configuration(
+        let applePayConfiguration = try ApplePayConfiguration(
             paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
 

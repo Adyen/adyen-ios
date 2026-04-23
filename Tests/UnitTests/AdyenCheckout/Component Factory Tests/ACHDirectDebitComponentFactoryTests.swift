@@ -28,19 +28,19 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
 
     // MARK: - Default Configuration Tests
 
-    func test_defaultConfiguration_returnsValidConfiguration() {
+    func test_defaultConfiguration_returnsValidConfiguration() throws {
         // When
-        let configuration = sut.defaultConfiguration()
+        let configuration = try XCTUnwrap(sut.defaultConfiguration())
 
         // Then
         XCTAssertEqual(configuration.componentType, .payment(.achDirectDebit))
         XCTAssertTrue(configuration.showsSubmitButton)
     }
 
-    func test_defaultConfiguration_returnsNewInstanceEachTime() {
+    func test_defaultConfiguration_returnsNewInstanceEachTime() throws {
         // When
-        let config1 = sut.defaultConfiguration()
-        let config2 = sut.defaultConfiguration()
+        let config1 = try XCTUnwrap(sut.defaultConfiguration())
+        let config2 = try XCTUnwrap(sut.defaultConfiguration())
 
         // Then - Verify they are independent instances
         var mutableConfig1 = config1
@@ -164,7 +164,7 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
     func test_factory_hasCorrectAssociatedTypes() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
-        let configuration = sut.defaultConfiguration()
+        let configuration = try XCTUnwrap(sut.defaultConfiguration())
 
         // When
         let component = sut.create(

@@ -38,14 +38,14 @@ final class CheckoutConfigurationTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         
         // When
-        let resolvedConfig: BLIKComponentConfiguration = checkoutConfig.configuration(
+        let resolvedConfig: BLIKComponentConfiguration? = checkoutConfig.configuration(
             for: paymentMethod,
             defaultValue: BLIKComponentConfiguration()
         )
         
         // Then - Should return the stored configuration with custom value
-        XCTAssertEqual(resolvedConfig.componentType, .payment(.blik))
-        XCTAssertFalse(resolvedConfig.showsSubmitButton, "Should use stored configuration value")
+        XCTAssertEqual(resolvedConfig?.componentType, .payment(.blik))
+        XCTAssertFalse(resolvedConfig?.showsSubmitButton ?? true, "Should use stored configuration value")
     }
     
     func testConfiguration_WithoutExistingConfiguration_ReturnsDefaultValue() throws {
@@ -56,14 +56,14 @@ final class CheckoutConfigurationTests: XCTestCase {
         defaultConfig.showsSubmitButton = false // Custom default
         
         // When
-        let resolvedConfig: BLIKComponentConfiguration = checkoutConfig.configuration(
+        let resolvedConfig: BLIKComponentConfiguration? = checkoutConfig.configuration(
             for: paymentMethod,
             defaultValue: defaultConfig
         )
         
         // Then - Should return the default value
-        XCTAssertEqual(resolvedConfig.componentType, .payment(.blik))
-        XCTAssertFalse(resolvedConfig.showsSubmitButton, "Should use default value")
+        XCTAssertEqual(resolvedConfig?.componentType, .payment(.blik))
+        XCTAssertFalse(resolvedConfig?.showsSubmitButton ?? true, "Should use default value")
     }
     
     func testConfiguration_AutoclosureNotEvaluatedWhenConfigExists() throws {
@@ -78,7 +78,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         var defaultWasCalled = false
         
         // When
-        let resolvedConfig: BLIKComponentConfiguration = checkoutConfig.configuration(
+        let resolvedConfig: BLIKComponentConfiguration? = checkoutConfig.configuration(
             for: paymentMethod,
             defaultValue: {
                 defaultWasCalled = true
@@ -88,7 +88,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         
         // Then - Default should not be evaluated since config exists
         XCTAssertFalse(defaultWasCalled, "Autoclosure should not be evaluated when config exists")
-        XCTAssertFalse(resolvedConfig.showsSubmitButton, "Should use stored config")
+        XCTAssertFalse(resolvedConfig?.showsSubmitButton ?? true, "Should use stored config")
     }
     
     func testConfiguration_AutoclosureEvaluatedWhenConfigMissing() throws {
@@ -98,7 +98,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         var defaultWasCalled = false
         
         // When
-        let _: BLIKComponentConfiguration = checkoutConfig.configuration(
+        let _: BLIKComponentConfiguration? = checkoutConfig.configuration(
             for: paymentMethod,
             defaultValue: {
                 defaultWasCalled = true
@@ -278,6 +278,24 @@ final class CheckoutConfigurationTests: XCTestCase {
         XCTAssertTrue(defaultWasCalled, "Autoclosure should be evaluated when config is missing")
     }
     
+    // MARK: - Nil Default Tests
+
+    func testConfiguration_WithNilDefaultAndNoStored_ReturnsNil() throws {
+        // Given
+        let checkoutConfig = makeCheckoutConfiguration()
+        let paymentMethod = try XCTUnwrap(createApplePayPaymentMethod())
+
+        // When — missing stored config AND nil default should produce nil.
+        // This is the contract Apple Pay relies on: factory.defaultConfiguration() returns nil.
+        let resolvedConfig: ApplePayConfiguration? = checkoutConfig.configuration(
+            for: paymentMethod,
+            defaultValue: nil
+        )
+
+        // Then
+        XCTAssertNil(resolvedConfig)
+    }
+
     // MARK: - Helper Methods
     
     private func createBLIKPaymentMethod() -> BLIKPaymentMethod? {
@@ -286,6 +304,10 @@ final class CheckoutConfigurationTests: XCTestCase {
             "name": "BLIK"
         ]
         return try? AdyenCoder.decode(dict) as BLIKPaymentMethod
+    }
+
+    private func createApplePayPaymentMethod() -> ApplePayPaymentMethod? {
+        try? AdyenCoder.decode(applePayDictionary) as ApplePayPaymentMethod
     }
 
     private func makeCheckoutConfiguration(

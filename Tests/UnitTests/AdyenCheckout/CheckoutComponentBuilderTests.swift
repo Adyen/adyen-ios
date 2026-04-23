@@ -9,6 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenCheckout
 @_spi(AdyenInternal) @testable import AdyenComponents
 @_spi(AdyenInternal) @testable import AdyenUI
+import PassKit
 import XCTest
 
 @MainActor
@@ -402,6 +403,48 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertTrue(component is StoredPaymentMethodComponent, "Component should be StoredPaymentMethodComponent")
     }
     
+    // MARK: - Apple Pay Component Tests
+    
+    func testBuild_WithApplePayAndConfiguration_ReturnsApplePayComponent() throws {
+        // Given
+        let paymentMethod = try XCTUnwrap(createApplePayPaymentMethod())
+        let applePayConfig = try ApplePayConfiguration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
+        )
+        checkoutConfiguration = makeCheckoutConfiguration(
+            configurations: [.payment(.applePay): applePayConfig]
+        )
+        
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+        
+        // Then
+        XCTAssertEqual(component.paymentMethod.type, .applePay)
+        XCTAssertTrue(component is ApplePayComponent, "Component should be ApplePayComponent")
+    }
+    
+    func testBuild_WithApplePayAndNoConfiguration_ThrowsUnknownError() throws {
+        // Given — no Apple Pay configuration supplied to the DSL
+        let paymentMethod = try XCTUnwrap(createApplePayPaymentMethod())
+        checkoutConfiguration = makeCheckoutConfiguration()
+        
+        // When / Then
+        XCTAssertThrowsError(
+            try CheckoutComponentBuilder.build(
+                for: paymentMethod,
+                configuration: checkoutConfiguration,
+                context: context
+            ),
+            "Builder should throw when Apple Pay has no default and no user-supplied config"
+        ) { error in
+            XCTAssertTrue(error is UnknownError, "Expected UnknownError, got \(type(of: error))")
+        }
+    }
+    
     // MARK: - Helper Methods
     
     private func createBLIKPaymentMethod() -> BLIKPaymentMethod? {
@@ -420,6 +463,10 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         return try? AdyenCoder.decode(dict) as ACHDirectDebitPaymentMethod
     }
     
+    private func createApplePayPaymentMethod() -> ApplePayPaymentMethod? {
+        try? AdyenCoder.decode(applePayDictionary) as ApplePayPaymentMethod
+    }
+
     private func createStoredCardPaymentMethod() -> StoredCardPaymentMethod? {
         let dict: [String: Any] = [
             "type": "scheme",

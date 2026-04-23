@@ -36,7 +36,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         applePayPaymentMethod
     }
 
-    internal let configuration: Configuration
+    internal let configuration: ApplePayConfiguration
 
     internal var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
 
@@ -61,7 +61,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     public init(
         paymentMethod: ApplePayPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration
+        configuration: ApplePayConfiguration
     ) throws {
         guard PKPaymentAuthorizationViewController.canMakePayments() else {
             throw Error.deviceDoesNotSupportApplePay

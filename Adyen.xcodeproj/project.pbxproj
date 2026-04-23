@@ -470,6 +470,7 @@
 		A013F98126AFF72D00602633 /* BrazilSocialSecurityNumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07B2CE526A5B5440008185C /* BrazilSocialSecurityNumberFormatter.swift */; };
 		A018094826FDD345003A8DE3 /* FormCardNumberContainerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A018094726FDD345003A8DE3 /* FormCardNumberContainerItem.swift */; };
 		A01948342D8827FD00AA27AC /* PayToFormPickerItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01948332D8827A300AA27AC /* PayToFormPickerItemView.swift */; };
+		A01B112C2F991E830081DA79 /* ApplePayComponentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01B112B2F991E830081DA79 /* ApplePayComponentFactory.swift */; };
 		A01DCF0B26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01DCF0A26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift */; };
 		A01DFBBF2BA887BF00205881 /* ThreadSafeAnalyticsEventDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01DFBBE2BA887BF00205881 /* ThreadSafeAnalyticsEventDataSource.swift */; };
 		A01DFBC52BB6F9FA00205881 /* ValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01DFBC42BB6F9FA00205881 /* ValidationError.swift */; };
@@ -608,6 +609,7 @@
 		A0E1B63D2EA90B6D0070B915 /* BLIKComponentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1B63C2EA90B620070B915 /* BLIKComponentFactory.swift */; };
 		A0E1B63F2EA90BDF0070B915 /* CardComponentFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1B63E2EA90BDB0070B915 /* CardComponentFactory.swift */; };
 		A0E1B6422EAB9D0E0070B915 /* BLIKComponentFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1B6412EAB9D0C0070B915 /* BLIKComponentFactoryTests.swift */; };
+		A0E1B6512EE1E1A20070B915 /* ApplePayComponentFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1B6502EE1E1A10070B915 /* ApplePayComponentFactoryTests.swift */; };
 		A0E1B6452EAB9F580070B915 /* CheckoutConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1B6442EAB9F520070B915 /* CheckoutConfigurationTests.swift */; };
 		A0E1B6492EABA05F0070B915 /* PaymentComponentFactoryProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1B6482EABA05D0070B915 /* PaymentComponentFactoryProtocolTests.swift */; };
 		A0E1B64B2EABA0C00070B915 /* CheckoutComponentBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1B64A2EABA0BF0070B915 /* CheckoutComponentBuilderTests.swift */; };
@@ -2163,6 +2165,7 @@
 		A01948332D8827A300AA27AC /* PayToFormPickerItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToFormPickerItemView.swift; sourceTree = "<group>"; };
 		A01948542D91AD8700AA27AC /* CheckoutConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutConfiguration.swift; sourceTree = "<group>"; };
 		A01948562D92BFAB00AA27AC /* ConfigurationBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationBuilder.swift; sourceTree = "<group>"; };
+		A01B112B2F991E830081DA79 /* ApplePayComponentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayComponentFactory.swift; sourceTree = "<group>"; };
 		A01D775529B250C10075BD70 /* CashAppPayDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPayDetails.swift; sourceTree = "<group>"; };
 		A01DCF0A26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardExpiryDateItem.swift; sourceTree = "<group>"; };
 		A01DFBBE2BA887BF00205881 /* ThreadSafeAnalyticsEventDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadSafeAnalyticsEventDataSource.swift; sourceTree = "<group>"; };
@@ -2271,6 +2274,7 @@
 		A0E1B63C2EA90B620070B915 /* BLIKComponentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentFactory.swift; sourceTree = "<group>"; };
 		A0E1B63E2EA90BDB0070B915 /* CardComponentFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentFactory.swift; sourceTree = "<group>"; };
 		A0E1B6412EAB9D0C0070B915 /* BLIKComponentFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentFactoryTests.swift; sourceTree = "<group>"; };
+		A0E1B6502EE1E1A10070B915 /* ApplePayComponentFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplePayComponentFactoryTests.swift; sourceTree = "<group>"; };
 		A0E1B6442EAB9F520070B915 /* CheckoutConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutConfigurationTests.swift; sourceTree = "<group>"; };
 		A0E1B6482EABA05D0070B915 /* PaymentComponentFactoryProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentFactoryProtocolTests.swift; sourceTree = "<group>"; };
 		A0E1B64A2EABA0BF0070B915 /* CheckoutComponentBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutComponentBuilderTests.swift; sourceTree = "<group>"; };
@@ -4124,6 +4128,7 @@
 			isa = PBXGroup;
 			children = (
 				A0E1B6412EAB9D0C0070B915 /* BLIKComponentFactoryTests.swift */,
+				A0E1B6502EE1E1A10070B915 /* ApplePayComponentFactoryTests.swift */,
 			);
 			path = "Component Factory Tests";
 			sourceTree = "<group>";
@@ -5902,6 +5907,7 @@
 				E97B971C229E83F800505476 /* ApplePayComponent.swift */,
 				F99262C324EECB9F00C9A60D /* ApplePayComponentExtensions.swift */,
 				E97B971E22A14C6C00505476 /* ApplePayDetails.swift */,
+				A01B112B2F991E830081DA79 /* ApplePayComponentFactory.swift */,
 				E7D874F227DF5CDC00D3C00A /* ApplePayComponentError.swift */,
 				E7D874F427E0E26100D3C00A /* ApplePayConfiguration.swift */,
 				C92245B02EE9863F00815A51 /* ApplePayNetworksProvider.swift */,
@@ -8425,6 +8431,7 @@
 				B6D808212BCD151F00F3F5EB /* URLProtocolMock.swift in Sources */,
 				B6D8081B2BCD151F00F3F5EB /* StoredPaymentMethodMock.swift in Sources */,
 				A0E1B6422EAB9D0E0070B915 /* BLIKComponentFactoryTests.swift in Sources */,
+				A0E1B6512EE1E1A20070B915 /* ApplePayComponentFactoryTests.swift in Sources */,
 				A06C76452E1EAF9700213E53 /* AdyenSessionMock.swift in Sources */,
 				B62D48C02BBE8DF5001EF01A /* APIClientMock.swift in Sources */,
 				A03056E82E016D9A00ED7014 /* CheckoutTests.swift in Sources */,
@@ -9160,6 +9167,7 @@
 				C930FB6E269D79E0006A26D2 /* AffirmDetails.swift in Sources */,
 				5A54603F264A5CEC00724A87 /* BoletoComponent.swift in Sources */,
 				C93B01B72760B03400D311A1 /* BACSConfirmationViewController.swift in Sources */,
+				A01B112C2F991E830081DA79 /* ApplePayComponentFactory.swift in Sources */,
 				C9D8EB9927452355006D8CA1 /* BACSInputFormViewController.swift in Sources */,
 				A0E1B63D2EA90B6D0070B915 /* BLIKComponentFactory.swift in Sources */,
 				A0BFBB542D6F267A003F543E /* PayToItemsProvider.swift in Sources */,
