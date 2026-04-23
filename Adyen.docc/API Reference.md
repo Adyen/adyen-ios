@@ -68,8 +68,6 @@ The Adyen DropIn/Components SDK API Reference.
 - ``Action``
 - ``RedirectAction``
 - ``ThreeDS2Action``
-- ``ThreeDS2FingerprintAction``
-- ``ThreeDS2ChallengeAction``
 - ``AwaitAction``
 - ``GenericVoucherAction``
 - ``VoucherAction``
