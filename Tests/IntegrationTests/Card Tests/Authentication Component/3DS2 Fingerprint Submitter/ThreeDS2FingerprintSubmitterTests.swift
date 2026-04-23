@@ -106,8 +106,10 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
             case let .success(result):
                 switch result {
                 case let .details(result):
-                    XCTAssertTrue(result is ThreeDSResult)
-                    let details = result as! ThreeDSResult
+                    guard let details = result as? ThreeDSResult else {
+                        XCTFail("result is not ThreeDSResult")
+                        return
+                    }
                     XCTAssertEqual(details.payload, "payload")
                 default:
                     XCTFail()
