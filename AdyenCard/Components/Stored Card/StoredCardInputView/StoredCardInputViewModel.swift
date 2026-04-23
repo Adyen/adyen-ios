@@ -135,6 +135,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
 
     @MainActor internal func viewDidDisappear() {
         resetSecurityCodeField()
+        inProgress = false
     }
 
     // MARK: - Submit payment

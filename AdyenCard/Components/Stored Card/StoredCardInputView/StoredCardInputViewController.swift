@@ -204,6 +204,7 @@ internal class StoredCardInputViewController: UIViewController {
     }
 
     private func updateLoadingState(_ isLoading: Bool) {
+        primaryButton.isEnabled = !isLoading
         primaryButton.showsActivityIndicator = isLoading
     }
 
