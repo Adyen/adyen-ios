@@ -23,7 +23,6 @@ public struct CheckoutResult {
 }
 
 /// Wrapper type to contain checkout related errors.
-// TODO: if not needed, can remove?
 public struct CheckoutError: Error {
     
     private let error: Error
