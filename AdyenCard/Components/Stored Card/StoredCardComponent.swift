@@ -55,18 +55,20 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
         )
 
         viewModel.cardDetailsCompletionHandler = { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case let .success(details):
-                submit(
-                    data: PaymentComponentData(
-                        paymentMethodDetails: details,
-                        amount: context.amount,
-                        order: order
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                switch result {
+                case let .success(details):
+                    self.submit(
+                        data: PaymentComponentData(
+                            paymentMethodDetails: details,
+                            amount: context.amount,
+                            order: order
+                        )
                     )
-                )
-            case let .failure(error):
-                delegate?.didFail(with: error, from: self)
+                case let .failure(error):
+                    delegate?.didFail(with: error, from: self)
+                }
             }
         }
 
