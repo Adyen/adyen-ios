@@ -23,16 +23,15 @@ extension Checkout: PaymentComponentDelegate {
         if let onSubmit = configuration.onSubmit {
             submitTask?.cancel()
             submitTask = Task { [weak self] in
-                let result: SubmitResult
                 do {
-                    result = try await onSubmit(data)
-                } catch is CancellationError {
-                    return
+                    let submitResult = try await onSubmit(data)
+                    guard !Task.isCancelled else { return }
+                    self?.handle(submitResult: submitResult, from: component)
                 } catch {
-                    result = .error(error)
+                    // Ignore if this was a cancellation (task superseded or Checkout torn down).
+                    guard !(error is CancellationError), !Task.isCancelled else { return }
+                    self?.handle(submitResult: .error(error), from: component)
                 }
-                guard !Task.isCancelled else { return }
-                self?.handle(submitResult: result, from: component)
             }
         } else if let session {
             session.didSubmit(
@@ -81,16 +80,15 @@ extension Checkout: ActionComponentDelegate {
         if let onAdditionalDetails = configuration.onAdditionalDetails {
             additionalDetailsTask?.cancel()
             additionalDetailsTask = Task { [weak self] in
-                let result: AdditionalDetailsResult
                 do {
-                    result = try await onAdditionalDetails(data)
-                } catch is CancellationError {
-                    return
+                    let additionalDetailsResult = try await onAdditionalDetails(data)
+                    guard !Task.isCancelled else { return }
+                    self?.handle(additionalDetailsResult: additionalDetailsResult, from: self?.pendingPaymentComponent)
                 } catch {
-                    result = .error(error)
+                    // Ignore if this was a cancellation (task superseded or Checkout torn down).
+                    guard !(error is CancellationError), !Task.isCancelled else { return }
+                    self?.handle(additionalDetailsResult: .error(error), from: self?.pendingPaymentComponent)
                 }
-                guard !Task.isCancelled else { return }
-                self?.handle(additionalDetailsResult: result, from: self?.pendingPaymentComponent)
             }
         } else if let session {
             session.didProvide(
