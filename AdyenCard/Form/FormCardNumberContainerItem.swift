@@ -10,6 +10,10 @@ import UIKit
 /// A form item which consists of card number item and the supported card icons below.
 internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     
+    private enum Constants {
+        static let brandDescriptionInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+    }
+    
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
     /// The supported card type logos.
@@ -44,18 +48,22 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
         return item
     }()
     
-    internal lazy var brandDescriptionItem: FormLabelItem = {
+    internal lazy var brandDescriptionItem: FormContainerItem = {
         let style = TextStyle(
             font: .preferredFont(forTextStyle: .footnote),
-            color: UIColor.Adyen.componentSecondaryLabel
+            color: UIColor.Adyen.componentSecondaryLabel,
+            textAlignment: .natural
         )
         let item = FormLabelItem(
             text: localizedString(.creditCardDualBrandDescription, localizationParameters),
             style: style
         )
-        item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "brandDescriptionItem")
-        item.isHidden.wrappedValue = true
-        return item
+        
+        let containerItem = item.padding(Constants.brandDescriptionInsets)
+        containerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "brandDescriptionItem")
+        containerItem.isHidden.wrappedValue = true
+        
+        return containerItem
     }()
     
     internal lazy var supportedCardLogosItem: FormCardLogosItem = {
