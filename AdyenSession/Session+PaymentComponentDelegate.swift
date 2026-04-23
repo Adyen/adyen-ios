@@ -67,28 +67,27 @@ extension Session {
         )
         Task { [weak self] in
             guard let self else { return }
-            let submitResult: SubmitResult
             do {
                 let response: PaymentsResponse = try await apiClient.performAsync(request)
-                submitResult = mapToSubmitResult(response)
+                handle(paymentResponse: response, for: component, in: dropInComponent)
             } catch {
-                submitResult = .error(error)
+                finish(with: error, component: component)
             }
-            handle(submitResult: submitResult, for: component, in: dropInComponent)
         }
     }
-
+    
     @MainActor
-    private func handle(
-        submitResult: SubmitResult,
+    internal func handle(
+        paymentResponse response: PaymentsResponse,
         for currentComponent: Component,
         in dropInComponent: AnyDropInComponent?
     ) {
-        switch submitResult {
-        case let .action(action):
+        if let action = response.action {
             handle(action: action, for: currentComponent, in: dropInComponent)
+        } else if let order = response.order,
+                  let remainingAmount = order.remainingAmount,
+                  remainingAmount.value > 0 {
             
-        case let .partialPayment(payload):
             guard let dropInComponent else {
                 finish(
                     with: PartialPaymentError.notSupportedForComponent,
@@ -96,54 +95,21 @@ extension Session {
                 )
                 return
             }
-            // ⚠️ BEHAVIOR REGRESSION R1 (v6, intentional — Android parity).
-            // Pre-v6 Session showed a "Payment refused" UIAlertController here whenever the
-            // `/payments` response had `resultCode == .refused` and a non-zero
-            // `order.remainingAmount` (e.g. gift card declined mid-flow). That alert is now
-            // removed to match Android's `SessionInteractor`, which routes the same condition
-            // (`RefusedPartialPayment`) through its `onFinished(...)` callback without
-            // showing UI.
-            //
-            // Shoppers no longer receive a Session-level "Payment refused" notification on
-            // gift-card decline; the drop-in simply reloads with updated payment methods.
-            // If UX wants the alert back, it should live in the drop-in layer (not Session).
-            updateDropIn(
-                dropInComponent,
-                with: payload.order,
-                currentComponent: currentComponent
+            
+            handle(
+                order: order,
+                resultCode: response.resultCode,
+                currentComponent: currentComponent,
+                dropInComponent: dropInComponent
             )
             
-        case let .finished(resultCode):
+        } else {
             let result = CheckoutResult(
-                resultCode: CheckoutResultCode(rawValue: resultCode),
-                sessionResult: state.sessionResult
+                resultCode: response.resultCode,
+                sessionResult: response.sessionResult
             )
             finish(with: result, component: currentComponent)
-            
-        case let .error(error):
-            finish(with: error, component: currentComponent)
-            
-        @unknown default:
-            AdyenAssertion.assertionFailure(
-                message: "Unhandled SubmitResult branch in Session; ignored."
-            )
         }
-    }
-    
-    /// Pure mapping from a `/payments` response to a `SubmitResult`.
-    /// The mapper is intentionally pure; HTTP / merchant errors are folded at the Task catch site.
-    /// `paymentMethodsUpdate` is emitted as `nil` — it is produced later by the session reload and
-    /// read by consumers from `state.paymentMethods` at that point.
-    internal func mapToSubmitResult(_ response: PaymentsResponse) -> SubmitResult {
-        if let action = response.action {
-            return .action(action)
-        }
-        if let order = response.order,
-           let remainingAmount = order.remainingAmount,
-           remainingAmount.value > 0 {
-            return .partialPayment(PartialPayment(order: order, paymentMethodsUpdate: nil))
-        }
-        return .finished(resultCode: response.resultCode.rawValue)
     }
     
     @MainActor
@@ -157,6 +123,46 @@ extension Session {
         } else {
             actionHandlingComponent.handle(action)
         }
+    }
+    
+    @MainActor
+    private func handle(
+        order: PartialPaymentOrder,
+        resultCode: CheckoutResultCode,
+        currentComponent: Component,
+        dropInComponent: AnyDropInComponent
+    ) {
+        let updateDropInBlock: (() -> Void) = { [weak self] in
+            self?.updateDropIn(dropInComponent, with: order, currentComponent: currentComponent)
+        }
+        
+        // dropIn needs to be updated in both cases
+        if resultCode == .refused {
+            showPaymentFailedAlert(on: dropInComponent, completion: updateDropInBlock)
+        } else {
+            updateDropInBlock()
+        }
+    }
+    
+    @MainActor
+    private func showPaymentFailedAlert(on dropInComponent: AnyDropInComponent, completion: @escaping (() -> Void)) {
+        let localizationParameters = (dropInComponent as? Localizable)?.localizationParameters
+        let title = localizedString(.errorTitle, localizationParameters)
+        let message = localizedString(.paymentRefusedMessage, localizationParameters)
+        
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        let doneTitle = localizedString(.dismissButton, localizationParameters)
+        let doneAction = UIAlertAction(title: doneTitle, style: .default) { _ in
+            completion()
+        }
+        alertController.addAction(doneAction)
+        
+        dropInComponent.viewController.present(alertController, animated: true)
     }
     
     @MainActor

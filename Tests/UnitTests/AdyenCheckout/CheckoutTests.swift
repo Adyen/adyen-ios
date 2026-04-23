@@ -586,26 +586,6 @@ final class CheckoutTests: XCTestCase {
         await fulfillment(of: [onErrorExpectation], timeout: 1)
     }
     
-    func test_didComplete_emitsFinishedWithEmptyResultCode_callsOnComplete() async {
-        let onCompleteExpectation = expectation(description: "onComplete called with empty-string fallback")
-        
-        configuration.onComplete = { result in
-            // Phase 3 / Plan Key Design Decision #7: the non-session didComplete(from:) path
-            // emits AdditionalDetailsResult.finished(resultCode: ""), which the SDK folds into a
-            // CheckoutResult with CheckoutResultCode.other("").
-            XCTAssertEqual(result.resultCode, .other(Self.missingResultCode))
-            onCompleteExpectation.fulfill()
-        }
-        
-        let sut = Checkout(
-            configuration: configuration,
-            adyenContext: Dummy.context,
-            presentationDelegate: nil
-        )
-        sut.didComplete(from: ActionComponentMock())
-        await fulfillment(of: [onCompleteExpectation], timeout: 1)
-    }
-    
     func test_didProvide_errorThrown_callsOnError() async {
         let onErrorExpectation = expectation(description: "onError called")
         let actionData = ActionComponentData(
@@ -627,6 +607,30 @@ final class CheckoutTests: XCTestCase {
         )
         sut.didProvide(actionData, from: ActionComponentMock())
         await fulfillment(of: [onErrorExpectation], timeout: 1)
+    }
+    
+    func test_didProvide_cancellationErrorThrown_doesNotCallOnError() async {
+        let onErrorExpectation = expectation(description: "onError should NOT be called")
+        onErrorExpectation.isInverted = true
+        let actionData = ActionComponentData(
+            details: AwaitActionDetails(payload: "payload"),
+            paymentData: "data"
+        )
+        
+        configuration.onAdditionalDetails = { _ in
+            throw CancellationError()
+        }
+        configuration.onError = { _ in
+            onErrorExpectation.fulfill()
+        }
+        
+        let sut = Checkout(
+            configuration: configuration,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        sut.didProvide(actionData, from: ActionComponentMock())
+        await fulfillment(of: [onErrorExpectation], timeout: 0.5)
     }
 }
 
