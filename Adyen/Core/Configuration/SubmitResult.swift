@@ -33,10 +33,10 @@ public struct PartialPayment: Sendable {
     
     /// Updated payment methods for the continuation flow. Optional because a session reload
     /// does not always produce a new list.
-    public let paymentMethodsUpdate: PaymentMethods?
+    public let paymentMethods: PaymentMethods?
     
-    public init(order: PartialPaymentOrder, paymentMethodsUpdate: PaymentMethods? = nil) {
+    public init(order: PartialPaymentOrder, paymentMethods: PaymentMethods? = nil) {
         self.order = order
-        self.paymentMethodsUpdate = paymentMethodsUpdate
+        self.paymentMethods = paymentMethods
     }
 }
