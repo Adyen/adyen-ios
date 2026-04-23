@@ -140,6 +140,30 @@ class StoredCardComponentTests: XCTestCase {
         XCTAssertTrue(proxy.isPayButtonEnabled)
     }
 
+    // MARK: - Validation Errors
+
+    /// Verifies that entering an incomplete security code (2 digits) and tapping pay shows a validation error
+    /// and does NOT call the submit delegate.
+    func testPaymentSubmitWithIncompleteCVC_ShowsErrorAndDoesNotSubmit() {
+        // Given
+        let sut = makeSUT()
+        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+
+        delegate.onDidSubmit = { _, _ in XCTFail("didSubmit should not be called for invalid CVC") }
+        delegate.onDidFail = { _, _ in XCTFail("didFail should not be called") }
+
+        // When
+        proxy.present()
+        proxy.enterText("12") // Only 2 digits - invalid for any card type
+        proxy.tapPayButton()
+
+        // Then - wait for async submit to complete and trigger validation
+        wait(until: { proxy.securityCodeShowsError }, timeout: 1.0, retryInterval: .milliseconds(50))
+        XCTAssertNil(delegate.didSubmitReceivedArguments, "Delegate should not receive submit call")
+    }
+
     // MARK: - Analytics
 
     /// Verifies that accessing the view controller sends an initial analytics event.
@@ -214,6 +238,10 @@ final class StoredCardComponentProxy {
 
     var securityCodeText: String? {
         securityCodeItemView?.textField.text
+    }
+
+    var securityCodeShowsError: Bool {
+        securityCodeItemView?.accessory == .invalid
     }
 
     func enterText(_ code: String) {
