@@ -18,7 +18,6 @@ internal class StoredCardInputViewController: UIViewController {
     // MARK: - Constants
 
     private enum Constants {
-        static let chevronBackwardImage = "chevron.backward"
         static let contentPadding: CGFloat = 16
         static let distanceBetweenImageAndLabels: CGFloat = 12
         static let distanceFromButtonsToLabels: CGFloat = 24
@@ -142,6 +141,11 @@ internal class StoredCardInputViewController: UIViewController {
         viewModel.viewDidLoad()
     }
 
+    override internal func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.viewDidDisappear()
+    }
+
     // MARK: - setup & configurations
 
     private func setupView() {
@@ -171,7 +175,6 @@ internal class StoredCardInputViewController: UIViewController {
         configureConstraints()
         configureContent()
         setupBindings()
-        setupNavigationBackButton()
         disableSwipeDownToDismissScreen()
     }
 
@@ -194,16 +197,6 @@ internal class StoredCardInputViewController: UIViewController {
         ])
     }
 
-    private func setupNavigationBackButton() {
-        let backButton = UIBarButtonItem(
-            image: UIImage(systemName: Constants.chevronBackwardImage),
-            style: .plain,
-            target: self,
-            action: #selector(backTapped)
-        )
-        navigationItem.leftBarButtonItem = backButton
-    }
-
     private func configureContent() {
         titleLabel.text = viewModel.titleText
         subtitleLabel.attributedText = viewModel.subtitleText
@@ -211,7 +204,6 @@ internal class StoredCardInputViewController: UIViewController {
     }
 
     private func updateLoadingState(_ isLoading: Bool) {
-        primaryButton.isEnabled = !isLoading
         primaryButton.showsActivityIndicator = isLoading
     }
 
@@ -236,9 +228,5 @@ internal class StoredCardInputViewController: UIViewController {
         Task { @MainActor [weak self] in
             await self?.viewModel.submit()
         }
-    }
-
-    @objc private func backTapped() {
-        viewModel.dismiss()
     }
 }

@@ -18,14 +18,14 @@ struct StoredCardInputViewControllerTests {
     // MARK: - A: UI Display
 
     @Test
-    func viewDidLoad_callsViewModelViewDidLoad() {
+    func viewDidLoad_callsViewModelViewDidLoad() async {
         let (proxy, viewModel) = makeSUT()
-        proxy.load()
+        await proxy.load()
         #expect(viewModel.viewDidLoadCallsCount == 1)
     }
 
     @Test
-    func viewDidLoad_configuresLabelsAndButtonsFromViewModel() throws {
+    func viewDidLoad_configuresLabelsAndButtonsFromViewModel() async throws {
         let titleText = "Enter security code"
         let subtitleText = "Use your Visa card"
         let submitTitle = "Pay €9.99"
@@ -35,7 +35,7 @@ struct StoredCardInputViewControllerTests {
             subtitleText: subtitleText,
             submitButtonTitle: submitTitle
         )
-        proxy.load()
+        await proxy.load()
 
         #expect(try proxy.titleLabelText == titleText)
         #expect(try proxy.subtitleLabelText == subtitleText)
@@ -43,17 +43,10 @@ struct StoredCardInputViewControllerTests {
     }
 
     @Test
-    func viewDidLoad_setsIsModalInPresentation() {
+    func viewDidLoad_setsIsModalInPresentation() async {
         let (proxy, _) = makeSUT()
-        proxy.load()
+        await proxy.load()
         #expect(proxy.viewController.isModalInPresentation)
-    }
-
-    @Test
-    func viewDidLoad_hasBackNavigationButton() {
-        let (proxy, _) = makeSUT()
-        proxy.load()
-        #expect(proxy.viewController.navigationItem.leftBarButtonItem != nil)
     }
 
     // MARK: - B: Primary button tap
@@ -61,7 +54,7 @@ struct StoredCardInputViewControllerTests {
     @Test
     func primaryButtonTap_callsSubmit() async throws {
         let (proxy, viewModel) = makeSUT()
-        proxy.load()
+        await proxy.load()
 
         try proxy.tapPrimaryButton()
 
@@ -79,7 +72,7 @@ struct StoredCardInputViewControllerTests {
     func inProgressPublisher_updatesPrimaryButtonState() async throws {
         let inProgressSource = StoredCardInputInProgressSource()
         let (proxy, _) = makeSUT(inProgressPublisher: inProgressSource.$isInProgress)
-        proxy.load()
+        await proxy.load()
 
         let button = try proxy.primaryButton()
         #expect(!button.showsActivityIndicator)
@@ -99,9 +92,9 @@ struct StoredCardInputViewControllerTests {
     }
 
     @Test
-    func onSecurityCodeValidationRequested_setsInvalidStateOnItem() {
+    func onSecurityCodeValidationRequested_setsInvalidStateOnItem() async {
         let (proxy, viewModel) = makeSUT()
-        proxy.load()
+        await proxy.load()
 
         viewModel.onSecurityCodeValidationRequested?()
 
@@ -113,25 +106,23 @@ struct StoredCardInputViewControllerTests {
     }
 
     @Test
-    func viewDidLoad_assignsOnSecurityCodeValidationRequestedCallback() {
+    func viewDidLoad_assignsOnSecurityCodeValidationRequestedCallback() async {
         let (proxy, viewModel) = makeSUT()
         #expect(viewModel.onSecurityCodeValidationRequested == nil)
 
-        proxy.load()
+        await proxy.load()
 
         #expect(viewModel.onSecurityCodeValidationRequested != nil)
     }
 
-    // MARK: - D: Secondary button and back button
-
     @Test
-    func backButtonTap_callsDismiss() {
+    func onViewDisappear_callsViewDidDisappear() async {
         let (proxy, viewModel) = makeSUT()
-        proxy.load()
+        await proxy.load()
 
-        proxy.tapBackButton()
+        await proxy.dismissView()
 
-        #expect(viewModel.dismissCallsCount == 1)
+        #expect(viewModel.viewDidDisappearCallsCount == 1)
     }
 
     // MARK: - Helpers
@@ -166,8 +157,18 @@ struct StoredCardInputViewControllerTests {
 struct StoredCardInputViewControllerProxy {
     let viewController: StoredCardInputViewController
 
-    func load() {
-        viewController.loadViewIfNeeded()
+    private let window = UIWindow(frame: UIScreen.main.bounds)
+    private let rootController = UIViewController()
+
+    func load() async {
+        window.rootViewController = rootController
+        window.makeKeyAndVisible()
+        await withCheckedContinuation { continuation in
+            rootController.present(viewController, animated: false) {
+                viewController.loadViewIfNeeded()
+                continuation.resume()
+            }
+        }
     }
 
     var titleLabelText: String {
@@ -208,9 +209,12 @@ struct StoredCardInputViewControllerProxy {
         try primaryButton().sendActions(for: .touchUpInside)
     }
 
-    func tapBackButton() {
-        let backButton = viewController.navigationItem.leftBarButtonItem
-        _ = backButton?.target?.perform(backButton?.action)
+    func dismissView() async {
+        await withCheckedContinuation { continuation in
+            rootController.dismiss(animated: false) {
+                continuation.resume()
+            }
+        }
     }
 }
 

@@ -6,7 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable @_spi(AdyenInternal) import AdyenCard
-@testable import AdyenUI
+@testable @_spi(AdyenInternal) import AdyenUI
 import XCTest
 
 @MainActor
@@ -25,7 +25,6 @@ class StoredCardComponentTests: XCTestCase {
 
         // Then
         XCTAssertNotNil(proxy.securityCodeText)
-        XCTAssertTrue(proxy.hasCancelButton)
         XCTAssertTrue(proxy.hasPayButton)
     }
 
@@ -61,6 +60,7 @@ class StoredCardComponentTests: XCTestCase {
         XCTAssertNil(cardDetails.encryptedExpiryMonth)
 
         XCTAssertTrue(proxy.securityCodeText?.isEmpty == true)
+        // Button is disabled after submission because security code is cleared on submit in the UI.
         XCTAssertFalse(proxy.isPayButtonEnabled)
     }
 
@@ -110,11 +110,9 @@ class StoredCardComponentTests: XCTestCase {
 
         proxy.enterText("1")
         XCTAssertEqual(proxy.securityCodeText, "111")
-        XCTAssertFalse(proxy.isPayButtonEnabled)
 
         proxy.enterText("1")
         XCTAssertEqual(proxy.securityCodeText, "1111")
-        XCTAssertTrue(proxy.isPayButtonEnabled)
 
         // When / Then - cannot exceed 4 digits
         proxy.enterText("1")
@@ -208,65 +206,47 @@ final class StoredCardComponentProxy {
     // MARK: - Presentation
 
     func present() {
+        component.viewController.loadViewIfNeeded()
         testCase.presentOnRoot(component.viewController)
     }
 
     // MARK: - Security Code
 
     var securityCodeText: String? {
-        alertTextField?.text
+        securityCodeItemView?.textField.text
     }
 
     func enterText(_ code: String) {
-        guard let textField = alertTextField else { return }
+        guard let textField = securityCodeItemView?.textField else { return }
         code.forEach { textField.insertText(String($0)) }
         textField.sendActions(for: .editingChanged)
     }
 
     // MARK: - Buttons
 
-    var hasCancelButton: Bool {
-        alertController?.actions.contains { $0.title == localizedString(.cancelButton, component.localizationParameters) } ?? false
-    }
-
     var hasPayButton: Bool {
-        payAction != nil
+        primaryButton != nil
     }
 
     var isPayButtonEnabled: Bool {
-        payAction?.isEnabled ?? false
+        primaryButton?.isEnabled ?? false
     }
 
     func tapPayButton() {
-        payAction?.tap()
+        primaryButton?.sendActions(for: .touchUpInside)
     }
 
-    // MARK: - Private (UIAlertController implementation)
+    // MARK: - Private (StoredCardInputViewController implementation)
 
-    private var alertController: UIAlertController? {
-        component.viewController as? UIAlertController
+    private var storedCardInputViewController: StoredCardInputViewController? {
+        component.viewController as? StoredCardInputViewController
     }
 
-    private var alertTextField: UITextField? {
-        alertController?.textFields?.first
+    private var securityCodeItemView: FormCardSecurityCodeItemView? {
+        storedCardInputViewController?.view.findView(by: "securityCodeItemView")
     }
 
-    private var payAction: UIAlertAction? {
-        let buttonTitle = localizedSubmitButtonTitle(with: component.context.amount, style: .immediate, component.localizationParameters)
-        return alertController?.actions.first { $0.title == buttonTitle }
-    }
-}
-
-// MARK: - UIAlertAction+Tap
-
-extension UIAlertAction {
-    typealias AlertHandler = @convention(block) (UIAlertAction) -> Void
-
-    func tap() {
-        let closure = self.value(forKey: "handler")
-
-        let handler = unsafeBitCast(closure as AnyObject, to: AlertHandler.self)
-
-        handler(self)
+    private var primaryButton: FormButton? {
+        storedCardInputViewController?.view.findView(by: "primaryButton")
     }
 }

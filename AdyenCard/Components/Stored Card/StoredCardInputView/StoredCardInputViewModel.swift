@@ -25,7 +25,7 @@ internal protocol StoredCardInputViewModelProtocol: AnyObject {
     var submitButtonTitle: String { get }
 
     @MainActor func submit() async
-    @MainActor func dismiss()
+    @MainActor func viewDidDisappear()
 
     var theme: CheckoutTheme { get }
 
@@ -46,6 +46,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     private let analyticsProvider: AnyAnalyticsProvider?
     private let amount: Amount?
     private let publicKey: String
+    private let cardBrand: CardType
 
     internal let theme: CheckoutTheme
     internal var onSecurityCodeValidationRequested: VoidCompletion?
@@ -57,7 +58,6 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
 
     /// This informs the status of the payment after submitting the security code.
     internal var cardDetailsCompletionHandler: Completion<Result<CardDetails, Error>>?
-    internal var closeHandler: VoidCompletion?
 
     internal init(
         theme: CheckoutTheme,
@@ -66,7 +66,8 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         publicKey: String,
         amount: Amount?,
         analyticsProvider: AnyAnalyticsProvider?,
-        localizationParameters: LocalizationParameters?
+        localizationParameters: LocalizationParameters?,
+        cardBrand: CardType
     ) {
         self.theme = theme
         self.storedCardPaymentMethod = storedCardPaymentMethod
@@ -75,6 +76,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         self.publicKey = publicKey
         self.localizationParameters = localizationParameters
         self.analyticsProvider = analyticsProvider
+        self.cardBrand = cardBrand
     }
 
     internal lazy var cardImageItem: CardImageItem = {
@@ -128,11 +130,11 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
 
     internal func viewDidLoad() {
         sendDidLoadEvent()
+        securityCodeItem.selectedCard = cardBrand
     }
 
-    @MainActor internal func dismiss() {
+    @MainActor internal func viewDidDisappear() {
         resetSecurityCodeField()
-        closeHandler?()
     }
 
     // MARK: - Submit payment
@@ -146,9 +148,8 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         inProgress = true
         let securityCode: String = securityCodeItem.value
         resetSecurityCodeField()
-
         await submitPayment(securityCode: securityCode)
-        inProgress = false
+        // We do not know the result of the submit payment hence we keep the state as in progress.
     }
 
     internal func submitPayment(securityCode: String) async {
