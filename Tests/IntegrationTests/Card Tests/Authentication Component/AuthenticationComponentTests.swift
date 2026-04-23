@@ -10,7 +10,6 @@ import XCTest
 @_spi(AdyenInternal) import Adyen
 @_spi(AdyenInternal) import AdyenUI
 
-@available(iOS 16.0, *)
 @MainActor
 class AuthenticationComponentTests: XCTestCase {
 

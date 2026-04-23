@@ -18,7 +18,6 @@ internal typealias VoidHandler = () -> Void
     import UIKit
     
     /// Handles the 3D Secure 2 fingerprint and challenge actions separately + Delegated Authentication.
-    @available(iOS 16.0, *)
     @MainActor
     // swiftlint:disable:next type_body_length
     internal class ThreeDS2PlusDACoreActionHandler: ThreeDS2CoreActionHandler {
