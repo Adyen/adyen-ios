@@ -34,7 +34,7 @@ internal enum ConfigurationConstants {
     static let shopperReference = "iOS Checkout Shopper"
 
     static let shopperEmail = "checkoutShopperiOS@example.org"
-    static let recurringProcessingModel = "CardOnFile"
+    static let recurringProcessingModel: String? = nil
 
     static var apiContext: APIContext {
         if let apiContext = try? APIContext(environment: componentsEnvironment, clientKey: clientKey) {
