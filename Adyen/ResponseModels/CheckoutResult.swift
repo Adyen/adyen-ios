@@ -21,20 +21,3 @@ public struct CheckoutResult {
         self.sessionResult = sessionResult
     }
 }
-
-/// Wrapper type to contain checkout related errors.
-public struct CheckoutError: Error {
-    
-    public let error: Error
-    
-    public init(error: Error) {
-        self.error = error
-    }
-}
-
-extension CheckoutError: LocalizedError {
-    
-    public var errorDescription: String? {
-        error.localizedDescription
-    }
-}

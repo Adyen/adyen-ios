@@ -30,7 +30,7 @@ extension Checkout: PaymentComponentDelegate {
                 } catch {
                     // Ignore if this was a cancellation (task superseded or Checkout torn down).
                     guard !(error is CancellationError), !Task.isCancelled else { return }
-                    self?.handle(submitResult: .error(error), from: component)
+                    self?.handle(error, from: component)
                 }
             }
         } else if let session {
@@ -53,10 +53,12 @@ extension Checkout: PaymentComponentDelegate {
         switch submitResult {
         case let .action(action):
             actionHandlingComponent.handle(action)
-        case let .finished(resultCode):
+        case let .completion(resultCode):
             finish(with: CheckoutResult(resultCode: CheckoutResultCode(rawValue: resultCode)), from: component)
-        case let .error(error):
-            finish(with: error, from: component)
+        case .retry:
+            // TODO: Re-prompt the shopper at payment-method selection. Optionally surface
+            // `errorMessage` in the UI before re-prompting.
+            break
         case .partialPayment:
             // Components (advanced flow): the SDK intentionally performs no work here.
             // The merchant owns the continuation — they decide whether to instantiate a new
@@ -87,7 +89,7 @@ extension Checkout: ActionComponentDelegate {
                 } catch {
                     // Ignore if this was a cancellation (task superseded or Checkout torn down).
                     guard !(error is CancellationError), !Task.isCancelled else { return }
-                    self?.handle(additionalDetailsResult: .error(error), from: self?.pendingPaymentComponent)
+                    self?.handle(error, from: self?.pendingPaymentComponent)
                 }
             }
         } else if let session {
@@ -114,10 +116,8 @@ extension Checkout: ActionComponentDelegate {
     @MainActor
     private func handle(additionalDetailsResult: AdditionalDetailsResult, from component: (any PaymentComponent)?) {
         switch additionalDetailsResult {
-        case let .finished(resultCode):
+        case let .completion(resultCode):
             finish(with: CheckoutResult(resultCode: CheckoutResultCode(rawValue: resultCode)), from: component)
-        case let .error(error):
-            finish(with: error, from: component)
         @unknown default:
             AdyenAssertion.assertionFailure(
                 message: "Unhandled AdditionalDetailsResult branch; ignored."
@@ -170,6 +170,6 @@ private extension Checkout {
     func finish(with error: Error, from component: (any PaymentComponent)?) {
         (component as? any FinalizableComponent)?.didFinalize(with: false, completion: nil)
         pendingPaymentComponent = nil
-        configuration.onError?(CheckoutError(error: error))
+        configuration.onError?(error)
     }
 }

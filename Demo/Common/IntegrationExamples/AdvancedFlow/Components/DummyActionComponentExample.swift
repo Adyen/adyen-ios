@@ -71,7 +71,7 @@ internal final class DummyActionComponentExample: InitialDataAdvancedFlowProtoco
             merchantAccount: ConfigurationConstants.current.merchantAccount
         )
         let response = try await asyncApiClient.performAsync(request)
-        return .finished(resultCode: response.resultCode.rawValue)
+        return .completion(resultCode: response.resultCode.rawValue)
     }
     
     private func startLoading() {

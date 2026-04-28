@@ -193,7 +193,7 @@ final class CheckoutTests: XCTestCase {
             XCTAssertEqual(details.blikCode, blikDetails.blikCode)
             expectation.fulfill()
             
-            return .finished(resultCode: CheckoutResultCode.authorised.rawValue)
+            return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
         }
         
         let sut = Checkout(
@@ -420,7 +420,7 @@ final class CheckoutTests: XCTestCase {
         
         configuration.onSubmit = { _ in
             onSubmitExpectation.fulfill()
-            return .finished(resultCode: CheckoutResultCode.authorised.rawValue)
+            return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
         }
         configuration.onComplete = { result in
             XCTAssertEqual(result.resultCode, .authorised)
@@ -500,7 +500,7 @@ final class CheckoutTests: XCTestCase {
             XCTAssertEqual(data.paymentData, "data")
             XCTAssertNotNil(data.details as? AwaitActionDetails)
             expectation.fulfill()
-            return .finished(resultCode: CheckoutResultCode.authorised.rawValue)
+            return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
         }
         
         let sut = Checkout(
@@ -522,7 +522,7 @@ final class CheckoutTests: XCTestCase {
         )
         
         configuration.onSubmit = { _ in
-            .error(TestError())
+            throw TestError()
         }
         configuration.onError = { _ in
             onErrorExpectation.fulfill()
@@ -547,7 +547,7 @@ final class CheckoutTests: XCTestCase {
         
         configuration.onAdditionalDetails = { _ in
             onAdditionalDetailsExpectation.fulfill()
-            return .finished(resultCode: CheckoutResultCode.authorised.rawValue)
+            return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
         }
         configuration.onComplete = { result in
             XCTAssertEqual(result.resultCode, .authorised)
@@ -571,7 +571,7 @@ final class CheckoutTests: XCTestCase {
         )
         
         configuration.onAdditionalDetails = { _ in
-            .error(TestError())
+            throw TestError()
         }
         configuration.onError = { _ in
             onErrorExpectation.fulfill()

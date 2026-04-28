@@ -117,7 +117,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         if let action = response.action {
             return .action(action)
         }
-        return .finished(resultCode: response.resultCode.rawValue)
+        return .completion(resultCode: response.resultCode.rawValue)
     }
 
     private func callDetails(with data: ActionComponentData) async throws -> AdditionalDetailsResult {
@@ -127,7 +127,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             merchantAccount: ConfigurationConstants.current.merchantAccount
         )
         let response = try await asyncApiClient.performAsync(request)
-        return .finished(resultCode: response.resultCode.rawValue)
+        return .completion(resultCode: response.resultCode.rawValue)
     }
     
     // MARK: - Private
