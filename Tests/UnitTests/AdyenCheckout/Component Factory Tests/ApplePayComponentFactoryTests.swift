@@ -74,7 +74,6 @@ final class ApplePayComponentFactoryTests: XCTestCase {
 
         // Then
         XCTAssertTrue(component.configuration.allowOnboarding)
-        XCTAssertEqual(component.configuration.merchantIdentifier, "test_id")
     }
 
     // MARK: - Type Conformance Tests

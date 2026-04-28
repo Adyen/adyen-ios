@@ -24,9 +24,6 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
 
     package var localizationParameters: LocalizationParameters?
 
-    /// The merchant identifier for apple pay.
-    public let merchantIdentifier: String
-
     /// The flag to toggle onboarding.
     /// If true, allow the shopper to add cards to Apple Pay if non exists yet.
     /// If false, then Apple Pay is disabled if the shopper doesn't have supported cards on Apple Pay wallet.
@@ -97,7 +94,6 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
 
         self.paymentRequest = paymentRequest
         self.allowOnboarding = allowOnboarding
-        self.merchantIdentifier = paymentRequest.merchantIdentifier
     }
 
     internal static func validate(summaryItems: [PKPaymentSummaryItem]) throws {
