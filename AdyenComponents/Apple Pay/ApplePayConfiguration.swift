@@ -30,34 +30,13 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
     /// Default is false.
     public var allowOnboarding: Bool = false
 
-    /// Called when the shopper authorizes the payment, before `onSubmit`.
-    ///
-    /// Use this closure to validate the shopper's payment information (e.g., billing/shipping address)
-    /// before the payment is submitted. You can perform synchronous or asynchronous validation,
-    /// including backend calls if needed.
-    ///
-    /// Return `.success` to proceed with submission, or `.failure` with errors to let the shopper retry.
-    ///
-    /// - Note: Return `.failure` with non-empty `errors` to keep the sheet open for correction.
-    ///   Use `PKPaymentRequest.paymentBillingAddressInvalidError(withKey:localizedDescription:)` or similar
-    ///   factory methods to create field-specific errors.
-    public var onAuthorize: (@MainActor (PKPayment) async -> PKPaymentAuthorizationResult)?
+    internal var onAuthorize: (@MainActor (PKPayment) async -> PKPaymentAuthorizationResult)?
 
-    /// Called when the shopper selects a shipping contact.
-    ///
-    /// Return an updated `PKPaymentRequestShippingContactUpdate` with revised summary items
-    /// and optionally updated shipping methods or errors.
-    public var onShippingContactChange: (@MainActor (PKContact, [PKPaymentSummaryItem]) async -> PKPaymentRequestShippingContactUpdate)?
+    internal var onShippingContactChange: (@MainActor (PKContact, [PKPaymentSummaryItem]) async -> PKPaymentRequestShippingContactUpdate)?
 
-    /// Called when the shopper selects a shipping method.
-    ///
-    /// Return an updated `PKPaymentRequestShippingMethodUpdate` with revised summary items.
-    public var onShippingMethodChange: (@MainActor (PKShippingMethod, [PKPaymentSummaryItem]) async -> PKPaymentRequestShippingMethodUpdate)?
+    internal var onShippingMethodChange: (@MainActor (PKShippingMethod, [PKPaymentSummaryItem]) async -> PKPaymentRequestShippingMethodUpdate)?
 
-    /// Called when the shopper enters or updates a coupon code.
-    ///
-    /// Return an updated `PKPaymentRequestCouponCodeUpdate` with revised summary items.
-    public var onCouponCodeChange: (@MainActor (String, [PKPaymentSummaryItem]) async -> PKPaymentRequestCouponCodeUpdate)?
+    internal var onCouponCodeChange: (@MainActor (String, [PKPaymentSummaryItem]) async -> PKPaymentRequestCouponCodeUpdate)?
 
     /// The payment request object needed for Apple Pay. Must contain all the required fields
     /// such as `merchantIdentifier`, `summaryItems`, `currencyCode`, and `countryCode`.
@@ -136,6 +115,67 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
         newItems.append(PKPaymentSummaryItem(label: lastItem.label, amount: decimalAmount))
         newConfig.paymentRequest.paymentSummaryItems = newItems
         return newConfig
+    }
+
+    /// Sets the handler called when the shopper authorizes the payment, before `onSubmit`.
+    ///
+    /// Use this closure to validate the shopper's payment information (e.g., billing/shipping address)
+    /// before the payment is submitted. You can perform synchronous or asynchronous validation,
+    /// including backend calls if needed.
+    ///
+    /// Return `.success` to proceed with submission, or `.failure` with errors to let the shopper retry.
+    ///
+    /// - Note: Return `.failure` with non-empty `errors` to keep the sheet open for correction.
+    ///   Use `PKPaymentRequest.paymentBillingAddressInvalidError(withKey:localizedDescription:)` or similar
+    ///   factory methods to create field-specific errors.
+    /// - Parameter onAuthorize: The closure to call when the payment is authorized.
+    /// - Returns: A modified copy of the configuration.
+    public func onAuthorize(
+        _ onAuthorize: @escaping @MainActor (PKPayment) async -> PKPaymentAuthorizationResult
+    ) -> Self {
+        var copy = self
+        copy.onAuthorize = onAuthorize
+        return copy
+    }
+
+    /// Sets the handler called when the shopper selects a shipping contact.
+    ///
+    /// Return an updated `PKPaymentRequestShippingContactUpdate` with revised summary items
+    /// and optionally updated shipping methods or errors.
+    /// - Parameter onShippingContactChange: The closure to call when the shipping contact changes.
+    /// - Returns: A modified copy of the configuration.
+    public func onShippingContactChange(
+        _ onShippingContactChange: @escaping @MainActor (PKContact, [PKPaymentSummaryItem]) async -> PKPaymentRequestShippingContactUpdate
+    ) -> Self {
+        var copy = self
+        copy.onShippingContactChange = onShippingContactChange
+        return copy
+    }
+
+    /// Sets the handler called when the shopper selects a shipping method.
+    ///
+    /// Return an updated `PKPaymentRequestShippingMethodUpdate` with revised summary items.
+    /// - Parameter onShippingMethodChange: The closure to call when the shipping method changes.
+    /// - Returns: A modified copy of the configuration.
+    public func onShippingMethodChange(
+        _ onShippingMethodChange: @escaping @MainActor (PKShippingMethod, [PKPaymentSummaryItem]) async -> PKPaymentRequestShippingMethodUpdate
+    ) -> Self {
+        var copy = self
+        copy.onShippingMethodChange = onShippingMethodChange
+        return copy
+    }
+
+    /// Sets the handler called when the shopper enters or updates a coupon code.
+    ///
+    /// Return an updated `PKPaymentRequestCouponCodeUpdate` with revised summary items.
+    /// - Parameter onCouponCodeChange: The closure to call when the coupon code changes.
+    /// - Returns: A modified copy of the configuration.
+    public func onCouponCodeChange(
+        _ onCouponCodeChange: @escaping @MainActor (String, [PKPaymentSummaryItem]) async -> PKPaymentRequestCouponCodeUpdate
+    ) -> Self {
+        var copy = self
+        copy.onCouponCodeChange = onCouponCodeChange
+        return copy
     }
 }
 
