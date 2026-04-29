@@ -36,7 +36,10 @@ public class CheckoutPlatformParams {
     private let lock = NSLock()
 
     @_spi(AdyenInternal)
-    public func override(version: String, platform: Platform) {
+    public func overrideForCrossPlatform(
+        platform: Platform,
+        version: String
+    ) {
         lock.lock()
         defer { lock.unlock() }
 

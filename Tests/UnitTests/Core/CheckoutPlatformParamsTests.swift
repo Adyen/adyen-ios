@@ -23,14 +23,14 @@ class CheckoutPlatformParamsTests: XCTestCase {
         let originalPlatform = sut.platform
 
         // When
-        sut.override(version: "1.0.0", platform: .flutter)
+        sut.overrideForCrossPlatform(platform: .flutter, version: "1.0.0")
 
         // Then
         XCTAssertEqual(sut.version, "1.0.0")
         XCTAssertEqual(sut.platform, .flutter)
 
         // Cleanup - restore original values
-        sut.override(version: originalVersion, platform: originalPlatform)
+        sut.overrideForCrossPlatform(platform: originalPlatform, version: originalVersion)
     }
 
     func test_override_with_react_native_platform() {
@@ -39,7 +39,7 @@ class CheckoutPlatformParamsTests: XCTestCase {
         let originalPlatform = sut.platform
 
         // When
-        sut.override(version: "2.0.0", platform: .reactNative)
+        sut.overrideForCrossPlatform(platform: .reactNative, version: "2.0.0")
 
         // Then
         XCTAssertEqual(sut.version, "2.0.0")
@@ -47,7 +47,7 @@ class CheckoutPlatformParamsTests: XCTestCase {
         XCTAssertEqual(sut.platform.rawValue, "react-native")
 
         // Cleanup - restore original values
-        sut.override(version: originalVersion, platform: originalPlatform)
+        sut.overrideForCrossPlatform(platform: originalPlatform, version: originalVersion)
     }
 
     func test_channel_is_always_ios() {
@@ -56,13 +56,13 @@ class CheckoutPlatformParamsTests: XCTestCase {
         let originalPlatform = sut.platform
 
         // When - override to different platform
-        sut.override(version: "1.0.0", platform: .flutter)
+        sut.overrideForCrossPlatform(platform: .flutter, version: "1.0.0")
 
         // Then - channel should still be ios
         XCTAssertEqual(sut.channel, "ios")
 
         // Cleanup
-        sut.override(version: originalVersion, platform: originalPlatform)
+        sut.overrideForCrossPlatform(platform: originalPlatform, version: originalVersion)
     }
 
     func test_shared_returns_same_instance() {
