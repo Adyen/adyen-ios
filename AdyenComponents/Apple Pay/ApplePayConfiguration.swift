@@ -190,11 +190,8 @@ extension ApplePayPaymentMethod {
         guard let brands else { return networks }
 
         // Build a lookup table from txVariantName → PKPaymentNetwork.
-        let networkByBrand: [String: [PKPaymentNetwork]] = networks.reduce(into: [:]) { dict, network in
-            dict[network.txVariantName, default: []].append(network)
-        }
-
-        return brands.compactMap { networkByBrand[$0] }.flatMap { $0 }
+        let networkByBrand = Dictionary(grouping: networks, by: \.txVariantName)
+        return brands.flatMap { networkByBrand[$0] ?? [] }
     }
 }
 
