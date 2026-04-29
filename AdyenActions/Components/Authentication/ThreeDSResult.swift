@@ -8,7 +8,7 @@
 import Foundation
 
 /// Contains the result of a 3DS transaction.
-internal struct ThreeDSResult: Decodable {
+internal struct ThreeDSResult: AdditionalDetails, Decodable {
 
     /// The payload to submit to verify the authentication.
     internal let payload: String
@@ -89,4 +89,10 @@ internal struct ThreeDSResult: Decodable {
         case payload = "threeDSResult"
     }
 
+    // MARK: - Encoding
+    
+    internal func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(payload, forKey: .payload)
+    }
 }

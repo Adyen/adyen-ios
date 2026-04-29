@@ -15,7 +15,6 @@ internal protocol DelegatedAuthenticationErrorViewDelegate: AnyObject {
     func troubleshootingButtonTapped()
 }
 
-@available(iOS 16.0, *)
 internal final class DelegatedAuthenticationErrorView: UIView {
 
     private enum Constants {

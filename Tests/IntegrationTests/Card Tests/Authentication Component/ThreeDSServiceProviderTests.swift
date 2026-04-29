@@ -9,7 +9,6 @@
 import XCTest
 @_spi(AdyenInternal) import Adyen
 
-@available(iOS 16.0, *)
 final class ThreeDSServiceProviderTests: XCTestCase {
     private let authenticationRequestParameters = AuthenticationRequestParametersMock(
         deviceInformation: "device_info",
