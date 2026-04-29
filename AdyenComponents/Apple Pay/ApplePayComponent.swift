@@ -12,7 +12,11 @@ import PassKit
 @MainActor
 public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, FinalizableComponent {
 
-    internal let paymentRequest: PKPaymentRequest
+    /// The Apple Pay payment request. Kept on the configuration; exposed here as a
+    /// convenience that returns the same `PKPaymentRequest` reference.
+    internal var paymentRequest: PKPaymentRequest {
+        configuration.paymentRequest
+    }
 
     internal let applePayPaymentMethod: ApplePayPaymentMethod
 
@@ -71,8 +75,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
             throw Error.userCannotMakePayment
         }
 
-        var configuration = configuration
-        self.paymentRequest = configuration.paymentRequest(with: supportedNetworks)
+        configuration.paymentRequest.supportedNetworks = supportedNetworks
         self.configuration = configuration
         self.context = context
         self.applePayPaymentMethod = paymentMethod

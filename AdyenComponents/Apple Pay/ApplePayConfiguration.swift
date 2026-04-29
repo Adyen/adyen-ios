@@ -69,8 +69,6 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
     ///   such as `merchantIdentifier`, `summaryItems`, `currencyCode`, and `countryCode`.
     ///   - allowOnboarding: Flag to allow shoppers to add new cards for Apple Pay  if there is none. Default is `false`.
     /// - Warning: The instance of `paymentRequest` may be mutated.
-    /// - Note: Use this initializer to support any new additions to the `PKPaymentRequest` object,
-    ///  such as recurring payments via its `recurringPaymentRequest` property.
     /// - Throws: `ApplePayComponent.Error.emptyMerchantIdentifier` if the merchant identifier is empty.
     /// - Throws: `ApplePayComponent.Error.invalidCountryCode` if the country code is not valid.
     /// - Throws: `ApplePayComponent.Error.invalidCurrencyCode` if the currency code is not valid.
@@ -90,6 +88,7 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
         guard CurrencyCodeValidator().isValid(paymentRequest.currencyCode) else {
             throw ApplePayComponent.Error.invalidCurrencyCode
         }
+        
         try Self.validate(summaryItems: paymentRequest.paymentSummaryItems)
 
         self.paymentRequest = paymentRequest
@@ -107,11 +106,6 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
         guard !summaryItems.map(\.amount).contains(NSDecimalNumber.notANumber) else {
             throw ApplePayComponent.Error.invalidSummaryItem
         }
-    }
-
-    internal mutating func paymentRequest(with supportedNetworks: [PKPaymentNetwork]) -> PKPaymentRequest {
-        paymentRequest.supportedNetworks = supportedNetworks
-        return paymentRequest
     }
 
     package var currentAmount: Amount? {
