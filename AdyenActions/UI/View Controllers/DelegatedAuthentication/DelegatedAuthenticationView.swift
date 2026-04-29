@@ -17,7 +17,6 @@ internal protocol DelegatedAuthenticationViewDelegate: AnyObject {
     func secondButtonTapped()
 }
 
-@available(iOS 16.0, *)
 internal final class DelegatedAuthenticationView: UIView {
     
     private enum Constants {

@@ -25,7 +25,7 @@ internal enum ThreeDSActionHandlerResult: Decodable {
             self = .action(action)
         case .completed:
             let result = try container.decode(ThreeDSResult.self, forKey: .details)
-            self = .details(ThreeDS2Details.completed(result))
+            self = .details(result)
         }
     }
 

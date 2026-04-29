@@ -10,7 +10,6 @@
 #endif
 import UIKit
 
-@available(iOS 16.0, *)
 internal final class DAApprovalViewController: UIViewController {
     private let style: DelegatedAuthenticationComponentStyle
     private let localizationParameters: LocalizationParameters?
@@ -171,7 +170,6 @@ internal final class DAApprovalViewController: UIViewController {
     }
 }
 
-@available(iOS 16.0, *)
 extension DAApprovalViewController: DelegatedAuthenticationViewDelegate {
     internal func firstButtonTapped() {
         useBiometricsHandler()
