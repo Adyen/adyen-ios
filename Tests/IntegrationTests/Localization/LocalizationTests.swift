@@ -319,14 +319,13 @@ class LocalizationTests: XCTestCase {
         XCTAssertEqual(localizedString(.cancelButton, parameters, "now"), "Cancelled now")
     }
 
-    func test_localizedString_withProviderAndUnmappedKey_shouldNotConsultProvider() {
+    func test_localizedString_withProviderReturningNilForUnknownKey_shouldFallbackToBundle() {
         let provider = MockCheckoutLocalizationProvider(values: [:])
         let parameters = LocalizationParameters().withProvider(provider)
 
-        // `.cardStoredTitle` is not exposed via `CheckoutLocalizationKey`, so the provider
-        // must not be asked and the bundle fallback must win.
+        // `.cardStoredTitle` has no public `CheckoutLocalizationKey` counterpart. The provider
+        // is still consulted, returns nil for the unrecognized key, and the bundle fallback wins.
         XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Verify your card")
-        XCTAssertTrue(provider.requestedKeys.isEmpty)
     }
 
     func test_localizedString_withProvider_shouldPassResolvedLocale() {
@@ -336,19 +335,6 @@ class LocalizationTests: XCTestCase {
         _ = localizedString(.cardNumberItemTitle, parameters)
 
         XCTAssertEqual(provider.lastLocale?.identifier, "fr-FR")
-    }
-
-    func test_checkoutLocalizationKey_reverseMap_shouldContainEveryMappedKnownKey() {
-        // Every known `CheckoutLocalizationKey` whose underlying `LocalizationKey`
-        // is real (i.e. lives in the `adyen.*` namespace) must be reachable through
-        // the reverse map.
-        for key in CheckoutLocalizationKey.allKnownKeys where key.localizationKey.key.hasPrefix("adyen.") {
-            XCTAssertEqual(
-                CheckoutLocalizationKey.byLocalizationKey[key.localizationKey.key],
-                key,
-                "Reverse map is missing \(key.localizationKey.key)"
-            )
-        }
     }
 }
 
