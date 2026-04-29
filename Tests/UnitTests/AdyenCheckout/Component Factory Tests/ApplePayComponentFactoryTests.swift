@@ -30,10 +30,13 @@ final class ApplePayComponentFactoryTests: XCTestCase {
 
     // MARK: - Default Configuration Tests
 
-    func testDefaultConfiguration_ReturnsNil() {
+    func testDefaultConfiguration_Throws() {
         // Apple Pay has no usable default because merchant identifier and payment request
-        // are merchant-specific and cannot be inferred.
-        XCTAssertNil(factory.defaultConfiguration())
+        // are merchant-specific and cannot be inferred. The factory must signal this
+        // explicitly so callers cannot silently fall through.
+        XCTAssertThrowsError(try factory.defaultConfiguration()) { error in
+            XCTAssertTrue(error is UnknownError)
+        }
     }
 
     // MARK: - Component Creation Tests

@@ -420,8 +420,9 @@ class ApplePayComponentTest: XCTestCase {
         request.requiredBillingContactFields = expectedRequiredBillingFields
         request.requiredShippingContactFields = expectedRequiredShippingFields
 
-        var configuration = try ApplePayConfiguration(paymentRequest: request)
-        let paymentRequest = configuration.paymentRequest(with: paymentMethod.supportedNetworks())
+        let configuration = try ApplePayConfiguration(paymentRequest: request)
+        configuration.paymentRequest.supportedNetworks = paymentMethod.supportedNetworks()
+        let paymentRequest = configuration.paymentRequest
         XCTAssertEqual(paymentRequest.paymentSummaryItems, expectedSummaryItems)
         XCTAssertEqual(paymentRequest.merchantCapabilities, PKMerchantCapability.capability3DS)
         XCTAssertEqual(paymentRequest.currencyCode, currencyCode)
@@ -461,8 +462,9 @@ class ApplePayComponentTest: XCTestCase {
         request.requiredBillingContactFields = expectedRequiredBillingFields
         request.requiredShippingContactFields = expectedRequiredShippingFields
 
-        var configuration = try ApplePayConfiguration(paymentRequest: request)
-        let paymentRequest = configuration.paymentRequest(with: paymentMethod.supportedNetworks())
+        let configuration = try ApplePayConfiguration(paymentRequest: request)
+        configuration.paymentRequest.supportedNetworks = paymentMethod.supportedNetworks()
+        let paymentRequest = configuration.paymentRequest
 
         XCTAssertEqual(paymentRequest.paymentSummaryItems.count, 1)
         XCTAssertEqual(paymentRequest.paymentSummaryItems[0].label, "TEST")

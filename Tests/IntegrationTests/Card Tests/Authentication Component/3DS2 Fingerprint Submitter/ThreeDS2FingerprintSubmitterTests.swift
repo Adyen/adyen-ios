@@ -93,7 +93,7 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
         let apiClient = APIClientMock()
         let sut = ThreeDS2FingerprintSubmitter(context: Dummy.context, apiClient: apiClient)
 
-        let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
+        let mockedDetails = ThreeDSResult(payload: "payload")
         let mockedResponse = Submit3DS2FingerprintResponse(result: .details(mockedDetails))
         apiClient.mockedResults = [.success(mockedResponse)]
 
@@ -105,15 +105,12 @@ class ThreeDS2FingerprintSubmitterTests: XCTestCase {
                 XCTFail()
             case let .success(result):
                 switch result {
-                case let .details(details):
-                    XCTAssertTrue(details is ThreeDS2Details)
-                    let details = details as! ThreeDS2Details
-                    switch details {
-                    case let .completed(threeDSResult):
-                        XCTAssertEqual(threeDSResult.payload, "payload")
-                    default:
-                        XCTFail()
+                case let .details(result):
+                    guard let details = result as? ThreeDSResult else {
+                        XCTFail("result is not ThreeDSResult")
+                        return
                     }
+                    XCTAssertEqual(details.payload, "payload")
                 default:
                     XCTFail()
                 }

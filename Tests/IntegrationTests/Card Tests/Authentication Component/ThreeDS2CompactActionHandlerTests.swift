@@ -43,12 +43,14 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         challengeAction = ThreeDS2ChallengeAction(challengeToken: challengeToken, authorisationToken: "authToken", paymentData: "paymentData")
     }
     
+    /// Verifies that setting threeDSRequestorAppURL propagates to the core action handler.
     func testSettingThreeDSRequestorAppURL() {
         let sut = ThreeDS2CompactActionHandler(context: Dummy.context, theme: .default, service: ThreeDSServiceableMock(), delegatedAuthenticationConfiguration: nil)
         sut.threeDSRequestorAppURL = URL(string: "https://google.com")
         XCTAssertEqual(sut.coreActionHandler.threeDSRequestorAppURL, URL(string: "https://google.com"))
     }
 
+    /// Verifies that the wrapped component correctly reflects context and isDropIn state.
     func testWrappedComponent() {
         let sut = ThreeDS2CompactActionHandler(context: Dummy.context, theme: .default, service: ThreeDSServiceableMock(), delegatedAuthenticationConfiguration: nil)
         XCTAssertEqual(sut.wrappedComponent.context.apiContext.clientKey, Dummy.apiContext.clientKey)
@@ -61,10 +63,11 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         XCTAssertEqual(sut.wrappedComponent._isDropIn, true)
     }
 
+    /// Verifies that an invalid fingerprint token results in a decoding error.
     func testFingerprintFlowInvalidFingerprintToken() {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
 
-        let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
+        let mockedDetails = ThreeDSResult(payload: "payload")
         submitter.mockedResult = .success(.details(mockedDetails))
 
         let service = ThreeDSServiceableMock()
@@ -109,6 +112,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
+    /// Verifies that a successful challenge flow returns the expected ThreeDSResult with correct payload.
     func testChallengeFlowSuccess() {
 
         let service = ThreeDSServiceableMock()
@@ -131,26 +135,26 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             case let .success(result):
                 switch result {
                 case let .details(details):
-                    XCTAssertTrue(details is ThreeDS2Details)
-                    let details = details as! ThreeDS2Details
-                    switch details {
-                    case let .completed(result):
-                        let data = Data(base64Encoded: result.payload)
-                        let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: String]
-                        XCTAssertEqual(json?["transStatus"], "Y")
-                        XCTAssertEqual(json?["authorisationToken"], "authToken")
-                        
-                        // check events
-                        let challengeSentEvent = analyticsProviderMock.logs[0]
-                        let challengeDisplayedEvent = analyticsProviderMock.logs[1]
-                        let challengeCompleteEvent = analyticsProviderMock.logs[2]
-                        
-                        XCTAssertEqual(challengeSentEvent.subType, .challengeDataSent)
-                        XCTAssertEqual(challengeDisplayedEvent.subType, .challengeDisplayed)
-                        XCTAssertEqual(challengeCompleteEvent.subType, .challengeComplete)
-                    default:
-                        XCTFail()
+                    guard let threeDSResult = details as? ThreeDSResult else {
+                        XCTFail("Expected ThreeDSResult but got \(type(of: details))")
+                        return
                     }
+                    guard let data = Data(base64Encoded: threeDSResult.payload),
+                          let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: String] else {
+                        XCTFail("Failed to decode payload")
+                        return
+                    }
+                    XCTAssertEqual(json["transStatus"], "Y")
+                    XCTAssertEqual(json["authorisationToken"], "authToken")
+                    
+                    // check events
+                    let challengeSentEvent = analyticsProviderMock.logs[0]
+                    let challengeDisplayedEvent = analyticsProviderMock.logs[1]
+                    let challengeCompleteEvent = analyticsProviderMock.logs[2]
+                    
+                    XCTAssertEqual(challengeSentEvent.subType, .challengeDataSent)
+                    XCTAssertEqual(challengeDisplayedEvent.subType, .challengeDisplayed)
+                    XCTAssertEqual(challengeCompleteEvent.subType, .challengeComplete)
                 default:
                     XCTFail()
                 }
@@ -163,6 +167,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
+    /// Verifies that a challenge error includes the threeDS2SDKError in the payload.
     func testChallengeFlowFailure() {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
 
@@ -183,26 +188,21 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             switch result {
             case let .success(actionHandlerResult):
                 switch actionHandlerResult {
-                case let .details(additionalDetails as ThreeDS2Details):
-                    switch additionalDetails {
-                    case let .completed(threeDSResult):
-                        struct Payload: Codable {
-                            let threeDS2SDKError: String?
-                        }
-                        // Check if there is a threeDS2SDKError in the payload.
-                        let payload: Payload? = try? AdyenCoder.decodeBase64(threeDSResult.payload)
-                        XCTAssertNotNil(payload?.threeDS2SDKError)
-                        
-                        let errorEvent = analyticsProviderMock.errors[0]
-                        XCTAssertEqual(errorEvent.errorType, .threeDS2)
-                        XCTAssertEqual(errorEvent.component, "threeDS2Challenge")
-                        XCTAssertEqual(
-                            errorEvent.code,
-                            AnalyticsConstants.ErrorCode.threeDS2ChallengeHandlingFailed.stringValue
-                        )
-                    default:
-                        XCTFail()
+                case let .details(additionalDetails as ThreeDSResult):
+                    struct Payload: Codable {
+                        let threeDS2SDKError: String?
                     }
+                    // Check if there is a threeDS2SDKError in the payload.
+                    let payload: Payload? = try? AdyenCoder.decodeBase64(additionalDetails.payload)
+                    XCTAssertNotNil(payload?.threeDS2SDKError)
+                    
+                    let errorEvent = analyticsProviderMock.errors[0]
+                    XCTAssertEqual(errorEvent.errorType, .threeDS2)
+                    XCTAssertEqual(errorEvent.component, "threeDS2Challenge")
+                    XCTAssertEqual(
+                        errorEvent.code,
+                        AnalyticsConstants.ErrorCode.threeDS2ChallengeHandlingFailed.stringValue
+                    )
                 default:
                     XCTFail()
                 }
@@ -215,6 +215,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
+    /// Verifies that an invalid challenge token results in a decoding error.
     func testChallengeFlowInvalidChallengeToken() {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
         let mockedAction = ThreeDS2ChallengeAction(challengeToken: "Invalid-token", authorisationToken: "AuthToken", paymentData: "paymentData")
@@ -259,6 +260,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
+    /// Verifies that a missing transaction results in the appropriate error.
     func testChallengeFlowMissingTransaction() {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
         let service = ThreeDSServiceableMock()
@@ -298,10 +300,11 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
+    /// Verifies that an invalid ephemeral public key results in a fingerprint creation error.
     func testFingerprintFlowInvalidEphemeralPublicKey() {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
 
-        let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
+        let mockedDetails = ThreeDSResult(payload: "payload")
         submitter.mockedResult = .success(.details(mockedDetails))
 
         let service = ThreeDSServiceableMock()
@@ -355,10 +358,11 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
+    /// Verifies that a frictionless fingerprint flow completes successfully with the expected payload.
     func testFingerprintFlowFrictionless() {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
 
-        let mockedDetails = ThreeDS2Details.completed(ThreeDSResult(payload: "payload"))
+        let mockedDetails = ThreeDSResult(payload: "payload")
         submitter.mockedResult = .success(.details(mockedDetails))
 
         let service = ThreeDSServiceableMock()
@@ -379,21 +383,18 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
             case let .success(result):
                 switch result {
                 case let .details(details):
-                    XCTAssertTrue(details is ThreeDS2Details)
-                    let details = details as! ThreeDS2Details
-                    switch details {
-                    case let .completed(threeDSResult):
-                        XCTAssertEqual(threeDSResult.payload, "payload")
-                        
-                        // check events
-                        let fingerprintSentEvent = analyticsProviderMock.logs[0]
-                        let fingerprintCompleteEvent = analyticsProviderMock.logs[1]
-                        
-                        XCTAssertEqual(fingerprintSentEvent.subType, .fingerprintSent)
-                        XCTAssertEqual(fingerprintCompleteEvent.subType, .fingerprintComplete)
-                    default:
-                        XCTFail()
+                    guard let threeDSResult = details as? ThreeDSResult else {
+                        XCTFail("Expected ThreeDSResult but got \(type(of: details))")
+                        return
                     }
+                    XCTAssertEqual(threeDSResult.payload, "payload")
+                    
+                    // check events
+                    let fingerprintSentEvent = analyticsProviderMock.logs[0]
+                    let fingerprintCompleteEvent = analyticsProviderMock.logs[1]
+                    
+                    XCTAssertEqual(fingerprintSentEvent.subType, .fingerprintSent)
+                    XCTAssertEqual(fingerprintCompleteEvent.subType, .fingerprintComplete)
                 default:
                     XCTFail()
                 }
@@ -406,6 +407,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
+    /// Verifies that a 3DS1 fallback redirect action is correctly returned during fingerprint flow.
     func testFingerprintFlow3DS1Fallback() throws {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
 
@@ -445,6 +447,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
+    /// Verifies that a submitter failure propagates the error correctly.
     func testFingerprintFlowSubmitterFailure() {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
 
@@ -473,6 +476,7 @@ class ThreeDS2CompactActionHandlerTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
     
+    /// Verifies that a fingerprint failure submits the error payload to the server.
     func testFingerprintFailureThatSubmitsErrorPayload() {
         let submitter = AnyThreeDS2FingerprintSubmitterMock()
         let onSubmitFingerprint = expectation(description: "Expect onSubmitFingerprint to be called.")

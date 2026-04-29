@@ -74,7 +74,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         typealias Method = MockPaymentMethod
         typealias Component = MockComponent
         
-        func defaultConfiguration() -> MockConfiguration? {
+        func defaultConfiguration() -> MockConfiguration {
             MockConfiguration(value: "factory_default", showsSubmitButton: true)
         }
         
@@ -101,12 +101,12 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         XCTAssertNotNil(factory as any PaymentComponentFactory)
     }
     
-    func testMockFactory_ProvidesDefaultConfiguration() throws {
+    func testMockFactory_ProvidesDefaultConfiguration() {
         // Given
         let factory = MockFactory()
         
         // When
-        let config = try XCTUnwrap(factory.defaultConfiguration())
+        let config = factory.defaultConfiguration()
         
         // Then
         XCTAssertEqual(config.value, "factory_default")
@@ -133,12 +133,12 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         XCTAssertEqual(component.context.apiContext.clientKey, context.apiContext.clientKey)
     }
     
-    func testMockFactory_AssociatedTypesAreCorrect() throws {
+    func testMockFactory_AssociatedTypesAreCorrect() {
         // Given
         let factory = MockFactory()
         
         // When
-        let config = try XCTUnwrap(factory.defaultConfiguration())
+        let config = factory.defaultConfiguration()
         let paymentMethod = MockPaymentMethod()
         let component = factory.create(
             with: paymentMethod,
@@ -170,11 +170,11 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         XCTAssertEqual(component.configValue, "custom_value")
     }
     
-    func testMockFactory_PreservesPaymentMethod() throws {
+    func testMockFactory_PreservesPaymentMethod() {
         // Given
         let factory = MockFactory()
         let paymentMethod = MockPaymentMethod()
-        let config = try XCTUnwrap(factory.defaultConfiguration())
+        let config = factory.defaultConfiguration()
         
         // When
         let component = factory.create(
@@ -188,7 +188,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         XCTAssertEqual(component.paymentMethod.name, paymentMethod.name)
     }
     
-    func testMockFactory_PreservesContext() throws {
+    func testMockFactory_PreservesContext() {
         // Given
         let factory = MockFactory()
         let paymentMethod = MockPaymentMethod()
@@ -199,7 +199,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
             publicKey: Dummy.publicKey,
             analyticsProvider: AnalyticsProviderMock()
         )
-        let config = try XCTUnwrap(factory.defaultConfiguration())
+        let config = factory.defaultConfiguration()
         
         // When
         let component = factory.create(
@@ -231,11 +231,11 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         XCTAssertNotIdentical(component1, component2)
     }
     
-    func testMockFactory_ComponentConformsToPaymentComponent() throws {
+    func testMockFactory_ComponentConformsToPaymentComponent() {
         // Given
         let factory = MockFactory()
         let paymentMethod = MockPaymentMethod()
-        let config = try XCTUnwrap(factory.defaultConfiguration())
+        let config = factory.defaultConfiguration()
         
         // When
         let component = factory.create(
@@ -250,13 +250,13 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         XCTAssertNotNil(component.paymentMethod)
     }
     
-    func testMockFactory_DefaultConfigurationIsConsistent() throws {
+    func testMockFactory_DefaultConfigurationIsConsistent() {
         // Given
         let factory = MockFactory()
         
         // When
-        let config1 = try XCTUnwrap(factory.defaultConfiguration())
-        let config2 = try XCTUnwrap(factory.defaultConfiguration())
+        let config1 = factory.defaultConfiguration()
+        let config2 = factory.defaultConfiguration()
         
         // Then - Default configurations should have same values
         XCTAssertEqual(config1.value, config2.value)

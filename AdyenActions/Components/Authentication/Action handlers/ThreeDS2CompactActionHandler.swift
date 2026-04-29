@@ -119,8 +119,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
         coreActionHandler.handle(challengeAction, event: event) { result in
             switch result {
             case let .success(result):
-                let additionalDetails = ThreeDS2Details.completed(result)
-                completionHandler(.success(.details(additionalDetails)))
+                completionHandler(.success(.details(result)))
             case let .failure(error):
                 completionHandler(.failure(error))
             }

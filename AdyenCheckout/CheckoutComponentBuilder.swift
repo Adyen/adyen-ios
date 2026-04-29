@@ -121,18 +121,10 @@ internal enum CheckoutComponentBuilder {
         context: AdyenContext
     ) throws -> PaymentComponent where Factory.Configuration: CheckoutComponentConfiguration {
 
-        guard var componentConfiguration = configuration.configuration(
+        var componentConfiguration = try configuration.configuration(
             for: paymentMethod,
             defaultValue: factory.defaultConfiguration()
-        ) else {
-            // No merchant-provided configuration and no usable default — the integrator
-            // must provide one for this payment method (e.g., Apple Pay).
-            // TODO: turn this error into CheckoutError with a type
-            throw UnknownError(
-                errorDescription: "Missing required configuration for payment method \(paymentMethod.type.rawValue). "
-                    + "Provide a configuration via CheckoutConfiguration to use this payment method."
-            )
-        }
+        )
 
         componentConfiguration.showsSubmitButton = configuration.showsSubmitButton
         componentConfiguration.theme = configuration.theme
