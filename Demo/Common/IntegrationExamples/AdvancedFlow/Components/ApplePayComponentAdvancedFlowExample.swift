@@ -127,11 +127,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
 
         self.checkout = checkout
 
-        guard let component = checkout.createPaymentComponent(for: .applePay) else {
-            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self)
-        }
-
-        return component
+        return try checkout.createPaymentComponent(for: .applePay)
     }
 
     // MARK: - Backend calls

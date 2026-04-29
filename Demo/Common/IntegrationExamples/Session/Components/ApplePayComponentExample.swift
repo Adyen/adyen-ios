@@ -83,11 +83,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 
         self.checkout = checkout
 
-        guard let component = checkout.createPaymentComponent(for: .applePay) else {
-            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self)
-        }
-
-        return component
+        return try checkout.createPaymentComponent(for: .applePay)
     }
 
     private func startLoading() {
