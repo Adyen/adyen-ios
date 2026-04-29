@@ -32,6 +32,12 @@ public final class CheckoutPlatformParams {
 
     private init() {}
 
+    /// Internal initializer for testing purposes.
+    internal init(version: String, platform: Platform) {
+        self.version = version
+        self.platform = platform
+    }
+
     // MARK: - Mutation (restricted)
 
     private let lock = NSLock()

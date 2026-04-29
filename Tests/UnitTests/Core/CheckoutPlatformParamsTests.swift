@@ -18,9 +18,7 @@ class CheckoutPlatformParamsTests: XCTestCase {
     }
 
     func test_override_updates_version_and_platform() {
-        let sut = CheckoutPlatformParams.shared
-        let originalVersion = sut.version
-        let originalPlatform = sut.platform
+        let sut = CheckoutPlatformParams(version: adyenSdkVersion, platform: .ios)
 
         // When
         sut.overrideForCrossPlatform(platform: .flutter, version: "1.0.0")
@@ -28,15 +26,10 @@ class CheckoutPlatformParamsTests: XCTestCase {
         // Then
         XCTAssertEqual(sut.version, "1.0.0")
         XCTAssertEqual(sut.platform, .flutter)
-
-        // Cleanup - restore original values
-        sut.overrideForCrossPlatform(platform: originalPlatform, version: originalVersion)
     }
 
     func test_override_with_react_native_platform() {
-        let sut = CheckoutPlatformParams.shared
-        let originalVersion = sut.version
-        let originalPlatform = sut.platform
+        let sut = CheckoutPlatformParams(version: adyenSdkVersion, platform: .ios)
 
         // When
         sut.overrideForCrossPlatform(platform: .reactNative, version: "2.0.0")
@@ -45,24 +38,16 @@ class CheckoutPlatformParamsTests: XCTestCase {
         XCTAssertEqual(sut.version, "2.0.0")
         XCTAssertEqual(sut.platform, .reactNative)
         XCTAssertEqual(sut.platform.rawValue, "react-native")
-
-        // Cleanup - restore original values
-        sut.overrideForCrossPlatform(platform: originalPlatform, version: originalVersion)
     }
 
     func test_channel_is_always_ios() {
-        let sut = CheckoutPlatformParams.shared
-        let originalVersion = sut.version
-        let originalPlatform = sut.platform
+        let sut = CheckoutPlatformParams(version: adyenSdkVersion, platform: .ios)
 
         // When - override to different platform
         sut.overrideForCrossPlatform(platform: .flutter, version: "1.0.0")
 
         // Then - channel should still be ios
         XCTAssertEqual(sut.channel, "ios")
-
-        // Cleanup
-        sut.overrideForCrossPlatform(platform: originalPlatform, version: originalVersion)
     }
 
     func test_shared_returns_same_instance() {
