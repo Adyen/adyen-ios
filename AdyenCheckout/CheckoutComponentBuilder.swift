@@ -121,9 +121,7 @@ internal enum CheckoutComponentBuilder {
         componentConfiguration.showsSubmitButton = configuration.showsSubmitButton
         componentConfiguration.theme = configuration.theme
         // Component-level provider wins; fall back to the global one only if unset.
-        if componentConfiguration.localizationProvider == nil {
-            componentConfiguration.localizationProvider = configuration.localizationProvider
-        }
+        componentConfiguration.localizationProvider = componentConfiguration.localizationProvider ?? configuration.localizationProvider
         
         return factory.create(
             with: paymentMethod,
