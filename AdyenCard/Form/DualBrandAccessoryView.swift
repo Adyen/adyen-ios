@@ -24,11 +24,11 @@ internal class DualBrandAccessoryView: UIView {
         static let containerPadding: CGFloat = 2
         static let stackSpacing: CGFloat = 2
         static let selectedBorderWidth: CGFloat = 1
-        static let selectedBorderColor = UIColor.Adyen.componentTertiaryLabel.withAlphaComponent(0.2)
+        static var selectedBorderColor: UIColor { UIColor.Adyen.componentTertiaryLabel.withAlphaComponent(0.2) }
         static let selectedShadowRadius: CGFloat = 8
         static let selectedShadowOffset = CGSize(width: 0, height: 3)
         static let selectedShadowOpacity: Float = 0.12
-        static let segmentedBackgroundColor = UIColor.Adyen.secondaryComponentBackground
+        static var segmentedBackgroundColor: UIColor { UIColor.Adyen.secondaryComponentBackground }
         static let animationDuration: TimeInterval = 0.2
     }
     
