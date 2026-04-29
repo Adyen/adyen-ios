@@ -7,7 +7,8 @@
 import Foundation
 
 @_spi(AdyenInternal)
-public class CheckoutPlatformParams {
+/// Reference to the Android counterpart: https://github.com/Adyen/adyen-android/blob/main/core/src/main/java/com/adyen/checkout/core/common/internal/helper/CheckoutPlatformParams.kt
+public final class CheckoutPlatformParams {
 
     // MARK: - Types
 

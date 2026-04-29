@@ -21,7 +21,7 @@ public struct SDKData: Codable {
         }
     }
 
-    internal enum PaymentMethodBehavior: String, Codable {
+    public enum PaymentMethodBehavior: String, Codable {
         /// Indicates that the SDK has a specific component for this payment method.
         case nativeComponent
 
@@ -76,4 +76,20 @@ public struct SDKData: Codable {
 @_spi(AdyenInternal)
 public protocol SDKDataAuthenticationProvider {
     var authentication: SDKData.Authentication { get }
+}
+
+@_spi(AdyenInternal)
+public extension PaymentComponent {
+
+    var paymentMethodBehavior: SDKData.PaymentMethodBehavior {
+        .nativeComponent
+    }
+}
+
+@_spi(AdyenInternal)
+public extension InstantPaymentComponent {
+
+    var paymentMethodBehavior: SDKData.PaymentMethodBehavior {
+        .genericComponent
+    }
 }

@@ -19,7 +19,9 @@ public protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentMe
     
     /// The delegate of the payment component.
     var delegate: PaymentComponentDelegate? { get set }
-    
+
+    @_spi(AdyenInternal)
+    var paymentMethodBehavior: SDKData.PaymentMethodBehavior { get }
 }
 
 @_spi(AdyenInternal)
@@ -46,11 +48,6 @@ extension PaymentComponent {
     
     /// Adds SDK related info to payment data object and returns the final data in the completion.
     public func prepareSubmitData(from data: PaymentComponentData, completion: @escaping (PaymentComponentData) -> Void) {
-        let isInstantPaymentComponent = self is InstantPaymentComponent
-        let paymentMethodBehavior: SDKData.PaymentMethodBehavior = isInstantPaymentComponent
-            ? .genericComponent
-            : .nativeComponent
-
         let sdkData = SDKData(
             checkoutAttemptId: checkoutAttemptId,
             paymentMethodBehavior: paymentMethodBehavior,
