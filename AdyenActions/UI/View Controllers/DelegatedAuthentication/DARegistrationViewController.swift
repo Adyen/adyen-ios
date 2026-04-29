@@ -10,7 +10,6 @@
 #endif
 import UIKit
 
-@available(iOS 16.0, *)
 internal final class DARegistrationViewController: UIViewController {
     private let cardNumber: String?
     private let cardType: CardType?
@@ -110,7 +109,6 @@ internal final class DARegistrationViewController: UIViewController {
     }
 }
 
-@available(iOS 16.0, *)
 extension DARegistrationViewController: DelegatedAuthenticationViewDelegate {
     internal func firstButtonTapped() {
         registrationView.firstButton.showsActivityIndicator = true

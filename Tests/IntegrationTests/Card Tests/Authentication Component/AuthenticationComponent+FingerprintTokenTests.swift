@@ -8,7 +8,6 @@
 import XCTest
 @_spi(AdyenInternal) import Adyen
 
-@available(iOS 16.0, *)
 extension AuthenticationComponentTests {
     func testParsingTokenWithFeaturesInConfiguration() throws {
         let token = """
