@@ -113,12 +113,12 @@ public struct CheckoutConfiguration {
     
     internal func configuration<T: CheckoutComponentConfiguration>(
         for paymentMethod: PaymentMethod,
-        defaultValue: @autoclosure () -> T?
-    ) -> T? {
+        defaultValue: @autoclosure () throws -> T
+    ) throws -> T {
         if let config = configurations[.payment(paymentMethod.type)] as? T {
             return config
         }
-        return defaultValue()
+        return try defaultValue()
     }
     
     internal func configuration<T: CheckoutComponentConfiguration>(for actionType: ActionComponentType, defaultValue: @autoclosure () -> T) -> T {

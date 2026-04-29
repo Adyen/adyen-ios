@@ -12,7 +12,7 @@ import UIKit
 /// Create instances using `Checkout.createPaymentComponent(for:)`.
 ///
 /// ```swift
-/// let component = checkout.createPaymentComponent(for: .scheme)
+/// let component = try checkout.createPaymentComponent(for: .scheme)
 /// ```
 ///
 /// ## Custom Pay Button
@@ -25,7 +25,7 @@ import UIKit
 @MainActor
 public final class CheckoutPaymentComponent {
     
-    internal let paymentComponent: PaymentComponent?
+    internal let paymentComponent: PaymentComponent
     
     /// The view controller of the component.
     public var viewController: UIViewController? {
@@ -40,14 +40,14 @@ public final class CheckoutPaymentComponent {
         configuration: CheckoutConfiguration,
         context: AdyenContext,
         delegate: PaymentComponentDelegate?
-    ) {
+    ) throws {
         // TODO: Add new v6 style here
-        self.paymentComponent = Self.component(
+        self.paymentComponent = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: configuration,
             context: context
         )
-        self.paymentComponent?.delegate = delegate
+        self.paymentComponent.delegate = delegate
     }
 
     package init(
@@ -62,25 +62,6 @@ public final class CheckoutPaymentComponent {
             configuration: configuration,
             context: context
         )
-        self.paymentComponent?.delegate = delegate
-    }
-
-    private static func component(
-        for paymentMethod: PaymentMethod,
-        configuration: CheckoutConfiguration,
-        context: AdyenContext
-    ) -> PaymentComponent? {
-        do {
-            return try CheckoutComponentBuilder.build(
-                for: paymentMethod,
-                configuration: configuration,
-                context: context
-            )
-        } catch {
-            AdyenAssertion.assertionFailure(
-                message: "Failed to build payment component for \(paymentMethod.type.rawValue): \(error)"
-            )
-            return nil
-        }
+        self.paymentComponent.delegate = delegate
     }
 }
