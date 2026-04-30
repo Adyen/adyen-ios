@@ -22,7 +22,7 @@ internal enum ConfigurationConstants {
     static let classicAPIEnvironment = DemoClassicAPIEnvironment.test
     
     static let componentsEnvironment = Environment.test
-    
+
     static let appName = "Adyen Demo"
     
     static let reference = "Test Order Reference - iOS UIHost"
