@@ -2550,6 +2550,24 @@ extension CardComponentTests {
         XCTAssertEqual(sut.cardViewController.items.numberContainerItem.numberItem.title, "Custom number")
     }
 
+    func test_cardComponent_withProviderOverride_shouldRenderCustomSecurityCodeTitle() {
+        var configuration = CardComponentConfiguration()
+        configuration.localizationProvider = CardLocalizationProviderMock(values: [.cardSecurityCode: "Custom security code"])
+
+        let sut = CardComponent(paymentMethod: method, context: context, configuration: configuration)
+
+        XCTAssertEqual(sut.cardViewController.items.securityCodeItem.title, "Custom security code")
+    }
+
+    func test_cardComponent_withProviderOverride_shouldRenderCustomStorePaymentMethodTitle() {
+        var configuration = CardComponentConfiguration()
+        configuration.localizationProvider = CardLocalizationProviderMock(values: [.cardStorePaymentMethod: "Remember this card"])
+
+        let sut = CardComponent(paymentMethod: method, context: context, configuration: configuration)
+
+        XCTAssertEqual(sut.cardViewController.items.storeDetailsItem.title, "Remember this card")
+    }
+
     func test_cardComponent_withProviderReturningNil_shouldFallbackToSDKLocalization() {
         var configuration = CardComponentConfiguration()
         configuration.localizationProvider = CardLocalizationProviderMock(values: [:])
