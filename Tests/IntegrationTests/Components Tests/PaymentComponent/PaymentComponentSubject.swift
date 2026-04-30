@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 class PaymentComponentSubject: PaymentComponent {
@@ -13,6 +13,7 @@ class PaymentComponentSubject: PaymentComponent {
 
     var context: AdyenContext
     var delegate: PaymentComponentDelegate?
+    var paymentMethodBehavior: SDKData.PaymentMethodBehavior = .nativeComponent
     var payment: Payment?
     var order: PartialPaymentOrder?
     var paymentMethod: PaymentMethod

@@ -101,7 +101,7 @@ class AnalyticsProviderTests: XCTestCase {
             if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
                 XCTAssertNil(initialAnalyticsdRequest.amount)
                 XCTAssertEqual(initialAnalyticsdRequest.version, adyenSdkVersion)
-                XCTAssertEqual(initialAnalyticsdRequest.platform, "iOS")
+                XCTAssertEqual(initialAnalyticsdRequest.platform, "ios")
                 XCTAssertEqual(initialAnalyticsdRequest.level, "all")
                 analyticsExpectation.fulfill()
             }
@@ -124,7 +124,6 @@ class AnalyticsProviderTests: XCTestCase {
         
         let eventAnalyticsProvider = EventAnalyticsProvider(
             apiClient: eventApiClient,
-            context: AnalyticsContext(),
             eventDataSource: AnalyticsEventDataSource()
         )
         let sut = AnalyticsProvider(
@@ -193,14 +192,13 @@ class AnalyticsProviderTests: XCTestCase {
         apiClient.onExecute = { request in
             if let initialAnalyticsdRequest = request as? InitialAnalyticsRequest {
                 XCTAssertEqual(initialAnalyticsdRequest.amount, amount)
-                XCTAssertEqual(initialAnalyticsdRequest.version, "version")
-                XCTAssertEqual(initialAnalyticsdRequest.platform, "react-native")
+                XCTAssertEqual(initialAnalyticsdRequest.version, adyenSdkVersion)
+                XCTAssertEqual(initialAnalyticsdRequest.platform, "ios")
                 analyticsExpectation.fulfill()
             }
         }
         
-        var configuration = AnalyticsConfiguration()
-        configuration.context = AnalyticsContext(version: "version", platform: .reactNative)
+        let configuration = AnalyticsConfiguration()
         let analyticsProvider = AnalyticsProvider(
             apiClient: apiClient,
             configuration: configuration,
@@ -216,9 +214,8 @@ class AnalyticsProviderTests: XCTestCase {
     
     func testInitialRequestEncoding() throws {
         
-        var configuration = AnalyticsConfiguration()
-        configuration.context = AnalyticsContext(version: "version", platform: .flutter)
-        
+        let configuration = AnalyticsConfiguration()
+
         let analyticsData = AnalyticsData(
             flavor: .components(type: .achDirectDebit),
             additionalFields: AdditionalAnalyticsFields(amount: .init(value: 1, currencyCode: "EUR"), sessionId: "test_session_id"),
@@ -233,10 +230,10 @@ class AnalyticsProviderTests: XCTestCase {
         let expectedDecodedRequest = [
             "locale": "en_US",
             "paymentMethods": analyticsData.paymentMethods,
-            "platform": "flutter",
+            "platform": "ios",
             "component": "ach",
             "flavor": "components",
-            "channel": "iOS",
+            "channel": "ios",
             "systemVersion": analyticsData.systemVersion,
             "screenWidth": analyticsData.screenWidth,
             "referrer": analyticsData.referrer,
@@ -248,7 +245,7 @@ class AnalyticsProviderTests: XCTestCase {
                 "value": 1
             ] as [String: Any],
             "sessionId": "test_session_id",
-            "version": "version"
+            "version": adyenSdkVersion
         ] as [String: Any]
         
         XCTAssertEqual(
