@@ -20,7 +20,9 @@ public struct AnalyticsEventInfo: AnalyticsEvent {
     public var type: InfoType
     
     public var target: AnalyticsEventTarget?
-    
+
+    public var presentedValues: [String]?
+
     public var isStoredPaymentMethod: Bool?
     
     public var brand: String?
@@ -55,6 +57,7 @@ public struct AnalyticsEventInfo: AnalyticsEvent {
         try container.encode(self.component, forKey: .component)
         try container.encode(self.type, forKey: .type)
         try container.encodeIfPresent(self.target, forKey: .target)
+        try container.encodeIfPresent(self.presentedValues, forKey: .presentedValues)
         try container.encodeIfPresent(self.isStoredPaymentMethod, forKey: .isStoredPaymentMethod)
         try container.encodeIfPresent(self.brand, forKey: .brand)
         try container.encodeIfPresent(self.issuer, forKey: .issuer)
@@ -69,6 +72,7 @@ public struct AnalyticsEventInfo: AnalyticsEvent {
         case component
         case type
         case target
+        case presentedValues
         case isStoredPaymentMethod
         case brand
         case issuer
