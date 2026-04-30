@@ -27,19 +27,16 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
     internal let apiClient: APIClientProtocol
     internal let eventDataSource: AnyAnalyticsEventDataSource
     
-    private let context: AnalyticsContext
     private var batchTimer: Timer?
     private let batchInterval: TimeInterval
     
     internal init(
         apiClient: APIClientProtocol,
-        context: AnalyticsContext,
         eventDataSource: AnyAnalyticsEventDataSource,
         batchInterval: TimeInterval = Constants.batchInterval
     ) {
         self.apiClient = apiClient
         self.eventDataSource = eventDataSource
-        self.context = context
         self.batchInterval = batchInterval
     }
     
@@ -88,7 +85,7 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
         
         // as per this call's limitation, we only send up to the
         // limit of each event and discard the older ones
-        let platform = context.platform.rawValue
+        let platform = checkoutPlatformParams.platform.rawValue
         var request = AnalyticsRequest(
             checkoutAttemptId: checkoutAttemptId,
             platform: platform

@@ -158,7 +158,6 @@ final class EventAnalyticsProviderTests: XCTestCase {
         
         EventAnalyticsProvider(
             apiClient: apiClient,
-            context: AnalyticsContext(),
             eventDataSource: eventDataSource
         )
     }
