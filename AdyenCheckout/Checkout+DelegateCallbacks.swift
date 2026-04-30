@@ -66,10 +66,6 @@ extension Checkout: PaymentComponentDelegate {
             // they returned from `onSubmit`.
             // TODO: add partial-payment support for Drop-in on the advanced (non-session) flow.
             break
-        @unknown default:
-            AdyenAssertion.assertionFailure(
-                message: "Unhandled SubmitResult branch; ignored."
-            )
         }
     }
 }
@@ -118,10 +114,6 @@ extension Checkout: ActionComponentDelegate {
         switch additionalDetailsResult {
         case let .completion(resultCode):
             finish(with: CheckoutResult(resultCode: CheckoutResultCode(rawValue: resultCode)), from: component)
-        @unknown default:
-            AdyenAssertion.assertionFailure(
-                message: "Unhandled AdditionalDetailsResult branch; ignored."
-            )
         }
     }
 }
