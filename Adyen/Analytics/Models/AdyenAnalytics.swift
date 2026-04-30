@@ -42,6 +42,7 @@ public enum AnalyticsEventTarget: String, Encodable {
     case addressPostalCode = "postal_code"
     case issuerList = "list"
     case listSearch = "list_search"
+    case listDetected = "list_detected"
 }
 
 /// A configuration object that defines the behavior for the analytics.

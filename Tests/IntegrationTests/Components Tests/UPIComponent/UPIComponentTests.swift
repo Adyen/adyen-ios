@@ -325,5 +325,241 @@ class UPIComponentTests: XCTestCase {
         // Then - should fail because VPA is empty
         XCTAssertFalse(validationResult)
     }
+    
+    // MARK: - Analytics Tests
+    
+    func test_viewDidLoad_shouldSendInitialAnalytics() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upi)
+        let sut = UPIComponent(paymentMethod: paymentMethod, context: context)
+        
+        // When
+        sut.viewDidLoad(viewController: UIViewController())
+        
+        // Then
+        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
+    }
+    
+    func test_viewDidLoad_shouldSendRenderedEvent() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upi)
+        let sut = UPIComponent(paymentMethod: paymentMethod, context: context)
+        
+        // When
+        sut.viewDidLoad(viewController: UIViewController())
+        
+        // Then
+        let renderedEvents = analyticsProviderMock.infos.filter { $0.type == .rendered }
+        XCTAssertEqual(renderedEvents.count, 1)
+        XCTAssertEqual(renderedEvents.first?.component, "upi")
+    }
+    
+    func test_viewDidAppear_withAppsAvailable_shouldSendUPIIntentDisplayedEvent() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+        let schemeChecker = URLSchemeCheckerMock()
+        schemeChecker.openableSchemes = ["tez"]
+        
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upiWithApps)
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            urlSchemeChecker: schemeChecker
+        )
+        
+        // When
+        sut.viewDidAppear(viewController: UIViewController())
+        
+        // Then
+        let displayedEvents = analyticsProviderMock.infos.filter { $0.type == .displayed }
+        XCTAssertEqual(displayedEvents.count, 1)
+        XCTAssertEqual(displayedEvents.first?.component, "upi_intent")
+        XCTAssertEqual(displayedEvents.first?.target, .listDetected)
+    }
+    
+    func test_viewDidAppear_withNoInstalledApps_shouldSendUPIIntentDisplayedEventWithIssuerListTarget() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+        let schemeChecker = URLSchemeCheckerMock()
+        schemeChecker.openableSchemes = []
+        
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upiWithApps)
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            urlSchemeChecker: schemeChecker
+        )
+        
+        // When
+        sut.viewDidAppear(viewController: UIViewController())
+        
+        // Then
+        let displayedEvents = analyticsProviderMock.infos.filter { $0.type == .displayed }
+        XCTAssertEqual(displayedEvents.count, 1)
+        XCTAssertEqual(displayedEvents.first?.component, "upi_intent")
+        XCTAssertEqual(displayedEvents.first?.target, .issuerList)
+    }
+    
+    func test_viewDidAppear_withInstalledApps_shouldIncludePresentedValuesInDisplayedEvent() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+        let schemeChecker = URLSchemeCheckerMock()
+        schemeChecker.openableSchemes = ["tez", "phonepe"]
+        
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upiWithApps)
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            urlSchemeChecker: schemeChecker
+        )
+        
+        // When
+        sut.viewDidAppear(viewController: UIViewController())
+        
+        // Then
+        let displayedEvents = analyticsProviderMock.infos.filter { $0.type == .displayed }
+        XCTAssertEqual(displayedEvents.count, 1)
+        
+        let presentedValues = displayedEvents.first?.presentedValues
+        XCTAssertNotNil(presentedValues)
+        XCTAssertTrue(presentedValues?.contains("gpay") ?? false)
+        XCTAssertTrue(presentedValues?.contains("phonepe") ?? false)
+    }
+    
+    func test_viewDidAppear_withNoApps_shouldSendUPICollectDisplayedEvent() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upi)
+        let sut = UPIComponent(paymentMethod: paymentMethod, context: context)
+        
+        // When
+        sut.viewDidAppear(viewController: UIViewController())
+        
+        // Then
+        let displayedEvents = analyticsProviderMock.infos.filter { $0.type == .displayed }
+        XCTAssertEqual(displayedEvents.count, 1)
+        XCTAssertEqual(displayedEvents.first?.component, "upi_collect")
+    }
+    
+    func test_switchingToCollectFlow_shouldSendUPICollectDisplayedEvent() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+        let schemeChecker = URLSchemeCheckerMock()
+        schemeChecker.openableSchemes = ["tez"]
+        
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upiWithApps)
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            urlSchemeChecker: schemeChecker
+        )
+        
+        // Clear any initial events
+        analyticsProviderMock.clearAll()
+        
+        // When - switch to UPI Collect flow (index 1)
+        sut.upiFlowSelectionItem.selectionHandler?(1)
+        
+        // Then
+        let displayedEvents = analyticsProviderMock.infos.filter { $0.type == .displayed }
+        XCTAssertEqual(displayedEvents.count, 1)
+        XCTAssertEqual(displayedEvents.first?.component, "upi_collect")
+    }
+    
+    func test_switchingBackToIntentFlow_shouldSendUPIIntentDisplayedEvent() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+        let schemeChecker = URLSchemeCheckerMock()
+        schemeChecker.openableSchemes = ["tez"]
+        
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upiWithApps)
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            urlSchemeChecker: schemeChecker
+        )
+        
+        // Switch to collect first
+        sut.upiFlowSelectionItem.selectionHandler?(1)
+        
+        // Clear events
+        analyticsProviderMock.clearAll()
+        
+        // When - switch back to UPI Intent flow (index 0)
+        sut.upiFlowSelectionItem.selectionHandler?(0)
+        
+        // Then
+        let displayedEvents = analyticsProviderMock.infos.filter { $0.type == .displayed }
+        XCTAssertEqual(displayedEvents.count, 1)
+        XCTAssertEqual(displayedEvents.first?.component, "upi_intent")
+    }
+    
+    func test_selectingUPIApp_shouldSendSelectedEvent() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+        let schemeChecker = URLSchemeCheckerMock()
+        schemeChecker.openableSchemes = ["tez"]
+        
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upiWithApps)
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            urlSchemeChecker: schemeChecker
+        )
+        
+        // Clear any initial events
+        analyticsProviderMock.clearAll()
+        
+        // When - select the first app (gpay)
+        let firstAppItem = sut.upiAppsList.first
+        firstAppItem?.selectionHandler?()
+        
+        // Then
+        let selectedEvents = analyticsProviderMock.infos.filter { $0.type == .selected }
+        XCTAssertEqual(selectedEvents.count, 1)
+        XCTAssertEqual(selectedEvents.first?.component, "upi_intent")
+        XCTAssertEqual(selectedEvents.first?.issuer, "gpay")
+        XCTAssertEqual(selectedEvents.first?.target, .listDetected)
+    }
+    
+    func test_selectingUPIApp_withNoInstalledApps_shouldSendSelectedEventWithIssuerListTarget() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(with: analyticsProviderMock)
+        let schemeChecker = URLSchemeCheckerMock()
+        schemeChecker.openableSchemes = []
+        
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upiWithApps)
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: context,
+            urlSchemeChecker: schemeChecker
+        )
+        
+        // Clear any initial events
+        analyticsProviderMock.clearAll()
+        
+        // When - select the first app (bhim - first in the list when no apps installed)
+        let firstAppItem = sut.upiAppsList.first
+        firstAppItem?.selectionHandler?()
+        
+        // Then
+        let selectedEvents = analyticsProviderMock.infos.filter { $0.type == .selected }
+        XCTAssertEqual(selectedEvents.count, 1)
+        XCTAssertEqual(selectedEvents.first?.component, "upi_intent")
+        XCTAssertEqual(selectedEvents.first?.issuer, "bhim")
+        XCTAssertEqual(selectedEvents.first?.target, .issuerList)
+    }
 
 }
