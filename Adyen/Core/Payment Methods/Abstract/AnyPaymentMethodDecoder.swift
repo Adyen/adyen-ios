@@ -92,7 +92,8 @@ internal enum AnyPaymentMethodDecoder {
         .twint: TwintPaymentMethodDecoder(),
         .payByBankAISDD: PayByBankUSPaymentMethodDecoder(),
         .payTo: PayToPaymentMethodDecoder(),
-        .iris: IrisPaymentMethodDecoder()
+        .iris: IrisPaymentMethodDecoder(),
+        .ideal: InstantPaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = InstantPaymentMethodDecoder()
@@ -105,18 +106,6 @@ internal enum AnyPaymentMethodDecoder {
             let brand = try? container.decode(String.self, forKey: .brand)
             let isIssuersList = try container.containsValue(.issuers)
             
-            if type == .ideal || type == .iris {
-                return try InstantPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
-            }
-            
-            if isIssuersList {
-                if type == .onlineBankingCZ || type == .onlineBankingSK {
-                    return try OnlineBankingPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
-                }
-                
-                return try IssuerListPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
-            }
-
             // This is a hack to handle stored Bancontact as a separate
             // payment method, even though Bancontact is just another
             // scheme of a card payment method,
@@ -129,8 +118,17 @@ internal enum AnyPaymentMethodDecoder {
                 return try decoders[.bcmc, default: defaultDecoder].decode(from: decoder, isStored: true)
             }
             
-            let paymentDecoder = type.map { decoders[$0, default: defaultDecoder] } ?? defaultDecoder
-            return try paymentDecoder.decode(from: decoder, isStored: isStored)
+            // Use type-specific decoder if available
+            if let type, let paymentDecoder = decoders[type] {
+                return try paymentDecoder.decode(from: decoder, isStored: isStored)
+            }
+            
+            // Fallback: decode unknown payment methods with issuers as IssuerListPaymentMethod
+            if isIssuersList {
+                return try IssuerListPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
+            }
+            
+            return try defaultDecoder.decode(from: decoder, isStored: isStored)
         } catch {
             return .none
         }
