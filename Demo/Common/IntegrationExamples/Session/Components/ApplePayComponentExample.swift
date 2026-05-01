@@ -53,7 +53,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
         ) {
             try ConfigurationConstants.current
                 .applePayConfiguration(using: .demo)
-                .onAuthorize { _ in
+                .onAuthorize { payment in
                     if ConfigurationConstants.current.applePaySettings.didAuthorizeSuccessful {
                         return PKPaymentAuthorizationResult(status: .success, errors: nil)
                     } else {

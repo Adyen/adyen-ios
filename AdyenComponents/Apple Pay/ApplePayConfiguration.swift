@@ -137,6 +137,9 @@ extension ApplePayConfiguration {
     ///   Use `PKPaymentRequest.paymentBillingAddressInvalidError(withKey:localizedDescription:)` or similar
     ///   factory methods to create field-specific errors.
     /// - Parameter onAuthorize: The closure to call when the payment is authorized.
+    ///   - Parameters:
+    ///     - payment: The `PKPayment` object containing the payment token, billing/shipping contact, and shipping method.
+    ///   - Returns: A `PKPaymentAuthorizationResult` indicating success or failure with optional field-specific errors.
     /// - Returns: A modified copy of the configuration.
     public func onAuthorize(
         _ onAuthorize: @escaping @MainActor (PKPayment) async -> PKPaymentAuthorizationResult
@@ -151,6 +154,10 @@ extension ApplePayConfiguration {
     /// Return an updated `PKPaymentRequestShippingContactUpdate` with revised summary items
     /// and optionally updated shipping methods or errors.
     /// - Parameter onShippingContactChange: The closure to call when the shipping contact changes.
+    ///   - Parameters:
+    ///     - contact: The selected `PKContact` containing the shipping address and contact information.
+    ///     - summaryItems: The current array of `PKPaymentSummaryItem` objects representing line items and total.
+    ///   - Returns: A `PKPaymentRequestShippingContactUpdate` with updated summary items, shipping methods, and/or errors.
     /// - Returns: A modified copy of the configuration.
     public func onShippingContactChange(
         _ onShippingContactChange: @escaping @MainActor (PKContact, [PKPaymentSummaryItem]) async -> PKPaymentRequestShippingContactUpdate
@@ -164,6 +171,10 @@ extension ApplePayConfiguration {
     ///
     /// Return an updated `PKPaymentRequestShippingMethodUpdate` with revised summary items.
     /// - Parameter onShippingMethodChange: The closure to call when the shipping method changes.
+    ///   - Parameters:
+    ///     - shippingMethod: The selected `PKShippingMethod` containing the shipping option details.
+    ///     - summaryItems: The current array of `PKPaymentSummaryItem` objects representing line items and total.
+    ///   - Returns: A `PKPaymentRequestShippingMethodUpdate` with updated summary items reflecting the new shipping cost.
     /// - Returns: A modified copy of the configuration.
     public func onShippingMethodChange(
         _ onShippingMethodChange: @escaping @MainActor (PKShippingMethod, [PKPaymentSummaryItem]) async -> PKPaymentRequestShippingMethodUpdate
@@ -177,6 +188,10 @@ extension ApplePayConfiguration {
     ///
     /// Return an updated `PKPaymentRequestCouponCodeUpdate` with revised summary items.
     /// - Parameter onCouponCodeChange: The closure to call when the coupon code changes.
+    ///   - Parameters:
+    ///     - couponCode: The entered or updated coupon code string.
+    ///     - summaryItems: The current array of `PKPaymentSummaryItem` objects representing line items and total.
+    ///   - Returns: A `PKPaymentRequestCouponCodeUpdate` with updated summary items reflecting the applied discount or errors if the code is invalid.
     /// - Returns: A modified copy of the configuration.
     public func onCouponCodeChange(
         _ onCouponCodeChange: @escaping @MainActor (String, [PKPaymentSummaryItem]) async -> PKPaymentRequestCouponCodeUpdate

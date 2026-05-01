@@ -55,7 +55,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
         ) {
             try ConfigurationConstants.current
                 .applePayConfiguration(using: .demoWithShippingFields)
-                .onAuthorize { _ in
+                .onAuthorize { payment in
                     if ConfigurationConstants.current.applePaySettings.didAuthorizeSuccessful {
                         return PKPaymentAuthorizationResult(status: .success, errors: nil)
                     } else {
