@@ -275,7 +275,51 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertEqual(localizationProvider.localizedString(CheckoutLocalizationKey.cardNumber, locale: locale), "Localized card number")
         XCTAssertEqual(provider.recordedCalls.count, 1)
         XCTAssertEqual(provider.recordedCalls.first?.locale.identifier, locale.identifier)
-        XCTAssertEqual(provider.recordedCalls.first?.key, CheckoutLocalizationKey.cardNumber)
+        XCTAssertTrue(provider.recordedCalls.contains { $0.key == CheckoutLocalizationKey.cardNumber })
+    }
+
+    func test_cardComponent_withLocalizationProviderOnCheckoutConfiguration_shouldRenderGlobalProviderValue() throws {
+        // Given
+        let paymentMethod = try XCTUnwrap(createCardPaymentMethod())
+        let provider = CheckoutLocalizationProviderMock(result: "Global number")
+        checkoutConfiguration = makeCheckoutConfiguration().localizationProvider(provider)
+
+        // When
+        let component = CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+
+        // Then
+        let cardComponent = try XCTUnwrap(component as? CardComponent)
+        XCTAssertEqual(cardComponent.cardViewController.items.numberContainerItem.numberItem.title, "Global number")
+        XCTAssertTrue(provider.recordedCalls.contains { $0.key == CheckoutLocalizationKey.cardNumber })
+    }
+
+    func test_cardComponent_withComponentLevelLocalizationProvider_shouldOverrideCheckoutConfigurationProvider() throws {
+        // Given
+        let paymentMethod = try XCTUnwrap(createCardPaymentMethod())
+        let globalProvider = CheckoutLocalizationProviderMock(result: "Global number")
+        let componentProvider = CheckoutLocalizationProviderMock(result: "Component number")
+        var cardConfiguration = CardComponentConfiguration()
+        cardConfiguration.localizationProvider = componentProvider
+        checkoutConfiguration = makeCheckoutConfiguration(
+            configurations: [.payment(.scheme): cardConfiguration]
+        ).localizationProvider(globalProvider)
+
+        // When
+        let component = CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+
+        // Then
+        let cardComponent = try XCTUnwrap(component as? CardComponent)
+        XCTAssertEqual(cardComponent.cardViewController.items.numberContainerItem.numberItem.title, "Component number")
+        XCTAssertTrue(componentProvider.recordedCalls.contains { $0.key == CheckoutLocalizationKey.cardNumber })
+        XCTAssertTrue(globalProvider.recordedCalls.isEmpty)
     }
     
     // MARK: - ACH Direct Debit Component Tests

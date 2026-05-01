@@ -288,4 +288,71 @@ class LocalizationTests: XCTestCase {
         // Keys absent from the merchant bundle fall back to the SDK's English strings.
         XCTAssertEqual(localizedString(.submitButton, parameters), "Pay")
     }
+
+    // MARK: - Provider-first resolution
+
+    func test_localizedString_withProvider_shouldReturnProviderValue() {
+        let provider = MockCheckoutLocalizationProvider(values: [.cardNumber: "Custom card number"])
+        let parameters = LocalizationParameters().withProvider(provider)
+
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "Custom card number")
+    }
+
+    func test_localizedString_withProviderReturningNil_shouldFallbackToBundleChain() {
+        let provider = MockCheckoutLocalizationProvider(values: [:])
+        let parameters = LocalizationParameters(enforcedLocale: "it-IT").withProvider(provider)
+
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Verifica la Carta")
+    }
+
+    func test_localizedString_withProviderReturningEmptyString_shouldFallbackToBundleChain() {
+        let provider = MockCheckoutLocalizationProvider(values: [.cardNumber: ""])
+        let parameters = LocalizationParameters(enforcedLocale: "it-IT").withProvider(provider)
+
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), "Numero carta")
+    }
+
+    func test_localizedString_withProviderAndArguments_shouldFormatProviderValue() {
+        let provider = MockCheckoutLocalizationProvider(values: [.generalCancel: "Cancelled %@"])
+        let parameters = LocalizationParameters().withProvider(provider)
+
+        XCTAssertEqual(localizedString(.cancelButton, parameters, "now"), "Cancelled now")
+    }
+
+    func test_localizedString_withProviderReturningNilForUnknownKey_shouldFallbackToBundle() {
+        let provider = MockCheckoutLocalizationProvider(values: [:])
+        let parameters = LocalizationParameters().withProvider(provider)
+
+        // `.cardStoredTitle` has no public `CheckoutLocalizationKey` counterpart. The provider
+        // is still consulted, returns nil for the unrecognized key, and the bundle fallback wins.
+        XCTAssertEqual(localizedString(.cardStoredTitle, parameters), "Verify your card")
+    }
+
+    func test_localizedString_withProvider_shouldPassResolvedLocale() {
+        let provider = MockCheckoutLocalizationProvider(values: [.cardNumber: "Custom"])
+        let parameters = LocalizationParameters(enforcedLocale: "fr-FR").withProvider(provider)
+
+        _ = localizedString(.cardNumberItemTitle, parameters)
+
+        XCTAssertEqual(provider.lastLocale?.identifier, "fr-FR")
+    }
+}
+
+// MARK: - Test helpers
+
+private final class MockCheckoutLocalizationProvider: CheckoutLocalizationProvider {
+
+    private let values: [CheckoutLocalizationKey: String]
+    private(set) var requestedKeys: [CheckoutLocalizationKey] = []
+    private(set) var lastLocale: Locale?
+
+    init(values: [CheckoutLocalizationKey: String]) {
+        self.values = values
+    }
+
+    func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String? {
+        requestedKeys.append(key)
+        lastLocale = locale
+        return values[key]
+    }
 }

@@ -49,6 +49,15 @@ public class CardComponent: PresentableComponent,
     /// Card component configuration.
     public internal(set) var configuration: CardComponentConfiguration
 
+    /// Localization parameters with the component-resolved ``CheckoutLocalizationProvider``
+    /// attached, used for all card UI string lookups.
+    private var resolvedLocalizationParameters: LocalizationParameters? {
+        guard let provider = configuration.localizationProvider else {
+            return configuration.localizationParameters
+        }
+        return (configuration.localizationParameters ?? LocalizationParameters()).withProvider(provider)
+    }
+
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate? {
         didSet {
@@ -151,14 +160,14 @@ public class CardComponent: PresentableComponent,
         // TODO: FIX StoredCard UI
         if configuration.stored.showsSecurityCodeField {
             let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context)
-            storedComponent.localizationParameters = configuration.localizationParameters
+            storedComponent.localizationParameters = resolvedLocalizationParameters
             return storedComponent
         } else {
             let storedComponent = StoredPaymentMethodComponent(
                 paymentMethod: paymentMethod,
                 context: context
             )
-            storedComponent.localizationParameters = configuration.localizationParameters
+            storedComponent.localizationParameters = resolvedLocalizationParameters
             return storedComponent
         }
     }()
@@ -189,7 +198,7 @@ public class CardComponent: PresentableComponent,
             supportedCardTypes: supportedCardTypes,
             initialCountryCode: initialCountryCode,
             scope: String(describing: self),
-            localizationParameters: configuration.localizationParameters,
+            localizationParameters: resolvedLocalizationParameters,
             theme: configuration.theme,
             cardScannerAnalyticsHandler: { [weak self] logSubType in
                 self?.sendCardScannerLogEvent(logSubType)
@@ -198,7 +207,7 @@ public class CardComponent: PresentableComponent,
 
         formViewController.delegate = self
         formViewController.cardDelegate = self
-        formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
+        formViewController.title = paymentMethod.displayInformation(using: resolvedLocalizationParameters).title
 
         formViewController.items.onDidTriggerInfoEvent = { [weak self] infoEventData in
             self?.sendInfoEvent(with: infoEventData)
