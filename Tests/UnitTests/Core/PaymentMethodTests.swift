@@ -346,7 +346,7 @@ class PaymentMethodTests: XCTestCase {
         
         // IRIS has issuers but should decode as InstantPaymentMethod, not IssuerListPaymentMethod
         XCTAssertTrue(paymentMethods.regular[36] is InstantPaymentMethod)
-        XCTAssertEqual(paymentMethods.regular[36].type.rawValue, "iris")
+        XCTAssertEqual(paymentMethods.regular[36].type, .iris)
         XCTAssertEqual(paymentMethods.regular[36].name, "IRIS")
     }
     

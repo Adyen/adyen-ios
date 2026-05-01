@@ -147,6 +147,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case "twint": self = .twint
         case "paybybank_AIS_DD": self = .payByBankAISDD
         case "payto": self = .payTo
+        case "iris": self = .iris
         default: self = .other(rawValue)
         }
     }
