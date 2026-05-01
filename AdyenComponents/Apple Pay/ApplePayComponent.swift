@@ -25,10 +25,8 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// While suspended, the Apple Pay sheet stays on screen waiting for a `PKPaymentAuthorizationResult`.
     internal var paymentResultContinuation: CheckedContinuation<Bool, Never>?
 
-    /// Tracks whether `handleDidAuthorize` ran and returned a result to Apple.
-    /// Used by `didFinish` to distinguish user cancellation from normal sheet dismissal.
-    /// Set to `true` in every exit path of `handleDidAuthorize` — including early returns
-    /// for invalid tokens or failed `onAuthorize` — to prevent a spurious `didFail(.cancelled)`.
+    /// `true` once the shopper has tapped Pay. Lets `didFinish` distinguish a real
+    /// cancellation (false) from a UI-only sheet dismissal during authorization (true).
     internal var authorizationHandled = false
 
     /// The context object for this component.
