@@ -64,8 +64,7 @@ final class ApplePayComponentFactoryTests: XCTestCase {
         // Given
         let paymentMethod = try XCTUnwrap(createApplePayPaymentMethod())
         let configuration = try ApplePayConfiguration(
-            paymentRequest: Dummy.createTestApplePayPaymentRequest(),
-            allowOnboarding: true
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
 
         // When

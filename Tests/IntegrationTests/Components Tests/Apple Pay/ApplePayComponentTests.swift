@@ -148,6 +148,7 @@ class ApplePayComponentTest: XCTestCase {
         let request = Dummy.createTestApplePayPaymentRequest()
 
         let config = try ApplePayConfiguration(paymentRequest: request)
+            .allowOnboarding(false)
 
         XCTAssertEqual(config.paymentRequest.merchantIdentifier, request.merchantIdentifier)
         XCTAssertFalse(config.allowOnboarding)

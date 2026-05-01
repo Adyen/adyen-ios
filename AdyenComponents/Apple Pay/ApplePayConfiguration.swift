@@ -25,18 +25,36 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
     package var localizationParameters: LocalizationParameters?
 
     /// The flag to toggle onboarding.
-    /// If true, allow the shopper to add cards to Apple Pay if non exists yet.
+    /// If true, allow the shopper to add cards to Apple Pay if none exists yet.
     /// If false, then Apple Pay is disabled if the shopper doesn't have supported cards on Apple Pay wallet.
-    /// Default is false.
-    public var allowOnboarding: Bool = false
+    internal var allowOnboarding: Bool = true
 
-    internal var onAuthorize: (@MainActor (PKPayment) async -> PKPaymentAuthorizationResult)?
+    internal var onAuthorize: (
+        @MainActor (
+            PKPayment
+        ) async -> PKPaymentAuthorizationResult
+    )?
 
-    internal var onShippingContactChange: (@MainActor (PKContact, [PKPaymentSummaryItem]) async -> PKPaymentRequestShippingContactUpdate)?
+    internal var onShippingContactChange: (
+        @MainActor (
+            PKContact,
+            [PKPaymentSummaryItem]
+        ) async -> PKPaymentRequestShippingContactUpdate
+    )?
 
-    internal var onShippingMethodChange: (@MainActor (PKShippingMethod, [PKPaymentSummaryItem]) async -> PKPaymentRequestShippingMethodUpdate)?
+    internal var onShippingMethodChange: (
+        @MainActor (
+            PKShippingMethod,
+            [PKPaymentSummaryItem]
+        ) async -> PKPaymentRequestShippingMethodUpdate
+    )?
 
-    internal var onCouponCodeChange: (@MainActor (String, [PKPaymentSummaryItem]) async -> PKPaymentRequestCouponCodeUpdate)?
+    internal var onCouponCodeChange: (
+        @MainActor (
+            String,
+            [PKPaymentSummaryItem]
+        ) async -> PKPaymentRequestCouponCodeUpdate
+    )?
 
     /// The payment request object needed for Apple Pay. Must contain all the required fields
     /// such as `merchantIdentifier`, `summaryItems`, `currencyCode`, and `countryCode`.
@@ -46,7 +64,6 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
     /// - Parameters:
     ///   - paymentRequest: The payment request object needed for Apple Pay. Must contain all the required fields
     ///   such as `merchantIdentifier`, `summaryItems`, `currencyCode`, and `countryCode`.
-    ///   - allowOnboarding: Flag to allow shoppers to add new cards for Apple Pay  if there is none. Default is `false`.
     /// - Warning: The instance of `paymentRequest` may be mutated.
     /// - Throws: `ApplePayComponent.Error.emptyMerchantIdentifier` if the merchant identifier is empty.
     /// - Throws: `ApplePayComponent.Error.invalidCountryCode` if the country code is not valid.
@@ -55,8 +72,7 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
     /// - Throws: `ApplePayComponent.Error.negativeGrandTotal` if the grand total is negative.
     /// - Throws: `ApplePayComponent.Error.invalidSummaryItem` if at least one of the summary items has an invalid amount.
     public init(
-        paymentRequest: PKPaymentRequest,
-        allowOnboarding: Bool = false
+        paymentRequest: PKPaymentRequest
     ) throws {
         guard !paymentRequest.merchantIdentifier.isEmpty else {
             throw ApplePayComponent.Error.emptyMerchantIdentifier
@@ -71,7 +87,6 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
         try Self.validate(summaryItems: paymentRequest.paymentSummaryItems)
 
         self.paymentRequest = paymentRequest
-        self.allowOnboarding = allowOnboarding
     }
 
     internal static func validate(summaryItems: [PKPaymentSummaryItem]) throws {
@@ -82,7 +97,7 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
               lastItem.amount.doubleValue >= 0 else {
             throw ApplePayComponent.Error.negativeGrandTotal
         }
-        guard !summaryItems.map(\.amount).contains(NSDecimalNumber.notANumber) else {
+        guard summaryItems.allSatisfy({ $0.amount != .notANumber }) else {
             throw ApplePayComponent.Error.invalidSummaryItem
         }
     }
@@ -110,7 +125,10 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
         newConfig.paymentRequest.paymentSummaryItems = newItems
         return newConfig
     }
+}
 
+extension ApplePayConfiguration {
+    
     /// Sets the handler called when the shopper authorizes the payment, before `onSubmit`.
     ///
     /// Use this closure to validate the shopper's payment information (e.g., billing/shipping address)
@@ -169,6 +187,15 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
     ) -> Self {
         var copy = self
         copy.onCouponCodeChange = onCouponCodeChange
+        return copy
+    }
+    
+    /// Sets whether to allow adding new cards to Apple Pay if there is none.
+    /// - Parameter allowOnboarding: Flag to allow shoppers to add new cards if there is none configured for Apple pay.
+    /// - Returns: A modified copy of the configuration.
+    public func allowOnboarding(_ allowOnboarding: Bool) -> Self {
+        var copy = self
+        copy.allowOnboarding = allowOnboarding
         return copy
     }
 }

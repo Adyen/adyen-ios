@@ -298,10 +298,8 @@ internal struct DemoAppSettings: Codable {
     }
 
     internal func applePayConfiguration(using request: PKPaymentRequest) throws -> ApplePayConfiguration {
-        try ApplePayConfiguration(
-            paymentRequest: request,
-            allowOnboarding: applePaySettings.allowOnboarding
-        )
+        try ApplePayConfiguration(paymentRequest: request)
+            .allowOnboarding(applePaySettings.allowOnboarding)
     }
 
     internal var analyticsConfiguration: AnalyticsConfiguration {
