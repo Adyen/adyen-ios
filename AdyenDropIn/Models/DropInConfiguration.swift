@@ -30,7 +30,7 @@ public extension DropInComponent {
         public var card = Card()
         
         /// The Apple Pay configuration.
-        public var applePay: ApplePayComponent.Configuration?
+        public var applePay: ApplePayConfiguration?
         
         /// Payment methods list related configurations.
         public var paymentMethodsList = PaymentMethodListConfiguration()

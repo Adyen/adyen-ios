@@ -93,11 +93,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
         self.checkout = checkout
 
-        guard let component = checkout.createPaymentComponent(for: .blik) else {
-            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: BLIKPaymentMethod.self)
-        }
-
-        return component
+        return try checkout.createPaymentComponent(for: .blik)
     }
 
     // MARK: - Backend calls

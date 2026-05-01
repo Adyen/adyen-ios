@@ -154,7 +154,7 @@ extension ApplePayComponent {
             return paymentRequest.paymentSummaryItems
         }
         do {
-            try Configuration.validate(summaryItems: result.paymentSummaryItems)
+            try ApplePayConfiguration.validate(summaryItems: result.paymentSummaryItems)
             paymentRequest.paymentSummaryItems = result.paymentSummaryItems
             return result.paymentSummaryItems
         } catch {

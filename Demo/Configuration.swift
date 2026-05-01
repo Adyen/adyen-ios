@@ -297,8 +297,8 @@ internal struct DemoAppSettings: Codable {
         return dropInConfig
     }
 
-    internal func applePayConfiguration(using request: PKPaymentRequest) throws -> ApplePayComponent.Configuration {
-        try ApplePayComponent.Configuration(
+    internal func applePayConfiguration(using request: PKPaymentRequest) throws -> ApplePayConfiguration {
+        try ApplePayConfiguration(
             paymentRequest: request,
             allowOnboarding: applePaySettings.allowOnboarding
         )
