@@ -163,7 +163,7 @@ class ApplePayComponentTest: XCTestCase {
         let configuration = try ApplePayConfiguration(
             paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
-            .allowOnboarding(false)
+        .allowOnboarding(false)
 
         // When / Then
         XCTAssertThrowsError(
@@ -299,6 +299,41 @@ class ApplePayComponentTest: XCTestCase {
         let result = await sut.paymentAuthorizationViewController(controller, didChangeCouponCode: "Coupon")
 
         XCTAssertEqual(receivedCoupon, "Coupon")
+        XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.count, 2)
+        XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.last?.label, "New Item 2")
+        XCTAssertEqual(result.paymentSummaryItems.count, 2)
+    }
+
+    func testApplePayPaymentMethod() async throws {
+        var receivedPaymentMethod: PKPaymentMethod?
+        var configuration = try ApplePayConfiguration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
+        )
+        configuration.onPaymentMethodChange = { paymentMethod, _ in
+            receivedPaymentMethod = paymentMethod
+            return PKPaymentRequestPaymentMethodUpdate(paymentSummaryItems: [
+                PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
+                PKPaymentSummaryItem(label: "New Item 2", amount: 2222)
+            ])
+        }
+
+        sut = try ApplePayComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: configuration
+        )
+
+        try await Task.sleep(for: .seconds(1))
+
+        XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.count, 5)
+        XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.last?.label, "summary_4")
+
+        let controller = try XCTUnwrap(sut.paymentAuthorizationViewController)
+        let mockPaymentMethod = PKPaymentMethodMock()
+
+        let result = await sut.paymentAuthorizationViewController(controller, didSelect: mockPaymentMethod)
+
+        XCTAssertNotNil(receivedPaymentMethod)
         XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.count, 2)
         XCTAssertEqual(self.sut.paymentRequest.paymentSummaryItems.last?.label, "New Item 2")
         XCTAssertEqual(result.paymentSummaryItems.count, 2)

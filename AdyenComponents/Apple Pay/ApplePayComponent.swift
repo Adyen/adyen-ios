@@ -127,14 +127,14 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         return PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: networks)
     }
     
+    // TODO: turn this into async, as now the sheet dismisses immediately
+    // before user can see the success checkmark on Apple Pay
     /// Resumes the suspended Apple Pay authorization so the sheet shows a success/failure animation
     /// and dismisses. Called by the Checkout layer once the backend payment result is known.
     ///
     /// - Parameters:
     ///   - success: `true` if the payment succeeded, `false` otherwise.
     ///   - completion: Invoked once the continuation has been resumed.
-    // TODO: turn this into async, as now the sheet dismisses immediately
-    // before user can see the success checkmark on Apple Pay
     public func didFinalize(with success: Bool, completion: (() -> Void)?) {
         resumeContinuation(success: success)
         completion?()

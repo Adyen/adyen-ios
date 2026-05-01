@@ -34,6 +34,15 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         await handleAuthorize(payment: payment)
     }
 
+    // MARK: - Payment Method (async)
+
+    public func paymentAuthorizationViewController(
+        _ controller: PKPaymentAuthorizationViewController,
+        didSelect paymentMethod: PKPaymentMethod
+    ) async -> PKPaymentRequestPaymentMethodUpdate {
+        await handlePaymentMethodChange(paymentMethod)
+    }
+
     // MARK: - Shipping Contact (async)
 
     public func paymentAuthorizationViewController(
@@ -117,7 +126,7 @@ extension ApplePayComponent {
         }
 
         let result = await onShippingContactChange(contact, paymentRequest.paymentSummaryItems)
-        result.paymentSummaryItems = validatedPaymentSummaryItems(from: result)
+        result.paymentSummaryItems = validSummaryItems(from: result)
         return result
     }
 
@@ -127,7 +136,7 @@ extension ApplePayComponent {
         }
 
         let result = await onShippingMethodChange(shippingMethod, paymentRequest.paymentSummaryItems)
-        result.paymentSummaryItems = validatedPaymentSummaryItems(from: result)
+        result.paymentSummaryItems = validSummaryItems(from: result)
         return result
     }
 
@@ -137,11 +146,21 @@ extension ApplePayComponent {
         }
 
         let result = await onCouponCodeChange(couponCode, paymentRequest.paymentSummaryItems)
-        result.paymentSummaryItems = validatedPaymentSummaryItems(from: result)
+        result.paymentSummaryItems = validSummaryItems(from: result)
         return result
     }
 
-    /// Validates the summary items from a merchant-returned update result.
+    private func handlePaymentMethodChange(_ paymentMethod: PKPaymentMethod) async -> PKPaymentRequestPaymentMethodUpdate {
+        guard let onPaymentMethodChange = configuration.onPaymentMethodChange else {
+            return PKPaymentRequestPaymentMethodUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
+        }
+
+        let result = await onPaymentMethodChange(paymentMethod, paymentRequest.paymentSummaryItems)
+        result.paymentSummaryItems = validSummaryItems(from: result)
+        return result
+    }
+
+    /// Returns valid summary items from a merchant-returned update result.
     ///
     /// If the result indicates failure or has empty items, the current `paymentRequest.paymentSummaryItems`
     /// are returned unchanged.
@@ -150,7 +169,7 @@ extension ApplePayComponent {
     /// previous valid summary items to keep the Apple Pay sheet in a consistent state.
     ///
     /// Otherwise the new items are accepted and stored on `paymentRequest`.
-    private func validatedPaymentSummaryItems(from result: some PKPaymentRequestUpdate) -> [PKPaymentSummaryItem] {
+    private func validSummaryItems(from result: some PKPaymentRequestUpdate) -> [PKPaymentSummaryItem] {
         guard result.status == .success, !result.paymentSummaryItems.isEmpty else {
             return paymentRequest.paymentSummaryItems
         }

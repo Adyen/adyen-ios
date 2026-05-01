@@ -100,6 +100,20 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
                     }
                     return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: items)
                 }
+                .onPaymentMethodChange { paymentMethod, summaryItems in
+                    // Example: Add a processing fee based on card type
+                    var items = summaryItems
+                    if let last = items.last {
+                        items = items.dropLast()
+                        let cardType = paymentMethod.displayName ?? "Card"
+                        items.append(.init(
+                            label: "Processing Fee (\(cardType))",
+                            amount: NSDecimalNumber(value: 1.0)
+                        ))
+                        items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue + 1.0)))
+                    }
+                    return PKPaymentRequestPaymentMethodUpdate(paymentSummaryItems: items)
+                }
         }
         .onSubmit { [weak self] data in
             guard let self else { throw CancellationError() }
