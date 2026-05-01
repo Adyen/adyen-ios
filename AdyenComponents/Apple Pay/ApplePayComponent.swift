@@ -133,6 +133,8 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// - Parameters:
     ///   - success: `true` if the payment succeeded, `false` otherwise.
     ///   - completion: Invoked once the continuation has been resumed.
+    // TODO: turn this into async, as now the sheet dismisses immediately
+    // before user can see the success checkmark on Apple Pay
     public func didFinalize(with success: Bool, completion: (() -> Void)?) {
         resumeContinuation(success: success)
         completion?()
