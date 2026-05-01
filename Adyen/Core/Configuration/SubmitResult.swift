@@ -6,7 +6,7 @@
 
 import Foundation
 
-/// Result returned by the merchant's `onSubmit` callback in the advanced flow.
+/// Result returned by `onSubmit` callback in the advanced flow.
 ///
 /// Mirrors the generic advanced-flow branch view: `Completion | Action | Retry | PartialPayment`.
 /// Infrastructure failures are signaled by throwing from the callback (the SDK routes thrown
@@ -31,6 +31,7 @@ public enum SubmitResult: Sendable {
 }
 
 /// Payload carried on `SubmitResult.partialPayment`, describing the partial-payment continuation.
+/// TODO: Revisit whether this should be nested in `SubmitResult` when adding Drop-in support.
 public struct PartialPayment: Sendable {
     
     /// The partial-payment order. `remainingAmount` is reachable via `order.remainingAmount`.
