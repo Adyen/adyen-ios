@@ -78,7 +78,11 @@ let applePayDictionary = [
 
 let idealDictionary = [
     "type": "ideal",
-    "name": "iDeal"
+    "name": "iDeal",
+    "issuers": [
+        ["id": "1121", "name": "Test Issuer"],
+        ["id": "1154", "name": "Test Issuer 2"]
+    ]
 ] as [String: Any]
 
 let irisDictionary = [

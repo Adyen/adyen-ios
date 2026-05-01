@@ -336,8 +336,9 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(cashAppPay.clientId, "testClient")
         XCTAssertEqual(cashAppPay.scopeId, "testScope")
         
+        // iDEAL has issuers but should decode as InstantPaymentMethod, not IssuerListPaymentMethod
         XCTAssertTrue(paymentMethods.regular[34] is InstantPaymentMethod)
-        XCTAssertEqual(paymentMethods.regular[34].type.rawValue, "ideal")
+        XCTAssertEqual(paymentMethods.regular[34].type, .ideal)
         XCTAssertEqual(paymentMethods.regular[34].name, "iDeal")
 
         XCTAssertTrue(paymentMethods.regular[35] is PayToPaymentMethod)
