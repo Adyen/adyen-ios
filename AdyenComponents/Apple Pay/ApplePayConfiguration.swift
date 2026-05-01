@@ -29,11 +29,7 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
     /// If false, then Apple Pay is disabled if the shopper doesn't have supported cards on Apple Pay wallet.
     internal var allowOnboarding: Bool = true
 
-    internal var onAuthorize: (
-        @MainActor (
-            PKPayment
-        ) async -> PKPaymentAuthorizationResult
-    )?
+    internal var onAuthorize: (@MainActor (PKPayment) async -> PKPaymentAuthorizationResult)?
 
     internal var onShippingContactChange: (
         @MainActor (
