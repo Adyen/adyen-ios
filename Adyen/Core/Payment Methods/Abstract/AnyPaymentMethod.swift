@@ -19,7 +19,6 @@ internal enum AnyPaymentMethod: Codable {
     case storedPayTo(StoredPayToPaymentMethod)
 
     case instant(PaymentMethod)
-    case iris(InstantPaymentMethod)
     case card(AnyCardPaymentMethod)
     case issuerList(IssuerListPaymentMethod)
     case sepaDirectDebit(SEPADirectDebitPaymentMethod)
@@ -58,7 +57,6 @@ internal enum AnyPaymentMethod: Codable {
         case let .storedPayPal(paymentMethod): return paymentMethod
         case let .storedBCMC(paymentMethod): return paymentMethod
         case let .instant(paymentMethod): return paymentMethod
-        case let .iris(paymentMethod): return paymentMethod
         case let .storedInstant(paymentMethod): return paymentMethod
         case let .storedAchDirectDebit(paymentMethod): return paymentMethod
         case let .storedCashAppPay(paymentMethod): return paymentMethod

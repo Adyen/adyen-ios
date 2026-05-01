@@ -92,7 +92,7 @@ internal enum AnyPaymentMethodDecoder {
         .twint: TwintPaymentMethodDecoder(),
         .payByBankAISDD: PayByBankUSPaymentMethodDecoder(),
         .payTo: PayToPaymentMethodDecoder(),
-        .iris: IrisPaymentMethodDecoder(),
+        .iris: InstantPaymentMethodDecoder(),
         .ideal: InstantPaymentMethodDecoder()
     ]
     
@@ -558,16 +558,6 @@ private struct PayToPaymentMethodDecoder: PaymentMethodDecoder {
         default:
             return nil
         }
-    }
-}
-
-private struct IrisPaymentMethodDecoder: PaymentMethodDecoder {
-    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
-        try .iris(InstantPaymentMethod(from: decoder))
-    }
-
-    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
-        (paymentMethod as? InstantPaymentMethod).map { .iris($0) }
     }
 }
 
