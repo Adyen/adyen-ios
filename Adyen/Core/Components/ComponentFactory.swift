@@ -34,9 +34,15 @@ package protocol PaymentComponentFactory {
         with paymentMethod: Method,
         context: AdyenContext,
         configuration: Configuration
-    ) -> Component
+    ) throws -> Component
     
-    /// Creates the default configuration for the component.
-    /// - Returns: A new configuration instance for the component.
-    func defaultConfiguration() -> Configuration
+    /// Returns a default configuration for this factory's component.
+    ///
+    /// Most factories can construct a usable default. Some (e.g. Apple Pay) cannot, because
+    /// their configuration requires merchant-specific values; those factories throw to make
+    /// the missing-configuration case explicit at the call site.
+    ///
+    /// - Returns: A configured ``Configuration`` instance.
+    /// - Throws: An error if no usable default exists for this factory.
+    func defaultConfiguration() throws -> Configuration
 }
