@@ -44,3 +44,4 @@ COSDK-
 - [ ] Tested changes locally
 - [ ] Added/updated unit tests
 - [ ] Verified against acceptance criteria
+- [ ] Aligned with other platforms in case of any public API changes
