@@ -81,6 +81,16 @@ let idealDictionary = [
     "name": "iDeal"
 ] as [String: Any]
 
+let irisDictionary = [
+    "type": "iris",
+    "name": "IRIS",
+    "issuers": [
+        ["id": "PIRBGRAA", "name": "Piraeus Bank"],
+        ["id": "ERBKGRAA", "name": "Eurobank"],
+        ["id": "ETHNGRAA", "name": "National Bank of Greece"]
+    ]
+] as [String: Any]
+
 let bcmcCardDictionary = [
     "name": "Bancontact card",
     "supportsRecurring": true,

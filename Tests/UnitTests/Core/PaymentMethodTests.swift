@@ -84,7 +84,8 @@ class PaymentMethodTests: XCTestCase {
                 upi,
                 cashAppPay,
                 idealDictionary,
-                payto
+                payto,
+                irisDictionary
             ]
         ]
     }
@@ -183,7 +184,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 36)
+        XCTAssertEqual(paymentMethods.regular.count, 37)
 
         let creditCardPaymentMethod = try XCTUnwrap(paymentMethods.regular[0] as? CardPaymentMethod)
         XCTAssertEqual(creditCardPaymentMethod.fundingSource, .credit)
@@ -342,6 +343,11 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.regular[35] is PayToPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[35].name, "payto")
         XCTAssertEqual(paymentMethods.regular[35].type.rawValue, "payto")
+        
+        // IRIS has issuers but should decode as InstantPaymentMethod, not IssuerListPaymentMethod
+        XCTAssertTrue(paymentMethods.regular[36] is InstantPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[36].type.rawValue, "iris")
+        XCTAssertEqual(paymentMethods.regular[36].name, "IRIS")
     }
     
     // MARK: - Display Information Override
