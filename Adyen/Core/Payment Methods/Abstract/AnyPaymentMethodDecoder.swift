@@ -91,7 +91,8 @@ internal enum AnyPaymentMethodDecoder {
         .cashAppPay: CashAppPayPaymentMethodDecoder(),
         .twint: TwintPaymentMethodDecoder(),
         .payByBankAISDD: PayByBankUSPaymentMethodDecoder(),
-        .payTo: PayToPaymentMethodDecoder()
+        .payTo: PayToPaymentMethodDecoder(),
+        .iris: IrisPaymentMethodDecoder()
     ]
     
     private static var defaultDecoder: PaymentMethodDecoder = InstantPaymentMethodDecoder()
@@ -104,7 +105,7 @@ internal enum AnyPaymentMethodDecoder {
             let brand = try? container.decode(String.self, forKey: .brand)
             let isIssuersList = try container.containsValue(.issuers)
             
-            if type == .ideal {
+            if type == .ideal || type == .iris {
                 return try InstantPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
             }
             
@@ -559,6 +560,16 @@ private struct PayToPaymentMethodDecoder: PaymentMethodDecoder {
         default:
             return nil
         }
+    }
+}
+
+private struct IrisPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
+        try .iris(InstantPaymentMethod(from: decoder))
+    }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        (paymentMethod as? InstantPaymentMethod).map { .iris($0) }
     }
 }
 
