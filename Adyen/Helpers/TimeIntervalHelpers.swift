@@ -7,12 +7,10 @@
 import AdyenNetworking
 import Foundation
 
-// So that any `TimeInterval` instance will inherit the `adyen` scope.
-
+/// So that any `TimeInterval` instance will inherit the `adyen` scope.
 extension TimeInterval: AdyenCompatible {}
 
-// Adds helper functionality to any `TimeInterval` instance through the `adyen` property.
-
+/// Adds helper functionality to any `TimeInterval` instance through the `adyen` property.
 extension AdyenScope where Base == TimeInterval {
     
     /// Transform `TimeInterval` to a `String` with either "MM:SS" or "HH:MM:SS" depending
