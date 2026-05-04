@@ -320,7 +320,7 @@ extension CardType {
         case .chinaUnionPay:
             return "^(62|81)[0-9]{0,17}$"
         case .dankort:
-            return "^(5019)[0-9]{0,12}$"
+            return "^(5|50|501|5019[0-9]{0,12}|4|45|457|4571[0-9]{0,12}|3|35|357|3571[0-9]{0,12})$"
         case .dankortVISA:
             return "^(4571)[0-9]{0,12}$"
         case .diners:

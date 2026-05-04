@@ -28,11 +28,8 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     /// Reported with every entered digit.
     @AdyenObservable("") internal var binValue: String
     
-    /// Initial brand set after detection before any user interaction
-    @AdyenObservable(nil) internal private(set) var initialBrand: CardBrand?
-    
-    /// Brand selected in dual branded cards, set after user selection.
-    @AdyenObservable(nil) internal private(set) var selectedDualBrand: CardBrand?
+    /// The active brand — set from BIN detection or user selection in dual-brand mode.
+    @AdyenObservable(nil) internal private(set) var selectedBrand: CardBrand?
     
     /// Detected brand logo(s) for the entered bin.
     @AdyenObservable([]) internal private(set) var detectedBrandLogos: [FormCardLogosItem.CardTypeLogo]
@@ -52,13 +49,21 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         scanCardHandler != nil
     }
     
-    /// Returns the initial brand for single brand cases
-    /// or `selectedDualBrand` for dual brand cases
+    /// Returns the brand to include in the payment request.
+    /// Returns `nil` for locally detected brands and `.dualUnselectable` mode.
     internal var currentBrand: CardBrand? {
-        isDualBranded ? selectedDualBrand : initialBrand
+        guard !isBrandDetectedLocally else { return nil }
+        return brandDisplayMode == .dualUnselectable ? nil : selectedBrand
     }
     
-    internal var isDualBranded: Bool = false
+    internal var brandDisplayMode: DualBrandAccessoryView.BrandDisplayMode = .single
+    
+    @AdyenObservable(.primary) internal var brandSelection: DualBrandAccessoryView.BrandSelection
+    
+    /// Whether the detected brand came from local (regex) detection rather than a server BIN lookup.
+    internal var isBrandDetectedLocally = false
+    
+    internal var onUserBrandSelection: ((CardBrand) -> Void)?
 
     /// Initializes the form card number item.
     internal init(
@@ -67,14 +72,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         localizationParameters: LocalizationParameters? = nil,
         scanCardHandler: (() -> Void)? = nil
     ) {
-        // these 4 US debit brands are not to be displayed
-        // but should be supported so it's done here for now
-        self.cardTypeLogos = cardTypeLogos.filter { logo in
-            logo.type != .accel &&
-                logo.type != .pulse &&
-                logo.type != .star &&
-                logo.type != .nyce
-        }
+        self.cardTypeLogos = cardTypeLogos
         self.supportedCardTypes = cardTypeLogos.map(\.type)
         self.localizationParameters = localizationParameters
         self.scanCardHandler = scanCardHandler
@@ -165,24 +163,20 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     }
     
     /// Updates the item with the detected brands.
-    /// and sets the first supported one as the `initialBrand`.
+    /// Sets the first supported one as `selectedBrand`.
     internal func update(brands: [CardBrand]) {
         detectedBrands = brands
         
         switch (brands.count, brands.first(where: \.isSupported)) {
         case (1, _):
-            update(initialBrand: brands.first)
+            updateSelectedBrand(brands.first)
         case let (2, .some(firstSupportedBrand)):
-            update(initialBrand: firstSupportedBrand)
+            updateSelectedBrand(firstSupportedBrand)
         case (2, nil):
-            // if there are 2 brands and neither is supported,
-            // need to show unsupported text
-            update(initialBrand: nil, defaultSupportedValue: false)
+            updateSelectedBrand(nil, defaultSupportedValue: false)
         default:
-            update(initialBrand: nil)
+            updateSelectedBrand(nil)
         }
-        
-        isDualBranded = brands.count == 2 && brands.allSatisfy(\.isSupported)
         
         detectedBrandLogos = brands.filter(\.isSupported)
             .compactMap { brand in
@@ -190,17 +184,20 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
             }
     }
 
-    /// Changes the selected dual brand with the given cardBrand to trigger updates
-    /// for the observing objects.
-    internal func selectBrand(cardBrand: CardBrand) {
-        updateValidation(for: cardBrand)
-        self.selectedDualBrand = cardBrand
+    /// Selects a brand from the segmented picker by index.
+    internal func selectBrand(from selection: DualBrandAccessoryView.BrandSelection) {
+        guard let brand = detectedBrands.adyen[safeIndex: selection.rawValue] else { return }
+        updateValidation(for: brand)
+        self.brandSelection = selection
+        self.selectedBrand = brand
+        onUserBrandSelection?(brand)
     }
 
-    /// Updates the initial brand and the related validation checks.
-    private func update(initialBrand: CardBrand?, defaultSupportedValue: Bool = true) {
-        updateValidation(for: initialBrand, defaultSupportedValue: defaultSupportedValue)
-        self.initialBrand = initialBrand
+    /// Updates the current brand from the binlookup response.
+    private func updateSelectedBrand(_ brand: CardBrand?, defaultSupportedValue: Bool = true) {
+        updateValidation(for: brand, defaultSupportedValue: defaultSupportedValue)
+        updateBrandSelection(with: brand)
+        self.selectedBrand = brand
         updateBINIfNeeded()
     }
     
@@ -221,6 +218,18 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
             isEnteredBrandSupported: isBrandSupported,
             panLength: brand?.panLength
         )
+    }
+    
+    private func updateBrandSelection(with brand: CardBrand?) {
+        // Each guard separate to make it readable
+        guard let brand,
+              let index = detectedBrands.firstIndex(of: brand),
+              let selection = DualBrandAccessoryView.BrandSelection(rawValue: index) else {
+            brandSelection = .primary
+            return
+        }
+        
+        brandSelection = selection
     }
     
     /// Calculates the length of the string being replaced
