@@ -29,11 +29,6 @@ public final class UPIComponent: PaymentComponent,
         internal static let errorIcon = "error"
     }
 
-    private enum Localization {
-        static let localAppListTitle = "On your device"
-        static let noLocalAppListTitle = "Options"
-    }
-
     // MARK: - Properties
 
     /// Configuration for UPI Component.
@@ -212,8 +207,11 @@ public final class UPIComponent: PaymentComponent,
 
     /// The UPI apps list title item.
     internal lazy var appsListTitleItem: FormContainerItem<FormLabelItem> = {
-        // TODO: - Replace with localization keys
-        let title = installedUPIApps.isEmpty ? Localization.noLocalAppListTitle : Localization.localAppListTitle
+        let titleKey: LocalizationKey = installedUPIApps.isEmpty
+            ? .upiIntentAppsTitle
+            : .upiIntentAppsTitleOnDevice
+
+        let title = localizedString(titleKey, configuration.localizationParameters)
         let item = FormLabelItem(
             text: title,
             style: configuration.style.sectionHeader
