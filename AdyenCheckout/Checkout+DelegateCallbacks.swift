@@ -16,7 +16,7 @@ extension Checkout: PaymentComponentDelegate {
     public func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         AdyenAssertion.assert(
             message: "A new payment component submitted while another flow is still pending.",
-            condition: pendingPaymentComponent == nil
+            condition: pendingPaymentComponent != nil
         )
         pendingPaymentComponent = component
 

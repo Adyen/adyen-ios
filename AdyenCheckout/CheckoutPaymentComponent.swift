@@ -12,7 +12,7 @@ import UIKit
 /// Create instances using `Checkout.createPaymentComponent(for:)`.
 ///
 /// ```swift
-/// let component = checkout.createPaymentComponent(for: .scheme)
+/// let component = try checkout.createPaymentComponent(for: .scheme)
 /// ```
 ///
 /// ## Custom Pay Button
@@ -25,11 +25,7 @@ import UIKit
 @MainActor
 public final class CheckoutPaymentComponent {
     
-    internal let paymentComponent: PaymentComponent?
-    
-    private var configuration: CheckoutConfiguration
-    
-    internal weak var delegate: PaymentComponentDelegate?
+    internal let paymentComponent: PaymentComponent
     
     /// The view controller of the component.
     public var viewController: UIViewController? {
@@ -44,24 +40,28 @@ public final class CheckoutPaymentComponent {
         configuration: CheckoutConfiguration,
         context: AdyenContext,
         delegate: PaymentComponentDelegate?
-    ) {
-        self.configuration = configuration
-        self.delegate = delegate
+    ) throws {
         // TODO: Add new v6 style here
-        self.paymentComponent = CheckoutComponentBuilder.build(for: paymentMethod, configuration: configuration, context: context)
-        self.paymentComponent?.delegate = delegate
+        self.paymentComponent = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: configuration,
+            context: context
+        )
+        self.paymentComponent.delegate = delegate
     }
-    
+
     package init(
         storedPaymentMethod: StoredPaymentMethod,
         configuration: CheckoutConfiguration,
         context: AdyenContext,
         delegate: PaymentComponentDelegate?
     ) {
-        self.configuration = configuration
-        self.delegate = delegate
         // TODO: Add new v6 style here
-        self.paymentComponent = CheckoutComponentBuilder.build(for: storedPaymentMethod, configuration: configuration, context: context)
-        self.paymentComponent?.delegate = delegate
+        self.paymentComponent = CheckoutComponentBuilder.build(
+            for: storedPaymentMethod,
+            configuration: configuration,
+            context: context
+        )
+        self.paymentComponent.delegate = delegate
     }
 }
