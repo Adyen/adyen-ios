@@ -219,6 +219,48 @@ final class DualBrandAccessoryViewTests: XCTestCase {
         XCTAssertTrue(sut.secondaryLogoView.isHidden, "Secondary should be hidden after switching to single")
     }
     
+    // MARK: - External Selection Update Tests
+    
+    func testUpdateSelection_setsCurrentSelection() throws {
+        let dualBrandLogos = try [
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa),
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), type: .bcmc)
+        ]
+        sut.updateCurrentLogos(dualBrandLogos, mode: .dualSelectable)
+        XCTAssertEqual(sut.currentSelection, .primary)
+        
+        sut.updateSelection(with: .secondary)
+        
+        XCTAssertEqual(sut.currentSelection, .secondary, "updateSelection should update currentSelection")
+    }
+    
+    func testUpdateSelection_doesNotFireCallback() throws {
+        let dualBrandLogos = try [
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa),
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), type: .bcmc)
+        ]
+        sut.updateCurrentLogos(dualBrandLogos, mode: .dualSelectable)
+        brandSelectionCount = 0
+        
+        sut.updateSelection(with: .secondary)
+        
+        XCTAssertEqual(brandSelectionCount, 0, "updateSelection should not fire onBrandSelection callback (avoids infinite loop)")
+    }
+    
+    func testUpdateSelection_backToPrimary() throws {
+        let dualBrandLogos = try [
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/visa.png")), type: .visa),
+            FormCardLogosItem.CardTypeLogo(url: XCTUnwrap(URL(string: "https://example.com/bcmc.png")), type: .bcmc)
+        ]
+        sut.updateCurrentLogos(dualBrandLogos, mode: .dualSelectable)
+        sut.updateSelection(with: .secondary)
+        XCTAssertEqual(sut.currentSelection, .secondary)
+        
+        sut.updateSelection(with: .primary)
+        
+        XCTAssertEqual(sut.currentSelection, .primary, "updateSelection should allow switching back to primary")
+    }
+    
     private var brandImageStyle: ImageStyle = .init(
         borderColor: nil,
         borderWidth: 0.0,

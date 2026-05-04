@@ -49,12 +49,6 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         scanCardHandler != nil
     }
     
-    internal enum BrandDisplayMode: Equatable {
-        case single
-        case dualUnselectable
-        case dualSelectable
-    }
-    
     /// Returns the brand to include in the payment request.
     /// Returns `nil` for locally detected brands and `.dualUnselectable` mode.
     internal var currentBrand: CardBrand? {
@@ -62,7 +56,9 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         return brandDisplayMode == .dualUnselectable ? nil : selectedBrand
     }
     
-    internal var brandDisplayMode: BrandDisplayMode = .single
+    internal var brandDisplayMode: DualBrandAccessoryView.BrandDisplayMode = .single
+    
+    @AdyenObservable(.primary) internal var brandSelection: DualBrandAccessoryView.BrandSelection
     
     /// Whether the detected brand came from local (regex) detection rather than a server BIN lookup.
     internal var isBrandDetectedLocally = false
@@ -192,12 +188,15 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     internal func selectBrand(from selection: DualBrandAccessoryView.BrandSelection) {
         guard let brand = detectedBrands.adyen[safeIndex: selection.rawValue] else { return }
         updateValidation(for: brand)
+        self.brandSelection = selection
         self.selectedBrand = brand
         onUserBrandSelection?(brand)
     }
 
+    /// Updates the current brand from the binlookup response.
     private func updateSelectedBrand(_ brand: CardBrand?, defaultSupportedValue: Bool = true) {
         updateValidation(for: brand, defaultSupportedValue: defaultSupportedValue)
+        updateBrandSelection(with: brand)
         self.selectedBrand = brand
         updateBINIfNeeded()
     }
@@ -219,6 +218,18 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
             isEnteredBrandSupported: isBrandSupported,
             panLength: brand?.panLength
         )
+    }
+    
+    private func updateBrandSelection(with brand: CardBrand?) {
+        // Each guard separate to make it readable
+        guard let brand,
+              let index = detectedBrands.firstIndex(of: brand),
+              let selection = DualBrandAccessoryView.BrandSelection(rawValue: index) else {
+            brandSelection = .primary
+            return
+        }
+        
+        brandSelection = selection
     }
     
     /// Calculates the length of the string being replaced

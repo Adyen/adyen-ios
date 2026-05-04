@@ -15,6 +15,12 @@ internal class DualBrandAccessoryView: UIView {
         case secondary
     }
     
+    internal enum BrandDisplayMode: Equatable {
+        case single
+        case dualUnselectable
+        case dualSelectable
+    }
+    
     private enum Constants {
         static let iconSize = CGSize(width: 27, height: 18)
         static let placeholderImage = UIImage(named: "ic_card_front", in: .cardInternalResources, compatibleWith: nil)
@@ -24,11 +30,17 @@ internal class DualBrandAccessoryView: UIView {
         static let containerPadding: CGFloat = 2
         static let stackSpacing: CGFloat = 2
         static let selectedBorderWidth: CGFloat = 1
-        static var selectedBorderColor: UIColor { UIColor.Adyen.componentTertiaryLabel.withAlphaComponent(0.2) }
+        static var selectedBorderColor: UIColor {
+            UIColor.Adyen.componentTertiaryLabel.withAlphaComponent(0.2)
+        }
+
         static let selectedShadowRadius: CGFloat = 8
         static let selectedShadowOffset = CGSize(width: 0, height: 3)
         static let selectedShadowOpacity: Float = 0.12
-        static var segmentedBackgroundColor: UIColor { UIColor.Adyen.secondaryComponentBackground }
+        static var segmentedBackgroundColor: UIColor {
+            UIColor.Adyen.secondaryComponentBackground
+        }
+
         static let animationDuration: TimeInterval = 0.2
     }
     
@@ -44,7 +56,7 @@ internal class DualBrandAccessoryView: UIView {
     
     internal var onBrandSelection: ((BrandSelection) -> Void)?
     
-    private var displayMode: FormCardNumberItem.BrandDisplayMode = .single {
+    private var displayMode: BrandDisplayMode = .single {
         didSet {
             guard displayMode != oldValue else { return }
             applyDisplayMode()
@@ -114,7 +126,7 @@ internal class DualBrandAccessoryView: UIView {
     
     internal func updateCurrentLogos(
         _ logos: [FormCardLogosItem.CardTypeLogo],
-        mode: FormCardNumberItem.BrandDisplayMode = .single
+        mode: BrandDisplayMode = .single
     ) {
         resetState()
         guard !logos.isEmpty else { return }
@@ -135,6 +147,12 @@ internal class DualBrandAccessoryView: UIView {
         }
         
         return self
+    }
+    
+    /// Updates the selection from outside.
+    internal func updateSelection(with selection: BrandSelection) {
+        currentSelection = selection
+        updateSelectionAppearance()
     }
     
     // MARK: - Layout
@@ -211,11 +229,11 @@ internal class DualBrandAccessoryView: UIView {
         select(.secondary)
     }
     
-    private func select(_ brand: BrandSelection) {
-        guard currentSelection != brand else { return }
-        currentSelection = brand
+    private func select(_ selection: BrandSelection) {
+        guard currentSelection != selection else { return }
+        currentSelection = selection
         UIView.animate(withDuration: Constants.animationDuration) { self.updateSelectionAppearance() }
-        onBrandSelection?(brand)
+        onBrandSelection?(selection)
     }
     
     private func updateSelectionAppearance() {
@@ -238,7 +256,7 @@ internal class DualBrandAccessoryView: UIView {
     
     // MARK: - Logo Setup
     
-    private func setupLogoViews(from logos: [FormCardLogosItem.CardTypeLogo], mode: FormCardNumberItem.BrandDisplayMode) {
+    private func setupLogoViews(from logos: [FormCardLogosItem.CardTypeLogo], mode: BrandDisplayMode) {
         guard let firstLogo = logos.first else { return }
         let secondLogo = logos.adyen[safeIndex: 1]
         

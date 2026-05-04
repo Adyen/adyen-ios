@@ -328,6 +328,110 @@ class FormCardNumberItemTests: XCTestCase {
         XCTAssertEqual(sut.selectedBrand?.type, .visa, "selectedBrand should still be set for validation/logo display")
     }
     
+    // MARK: - brandSelection Sync Tests
+    
+    func testBrandSelection_defaultIsPrimary() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        XCTAssertEqual(sut.brandSelection, .primary)
+    }
+    
+    func testBrandSelection_selectBrandFromSecondary_updatesBrandSelection() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        let bcmc = CardBrand(type: .bcmc)
+        
+        sut.update(brands: [visa, bcmc])
+        sut.selectBrand(from: .secondary)
+        
+        XCTAssertEqual(sut.brandSelection, .secondary, "brandSelection should sync to .secondary after user tap")
+    }
+    
+    func testBrandSelection_selectBrandFromPrimary_updatesBrandSelection() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        let bcmc = CardBrand(type: .bcmc)
+        
+        sut.update(brands: [visa, bcmc])
+        sut.selectBrand(from: .secondary)
+        sut.selectBrand(from: .primary)
+        
+        XCTAssertEqual(sut.brandSelection, .primary, "brandSelection should sync back to .primary")
+    }
+    
+    func testBrandSelection_updateBrandsAutoSelectsFirstSupported_syncsBrandSelection() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let unsupported = CardBrand(type: .visa, isSupported: false)
+        let supported = CardBrand(type: .bcmc, isSupported: true)
+        
+        sut.update(brands: [unsupported, supported])
+        
+        XCTAssertEqual(sut.selectedBrand?.type, .bcmc, "First supported brand should be auto-selected")
+        XCTAssertEqual(sut.brandSelection, .secondary, "brandSelection should match the index of the auto-selected brand")
+    }
+    
+    func testBrandSelection_singleBrand_staysPrimary() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        
+        sut.update(brands: [visa])
+        
+        XCTAssertEqual(sut.brandSelection, .primary, "Single brand should keep brandSelection at .primary")
+    }
+    
+    func testBrandSelection_clearBrands_resetsToPrimary() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        let bcmc = CardBrand(type: .bcmc)
+        
+        sut.update(brands: [visa, bcmc])
+        sut.selectBrand(from: .secondary)
+        XCTAssertEqual(sut.brandSelection, .secondary)
+        
+        sut.update(brands: [])
+        
+        XCTAssertNil(sut.selectedBrand)
+        XCTAssertEqual(sut.brandSelection, .primary, "brandSelection should reset to .primary when brands are cleared")
+    }
+    
+    func testBrandSelection_bothBrandsSupported_autoSelectsFirst() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        let bcmc = CardBrand(type: .bcmc)
+        
+        sut.update(brands: [visa, bcmc])
+        
+        XCTAssertEqual(sut.selectedBrand?.type, .visa, "First supported brand should be auto-selected")
+        XCTAssertEqual(sut.brandSelection, .primary, "brandSelection should be .primary for first brand")
+    }
+    
+    func testBrandSelection_callbackFiredOnUserSelection() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        let bcmc = CardBrand(type: .bcmc)
+        
+        var callbackBrand: CardBrand?
+        sut.onUserBrandSelection = { brand in
+            callbackBrand = brand
+        }
+        
+        sut.update(brands: [visa, bcmc])
+        sut.selectBrand(from: .secondary)
+        
+        XCTAssertEqual(callbackBrand?.type, .bcmc, "Callback should fire with the selected brand")
+    }
+    
+    func testBrandSelection_invalidIndex_doesNotCrash() {
+        let sut = FormCardNumberItem(cardTypeLogos: [])
+        let visa = CardBrand(type: .visa)
+        
+        sut.update(brands: [visa])
+        // .secondary index (1) is out of bounds for single-brand array
+        sut.selectBrand(from: .secondary)
+        
+        // Should not crash, selectedBrand should remain as the auto-selected one
+        XCTAssertEqual(sut.selectedBrand?.type, .visa)
+    }
+    
 }
 
 // MARK: - Brand Description Tests
