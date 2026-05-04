@@ -337,18 +337,18 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(cashAppPay.scopeId, "testScope")
         
         // iDEAL has issuers but should decode as InstantPaymentMethod, not IssuerListPaymentMethod
-        XCTAssertTrue(paymentMethods.regular[34] is InstantPaymentMethod)
-        XCTAssertEqual(paymentMethods.regular[34].type, .ideal)
-        XCTAssertEqual(paymentMethods.regular[34].name, "iDeal")
+        let iDealPaymentMethod = try XCTUnwrap(paymentMethods.regular[34] as? InstantPaymentMethod)
+        XCTAssertEqual(iDealPaymentMethod.type, .ideal)
+        XCTAssertEqual(iDealPaymentMethod.name, "iDeal")
 
-        XCTAssertTrue(paymentMethods.regular[35] is PayToPaymentMethod)
-        XCTAssertEqual(paymentMethods.regular[35].name, "payto")
-        XCTAssertEqual(paymentMethods.regular[35].type.rawValue, "payto")
-        
+        let payToPaymentMethod = try XCTUnwrap(paymentMethods.regular[35] as? PayToPaymentMethod)
+        XCTAssertEqual(payToPaymentMethod.type.rawValue, "payto")
+        XCTAssertEqual(payToPaymentMethod.name, "payto")
+
         // IRIS has issuers but should decode as InstantPaymentMethod, not IssuerListPaymentMethod
-        XCTAssertTrue(paymentMethods.regular[36] is InstantPaymentMethod)
-        XCTAssertEqual(paymentMethods.regular[36].type, .iris)
-        XCTAssertEqual(paymentMethods.regular[36].name, "IRIS")
+        let irisPaymentMethod = try XCTUnwrap(paymentMethods.regular[36] as? InstantPaymentMethod)
+        XCTAssertEqual(irisPaymentMethod.type, .iris)
+        XCTAssertEqual(irisPaymentMethod.name, "IRIS")
     }
     
     // MARK: - Display Information Override
