@@ -222,11 +222,14 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     
     private func updateBrandSelection(with brand: CardBrand?) {
         // Each guard separate to make it readable
-        guard let brand else { return }
-        guard let index = detectedBrands.firstIndex(of: brand) else { return }
-        guard let selection = DualBrandAccessoryView.BrandSelection(rawValue: index) else { return }
+        guard let brand,
+              let index = detectedBrands.firstIndex(of: brand),
+              let selection = DualBrandAccessoryView.BrandSelection(rawValue: index) else {
+            brandSelection = .primary
+            return
+        }
         
-        self.brandSelection = selection
+        brandSelection = selection
     }
     
     /// Calculates the length of the string being replaced

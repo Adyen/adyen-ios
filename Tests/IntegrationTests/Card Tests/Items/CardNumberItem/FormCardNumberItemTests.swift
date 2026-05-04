@@ -389,11 +389,8 @@ class FormCardNumberItemTests: XCTestCase {
         
         sut.update(brands: [])
         
-        // After clearing, selectedBrand is nil, so updateBrandSelection guards out
-        // and brandSelection is not explicitly reset — but this is fine because
-        // the view will call updateCurrentLogos([]) which resets the view's selection.
-        // The important thing is selectedBrand is nil.
         XCTAssertNil(sut.selectedBrand)
+        XCTAssertEqual(sut.brandSelection, .primary, "brandSelection should reset to .primary when brands are cleared")
     }
     
     func testBrandSelection_bothBrandsSupported_autoSelectsFirst() {
