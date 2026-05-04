@@ -4,27 +4,26 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import Foundation
 import UIKit
 
 /// A form item that represents a segmented control.
-@_spi(AdyenInternal)
-public final class FormSegmentedControlItem: FormItem {
+package final class FormSegmentedControlItem: FormItem {
 
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
-    
-    public var subitems: [FormItem] = []
+    package var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
 
-    public var identifier: String?
+    package var subitems: [FormItem] = []
+
+    package var identifier: String?
 
     /// The style of the segmented control.
-    public var style: SegmentedControlStyle
+    package var style: SegmentedControlStyle
 
     /// A closure that will be invoked when a segmented control index is changed.
-    public var selectionHandler: ((_ selectedIndex: Int) -> Void)?
+    package var selectionHandler: ((_ selectedIndex: Int) -> Void)?
 
-    public init(
+    package init(
         items: [String],
         style: SegmentedControlStyle,
         identifier: String? = nil
@@ -37,7 +36,7 @@ public final class FormSegmentedControlItem: FormItem {
     /// The segmented control items.
     private var items: [String]
 
-    public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         let segmentedControl = ADYSegmentedControl(items: items)
         segmentedControl.accessibilityIdentifier = identifier
         segmentedControl.backgroundColor = style.backgroundColor
@@ -56,7 +55,7 @@ public final class FormSegmentedControlItem: FormItem {
 
 internal class ADYSegmentedControl: UISegmentedControl, AnyFormItemView {
 
-    public var childItemViews: [AnyFormItemView] {
+    package var childItemViews: [AnyFormItemView] {
         []
     }
 }

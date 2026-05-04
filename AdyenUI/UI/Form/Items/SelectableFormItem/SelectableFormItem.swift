@@ -4,36 +4,35 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import Foundation
 
 /// Simple form item that represent a single selectable element.
-@_spi(AdyenInternal)
-public class SelectableFormItem: FormItem {
+package class SelectableFormItem: FormItem {
 
-    public var subitems: [FormItem] = []
+    package var subitems: [FormItem] = []
 
     /// The title of the item.
-    public var title: String
+    package var title: String
 
     /// The image url  to display the icon
-    public var imageUrl: URL?
+    package var imageUrl: URL?
 
     /// Determines whether the item is currently the selected one.
-    @AdyenObservable(false) public var isSelected: Bool
+    @AdyenObservable(false) package var isSelected: Bool
 
     /// The handler to invoke when the item is selected.
-    public var selectionHandler: (() -> Void)?
+    package var selectionHandler: (() -> Void)?
 
     /// The `accessibilityIdentifier` to be used on the `SelectableFormItem`
-    public var identifier: String?
+    package var identifier: String?
 
     /// The `accessibilityLabel` to be used on the ``SelectableFormItem``
-    public let accessibilityLabel: String
+    package let accessibilityLabel: String
 
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    package var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
 
-    @AdyenObservable(true) public var isSeparatorViewShown: Bool
+    @AdyenObservable(true) package var isSeparatorViewShown: Bool
 
     /// Initializes the list item.
     ///
@@ -45,7 +44,7 @@ public class SelectableFormItem: FormItem {
     ///   - identifier: The `accessibilityIdentifier` to be used on the `SelectableFormItem`
     ///   - accessibilityLabel: An optional custom `accessibilityLabel` to use.
     ///   - selectionHandler: The closure to execute when an item is selected.
-    public init(
+    package init(
         title: String,
         imageUrl: URL? = nil,
         isSelected: Bool = false,
@@ -63,16 +62,15 @@ public class SelectableFormItem: FormItem {
         self.isSeparatorViewShown = isSeparatorViewShown
     }
 
-    public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
 
 }
 
-@_spi(AdyenInternal)
 extension SelectableFormItem: Equatable {
 
-    public static func == (lhs: SelectableFormItem, rhs: SelectableFormItem) -> Bool {
+    package static func == (lhs: SelectableFormItem, rhs: SelectableFormItem) -> Bool {
         lhs.title == rhs.title &&
             lhs.identifier == rhs.identifier
     }

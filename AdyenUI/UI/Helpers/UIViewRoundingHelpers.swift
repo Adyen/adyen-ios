@@ -4,12 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import AdyenNetworking
 import UIKit
 
 /// Adds helper functionality to any `UIViewController` instance through the `adyen` property.
-@_spi(AdyenInternal)
 extension AdyenScope where Base: UIView {
     
     /// Apply a BezierPath mask in shape of a rounded rectangular path.

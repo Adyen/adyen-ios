@@ -8,9 +8,9 @@ import AdyenNetworking
 import func Darwin.fputs
 
 /// Provides control over SDK logging.
-public enum AdyenLogging {
+package enum AdyenLogging {
     /// Indicates whether to enable printing to the console.
-    public static var isEnabled: Bool = false {
+    package static var isEnabled: Bool = false {
         didSet {
             AdyenNetworking.Logging.isEnabled = isEnabled
         }
@@ -19,8 +19,7 @@ public enum AdyenLogging {
 
 /// Copies the interface of `Swift.print()`,
 /// and `Swift.print()` is called inside after checking first if `AdyenLogging.isEnabled` is `true`, and returns if `false`.
-@_spi(AdyenInternal)
-public func adyenPrint(_ items: Any..., separator: String = " ", terminator: String = "\n") {
+package func adyenPrint(_ items: Any..., separator: String = " ", terminator: String = "\n") {
     guard AdyenLogging.isEnabled else { return }
     var idx = items.startIndex
     let endIdx = items.endIndex

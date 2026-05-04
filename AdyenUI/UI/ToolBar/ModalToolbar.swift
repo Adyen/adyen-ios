@@ -7,14 +7,13 @@
 @_spi(AdyenInternal) import Adyen
 import UIKit
 
-@_spi(AdyenInternal)
-public class ModalToolbar: UIView, AnyNavigationBar {
+package class ModalToolbar: UIView, AnyNavigationBar {
     private let style: NavigationStyle
-    public var onCancelHandler: (() -> Void)?
+    package var onCancelHandler: (() -> Void)?
     private let title: String?
     private let paddingWithMarginCorrection: CGFloat = 16
 
-    public init(title: String?, style: NavigationStyle) {
+    package init(title: String?, style: NavigationStyle) {
         self.style = style
         self.title = title
         super.init(frame: .zero)

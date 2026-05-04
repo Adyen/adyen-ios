@@ -4,17 +4,16 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import AdyenNetworking
 import UIKit
 
-@_spi(AdyenInternal)
 extension UIImageView {
     
     /// Initializes UIImageView with given `ImageStyle`
     /// Sets `translatesAutoresizingMaskIntoConstraints` to `false`
     /// - Parameter style: `ImageStyle` to be applied
-    public convenience init(style: ImageStyle) {
+    package convenience init(style: ImageStyle) {
         self.init()
         translatesAutoresizingMaskIntoConstraints = false
         adyen.apply(style)
