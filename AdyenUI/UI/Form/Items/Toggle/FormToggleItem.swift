@@ -7,9 +7,8 @@
 import Foundation
 
 /// An item in which a switch is toggled, producing a boolean value.
-@_spi(AdyenInternal)
-public final class FormToggleItem: FormValueItem<Bool, FormToggleItemStyle> {
-    
+package final class FormToggleItem: FormValueItem<Bool, FormToggleItemStyle> {
+
     /// Initializes the switch item.
     ///
     /// - Parameter style: The switch item style.

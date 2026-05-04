@@ -8,8 +8,7 @@
 import UIKit
 
 /// A view representing a switch item.
-@_spi(AdyenInternal)
-public final class FormToggleItemView: FormItemView<FormToggleItem> {
+package final class FormToggleItemView: FormItemView<FormToggleItem> {
 
     private let theme: CheckoutTheme
 
