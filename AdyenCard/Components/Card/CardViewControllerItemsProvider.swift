@@ -156,30 +156,6 @@ extension CardViewController {
             return holderNameItem
         }()
 
-        internal lazy var coBadgedCardItem: FormCoBadgedCardItem = {
-            let item = FormCoBadgedCardItem(
-                title: localizedString(
-                    .creditCardDualBrandTitle,
-                    configuration.localizationParameters
-                ),
-                subtitle: localizedString(
-                    .creditCardDualBrandDescription,
-                    configuration.localizationParameters
-                ),
-                selectableFormItems: [],
-                style: .init(
-                    title: configuration.style.sectionHeader,
-                    subtitle: configuration.style.footnoteLabel
-                )
-            )
-            item.style.subtitle.textAlignment = .natural
-            item.identifier = ViewIdentifierBuilder.build(
-                scopeInstance: self,
-                postfix: "coBadgedCardItem"
-            )
-            return item
-        }()
-
         internal lazy var additionalAuthCodeItem: FormTextInputItem = {
             var additionalItem = FormTextInputItem(style: formStyle.textField)
             additionalItem.title = localizedString(.cardTaxNumberLabelShort, localizationParameters)

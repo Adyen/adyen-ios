@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "L'émetteur de cette carte n'est pas pris en charge";
 "adyen.card.scanYourCardButton" = "Scannez votre carte";
 "adyen.creditCard.dualBrand.title" = "Marque de la carte";
-"adyen.creditCard.dualBrand.description" = "Sélectionnez la marque de la carte avec laquelle vous préférez payer. Ceci est facultatif.";
+"adyen.creditCard.dualBrand.description" = "Vous pouvez sélectionner la marque de la carte avec laquelle vous préférez payer. Ceci est facultatif.";
 "adyen.dropIn.stored.title" = "Confirmer paiement de %@";
 "adyen.dropIn.preselected.openAll.title" = "Changer de moyen de paiement";
 "adyen.continueTo" = "Poursuivre vers %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "Lire les instructions";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "Copier le code";
+"adyen.voucher.code.copied.label" = "Code copié dans le presse-papiers";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Montant";
 "adyen.voucher.entity" = "Entité";
 "adyen.pix.instructions" = "Utilisez votre application bancaire pour scanner le code QR ou copiez le code PIX ci-dessous pour finaliser votre paiement.";
 "adyen.pix.expirationLabel" = "Vous avez %@ pour payer cette somme";
-"adyen.pix.copyButton" = "Copier le code";
-"adyen.pix.instructions.copiedMessage" = "Code copié dans le presse-papiers";
 "adyen.pix.code.copy.label" = "Copier le code PIX";
 "adyen.pix.code.copied.label" = "Code PIX copié";
 "adyen.billingAddressSection.title" = "Adresse de facturation";
@@ -183,7 +183,7 @@
 "adyen.payByBankAISDD.submit" = "Continuer vers Pay by Bank";
 "adyen.payByBankAISDD.more" = "+ de détails";
 "adyen.upi.modeSelection" = "Comment souhaitez-vous utiliser UPI ?";
-"adyen.upi.mode.payByAnyUpi" = "Application UPI";
+"adyen.upi.mode.payByAnyUpi" = "Applications UPI";
 "adyen.upi.intent.instruction" = "Sélectionnez votre application UPI préférée";
 "adyen.upi.error.noAppSelected" = "Sélectionnez votre application UPI préférée pour continuer";
 "adyen.upi.collect.field.label" = "Identifiant UPI";

@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Den angivna kortutgivaren stöds inte";
 "adyen.card.scanYourCardButton" = "Skanna ditt kort";
 "adyen.creditCard.dualBrand.title" = "Kortmärke";
-"adyen.creditCard.dualBrand.description" = "Välj det kortmärke du föredrar att betala med. Detta är valfritt.";
+"adyen.creditCard.dualBrand.description" = "Du kan välja det kortmärke du föredrar att betala med. Detta är valfritt.";
 "adyen.dropIn.stored.title" = "Bekräfta %@-betalning";
 "adyen.dropIn.preselected.openAll.title" = "Ändra betalningssätt";
 "adyen.continueTo" = "Fortsätt till %@";
@@ -78,12 +78,12 @@
 "adyen.button.copy" = "Kopiera";
 "adyen.voucher.introduction" = "Tack för ditt köp, vänligen använd följande information för att slutföra din betalning.";
 "adyen.voucher.readInstructions" = "Läs instruktionerna";
+"adyen.voucher.code.copy.label" = "Kopiera kod";
+"adyen.voucher.code.copied.label" = "Koden kopierades till Urklipp";
 "adyen.amount" = "Belopp";
 "adyen.voucher.entity" = "Enhet";
 "adyen.pix.instructions" = "Använd din bankapp för att skanna QR-koden eller kopiera PIX-koden nedan för att slutföra din betalning.";
 "adyen.pix.expirationLabel" = "Du har %@ att betala";
-"adyen.pix.copyButton" = "Kopiera kod";
-"adyen.pix.instructions.copiedMessage" = "Koden kopierades till Urklipp";
 "adyen.pix.code.copy.label" = "Kopiera PIX-kod";
 "adyen.pix.code.copied.label" = "PIX-kod har kopierats";
 "adyen.billingAddressSection.title" = "Faktureringsadress";
@@ -179,7 +179,7 @@
 "adyen.payByBankAISDD.submit" = "Fortsätt att betala via bank";
 "adyen.payByBankAISDD.more" = "+ mer";
 "adyen.upi.modeSelection" = "Hur vill du använda UPI?";
-"adyen.upi.mode.payByAnyUpi" = "UPI-app";
+"adyen.upi.mode.payByAnyUpi" = "UPI-appar";
 "adyen.upi.intent.instruction" = "Välj din föredragna UPI-app";
 "adyen.upi.error.noAppSelected" = "Välj din föredragna UPI-app för att fortsätta";
 "adyen.upi.collect.field.label" = "UPI-ID";
