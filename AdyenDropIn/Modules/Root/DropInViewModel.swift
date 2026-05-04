@@ -8,7 +8,7 @@ import Adyen
 import AdyenNetworking
 import Foundation
 #if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
+    import AdyenActions
 #endif
 
 @MainActor

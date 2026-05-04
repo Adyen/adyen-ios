@@ -8,16 +8,15 @@ import Adyen
 import UIKit
 
 /// `ADYViewController` serves as a height-aware `UIViewController`
-@_spi(AdyenInternal)
-public final class ADYViewController: UIViewController {
-    
+package final class ADYViewController: UIViewController {
+
     private let contentView: UIView
     
     /// Initializes the `ADYViewController` instance with given view and an optional title
     /// - Parameters:
     ///   - view: The instance of UIView to be displayed
     ///   - title: The title of the `ADYViewController`
-    public init(view: UIView, title: String? = nil) {
+    package init(view: UIView, title: String? = nil) {
         self.contentView = view
         super.init(nibName: nil, bundle: Bundle(for: ADYViewController.self))
         self.title = title
@@ -28,11 +27,11 @@ public final class ADYViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override public func loadView() {
+    override package func loadView() {
         self.view = contentView
     }
     
-    override public var preferredContentSize: CGSize {
+    override package var preferredContentSize: CGSize {
         get {
             view.adyen.minimalSize
         }

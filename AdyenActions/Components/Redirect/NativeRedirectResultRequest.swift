@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import AdyenNetworking
 import Foundation
-@_spi(AdyenInternal) import Adyen
 
 internal struct NativeRedirectResultRequest: Request {
     internal typealias ResponseType = RedirectDetails

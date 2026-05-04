@@ -4,7 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import protocol Adyen.ShopperInformation
 
 /// Contains the details supplied by the Atome component.
 public struct AtomeDetails: PaymentMethodDetails, ShopperInformation {
