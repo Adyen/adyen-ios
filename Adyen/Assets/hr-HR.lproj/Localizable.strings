@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Unesena marka kartice nije podržana";
 "adyen.card.scanYourCardButton" = "Skenirajte svoju karticu";
 "adyen.creditCard.dualBrand.title" = "Vrsta kartice";
-"adyen.creditCard.dualBrand.description" = "Odaberite vrstu kartice kojom želite platiti. Ovo je neobavezno.";
+"adyen.creditCard.dualBrand.description" = "Možete odabrati vrstu kartice kojom želite platiti. Ovo je neobavezno.";
 "adyen.dropIn.stored.title" = "Potvrdite plaćanje: %@";
 "adyen.dropIn.preselected.openAll.title" = "Promijeni način plaćanja";
 "adyen.continueTo" = "Nastavi na %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "Pročitajte upute";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "Kopiraj kôd";
+"adyen.voucher.code.copied.label" = "Kôd je kopiran u međuspremnik";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Iznos";
 "adyen.voucher.entity" = "Entitet";
 "adyen.pix.instructions" = "Upotrijebite bankovnu aplikaciju za skeniranje QR koda ili kopirajte PIX kod u nastavku kako biste dovršili plaćanje.";
 "adyen.pix.expirationLabel" = "Imate %@ za plaćanje";
-"adyen.pix.copyButton" = "Kopiraj kôd";
-"adyen.pix.instructions.copiedMessage" = "Kôd je kopiran u međuspremnik";
 "adyen.pix.code.copy.label" = "Kopirajte PIX kôd";
 "adyen.pix.code.copied.label" = "PIX kôd je kopiran";
 "adyen.billingAddressSection.title" = "Adresa za račun";
@@ -183,7 +183,7 @@
 "adyen.payByBankAISDD.submit" = "Nastavite s plaćanjem putem banke";
 "adyen.payByBankAISDD.more" = "+ više";
 "adyen.upi.modeSelection" = "Kako biste željeli koristiti UPI?";
-"adyen.upi.mode.payByAnyUpi" = "UPI aplikacija";
+"adyen.upi.mode.payByAnyUpi" = "UPI aplikacije";
 "adyen.upi.intent.instruction" = "Odaberite svoju željenu UPI aplikaciju";
 "adyen.upi.error.noAppSelected" = "Da biste nastavili, odaberite željenu UPI aplikaciju";
 "adyen.upi.collect.field.label" = "UPI ID";

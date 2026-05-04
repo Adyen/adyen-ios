@@ -7,34 +7,6 @@
 import Foundation
 import UIKit
 
-/// The context in which the SDK operates
-///
-/// Used to e.g. override the version + platform from within the Flutter SDK
-@_spi(AdyenInternal)
-public struct AnalyticsContext {
-    
-    internal let version: String
-    internal let platform: Platform
-    
-    public init(
-        version: String = adyenSdkVersion,
-        platform: Platform = .iOS
-    ) {
-        self.version = version
-        self.platform = platform
-    }
-}
-
-@_spi(AdyenInternal)
-public extension AnalyticsContext {
-
-    enum Platform: String {
-        case iOS = "iOS"
-        case reactNative = "react-native"
-        case flutter
-    }
-}
-
 internal struct AnalyticsData: Encodable {
 
     // MARK: - Properties
@@ -42,8 +14,8 @@ internal struct AnalyticsData: Encodable {
     /// The version of the SDK
     internal let version: String
 
-    internal let channel: String = "iOS"
-    
+    internal let channel: String = CheckoutPlatformParams.shared.channel
+
     /// The platform the SDK is running on (e.g. ios, flutter, react-native)
     internal let platform: String
 
@@ -100,9 +72,9 @@ internal struct AnalyticsData: Encodable {
         self.amount = additionalFields?.amount
         self.sessionId = additionalFields?.sessionId
         
-        self.version = configuration.context.version
-        self.platform = configuration.context.platform.rawValue
-        
+        self.version = checkoutPlatformParams.version
+        self.platform = checkoutPlatformParams.platform.rawValue
+
         self.level = configuration.analyticsLevel
 
         switch flavor {

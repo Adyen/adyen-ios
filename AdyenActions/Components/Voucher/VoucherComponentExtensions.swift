@@ -96,7 +96,7 @@ extension VoucherComponent: VoucherViewDelegate, DocumentActionViewDelegate {
     
     private func createCopyCodeAlertAction(for reference: String) -> UIAlertAction {
         UIAlertAction(
-            title: localizedString(.pixCopyButton, configuration.localizationParameters),
+            title: localizedString(.voucherCodeCopyLabel, configuration.localizationParameters),
             style: .default,
             handler: { [weak self] _ in self?.copyCodeSelected(reference) }
         )

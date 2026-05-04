@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Die eingegebene Kartenmarke wird nicht unterstützt";
 "adyen.card.scanYourCardButton" = "Scannen Sie Ihre Karte";
 "adyen.creditCard.dualBrand.title" = "Kartenmarke";
-"adyen.creditCard.dualBrand.description" = "Wählen Sie die Kartenmarke aus, mit der Sie bezahlen möchten. Dies ist optional.";
+"adyen.creditCard.dualBrand.description" = "Sie können die Kartenmarke auswählen, mit der Sie bezahlen möchten. Dies ist optional.";
 "adyen.dropIn.stored.title" = "Bestätige %@ Zahlung";
 "adyen.dropIn.preselected.openAll.title" = "Zahlungsmethode wechseln";
 "adyen.continueTo" = "Weiter zu %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "Anweisungen lesen";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "Code kopieren";
+"adyen.voucher.code.copied.label" = "Code wurde in die Zwischenablage kopiert";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Betrag";
 "adyen.voucher.entity" = "Entität";
 "adyen.pix.instructions" = "Verwenden Sie Ihre Banking-App, um den QR-Code zu scannen, oder kopieren Sie den untenstehenden PIX-Code, um Ihre Zahlung abzuschließen.";
 "adyen.pix.expirationLabel" = "Sie haben noch %@ um zu zahlen";
-"adyen.pix.copyButton" = "Code kopieren";
-"adyen.pix.instructions.copiedMessage" = "Code wurde in die Zwischenablage kopiert";
 "adyen.pix.code.copy.label" = "PIX-Code kopieren";
 "adyen.pix.code.copied.label" = "PIX-Code wurde kopiert";
 "adyen.billingAddressSection.title" = "Rechnungsadresse";
@@ -162,7 +162,7 @@
 "adyen.bacs.holderNameField.invalidMessage" = "Ungültiger Bankkontoinhabername";
 "adyen.bacs.bankAccountNumberField.invalidMessage" = "Ungültige Bankkontonummer";
 "adyen.bacs.bankLocationIdField.invalidMessage" = "Ungültige Bankleitzahl";
-"adyen.bacs.paymentButton.title" = "Bestätigen und bezahlen";
+"adyen.bacs.paymentButton.title" = "Bestätigen und kaufen";
 "adyen.bacs.downloadMandate" = "Laden Sie Ihre Lastschriftanweisung (DDI/Einzugsermächtigung) herunter";
 "adyen.ach.bankAccount.title" = "Bankkonto";
 "adyen.ach.accountHolderNameField.title" = "Name des Kontoinhabers";
@@ -183,7 +183,7 @@
 "adyen.payByBankAISDD.submit" = "Weiter zu Pay by Bank";
 "adyen.payByBankAISDD.more" = "+ mehr";
 "adyen.upi.modeSelection" = "Wie möchten Sie UPI verwenden?";
-"adyen.upi.mode.payByAnyUpi" = "UPI-App";
+"adyen.upi.mode.payByAnyUpi" = "UPI-Apps";
 "adyen.upi.intent.instruction" = "Wählen Sie Ihre bevorzugte UPI-App";
 "adyen.upi.error.noAppSelected" = "Wählen Sie Ihre bevorzugte UPI-App aus, um fortzufahren";
 "adyen.upi.collect.field.label" = "UPI-ID";

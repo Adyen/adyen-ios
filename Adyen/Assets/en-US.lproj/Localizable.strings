@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "The entered card brand isn't supported";
 "adyen.card.scanYourCardButton" = "Scan your card";
 "adyen.creditCard.dualBrand.title" = "Card Brand";
-"adyen.creditCard.dualBrand.description" = "Select the card brand you prefer to pay with. This is optional.";
+"adyen.creditCard.dualBrand.description" = "You can select the card brand you prefer to pay with. This is optional.";
 "adyen.dropIn.stored.title" = "Confirm %@ payment";
 "adyen.dropIn.preselected.openAll.title" = "Change Payment Method";
 "adyen.continueTo" = "Continue to %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "Read instructions";
 "adyen.voucher.saveImage" = "Save as image";
 "adyen.voucher.finish" = "Finish";
+"adyen.voucher.code.copy.label" = "Copy code";
+"adyen.voucher.code.copied.label" = "Code copied to clipboard";
 "adyen.card.brazilSSN.placeholder" = "123.123.123-12";
 "adyen.amount" = "Amount";
 "adyen.voucher.entity" = "Entity";
 "adyen.pix.instructions" = "Use your banking app to scan the QR code or copy the PIX code below to complete your payment.";
 "adyen.pix.expirationLabel" = "You have %@ to pay";
-"adyen.pix.copyButton" = "Copy code";
-"adyen.pix.instructions.copiedMessage" = "Code copied to clipboard";
 "adyen.pix.code.copy.label" = "Copy PIX code";
 "adyen.pix.code.copied.label" = "PIX code copied";
 "adyen.billingAddressSection.title" = "Billing address";
@@ -183,7 +183,7 @@
 "adyen.payByBankAISDD.submit" = "Continue to Pay by Bank";
 "adyen.payByBankAISDD.more" = "+ more";
 "adyen.upi.modeSelection" = "How would you like to use UPI?";
-"adyen.upi.mode.payByAnyUpi" = "UPI app";
+"adyen.upi.mode.payByAnyUpi" = "UPI apps";
 "adyen.upi.intent.instruction" = "Select your preferred UPI app";
 "adyen.upi.error.noAppSelected" = "Select your preferred UPI app to continue";
 "adyen.upi.collect.field.label" = "UPI ID";

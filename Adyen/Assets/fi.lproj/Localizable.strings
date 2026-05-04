@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Syötettyä tuotemerkkikorttia ei tueta";
 "adyen.card.scanYourCardButton" = "Skannaa korttisi";
 "adyen.creditCard.dualBrand.title" = "Korttibrändi";
-"adyen.creditCard.dualBrand.description" = "Valitse ensisijainen maksukorttisi. Tämä on vapaaehtoista.";
+"adyen.creditCard.dualBrand.description" = "Voit valita, millä kortilla haluat maksaa. Tämä on vapaaehtoista.";
 "adyen.dropIn.stored.title" = "Vahvista %@ maksu";
 "adyen.dropIn.preselected.openAll.title" = "Muuta maksutapaa";
 "adyen.continueTo" = "Jatka kohteeseen %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "Lue ohjeet";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "Kopioi koodi";
+"adyen.voucher.code.copied.label" = "Koodi kopioitu leikepöydälle";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Summa";
 "adyen.voucher.entity" = "Kokonaisuus";
 "adyen.pix.instructions" = "Suorita maksu skannaamalla QR-koodi pankkisovelluksellasi tai kopioimalla alla oleva PIX-koodi.";
 "adyen.pix.expirationLabel" = "Sinulla on %@ maksettavana";
-"adyen.pix.copyButton" = "Kopioi koodi";
-"adyen.pix.instructions.copiedMessage" = "Koodi kopioitu leikepöydälle";
 "adyen.pix.code.copy.label" = "Kopioi PIX-koodi";
 "adyen.pix.code.copied.label" = "PIX-koodi kopioitu";
 "adyen.billingAddressSection.title" = "Laskutusosoite";
@@ -183,7 +183,7 @@
 "adyen.payByBankAISDD.submit" = "Jatka pankkimaksuun";
 "adyen.payByBankAISDD.more" = "+ lisää";
 "adyen.upi.modeSelection" = "Miten haluaisit käyttää UPI:a?";
-"adyen.upi.mode.payByAnyUpi" = "UPI-sovellus";
+"adyen.upi.mode.payByAnyUpi" = "UPI-sovellukset";
 "adyen.upi.intent.instruction" = "Valitse haluamasi UPI-sovellus";
 "adyen.upi.error.noAppSelected" = "Jos haluat jatkaa, valitse haluamasi UPI-sovellus";
 "adyen.upi.collect.field.label" = "UPI-tunnus";

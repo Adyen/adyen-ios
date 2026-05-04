@@ -10,6 +10,10 @@ import UIKit
 /// A form item which consists of card number item and the supported card icons below.
 internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     
+    private enum Constants {
+        static let brandDescriptionInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+    }
+    
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
     /// The supported card type logos.
@@ -26,7 +30,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     private let scanCardHandler: (() -> Void)?
    
     internal lazy var subitems: [FormItem] = {
-        var subItems: [FormItem] = [numberItem]
+        var subItems: [FormItem] = [numberItem, brandDescriptionItem]
         if showsSupportedCardLogos {
             subItems.append(supportedCardLogosItem)
         }
@@ -42,6 +46,24 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
         )
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "numberItem")
         return item
+    }()
+    
+    internal lazy var brandDescriptionItem: FormContainerItem = {
+        let style = TextStyle(
+            font: .preferredFont(forTextStyle: .footnote),
+            color: UIColor.Adyen.componentSecondaryLabel,
+            textAlignment: .natural
+        )
+        let item = FormLabelItem(
+            text: localizedString(.creditCardDualBrandDescription, localizationParameters),
+            style: style
+        )
+        
+        let containerItem = item.padding(Constants.brandDescriptionInsets)
+        containerItem.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "brandDescriptionItem")
+        containerItem.isHidden.wrappedValue = true
+        
+        return containerItem
     }()
     
     internal lazy var supportedCardLogosItem: FormCardLogosItem = {
@@ -63,12 +85,12 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
         self.style = style
         self.scanCardHandler = scanCardHandler
         
-        if showsSupportedCardLogos {
-            observe(numberItem.$isActive) { [weak self] _ in
-                guard let self else { return }
-                // logo item should be visible when field is invalid after active state changes
+        observe(numberItem.$isActive) { [weak self] _ in
+            guard let self else { return }
+            if self.showsSupportedCardLogos {
                 self.supportedCardLogosItem.isHidden.wrappedValue = self.numberItem.isValid()
             }
+            self.updateBrandDescriptionVisibility()
         }
     }
     
@@ -82,6 +104,13 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
         if showsSupportedCardLogos {
             supportedCardLogosItem.isHidden.wrappedValue = brands.contains(where: \.isSupported)
         }
+        updateBrandDescriptionVisibility()
+    }
+    
+    private func updateBrandDescriptionVisibility() {
+        let isDualSelectable = numberItem.brandDisplayMode == .dualSelectable
+        let shouldShow = isDualSelectable && (numberItem.isActive || numberItem.isValid())
+        brandDescriptionItem.isHidden.wrappedValue = !shouldShow
     }
     
     internal func setCardNumber(_ cardNumber: String) {

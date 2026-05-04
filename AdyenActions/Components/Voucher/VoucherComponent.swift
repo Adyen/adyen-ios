@@ -189,7 +189,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
             ),
             mainButton: getPrimaryButtonTitle(with: action),
             secondaryButtonTitle: localizedString(.moreOptions, configuration.localizationParameters),
-            codeConfirmationTitle: localizedString(.pixInstructionsCopiedMessage, configuration.localizationParameters),
+            codeConfirmationTitle: localizedString(.voucherCodeCopiedLabel, configuration.localizationParameters),
             mainButtonType: canAddPasses(action: action.anyAction) ? .addToAppleWallet : .save,
             style: viewStyle,
             imageLoader: ImageLoaderProvider.imageLoader()

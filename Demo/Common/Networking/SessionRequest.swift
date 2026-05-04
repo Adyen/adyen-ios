@@ -36,7 +36,7 @@ internal struct SessionRequest: APIRequest {
         try container.encode(currentConfiguration.amount, forKey: .amount)
         try container.encode(ConfigurationConstants.returnUrl.absoluteString, forKey: .returnUrl)
         try container.encode(ConfigurationConstants.reference, forKey: .reference)
-        try container.encode("iOS", forKey: .channel)
+        try container.encode("ios", forKey: .channel)
         try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
 
         // We disable the mandate as it is not accepted in every single PM. Used to test PayTo
