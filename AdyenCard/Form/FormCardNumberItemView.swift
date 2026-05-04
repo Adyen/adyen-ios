@@ -38,6 +38,11 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
             guard let self else { return }
             self.detectedBrandsView.updateCurrentLogos(newValue, mode: self.item.brandDisplayMode)
         }
+        
+        observe(item.$brandSelection) { [weak self] newValue in
+            guard let self else { return }
+            self.detectedBrandsView.updateSelection(with: newValue)
+        }
     }
     
     override public func handleFormattedValueDidChange(_ newValue: String) {
