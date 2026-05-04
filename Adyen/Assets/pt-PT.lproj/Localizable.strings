@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "A marca do cartão inserida não é compatível";
 "adyen.card.scanYourCardButton" = "Digitalize o seu cartão";
 "adyen.creditCard.dualBrand.title" = "Marca do cartão";
-"adyen.creditCard.dualBrand.description" = "Selecione a marca de cartão com que prefere pagar. Isto é opcional.";
+"adyen.creditCard.dualBrand.description" = "Pode selecionar a marca do cartão com que prefere pagar. Isto é opcional.";
 "adyen.dropIn.stored.title" = "Confirmar %@ pagamento";
 "adyen.dropIn.preselected.openAll.title" = "Alterar método de pagamento";
 "adyen.continueTo" = "Continuar para %@";
@@ -78,13 +78,13 @@
 "adyen.button.copy" = "Copiar";
 "adyen.voucher.introduction" = "Obrigado pela sua compra, use as seguintes informações para concluir o seu pagamento.";
 "adyen.voucher.readInstructions" = "Ler instruções";
+"adyen.voucher.code.copy.label" = "Copiar código";
+"adyen.voucher.code.copied.label" = "Código copiado para a área de transferência";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Valor";
 "adyen.voucher.entity" = "Entidade";
 "adyen.pix.instructions" = "Utilize a aplicação do seu banco para ler o código QR ou copie o código PIX abaixo para concluir o seu pagamento.";
 "adyen.pix.expirationLabel" = "Tem %@ para pagar";
-"adyen.pix.copyButton" = "Copiar código";
-"adyen.pix.instructions.copiedMessage" = "Código copiado para a área de transferência";
 "adyen.pix.code.copy.label" = "Copiar código PIX";
 "adyen.pix.code.copied.label" = "Código PIX copiado";
 "adyen.billingAddressSection.title" = "Morada de cobrança";
@@ -180,7 +180,7 @@
 "adyen.payByBankAISDD.submit" = "Continuar para pagamento por banco";
 "adyen.payByBankAISDD.more" = "+ mais";
 "adyen.upi.modeSelection" = "Como gostaria de usar a UPI?";
-"adyen.upi.mode.payByAnyUpi" = "Aplicação de UPI";
+"adyen.upi.mode.payByAnyUpi" = "Aplicações de UPI";
 "adyen.upi.intent.instruction" = "Selecione a aplicação de UPI que prefere";
 "adyen.upi.error.noAppSelected" = "Para continuar, selecione a aplicação de UPI de sua preferência";
 "adyen.upi.collect.field.label" = "ID da UPI";
@@ -191,6 +191,8 @@
 "adyen.upi.vpaWaitingMessage" = "Abra a aplicação UPI para confirmar o pagamento";
 "adyen.upi.qrcode.timerMessage" = "Tem %@ para aprovar";
 "adyen.upi.qrcode.instructions" = "Faça uma captura de ecrã para carregar na aplicação UPI ou verificar o código QR usando a sua aplicação UPI preferida para concluir o pagamento.";
+"adyen.upi.intent.apps.title" = "Opções";
+"adyen.upi.intent.apps.title.onDevice" = "No seu dispositivo";
 "adyen.twint.noAppsInstalled.message" = "Nenhuma versão ou uma versão desatualizada do TWINT está instalada neste dispositivo. Atualize ou instale a app TWINT.";
 "adyen.threeds2.DA.registration.title" = "Finalização de compra segura";
 "adyen.threeds2.DA.biometrics" = "Biométrica";

@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "A megadott kártyamárka nem támogatott";
 "adyen.card.scanYourCardButton" = "Kártya beolvasása";
 "adyen.creditCard.dualBrand.title" = "Kártyakibocsátó";
-"adyen.creditCard.dualBrand.description" = "Válassza ki a fizetéshez használni kívánt kártyakibocsátót. Ez nem kötelező.";
+"adyen.creditCard.dualBrand.description" = "Kiválaszthatja a fizetéshez használni kívánt kártyakibocsátót. Ez nem kötelező.";
 "adyen.dropIn.stored.title" = "%@ használatával történő fizetés jóváhagyása";
 "adyen.dropIn.preselected.openAll.title" = "Fizetési mód módosítása";
 "adyen.continueTo" = "Folytatás a következővel: %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "Olvassa el az utasításokat";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "Kód másolása";
+"adyen.voucher.code.copied.label" = "Kód a vágólapra másolva";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Összeg";
 "adyen.voucher.entity" = "Entitás";
 "adyen.pix.instructions" = "A fizetés végrehajtásához a banki alkalmazással olvassa be a QR-kódot, vagy másolja ki az alábbi PIX-kódot.";
 "adyen.pix.expirationLabel" = "Fizetéshez rendelkezésre álló idő: %@";
-"adyen.pix.copyButton" = "Kód másolása";
-"adyen.pix.instructions.copiedMessage" = "Kód a vágólapra másolva";
 "adyen.pix.code.copy.label" = "PIX-kód másolása";
 "adyen.pix.code.copied.label" = "PIX-kód másolva";
 "adyen.billingAddressSection.title" = "Számlázási cím";
@@ -183,7 +183,7 @@
 "adyen.payByBankAISDD.submit" = "Tovább a Fizetés bankkal lehetőségre";
 "adyen.payByBankAISDD.more" = "+ továbbiak";
 "adyen.upi.modeSelection" = "Hogyan szeretné használni az UPI-t?";
-"adyen.upi.mode.payByAnyUpi" = "UPI-alkalmazás";
+"adyen.upi.mode.payByAnyUpi" = "UPI-alkalmazások";
 "adyen.upi.intent.instruction" = "Válassza ki a kívánt UPI-alkalmazást";
 "adyen.upi.error.noAppSelected" = "A folytatáshoz válassza ki a kívánt UPI-alkalmazást";
 "adyen.upi.collect.field.label" = "UPI-azonosító";
@@ -194,6 +194,8 @@
 "adyen.upi.vpaWaitingMessage" = "A fizetés megerősítéséhez nyissa meg UPI-alkalmazást";
 "adyen.upi.qrcode.timerMessage" = "Jóváhagyásra rendelkezésre álló idő: %@";
 "adyen.upi.qrcode.instructions" = "A fizetés befejezéséhez készítsen képernyőképet és töltse fel az UPI-alkalmazásban, vagy a kívánt UPI-alkalmazással olvassa be a QR-kódot.";
+"adyen.upi.intent.apps.title" = "Lehetőségek";
+"adyen.upi.intent.apps.title.onDevice" = "Az eszközre";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Az eszközről hiányzik a TWINT, vagy egy elavult verziója van telepítve. Frissítse vagy telepítse a TWINT alkalmazást.";

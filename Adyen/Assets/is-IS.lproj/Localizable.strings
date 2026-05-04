@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Ekki er stuðningur við innslegið kortamerki";
 "adyen.card.scanYourCardButton" = "Skannaðu kortið þitt";
 "adyen.creditCard.dualBrand.title" = "Kortafyrirtæki";
-"adyen.creditCard.dualBrand.description" = "Veldu kortafyrirtæki kortsins sem þú vilt greiða með. Þetta er valfrjálst.";
+"adyen.creditCard.dualBrand.description" = "Þú getur valið kortafyrirtæki kortsins sem þú vilt greiða með. Þetta er valfrjálst.";
 "adyen.dropIn.stored.title" = "Staðfesta %@ greiðslu";
 "adyen.dropIn.preselected.openAll.title" = "Breyta greiðslumáta";
 "adyen.continueTo" = "Halda áfram á %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "Lesa leiðbeiningar";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "Afrita kóða";
+"adyen.voucher.code.copied.label" = "Kóði afritaður á klemmuspjald";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Upphæð";
 "adyen.voucher.entity" = "Aðili";
 "adyen.pix.instructions" = "Notaðu bankaforritið til að skanna QR-kóðann eða afritaðu PIX-kóðann fyrir neðan til að ljúka greiðslunni.";
 "adyen.pix.expirationLabel" = "Þú þarft að greiða %@";
-"adyen.pix.copyButton" = "Afrita kóða";
-"adyen.pix.instructions.copiedMessage" = "Kóði afritaður á klemmuspjald";
 "adyen.pix.code.copy.label" = "Afrita PIX-kóða";
 "adyen.pix.code.copied.label" = "PIX-kóði afritaður";
 "adyen.billingAddressSection.title" = "Heimilisfang greiðanda";
@@ -194,6 +194,8 @@
 "adyen.upi.vpaWaitingMessage" = "Opnaðu UPI-forritið þitt til að staðfesta greiðsluna";
 "adyen.upi.qrcode.timerMessage" = "Þú hefur %@ til að samþykkja";
 "adyen.upi.qrcode.instructions" = "Taktu skjámynd til að hlaða upp í UPI-forritinu eða skannaðu QR-kóðann með því að nota UPI-forrit sem þú vilt til að ljúka greiðslunni.";
+"adyen.upi.intent.apps.title" = "Valkostir";
+"adyen.upi.intent.apps.title.onDevice" = "Í tækinu þínu";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Engin eða úrelt útgáfa af TWINT er uppsett á þessu tæki. Uppfærðu eða settu TWINT-forritið upp.";

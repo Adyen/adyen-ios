@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Marca de card introdusă nu este acceptată";
 "adyen.card.scanYourCardButton" = "Scanați-vă cardul";
 "adyen.creditCard.dualBrand.title" = "Brandul cardului";
-"adyen.creditCard.dualBrand.description" = "Selectați brandul cardului cu care preferați să plătiți. Acest lucru este opțional.";
+"adyen.creditCard.dualBrand.description" = "Puteți selecta marca de card cu care doriți să efectuați plata. Acest lucru este opțional.";
 "adyen.dropIn.stored.title" = "Confirmați plata %@";
 "adyen.dropIn.preselected.openAll.title" = "Schimbare metodă de plată";
 "adyen.continueTo" = "Continuați către %@";
@@ -78,12 +78,12 @@
 "adyen.button.copy" = "Copiere";
 "adyen.voucher.introduction" = "Vă mulțumim pentru cumpărături, vă rugăm să utilizați următoarele informații pentru a vă finaliza plata.";
 "adyen.voucher.readInstructions" = "Citiți instrucțiunile";
+"adyen.voucher.code.copy.label" = "Copiați codul";
+"adyen.voucher.code.copied.label" = "Cod copiat în clipboard";
 "adyen.amount" = "Sumă";
 "adyen.voucher.entity" = "Entitate";
 "adyen.pix.instructions" = "Utilizați aplicația de banking pentru a scana codul QR sau pentru a copia codul PIX de mai jos pentru a finaliza plata.";
 "adyen.pix.expirationLabel" = "Trebuie să achitați %@";
-"adyen.pix.copyButton" = "Copiați codul";
-"adyen.pix.instructions.copiedMessage" = "Cod copiat în clipboard";
 "adyen.pix.code.copy.label" = "Copiați codul PIX";
 "adyen.pix.code.copied.label" = "Codul PIX a fost copiat";
 "adyen.billingAddressSection.title" = "Adresa de facturare";
@@ -179,7 +179,7 @@
 "adyen.payByBankAISDD.submit" = "Continuați către plata prin bancă";
 "adyen.payByBankAISDD.more" = "+ mai multe";
 "adyen.upi.modeSelection" = "Cum doriți să utilizați UPI?";
-"adyen.upi.mode.payByAnyUpi" = "Aplicația UPI";
+"adyen.upi.mode.payByAnyUpi" = "Aplicații UPI";
 "adyen.upi.intent.instruction" = "Selectați aplicația UPI preferată";
 "adyen.upi.error.noAppSelected" = "Selectați aplicația UPI preferată pentru a continua";
 "adyen.upi.collect.field.label" = "ID UPI";
@@ -190,6 +190,8 @@
 "adyen.upi.vpaWaitingMessage" = "Deschideți aplicația UPI pentru a confirma plata";
 "adyen.upi.qrcode.timerMessage" = "Aveți %@ ca să aprobați";
 "adyen.upi.qrcode.instructions" = "Faceți o captură de ecran pentru a o încărca în aplicația UPI sau scanați codul QR folosind aplicația UPI preferată pentru a finaliza plata.";
+"adyen.upi.intent.apps.title" = "Opțiuni";
+"adyen.upi.intent.apps.title.onDevice" = "Pe dispozitivul dvs.";
 "adyen.twint.noAppsInstalled.message" = "Pe acest dispozitiv nu este instalată nicio versiune sau este o versiune depășită a TWINT. Actualizați sau instalați aplicația TWINT.";
 "adyen.threeds2.DA.registration.title" = "Plată securizată";
 "adyen.threeds2.DA.biometrics" = "biometric";

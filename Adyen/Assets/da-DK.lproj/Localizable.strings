@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Det angivne kortmærke understøttes ikke";
 "adyen.card.scanYourCardButton" = "Scan dit kort";
 "adyen.creditCard.dualBrand.title" = "Korttype";
-"adyen.creditCard.dualBrand.description" = "Vælg den korttype, du foretrækker at betale med. Dette er valgfrit.";
+"adyen.creditCard.dualBrand.description" = "Du kan vælge den korttype, du foretrækker at betale med. Dette er valgfrit.";
 "adyen.dropIn.stored.title" = "Bekræft %@-betaling";
 "adyen.dropIn.preselected.openAll.title" = "Skift betalingsmåde";
 "adyen.continueTo" = "Fortsæt til %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "Læs anvisningerne";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "Kopiér koden";
+"adyen.voucher.code.copied.label" = "Koden er kopieret til udklipsholderen";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Beløb";
 "adyen.voucher.entity" = "Enhed";
 "adyen.pix.instructions" = "Brug din bankapp til at scanne QR-koden, eller kopiér PIX-koden nedenfor for at gennemføre din betaling.";
 "adyen.pix.expirationLabel" = "Du har %@ at betale";
-"adyen.pix.copyButton" = "Kopiér koden";
-"adyen.pix.instructions.copiedMessage" = "Koden er kopieret til udklipsholderen";
 "adyen.pix.code.copy.label" = "Kopiér PIX-kode";
 "adyen.pix.code.copied.label" = "PIX-kode er kopieret";
 "adyen.billingAddressSection.title" = "Faktureringsadresse";
@@ -183,7 +183,7 @@
 "adyen.payByBankAISDD.submit" = "Fortsæt via Pay by Bank";
 "adyen.payByBankAISDD.more" = "+ mere";
 "adyen.upi.modeSelection" = "Hvordan vil du bruge UPI?";
-"adyen.upi.mode.payByAnyUpi" = "UPI-app";
+"adyen.upi.mode.payByAnyUpi" = "UPI-apps";
 "adyen.upi.intent.instruction" = "Vælg din foretrukne UPI-app";
 "adyen.upi.error.noAppSelected" = "Vælg din foretrukne UPI-app for at fortsætte";
 "adyen.upi.collect.field.label" = "UPI-id";
@@ -194,6 +194,8 @@
 "adyen.upi.vpaWaitingMessage" = "Åbn din UPI-app for at bekræfte betalingen";
 "adyen.upi.qrcode.timerMessage" = "Du har %@ til at godkende";
 "adyen.upi.qrcode.instructions" = "Tag et skærmbillede, som du kan uploade i UPI-appen, eller scan QR-koden med din foretrukne UPI-app for at gennemføre betalingen.";
+"adyen.upi.intent.apps.title" = "Valgmuligheder";
+"adyen.upi.intent.apps.title.onDevice" = "På din enhed";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Ingen eller en forældet version af TWINT er installeret på denne enhed. Opdater eller installer TWINT-appen.";

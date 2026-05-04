@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Zadaná značka karty nie je podporovaná";
 "adyen.card.scanYourCardButton" = "Naskenujte svoju kartu";
 "adyen.creditCard.dualBrand.title" = "Značka karty";
-"adyen.creditCard.dualBrand.description" = "Vyberte značku karty, ktorou preferujete platiť. Táto možnosť je nepovinná.";
+"adyen.creditCard.dualBrand.description" = "Môžete vybrať značku karty, ktorou preferujete platiť. Táto možnosť je nepovinná.";
 "adyen.dropIn.stored.title" = "Potvrďte platbu pomocou %@";
 "adyen.dropIn.preselected.openAll.title" = "Zmeniť spôsob platby";
 "adyen.continueTo" = "Pokračovať do %@";
@@ -78,12 +78,12 @@
 "adyen.button.copy" = "Kopírovať";
 "adyen.voucher.introduction" = "Ďakujeme vám za nákup. Na dokončenie platby použite nasledujúce informácie.";
 "adyen.voucher.readInstructions" = "Prečítajte si pokyny";
+"adyen.voucher.code.copy.label" = "Skopírovať kód";
+"adyen.voucher.code.copied.label" = "Kód bol skopírovaný do schránky";
 "adyen.amount" = "Čiastka";
 "adyen.voucher.entity" = "Subjekt";
 "adyen.pix.instructions" = "Pomocou svojej bankovej aplikácie naskenujte QR kód alebo skopírujte kód PIX nižšie a dokončite platbu.";
 "adyen.pix.expirationLabel" = "Na zaplatenie máte %@";
-"adyen.pix.copyButton" = "Skopírovať kód";
-"adyen.pix.instructions.copiedMessage" = "Kód bol skopírovaný do schránky";
 "adyen.pix.code.copy.label" = "Skopírovať kód PIX";
 "adyen.pix.code.copied.label" = "Kód PIX bol skopírovaný";
 "adyen.billingAddressSection.title" = "Fakturačná adresa";
@@ -179,7 +179,7 @@
 "adyen.payByBankAISDD.submit" = "Pokračovať v platbe bankou";
 "adyen.payByBankAISDD.more" = "+ ďalšie";
 "adyen.upi.modeSelection" = "Ako by ste chceli použiť UPI?";
-"adyen.upi.mode.payByAnyUpi" = "Aplikácia UPI";
+"adyen.upi.mode.payByAnyUpi" = "Aplikácie UPI";
 "adyen.upi.intent.instruction" = "Vyberte si preferovanú aplikáciu UPI";
 "adyen.upi.error.noAppSelected" = "Pokračujte výberom preferovanej aplikácie UPI";
 "adyen.upi.collect.field.label" = "ID UPI";
@@ -190,6 +190,8 @@
 "adyen.upi.vpaWaitingMessage" = "Otvorte aplikáciu UPI a potvrďte platbu";
 "adyen.upi.qrcode.timerMessage" = "Na schválenie máte %@";
 "adyen.upi.qrcode.instructions" = "Urobte snímku obrazovky, ktorú nahrajte do aplikácie UPI, alebo naskenujte kód QR pomocou preferovanej aplikácie UPI a dokončite platbu.";
+"adyen.upi.intent.apps.title" = "Možnosti";
+"adyen.upi.intent.apps.title.onDevice" = "Na vašom zariadení";
 "adyen.twint.noAppsInstalled.message" = "V tomto zariadení nie je nainštalovaná aplikácia TWINT, alebo je verzia aplikácie TWINT zastaraná. Prosím, aktualizujte si alebo si nainštalujte aplikáciu TWINT.";
 "adyen.threeds2.DA.registration.title" = "Zabezpečená platba";
 "adyen.threeds2.DA.biometrics" = "biometrické údaje";

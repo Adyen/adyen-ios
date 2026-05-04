@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Карты введенной платежной системы не поддерживаются";
 "adyen.card.scanYourCardButton" = "Отсканируйте свою карту";
 "adyen.creditCard.dualBrand.title" = "Платежная система карты";
-"adyen.creditCard.dualBrand.description" = "Выберите платежную систему карты по умолчанию. Это необязательно.";
+"adyen.creditCard.dualBrand.description" = "Можно выбрать платежную систему карты по умолчанию. Это необязательно.";
 "adyen.dropIn.stored.title" = "Подтвердить оплату %@";
 "adyen.dropIn.preselected.openAll.title" = "Изменить способ оплаты";
 "adyen.continueTo" = "Перейти к %@";
@@ -78,12 +78,12 @@
 "adyen.button.copy" = "Копия";
 "adyen.voucher.introduction" = "Благодарим за покупку. Для завершения оплаты используйте следующие сведения.";
 "adyen.voucher.readInstructions" = "Прочитайте инструкции";
+"adyen.voucher.code.copy.label" = "Скопировать код";
+"adyen.voucher.code.copied.label" = "Код скопирован в буфер обмена";
 "adyen.amount" = "Сумма";
 "adyen.voucher.entity" = "Объект";
 "adyen.pix.instructions" = "Для оформления оплаты используйте свое банковское приложение, чтобы отсканировать QR-код или скопировать PIX-код ниже.";
 "adyen.pix.expirationLabel" = "У вас %@ на оплату";
-"adyen.pix.copyButton" = "Скопировать код";
-"adyen.pix.instructions.copiedMessage" = "Код скопирован в буфер обмена";
 "adyen.pix.code.copy.label" = "Скопировать код PIX";
 "adyen.pix.code.copied.label" = "Код PIX скопирован";
 "adyen.billingAddressSection.title" = "Платежный адрес";
@@ -179,7 +179,7 @@
 "adyen.payByBankAISDD.submit" = "Продолжить оплату через банк";
 "adyen.payByBankAISDD.more" = "+ иное";
 "adyen.upi.modeSelection" = "Как вы хотите использовать UPI?";
-"adyen.upi.mode.payByAnyUpi" = "Приложение UPI";
+"adyen.upi.mode.payByAnyUpi" = "Приложения UPI";
 "adyen.upi.intent.instruction" = "Выберите предпочитаемое приложение UPI";
 "adyen.upi.error.noAppSelected" = "Для продолжения выберите предпочитаемое приложение UPI";
 "adyen.upi.collect.field.label" = "Идентификатор UPI";
@@ -190,6 +190,8 @@
 "adyen.upi.vpaWaitingMessage" = "Откройте приложение UPI для подтверждения платежа";
 "adyen.upi.qrcode.timerMessage" = "На одобрение отведено %@";
 "adyen.upi.qrcode.instructions" = "Сделайте снимок экрана, чтобы загрузить его в приложение UPI, или отсканируйте QR-код своим любимым приложением UPI, чтобы оформить платеж.";
+"adyen.upi.intent.apps.title" = "Опции";
+"adyen.upi.intent.apps.title.onDevice" = "На вашем устройстве";
 "adyen.twint.noAppsInstalled.message" = "На этом устройстве либо установлена устаревшая версия TWINT, либо это приложение не установлено вообще. Обновите или установите TWINT.";
 "adyen.threeds2.DA.registration.title" = "Безопасная оплата";
 "adyen.threeds2.DA.biometrics" = "биометрика";

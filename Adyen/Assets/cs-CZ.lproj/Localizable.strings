@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Zadaná značka karet není podporovaná";
 "adyen.card.scanYourCardButton" = "Naskenujte svou kartu";
 "adyen.creditCard.dualBrand.title" = "Značka karty";
-"adyen.creditCard.dualBrand.description" = "Vyberte značku karty, kterou preferujete pro platbu. Je to volitelné.";
+"adyen.creditCard.dualBrand.description" = "Můžete si vybrat značku karty, kterou chcete raději platit. Je to volitelné.";
 "adyen.dropIn.stored.title" = "Potvrdit platbu %@";
 "adyen.dropIn.preselected.openAll.title" = "Změnit způsob platby";
 "adyen.continueTo" = "Pokračovat k %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "Přečtěte si pokyny";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "Kopírovat kód";
+"adyen.voucher.code.copied.label" = "Kód zkopírován do schránky";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Částka";
 "adyen.voucher.entity" = "Subjekt";
 "adyen.pix.instructions" = "Pomocí bankovní aplikace naskenujte QR kód nebo zkopírujte uvedený PIX kód a platbu dokončete.";
 "adyen.pix.expirationLabel" = "Na zaplacení vám zbývá %@";
-"adyen.pix.copyButton" = "Kopírovat kód";
-"adyen.pix.instructions.copiedMessage" = "Kód zkopírován do schránky";
 "adyen.pix.code.copy.label" = "Kopírovat kód PIX";
 "adyen.pix.code.copied.label" = "Kód PIX zkopírován";
 "adyen.billingAddressSection.title" = "Fakturační adresa";
@@ -194,6 +194,8 @@
 "adyen.upi.vpaWaitingMessage" = "Otevřete platební aplikaci UPI a potvrďte platbu";
 "adyen.upi.qrcode.timerMessage" = "Máte %@ na schválení";
 "adyen.upi.qrcode.instructions" = "Pořiďte snímek obrazovky a nahrajte ho v aplikaci UPI nebo naskenujte QR kód ve své oblíbené aplikaci UPI a dokončete platbu.";
+"adyen.upi.intent.apps.title" = "Možnosti";
+"adyen.upi.intent.apps.title.onDevice" = "Na vašem zařízení";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "V tomto zařízení není nainstalována žádná verze TWINT nebo je zastaralá. Aktualizujte nebo nainstalujte aplikaci TWINT.";

@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Η επωνυμία κάρτας που εισαγάγατε δεν υποστηρίζεται";
 "adyen.card.scanYourCardButton" = "Σαρώστε την κάρτα σας";
 "adyen.creditCard.dualBrand.title" = "Επωνυμία κάρτας";
-"adyen.creditCard.dualBrand.description" = "Επιλέξτε την επωνυμία της κάρτας με την οποία προτιμάτε να πληρώσετε. Αυτό είναι προαιρετικό.";
+"adyen.creditCard.dualBrand.description" = "Μπορείτε να επιλέξετε την επωνυμία της κάρτας με την οποία προτιμάτε να πληρώσετε. Αυτό είναι προαιρετικό.";
 "adyen.dropIn.stored.title" = "Επιβεβαίωση πληρωμής μέσω %@";
 "adyen.dropIn.preselected.openAll.title" = "Αλλαγή τρόπου πληρωμής";
 "adyen.continueTo" = "Μετάβαση στην %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "Διαβάστε τις οδηγίες";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "Αντιγραφή κωδικού";
+"adyen.voucher.code.copied.label" = "Ο κωδικός αντιγράφτηκε στο πρόχειρο";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Ποσό";
 "adyen.voucher.entity" = "Οντότητα";
 "adyen.pix.instructions" = "Χρησιμοποιήστε την εφαρμογή τραπεζικής σας για να σαρώσετε τον κωδικό QR ή αντιγράψτε τον κωδικό Pix παρακάτω για να ολοκληρώσετε την πληρωμή σας.";
 "adyen.pix.expirationLabel" = "Έχετε στη διάθεσή σας %@ για την πληρωμή";
-"adyen.pix.copyButton" = "Αντιγραφή κωδικού";
-"adyen.pix.instructions.copiedMessage" = "Ο κωδικός αντιγράφτηκε στο πρόχειρο";
 "adyen.pix.code.copy.label" = "Αντιγραφή κωδικού PIX";
 "adyen.pix.code.copied.label" = "Ο κωδικός PIX αντιγράφηκε";
 "adyen.billingAddressSection.title" = "Διεύθυνση τιμολόγησης";
@@ -183,7 +183,7 @@
 "adyen.payByBankAISDD.submit" = "Συνεχίστε να πληρώνετε μέσω τράπεζας";
 "adyen.payByBankAISDD.more" = "+ περισσότερα";
 "adyen.upi.modeSelection" = "Πώς θα θέλατε να χρησιμοποιήσετε το UPI;";
-"adyen.upi.mode.payByAnyUpi" = "Εφαρμογή UPI";
+"adyen.upi.mode.payByAnyUpi" = "Εφαρμογές UPI";
 "adyen.upi.intent.instruction" = "Επιλέξτε την προτιμώμενη εφαρμογή UPI";
 "adyen.upi.error.noAppSelected" = "Επιλέξτε την προτιμώμενη εφαρμογή UPI για να συνεχίσετε";
 "adyen.upi.collect.field.label" = "Αναγνωριστικό UPI";
@@ -194,6 +194,8 @@
 "adyen.upi.vpaWaitingMessage" = "Ανοίξτε την εφαρμογή UPI για επιβεβαίωση της πληρωμής";
 "adyen.upi.qrcode.timerMessage" = "%@ προς έγκριση";
 "adyen.upi.qrcode.instructions" = "Τραβήξτε ένα στιγμιότυπο οθόνης για να το ανεβάσετε στην εφαρμογή UPI ή σαρώστε τον κωδικό QR χρησιμοποιώντας την εφαρμογή UPI που προτιμάτε για να ολοκληρώσετε την πληρωμή.";
+"adyen.upi.intent.apps.title" = "Επιλογές";
+"adyen.upi.intent.apps.title.onDevice" = "Στη συσκευή σας";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Σε αυτή τη συσκευή το TWINT είτε δεν είναι εγκατεστημένο είτε είναι σε παλιά έκδοση. Ενημερώστε ή εγκαταστήστε την εφαρμογή TWINT.";

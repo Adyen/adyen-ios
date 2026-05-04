@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Įvestas kortelės prekės ženklas nepalaikomas";
 "adyen.card.scanYourCardButton" = "Nuskaitykite savo kortelę";
 "adyen.creditCard.dualBrand.title" = "Kortelės prekių ženklas";
-"adyen.creditCard.dualBrand.description" = "Pasirinkite kortelės, kuria pageidaujate atsiskaityti, prekių ženklą. Tai neprivaloma.";
+"adyen.creditCard.dualBrand.description" = "Galite pasirinkti pageidaujamą mokėjimo kortelės prekių ženklą. Tai neprivaloma.";
 "adyen.dropIn.stored.title" = "Patvirtinti %@ mokėjimą";
 "adyen.dropIn.preselected.openAll.title" = "Keisti mokėjimo būdą";
 "adyen.continueTo" = "Eiti į %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "Perskaitykite instrukcijas";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "Kopijuoti kodą";
+"adyen.voucher.code.copied.label" = "Į iškarpinę nukopijuotas kodas";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Suma";
 "adyen.voucher.entity" = "Subjektas";
 "adyen.pix.instructions" = "Norėdami užbaigti mokėjimą, savo banko programėle nuskaitykite QR kodą arba nukopijuokite toliau pateiktą PIX kodą.";
 "adyen.pix.expirationLabel" = "Jūs turite mokėti %@";
-"adyen.pix.copyButton" = "Kopijuoti kodą";
-"adyen.pix.instructions.copiedMessage" = "Į iškarpinę nukopijuotas kodas";
 "adyen.pix.code.copy.label" = "Kopijuoti „PIX“ kodą";
 "adyen.pix.code.copied.label" = "„PIX“ kodas nukopijuotas";
 "adyen.billingAddressSection.title" = "Sąskaitų siuntimo adresas";
@@ -183,7 +183,7 @@
 "adyen.payByBankAISDD.submit" = "Toliau eiti į „Pay by Bank“";
 "adyen.payByBankAISDD.more" = "+ daugiau";
 "adyen.upi.modeSelection" = "Kaip norėtumėte naudoti UPI?";
-"adyen.upi.mode.payByAnyUpi" = "UPI programėlė";
+"adyen.upi.mode.payByAnyUpi" = "UPI programos";
 "adyen.upi.intent.instruction" = "Pasirinkite pageidaujamą UPI programėlę";
 "adyen.upi.error.noAppSelected" = "Norėdami tęsti, pasirinkite pageidaujamą UPI programėlę";
 "adyen.upi.collect.field.label" = "UPI ID";
@@ -194,6 +194,8 @@
 "adyen.upi.vpaWaitingMessage" = "Atidarykite savo UPI programą, kad patvirtintumėte mokėjimą";
 "adyen.upi.qrcode.timerMessage" = "Turite %@ patvirtinti";
 "adyen.upi.qrcode.instructions" = "Padarykite ekrano kopiją ir įkelkite ją į UPI programą arba nuskaitykite QR kodą naudodami pageidaujamą UPI programą, kad užbaigtumėte mokėjimą.";
+"adyen.upi.intent.apps.title" = "Parinktys";
+"adyen.upi.intent.apps.title.onDevice" = "Jūsų įrenginyje";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Šiame įrenginyje neįdiegta arba pasenusi TWINT versija. Atnaujinkite arba įdiekite TWINT programą.";

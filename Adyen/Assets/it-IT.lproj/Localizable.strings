@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Il brand della carta inserita non è supportato";
 "adyen.card.scanYourCardButton" = "Scansiona la tua carta";
 "adyen.creditCard.dualBrand.title" = "Marca della carta";
-"adyen.creditCard.dualBrand.description" = "Seleziona la marca della carta con cui preferisci pagare. Questo è facoltativo.";
+"adyen.creditCard.dualBrand.description" = "Puoi selezionare la marca della carta con cui preferisci pagare. Questa opzione è facoltativa.";
 "adyen.dropIn.stored.title" = "Conferma il pagamento di %@";
 "adyen.dropIn.preselected.openAll.title" = "Cambia metodo di pagamento";
 "adyen.continueTo" = "Procedi verso %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "Leggi le istruzioni";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "Copia codice";
+"adyen.voucher.code.copied.label" = "Codice copiato negli appunti";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Somma";
 "adyen.voucher.entity" = "Entità";
 "adyen.pix.instructions" = "Utilizza l'app della tua banca per scansionare il codice QR o copia il codice PIX qui sotto per completare il pagamento.";
 "adyen.pix.expirationLabel" = "Devi pagare %@";
-"adyen.pix.copyButton" = "Copia codice";
-"adyen.pix.instructions.copiedMessage" = "Codice copiato negli appunti";
 "adyen.pix.code.copy.label" = "Copia il codice PIX";
 "adyen.pix.code.copied.label" = "Codice PIX copiato";
 "adyen.billingAddressSection.title" = "Indirizzo di fatturazione";
@@ -194,6 +194,8 @@
 "adyen.upi.vpaWaitingMessage" = "Apri l'app UPI per confermare il pagamento";
 "adyen.upi.qrcode.timerMessage" = "Hai a disposizione %@ per completare l'approvazione";
 "adyen.upi.qrcode.instructions" = "Per completare il pagamento, acquisisci uno screenshot da caricare nell'app UPI o scansiona il codice QR utilizzando l'app UPI che preferisci.";
+"adyen.upi.intent.apps.title" = "Opzioni";
+"adyen.upi.intent.apps.title.onDevice" = "Sul tuo dispositivo";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Su questo dispositivo non è installata alcuna versione di TWINT, oppure la versione installata è obsoleta. Aggiorna o installa l'app TWINT.";

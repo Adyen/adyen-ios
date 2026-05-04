@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "不支持输入的卡片品牌";
 "adyen.card.scanYourCardButton" = "扫描您的卡片";
 "adyen.creditCard.dualBrand.title" = "卡片品牌";
-"adyen.creditCard.dualBrand.description" = "请选择您偏好的支付卡片品牌。这是可选的。";
+"adyen.creditCard.dualBrand.description" = "您可以选择您偏好的支付卡片品牌。这是可选的。";
 "adyen.dropIn.stored.title" = "确认 %@ 支付";
 "adyen.dropIn.preselected.openAll.title" = "更改支付方式";
 "adyen.continueTo" = "继续至 %@";
@@ -78,12 +78,12 @@
 "adyen.button.copy" = "复制";
 "adyen.voucher.introduction" = "感谢您的购买，请使用以下信息完成支付。";
 "adyen.voucher.readInstructions" = "阅读说明";
+"adyen.voucher.code.copy.label" = "复制代码";
+"adyen.voucher.code.copied.label" = "代码复制到剪贴板";
 "adyen.amount" = "金额";
 "adyen.voucher.entity" = "实体";
 "adyen.pix.instructions" = "使用您的银行应用程序扫描二维码或复制下方的 PIX 代码以完成支付。";
 "adyen.pix.expirationLabel" = "您有 %@ 可以支付";
-"adyen.pix.copyButton" = "复制代码";
-"adyen.pix.instructions.copiedMessage" = "代码复制到剪贴板";
 "adyen.pix.code.copy.label" = "复制 PIX 代码";
 "adyen.pix.code.copied.label" = "PIX 代码已复制";
 "adyen.billingAddressSection.title" = "账单地址";
@@ -190,6 +190,8 @@
 "adyen.upi.vpaWaitingMessage" = "打开您的 UPI 应用以确认付款";
 "adyen.upi.qrcode.timerMessage" = "您还有 %@ 可批准";
 "adyen.upi.qrcode.instructions" = "截取屏幕截图以上传到 UPI 应用，或者使用您首选的 UPI 应用扫描二维码以完成付款。";
+"adyen.upi.intent.apps.title" = "选项";
+"adyen.upi.intent.apps.title.onDevice" = "在您的设备上";
 "adyen.twint.noAppsInstalled.message" = "此设备上未安装 TWINT 或安装的 TWINT 版本已过期。请更新或安装 TWINT 应用。";
 "adyen.threeds2.DA.registration.title" = "安全结账";
 "adyen.threeds2.DA.biometrics" = "生物特征识别技术";
