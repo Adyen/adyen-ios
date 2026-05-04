@@ -6,6 +6,7 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
+@_spi(AdyenInternal) import enum Adyen.ValidationStatus
 import UIKit
 
 package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress?> {

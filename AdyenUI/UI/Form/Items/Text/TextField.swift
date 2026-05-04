@@ -11,7 +11,6 @@ import UIKit
 /// specifically the voice over reading of the UITextField.placeholder.
 /// So in order to prevent this behaviour,
 /// accessibilityValue is overriden to return an empty string in case the text var is nil or empty string.
-@_spi(AdyenInternal)
 @objc(AdyTextField)
 public final class TextField: UITextField {
     
