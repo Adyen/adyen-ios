@@ -7,9 +7,8 @@
 @_spi(AdyenInternal) import Adyen
 import Foundation
 
-@_spi(AdyenInternal)
-public extension FormAddressItem {
-    
+package extension FormAddressItem {
+
     /// The configuration of the form address item
     struct Configuration {
         
@@ -28,7 +27,7 @@ public extension FormAddressItem {
         ///   - localizationParameters: The localization parameters.
         ///   - supportedCountryCodes: Supported country codes. If `nil`, all country codes are listed.
         ///   - showsHeader: Whether to show a title header.
-        public init(
+        package init(
             style: AddressStyle = AddressStyle(),
             localizationParameters: LocalizationParameters? = nil,
             supportedCountryCodes: [String]? = nil,

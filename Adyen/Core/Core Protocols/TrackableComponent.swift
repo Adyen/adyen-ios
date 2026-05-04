@@ -8,33 +8,29 @@ import Foundation
 import UIKit
 
 /// A component that can send analytics events.
-@_spi(AdyenInternal)
-public protocol TrackableComponent {
-    
+package protocol TrackableComponent {
     /// Analytics flavor to determine the component / dropIn that initiates the events.
     var analyticsFlavor: AnalyticsFlavor { get }
-    
+
     /// Sends the initial data and retrieves the checkout attempt id
     func sendInitialAnalytics()
-    
+
     /// Sends the rendering event of the component
     func sendDidLoadEvent()
 }
 
-@_spi(AdyenInternal)
-extension TrackableComponent where Self: ViewControllerDelegate {
-    
-    public func viewDidLoad(viewController: UIViewController) {
+package extension TrackableComponent where Self: ViewControllerDelegate {
+
+    func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
         sendDidLoadEvent()
     }
 }
 
 /// Generic extension to send events for all components and dropIn.
-@_spi(AdyenInternal)
-extension TrackableComponent where Self: Component {
-    
-    public func sendInitialAnalytics() {
+package extension TrackableComponent where Self: Component {
+
+    func sendInitialAnalytics() {
         // initial call is not needed again if inside dropIn
         guard !_isDropIn else { return }
         let amount = context.amount
@@ -46,14 +42,13 @@ extension TrackableComponent where Self: Component {
     }
 }
 
-@_spi(AdyenInternal)
-extension TrackableComponent where Self: PaymentMethodAware & Component {
-    
-    public var analyticsFlavor: AnalyticsFlavor {
+package extension TrackableComponent where Self: PaymentMethodAware & Component {
+
+    var analyticsFlavor: AnalyticsFlavor {
         .components(type: paymentMethod.type)
     }
-    
-    public func sendDidLoadEvent() {
+
+    func sendDidLoadEvent() {
         var infoEvent = AnalyticsEventInfo(component: paymentMethod.type.rawValue, type: .rendered)
         infoEvent.isStoredPaymentMethod = (paymentMethod is StoredPaymentMethod) ? true : nil
         infoEvent.brand = (paymentMethod as? StoredCardPaymentMethod)?.brand.rawValue

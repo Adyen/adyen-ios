@@ -31,14 +31,13 @@ extension PhoneExtension: FormPickable {
 }
 
 /// A picker form item for picking regions.
-@_spi(AdyenInternal)
-public final class FormPhoneExtensionPickerItem: FormPickerItem<PhoneExtension> {
+package final class FormPhoneExtensionPickerItem: FormPickerItem<PhoneExtension> {
     
     internal var allowsSelection: Bool {
         selectableValues.count > 1
     }
     
-    public required init(
+    package required init(
         preselectedExtension: PhoneExtension?,
         selectableExtensions: [PhoneExtension],
         validationFailureMessage: String?,

@@ -11,8 +11,7 @@ package protocol AdyenCancellable {
 }
 
 /// Indicates whether or not a task should be cancelled
-@_spi(AdyenInternal)
-public class AdyenTask: AdyenCancellable {
+package class AdyenTask: AdyenCancellable {
     public private(set) var isCancelled: Bool = false
     public func cancel() {
         isCancelled = true

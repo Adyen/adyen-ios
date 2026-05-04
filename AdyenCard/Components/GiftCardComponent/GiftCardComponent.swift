@@ -471,7 +471,6 @@ extension GiftCardComponent {
     }
 }
 
-@_spi(AdyenInternal)
 extension GiftCardComponent: PartialPaymentComponent {}
 
 // MARK: - SubmitCustomizable

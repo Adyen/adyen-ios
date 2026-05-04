@@ -10,13 +10,13 @@ import UIKit
 
 /// Adds helper functionality to any `UIViewController` instance through the `adyen` property.
 @_spi(AdyenInternal)
-public extension AdyenScope where Base: UIView {
+extension AdyenScope where Base: UIView {
     
     /// Apply a BezierPath mask in shape of a rounded rectangular path.
     /// - Parameters:
     ///   - corners: The corners of a rectangle to round.
     ///   - radius: The radius of each corner oval.
-    func round(corners: UIRectCorner, radius: CGFloat) {
+    package func round(corners: UIRectCorner, radius: CGFloat) {
         let maskedLayer = CAShapeLayer()
         let radii = CGSize(width: radius, height: radius)
         let path = UIBezierPath(roundedRect: base.bounds, byRoundingCorners: corners, cornerRadii: radii)
@@ -28,7 +28,7 @@ public extension AdyenScope where Base: UIView {
     /// - Parameters:
     ///   - corners: The corners of a rectangle to round.
     ///   - percentage: The percentage of a length of a smallest dimension.
-    func round(corners: UIRectCorner, percentage: CGFloat) {
+    package func round(corners: UIRectCorner, percentage: CGFloat) {
         let radius = percentage * min(base.bounds.height, base.bounds.width)
         base.adyen.round(corners: corners, radius: radius)
     }
@@ -37,7 +37,7 @@ public extension AdyenScope where Base: UIView {
     /// - Parameters:
     ///   - corners: The corners of a rectangle to round.
     ///   - rounding: The rounding style.
-    func round(corners: UIRectCorner, rounding: CornerRounding) {
+    package func round(corners: UIRectCorner, rounding: CornerRounding) {
         switch rounding {
         case let .fixed(value):
             base.adyen.round(corners: corners, radius: value)
@@ -51,7 +51,7 @@ public extension AdyenScope where Base: UIView {
     /// Apply a radius to redraw view with a rounded corners for the layer’s background. Requires bounds clipping.
     /// - Parameters:
     ///   - radius: The radius of each corner oval.
-    func round(using rounding: CornerRounding) {
+    package func round(using rounding: CornerRounding) {
         base.layer.cornerCurve = .continuous
         
         switch rounding {

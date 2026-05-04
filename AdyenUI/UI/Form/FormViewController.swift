@@ -44,7 +44,7 @@ open class FormViewController: UIViewController, AdyenObserver {
     package var theme: CheckoutTheme = .init()
 
     /// Delegate to handle different viewController events.
-    public weak var delegate: ViewControllerDelegate?
+    package weak var delegate: ViewControllerDelegate?
 
     // MARK: - Private properties
 

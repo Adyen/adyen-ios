@@ -69,7 +69,7 @@ open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> 
     ///   - style: The `FormTextItemStyle` UI style.
     ///   - localizationParameters: The localization parameters.
     ///   - identifier: The item identifier
-    public init(
+    package init(
         preselectedValue: Value?,
         selectableValues: [Value],
         title: String,

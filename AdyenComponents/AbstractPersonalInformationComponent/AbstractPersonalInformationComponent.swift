@@ -215,8 +215,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return injector
     }()
 
-    @_spi(AdyenInternal)
-    public var phoneItem: FormPhoneNumberItem? {
+    package var phoneItem: FormPhoneNumberItem? {
         phoneItemInjector?.item
     }
 

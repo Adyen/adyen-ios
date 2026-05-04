@@ -9,11 +9,10 @@ import AdyenNetworking
 import UIKit
 
 /// Adds helper functionality to any `UIView` instance through the `adyen` property.
-@_spi(AdyenInternal)
 extension AdyenScope where Base: UIView {
     
     @discardableResult
-    public func snapshot(forceRedraw: Bool = false) -> UIImage? {
+    package func snapshot(forceRedraw: Bool = false) -> UIImage? {
         if forceRedraw {
             snapshot(forceRedraw: false)
         }
@@ -28,7 +27,7 @@ extension AdyenScope where Base: UIView {
         }
     }
     
-    public func hide(
+    package func hide(
         animationKey: String,
         hidden: Bool,
         animated: Bool
@@ -90,7 +89,7 @@ extension AdyenScope where Base: UIView {
         base.alpha = hidden ? 0 : 1
     }
 
-    public var minimalSize: CGSize {
+    package var minimalSize: CGSize {
         let targetSize = CGSize(
             width: Dimensions.expectedWidth(for: base.window),
             height: UIView.layoutFittingCompressedSize.height
@@ -102,7 +101,7 @@ extension AdyenScope where Base: UIView {
         )
     }
 
-    public func applyLayerBorderColor(
+    package func applyLayerBorderColor(
         _ color: UIColor?,
         on layer: CALayer? = nil,
         resolvingWith traitCollection: UITraitCollection? = nil

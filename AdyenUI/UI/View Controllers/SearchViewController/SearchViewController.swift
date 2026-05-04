@@ -28,7 +28,7 @@ public class SearchViewController: UIViewController, AdyenObserver {
     internal let emptyView: SearchResultsEmptyView
     
     /// Delegate to handle different viewController events.
-    public weak var delegate: ViewControllerDelegate?
+    package weak var delegate: ViewControllerDelegate?
     
     package lazy var resultsListViewController = ListViewController(style: viewModel.style)
 

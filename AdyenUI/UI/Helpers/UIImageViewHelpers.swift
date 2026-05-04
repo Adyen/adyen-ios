@@ -21,13 +21,12 @@ extension UIImageView {
     }
 }
 
-public extension AdyenScope where Base: UIImageView {
+extension AdyenScope where Base: UIImageView {
     
     /// Applies given `ImageStyle` to the UIImageView
     /// Sets `translatesAutoresizingMaskIntoConstraints` to `false`
     /// - Parameter style: `ImageStyle` to be applied
-    @_spi(AdyenInternal)
-    func apply(_ style: ImageStyle) {
+    package func apply(_ style: ImageStyle) {
         round(using: style.cornerRounding)
         base.layer.borderColor = style.borderColor?.cgColor
         base.layer.borderWidth = style.borderWidth

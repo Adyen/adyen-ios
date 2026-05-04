@@ -25,7 +25,7 @@ public final class SecuredViewController<ChildViewController: UIViewController>:
 
     private var backgroundObservers: [Any]?
 
-    public weak var delegate: ViewControllerDelegate?
+    package weak var delegate: ViewControllerDelegate?
 
     override public var preferredContentSize: CGSize {
         get { childViewController.preferredContentSize }

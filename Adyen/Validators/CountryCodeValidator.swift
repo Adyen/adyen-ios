@@ -7,8 +7,7 @@
 import Foundation
 
 /// Validates two-character ISO standard 3166 2-character country codes.
-@_spi(AdyenInternal)
-public struct CountryCodeValidator: Validator {
+package struct CountryCodeValidator: Validator {
 
     private static let allCountryCodes = Set(Locale.isoRegionCodes)
 

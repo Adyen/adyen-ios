@@ -7,8 +7,7 @@
 import AdyenNetworking
 import Foundation
 
-@_spi(AdyenInternal)
-public struct OrderStatusRequest: APIRequest {
+package struct OrderStatusRequest: APIRequest {
 
     public typealias ResponseType = OrderStatusResponse
 

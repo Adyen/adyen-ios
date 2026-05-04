@@ -23,7 +23,6 @@ extension DropInComponent: NavigationDelegate {
         viewController.dismiss(animated: true, completion: completion)
     }
 
-    @_spi(AdyenInternal)
     public func present(component: PresentableComponent) {
         viewController.present(component.viewController, animated: true)
     }
@@ -44,7 +43,6 @@ extension DropInComponent: FinalizableComponent {
 
 extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
 
-    @_spi(AdyenInternal)
     public func showConfirmation(for component: InstantPaymentComponent, with order: PartialPaymentOrder?) {
 //        let newRootViewController = resolvePreselectedPaymentMethodView(
 //            for: component,
@@ -59,14 +57,13 @@ extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
     }
 }
 
-@_spi(AdyenInternal)
 extension DropInComponent: TrackableComponent {
-    public var analyticsFlavor: AnalyticsFlavor {
+    package var analyticsFlavor: AnalyticsFlavor {
         let paymentMethodTypes = paymentMethods.regular.map(\.type.rawValue)
         return .dropIn(paymentMethods: paymentMethodTypes)
     }
 
-    public func sendDidLoadEvent() {
+    package func sendDidLoadEvent() {
         var infoEvent = AnalyticsEventInfo(component: "dropin", type: .rendered)
         infoEvent.configData = DropInAnalyticsConfiguration(configuration: configuration)
         context.analyticsProvider?.add(info: infoEvent)

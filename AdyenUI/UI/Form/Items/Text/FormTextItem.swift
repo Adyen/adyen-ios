@@ -20,7 +20,7 @@ open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFor
     public var formatter: Adyen.Formatter?
 
     /// The validator to use for validating the text in the text field.
-    public var validator: Validator?
+    package var validator: Validator?
 
     /// The auto-capitalization style for the text field.
     public var autocapitalizationType: UITextAutocapitalizationType = .sentences

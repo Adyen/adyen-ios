@@ -8,8 +8,7 @@
 import Foundation
 
 /// Describes a phone number entry form item.
-@_spi(AdyenInternal)
-public final class FormPhoneNumberItem: FormTextItem {
+package final class FormPhoneNumberItem: FormTextItem {
     
     /// The phone prefix picker item.
     internal let phonePrefixItem: FormPhoneExtensionPickerItem
@@ -28,7 +27,7 @@ public final class FormPhoneNumberItem: FormTextItem {
     /// - Parameter selectableValues: The list of values to select from.
     /// - Parameter style: The `FormTextItemStyle` UI style.
     /// - Parameter localizationParameters: Parameters for custom localization, leave it nil to use the default parameters.
-    public init(
+    package init(
         phoneNumber: PhoneNumber?,
         selectableValues: [PhoneExtension],
         style: FormTextItemStyle,

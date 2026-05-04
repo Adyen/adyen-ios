@@ -6,8 +6,7 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public extension Result {
+package extension Result {
     
     func handle(success: (Success) -> Void, failure: (Failure) -> Void) {
         switch self {

@@ -85,7 +85,6 @@ public final class PayByBankUSComponent: PaymentComponent, PresentableComponent 
     }
 }
 
-@_spi(AdyenInternal)
 extension PayByBankUSComponent: TrackableComponent {}
 
 extension PayByBankUSComponent: LoadingComponent {

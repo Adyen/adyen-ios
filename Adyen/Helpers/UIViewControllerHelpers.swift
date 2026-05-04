@@ -8,8 +8,7 @@ import AdyenNetworking
 import UIKit
 
 /// Adds helper functionality to any `UIViewController` instance through the `adyen` property.
-@_spi(AdyenInternal)
-public extension AdyenScope where Base: UIViewController {
+extension AdyenScope where Base: UIViewController {
     
     /// Enables any `UIViewController` to access its top most presented view controller, e.g `viewController.adyen.topPresenter`.
     var topPresenter: UIViewController {
@@ -22,5 +21,4 @@ public extension AdyenScope where Base: UIViewController {
     
 }
 
-@_spi(AdyenInternal)
 extension UIResponder: AdyenCompatible {}

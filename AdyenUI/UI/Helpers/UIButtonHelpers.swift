@@ -22,7 +22,7 @@ extension UIButton {
     }
 }
 
-public extension AdyenScope where Base: UIButton {
+package extension AdyenScope where Base: UIButton {
     
     /// Applies given `ButtonStyle` to the UIButton
     /// Sets `translatesAutoresizingMaskIntoConstraints` to `false`

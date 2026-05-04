@@ -7,7 +7,6 @@
 import AdyenNetworking
 import Foundation
 
-@_spi(AdyenInternal)
 extension String: AdyenCompatible {
 
     public enum Adyen {
@@ -19,11 +18,9 @@ extension String: AdyenCompatible {
     }
 }
 
-@_spi(AdyenInternal)
 extension Optional: AdyenCompatible {}
 
-@_spi(AdyenInternal)
-public extension AdyenScope where Base == String? {
+extension AdyenScope where Base == String? {
 
     /// Returns true if optional string is null or not empty.
     var isNullOrEmpty: Bool {
@@ -38,8 +35,7 @@ public extension AdyenScope where Base == String? {
 
 }
 
-@_spi(AdyenInternal)
-public extension AdyenScope where Base == String {
+extension AdyenScope where Base == String {
 
     /// Returns nil string is empty or actual value.
     var nilIfEmpty: String? {
@@ -51,7 +47,7 @@ public extension AdyenScope where Base == String {
     /// - Parameters:
     ///   - length: The maximum desired length for the string.
     /// - Returns: A truncated string.
-    func truncate(to length: Int) -> String {
+    package func truncate(to length: Int) -> String {
         (base.count > length) ? String(base.prefix(length)) : base
     }
     
@@ -59,7 +55,7 @@ public extension AdyenScope where Base == String {
     ///
     /// - Parameter lengths: The lengths to separate the string into.
     /// - Returns: An array of substring with the given lengths.
-    func components(withLengths lengths: [Int]) -> [String] {
+    package func components(withLengths lengths: [Int]) -> [String] {
         guard !base.isEmpty else { return [] }
         
         var input = base
@@ -81,7 +77,7 @@ public extension AdyenScope where Base == String {
     ///
     /// - Parameter length: The length of each of the substrings.
     /// - Returns: An array of substrings of the given length.
-    func components(withLength length: Int) -> [String] {
+    package func components(withLength length: Int) -> [String] {
         var input = base
         var output = [String]()
         
@@ -97,7 +93,7 @@ public extension AdyenScope where Base == String {
     ///
     /// - Parameter position: The position of the desired substring.
     /// - Returns: A string with the substring of the given position.
-    subscript(position: Int) -> String {
+    package subscript(position: Int) -> String {
         guard position >= 0, position < base.count else { return "" }
         
         return String(base[base.index(base.startIndex, offsetBy: position)])
@@ -108,7 +104,7 @@ public extension AdyenScope where Base == String {
     ///
     /// - Parameter range: The range of the desired substring.
     /// - Returns: A string with the substring of the given range.
-    subscript(range: Range<Int>) -> String {
+    package subscript(range: Range<Int>) -> String {
         guard let safe = safeRange(from: range) else { return "" }
         return String(base[safe])
     }
@@ -118,7 +114,7 @@ public extension AdyenScope where Base == String {
     ///
     /// - Parameter range: The closed range of the desired substring.
     /// - Returns: A string with the substring of the given closed range.
-    subscript(range: ClosedRange<Int>) -> String {
+    package subscript(range: ClosedRange<Int>) -> String {
         guard let safeRange = safeClosedRange(from: range) else { return "" }
         return String(base[safeRange])
     }
@@ -154,7 +150,7 @@ public extension AdyenScope where Base == String {
     }
     
     /// Returns a list of ``NSRange`` indicating links using following regex pattern: `#(.+?)#`
-    var linkRanges: [NSRange] {
+    package var linkRanges: [NSRange] {
         let pattern = "#(.+?)#"
         var ranges: [NSRange] = []
         do {

@@ -10,8 +10,7 @@ private enum AssociatedKeys {
     internal static var animations: Void?
 }
 
-@_spi(AdyenInternal)
-public class AnimationContext: NSObject {
+package class AnimationContext: NSObject {
     fileprivate let animationKey: String
     
     fileprivate let duration: TimeInterval
@@ -41,8 +40,7 @@ public class AnimationContext: NSObject {
     }
 }
 
-@_spi(AdyenInternal)
-public final class KeyFrameAnimationContext: AnimationContext {
+package final class KeyFrameAnimationContext: AnimationContext {
     
     fileprivate let keyFrameOptions: UIView.KeyframeAnimationOptions
     
@@ -66,8 +64,7 @@ public final class KeyFrameAnimationContext: AnimationContext {
     }
 }
 
-@_spi(AdyenInternal)
-public final class SpringAnimationContext: AnimationContext {
+package final class SpringAnimationContext: AnimationContext {
 
     fileprivate let dampingRatio: CGFloat
     fileprivate let velocity: CGFloat
@@ -95,14 +92,13 @@ public final class SpringAnimationContext: AnimationContext {
     }
 }
 
-@_spi(AdyenInternal)
-extension AdyenScope where Base: UIView {
+package extension AdyenScope where Base: UIView {
     
-    public func cancelAnimations(with key: String) {
+    func cancelAnimations(with key: String) {
         base.animations.removeAll { $0.animationKey == key }
     }
     
-    public func animate(context: AnimationContext) {
+    func animate(context: AnimationContext) {
         base.animations.append(context)
         
         if base.animations.count == 1 {
@@ -149,8 +145,7 @@ extension AdyenScope where Base: UIView {
     }
 }
 
-@_spi(AdyenInternal)
-private extension UIView {
+package extension UIView {
 
     var animations: [AnimationContext] {
         get {
