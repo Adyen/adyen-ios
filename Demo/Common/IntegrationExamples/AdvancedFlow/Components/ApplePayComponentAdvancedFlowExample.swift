@@ -95,6 +95,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
                     var items = summaryItems
                     if let last = items.last {
                         items = items.dropLast()
+                        // make sure your backend's amount and apple pay sheet amount are the same
                         items.append(.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0)))
                         items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue - 5.0)))
                     }

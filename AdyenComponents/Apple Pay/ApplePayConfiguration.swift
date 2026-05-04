@@ -135,7 +135,8 @@ extension ApplePayConfiguration {
     ///
     /// - Note: Return `.failure` with non-empty `errors` to keep the sheet open for correction.
     ///   Use `PKPaymentRequest.paymentBillingAddressInvalidError(withKey:localizedDescription:)` or similar
-    ///   factory methods to create field-specific errors.
+    ///   factory methods to create field-specific errors. If `errors` parameter is empty, the system will dismiss
+    ///   the sheet.
     /// - Parameter onAuthorize: The closure to call when the payment is authorized.
     ///   - Parameters:
     ///     - payment: The `PKPayment` object containing the payment token, billing/shipping contact, and shipping method.
