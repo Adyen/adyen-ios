@@ -69,26 +69,30 @@ struct StoredCardInputViewControllerTests {
     // MARK: - C: View model callbacks → UI
 
     @Test
-    func inProgressPublisher_updatesPrimaryButtonState() async throws {
+    func inProgressPublisher_updatesLoadingState() async throws {
         let inProgressSource = StoredCardInputInProgressSource()
         let (proxy, _) = makeSUT(inProgressPublisher: inProgressSource.$isInProgress)
         await proxy.load()
 
         let button = try proxy.primaryButton()
+        let securityCodeItemView = try proxy.securityCodeItemView()
         #expect(!button.showsActivityIndicator)
         #expect(button.isEnabled)
+        #expect(securityCodeItemView.isUserInteractionEnabled)
 
         inProgressSource.isInProgress = true
         await Task.yield()
 
         #expect(button.showsActivityIndicator)
         #expect(!button.isEnabled)
+        #expect(!securityCodeItemView.isUserInteractionEnabled)
 
         inProgressSource.isInProgress = false
         await Task.yield()
 
         #expect(!button.showsActivityIndicator)
         #expect(button.isEnabled)
+        #expect(securityCodeItemView.isUserInteractionEnabled)
     }
 
     @Test
@@ -202,6 +206,13 @@ struct StoredCardInputViewControllerProxy {
         try #require(
             viewController.view.findView(by: "primaryButton") as? FormButton,
             "Cannot find primaryButton"
+        )
+    }
+
+    func securityCodeItemView() throws -> FormCardSecurityCodeItemView {
+        try #require(
+            viewController.view.findView(by: "securityCodeItemView") as? FormCardSecurityCodeItemView,
+            "Cannot find securityCodeItemView"
         )
     }
 
