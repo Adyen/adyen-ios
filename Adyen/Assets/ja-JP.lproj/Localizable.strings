@@ -194,6 +194,8 @@
 "adyen.upi.vpaWaitingMessage" = "UPIアプリを開いて、支払を確認してください";
 "adyen.upi.qrcode.timerMessage" = "承認まで残り%@";
 "adyen.upi.qrcode.instructions" = "スクリーンショットを撮影してUPIアプリにアップロードするか、お好みのUPIアプリを使用してQRコードをスキャンし、支払を完了してください。";
+"adyen.upi.intent.apps.title" = "オプション";
+"adyen.upi.intent.apps.title.onDevice" = "お使いのデバイスで";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "このデバイスにはTWINTがインストールされていないか、古いバージョンがインストールされています。 TWINTアプリを更新またはインストールするようお願い申し上げます。";

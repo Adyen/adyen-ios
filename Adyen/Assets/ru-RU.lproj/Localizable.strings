@@ -190,6 +190,8 @@
 "adyen.upi.vpaWaitingMessage" = "Откройте приложение UPI для подтверждения платежа";
 "adyen.upi.qrcode.timerMessage" = "На одобрение отведено %@";
 "adyen.upi.qrcode.instructions" = "Сделайте снимок экрана, чтобы загрузить его в приложение UPI, или отсканируйте QR-код своим любимым приложением UPI, чтобы оформить платеж.";
+"adyen.upi.intent.apps.title" = "Опции";
+"adyen.upi.intent.apps.title.onDevice" = "На вашем устройстве";
 "adyen.twint.noAppsInstalled.message" = "На этом устройстве либо установлена устаревшая версия TWINT, либо это приложение не установлено вообще. Обновите или установите TWINT.";
 "adyen.threeds2.DA.registration.title" = "Безопасная оплата";
 "adyen.threeds2.DA.biometrics" = "биометрика";

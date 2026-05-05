@@ -194,6 +194,8 @@
 "adyen.upi.vpaWaitingMessage" = "Avaa UPI-sovellus vahvistaaksesi maksun";
 "adyen.upi.qrcode.timerMessage" = "Sinulla on %@ hyväksyttävänä";
 "adyen.upi.qrcode.instructions" = "Suorita maksu ottamalla kuvakaappaus, jonka voit ladata UPI-sovellukseen, tai skannaamalla QR-koodi haluamallasi UPI-sovelluksella.";
+"adyen.upi.intent.apps.title" = "Vaihtoehdot";
+"adyen.upi.intent.apps.title.onDevice" = "Laitteellasi";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Laitteeseen ei ole asennettu TWINT-sovellusta tai laitteessa on sen vanhentunut versio. Päivitä tai asenna TWINT-sovellus.";

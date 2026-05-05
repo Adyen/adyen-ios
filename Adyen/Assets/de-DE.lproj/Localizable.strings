@@ -194,6 +194,8 @@
 "adyen.upi.vpaWaitingMessage" = "Öffnen Sie Ihre UPI-App, um die Zahlung zu bestätigen.";
 "adyen.upi.qrcode.timerMessage" = "Sie haben noch %@ Minuten Zeit für die Genehmigung.";
 "adyen.upi.qrcode.instructions" = "Machen Sie einen Screenshot, um ihn in der UPI-App hochzuladen, oder scannen Sie den QR-Code mit Ihrer bevorzugten UPI-App, um die Zahlung abzuschließen.";
+"adyen.upi.intent.apps.title" = "Optionen";
+"adyen.upi.intent.apps.title.onDevice" = "Auf Ihrem Gerät";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Auf diesem Gerät ist keine oder eine veraltete Version von TWINT installiert. Bitte aktualisieren oder installieren Sie die TWINT-App.";

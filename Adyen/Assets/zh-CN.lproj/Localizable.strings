@@ -190,6 +190,8 @@
 "adyen.upi.vpaWaitingMessage" = "打开您的 UPI 应用以确认付款";
 "adyen.upi.qrcode.timerMessage" = "您还有 %@ 可批准";
 "adyen.upi.qrcode.instructions" = "截取屏幕截图以上传到 UPI 应用，或者使用您首选的 UPI 应用扫描二维码以完成付款。";
+"adyen.upi.intent.apps.title" = "选项";
+"adyen.upi.intent.apps.title.onDevice" = "在您的设备上";
 "adyen.twint.noAppsInstalled.message" = "此设备上未安装 TWINT 或安装的 TWINT 版本已过期。请更新或安装 TWINT 应用。";
 "adyen.threeds2.DA.registration.title" = "安全结账";
 "adyen.threeds2.DA.biometrics" = "生物特征识别技术";

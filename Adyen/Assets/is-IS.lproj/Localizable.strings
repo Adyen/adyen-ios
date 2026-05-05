@@ -194,6 +194,8 @@
 "adyen.upi.vpaWaitingMessage" = "Opnaðu UPI-forritið þitt til að staðfesta greiðsluna";
 "adyen.upi.qrcode.timerMessage" = "Þú hefur %@ til að samþykkja";
 "adyen.upi.qrcode.instructions" = "Taktu skjámynd til að hlaða upp í UPI-forritinu eða skannaðu QR-kóðann með því að nota UPI-forrit sem þú vilt til að ljúka greiðslunni.";
+"adyen.upi.intent.apps.title" = "Valkostir";
+"adyen.upi.intent.apps.title.onDevice" = "Í tækinu þínu";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Engin eða úrelt útgáfa af TWINT er uppsett á þessu tæki. Uppfærðu eða settu TWINT-forritið upp.";

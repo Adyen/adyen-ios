@@ -561,5 +561,139 @@ class UPIComponentTests: XCTestCase {
         XCTAssertEqual(selectedEvents.first?.issuer, "bhim")
         XCTAssertEqual(selectedEvents.first?.target, .issuerList)
     }
+    
+    // MARK: - Localization Tests
+    
+    func test_modeInstructionsLabelItem_shouldUseCorrectLocalization() throws {
+        // Given
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upiWithApps)
+        
+        // When
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context
+        )
+        
+        // Then
+        XCTAssertEqual(sut.modeInstructionsLabelItem.text, "How would you like to use UPI?")
+    }
+    
+    func test_upiFlowSelectionItem_shouldUseCorrectLocalization() throws {
+        // Given
+        let schemeChecker = URLSchemeCheckerMock()
+        schemeChecker.openableSchemes = ["tez"]
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upiWithApps)
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            urlSchemeChecker: schemeChecker
+        )
+        
+        // When
+        let segmentedControl: UISegmentedControl = try XCTUnwrap(
+            sut.viewController.view.findView(with: "AdyenComponents.UPIComponent.upiFlowSelectionSegmentedControlItem")
+        )
+        
+        // Then
+        XCTAssertEqual(segmentedControl.titleForSegment(at: 0), "UPI apps")
+        XCTAssertEqual(segmentedControl.titleForSegment(at: 1), "UPI ID")
+    }
+    
+    func test_collectInstructionsLabelItem_shouldUseCorrectLocalization() throws {
+        // Given
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upi)
+        
+        // When
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context
+        )
+        
+        // Then
+        XCTAssertEqual(sut.collectInstructionsLabelItem.content.text, "Enter your UPI ID")
+    }
+    
+    func test_intentInstructionsLabelItem_shouldUseCorrectLocalization() throws {
+        // Given
+        let schemeChecker = URLSchemeCheckerMock()
+        schemeChecker.openableSchemes = ["tez"]
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upiWithApps)
+        
+        // When
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            urlSchemeChecker: schemeChecker
+        )
+        
+        // Then
+        XCTAssertEqual(sut.intentInstructionsLabelItem.content.text, "Select your preferred UPI app")
+    }
+    
+    func test_vpaInputItem_shouldUseCorrectLocalization() throws {
+        // Given
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upi)
+        
+        // When
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context
+        )
+        
+        // Then
+        XCTAssertEqual(sut.vpaInputItem.title, "UPI ID")
+        XCTAssertEqual(sut.vpaInputItem.validationFailureMessage, "Enter a valid UPI")
+    }
+    
+    func test_errorItem_shouldUseCorrectLocalization() throws {
+        // Given
+        let schemeChecker = URLSchemeCheckerMock()
+        schemeChecker.openableSchemes = ["tez"]
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upiWithApps)
+        
+        // When
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            urlSchemeChecker: schemeChecker
+        )
+        
+        // Then
+        XCTAssertEqual(sut.errorItem.message, "Select your preferred UPI app to continue")
+    }
+    
+    func test_appsListTitleItem_withInstalledApps_shouldUseOnDeviceLocalization() throws {
+        // Given
+        let schemeChecker = URLSchemeCheckerMock()
+        schemeChecker.openableSchemes = ["tez"]
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upiWithApps)
+        
+        // When
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            urlSchemeChecker: schemeChecker
+        )
+        
+        // Then
+        XCTAssertEqual(sut.appsListTitleItem.content.text, "On your device")
+    }
+    
+    func test_appsListTitleItem_withNoInstalledApps_shouldUseOptionsLocalization() throws {
+        // Given
+        let schemeChecker = URLSchemeCheckerMock()
+        schemeChecker.openableSchemes = []
+        let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upiWithApps)
+        
+        // When
+        let sut = UPIComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            urlSchemeChecker: schemeChecker
+        )
+        
+        // Then
+        XCTAssertEqual(sut.appsListTitleItem.content.text, "Options")
+    }
 
 }

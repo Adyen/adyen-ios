@@ -194,6 +194,8 @@
 "adyen.upi.vpaWaitingMessage" = "Atidarykite savo UPI programą, kad patvirtintumėte mokėjimą";
 "adyen.upi.qrcode.timerMessage" = "Turite %@ patvirtinti";
 "adyen.upi.qrcode.instructions" = "Padarykite ekrano kopiją ir įkelkite ją į UPI programą arba nuskaitykite QR kodą naudodami pageidaujamą UPI programą, kad užbaigtumėte mokėjimą.";
+"adyen.upi.intent.apps.title" = "Parinktys";
+"adyen.upi.intent.apps.title.onDevice" = "Jūsų įrenginyje";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Šiame įrenginyje neįdiegta arba pasenusi TWINT versija. Atnaujinkite arba įdiekite TWINT programą.";

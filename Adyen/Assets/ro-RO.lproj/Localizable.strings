@@ -190,6 +190,8 @@
 "adyen.upi.vpaWaitingMessage" = "Deschideți aplicația UPI pentru a confirma plata";
 "adyen.upi.qrcode.timerMessage" = "Aveți %@ ca să aprobați";
 "adyen.upi.qrcode.instructions" = "Faceți o captură de ecran pentru a o încărca în aplicația UPI sau scanați codul QR folosind aplicația UPI preferată pentru a finaliza plata.";
+"adyen.upi.intent.apps.title" = "Opțiuni";
+"adyen.upi.intent.apps.title.onDevice" = "Pe dispozitivul dvs.";
 "adyen.twint.noAppsInstalled.message" = "Pe acest dispozitiv nu este instalată nicio versiune sau este o versiune depășită a TWINT. Actualizați sau instalați aplicația TWINT.";
 "adyen.threeds2.DA.registration.title" = "Plată securizată";
 "adyen.threeds2.DA.biometrics" = "biometric";
