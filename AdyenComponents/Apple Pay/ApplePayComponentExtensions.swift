@@ -67,8 +67,9 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
 extension ApplePayComponent {
 
     private func handleAuthorize(payment: PKPayment) async -> PKPaymentAuthorizationResult {
+        authorizationHandled = true
+
         guard !payment.token.paymentData.isEmpty else {
-            authorizationHandled = true
             delegate?.didFail(with: Error.invalidToken, from: self)
             return PKPaymentAuthorizationResult(status: .failure, errors: nil)
         }
@@ -77,8 +78,9 @@ extension ApplePayComponent {
         if let onAuthorize = configuration.onAuthorize {
             let result = await onAuthorize(payment)
             if result.status == .failure {
-                // Error returned from merchant — pass back to Apple Pay sheet
-                authorizationHandled = true
+                // Sheet stays open for the shopper to retry.
+                // Cancelling after this before a new authorize should trigger didFail
+                authorizationHandled = false
                 return result
             }
         }
@@ -106,7 +108,6 @@ extension ApplePayComponent {
             self.submit(data: data)
         }
 
-        authorizationHandled = true
         return PKPaymentAuthorizationResult(status: success ? .success : .failure, errors: nil)
     }
 
