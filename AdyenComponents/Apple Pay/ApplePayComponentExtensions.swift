@@ -76,8 +76,6 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
 extension ApplePayComponent {
 
     private func handleAuthorize(payment: PKPayment) async -> PKPaymentAuthorizationResult {
-        // Close the cancel window now: any later sheet dismissal is UI-only,
-        // not a payment cancellation.
         authorizationHandled = true
 
         guard !payment.token.paymentData.isEmpty else {
@@ -89,7 +87,9 @@ extension ApplePayComponent {
         if let onAuthorize = configuration.onAuthorize {
             let result = await onAuthorize(payment)
             if result.status == .failure {
-                // Error returned from merchant — pass back to Apple Pay sheet
+                // Sheet stays open for the shopper to retry.
+                // Cancelling after this before a new authorize should trigger didFail
+                authorizationHandled = false
                 return result
             }
         }

@@ -723,7 +723,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertNotNil(receivedPayment)
 
         // Resolve the continuation so the async method can return
-        await sut.didFinalize(with: true, completion: nil)
+        sut.didFinalize(with: true, completion: nil)
         let result = await resultTask.value
         XCTAssertEqual(result.status, .success)
     }
@@ -790,7 +790,7 @@ class ApplePayComponentTest: XCTestCase {
         await fulfillment(of: [didSubmitExpectation], timeout: 5)
 
         // Resolve so the async method finishes
-        await sut.didFinalize(with: true, completion: nil)
+        sut.didFinalize(with: true, completion: nil)
         let result = await resultTask.value
         XCTAssertEqual(result.status, .success)
     }
@@ -858,7 +858,7 @@ class ApplePayComponentTest: XCTestCase {
         await fulfillment(of: [didSubmitExpectation], timeout: 5)
 
         // When
-        await sut.didFinalize(with: true, completion: nil)
+        sut.didFinalize(with: true, completion: nil)
 
         // Then
         let result = await resultTask.value
@@ -886,7 +886,7 @@ class ApplePayComponentTest: XCTestCase {
         await fulfillment(of: [didSubmitExpectation], timeout: 5)
 
         // When
-        await sut.didFinalize(with: false, completion: nil)
+        sut.didFinalize(with: false, completion: nil)
 
         // Then
         let result = await resultTask.value
@@ -939,14 +939,14 @@ class ApplePayComponentTest: XCTestCase {
             await self.sut.paymentAuthorizationViewController(controller, didAuthorizePayment: mockPayment)
         }
         await fulfillment(of: [onAuthorizeStarted], timeout: 5)
-        try sut.paymentAuthorizationViewControllerDidFinish(controller)
+        sut.paymentAuthorizationViewControllerDidFinish(controller)
 
         // Release onAuthorize -> code proceeds to submit -> continuation stored.
         releaseOnAuthorize.fulfill()
         await fulfillment(of: [didSubmitExpectation], timeout: 5)
 
         // Resolve so the auth task can return.
-        await sut.didFinalize(with: true, completion: nil)
+        sut.didFinalize(with: true, completion: nil)
         let result = await resultTask.value
 
         // Then
@@ -980,13 +980,13 @@ class ApplePayComponentTest: XCTestCase {
         }
         await fulfillment(of: [didSubmitExpectation], timeout: 5)
 
-        try sut.paymentAuthorizationViewControllerDidFinish(controller)
+        sut.paymentAuthorizationViewControllerDidFinish(controller)
 
         // Give any spurious `didFail` enough time to fire if the regression returns.
         try await Task.sleep(for: .milliseconds(200))
 
         // Resolve so the auth task can return.
-        await sut.didFinalize(with: true, completion: nil)
+        sut.didFinalize(with: true, completion: nil)
         let result = await resultTask.value
 
         // Then
@@ -1009,11 +1009,54 @@ class ApplePayComponentTest: XCTestCase {
         }
 
         let controller = try XCTUnwrap(sut.paymentAuthorizationViewController)
-        try sut.paymentAuthorizationViewControllerDidFinish(controller)
+        sut.paymentAuthorizationViewControllerDidFinish(controller)
 
         await fulfillment(of: [didFailExpectation], timeout: 5)
     }
 
+    func test_dismiss_afterMerchantRejection_callsDidFailCancelled() async throws {
+        // Given
+        try await Task.sleep(for: .seconds(1))
+
+        var configuration = try ApplePayConfiguration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
+        )
+        configuration.onAuthorize = { _ in
+            let postalCodeError = PKPaymentRequest.paymentShippingAddressInvalidError(
+                withKey: CNPostalAddressPostalCodeKey,
+                localizedDescription: "Wrong postal code"
+            )
+            return PKPaymentAuthorizationResult(status: .failure, errors: [postalCodeError])
+        }
+
+        sut = try ApplePayComponent(
+            paymentMethod: paymentMethod,
+            context: Dummy.context,
+            configuration: configuration
+        )
+        sut.delegate = mockDelegate
+
+        let didFailExpectation = expectation(description: "didFail(.cancelled)")
+        mockDelegate.onDidFail = { error, _ in
+            XCTAssertEqual(error as? ComponentError, .cancelled)
+            didFailExpectation.fulfill()
+        }
+        mockDelegate.onDidSubmit = { _, _ in
+            XCTFail("didSubmit must not fire — merchant rejected before submit")
+        }
+
+        let mockPayment = try PKPaymentMock.create(withPaymentData: XCTUnwrap("test_token".data(using: .utf8)))
+        let controller = try XCTUnwrap(sut.paymentAuthorizationViewController)
+
+        // When — shopper taps Pay, merchant rejects, sheet stays open, shopper dismisses.
+        let result = await sut.paymentAuthorizationViewController(controller, didAuthorizePayment: mockPayment)
+        XCTAssertEqual(result.status, .failure)
+
+        sut.paymentAuthorizationViewControllerDidFinish(controller)
+
+        // Then
+        await fulfillment(of: [didFailExpectation], timeout: 5)
+    }
 }
 
 // MARK: - PKPayment Mock
