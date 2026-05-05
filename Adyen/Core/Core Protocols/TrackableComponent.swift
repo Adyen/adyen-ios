@@ -19,18 +19,18 @@ package protocol TrackableComponent {
     func sendDidLoadEvent()
 }
 
-package extension TrackableComponent where Self: ViewControllerDelegate {
+extension TrackableComponent where Self: ViewControllerDelegate {
 
-    func viewDidLoad(viewController: UIViewController) {
+    package func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
         sendDidLoadEvent()
     }
 }
 
 /// Generic extension to send events for all components and dropIn.
-package extension TrackableComponent where Self: Component {
+extension TrackableComponent where Self: Component {
 
-    func sendInitialAnalytics() {
+    package func sendInitialAnalytics() {
         // initial call is not needed again if inside dropIn
         guard !_isDropIn else { return }
         let amount = context.amount
@@ -42,13 +42,13 @@ package extension TrackableComponent where Self: Component {
     }
 }
 
-package extension TrackableComponent where Self: PaymentMethodAware & Component {
+extension TrackableComponent where Self: PaymentMethodAware & Component {
 
-    var analyticsFlavor: AnalyticsFlavor {
+    package var analyticsFlavor: AnalyticsFlavor {
         .components(type: paymentMethod.type)
     }
 
-    func sendDidLoadEvent() {
+    package func sendDidLoadEvent() {
         var infoEvent = AnalyticsEventInfo(component: paymentMethod.type.rawValue, type: .rendered)
         infoEvent.isStoredPaymentMethod = (paymentMethod is StoredPaymentMethod) ? true : nil
         infoEvent.brand = (paymentMethod as? StoredCardPaymentMethod)?.brand.rawValue

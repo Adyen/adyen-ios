@@ -11,7 +11,7 @@ import UIKit
 extension AdyenScope where Base: UIViewController {
     
     /// Enables any `UIViewController` to access its top most presented view controller, e.g `viewController.adyen.topPresenter`.
-    var topPresenter: UIViewController {
+    package var topPresenter: UIViewController {
         var topController: UIViewController = self.base
         while let presenter = topController.presentedViewController {
             topController = presenter

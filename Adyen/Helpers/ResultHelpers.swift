@@ -6,9 +6,9 @@
 
 import Foundation
 
-package extension Result {
+extension Result {
     
-    func handle(success: (Success) -> Void, failure: (Failure) -> Void) {
+    package func handle(success: (Success) -> Void, failure: (Failure) -> Void) {
         switch self {
         case let .success(successObject):
             success(successObject)

@@ -11,7 +11,7 @@ import UIKit
 extension Bundle: AdyenCompatible {}
 
 /// Adds helper functionality to any `Bundle` instance through the `adyen` property.
-package extension AdyenScope where Base: Bundle {
+extension AdyenScope where Base: Bundle {
 
     /// Enables any `Bundle` instance to check whether a certain scheme is configured in the Info.plist or not.
     package func isSchemeConfigured(_ scheme: String) -> Bool {

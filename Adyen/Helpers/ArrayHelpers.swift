@@ -6,9 +6,9 @@
 
 import Foundation
 
-package extension AdyenScope {
+extension AdyenScope {
     /// Safely returns the value at the given index if within bounds. Returns `nil` otherwise.
-    subscript<T>(safeIndex index: Int) -> T? where Base == [T] {
+    package subscript<T>(safeIndex index: Int) -> T? where Base == [T] {
         guard index >= base.startIndex,
               index < base.endIndex else { return nil }
         return base[index]

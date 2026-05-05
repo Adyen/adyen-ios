@@ -23,12 +23,12 @@ extension Optional: AdyenCompatible {}
 extension AdyenScope where Base == String? {
 
     /// Returns true if optional string is null or not empty.
-    var isNullOrEmpty: Bool {
+    package var isNullOrEmpty: Bool {
         base == nil || base?.isEmpty == false
     }
     
     /// Returns nil string is empty or actual value.
-    var nilIfEmpty: String? {
+    package var nilIfEmpty: String? {
         guard let base else { return nil }
         return base.isEmpty ? nil : base
     }
@@ -38,7 +38,7 @@ extension AdyenScope where Base == String? {
 extension AdyenScope where Base == String {
 
     /// Returns nil string is empty or actual value.
-    var nilIfEmpty: String? {
+    package var nilIfEmpty: String? {
         base.isEmpty ? nil : base
     }
     

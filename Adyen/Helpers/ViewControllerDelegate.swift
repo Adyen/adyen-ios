@@ -19,11 +19,11 @@ package protocol ViewControllerDelegate: AnyObject {
     func viewWillAppear(viewController: UIViewController)
 }
 
-package extension ViewControllerDelegate {
+extension ViewControllerDelegate {
 
-    func viewDidLoad(viewController: UIViewController) { /* Empty implementation */ }
+    package func viewDidLoad(viewController: UIViewController) { /* Empty implementation */ }
 
-    func viewDidAppear(viewController: UIViewController) { /* Empty implementation */ }
+    package func viewDidAppear(viewController: UIViewController) { /* Empty implementation */ }
 
-    func viewWillAppear(viewController: UIViewController) { /* Empty implementation */ }
+    package func viewWillAppear(viewController: UIViewController) { /* Empty implementation */ }
 }

@@ -92,13 +92,13 @@ package final class SpringAnimationContext: AnimationContext {
     }
 }
 
-package extension AdyenScope where Base: UIView {
+extension AdyenScope where Base: UIView {
     
-    func cancelAnimations(with key: String) {
+    package func cancelAnimations(with key: String) {
         base.animations.removeAll { $0.animationKey == key }
     }
     
-    func animate(context: AnimationContext) {
+    package func animate(context: AnimationContext) {
         base.animations.append(context)
         
         if base.animations.count == 1 {
@@ -145,9 +145,9 @@ package extension AdyenScope where Base: UIView {
     }
 }
 
-package extension UIView {
+extension UIView {
 
-    var animations: [AnimationContext] {
+    internal var animations: [AnimationContext] {
         get {
             objc_getAssociatedObject(self, &AssociatedKeys.animations) as? [AnimationContext] ?? []
         }
