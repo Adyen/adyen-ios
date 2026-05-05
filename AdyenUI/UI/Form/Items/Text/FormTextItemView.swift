@@ -140,7 +140,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     // MARK: - Text Field
     
-    public lazy var textField: TextField = {
+    package lazy var textField: TextField = {
         let textField = TextField()
         textField.adjustsFontForContentSizeCategory = true
         textField.text = item.value

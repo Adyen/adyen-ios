@@ -8,9 +8,9 @@ import AdyenNetworking
 import func Darwin.fputs
 
 /// Provides control over SDK logging.
-package enum AdyenLogging {
+public enum AdyenLogging {
     /// Indicates whether to enable printing to the console.
-    package static var isEnabled: Bool = false {
+    public static var isEnabled: Bool = false {
         didSet {
             AdyenNetworking.Logging.isEnabled = isEnabled
         }

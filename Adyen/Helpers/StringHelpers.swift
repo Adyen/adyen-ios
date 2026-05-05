@@ -9,12 +9,12 @@ import Foundation
 
 extension String: AdyenCompatible {
 
-    public enum Adyen {
+    package enum Adyen {
 
         /// A masked string prefix used to indicate secured/hidden card digits (e.g., "••••1234").
         /// Uses `\u{00a0}` (non-breaking space) after the bullets to prevent line breaks
         /// between the masked prefix and the following digits.
-        public static let securedString: String = "••••\u{00a0}"
+        package static let securedString: String = "••••\u{00a0}"
     }
 }
 
