@@ -9,6 +9,15 @@ import XCTest
 
 class LocalizationTests: XCTestCase {
 
+    override func setUp() {
+        super.setUp()
+        resetLocalizationTestState()
+    }
+
+    private func resetLocalizationTestState() {
+        LocalizationWarningLog.reset()
+    }
+
     func testResolvedLocalizedStringIfAvailableIgnoresDebugPlaceholder() {
         XCTAssertNil(resolvedLocalizedStringIfAvailable("adyen.submitButton.formatted", forKey: "adyen.submitButton.formatted"))
         XCTAssertNil(resolvedLocalizedStringIfAvailable("ADYEN.SUBMITBUTTON.FORMATTED", forKey: "adyen.submitButton.formatted"))
@@ -336,9 +345,110 @@ class LocalizationTests: XCTestCase {
 
         XCTAssertEqual(provider.lastLocale?.identifier, "fr-FR")
     }
+
+    func test_localizedString_withProviderMissingUnsupportedLocaleAndKnownKey_shouldWarnAndFallback() {
+        let provider = MockCheckoutLocalizationProvider(values: [:])
+        let parameters = LocalizationParameters(enforcedLocale: "zu").withProvider(provider)
+        let expected = localizedString(.cardNumberItemTitle, LocalizationParameters(enforcedLocale: "en-US"))
+
+        let warnings = recordWarnings {
+            XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), expected)
+        }
+
+        XCTAssertEqual(
+            warnings,
+            [LocalizationWarning(localeIdentifier: "zu", key: LocalizationKey.cardNumberItemTitle.key, source: .provider)]
+        )
+    }
+
+    func test_localizedString_withProviderMissingUnsupportedLocaleAndUnknownKey_shouldWarnAndFallback() {
+        let provider = MockCheckoutLocalizationProvider(values: [:])
+        let parameters = LocalizationParameters(enforcedLocale: "zu").withProvider(provider)
+        let expected = localizedString(.cardStoredTitle, LocalizationParameters(enforcedLocale: "en-US"))
+
+        let warnings = recordWarnings {
+            XCTAssertEqual(localizedString(.cardStoredTitle, parameters), expected)
+        }
+
+        XCTAssertEqual(
+            warnings,
+            [LocalizationWarning(localeIdentifier: "zu", key: LocalizationKey.cardStoredTitle.key, source: .provider)]
+        )
+    }
+
+    func test_localizedString_withProviderMissingSupportedLocale_shouldFallbackWithoutWarning() {
+        let provider = MockCheckoutLocalizationProvider(values: [:])
+        let parameters = LocalizationParameters(enforcedLocale: "it-IT").withProvider(provider)
+        let expected = localizedString(.cardNumberItemTitle, LocalizationParameters(enforcedLocale: "it-IT"))
+
+        let warnings = recordWarnings {
+            XCTAssertEqual(localizedString(.cardNumberItemTitle, parameters), expected)
+        }
+
+        XCTAssertTrue(warnings.isEmpty)
+    }
+
+    func test_localizedString_withRepeatedProviderMiss_shouldWarnOnlyOnce() {
+        let provider = MockCheckoutLocalizationProvider(values: [:])
+        let parameters = LocalizationParameters(enforcedLocale: "zu").withProvider(provider)
+
+        let warnings = recordWarnings {
+            _ = localizedString(.cardNumberItemTitle, parameters)
+            _ = localizedString(.cardNumberItemTitle, parameters)
+        }
+
+        XCTAssertEqual(
+            warnings,
+            [LocalizationWarning(localeIdentifier: "zu", key: LocalizationKey.cardNumberItemTitle.key, source: .provider)]
+        )
+    }
+
+    func test_localizedString_withUnsupportedLocaleAndPartialMerchantBundleCoverage_shouldWarnAndFallback() {
+        let parameters = LocalizationParameters(enforcedLocale: "hi", bundle: Bundle(for: LocalizationTests.self))
+        let expected = localizedString(.submitButton, LocalizationParameters(enforcedLocale: "en-US"))
+
+        let warnings = recordWarnings {
+            XCTAssertEqual(localizedString(.submitButton, parameters), expected)
+        }
+
+        XCTAssertEqual(
+            warnings,
+            [LocalizationWarning(localeIdentifier: "hi", key: LocalizationKey.submitButton.key, source: .bundle)]
+        )
+    }
+
+    func test_localizedString_withSupportedLocaleAndPartialMerchantBundleCoverage_shouldFallbackWithoutWarning() {
+        let parameters = LocalizationParameters(enforcedLocale: "is-IS", bundle: Bundle(for: LocalizationTests.self))
+        let expected = localizedString(.submitButton, LocalizationParameters(enforcedLocale: "is-IS"))
+
+        let warnings = recordWarnings {
+            XCTAssertEqual(localizedString(.submitButton, parameters), expected)
+        }
+
+        XCTAssertTrue(warnings.isEmpty)
+    }
+
+    func test_localizedString_withUnsupportedLocaleAndNoMerchantBundleIntent_shouldFallbackWithoutWarning() {
+        let parameters = LocalizationParameters(enforcedLocale: "zu")
+        let expected = localizedString(.submitButton, LocalizationParameters(enforcedLocale: "en-US"))
+
+        let warnings = recordWarnings {
+            XCTAssertEqual(localizedString(.submitButton, parameters), expected)
+        }
+
+        XCTAssertTrue(warnings.isEmpty)
+    }
+
 }
 
 // MARK: - Test helpers
+
+private func recordWarnings(_ perform: () -> Void) -> [LocalizationWarning] {
+    var warnings = [LocalizationWarning]()
+    LocalizationWarningLog.onEmit = { warnings.append($0) }
+    perform()
+    return warnings
+}
 
 private final class MockCheckoutLocalizationProvider: CheckoutLocalizationProvider {
 
