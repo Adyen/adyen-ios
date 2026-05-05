@@ -4,12 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import UIKit
 
 /// A view representing a switch item.
-@_spi(AdyenInternal)
-public final class FormToggleItemView: FormItemView<FormToggleItem> {
+package final class FormToggleItemView: FormItemView<FormToggleItem> {
 
     private let theme: CheckoutTheme
 

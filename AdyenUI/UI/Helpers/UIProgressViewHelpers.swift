@@ -6,10 +6,9 @@
 
 import UIKit
 
-@_spi(AdyenInternal)
 extension UIProgressView {
     
-    public convenience init(style: ProgressViewStyle) {
+    package convenience init(style: ProgressViewStyle) {
         self.init()
         
         backgroundColor = style.backgroundColor

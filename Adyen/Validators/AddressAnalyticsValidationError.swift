@@ -6,8 +6,7 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public enum AddressAnalyticsValidationError: AnalyticsValidationError {
+package enum AddressAnalyticsValidationError: AnalyticsValidationError {
     
     /// Postal code is not filled.
     case postalCodeEmpty

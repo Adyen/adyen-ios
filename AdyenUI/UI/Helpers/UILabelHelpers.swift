@@ -4,18 +4,17 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import AdyenNetworking
 import UIKit
 
-@_spi(AdyenInternal)
 extension UILabel {
     
     /// Initializes UILabel with given `TextStyle`
     /// Sets `translatesAutoresizingMaskIntoConstraints` to `false`
     /// Sets `adjustsFontForContentSizeCategory` to `true`
     /// - Parameter style: `TextStyle` to be applied
-    public convenience init(style: TextStyle) {
+    package convenience init(style: TextStyle) {
         self.init()
         translatesAutoresizingMaskIntoConstraints = false
         adyen.apply(style)
@@ -23,13 +22,12 @@ extension UILabel {
     
 }
 
-public extension AdyenScope where Base: UILabel {
+extension AdyenScope where Base: UILabel {
     
     /// Applies given `TextStyle` to the UILabel
     /// Sets `adjustsFontForContentSizeCategory` to `true`
     /// - Parameter style: `TextStyle` to be applied
-    @_spi(AdyenInternal)
-    func apply(_ style: TextStyle) {
+    package func apply(_ style: TextStyle) {
         base.font = style.font
         base.textColor = style.color
         base.textAlignment = style.textAlignment

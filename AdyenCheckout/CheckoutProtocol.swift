@@ -4,12 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 #if canImport(AdyenSession)
-    @_spi(AdyenInternal) import AdyenSession
+    import AdyenSession
 #endif
 #if canImport(AdyenDropIn)
-    @_spi(AdyenInternal) import AdyenDropIn
+    import AdyenDropIn
 #endif
 import AdyenNetworking
 

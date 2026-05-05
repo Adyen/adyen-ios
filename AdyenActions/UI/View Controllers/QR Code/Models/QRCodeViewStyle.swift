@@ -6,7 +6,7 @@
 
 import Adyen
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
 #endif
 import Foundation
 import UIKit

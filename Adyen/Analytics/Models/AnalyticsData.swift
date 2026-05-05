@@ -10,8 +10,7 @@ import UIKit
 /// The context in which the SDK operates
 ///
 /// Used to e.g. override the version + platform from within the Flutter SDK
-@_spi(AdyenInternal)
-public struct AnalyticsContext {
+package struct AnalyticsContext {
     
     internal let version: String
     internal let platform: Platform
@@ -25,8 +24,7 @@ public struct AnalyticsContext {
     }
 }
 
-@_spi(AdyenInternal)
-public extension AnalyticsContext {
+package extension AnalyticsContext {
 
     enum Platform: String {
         case iOS = "iOS"

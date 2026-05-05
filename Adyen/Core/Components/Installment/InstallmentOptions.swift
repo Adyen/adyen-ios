@@ -77,18 +77,15 @@ public struct InstallmentOptions: Equatable, Codable {
 public struct InstallmentConfiguration: Decodable {
     
     /// The option that apply to all card types, unless included `cardTypeBased` options.
-    @_spi(AdyenInternal)
-    public let defaultOptions: InstallmentOptions?
-    
+    package let defaultOptions: InstallmentOptions?
+
     /// Options that are specific to given card types
-    @_spi(AdyenInternal)
-    public let cardBasedOptions: [CardType: InstallmentOptions]?
-    
+    package let cardBasedOptions: [CardType: InstallmentOptions]?
+
     /// Determines whether to show the amount next to the installment value.
     /// For example, `3 months X 500 USD` or `3 months`.
     /// Amount is calculated by simple division.
-    @_spi(AdyenInternal)
-    public var showInstallmentAmount: Bool
+    package var showInstallmentAmount: Bool
     
     /// Creates a new installment configuration by providing both the card type based options
     ///  and default options for the rest of the card types.

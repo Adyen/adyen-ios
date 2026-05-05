@@ -4,10 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import protocol Adyen.Component
 import AdyenNetworking
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
 #endif
 import PassKit
 import UIKit

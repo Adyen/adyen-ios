@@ -4,18 +4,18 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 #if canImport(AdyenCard)
-    @_spi(AdyenInternal) import AdyenCard
+    import AdyenCard
 #endif
 #if canImport(AdyenComponents)
     import AdyenComponents
 #endif
 #if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
+    import AdyenActions
 #endif
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
 #endif
 import Foundation
 import PassKit

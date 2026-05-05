@@ -6,8 +6,7 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public struct UnknownError: Error, LocalizedError {
+package struct UnknownError: Error, LocalizedError {
     
     public var errorDescription: String?
     

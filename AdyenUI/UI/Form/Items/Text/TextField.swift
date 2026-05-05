@@ -11,19 +11,18 @@ import UIKit
 /// specifically the voice over reading of the UITextField.placeholder.
 /// So in order to prevent this behaviour,
 /// accessibilityValue is overriden to return an empty string in case the text var is nil or empty string.
-@_spi(AdyenInternal)
 @objc(AdyTextField)
-public final class TextField: UITextField {
-    
+package final class TextField: UITextField {
+
     private var heightConstraint: NSLayoutConstraint?
     
     internal var disablePlaceHolderAccessibility: Bool = true
     
     /// A boolean value to determine whether editing actions such as
     /// cut, copy, share are allowed for the text field. Default is `true`
-    public var allowsEditingActions: Bool = true
+    package var allowsEditingActions: Bool = true
 
-    override public var accessibilityValue: String? {
+    override package var accessibilityValue: String? {
         get {
             guard disablePlaceHolderAccessibility else { return super.accessibilityValue }
             if let text = super.text, !text.isEmpty {
@@ -36,7 +35,7 @@ public final class TextField: UITextField {
         set { super.accessibilityValue = newValue }
     }
 
-    override public var font: UIFont? {
+    override package var font: UIFont? {
         didSet {
             let sizeToFit = sizeThatFits(CGSize(
                 width: bounds.width,
@@ -49,7 +48,7 @@ public final class TextField: UITextField {
         }
     }
     
-    override public func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+    override package func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         switch action {
         case #selector(UIResponderStandardEditActions.paste(_:)):
             return super.canPerformAction(action, withSender: sender)
@@ -59,7 +58,6 @@ public final class TextField: UITextField {
     }
 }
 
-@_spi(AdyenInternal)
 extension TextField {
 
     package func apply(placeholderText: String?, with style: AdyenLabelStyle) {

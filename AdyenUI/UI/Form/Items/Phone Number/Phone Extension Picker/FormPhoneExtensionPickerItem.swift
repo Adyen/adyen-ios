@@ -4,7 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import UIKit
 
 @_spi(AdyenInternal)
@@ -31,14 +32,13 @@ extension PhoneExtension: FormPickable {
 }
 
 /// A picker form item for picking regions.
-@_spi(AdyenInternal)
-public final class FormPhoneExtensionPickerItem: FormPickerItem<PhoneExtension> {
+package final class FormPhoneExtensionPickerItem: FormPickerItem<PhoneExtension> {
     
     internal var allowsSelection: Bool {
         selectableValues.count > 1
     }
     
-    public required init(
+    package required init(
         preselectedExtension: PhoneExtension?,
         selectableExtensions: [PhoneExtension],
         validationFailureMessage: String?,

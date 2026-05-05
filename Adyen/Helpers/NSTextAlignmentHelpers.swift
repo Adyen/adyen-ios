@@ -9,12 +9,10 @@ import Foundation
 import QuartzCore
 import UIKit
 
-@_spi(AdyenInternal)
 extension NSTextAlignment: AdyenCompatible {}
 
-@_spi(AdyenInternal)
-public extension AdyenScope where Base == NSTextAlignment {
-    var caAlignmentMode: CATextLayerAlignmentMode {
+extension AdyenScope where Base == NSTextAlignment {
+    package var caAlignmentMode: CATextLayerAlignmentMode {
         switch base {
         case .center:
             return .center
