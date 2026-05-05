@@ -52,6 +52,13 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
         ) async -> PKPaymentRequestCouponCodeUpdate
     )?
 
+    internal var onPaymentMethodChange: (
+        @MainActor (
+            PKPaymentMethod,
+            [PKPaymentSummaryItem]
+        ) async -> PKPaymentRequestPaymentMethodUpdate
+    )?
+
     /// The payment request object needed for Apple Pay. Must contain all the required fields
     /// such as `merchantIdentifier`, `summaryItems`, `currencyCode`, and `countryCode`.
     internal var paymentRequest: PKPaymentRequest
@@ -161,7 +168,10 @@ extension ApplePayConfiguration {
     ///   - Returns: A `PKPaymentRequestShippingContactUpdate` with updated summary items, shipping methods, and/or errors.
     /// - Returns: A modified copy of the configuration.
     public func onShippingContactChange(
-        _ onShippingContactChange: @escaping @MainActor (PKContact, [PKPaymentSummaryItem]) async -> PKPaymentRequestShippingContactUpdate
+        _ onShippingContactChange: @escaping @MainActor (
+            PKContact,
+            [PKPaymentSummaryItem]
+        ) async -> PKPaymentRequestShippingContactUpdate
     ) -> Self {
         var copy = self
         copy.onShippingContactChange = onShippingContactChange
@@ -178,7 +188,10 @@ extension ApplePayConfiguration {
     ///   - Returns: A `PKPaymentRequestShippingMethodUpdate` with updated summary items reflecting the new shipping cost.
     /// - Returns: A modified copy of the configuration.
     public func onShippingMethodChange(
-        _ onShippingMethodChange: @escaping @MainActor (PKShippingMethod, [PKPaymentSummaryItem]) async -> PKPaymentRequestShippingMethodUpdate
+        _ onShippingMethodChange: @escaping @MainActor (
+            PKShippingMethod,
+            [PKPaymentSummaryItem]
+        ) async -> PKPaymentRequestShippingMethodUpdate
     ) -> Self {
         var copy = self
         copy.onShippingMethodChange = onShippingMethodChange
@@ -192,13 +205,37 @@ extension ApplePayConfiguration {
     ///   - Parameters:
     ///     - couponCode: The entered or updated coupon code string.
     ///     - summaryItems: The current array of `PKPaymentSummaryItem` objects representing line items and total.
-    ///   - Returns: A `PKPaymentRequestCouponCodeUpdate` with updated summary items reflecting the applied discount or errors if the code is invalid.
+    ///   - Returns: A `PKPaymentRequestCouponCodeUpdate` with updated summary items reflecting the applied discount
+    ///    or errors if the code is invalid.
     /// - Returns: A modified copy of the configuration.
     public func onCouponCodeChange(
-        _ onCouponCodeChange: @escaping @MainActor (String, [PKPaymentSummaryItem]) async -> PKPaymentRequestCouponCodeUpdate
+        _ onCouponCodeChange: @escaping @MainActor (
+            String,
+            [PKPaymentSummaryItem]
+        ) async -> PKPaymentRequestCouponCodeUpdate
     ) -> Self {
         var copy = self
         copy.onCouponCodeChange = onCouponCodeChange
+        return copy
+    }
+
+    /// Sets the handler called when the shopper selects a payment method.
+    ///
+    /// Return an updated `PKPaymentRequestPaymentMethodUpdate` with revised summary items.
+    /// - Parameter onPaymentMethodChange: The closure to call when the payment method changes.
+    ///   - Parameters:
+    ///     - paymentMethod: The selected `PKPaymentMethod` containing the payment card details.
+    ///     - summaryItems: The current array of `PKPaymentSummaryItem` objects representing line items and total.
+    ///   - Returns: A `PKPaymentRequestPaymentMethodUpdate` with updated summary items reflecting any changes based on the payment method.
+    /// - Returns: A modified copy of the configuration.
+    public func onPaymentMethodChange(
+        _ onPaymentMethodChange: @escaping @MainActor (
+            PKPaymentMethod,
+            [PKPaymentSummaryItem]
+        ) async -> PKPaymentRequestPaymentMethodUpdate
+    ) -> Self {
+        var copy = self
+        copy.onPaymentMethodChange = onPaymentMethodChange
         return copy
     }
     
