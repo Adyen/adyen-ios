@@ -22,7 +22,8 @@ public enum ClientKeyError: Error, LocalizedError {
 }
 
 /// Validates a client key https://docs.adyen.com/user-management/client-side-authentication
-package final class ClientKeyValidator: RegularExpressionValidator {
+@_spi(AdyenInternal)
+public final class ClientKeyValidator: RegularExpressionValidator {
 
     public init() {
         let regex = #"^[a-z]{4,8}_[a-zA-Z0-9]{8,128}$"#

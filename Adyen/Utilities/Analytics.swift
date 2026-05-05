@@ -8,7 +8,8 @@ import AdyenNetworking
 import Foundation
 import UIKit
 
-package class Analytics {
+@_spi(AdyenInternal)
+public class Analytics {
     
     public enum Flavor: String {
         case components, dropin

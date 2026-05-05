@@ -7,7 +7,8 @@
 import Foundation
 
 /// Validates a string using a regular expression.
-package class RegularExpressionValidator: LengthValidator {
+@_spi(AdyenInternal)
+public class RegularExpressionValidator: LengthValidator {
     
     private let regularExpression: String
     

@@ -5,6 +5,7 @@
 //
 
 import Adyen
+@_spi(AdyenInternal) import struct Adyen.InstallmentConfiguration
 import AdyenNetworking
 import Foundation
 
