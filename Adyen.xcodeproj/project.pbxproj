@@ -51,9 +51,6 @@
 		00BC8F552BF349FC00EBE0EB /* SelectableFormItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00BC8F542BF349FC00EBE0EB /* SelectableFormItemStyle.swift */; };
 		00C3DB0E2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */; };
 		00C3DB0F2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */; };
-		00C401AB2DB242CD000EDA3C /* FormCoBadgedCardItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C401AA2DB242BC000EDA3C /* FormCoBadgedCardItem.swift */; };
-		00C401AD2DB24760000EDA3C /* FormCoBadgedCardItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C401AC2DB2475E000EDA3C /* FormCoBadgedCardItemView.swift */; };
-		00C401AF2DB24A8E000EDA3C /* FormCoBadgedCardItemStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00C401AE2DB24A8C000EDA3C /* FormCoBadgedCardItemStyle.swift */; };
 		00D5B8662A4C63FE003CFCD0 /* CardComponentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */; };
 		00D5B8672A4C63FE003CFCD0 /* CardComponentSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */; };
 		00E5D6552AF4E99B00CDE118 /* AdyenTwint.docc in Sources */ = {isa = PBXBuildFile; fileRef = 00E5D6542AF4E99B00CDE118 /* AdyenTwint.docc */; };
@@ -1685,9 +1682,6 @@
 		00BC8F522BF2569200EBE0EB /* SelectableFormItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableFormItemView.swift; sourceTree = "<group>"; };
 		00BC8F542BF349FC00EBE0EB /* SelectableFormItemStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableFormItemStyle.swift; sourceTree = "<group>"; };
 		00C3DB0D2A94B4C8009A90BD /* AnalyticsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsSettingsView.swift; sourceTree = "<group>"; };
-		00C401AA2DB242BC000EDA3C /* FormCoBadgedCardItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCoBadgedCardItem.swift; sourceTree = "<group>"; };
-		00C401AC2DB2475E000EDA3C /* FormCoBadgedCardItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCoBadgedCardItemView.swift; sourceTree = "<group>"; };
-		00C401AE2DB24A8C000EDA3C /* FormCoBadgedCardItemStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCoBadgedCardItemStyle.swift; sourceTree = "<group>"; };
 		00D5B8652A4C63FE003CFCD0 /* CardComponentSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentSettingsView.swift; sourceTree = "<group>"; };
 		00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenTwint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E5D6532AF4E99B00CDE118 /* AdyenTwint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenTwint.h; sourceTree = "<group>"; };
@@ -4397,9 +4391,6 @@
 				A018094726FDD345003A8DE3 /* FormCardNumberContainerItem.swift */,
 				A09C704227032870004C01AA /* FormCardLogosItemView.swift */,
 				B6C9DA782D0C3F62005D65C7 /* DualBrandAccessoryView.swift */,
-				00C401AA2DB242BC000EDA3C /* FormCoBadgedCardItem.swift */,
-				00C401AC2DB2475E000EDA3C /* FormCoBadgedCardItemView.swift */,
-				00C401AE2DB24A8C000EDA3C /* FormCoBadgedCardItemStyle.swift */,
 			);
 			path = Form;
 			sourceTree = "<group>";
@@ -8011,7 +8002,6 @@
 				A01DCF0B26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift in Sources */,
 				A0FA143F26D65A5300627127 /* InstallmentPickerElement.swift in Sources */,
 				F9D5751E237C106A009C18B5 /* BCMCComponent.swift in Sources */,
-				00C401AD2DB24760000EDA3C /* FormCoBadgedCardItemView.swift in Sources */,
 				E7166A5424EACC44007CCDEF /* BinLookupResponse.swift in Sources */,
 				E9E3DAB4221D988200697074 /* CardNumberValidator.swift in Sources */,
 				F92329DD25AD049E002C5BC4 /* FallbackCardBrandProvider.swift in Sources */,
@@ -8047,14 +8037,12 @@
 				F92329D225AD0240002C5BC4 /* CardBrand.swift in Sources */,
 				F9C6BD6026DFBA0600DA7512 /* ThreeDS2SdkVersion.swift in Sources */,
 				E7451A052600EC8D000BDCCF /* CardComponentConfiguration.swift in Sources */,
-				00C401AB2DB242CD000EDA3C /* FormCoBadgedCardItem.swift in Sources */,
 				F919DF9524E6D7BC0027976E /* CardComponentExtensions.swift in Sources */,
 				E76CAC4E26BC0CC200117953 /* CardViewControllerItemsProvider.swift in Sources */,
 				B66CAF3A2DAEB16D0017984C /* DummyCardScannerController.swift in Sources */,
 				E76EC680241125E0009C6E2F /* FormCardSecurityCodeItem.swift in Sources */,
 				E7166A5624EAD99F007CCDEF /* BinInfoProvider.swift in Sources */,
 				A01DFBC72BB6FBF800205881 /* CardValidationError.swift in Sources */,
-				00C401AF2DB24A8E000EDA3C /* FormCoBadgedCardItemStyle.swift in Sources */,
 				E2028F5E222805E20007FF8B /* CardDetails.swift in Sources */,
 				F96A2882265F9C2B00E718BD /* GiftCardComponent+Extensions.swift in Sources */,
 				A001676C2BD120400099A6AE /* CardHolderNameValidator.swift in Sources */,

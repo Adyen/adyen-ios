@@ -84,7 +84,8 @@ class PaymentMethodTests: XCTestCase {
                 upi,
                 cashAppPay,
                 idealDictionary,
-                payto
+                payto,
+                irisDictionary
             ]
         ]
     }
@@ -183,7 +184,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 36)
+        XCTAssertEqual(paymentMethods.regular.count, 37)
 
         let creditCardPaymentMethod = try XCTUnwrap(paymentMethods.regular[0] as? CardPaymentMethod)
         XCTAssertEqual(creditCardPaymentMethod.fundingSource, .credit)
@@ -335,13 +336,19 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(cashAppPay.clientId, "testClient")
         XCTAssertEqual(cashAppPay.scopeId, "testScope")
         
-        XCTAssertTrue(paymentMethods.regular[34] is InstantPaymentMethod)
-        XCTAssertEqual(paymentMethods.regular[34].type.rawValue, "ideal")
-        XCTAssertEqual(paymentMethods.regular[34].name, "iDeal")
+        // iDEAL has issuers but should decode as InstantPaymentMethod, not IssuerListPaymentMethod
+        let iDealPaymentMethod = try XCTUnwrap(paymentMethods.regular[34] as? InstantPaymentMethod)
+        XCTAssertEqual(iDealPaymentMethod.type, .ideal)
+        XCTAssertEqual(iDealPaymentMethod.name, "iDeal")
 
-        XCTAssertTrue(paymentMethods.regular[35] is PayToPaymentMethod)
-        XCTAssertEqual(paymentMethods.regular[35].name, "payto")
-        XCTAssertEqual(paymentMethods.regular[35].type.rawValue, "payto")
+        let payToPaymentMethod = try XCTUnwrap(paymentMethods.regular[35] as? PayToPaymentMethod)
+        XCTAssertEqual(payToPaymentMethod.type.rawValue, "payto")
+        XCTAssertEqual(payToPaymentMethod.name, "payto")
+
+        // IRIS has issuers but should decode as InstantPaymentMethod, not IssuerListPaymentMethod
+        let irisPaymentMethod = try XCTUnwrap(paymentMethods.regular[36] as? InstantPaymentMethod)
+        XCTAssertEqual(irisPaymentMethod.type, .iris)
+        XCTAssertEqual(irisPaymentMethod.name, "IRIS")
     }
     
     // MARK: - Display Information Override

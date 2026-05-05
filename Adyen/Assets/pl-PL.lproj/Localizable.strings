@@ -40,7 +40,7 @@
 "adyen.card.numberItem.unknownBrand" = "Wprowadzona marka karty nie jest obsługiwana";
 "adyen.card.scanYourCardButton" = "Zeskanuj kartę";
 "adyen.creditCard.dualBrand.title" = "Marka karty";
-"adyen.creditCard.dualBrand.description" = "Wybierz markę karty, którą preferujesz dokonywać płatności. Jest to opcjonalne.";
+"adyen.creditCard.dualBrand.description" = "Możesz wybrać markę karty, którą preferujesz dokonywać płatności. Jest to opcjonalne.";
 "adyen.dropIn.stored.title" = "Potwierdź płatność %@";
 "adyen.dropIn.preselected.openAll.title" = "Zmień metodę płatności";
 "adyen.continueTo" = "Przejdź do %@";
@@ -81,13 +81,13 @@
 "adyen.voucher.readInstructions" = "Przeczytaj instrukcje";
 "adyen.voucher.saveImage" = "";
 "adyen.voucher.finish" = "";
+"adyen.voucher.code.copy.label" = "Skopiuj kod";
+"adyen.voucher.code.copied.label" = "Kod skopiowany do schowka";
 "adyen.card.brazilSSN.placeholder" = "";
 "adyen.amount" = "Kwota";
 "adyen.voucher.entity" = "Pozycja";
 "adyen.pix.instructions" = "Aby dokończyć płatność, należy użyć aplikacji bankowej do zeskanowania kodu QR lub skopiować poniższy kod PIX.";
 "adyen.pix.expirationLabel" = "Masz do zapłacenia %@";
-"adyen.pix.copyButton" = "Skopiuj kod";
-"adyen.pix.instructions.copiedMessage" = "Kod skopiowany do schowka";
 "adyen.pix.code.copy.label" = "Skopiuj kod PIX";
 "adyen.pix.code.copied.label" = "Skopiowano kod PIX";
 "adyen.billingAddressSection.title" = "Adres rozliczeniowy";
@@ -183,7 +183,7 @@
 "adyen.payByBankAISDD.submit" = "Kontynuuj płatność przez bank";
 "adyen.payByBankAISDD.more" = "+ więcej";
 "adyen.upi.modeSelection" = "Jak chcesz korzystać z UPI?";
-"adyen.upi.mode.payByAnyUpi" = "Aplikacja UPI";
+"adyen.upi.mode.payByAnyUpi" = "Aplikacje UPI";
 "adyen.upi.intent.instruction" = "Wybierz preferowaną aplikację UPI";
 "adyen.upi.error.noAppSelected" = "Wybierz preferowaną aplikację UPI, aby kontynuować";
 "adyen.upi.collect.field.label" = "Identyfikator UPI";

@@ -129,7 +129,17 @@ public class CardComponent: PresentableComponent,
         self.publicKeyProvider = publicKeyProvider
         self.binInfoProvider = binProvider
 
-        self.supportedCardTypes = configuration.allowedCardTypes ?? paymentMethod.brands
+        // these 4 US debit brands are not to be displayed
+        // but should be supported so it's done here for now
+        // we moved this hardcoded filter from FormCardNumberItem to here
+        // but it's still just a workaround and better done on backend
+        let supportedCardTypes = configuration.allowedCardTypes ?? paymentMethod.brands
+        self.supportedCardTypes = supportedCardTypes.filter {
+            $0 != .accel &&
+                $0 != .pulse &&
+                $0 != .star &&
+                $0 != .nyce
+        }
     }
     
     // MARK: - Presentable Component Protocol
@@ -260,10 +270,10 @@ extension CardComponent: CardViewControllerDelegate {
     }
     
     private func updateBrand(with pan: String) {
-        binInfoProvider.provide(for: pan, supportedTypes: supportedCardTypes) { [weak self] binInfo in
+        binInfoProvider.provide(for: pan, supportedTypes: supportedCardTypes) { [weak self] response in
             guard let self else { return }
-            self.cardViewController.update(binInfo: binInfo)
-            self.cardComponentDelegate?.didChangeCardBrand(binInfo.brands ?? [], component: self)
+            self.cardViewController.handleBinLookupResponse(response)
+            self.cardComponentDelegate?.didChangeCardBrand(response.brands ?? [], component: self)
         }
     }
 }
