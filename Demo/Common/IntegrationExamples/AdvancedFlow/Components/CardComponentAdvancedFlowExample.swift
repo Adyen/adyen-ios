@@ -107,20 +107,23 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     // MARK: - Payment response handling
 
-    private func callPayments(with data: PaymentComponentData) async throws -> CheckoutPaymentsResponse {
+    private func callPayments(with data: PaymentComponentData) async throws -> SubmitResult {
         let request = PaymentsRequest(data: data)
         let response = try await asyncApiClient.performAsync(request)
-        return CheckoutPaymentsResponse(resultCode: response.resultCode, action: response.action)
+        if let action = response.action {
+            return .action(action)
+        }
+        return .completion(resultCode: response.resultCode.rawValue)
     }
 
-    private func callDetails(with data: ActionComponentData) async throws -> CheckoutPaymentsResponse {
+    private func callDetails(with data: ActionComponentData) async throws -> AdditionalDetailsResult {
         let request = PaymentDetailsRequest(
             details: data.details,
             paymentData: data.paymentData,
             merchantAccount: ConfigurationConstants.current.merchantAccount
         )
         let response = try await asyncApiClient.performAsync(request)
-        return CheckoutPaymentsResponse(resultCode: response.resultCode, action: response.action)
+        return .completion(resultCode: response.resultCode.rawValue)
     }
     
     // MARK: - Private

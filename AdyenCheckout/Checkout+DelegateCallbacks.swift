@@ -24,9 +24,9 @@ extension Checkout: PaymentComponentDelegate {
             submitTask?.cancel()
             submitTask = Task { [weak self] in
                 do {
-                    let response = try await onSubmit(data)
+                    let submitResult = try await onSubmit(data)
                     guard !Task.isCancelled else { return }
-                    self?.handle(response, from: component)
+                    self?.handle(submitResult: submitResult, from: component)
                 } catch {
                     // Ignore if this was a cancellation (task superseded or Checkout torn down).
                     guard !(error is CancellationError), !Task.isCancelled else { return }
@@ -47,6 +47,27 @@ extension Checkout: PaymentComponentDelegate {
     public func didFail(with error: any Error, from component: any PaymentComponent) {
         handle(error, from: component)
     }
+
+    @MainActor
+    private func handle(submitResult: SubmitResult, from component: (any PaymentComponent)?) {
+        switch submitResult {
+        case let .action(action):
+            actionHandlingComponent.handle(action)
+        case let .completion(resultCode):
+            finish(with: CheckoutResult(resultCode: CheckoutResultCode(rawValue: resultCode)), from: component)
+        case .retry:
+            // TODO: Re-prompt the shopper at payment-method selection. Optionally surface
+            // `errorMessage` in the UI before re-prompting.
+            break
+        case .partialPayment:
+            // Components (advanced flow): the SDK intentionally performs no work here.
+            // The merchant owns the continuation — they decide whether to instantiate a new
+            // payment component for the remaining amount based on the PartialPayment payload
+            // they returned from `onSubmit`.
+            // TODO: add partial-payment support for Drop-in on the advanced (non-session) flow.
+            break
+        }
+    }
 }
 
 // MARK: - ActionComponentDelegate
@@ -58,9 +79,9 @@ extension Checkout: ActionComponentDelegate {
             additionalDetailsTask?.cancel()
             additionalDetailsTask = Task { [weak self] in
                 do {
-                    let response = try await onAdditionalDetails(data)
+                    let additionalDetailsResult = try await onAdditionalDetails(data)
                     guard !Task.isCancelled else { return }
-                    self?.handle(response, from: self?.pendingPaymentComponent)
+                    self?.handle(additionalDetailsResult: additionalDetailsResult, from: self?.pendingPaymentComponent)
                 } catch {
                     // Ignore if this was a cancellation (task superseded or Checkout torn down).
                     guard !(error is CancellationError), !Task.isCancelled else { return }
@@ -87,6 +108,14 @@ extension Checkout: ActionComponentDelegate {
         // it's still holding open (e.g. the Apple Pay sheet) can dismiss.
         handle(error, from: pendingPaymentComponent)
     }
+
+    @MainActor
+    private func handle(additionalDetailsResult: AdditionalDetailsResult, from component: (any PaymentComponent)?) {
+        switch additionalDetailsResult {
+        case let .completion(resultCode):
+            finish(with: CheckoutResult(resultCode: CheckoutResultCode(rawValue: resultCode)), from: component)
+        }
+    }
 }
 
 // MARK: - SessionDelegate
@@ -105,21 +134,6 @@ extension Checkout: SessionDelegate {
 // MARK: - Private Helpers
 
 private extension Checkout {
-
-    /// Response entry point. If the response carries an action, dispatch it and keep
-    /// `pendingPaymentComponent` set so the final result (arriving later via `didProvide`)
-    /// can still finalize the component that originally submitted.
-    func handle(_ paymentsResponse: CheckoutPaymentsResponse, from component: (any PaymentComponent)?) {
-        if let action = paymentsResponse.action {
-            actionHandlingComponent.handle(action)
-        } else {
-            // TODO: check for error cases here
-            finish(
-                with: CheckoutResult(resultCode: paymentsResponse.resultCode),
-                from: component
-            )
-        }
-    }
 
     /// Error entry point. Consolidates every error path (onSubmit, onAdditionalDetails,
     /// component/action/session failures) into a single place so finalization and merchant
