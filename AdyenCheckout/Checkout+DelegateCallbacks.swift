@@ -162,6 +162,6 @@ private extension Checkout {
     func finish(with error: Error, from component: (any PaymentComponent)?) {
         (component as? any FinalizableComponent)?.didFinalize(with: false, completion: nil)
         pendingPaymentComponent = nil
-        configuration.onError?(error)
+        configuration.onError?(CheckoutError(error: error))
     }
 }

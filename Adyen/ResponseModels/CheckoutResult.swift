@@ -21,3 +21,19 @@ public struct CheckoutResult {
         self.sessionResult = sessionResult
     }
 }
+
+/// Wrapper type to contain checkout related errors.
+// TODO: Convert to fully implemented CheckoutError
+// and return non-sensitive messages.
+public struct CheckoutError: LocalizedError {
+    
+    private let error: Error
+    
+    public init(error: Error) {
+        self.error = error
+    }
+    
+    public var errorDescription: String? {
+        error.localizedDescription
+    }
+}
