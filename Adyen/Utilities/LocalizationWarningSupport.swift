@@ -20,6 +20,7 @@ internal struct LocalizationWarning: Hashable {
 internal enum LocalizationWarningLog {
     internal static var onEmit: ((LocalizationWarning) -> Void)?
     private static var emittedWarnings = Set<LocalizationWarning>()
+    private static let lock = NSLock()
 
     internal static func emit(source: LocalizationSource, localeIdentifier: String, key: String) {
         let warning = LocalizationWarning(
@@ -27,7 +28,14 @@ internal enum LocalizationWarningLog {
             key: key,
             source: source
         )
-        guard emittedWarnings.insert(warning).inserted else { return }
+
+        let onEmit: ((LocalizationWarning) -> Void)?
+        lock.lock()
+        let didInsert = emittedWarnings.insert(warning).inserted
+        onEmit = LocalizationWarningLog.onEmit
+        lock.unlock()
+
+        guard didInsert else { return }
         onEmit?(warning)
         adyenPrint(
             "Localization warning: Missing localization for unsupported locale '" + warning.localeIdentifier
@@ -38,8 +46,10 @@ internal enum LocalizationWarningLog {
     }
 
     internal static func reset() {
+        lock.lock()
         onEmit = nil
         emittedWarnings.removeAll()
+        lock.unlock()
     }
 }
 
