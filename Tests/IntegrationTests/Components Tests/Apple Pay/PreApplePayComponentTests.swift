@@ -68,6 +68,7 @@ class PreApplePayComponentTests: XCTestCase {
         let applePayConfiguration = try ApplePayConfiguration(
             paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
+            .allowOnboarding(false)
 
         // When / Then
         XCTAssertThrowsError(
