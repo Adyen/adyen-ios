@@ -70,13 +70,13 @@ public struct CheckoutConfiguration {
         amount: Amount?,
         clientKey: String,
         analyticsConfiguration: AnalyticsConfiguration = .init(),
-        @CheckoutConfigurationBuilder content: () -> CheckoutConfigurable
+        @CheckoutConfigurationBuilder content: () throws -> CheckoutConfigurable
     ) throws {
         let apiContext = try APIContext(environment: environment, clientKey: clientKey)
         let analyticsApiContext = Self.createAnalyticsAPIContext(apiContext: apiContext)
 
         var configDictionary: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
-        let content = content()
+        let content = try content()
         let configArray = (content as? CompositeCheckoutConfiguration)?.configurations ?? []
         
         for configuration in configArray {
@@ -111,11 +111,14 @@ public struct CheckoutConfiguration {
         self.theme = theme
     }
     
-    internal func configuration<T: CheckoutComponentConfiguration>(for paymentMethod: PaymentMethod, defaultValue: @autoclosure () -> T) -> T {
+    internal func configuration<T: CheckoutComponentConfiguration>(
+        for paymentMethod: PaymentMethod,
+        defaultValue: @autoclosure () throws -> T
+    ) throws -> T {
         if let config = configurations[.payment(paymentMethod.type)] as? T {
             return config
         }
-        return defaultValue()
+        return try defaultValue()
     }
     
     internal func configuration<T: CheckoutComponentConfiguration>(for actionType: ActionComponentType, defaultValue: @autoclosure () -> T) -> T {

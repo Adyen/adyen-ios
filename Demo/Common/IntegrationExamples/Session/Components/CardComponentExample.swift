@@ -84,11 +84,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         
         self.checkout = checkout
         
-        guard let component = checkout.createPaymentComponent(for: .scheme) else {
-            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
-        }
-        
-        return component
+        return try checkout.createPaymentComponent(for: .scheme)
     }
 
     private func startLoading() {

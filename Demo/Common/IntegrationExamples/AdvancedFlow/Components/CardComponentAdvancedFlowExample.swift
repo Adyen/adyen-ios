@@ -102,11 +102,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
         self.checkout = checkout
 
-        guard let component = checkout.createPaymentComponent(for: .scheme) else {
-            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
-        }
-
-        return component
+        return try checkout.createPaymentComponent(for: .scheme)
     }
 
     // MARK: - Payment response handling

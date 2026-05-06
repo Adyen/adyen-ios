@@ -13,7 +13,6 @@ import XCTest
     import Foundation
     import UIKit
 
-    @available(iOS 16.0, *)
     @MainActor
     final class ThreeDS2PlusDACoreActionHandlerTests: XCTestCase {
         var authenticationRequestParameters: AnyAuthenticationRequestParameters!
