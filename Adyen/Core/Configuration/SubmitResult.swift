@@ -7,10 +7,6 @@
 import Foundation
 
 /// Result returned by `onSubmit` callback in the advanced flow.
-///
-/// Mirrors the generic advanced-flow branch view: `Completion | Action | Retry | PartialPayment`.
-/// Infrastructure failures are signaled by throwing from the callback (the SDK routes thrown
-/// errors to `onError`).
 public enum SubmitResult: Sendable {
     
     /// The `/payments` call completed and carries a final `resultCode`.

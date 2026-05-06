@@ -14,7 +14,7 @@ import XCTest
 
 @MainActor
 final class CheckoutTests: XCTestCase {
-    /// Sentinel used when the advanced (non-session) action flow has no server-provided
+    /// Used when the advanced (non-session) action flow has no server-provided
     /// resultCode to report — see `Checkout.didComplete(from:)`.
     private static let missingResultCode = ""
     
