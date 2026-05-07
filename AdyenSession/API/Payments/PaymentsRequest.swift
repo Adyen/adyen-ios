@@ -9,8 +9,18 @@ import AdyenNetworking
 #if canImport(AdyenActions)
     @_spi(AdyenInternal) import AdyenActions
 #endif
-import CloudKit
 import Foundation
+
+internal enum SessionError: LocalizedError {
+    case unsupportedActionAfterDetails
+    
+    internal var errorDescription: String? {
+        switch self {
+        case .unsupportedActionAfterDetails:
+            return "Additional details response contained an unsupported follow-up action."
+        }
+    }
+}
 
 internal struct PaymentsRequest: APIRequest {
     internal let path: String
@@ -95,5 +105,26 @@ internal struct PaymentsResponse: SessionDataAware, SessionResultAware {
         case sessionData
         case resultCode
         case sessionResult
+    }
+}
+
+internal extension PaymentsResponse {
+    func asComponentSubmitResult() throws -> SubmitResult {
+        if let action {
+            return .action(action)
+        }
+        if let order,
+           let remainingAmount = order.remainingAmount,
+           remainingAmount.value > 0 {
+            throw PartialPaymentError.notSupportedForComponent
+        }
+        return .completion(resultCode: resultCode.rawValue)
+    }
+    
+    func asAdditionalDetailsResult() throws -> AdditionalDetailsResult {
+        if action != nil {
+            throw SessionError.unsupportedActionAfterDetails
+        }
+        return .completion(resultCode: resultCode.rawValue)
     }
 }
