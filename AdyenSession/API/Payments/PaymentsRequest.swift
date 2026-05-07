@@ -13,11 +13,14 @@ import Foundation
 
 internal enum SessionError: LocalizedError {
     case unsupportedActionAfterDetails
+    case unsupportedOrderAfterDetails
     
     internal var errorDescription: String? {
         switch self {
         case .unsupportedActionAfterDetails:
             return "Additional details response contained an unsupported follow-up action."
+        case .unsupportedOrderAfterDetails:
+            return "Additional details response contained an unsupported follow-up order."
         }
     }
 }
@@ -109,7 +112,7 @@ internal struct PaymentsResponse: SessionDataAware, SessionResultAware {
 }
 
 internal extension PaymentsResponse {
-    func asComponentSubmitResult() throws -> SubmitResult {
+    func asSubmitResult() throws -> SubmitResult {
         if let action {
             return .action(action)
         }
@@ -124,6 +127,9 @@ internal extension PaymentsResponse {
     func asAdditionalDetailsResult() throws -> AdditionalDetailsResult {
         if action != nil {
             throw SessionError.unsupportedActionAfterDetails
+        }
+        if order != nil {
+            throw SessionError.unsupportedOrderAfterDetails
         }
         return .completion(resultCode: resultCode.rawValue)
     }

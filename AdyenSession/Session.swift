@@ -28,6 +28,11 @@ public final class Session: SessionProtocol {
     
     internal let context: AdyenContext
     
+    package var currentResult: CheckoutResult? {
+        guard let resultCode = state.resultCode else { return nil }
+        return CheckoutResult(resultCode: resultCode, sessionResult: state.sessionResult)
+    }
+    
     /// Session's API client should be only of SessionAPIClient type
     /// in order to update session data/result after each internal API call.
     internal private(set) lazy var apiClient: SessionAPIClient = {
@@ -125,6 +130,31 @@ public final class Session: SessionProtocol {
             paymentMethods: response.paymentMethods,
             responseConfiguration: response.configuration
         )
+    }
+    
+    // MARK: - API
+    
+    @MainActor
+    package func performSubmit(_ data: PaymentComponentData) async throws -> SubmitResult {
+        let request = PaymentsRequest(
+            sessionId: state.identifier,
+            sessionData: state.data,
+            data: data
+        )
+        let response: PaymentsResponse = try await apiClient.performAsync(request)
+        return try response.asSubmitResult()
+    }
+    
+    @MainActor
+    package func performAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult {
+        let request = PaymentDetailsRequest(
+            sessionId: state.identifier,
+            sessionData: state.data,
+            paymentData: data.paymentData,
+            details: data.details
+        )
+        let response: PaymentsResponse = try await apiClient.performAsync(request)
+        return try response.asAdditionalDetailsResult()
     }
     
     // MARK: - Private

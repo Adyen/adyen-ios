@@ -98,7 +98,7 @@ class SessionTests: XCTestCase {
 
     }
 
-    func testPaymentsResponseAsComponentSubmitResultWithCompletion() throws {
+    func test_asSubmitResult_withCompletionResponse_shouldReturnCompletion() throws {
         let response = PaymentsResponse(
             resultCode: .authorised,
             action: nil,
@@ -107,7 +107,7 @@ class SessionTests: XCTestCase {
             sessionResult: "sessionResultString"
         )
         
-        let result = try response.asComponentSubmitResult()
+        let result = try response.asSubmitResult()
         
         switch result {
         case let .completion(resultCode):
@@ -117,7 +117,7 @@ class SessionTests: XCTestCase {
         }
     }
     
-    func testPaymentsResponseAsComponentSubmitResultWithAction() throws {
+    func test_asSubmitResult_withActionResponse_shouldReturnAction() throws {
         let action = try RedirectAction(
             url: XCTUnwrap(URL(string: "https://google.com")),
             paymentData: "payment_data"
@@ -130,7 +130,7 @@ class SessionTests: XCTestCase {
             sessionResult: nil
         )
         
-        let result = try response.asComponentSubmitResult()
+        let result = try response.asSubmitResult()
         
         switch result {
         case .action:
@@ -140,7 +140,7 @@ class SessionTests: XCTestCase {
         }
     }
     
-    func testPaymentsResponseAsComponentSubmitResultWithPartialPaymentOrderThrows() throws {
+    func test_asSubmitResult_withPartialPaymentOrder_shouldThrowNotSupported() throws {
         let order = PartialPaymentOrder(
             pspReference: "pspReference",
             orderData: "order_data",
@@ -157,7 +157,7 @@ class SessionTests: XCTestCase {
             sessionResult: nil
         )
         
-        XCTAssertThrowsError(try response.asComponentSubmitResult()) { error in
+        XCTAssertThrowsError(try response.asSubmitResult()) { error in
             if case .notSupportedForComponent? = error as? PartialPaymentError {
                 return
             }
@@ -165,7 +165,7 @@ class SessionTests: XCTestCase {
         }
     }
     
-    func testPaymentsResponseAsAdditionalDetailsResultWithCompletion() throws {
+    func test_asAdditionalDetailsResult_withCompletionResponse_shouldReturnCompletion() throws {
         let response = PaymentsResponse(
             resultCode: .authorised,
             action: nil,
@@ -182,7 +182,7 @@ class SessionTests: XCTestCase {
         }
     }
     
-    func testPaymentsResponseAsAdditionalDetailsResultWithActionThrows() throws {
+    func test_asAdditionalDetailsResult_withActionResponse_shouldThrowUnsupportedActionAfterDetails() throws {
         let action = try RedirectAction(
             url: XCTUnwrap(URL(string: "https://google.com")),
             paymentData: "payment_data"
