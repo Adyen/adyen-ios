@@ -120,42 +120,17 @@ struct StoredCardInputViewModelTests {
 
     // MARK: - Navigation & Reset
 
-    @Test func dismiss_invokesHandlerAndResets() {
-        // Given
-        let sut = makeSUT()
-        sut.securityCodeItem.value = "737"
-        var closeHandlerCalled = false
-        sut.closeHandler = { closeHandlerCalled = true }
-
-        // When
-        sut.dismiss()
-
-        // Then
-        #expect(closeHandlerCalled)
-        #expect(sut.securityCodeItem.value.isEmpty)
-    }
-
     @Test
     func dismiss_resetsSecurityCode() {
         // Given
         let sut = makeSUT()
         sut.securityCodeItem.value = "999"
-        sut.closeHandler = {}
 
         // When
-        sut.dismiss()
+        sut.viewDidDisappear()
 
         // Then
         #expect(sut.securityCodeItem.value.isEmpty, "Security code should be cleared after dismiss")
-    }
-
-    @Test func navigation_withoutHandlers_doesNotCrash() {
-        // Given
-        let sut = makeSUT()
-        sut.closeHandler = nil
-
-        // When / Then - no crash
-        sut.dismiss()
     }
 
     // MARK: - Submit Payment
@@ -244,8 +219,8 @@ struct StoredCardInputViewModelTests {
         await sut.submit()
 
         // Then
-        #expect(receivedProgress == [true, false])
-        #expect(!sut.inProgress)
+        #expect(receivedProgress == [true])
+        #expect(sut.inProgress)
     }
 
     // MARK: - Custom Localization
@@ -337,7 +312,8 @@ struct StoredCardInputViewModelTests {
             publicKey: publicKey,
             amount: amount,
             analyticsProvider: analyticsProvider,
-            localizationParameters: localizationParameters
+            localizationParameters: localizationParameters,
+            cardBrand: brand
         )
     }
 }
