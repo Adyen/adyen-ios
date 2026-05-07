@@ -44,11 +44,7 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouting {
     // MARK: - Router
     
     internal var rootViewController: UIViewController {
-        if viewController.componentViewController is UIAlertController {
-            return viewController.componentViewController
-        }
-        
-        return viewController
+        viewController
     }
 
     // MARK: - ComponentContainerRouting
