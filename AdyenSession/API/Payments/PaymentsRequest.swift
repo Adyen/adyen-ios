@@ -128,7 +128,7 @@ internal extension PaymentsResponse {
         if action != nil {
             throw SessionError.unsupportedActionAfterDetails
         }
-        if order != nil {
+        if let order, let remainingAmount = order.remainingAmount, remainingAmount.value > 0 {
             throw SessionError.unsupportedOrderAfterDetails
         }
         return .completion(resultCode: resultCode.rawValue)
