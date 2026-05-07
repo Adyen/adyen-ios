@@ -13,7 +13,7 @@ import UIKit
 /// A view representing a FormCoBadged card Item.
 internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem> {
 
-    private let theme: AdyenTheme
+    private let theme: CheckoutTheme
 
     private enum Constants {
         static let viewHeight: CGFloat = 220
@@ -53,7 +53,7 @@ internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem
     }()
 
     /// Initializes the CoBadged card Item view.
-    internal init(item: FormCoBadgedCardItem, theme: AdyenTheme) {
+    internal init(item: FormCoBadgedCardItem, theme: CheckoutTheme) {
         self.theme = theme
         super.init(item: item)
         backgroundColor = theme.colors.background

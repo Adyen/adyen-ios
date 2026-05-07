@@ -49,7 +49,7 @@ public struct CheckoutConfiguration {
 
     package var localizationProvider: (any CheckoutLocalizationProvider)?
 
-    package var theme: AdyenTheme
+    package var theme: CheckoutTheme
 
     package let amount: Amount?
 
@@ -72,13 +72,13 @@ public struct CheckoutConfiguration {
         amount: Amount?,
         clientKey: String,
         analyticsConfiguration: AnalyticsConfiguration = .init(),
-        @CheckoutConfigurationBuilder content: () -> CheckoutConfigurable
+        @CheckoutConfigurationBuilder content: () throws -> CheckoutConfigurable
     ) throws {
         let apiContext = try APIContext(environment: environment, clientKey: clientKey)
         let analyticsApiContext = Self.createAnalyticsAPIContext(apiContext: apiContext)
 
         var configDictionary: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
-        let content = content()
+        let content = try content()
         let configArray = (content as? CompositeCheckoutConfiguration)?.configurations ?? []
         
         for configuration in configArray {
@@ -104,7 +104,7 @@ public struct CheckoutConfiguration {
         analyticsConfiguration: AnalyticsConfiguration,
         configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:],
         localizationProvider: (any CheckoutLocalizationProvider)? = nil,
-        theme: AdyenTheme = .default
+        theme: CheckoutTheme = .default
     ) {
         self.analyticsConfiguration = analyticsConfiguration
         self.analyticsApiContext = analyticsApiContext
@@ -115,11 +115,14 @@ public struct CheckoutConfiguration {
         self.theme = theme
     }
     
-    internal func configuration<T: CheckoutComponentConfiguration>(for paymentMethod: PaymentMethod, defaultValue: @autoclosure () -> T) -> T {
+    internal func configuration<T: CheckoutComponentConfiguration>(
+        for paymentMethod: PaymentMethod,
+        defaultValue: @autoclosure () throws -> T
+    ) throws -> T {
         if let config = configurations[.payment(paymentMethod.type)] as? T {
             return config
         }
-        return defaultValue()
+        return try defaultValue()
     }
     
     internal func configuration<T: CheckoutComponentConfiguration>(for actionType: ActionComponentType, defaultValue: @autoclosure () -> T) -> T {
@@ -180,11 +183,11 @@ extension CheckoutConfiguration {
 
     /// Sets the theme for the checkout configuration.
     ///
-    /// Use `AdyenTheme` builder methods to customize colors, attributes, and elements:
+    /// Use `CheckoutTheme` builder methods to customize colors, attributes, and elements:
     ///
-    /// - Parameter theme: The AdyenTheme to apply to the checkout configuration.
+    /// - Parameter theme: The CheckoutTheme to apply to the checkout configuration.
     /// - Returns: A modified CheckoutConfiguration with the specified theme.
-    public func theme(_ theme: AdyenTheme) -> Self {
+    public func theme(_ theme: CheckoutTheme) -> Self {
         var copy = self
         copy.theme = theme
         return copy

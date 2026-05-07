@@ -77,7 +77,7 @@ internal enum ConfigurationConstants {
         "remarks": "Remark on mandate"
     ]
     
-    static var delegatedAuthenticationConfigurations: ThreeDS2ActionConfiguration.DelegatedAuthentication {
+    static var delegatedAuthenticationConfigurations: AuthenticationConfiguration.DelegatedAuthentication {
         .init(relyingPartyIdentifier: "test-authentication-adyen.netlify.app")
     }
 
@@ -141,6 +141,14 @@ internal struct AnalyticsSettings: Codable {
     internal var isEnabled: Bool = true
 }
 
+internal struct ThemeSettings: Codable {
+    internal var selectedTheme: String = ExampleAppTheme.defaultOption.rawValue
+    
+    internal var theme: ExampleAppTheme {
+        ExampleAppTheme(rawValue: selectedTheme) ?? .defaultTheme
+    }
+}
+
 internal struct DemoAppSettings: Codable {
     private static let defaultsKey = "ConfigurationKey"
     
@@ -154,6 +162,7 @@ internal struct DemoAppSettings: Codable {
     internal let threeDSConfigurationSettings: ThreeDSConfigurationSettings
     internal let applePaySettings: ApplePaySettings
     internal let analyticsSettings: AnalyticsSettings
+    internal let themeSettings: ThemeSettings
 
     internal var amount: Amount {
         Amount(value: value, currencyCode: currencyCode, localeIdentifier: nil)
@@ -182,7 +191,8 @@ internal struct DemoAppSettings: Codable {
         dropInSettings: defaultDropInSettings,
         threeDSConfigurationSettings: threeDSConfigurationSettings,
         applePaySettings: defaultApplePaySettings,
-        analyticsSettings: defaultAnalyticsSettings
+        analyticsSettings: defaultAnalyticsSettings,
+        themeSettings: defaultThemeSettings
     )
 
     internal static let defaultCardSettings = CardSettings(
@@ -214,6 +224,8 @@ internal struct DemoAppSettings: Codable {
     )
 
     internal static let defaultAnalyticsSettings = AnalyticsSettings(isEnabled: true)
+    
+    internal static let defaultThemeSettings = ThemeSettings()
     
     fileprivate static func loadConfiguration() -> DemoAppSettings {
         var config = UserDefaults.standard.data(forKey: defaultsKey)
@@ -269,8 +281,7 @@ internal struct DemoAppSettings: Codable {
         var style = DropInComponent.Style()
         style.navigation.tintColor = .red
 
-        // TODO: Add new style here
-        let theme = AdyenTheme.default
+        let theme = themeSettings.theme.theme
 
         let dropInConfig = DropInComponent.Configuration(
             style: style,
@@ -286,11 +297,9 @@ internal struct DemoAppSettings: Codable {
         return dropInConfig
     }
 
-    internal func applePayConfiguration(using request: PKPaymentRequest) throws -> ApplePayComponent.Configuration {
-        try ApplePayComponent.Configuration(
-            paymentRequest: request,
-            allowOnboarding: applePaySettings.allowOnboarding
-        )
+    internal func applePayConfiguration(using request: PKPaymentRequest) throws -> ApplePayConfiguration {
+        try ApplePayConfiguration(paymentRequest: request)
+            .allowOnboarding(applePaySettings.allowOnboarding)
     }
 
     internal var analyticsConfiguration: AnalyticsConfiguration {
@@ -349,12 +358,26 @@ internal extension PKPaymentRequest {
         paymentRequest.paymentSummaryItems = [
             PKPaymentSummaryItem(label: ConfigurationConstants.appName, amount: decimalAmount)
         ]
-        paymentRequest.merchantCapabilities = .capability3DS
+        paymentRequest.merchantCapabilities = [.capability3DS, .credit, .debit]
         return paymentRequest
     }
     
     static var demoWithShippingFields: PKPaymentRequest {
-        let paymentRequest = demo
+        let amount = ConfigurationConstants.current.amount
+        let decimalAmount = AmountFormatter.decimalAmount(
+            amount.value,
+            currencyCode: amount.currencyCode,
+            localeIdentifier: amount.localeIdentifier
+        )
+
+        let paymentRequest = PKPaymentRequest()
+        paymentRequest.merchantIdentifier = ConfigurationConstants.current.applePaySettings.merchantIdentifier
+        paymentRequest.countryCode = ConfigurationConstants.current.countryCode
+        paymentRequest.currencyCode = amount.currencyCode
+        paymentRequest.paymentSummaryItems = [
+            PKPaymentSummaryItem(label: ConfigurationConstants.appName, amount: decimalAmount)
+        ]
+        paymentRequest.merchantCapabilities = [.capability3DS, .credit, .debit]
         paymentRequest.shippingType = .delivery
         paymentRequest.requiredShippingContactFields = [.postalAddress]
         paymentRequest.requiredBillingContactFields = [.postalAddress]

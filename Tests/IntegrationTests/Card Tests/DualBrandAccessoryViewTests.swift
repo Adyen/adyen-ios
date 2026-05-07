@@ -91,5 +91,4 @@ final class DualBrandAccessoryViewTests: XCTestCase {
         XCTAssertTrue(sut.secondaryLogoView.isHidden, "Secondary logo should be hidden")
     }
     
-
 }

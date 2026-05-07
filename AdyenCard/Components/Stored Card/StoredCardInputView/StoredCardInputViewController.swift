@@ -18,8 +18,7 @@ internal class StoredCardInputViewController: UIViewController {
     // MARK: - Constants
 
     private enum Constants {
-        static let chevronBackwardImage = "chevron.backward"
-        static let contentPadding: CGFloat = 24
+        static let contentPadding: CGFloat = 16
         static let distanceBetweenImageAndLabels: CGFloat = 12
         static let distanceFromButtonsToLabels: CGFloat = 24
         static let buttonsBottomPadding: CGFloat = 0
@@ -118,7 +117,7 @@ internal class StoredCardInputViewController: UIViewController {
     private let viewModel: StoredCardInputViewModelProtocol
     private var cancellables = Set<AnyCancellable>()
 
-    private var theme: AdyenTheme {
+    private var theme: CheckoutTheme {
         viewModel.theme
     }
 
@@ -142,6 +141,11 @@ internal class StoredCardInputViewController: UIViewController {
         viewModel.viewDidLoad()
     }
 
+    override internal func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.viewDidDisappear()
+    }
+
     // MARK: - setup & configurations
 
     private func setupView() {
@@ -151,32 +155,26 @@ internal class StoredCardInputViewController: UIViewController {
         scrollView.addSubview(contentStackView)
 
         [
-            topContentStackView,
-            securityCodeItemView,
-            buttonsStackView
-        ].forEach(contentStackView.addArrangedSubview)
+            titleLabel,
+            subtitleLabel
+        ].forEach(labelsStackView.addArrangedSubview)
 
         [
             cardImageView,
             labelsStackView
         ].forEach(topContentStackView.addArrangedSubview)
 
-        [
-            titleLabel,
-            subtitleLabel
-        ].forEach(labelsStackView.addArrangedSubview)
-
-        [
-            titleLabel,
-            subtitleLabel
-        ].forEach(labelsStackView.addArrangedSubview)
-
         buttonsStackView.addArrangedSubview(primaryButton)
+
+        [
+            topContentStackView,
+            securityCodeItemView,
+            buttonsStackView
+        ].forEach(contentStackView.addArrangedSubview)
 
         configureConstraints()
         configureContent()
         setupBindings()
-        setupNavigationBackButton()
         disableSwipeDownToDismissScreen()
     }
 
@@ -185,6 +183,7 @@ internal class StoredCardInputViewController: UIViewController {
     }
 
     private func configureConstraints() {
+        // TODO: Robert: StoredView: Auto layout Constraints breaks. This needs a separate investigation as this involves the FormCardSecurityCodeItemView
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -193,19 +192,9 @@ internal class StoredCardInputViewController: UIViewController {
 
             contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: Constants.contentPadding),
-            contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -Constants.contentPadding),
-            contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -Constants.buttonsBottomPadding)
+            contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -Constants.buttonsBottomPadding),
+            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -2 * Constants.contentPadding)
         ])
-    }
-
-    private func setupNavigationBackButton() {
-        let backButton = UIBarButtonItem(
-            image: UIImage(systemName: Constants.chevronBackwardImage),
-            style: .plain,
-            target: self,
-            action: #selector(backTapped)
-        )
-        navigationItem.leftBarButtonItem = backButton
     }
 
     private func configureContent() {
@@ -217,6 +206,7 @@ internal class StoredCardInputViewController: UIViewController {
     private func updateLoadingState(_ isLoading: Bool) {
         primaryButton.isEnabled = !isLoading
         primaryButton.showsActivityIndicator = isLoading
+        securityCodeItemView.isUserInteractionEnabled = !isLoading
     }
 
     private func setupBindings() {
@@ -240,9 +230,5 @@ internal class StoredCardInputViewController: UIViewController {
         Task { @MainActor [weak self] in
             await self?.viewModel.submit()
         }
-    }
-
-    @objc private func backTapped() {
-        viewModel.dismiss()
     }
 }

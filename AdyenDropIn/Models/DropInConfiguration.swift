@@ -30,7 +30,7 @@ public extension DropInComponent {
         public var card = Card()
         
         /// The Apple Pay configuration.
-        public var applePay: ApplePayComponent.Configuration?
+        public var applePay: ApplePayConfiguration?
         
         /// Payment methods list related configurations.
         public var paymentMethodsList = PaymentMethodListConfiguration()
@@ -57,7 +57,7 @@ public extension DropInComponent {
         public var style: DropInComponent.Style
 
         /// Indicates the UI style configuration of the drop in component.
-        public var theme: AdyenTheme = .default
+        public var theme: CheckoutTheme = .default
 
         /// Boleto component configuration.
         public var boleto: Boleto = .init()
@@ -78,7 +78,7 @@ public extension DropInComponent {
         ///   - allowPreselectedPaymentView: Boolean to enable the preselected stored payment method view step.
         public init(
             style: Style = Style(),
-            theme: AdyenTheme = .default,
+            theme: CheckoutTheme = .default,
             allowsSkippingPaymentList: Bool = false,
             allowPreselectedPaymentView: Bool = true
         ) {
@@ -95,8 +95,8 @@ public extension DropInComponent {
         public init() { /* Empty initializer */ }
         
         /// Three DS configurations
-        public var threeDS: ThreeDS2ActionConfiguration = .init()
-        
+        public var authentication: AuthenticationConfiguration = .init()
+
         /// Twint configurations
         public var twint: TwintActionConfiguration?
     }

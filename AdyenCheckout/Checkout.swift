@@ -14,6 +14,9 @@
 #if canImport(AdyenActions)
     @_spi(AdyenInternal) import AdyenActions
 #endif
+#if canImport(AdyenComponents)
+    @_spi(AdyenInternal) import AdyenComponents
+#endif
 import AdyenNetworking
 import Foundation
 
@@ -63,15 +66,15 @@ public final class Checkout: CheckoutProtocol {
     internal let adyenContext: AdyenContext
 
     internal lazy var actionHandlingComponent: ActionHandlingComponent = {
-        let threeDS2Config: ThreeDS2ActionConfiguration = configuration.configuration(
+        let authenticationConfiguration: AuthenticationConfiguration = configuration.configuration(
             for: .threeDS2,
-            defaultValue: ThreeDS2ActionConfiguration()
+            defaultValue: AuthenticationConfiguration(theme: configuration.theme)
         )
         
         let twintConfig: TwintActionConfiguration? = configuration.configuration(for: .twint)
         
         let actionConfig = CheckoutActionComponent.Configuration(
-            threeDS: threeDS2Config,
+            authentication: authenticationConfiguration,
             twint: twintConfig
         )
         
@@ -83,6 +86,15 @@ public final class Checkout: CheckoutProtocol {
         handler.presentationDelegate = presentationDelegate
         return handler
     }()
+    
+    internal var submitTask: Task<Void, Never>?
+    internal var additionalDetailsTask: Task<Void, Never>?
+
+    /// The payment component that submitted the current flow.
+    /// Kept around so that when a final result comes back through the action path
+    /// (e.g. after 3DS), we can still finalize the original component — for example,
+    /// dismissing the Apple Pay sheet that is still waiting for a response.
+    internal weak var pendingPaymentComponent: (any PaymentComponent)?
     
     // MARK: - Public
     
@@ -171,6 +183,11 @@ public final class Checkout: CheckoutProtocol {
         self.session?.delegate = self
         self.session?.presentationDelegate = presentationDelegate
     }
+    
+    deinit {
+        submitTask?.cancel()
+        additionalDetailsTask?.cancel()
+    }
 }
 
 public extension Checkout {
@@ -180,19 +197,29 @@ public extension Checkout {
     /// Use this method to create a component for regular (non-stored) payment methods.
     ///
     /// - Parameter type: The type of payment method to create a component for (e.g., `.scheme` for cards, `.ideal` for iDEAL).
-    /// - Returns: A configured payment component, or `nil` if the payment method is not available
-    ///   in the current payment methods.
+    /// - Returns: A configured payment component.
+    /// - Throws: An error if the payment method is not available in the current
+    ///   payment methods, or if the component could not be built (for example,
+    ///   when a required configuration is missing).
     ///
     /// ## Example
     /// ```swift
-    /// if let cardComponent = checkout.createPaymentComponent(for: .scheme) {
+    /// do {
+    ///     let cardComponent = try checkout.createPaymentComponent(for: .scheme)
     ///     present(cardComponent.viewController, animated: true)
+    /// } catch {
+    ///     // Handle missing method / misconfiguration
     /// }
     /// ```
-    func createPaymentComponent(for type: PaymentMethodType) -> CheckoutPaymentComponent? {
-        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: type) else { return nil }
+    func createPaymentComponent(for type: PaymentMethodType) throws -> CheckoutPaymentComponent {
+        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: type) else {
+            // TODO: replace `UnknownError` with a typed `CheckoutError paymentMethodNotAvailable`
+            throw UnknownError(
+                errorDescription: "Payment method \(type.rawValue) is not available in the current payment methods."
+            )
+        }
         
-        return CheckoutPaymentComponent(
+        return try CheckoutPaymentComponent(
             paymentMethod: paymentMethod,
             configuration: configuration,
             context: adyenContext,
@@ -208,19 +235,25 @@ public extension Checkout {
     ///
     /// - Parameter identifier: The unique identifier of the stored payment method.
     ///   This value comes from `paymentMethods.stored`.
-    /// - Returns: A configured payment component, or `nil` if no stored payment method
-    ///   with the given identifier exists.
+    /// - Returns: A configured payment component.
+    /// - Throws: An error if no stored payment method with the given identifier exists.
     ///
     /// ## Example
     /// ```swift
-    ///
-    /// // Create component for selected stored method
-    /// if let storedComponent = checkout.createPaymentComponent(for: selectedMethod.identifier) {
+    /// do {
+    ///     let storedComponent = try checkout.createPaymentComponent(for: selectedMethod.identifier)
     ///     present(storedComponent.viewController, animated: true)
+    /// } catch {
+    ///     // Handle missing stored method
     /// }
     /// ```
-    func createPaymentComponent(for identifier: String) -> CheckoutPaymentComponent? {
-        guard let storedPaymentMethod = paymentMethods?.stored.first(where: { $0.identifier == identifier }) else { return nil }
+    func createPaymentComponent(for identifier: String) throws -> CheckoutPaymentComponent {
+        guard let storedPaymentMethod = paymentMethods?.stored.first(where: { $0.identifier == identifier }) else {
+            // TODO: replace `UnknownError` with a typed `CheckoutError storedPaymentMethodNotAvailable`
+            throw UnknownError(
+                errorDescription: "No stored payment method found for identifier \(identifier)."
+            )
+        }
         
         return CheckoutPaymentComponent(
             storedPaymentMethod: storedPaymentMethod,

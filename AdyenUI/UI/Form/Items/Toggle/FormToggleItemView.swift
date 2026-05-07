@@ -11,7 +11,7 @@ import UIKit
 @_spi(AdyenInternal)
 public final class FormToggleItemView: FormItemView<FormToggleItem> {
 
-    private let theme: AdyenTheme
+    private let theme: CheckoutTheme
 
     // MARK: - UI elements
     
@@ -53,7 +53,7 @@ public final class FormToggleItemView: FormItemView<FormToggleItem> {
     }()
 
     /// Initializes the switch item view with a theme.
-    public init(item: FormToggleItem, theme: AdyenTheme) {
+    public init(item: FormToggleItem, theme: CheckoutTheme) {
         self.theme = theme
         super.init(item: item)
 

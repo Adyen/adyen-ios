@@ -135,7 +135,7 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
         var configuration = ACHDirectDebitComponentConfiguration()
 
-        let customTheme = AdyenTheme()
+        let customTheme = CheckoutTheme()
             .colors(AdyenColors(primary: .systemPink))
         configuration.theme = customTheme
 

@@ -20,7 +20,7 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
 
     package var style: FormComponentStyle
 
-    package var theme: AdyenTheme = .default
+    package var theme: CheckoutTheme = .default
 
     package var localizationParameters: LocalizationParameters?
 
@@ -47,7 +47,7 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
 
     package init(
         localizationParameters: LocalizationParameters? = nil,
-        theme: AdyenTheme = .default,
+        theme: CheckoutTheme = .default,
         style: FormComponentStyle = .init()
     ) {
         self.theme = theme

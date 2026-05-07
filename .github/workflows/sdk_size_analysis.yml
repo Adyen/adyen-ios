@@ -51,7 +51,7 @@ jobs:
       - name: Try to download base branch size artifact
         if: ${{ github.event_name == 'pull_request' }}
         continue-on-error: true
-        uses: dawidd6/action-download-artifact@v19
+        uses: dawidd6/action-download-artifact@v21
         with:
           name: sdk-sizes-${{ steps.sanitize.outputs.sanitized_base }}
           repo: ${{ github.repository }}

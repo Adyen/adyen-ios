@@ -22,7 +22,7 @@ internal enum CheckoutComponentBuilder {
         for paymentMethod: PaymentMethod,
         configuration: CheckoutConfiguration,
         context: AdyenContext
-    ) -> PaymentComponent {
+    ) throws -> PaymentComponent {
         
         // Assembly layer
         switch paymentMethod {
@@ -30,16 +30,23 @@ internal enum CheckoutComponentBuilder {
         // components module
         #if canImport(AdyenComponents)
             case let blikPaymentMethod as BLIKPaymentMethod:
-                return createComponent(
+                return try createComponent(
                     using: BLIKComponentFactory(),
                     paymentMethod: blikPaymentMethod,
                     configuration: configuration,
                     context: context
                 )
             case let achPaymentMethod as ACHDirectDebitPaymentMethod:
-                return createComponent(
+                return try createComponent(
                     using: ACHDirectDebitComponentFactory(),
                     paymentMethod: achPaymentMethod,
+                    configuration: configuration,
+                    context: context
+                )
+            case let applePayPaymentMethod as ApplePayPaymentMethod:
+                return try createComponent(
+                    using: ApplePayComponentFactory(),
+                    paymentMethod: applePayPaymentMethod,
                     configuration: configuration,
                     context: context
                 )
@@ -48,7 +55,7 @@ internal enum CheckoutComponentBuilder {
         // card module
         #if canImport(AdyenCard)
             case let cardPaymentMethod as CardPaymentMethod:
-                return createComponent(
+                return try createComponent(
                     using: CardComponentFactory(),
                     paymentMethod: cardPaymentMethod,
                     configuration: configuration,
@@ -83,7 +90,8 @@ internal enum CheckoutComponentBuilder {
             case let storedCard as StoredCardPaymentMethod:
                 StoredCardComponent(
                     storedCardPaymentMethod: storedCard,
-                    context: context
+                    context: context,
+                    theme: configuration.theme
                 )
         #endif
             
@@ -111,19 +119,19 @@ internal enum CheckoutComponentBuilder {
         paymentMethod: Factory.Method,
         configuration: CheckoutConfiguration,
         context: AdyenContext
-    ) -> PaymentComponent where Factory.Configuration: CheckoutComponentConfiguration {
-        
-        var componentConfiguration = configuration.configuration(
+    ) throws -> PaymentComponent where Factory.Configuration: CheckoutComponentConfiguration {
+
+        var componentConfiguration = try configuration.configuration(
             for: paymentMethod,
             defaultValue: factory.defaultConfiguration()
         )
-        
+
         componentConfiguration.showsSubmitButton = configuration.showsSubmitButton
         componentConfiguration.theme = configuration.theme
         // Component-level provider wins; fall back to the global one only if unset.
         componentConfiguration.localizationProvider = componentConfiguration.localizationProvider ?? configuration.localizationProvider
-        
-        return factory.create(
+
+        return try factory.create(
             with: paymentMethod,
             context: context,
             configuration: componentConfiguration

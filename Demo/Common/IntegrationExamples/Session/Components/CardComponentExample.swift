@@ -63,7 +63,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
                 .onBinLookup { brands in
                     print("Bin lookup response \(brands)")
                 }
-            ThreeDS2ActionConfiguration()
+            AuthenticationConfiguration()
                 .requestorAppURL(ConfigurationConstants.returnUrl)
         }
         .onComplete { [weak self] result in
@@ -84,11 +84,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         
         self.checkout = checkout
         
-        guard let component = checkout.createPaymentComponent(for: .scheme) else {
-            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: CardPaymentMethod.self)
-        }
-        
-        return component
+        return try checkout.createPaymentComponent(for: .scheme)
     }
 
     private func startLoading() {

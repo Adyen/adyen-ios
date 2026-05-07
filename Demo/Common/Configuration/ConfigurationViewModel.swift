@@ -34,6 +34,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var analyticsIsEnabled: Bool = true
     @Published internal var installmentsEnabled: Bool = false
     @Published internal var showInstallmentAmount: Bool = false
+    @Published internal var selectedTheme: ExampleAppTheme = .defaultTheme
 
     private let onDone: (DemoAppSettings) -> Void
     private let configuration: DemoAppSettings
@@ -71,6 +72,7 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.analyticsIsEnabled = configuration.analyticsSettings.isEnabled
         self.installmentsEnabled = configuration.cardSettings.enableInstallments
         self.showInstallmentAmount = configuration.cardSettings.showsInstallmentAmount
+        self.selectedTheme = configuration.themeSettings.theme
     }
     
     internal func doneTapped() {
@@ -112,7 +114,8 @@ internal final class ConfigurationViewModel: ObservableObject {
                 allowOnboarding: allowOnboarding,
                 didAuthorizeSuccessful: applePayDidAuthorizeSuccessful
             ),
-            analyticsSettings: AnalyticsSettings(isEnabled: analyticsIsEnabled)
+            analyticsSettings: AnalyticsSettings(isEnabled: analyticsIsEnabled),
+            themeSettings: ThemeSettings(selectedTheme: selectedTheme.rawValue)
         )
     }
 

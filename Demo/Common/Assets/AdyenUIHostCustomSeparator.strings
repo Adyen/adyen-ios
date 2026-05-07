@@ -29,6 +29,8 @@
 "adyen_card_stored_title" = "Test-Verify your card";
 "adyen_card_stored_message" = "Test-Please enter the CVC code for %@";
 "adyen_card_stored_expires" = "Test-Expires %@";
+"adyen_card_securityCode_title" = "Test-Enter security code";
+"adyen_card_securityCode_description" = "Test-Enter the security code for %@";
 "adyen_dropIn_stored_title" = "Test-Confirm %@ payment";
 "adyen_phoneNumber_title" = "Phone Number";
 "adyen_phoneNumber_placeholder" = "Test 123 456 789";

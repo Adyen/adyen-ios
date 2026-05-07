@@ -26,7 +26,7 @@ internal protocol PreselectedPaymentMethodViewModelProtocol: AnyObject {
     var showAllPaymentMethodsButtonTitle: String { get }
     func showAllPaymentMethods()
     /// Theming
-    var theme: AdyenTheme { get }
+    var theme: CheckoutTheme { get }
 
     /// Loading state
     var onLoadingStateChange: ((_ isLoading: Bool) -> Void)? { get set }
@@ -46,7 +46,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     // MARK: - Properties
 
     private let component: PaymentComponent
-    internal let theme: AdyenTheme
+    internal let theme: CheckoutTheme
     private let localizationParameters: LocalizationParameters?
     private let dropInFlowManager: DropInFlowManaging
     internal let analyticsProvider: AnyAnalyticsProvider?
@@ -64,7 +64,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
 
     internal init(
         component: PaymentComponent,
-        theme: AdyenTheme,
+        theme: CheckoutTheme,
         localizationParameters: LocalizationParameters?,
         analyticsProvider: AnyAnalyticsProvider?,
         dropInAnalyticsConfiguration: DropInAnalyticsConfiguration,
@@ -101,20 +101,16 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
         return displayInformation.title
     }
 
-    private var formattedAmount: String {
-        guard let amount = component.context.amount,
-              let formatted = AmountFormatter.formatted(amount: amount.value, currencyCode: amount.currencyCode) else {
-            return ""
-        }
-        return formatted
-    }
-
     internal var subtitleText: String {
-        localizedString(.preselectedPaymentMethodSubtitle, localizationParameters, component.paymentMethod.name, formattedAmount)
+        localizedString(.preselectedPaymentMethodSubtitle, localizationParameters, component.paymentMethod.name)
     }
 
     internal var submitButtonTitle: String {
-        localizedString(.submitButtonFormatted, localizationParameters, formattedAmount)
+        localizedSubmitButtonTitle(
+            with: component.context.amount,
+            style: .immediate,
+            localizationParameters
+        )
     }
 
     internal func submitPayment() {

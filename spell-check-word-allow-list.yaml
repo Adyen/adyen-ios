@@ -224,3 +224,5 @@ whiteList:
   - sourcery
   - nonisolated
   - xcstrings
+  - preconcurrency
+  - preapplepay

@@ -10,133 +10,91 @@ import PassKit
 
 @_spi(AdyenInternal)
 extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
-    
+
+    // MARK: - Did Finish
+
     public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-        if configuration.dismissesAutomatically {
-            controller.dismiss(animated: true) { [weak self] in
-                self?.handleViewControllerDidFinish()
+        controller.dismiss(animated: true) { [weak self] in
+            MainActor.assumeIsolated {
+                guard let self, !self.authorizationHandled else { return }
+
+                // Either user cancelled, or dismissed mid-authorization. Cancel current.
+                self.cancelPendingAuthorization()
+                self.delegate?.didFail(with: ComponentError.cancelled, from: self)
             }
-        } else {
-            handleViewControllerDidFinish()
         }
     }
-    
-    private func handleViewControllerDidFinish() {
-        switch state {
-        case let .finalized(completion):
-            completion?()
-        case .initial:
-            // User cancelled without authorizing payment - allow component reuse
-            paymentAuthorizationViewController = nil
-            delegate?.didFail(with: ComponentError.cancelled, from: self)
-        case .submitted:
-            // Payment authorized but finalizeIfNeeded not called
-            // we call didFail here to not cause a breaking behavior change
-            delegate?.didFail(with: ComponentError.cancelled, from: self)
-        }
-    }
-    
+
+    // MARK: - Did Authorize (async)
+
     public func paymentAuthorizationViewController(
         _ controller: PKPaymentAuthorizationViewController,
-        didAuthorizePayment payment: PKPayment,
-        handler completion: @escaping (PKPaymentAuthorizationResult) -> Void
-    ) {
-        guard payment.token.paymentData.isEmpty == false else {
-            completion(PKPaymentAuthorizationResult(status: .failure, errors: nil))
+        didAuthorizePayment payment: PKPayment
+    ) async -> PKPaymentAuthorizationResult {
+        await handleAuthorize(payment: payment)
+    }
+
+    // MARK: - Payment Method (async)
+
+    public func paymentAuthorizationViewController(
+        _ controller: PKPaymentAuthorizationViewController,
+        didSelect paymentMethod: PKPaymentMethod
+    ) async -> PKPaymentRequestPaymentMethodUpdate {
+        await handlePaymentMethodChange(paymentMethod)
+    }
+
+    // MARK: - Shipping Contact (async)
+
+    public func paymentAuthorizationViewController(
+        _ controller: PKPaymentAuthorizationViewController,
+        didSelectShippingContact contact: PKContact
+    ) async -> PKPaymentRequestShippingContactUpdate {
+        await handleShippingContactChange(contact)
+    }
+
+    // MARK: - Shipping Method (async)
+
+    public func paymentAuthorizationViewController(
+        _ controller: PKPaymentAuthorizationViewController,
+        didSelect shippingMethod: PKShippingMethod
+    ) async -> PKPaymentRequestShippingMethodUpdate {
+        await handleShippingMethodChange(shippingMethod)
+    }
+
+    // MARK: - Coupon Code (async)
+
+    public func paymentAuthorizationViewController(
+        _ controller: PKPaymentAuthorizationViewController,
+        didChangeCouponCode couponCode: String
+    ) async -> PKPaymentRequestCouponCodeUpdate {
+        await handleCouponCodeChange(couponCode)
+    }
+}
+
+// MARK: - Private Helpers
+
+extension ApplePayComponent {
+
+    private func handleAuthorize(payment: PKPayment) async -> PKPaymentAuthorizationResult {
+        authorizationHandled = true
+
+        guard !payment.token.paymentData.isEmpty else {
             delegate?.didFail(with: Error.invalidToken, from: self)
-            return
+            return PKPaymentAuthorizationResult(status: .failure, errors: nil)
         }
 
-        // Call the authorization delegate's didAuthorize method for validation
-        // If no delegate is set, proceed directly with payment submission
-        if let authorizationDelegate {
-            authorizationDelegate.didAuthorize(payment: payment) { [weak self] result in
-                guard let self else { return }
-                if result.status == .success {
-                    self.proceedWithSubmission(for: payment, completion: completion)
-                } else {
-                    // Validation failed - pass the result back to Apple Pay
-                    completion(result)
-                }
+        // Optional merchant validation via configuration closure
+        if let onAuthorize = configuration.onAuthorize {
+            let result = await onAuthorize(payment)
+            if result.status == .failure {
+                // Sheet stays open for the shopper to retry.
+                // Cancelling after this before a new authorize should trigger didFail
+                authorizationHandled = false
+                return result
             }
-        } else {
-            proceedWithSubmission(for: payment, completion: completion)
-        }
-    }
-    
-    public func paymentAuthorizationViewController(
-        _ controller: PKPaymentAuthorizationViewController,
-        didSelectShippingContact contact: PKContact,
-        handler completion: @escaping (PKPaymentRequestShippingContactUpdate) -> Void
-    ) {
-        guard let applePayDelegate else {
-            return completion(.init(paymentSummaryItems: paymentRequest.paymentSummaryItems))
         }
 
-        applePayDelegate.didUpdate(
-            contact: contact,
-            for: paymentRequest.paymentSummaryItems
-        ) { [weak self] result in
-            guard let self else { return }
-            self.updatePaymentSummaryItems(from: result)
-            completion(result)
-        }
-    }
-
-    public func paymentAuthorizationViewController(
-        _ controller: PKPaymentAuthorizationViewController,
-        didSelect shippingMethod: PKShippingMethod,
-        handler completion: @escaping (PKPaymentRequestShippingMethodUpdate) -> Void
-    ) {
-        guard let applePayDelegate else {
-            return completion(.init(paymentSummaryItems: paymentRequest.paymentSummaryItems))
-        }
-
-        applePayDelegate.didUpdate(
-            shippingMethod: shippingMethod,
-            for: paymentRequest.paymentSummaryItems
-        ) { [weak self] result in
-            guard let self else { return }
-            self.updatePaymentSummaryItems(from: result)
-            completion(result)
-        }
-    }
-
-    public func paymentAuthorizationViewController(
-        _ controller: PKPaymentAuthorizationViewController,
-        didChangeCouponCode couponCode: String,
-        handler completion: @escaping (PKPaymentRequestCouponCodeUpdate) -> Void
-    ) {
-        guard let applePayDelegate else {
-            return completion(.init(paymentSummaryItems: paymentRequest.paymentSummaryItems))
-        }
-
-        applePayDelegate.didUpdate(
-            couponCode: couponCode,
-            for: paymentRequest.paymentSummaryItems
-        ) { [weak self] result in
-            guard let self else { return }
-            self.updatePaymentSummaryItems(from: result)
-            completion(result)
-        }
-    }
-
-    private func updatePaymentSummaryItems(from result: some PKPaymentRequestUpdate) {
-        guard result.status == .success, !result.paymentSummaryItems.isEmpty else { return }
-        do {
-            try Configuration.validate(summaryItems: result.paymentSummaryItems)
-            paymentRequest.paymentSummaryItems = result.paymentSummaryItems
-        } catch {
-            delegate?.didFail(with: error, from: self)
-        }
-    }
-    
-    private func proceedWithSubmission(
-        for payment: PKPayment,
-        completion: @escaping (PKPaymentAuthorizationResult) -> Void
-    ) {
-        state = .submitted(completion)
-        
+        // Build payment details and submit to delegate (fire-and-forget)
         let token = payment.token.paymentData.base64EncodedString()
         let network = payment.token.paymentMethod.network?.rawValue ?? ""
         let details = ApplePayDetails(
@@ -147,8 +105,81 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
             shippingContact: payment.shippingContact,
             shippingMethod: payment.shippingMethod
         )
-        
+
         let amount = configuration.currentAmount
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: amount, order: order))
+        let data = PaymentComponentData(paymentMethodDetails: details, amount: amount, order: order)
+
+        // Store the continuation first, then submit. submit() is fire-and-forget — it triggers
+        // the delegate's didSubmit which eventually leads to resolve(success:) being called.
+        // The continuation must be stored before submit so resolve() has something to resume.
+        let success = await withCheckedContinuation { continuation in
+            self.paymentResultContinuation = continuation
+            self.submit(data: data)
+        }
+
+        return PKPaymentAuthorizationResult(status: success ? .success : .failure, errors: nil)
+    }
+
+    private func handleShippingContactChange(_ contact: PKContact) async -> PKPaymentRequestShippingContactUpdate {
+        guard let onShippingContactChange = configuration.onShippingContactChange else {
+            return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
+        }
+
+        let result = await onShippingContactChange(contact, paymentRequest.paymentSummaryItems)
+        result.paymentSummaryItems = validSummaryItems(from: result)
+        return result
+    }
+
+    private func handleShippingMethodChange(_ shippingMethod: PKShippingMethod) async -> PKPaymentRequestShippingMethodUpdate {
+        guard let onShippingMethodChange = configuration.onShippingMethodChange else {
+            return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
+        }
+
+        let result = await onShippingMethodChange(shippingMethod, paymentRequest.paymentSummaryItems)
+        result.paymentSummaryItems = validSummaryItems(from: result)
+        return result
+    }
+
+    private func handleCouponCodeChange(_ couponCode: String) async -> PKPaymentRequestCouponCodeUpdate {
+        guard let onCouponCodeChange = configuration.onCouponCodeChange else {
+            return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
+        }
+
+        let result = await onCouponCodeChange(couponCode, paymentRequest.paymentSummaryItems)
+        result.paymentSummaryItems = validSummaryItems(from: result)
+        return result
+    }
+
+    private func handlePaymentMethodChange(_ paymentMethod: PKPaymentMethod) async -> PKPaymentRequestPaymentMethodUpdate {
+        guard let onPaymentMethodChange = configuration.onPaymentMethodChange else {
+            return PKPaymentRequestPaymentMethodUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
+        }
+
+        let result = await onPaymentMethodChange(paymentMethod, paymentRequest.paymentSummaryItems)
+        result.paymentSummaryItems = validSummaryItems(from: result)
+        return result
+    }
+
+    /// Returns valid summary items from a merchant-returned update result.
+    ///
+    /// If the result indicates failure or has empty items, the current `paymentRequest.paymentSummaryItems`
+    /// are returned unchanged.
+    ///
+    /// If validation fails, notifies the delegate via `didFail` and falls back to the
+    /// previous valid summary items to keep the Apple Pay sheet in a consistent state.
+    ///
+    /// Otherwise the new items are accepted and stored on `paymentRequest`.
+    private func validSummaryItems(from result: some PKPaymentRequestUpdate) -> [PKPaymentSummaryItem] {
+        guard result.status == .success, !result.paymentSummaryItems.isEmpty else {
+            return paymentRequest.paymentSummaryItems
+        }
+        do {
+            try ApplePayConfiguration.validate(summaryItems: result.paymentSummaryItems)
+            paymentRequest.paymentSummaryItems = result.paymentSummaryItems
+            return result.paymentSummaryItems
+        } catch {
+            delegate?.didFail(with: error, from: self)
+            return paymentRequest.paymentSummaryItems
+        }
     }
 }

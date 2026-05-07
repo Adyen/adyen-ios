@@ -83,3 +83,19 @@ public enum CheckoutResultCode: RawRepresentable, Decodable, Equatable {
         }
     }
 }
+
+package extension CheckoutResultCode {
+
+    /// Whether this result code represents a successful terminal outcome for the shopper.
+    ///
+    /// Used by components with suspend/resume semantics (e.g., Apple Pay) to decide
+    /// whether to present the success or failure animation when the flow completes.
+    var isSuccessful: Bool {
+        switch self {
+        case .authorised, .received, .pending:
+            true
+        default:
+            false
+        }
+    }
+}

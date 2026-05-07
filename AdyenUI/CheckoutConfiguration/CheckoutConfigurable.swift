@@ -27,7 +27,7 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
 
     //  var style: FormComponentStyle { get }
 
-    var theme: AdyenTheme { get set }
+    var theme: CheckoutTheme { get set }
 }
 
 public extension CheckoutConfigurable {

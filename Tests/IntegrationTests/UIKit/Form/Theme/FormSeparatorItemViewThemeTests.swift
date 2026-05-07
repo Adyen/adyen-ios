@@ -11,7 +11,7 @@ import XCTest
 final class FormSeparatorItemViewThemeTests: XCTestCase {
 
     func test_formSeparatorItemView_shouldApplyThemeSeparatorColor() {
-        let customTheme = AdyenTheme(colors: AdyenColors(separator: .red))
+        let customTheme = CheckoutTheme(colors: AdyenColors(separator: .red))
         let sut = makeSUT(theme: customTheme)
 
         XCTAssertEqual(getSeparatorView(from: sut)?.backgroundColor, .red)
@@ -33,12 +33,12 @@ final class FormSeparatorItemViewThemeTests: XCTestCase {
         let sut = FormSeparatorItemView(item: item)
 
         let separatorView = sut.findView(by: "testSeparatorConvenience.separatorLine") as UIView?
-        XCTAssertEqual(separatorView?.backgroundColor, AdyenTheme.default.colors.separator)
+        XCTAssertEqual(separatorView?.backgroundColor, CheckoutTheme.default.colors.separator)
     }
 
     // MARK: - SUT Factory
 
-    private func makeSUT(theme: AdyenTheme = .default) -> FormSeparatorItemView {
+    private func makeSUT(theme: CheckoutTheme = .default) -> FormSeparatorItemView {
         let item = FormSeparatorItem(color: .blue)
         item.identifier = "testSeparator"
         return FormSeparatorItemView(item: item, theme: theme)

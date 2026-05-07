@@ -42,7 +42,7 @@ Adyen iOS is available through either [CocoaPods](http://cocoapods.org) or [Swif
 
 ### Minimum Requirements
 
-- iOS 12.0
+- iOS 16.0
 - Xcode 15.0
 - Swift 5.7
 

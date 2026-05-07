@@ -105,7 +105,8 @@ class ActionTests: XCTestCase {
         let json =
             """
             {
-                "type": "threeDS2Fingerprint",
+                "type": "threeDS2",
+                "subtype": "fingerprint",
                 "token": "example_token",
                 "paymentData": "example_data"
             }
@@ -114,7 +115,7 @@ class ActionTests: XCTestCase {
         let action = try? JSONDecoder().decode(Action.self, from: try XCTUnwrap(json.data(using: .utf8)))
         
         var fingerprintAction: ThreeDS2FingerprintAction?
-        if case let .threeDS2Fingerprint(fingerprint)? = action {
+        if case let .threeDS2(.fingerprint(fingerprint))? = action {
             fingerprintAction = fingerprint
         }
         
@@ -127,7 +128,8 @@ class ActionTests: XCTestCase {
         let json =
             """
             {
-                "type": "threeDS2Challenge",
+                "type": "threeDS2",
+                "subtype": "challenge",
                 "token": "example_token",
                 "paymentData": "example_data"
             }
@@ -136,7 +138,7 @@ class ActionTests: XCTestCase {
         let action = try? JSONDecoder().decode(Action.self, from: try XCTUnwrap(json.data(using: .utf8)))
         
         var challengeAction: ThreeDS2ChallengeAction?
-        if case let .threeDS2Challenge(challenge)? = action {
+        if case let .threeDS2(.challenge(challenge))? = action {
             challengeAction = challenge
         }
         

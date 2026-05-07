@@ -14,6 +14,10 @@ import XCTest
 
 @MainActor
 final class CheckoutTests: XCTestCase {
+    /// Used when the advanced (non-session) action flow has no server-provided
+    /// resultCode to report — see `Checkout.didComplete(from:)`.
+    private static let missingResultCode = ""
+    
     var mockProvider: CheckoutProviderMock!
     var configuration: CheckoutConfiguration!
     var paymentMethods: PaymentMethods!
@@ -167,7 +171,7 @@ final class CheckoutTests: XCTestCase {
     
     // MARK: - payment component delegate
     
-    func test_didSubmit_callsOnSubmit_whenSet() throws {
+    func test_didSubmit_callsOnSubmit_whenSet() async throws {
         let expectation = expectation(description: "onSubmit called")
         var didCallSubmit = false
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
@@ -181,7 +185,7 @@ final class CheckoutTests: XCTestCase {
             order: nil
         )
         
-        configuration.onSubmit = { data, completion in
+        configuration.onSubmit = { data in
             didCallSubmit = true
             XCTAssertEqual(data.paymentMethod.sdkData, paymentData.paymentMethod.sdkData)
             let details = data.paymentMethod as! BLIKDetails
@@ -189,7 +193,7 @@ final class CheckoutTests: XCTestCase {
             XCTAssertEqual(details.blikCode, blikDetails.blikCode)
             expectation.fulfill()
             
-            completion?(CheckoutPaymentsResponse(resultCode: .authorised))
+            return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
         }
         
         let sut = Checkout(
@@ -198,14 +202,14 @@ final class CheckoutTests: XCTestCase {
             presentationDelegate: nil
         )
         sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
-        waitForExpectations(timeout: 1)
+        await fulfillment(of: [expectation], timeout: 1)
         
         XCTAssertTrue(didCallSubmit)
     }
     
     // MARK: - createPaymentComponent(for type:) Tests
     
-    func test_createPaymentComponent_forType_returnsComponent_whenPaymentMethodExists() {
+    func test_createPaymentComponent_forType_returnsComponent_whenPaymentMethodExists() throws {
         // Given
         let sut = Checkout(
             configuration: configuration,
@@ -215,14 +219,38 @@ final class CheckoutTests: XCTestCase {
         )
         
         // When
-        let component = sut.createPaymentComponent(for: .blik)
+        let component = try sut.createPaymentComponent(for: .blik)
         
         // Then
-        XCTAssertNotNil(component)
-        XCTAssertNotNil(component?.viewController)
+        XCTAssertNotNil(component.viewController)
     }
     
-    func test_createPaymentComponent_forType_returnsNil_whenPaymentMethodDoesNotExist() {
+    func test_createPaymentComponent_forType_throws_whenPaymentMethodDoesNotExist() {
+        // Given
+        let sut = Checkout(
+            configuration: configuration,
+            paymentMethods: paymentMethods,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        
+        // When / Then
+        XCTAssertThrowsError(try sut.createPaymentComponent(for: .ideal))
+    }
+    
+    func test_createPaymentComponent_forType_throws_whenPaymentMethodsIsNil() {
+        // Given
+        let sut = Checkout(
+            configuration: configuration,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        
+        // When / Then
+        XCTAssertThrowsError(try sut.createPaymentComponent(for: .scheme))
+    }
+    
+    func test_createPaymentComponent_forScheme_returnsCardComponent() throws {
         // Given
         let sut = Checkout(
             configuration: configuration,
@@ -232,42 +260,10 @@ final class CheckoutTests: XCTestCase {
         )
         
         // When
-        let component = sut.createPaymentComponent(for: .ideal)
+        let component = try sut.createPaymentComponent(for: .scheme)
         
         // Then
-        XCTAssertNil(component)
-    }
-    
-    func test_createPaymentComponent_forType_returnsNil_whenPaymentMethodsIsNil() {
-        // Given
-        let sut = Checkout(
-            configuration: configuration,
-            adyenContext: Dummy.context,
-            presentationDelegate: nil
-        )
-        
-        // When
-        let component = sut.createPaymentComponent(for: .scheme)
-        
-        // Then
-        XCTAssertNil(component)
-    }
-    
-    func test_createPaymentComponent_forScheme_returnsCardComponent() {
-        // Given
-        let sut = Checkout(
-            configuration: configuration,
-            paymentMethods: paymentMethods,
-            adyenContext: Dummy.context,
-            presentationDelegate: nil
-        )
-        
-        // When
-        let component = sut.createPaymentComponent(for: .scheme)
-        
-        // Then
-        XCTAssertNotNil(component)
-        XCTAssertNotNil(component?.viewController)
+        XCTAssertNotNil(component.viewController)
     }
     
     // MARK: - createPaymentComponent(for identifier:) Tests
@@ -283,13 +279,10 @@ final class CheckoutTests: XCTestCase {
         let storedMethodIdentifier = try XCTUnwrap(paymentMethods.stored.first?.identifier)
         
         // When
-        let component = sut.createPaymentComponent(for: storedMethodIdentifier)
-        
-        // Then
-        XCTAssertNotNil(component)
+        _ = try sut.createPaymentComponent(for: storedMethodIdentifier)
     }
     
-    func test_createPaymentComponent_forIdentifier_returnsNil_whenStoredMethodDoesNotExist() {
+    func test_createPaymentComponent_forIdentifier_throws_whenStoredMethodDoesNotExist() {
         // Given
         let sut = Checkout(
             configuration: configuration,
@@ -298,14 +291,11 @@ final class CheckoutTests: XCTestCase {
             presentationDelegate: nil
         )
         
-        // When
-        let component = sut.createPaymentComponent(for: "non-existent-identifier")
-        
-        // Then
-        XCTAssertNil(component)
+        // When / Then
+        XCTAssertThrowsError(try sut.createPaymentComponent(for: "non-existent-identifier"))
     }
     
-    func test_createPaymentComponent_forIdentifier_returnsNil_whenPaymentMethodsIsNil() {
+    func test_createPaymentComponent_forIdentifier_throws_whenPaymentMethodsIsNil() {
         // Given
         let sut = Checkout(
             configuration: configuration,
@@ -313,14 +303,11 @@ final class CheckoutTests: XCTestCase {
             presentationDelegate: nil
         )
         
-        // When
-        let component = sut.createPaymentComponent(for: "any-identifier")
-        
-        // Then
-        XCTAssertNil(component)
+        // When / Then
+        XCTAssertThrowsError(try sut.createPaymentComponent(for: "any-identifier"))
     }
     
-    func test_createPaymentComponent_forIdentifier_returnsCorrectStoredMethod() {
+    func test_createPaymentComponent_forIdentifier_returnsCorrectStoredMethod() throws {
         // Given
         let sut = Checkout(
             configuration: configuration,
@@ -336,10 +323,7 @@ final class CheckoutTests: XCTestCase {
         }
         
         // When
-        let component = sut.createPaymentComponent(for: storedCard.identifier)
-        
-        // Then
-        XCTAssertNotNil(component)
+        _ = try sut.createPaymentComponent(for: storedCard.identifier)
     }
     
     // MARK: - Action-Only Setup Tests
@@ -383,7 +367,7 @@ final class CheckoutTests: XCTestCase {
         }
     }
     
-    func testSetupActionOnly_createPaymentComponent_returnsNil() async throws {
+    func testSetupActionOnly_createPaymentComponent_throws() async throws {
         // Given
         let expectedCheckout = Checkout(
             configuration: configuration,
@@ -399,11 +383,240 @@ final class CheckoutTests: XCTestCase {
             provider: mockProvider
         )
         
-        // Then - createPaymentComponent should return nil since no paymentMethods
-        let component = checkout.createPaymentComponent(for: .scheme)
-        XCTAssertNil(component)
+        // Then - createPaymentComponent should throw since no paymentMethods
+        XCTAssertThrowsError(try checkout.createPaymentComponent(for: .scheme))
     }
     
+    func test_didSubmit_responseWithoutAction_callsOnComplete() async throws {
+        let onSubmitExpectation = expectation(description: "onSubmit called")
+        let onCompleteExpectation = expectation(description: "onComplete called")
+        let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
+        let paymentData = PaymentComponentData(
+            paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
+            amount: nil,
+            order: nil
+        )
+        
+        configuration.onSubmit = { _ in
+            onSubmitExpectation.fulfill()
+            return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
+        }
+        configuration.onComplete = { result in
+            XCTAssertEqual(result.resultCode, .authorised)
+            onCompleteExpectation.fulfill()
+        }
+        
+        let sut = Checkout(
+            configuration: configuration,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
+        await fulfillment(of: [onSubmitExpectation, onCompleteExpectation], timeout: 1)
+    }
+    
+    func test_didSubmit_errorThrown_callsOnError() async throws {
+        let onErrorExpectation = expectation(description: "onError called")
+        let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
+        let paymentData = PaymentComponentData(
+            paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
+            amount: nil,
+            order: nil
+        )
+        
+        configuration.onSubmit = { _ in
+            throw TestError()
+        }
+        configuration.onError = { _ in
+            onErrorExpectation.fulfill()
+        }
+        
+        let sut = Checkout(
+            configuration: configuration,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
+        await fulfillment(of: [onErrorExpectation], timeout: 1)
+    }
+    
+    func test_didSubmit_cancellationErrorThrown_doesNotCallOnError() async throws {
+        let onErrorExpectation = expectation(description: "onError should NOT be called")
+        onErrorExpectation.isInverted = true
+        let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
+        let paymentData = PaymentComponentData(
+            paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
+            amount: nil,
+            order: nil
+        )
+        
+        configuration.onSubmit = { _ in
+            throw CancellationError()
+        }
+        configuration.onError = { _ in
+            onErrorExpectation.fulfill()
+        }
+        
+        let sut = Checkout(
+            configuration: configuration,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
+        await fulfillment(of: [onErrorExpectation], timeout: 0.5)
+    }
+    
+    // MARK: - action component delegate
+    
+    func test_didProvide_callsOnAdditionalDetails_whenSet() async {
+        let expectation = expectation(description: "onAdditionalDetails called")
+        let actionData = ActionComponentData(
+            details: AwaitActionDetails(payload: "payload"),
+            paymentData: "data"
+        )
+        
+        configuration.onAdditionalDetails = { data in
+            XCTAssertEqual(data.paymentData, "data")
+            XCTAssertNotNil(data.details as? AwaitActionDetails)
+            expectation.fulfill()
+            return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
+        }
+        
+        let sut = Checkout(
+            configuration: configuration,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        sut.didProvide(actionData, from: ActionComponentMock())
+        await fulfillment(of: [expectation], timeout: 1)
+    }
+    
+    func test_didSubmit_returnsErrorBranch_callsOnError() async throws {
+        let onErrorExpectation = expectation(description: "onError called")
+        let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
+        let paymentData = PaymentComponentData(
+            paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
+            amount: nil,
+            order: nil
+        )
+        
+        configuration.onSubmit = { _ in
+            throw TestError()
+        }
+        configuration.onError = { _ in
+            onErrorExpectation.fulfill()
+        }
+        
+        let sut = Checkout(
+            configuration: configuration,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
+        await fulfillment(of: [onErrorExpectation], timeout: 1)
+    }
+    
+    func test_didProvide_returnsFinished_callsOnComplete() async {
+        let onAdditionalDetailsExpectation = expectation(description: "onAdditionalDetails called")
+        let onCompleteExpectation = expectation(description: "onComplete called")
+        let actionData = ActionComponentData(
+            details: AwaitActionDetails(payload: "payload"),
+            paymentData: "data"
+        )
+        
+        configuration.onAdditionalDetails = { _ in
+            onAdditionalDetailsExpectation.fulfill()
+            return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
+        }
+        configuration.onComplete = { result in
+            XCTAssertEqual(result.resultCode, .authorised)
+            onCompleteExpectation.fulfill()
+        }
+        
+        let sut = Checkout(
+            configuration: configuration,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        sut.didProvide(actionData, from: ActionComponentMock())
+        await fulfillment(of: [onAdditionalDetailsExpectation, onCompleteExpectation], timeout: 1)
+    }
+    
+    func test_didProvide_returnsErrorBranch_callsOnError() async {
+        let onErrorExpectation = expectation(description: "onError called")
+        let actionData = ActionComponentData(
+            details: AwaitActionDetails(payload: "payload"),
+            paymentData: "data"
+        )
+        
+        configuration.onAdditionalDetails = { _ in
+            throw TestError()
+        }
+        configuration.onError = { _ in
+            onErrorExpectation.fulfill()
+        }
+        
+        let sut = Checkout(
+            configuration: configuration,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        sut.didProvide(actionData, from: ActionComponentMock())
+        await fulfillment(of: [onErrorExpectation], timeout: 1)
+    }
+    
+    func test_didProvide_errorThrown_callsOnError() async {
+        let onErrorExpectation = expectation(description: "onError called")
+        let actionData = ActionComponentData(
+            details: AwaitActionDetails(payload: "payload"),
+            paymentData: "data"
+        )
+        
+        configuration.onAdditionalDetails = { _ in
+            throw TestError()
+        }
+        configuration.onError = { _ in
+            onErrorExpectation.fulfill()
+        }
+        
+        let sut = Checkout(
+            configuration: configuration,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        sut.didProvide(actionData, from: ActionComponentMock())
+        await fulfillment(of: [onErrorExpectation], timeout: 1)
+    }
+    
+    func test_didProvide_cancellationErrorThrown_doesNotCallOnError() async {
+        let onErrorExpectation = expectation(description: "onError should NOT be called")
+        onErrorExpectation.isInverted = true
+        let actionData = ActionComponentData(
+            details: AwaitActionDetails(payload: "payload"),
+            paymentData: "data"
+        )
+        
+        configuration.onAdditionalDetails = { _ in
+            throw CancellationError()
+        }
+        configuration.onError = { _ in
+            onErrorExpectation.fulfill()
+        }
+        
+        let sut = Checkout(
+            configuration: configuration,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        sut.didProvide(actionData, from: ActionComponentMock())
+        await fulfillment(of: [onErrorExpectation], timeout: 0.5)
+    }
 }
 
 struct TestError: Error {}
+
+@MainActor
+private final class ActionComponentMock: ActionComponent {
+    var context: AdyenContext = Dummy.context
+    var delegate: ActionComponentDelegate?
+}

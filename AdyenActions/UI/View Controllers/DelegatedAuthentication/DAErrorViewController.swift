@@ -10,7 +10,6 @@
 #endif
 import UIKit
 
-@available(iOS 16.0, *)
 internal final class DAErrorViewController: UIViewController {
 
     internal enum Screen {
@@ -227,7 +226,6 @@ internal final class DAErrorViewController: UIViewController {
     }
 }
 
-@available(iOS 16.0, *)
 extension DAErrorViewController: DelegatedAuthenticationErrorViewDelegate {
     internal func troubleshootingButtonTapped() {
         guard let resetCredentialAlert else {

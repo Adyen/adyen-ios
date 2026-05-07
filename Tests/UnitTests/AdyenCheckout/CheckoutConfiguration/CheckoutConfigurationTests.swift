@@ -38,7 +38,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         
         // When
-        let resolvedConfig: BLIKComponentConfiguration = checkoutConfig.configuration(
+        let resolvedConfig: BLIKComponentConfiguration = try checkoutConfig.configuration(
             for: paymentMethod,
             defaultValue: BLIKComponentConfiguration()
         )
@@ -56,7 +56,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         defaultConfig.showsSubmitButton = false // Custom default
         
         // When
-        let resolvedConfig: BLIKComponentConfiguration = checkoutConfig.configuration(
+        let resolvedConfig: BLIKComponentConfiguration = try checkoutConfig.configuration(
             for: paymentMethod,
             defaultValue: defaultConfig
         )
@@ -78,7 +78,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         var defaultWasCalled = false
         
         // When
-        let resolvedConfig: BLIKComponentConfiguration = checkoutConfig.configuration(
+        let resolvedConfig: BLIKComponentConfiguration = try checkoutConfig.configuration(
             for: paymentMethod,
             defaultValue: {
                 defaultWasCalled = true
@@ -98,7 +98,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         var defaultWasCalled = false
         
         // When
-        let _: BLIKComponentConfiguration = checkoutConfig.configuration(
+        let _: BLIKComponentConfiguration = try checkoutConfig.configuration(
             for: paymentMethod,
             defaultValue: {
                 defaultWasCalled = true
@@ -137,20 +137,21 @@ final class CheckoutConfigurationTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         
         // When
-        let resolvedConfig = checkoutConfig.configuration(for: paymentMethod, defaultValue: BLIKComponentConfiguration())
+        let resolvedConfig: BLIKComponentConfiguration = try checkoutConfig.configuration(
+            for: paymentMethod,
+            defaultValue: BLIKComponentConfiguration()
+        )
         
         // Then
-        XCTAssertNotNil(resolvedConfig)
-        
-        XCTAssertNotNil(resolvedConfig, "Should be BLIKComponentConfiguration")
-        XCTAssertEqual(resolvedConfig.componentType, .payment(.blik))
+        let unwrapped = resolvedConfig
+        XCTAssertEqual(unwrapped.componentType, .payment(.blik))
     }
     
     // MARK: - Action Configuration Tests
     
     func testActionConfiguration_WithDefaultValue_ReturnsProvidedConfiguration() throws {
         // Given
-        let threeDS2Config = try ThreeDS2ActionConfiguration()
+        let threeDS2Config = try AuthenticationConfiguration()
             .requestorAppURL(XCTUnwrap(URL(string: "https://example.com")))
         
         let checkoutConfig = makeCheckoutConfiguration(
@@ -158,9 +159,9 @@ final class CheckoutConfigurationTests: XCTestCase {
         )
         
         // When
-        let resolvedConfig: ThreeDS2ActionConfiguration = checkoutConfig.configuration(
+        let resolvedConfig: AuthenticationConfiguration = checkoutConfig.configuration(
             for: .threeDS2,
-            defaultValue: ThreeDS2ActionConfiguration()
+            defaultValue: AuthenticationConfiguration()
         )
         
         // Then - Should return the stored configuration
@@ -171,11 +172,11 @@ final class CheckoutConfigurationTests: XCTestCase {
     func testActionConfiguration_WithDefaultValue_ReturnsDefaultWhenMissing() throws {
         // Given
         let checkoutConfig = makeCheckoutConfiguration()
-        let defaultConfig = try ThreeDS2ActionConfiguration()
+        let defaultConfig = try AuthenticationConfiguration()
             .requestorAppURL(XCTUnwrap(URL(string: "https://default.com")))
         
         // When
-        let resolvedConfig: ThreeDS2ActionConfiguration = checkoutConfig.configuration(
+        let resolvedConfig: AuthenticationConfiguration = checkoutConfig.configuration(
             for: .threeDS2,
             defaultValue: defaultConfig
         )
@@ -187,7 +188,7 @@ final class CheckoutConfigurationTests: XCTestCase {
     
     func testActionConfiguration_Optional_ReturnsProvidedConfiguration() throws {
         // Given
-        let threeDS2Config = try ThreeDS2ActionConfiguration()
+        let threeDS2Config = try AuthenticationConfiguration()
             .requestorAppURL(XCTUnwrap(URL(string: "https://example.com")))
         
         let checkoutConfig = makeCheckoutConfiguration(
@@ -195,7 +196,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         )
         
         // When
-        let resolvedConfig: ThreeDS2ActionConfiguration? = checkoutConfig.configuration(for: .threeDS2)
+        let resolvedConfig: AuthenticationConfiguration? = checkoutConfig.configuration(for: .threeDS2)
         
         // Then - Should return the stored configuration
         XCTAssertNotNil(resolvedConfig)
@@ -208,7 +209,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         let checkoutConfig = makeCheckoutConfiguration()
 
         // When
-        let resolvedConfig: ThreeDS2ActionConfiguration? = checkoutConfig.configuration(for: .threeDS2)
+        let resolvedConfig: AuthenticationConfiguration? = checkoutConfig.configuration(for: .threeDS2)
         
         // Then - Should return nil
         XCTAssertNil(resolvedConfig)
@@ -255,7 +256,7 @@ final class CheckoutConfigurationTests: XCTestCase {
     
     func testActionConfiguration_AutoclosureNotEvaluatedWhenConfigExists() {
         // Given
-        let threeDS2Config = ThreeDS2ActionConfiguration()
+        let threeDS2Config = AuthenticationConfiguration()
         
         let checkoutConfig = makeCheckoutConfiguration(
             configurations: [.action(.threeDS2): threeDS2Config]
@@ -263,11 +264,11 @@ final class CheckoutConfigurationTests: XCTestCase {
         var defaultWasCalled = false
         
         // When
-        let _: ThreeDS2ActionConfiguration = checkoutConfig.configuration(
+        let _: AuthenticationConfiguration = checkoutConfig.configuration(
             for: .threeDS2,
             defaultValue: {
                 defaultWasCalled = true
-                return ThreeDS2ActionConfiguration()
+                return AuthenticationConfiguration()
             }()
         )
         
@@ -281,11 +282,11 @@ final class CheckoutConfigurationTests: XCTestCase {
         var defaultWasCalled = false
         
         // When
-        let _: ThreeDS2ActionConfiguration = checkoutConfig.configuration(
+        let _: AuthenticationConfiguration = checkoutConfig.configuration(
             for: .threeDS2,
             defaultValue: {
                 defaultWasCalled = true
-                return ThreeDS2ActionConfiguration()
+                return AuthenticationConfiguration()
             }()
         )
         
@@ -301,6 +302,10 @@ final class CheckoutConfigurationTests: XCTestCase {
             "name": "BLIK"
         ]
         return try? AdyenCoder.decode(dict) as BLIKPaymentMethod
+    }
+
+    private func createApplePayPaymentMethod() -> ApplePayPaymentMethod? {
+        try? AdyenCoder.decode(applePayDictionary) as ApplePayPaymentMethod
     }
 
     private func makeCheckoutConfiguration(

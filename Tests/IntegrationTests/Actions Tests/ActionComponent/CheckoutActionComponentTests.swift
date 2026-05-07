@@ -197,7 +197,7 @@ class CheckoutActionComponentTests: XCTestCase {
         let action = try JSONDecoder().decode(ThreeDS2Action.self, from: XCTUnwrap(threeDSFingerprintAction.data(using: .utf8)))
         sut.handle(Action.threeDS2(action))
 
-        wait { sut.currentActionComponent is ThreeDS2Component }
+        wait { sut.currentActionComponent is AuthenticationComponent }
     }
 
     func testVoucherAction() throws {
@@ -352,10 +352,6 @@ class CheckoutActionComponentTests: XCTestCase {
             XCTAssertEqual(event.component, "redirect")
         case .sdk:
             XCTAssertEqual(event.component, "sdk")
-        case .threeDS2Fingerprint:
-            XCTAssertEqual(event.component, "threeDS2Fingerprint")
-        case .threeDS2Challenge:
-            XCTAssertEqual(event.component, "threeDS2Challenge")
         case .threeDS2:
             XCTAssertEqual(event.component, "threeDS2")
         case .await:

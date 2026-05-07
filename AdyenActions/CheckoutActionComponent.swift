@@ -5,7 +5,6 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import Adyen3DS2
 import Foundation
 import UIKit
 
@@ -38,9 +37,9 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
         /// The UI style configurations.
         public var style: ActionComponentStyle = .init()
         
-        /// Three DS configuration.
-        public var threeDS: ThreeDS2ActionConfiguration
-        
+        /// Authentication configuration.
+        public var authentication: AuthenticationConfiguration
+
         /// Twint configuration.
         public var twint: TwintActionConfiguration?
         
@@ -49,7 +48,7 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
         /// - Parameters:
         ///   - localizationParameters: Localization parameters.
         ///   - style: The UI style configurations.
-        ///   - threeDS: Three DS configurations.
+        ///   - authentication: Authentication configuration.
         ///   - twint: Twint configurations.
         public init(
             style: ActionComponentStyle = .init(),
@@ -67,12 +66,12 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
         package init(
             localizationParameters: LocalizationParameters? = nil,
             style: ActionComponentStyle = .init(),
-            threeDS: ThreeDS2ActionConfiguration = .init(),
+            authentication: AuthenticationConfiguration = .init(),
             twint: TwintActionConfiguration? = nil
         ) {
             self.localizationParameters = localizationParameters
             self.style = style
-            self.threeDS = threeDS
+            self.authentication = authentication
             self.twint = twint
         }
     }
@@ -106,10 +105,6 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
         switch action {
         case let .redirect(redirectAction):
             handle(redirectAction)
-        case let .threeDS2Fingerprint(fingerprintAction):
-            handle(fingerprintAction)
-        case let .threeDS2Challenge(challengeAction):
-            handle(challengeAction)
         case let .threeDS2(threeDS2Action):
             handle(threeDS2Action)
         case let .sdk(sdkAction):
@@ -146,23 +141,16 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
     }
     
     private func handle(_ action: ThreeDS2Action) {
-        let component = createThreeDS2Component()
+        let component = createAuthenticationComponent()
         currentActionComponent = component
         
         component.handle(action)
     }
     
-    private func handle(_ action: ThreeDS2FingerprintAction) {
-        let component = createThreeDS2Component()
-        currentActionComponent = component
-        
-        component.handle(action)
-    }
-    
-    private func createThreeDS2Component() -> ThreeDS2Component {
-        let component = ThreeDS2Component(
+    private func createAuthenticationComponent() -> AuthenticationComponent {
+        let component = AuthenticationComponent(
             context: context,
-            configuration: configuration.threeDS
+            configuration: configuration.authentication
         )
         component._isDropIn = _isDropIn
         component.delegate = delegate
@@ -170,17 +158,7 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
         
         return component
     }
-    
-    private func handle(_ action: ThreeDS2ChallengeAction) {
-        guard let threeDS2Component = currentActionComponent as? ThreeDS2Component else {
-            AdyenAssertion.assertionFailure( // swiftlint:disable:next line_length
-                message: "ThreeDS2Component is nil. There must be a ThreeDS2FingerprintAction action preceding a ThreeDS2ChallengeAction action"
-            )
-            return
-        }
-        threeDS2Component.handle(action)
-    }
-    
+
     private func handle(_ sdkAction: SDKAction) {
         switch sdkAction {
         case let .weChatPay(weChatPaySDKAction):
@@ -297,10 +275,6 @@ private extension Action {
             return "redirect"
         case .sdk:
             return "sdk"
-        case .threeDS2Fingerprint:
-            return "threeDS2Fingerprint"
-        case .threeDS2Challenge:
-            return "threeDS2Challenge"
         case .threeDS2:
             return "threeDS2"
         case .await, .redirectableAwait:

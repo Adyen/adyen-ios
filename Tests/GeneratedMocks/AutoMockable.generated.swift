@@ -617,12 +617,12 @@ class StoredCardInputViewModelProtocolMock: StoredCardInputViewModelProtocol {
     }
 
     var underlyingSubmitButtonTitle: String!
-    var theme: AdyenTheme {
+    var theme: CheckoutTheme {
         get { underlyingTheme }
         set(value) { underlyingTheme = value }
     }
 
-    var underlyingTheme: AdyenTheme!
+    var underlyingTheme: CheckoutTheme!
     var onSecurityCodeValidationRequested: VoidCompletion?
     var inProgressPublisher: Published<Bool>.Publisher {
         get { underlyingInProgressPublisher }
@@ -646,19 +646,19 @@ class StoredCardInputViewModelProtocolMock: StoredCardInputViewModelProtocol {
         await submitClosure?()
     }
 
-    // MARK: - dismiss
+    // MARK: - viewDidDisappear
 
-    var dismissCallsCount = 0
-    var dismissCalled: Bool {
-        dismissCallsCount > 0
+    var viewDidDisappearCallsCount = 0
+    var viewDidDisappearCalled: Bool {
+        viewDidDisappearCallsCount > 0
     }
 
-    var dismissClosure: (() -> Void)?
+    var viewDidDisappearClosure: (() -> Void)?
 
     @MainActor
-    func dismiss() {
-        dismissCallsCount += 1
-        dismissClosure?()
+    func viewDidDisappear() {
+        viewDidDisappearCallsCount += 1
+        viewDidDisappearClosure?()
     }
 
     // MARK: - viewDidLoad
