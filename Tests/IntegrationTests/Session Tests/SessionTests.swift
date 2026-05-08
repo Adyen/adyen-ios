@@ -98,6 +98,111 @@ class SessionTests: XCTestCase {
 
     }
 
+    func testPaymentsResponseAsComponentSubmitResultWithCompletion() throws {
+        let response = PaymentsResponse(
+            resultCode: .authorised,
+            action: nil,
+            order: nil,
+            sessionData: "session_data",
+            sessionResult: "sessionResultString"
+        )
+        
+        let result = try response.asComponentSubmitResult()
+        
+        switch result {
+        case let .completion(resultCode):
+            XCTAssertEqual(resultCode, CheckoutResultCode.authorised.rawValue)
+        default:
+            XCTFail("Expected completion result")
+        }
+    }
+    
+    func testPaymentsResponseAsComponentSubmitResultWithAction() throws {
+        let action = try RedirectAction(
+            url: XCTUnwrap(URL(string: "https://google.com")),
+            paymentData: "payment_data"
+        )
+        let response = PaymentsResponse(
+            resultCode: .redirectShopper,
+            action: .redirect(action),
+            order: nil,
+            sessionData: "session_data",
+            sessionResult: nil
+        )
+        
+        let result = try response.asComponentSubmitResult()
+        
+        switch result {
+        case .action:
+            break
+        default:
+            XCTFail("Expected action result")
+        }
+    }
+    
+    func testPaymentsResponseAsComponentSubmitResultWithPartialPaymentOrderThrows() throws {
+        let order = PartialPaymentOrder(
+            pspReference: "pspReference",
+            orderData: "order_data",
+            reference: "reference",
+            amount: .init(value: 220, currencyCode: "USD", localeIdentifier: nil),
+            remainingAmount: .init(value: 20, currencyCode: "USD", localeIdentifier: nil),
+            expiresAt: Date()
+        )
+        let response = PaymentsResponse(
+            resultCode: .received,
+            action: nil,
+            order: order,
+            sessionData: "session_data",
+            sessionResult: nil
+        )
+        
+        XCTAssertThrowsError(try response.asComponentSubmitResult()) { error in
+            if case .notSupportedForComponent? = error as? PartialPaymentError {
+                return
+            }
+            XCTFail("Expected PartialPaymentError.notSupportedForComponent")
+        }
+    }
+    
+    func testPaymentsResponseAsAdditionalDetailsResultWithCompletion() throws {
+        let response = PaymentsResponse(
+            resultCode: .authorised,
+            action: nil,
+            order: nil,
+            sessionData: "session_data",
+            sessionResult: "sessionResultString"
+        )
+        
+        let result = try response.asAdditionalDetailsResult()
+        
+        switch result {
+        case let .completion(resultCode):
+            XCTAssertEqual(resultCode, CheckoutResultCode.authorised.rawValue)
+        }
+    }
+    
+    func testPaymentsResponseAsAdditionalDetailsResultWithActionThrows() throws {
+        let action = try RedirectAction(
+            url: XCTUnwrap(URL(string: "https://google.com")),
+            paymentData: "payment_data"
+        )
+        let response = PaymentsResponse(
+            resultCode: .redirectShopper,
+            action: .redirect(action),
+            order: nil,
+            sessionData: "session_data",
+            sessionResult: nil
+        )
+        
+        XCTAssertThrowsError(try response.asAdditionalDetailsResult()) { error in
+            if case .unsupportedActionAfterDetails? = error as? SessionError {
+                return
+            }
+            XCTFail("Expected SessionError.unsupportedActionAfterDetails")
+        }
+    }
+    
     func testDidSubmitWithNoActionAndNoOrder() throws {
         let paymentMethod = try XCTUnwrap(expectedPaymentMethods.regular.last as? MBWayPaymentMethod)
         let data = PaymentComponentData(

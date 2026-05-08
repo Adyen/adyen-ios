@@ -26,10 +26,7 @@ extension Session: PaymentComponentDelegate {
     
     @MainActor
     internal func finish(with result: CheckoutResult, component: Component) {
-        let success = result.resultCode == .authorised
-            || result.resultCode == .received
-            || result.resultCode == .pending
-        component.finalizeIfNeeded(with: success) { [weak self] in
+        component.finalizeIfNeeded(with: result.resultCode.isSuccessful) { [weak self] in
             guard let self else { return }
             self.delegate?.didComplete(with: result, component: component, session: self)
         }
