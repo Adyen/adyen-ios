@@ -98,7 +98,7 @@ class SessionTests: XCTestCase {
 
     }
 
-    func test_asSubmitResult_withCompletionResponse_shouldReturnCompletion() throws {
+    func test_asSubmitResult_withCompletionResponse_shouldReturnCompletion() {
         let response = PaymentsResponse(
             resultCode: .authorised,
             action: nil,
@@ -107,7 +107,7 @@ class SessionTests: XCTestCase {
             sessionResult: "sessionResultString"
         )
         
-        let result = try response.asSubmitResult()
+        let result = response.asSubmitResult(paymentMethods: expectedPaymentMethods)
         
         switch result {
         case let .completion(resultCode):
@@ -130,7 +130,7 @@ class SessionTests: XCTestCase {
             sessionResult: nil
         )
         
-        let result = try response.asSubmitResult()
+        let result = response.asSubmitResult(paymentMethods: expectedPaymentMethods)
         
         switch result {
         case .action:
@@ -140,7 +140,7 @@ class SessionTests: XCTestCase {
         }
     }
     
-    func test_asSubmitResult_withPartialPaymentOrder_shouldThrowNotSupported() throws {
+    func test_asSubmitResult_withPartialPaymentOrder_shouldReturnPartialPayment() {
         let order = PartialPaymentOrder(
             pspReference: "pspReference",
             orderData: "order_data",
@@ -157,11 +157,15 @@ class SessionTests: XCTestCase {
             sessionResult: nil
         )
         
-        XCTAssertThrowsError(try response.asSubmitResult()) { error in
-            if case .notSupportedForComponent? = error as? PartialPaymentError {
-                return
-            }
-            XCTFail("Expected PartialPaymentError.notSupportedForComponent")
+        let result = response.asSubmitResult(paymentMethods: expectedPaymentMethods)
+        
+        switch result {
+        case let .partialPayment(partialPayment):
+            XCTAssertEqual(partialPayment.order, order)
+            XCTAssertEqual(partialPayment.paymentMethods.regular.count, expectedPaymentMethods.regular.count)
+            XCTAssertEqual(partialPayment.paymentMethods.stored.count, expectedPaymentMethods.stored.count)
+        default:
+            XCTFail("Expected partial payment result")
         }
     }
     

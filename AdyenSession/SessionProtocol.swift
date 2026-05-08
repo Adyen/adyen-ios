@@ -16,21 +16,18 @@ package protocol SessionProtocol: AnyObject {
     var delegate: SessionDelegate? { get set }
     var presentationDelegate: PresentationDelegate? { get set }
     
-    @MainActor
+    var showRemovePaymentMethodButton: Bool { get }
+    
     func performSubmit(_ data: PaymentComponentData) async throws -> SubmitResult
     
-    @MainActor
     func performAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult
     
-    func didSubmit(
-        _ paymentComponentData: PaymentComponentData,
-        from component: PaymentComponent,
-        dropInComponent: AnyDropInComponent?
-    )
+    func performBalanceCheck(with data: PaymentComponentData) async throws -> Balance
     
-    func didProvide(
-        _ actionComponentData: ActionComponentData,
-        from component: ActionComponent,
-        dropInComponent: AnyDropInComponent?
-    )
+    func requestOrder() async throws -> PartialPaymentOrder
+    
+    func cancelOrder(_ order: PartialPaymentOrder) async
+    
+    func disable(storedPaymentMethod: StoredPaymentMethod) async throws
+    
 }

@@ -12,13 +12,20 @@ public final class AdyenSessionMock: SessionProtocol {
     public var currentResult: CheckoutResult?
     public var delegate: SessionDelegate?
     public var presentationDelegate: PresentationDelegate?
+    public var showRemovePaymentMethodButton = false
 
     var didSubmitCalled = false
     var didProvideCalled = false
     var performSubmitCalled = false
     var performAdditionalDetailsCalled = false
+    var performBalanceCheckCalled = false
+    var requestOrderCalled = false
+    var cancelOrderCalled = false
+    var disableStoredPaymentMethodCalled = false
     var performSubmitResult: Result<SubmitResult, Error>?
     var performAdditionalDetailsResult: Result<AdditionalDetailsResult, Error>?
+    var performBalanceCheckResult: Result<Balance, Error>?
+    var requestOrderResult: Result<PartialPaymentOrder, Error>?
 
     internal init(
         state: Session.State,
@@ -40,6 +47,26 @@ public final class AdyenSessionMock: SessionProtocol {
         performAdditionalDetailsCalled = true
         guard let performAdditionalDetailsResult else { throw AdyenSessionMockError.missingResult }
         return try performAdditionalDetailsResult.get()
+    }
+    
+    public func performBalanceCheck(with data: PaymentComponentData) async throws -> Balance {
+        performBalanceCheckCalled = true
+        guard let performBalanceCheckResult else { throw AdyenSessionMockError.missingResult }
+        return try performBalanceCheckResult.get()
+    }
+    
+    public func requestOrder() async throws -> PartialPaymentOrder {
+        requestOrderCalled = true
+        guard let requestOrderResult else { throw AdyenSessionMockError.missingResult }
+        return try requestOrderResult.get()
+    }
+    
+    public func cancelOrder(_ order: PartialPaymentOrder) async {
+        cancelOrderCalled = true
+    }
+    
+    public func disable(storedPaymentMethod: StoredPaymentMethod) async throws {
+        disableStoredPaymentMethodCalled = true
     }
     
     public func didSubmit(
