@@ -11,6 +11,7 @@
 #if canImport(AdyenActions)
     @_spi(AdyenInternal) import AdyenActions
 #endif
+import Foundation
 
 // MARK: - Internal Helpers
 
