@@ -180,7 +180,6 @@ public final class Checkout: CheckoutProtocol {
         self.paymentMethods = paymentMethods ?? session?.state.paymentMethods
         self.presentationDelegate = presentationDelegate
         self.adyenContext = adyenContext
-        self.session?.delegate = self
         self.session?.presentationDelegate = presentationDelegate
     }
     

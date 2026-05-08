@@ -34,11 +34,18 @@ extension Checkout: PaymentComponentDelegate {
                 }
             }
         } else if let session {
-            session.didSubmit(
-                data,
-                from: component,
-                dropInComponent: nil
-            )
+            submitTask?.cancel()
+            submitTask = Task { [weak self] in
+                do {
+                    let submitResult = try await session.performSubmit(data)
+                    guard !Task.isCancelled else { return }
+                    self?.handle(submitResult: submitResult, from: component)
+                } catch {
+                    // Ignore if this was a cancellation (task superseded or Checkout torn down).
+                    guard !(error is CancellationError), !Task.isCancelled else { return }
+                    self?.handle(error, from: component)
+                }
+            }
         } else {
             // TODO: throw/assert to inform missing callbacks
         }
@@ -89,18 +96,29 @@ extension Checkout: ActionComponentDelegate {
                 }
             }
         } else if let session {
-            session.didProvide(
-                data,
-                from: component,
-                dropInComponent: nil
-            )
+            additionalDetailsTask?.cancel()
+            additionalDetailsTask = Task { [weak self] in
+                do {
+                    let additionalDetailsResult = try await session.performAdditionalDetails(data)
+                    guard !Task.isCancelled else { return }
+                    self?.handle(additionalDetailsResult: additionalDetailsResult, from: self?.pendingPaymentComponent)
+                } catch {
+                    // Ignore if this was a cancellation (task superseded or Checkout torn down).
+                    guard !(error is CancellationError), !Task.isCancelled else { return }
+                    self?.handle(error, from: self?.pendingPaymentComponent)
+                }
+            }
         } else {
             // TODO: throw/assert to inform missing callbacks
         }
     }
 
     public func didComplete(from component: any Adyen.ActionComponent) {
-        // TODO: need a result code here, refactor this function to contain it or create on here?
+        guard let result = session?.currentResult else {
+            // TODO: need a result code for advanced non-session action flows.
+            return
+        }
+        finish(with: result, from: pendingPaymentComponent)
     }
 
     public func didFail(with error: any Error, from component: any Adyen.ActionComponent) {
@@ -115,19 +133,6 @@ extension Checkout: ActionComponentDelegate {
         case let .completion(resultCode):
             finish(with: CheckoutResult(resultCode: CheckoutResultCode(rawValue: resultCode)), from: component)
         }
-    }
-}
-
-// MARK: - SessionDelegate
-
-extension Checkout: SessionDelegate {
-
-    public func didComplete(with result: CheckoutResult, component: any Component, session: Session) {
-        finish(with: result, from: component as? (any PaymentComponent))
-    }
-
-    public func didFail(with error: any Error, from component: any Component, session: Session) {
-        handle(error, from: component as? (any PaymentComponent))
     }
 }
 

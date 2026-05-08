@@ -9,11 +9,16 @@
 
 public final class AdyenSessionMock: SessionProtocol {
     public var state: Session.State
+    public var currentResult: CheckoutResult?
     public var delegate: SessionDelegate?
     public var presentationDelegate: PresentationDelegate?
 
     var didSubmitCalled = false
     var didProvideCalled = false
+    var performSubmitCalled = false
+    var performAdditionalDetailsCalled = false
+    var performSubmitResult: Result<SubmitResult, Error>?
+    var performAdditionalDetailsResult: Result<AdditionalDetailsResult, Error>?
 
     internal init(
         state: Session.State,
@@ -23,6 +28,18 @@ public final class AdyenSessionMock: SessionProtocol {
         self.state = state
         self.delegate = delegate
         self.presentationDelegate = presentationDelegate
+    }
+    
+    public func performSubmit(_ data: PaymentComponentData) async throws -> SubmitResult {
+        performSubmitCalled = true
+        guard let performSubmitResult else { throw AdyenSessionMockError.missingResult }
+        return try performSubmitResult.get()
+    }
+    
+    public func performAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult {
+        performAdditionalDetailsCalled = true
+        guard let performAdditionalDetailsResult else { throw AdyenSessionMockError.missingResult }
+        return try performAdditionalDetailsResult.get()
     }
     
     public func didSubmit(
@@ -40,4 +57,8 @@ public final class AdyenSessionMock: SessionProtocol {
     ) {
         didProvideCalled = true
     }
+}
+
+private enum AdyenSessionMockError: Error {
+    case missingResult
 }

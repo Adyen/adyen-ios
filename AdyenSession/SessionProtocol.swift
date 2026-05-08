@@ -12,8 +12,15 @@ import AdyenNetworking
 
 package protocol SessionProtocol: AnyObject {
     var state: Session.State { get }
+    var currentResult: CheckoutResult? { get }
     var delegate: SessionDelegate? { get set }
     var presentationDelegate: PresentationDelegate? { get set }
+    
+    @MainActor
+    func performSubmit(_ data: PaymentComponentData) async throws -> SubmitResult
+    
+    @MainActor
+    func performAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult
     
     func didSubmit(
         _ paymentComponentData: PaymentComponentData,
