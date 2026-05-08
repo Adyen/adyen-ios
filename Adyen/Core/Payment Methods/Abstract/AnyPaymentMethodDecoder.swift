@@ -42,7 +42,7 @@ internal enum AnyPaymentMethodDecoder {
         .afterpay: UnsupportedPaymentMethodDecoder(),
         .androidPay: UnsupportedPaymentMethodDecoder(),
         .amazonPay: UnsupportedPaymentMethodDecoder(),
-        .bizum: UnsupportedPaymentMethodDecoder(),
+        
         .upiQr: UnsupportedPaymentMethodDecoder(),
         .upiIntent: UnsupportedPaymentMethodDecoder(),
         .upiCollect: UnsupportedPaymentMethodDecoder(),
@@ -63,6 +63,7 @@ internal enum AnyPaymentMethodDecoder {
         .achDirectDebit: ACHDirectDebitPaymentMethodDecoder(),
         .applePay: ApplePayPaymentMethodDecoder(),
         .payPal: PayPalPaymentMethodDecoder(),
+        .bizum: InstantPaymentMethodDecoder(),
         .bcmc: BCMCCardPaymentMethodDecoder(),
         .weChatPaySDK: WeChatPayPaymentMethodDecoder(),
         .qiwiWallet: QiwiWalletPaymentMethodDecoder(),
