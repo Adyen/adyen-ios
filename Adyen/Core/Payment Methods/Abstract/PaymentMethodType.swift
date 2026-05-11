@@ -61,6 +61,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     case mealVoucherSodexo
     case upi
     case cashAppPay
+    case bizum
     case twint
     case payByBankAISDD
     case payTo
@@ -78,7 +79,6 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     case upiCollect
     case upiIntent
     case upiQr
-    case bizum
     
     // swiftlint:disable cyclomatic_complexity function_body_length
     
