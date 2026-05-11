@@ -62,8 +62,8 @@ final class ApplePayPaymentMethodTests: XCTestCase {
         // Given
         let sut = makeSUT(brands: ["cartebancaire"])
         let networksProviderMock = ApplePayNetworksProvidingMock()
-        let network1 = PKPaymentNetwork(rawValue: "cartebancaire")
-        let network2 = PKPaymentNetwork(rawValue: "CarteBancaire")
+        let network1 = PKPaymentNetwork.carteBancaire
+        let network2 = PKPaymentNetwork.cartesBancaires
         networksProviderMock.availableNetworksReturnValue = [network1, network2]
 
         // When
