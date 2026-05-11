@@ -44,7 +44,7 @@ public struct APIContext: AnyAPIContext {
             throw ClientKeyError.invalidClientKey
         }
 
-        self.environment = environment
+        self.environment = Environment.liveIndia
         self.clientKey = clientKey
     }
 
