@@ -4,16 +4,15 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 #if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
+    import AdyenActions
 #endif
 import AdyenNetworking
 
 package protocol SessionProtocol: AnyObject {
     var state: Session.State { get }
     var currentResult: CheckoutResult? { get }
-    var delegate: SessionDelegate? { get set }
     var presentationDelegate: PresentationDelegate? { get set }
     
     var showRemovePaymentMethodButton: Bool { get }

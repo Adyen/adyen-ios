@@ -4,33 +4,32 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 #if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
+    import AdyenActions
 #endif
 import AdyenNetworking
 import Foundation
 
-/// ``Session`` acts as the delegate for the checkout payment flow.
-/// It can handle the required steps internally such as `/payments` and `/payment/details`
-/// calls and partial payment calls, then provide feedback
-/// via ``SessionDelegate`` methods.
-public final class Session: SessionProtocol {
+/// ``Session`` manages the checkout session lifecycle, handling
+/// `/payments`, `/payment/details`, and partial payment calls internally.
+package final class Session: SessionProtocol {
     
     /// The session context information.
-    public internal(set) var state: Session.State
+    package internal(set) var state: Session.State
     
     /// The presentation delegate.
-    public package(set) weak var presentationDelegate: PresentationDelegate?
-    
-    /// The delegate object.
-    public package(set) weak var delegate: SessionDelegate?
+    package weak var presentationDelegate: PresentationDelegate?
     
     internal let context: AdyenContext
     
     package var currentResult: CheckoutResult? {
         guard let resultCode = state.resultCode else { return nil }
         return CheckoutResult(resultCode: resultCode, sessionResult: state.sessionResult)
+    }
+    
+    package var showRemovePaymentMethodButton: Bool {
+        state.responseConfiguration.showRemovePaymentMethodButton
     }
     
     /// Session's API client should be only of SessionAPIClient type
@@ -47,20 +46,6 @@ public final class Session: SessionProtocol {
         )
     }()
     
-    @MainActor
-    internal lazy var actionHandlingComponent: ActionHandlingComponent = {
-        let handler = CheckoutActionComponent(
-            context: context,
-            configuration: CheckoutActionComponent.Configuration()
-        )
-        // TODO: create a way for CheckoutConfig to have CheckoutActionComponent.Configuration
-        // and it should provided if they want to have action handling
-        // move CheckoutActionComponent.Configuration to its own entity and make it public
-        handler.delegate = self
-        handler.presentationDelegate = presentationDelegate
-        return handler
-    }()
-    
     /// The injected API client to be used by the session's API client.
     private let baseAPIClient: AsyncAPIClientProtocol
     
@@ -68,11 +53,9 @@ public final class Session: SessionProtocol {
         state: Session.State,
         baseAPIClient: AsyncAPIClientProtocol,
         context: AdyenContext,
-        delegate: SessionDelegate? = nil,
         presentationDelegate: PresentationDelegate? = nil
     ) {
         self.state = state
-        self.delegate = delegate
         self.presentationDelegate = presentationDelegate
         self.baseAPIClient = baseAPIClient
         self.context = context
@@ -243,25 +226,25 @@ private extension Session {
 extension Session {
     
     /// Current state/information of session that gets updated after each internal call.
-    public struct State {
+    package struct State {
         
         /// The session data.
-        public internal(set) var data: String
+        package internal(set) var data: String
         
         /// The session identifier
-        public let identifier: String
+        package let identifier: String
         
         /// Country Code
-        public let countryCode: String?
+        package let countryCode: String?
         
         /// Shopper Locale
-        public let shopperLocale: String?
+        package let shopperLocale: String?
         
         /// The payment amount
-        public let amount: Amount
+        package let amount: Amount
         
         /// The payment methods
-        public let paymentMethods: PaymentMethods
+        package let paymentMethods: PaymentMethods
         
         /// Result code from the latest API call
         internal var resultCode: CheckoutResultCode?
@@ -276,26 +259,23 @@ extension Session {
 
 // MARK: - Component Configuration Awareness
 
-@_spi(AdyenInternal)
 extension Session: AdyenSessionAware {
     
-    public var isSession: Bool {
+    package nonisolated var isSession: Bool {
         true
     }
 }
 
-@_spi(AdyenInternal)
 extension Session: InstallmentConfigurationAware {
     
-    public var installmentConfiguration: InstallmentConfiguration? {
+    package var installmentConfiguration: InstallmentConfiguration? {
         state.responseConfiguration.installmentOptions
     }
 }
 
-@_spi(AdyenInternal)
 extension Session: StorePaymentMethodFieldAware {
     
-    public var showStorePaymentMethodField: Bool? {
+    package var showStorePaymentMethodField: Bool? {
         state.responseConfiguration.enableStoreDetails
     }
 }

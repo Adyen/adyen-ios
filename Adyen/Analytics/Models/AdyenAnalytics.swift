@@ -7,8 +7,7 @@
 import Foundation
 
 /// Used as a singleton to update the sessionId
-@_spi(AdyenInternal)
-public final class AnalyticsForSession {
+package final class AnalyticsForSession {
     
     /// Needed to be able to determine if using session
     public static var sessionId: String?
@@ -17,8 +16,7 @@ public final class AnalyticsForSession {
 }
 
 /// A protocol that defines the events that can occur under Checkout Analytics.
-@_spi(AdyenInternal)
-public protocol AnalyticsEvent: Encodable {
+package protocol AnalyticsEvent: Encodable {
     var timestamp: Int { get }
     
     var component: String { get }
@@ -26,8 +24,7 @@ public protocol AnalyticsEvent: Encodable {
     var id: String { get }
 }
 
-@_spi(AdyenInternal)
-public enum AnalyticsEventTarget: String, Encodable {
+package enum AnalyticsEventTarget: String, Encodable {
     case cardNumber = "card_number"
     case expiryDate = "expiry_date"
     case securityCode = "security_code"
@@ -61,8 +58,7 @@ public struct AnalyticsConfiguration {
 }
 
 /// Additional fields to be provided with an ``InitialAnalyticsRequest``
-@_spi(AdyenInternal)
-public struct AdditionalAnalyticsFields {
+package struct AdditionalAnalyticsFields {
     /// The amount of the payment
     public let amount: Amount?
     

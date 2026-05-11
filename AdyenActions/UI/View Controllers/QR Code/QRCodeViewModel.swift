@@ -4,8 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import UIKit
-@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 
 internal protocol QRCodeViewModelProtocol {
     var flowType: QRCodeFlowType { get }

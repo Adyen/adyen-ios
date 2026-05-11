@@ -10,7 +10,8 @@ import Foundation
 import UIKit
 
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
+    @_spi(AdyenInternal) import class AdyenUI.FormButton
 #endif
 
 internal class StoredCardInputViewController: UIViewController {

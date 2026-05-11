@@ -7,16 +7,15 @@
 import Foundation
 
 /// Model for any geographic region.
-@_spi(AdyenInternal)
-public struct Region: Decodable, CustomStringConvertible, Equatable {
+package struct Region: Decodable, CustomStringConvertible, Equatable {
 
     /// Unique identifier.
-    public let identifier: String
+    package let identifier: String
 
     /// Localized human-friendly name.
-    public let name: String
+    package let name: String
 
-    public var description: String {
+    package var description: String {
         name
     }
 
@@ -27,10 +26,9 @@ public struct Region: Decodable, CustomStringConvertible, Equatable {
 }
 
 /// Fetch localized geographic regions from external.
-@_spi(AdyenInternal)
-public enum RegionRepository {
+package enum RegionRepository {
 
-    public static func regions(
+    package static func regions(
         from locale: NSLocale,
         with countryCodes: [String]? = nil
     ) -> [Region] {
@@ -42,7 +40,7 @@ public enum RegionRepository {
         }
     }
 
-    public static func subRegions(for countryCode: String) -> [Region]? {
+    package static func subRegions(for countryCode: String) -> [Region]? {
         allRegions[countryCode]
     }
     

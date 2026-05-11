@@ -94,9 +94,9 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
             fatalError("AdyenContext is not initialized")
         }
 
-        let component = IssuerListComponent(paymentMethod: paymentMethod, context: context)
-        component.delegate = session
-        return component
+        return IssuerListComponent(paymentMethod: paymentMethod, context: context)
+        // TODO: Migrate to Checkout — Session no longer conforms to PaymentComponentDelegate in v6.
+        // component.delegate = session
     }
 
     private func present(_ component: PresentableComponent) {
@@ -119,20 +119,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
 
 }
 
-extension IssuerListComponentExample: SessionDelegate {
-    
-    func didComplete(with result: CheckoutResult, component: Component, session: Session) {
-        dismissAndShowAlert(result.resultCode.isSuccess, result.resultCode.rawValue)
-    }
-
-    func didFail(with error: Error, from component: Component, session: Session) {
-        dismissAndShowAlert(false, error.localizedDescription)
-    }
-
-    func didOpenExternalApplication(component: ActionComponent, session: Session) {
-        print(#function)
-    }
-}
+// TODO: Migrate to Checkout API — SessionDelegate has been removed in v6.
 
 extension IssuerListComponentExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {

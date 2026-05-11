@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import UIKit
 
 /// The interface of the delegate of a text item view.
@@ -140,7 +140,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     
     // MARK: - Text Field
     
-    public lazy var textField: TextField = {
+    package lazy var textField: TextField = {
         let textField = TextField()
         textField.adjustsFontForContentSizeCategory = true
         textField.text = item.value

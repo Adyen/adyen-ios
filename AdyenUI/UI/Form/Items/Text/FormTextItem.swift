@@ -4,7 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import enum Adyen.ValidationStatus
 import UIKit
 
 /// An item in which text can be entered using a text field.
@@ -20,7 +21,7 @@ open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFor
     public var formatter: Adyen.Formatter?
 
     /// The validator to use for validating the text in the text field.
-    public var validator: Validator?
+    package var validator: Validator?
 
     /// The auto-capitalization style for the text field.
     public var autocapitalizationType: UITextAutocapitalizationType = .sentences

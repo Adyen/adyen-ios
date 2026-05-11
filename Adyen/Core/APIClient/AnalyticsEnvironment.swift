@@ -8,8 +8,7 @@ import AdyenNetworking
 import Foundation
 
 /// Enum that defines the  analytics environment URLs..
-@_spi(AdyenInternal)
-public enum AnalyticsEnvironment: String, AnyAPIEnvironment {
+package enum AnalyticsEnvironment: String, AnyAPIEnvironment {
     
     case test = "https://checkoutanalytics-test.adyen.com/"
     
@@ -25,10 +24,8 @@ public enum AnalyticsEnvironment: String, AnyAPIEnvironment {
     
     case liveNea = "https://checkoutanalytics-live-nea.adyen.com/"
     
-    @_spi(AdyenInternal)
     case beta = "https://beta.adyen.com/checkoutanalytics/v3/analytics/"
     
-    @_spi(AdyenInternal)
     case local = "http://localhost:8080/"
     
     public var baseURL: URL {

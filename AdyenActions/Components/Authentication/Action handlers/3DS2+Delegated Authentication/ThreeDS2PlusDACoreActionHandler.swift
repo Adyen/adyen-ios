@@ -9,7 +9,8 @@ internal typealias VoidHandler = () -> Void
 // swiftlint:disable file_length
 
 #if canImport(AdyenAuthentication)
-    @_spi(AdyenInternal) import Adyen
+    import Adyen
+    @_spi(AdyenInternal) import class Adyen.Analytics
     import AdyenAuthentication
     #if canImport(AdyenUI)
         import AdyenUI

@@ -6,11 +6,10 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public struct BalanceChecker {
+package struct BalanceChecker {
 
     /// Indicates balance related errors.
-    public enum Error: LocalizedError {
+    package enum Error: LocalizedError {
 
         /// Indicates there is a currency code mismatch.
         case unexpectedCurrencyCode
@@ -29,7 +28,7 @@ public struct BalanceChecker {
     }
 
     /// The balance check result.
-    public struct Result {
+    package struct Result {
 
         /// Indicates whether the balance is enough to pay a certain amount.
         public let isBalanceEnough: Bool
@@ -42,7 +41,7 @@ public struct BalanceChecker {
         public let amountToPay: Amount
     }
 
-    public init() { /* Empty initializer */ }
+    package init() { /* Empty initializer */ }
 
     /// Check if a Balance is enough to pay an amount.
     ///
@@ -52,7 +51,7 @@ public struct BalanceChecker {
     /// - Throws: `Error.zeroBalance` in case the balance has zero available amount
     /// - Throws: `Error.unexpectedCurrencyCode` in case there is inconsistencies regarding currency codes.
     /// - Returns: an instance of `BalanceValidator.Result`.
-    public func check(balance: Balance, isEnoughToPay amount: Amount) throws -> Result {
+    package func check(balance: Balance, isEnoughToPay amount: Amount) throws -> Result {
         guard balance.availableAmount.value > 0 else {
             throw Error.zeroBalance
         }

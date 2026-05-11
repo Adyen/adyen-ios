@@ -8,7 +8,6 @@ import AdyenNetworking
 import UIKit
 
 /// Adds helper functionality to any `UIView` instance through the `adyen` property.
-@_spi(AdyenInternal)
 extension AdyenScope where Base: UIView {
 
     /// Attaches top, bottom, left and right anchors of this view to the corresponding anchors inside the specified view.
@@ -16,7 +15,7 @@ extension AdyenScope where Base: UIView {
     /// - Parameter view: Container view
     /// - Parameter padding: Padding values for each edge. Default is 0 on all edges.
     @discardableResult
-    public func anchor(
+    package func anchor(
         inside view: UIView,
         with padding: UIEdgeInsets = .zero
     ) -> [NSLayoutConstraint] {
@@ -31,7 +30,7 @@ extension AdyenScope where Base: UIView {
     /// - Parameter margins: The layout guide to constraint to.
     /// - Parameter padding: Padding values for each edge. Default is 0 on all edges.
     @discardableResult
-    public func anchor(
+    package func anchor(
         inside margins: UILayoutGuide,
         with padding: UIEdgeInsets = .zero
     ) -> [NSLayoutConstraint] {
@@ -47,7 +46,7 @@ extension AdyenScope where Base: UIView {
     ///   - anchorSource: The anchor source to contain this view.
     ///   - edgeInsets: Edges with inset values on which the views should be anchored. Defaults to all 4 edges with 0 inset each.
     @discardableResult
-    public func anchor(
+    package func anchor(
         inside anchorSource: LayoutAnchorSource,
         edgeInsets: EdgeInsets = .zero
     ) -> [NSLayoutConstraint] {
@@ -94,7 +93,7 @@ extension AdyenScope where Base: UIView {
     /// Wrap the view inside a container view with certain edge insets
     ///
     /// - Parameter insets: The insets inside the container view.
-    public func wrapped(with insets: UIEdgeInsets = .zero) -> UIView {
+    package func wrapped(with insets: UIEdgeInsets = .zero) -> UIView {
         let containerView = UIView()
         containerView.addSubview(base)
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -104,8 +103,8 @@ extension AdyenScope where Base: UIView {
     }
 
     /// An enum to specify an anchor source
-    public enum LayoutAnchorSource {
-        
+    package enum LayoutAnchorSource {
+
         /// Regular `UIView` object
         case view(UIView)
         
@@ -123,18 +122,18 @@ extension AdyenScope where Base: UIView {
     }
     
     /// Inset distances for views that can be nil.
-    public struct EdgeInsets {
-        
-        public var top: CGFloat?
+    package struct EdgeInsets {
 
-        public var left: CGFloat?
+        package var top: CGFloat?
 
-        public var bottom: CGFloat?
+        package var left: CGFloat?
 
-        public var right: CGFloat?
-        
+        package var bottom: CGFloat?
+
+        package var right: CGFloat?
+
         /// Creates insets with 0 on all 4 values.
-        public static var zero: EdgeInsets {
+        package static var zero: EdgeInsets {
             .init(top: 0, left: 0, bottom: 0, right: 0)
         }
         
@@ -145,7 +144,7 @@ extension AdyenScope where Base: UIView {
             right = edgeInsets.right
         }
         
-        public init(top: CGFloat? = nil, left: CGFloat? = nil, bottom: CGFloat? = nil, right: CGFloat? = nil) {
+        package init(top: CGFloat? = nil, left: CGFloat? = nil, bottom: CGFloat? = nil, right: CGFloat? = nil) {
             self.top = top
             self.left = left
             self.bottom = bottom

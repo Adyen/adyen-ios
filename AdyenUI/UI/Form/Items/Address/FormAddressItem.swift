@@ -4,20 +4,20 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import Foundation
 
 /// A full address form, suitable for all countries.
-@_spi(AdyenInternal)
-public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, AdyenObserver, CompoundFormItem {
-    
+package final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, AdyenObserver, CompoundFormItem {
+
     private var context: AddressViewModelBuilderContext {
         didSet {
             self.reloadFields()
         }
     }
     
-    override public var value: PostalAddress {
+    override package var value: PostalAddress {
         didSet {
             updateCountryPicker()
         }
@@ -43,18 +43,17 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     
     internal weak var delegate: SelfRenderingFormItemDelegate?
     
-    override public var subitems: [FormItem] {
+    override package var subitems: [FormItem] {
         items
     }
     
     internal let addressViewModelBuilder: AddressViewModelBuilder
     
     private weak var presenter: ViewControllerPresenter?
-    
-    @_spi(AdyenInternal)
-    public private(set) var addressViewModel: AddressViewModel
 
-    override public var title: String? {
+    package private(set) var addressViewModel: AddressViewModel
+
+    override package var title: String? {
         didSet {
             headerItem.text = title ?? ""
         }
@@ -66,7 +65,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
     ///   - configuration: The configuration of the FormAddressItem
     ///   - identifier: The item identifier
     ///   - addressViewModelBuilder: The Address view model builder
-    public init(
+    package init(
         initialCountry: String,
         configuration: Configuration,
         identifier: String? = nil,
@@ -125,7 +124,7 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         )
     }()
     
-    public func updateOptionalStatus(isOptional: Bool) {
+    package func updateOptionalStatus(isOptional: Bool) {
         context.isOptional = isOptional
     }
     
@@ -271,9 +270,9 @@ public final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>, 
         }
     }
         
-    // MARK: - Public
-    
-    override public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    // MARK: - package
+
+    override package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
 }

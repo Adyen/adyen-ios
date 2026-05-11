@@ -4,15 +4,15 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 #if canImport(AdyenComponents)
     import AdyenComponents
 #endif
 #if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
+    import AdyenActions
 #endif
 #if canImport(AdyenCard)
-    @_spi(AdyenInternal) import AdyenCard
+    import AdyenCard
 #endif
 import AdyenNetworking
 import UIKit
@@ -59,14 +59,13 @@ extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
     }
 }
 
-@_spi(AdyenInternal)
 extension DropInComponent: TrackableComponent {
-    public var analyticsFlavor: AnalyticsFlavor {
+    package var analyticsFlavor: AnalyticsFlavor {
         let paymentMethodTypes = paymentMethods.regular.map(\.type.rawValue)
         return .dropIn(paymentMethods: paymentMethodTypes)
     }
 
-    public func sendDidLoadEvent() {
+    package func sendDidLoadEvent() {
         var infoEvent = AnalyticsEventInfo(component: "dropin", type: .rendered)
         infoEvent.configData = DropInAnalyticsConfiguration(configuration: configuration)
         context.analyticsProvider?.add(info: infoEvent)

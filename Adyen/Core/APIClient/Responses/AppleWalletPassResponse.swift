@@ -7,8 +7,7 @@
 import AdyenNetworking
 import Foundation
 
-@_spi(AdyenInternal)
-public struct AppleWalletPassResponse: Response {
+package struct AppleWalletPassResponse: Response {
 
     public let passData: Data
 
