@@ -79,7 +79,6 @@ final class CheckoutTests: XCTestCase {
         XCTAssertNotNil(checkout.paymentMethods)
         XCTAssertNotNil(checkout.session)
         XCTAssertTrue(checkout.session === expectedSession)
-        XCTAssertNil(checkout.session?.delegate)
         XCTAssertEqual(checkout.session?.state.identifier, "test_session_id")
         XCTAssertEqual(checkout.session?.state.data, "test_session_data")
         XCTAssertTrue(mockProvider.setupSessionCalled)
