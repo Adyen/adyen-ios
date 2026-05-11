@@ -74,7 +74,6 @@ class PaymentMethodTests: XCTestCase {
                 giftCard1,
                 givexGiftCard,
                 mealVoucherSodexo,
-                bizum,
                 boletoBancario,
                 boletoBancarioSantander,
                 primeiroPayBoleto,
@@ -85,7 +84,8 @@ class PaymentMethodTests: XCTestCase {
                 cashAppPay,
                 idealDictionary,
                 payto,
-                irisDictionary
+                irisDictionary,
+                bizum
             ]
         ]
     }
@@ -302,57 +302,57 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethods.regular[25].name, "Sodexo")
         XCTAssertEqual(paymentMethods.regular[25].type.rawValue, "mealVoucher_FR_sodexo")
         
-        XCTAssertTrue(paymentMethods.regular[26] is InstantPaymentMethod)
-        XCTAssertEqual(paymentMethods.regular[26].name, "Bizum")
-        XCTAssertEqual(paymentMethods.regular[26].type.rawValue, "bizum")
-        
+        XCTAssertTrue(paymentMethods.regular[26] is BoletoPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[26].name, "Boleto Bancario")
+        XCTAssertEqual(paymentMethods.regular[26].type.rawValue, "boletobancario")
+
         XCTAssertTrue(paymentMethods.regular[27] is BoletoPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[27].name, "Boleto Bancario")
-        XCTAssertEqual(paymentMethods.regular[27].type.rawValue, "boletobancario")
+        XCTAssertEqual(paymentMethods.regular[27].type.rawValue, "boletobancario_santander")
 
         XCTAssertTrue(paymentMethods.regular[28] is BoletoPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[28].name, "Boleto Bancario")
-        XCTAssertEqual(paymentMethods.regular[28].type.rawValue, "boletobancario_santander")
+        XCTAssertEqual(paymentMethods.regular[28].type.rawValue, "primeiropay_boleto")
 
         XCTAssertTrue(paymentMethods.regular[29] is BoletoPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[29].name, "Boleto Bancario")
-        XCTAssertEqual(paymentMethods.regular[29].type.rawValue, "primeiropay_boleto")
+        XCTAssertEqual(paymentMethods.regular[29].type.rawValue, "boletobancario_itau")
 
-        XCTAssertTrue(paymentMethods.regular[30] is BoletoPaymentMethod)
-        XCTAssertEqual(paymentMethods.regular[30].name, "Boleto Bancario")
-        XCTAssertEqual(paymentMethods.regular[30].type.rawValue, "boletobancario_itau")
+        XCTAssertTrue(paymentMethods.regular[30] is AffirmPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[30].name, "Affirm")
+        XCTAssertEqual(paymentMethods.regular[30].type.rawValue, "affirm")
 
-        XCTAssertTrue(paymentMethods.regular[31] is AffirmPaymentMethod)
-        XCTAssertEqual(paymentMethods.regular[31].name, "Affirm")
-        XCTAssertEqual(paymentMethods.regular[31].type.rawValue, "affirm")
+        XCTAssertTrue(paymentMethods.regular[31] is AtomePaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[31].name, "Atome")
+        XCTAssertEqual(paymentMethods.regular[31].type.rawValue, "atome")
 
-        XCTAssertTrue(paymentMethods.regular[32] is AtomePaymentMethod)
-        XCTAssertEqual(paymentMethods.regular[32].name, "Atome")
-        XCTAssertEqual(paymentMethods.regular[32].type.rawValue, "atome")
+        XCTAssertTrue(paymentMethods.regular[32] is UPIPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[32].name, "UPI")
+        XCTAssertEqual(paymentMethods.regular[32].type.rawValue, "upi")
 
-        XCTAssertTrue(paymentMethods.regular[33] is UPIPaymentMethod)
-        XCTAssertEqual(paymentMethods.regular[33].name, "UPI")
-        XCTAssertEqual(paymentMethods.regular[33].type.rawValue, "upi")
-
-        let cashAppPay = try XCTUnwrap(paymentMethods.regular[34] as? CashAppPayPaymentMethod)
+        let cashAppPay = try XCTUnwrap(paymentMethods.regular[33] as? CashAppPayPaymentMethod)
         XCTAssertEqual(cashAppPay.name, "Cash App Pay")
         XCTAssertEqual(cashAppPay.type.rawValue, "cashapp")
         XCTAssertEqual(cashAppPay.clientId, "testClient")
         XCTAssertEqual(cashAppPay.scopeId, "testScope")
         
         // iDEAL has issuers but should decode as InstantPaymentMethod, not IssuerListPaymentMethod
-        let iDealPaymentMethod = try XCTUnwrap(paymentMethods.regular[35] as? InstantPaymentMethod)
+        let iDealPaymentMethod = try XCTUnwrap(paymentMethods.regular[34] as? InstantPaymentMethod)
         XCTAssertEqual(iDealPaymentMethod.type, .ideal)
         XCTAssertEqual(iDealPaymentMethod.name, "iDeal")
 
-        let payToPaymentMethod = try XCTUnwrap(paymentMethods.regular[36] as? PayToPaymentMethod)
+        let payToPaymentMethod = try XCTUnwrap(paymentMethods.regular[35] as? PayToPaymentMethod)
         XCTAssertEqual(payToPaymentMethod.type.rawValue, "payto")
         XCTAssertEqual(payToPaymentMethod.name, "payto")
 
         // IRIS has issuers but should decode as InstantPaymentMethod, not IssuerListPaymentMethod
-        let irisPaymentMethod = try XCTUnwrap(paymentMethods.regular[37] as? InstantPaymentMethod)
+        let irisPaymentMethod = try XCTUnwrap(paymentMethods.regular[36] as? InstantPaymentMethod)
         XCTAssertEqual(irisPaymentMethod.type, .iris)
         XCTAssertEqual(irisPaymentMethod.name, "IRIS")
+        
+        XCTAssertTrue(paymentMethods.regular[37] is InstantPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[37].name, "Bizum")
+        XCTAssertEqual(paymentMethods.regular[37].type.rawValue, "bizum")
     }
     
     // MARK: - Display Information Override

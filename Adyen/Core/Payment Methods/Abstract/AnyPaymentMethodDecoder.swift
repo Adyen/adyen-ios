@@ -42,7 +42,6 @@ internal enum AnyPaymentMethodDecoder {
         .afterpay: UnsupportedPaymentMethodDecoder(),
         .androidPay: UnsupportedPaymentMethodDecoder(),
         .amazonPay: UnsupportedPaymentMethodDecoder(),
-        
         .upiQr: UnsupportedPaymentMethodDecoder(),
         .upiIntent: UnsupportedPaymentMethodDecoder(),
         .upiCollect: UnsupportedPaymentMethodDecoder(),
