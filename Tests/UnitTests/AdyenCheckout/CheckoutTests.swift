@@ -10,6 +10,7 @@
 @_spi(AdyenInternal) @testable import AdyenDropIn
 @_spi(AdyenInternal) @testable import AdyenComponents
 @_spi(AdyenInternal) @testable import AdyenActions
+import UIKit
 import XCTest
 
 @MainActor

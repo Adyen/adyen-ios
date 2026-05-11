@@ -77,6 +77,11 @@ public final class Session: SessionProtocol {
         self.baseAPIClient = baseAPIClient
         self.context = context
     }
+}
+
+// MARK: - Setup
+
+extension Session {
     
     /// Initializes an instance of ``Session`` asynchronously.
     /// - Parameter sessionResponse: The session setup initial data.
@@ -89,7 +94,6 @@ public final class Session: SessionProtocol {
         apiClient: AsyncAPIClientProtocol,
         context: AdyenContext
     ) async throws -> Session {
-        
         let sessionState = try await makeSetupCall(
             with: sessionResponse,
             baseAPIClient: apiClient
@@ -109,7 +113,6 @@ public final class Session: SessionProtocol {
         baseAPIClient: AsyncAPIClientProtocol,
         order: PartialPaymentOrder? = nil
     ) async throws -> State {
-        
         let sessionId = sessionResponse.id
         let sessionData = sessionResponse.sessionData
         
@@ -131,10 +134,12 @@ public final class Session: SessionProtocol {
             responseConfiguration: response.configuration
         )
     }
+}
+
+// MARK: - Session API
+
+extension Session {
     
-    // MARK: - API
-    
-    @MainActor
     package func performSubmit(_ data: PaymentComponentData) async throws -> SubmitResult {
         let request = PaymentsRequest(
             sessionId: state.identifier,
@@ -142,10 +147,16 @@ public final class Session: SessionProtocol {
             data: data
         )
         let response: PaymentsResponse = try await apiClient.performAsync(request)
-        return try response.asSubmitResult()
+        guard let order = response.order,
+              let remainingAmount = order.remainingAmount,
+              remainingAmount.value > 0 else {
+            return response.asSubmitResult(paymentMethods: state.paymentMethods)
+        }
+        let newState = try await updatedState(with: order, result: response)
+        state = newState
+        return response.asSubmitResult(paymentMethods: newState.paymentMethods)
     }
     
-    @MainActor
     package func performAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult {
         let request = PaymentDetailsRequest(
             sessionId: state.identifier,
@@ -157,17 +168,77 @@ public final class Session: SessionProtocol {
         return try response.asAdditionalDetailsResult()
     }
     
-    // MARK: - Private
+    package func performBalanceCheck(with data: PaymentComponentData) async throws -> Balance {
+        let request = BalanceCheckRequest(
+            sessionId: state.identifier,
+            sessionData: state.data,
+            data: data
+        )
+        let response: BalanceCheckResponse = try await apiClient.performAsync(request)
+        guard let availableAmount = response.balance else {
+            throw BalanceChecker.Error.zeroBalance
+        }
+        return Balance(availableAmount: availableAmount, transactionLimit: response.transactionLimit)
+    }
     
-    private func updateSession(with data: SessionDataAware) {
+    package func requestOrder() async throws -> PartialPaymentOrder {
+        let request = CreateOrderRequest(
+            sessionId: state.identifier,
+            sessionData: state.data
+        )
+        let response: CreateOrderResponse = try await apiClient.performAsync(request)
+        return response.order
+    }
+    
+    package func cancelOrder(_ order: PartialPaymentOrder) async {
+        let request = CancelOrderRequest(
+            sessionId: state.identifier,
+            sessionData: state.data,
+            order: order
+        )
+        _ = try? await apiClient.performAsync(request) as CancelOrderResponse
+    }
+    
+    package func disable(storedPaymentMethod: StoredPaymentMethod) async throws {
+        let request = DisableStoredPaymentMethodRequest(
+            sessionId: state.identifier,
+            sessionData: state.data,
+            storedPaymentMethodId: storedPaymentMethod.identifier
+        )
+        _ = try await apiClient.performAsync(request) as EmptyResponse
+    }
+}
+
+// MARK: - Session State Updates
+
+private extension Session {
+    
+    func updatedState(with order: PartialPaymentOrder, result: PaymentsResponse) async throws -> State {
+        let initialInfo = SessionResponse(
+            id: state.identifier,
+            sessionData: state.data
+        )
+        var newState = try await Self.makeSetupCall(
+            with: initialInfo,
+            baseAPIClient: apiClient,
+            order: order
+        )
+        newState.resultCode = result.resultCode
+        newState.sessionResult = result.sessionResult
+        return newState
+    }
+    
+    func updateSession(with data: SessionDataAware) {
         state.data = data.sessionData
     }
     
-    private func updateSession(with result: SessionResultAware) {
+    func updateSession(with result: SessionResultAware) {
         state.resultCode = result.resultCode
         state.sessionResult = result.sessionResult
     }
 }
+
+// MARK: - State
 
 extension Session {
     
@@ -202,6 +273,8 @@ extension Session {
         internal let responseConfiguration: SessionSetupResponse.Configuration
     }
 }
+
+// MARK: - Component Configuration Awareness
 
 @_spi(AdyenInternal)
 extension Session: AdyenSessionAware {

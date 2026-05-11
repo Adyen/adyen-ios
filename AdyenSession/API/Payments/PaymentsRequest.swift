@@ -112,14 +112,14 @@ internal struct PaymentsResponse: SessionDataAware, SessionResultAware {
 }
 
 internal extension PaymentsResponse {
-    func asSubmitResult() throws -> SubmitResult {
+    func asSubmitResult(paymentMethods: PaymentMethods) -> SubmitResult {
         if let action {
             return .action(action)
         }
         if let order,
            let remainingAmount = order.remainingAmount,
            remainingAmount.value > 0 {
-            throw PartialPaymentError.notSupportedForComponent
+            return .partialPayment(PartialPayment(order: order, paymentMethods: paymentMethods))
         }
         return .completion(resultCode: resultCode.rawValue)
     }

@@ -268,6 +268,22 @@ public extension Checkout {
     func createDropIn() -> DropInComponent? {
         // TODO: dropin creation discussion with new changes
         nil
+//        guard let paymentMethods else { return nil }
+//
+//        let dropInConfiguration = DropInComponent.Configuration(theme: configuration.theme)
+//        let dropIn = DropInComponent(
+//            paymentMethods: paymentMethods,
+//            context: adyenContext,
+//            configuration: dropInConfiguration
+//        )
+//        dropIn.delegate = self
+//
+//        if session != nil {
+//            dropIn.partialPaymentDelegate = self
+//            dropIn.storedPaymentMethodsDelegate = self
+//        }
+//
+//        return dropIn
     }
 
     /// Handles an action received from the `/payments` or `/payments/details` response.
