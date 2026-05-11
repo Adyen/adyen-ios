@@ -58,22 +58,60 @@ final class ApplePayPaymentMethodTests: XCTestCase {
         XCTAssertEqual(expectedBrands, receivedBrands)
     }
 
-    func testSupportedNetworks_givenDuplicateNetworks_shouldUseFirstOccurrence() {
+    func testSupportedNetworks_givenMultipleNetworksWithSameTxVariantName_shouldReturnAll() {
         // Given
-        let expectedBrands = ["cartebancaire"]
-        let sut = makeSUT(brands: expectedBrands)
+        let sut = makeSUT(brands: ["cartebancaire"])
         let networksProviderMock = ApplePayNetworksProvidingMock()
-        networksProviderMock.availableNetworksReturnValue = [
-            PKPaymentNetwork(rawValue: "cartebancaire"), // first
-            PKPaymentNetwork(rawValue: "cartebancaire") // duplicate—ignored
-        ]
+        let network1 = PKPaymentNetwork.carteBancaire
+        let network2 = PKPaymentNetwork.cartesBancaires
+        networksProviderMock.availableNetworksReturnValue = [network1, network2]
 
         // When
         let result = sut.supportedNetworks(provider: networksProviderMock)
 
         // Then
-        let receivedBrands = result.map(\.txVariantName)
-        XCTAssertEqual(expectedBrands, receivedBrands)
+        XCTAssertEqual(result.count, 2)
+        XCTAssertEqual(result[0], network1)
+        XCTAssertEqual(result[1], network2)
+    }
+
+    func testSupportedNetworks_givenMultipleBrandsWithMultipleVariants_shouldReturnAllGroupedByBrand() {
+        // Given
+        let sut = makeSUT(brands: ["visa", "mc"])
+        let networksProviderMock = ApplePayNetworksProvidingMock()
+        let visa1 = PKPaymentNetwork(rawValue: "visa")
+        let visa2 = PKPaymentNetwork(rawValue: "Visa")
+        let mc1 = PKPaymentNetwork.masterCard
+        let mc2 = PKPaymentNetwork(rawValue: "mc")
+        networksProviderMock.availableNetworksReturnValue = [visa1, visa2, mc1, mc2]
+
+        // When
+        let result = sut.supportedNetworks(provider: networksProviderMock)
+
+        // Then: visa variants first (in provider order), then mc variants
+        XCTAssertEqual(result.count, 4)
+        XCTAssertEqual(result[0], visa1)
+        XCTAssertEqual(result[1], visa2)
+        XCTAssertEqual(result[2], mc1)
+        XCTAssertEqual(result[3], mc2)
+    }
+
+    func testSupportedNetworks_givenBrandWithNoMatchingVariants_shouldSkipIt() {
+        // Given
+        let sut = makeSUT(brands: ["visa", "unknown", "mc"])
+        let networksProviderMock = ApplePayNetworksProvidingMock()
+        let visa1 = PKPaymentNetwork(rawValue: "visa")
+        let visa2 = PKPaymentNetwork(rawValue: "VISA")
+        networksProviderMock.availableNetworksReturnValue = [visa1, visa2, .masterCard]
+
+        // When
+        let result = sut.supportedNetworks(provider: networksProviderMock)
+
+        // Then: visa variants, then mc (unknown skipped)
+        XCTAssertEqual(result.count, 3)
+        XCTAssertEqual(result[0], visa1)
+        XCTAssertEqual(result[1], visa2)
+        XCTAssertEqual(result[2], .masterCard)
     }
 
     func testSupportedNetworks_givenBrandsOrder_shouldPreserveOrderInOutput() {

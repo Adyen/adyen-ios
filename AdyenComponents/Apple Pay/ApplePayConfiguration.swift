@@ -190,15 +190,8 @@ extension ApplePayPaymentMethod {
         guard let brands else { return networks }
 
         // Build a lookup table from txVariantName → PKPaymentNetwork.
-        // Some networks appear more than once on iOS (e.g., cartebancaire), so we
-        // keep the first occurrence and ignore duplicates.
-        let networkByBrand: [String: PKPaymentNetwork] = networks.reduce(into: [:]) { dict, network in
-            if dict[network.txVariantName] == nil {
-                dict[network.txVariantName] = network
-            }
-        }
-
-        return brands.compactMap { networkByBrand[$0] }
+        let networkByBrand = Dictionary(grouping: networks, by: \.txVariantName)
+        return brands.flatMap { networkByBrand[$0] ?? [] }
     }
 }
 
