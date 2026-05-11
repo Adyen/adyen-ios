@@ -10,7 +10,6 @@
 public final class AdyenSessionMock: SessionProtocol {
     public var state: Session.State
     public var currentResult: CheckoutResult?
-    public var delegate: SessionDelegate?
     public var presentationDelegate: PresentationDelegate?
     public var showRemovePaymentMethodButton = false
 
@@ -29,11 +28,9 @@ public final class AdyenSessionMock: SessionProtocol {
 
     internal init(
         state: Session.State,
-        delegate: SessionDelegate? = nil,
         presentationDelegate: PresentationDelegate? = nil
     ) {
         self.state = state
-        self.delegate = delegate
         self.presentationDelegate = presentationDelegate
     }
     
@@ -69,21 +66,6 @@ public final class AdyenSessionMock: SessionProtocol {
         disableStoredPaymentMethodCalled = true
     }
     
-    public func didSubmit(
-        _ paymentComponentData: PaymentComponentData,
-        from component: any PaymentComponent,
-        dropInComponent: (any AnyDropInComponent)?
-    ) {
-        didSubmitCalled = true
-    }
-    
-    public func didProvide(
-        _ actionComponentData: ActionComponentData,
-        from component: any ActionComponent,
-        dropInComponent: (any AnyDropInComponent)?
-    ) {
-        didProvideCalled = true
-    }
 }
 
 private enum AdyenSessionMockError: Error {

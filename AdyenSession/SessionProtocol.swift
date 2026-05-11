@@ -13,7 +13,6 @@ import AdyenNetworking
 package protocol SessionProtocol: AnyObject {
     var state: Session.State { get }
     var currentResult: CheckoutResult? { get }
-    var delegate: SessionDelegate? { get set }
     var presentationDelegate: PresentationDelegate? { get set }
     
     var showRemovePaymentMethodButton: Bool { get }
