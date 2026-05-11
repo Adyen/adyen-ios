@@ -74,7 +74,6 @@ class PaymentMethodTests: XCTestCase {
                 giftCard1,
                 givexGiftCard,
                 mealVoucherSodexo,
-                bizum,
                 boletoBancario,
                 boletoBancarioSantander,
                 primeiroPayBoleto,
@@ -85,7 +84,8 @@ class PaymentMethodTests: XCTestCase {
                 cashAppPay,
                 idealDictionary,
                 payto,
-                irisDictionary
+                irisDictionary,
+                bizum
             ]
         ]
     }
@@ -184,7 +184,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 37)
+        XCTAssertEqual(paymentMethods.regular.count, 38)
 
         let creditCardPaymentMethod = try XCTUnwrap(paymentMethods.regular[0] as? CardPaymentMethod)
         XCTAssertEqual(creditCardPaymentMethod.fundingSource, .credit)
@@ -349,6 +349,10 @@ class PaymentMethodTests: XCTestCase {
         let irisPaymentMethod = try XCTUnwrap(paymentMethods.regular[36] as? InstantPaymentMethod)
         XCTAssertEqual(irisPaymentMethod.type, .iris)
         XCTAssertEqual(irisPaymentMethod.name, "IRIS")
+        
+        XCTAssertTrue(paymentMethods.regular[37] is InstantPaymentMethod)
+        XCTAssertEqual(paymentMethods.regular[37].name, "Bizum")
+        XCTAssertEqual(paymentMethods.regular[37].type.rawValue, "bizum")
     }
     
     // MARK: - Display Information Override
