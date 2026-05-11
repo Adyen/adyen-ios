@@ -51,9 +51,6 @@ public struct AnalyticsConfiguration {
 
     /// A Boolean value that determines whether analytics is enabled.
     public let isEnabled: Bool
-    
-    @_spi(AdyenInternal)
-    public var context: AnalyticsContext = .init()
 
     // MARK: - Initializers
     
