@@ -5,7 +5,7 @@
         "currency" : "EUR",
         "value" : 17408
     },
-    "channel" : "iOS",
+    "channel" : "ios",
     "countryCode" : "NL",
     "additionalData" : {
         "allow3DS2" : "true"

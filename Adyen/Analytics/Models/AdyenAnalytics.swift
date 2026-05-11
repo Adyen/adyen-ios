@@ -48,8 +48,6 @@ public struct AnalyticsConfiguration {
 
     /// A Boolean value that determines whether analytics is enabled.
     public let isEnabled: Bool
-    
-    package var context: AnalyticsContext = .init()
 
     // MARK: - Initializers
     
