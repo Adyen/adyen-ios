@@ -31,6 +31,9 @@ public protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentMe
     var delegate: PaymentComponentDelegate? { get set }
 
     var type: PaymentComponentType { get }
+
+    @_spi(AdyenInternal)
+    var paymentMethodBehavior: SDKData.PaymentMethodBehavior { get }
 }
 
 public extension PaymentComponent where Self: PresentableComponent {
@@ -80,6 +83,7 @@ extension PaymentComponent {
 
         let sdkData = SDKData(
             checkoutAttemptId: checkoutAttemptId,
+            paymentMethodBehavior: paymentMethodBehavior,
             authenticationProvider: data.paymentMethod as? SDKDataAuthenticationProvider
         )
         

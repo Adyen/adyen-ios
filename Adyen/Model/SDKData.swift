@@ -6,21 +6,22 @@
 
 import Foundation
 
-package struct SDKData: Codable {
+@_spi(AdyenInternal)
+public struct SDKData: Codable {
 
     internal struct Analytics: Codable {
         internal let checkoutAttemptId: String
     }
 
-    package struct Authentication: Codable {
+    public struct Authentication: Codable {
         internal let threeDS2SdkVersion: String
 
-        package init(threeDS2SdkVersion: String) {
+        public init(threeDS2SdkVersion: String) {
             self.threeDS2SdkVersion = threeDS2SdkVersion
         }
     }
 
-    package enum PaymentMethodBehavior: String, Codable {
+    public enum PaymentMethodBehavior: String, Codable {
         /// Indicates that the SDK has a specific component for this payment method.
         case nativeComponent
 
@@ -40,7 +41,8 @@ package struct SDKData: Codable {
     private let platform: String = checkoutPlatformParams.platform.rawValue
     private let sdkVersion: String = checkoutPlatformParams.version
 
-    package var encodedValue: String? {
+    @_spi(AdyenInternal)
+    public var encodedValue: String? {
         try? AdyenCoder.encodeBase64(self)
     }
 
@@ -71,18 +73,21 @@ package struct SDKData: Codable {
     }
 }
 
-package protocol SDKDataAuthenticationProvider {
+@_spi(AdyenInternal)
+public protocol SDKDataAuthenticationProvider {
     var authentication: SDKData.Authentication { get }
 }
 
-package extension PaymentComponent {
+@_spi(AdyenInternal)
+public extension PaymentComponent {
 
     var paymentMethodBehavior: SDKData.PaymentMethodBehavior {
         .nativeComponent
     }
 }
 
-package extension InstantPaymentComponent {
+@_spi(AdyenInternal)
+public extension InstantPaymentComponent {
 
     var paymentMethodBehavior: SDKData.PaymentMethodBehavior {
         .genericComponent
