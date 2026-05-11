@@ -62,7 +62,6 @@ internal enum AnyPaymentMethodDecoder {
         .achDirectDebit: ACHDirectDebitPaymentMethodDecoder(),
         .applePay: ApplePayPaymentMethodDecoder(),
         .payPal: PayPalPaymentMethodDecoder(),
-        .bizum: InstantPaymentMethodDecoder(),
         .bcmc: BCMCCardPaymentMethodDecoder(),
         .weChatPaySDK: WeChatPayPaymentMethodDecoder(),
         .qiwiWallet: QiwiWalletPaymentMethodDecoder(),
@@ -102,19 +101,6 @@ internal enum AnyPaymentMethodDecoder {
             let type = try PaymentMethodType(rawValue: container.decode(String.self, forKey: .type))
             let isStored = decoder.codingPath.contains { $0.stringValue == PaymentMethods.CodingKeys.stored.stringValue }
             let brand = try? container.decode(String.self, forKey: .brand)
-            let isIssuersList = try container.containsValue(.issuers)
-            
-            if type == .ideal {
-                return try InstantPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
-            }
-            
-            if isIssuersList {
-                if type == .onlineBankingCZ || type == .onlineBankingSK {
-                    return try OnlineBankingPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
-                }
-                
-                return try IssuerListPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
-            }
 
             // This is a hack to handle stored Bancontact as a separate
             // payment method, even though Bancontact is just another
@@ -127,9 +113,13 @@ internal enum AnyPaymentMethodDecoder {
             if isStored, brand == "bcmc", type == .scheme {
                 return try decoders[.bcmc, default: defaultDecoder].decode(from: decoder, isStored: true)
             }
-            
-            let paymentDecoder = type.map { decoders[$0, default: defaultDecoder] } ?? defaultDecoder
-            return try paymentDecoder.decode(from: decoder, isStored: isStored)
+
+            // Use type-specific decoder if available
+            if let type, let paymentDecoder = decoders[type] {
+                return try paymentDecoder.decode(from: decoder, isStored: isStored)
+            }
+
+            return try defaultDecoder.decode(from: decoder, isStored: isStored)
         } catch {
             return .none
         }
