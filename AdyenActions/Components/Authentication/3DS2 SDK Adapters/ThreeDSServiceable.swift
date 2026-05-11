@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
-@_spi(AdyenInternal) import Adyen
 
 /// This protocol abstracts the SDK logic away.
 /// The 3DS2 SDK performs 2 tasks - fingerprint & challenge.

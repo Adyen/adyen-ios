@@ -4,7 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import UIKit
 
 @_spi(AdyenInternal)
@@ -18,8 +19,7 @@ public enum AddressField: String, CaseIterable {
     case country
 }
 
-@_spi(AdyenInternal)
-public enum AddressFormScheme {
+package enum AddressFormScheme {
     public var children: [AddressField] {
         switch self {
         case let .item(item): return [item]
@@ -37,13 +37,11 @@ public struct AddressViewModel {
     internal var labels: [AddressField: LocalizationKey]
     internal var placeholder: [AddressField: LocalizationKey]
 
-    @_spi(AdyenInternal)
-    public var optionalFields: [AddressField]
+    package var optionalFields: [AddressField]
 
-    @_spi(AdyenInternal)
-    public var scheme: [AddressFormScheme]
+    package var scheme: [AddressFormScheme]
 
-    public init(
+    package init(
         labels: [AddressField: LocalizationKey],
         placeholder: [AddressField: LocalizationKey],
         optionalFields: [AddressField],
@@ -57,9 +55,8 @@ public struct AddressViewModel {
 
 }
 
-@_spi(AdyenInternal)
-public extension AddressViewModel {
-    
+package extension AddressViewModel {
+
     /// Returns all fields that are not specified as `optionalFields`
     var requiredFields: Set<AddressField> {
         let allAddressFieldsInScheme: Set<AddressField> = Set(scheme.flatMap(\.children))
@@ -90,8 +87,7 @@ extension AddressField {
     }
 }
 
-@_spi(AdyenInternal)
-public extension PostalAddress {
+package extension PostalAddress {
 
     /// Validates whether all required fields are filled in and not empty
     func satisfies(requiredFields: Set<AddressField>) -> Bool {

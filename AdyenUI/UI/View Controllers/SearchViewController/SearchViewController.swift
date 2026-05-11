@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import UIKit
 
 /// Protocol specifying the interface of a view that is shown
@@ -28,7 +28,7 @@ public class SearchViewController: UIViewController, AdyenObserver {
     internal let emptyView: SearchResultsEmptyView
     
     /// Delegate to handle different viewController events.
-    public weak var delegate: ViewControllerDelegate?
+    package weak var delegate: ViewControllerDelegate?
     
     package lazy var resultsListViewController = ListViewController(style: viewModel.style)
 

@@ -4,13 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import UIKit
 
 /// A control to select a phone extension from a list.
-@_spi(AdyenInternal)
-public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExtensionPickerItem> {
-    
+package final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExtensionPickerItem> {
+
     private let theme: CheckoutTheme
     
     private enum Constants {
@@ -74,7 +73,7 @@ public final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExten
         }
     }
     
-    public required convenience init(item: FormPhoneExtensionPickerItem) {
+    package required convenience init(item: FormPhoneExtensionPickerItem) {
         self.init(item: item, theme: .default)
     }
     

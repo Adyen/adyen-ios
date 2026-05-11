@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import UIKit
 
 /// Displays a form for the user to enter details.
@@ -44,7 +44,7 @@ open class FormViewController: UIViewController, AdyenObserver {
     package var theme: CheckoutTheme = .init()
 
     /// Delegate to handle different viewController events.
-    public weak var delegate: ViewControllerDelegate?
+    package weak var delegate: ViewControllerDelegate?
 
     // MARK: - Private properties
 

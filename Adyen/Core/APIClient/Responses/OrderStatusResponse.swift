@@ -7,8 +7,7 @@
 import AdyenNetworking
 import Foundation
 
-@_spi(AdyenInternal)
-public struct OrderStatusResponse: Response {
+package struct OrderStatusResponse: Response {
 
     /// The remaining amount to be paid.
     public let remainingAmount: Amount
@@ -35,8 +34,7 @@ public struct OrderStatusResponse: Response {
     }
 }
 
-@_spi(AdyenInternal)
-public struct OrderPaymentMethod: PaymentMethod {
+package struct OrderPaymentMethod: PaymentMethod {
 
     public var name: String {
         String.Adyen.securedString + lastFour

@@ -4,12 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import Foundation
 import UIKit
 
-@_spi(AdyenInternal)
-public final class LoadingView: UIControl {
+package final class LoadingView: UIControl {
 
     private lazy var activityIndicatorView: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView(style: activityIndicatorStyle)
@@ -25,11 +24,11 @@ public final class LoadingView: UIControl {
 
     private let contentView: UIView
     
-    public var disableUserInteractionWhileLoading: Bool = false
-    
-    public var spinnerAppearanceDelay: DispatchTimeInterval = .seconds(1)
+    package var disableUserInteractionWhileLoading: Bool = false
 
-    public init(contentView: UIView) {
+    package var spinnerAppearanceDelay: DispatchTimeInterval = .seconds(1)
+
+    package init(contentView: UIView) {
         self.contentView = contentView
         super.init(frame: .zero)
         contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -44,12 +43,12 @@ public final class LoadingView: UIControl {
     }
 
     @available(*, unavailable)
-    public required init?(coder: NSCoder) {
+    package required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     /// Boolean value indicating whether an activity indicator should be shown.
-    public var showsActivityIndicator: Bool {
+    package var showsActivityIndicator: Bool {
         get {
             activityIndicatorView.isAnimating
         }

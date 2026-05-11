@@ -6,24 +6,23 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public final class BrazilSocialSecurityNumberValidator: CombinedValidator, StatusValidator {
-    
+package final class BrazilSocialSecurityNumberValidator: CombinedValidator, StatusValidator {
+
     private enum Constants {
         static let firstMaxLength = 11
         static let secondMaxLength = 14
     }
     
-    public let firstValidator: Validator
-    
-    public let secondValidator: Validator
-    
-    public init() {
+    package let firstValidator: Validator
+
+    package let secondValidator: Validator
+
+    package init() {
         self.firstValidator = NumericStringValidator(exactLength: Constants.firstMaxLength)
         self.secondValidator = NumericStringValidator(exactLength: Constants.secondMaxLength)
     }
     
-    public func validate(_ value: String) -> ValidationStatus {
+    package func validate(_ value: String) -> ValidationStatus {
         if value.isEmpty {
             return .invalid(BrazilAnalyticsValidationError.socialSecurityNumberEmpty)
         }
@@ -37,7 +36,7 @@ public final class BrazilSocialSecurityNumberValidator: CombinedValidator, Statu
         return .valid
     }
     
-    public func isValid(_ value: String) -> Bool {
+    package func isValid(_ value: String) -> Bool {
         validate(value).isValid
     }
 }

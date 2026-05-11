@@ -4,7 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import enum Adyen.ValidationStatus
 import Foundation
 
 /// Validates birthdate (YYMMDD) or the Corporate registration number (10 digits) for KCP.

@@ -4,12 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import Foundation
 
-@_spi(AdyenInternal)
-public final class FormPostalCodeItem: FormTextItem {
-    
+package final class FormPostalCodeItem: FormTextItem {
+
     private enum Constants {
         static let minLength = 2
         static let maxLength = 30

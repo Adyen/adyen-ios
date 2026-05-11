@@ -8,10 +8,9 @@ import Foundation
 
 /// A property wrapper to enable a property to be lazily initialized when its first called,
 /// with the added ability to nullify it and gets reinitialized when called again.
-@_spi(AdyenInternal)
 @propertyWrapper
-public final class LazyOptional<ValueType> {
-    
+package final class LazyOptional<ValueType> {
+
     private var _wrappedValue: ValueType?
     
     private let initialize: () -> ValueType

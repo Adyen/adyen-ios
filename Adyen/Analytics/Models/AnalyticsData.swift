@@ -12,7 +12,7 @@ import UIKit
 /// Used to e.g. override the version + platform from within the Flutter SDK
 @_spi(AdyenInternal)
 public struct AnalyticsContext {
-    
+
     internal let version: String
     internal let platform: Platform
     

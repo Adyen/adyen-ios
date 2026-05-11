@@ -4,29 +4,28 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import UIKit
 
 /// Simple form item that represent a single UImage element.
-@_spi(AdyenInternal)
-public class FormImageItem: FormItem {
+package class FormImageItem: FormItem {
 
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    package var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
 
-    public var subitems: [FormItem] = []
+    package var subitems: [FormItem] = []
 
     /// The name of the Image.
-    public var name: String
+    package var name: String
 
-    public var identifier: String?
+    package var identifier: String?
 
     /// The size of the Image.
-    public var size: CGSize
+    package var size: CGSize
 
     /// The style of the Image.
-    public var style: ImageStyle?
-    
-    public init(
+    package var style: ImageStyle?
+
+    package init(
         name: String,
         size: CGSize? = nil,
         style: ImageStyle? = nil,
@@ -38,7 +37,7 @@ public class FormImageItem: FormItem {
         self.identifier = identifier
     }
 
-    public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         FormImageView(item: self)
     }
 }

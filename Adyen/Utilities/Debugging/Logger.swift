@@ -19,8 +19,7 @@ public enum AdyenLogging {
 
 /// Copies the interface of `Swift.print()`,
 /// and `Swift.print()` is called inside after checking first if `AdyenLogging.isEnabled` is `true`, and returns if `false`.
-@_spi(AdyenInternal)
-public func adyenPrint(_ items: Any..., separator: String = " ", terminator: String = "\n") {
+package func adyenPrint(_ items: Any..., separator: String = " ", terminator: String = "\n") {
     guard AdyenLogging.isEnabled else { return }
     var idx = items.startIndex
     let endIdx = items.endIndex
