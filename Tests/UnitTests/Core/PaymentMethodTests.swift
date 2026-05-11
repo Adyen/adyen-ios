@@ -84,6 +84,7 @@ class PaymentMethodTests: XCTestCase {
                 cashAppPay,
                 idealDictionary,
                 payto,
+                irisDictionary,
                 bizum
             ]
         ]
@@ -183,7 +184,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 37)
+        XCTAssertEqual(paymentMethods.regular.count, 38)
 
         let creditCardPaymentMethod = try XCTUnwrap(paymentMethods.regular[0] as? CardPaymentMethod)
         XCTAssertEqual(creditCardPaymentMethod.fundingSource, .credit)
@@ -335,17 +336,21 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(cashAppPay.clientId, "testClient")
         XCTAssertEqual(cashAppPay.scopeId, "testScope")
         
-        XCTAssertTrue(paymentMethods.regular[34] is InstantPaymentMethod)
-        XCTAssertEqual(paymentMethods.regular[34].type.rawValue, "ideal")
-        XCTAssertEqual(paymentMethods.regular[34].name, "iDeal")
+        let iDealPaymentMethod = try XCTUnwrap(paymentMethods.regular[34] as? InstantPaymentMethod)
+        XCTAssertEqual(iDealPaymentMethod.type, .ideal)
+        XCTAssertEqual(iDealPaymentMethod.name, "iDeal")
 
-        XCTAssertTrue(paymentMethods.regular[35] is PayToPaymentMethod)
-        XCTAssertEqual(paymentMethods.regular[35].name, "payto")
-        XCTAssertEqual(paymentMethods.regular[35].type.rawValue, "payto")
-        
-        XCTAssertTrue(paymentMethods.regular[36] is InstantPaymentMethod)
-        XCTAssertEqual(paymentMethods.regular[36].name, "Bizum")
-        XCTAssertEqual(paymentMethods.regular[36].type.rawValue, "bizum")
+        let payToPaymentMethod = try XCTUnwrap(paymentMethods.regular[35] as? PayToPaymentMethod)
+        XCTAssertEqual(payToPaymentMethod.type.rawValue, "payto")
+        XCTAssertEqual(payToPaymentMethod.name, "payto")
+
+        let irisPaymentMethod = try XCTUnwrap(paymentMethods.regular[36] as? InstantPaymentMethod)
+        XCTAssertEqual(irisPaymentMethod.type.rawValue, "iris")
+        XCTAssertEqual(irisPaymentMethod.name, "IRIS")
+
+        let bizumPaymentMethod = try XCTUnwrap(paymentMethods.regular[37] as? InstantPaymentMethod)
+        XCTAssertEqual(bizumPaymentMethod.type.rawValue, "bizum")
+        XCTAssertEqual(bizumPaymentMethod.name, "Bizum")
     }
     
     // MARK: - Display Information Override
