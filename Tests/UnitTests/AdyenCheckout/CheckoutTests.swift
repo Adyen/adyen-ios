@@ -10,6 +10,7 @@
 @_spi(AdyenInternal) @testable import AdyenDropIn
 @_spi(AdyenInternal) @testable import AdyenComponents
 @_spi(AdyenInternal) @testable import AdyenActions
+import UIKit
 import XCTest
 
 @MainActor
@@ -78,7 +79,6 @@ final class CheckoutTests: XCTestCase {
         XCTAssertNotNil(checkout.paymentMethods)
         XCTAssertNotNil(checkout.session)
         XCTAssertTrue(checkout.session === expectedSession)
-        XCTAssertTrue(checkout.session?.delegate === checkout)
         XCTAssertEqual(checkout.session?.state.identifier, "test_session_id")
         XCTAssertEqual(checkout.session?.state.data, "test_session_data")
         XCTAssertTrue(mockProvider.setupSessionCalled)
@@ -170,6 +170,61 @@ final class CheckoutTests: XCTestCase {
     }
     
     // MARK: - payment component delegate
+    
+    func test_didSubmit_withSessionAndMissingOnSubmit_shouldPerformSubmit() async throws {
+        let onCompleteExpectation = expectation(description: "onComplete called")
+        let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
+        let paymentData = PaymentComponentData(
+            paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
+            amount: nil,
+            order: nil
+        )
+        let session = makeSessionMock()
+        session.performSubmitResult = .success(.completion(resultCode: CheckoutResultCode.authorised.rawValue))
+        configuration.onComplete = { result in
+            XCTAssertEqual(result.resultCode, .authorised)
+            onCompleteExpectation.fulfill()
+        }
+        let sut = Checkout(
+            configuration: configuration,
+            session: session,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        
+        sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
+        await fulfillment(of: [onCompleteExpectation], timeout: 1)
+        
+        XCTAssertTrue(session.performSubmitCalled)
+        XCTAssertFalse(session.didSubmitCalled)
+    }
+    
+    func test_didSubmit_withSessionPerformSubmitError_shouldCallOnError() async throws {
+        let onErrorExpectation = expectation(description: "onError called")
+        let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
+        let paymentData = PaymentComponentData(
+            paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
+            amount: nil,
+            order: nil
+        )
+        let session = makeSessionMock()
+        session.performSubmitResult = .failure(TestError())
+        configuration.onError = { _ in
+            onErrorExpectation.fulfill()
+        }
+        let sut = Checkout(
+            configuration: configuration,
+            session: session,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        
+        sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
+        await fulfillment(of: [onErrorExpectation], timeout: 1)
+        
+        XCTAssertTrue(session.performSubmitCalled)
+        XCTAssertFalse(session.didSubmitCalled)
+    }
     
     func test_didSubmit_callsOnSubmit_whenSet() async throws {
         let expectation = expectation(description: "onSubmit called")
@@ -468,6 +523,56 @@ final class CheckoutTests: XCTestCase {
     
     // MARK: - action component delegate
     
+    func test_didProvide_withSessionAndMissingOnAdditionalDetails_shouldPerformAdditionalDetails() async throws {
+        let onCompleteExpectation = expectation(description: "onComplete called")
+        let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
+        let paymentComponent = PaymentComponentMock(paymentMethod: blik)
+        let actionData = ActionComponentData(
+            details: AwaitActionDetails(payload: "payload"),
+            paymentData: "data"
+        )
+        let session = makeSessionMock()
+        session.performAdditionalDetailsResult = .success(.completion(resultCode: CheckoutResultCode.authorised.rawValue))
+        configuration.onComplete = { result in
+            XCTAssertEqual(result.resultCode, .authorised)
+            onCompleteExpectation.fulfill()
+        }
+        let sut = Checkout(
+            configuration: configuration,
+            session: session,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        sut.pendingPaymentComponent = paymentComponent
+        
+        sut.didProvide(actionData, from: ActionComponentMock())
+        await fulfillment(of: [onCompleteExpectation], timeout: 1)
+        
+        XCTAssertTrue(session.performAdditionalDetailsCalled)
+        XCTAssertFalse(session.didProvideCalled)
+    }
+    
+    func test_didComplete_withSessionCurrentResult_shouldCallOnComplete() async throws {
+        let onCompleteExpectation = expectation(description: "onComplete called")
+        let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
+        let session = makeSessionMock()
+        session.currentResult = CheckoutResult(resultCode: .authorised)
+        configuration.onComplete = { result in
+            XCTAssertEqual(result.resultCode, .authorised)
+            onCompleteExpectation.fulfill()
+        }
+        let sut = Checkout(
+            configuration: configuration,
+            session: session,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil
+        )
+        sut.pendingPaymentComponent = PaymentComponentMock(paymentMethod: blik)
+        
+        sut.didComplete(from: ActionComponentMock())
+        await fulfillment(of: [onCompleteExpectation], timeout: 1)
+    }
+    
     func test_didProvide_callsOnAdditionalDetails_whenSet() async {
         let expectation = expectation(description: "onAdditionalDetails called")
         let actionData = ActionComponentData(
@@ -610,6 +715,18 @@ final class CheckoutTests: XCTestCase {
         )
         sut.didProvide(actionData, from: ActionComponentMock())
         await fulfillment(of: [onErrorExpectation], timeout: 0.5)
+    }
+    
+    private func makeSessionMock() -> AdyenSessionMock {
+        AdyenSessionMock(state: .init(
+            data: "test_session_data",
+            identifier: "test_session_id",
+            countryCode: "US",
+            shopperLocale: "en_US",
+            amount: Amount(value: 1000, currencyCode: "USD"),
+            paymentMethods: paymentMethods,
+            responseConfiguration: .init(installmentOptions: nil, enableStoreDetails: true)
+        ))
     }
 }
 

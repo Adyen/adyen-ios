@@ -8,132 +8,122 @@ import Adyen
 #if canImport(AdyenSession)
     import AdyenSession
 #endif
+#if canImport(AdyenActions)
+    @_spi(AdyenInternal) import AdyenActions
+#endif
+import Foundation
 
-// MARK: - PaymentComponentDelegate
+// MARK: - Internal Helpers
 
-extension Checkout: PaymentComponentDelegate {
+internal enum CheckoutCallbackSource {
+    case component(any PaymentComponent)
+    case dropIn(component: any PaymentComponent, dropInComponent: any AnyDropInComponent)
 
-    public func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
-        AdyenAssertion.assert(
-            message: "A new payment component submitted while another flow is still pending.",
-            condition: pendingPaymentComponent != nil
-        )
-        pendingPaymentComponent = component
-
-        if let onSubmit = configuration.onSubmit {
-            submitTask?.cancel()
-            submitTask = Task { [weak self] in
-                do {
-                    let submitResult = try await onSubmit(data)
-                    guard !Task.isCancelled else { return }
-                    self?.handle(submitResult: submitResult, from: component)
-                } catch {
-                    // Ignore if this was a cancellation (task superseded or Checkout torn down).
-                    guard !(error is CancellationError), !Task.isCancelled else { return }
-                    self?.handle(error, from: component)
-                }
-            }
-        } else if let session {
-            session.didSubmit(
-                data,
-                from: component,
-                dropInComponent: nil
-            )
-        } else {
-            // TODO: throw/assert to inform missing callbacks
+    internal var paymentComponent: any PaymentComponent {
+        switch self {
+        case let .component(component):
+            component
+        case let .dropIn(component, _):
+            component
         }
     }
 
-    public func didFail(with error: any Error, from component: any PaymentComponent) {
-        handle(error, from: component)
-    }
-
-    @MainActor
-    private func handle(submitResult: SubmitResult, from component: (any PaymentComponent)?) {
-        switch submitResult {
-        case let .action(action):
-            actionHandlingComponent.handle(action)
-        case let .completion(resultCode):
-            finish(with: CheckoutResult(resultCode: CheckoutResultCode(rawValue: resultCode)), from: component)
-        case .retry:
-            // TODO: Re-prompt the shopper at payment-method selection. Optionally surface
-            // `errorMessage` in the UI before re-prompting.
-            break
-        case .partialPayment:
-            // Components (advanced flow): the SDK intentionally performs no work here.
-            // The merchant owns the continuation — they decide whether to instantiate a new
-            // payment component for the remaining amount based on the PartialPayment payload
-            // they returned from `onSubmit`.
-            // TODO: add partial-payment support for Drop-in on the advanced (non-session) flow.
-            break
+    internal var dropInComponent: (any AnyDropInComponent)? {
+        switch self {
+        case .component:
+            nil
+        case let .dropIn(_, dropInComponent):
+            dropInComponent
         }
     }
 }
 
-// MARK: - ActionComponentDelegate
+internal extension Checkout {
 
-extension Checkout: ActionComponentDelegate {
+    func performSubmit(
+        _ data: PaymentComponentData,
+        source: CheckoutCallbackSource
+    ) {
+        AdyenAssertion.assert(
+            message: "A new payment component submitted while another flow is still pending.",
+            condition: pendingPaymentComponent != nil
+        )
+        pendingPaymentComponent = source.paymentComponent
+        submitTask?.cancel()
 
-    public func didProvide(_ data: Adyen.ActionComponentData, from component: any Adyen.ActionComponent) {
-        if let onAdditionalDetails = configuration.onAdditionalDetails {
-            additionalDetailsTask?.cancel()
-            additionalDetailsTask = Task { [weak self] in
-                do {
-                    let additionalDetailsResult = try await onAdditionalDetails(data)
-                    guard !Task.isCancelled else { return }
-                    self?.handle(additionalDetailsResult: additionalDetailsResult, from: self?.pendingPaymentComponent)
-                } catch {
-                    // Ignore if this was a cancellation (task superseded or Checkout torn down).
-                    guard !(error is CancellationError), !Task.isCancelled else { return }
-                    self?.handle(error, from: self?.pendingPaymentComponent)
-                }
+        guard let onSubmit = onSubmit(for: data) else {
+            handle(CallbackError.missingSubmitHandler, from: source.paymentComponent)
+            return
+        }
+
+        submitTask = Task { [weak self] in
+            do {
+                let submitResult = try await onSubmit()
+                guard !Task.isCancelled else { return }
+                self?.handle(submitResult: submitResult, source: source)
+            } catch {
+                // Ignore if this was a cancellation (task superseded or Checkout torn down).
+                guard !(error is CancellationError), !Task.isCancelled else { return }
+                self?.handle(error, from: source.paymentComponent)
             }
-        } else if let session {
-            session.didProvide(
-                data,
-                from: component,
-                dropInComponent: nil
-            )
-        } else {
-            // TODO: throw/assert to inform missing callbacks
         }
     }
 
-    public func didComplete(from component: any Adyen.ActionComponent) {
-        // TODO: need a result code here, refactor this function to contain it or create on here?
+    func performAdditionalDetails(
+        _ data: ActionComponentData,
+        from component: any ActionComponent
+    ) {
+        (component as? any PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
+        let paymentComponent = pendingPaymentComponent
+        additionalDetailsTask?.cancel()
+
+        guard let onAdditionalDetails = onAdditionalDetails(for: data) else {
+            handle(CallbackError.missingAdditionalDetailsHandler, from: paymentComponent)
+            return
+        }
+
+        additionalDetailsTask = Task { [weak self] in
+            do {
+                let additionalDetailsResult = try await onAdditionalDetails()
+                guard !Task.isCancelled else { return }
+                self?.handle(additionalDetailsResult: additionalDetailsResult, from: paymentComponent)
+            } catch {
+                // Ignore if this was a cancellation (task superseded or Checkout torn down).
+                guard !(error is CancellationError), !Task.isCancelled else { return }
+                self?.handle(error, from: paymentComponent)
+            }
+        }
     }
 
-    public func didFail(with error: any Error, from component: any Adyen.ActionComponent) {
-        // Route back to the payment component that started this flow so any UI
-        // it's still holding open (e.g. the Apple Pay sheet) can dismiss.
-        handle(error, from: pendingPaymentComponent)
+    func completeAction(from component: (any PaymentComponent)?) {
+        guard let result = session?.currentResult else {
+            // TODO: need a result code for advanced non-session action flows.
+            return
+        }
+        finish(with: result, from: component)
     }
 
-    @MainActor
-    private func handle(additionalDetailsResult: AdditionalDetailsResult, from component: (any PaymentComponent)?) {
+    func handle(submitResult: SubmitResult, source: CheckoutCallbackSource) {
+        switch submitResult {
+        case let .action(action):
+            handle(action, source: source)
+        case let .completion(resultCode):
+            finish(with: CheckoutResult(resultCode: CheckoutResultCode(rawValue: resultCode)), from: source.paymentComponent)
+        case .retry:
+            // TODO: Re-prompt the shopper at payment-method selection. Optionally surface
+            // `errorMessage` in the UI before re-prompting.
+            break
+        case let .partialPayment(partialPayment):
+            handle(partialPayment: partialPayment, source: source)
+        }
+    }
+
+    func handle(additionalDetailsResult: AdditionalDetailsResult, from component: (any PaymentComponent)?) {
         switch additionalDetailsResult {
         case let .completion(resultCode):
             finish(with: CheckoutResult(resultCode: CheckoutResultCode(rawValue: resultCode)), from: component)
         }
     }
-}
-
-// MARK: - SessionDelegate
-
-extension Checkout: SessionDelegate {
-
-    public func didComplete(with result: CheckoutResult, component: any Component, session: Session) {
-        finish(with: result, from: component as? (any PaymentComponent))
-    }
-
-    public func didFail(with error: any Error, from component: any Component, session: Session) {
-        handle(error, from: component as? (any PaymentComponent))
-    }
-}
-
-// MARK: - Private Helpers
-
-private extension Checkout {
 
     /// Error entry point. Consolidates every error path (onSubmit, onAdditionalDetails,
     /// component/action/session failures) into a single place so finalization and merchant
@@ -163,5 +153,51 @@ private extension Checkout {
         (component as? any FinalizableComponent)?.didFinalize(with: false, completion: nil)
         pendingPaymentComponent = nil
         configuration.onError?(CheckoutError(error: error))
+    }
+}
+
+private extension Checkout {
+    
+    func onSubmit(for data: PaymentComponentData) -> (() async throws -> SubmitResult)? {
+        if let onSubmit = configuration.onSubmit {
+            return { try await onSubmit(data) }
+        } else if let session {
+            return { try await session.performSubmit(data) }
+        } else {
+            return nil
+        }
+    }
+    
+    func onAdditionalDetails(for data: ActionComponentData) -> (() async throws -> AdditionalDetailsResult)? {
+        if let onAdditionalDetails = configuration.onAdditionalDetails {
+            return { try await onAdditionalDetails(data) }
+        } else if let session {
+            return { try await session.performAdditionalDetails(data) }
+        } else {
+            return nil
+        }
+    }
+    
+    func handle(_ action: Action, source: CheckoutCallbackSource) {
+        if let dropInComponent = source.dropInComponent as? ActionHandlingComponent {
+            dropInComponent.handle(action)
+        } else {
+            actionHandlingComponent.handle(action)
+        }
+    }
+    
+}
+
+internal enum CallbackError: LocalizedError {
+    case missingSubmitHandler
+    case missingAdditionalDetailsHandler
+
+    internal var errorDescription: String? {
+        switch self {
+        case .missingSubmitHandler:
+            "Checkout requires either `onSubmit` or a session to submit payment data."
+        case .missingAdditionalDetailsHandler:
+            "Checkout requires either `onAdditionalDetails` or a session to submit additional details."
+        }
     }
 }
