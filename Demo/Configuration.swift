@@ -22,7 +22,7 @@ internal enum ConfigurationConstants {
     static let classicAPIEnvironment = DemoClassicAPIEnvironment.test
     
     static let componentsEnvironment = Environment.test
-    
+
     static let appName = "Adyen Demo"
     
     static let reference = "Test Order Reference - iOS UIHost"
@@ -44,12 +44,12 @@ internal enum ConfigurationConstants {
         return try! APIContext(environment: componentsEnvironment, clientKey: "local_DUMMYKEYFORTESTING")
     }
 
-    static let clientKey = secretValue(for: .clientKey)
-    
+    static let clientKey = "{YOUR_CLIENT_KEY}"
+
     static let serverUrl = secretValue(for: .serverUrl)
     
-    static let merchantAccount = secretValue(for: .merchantAccount)
-    
+    static let merchantAccount = "{YOUR_MERCHANT_ACCOUNT}"
+
     static let adyenServerKey = secretValue(for: .adyenServerKey)
 
     static let appleTeamIdentifier = secretValue(for: .appleTeamIdentifier)
