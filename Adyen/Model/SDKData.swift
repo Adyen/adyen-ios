@@ -6,6 +6,7 @@
 
 import Foundation
 
+// TODO: - Convert into package once PaymentComponent is ready
 @_spi(AdyenInternal)
 public struct SDKData: Codable {
 
