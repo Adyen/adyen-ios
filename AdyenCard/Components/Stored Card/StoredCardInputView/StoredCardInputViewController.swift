@@ -89,10 +89,10 @@ internal class StoredCardInputViewController: UIViewController {
     }()
 
     private lazy var securityCodeItemView: FormCardSecurityCodeItemView = {
-        // TODO: Robert: StoredView: 🐞 There is a bug(COSDK-572) with FormCardSecurityCodeItemView that when i type more than 3 characters only 3 display but validation happens with 4+ characters and then it fails validation. Needs to be debugged separately.
         let view = FormCardSecurityCodeItemView(item: viewModel.securityCodeItem, theme: theme)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "securityCodeItemView")
+        view.delegate = self
         return view
     }()
 
@@ -177,6 +177,7 @@ internal class StoredCardInputViewController: UIViewController {
         configureContent()
         setupBindings()
         disableSwipeDownToDismissScreen()
+        securityCodeItemView.textField.becomeFirstResponder()
     }
 
     private func disableSwipeDownToDismissScreen() {
@@ -205,6 +206,9 @@ internal class StoredCardInputViewController: UIViewController {
     }
 
     private func updateLoadingState(_ isLoading: Bool) {
+        if isLoading {
+            securityCodeItemView.resignFirstResponder()
+        }
         primaryButton.isEnabled = !isLoading
         primaryButton.showsActivityIndicator = isLoading
         securityCodeItemView.isUserInteractionEnabled = !isLoading
@@ -231,5 +235,19 @@ internal class StoredCardInputViewController: UIViewController {
         Task { @MainActor [weak self] in
             await self?.viewModel.submit()
         }
+    }
+}
+
+extension StoredCardInputViewController: FormTextItemViewDelegate {
+    internal func didReachMaximumLength(in itemView: FormTextItemView<some FormTextItem>) {
+        handleReturnKey(from: itemView)
+    }
+
+    internal func didSelectReturnKey(in itemView: FormTextItemView<some FormTextItem>) {
+        handleReturnKey(from: itemView)
+    }
+
+    internal func handleReturnKey(from itemView: FormTextItemView<some FormTextItem>) {
+        itemView.resignFirstResponder()
     }
 }
