@@ -13,23 +13,24 @@ import UIKit
 /// you should be able to scroll to see the primary button.
 package class KeyboardScrollViewHandler: AdyenObserver {
 
+    private enum Constants {
+        static let animationKey = "keyboardBottomInset"
+    }
+
     // MARK: - Properties
 
     private weak var scrollView: UIScrollView?
     private weak var view: UIView?
     private let keyboardObserver = KeyboardObserver()
-    private let animationKey: String
 
     // MARK: - Initializers
 
     package init(
         scrollView: UIScrollView,
-        view: UIView,
-        animationKey: String = "keyboardBottomInset"
+        view: UIView
     ) {
         self.scrollView = scrollView
         self.view = view
-        self.animationKey = animationKey
     }
 
     package func startObserving() {
@@ -61,7 +62,7 @@ package class KeyboardScrollViewHandler: AdyenObserver {
         }
 
         view.adyen.animate(context: AnimationContext(
-            animationKey: animationKey,
+            animationKey: Constants.animationKey,
             duration: transition.animationDuration,
             options: transition.animationOptions.union(.beginFromCurrentState),
             animations: updateInsets
@@ -69,11 +70,12 @@ package class KeyboardScrollViewHandler: AdyenObserver {
     }
 
     private func keyboardOverlap(with keyboardRect: CGRect) -> CGFloat {
-        guard let scrollView, let view, view.window != nil else {
+        guard let scrollView, let view, let window = view.window else {
             return keyboardRect.height
         }
 
-        let scrollViewFrame = scrollView.convert(scrollView.bounds, to: nil)
-        return scrollViewFrame.intersection(keyboardRect).height
+        let keyboardRectInWindow = window.convert(keyboardRect, from: nil)
+        let scrollViewRectInWindow = scrollView.convert(scrollView.bounds, to: window)
+        return scrollViewRectInWindow.intersection(keyboardRectInWindow).height
     }
 }

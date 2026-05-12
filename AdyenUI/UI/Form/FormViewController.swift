@@ -251,8 +251,7 @@ open class FormViewController: UIViewController, AdyenObserver {
 
         keyboardScrollViewHandler = KeyboardScrollViewHandler(
             scrollView: scrollView,
-            view: view,
-            animationKey: Animations.keyboardBottomInset
+            view: view
         )
         keyboardScrollViewHandler?.startObserving()
     }
