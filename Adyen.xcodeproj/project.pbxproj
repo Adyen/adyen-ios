@@ -512,6 +512,7 @@
 		A03056D52DEDED2F00ED7014 /* AdyenCheckout.docc in Sources */ = {isa = PBXBuildFile; fileRef = A03056CD2DEDED2F00ED7014 /* AdyenCheckout.docc */; };
 		A03056D62DEDED2F00ED7014 /* CheckoutPaymentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056CF2DEDED2F00ED7014 /* CheckoutPaymentComponent.swift */; };
 		A03056D72DEDED2F00ED7014 /* Checkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056CE2DEDED2F00ED7014 /* Checkout.swift */; };
+		EBF100012F00000100CB0001 /* FlowTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF100002F00000100CB0001 /* FlowTypes.swift */; };
 		A03056D82DEDED2F00ED7014 /* AdyenCheckout.h in Headers */ = {isa = PBXBuildFile; fileRef = A03056CC2DEDED2F00ED7014 /* AdyenCheckout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A03056DA2DEF331100ED7014 /* Checkout+DelegateCallbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056D92DEF32FD00ED7014 /* Checkout+DelegateCallbacks.swift */; };
 		A03056DC2DF07F8100ED7014 /* CheckoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056DB2DF07F7800ED7014 /* CheckoutProvider.swift */; };
@@ -2183,6 +2184,7 @@
 		A03056CC2DEDED2F00ED7014 /* AdyenCheckout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenCheckout.h; sourceTree = "<group>"; };
 		A03056CD2DEDED2F00ED7014 /* AdyenCheckout.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = AdyenCheckout.docc; sourceTree = "<group>"; };
 		A03056CE2DEDED2F00ED7014 /* Checkout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkout.swift; sourceTree = "<group>"; };
+		EBF100002F00000100CB0001 /* FlowTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowTypes.swift; sourceTree = "<group>"; };
 		A03056CF2DEDED2F00ED7014 /* CheckoutPaymentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPaymentComponent.swift; sourceTree = "<group>"; };
 		A03056D02DEDED2F00ED7014 /* CheckoutProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutProtocol.swift; sourceTree = "<group>"; };
 		A03056D12DEDED2F00ED7014 /* CheckoutComponentBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutComponentBuilder.swift; sourceTree = "<group>"; };
@@ -4030,6 +4032,7 @@
 			isa = PBXGroup;
 			children = (
 				A03056D02DEDED2F00ED7014 /* CheckoutProtocol.swift */,
+				EBF100002F00000100CB0001 /* FlowTypes.swift */,
 				A03056CE2DEDED2F00ED7014 /* Checkout.swift */,
 				A03056DB2DF07F7800ED7014 /* CheckoutProvider.swift */,
 				A03056DE2DF07F7900ED7014 /* CheckoutAttemptIdProvider.swift */,
@@ -8376,6 +8379,7 @@
 				A03056DC2DF07F8100ED7014 /* CheckoutProvider.swift in Sources */,
 				A03056DD2DF07F8200ED7014 /* CheckoutAttemptIdProvider.swift in Sources */,
 				A03056D62DEDED2F00ED7014 /* CheckoutPaymentComponent.swift in Sources */,
+				EBF100012F00000100CB0001 /* FlowTypes.swift in Sources */,
 				00262C8D2E8286E200DDDFA4 /* ConfigurationBuilder.swift in Sources */,
 				A03056D72DEDED2F00ED7014 /* Checkout.swift in Sources */,
 			);
