@@ -61,7 +61,7 @@ private extension CardComponentConfiguration {
         configuration.style = style
         configuration.showCardholderName = showCardholderName
         configuration.showStorePayment = showStorePayment
-        configuration.stored = stored
+        configuration.showSecurityCodeForStoredCard = showSecurityCodeForStoredCard
         configuration.showSupportedCardBrandLogos = false
         configuration.binLookupType = .bcmc
         configuration.localizationParameters = localizationParameters

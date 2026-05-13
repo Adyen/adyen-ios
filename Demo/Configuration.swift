@@ -104,7 +104,7 @@ internal enum ConfigurationConstants {
 internal struct CardSettings: Codable {
     internal var showCardholderName = false
     internal var showStorePayment = true
-    internal var showsStoredCardSecurityCodeField = true
+    internal var showSecurityCodeForStoredCard = true
     internal var showSecurityCode = true
     internal var addressMode: AddressFormType = .none
     internal var socialSecurityNumberVisibility: CardComponentConfiguration.FieldVisibility = .auto
@@ -198,7 +198,7 @@ internal struct DemoAppSettings: Codable {
     internal static let defaultCardSettings = CardSettings(
         showCardholderName: false,
         showStorePayment: true,
-        showsStoredCardSecurityCodeField: true,
+        showSecurityCodeForStoredCard: true,
         showSecurityCode: true,
         addressMode: .none,
         socialSecurityNumberVisibility: .auto,
@@ -248,31 +248,25 @@ internal struct DemoAppSettings: Codable {
     }
 
     internal var cardConfiguration: CardComponentConfiguration {
-        var storedCardConfig = StoredCardConfiguration()
-        storedCardConfig.showsSecurityCodeField = cardSettings.showsStoredCardSecurityCodeField
-        
         return CardComponentConfiguration()
             .showCardholderName(cardSettings.showCardholderName)
             .showStorePayment(cardSettings.showStorePayment)
             .showSecurityCode(cardSettings.showSecurityCode)
             .koreanAuthenticationVisibility(cardSettings.koreanAuthenticationVisibility)
             .socialSecurityNumberVisibility(cardSettings.socialSecurityNumberVisibility)
-            .stored(storedCardConfig)
+            .showSecurityCodeForStoredCard(cardSettings.showSecurityCodeForStoredCard)
             .installmentConfiguration(installmentConfiguration)
             .billingAddressMode(billingAddressMode(from: cardSettings.addressMode))
     }
 
     internal var cardDropInConfiguration: DropInComponent.Card {
-        var storedCardConfig = StoredCardConfiguration()
-        storedCardConfig.showsSecurityCodeField = cardSettings.showsStoredCardSecurityCodeField
-        
         return .init(
             showCardholderName: cardSettings.showCardholderName,
             showStorePayment: cardSettings.showStorePayment,
             showSecurityCode: cardSettings.showSecurityCode,
             koreanAuthenticationVisibility: cardSettings.koreanAuthenticationVisibility,
             socialSecurityNumberVisibility: cardSettings.socialSecurityNumberVisibility,
-            storedCardConfiguration: storedCardConfig,
+            showSecurityCodeForStoredCard: cardSettings.showSecurityCodeForStoredCard,
             installmentConfiguration: installmentConfiguration
         )
     }

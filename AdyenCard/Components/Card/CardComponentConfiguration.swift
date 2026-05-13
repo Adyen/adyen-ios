@@ -44,9 +44,8 @@ public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPer
     /// In `auto` mode the field will appear based on card bin lookup.
     internal var socialSecurityNumberVisibility: FieldVisibility
 
-    // TODO: Move this to its own config?
-    /// Stored card configuration.
-    internal var stored: StoredCardConfiguration
+    /// Indicates whether to show the security code field for stored cards. Defaults to true.
+    internal var showSecurityCodeForStoredCard: Bool
 
     /// The list of allowed card types.  Defaults to nil.
     /// By default list of supported cards is extracted from component's `AnyCardPaymentMethod`.
@@ -77,7 +76,7 @@ public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPer
     public init() {
         self.theme = .init()
         self.style = FormComponentStyle()
-        self.stored = .init()
+        self.showSecurityCodeForStoredCard = true
         self.billingAddress = .init()
         self.showsSubmitButton = true
         self.showCardholderName = false
@@ -153,12 +152,12 @@ extension CardComponentConfiguration {
         return copy
     }
     
-    /// Sets the stored card configuration.
-    /// - Parameter stored: The stored card configuration.
+    /// Sets whether to show the security code field for stored cards.
+    /// - Parameter showSecurityCodeForStoredCard: Boolean value indicating if the security code field should be shown for stored cards.
     /// - Returns: A modified copy of the configuration.
-    public func stored(_ stored: StoredCardConfiguration) -> Self {
+    public func showSecurityCodeForStoredCard(_ showSecurityCodeForStoredCard: Bool) -> Self {
         var copy = self
-        copy.stored = stored
+        copy.showSecurityCodeForStoredCard = showSecurityCodeForStoredCard
         return copy
     }
     
@@ -253,8 +252,8 @@ public protocol AnyCardComponentConfiguration {
     // Billing address fields configurations
 //    var billingAddress: BillingAddressConfiguration { get }
 
-    /// Stored card configuration.
-    var stored: StoredCardConfiguration { get }
+    /// Indicates whether to show the security code field for stored cards. Defaults to true.
+    var showSecurityCodeForStoredCard: Bool { get }
 
     /// The list of allowed card types.  Defaults to nil.
     /// By default list of supported cards is extracted from component's `AnyCardPaymentMethod`.

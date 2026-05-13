@@ -526,7 +526,7 @@ class CardComponentTests: XCTestCase {
     // TODO: FIX ME
 //    func testStoredCardPaymentLocalizationWithNoCVV() throws {
 //        var configuration = CardComponentConfiguration()
-//        configuration.stored.showsSecurityCodeField = false
+//        configuration.showSecurityCodeForStoredCard = false
 //        configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
 //        let sut = CardComponent(
 //            paymentMethod: storedMethod,
@@ -546,7 +546,7 @@ class CardComponentTests: XCTestCase {
 
 //    func testStoredCardPaymentWithNoCVV() throws {
 //        var configuration = CardComponentConfiguration()
-//        configuration.stored.showsSecurityCodeField = false
+//        configuration.showSecurityCodeForStoredCard = false
 //        let sut = CardComponent(
 //            paymentMethod: storedMethod,
 //            context: context,
@@ -565,7 +565,7 @@ class CardComponentTests: XCTestCase {
 
 //    func testStoredCardPaymentWithNoCVVAndNoPayment() {
 //        var configuration = CardComponentConfiguration()
-//        configuration.stored.showsSecurityCodeField = false
+//        configuration.showSecurityCodeForStoredCard = false
 //        let context = Dummy.context(with: nil)
 //        let sut = CardComponent(
 //            paymentMethod: storedMethod,
@@ -584,7 +584,7 @@ class CardComponentTests: XCTestCase {
 //
 //    func testOneClickPayment() {
 //        var configuration = CardComponentConfiguration()
-//        configuration.stored.showsSecurityCodeField = false
+//        configuration.showSecurityCodeForStoredCard = false
 //        let sut = CardComponent(
 //            paymentMethod: storedMethod,
 //            context: context,

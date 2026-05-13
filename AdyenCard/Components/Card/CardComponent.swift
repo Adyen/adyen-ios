@@ -151,7 +151,7 @@ public class CardComponent: PresentableComponent,
             return nil
         }
         // TODO: FIX StoredCard UI
-        if configuration.stored.showsSecurityCodeField {
+        if configuration.showSecurityCodeForStoredCard {
             let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context, theme: configuration.theme)
             storedComponent.localizationParameters = configuration.localizationParameters
             return storedComponent

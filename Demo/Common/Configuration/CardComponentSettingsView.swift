@@ -61,7 +61,7 @@ internal struct CardSettingsView: View {
                     }
                 }
                 Section(header: Text("Stored Card")) {
-                    Toggle(isOn: $viewModel.showsStoredCardSecurityCodeField) {
+                    Toggle(isOn: $viewModel.showSecurityCodeForStoredCard) {
                         Text("Security Code")
                     }
                 }

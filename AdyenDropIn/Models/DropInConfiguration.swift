@@ -169,8 +169,8 @@ public extension DropInComponent {
         /// In `auto` mode the field will appear based on card bin lookup.
         public var socialSecurityNumberVisibility: CardComponentConfiguration.FieldVisibility
 
-        /// Stored card configuration.
-        public var stored: StoredCardConfiguration
+        /// Indicates whether to show the security code field for stored cards. Defaults to true.
+        public var showSecurityCodeForStoredCard: Bool
 
         /// The list of allowed card types.  Defaults to nil.
         /// By default list of supported cards is extracted from component's `AnyCardPaymentMethod`.
@@ -192,7 +192,7 @@ public extension DropInComponent {
         ///   - koreanAuthenticationVisibility: Indicates the visibility option for the security fields for South Korea issued cards.
         ///   Defaults to `.auto`.
         ///   - socialSecurityNumberVisibility: Indicates the visibility option for the security code field. Defaults to `.auto`
-        ///   - storedCardConfiguration: Stored card configuration.
+        ///   - showSecurityCodeForStoredCard: Indicates whether to show the security code field for stored cards. Defaults to `true`.
         ///   - supportedCardBrands: The enforced list of allowed card types.
         ///   - installmentConfiguration: Configuration for installments. Defaults to `nil`.
         ///   - billingAddress: Billing address fields configurations.
@@ -202,14 +202,14 @@ public extension DropInComponent {
             showSecurityCode: Bool = true,
             koreanAuthenticationVisibility: CardComponentConfiguration.FieldVisibility = .auto,
             socialSecurityNumberVisibility: CardComponentConfiguration.FieldVisibility = .auto,
-            storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
+            showSecurityCodeForStoredCard: Bool = true,
             supportedCardBrands: [CardType]? = nil,
             installmentConfiguration: InstallmentConfiguration? = nil
         ) {
             self.showCardholderName = showCardholderName
             self.showSecurityCode = showSecurityCode
             self.showStorePayment = showStorePayment
-            self.stored = storedCardConfiguration
+            self.showSecurityCodeForStoredCard = showSecurityCodeForStoredCard
             self.supportedCardBrands = supportedCardBrands
             self.koreanAuthenticationVisibility = koreanAuthenticationVisibility
             self.socialSecurityNumberVisibility = socialSecurityNumberVisibility
