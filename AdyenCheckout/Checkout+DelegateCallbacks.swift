@@ -38,7 +38,7 @@ internal enum CheckoutCallbackSource {
     }
 }
 
-internal extension Checkout {
+internal extension CheckoutCore {
 
     func performSubmit(
         _ data: PaymentComponentData,
@@ -146,36 +146,24 @@ internal extension Checkout {
     func finish(with result: CheckoutResult, from component: (any PaymentComponent)?) {
         (component as? any FinalizableComponent)?.didFinalize(with: result.resultCode.isSuccessful, completion: nil)
         pendingPaymentComponent = nil
-        configuration.onComplete?(result)
+        resultCallbacks.onComplete?(result)
     }
 
     func finish(with error: Error, from component: (any PaymentComponent)?) {
         (component as? any FinalizableComponent)?.didFinalize(with: false, completion: nil)
         pendingPaymentComponent = nil
-        configuration.onError?(CheckoutError(error: error))
+        resultCallbacks.onError?(CheckoutError(error: error))
     }
 }
 
-private extension Checkout {
+private extension CheckoutCore {
     
     func onSubmit(for data: PaymentComponentData) -> (() async throws -> SubmitResult)? {
-        if let onSubmit = configuration.onSubmit {
-            return { try await onSubmit(data) }
-        } else if let session {
-            return { try await session.performSubmit(data) }
-        } else {
-            return nil
-        }
+        { try await self.submissionHandler.submit(data) }
     }
     
     func onAdditionalDetails(for data: ActionComponentData) -> (() async throws -> AdditionalDetailsResult)? {
-        if let onAdditionalDetails = configuration.onAdditionalDetails {
-            return { try await onAdditionalDetails(data) }
-        } else if let session {
-            return { try await session.performAdditionalDetails(data) }
-        } else {
-            return nil
-        }
+        { try await self.submissionHandler.submitAdditionalDetails(data) }
     }
     
     func handle(_ action: Action, source: CheckoutCallbackSource) {
@@ -191,13 +179,19 @@ private extension Checkout {
 internal enum CallbackError: LocalizedError {
     case missingSubmitHandler
     case missingAdditionalDetailsHandler
+    case unsupportedSubmit
+    case unsupportedAdditionalDetails
 
     internal var errorDescription: String? {
         switch self {
         case .missingSubmitHandler:
-            "Checkout requires either `onSubmit` or a session to submit payment data."
+            "Checkout requires `onSubmit` to submit payment data."
         case .missingAdditionalDetailsHandler:
-            "Checkout requires either `onAdditionalDetails` or a session to submit additional details."
+            "Checkout requires `onAdditionalDetails` to submit additional details."
+        case .unsupportedSubmit:
+            "Action-only checkout cannot submit payment data."
+        case .unsupportedAdditionalDetails:
+            "Action-only checkout cannot submit additional details."
         }
     }
 }

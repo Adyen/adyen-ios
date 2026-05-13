@@ -58,7 +58,7 @@ final class CheckoutTests: XCTestCase {
             responseConfiguration: .init(installmentOptions: nil, enableStoreDetails: true)
         ))
         
-        let expectedCheckout = Checkout(
+        let expectedCheckout = CheckoutCore(
             configuration: configuration,
             session: expectedSession,
             adyenContext: Dummy.context,
@@ -104,7 +104,7 @@ final class CheckoutTests: XCTestCase {
     }
 
     func testSetupWithPaymentMethods_Success() async throws {
-        let expectedCheckout = Checkout(
+        let expectedCheckout = CheckoutCore(
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
@@ -185,7 +185,7 @@ final class CheckoutTests: XCTestCase {
             XCTAssertEqual(result.resultCode, .authorised)
             onCompleteExpectation.fulfill()
         }
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             session: session,
             adyenContext: Dummy.context,
@@ -212,7 +212,7 @@ final class CheckoutTests: XCTestCase {
         configuration.onError = { _ in
             onErrorExpectation.fulfill()
         }
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             session: session,
             adyenContext: Dummy.context,
@@ -251,7 +251,7 @@ final class CheckoutTests: XCTestCase {
             return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
         }
         
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             adyenContext: Dummy.context,
             presentationDelegate: nil
@@ -266,7 +266,7 @@ final class CheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forType_returnsComponent_whenPaymentMethodExists() throws {
         // Given
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
@@ -282,7 +282,7 @@ final class CheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forType_throws_whenPaymentMethodDoesNotExist() {
         // Given
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
@@ -295,7 +295,7 @@ final class CheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forType_throws_whenPaymentMethodsIsNil() {
         // Given
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             adyenContext: Dummy.context,
             presentationDelegate: nil
@@ -307,7 +307,7 @@ final class CheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forScheme_returnsCardComponent() throws {
         // Given
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
@@ -325,7 +325,7 @@ final class CheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forIdentifier_returnsComponent_whenStoredMethodExists() throws {
         // Given
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
@@ -339,7 +339,7 @@ final class CheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forIdentifier_throws_whenStoredMethodDoesNotExist() {
         // Given
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
@@ -352,7 +352,7 @@ final class CheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forIdentifier_throws_whenPaymentMethodsIsNil() {
         // Given
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             adyenContext: Dummy.context,
             presentationDelegate: nil
@@ -364,7 +364,7 @@ final class CheckoutTests: XCTestCase {
     
     func test_createPaymentComponent_forIdentifier_returnsCorrectStoredMethod() throws {
         // Given
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
@@ -385,7 +385,7 @@ final class CheckoutTests: XCTestCase {
     
     func testSetupActionOnly_Success() async throws {
         // Given
-        let expectedCheckout = Checkout(
+        let expectedCheckout = CheckoutCore(
             configuration: configuration,
             adyenContext: Dummy.context,
             presentationDelegate: nil
@@ -401,7 +401,6 @@ final class CheckoutTests: XCTestCase {
         
         // Then
         XCTAssertNil(checkout.session)
-        XCTAssertNil(checkout.paymentMethods)
         XCTAssertTrue(mockProvider.setupActionOnlyCalled)
     }
     
@@ -422,9 +421,9 @@ final class CheckoutTests: XCTestCase {
         }
     }
     
-    func testSetupActionOnly_createPaymentComponent_throws() async throws {
+    func testSetupActionOnly_returnsActionOnlyCheckout() async throws {
         // Given
-        let expectedCheckout = Checkout(
+        let expectedCheckout = CheckoutCore(
             configuration: configuration,
             adyenContext: Dummy.context,
             presentationDelegate: nil
@@ -438,8 +437,9 @@ final class CheckoutTests: XCTestCase {
             provider: mockProvider
         )
         
-        // Then - createPaymentComponent should throw since no paymentMethods
-        XCTAssertThrowsError(try checkout.createPaymentComponent(for: .scheme))
+        // Then
+        _ = checkout
+        XCTAssertTrue(mockProvider.setupActionOnlyCalled)
     }
     
     func test_didSubmit_responseWithoutAction_callsOnComplete() async throws {
@@ -461,7 +461,7 @@ final class CheckoutTests: XCTestCase {
             onCompleteExpectation.fulfill()
         }
         
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             adyenContext: Dummy.context,
             presentationDelegate: nil
@@ -486,7 +486,7 @@ final class CheckoutTests: XCTestCase {
             onErrorExpectation.fulfill()
         }
         
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             adyenContext: Dummy.context,
             presentationDelegate: nil
@@ -512,7 +512,7 @@ final class CheckoutTests: XCTestCase {
             onErrorExpectation.fulfill()
         }
         
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             adyenContext: Dummy.context,
             presentationDelegate: nil
@@ -537,7 +537,7 @@ final class CheckoutTests: XCTestCase {
             XCTAssertEqual(result.resultCode, .authorised)
             onCompleteExpectation.fulfill()
         }
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             session: session,
             adyenContext: Dummy.context,
@@ -561,7 +561,7 @@ final class CheckoutTests: XCTestCase {
             XCTAssertEqual(result.resultCode, .authorised)
             onCompleteExpectation.fulfill()
         }
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             session: session,
             adyenContext: Dummy.context,
@@ -587,7 +587,7 @@ final class CheckoutTests: XCTestCase {
             return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
         }
         
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             adyenContext: Dummy.context,
             presentationDelegate: nil
@@ -612,7 +612,7 @@ final class CheckoutTests: XCTestCase {
             onErrorExpectation.fulfill()
         }
         
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             adyenContext: Dummy.context,
             presentationDelegate: nil
@@ -638,7 +638,7 @@ final class CheckoutTests: XCTestCase {
             onCompleteExpectation.fulfill()
         }
         
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             adyenContext: Dummy.context,
             presentationDelegate: nil
@@ -661,7 +661,7 @@ final class CheckoutTests: XCTestCase {
             onErrorExpectation.fulfill()
         }
         
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             adyenContext: Dummy.context,
             presentationDelegate: nil
@@ -684,7 +684,7 @@ final class CheckoutTests: XCTestCase {
             onErrorExpectation.fulfill()
         }
         
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             adyenContext: Dummy.context,
             presentationDelegate: nil
@@ -708,7 +708,7 @@ final class CheckoutTests: XCTestCase {
             onErrorExpectation.fulfill()
         }
         
-        let sut = Checkout(
+        let sut = CheckoutCore(
             configuration: configuration,
             adyenContext: Dummy.context,
             presentationDelegate: nil

@@ -15,7 +15,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var checkout: Checkout?
+    private var checkout: SessionCheckout?
     private var adyenComponent: CheckoutPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
@@ -65,6 +65,12 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                     }
                 }
         }
+
+        let checkout = try await Checkout.setup(
+            with: sessionResponse,
+            configuration: configuration,
+            presentationDelegate: self
+        )
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
                 result.resultCode.isSuccess,
@@ -74,12 +80,6 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
         .onError { [weak self] error in
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
-
-        let checkout = try await Checkout.setup(
-            with: sessionResponse,
-            configuration: configuration,
-            presentationDelegate: self
-        )
 
         self.checkout = checkout
 

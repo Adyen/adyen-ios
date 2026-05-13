@@ -31,25 +31,25 @@ internal class CheckoutProvider: CheckoutProviding {
     internal func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
+        callbacks: SessionCheckoutCallbacks,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> Checkout {
-        
+    ) async throws -> CheckoutCoreProtocol {
+
         let apiClient = APIClient(apiContext: configuration.apiContext)
-
         let adyenContext = try await setupAdyenContext(configuration: configuration, apiClient: apiClient)
-
-        // create and store session and payment methods
-        async let session = setupSession(
+        let session = try await setupSession(
             with: sessionResponse,
             adyenContext: adyenContext,
             apiClient: apiClient
         )
 
-        return try await Checkout(
+        return await CheckoutCore(
             configuration: configuration,
             session: session,
             adyenContext: adyenContext,
-            presentationDelegate: presentationDelegate
+            presentationDelegate: presentationDelegate,
+            resultCallbacks: callbacks,
+            submissionHandler: SessionSubmissionHandler(session: session)
         )
     }
     
@@ -63,18 +63,20 @@ internal class CheckoutProvider: CheckoutProviding {
     internal func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
+        callbacks: AdvancedCheckoutCallbacks,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> Checkout {
+    ) async throws -> CheckoutCoreProtocol {
 
         let apiClient = APIClient(apiContext: configuration.apiContext)
-
         let adyenContext = try await setupAdyenContext(configuration: configuration, apiClient: apiClient)
 
-        return await Checkout(
+        return await CheckoutCore(
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: adyenContext,
-            presentationDelegate: presentationDelegate
+            presentationDelegate: presentationDelegate,
+            resultCallbacks: callbacks,
+            submissionHandler: AdvancedSubmissionHandler(callbacks: callbacks)
         )
     }
     
@@ -84,17 +86,19 @@ internal class CheckoutProvider: CheckoutProviding {
     ///   - presentationDelegate: A delegate for handling action UI presentation.
     internal func setup(
         configuration: CheckoutConfiguration,
+        callbacks: ActionOnlyCheckoutCallbacks,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> Checkout {
+    ) async throws -> CheckoutCoreProtocol {
 
         let apiClient = APIClient(apiContext: configuration.apiContext)
-
         let adyenContext = try await setupAdyenContext(configuration: configuration, apiClient: apiClient)
 
-        return await Checkout(
+        return await CheckoutCore(
             configuration: configuration,
             adyenContext: adyenContext,
-            presentationDelegate: presentationDelegate
+            presentationDelegate: presentationDelegate,
+            resultCallbacks: callbacks,
+            submissionHandler: ActionOnlySubmissionHandler()
         )
     }
     
@@ -120,13 +124,16 @@ internal class CheckoutProvider: CheckoutProviding {
         let analyticsApiClient = configuration.analyticsApiContext.flatMap { APIClient(apiContext: $0) }
 
         // TODO: Improvement: Suggestion: instead of the checkout provider being aware of something as specific as checkoutAttemptId.
-        // - This could be wrapped in something related to Analytics ex: await AnalyticsProvider.init() and internally fetch what is required for analytics.
+        // - This could be wrapped in something related to Analytics ex: await AnalyticsProvider.init()
+        //   and internally fetch what is required for analytics.
         async let checkoutAttemptId = checkoutAttemptIdProvider.fetchCheckoutAttemptId(
             with: analyticsApiClient
         )
 
-        // TODO: Improvement: Suggestion: Instead of fetching the publicKey, which requires a bit of searching to understand that it is being used for encryption ex: card encryption.
-        // if there is a holding type like `await Encryptor.init(clientId:)` then we know that the Encryption is being setup and  key is being used for encryption and it is mapped to the clientId.
+        // TODO: Improvement: Suggestion: instead of fetching the publicKey, which requires a bit of searching to understand
+        // that it is being used for encryption ex: card encryption.
+        // If there is a holding type like `await Encryptor.init(clientId:)` then we know that the Encryption is being setup
+        // and key is being used for encryption and it is mapped to the clientId.
         async let publicKey = try await publicKeyProvider.fetchPublicKey(
             apiClient: apiClient,
             clientKey: configuration.apiContext.clientKey
