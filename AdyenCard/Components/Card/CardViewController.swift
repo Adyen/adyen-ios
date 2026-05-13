@@ -207,7 +207,7 @@ internal class CardViewController: FormViewController {
     }
     
     internal var storePayment: Bool? {
-        configuration.showStorePayment ? items.storeDetailsItem.value : nil
+        configuration.showStorePaymentMethod ? items.storeDetailsItem.value : nil
     }
     
     internal var installments: Installments? {
@@ -347,7 +347,7 @@ extension CardViewController {
             append(installmentsItem)
         }
         
-        if configuration.showStorePayment {
+        if configuration.showStorePaymentMethod {
             append(items.storeDetailsItem)
             append(FormSpacerItem())
         }

@@ -31,7 +31,7 @@ public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPer
     internal var showCardholderName: Bool
 
     /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
-    internal var showStorePayment: Bool
+    internal var showStorePaymentMethod: Bool
 
     /// Indicates whether to show the security code field at all. Defaults to true.
     internal var showSecurityCode: Bool
@@ -81,7 +81,7 @@ public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPer
         self.showsSubmitButton = true
         self.showCardholderName = false
         self.showSecurityCode = true
-        self.showStorePayment = true
+        self.showStorePaymentMethod = true
         self.koreanAuthenticationVisibility = .auto
         self.socialSecurityNumberVisibility = .auto
         self.binLookupType = .card
@@ -107,11 +107,11 @@ extension CardComponentConfiguration {
     }
     
     /// Sets whether the field for storing the card payment method should be displayed in the form.
-    /// - Parameter showStorePayment: Boolean value indicating if the store payment method toggle should be shown.
+    /// - Parameter showStorePaymentMethod: Boolean value indicating if the store payment method toggle should be shown.
     /// - Returns: A modified copy of the configuration.
-    public func showStorePayment(_ showStorePayment: Bool) -> Self {
+    public func showStorePaymentMethod(_ showStorePaymentMethod: Bool) -> Self {
         var copy = self
-        copy.showStorePayment = showStorePayment
+        copy.showStorePaymentMethod = showStorePaymentMethod
         return copy
     }
     
@@ -236,7 +236,7 @@ public protocol AnyCardComponentConfiguration {
     var showCardholderName: Bool { get }
 
     /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
-    var showStorePayment: Bool { get }
+    var showStorePaymentMethod: Bool { get }
 
     /// Indicates whether to show the security code field at all. Defaults to true.
     var showSecurityCode: Bool { get }

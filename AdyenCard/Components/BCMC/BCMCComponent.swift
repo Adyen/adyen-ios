@@ -60,7 +60,7 @@ private extension CardComponentConfiguration {
         var configuration = CardComponentConfiguration()
         configuration.style = style
         configuration.showCardholderName = showCardholderName
-        configuration.showStorePayment = showStorePayment
+        configuration.showStorePaymentMethod = showStorePaymentMethod
         configuration.showSecurityCodeForStoredCard = showSecurityCodeForStoredCard
         configuration.showSupportedCardBrandLogos = false
         configuration.binLookupType = .bcmc

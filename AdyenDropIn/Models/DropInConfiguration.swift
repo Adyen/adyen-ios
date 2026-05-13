@@ -156,7 +156,7 @@ public extension DropInComponent {
         public var showCardholderName: Bool
 
         /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
-        public var showStorePayment: Bool
+        public var showStorePaymentMethod: Bool
 
         /// Indicates whether to show the security code field at all. Defaults to true.
         public var showSecurityCode: Bool
@@ -185,7 +185,7 @@ public extension DropInComponent {
         /// - Parameters:
         ///   - showCardholderName: Indicates if the field for entering the cardholder name should be displayed in the form.
         ///   Defaults to `false`.
-        ///   - showStorePayment: Indicates if the field for storing the card payment method should be displayed in the form.
+        ///   - showStorePaymentMethod: Indicates if the field for storing the card payment method should be displayed in the form.
         ///   Defaults to `true`.
         ///   - showSecurityCode: Indicates whether to show the security code field at all.
         ///   Defaults to `true`.
@@ -198,7 +198,7 @@ public extension DropInComponent {
         ///   - billingAddress: Billing address fields configurations.
         public init(
             showCardholderName: Bool = false,
-            showStorePayment: Bool = true,
+            showStorePaymentMethod: Bool = true,
             showSecurityCode: Bool = true,
             koreanAuthenticationVisibility: CardComponentConfiguration.FieldVisibility = .auto,
             socialSecurityNumberVisibility: CardComponentConfiguration.FieldVisibility = .auto,
@@ -208,7 +208,7 @@ public extension DropInComponent {
         ) {
             self.showCardholderName = showCardholderName
             self.showSecurityCode = showSecurityCode
-            self.showStorePayment = showStorePayment
+            self.showStorePaymentMethod = showStorePaymentMethod
             self.showSecurityCodeForStoredCard = showSecurityCodeForStoredCard
             self.supportedCardBrands = supportedCardBrands
             self.koreanAuthenticationVisibility = koreanAuthenticationVisibility

@@ -63,7 +63,7 @@ public class CardComponent: PresentableComponent,
 
             if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
                storePaymentMethodAware.isSession {
-                configuration.showStorePayment = storePaymentMethodAware.showStorePaymentMethodField ?? false
+                configuration.showStorePaymentMethod = storePaymentMethodAware.showStorePaymentMethodField ?? false
             }
         }
     }

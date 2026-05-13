@@ -20,7 +20,7 @@ internal struct CardSettingsView: View {
                         Text("Holder Name")
                     }
                     
-                    Toggle(isOn: $viewModel.showStorePayment) {
+                    Toggle(isOn: $viewModel.showStorePaymentMethod) {
                         VStack(alignment: .leading) {
                             Text("Store Payment Method Toggle")
                             Text("(Requires API version 70 or higher)")
@@ -32,10 +32,12 @@ internal struct CardSettingsView: View {
                         Text("Security Code")
                     }
                     Toggle(isOn: $viewModel.installmentsEnabled.animation()) {
-                        Text("Installments")
-                        Text("(Example values for installments)")
-                            .foregroundColor(.gray)
-                            .font(.footnote)
+                        VStack(alignment: .leading) {
+                            Text("Installments")
+                            Text("(Example values for installments)")
+                                .foregroundColor(.gray)
+                                .font(.footnote)
+                        }
                     }
                     if viewModel.installmentsEnabled {
                         Toggle(isOn: $viewModel.showInstallmentAmount) {

@@ -34,7 +34,7 @@ internal struct CardAnalyticsConfiguration: AnalyticsStringDictionaryConvertible
         }
         self.showCardholderName = configuration.showCardholderName
         self.hideCVC = !configuration.showSecurityCode
-        self.enableStoredDetails = configuration.showStorePayment
+        self.enableStoredDetails = configuration.showStorePaymentMethod
         self.hasInstallmentOptions = configuration.installmentConfiguration != nil
         self.showKCPType = configuration.koreanAuthenticationVisibility.analyticsDescription
         self.socialSecurityNumberVisibility = configuration.socialSecurityNumberVisibility.analyticsDescription

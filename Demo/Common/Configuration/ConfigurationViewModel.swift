@@ -15,7 +15,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var apiVersion: String = ""
     @Published internal var merchantAccount: String = ""
     @Published internal var showCardholderName = false
-    @Published internal var showStorePayment = true
+    @Published internal var showStorePaymentMethod = true
     @Published internal var showSecurityCodeForStoredCard = true
     @Published internal var showSecurityCode = true
     @Published internal var addressMode: CardSettings.AddressFormType = .none
@@ -56,7 +56,7 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.apiVersion = configuration.apiVersion.description
         self.merchantAccount = configuration.merchantAccount
         self.showCardholderName = configuration.cardSettings.showCardholderName
-        self.showStorePayment = configuration.cardSettings.showStorePayment
+        self.showStorePaymentMethod = configuration.cardSettings.showStorePaymentMethod
         self.showSecurityCodeForStoredCard = configuration.cardSettings.showSecurityCodeForStoredCard
         self.showSecurityCode = configuration.cardSettings.showSecurityCode
         self.addressMode = configuration.cardSettings.addressMode
@@ -92,7 +92,7 @@ internal final class ConfigurationViewModel: ObservableObject {
             merchantAccount: merchantAccount,
             cardSettings: CardSettings(
                 showCardholderName: showCardholderName,
-                showStorePayment: showStorePayment,
+                showStorePaymentMethod: showStorePaymentMethod,
                 showSecurityCodeForStoredCard: showSecurityCodeForStoredCard,
                 showSecurityCode: showSecurityCode,
                 addressMode: addressMode,

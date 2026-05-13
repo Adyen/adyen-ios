@@ -140,7 +140,7 @@ class BCMCComponentTests: XCTestCase {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         var configuration = CardComponentConfiguration()
-        configuration.showStorePayment = false
+        configuration.showStorePaymentMethod = false
         let sut = BCMCComponent(
             paymentMethod: paymentMethod,
             context: context,

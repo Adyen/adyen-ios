@@ -103,7 +103,7 @@ internal enum ConfigurationConstants {
 
 internal struct CardSettings: Codable {
     internal var showCardholderName = false
-    internal var showStorePayment = true
+    internal var showStorePaymentMethod = true
     internal var showSecurityCodeForStoredCard = true
     internal var showSecurityCode = true
     internal var addressMode: AddressFormType = .none
@@ -197,7 +197,7 @@ internal struct DemoAppSettings: Codable {
 
     internal static let defaultCardSettings = CardSettings(
         showCardholderName: false,
-        showStorePayment: true,
+        showStorePaymentMethod: true,
         showSecurityCodeForStoredCard: true,
         showSecurityCode: true,
         addressMode: .none,
@@ -250,7 +250,7 @@ internal struct DemoAppSettings: Codable {
     internal var cardConfiguration: CardComponentConfiguration {
         return CardComponentConfiguration()
             .showCardholderName(cardSettings.showCardholderName)
-            .showStorePayment(cardSettings.showStorePayment)
+            .showStorePaymentMethod(cardSettings.showStorePaymentMethod)
             .showSecurityCode(cardSettings.showSecurityCode)
             .koreanAuthenticationVisibility(cardSettings.koreanAuthenticationVisibility)
             .socialSecurityNumberVisibility(cardSettings.socialSecurityNumberVisibility)
@@ -262,7 +262,7 @@ internal struct DemoAppSettings: Codable {
     internal var cardDropInConfiguration: DropInComponent.Card {
         return .init(
             showCardholderName: cardSettings.showCardholderName,
-            showStorePayment: cardSettings.showStorePayment,
+            showStorePaymentMethod: cardSettings.showStorePaymentMethod,
             showSecurityCode: cardSettings.showSecurityCode,
             koreanAuthenticationVisibility: cardSettings.koreanAuthenticationVisibility,
             socialSecurityNumberVisibility: cardSettings.socialSecurityNumberVisibility,

@@ -137,7 +137,7 @@ class CardComponentTests: XCTestCase {
         
         var configuration = CardComponentConfiguration()
         configuration.showCardholderName = true
-        configuration.showStorePayment = true
+        configuration.showStorePaymentMethod = true
         configuration.theme = CheckoutTheme(colors: customColors)
             .primaryButton(backgroundColor: .red, textColor: .white, cornerRadius: 12)
             .cornerRadius(8)
