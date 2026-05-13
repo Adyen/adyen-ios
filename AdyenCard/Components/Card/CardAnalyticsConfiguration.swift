@@ -16,10 +16,10 @@ internal struct CardAnalyticsConfiguration: AnalyticsStringDictionaryConvertible
     private let billingAddressMode: String?
     private let billingAddressAllowedCountries: String?
     private let billingAddressRequired: Bool
-    private let showsHolderNameField: Bool
+    private let showCardholderName: Bool
     private let hideCVC: Bool
     private let showKCPType: String
-    private let socialSecurityNumberMode: String
+    private let socialSecurityNumberVisibility: String
     private let enableStoredDetails: Bool
     private let hasInstallmentOptions: Bool
     private let brands: String?
@@ -32,13 +32,13 @@ internal struct CardAnalyticsConfiguration: AnalyticsStringDictionaryConvertible
         } else {
             self.billingAddressRequired = false
         }
-        self.showsHolderNameField = configuration.showsHolderNameField
-        self.hideCVC = !configuration.showsSecurityCodeField
-        self.enableStoredDetails = configuration.showsStorePaymentMethodField
+        self.showCardholderName = configuration.showCardholderName
+        self.hideCVC = !configuration.showSecurityCode
+        self.enableStoredDetails = configuration.showStorePayment
         self.hasInstallmentOptions = configuration.installmentConfiguration != nil
-        self.showKCPType = configuration.koreanAuthenticationMode.analyticsDescription
-        self.socialSecurityNumberMode = configuration.socialSecurityNumberMode.analyticsDescription
-        self.brands = configuration.allowedCardTypes?
+        self.showKCPType = configuration.koreanAuthenticationVisibility.analyticsDescription
+        self.socialSecurityNumberVisibility = configuration.socialSecurityNumberVisibility.analyticsDescription
+        self.brands = configuration.supportedCardBrands?
             .map(\.rawValue)
             .joined(separator: Constants.stringSeparator)
     }

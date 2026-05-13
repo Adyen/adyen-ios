@@ -70,7 +70,7 @@ class CardComponentTests: XCTestCase {
     func test_formItems_withCustomTableName_shouldUseLocalizedStrings() {
 
         var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = true
+        configuration.showCardholderName = true
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let sut = CardComponent(
             paymentMethod: method,
@@ -99,7 +99,7 @@ class CardComponentTests: XCTestCase {
     func test_formItems_withCustomKeySeparator_shouldUseLocalizedStrings() {
         
         var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = true
+        configuration.showCardholderName = true
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
         let sut = CardComponent(
             paymentMethod: method,
@@ -136,8 +136,8 @@ class CardComponentTests: XCTestCase {
         )
         
         var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = true
-        configuration.showsStorePaymentMethodField = true
+        configuration.showCardholderName = true
+        configuration.showStorePayment = true
         configuration.theme = CheckoutTheme(colors: customColors)
             .primaryButton(backgroundColor: .red, textColor: .white, cornerRadius: 12)
             .cornerRadius(8)
@@ -221,7 +221,7 @@ class CardComponentTests: XCTestCase {
         let expectedActiveBorderColor = dynamicColor(light: .orange, dark: .purple)
 
         var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = true
+        configuration.showCardholderName = true
         configuration.theme = CheckoutTheme(
             colors: AdyenColors(
                 containerOutline: expectedBorderColor,
@@ -298,7 +298,7 @@ class CardComponentTests: XCTestCase {
 
     func test_securityCodeField_whenConfiguredToHide_shouldNotBeVisible() {
         var configuration = CardComponentConfiguration()
-        configuration.showsSecurityCodeField = false
+        configuration.showSecurityCode = false
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
@@ -389,7 +389,7 @@ class CardComponentTests: XCTestCase {
         
         // Given
         var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = true
+        configuration.showCardholderName = true
         configuration.billingAddress.mode = .lookup(
             onAddressLookup: { searchTerm in
                 XCTFail("Lookup handler should not be called")
@@ -826,7 +826,7 @@ class CardComponentTests: XCTestCase {
     func test_KCPFields_whenKoreanCard_shouldShowTaxAndPasswordFields() throws {
         // Given
         var configuration = CardComponentConfiguration()
-        configuration.koreanAuthenticationMode = .auto
+        configuration.koreanAuthenticationVisibility = .auto
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(
@@ -886,7 +886,7 @@ class CardComponentTests: XCTestCase {
     func test_brazilSSNField_withAutoMode_shouldShowBasedOnBinResponse() throws {
         // Given
         var configuration = CardComponentConfiguration()
-        configuration.socialSecurityNumberMode = .auto
+        configuration.socialSecurityNumberVisibility = .auto
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(
@@ -940,7 +940,7 @@ class CardComponentTests: XCTestCase {
     
     func test_brazilSSNField_withHideMode_shouldNotBeVisible() {
         var configuration = CardComponentConfiguration()
-        configuration.socialSecurityNumberMode = .hide
+        configuration.socialSecurityNumberVisibility = .hide
 
         let sut = CardComponent(
             paymentMethod: method,
@@ -962,7 +962,7 @@ class CardComponentTests: XCTestCase {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard, .elo])
 
         var configuration = CardComponentConfiguration()
-        configuration.socialSecurityNumberMode = .show
+        configuration.socialSecurityNumberVisibility = .show
 
         let sut = CardComponent(
             paymentMethod: method,
@@ -1013,7 +1013,7 @@ class CardComponentTests: XCTestCase {
             configuration: CardComponentConfiguration()
         )
         
-        XCTAssertTrue(sut.cardViewController.items.numberContainerItem.showsSupportedCardLogos)
+        XCTAssertTrue(sut.cardViewController.items.numberContainerItem.showSupportedCardBrandLogos)
         
         setupRootViewController(sut.viewController)
         
@@ -1534,7 +1534,7 @@ class CardComponentTests: XCTestCase {
     func test_prefilling_withBillingAddressInLookupMode_shouldPrefillItems() throws {
         // Given
         var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = true
+        configuration.showCardholderName = true
         configuration.billingAddress.mode = .lookup(
             onAddressLookup: { searchTerm in
                 [.init(identifier: searchTerm, postalAddress: .init(city: searchTerm))]
@@ -1574,7 +1574,7 @@ class CardComponentTests: XCTestCase {
     func test_prefilling_withBillingAddressInFullMode_shouldPrefillItems() throws {
         // Given
         var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = true
+        configuration.showCardholderName = true
         configuration.billingAddress.mode = .full
         configuration.shopperInformation = shopperInformation
 
@@ -1610,7 +1610,7 @@ class CardComponentTests: XCTestCase {
         // Given
 
         var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = true
+        configuration.showCardholderName = true
         configuration.billingAddress.mode = .postalCode
         configuration.shopperInformation = shopperInformation
 
@@ -1645,7 +1645,7 @@ class CardComponentTests: XCTestCase {
     func test_prefilling_withNoShopperInformationAndFullAddressMode_shouldNotPrefillItems() throws {
         // Given
         var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = true
+        configuration.showCardholderName = true
         configuration.billingAddress.mode = .full
 
         let sut = CardComponent(
@@ -1676,7 +1676,7 @@ class CardComponentTests: XCTestCase {
     func test_prefilling_withNoShopperInformationAndPostalCodeMode_shouldNotPrefillItems() throws {
         // Given
         var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = true
+        configuration.showCardholderName = true
         configuration.billingAddress.mode = .postalCode
 
         let sut = CardComponent(
@@ -2039,7 +2039,7 @@ class CardComponentTests: XCTestCase {
 
     func test_holderNameField_withEmptyValue_shouldBeInvalid() {
         var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = true
+        configuration.showCardholderName = true
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
         let sut = CardComponent(
@@ -2100,7 +2100,7 @@ class CardComponentTests: XCTestCase {
 
     func test_holderNameField_withMinimumLength_shouldBeValid() {
         var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = true
+        configuration.showCardholderName = true
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
         let sut = CardComponent(

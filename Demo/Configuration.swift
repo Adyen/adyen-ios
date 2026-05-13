@@ -102,13 +102,13 @@ internal enum ConfigurationConstants {
 }
 
 internal struct CardSettings: Codable {
-    internal var showsHolderNameField = false
-    internal var showsStorePaymentMethodField = true
+    internal var showCardholderName = false
+    internal var showStorePayment = true
     internal var showsStoredCardSecurityCodeField = true
-    internal var showsSecurityCodeField = true
+    internal var showSecurityCode = true
     internal var addressMode: AddressFormType = .none
-    internal var socialSecurityNumberMode: CardComponentConfiguration.FieldVisibility = .auto
-    internal var koreanAuthenticationMode: CardComponentConfiguration.FieldVisibility = .auto
+    internal var socialSecurityNumberVisibility: CardComponentConfiguration.FieldVisibility = .auto
+    internal var koreanAuthenticationVisibility: CardComponentConfiguration.FieldVisibility = .auto
     internal var enableInstallments = false
     internal var showsInstallmentAmount = false
     
@@ -196,13 +196,13 @@ internal struct DemoAppSettings: Codable {
     )
 
     internal static let defaultCardSettings = CardSettings(
-        showsHolderNameField: false,
-        showsStorePaymentMethodField: true,
+        showCardholderName: false,
+        showStorePayment: true,
         showsStoredCardSecurityCodeField: true,
-        showsSecurityCodeField: true,
+        showSecurityCode: true,
         addressMode: .none,
-        socialSecurityNumberMode: .auto,
-        koreanAuthenticationMode: .auto,
+        socialSecurityNumberVisibility: .auto,
+        koreanAuthenticationVisibility: .auto,
         enableInstallments: false,
         showsInstallmentAmount: false
     )
@@ -252,11 +252,11 @@ internal struct DemoAppSettings: Codable {
         storedCardConfig.showsSecurityCodeField = cardSettings.showsStoredCardSecurityCodeField
         
         return CardComponentConfiguration()
-            .showsHolderNameField(cardSettings.showsHolderNameField)
-            .showsStorePaymentMethodField(cardSettings.showsStorePaymentMethodField)
-            .showsSecurityCodeField(cardSettings.showsSecurityCodeField)
-            .koreanAuthenticationMode(cardSettings.koreanAuthenticationMode)
-            .socialSecurityNumberMode(cardSettings.socialSecurityNumberMode)
+            .showCardholderName(cardSettings.showCardholderName)
+            .showStorePayment(cardSettings.showStorePayment)
+            .showSecurityCode(cardSettings.showSecurityCode)
+            .koreanAuthenticationVisibility(cardSettings.koreanAuthenticationVisibility)
+            .socialSecurityNumberVisibility(cardSettings.socialSecurityNumberVisibility)
             .stored(storedCardConfig)
             .installmentConfiguration(installmentConfiguration)
             .billingAddressMode(billingAddressMode(from: cardSettings.addressMode))
@@ -267,11 +267,11 @@ internal struct DemoAppSettings: Codable {
         storedCardConfig.showsSecurityCodeField = cardSettings.showsStoredCardSecurityCodeField
         
         return .init(
-            showsHolderNameField: cardSettings.showsHolderNameField,
-            showsStorePaymentMethodField: cardSettings.showsStorePaymentMethodField,
-            showsSecurityCodeField: cardSettings.showsSecurityCodeField,
-            koreanAuthenticationMode: cardSettings.koreanAuthenticationMode,
-            socialSecurityNumberMode: cardSettings.socialSecurityNumberMode,
+            showCardholderName: cardSettings.showCardholderName,
+            showStorePayment: cardSettings.showStorePayment,
+            showSecurityCode: cardSettings.showSecurityCode,
+            koreanAuthenticationVisibility: cardSettings.koreanAuthenticationVisibility,
+            socialSecurityNumberVisibility: cardSettings.socialSecurityNumberVisibility,
             storedCardConfiguration: storedCardConfig,
             installmentConfiguration: installmentConfiguration
         )

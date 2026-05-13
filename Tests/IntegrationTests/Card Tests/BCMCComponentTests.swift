@@ -69,7 +69,7 @@ class BCMCComponentTests: XCTestCase {
         
         sut.viewController.loadViewIfNeeded()
         
-        XCTAssertEqual(sut.configuration.allowedCardTypes, nil)
+        XCTAssertEqual(sut.configuration.supportedCardBrands, nil)
         XCTAssertEqual(sut.supportedCardTypes, brands)
         
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
@@ -89,7 +89,7 @@ class BCMCComponentTests: XCTestCase {
             configuration: CardComponentConfiguration()
         )
         
-        XCTAssertFalse(sut.cardViewController.items.numberContainerItem.showsSupportedCardLogos)
+        XCTAssertFalse(sut.cardViewController.items.numberContainerItem.showSupportedCardBrandLogos)
         
         sut.viewController.loadViewIfNeeded()
         
@@ -116,7 +116,7 @@ class BCMCComponentTests: XCTestCase {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = true
+        configuration.showCardholderName = true
         let sut = BCMCComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -125,7 +125,7 @@ class BCMCComponentTests: XCTestCase {
         
         sut.viewController.loadViewIfNeeded()
         
-        XCTAssertEqual(sut.configuration.allowedCardTypes, nil)
+        XCTAssertEqual(sut.configuration.supportedCardBrands, nil)
         XCTAssertEqual(sut.supportedCardTypes, brands)
         
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
@@ -140,7 +140,7 @@ class BCMCComponentTests: XCTestCase {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         var configuration = CardComponentConfiguration()
-        configuration.showsStorePaymentMethodField = false
+        configuration.showStorePayment = false
         let sut = BCMCComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -149,7 +149,7 @@ class BCMCComponentTests: XCTestCase {
         
         sut.viewController.loadViewIfNeeded()
         
-        XCTAssertEqual(sut.configuration.allowedCardTypes, nil)
+        XCTAssertEqual(sut.configuration.supportedCardBrands, nil)
         XCTAssertEqual(sut.supportedCardTypes, brands)
         
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))

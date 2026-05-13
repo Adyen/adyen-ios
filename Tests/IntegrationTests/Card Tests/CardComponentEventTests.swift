@@ -34,11 +34,11 @@ final class CardComponentEventTests: XCTestCase {
         XCTAssertEqual(info?.type, .rendered)
 
         let configDataDict = try XCTUnwrap(info?.configData?.stringOnlyDictionary)
-        XCTAssertEqual(configDataDict["socialSecurityNumberMode"], "auto")
+        XCTAssertEqual(configDataDict["socialSecurityNumberVisibility"], "auto")
         XCTAssertEqual(configDataDict["hasInstallmentOptions"], "false")
         XCTAssertEqual(configDataDict["billingAddressRequired"], "true")
         XCTAssertEqual(configDataDict["hideCVC"], "false")
-        XCTAssertEqual(configDataDict["showsHolderNameField"], "false")
+        XCTAssertEqual(configDataDict["showCardholderName"], "false")
         XCTAssertEqual(configDataDict["showKCPType"], "auto")
         XCTAssertEqual(configDataDict["enableStoredDetails"], "true")
         XCTAssertEqual(configDataDict.keys.count, 7)
@@ -100,7 +100,7 @@ final class CardComponentEventTests: XCTestCase {
     func test_holderName_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardComponentConfiguration()
-        config.showsHolderNameField = true
+        config.showCardholderName = true
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
         let holderNameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
@@ -118,7 +118,7 @@ final class CardComponentEventTests: XCTestCase {
     func test_kcpField_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardComponentConfiguration()
-        config.koreanAuthenticationMode = .show
+        config.koreanAuthenticationVisibility = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
         let kcpItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
@@ -138,7 +138,7 @@ final class CardComponentEventTests: XCTestCase {
     func test_kcpPassword_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardComponentConfiguration()
-        config.koreanAuthenticationMode = .show
+        config.koreanAuthenticationVisibility = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
         let kcpPasswordItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
@@ -158,7 +158,7 @@ final class CardComponentEventTests: XCTestCase {
     func test_socialSecurity_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardComponentConfiguration()
-        config.socialSecurityNumberMode = .show
+        config.socialSecurityNumberVisibility = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
         let socialSecurityItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
@@ -254,7 +254,7 @@ final class CardComponentEventTests: XCTestCase {
     func test_holderName_withInvalidValue_shouldSendValidationErrorEvent() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardComponentConfiguration()
-        config.showsHolderNameField = true
+        config.showCardholderName = true
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
         let holderNameItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
@@ -274,7 +274,7 @@ final class CardComponentEventTests: XCTestCase {
     func test_kcpField_withInvalidValue_shouldSendValidationErrorEvent() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardComponentConfiguration()
-        config.koreanAuthenticationMode = .show
+        config.koreanAuthenticationVisibility = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
         let kcpItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
@@ -296,7 +296,7 @@ final class CardComponentEventTests: XCTestCase {
     func test_kcpPassword_withInvalidValue_shouldSendValidationErrorEvent() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardComponentConfiguration()
-        config.koreanAuthenticationMode = .show
+        config.koreanAuthenticationVisibility = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
         let kcpPasswordItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(
@@ -318,7 +318,7 @@ final class CardComponentEventTests: XCTestCase {
     func test_socialSecurity_withInvalidValue_shouldSendValidationErrorEvent() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardComponentConfiguration()
-        config.socialSecurityNumberMode = .show
+        config.socialSecurityNumberVisibility = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
         let socialSecurityItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(

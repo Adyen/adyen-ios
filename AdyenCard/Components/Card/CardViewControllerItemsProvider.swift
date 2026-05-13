@@ -115,7 +115,7 @@ extension CardViewController {
         internal lazy var numberContainerItem: FormCardNumberContainerItem = {
             let item = FormCardNumberContainerItem(
                 cardTypeLogos: cardLogos,
-                showsSupportedCardLogos: configuration.showsSupportedCardLogos,
+                showSupportedCardBrandLogos: configuration.showSupportedCardBrandLogos,
                 style: formStyle.textField,
                 localizationParameters: localizationParameters,
                 scanCardHandler: scanCardHandler
@@ -201,7 +201,7 @@ extension CardViewController {
             additionalItem.autocapitalizationType = .none
             additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthCodeItem")
             additionalItem.keyboardType = .numberPad
-            additionalItem.isVisible = configuration.koreanAuthenticationMode == .show
+            additionalItem.isVisible = configuration.koreanAuthenticationVisibility == .show
             
             setupEventTriggers(for: additionalItem, target: .taxNumber)
 
@@ -217,7 +217,7 @@ extension CardViewController {
             additionalItem.autocapitalizationType = .none
             additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthPasswordItem")
             additionalItem.keyboardType = .numberPad
-            additionalItem.isVisible = configuration.koreanAuthenticationMode == .show
+            additionalItem.isVisible = configuration.koreanAuthenticationVisibility == .show
             
             setupEventTriggers(for: additionalItem, target: .authPassWord)
 
@@ -234,7 +234,7 @@ extension CardViewController {
             securityNumberItem.autocapitalizationType = .none
             securityNumberItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "socialSecurityNumberItem")
             securityNumberItem.keyboardType = .numberPad
-            securityNumberItem.isVisible = configuration.socialSecurityNumberMode == .show
+            securityNumberItem.isVisible = configuration.socialSecurityNumberVisibility == .show
             
             setupEventTriggers(for: securityNumberItem, target: .boletoSocialSecurityNumber)
             

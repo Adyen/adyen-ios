@@ -16,11 +16,11 @@ internal struct CardSettingsView: View {
         NavigationView {
             List {
                 Section(header: Text("Visibility")) {
-                    Toggle(isOn: $viewModel.showsHolderNameField) {
+                    Toggle(isOn: $viewModel.showCardholderName) {
                         Text("Holder Name")
                     }
                     
-                    Toggle(isOn: $viewModel.showsStorePaymentMethodField) {
+                    Toggle(isOn: $viewModel.showStorePayment) {
                         VStack(alignment: .leading) {
                             Text("Store Payment Method Toggle")
                             Text("(Requires API version 70 or higher)")
@@ -28,7 +28,7 @@ internal struct CardSettingsView: View {
                                 .font(.footnote)
                         }
                     }
-                    Toggle(isOn: $viewModel.showsSecurityCodeField) {
+                    Toggle(isOn: $viewModel.showSecurityCode) {
                         Text("Security Code")
                     }
                     Toggle(isOn: $viewModel.installmentsEnabled.animation()) {
@@ -49,12 +49,12 @@ internal struct CardSettingsView: View {
                             Text($0.displayName)
                         }
                     }
-                    Picker("Social Security Number Mode", selection: $viewModel.socialSecurityNumberMode) {
+                    Picker("Social Security Number Mode", selection: $viewModel.socialSecurityNumberVisibility) {
                         ForEach(CardComponentConfiguration.FieldVisibility.allCases, id: \.self) {
                             Text($0.displayName)
                         }
                     }
-                    Picker("Korean Authentication Mode", selection: $viewModel.koreanAuthenticationMode) {
+                    Picker("Korean Authentication Mode", selection: $viewModel.koreanAuthenticationVisibility) {
                         ForEach(CardComponentConfiguration.FieldVisibility.allCases, id: \.self) {
                             Text($0.displayName)
                         }

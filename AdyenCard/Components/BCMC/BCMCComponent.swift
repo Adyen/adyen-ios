@@ -59,10 +59,10 @@ private extension CardComponentConfiguration {
     func bcmcConfiguration() -> CardComponentConfiguration {
         var configuration = CardComponentConfiguration()
         configuration.style = style
-        configuration.showsHolderNameField = showsHolderNameField
-        configuration.showsStorePaymentMethodField = showsStorePaymentMethodField
+        configuration.showCardholderName = showCardholderName
+        configuration.showStorePayment = showStorePayment
         configuration.stored = stored
-        configuration.showsSupportedCardLogos = false
+        configuration.showSupportedCardBrandLogos = false
         configuration.binLookupType = .bcmc
         configuration.localizationParameters = localizationParameters
         return configuration

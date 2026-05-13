@@ -63,7 +63,7 @@ public class CardComponent: PresentableComponent,
 
             if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
                storePaymentMethodAware.isSession {
-                configuration.showsStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
+                configuration.showStorePayment = storePaymentMethodAware.showStorePaymentMethodField ?? false
             }
         }
     }
@@ -123,7 +123,7 @@ public class CardComponent: PresentableComponent,
         self.configuration = configuration
         self.binInfoProvider = binProvider
 
-        self.supportedCardTypes = configuration.allowedCardTypes ?? paymentMethod.brands
+        self.supportedCardTypes = configuration.supportedCardBrands ?? paymentMethod.brands
     }
 
     // MARK: - Presentable Component Protocol

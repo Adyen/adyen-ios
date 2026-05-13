@@ -153,21 +153,21 @@ public extension DropInComponent {
     struct Card: AnyCardComponentConfiguration {
         
         /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
-        public var showsHolderNameField: Bool
+        public var showCardholderName: Bool
 
         /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
-        public var showsStorePaymentMethodField: Bool
+        public var showStorePayment: Bool
 
         /// Indicates whether to show the security code field at all. Defaults to true.
-        public var showsSecurityCodeField: Bool
+        public var showSecurityCode: Bool
 
         /// Indicates whether to show the security fields for South Korea issued cards. Defaults to `auto`.
         /// In AUTO mode the field will appear only for card issued in "KR" (South Korea).
-        public var koreanAuthenticationMode: CardComponentConfiguration.FieldVisibility
+        public var koreanAuthenticationVisibility: CardComponentConfiguration.FieldVisibility
 
         /// Indicates the visibility mode for the social security number field (CPF/CNPJ) for Brazilian cards. Defaults to `auto`.
         /// In `auto` mode the field will appear based on card bin lookup.
-        public var socialSecurityNumberMode: CardComponentConfiguration.FieldVisibility
+        public var socialSecurityNumberVisibility: CardComponentConfiguration.FieldVisibility
 
         /// Stored card configuration.
         public var stored: StoredCardConfiguration
@@ -175,7 +175,7 @@ public extension DropInComponent {
         /// The list of allowed card types.  Defaults to nil.
         /// By default list of supported cards is extracted from component's `AnyCardPaymentMethod`.
         /// Use this property to enforce a custom collection of card types.
-        public var allowedCardTypes: [CardType]?
+        public var supportedCardBrands: [CardType]?
 
         /// Installments options to present to the user.
         public var installmentConfiguration: InstallmentConfiguration?
@@ -183,36 +183,36 @@ public extension DropInComponent {
         /// Configuration of Card component.
         ///
         /// - Parameters:
-        ///   - showsHolderNameField: Indicates if the field for entering the holder name should be displayed in the form.
+        ///   - showCardholderName: Indicates if the field for entering the holder name should be displayed in the form.
         ///   Defaults to `false`.
-        ///   - showsStorePaymentMethodField: Indicates if the field for storing the card payment method should be displayed in the form.
+        ///   - showStorePayment: Indicates if the field for storing the card payment method should be displayed in the form.
         ///   Defaults to `true`.
-        ///   - showsSecurityCodeField: Indicates whether to show the security code field at all.
+        ///   - showSecurityCode: Indicates whether to show the security code field at all.
         ///   Defaults to `true`.
-        ///   - koreanAuthenticationMode: Indicates the visibility option for the security fields for South Korea issued cards.
+        ///   - koreanAuthenticationVisibility: Indicates the visibility option for the security fields for South Korea issued cards.
         ///   Defaults to `.auto`.
-        ///   - socialSecurityNumberMode: Indicates the visibility option for the security code field. Defaults to `.auto`
+        ///   - socialSecurityNumberVisibility: Indicates the visibility option for the security code field. Defaults to `.auto`
         ///   - storedCardConfiguration: Stored card configuration.
-        ///   - allowedCardTypes: The enforced list of allowed card types.
+        ///   - supportedCardBrands: The enforced list of allowed card types.
         ///   - installmentConfiguration: Configuration for installments. Defaults to `nil`.
         ///   - billingAddress: Billing address fields configurations.
         public init(
-            showsHolderNameField: Bool = false,
-            showsStorePaymentMethodField: Bool = true,
-            showsSecurityCodeField: Bool = true,
-            koreanAuthenticationMode: CardComponentConfiguration.FieldVisibility = .auto,
-            socialSecurityNumberMode: CardComponentConfiguration.FieldVisibility = .auto,
+            showCardholderName: Bool = false,
+            showStorePayment: Bool = true,
+            showSecurityCode: Bool = true,
+            koreanAuthenticationVisibility: CardComponentConfiguration.FieldVisibility = .auto,
+            socialSecurityNumberVisibility: CardComponentConfiguration.FieldVisibility = .auto,
             storedCardConfiguration: StoredCardConfiguration = StoredCardConfiguration(),
-            allowedCardTypes: [CardType]? = nil,
+            supportedCardBrands: [CardType]? = nil,
             installmentConfiguration: InstallmentConfiguration? = nil
         ) {
-            self.showsHolderNameField = showsHolderNameField
-            self.showsSecurityCodeField = showsSecurityCodeField
-            self.showsStorePaymentMethodField = showsStorePaymentMethodField
+            self.showCardholderName = showCardholderName
+            self.showSecurityCode = showSecurityCode
+            self.showStorePayment = showStorePayment
             self.stored = storedCardConfiguration
-            self.allowedCardTypes = allowedCardTypes
-            self.koreanAuthenticationMode = koreanAuthenticationMode
-            self.socialSecurityNumberMode = socialSecurityNumberMode
+            self.supportedCardBrands = supportedCardBrands
+            self.koreanAuthenticationVisibility = koreanAuthenticationVisibility
+            self.socialSecurityNumberVisibility = socialSecurityNumberVisibility
             self.installmentConfiguration = installmentConfiguration
         }
         

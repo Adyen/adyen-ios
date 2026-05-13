@@ -44,7 +44,7 @@ class CardComponentValidationTests: XCTestCase {
     func testUC10_PayButton_ValidatesAllFieldsSimultaneously() {
         // Given - form with multiple fields
         var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = true
+        configuration.showCardholderName = true
         configuration.showsSubmitButton = true
 
         let sut = CardComponent(

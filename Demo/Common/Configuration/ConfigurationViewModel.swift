@@ -14,13 +14,13 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var value: String = ""
     @Published internal var apiVersion: String = ""
     @Published internal var merchantAccount: String = ""
-    @Published internal var showsHolderNameField = false
-    @Published internal var showsStorePaymentMethodField = true
+    @Published internal var showCardholderName = false
+    @Published internal var showStorePayment = true
     @Published internal var showsStoredCardSecurityCodeField = true
-    @Published internal var showsSecurityCodeField = true
+    @Published internal var showSecurityCode = true
     @Published internal var addressMode: CardSettings.AddressFormType = .none
-    @Published internal var socialSecurityNumberMode: CardComponentConfiguration.FieldVisibility = .auto
-    @Published internal var koreanAuthenticationMode: CardComponentConfiguration.FieldVisibility = .auto
+    @Published internal var socialSecurityNumberVisibility: CardComponentConfiguration.FieldVisibility = .auto
+    @Published internal var koreanAuthenticationVisibility: CardComponentConfiguration.FieldVisibility = .auto
     @Published internal var allowDisablingStoredPaymentMethods: Bool = false
     @Published internal var allowsSkippingPaymentList: Bool = false
     @Published internal var allowPreselectedPaymentView: Bool = true
@@ -55,13 +55,13 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.value = configuration.value.description
         self.apiVersion = configuration.apiVersion.description
         self.merchantAccount = configuration.merchantAccount
-        self.showsHolderNameField = configuration.cardSettings.showsHolderNameField
-        self.showsStorePaymentMethodField = configuration.cardSettings.showsStorePaymentMethodField
+        self.showCardholderName = configuration.cardSettings.showCardholderName
+        self.showStorePayment = configuration.cardSettings.showStorePayment
         self.showsStoredCardSecurityCodeField = configuration.cardSettings.showsStoredCardSecurityCodeField
-        self.showsSecurityCodeField = configuration.cardSettings.showsSecurityCodeField
+        self.showSecurityCode = configuration.cardSettings.showSecurityCode
         self.addressMode = configuration.cardSettings.addressMode
-        self.socialSecurityNumberMode = configuration.cardSettings.socialSecurityNumberMode
-        self.koreanAuthenticationMode = configuration.cardSettings.koreanAuthenticationMode
+        self.socialSecurityNumberVisibility = configuration.cardSettings.socialSecurityNumberVisibility
+        self.koreanAuthenticationVisibility = configuration.cardSettings.koreanAuthenticationVisibility
         self.allowDisablingStoredPaymentMethods = configuration.dropInSettings.allowDisablingStoredPaymentMethods
         self.allowsSkippingPaymentList = configuration.dropInSettings.allowsSkippingPaymentList
         self.allowPreselectedPaymentView = configuration.dropInSettings.allowPreselectedPaymentView
@@ -91,13 +91,13 @@ internal final class ConfigurationViewModel: ObservableObject {
             apiVersion: Int(apiVersion) ?? configuration.apiVersion,
             merchantAccount: merchantAccount,
             cardSettings: CardSettings(
-                showsHolderNameField: showsHolderNameField,
-                showsStorePaymentMethodField: showsStorePaymentMethodField,
+                showCardholderName: showCardholderName,
+                showStorePayment: showStorePayment,
                 showsStoredCardSecurityCodeField: showsStoredCardSecurityCodeField,
-                showsSecurityCodeField: showsSecurityCodeField,
+                showSecurityCode: showSecurityCode,
                 addressMode: addressMode,
-                socialSecurityNumberMode: socialSecurityNumberMode,
-                koreanAuthenticationMode: koreanAuthenticationMode,
+                socialSecurityNumberVisibility: socialSecurityNumberVisibility,
+                koreanAuthenticationVisibility: koreanAuthenticationVisibility,
                 enableInstallments: installmentsEnabled,
                 showsInstallmentAmount: showInstallmentAmount
             ),

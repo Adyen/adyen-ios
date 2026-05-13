@@ -35,7 +35,7 @@ class CardComponentUITests: XCTestCase {
     func test_hidden_cvc() {
         
         var configuration = CardComponentConfiguration.minimal
-        configuration.showsSecurityCodeField = false
+        configuration.showSecurityCode = false
         
         let sut = CardComponent(
             paymentMethod: paymentMethod,
@@ -74,19 +74,19 @@ private extension CardComponentConfiguration {
     
     static var minimal: Self {
         var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = false
-        configuration.koreanAuthenticationMode = .hide
-        configuration.socialSecurityNumberMode = .hide
+        configuration.showCardholderName = false
+        configuration.koreanAuthenticationVisibility = .hide
+        configuration.socialSecurityNumberVisibility = .hide
         configuration.installmentConfiguration = nil
         return configuration
     }
     
     static var extended: Self {
         var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = true
+        configuration.showCardholderName = true
         configuration.billingAddress.mode = .full
-        configuration.koreanAuthenticationMode = .show
-        configuration.socialSecurityNumberMode = .show
+        configuration.koreanAuthenticationVisibility = .show
+        configuration.socialSecurityNumberVisibility = .show
         configuration.installmentConfiguration = .init(
             cardBasedOptions: [.bcmc: .init(
                 monthValues: [2, 3, 4],

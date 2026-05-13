@@ -54,7 +54,7 @@ internal struct SessionRequest: APIRequest {
             )
         }
 
-        if ConfigurationConstants.current.cardSettings.showsStorePaymentMethodField {
+        if ConfigurationConstants.current.cardSettings.showStorePayment {
             AdyenAssertion.assert(
                 message: "API version should be v70 or above to apply card component's store payment method field",
                 condition: ConfigurationConstants.current.apiVersion < 70
