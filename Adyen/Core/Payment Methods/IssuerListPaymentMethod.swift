@@ -52,12 +52,7 @@ public struct IssuerListPaymentMethod: PaymentMethod {
         try container.encode(name, forKey: .name)
         try container.encode(issuers, forKey: .issuers)
     }
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
+
     private enum CodingKeys: String, CodingKey {
         case type
         case name
@@ -75,4 +70,12 @@ public struct IssuerListPaymentMethod: PaymentMethod {
         }
     }
     
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension IssuerListPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
 }

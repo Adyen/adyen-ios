@@ -25,7 +25,7 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
     public var context: AdyenContext
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
 
     /// Component's configuration
     public var configuration: Configuration

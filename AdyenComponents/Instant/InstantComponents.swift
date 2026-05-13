@@ -10,10 +10,10 @@ import Adyen
 public typealias OXXOPaymentMethod = InstantPaymentMethod
 
 /// A component for handling OXXO payment.
-public typealias OXXOComponent = InstantPaymentComponent
+package typealias OXXOComponent = InstantPaymentComponent
 
 /// A  payment method for Multibanco.
 public typealias MultibancoPaymentMethod = InstantPaymentMethod
 
 /// A component for handling Multibanco payment.
-public typealias MultibancoComponent = InstantPaymentComponent
+package typealias MultibancoComponent = InstantPaymentComponent

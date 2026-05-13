@@ -45,7 +45,7 @@ public final class TwintComponent: InitiablePaymentComponent {
     public var configuration: Configuration
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
 
     // MARK: - Initializers
 
@@ -67,7 +67,7 @@ public final class TwintComponent: InitiablePaymentComponent {
     // MARK: - PaymentInitiable
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
-    public func initiatePayment(delegate: PaymentComponentDelegate) {
+    package func initiatePayment(delegate: PaymentComponentDelegate) {
         self.delegate = delegate
         submit(data: paymentData)
     }

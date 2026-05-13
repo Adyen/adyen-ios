@@ -44,7 +44,7 @@ public final class CashAppPayComponent: PaymentComponent,
     }
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate? {
+    package weak var delegate: PaymentComponentDelegate? {
         didSet {
             if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
                storePaymentMethodAware.isSession {

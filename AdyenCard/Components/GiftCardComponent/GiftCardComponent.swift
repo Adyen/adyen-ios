@@ -56,13 +56,13 @@ public final class GiftCardComponent: PresentableComponent,
     internal let showsSubmitButton: Bool
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
 
     /// The partial payment component delegate.
     public weak var partialPaymentDelegate: PartialPaymentDelegate?
 
     /// The delegate that handles shopper confirmation UI when the balance of the gift card is sufficient to pay.
-    public weak var readyToSubmitComponentDelegate: ReadyToSubmitPaymentComponentDelegate?
+    package weak var readyToSubmitComponentDelegate: ReadyToSubmitPaymentComponentDelegate?
 
     /// The localization parameters.
     public var localizationParameters: LocalizationParameters?

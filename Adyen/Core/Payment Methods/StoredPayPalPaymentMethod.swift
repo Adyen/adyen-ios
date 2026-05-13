@@ -25,12 +25,7 @@ public struct StoredPayPalPaymentMethod: StoredPaymentMethod {
     
     /// The email address of the PayPal account.
     public let emailAddress: String
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
+
     // MARK: - Decoding
     
     private enum CodingKeys: String, CodingKey {
@@ -41,4 +36,12 @@ public struct StoredPayPalPaymentMethod: StoredPaymentMethod {
         case supportedShopperInteractions
     }
     
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension StoredPayPalPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
 }

@@ -17,13 +17,8 @@ public struct ApplePayPaymentMethod: PaymentMethod {
 
     /// List of networks enabled on CA.
     public let brands: [String]?
-
+    
     // MARK: - Initializers
-
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
 
     internal init(
         type: PaymentMethodType,
@@ -45,4 +40,12 @@ public struct ApplePayPaymentMethod: PaymentMethod {
         case brands
     }
     
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension ApplePayPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
 }

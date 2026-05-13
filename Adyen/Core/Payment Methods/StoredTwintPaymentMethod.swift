@@ -20,11 +20,6 @@ public struct StoredTwintPaymentMethod: StoredPaymentMethod {
     public let supportedShopperInteractions: [ShopperInteraction]
 
     @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-
-    @_spi(AdyenInternal)
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(
             title: name,
@@ -39,5 +34,13 @@ public struct StoredTwintPaymentMethod: StoredPaymentMethod {
         case identifier = "id"
         case supportedShopperInteractions
 
+    }
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension StoredTwintPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
     }
 }

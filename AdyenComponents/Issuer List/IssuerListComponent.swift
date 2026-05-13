@@ -33,7 +33,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     }
     
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
     
     /// Component's configuration.
     public var configuration: Configuration

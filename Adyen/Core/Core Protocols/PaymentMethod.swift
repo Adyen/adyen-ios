@@ -25,24 +25,11 @@ public protocol PaymentMethod: Codable {
     ///   - using: The localization parameters.
     @_spi(AdyenInternal)
     func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation
-    
-    @_spi(AdyenInternal)
-    func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent?
 }
 
-public extension PaymentMethod {
-    
-    /// This default implementation has to be provided to be able to build with `BUILD_LIBRARY_FOR_DISTRIBUTION` enabled
-    ///
-    /// - Warning: Access will cause an failure in debug mode to assure the correct implementation of the `PaymentMethod` protocol
-    @_spi(AdyenInternal)
-    func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        AdyenAssertion.assertionFailure(
-            message: "`@_spi(AdyenInternal) \(#function)` needs to be implemented on `\(String(describing: Self.self))`"
-        )
-        
-        return nil
-    }
+/// A payment method that can build a `PaymentComponent` using a `PaymentComponentBuilder`.
+package protocol PaymentComponentBuildable {
+    func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent?
 }
 
 /// A protocol to define any partial payment method such as gift cards, `MealVoucher` etc.

@@ -15,11 +15,6 @@ public struct MealVoucherPaymentMethod: PartialPaymentMethod {
     
     public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
     }
@@ -31,4 +26,12 @@ public struct MealVoucherPaymentMethod: PartialPaymentMethod {
         case name
     }
 
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension MealVoucherPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
 }

@@ -122,10 +122,10 @@ public final class DropInComponent: NSObject,
     // MARK: - Delegates
 
     /// The delegate of the drop in component.
-    public weak var delegate: DropInComponentDelegate?
+    package weak var delegate: DropInComponentDelegate?
 
     /// The partial payment flow delegate.
-    public weak var partialPaymentDelegate: PartialPaymentDelegate?
+    package weak var partialPaymentDelegate: PartialPaymentDelegate?
 
     /// The stored payment methods delegate.
     public weak var storedPaymentMethodsDelegate: StoredPaymentMethodsDelegate? {

@@ -14,14 +14,17 @@ public struct WeChatPayPaymentMethod: PaymentMethod {
     public let name: String
     
     public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
+
     private enum CodingKeys: String, CodingKey {
         case type
         case name
+    }
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension WeChatPayPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
     }
 }

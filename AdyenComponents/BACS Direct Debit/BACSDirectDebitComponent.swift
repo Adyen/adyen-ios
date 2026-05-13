@@ -30,7 +30,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     public let viewController: UIViewController
 
     /// The object that acts as the delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
 
     /// The BACS Direct Debit payment method.
     public var paymentMethod: PaymentMethod {

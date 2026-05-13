@@ -40,7 +40,7 @@ public final class OnlineBankingComponent: PaymentComponent,
         onlineBankingPaymentMethod
     }
 
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
 
     public lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,

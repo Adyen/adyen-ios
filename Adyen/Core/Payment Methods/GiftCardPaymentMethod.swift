@@ -18,11 +18,6 @@ public struct GiftCardPaymentMethod: PartialPaymentMethod {
     /// The brand of the gift card.
     public let brand: String
 
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: brand)
     }
@@ -35,4 +30,12 @@ public struct GiftCardPaymentMethod: PartialPaymentMethod {
         case brand
     }
 
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension GiftCardPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
 }

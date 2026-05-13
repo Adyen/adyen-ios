@@ -52,7 +52,7 @@ public class CardComponent: PresentableComponent,
     public internal(set) var configuration: CardComponentConfiguration
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate? {
+    package weak var delegate: PaymentComponentDelegate? {
         didSet {
             storedCardComponent?.delegate = delegate
             // override installment config if using session (when session is set as delegate)

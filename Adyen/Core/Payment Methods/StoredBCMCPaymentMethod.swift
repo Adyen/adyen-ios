@@ -56,12 +56,7 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
     public var holderName: String? {
         storedCardPaymentMethod.holderName
     }
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
+
     // MARK: - Decoding
     
     public init(from decoder: Decoder) throws {
@@ -72,4 +67,12 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
         try storedCardPaymentMethod.encode(to: encoder)
     }
     
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension StoredBCMCPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
 }

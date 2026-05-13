@@ -25,7 +25,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
         blikPaymentMethod
     }
 
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
 
     public lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,

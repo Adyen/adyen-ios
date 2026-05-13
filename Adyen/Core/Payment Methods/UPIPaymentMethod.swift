@@ -18,11 +18,6 @@ public struct UPIPaymentMethod: PaymentMethod {
 
     public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-
     // MARK: - Private
 
     private enum CodingKeys: String, CodingKey {
@@ -31,4 +26,12 @@ public struct UPIPaymentMethod: PaymentMethod {
         case apps
     }
 
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension UPIPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
 }

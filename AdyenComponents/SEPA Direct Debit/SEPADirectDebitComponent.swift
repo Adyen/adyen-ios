@@ -33,7 +33,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     }
     
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
     
     /// Initializes the SEPA Direct Debit component.
     ///

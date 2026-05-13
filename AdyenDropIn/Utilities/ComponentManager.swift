@@ -88,7 +88,14 @@ internal final class ComponentManager: ComponentManaging {
             return nil
         }
 
-        guard var paymentComponent = paymentMethod.buildComponent(using: self) else { return nil }
+        let component: PaymentComponent? = {
+            if let buildable = paymentMethod as? any PaymentComponentBuildable {
+                buildable.buildComponent(using: self)
+            } else {
+                build(paymentMethod: paymentMethod)
+            }
+        }()
+        guard var paymentComponent = component else { return nil }
         paymentComponent.order = order
 
         if var localizableComponent = paymentComponent as? Localizable {

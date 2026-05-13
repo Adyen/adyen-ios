@@ -10,26 +10,26 @@ import UIKit
 // TODO: Fix Stored PM UI
 ///  A component that handle stored payment methods.
 @MainActor
-public final class StoredPaymentMethodComponent: StoredPaymentComponent {
+package final class StoredPaymentMethodComponent: StoredPaymentComponent {
 
     package var localizationParameters: LocalizationParameters?
 
     /// The context object for this component.
-    public let context: AdyenContext
+    package let context: AdyenContext
 
     /// The stored payment method.
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         storedPaymentMethod
     }
 
-    public weak var delegate: PaymentComponentDelegate?
-    
+    package weak var delegate: PaymentComponentDelegate?
+
     /// Initializes new instance of `StoredPaymentMethodComponent`.
     ///
     /// - Parameters:
     ///   - paymentMethod: The stored payment method.
     ///   - context: The context object.
-    public init(
+    package init(
         paymentMethod: StoredPaymentMethod,
         context: AdyenContext
     ) {
@@ -41,7 +41,7 @@ public final class StoredPaymentMethodComponent: StoredPaymentComponent {
     
     // MARK: - PresentableComponent
 
-    public lazy var viewController: UIViewController = {
+    package lazy var viewController: UIViewController = {
         sendInitialAnalytics()
         sendDidLoadEvent()
         

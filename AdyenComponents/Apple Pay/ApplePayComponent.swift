@@ -44,8 +44,8 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     internal var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
-    
+    package weak var delegate: PaymentComponentDelegate?
+
     /// Initializes the component.
     ///
     /// After the shopper authorizes payment, the component suspends the Apple Pay sheet

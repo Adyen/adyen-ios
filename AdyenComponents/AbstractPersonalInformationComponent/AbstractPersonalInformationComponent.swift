@@ -28,7 +28,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     
     public let paymentMethod: PaymentMethod
 
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
 
     public lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,

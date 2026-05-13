@@ -40,7 +40,7 @@ public final class PayByBankUSComponent: PaymentComponent, PresentableComponent 
     public var configuration: Configuration
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
     
     public var viewController: UIViewController {
         confirmationViewController

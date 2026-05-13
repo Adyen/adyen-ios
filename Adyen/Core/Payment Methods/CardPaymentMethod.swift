@@ -29,12 +29,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
         self.brands = try container.decodeIfPresent([CardType].self, forKey: .brands) ?? []
         self.fundingSource = try container.decodeIfPresent(CardFundingSource.self, forKey: .fundingSource)
     }
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
+
     public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: "card")
     }
@@ -90,12 +85,7 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
             accessibilityLabel: accessibilityLabel
         )
     }
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
+
     public let supportedShopperInteractions: [ShopperInteraction]
     
     /// The brand of the stored card, such as `"mc"` or `"visa"`.
@@ -128,4 +118,18 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
         case fundingSource
     }
     
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension CardPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
+}
+
+extension StoredCardPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
 }

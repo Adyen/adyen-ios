@@ -24,7 +24,7 @@ public final class BoletoComponent: PaymentComponent,
     @_spi(AdyenInternal)
     public let context: AdyenContext
 
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
         
     public var paymentMethod: PaymentMethod {
         boletoPaymentMethod
@@ -199,14 +199,13 @@ extension BoletoComponent: ViewControllerDelegate {
     }
 }
 
-@_spi(AdyenInternal)
 extension BoletoComponent: PaymentComponentDelegate {
     
-    public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
+    package func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         submit(data: data, component: self)
     }
     
-    public func didFail(with error: Error, from component: PaymentComponent) {
+    package func didFail(with error: Error, from component: PaymentComponent) {
         delegate?.didFail(with: error, from: self)
     }
 }
