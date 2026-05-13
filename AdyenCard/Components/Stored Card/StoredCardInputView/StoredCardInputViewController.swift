@@ -177,7 +177,7 @@ internal class StoredCardInputViewController: UIViewController {
         configureContent()
         setupBindings()
         disableSwipeDownToDismissScreen()
-        securityCodeItemView.textField.becomeFirstResponder()
+        securityCodeItemView.becomeFirstResponder()
     }
 
     private func disableSwipeDownToDismissScreen() {
@@ -240,14 +240,10 @@ internal class StoredCardInputViewController: UIViewController {
 
 extension StoredCardInputViewController: FormTextItemViewDelegate {
     internal func didReachMaximumLength(in itemView: FormTextItemView<some FormTextItem>) {
-        handleReturnKey(from: itemView)
+        securityCodeItemView.resignFirstResponder()
     }
 
     internal func didSelectReturnKey(in itemView: FormTextItemView<some FormTextItem>) {
-        handleReturnKey(from: itemView)
-    }
-
-    internal func handleReturnKey(from itemView: FormTextItemView<some FormTextItem>) {
-        itemView.resignFirstResponder()
+        securityCodeItemView.resignFirstResponder()
     }
 }
