@@ -81,10 +81,6 @@ package final class CheckoutCore: CheckoutCoreProtocol {
         presentationDelegate: PresentationDelegate?
     ) {
         let callbacks = AdvancedCheckoutCallbacks()
-        callbacks.onSubmit = configuration.onSubmit
-        callbacks.onAdditionalDetails = configuration.onAdditionalDetails
-        callbacks.onComplete = configuration.onComplete
-        callbacks.onError = configuration.onError
         let submissionHandler: any CheckoutSubmissionHandling
         if let session {
             submissionHandler = SessionSubmissionHandler(session: session)
