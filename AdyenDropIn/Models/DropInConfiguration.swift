@@ -152,7 +152,7 @@ public extension DropInComponent {
     /// Card Component configuration specific to Drop In Component.
     struct Card: AnyCardComponentConfiguration {
         
-        /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
+        /// Indicates if the field for entering the cardholder name should be displayed in the form. Defaults to false.
         public var showCardholderName: Bool
 
         /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
@@ -172,9 +172,9 @@ public extension DropInComponent {
         /// Indicates whether to show the security code field for stored cards. Defaults to true.
         public var showSecurityCodeForStoredCard: Bool
 
-        /// The list of allowed card types.  Defaults to nil.
-        /// By default list of supported cards is extracted from component's `AnyCardPaymentMethod`.
-        /// Use this property to enforce a custom collection of card types.
+        /// The list of supported card brands.  Defaults to nil.
+        /// By default list of supported brands is extracted from component's `AnyCardPaymentMethod`.
+        /// Use this property to enforce a custom collection of card brands.
         public var supportedCardBrands: [CardType]?
 
         /// Installments options to present to the user.
@@ -183,7 +183,7 @@ public extension DropInComponent {
         /// Configuration of Card component.
         ///
         /// - Parameters:
-        ///   - showCardholderName: Indicates if the field for entering the holder name should be displayed in the form.
+        ///   - showCardholderName: Indicates if the field for entering the cardholder name should be displayed in the form.
         ///   Defaults to `false`.
         ///   - showStorePayment: Indicates if the field for storing the card payment method should be displayed in the form.
         ///   Defaults to `true`.
@@ -193,7 +193,7 @@ public extension DropInComponent {
         ///   Defaults to `.auto`.
         ///   - socialSecurityNumberVisibility: Indicates the visibility option for the security code field. Defaults to `.auto`
         ///   - showSecurityCodeForStoredCard: Indicates whether to show the security code field for stored cards. Defaults to `true`.
-        ///   - supportedCardBrands: The enforced list of allowed card types.
+        ///   - supportedCardBrands: The enforced list of supported card brands.
         ///   - installmentConfiguration: Configuration for installments. Defaults to `nil`.
         ///   - billingAddress: Billing address fields configurations.
         public init(
