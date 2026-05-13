@@ -76,7 +76,7 @@ internal struct PartialConfirmationPaymentMethod: PaymentMethod {
 }
 
 extension PartialConfirmationPaymentMethod: PaymentComponentBuildable {
-    internal func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
+    internal func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
         (paymentMethod as? PaymentComponentBuildable)?.buildComponent(using: builder)
     }
 }
