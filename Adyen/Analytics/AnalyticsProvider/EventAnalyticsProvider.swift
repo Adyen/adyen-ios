@@ -18,21 +18,18 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
 
     internal let apiClient: AsyncAPIClientProtocol
     internal let eventDataSource: AnyAnalyticsEventDataSource
-    private let context: AnalyticsContext
     private var batchTimer: Timer?
     private let batchInterval: TimeInterval
     private let checkoutAttemptId: String
 
     internal init(
         apiClient: AsyncAPIClientProtocol,
-        context: AnalyticsContext,
         eventDataSource: AnyAnalyticsEventDataSource,
         checkoutAttemptId: String,
         batchInterval: TimeInterval = Constants.batchInterval
     ) {
         self.apiClient = apiClient
         self.eventDataSource = eventDataSource
-        self.context = context
         self.batchInterval = batchInterval
         self.checkoutAttemptId = checkoutAttemptId
         
@@ -84,7 +81,7 @@ internal final class EventAnalyticsProvider: AnyEventAnalyticsProvider {
 
         // as per this call's limitation, we only send up to the
         // limit of each event and discard the older ones
-        let platform = context.platform.rawValue
+        let platform = checkoutPlatformParams.platform.rawValue
         var request = AnalyticsRequest(
             checkoutAttemptId: checkoutAttemptId,
             platform: platform
