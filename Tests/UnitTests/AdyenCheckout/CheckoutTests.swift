@@ -565,6 +565,26 @@ final class CheckoutTests: XCTestCase {
         await fulfillment(of: [expectation], timeout: 1)
     }
     
+    func test_didProvide_actionOnlyCallsOnAdditionalDetails_whenSet() async {
+        let callbacks = ActionOnlyCheckoutCallbacks()
+        let expectation = expectation(description: "onAdditionalDetails called")
+        let actionData = ActionComponentData(
+            details: AwaitActionDetails(payload: "payload"),
+            paymentData: "data"
+        )
+
+        callbacks.onAdditionalDetails = { data in
+            XCTAssertEqual(data.paymentData, "data")
+            XCTAssertNotNil(data.details as? AwaitActionDetails)
+            expectation.fulfill()
+            return .completion(resultCode: CheckoutResultCode.authorised.rawValue)
+        }
+
+        let sut = makeActionOnlyCheckoutCore(callbacks: callbacks)
+        sut.didProvide(actionData, from: ActionComponentMock())
+        await fulfillment(of: [expectation], timeout: 1)
+    }
+
     func test_didSubmit_returnsErrorBranch_callsOnError() async throws {
         let callbacks = AdvancedCheckoutCallbacks()
         let onErrorExpectation = expectation(description: "onError called")
@@ -694,6 +714,18 @@ final class CheckoutTests: XCTestCase {
             presentationDelegate: nil,
             resultCallbacks: callbacks,
             submissionHandler: AdvancedSubmissionHandler(callbacks: callbacks)
+        )
+    }
+
+    private func makeActionOnlyCheckoutCore(
+        callbacks: ActionOnlyCheckoutCallbacks
+    ) -> CheckoutCore {
+        CheckoutCore(
+            configuration: configuration,
+            adyenContext: Dummy.context,
+            presentationDelegate: nil,
+            resultCallbacks: callbacks,
+            submissionHandler: ActionOnlySubmissionHandler(callbacks: callbacks)
         )
     }
 

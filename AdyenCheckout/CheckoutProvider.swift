@@ -98,7 +98,7 @@ internal class CheckoutProvider: CheckoutProviding {
             adyenContext: adyenContext,
             presentationDelegate: presentationDelegate,
             resultCallbacks: callbacks,
-            submissionHandler: ActionOnlySubmissionHandler()
+            submissionHandler: ActionOnlySubmissionHandler(callbacks: callbacks)
         )
     }
     

@@ -29,6 +29,8 @@ package final class AdvancedCheckoutCallbacks: CheckoutResultCallbacks {
 }
 
 package final class ActionOnlyCheckoutCallbacks: CheckoutResultCallbacks {
+    package var onAdditionalDetails: AdditionalDetailsHandler?
+
     package var onComplete: CheckoutSuccessHandler?
 
     package var onError: CheckoutErrorHandler?
