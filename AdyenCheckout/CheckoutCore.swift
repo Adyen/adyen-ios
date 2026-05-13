@@ -43,7 +43,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
     package let configuration: CheckoutConfiguration
     package weak var presentationDelegate: PresentationDelegate?
     package let adyenContext: AdyenContext
-    package let resultCallbacks: any CheckoutResultCallbacks
+    package let resultCallbacks: any CheckoutResultCallbackStore
     package let submissionHandler: any CheckoutSubmissionHandling
 
     internal lazy var actionHandlingComponent: ActionHandlingComponent = {
@@ -73,38 +73,13 @@ package final class CheckoutCore: CheckoutCoreProtocol {
 
     internal weak var pendingPaymentComponent: (any PaymentComponent)?
 
-    package convenience init(
-        configuration: CheckoutConfiguration,
-        session: SessionProtocol? = nil,
-        paymentMethods: PaymentMethods? = nil,
-        adyenContext: AdyenContext,
-        presentationDelegate: PresentationDelegate?
-    ) {
-        let callbacks = AdvancedCheckoutCallbacks()
-        let submissionHandler: any CheckoutSubmissionHandling
-        if let session {
-            submissionHandler = SessionSubmissionHandler(session: session)
-        } else {
-            submissionHandler = AdvancedSubmissionHandler(callbacks: callbacks)
-        }
-        self.init(
-            configuration: configuration,
-            session: session,
-            paymentMethods: paymentMethods,
-            adyenContext: adyenContext,
-            presentationDelegate: presentationDelegate,
-            resultCallbacks: callbacks,
-            submissionHandler: submissionHandler
-        )
-    }
-
     package init(
         configuration: CheckoutConfiguration,
         session: SessionProtocol? = nil,
         paymentMethods: PaymentMethods? = nil,
         adyenContext: AdyenContext,
         presentationDelegate: PresentationDelegate?,
-        resultCallbacks: any CheckoutResultCallbacks,
+        resultCallbacks: any CheckoutResultCallbackStore,
         submissionHandler: any CheckoutSubmissionHandling
     ) {
         self.configuration = configuration

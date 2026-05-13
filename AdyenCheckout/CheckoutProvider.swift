@@ -31,7 +31,7 @@ internal class CheckoutProvider: CheckoutProviding {
     internal func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
-        callbacks: SessionCheckoutCallbacks,
+        callbackStore: SessionCheckoutCallbackStore,
         presentationDelegate: PresentationDelegate?
     ) async throws -> CheckoutCoreProtocol {
 
@@ -48,7 +48,7 @@ internal class CheckoutProvider: CheckoutProviding {
             session: session,
             adyenContext: adyenContext,
             presentationDelegate: presentationDelegate,
-            resultCallbacks: callbacks,
+            resultCallbacks: callbackStore,
             submissionHandler: SessionSubmissionHandler(session: session)
         )
     }
@@ -63,7 +63,7 @@ internal class CheckoutProvider: CheckoutProviding {
     internal func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
-        callbacks: AdvancedCheckoutCallbacks,
+        callbackStore: AdvancedCheckoutCallbackStore,
         presentationDelegate: PresentationDelegate?
     ) async throws -> CheckoutCoreProtocol {
 
@@ -75,8 +75,8 @@ internal class CheckoutProvider: CheckoutProviding {
             paymentMethods: paymentMethods,
             adyenContext: adyenContext,
             presentationDelegate: presentationDelegate,
-            resultCallbacks: callbacks,
-            submissionHandler: AdvancedSubmissionHandler(callbacks: callbacks)
+            resultCallbacks: callbackStore,
+            submissionHandler: AdvancedSubmissionHandler(callbackStore: callbackStore)
         )
     }
     
@@ -86,7 +86,7 @@ internal class CheckoutProvider: CheckoutProviding {
     ///   - presentationDelegate: A delegate for handling action UI presentation.
     internal func setup(
         configuration: CheckoutConfiguration,
-        callbacks: ActionOnlyCheckoutCallbacks,
+        callbackStore: ActionOnlyCheckoutCallbackStore,
         presentationDelegate: PresentationDelegate?
     ) async throws -> CheckoutCoreProtocol {
 
@@ -97,8 +97,8 @@ internal class CheckoutProvider: CheckoutProviding {
             configuration: configuration,
             adyenContext: adyenContext,
             presentationDelegate: presentationDelegate,
-            resultCallbacks: callbacks,
-            submissionHandler: ActionOnlySubmissionHandler(callbacks: callbacks)
+            resultCallbacks: callbackStore,
+            submissionHandler: ActionOnlySubmissionHandler(callbackStore: callbackStore)
         )
     }
     

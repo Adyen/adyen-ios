@@ -6,19 +6,19 @@
 
 import Adyen
 
-package protocol CheckoutResultCallbacks: AnyObject {
+package protocol CheckoutResultCallbackStore: AnyObject {
     var onComplete: CheckoutSuccessHandler? { get set }
 
     var onError: CheckoutErrorHandler? { get set }
 }
 
-package final class SessionCheckoutCallbacks: CheckoutResultCallbacks {
+package final class SessionCheckoutCallbackStore: CheckoutResultCallbackStore {
     package var onComplete: CheckoutSuccessHandler?
 
     package var onError: CheckoutErrorHandler?
 }
 
-package final class AdvancedCheckoutCallbacks: CheckoutResultCallbacks {
+package final class AdvancedCheckoutCallbackStore: CheckoutResultCallbackStore {
     package var onSubmit: SubmitHandler?
 
     package var onAdditionalDetails: AdditionalDetailsHandler?
@@ -28,7 +28,7 @@ package final class AdvancedCheckoutCallbacks: CheckoutResultCallbacks {
     package var onError: CheckoutErrorHandler?
 }
 
-package final class ActionOnlyCheckoutCallbacks: CheckoutResultCallbacks {
+package final class ActionOnlyCheckoutCallbackStore: CheckoutResultCallbackStore {
     package var onAdditionalDetails: AdditionalDetailsHandler?
 
     package var onComplete: CheckoutSuccessHandler?

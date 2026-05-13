@@ -38,29 +38,29 @@ package final class SessionSubmissionHandler: CheckoutSubmissionHandling {
 
 @MainActor
 package final class AdvancedSubmissionHandler: CheckoutSubmissionHandling {
-    private let callbacks: AdvancedCheckoutCallbacks
+    private let callbackStore: AdvancedCheckoutCallbackStore
 
-    package init(callbacks: AdvancedCheckoutCallbacks) {
-        self.callbacks = callbacks
+    package init(callbackStore: AdvancedCheckoutCallbackStore) {
+        self.callbackStore = callbackStore
     }
 
     package func handleSubmit(_ data: PaymentComponentData) async throws -> SubmitResult {
-        guard let onSubmit = callbacks.onSubmit else { throw CallbackError.missingSubmitHandler }
+        guard let onSubmit = callbackStore.onSubmit else { throw CallbackError.missingSubmitHandler }
         return try await onSubmit(data)
     }
 
     package func handleAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult {
-        guard let onAdditionalDetails = callbacks.onAdditionalDetails else { throw CallbackError.missingAdditionalDetailsHandler }
+        guard let onAdditionalDetails = callbackStore.onAdditionalDetails else { throw CallbackError.missingAdditionalDetailsHandler }
         return try await onAdditionalDetails(data)
     }
 }
 
 @MainActor
 package final class ActionOnlySubmissionHandler: CheckoutSubmissionHandling {
-    private let callbacks: ActionOnlyCheckoutCallbacks
+    private let callbackStore: ActionOnlyCheckoutCallbackStore
 
-    package init(callbacks: ActionOnlyCheckoutCallbacks) {
-        self.callbacks = callbacks
+    package init(callbackStore: ActionOnlyCheckoutCallbackStore) {
+        self.callbackStore = callbackStore
     }
 
     package func handleSubmit(_ data: PaymentComponentData) async throws -> SubmitResult {
@@ -68,7 +68,7 @@ package final class ActionOnlySubmissionHandler: CheckoutSubmissionHandling {
     }
 
     package func handleAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult {
-        guard let onAdditionalDetails = callbacks.onAdditionalDetails else { throw CallbackError.missingAdditionalDetailsHandler }
+        guard let onAdditionalDetails = callbackStore.onAdditionalDetails else { throw CallbackError.missingAdditionalDetailsHandler }
         return try await onAdditionalDetails(data)
     }
 }
