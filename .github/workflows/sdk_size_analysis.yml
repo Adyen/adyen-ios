@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   sdk-size-analysis:
-    runs-on: macos-15-xlarge
+    runs-on: macos-26-xlarge
     steps:
       - uses: actions/checkout@v6
         with:

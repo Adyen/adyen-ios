@@ -10,7 +10,7 @@ permissions:
   contents: read          
 jobs:
   Generate:
-    runs-on: macos-15-xlarge
+    runs-on: macos-26-xlarge
     
     steps:
     - uses: actions/checkout@v6
