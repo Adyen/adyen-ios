@@ -31,7 +31,7 @@ jobs:
       - name: Select latest Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: latest-stable
+          xcode-version: '26.2'
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v4
@@ -44,7 +44,7 @@ jobs:
         run: |
           xcodebuild -project Adyen.xcodeproj \
             -scheme Adyen \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.6' \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=26.4' \
             SKIP_INSTALL=NO build | xcpretty --utf --color
 
       - name: Perform CodeQL Analysis
