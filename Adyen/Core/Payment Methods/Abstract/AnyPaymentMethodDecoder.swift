@@ -89,6 +89,7 @@ internal enum AnyPaymentMethodDecoder {
         .upi: UPIPaymentMethodDecoder(),
         .cashAppPay: CashAppPayPaymentMethodDecoder(),
         .twint: TwintPaymentMethodDecoder(),
+        .payByBank: PayByBankPaymentMethodDecoder(),
         .payByBankAISDD: PayByBankUSPaymentMethodDecoder(),
         .payTo: PayToPaymentMethodDecoder()
     ]
@@ -323,6 +324,27 @@ private struct BLIKPaymentMethodDecoder: PaymentMethodDecoder {
             return .blik(method)
         }
         return nil
+    }
+}
+
+private struct PayByBankPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
+        let container = try decoder.container(keyedBy: AnyPaymentMethod.CodingKeys.self)
+        let isIssuersList = container.contains(.issuers)
+
+        if isIssuersList {
+            return try IssuerListPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
+        }
+
+        return try InstantPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
+    }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        if let method = paymentMethod as? IssuerListPaymentMethod {
+            return .issuerList(method)
+        } else {
+            return InstantPaymentMethodDecoder().anyPaymentMethod(from: paymentMethod)
+        }
     }
 }
 
