@@ -25,7 +25,7 @@ jobs:
         find ./Tests/SnapshotTests -name "__Snapshots__" -exec rm -rf {} +
     - name: 📸 Generate Snapshots
       run: |
-        xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "platform=iOS Simulator,name=iPhone 16,OS=26.4" -destination "platform=iOS Simulator,name=iPad (10th generation),OS=26.4" | xcpretty --utf --color
+        xcodebuild test -project "${project}" -scheme "${scheme}" ${params} -destination "platform=iOS Simulator,name=iPhone 16,OS=26.2" -destination "platform=iOS Simulator,name=iPad (10th generation),OS=26.2" | xcpretty --utf --color
       env:
         project: 'Adyen.xcodeproj'
         params: '-skipPackagePluginValidation'

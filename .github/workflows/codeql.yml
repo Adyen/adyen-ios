@@ -44,7 +44,7 @@ jobs:
         run: |
           xcodebuild -project Adyen.xcodeproj \
             -scheme Adyen \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=26.4' \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=26.2' \
             SKIP_INSTALL=NO build | xcpretty --utf --color
 
       - name: Perform CodeQL Analysis
