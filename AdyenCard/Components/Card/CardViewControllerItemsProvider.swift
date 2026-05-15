@@ -26,7 +26,7 @@ extension CardViewController {
         private let theme: CheckoutTheme
         private let amount: Amount?
         private var localizationParameters: LocalizationParameters?
-        private let configuration: CardComponentConfiguration
+        private let configuration: CardConfiguration
         private let shopperInformation: PrefilledShopperInformation?
         private let cardLogos: [FormCardLogosItem.CardTypeLogo]
         private let scope: String
@@ -43,7 +43,7 @@ extension CardViewController {
             formStyle: FormComponentStyle,
             theme: CheckoutTheme,
             amount: Amount?,
-            configuration: CardComponentConfiguration,
+            configuration: CardConfiguration,
             shopperInformation: PrefilledShopperInformation?,
             cardLogos: [FormCardLogosItem.CardTypeLogo],
             scope: String,

@@ -10,7 +10,7 @@ import Adyen
 #endif
 
 /// Card component configuration.
-public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPersonalInformationConfiguration {
+public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInformationConfiguration {
     
     package let componentType: Adyen.CheckoutComponentType = .payment(.scheme)
     
@@ -96,7 +96,7 @@ public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPer
 
 // MARK: - Public modifiers
 
-extension CardComponentConfiguration {
+extension CardConfiguration {
     
     /// Sets the shopper's information to be prefilled.
     /// - Parameter shopperInformation: The shopper's information to be prefilled.
@@ -244,11 +244,11 @@ public protocol AnyCardComponentConfiguration {
 
     /// Indicates whether to show the security fields for South Korea issued cards. Defaults to `auto`.
     /// In AUTO mode the field will appear only for card issued in "KR" (South Korea).
-    var koreanAuthenticationVisibility: CardComponentConfiguration.FieldVisibility { get }
+    var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility { get }
 
     /// Indicates the visibility mode for the social security number field (CPF/CNPJ) for Brazilian cards. Defaults to `auto`.
     /// In `auto` mode the field will appear based on card bin lookup.
-    var socialSecurityNumberVisibility: CardComponentConfiguration.FieldVisibility { get }
+    var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility { get }
 
     // Billing address fields configurations
 //    var billingAddress: BillingAddressConfiguration { get }
@@ -265,7 +265,7 @@ public protocol AnyCardComponentConfiguration {
     var installmentConfiguration: InstallmentConfiguration? { get }
 }
 
-extension CardComponentConfiguration {
+extension CardConfiguration {
 
     /// The mode of input field on Component UI
     public enum FieldVisibility: String, Codable, CaseIterable {

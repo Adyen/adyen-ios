@@ -20,7 +20,7 @@ public final class BCMCComponent: CardComponent {
     public init(
         paymentMethod: BCMCPaymentMethod,
         context: AdyenContext,
-        configuration: CardComponentConfiguration = .init()
+        configuration: CardConfiguration = .init()
     ) {
         let configuration = configuration.bcmcConfiguration()
         let binInfoProvider = BinInfoProvider(
@@ -40,7 +40,7 @@ public final class BCMCComponent: CardComponent {
     override internal init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
-        configuration: CardComponentConfiguration,
+        configuration: CardConfiguration,
         binProvider: AnyBinInfoProvider
     ) {
         let configuration = configuration.bcmcConfiguration()
@@ -54,10 +54,10 @@ public final class BCMCComponent: CardComponent {
 
 }
 
-private extension CardComponentConfiguration {
+private extension CardConfiguration {
     
-    func bcmcConfiguration() -> CardComponentConfiguration {
-        var configuration = CardComponentConfiguration()
+    func bcmcConfiguration() -> CardConfiguration {
+        var configuration = CardConfiguration()
         configuration.style = style
         configuration.showCardholderName = showCardholderName
         configuration.showStorePaymentMethod = showStorePaymentMethod

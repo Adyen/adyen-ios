@@ -52,12 +52,12 @@ internal struct CardSettingsView: View {
                         }
                     }
                     Picker("Social Security Number Mode", selection: $viewModel.socialSecurityNumberVisibility) {
-                        ForEach(CardComponentConfiguration.FieldVisibility.allCases, id: \.self) {
+                        ForEach(CardConfiguration.FieldVisibility.allCases, id: \.self) {
                             Text($0.displayName)
                         }
                     }
                     Picker("Korean Authentication Mode", selection: $viewModel.koreanAuthenticationVisibility) {
-                        ForEach(CardComponentConfiguration.FieldVisibility.allCases, id: \.self) {
+                        ForEach(CardConfiguration.FieldVisibility.allCases, id: \.self) {
                             Text($0.displayName)
                         }
                     }
@@ -88,7 +88,7 @@ extension CardSettings.AddressFormType {
     }
 }
 
-extension CardComponentConfiguration.FieldVisibility {
+extension CardConfiguration.FieldVisibility {
 
     public var displayName: String {
         self.rawValue.capitalized

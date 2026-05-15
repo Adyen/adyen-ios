@@ -955,7 +955,7 @@
 		E74517A425FB834C000BDCCF /* EncryptedCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74517A325FB834C000BDCCF /* EncryptedCard.swift */; };
 		E74517CB25FBA2A5000BDCCF /* BinPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74517CA25FBA2A5000BDCCF /* BinPayload.swift */; };
 		E745185D25FBDDC7000BDCCF /* Payload.swift in Sources */ = {isa = PBXBuildFile; fileRef = E745185C25FBDDC7000BDCCF /* Payload.swift */; };
-		E7451A052600EC8D000BDCCF /* CardComponentConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7451A042600EC8D000BDCCF /* CardComponentConfiguration.swift */; };
+		E7451A052600EC8D000BDCCF /* CardConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7451A042600EC8D000BDCCF /* CardConfiguration.swift */; };
 		E745256925C1C9E1006A941F /* CheckoutActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C6F23F1924B000B4B2B /* CheckoutActionComponent.swift */; };
 		E746E67127B3FA700076BB71 /* InstantComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = E746E67027B3FA700076BB71 /* InstantComponents.swift */; };
 		E74CE3DF26727EB1008231D2 /* DropInComponentDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = E74CE3DE26727EB1008231D2 /* DropInComponentDelegateMock.swift */; };
@@ -2595,7 +2595,7 @@
 		E74517A325FB834C000BDCCF /* EncryptedCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedCard.swift; sourceTree = "<group>"; };
 		E74517CA25FBA2A5000BDCCF /* BinPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinPayload.swift; sourceTree = "<group>"; };
 		E745185C25FBDDC7000BDCCF /* Payload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payload.swift; sourceTree = "<group>"; };
-		E7451A042600EC8D000BDCCF /* CardComponentConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentConfiguration.swift; sourceTree = "<group>"; };
+		E7451A042600EC8D000BDCCF /* CardConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardConfiguration.swift; sourceTree = "<group>"; };
 		E746E67027B3FA700076BB71 /* InstantComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantComponents.swift; sourceTree = "<group>"; };
 		E749FD1D23CF4998000D18BA /* NavigationStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStyle.swift; sourceTree = "<group>"; };
 		E74CE3DE26727EB1008231D2 /* DropInComponentDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInComponentDelegateMock.swift; sourceTree = "<group>"; };
@@ -6264,7 +6264,7 @@
 			children = (
 				A0E1B63E2EA90BDB0070B915 /* CardComponentFactory.swift */,
 				E9E3DAA5221C431A00697074 /* CardComponent.swift */,
-				E7451A042600EC8D000BDCCF /* CardComponentConfiguration.swift */,
+				E7451A042600EC8D000BDCCF /* CardConfiguration.swift */,
 				F919DF9424E6D7BC0027976E /* CardComponentExtensions.swift */,
 				E2028F5D222805E20007FF8B /* CardDetails.swift */,
 				B639C0812D80399800472EBB /* CardScannerController.swift */,
@@ -8999,7 +8999,7 @@
 				B639C0822D8039F600472EBB /* CardScannerController.swift in Sources */,
 				F92329D225AD0240002C5BC4 /* CardBrand.swift in Sources */,
 				F9C6BD6026DFBA0600DA7512 /* ThreeDS2SdkVersion.swift in Sources */,
-				E7451A052600EC8D000BDCCF /* CardComponentConfiguration.swift in Sources */,
+				E7451A052600EC8D000BDCCF /* CardConfiguration.swift in Sources */,
 				00C401AB2DB242CD000EDA3C /* FormCoBadgedCardItem.swift in Sources */,
 				F919DF9524E6D7BC0027976E /* CardComponentExtensions.swift in Sources */,
 				E76CAC4E26BC0CC200117953 /* CardViewControllerItemsProvider.swift in Sources */,

@@ -20,7 +20,7 @@ final class CardComponentEventTests: XCTestCase {
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
-            configuration: CardComponentConfiguration()
+            configuration: CardConfiguration()
         )
 
         // When
@@ -99,7 +99,7 @@ final class CardComponentEventTests: XCTestCase {
     /// EVT-UC1, EVT-UC2: Field Focus/Unfocus - Send Focus and Unfocus Events
     func test_holderName_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
-        var config = CardComponentConfiguration()
+        var config = CardConfiguration()
         config.showCardholderName = true
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
@@ -117,7 +117,7 @@ final class CardComponentEventTests: XCTestCase {
     /// EVT-UC1, EVT-UC2: Field Focus/Unfocus - Send Focus and Unfocus Events
     func test_kcpField_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
-        var config = CardComponentConfiguration()
+        var config = CardConfiguration()
         config.koreanAuthenticationVisibility = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
@@ -137,7 +137,7 @@ final class CardComponentEventTests: XCTestCase {
     /// EVT-UC1, EVT-UC2: Field Focus/Unfocus - Send Focus and Unfocus Events
     func test_kcpPassword_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
-        var config = CardComponentConfiguration()
+        var config = CardConfiguration()
         config.koreanAuthenticationVisibility = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
@@ -157,7 +157,7 @@ final class CardComponentEventTests: XCTestCase {
     /// EVT-UC1, EVT-UC2: Field Focus/Unfocus - Send Focus and Unfocus Events
     func test_socialSecurity_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
-        var config = CardComponentConfiguration()
+        var config = CardConfiguration()
         config.socialSecurityNumberVisibility = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
@@ -177,7 +177,7 @@ final class CardComponentEventTests: XCTestCase {
     /// EVT-UC1, EVT-UC2: Field Focus/Unfocus - Send Focus and Unfocus Events
     func test_postalCode_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
-        var config = CardComponentConfiguration()
+        var config = CardConfiguration()
         config.billingAddress.mode = .postalCode
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
@@ -253,7 +253,7 @@ final class CardComponentEventTests: XCTestCase {
     // EVT-UC3: Explicit Validation Failure - Send Validation Error Event
     func test_holderName_withInvalidValue_shouldSendValidationErrorEvent() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
-        var config = CardComponentConfiguration()
+        var config = CardConfiguration()
         config.showCardholderName = true
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
@@ -273,7 +273,7 @@ final class CardComponentEventTests: XCTestCase {
     // EVT-UC3: Explicit Validation Failure - Send Validation Error Event
     func test_kcpField_withInvalidValue_shouldSendValidationErrorEvent() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
-        var config = CardComponentConfiguration()
+        var config = CardConfiguration()
         config.koreanAuthenticationVisibility = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
@@ -295,7 +295,7 @@ final class CardComponentEventTests: XCTestCase {
     // EVT-UC3: Explicit Validation Failure - Send Validation Error Event
     func test_kcpPassword_withInvalidValue_shouldSendValidationErrorEvent() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
-        var config = CardComponentConfiguration()
+        var config = CardConfiguration()
         config.koreanAuthenticationVisibility = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
@@ -317,7 +317,7 @@ final class CardComponentEventTests: XCTestCase {
     // EVT-UC3: Explicit Validation Failure - Send Validation Error Event
     func test_socialSecurity_withInvalidValue_shouldSendValidationErrorEvent() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
-        var config = CardComponentConfiguration()
+        var config = CardConfiguration()
         config.socialSecurityNumberVisibility = .show
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
@@ -339,7 +339,7 @@ final class CardComponentEventTests: XCTestCase {
     // EVT-UC3: Explicit Validation Failure - Send Validation Error Event
     func test_postalCode_withInvalidValue_shouldSendValidationErrorEvent() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
-        var config = CardComponentConfiguration()
+        var config = CardConfiguration()
         config.billingAddress.mode = .postalCode
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
@@ -445,7 +445,7 @@ final class CardComponentEventTests: XCTestCase {
     // MARK: - Helper methods
 
     private func makeSUT(
-        with configuration: CardComponentConfiguration = .init(),
+        with configuration: CardConfiguration = .init(),
         analyticsProviderMock: AnalyticsProviderMock
     ) -> CardComponent {
         let context = Dummy.context(analyticsProvider: analyticsProviderMock)

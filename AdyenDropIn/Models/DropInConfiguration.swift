@@ -163,11 +163,11 @@ public extension DropInComponent {
 
         /// Indicates whether to show the security fields for South Korea issued cards. Defaults to `auto`.
         /// In AUTO mode the field will appear only for card issued in "KR" (South Korea).
-        public var koreanAuthenticationVisibility: CardComponentConfiguration.FieldVisibility
+        public var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility
 
         /// Indicates the visibility mode for the social security number field (CPF/CNPJ) for Brazilian cards. Defaults to `auto`.
         /// In `auto` mode the field will appear based on card bin lookup.
-        public var socialSecurityNumberVisibility: CardComponentConfiguration.FieldVisibility
+        public var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility
 
         /// Indicates whether to show the security code field for stored cards. Defaults to true.
         public var showSecurityCodeForStoredCard: Bool
@@ -200,8 +200,8 @@ public extension DropInComponent {
             showCardholderName: Bool = false,
             showStorePaymentMethod: Bool = true,
             showSecurityCode: Bool = true,
-            koreanAuthenticationVisibility: CardComponentConfiguration.FieldVisibility = .auto,
-            socialSecurityNumberVisibility: CardComponentConfiguration.FieldVisibility = .auto,
+            koreanAuthenticationVisibility: CardConfiguration.FieldVisibility = .auto,
+            socialSecurityNumberVisibility: CardConfiguration.FieldVisibility = .auto,
             showSecurityCodeForStoredCard: Bool = true,
             supportedCardBrands: [CardType]? = nil,
             installmentConfiguration: InstallmentConfiguration? = nil
@@ -216,8 +216,8 @@ public extension DropInComponent {
             self.installmentConfiguration = installmentConfiguration
         }
         
-        internal var cardComponentConfiguration: CardComponentConfiguration {
-            CardComponentConfiguration()
+        internal var cardConfiguration: CardConfiguration {
+            CardConfiguration()
         }
         
     }

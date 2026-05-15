@@ -45,7 +45,7 @@ class BCMCComponentTests: XCTestCase {
         let sut = BCMCComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: CardComponentConfiguration()
+            configuration: CardConfiguration()
         )
         
         // When
@@ -64,7 +64,7 @@ class BCMCComponentTests: XCTestCase {
         let sut = BCMCComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: CardComponentConfiguration()
+            configuration: CardConfiguration()
         )
         
         sut.viewController.loadViewIfNeeded()
@@ -86,7 +86,7 @@ class BCMCComponentTests: XCTestCase {
         let sut = BCMCComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: CardComponentConfiguration()
+            configuration: CardConfiguration()
         )
         
         XCTAssertFalse(sut.cardViewController.items.numberContainerItem.showSupportedCardBrandLogos)
@@ -115,7 +115,7 @@ class BCMCComponentTests: XCTestCase {
         let brands: [CardType] = [.argencard]
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
-        var configuration = CardComponentConfiguration()
+        var configuration = CardConfiguration()
         configuration.showCardholderName = true
         let sut = BCMCComponent(
             paymentMethod: paymentMethod,
@@ -139,7 +139,7 @@ class BCMCComponentTests: XCTestCase {
         let brands: [CardType] = [.bcmc]
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
-        var configuration = CardComponentConfiguration()
+        var configuration = CardConfiguration()
         configuration.showStorePaymentMethod = false
         let sut = BCMCComponent(
             paymentMethod: paymentMethod,

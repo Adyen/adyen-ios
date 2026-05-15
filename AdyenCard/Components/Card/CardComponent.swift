@@ -49,7 +49,7 @@ public class CardComponent: PresentableComponent,
     public let supportedCardTypes: [CardType]
 
     /// Card component configuration.
-    public internal(set) var configuration: CardComponentConfiguration
+    public internal(set) var configuration: CardConfiguration
 
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate? {
@@ -89,7 +89,7 @@ public class CardComponent: PresentableComponent,
     public convenience init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
-        configuration: CardComponentConfiguration = .init()
+        configuration: CardConfiguration = .init()
     ) {
         let binInfoProvider = BinInfoProvider(
             apiClient: APIClient(apiContext: context.apiContext),
@@ -115,7 +115,7 @@ public class CardComponent: PresentableComponent,
     internal init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
-        configuration: CardComponentConfiguration,
+        configuration: CardConfiguration,
         binProvider: AnyBinInfoProvider
     ) {
         self.cardPaymentMethod = paymentMethod
@@ -274,7 +274,7 @@ private extension CardComponent {
     }
 }
 
-private extension CardComponentConfiguration {
+private extension CardConfiguration {
 
     func addressLookupViewModel(
         with initialCountry: String,

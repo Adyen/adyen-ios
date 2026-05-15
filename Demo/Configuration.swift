@@ -107,8 +107,8 @@ internal struct CardSettings: Codable {
     internal var showSecurityCodeForStoredCard = true
     internal var showSecurityCode = true
     internal var addressMode: AddressFormType = .none
-    internal var socialSecurityNumberVisibility: CardComponentConfiguration.FieldVisibility = .auto
-    internal var koreanAuthenticationVisibility: CardComponentConfiguration.FieldVisibility = .auto
+    internal var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility = .auto
+    internal var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility = .auto
     internal var enableInstallments = false
     internal var showsInstallmentAmount = false
     
@@ -247,8 +247,8 @@ internal struct DemoAppSettings: Codable {
         }
     }
 
-    internal var cardConfiguration: CardComponentConfiguration {
-        return CardComponentConfiguration()
+    internal var cardConfiguration: CardConfiguration {
+        CardConfiguration()
             .showCardholderName(cardSettings.showCardholderName)
             .showStorePaymentMethod(cardSettings.showStorePaymentMethod)
             .showSecurityCode(cardSettings.showSecurityCode)
@@ -260,7 +260,7 @@ internal struct DemoAppSettings: Codable {
     }
 
     internal var cardDropInConfiguration: DropInComponent.Card {
-        return .init(
+        .init(
             showCardholderName: cardSettings.showCardholderName,
             showStorePaymentMethod: cardSettings.showStorePaymentMethod,
             showSecurityCode: cardSettings.showSecurityCode,
