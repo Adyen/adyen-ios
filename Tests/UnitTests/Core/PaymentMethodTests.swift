@@ -85,7 +85,9 @@ class PaymentMethodTests: XCTestCase {
                 idealDictionary,
                 payto,
                 irisDictionary,
-                bizum
+                bizum,
+                payByBankInstant,
+                payByBankIssuerList
             ]
         ]
     }
@@ -184,7 +186,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Regular payment methods
         
-        XCTAssertEqual(paymentMethods.regular.count, 38)
+        XCTAssertEqual(paymentMethods.regular.count, 40)
 
         let creditCardPaymentMethod = try XCTUnwrap(paymentMethods.regular[0] as? CardPaymentMethod)
         XCTAssertEqual(creditCardPaymentMethod.fundingSource, .credit)
@@ -1227,6 +1229,33 @@ class PaymentMethodTests: XCTestCase {
         _ = dummy.checkoutAttemptId
         
         wait(for: [expectation], timeout: 10)
+    }
+    
+    // MARK: - Pay by Bank
+    
+    func test_decodingPayByBankPaymentMethod_withoutIssuers_decodesAsInstant() throws {
+        // Germany variant - no issuer selection
+        let paymentMethods = try AdyenCoder.decode([
+            "paymentMethods": [payByBankInstant]
+        ]) as PaymentMethods
+        
+        let paymentMethod = try XCTUnwrap(paymentMethods.regular.first as? InstantPaymentMethod)
+        XCTAssertEqual(paymentMethod.type, .payByBank)
+        XCTAssertEqual(paymentMethod.name, "Pay by Bank")
+    }
+    
+    func test_decodingPayByBankPaymentMethod_withIssuers_decodesAsIssuerList() throws {
+        // UK variant - with issuer selection
+        let paymentMethods = try AdyenCoder.decode([
+            "paymentMethods": [payByBankIssuerList]
+        ]) as PaymentMethods
+        
+        let paymentMethod = try XCTUnwrap(paymentMethods.regular.first as? IssuerListPaymentMethod)
+        XCTAssertEqual(paymentMethod.type, .payByBank)
+        XCTAssertEqual(paymentMethod.name, "Pay by Bank")
+        XCTAssertEqual(paymentMethod.issuers.count, 4)
+        XCTAssertEqual(paymentMethod.issuers[0].identifier, "uk-demobank-open-banking-handoff")
+        XCTAssertEqual(paymentMethod.issuers[0].name, "Tink Demo Bank")
     }
     
     // MARK: - Accessibility

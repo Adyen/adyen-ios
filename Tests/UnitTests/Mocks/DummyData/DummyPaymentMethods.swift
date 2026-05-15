@@ -646,3 +646,35 @@ let payto = [
     "name": "payto",
     "type": "payto"
 ]
+
+let payByBankInstant: [String: Any] = [
+    "name": "Pay by Bank",
+    "type": "paybybank"
+]
+
+let payByBankIssuerList: [String: Any] = [
+    "name": "Pay by Bank",
+    "type": "paybybank",
+    "issuers": [
+        [
+            "id": "uk-demobank-open-banking-handoff",
+            "disabled": false,
+            "name": "Tink Demo Bank"
+        ],
+        [
+            "id": "uk-demobank-open-banking-redirect",
+            "disabled": false,
+            "name": "Tink Demo Bank"
+        ],
+        [
+            "id": "uk-demobank-open-banking-redirect-aispis",
+            "disabled": false,
+            "name": "Tink Demo Bank"
+        ],
+        [
+            "id": "uk-demobank-open-banking-redirect-extendable",
+            "disabled": false,
+            "name": "Tink Demo Bank"
+        ]
+    ]
+]
