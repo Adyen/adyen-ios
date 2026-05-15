@@ -22,8 +22,8 @@ jobs:
   build:
     env:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
-      destination: "platform=iOS Simulator,name=iPhone 16,OS=26.2"
-      destination_iPad: "platform=iOS Simulator,name=iPad (10th generation),OS=26.2"
+      destination: "platform=iOS Simulator,name=iPhone Air,OS=26.2"
+      destination_iPad: "platform=iOS Simulator,name=iPad Air,OS=26.2"
       project: "Adyen.xcodeproj"
       params: "-derivedDataPath ./DerivedData -skipPackagePluginValidation"
     runs-on: macos-26-xlarge
