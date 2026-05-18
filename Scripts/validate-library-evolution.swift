@@ -67,7 +67,8 @@ func packageVersion(for packageURL: String) -> String {
     }
     let dependencyLines = lines[packageURLLineIndex...].prefix(5)
     guard let exactVersionLine = dependencyLines.first(where: { $0.contains("exact:") }),
-          let start = exactVersionLine.firstIndex(of: "\""),
+          let exactRange = exactVersionLine.range(of: "exact:"),
+          let start = exactVersionLine[exactRange.upperBound...].firstIndex(of: "\""),
           let end = exactVersionLine[exactVersionLine.index(after: start)...].firstIndex(of: "\"") else {
         fatalError("Could not find exact version for package URL \(packageURL) in Package.swift")
     }
