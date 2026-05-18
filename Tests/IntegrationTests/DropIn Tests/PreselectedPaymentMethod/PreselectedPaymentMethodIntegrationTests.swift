@@ -96,7 +96,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         #expect(analyticsProviderMock.infos.count == 1)
         let infoEvent = try #require(analyticsProviderMock.infos.first)
         #expect(infoEvent.component == "dropin")
-        #expect(infoEvent.type == .rendered)
+        #expect(infoEvent.type == AnalyticsEventInfo.InfoType.rendered)
     }
 
     // MARK: - Cancel Tests
@@ -312,6 +312,99 @@ struct PreselectedPaymentMethodIntegrationTests {
 }
 
 // MARK: - Mocks
+
+internal class DropInFlowManagingMock: DropInFlowManaging {
+    var submitFromActionPresenterCallsCount = 0
+    var submitFromActionPresenterCalled: Bool {
+        submitFromActionPresenterCallsCount > 0
+    }
+
+    var submitFromActionPresenterReceivedArguments: (
+        data: PaymentComponentData,
+        component: PaymentComponent,
+        actionPresenter: ActionPresenter
+    )?
+
+    func submit(_ data: PaymentComponentData, from component: PaymentComponent, actionPresenter: ActionPresenter) {
+        submitFromActionPresenterCallsCount += 1
+        submitFromActionPresenterReceivedArguments = (data, component, actionPresenter)
+    }
+
+    var failWithFromCallsCount = 0
+    var failWithFromCalled: Bool {
+        failWithFromCallsCount > 0
+    }
+
+    func fail(with error: Error, from component: PaymentComponent) {
+        failWithFromCallsCount += 1
+    }
+
+    var cancelComponentCallsCount = 0
+    var cancelComponentCalled: Bool {
+        cancelComponentCallsCount > 0
+    }
+
+    func cancel(component: PaymentComponent) {
+        cancelComponentCallsCount += 1
+    }
+
+    var handleActionCallsCount = 0
+
+    func handle(action: Action) {
+        handleActionCallsCount += 1
+    }
+}
+
+internal class PreselectedPaymentMethodRoutingMock: PreselectedPaymentMethodRouting {
+    var presentPaymentMethodListCallsCount = 0
+
+    func presentPaymentMethodList() {
+        presentPaymentMethodListCallsCount += 1
+    }
+
+    var presentComponentOnCancelCallsCount = 0
+
+    func present(component: PaymentComponent) {
+        presentComponentOnCancelCallsCount += 1
+    }
+
+    var presentActionComponentOnCancelCallsCount = 0
+
+    func present(actionComponent: PresentableComponent, onCancel: (() -> Void)?) {
+        presentActionComponentOnCancelCallsCount += 1
+    }
+
+    var dismissCompletionCallsCount = 0
+    var dismissCompletionCalled: Bool {
+        dismissCompletionCallsCount > 0
+    }
+
+    func dismiss(completion: (() -> Void)?) {
+        dismissCompletionCallsCount += 1
+        completion?()
+    }
+}
+
+internal class RouterMock: Router {
+    var childRouter: Router?
+    var rootViewController: UIViewController = .init()
+}
+
+internal class PaymentMethodListAssemblerProtocolMock: PaymentMethodListAssemblerProtocol {
+    var resolvePaymentMethodListRouterDelegateReturnValue: Router?
+
+    func resolvePaymentMethodListRouter(delegate: PaymentMethodListRouterListener?) -> Router {
+        resolvePaymentMethodListRouterDelegateReturnValue ?? RouterMock()
+    }
+}
+
+internal class ComponentContainerAssemblerProtocolMock: ComponentContainerAssemblerProtocol {
+    var resolveComponentContainerRouterForDelegateOnCancelReturnValue: Router?
+
+    func resolveComponentContainerRouter(for component: PresentableComponent, listener: ComponentContainerRouterListener) -> Router {
+        resolveComponentContainerRouterForDelegateOnCancelReturnValue ?? RouterMock()
+    }
+}
 
 internal class InitiablePaymentComponentMock: PaymentComponent, InitiablePaymentComponent {
 

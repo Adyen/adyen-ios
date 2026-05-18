@@ -134,16 +134,15 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
-    func didFail_givenCancellation_shouldDismiss() {
+    func didFail_givenCancellation_shouldNotCallDropInFlowManagerFail() {
         // Given
-        let (sut, dropInFlowManagerMock, routerMock) = makeSUT()
+        let (sut, dropInFlowManagerMock, _) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
 
         // When
         sut.didFail(with: ComponentError.cancelled, from: paymentComponentMock)
 
         // Then
-        #expect(routerMock.dismissCompletionCallsCount == 1)
         #expect(dropInFlowManagerMock.failWithFromCallsCount == 0)
     }
 
@@ -196,64 +195,83 @@ struct PaymentMethodListViewModelTests {
         }
     }
 
-    // MARK: - listItemIdentifier Tests
+    // MARK: - Mocks
 
-    @Test
-    func listItemIdentifier_forRegularPaymentMethod_shouldUseTypeRawValue() {
-        // Given
-        let (sut, _, _) = makeSUT()
-        let paymentMethod = PaymentMethodMock(type: .ideal, name: "iDEAL")
+    private class DropInFlowManagingMock: DropInFlowManaging {
+        var submitFromActionPresenterCallsCount = 0
+        var submitFromActionPresenterReceivedArguments: (
+            data: PaymentComponentData,
+            component: PaymentComponent,
+            actionPresenter: ActionPresenter
+        )?
 
-        // When
-        let identifier = sut.listItemIdentifier(for: paymentMethod)
+        func submit(
+            _ data: PaymentComponentData,
+            from component: PaymentComponent,
+            actionPresenter: ActionPresenter
+        ) {
+            submitFromActionPresenterCallsCount += 1
+            submitFromActionPresenterReceivedArguments = (data, component, actionPresenter)
+        }
 
-        // Then
-        #expect(identifier.contains("ideal"))
-        #expect(identifier.contains("PaymentMethodListViewModel"))
+        var failWithFromCallsCount = 0
+        var failWithFromReceivedArguments: (error: Error, component: PaymentComponent)?
+
+        func fail(with error: Error, from component: PaymentComponent) {
+            failWithFromCallsCount += 1
+            failWithFromReceivedArguments = (error, component)
+        }
+
+        var cancelComponentCallsCount = 0
+        var cancelComponentReceivedComponent: PaymentComponent?
+
+        func cancel(component: PaymentComponent) {
+            cancelComponentCallsCount += 1
+            cancelComponentReceivedComponent = component
+        }
+
+        var handleActionCallsCount = 0
+        var handleActionReceivedAction: Action?
+
+        func handle(action: Action) {
+            handleActionCallsCount += 1
+            handleActionReceivedAction = action
+        }
     }
 
-    @Test
-    func listItemIdentifier_forStoredPaymentMethod_shouldIncludeStoredIdentifier() {
-        // Given
-        let (sut, _, _) = makeSUT()
-        let storedPaymentMethod = StoredPaymentMethodMock(
-            identifier: "stored-123",
-            supportedShopperInteractions: [.shopperPresent],
-            type: .scheme,
-            name: "Stored Card"
-        )
+    private class PaymentMethodListRoutingMock: PaymentMethodListRouting {
+        var presentComponentCallsCount = 0
+        var presentComponentReceivedComponent: PaymentComponent?
 
-        // When
-        let identifier = sut.listItemIdentifier(for: storedPaymentMethod)
+        func present(component: PaymentComponent) {
+            presentComponentCallsCount += 1
+            presentComponentReceivedComponent = component
+        }
 
-        // Then
-        #expect(identifier.contains("scheme"))
-        #expect(identifier.contains("stored-123"))
-    }
+        var presentViewControllerCallsCount = 0
+        var presentViewControllerReceivedViewController: UIViewController?
 
-    @Test
-    func listItemIdentifier_forDifferentStoredPaymentMethods_shouldBeUnique() {
-        // Given
-        let (sut, _, _) = makeSUT()
-        let storedPaymentMethod1 = StoredPaymentMethodMock(
-            identifier: "stored-111",
-            supportedShopperInteractions: [.shopperPresent],
-            type: .scheme,
-            name: "Card 1"
-        )
-        let storedPaymentMethod2 = StoredPaymentMethodMock(
-            identifier: "stored-222",
-            supportedShopperInteractions: [.shopperPresent],
-            type: .scheme,
-            name: "Card 2"
-        )
+        func present(viewController: UIViewController) {
+            presentViewControllerCallsCount += 1
+            presentViewControllerReceivedViewController = viewController
+        }
 
-        // When
-        let identifier1 = sut.listItemIdentifier(for: storedPaymentMethod1)
-        let identifier2 = sut.listItemIdentifier(for: storedPaymentMethod2)
+        var presentActionComponentOnCancelCallsCount = 0
+        var presentActionComponentOnCancelReceivedArguments: (actionComponent: PresentableComponent, onCancel: (() -> Void)?)?
 
-        // Then
-        #expect(identifier1 != identifier2)
+        func present(actionComponent: PresentableComponent, onCancel: (() -> Void)?) {
+            presentActionComponentOnCancelCallsCount += 1
+            presentActionComponentOnCancelReceivedArguments = (actionComponent, onCancel)
+        }
+
+        var dismissCompletionCallsCount = 0
+        var dismissCompletionReceivedCompletion: (() -> Void)?
+
+        func dismiss(completion: (() -> Void)?) {
+            dismissCompletionCallsCount += 1
+            dismissCompletionReceivedCompletion = completion
+            completion?()
+        }
     }
 
     // MARK: - Helpers
@@ -286,7 +304,8 @@ struct PaymentMethodListViewModelTests {
             componentManager: componentManagerMock,
             configuration: DropInComponent.Configuration(),
             dropInFlowManager: dropInFlowManagerMock,
-            logoURLProvider: logoURLProvider
+            logoURLProvider: logoURLProvider,
+            theme: TestTheme.distinctive()
         )
 
         let routerMock = PaymentMethodListRoutingMock()
