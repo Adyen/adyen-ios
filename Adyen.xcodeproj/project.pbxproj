@@ -244,6 +244,8 @@
 		211BBD662F6C4F6700EF2172 /* CardImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211BBD652F6C4F6700EF2172 /* CardImageView.swift */; };
 		211BBD712F6C4FDD00EF2172 /* StoredCardInputViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211BBD702F6C4FDD00EF2172 /* StoredCardInputViewModelTests.swift */; };
 		211BBD732F6C905100EF2172 /* StoredCardInputViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211BBD722F6C904800EF2172 /* StoredCardInputViewControllerTests.swift */; };
+		212B656C2FB32253002AAFA7 /* KeyboardScrollViewHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212B656B2FB32253002AAFA7 /* KeyboardScrollViewHandlerTests.swift */; };
+		212B656E2FB3226A002AAFA7 /* KeyboardScrollViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212B656D2FB3226A002AAFA7 /* KeyboardScrollViewHandler.swift */; };
 		2144A4162F3A8D1400CCD7F8 /* AdyenUIImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2144A4152F3A8D1400CCD7F8 /* AdyenUIImages.swift */; };
 		2144A4182F3A8D4D00CCD7F8 /* BundleSPMExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2144A4172F3A8D4D00CCD7F8 /* BundleSPMExtension.swift */; };
 		2144A41B2F3A8F2500CCD7F8 /* AdyenUIAssetsAccessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2144A4192F3A8F2500CCD7F8 /* AdyenUIAssetsAccessTests.swift */; };
@@ -1961,6 +1963,8 @@
 		211BBD652F6C4F6700EF2172 /* CardImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImageView.swift; sourceTree = "<group>"; };
 		211BBD702F6C4FDD00EF2172 /* StoredCardInputViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredCardInputViewModelTests.swift; sourceTree = "<group>"; };
 		211BBD722F6C904800EF2172 /* StoredCardInputViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredCardInputViewControllerTests.swift; sourceTree = "<group>"; };
+		212B656B2FB32253002AAFA7 /* KeyboardScrollViewHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardScrollViewHandlerTests.swift; sourceTree = "<group>"; };
+		212B656D2FB3226A002AAFA7 /* KeyboardScrollViewHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardScrollViewHandler.swift; sourceTree = "<group>"; };
 		2144A4152F3A8D1400CCD7F8 /* AdyenUIImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenUIImages.swift; sourceTree = "<group>"; };
 		2144A4172F3A8D4D00CCD7F8 /* BundleSPMExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleSPMExtension.swift; sourceTree = "<group>"; };
 		2144A4192F3A8F2500CCD7F8 /* AdyenUIAssetsAccessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenUIAssetsAccessTests.swift; sourceTree = "<group>"; };
@@ -4220,6 +4224,7 @@
 		B62F517C2E97A47000610EFD /* Form */ = {
 			isa = PBXGroup;
 			children = (
+				212B656B2FB32253002AAFA7 /* KeyboardScrollViewHandlerTests.swift */,
 				B62F517F2E97AA6600610EFD /* TextFieldTests.swift */,
 			);
 			path = Form;
@@ -5322,6 +5327,7 @@
 		E2C0E094220B04E9008616F6 /* Form */ = {
 			isa = PBXGroup;
 			children = (
+				212B656D2FB3226A002AAFA7 /* KeyboardScrollViewHandler.swift */,
 				E216D3B42217096E0013CBCF /* Items */,
 				E2C0E095220B04F0008616F6 /* FormViewController.swift */,
 				C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */,
@@ -8218,6 +8224,7 @@
 				0019C45C2E6ADFB700B0C3A3 /* ListSectionHeaderStyle.swift in Sources */,
 				0019C45D2E6ADFB700B0C3A3 /* ListItemStyle.swift in Sources */,
 				0019C45E2E6ADFB700B0C3A3 /* ListCell.swift in Sources */,
+				212B656E2FB3226A002AAFA7 /* KeyboardScrollViewHandler.swift in Sources */,
 				0019C45F2E6ADFB700B0C3A3 /* ListViewController.swift in Sources */,
 				0019C4602E6ADFB700B0C3A3 /* ListItem.swift in Sources */,
 				B627200B2EBBDAA8009E9149 /* CheckoutTheme+Equatable.swift in Sources */,
@@ -8392,6 +8399,7 @@
 				2144A41B2F3A8F2500CCD7F8 /* AdyenUIAssetsAccessTests.swift in Sources */,
 				A0E1B6492EABA05F0070B915 /* PaymentComponentFactoryProtocolTests.swift in Sources */,
 				B6D808162BCD151F00F3F5EB /* CardPaymentMethodMock.swift in Sources */,
+				212B656C2FB32253002AAFA7 /* KeyboardScrollViewHandlerTests.swift in Sources */,
 				B6D8082E2BCD179400F3F5EB /* XCTestCase+FirstResponder.swift in Sources */,
 				B6D808202BCD151F00F3F5EB /* PaymentComponentMock.swift in Sources */,
 				B6D8080B2BCD147D00F3F5EB /* SimpleSchedulerTests.swift in Sources */,

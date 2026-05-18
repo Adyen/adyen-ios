@@ -129,6 +129,19 @@ struct StoredCardInputViewControllerTests {
         #expect(viewModel.viewDidDisappearCallsCount == 1)
     }
 
+    // MARK: - D: Security code input behavior
+
+    @Test
+    func typingThreeCharactersInSecurityCode_resignsFirstResponder() async throws {
+        let (proxy, _) = makeSUT()
+        await proxy.load()
+
+        let securityCodeView = try proxy.securityCodeItemView()
+        #expect(securityCodeView.isFirstResponder)
+        try proxy.enterCode("123")
+        #expect(!securityCodeView.isFirstResponder)
+    }
+
     // MARK: - Helpers
 
     private func makeSUT(
@@ -214,6 +227,12 @@ struct StoredCardInputViewControllerProxy {
             viewController.view.findView(by: "securityCodeItemView") as? FormCardSecurityCodeItemView,
             "Cannot find securityCodeItemView"
         )
+    }
+
+    func enterCode(_ code: String) throws {
+        let textField = try securityCodeItemView().textField
+        code.forEach { textField.insertText(String($0)) }
+        textField.sendActions(for: .editingChanged)
     }
 
     func tapPrimaryButton() throws {

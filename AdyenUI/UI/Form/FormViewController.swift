@@ -48,7 +48,7 @@ open class FormViewController: UIViewController, AdyenObserver {
 
     // MARK: - Private properties
 
-    private var keyboardObserver = KeyboardObserver()
+    private var keyboardScrollViewHandler: KeyboardScrollViewHandler?
     private var scrollEnabled: Bool
 
     // MARK: - Initializers
@@ -249,44 +249,11 @@ open class FormViewController: UIViewController, AdyenObserver {
     private func setupKeyboardObserver() {
         guard scrollEnabled else { return }
 
-        observe(keyboardObserver.$keyboardTransition) { [weak self] in
-            self?.handleKeyboardTransitionDidChange($0)
-        }
-    }
-
-    private func handleKeyboardTransitionDidChange(_ transition: KeyboardTransition) {
-        let updateInsets: () -> Void = { [weak self] in
-            guard let self else { return }
-
-            let bottomInset = self.keyboardOverlap(with: transition.keyboardRect)
-
-            var contentInset = self.scrollView.contentInset
-            contentInset.bottom = bottomInset
-            self.scrollView.contentInset = contentInset
-
-            var scrollIndicatorInsets = self.scrollView.scrollIndicatorInsets
-            scrollIndicatorInsets.bottom = bottomInset
-            self.scrollView.scrollIndicatorInsets = scrollIndicatorInsets
-        }
-
-        guard view.window != nil else {
-            updateInsets()
-            return
-        }
-
-        view.adyen.animate(context: AnimationContext(
-            animationKey: Animations.keyboardBottomInset,
-            duration: transition.animationDuration,
-            options: transition.animationOptions.union(.beginFromCurrentState),
-            animations: updateInsets
-        ))
-    }
-
-    private func keyboardOverlap(with keyboardRect: CGRect) -> CGFloat {
-        guard view.window != nil else { return keyboardRect.height }
-
-        let scrollViewFrame = scrollView.convert(scrollView.bounds, to: nil)
-        return scrollViewFrame.intersection(keyboardRect).height
+        keyboardScrollViewHandler = KeyboardScrollViewHandler(
+            scrollView: scrollView,
+            view: view
+        )
+        keyboardScrollViewHandler?.startObserving()
     }
 
     private func addSubviews() {
