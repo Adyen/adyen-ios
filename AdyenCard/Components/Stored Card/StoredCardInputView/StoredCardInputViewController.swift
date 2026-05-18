@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Combine
 import Foundation
 import UIKit
@@ -117,6 +117,7 @@ internal class StoredCardInputViewController: UIViewController {
 
     private let viewModel: StoredCardInputViewModelProtocol
     private var cancellables = Set<AnyCancellable>()
+    private var keyboardScrollViewHandler: KeyboardScrollViewHandler?
 
     private var theme: CheckoutTheme {
         viewModel.theme
@@ -151,7 +152,6 @@ internal class StoredCardInputViewController: UIViewController {
 
     private func setupView() {
         view.backgroundColor = theme.colors.background
-        // TODO: Robert: StoredView: 🐞 The scroll view isn't working in this screen. Needs separate investigation.
         view.addSubview(scrollView)
         scrollView.addSubview(contentStackView)
 
@@ -176,6 +176,7 @@ internal class StoredCardInputViewController: UIViewController {
         configureConstraints()
         configureContent()
         setupBindings()
+        setupKeyboardObserver()
         disableSwipeDownToDismissScreen()
         securityCodeItemView.becomeFirstResponder()
     }
@@ -197,6 +198,7 @@ internal class StoredCardInputViewController: UIViewController {
             contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -Constants.buttonsBottomPadding),
             contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -2 * Constants.contentPadding)
         ])
+
     }
 
     private func configureContent() {
@@ -236,6 +238,17 @@ internal class StoredCardInputViewController: UIViewController {
             await self?.viewModel.submit()
         }
     }
+
+    // MARK: - Keyboard handling
+
+    private func setupKeyboardObserver() {
+        keyboardScrollViewHandler = KeyboardScrollViewHandler(
+            scrollView: scrollView,
+            view: view
+        )
+        keyboardScrollViewHandler?.startObserving()
+    }
+
 }
 
 extension StoredCardInputViewController: FormTextItemViewDelegate {
