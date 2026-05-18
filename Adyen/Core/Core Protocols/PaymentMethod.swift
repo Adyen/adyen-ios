@@ -27,6 +27,7 @@ public protocol PaymentMethod: Codable {
     func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation
 }
 
+// TODO: Robert: This is a temperory protocol that will eventually be removed. Each Component should have its own factory see: `CardComponentFactory` for this every component should be migrated.
 /// A payment method that can build a `PaymentComponent` using a `PaymentComponentBuilder`.
 package protocol PaymentComponentBuildable {
     func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent?
