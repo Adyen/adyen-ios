@@ -24,15 +24,12 @@ public enum Checkout {
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil
     ) async throws -> SessionCheckout {
-        let callbacks = SessionCheckoutCallbacks()
-        let core = try await setup(
+        try await setup(
             with: sessionResponse,
             configuration: configuration,
-            callbacks: callbacks,
             presentationDelegate: presentationDelegate,
             provider: CheckoutProvider.default
         )
-        return SessionCheckout(core: core, callbacks: callbacks)
     }
 
     /// Sets up checkout for the advanced flow.
@@ -46,15 +43,12 @@ public enum Checkout {
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil
     ) async throws -> AdvancedCheckout {
-        let callbacks = AdvancedCheckoutCallbacks()
-        let core = try await setup(
+        try await setup(
             with: paymentMethods,
             configuration: configuration,
-            callbacks: callbacks,
             presentationDelegate: presentationDelegate,
             provider: CheckoutProvider.default
         )
-        return AdvancedCheckout(core: core, callbacks: callbacks)
     }
 
     /// Sets up checkout for action handling only.
@@ -66,14 +60,11 @@ public enum Checkout {
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil
     ) async throws -> ActionOnlyCheckout {
-        let callbacks = ActionOnlyCheckoutCallbacks()
-        let core = try await setup(
+        try await setup(
             configuration: configuration,
-            callbacks: callbacks,
             presentationDelegate: presentationDelegate,
             provider: CheckoutProvider.default
         )
-        return ActionOnlyCheckout(core: core, callbacks: callbacks)
     }
 }
 
@@ -83,7 +74,7 @@ internal extension Checkout {
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil,
-        provider: CheckoutProviding = CheckoutProvider.default
+        provider: CheckoutProviding
     ) async throws -> SessionCheckout {
         let callbacks = SessionCheckoutCallbacks()
         let core = try await setup(
@@ -100,7 +91,7 @@ internal extension Checkout {
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil,
-        provider: CheckoutProviding = CheckoutProvider.default
+        provider: CheckoutProviding
     ) async throws -> AdvancedCheckout {
         let callbacks = AdvancedCheckoutCallbacks()
         let core = try await setup(
@@ -116,7 +107,7 @@ internal extension Checkout {
     static func setup(
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil,
-        provider: CheckoutProviding = CheckoutProvider.default
+        provider: CheckoutProviding
     ) async throws -> ActionOnlyCheckout {
         let callbacks = ActionOnlyCheckoutCallbacks()
         let core = try await setup(
