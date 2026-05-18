@@ -10,7 +10,7 @@ import Adyen
 #endif
 
 /// Card component configuration.
-public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPersonalInformationConfiguration {
+public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInformationConfiguration {
     
     package let componentType: Adyen.CheckoutComponentType = .payment(.scheme)
     
@@ -27,31 +27,31 @@ public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPer
     
     package var localizationParameters: LocalizationParameters?
 
-    /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
-    internal var showsHolderNameField: Bool
+    /// Indicates if the field for entering the cardholder name should be displayed in the form. Defaults to false.
+    internal var showCardholderName: Bool
 
     /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
-    internal var showsStorePaymentMethodField: Bool
+    internal var showStorePaymentMethod: Bool
 
     /// Indicates whether to show the security code field at all. Defaults to true.
-    internal var showsSecurityCodeField: Bool
+    internal var showSecurityCode: Bool
 
     /// Indicates whether to show the security fields for South Korea issued cards. Defaults to `auto`.
     /// In AUTO mode the field will appear only for card issued in "KR" (South Korea).
-    internal var koreanAuthenticationMode: FieldVisibility
+    internal var koreanAuthenticationVisibility: FieldVisibility
 
     /// Indicates the visibility mode for the social security number field (CPF/CNPJ) for Brazilian cards. Defaults to `auto`.
     /// In `auto` mode the field will appear based on card bin lookup.
-    internal var socialSecurityNumberMode: FieldVisibility
+    internal var socialSecurityNumberVisibility: FieldVisibility
 
-    // TODO: Move this to its own config?
-    /// Stored card configuration.
-    internal var stored: StoredCardConfiguration
+    /// Indicates whether to show the security code field for stored cards. Defaults to true.
+    internal var showSecurityCodeForStoredCard: Bool
 
-    /// The list of allowed card types.  Defaults to nil.
-    /// By default list of supported cards is extracted from component's `AnyCardPaymentMethod`.
-    /// Use this property to enforce a custom collection of card types.
-    internal var allowedCardTypes: [CardType]?
+    // TODO: Rename CardType to CardBrand once the internal CardBrand struct conflict is resolved.
+    /// The list of supported card brands.  Defaults to nil.
+    /// By default list of supported brands is extracted from component's `AnyCardPaymentMethod`.
+    /// Use this property to enforce a custom collection of card brands.
+    internal var supportedCardBrands: [CardType]?
 
     /// Installments options to present to the user.
     internal var installmentConfiguration: InstallmentConfiguration?
@@ -62,8 +62,8 @@ public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPer
     /// The type used for the bin lookup
     internal var binLookupType: BinLookupRequestType
     
-    /// Indicates whether or not to show the supported card logos under the card number item
-    internal var showsSupportedCardLogos: Bool
+    /// Indicates whether or not to show the supported card brand logos under the card number item
+    internal var showSupportedCardBrandLogos: Bool
     
     /// Called when the BIN value changes (first 6-8 digits of the card number).
     internal var onBinChange: ((String) -> Void)?
@@ -77,26 +77,26 @@ public struct CardComponentConfiguration: CheckoutComponentConfiguration, AnyPer
     public init() {
         self.theme = .init()
         self.style = FormComponentStyle()
-        self.stored = .init()
+        self.showSecurityCodeForStoredCard = true
         self.billingAddress = .init()
         self.showsSubmitButton = true
-        self.showsHolderNameField = false
-        self.showsSecurityCodeField = true
-        self.showsStorePaymentMethodField = true
-        self.koreanAuthenticationMode = .auto
-        self.socialSecurityNumberMode = .auto
+        self.showCardholderName = false
+        self.showSecurityCode = true
+        self.showStorePaymentMethod = true
+        self.koreanAuthenticationVisibility = .auto
+        self.socialSecurityNumberVisibility = .auto
         self.binLookupType = .card
-        self.showsSupportedCardLogos = true
+        self.showSupportedCardBrandLogos = true
     }
 
     internal func showAdditionalAuthenticationFields(for issuingCountryCode: String?) -> Bool {
-        koreanAuthenticationMode != .hide && issuingCountryCode == "KR"
+        koreanAuthenticationVisibility != .hide && issuingCountryCode == "KR"
     }
 }
 
 // MARK: - Public modifiers
 
-extension CardComponentConfiguration {
+extension CardConfiguration {
     
     /// Sets the shopper's information to be prefilled.
     /// - Parameter shopperInformation: The shopper's information to be prefilled.
@@ -108,68 +108,68 @@ extension CardComponentConfiguration {
     }
     
     /// Sets whether the field for storing the card payment method should be displayed in the form.
-    /// - Parameter showsStorePaymentMethodField: Boolean value indicating if the store payment method toggle should be shown.
+    /// - Parameter showStorePaymentMethod: Boolean value indicating if the store payment method toggle should be shown.
     /// - Returns: A modified copy of the configuration.
-    public func showsStorePaymentMethodField(_ showsStorePaymentMethodField: Bool) -> Self {
+    public func showStorePaymentMethod(_ showStorePaymentMethod: Bool) -> Self {
         var copy = self
-        copy.showsStorePaymentMethodField = showsStorePaymentMethodField
+        copy.showStorePaymentMethod = showStorePaymentMethod
         return copy
     }
     
     /// Sets whether to show the security code field.
-    /// - Parameter showsSecurityCodeField: Boolean value indicating if the security code field should be shown.
+    /// - Parameter showSecurityCode: Boolean value indicating if the security code field should be shown.
     /// - Returns: A modified copy of the configuration.
-    public func showsSecurityCodeField(_ showsSecurityCodeField: Bool) -> Self {
+    public func showSecurityCode(_ showSecurityCode: Bool) -> Self {
         var copy = self
-        copy.showsSecurityCodeField = showsSecurityCodeField
+        copy.showSecurityCode = showSecurityCode
         return copy
     }
     
-    /// Sets whether to show the card holder name field.
-    /// - Parameter showsHolderNameField: Boolean value indicating if the card holder name field should be shown.
+    /// Sets whether to show the cardholder name field.
+    /// - Parameter showCardholderName: Boolean value indicating if the cardholder name field should be shown.
     /// - Returns: A modified copy of the configuration.
-    public func showsHolderNameField(_ showsHolderNameField: Bool) -> Self {
+    public func showCardholderName(_ showCardholderName: Bool) -> Self {
         var copy = self
-        copy.showsHolderNameField = showsHolderNameField
+        copy.showCardholderName = showCardholderName
         return copy
     }
     
     /// Sets the visibility mode for the security fields for South Korea issued cards.
-    /// - Parameter koreanAuthenticationMode: The visibility mode. In `.auto` mode the field will appear
+    /// - Parameter koreanAuthenticationVisibility: The visibility mode. In `.auto` mode the field will appear
     /// only for cards issued in "KR" (South Korea).
     /// - Returns: A modified copy of the configuration.
-    public func koreanAuthenticationMode(_ koreanAuthenticationMode: FieldVisibility) -> Self {
+    public func koreanAuthenticationVisibility(_ koreanAuthenticationVisibility: FieldVisibility) -> Self {
         var copy = self
-        copy.koreanAuthenticationMode = koreanAuthenticationMode
+        copy.koreanAuthenticationVisibility = koreanAuthenticationVisibility
         return copy
     }
     
     /// Sets the visibility mode for the social security number field (CPF/CNPJ) for Brazilian cards.
-    /// - Parameter socialSecurityNumberMode: The visibility mode. In `.auto` mode the field will appear based on card bin lookup.
+    /// - Parameter socialSecurityNumberVisibility: The visibility mode. In `.auto` mode the field will appear based on card bin lookup.
     /// - Returns: A modified copy of the configuration.
-    public func socialSecurityNumberMode(_ socialSecurityNumberMode: FieldVisibility) -> Self {
+    public func socialSecurityNumberVisibility(_ socialSecurityNumberVisibility: FieldVisibility) -> Self {
         var copy = self
-        copy.socialSecurityNumberMode = socialSecurityNumberMode
+        copy.socialSecurityNumberVisibility = socialSecurityNumberVisibility
         return copy
     }
     
-    /// Sets the stored card configuration.
-    /// - Parameter stored: The stored card configuration.
+    /// Sets whether to show the security code field for stored cards.
+    /// - Parameter showSecurityCodeForStoredCard: Boolean value indicating if the security code field should be shown for stored cards.
     /// - Returns: A modified copy of the configuration.
-    public func stored(_ stored: StoredCardConfiguration) -> Self {
+    public func showSecurityCodeForStoredCard(_ showSecurityCodeForStoredCard: Bool) -> Self {
         var copy = self
-        copy.stored = stored
+        copy.showSecurityCodeForStoredCard = showSecurityCodeForStoredCard
         return copy
     }
     
-    /// Sets the list of allowed card types.
-    /// By default the list of supported cards is extracted from component's `AnyCardPaymentMethod`.
-    /// Use this to enforce a custom collection of card types.
-    /// - Parameter allowedCardTypes: The list of allowed card types, or `nil` to use the default.
+    /// Sets the list of supported card brands.
+    /// By default the list of supported brands is extracted from component's `AnyCardPaymentMethod`.
+    /// Use this to enforce a custom collection of card brands.
+    /// - Parameter supportedCardBrands: The list of supported card brands, or `nil` to use the default.
     /// - Returns: A modified copy of the configuration.
-    public func allowedCardTypes(_ allowedCardTypes: [CardType]?) -> Self {
+    public func supportedCardBrands(_ supportedCardBrands: [CardType]?) -> Self {
         var copy = self
-        copy.allowedCardTypes = allowedCardTypes
+        copy.supportedCardBrands = supportedCardBrands
         return copy
     }
     
@@ -233,39 +233,39 @@ extension CardComponentConfiguration {
 /// Describes any configuration for the card component.
 public protocol AnyCardComponentConfiguration {
     
-    /// Indicates if the field for entering the holder name should be displayed in the form. Defaults to false.
-    var showsHolderNameField: Bool { get }
+    /// Indicates if the field for entering the cardholder name should be displayed in the form. Defaults to false.
+    var showCardholderName: Bool { get }
 
     /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
-    var showsStorePaymentMethodField: Bool { get }
+    var showStorePaymentMethod: Bool { get }
 
     /// Indicates whether to show the security code field at all. Defaults to true.
-    var showsSecurityCodeField: Bool { get }
+    var showSecurityCode: Bool { get }
 
     /// Indicates whether to show the security fields for South Korea issued cards. Defaults to `auto`.
     /// In AUTO mode the field will appear only for card issued in "KR" (South Korea).
-    var koreanAuthenticationMode: CardComponentConfiguration.FieldVisibility { get }
+    var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility { get }
 
     /// Indicates the visibility mode for the social security number field (CPF/CNPJ) for Brazilian cards. Defaults to `auto`.
     /// In `auto` mode the field will appear based on card bin lookup.
-    var socialSecurityNumberMode: CardComponentConfiguration.FieldVisibility { get }
+    var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility { get }
 
     // Billing address fields configurations
 //    var billingAddress: BillingAddressConfiguration { get }
 
-    /// Stored card configuration.
-    var stored: StoredCardConfiguration { get }
+    /// Indicates whether to show the security code field for stored cards. Defaults to true.
+    var showSecurityCodeForStoredCard: Bool { get }
 
-    /// The list of allowed card types.  Defaults to nil.
-    /// By default list of supported cards is extracted from component's `AnyCardPaymentMethod`.
-    /// Use this property to enforce a custom collection of card types.
-    var allowedCardTypes: [CardType]? { get }
+    /// The list of supported card brands.  Defaults to nil.
+    /// By default list of supported brands is extracted from component's `AnyCardPaymentMethod`.
+    /// Use this property to enforce a custom collection of card brands.
+    var supportedCardBrands: [CardType]? { get }
 
     /// Installments options to present to the user.
     var installmentConfiguration: InstallmentConfiguration? { get }
 }
 
-extension CardComponentConfiguration {
+extension CardConfiguration {
 
     /// The mode of input field on Component UI
     public enum FieldVisibility: String, Codable, CaseIterable {

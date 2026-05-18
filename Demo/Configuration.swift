@@ -102,13 +102,13 @@ internal enum ConfigurationConstants {
 }
 
 internal struct CardSettings: Codable {
-    internal var showsHolderNameField = false
-    internal var showsStorePaymentMethodField = true
-    internal var showsStoredCardSecurityCodeField = true
-    internal var showsSecurityCodeField = true
+    internal var showCardholderName = false
+    internal var showStorePaymentMethod = true
+    internal var showSecurityCodeForStoredCard = true
+    internal var showSecurityCode = true
     internal var addressMode: AddressFormType = .none
-    internal var socialSecurityNumberMode: CardComponentConfiguration.FieldVisibility = .auto
-    internal var koreanAuthenticationMode: CardComponentConfiguration.FieldVisibility = .auto
+    internal var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility = .auto
+    internal var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility = .auto
     internal var enableInstallments = false
     internal var showsInstallmentAmount = false
     
@@ -196,13 +196,13 @@ internal struct DemoAppSettings: Codable {
     )
 
     internal static let defaultCardSettings = CardSettings(
-        showsHolderNameField: false,
-        showsStorePaymentMethodField: true,
-        showsStoredCardSecurityCodeField: true,
-        showsSecurityCodeField: true,
+        showCardholderName: false,
+        showStorePaymentMethod: true,
+        showSecurityCodeForStoredCard: true,
+        showSecurityCode: true,
         addressMode: .none,
-        socialSecurityNumberMode: .auto,
-        koreanAuthenticationMode: .auto,
+        socialSecurityNumberVisibility: .auto,
+        koreanAuthenticationVisibility: .auto,
         enableInstallments: false,
         showsInstallmentAmount: false
     )
@@ -247,32 +247,26 @@ internal struct DemoAppSettings: Codable {
         }
     }
 
-    internal var cardConfiguration: CardComponentConfiguration {
-        var storedCardConfig = StoredCardConfiguration()
-        storedCardConfig.showsSecurityCodeField = cardSettings.showsStoredCardSecurityCodeField
-        
-        return CardComponentConfiguration()
-            .showsHolderNameField(cardSettings.showsHolderNameField)
-            .showsStorePaymentMethodField(cardSettings.showsStorePaymentMethodField)
-            .showsSecurityCodeField(cardSettings.showsSecurityCodeField)
-            .koreanAuthenticationMode(cardSettings.koreanAuthenticationMode)
-            .socialSecurityNumberMode(cardSettings.socialSecurityNumberMode)
-            .stored(storedCardConfig)
+    internal var cardConfiguration: CardConfiguration {
+        CardConfiguration()
+            .showCardholderName(cardSettings.showCardholderName)
+            .showStorePaymentMethod(cardSettings.showStorePaymentMethod)
+            .showSecurityCode(cardSettings.showSecurityCode)
+            .koreanAuthenticationVisibility(cardSettings.koreanAuthenticationVisibility)
+            .socialSecurityNumberVisibility(cardSettings.socialSecurityNumberVisibility)
+            .showSecurityCodeForStoredCard(cardSettings.showSecurityCodeForStoredCard)
             .installmentConfiguration(installmentConfiguration)
             .billingAddressMode(billingAddressMode(from: cardSettings.addressMode))
     }
 
     internal var cardDropInConfiguration: DropInComponent.Card {
-        var storedCardConfig = StoredCardConfiguration()
-        storedCardConfig.showsSecurityCodeField = cardSettings.showsStoredCardSecurityCodeField
-        
-        return .init(
-            showsHolderNameField: cardSettings.showsHolderNameField,
-            showsStorePaymentMethodField: cardSettings.showsStorePaymentMethodField,
-            showsSecurityCodeField: cardSettings.showsSecurityCodeField,
-            koreanAuthenticationMode: cardSettings.koreanAuthenticationMode,
-            socialSecurityNumberMode: cardSettings.socialSecurityNumberMode,
-            storedCardConfiguration: storedCardConfig,
+        .init(
+            showCardholderName: cardSettings.showCardholderName,
+            showStorePaymentMethod: cardSettings.showStorePaymentMethod,
+            showSecurityCode: cardSettings.showSecurityCode,
+            koreanAuthenticationVisibility: cardSettings.koreanAuthenticationVisibility,
+            socialSecurityNumberVisibility: cardSettings.socialSecurityNumberVisibility,
+            showSecurityCodeForStoredCard: cardSettings.showSecurityCodeForStoredCard,
             installmentConfiguration: installmentConfiguration
         )
     }

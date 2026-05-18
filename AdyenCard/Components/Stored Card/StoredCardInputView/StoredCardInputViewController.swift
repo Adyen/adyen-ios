@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Combine
 import Foundation
 import UIKit
@@ -89,10 +89,10 @@ internal class StoredCardInputViewController: UIViewController {
     }()
 
     private lazy var securityCodeItemView: FormCardSecurityCodeItemView = {
-        // TODO: Robert: StoredView: 🐞 There is a bug(COSDK-572) with FormCardSecurityCodeItemView that when i type more than 3 characters only 3 display but validation happens with 4+ characters and then it fails validation. Needs to be debugged separately.
         let view = FormCardSecurityCodeItemView(item: viewModel.securityCodeItem, theme: theme)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "securityCodeItemView")
+        view.delegate = self
         return view
     }()
 
@@ -117,6 +117,7 @@ internal class StoredCardInputViewController: UIViewController {
 
     private let viewModel: StoredCardInputViewModelProtocol
     private var cancellables = Set<AnyCancellable>()
+    private var keyboardScrollViewHandler: KeyboardScrollViewHandler?
 
     private var theme: CheckoutTheme {
         viewModel.theme
@@ -151,7 +152,6 @@ internal class StoredCardInputViewController: UIViewController {
 
     private func setupView() {
         view.backgroundColor = theme.colors.background
-        // TODO: Robert: StoredView: 🐞 The scroll view isn't working in this screen. Needs separate investigation.
         view.addSubview(scrollView)
         scrollView.addSubview(contentStackView)
 
@@ -176,7 +176,9 @@ internal class StoredCardInputViewController: UIViewController {
         configureConstraints()
         configureContent()
         setupBindings()
+        setupKeyboardObserver()
         disableSwipeDownToDismissScreen()
+        securityCodeItemView.becomeFirstResponder()
     }
 
     private func disableSwipeDownToDismissScreen() {
@@ -196,6 +198,7 @@ internal class StoredCardInputViewController: UIViewController {
             contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -Constants.buttonsBottomPadding),
             contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -2 * Constants.contentPadding)
         ])
+
     }
 
     private func configureContent() {
@@ -205,6 +208,9 @@ internal class StoredCardInputViewController: UIViewController {
     }
 
     private func updateLoadingState(_ isLoading: Bool) {
+        if isLoading {
+            securityCodeItemView.resignFirstResponder()
+        }
         primaryButton.isEnabled = !isLoading
         primaryButton.showsActivityIndicator = isLoading
         securityCodeItemView.isUserInteractionEnabled = !isLoading
@@ -231,5 +237,26 @@ internal class StoredCardInputViewController: UIViewController {
         Task { @MainActor [weak self] in
             await self?.viewModel.submit()
         }
+    }
+
+    // MARK: - Keyboard handling
+
+    private func setupKeyboardObserver() {
+        keyboardScrollViewHandler = KeyboardScrollViewHandler(
+            scrollView: scrollView,
+            view: view
+        )
+        keyboardScrollViewHandler?.startObserving()
+    }
+
+}
+
+extension StoredCardInputViewController: FormTextItemViewDelegate {
+    internal func didReachMaximumLength(in itemView: FormTextItemView<some FormTextItem>) {
+        securityCodeItemView.resignFirstResponder()
+    }
+
+    internal func didSelectReturnKey(in itemView: FormTextItemView<some FormTextItem>) {
+        securityCodeItemView.resignFirstResponder()
     }
 }
