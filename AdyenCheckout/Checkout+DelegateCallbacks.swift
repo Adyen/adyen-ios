@@ -51,10 +51,7 @@ internal extension CheckoutCore {
         pendingPaymentComponent = source.paymentComponent
         submitTask?.cancel()
 
-        guard let onSubmit = onSubmit(for: data) else {
-            handle(CallbackError.missingSubmitHandler, from: source.paymentComponent)
-            return
-        }
+        let onSubmit = onSubmit(for: data)
 
         submitTask = Task { [weak self] in
             do {
@@ -77,10 +74,7 @@ internal extension CheckoutCore {
         let paymentComponent = pendingPaymentComponent
         additionalDetailsTask?.cancel()
 
-        guard let onAdditionalDetails = onAdditionalDetails(for: data) else {
-            handle(CallbackError.missingAdditionalDetailsHandler, from: paymentComponent)
-            return
-        }
+        let onAdditionalDetails = onAdditionalDetails(for: data)
 
         additionalDetailsTask = Task { [weak self] in
             do {
@@ -158,12 +152,14 @@ internal extension CheckoutCore {
 
 private extension CheckoutCore {
     
-    func onSubmit(for data: PaymentComponentData) -> (() async throws -> SubmitResult)? {
-        { try await self.submissionHandler.handleSubmit(data) }
+    func onSubmit(for data: PaymentComponentData) -> () async throws -> SubmitResult {
+        let handler = submissionHandler
+        return { try await handler.handleSubmit(data) }
     }
     
-    func onAdditionalDetails(for data: ActionComponentData) -> (() async throws -> AdditionalDetailsResult)? {
-        { try await self.submissionHandler.handleAdditionalDetails(data) }
+    func onAdditionalDetails(for data: ActionComponentData) -> () async throws -> AdditionalDetailsResult {
+        let handler = submissionHandler
+        return { try await handler.handleAdditionalDetails(data) }
     }
     
     func handle(_ action: Action, source: CheckoutCallbackSource) {

@@ -21,7 +21,7 @@ class CardComponentUITests: XCTestCase {
     
     func test_all_fields() {
 
-        let configuration = CardComponentConfiguration.extended
+        let configuration = CardConfiguration.extended
         
         let sut = CardComponent(
             paymentMethod: paymentMethod,
@@ -34,8 +34,8 @@ class CardComponentUITests: XCTestCase {
     
     func test_hidden_cvc() {
         
-        var configuration = CardComponentConfiguration.minimal
-        configuration.showsSecurityCodeField = false
+        var configuration = CardConfiguration.minimal
+        configuration.showSecurityCode = false
         
         let sut = CardComponent(
             paymentMethod: paymentMethod,
@@ -48,7 +48,7 @@ class CardComponentUITests: XCTestCase {
     
     func test_billing_address_modes() {
         
-        var configuration = CardComponentConfiguration.minimal
+        var configuration = CardConfiguration.minimal
         
         [BillingAddressMode.none, .full, .postalCode].forEach { mode in
             configuration = configuration.billingAddressMode(mode)
@@ -70,23 +70,23 @@ class CardComponentUITests: XCTestCase {
 
 // MARK: - Convenience
 
-private extension CardComponentConfiguration {
+private extension CardConfiguration {
     
     static var minimal: Self {
-        var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = false
-        configuration.koreanAuthenticationMode = .hide
-        configuration.socialSecurityNumberMode = .hide
+        var configuration = CardConfiguration()
+        configuration.showCardholderName = false
+        configuration.koreanAuthenticationVisibility = .hide
+        configuration.socialSecurityNumberVisibility = .hide
         configuration.installmentConfiguration = nil
         return configuration
     }
     
     static var extended: Self {
-        var configuration = CardComponentConfiguration()
-        configuration.showsHolderNameField = true
+        var configuration = CardConfiguration()
+        configuration.showCardholderName = true
         configuration.billingAddress.mode = .full
-        configuration.koreanAuthenticationMode = .show
-        configuration.socialSecurityNumberMode = .show
+        configuration.koreanAuthenticationVisibility = .show
+        configuration.socialSecurityNumberVisibility = .show
         configuration.installmentConfiguration = .init(
             cardBasedOptions: [.bcmc: .init(
                 monthValues: [2, 3, 4],

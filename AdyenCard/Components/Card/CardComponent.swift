@@ -49,7 +49,7 @@ public class CardComponent: PresentableComponent,
     public let supportedCardTypes: [CardType]
 
     /// Card component configuration.
-    public internal(set) var configuration: CardComponentConfiguration
+    public internal(set) var configuration: CardConfiguration
 
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate? {
@@ -63,7 +63,7 @@ public class CardComponent: PresentableComponent,
 
             if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
                storePaymentMethodAware.isSession {
-                configuration.showsStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
+                configuration.showStorePaymentMethod = storePaymentMethodAware.showStorePaymentMethodField ?? false
             }
         }
     }
@@ -89,7 +89,7 @@ public class CardComponent: PresentableComponent,
     public convenience init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
-        configuration: CardComponentConfiguration = .init()
+        configuration: CardConfiguration = .init()
     ) {
         let binInfoProvider = BinInfoProvider(
             apiClient: APIClient(apiContext: context.apiContext),
@@ -115,7 +115,7 @@ public class CardComponent: PresentableComponent,
     internal init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
-        configuration: CardComponentConfiguration,
+        configuration: CardConfiguration,
         binProvider: AnyBinInfoProvider
     ) {
         self.cardPaymentMethod = paymentMethod
@@ -123,7 +123,7 @@ public class CardComponent: PresentableComponent,
         self.configuration = configuration
         self.binInfoProvider = binProvider
 
-        self.supportedCardTypes = configuration.allowedCardTypes ?? paymentMethod.brands
+        self.supportedCardTypes = configuration.supportedCardBrands ?? paymentMethod.brands
     }
 
     // MARK: - Presentable Component Protocol
@@ -151,7 +151,7 @@ public class CardComponent: PresentableComponent,
             return nil
         }
         // TODO: FIX StoredCard UI
-        if configuration.stored.showsSecurityCodeField {
+        if configuration.showSecurityCodeForStoredCard {
             let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context, theme: configuration.theme)
             storedComponent.localizationParameters = configuration.localizationParameters
             return storedComponent
@@ -274,7 +274,7 @@ private extension CardComponent {
     }
 }
 
-private extension CardComponentConfiguration {
+private extension CardConfiguration {
 
     func addressLookupViewModel(
         with initialCountry: String,
