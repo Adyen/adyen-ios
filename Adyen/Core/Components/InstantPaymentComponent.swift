@@ -17,8 +17,7 @@ public protocol InitiablePaymentComponent: PaymentComponent {
 package final class InstantPaymentComponent: InitiablePaymentComponent {
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
+    package let context: AdyenContext
 
     /// The ready to submit payment data.
     package let paymentData: PaymentComponentData

@@ -33,26 +33,25 @@ package class CardComponent: PresentableComponent,
     }
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
+    package let context: AdyenContext
 
     internal let cardPaymentMethod: AnyCardPaymentMethod
 
     internal let binInfoProvider: AnyBinInfoProvider
 
     /// The card payment method.
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         cardPaymentMethod
     }
 
     /// The supported card types.
-    public let supportedCardTypes: [CardType]
+    package let supportedCardTypes: [CardType]
 
     /// Card component configuration.
-    public internal(set) var configuration: CardConfiguration
+    package internal(set) var configuration: CardConfiguration
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate? {
+    package weak var delegate: PaymentComponentDelegate? {
         didSet {
             storedCardComponent?.delegate = delegate
             // override installment config if using session (when session is set as delegate)
@@ -69,7 +68,7 @@ package class CardComponent: PresentableComponent,
     }
 
     /// The partial payment order if any.
-    public var order: PartialPaymentOrder? {
+    package var order: PartialPaymentOrder? {
         didSet {
             storedCardComponent?.order = order
         }
@@ -86,7 +85,7 @@ package class CardComponent: PresentableComponent,
     ///   - paymentMethod: The card payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The configuration of the component.
-    public convenience init(
+    package convenience init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
         configuration: CardConfiguration = .init()
@@ -128,14 +127,14 @@ package class CardComponent: PresentableComponent,
 
     // MARK: - Presentable Component Protocol
 
-    public var viewController: UIViewController {
+    package var viewController: UIViewController {
         if let storedCardComponent {
             return storedCardComponent.viewController
         }
         return securedViewController
     }
 
-    public func stopLoading() {
+    package func stopLoading() {
         // since storedCardComponent is instantiated through this class
         // cardViewController should not be accessed when it's the storedCardComponent
         // we should separate stored card component logic into its own
@@ -168,11 +167,11 @@ package class CardComponent: PresentableComponent,
     /// Updates the visibility of the store payment method switch.
     ///
     /// - Parameter isVisible: Indicates whether to show the switch if `true` or to hide it if `false`.
-    public func update(storePaymentMethodFieldVisibility isVisible: Bool) {
+    package func update(storePaymentMethodFieldVisibility isVisible: Bool) {
         cardViewController.update(storePaymentMethodFieldVisibility: isVisible)
     }
 
-    public func update(storePaymentMethodFieldValue isOn: Bool) {
+    package func update(storePaymentMethodFieldValue isOn: Bool) {
         cardViewController.update(storePaymentMethodFieldValue: isOn)
     }
 
@@ -318,11 +317,11 @@ private extension CardConfiguration {
 
 extension CardComponent: SubmittableComponent {
 
-    public func submit() {
+    package func submit() {
         didSelectSubmitButton()
     }
 
-    public func validate() -> Bool {
+    package func validate() -> Bool {
         cardViewController.validate()
     }
 }

@@ -72,7 +72,6 @@ extension CardComponent {
     }
 }
 
-@_spi(AdyenInternal)
 extension CardComponent: TrackableComponent {
     
     public func sendDidLoadEvent() {
@@ -84,7 +83,6 @@ extension CardComponent: TrackableComponent {
     }
 }
 
-@_spi(AdyenInternal)
 extension CardComponent: ViewControllerDelegate {
 
     public func viewDidLoad(viewController: UIViewController) {

@@ -287,10 +287,8 @@ extension CashAppPayComponent {
     }
 }
 
-@_spi(AdyenInternal)
 extension CashAppPayComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
 extension CashAppPayComponent: ViewControllerDelegate {}
 
 // MARK: - SubmitCustomizable

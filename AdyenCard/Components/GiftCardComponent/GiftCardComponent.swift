@@ -39,8 +39,7 @@ package final class GiftCardComponent: PresentableComponent,
     }
     
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
+    package let context: AdyenContext
 
     private let partialPaymentMethodType: PartialPaymentMethodType
 

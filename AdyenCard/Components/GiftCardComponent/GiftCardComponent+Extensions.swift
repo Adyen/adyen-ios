@@ -7,10 +7,8 @@
 import Adyen
 import UIKit
 
-@_spi(AdyenInternal)
 extension GiftCardComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
 extension GiftCardComponent: ViewControllerDelegate {
 
     public func viewDidLoad(viewController: UIViewController) {

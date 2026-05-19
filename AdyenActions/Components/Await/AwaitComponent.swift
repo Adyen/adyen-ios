@@ -10,17 +10,16 @@ import Foundation
 
 /// A component that handles Await action's.
 @MainActor
-public final class AwaitComponent: ActionComponent, Cancellable {
-    
+package final class AwaitComponent: ActionComponent, Cancellable {
+
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
-    
+    package let context: AdyenContext
+
     /// Delegates `PresentableComponent`'s presentation.
-    public weak var presentationDelegate: PresentationDelegate?
-    
-    public weak var delegate: ActionComponentDelegate?
-    
+    package weak var presentationDelegate: PresentationDelegate?
+
+    package weak var delegate: ActionComponentDelegate?
+
     internal var appLauncher: AnyAppLauncher = AppLauncher()
 
     /// The await component configurations.
@@ -47,15 +46,15 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     }
     
     /// The await component configurations.
-    public var configuration: Configuration
-    
+    package var configuration: Configuration
+
     private let awaitComponentBuilder: AnyPollingHandlerProvider
     
     /// Initializes the `AwaitComponent`.
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The await component configurations.
-    public convenience init(
+    package convenience init(
         context: AdyenContext,
         configuration: Configuration = .init()
     ) {
@@ -86,7 +85,7 @@ public final class AwaitComponent: ActionComponent, Cancellable {
     /// Handles redirect await action.
     ///
     /// - Parameter action: The await action object.
-    public func handle(_ action: RedirectableAwaitAction) {
+    package func handle(_ action: RedirectableAwaitAction) {
         appLauncher.openCustomSchemeUrl(action.url) { [weak self] success in
             guard let self else { return }
             if success {
@@ -104,14 +103,14 @@ public final class AwaitComponent: ActionComponent, Cancellable {
         }
     }
 
-    public func didCancel() {
+    package func didCancel() {
         paymentMethodSpecificPollingComponent?.didCancel()
     }
 
     /// Handles await action.
     ///
     /// - Parameter action: The await action object.
-    public func handle(_ action: AwaitAction) {
+    package func handle(_ action: AwaitAction) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
 
         let viewModel = AwaitComponentViewModel.viewModel(

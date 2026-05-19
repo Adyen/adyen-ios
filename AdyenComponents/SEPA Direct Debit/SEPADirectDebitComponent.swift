@@ -21,8 +21,7 @@ package final class SEPADirectDebitComponent: PaymentComponent, PresentableCompo
     package typealias Configuration = BasicComponentConfiguration
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
+    package let context: AdyenContext
 
     /// Component's configuration
     package var configuration: Configuration
@@ -152,10 +151,8 @@ package final class SEPADirectDebitComponent: PaymentComponent, PresentableCompo
 
 }
 
-@_spi(AdyenInternal)
 extension SEPADirectDebitComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
 extension SEPADirectDebitComponent: ViewControllerDelegate {}
 
 // MARK: - SubmitCustomizable

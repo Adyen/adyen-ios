@@ -31,8 +31,7 @@ package class ApplePayComponent: NSObject, PresentableComponent, PaymentComponen
     internal var authorizationHandled = false
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
+    package let context: AdyenContext
 
     /// The Apple Pay payment method.
     package var paymentMethod: PaymentMethod {

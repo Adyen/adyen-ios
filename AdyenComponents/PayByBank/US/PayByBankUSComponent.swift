@@ -18,8 +18,7 @@ import UIKit
 package final class PayByBankUSComponent: PaymentComponent, PresentableComponent {
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
+    package let context: AdyenContext
 
     /// The payment method object for this component.
     package let paymentMethod: PaymentMethod

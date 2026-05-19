@@ -21,8 +21,7 @@ package final class BoletoComponent: PaymentComponent,
     AdyenObserver {
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
+    package let context: AdyenContext
 
     package weak var delegate: PaymentComponentDelegate?
 
@@ -207,7 +206,6 @@ extension BoletoComponent: PaymentComponentDelegate {
     }
 }
 
-@_spi(AdyenInternal)
 extension BoletoComponent {
     
     fileprivate final class FormComponent: AbstractPersonalInformationComponent {
@@ -231,13 +229,11 @@ extension BoletoComponent {
             )
         }
         
-        @_spi(AdyenInternal)
-        override public func submitButtonTitle() -> String {
+        override package func submitButtonTitle() -> String {
             localizedString(.boletobancarioBtnLabel, configuration.localizationParameters)
         }
         
-        @_spi(AdyenInternal)
-        override public func createPaymentDetails() -> PaymentMethodDetails {
+        override package func createPaymentDetails() -> PaymentMethodDetails {
             onCreatePaymentDetails() ?? InstantPaymentDetails(type: paymentMethod.type)
         }
     }

@@ -24,8 +24,7 @@ package final class IssuerListComponent: PaymentComponent, PresentableComponent,
     }
     
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
+    package let context: AdyenContext
 
     /// The issuer list payment method.
     package var paymentMethod: PaymentMethod {
@@ -166,10 +165,8 @@ package final class IssuerListComponent: PaymentComponent, PresentableComponent,
     }
 }
 
-@_spi(AdyenInternal)
 extension IssuerListComponent: ViewControllerDelegate {}
 
-@_spi(AdyenInternal)
 extension IssuerListComponent: TrackableComponent {}
 
 extension IssuerListComponent {

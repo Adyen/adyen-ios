@@ -16,23 +16,22 @@ internal enum QRCodeComponentError: LocalizedError {
     /// Indicates the QR code is not longer valid
     case qrCodeExpired
 
-    public var errorDescription: String? {
+    package var errorDescription: String? {
         "QR code is no longer valid"
     }
 }
 
 /// A component  for QRCode action.
 @MainActor
-public final class QRCodeActionComponent: ActionComponent, Cancellable, ShareableComponent {
-    
-    /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
-    
-    /// Delegates `PresentableComponent`'s presentation.
-    public weak var presentationDelegate: PresentationDelegate?
+package final class QRCodeActionComponent: ActionComponent, Cancellable, ShareableComponent {
 
-    public weak var delegate: ActionComponentDelegate?
+    /// The context object for this component.
+    package let context: AdyenContext
+
+    /// Delegates `PresentableComponent`'s presentation.
+    package weak var presentationDelegate: PresentationDelegate?
+
+    package weak var delegate: ActionComponentDelegate?
 
     internal let presenterViewController = UIViewController()
 
@@ -41,7 +40,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
         
         /// The component UI style.
         public var style: QRCodeComponentStyle = .init()
-        
+
         /// The localization parameters, leave it nil to use the default parameters.
         public var localizationParameters: LocalizationParameters?
         
@@ -57,7 +56,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     }
     
     /// The QR code component configurations.
-    public var configuration: Configuration
+    package var configuration: Configuration
 
     private let pollingComponentBuilder: AnyPollingHandlerProvider?
     
@@ -73,7 +72,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component configurations
-    public convenience init(
+    package convenience init(
         context: AdyenContext,
         configuration: Configuration = .init()
     ) {
@@ -102,7 +101,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     /// Handles QR code action.
     ///
     /// - Parameter action: The QR code action.
-    public func handle(_ action: QRCodeAction) {
+    package func handle(_ action: QRCodeAction) {
         AdyenAssertion.assert(message: "presentationDelegate is nil", condition: presentationDelegate == nil)
         
         let viewController = createViewController(with: action)
@@ -253,7 +252,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
         }
     }
 
-    public func didCancel() {
+    package func didCancel() {
         cleanup()
     }
     
@@ -263,17 +262,16 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     }
 }
 
-@_spi(AdyenInternal)
 extension QRCodeActionComponent: ActionComponentDelegate {
 
-    public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
+    package func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         cleanup()
         delegate?.didProvide(data, from: self)
     }
 
-    public func didComplete(from component: ActionComponent) {}
+    package func didComplete(from component: ActionComponent) {}
 
-    public func didFail(with error: Error, from component: ActionComponent) {
+    package func didFail(with error: Error, from component: ActionComponent) {
         cleanup()
         delegate?.didFail(with: error, from: self)
     }
