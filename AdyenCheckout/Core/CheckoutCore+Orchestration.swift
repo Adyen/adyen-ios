@@ -171,20 +171,3 @@ private extension CheckoutCore {
     }
     
 }
-
-internal enum CallbackError: LocalizedError {
-    case missingSubmitHandler
-    case missingAdditionalDetailsHandler
-    case unsupportedSubmit
-
-    internal var errorDescription: String? {
-        switch self {
-        case .missingSubmitHandler:
-            "Checkout requires `onSubmit` to submit payment data."
-        case .missingAdditionalDetailsHandler:
-            "Checkout requires `onAdditionalDetails` to submit additional details."
-        case .unsupportedSubmit:
-            "Action-only checkout cannot submit payment data."
-        }
-    }
-}
