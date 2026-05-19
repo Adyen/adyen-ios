@@ -44,7 +44,8 @@ public struct InstallmentOptions: Equatable, Codable {
         assert(maxInstallmentMonth > 1, "Must provide a valid max amount greater than 1.")
         self.init(monthValues: Array(2...maxInstallmentMonth), includesRevolving: includesRevolving)
     }
-
+    
+    @_spi(AdyenInternal)
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.regularInstallmentMonths = try container.decodeIfPresent([UInt].self, forKey: .regularInstallmentMonths) ?? []
