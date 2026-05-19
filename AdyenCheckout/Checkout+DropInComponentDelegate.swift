@@ -8,7 +8,7 @@
 
 // MARK: - DropInComponentDelegate
 
-extension Checkout: DropInComponentDelegate {
+extension CheckoutCore: DropInComponentDelegate {
 
     public func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent, in dropInComponent: any AnyDropInComponent) {
         performSubmit(data, source: .dropIn(component: component, dropInComponent: dropInComponent))

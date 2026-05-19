@@ -12,7 +12,7 @@ import UIKit
 
 // MARK: - SessionStoredPaymentMethodsDelegate
 
-extension Checkout: SessionStoredPaymentMethodsDelegate {
+extension CheckoutCore: SessionStoredPaymentMethodsDelegate {
 
     package nonisolated var isSession: Bool {
         true
@@ -45,7 +45,7 @@ extension Checkout: SessionStoredPaymentMethodsDelegate {
     }
 }
 
-private extension Checkout {
+private extension CheckoutCore {
 
     func showAlert(on dropInComponent: any AnyDropInComponent) {
         let localizationParameters = (dropInComponent as? Localizable)?.localizationParameters

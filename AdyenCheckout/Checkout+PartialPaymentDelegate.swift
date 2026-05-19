@@ -12,7 +12,7 @@ import UIKit
 
 // MARK: - PartialPaymentDelegate
 
-extension Checkout: PartialPaymentDelegate {
+extension CheckoutCore: PartialPaymentDelegate {
 
     public func checkBalance(
         with data: PaymentComponentData,
@@ -59,7 +59,7 @@ extension Checkout: PartialPaymentDelegate {
     }
 }
 
-internal extension Checkout {
+internal extension CheckoutCore {
 
     func handle(partialPayment: PartialPayment, source: CheckoutCallbackSource) {
         guard let dropInComponent = source.dropInComponent else {
