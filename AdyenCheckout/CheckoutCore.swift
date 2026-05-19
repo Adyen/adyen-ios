@@ -44,7 +44,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
     package weak var presentationDelegate: PresentationDelegate?
     package let adyenContext: AdyenContext
     package let resultCallbacks: any CheckoutResultCallbackStore
-    package let submissionHandler: any CheckoutSubmissionHandling
+    package let callbackHandler: any CheckoutCallbackHandling
 
     internal lazy var actionHandlingComponent: ActionHandlingComponent = {
         let authenticationConfiguration: AuthenticationConfiguration = configuration.configuration(
@@ -80,7 +80,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
         adyenContext: AdyenContext,
         presentationDelegate: PresentationDelegate?,
         resultCallbacks: any CheckoutResultCallbackStore,
-        submissionHandler: any CheckoutSubmissionHandling
+        callbackHandler: any CheckoutCallbackHandling
     ) {
         self.configuration = configuration
         self.session = session
@@ -88,7 +88,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
         self.presentationDelegate = presentationDelegate
         self.adyenContext = adyenContext
         self.resultCallbacks = resultCallbacks
-        self.submissionHandler = submissionHandler
+        self.callbackHandler = callbackHandler
         self.session?.presentationDelegate = presentationDelegate
     }
 

@@ -509,10 +509,6 @@
 		A02B89DE2DD76E660083CE99 /* ComponentManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9EDB79D2397AEF400CFB3C9 /* ComponentManagerTests.swift */; };
 		A02B89E12DD776410083CE99 /* CheckoutResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02B89E02DD776330083CE99 /* CheckoutResult.swift */; };
 		A03056D32DEDED2F00ED7014 /* CheckoutProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056D02DEDED2F00ED7014 /* CheckoutProtocol.swift */; };
-		EBF200012F00000100CB0001 /* CheckoutTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF200002F00000100CB0001 /* CheckoutTypes.swift */; };
-		EBF200032F00000100CB0001 /* CheckoutCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF200022F00000100CB0001 /* CheckoutCore.swift */; };
-		EBF200052F00000100CB0001 /* CheckoutCallbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF200042F00000100CB0001 /* CheckoutCallbacks.swift */; };
-		EBF200072F00000100CB0001 /* CheckoutSubmissionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF200062F00000100CB0001 /* CheckoutSubmissionHandler.swift */; };
 		A03056D42DEDED2F00ED7014 /* CheckoutComponentBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056D12DEDED2F00ED7014 /* CheckoutComponentBuilder.swift */; };
 		A03056D52DEDED2F00ED7014 /* AdyenCheckout.docc in Sources */ = {isa = PBXBuildFile; fileRef = A03056CD2DEDED2F00ED7014 /* AdyenCheckout.docc */; };
 		A03056D62DEDED2F00ED7014 /* CheckoutPaymentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03056CF2DEDED2F00ED7014 /* CheckoutPaymentComponent.swift */; };
@@ -1041,6 +1037,10 @@
 		EBA100132E90000100AD0001 /* Checkout+PartialPaymentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA100032E90000100AD0001 /* Checkout+PartialPaymentDelegate.swift */; };
 		EBA100142E90000100AD0001 /* Checkout+DropInComponentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA100042E90000100AD0001 /* Checkout+DropInComponentDelegate.swift */; };
 		EBA100152E90000100AD0001 /* Checkout+StoredPaymentMethodsDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA100052E90000100AD0001 /* Checkout+StoredPaymentMethodsDelegate.swift */; };
+		EBF200012F00000100CB0001 /* CheckoutTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF200002F00000100CB0001 /* CheckoutTypes.swift */; };
+		EBF200032F00000100CB0001 /* CheckoutCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF200022F00000100CB0001 /* CheckoutCore.swift */; };
+		EBF200052F00000100CB0001 /* CheckoutCallbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF200042F00000100CB0001 /* CheckoutCallbacks.swift */; };
+		EBF200072F00000100CB0001 /* CheckoutCallbackHandlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF200062F00000100CB0001 /* CheckoutCallbackHandlers.swift */; };
 		F90E95F02726B625007E382B /* DropInComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90E95EF2726B625007E382B /* DropInComponentExtensions.swift */; };
 		F90FB7BC2446E8C8005BFE0E /* BrowserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90FB7BB2446E8C8005BFE0E /* BrowserInfo.swift */; };
 		F913B3ED26B7FAA8008F6CD2 /* AdyenNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = F913B3EC26B7FAA8008F6CD2 /* AdyenNetworking */; };
@@ -2191,10 +2191,6 @@
 		A03056CE2DEDED2F00ED7014 /* Checkout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkout.swift; sourceTree = "<group>"; };
 		A03056CF2DEDED2F00ED7014 /* CheckoutPaymentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutPaymentComponent.swift; sourceTree = "<group>"; };
 		A03056D02DEDED2F00ED7014 /* CheckoutProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutProtocol.swift; sourceTree = "<group>"; };
-		EBF200002F00000100CB0001 /* CheckoutTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutTypes.swift; sourceTree = "<group>"; };
-		EBF200022F00000100CB0001 /* CheckoutCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutCore.swift; sourceTree = "<group>"; };
-		EBF200042F00000100CB0001 /* CheckoutCallbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutCallbacks.swift; sourceTree = "<group>"; };
-		EBF200062F00000100CB0001 /* CheckoutSubmissionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutSubmissionHandler.swift; sourceTree = "<group>"; };
 		A03056D12DEDED2F00ED7014 /* CheckoutComponentBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutComponentBuilder.swift; sourceTree = "<group>"; };
 		A03056D92DEF32FD00ED7014 /* Checkout+DelegateCallbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Checkout+DelegateCallbacks.swift"; sourceTree = "<group>"; };
 		A03056DB2DF07F7800ED7014 /* CheckoutProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutProvider.swift; sourceTree = "<group>"; };
@@ -2732,6 +2728,10 @@
 		EBA100032E90000100AD0001 /* Checkout+PartialPaymentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Checkout+PartialPaymentDelegate.swift"; sourceTree = "<group>"; };
 		EBA100042E90000100AD0001 /* Checkout+DropInComponentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Checkout+DropInComponentDelegate.swift"; sourceTree = "<group>"; };
 		EBA100052E90000100AD0001 /* Checkout+StoredPaymentMethodsDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Checkout+StoredPaymentMethodsDelegate.swift"; sourceTree = "<group>"; };
+		EBF200002F00000100CB0001 /* CheckoutTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutTypes.swift; sourceTree = "<group>"; };
+		EBF200022F00000100CB0001 /* CheckoutCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutCore.swift; sourceTree = "<group>"; };
+		EBF200042F00000100CB0001 /* CheckoutCallbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutCallbacks.swift; sourceTree = "<group>"; };
+		EBF200062F00000100CB0001 /* CheckoutCallbackHandlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutCallbackHandlers.swift; sourceTree = "<group>"; };
 		F90E95EF2726B625007E382B /* DropInComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInComponentExtensions.swift; sourceTree = "<group>"; };
 		F90E95F127280BD5007E382B /* CoreListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreListDataSource.swift; sourceTree = "<group>"; };
 		F90E95F52728106D007E382B /* DiffableListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffableListDataSource.swift; sourceTree = "<group>"; };
@@ -4040,7 +4040,7 @@
 				EBF200002F00000100CB0001 /* CheckoutTypes.swift */,
 				EBF200022F00000100CB0001 /* CheckoutCore.swift */,
 				EBF200042F00000100CB0001 /* CheckoutCallbacks.swift */,
-				EBF200062F00000100CB0001 /* CheckoutSubmissionHandler.swift */,
+				EBF200062F00000100CB0001 /* CheckoutCallbackHandlers.swift */,
 				A03056CE2DEDED2F00ED7014 /* Checkout.swift */,
 				A03056DB2DF07F7800ED7014 /* CheckoutProvider.swift */,
 				A03056DE2DF07F7900ED7014 /* CheckoutAttemptIdProvider.swift */,
@@ -8379,7 +8379,7 @@
 				EBF200012F00000100CB0001 /* CheckoutTypes.swift in Sources */,
 				EBF200032F00000100CB0001 /* CheckoutCore.swift in Sources */,
 				EBF200052F00000100CB0001 /* CheckoutCallbacks.swift in Sources */,
-				EBF200072F00000100CB0001 /* CheckoutSubmissionHandler.swift in Sources */,
+				EBF200072F00000100CB0001 /* CheckoutCallbackHandlers.swift in Sources */,
 				A03056DA2DEF331100ED7014 /* Checkout+DelegateCallbacks.swift in Sources */,
 				EBA100112E90000100AD0001 /* Checkout+PaymentComponentDelegate.swift in Sources */,
 				EBA100122E90000100AD0001 /* Checkout+ActionComponentDelegate.swift in Sources */,

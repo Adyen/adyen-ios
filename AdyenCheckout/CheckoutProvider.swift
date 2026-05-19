@@ -49,7 +49,7 @@ internal class CheckoutProvider: CheckoutProviding {
             adyenContext: adyenContext,
             presentationDelegate: presentationDelegate,
             resultCallbacks: callbackStore,
-            submissionHandler: SessionSubmissionHandler(session: session)
+            callbackHandler: SessionCallbackHandler(session: session)
         )
     }
     
@@ -76,7 +76,7 @@ internal class CheckoutProvider: CheckoutProviding {
             adyenContext: adyenContext,
             presentationDelegate: presentationDelegate,
             resultCallbacks: callbackStore,
-            submissionHandler: AdvancedSubmissionHandler(callbackStore: callbackStore)
+            callbackHandler: AdvancedCallbackHandler(callbackStore: callbackStore)
         )
     }
     
@@ -98,7 +98,7 @@ internal class CheckoutProvider: CheckoutProviding {
             adyenContext: adyenContext,
             presentationDelegate: presentationDelegate,
             resultCallbacks: callbackStore,
-            submissionHandler: ActionOnlySubmissionHandler(callbackStore: callbackStore)
+            callbackHandler: ActionOnlyCallbackHandler(callbackStore: callbackStore)
         )
     }
     

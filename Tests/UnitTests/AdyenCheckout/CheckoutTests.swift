@@ -645,7 +645,7 @@ final class CheckoutTests: XCTestCase {
             adyenContext: Dummy.context,
             presentationDelegate: nil,
             resultCallbacks: callbackStore,
-            submissionHandler: SessionSubmissionHandler(session: session)
+            callbackHandler: SessionCallbackHandler(session: session)
         )
     }
 
@@ -659,7 +659,7 @@ final class CheckoutTests: XCTestCase {
             adyenContext: Dummy.context,
             presentationDelegate: nil,
             resultCallbacks: callbackStore,
-            submissionHandler: AdvancedSubmissionHandler(callbackStore: callbackStore)
+            callbackHandler: AdvancedCallbackHandler(callbackStore: callbackStore)
         )
     }
 
@@ -671,7 +671,7 @@ final class CheckoutTests: XCTestCase {
             adyenContext: Dummy.context,
             presentationDelegate: nil,
             resultCallbacks: callbackStore,
-            submissionHandler: ActionOnlySubmissionHandler(callbackStore: callbackStore)
+            callbackHandler: ActionOnlyCallbackHandler(callbackStore: callbackStore)
         )
     }
 

@@ -153,12 +153,12 @@ internal extension CheckoutCore {
 private extension CheckoutCore {
     
     func onSubmit(for data: PaymentComponentData) -> () async throws -> SubmitResult {
-        let handler = submissionHandler
+        let handler = callbackHandler
         return { try await handler.handleSubmit(data) }
     }
     
     func onAdditionalDetails(for data: ActionComponentData) -> () async throws -> AdditionalDetailsResult {
-        let handler = submissionHandler
+        let handler = callbackHandler
         return { try await handler.handleAdditionalDetails(data) }
     }
     

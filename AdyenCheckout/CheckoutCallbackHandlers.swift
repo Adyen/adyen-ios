@@ -13,14 +13,14 @@ import Adyen
 #endif
 
 @MainActor
-package protocol CheckoutSubmissionHandling: AnyObject {
+package protocol CheckoutCallbackHandling: AnyObject {
     func handleSubmit(_ data: PaymentComponentData) async throws -> SubmitResult
     
     func handleAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult
 }
 
 @MainActor
-package final class SessionSubmissionHandler: CheckoutSubmissionHandling {
+package final class SessionCallbackHandler: CheckoutCallbackHandling {
     private let session: SessionProtocol
 
     package init(session: SessionProtocol) {
@@ -37,7 +37,7 @@ package final class SessionSubmissionHandler: CheckoutSubmissionHandling {
 }
 
 @MainActor
-package final class AdvancedSubmissionHandler: CheckoutSubmissionHandling {
+package final class AdvancedCallbackHandler: CheckoutCallbackHandling {
     private let callbackStore: AdvancedCheckoutCallbackStore
 
     package init(callbackStore: AdvancedCheckoutCallbackStore) {
@@ -56,7 +56,7 @@ package final class AdvancedSubmissionHandler: CheckoutSubmissionHandling {
 }
 
 @MainActor
-package final class ActionOnlySubmissionHandler: CheckoutSubmissionHandling {
+package final class ActionOnlyCallbackHandler: CheckoutCallbackHandling {
     private let callbackStore: ActionOnlyCheckoutCallbackStore
 
     package init(callbackStore: ActionOnlyCheckoutCallbackStore) {
