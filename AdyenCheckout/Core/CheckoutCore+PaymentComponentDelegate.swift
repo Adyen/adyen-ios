@@ -5,10 +5,11 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import Foundation
 
 // MARK: - PaymentComponentDelegate
 
-extension Checkout: PaymentComponentDelegate {
+extension CheckoutCore: PaymentComponentDelegate {
 
     public func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         performSubmit(data, source: .component(component))

@@ -306,7 +306,7 @@ extension ComponentManager: PaymentComponentBuilder {
 private extension ComponentManager {
     
     func createCardComponent(with paymentMethod: AnyCardPaymentMethod) -> CardComponent {
-        var cardConfiguration = configuration.card.cardComponentConfiguration
+        var cardConfiguration = configuration.card.cardConfiguration
         cardConfiguration.style = configuration.style.formComponent
         cardConfiguration.localizationParameters = configuration.localizationParameters
         cardConfiguration.shopperInformation = configuration.shopperInformation
@@ -319,7 +319,7 @@ private extension ComponentManager {
 
     func createBancontactComponent(with paymentMethod: BCMCPaymentMethod) -> PaymentComponent? {
         // TODO: To be replaced with a factory call
-        var cardConfiguration = configuration.card.cardComponentConfiguration
+        var cardConfiguration = configuration.card.cardConfiguration
         cardConfiguration.style = configuration.style.formComponent
         cardConfiguration.localizationParameters = configuration.localizationParameters
         cardConfiguration.shopperInformation = configuration.shopperInformation

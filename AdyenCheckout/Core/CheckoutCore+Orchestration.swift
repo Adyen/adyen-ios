@@ -38,7 +38,7 @@ internal enum CheckoutCallbackSource {
     }
 }
 
-internal extension Checkout {
+internal extension CheckoutCore {
 
     func performSubmit(
         _ data: PaymentComponentData,
@@ -51,10 +51,7 @@ internal extension Checkout {
         pendingPaymentComponent = source.paymentComponent
         submitTask?.cancel()
 
-        guard let onSubmit = onSubmit(for: data) else {
-            handle(CallbackError.missingSubmitHandler, from: source.paymentComponent)
-            return
-        }
+        let onSubmit = onSubmit(for: data)
 
         submitTask = Task { [weak self] in
             do {
@@ -77,10 +74,7 @@ internal extension Checkout {
         let paymentComponent = pendingPaymentComponent
         additionalDetailsTask?.cancel()
 
-        guard let onAdditionalDetails = onAdditionalDetails(for: data) else {
-            handle(CallbackError.missingAdditionalDetailsHandler, from: paymentComponent)
-            return
-        }
+        let onAdditionalDetails = onAdditionalDetails(for: data)
 
         additionalDetailsTask = Task { [weak self] in
             do {
@@ -146,36 +140,26 @@ internal extension Checkout {
     func finish(with result: CheckoutResult, from component: (any PaymentComponent)?) {
         (component as? any FinalizableComponent)?.didFinalize(with: result.resultCode.isSuccessful, completion: nil)
         pendingPaymentComponent = nil
-        configuration.onComplete?(result)
+        resultCallbacks.onComplete?(result)
     }
 
     func finish(with error: Error, from component: (any PaymentComponent)?) {
         (component as? any FinalizableComponent)?.didFinalize(with: false, completion: nil)
         pendingPaymentComponent = nil
-        configuration.onError?(CheckoutError(error: error))
+        resultCallbacks.onError?(CheckoutError(error: error))
     }
 }
 
-private extension Checkout {
+private extension CheckoutCore {
     
-    func onSubmit(for data: PaymentComponentData) -> (() async throws -> SubmitResult)? {
-        if let onSubmit = configuration.onSubmit {
-            return { try await onSubmit(data) }
-        } else if let session {
-            return { try await session.performSubmit(data) }
-        } else {
-            return nil
-        }
+    func onSubmit(for data: PaymentComponentData) -> () async throws -> SubmitResult {
+        let handler = callbackHandler
+        return { try await handler.handleSubmit(data) }
     }
     
-    func onAdditionalDetails(for data: ActionComponentData) -> (() async throws -> AdditionalDetailsResult)? {
-        if let onAdditionalDetails = configuration.onAdditionalDetails {
-            return { try await onAdditionalDetails(data) }
-        } else if let session {
-            return { try await session.performAdditionalDetails(data) }
-        } else {
-            return nil
-        }
+    func onAdditionalDetails(for data: ActionComponentData) -> () async throws -> AdditionalDetailsResult {
+        let handler = callbackHandler
+        return { try await handler.handleAdditionalDetails(data) }
     }
     
     func handle(_ action: Action, source: CheckoutCallbackSource) {
@@ -186,18 +170,4 @@ private extension Checkout {
         }
     }
     
-}
-
-internal enum CallbackError: LocalizedError {
-    case missingSubmitHandler
-    case missingAdditionalDetailsHandler
-
-    internal var errorDescription: String? {
-        switch self {
-        case .missingSubmitHandler:
-            "Checkout requires either `onSubmit` or a session to submit payment data."
-        case .missingAdditionalDetailsHandler:
-            "Checkout requires either `onAdditionalDetails` or a session to submit additional details."
-        }
-    }
 }

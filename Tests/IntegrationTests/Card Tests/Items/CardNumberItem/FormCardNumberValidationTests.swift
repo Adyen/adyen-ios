@@ -68,7 +68,7 @@ class FormCardNumberValidationTests: XCTestCase {
                 .init(url: Self.testURL, type: .visa),
                 .init(url: Self.testURL, type: .masterCard)
             ],
-            showsSupportedCardLogos: true,
+            showSupportedCardBrandLogos: true,
             style: FormTextItemStyle(),
             localizationParameters: nil,
             scanCardHandler: nil
@@ -109,7 +109,7 @@ class FormCardNumberValidationTests: XCTestCase {
                 .init(url: Self.testURL, type: .visa),
                 .init(url: Self.testURL, type: .masterCard)
             ],
-            showsSupportedCardLogos: true,
+            showSupportedCardBrandLogos: true,
             style: FormTextItemStyle(),
             localizationParameters: nil,
             scanCardHandler: nil
@@ -149,7 +149,7 @@ class FormCardNumberValidationTests: XCTestCase {
                 .init(url: Self.testURL, type: .visa),
                 .init(url: Self.testURL, type: .masterCard)
             ],
-            showsSupportedCardLogos: true,
+            showSupportedCardBrandLogos: true,
             style: FormTextItemStyle(),
             localizationParameters: nil,
             scanCardHandler: nil
@@ -290,7 +290,7 @@ class FormCardNumberValidationTests: XCTestCase {
                 .init(url: Self.testURL, type: .visa),
                 .init(url: Self.testURL, type: .masterCard)
             ],
-            showsSupportedCardLogos: true,
+            showSupportedCardBrandLogos: true,
             style: FormTextItemStyle(),
             localizationParameters: nil,
             scanCardHandler: nil

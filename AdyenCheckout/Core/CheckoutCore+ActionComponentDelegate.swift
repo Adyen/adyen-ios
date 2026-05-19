@@ -5,10 +5,11 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import Foundation
 
 // MARK: - ActionComponentDelegate
 
-extension Checkout: ActionComponentDelegate {
+extension CheckoutCore: ActionComponentDelegate {
 
     public func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
         performAdditionalDetails(data, from: component)

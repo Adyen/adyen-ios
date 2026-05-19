@@ -8,38 +8,29 @@ import Adyen
 #if canImport(AdyenSession)
     import AdyenSession
 #endif
-#if canImport(AdyenDropIn)
-    import AdyenDropIn
-#endif
 import AdyenNetworking
-
-@MainActor
-internal protocol CheckoutProtocol {
-    
-    func createPaymentComponent(for type: PaymentMethodType) throws -> CheckoutPaymentComponent
-    
-    func createPaymentComponent(for identifier: String) throws -> CheckoutPaymentComponent
-    
-    func createDropIn() -> DropInComponent?
-}
+import Foundation
 
 internal protocol CheckoutProviding: AdyenSessionProviding {
     func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
+        callbackStore: SessionCheckoutCallbackStore,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> Checkout
-    
+    ) async throws -> CheckoutCoreProtocol
+
     func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
+        callbackStore: AdvancedCheckoutCallbackStore,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> Checkout
-    
+    ) async throws -> CheckoutCoreProtocol
+
     func setup(
         configuration: CheckoutConfiguration,
+        callbackStore: ActionOnlyCheckoutCallbackStore,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> Checkout
+    ) async throws -> CheckoutCoreProtocol
 }
 
 internal protocol AdyenSessionProviding {
