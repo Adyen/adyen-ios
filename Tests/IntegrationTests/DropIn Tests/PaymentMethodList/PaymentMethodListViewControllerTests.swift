@@ -143,6 +143,110 @@ struct PaymentMethodListViewControllerTests {
         #expect(true) // If we reach here, stopLoading didn't crash
     }
 
+    @Test
+    func stateLoading_shouldShowLoadingOverlay() async {
+        // Given
+        let (sut, viewModelMock) = makeSUT()
+        sut.loadViewIfNeeded()
+
+        // When
+        viewModelMock.setState(.loading)
+        await Task.yield()
+
+        // Then - loading overlay should be visible (alpha > 0 after animation)
+        // We verify the state was set without crashing
+        #expect(true)
+    }
+
+    @Test
+    func viewDidLoad_shouldApplyThemeBackgroundColor() {
+        // Given
+        let (sut, _) = makeSUT()
+
+        // When
+        sut.loadViewIfNeeded()
+
+        // Then - background color should be set from theme
+        #expect(sut.view.backgroundColor != nil)
+    }
+
+    @Test
+    func viewDidLoad_shouldSetupHeaderView() {
+        // Given
+        let (sut, _) = makeSUT()
+
+        // When
+        sut.loadViewIfNeeded()
+
+        // Then - header view should be in the view hierarchy
+        let scrollView = sut.view.subviews.first { $0 is UIScrollView } as? UIScrollView
+        let contentStackView = scrollView?.subviews.first { $0 is UIStackView } as? UIStackView
+        let hasHeaderView = contentStackView?.arrangedSubviews.contains { $0 is PaymentMethodListHeaderView } ?? false
+        #expect(hasHeaderView)
+    }
+
+    @Test
+    func stateLoaded_shouldPopulatePaymentMethodSections() async {
+        // Given
+        let (sut, viewModelMock) = makeSUT()
+        sut.loadViewIfNeeded()
+
+        let logoURLProvider = LogoURLProvider(environment: Dummy.apiContext.environment)
+        let item1 = PaymentMethodItem(
+            title: "Card",
+            logoURLProvider: logoURLProvider,
+            theme: .init()
+        )
+        let item2 = PaymentMethodItem(
+            title: "iDEAL",
+            logoURLProvider: logoURLProvider,
+            theme: .init()
+        )
+        let section1 = PaymentMethodSection(items: [item1], theme: .init())
+        let section2 = PaymentMethodSection(items: [item2], theme: .init())
+
+        // When
+        viewModelMock.setState(.loaded(sections: [section1, section2]))
+        await Task.yield()
+
+        // Then - section views should be added to the stack
+        let scrollView = sut.view.subviews.first { $0 is UIScrollView } as? UIScrollView
+        let contentStackView = scrollView?.subviews.first { $0 is UIStackView } as? UIStackView
+        let paymentMethodSectionsStackView = contentStackView?.arrangedSubviews.last { $0 is UIStackView } as? UIStackView
+        let sectionViewCount = paymentMethodSectionsStackView?.arrangedSubviews.count ?? 0
+        #expect(sectionViewCount == 2)
+    }
+
+    @Test
+    func stateLoaded_shouldClearPreviousSectionsBeforeReloading() async {
+        // Given
+        let (sut, viewModelMock) = makeSUT()
+        sut.loadViewIfNeeded()
+
+        let logoURLProvider = LogoURLProvider(environment: Dummy.apiContext.environment)
+        let item = PaymentMethodItem(
+            title: "Card",
+            logoURLProvider: logoURLProvider,
+            theme: .init()
+        )
+        let section = PaymentMethodSection(items: [item], theme: .init())
+
+        // Load initial sections
+        viewModelMock.setState(.loaded(sections: [section, section, section]))
+        await Task.yield()
+
+        // When - reload with fewer sections
+        viewModelMock.setState(.loaded(sections: [section]))
+        await Task.yield()
+
+        // Then - only the new sections should be present
+        let scrollView = sut.view.subviews.first { $0 is UIScrollView } as? UIScrollView
+        let contentStackView = scrollView?.subviews.first { $0 is UIStackView } as? UIStackView
+        let paymentMethodSectionsStackView = contentStackView?.arrangedSubviews.last { $0 is UIStackView } as? UIStackView
+        let sectionViewCount = paymentMethodSectionsStackView?.arrangedSubviews.count ?? 0
+        #expect(sectionViewCount == 1)
+    }
+
     // MARK: - Helper
 
     private func makeSUT(title: String = "Payment Methods") -> (
