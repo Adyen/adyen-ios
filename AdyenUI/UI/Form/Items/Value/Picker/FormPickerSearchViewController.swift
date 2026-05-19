@@ -7,10 +7,9 @@
 import Adyen
 import UIKit
 
-@_spi(AdyenInternal)
-public final class FormPickerSearchViewController<Option: FormPickable>: UINavigationController {
-    
-    public init(
+package final class FormPickerSearchViewController<Option: FormPickable>: UINavigationController {
+
+    package init(
         localizationParameters: LocalizationParameters? = nil,
         style: Style = .init(),
         title: String?,
@@ -48,7 +47,7 @@ public final class FormPickerSearchViewController<Option: FormPickable>: UINavig
     }
     
     @available(*, unavailable)
-    public required init?(coder aDecoder: NSCoder) {
+    package required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

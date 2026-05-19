@@ -15,7 +15,7 @@ import UIKit
 /// A form item which consists of card number item and the supported card icons below.
 internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+    package var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
     
     /// The supported card type logos.
     internal let cardTypeLogos: [FormCardLogosItem.CardTypeLogo]

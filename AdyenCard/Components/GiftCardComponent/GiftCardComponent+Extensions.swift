@@ -11,7 +11,7 @@ extension GiftCardComponent: TrackableComponent {}
 
 extension GiftCardComponent: ViewControllerDelegate {
 
-    public func viewDidLoad(viewController: UIViewController) {
+    package func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
         sendDidLoadEvent()
     }
