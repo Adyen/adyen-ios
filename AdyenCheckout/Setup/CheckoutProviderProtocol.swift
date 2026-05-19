@@ -9,25 +9,26 @@ import Adyen
     import AdyenSession
 #endif
 import AdyenNetworking
+import Foundation
 
 internal protocol CheckoutProviding: AdyenSessionProviding {
     func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
-        callbacks: SessionCheckoutCallbacks,
+        callbackStore: SessionCheckoutCallbackStore,
         presentationDelegate: PresentationDelegate?
     ) async throws -> CheckoutCoreProtocol
 
     func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
-        callbacks: AdvancedCheckoutCallbacks,
+        callbackStore: AdvancedCheckoutCallbackStore,
         presentationDelegate: PresentationDelegate?
     ) async throws -> CheckoutCoreProtocol
 
     func setup(
         configuration: CheckoutConfiguration,
-        callbacks: ActionOnlyCheckoutCallbacks,
+        callbackStore: ActionOnlyCheckoutCallbackStore,
         presentationDelegate: PresentationDelegate?
     ) async throws -> CheckoutCoreProtocol
 }

@@ -153,12 +153,12 @@ internal extension CheckoutCore {
 private extension CheckoutCore {
     
     func onSubmit(for data: PaymentComponentData) -> () async throws -> SubmitResult {
-        let handler = submissionHandler
+        let handler = callbackHandler
         return { try await handler.handleSubmit(data) }
     }
     
     func onAdditionalDetails(for data: ActionComponentData) -> () async throws -> AdditionalDetailsResult {
-        let handler = submissionHandler
+        let handler = callbackHandler
         return { try await handler.handleAdditionalDetails(data) }
     }
     
@@ -170,21 +170,4 @@ private extension CheckoutCore {
         }
     }
     
-}
-
-internal enum CallbackError: LocalizedError {
-    case missingSubmitHandler
-    case missingAdditionalDetailsHandler
-    case unsupportedSubmit
-
-    internal var errorDescription: String? {
-        switch self {
-        case .missingSubmitHandler:
-            "Checkout requires `onSubmit` to submit payment data."
-        case .missingAdditionalDetailsHandler:
-            "Checkout requires `onAdditionalDetails` to submit additional details."
-        case .unsupportedSubmit:
-            "Action-only checkout cannot submit payment data."
-        }
-    }
 }

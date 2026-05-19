@@ -43,8 +43,8 @@ package final class CheckoutCore: CheckoutCoreProtocol {
     package let configuration: CheckoutConfiguration
     package weak var presentationDelegate: PresentationDelegate?
     package let adyenContext: AdyenContext
-    package let resultCallbacks: any CheckoutResultCallbacks
-    package let submissionHandler: any CheckoutSubmissionHandling
+    package let resultCallbacks: any CheckoutResultCallbackStore
+    package let callbackHandler: any CheckoutCallbackHandling
 
     internal lazy var actionHandlingComponent: ActionHandlingComponent = {
         let authenticationConfiguration: AuthenticationConfiguration = configuration.configuration(
@@ -73,39 +73,14 @@ package final class CheckoutCore: CheckoutCoreProtocol {
 
     internal weak var pendingPaymentComponent: (any PaymentComponent)?
 
-    package convenience init(
-        configuration: CheckoutConfiguration,
-        session: SessionProtocol? = nil,
-        paymentMethods: PaymentMethods? = nil,
-        adyenContext: AdyenContext,
-        presentationDelegate: PresentationDelegate?
-    ) {
-        let callbacks = AdvancedCheckoutCallbacks()
-        let submissionHandler: any CheckoutSubmissionHandling
-        if let session {
-            submissionHandler = SessionSubmissionHandler(session: session)
-        } else {
-            submissionHandler = AdvancedSubmissionHandler(callbacks: callbacks)
-        }
-        self.init(
-            configuration: configuration,
-            session: session,
-            paymentMethods: paymentMethods,
-            adyenContext: adyenContext,
-            presentationDelegate: presentationDelegate,
-            resultCallbacks: callbacks,
-            submissionHandler: submissionHandler
-        )
-    }
-
     package init(
         configuration: CheckoutConfiguration,
         session: SessionProtocol? = nil,
         paymentMethods: PaymentMethods? = nil,
         adyenContext: AdyenContext,
         presentationDelegate: PresentationDelegate?,
-        resultCallbacks: any CheckoutResultCallbacks,
-        submissionHandler: any CheckoutSubmissionHandling
+        resultCallbacks: any CheckoutResultCallbackStore,
+        callbackHandler: any CheckoutCallbackHandling
     ) {
         self.configuration = configuration
         self.session = session
@@ -113,7 +88,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
         self.presentationDelegate = presentationDelegate
         self.adyenContext = adyenContext
         self.resultCallbacks = resultCallbacks
-        self.submissionHandler = submissionHandler
+        self.callbackHandler = callbackHandler
         self.session?.presentationDelegate = presentationDelegate
     }
 
