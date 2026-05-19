@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenActions
 @testable import AdyenDropIn
 import Testing
@@ -101,6 +101,67 @@ struct PaymentMethodListRouterTests {
         #expect(sut.childRouter == nil)
     }
 
+    @Test
+    func didDismissComponentContainer_shouldCallCompletion() {
+        // Given
+        let (sut, _, _, _, _) = makeSUT()
+        var completionCalled = false
+
+        // When
+        sut.didDismissComponentContainer {
+            completionCalled = true
+        }
+
+        // Then
+        #expect(completionCalled == true)
+    }
+
+    @Test
+    func presentComponent_givenStoredComponent_shouldPresentComponentContainerModally() {
+        // Given
+        let (sut, _, navigationControllerSpy, _, componentContainerAssemblerMock) = makeSUT()
+        let storedPaymentComponent = makeStoredPaymentComponentMock()
+        let componentContainerRouter = componentContainerAssemblerMock.resolveComponentContainerRouterForDelegateOnCancelReturnValue
+
+        // When
+        sut.present(component: storedPaymentComponent)
+
+        // Then - stored components are presented modally, not pushed
+        #expect(navigationControllerSpy.pushViewControllerCallsCount == 0)
+        #expect(navigationControllerSpy.presentCallsCount == 1)
+        #expect(sut.childRouter === componentContainerRouter)
+    }
+
+    @Test
+    func presentComponent_givenInitiableComponent_shouldNotPresentAnything() {
+        // Given
+        let (sut, _, navigationControllerSpy, _, componentContainerAssemblerMock) = makeSUT()
+        let initiablePaymentComponent = makeInitiablePaymentComponentMock()
+
+        // When
+        sut.present(component: initiablePaymentComponent)
+
+        // Then - initiable components are not presented by the router
+        #expect(navigationControllerSpy.pushViewControllerCallsCount == 0)
+        #expect(navigationControllerSpy.presentCallsCount == 0)
+        #expect(componentContainerAssemblerMock.resolveComponentContainerRouterForDelegateOnCancelCallsCount == 0)
+        #expect(sut.childRouter == nil)
+    }
+
+    @Test
+    func presentViewController_shouldPresentModally() {
+        // Given
+        let (sut, _, navigationControllerSpy, _, _) = makeSUT()
+        let viewControllerToPresent = UIViewController()
+
+        // When
+        sut.present(viewController: viewControllerToPresent)
+
+        // Then
+        #expect(navigationControllerSpy.presentCallsCount == 1)
+        #expect(navigationControllerSpy.capturedPresentedViewController === viewControllerToPresent)
+    }
+
     // MARK: - Mocks
 
     private class PaymentMethodListRouterListenerMock: PaymentMethodListRouterListener {
@@ -179,5 +240,59 @@ struct PaymentMethodListRouterTests {
         let redirect = RedirectComponent(context: context)
         let viewController = UIViewController()
         return PresentableComponentWrapper(component: redirect, viewController: viewController)
+    }
+
+    private func makeStoredPaymentComponentMock() -> StoredPresentableComponentMock {
+        let paymentMethodMock = PaymentMethodMock(type: .scheme, name: "Stored Card")
+        let viewControllerMock = UIViewController()
+        return StoredPresentableComponentMock(
+            paymentMethod: paymentMethodMock,
+            viewController: viewControllerMock
+        )
+    }
+
+    private func makeInitiablePaymentComponentMock() -> InitiablePresentableComponentMock {
+        let paymentMethodMock = PaymentMethodMock(type: .applePay, name: "Apple Pay")
+        return InitiablePresentableComponentMock(paymentMethod: paymentMethodMock)
+    }
+}
+
+// MARK: - Test Mocks
+
+private class StoredPresentableComponentMock: StoredPaymentComponent {
+    var context: AdyenContext = Dummy.context
+    var paymentMethod: PaymentMethod
+    weak var delegate: PaymentComponentDelegate?
+    var viewController: UIViewController
+    var order: PartialPaymentOrder?
+
+    var type: PaymentComponentType {
+        .stored(self)
+    }
+
+    init(paymentMethod: PaymentMethod, viewController: UIViewController) {
+        self.paymentMethod = paymentMethod
+        self.viewController = viewController
+    }
+}
+
+private class InitiablePresentableComponentMock: PaymentComponent, InitiablePaymentComponent {
+    var context: AdyenContext = Dummy.context
+    var paymentMethod: PaymentMethod
+    weak var delegate: PaymentComponentDelegate?
+    var order: PartialPaymentOrder?
+
+    var type: PaymentComponentType {
+        .initiable(self)
+    }
+
+    init(paymentMethod: PaymentMethod) {
+        self.paymentMethod = paymentMethod
+    }
+
+    func initiatePayment() {}
+
+    func initiatePayment(delegate: PaymentComponentDelegate) {
+        self.delegate = delegate
     }
 }
