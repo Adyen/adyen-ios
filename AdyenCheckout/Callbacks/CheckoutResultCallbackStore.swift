@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import Foundation
 
 package protocol CheckoutResultCallbackStore: AnyObject {
     var onComplete: CheckoutSuccessHandler? { get set }

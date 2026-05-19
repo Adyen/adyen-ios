@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import Foundation
 
 /// Checkout flow for integrations handling `/payments` and `/payments/details` themselves.
 @MainActor

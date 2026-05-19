@@ -8,6 +8,7 @@ import Adyen
 #if canImport(AdyenDropIn)
     import AdyenDropIn
 #endif
+import Foundation
 
 /// Base checkout that can create payment method components.
 @MainActor

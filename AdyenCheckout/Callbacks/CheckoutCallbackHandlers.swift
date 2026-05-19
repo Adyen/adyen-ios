@@ -11,6 +11,7 @@ import Adyen
 #if canImport(AdyenSession)
     import AdyenSession
 #endif
+import Foundation
 
 @MainActor
 package protocol CheckoutCallbackHandling: AnyObject {

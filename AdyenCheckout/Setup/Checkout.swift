@@ -8,6 +8,7 @@ import Adyen
 #if canImport(AdyenSession)
     import AdyenSession
 #endif
+import Foundation
 
 /// The entry point for setting up an Adyen Checkout flow.
 @MainActor

@@ -11,6 +11,7 @@ import Adyen
 #if canImport(AdyenSession)
     import AdyenSession
 #endif
+import Foundation
 
 /// Base checkout that supports action handling and final result callbacks.
 @MainActor

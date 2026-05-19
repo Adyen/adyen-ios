@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import Foundation
 
 /// Checkout flow for integrations that only need to handle actions.
 @MainActor

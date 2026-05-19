@@ -9,6 +9,7 @@ import Adyen
     import AdyenSession
 #endif
 import AdyenNetworking
+import Foundation
 
 internal protocol CheckoutProviding: AdyenSessionProviding {
     func setup(

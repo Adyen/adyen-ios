@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import Foundation
 
 /// Checkout flow for integrations using the `/sessions` endpoint.
 @MainActor
