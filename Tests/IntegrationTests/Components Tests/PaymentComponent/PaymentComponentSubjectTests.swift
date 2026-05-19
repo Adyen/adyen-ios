@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import XCTest
 @_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenComponents
+@testable import AdyenComponents
+import XCTest
 
 @MainActor
 class PaymentComponentSubjectTests: XCTestCase {

@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import AdyenSession
-@_spi(AdyenInternal) @testable import Adyen
+@testable import Adyen
+@testable import AdyenSession
 
 public final class AdyenSessionMock: SessionProtocol {
     public var state: Session.State

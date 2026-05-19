@@ -4,12 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import AdyenCheckout
-@_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenSession
-@_spi(AdyenInternal) @testable import AdyenDropIn
-@_spi(AdyenInternal) @testable import AdyenActions
+@testable import Adyen
+@testable import AdyenActions
+@testable import AdyenCheckout
+@testable import AdyenDropIn
 import AdyenNetworking
+@testable import AdyenSession
 
 internal class CheckoutProviderMock: CheckoutProviding {
     var setupSessionCalled = false
