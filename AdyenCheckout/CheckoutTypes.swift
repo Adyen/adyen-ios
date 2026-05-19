@@ -15,9 +15,9 @@ import Adyen
     import AdyenSession
 #endif
 
-/// Base checkout flow that supports action handling and final result callbacks.
+/// Base checkout that supports action handling and final result callbacks.
 @MainActor
-public class CheckoutFlow {
+public class BaseCheckout {
 
     package let core: CheckoutCoreProtocol
     package let resultCallbacks: any CheckoutResultCallbackStore
@@ -49,9 +49,9 @@ public class CheckoutFlow {
     }
 }
 
-/// Base checkout flow that can create payment method components.
+/// Base checkout that can create payment method components.
 @MainActor
-public class PaymentCheckoutFlow: CheckoutFlow {
+public class PaymentCheckout: BaseCheckout {
 
     /// The payment methods available for this checkout flow.
     public var paymentMethods: PaymentMethods? {
@@ -76,7 +76,7 @@ public class PaymentCheckoutFlow: CheckoutFlow {
 
 /// Checkout flow for integrations using the `/sessions` endpoint.
 @MainActor
-public final class SessionCheckout: PaymentCheckoutFlow {
+public final class SessionCheckout: PaymentCheckout {
 
     package let callbackStore: SessionCheckoutCallbackStore
 
@@ -88,7 +88,7 @@ public final class SessionCheckout: PaymentCheckoutFlow {
 
 /// Checkout flow for integrations handling `/payments` and `/payments/details` themselves.
 @MainActor
-public final class AdvancedCheckout: PaymentCheckoutFlow {
+public final class AdvancedCheckout: PaymentCheckout {
 
     package let callbackStore: AdvancedCheckoutCallbackStore
 
@@ -112,7 +112,7 @@ public final class AdvancedCheckout: PaymentCheckoutFlow {
 
 /// Checkout flow for integrations that only need to handle actions.
 @MainActor
-public final class ActionOnlyCheckout: CheckoutFlow {
+public final class ActionOnlyCheckout: BaseCheckout {
 
     package let callbackStore: ActionOnlyCheckoutCallbackStore
 

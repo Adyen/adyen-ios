@@ -3990,6 +3990,34 @@
 			path = Configuration;
 			sourceTree = "<group>";
 		};
+		A01B13662FBC6B3F0081DA79 /* Flows */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Flows;
+			sourceTree = "<group>";
+		};
+		A01B13672FBC6B460081DA79 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		A01B13682FBC6B520081DA79 /* Callbacks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Callbacks;
+			sourceTree = "<group>";
+		};
+		A01B13692FBC6B5B0081DA79 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
 		A020EC5829ED33CF0050B2FE /* Cash App Pay */ = {
 			isa = PBXGroup;
 			children = (
@@ -4036,6 +4064,10 @@
 		A03056D22DEDED2F00ED7014 /* AdyenCheckout */ = {
 			isa = PBXGroup;
 			children = (
+				A01B13692FBC6B5B0081DA79 /* Core */,
+				A01B13682FBC6B520081DA79 /* Callbacks */,
+				A01B13672FBC6B460081DA79 /* Component */,
+				A01B13662FBC6B3F0081DA79 /* Flows */,
 				A03056D02DEDED2F00ED7014 /* CheckoutProtocol.swift */,
 				EBF200002F00000100CB0001 /* CheckoutTypes.swift */,
 				EBF200022F00000100CB0001 /* CheckoutCore.swift */,
