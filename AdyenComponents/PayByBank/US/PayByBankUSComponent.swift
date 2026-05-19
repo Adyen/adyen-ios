@@ -9,7 +9,6 @@ import Adyen
 
 #if canImport(AdyenUI)
     import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormButton
 #endif
 import Foundation
 import UIKit

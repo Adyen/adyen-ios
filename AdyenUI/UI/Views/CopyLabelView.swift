@@ -8,10 +8,9 @@ import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import UIKit
 
-@_spi(AdyenInternal)
-public final class CopyLabelView: UIView, Localizable {
+package final class CopyLabelView: UIView, Localizable {
 
-    public var localizationParameters: LocalizationParameters?
+    package var localizationParameters: LocalizationParameters?
 
     private let style: TextStyle
 
@@ -27,7 +26,7 @@ public final class CopyLabelView: UIView, Localizable {
         return label
     }()
 
-    public init(text: String, style: TextStyle) {
+    package init(text: String, style: TextStyle) {
         self.text = text
         self.style = style
         super.init(frame: .zero)
@@ -64,7 +63,7 @@ public final class CopyLabelView: UIView, Localizable {
         backgroundColor = UIColor.Adyen.lightGray
     }
 
-    override public var canBecomeFirstResponder: Bool {
+    override package var canBecomeFirstResponder: Bool {
         true
     }
 
@@ -79,7 +78,7 @@ public final class CopyLabelView: UIView, Localizable {
     }
 
     @discardableResult
-    override public func becomeFirstResponder() -> Bool {
+    override package func becomeFirstResponder() -> Bool {
         super.becomeFirstResponder()
     }
 
