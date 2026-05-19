@@ -142,4 +142,11 @@ public final class ActionOnlyCheckout: ActionCheckout {
         self.callbacks = callbacks
         super.init(core: core, resultCallbacks: callbacks)
     }
+
+    /// Sets the callback invoked when additional action details are submitted.
+    @discardableResult
+    public func onAdditionalDetails(_ handler: @escaping AdditionalDetailsHandler) -> Self {
+        callbacks.onAdditionalDetails = handler
+        return self
+    }
 }

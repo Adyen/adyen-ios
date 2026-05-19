@@ -14,9 +14,9 @@ import Adyen
 
 @MainActor
 package protocol CheckoutSubmissionHandling: AnyObject {
-    func submit(_ data: PaymentComponentData) async throws -> SubmitResult
-
-    func submitAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult
+    func handleSubmit(_ data: PaymentComponentData) async throws -> SubmitResult
+    
+    func handleAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult
 }
 
 @MainActor
@@ -27,11 +27,11 @@ package final class SessionSubmissionHandler: CheckoutSubmissionHandling {
         self.session = session
     }
 
-    package func submit(_ data: PaymentComponentData) async throws -> SubmitResult {
+    package func handleSubmit(_ data: PaymentComponentData) async throws -> SubmitResult {
         try await session.performSubmit(data)
     }
 
-    package func submitAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult {
+    package func handleAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult {
         try await session.performAdditionalDetails(data)
     }
 }
@@ -44,12 +44,12 @@ package final class AdvancedSubmissionHandler: CheckoutSubmissionHandling {
         self.callbacks = callbacks
     }
 
-    package func submit(_ data: PaymentComponentData) async throws -> SubmitResult {
+    package func handleSubmit(_ data: PaymentComponentData) async throws -> SubmitResult {
         guard let onSubmit = callbacks.onSubmit else { throw CallbackError.missingSubmitHandler }
         return try await onSubmit(data)
     }
 
-    package func submitAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult {
+    package func handleAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult {
         guard let onAdditionalDetails = callbacks.onAdditionalDetails else { throw CallbackError.missingAdditionalDetailsHandler }
         return try await onAdditionalDetails(data)
     }
@@ -57,13 +57,18 @@ package final class AdvancedSubmissionHandler: CheckoutSubmissionHandling {
 
 @MainActor
 package final class ActionOnlySubmissionHandler: CheckoutSubmissionHandling {
-    package init() {}
+    private let callbacks: ActionOnlyCheckoutCallbacks
 
-    package func submit(_ data: PaymentComponentData) async throws -> SubmitResult {
+    package init(callbacks: ActionOnlyCheckoutCallbacks) {
+        self.callbacks = callbacks
+    }
+
+    package func handleSubmit(_ data: PaymentComponentData) async throws -> SubmitResult {
         throw CallbackError.unsupportedSubmit
     }
 
-    package func submitAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult {
-        throw CallbackError.unsupportedAdditionalDetails
+    package func handleAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult {
+        guard let onAdditionalDetails = callbacks.onAdditionalDetails else { throw CallbackError.missingAdditionalDetailsHandler }
+        return try await onAdditionalDetails(data)
     }
 }
