@@ -4,11 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import AdyenActions
-@testable @_spi(AdyenInternal) import AdyenCard
-import XCTest
 @_spi(AdyenInternal) import Adyen
+@testable import AdyenActions
+@testable import AdyenCard
 @_spi(AdyenInternal) import AdyenUI
+import XCTest
 
 @MainActor
 class AuthenticationComponentTests: XCTestCase {

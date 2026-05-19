@@ -4,11 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenCard
-@_spi(AdyenInternal) @testable import AdyenCheckout
-@_spi(AdyenInternal) @testable import AdyenComponents
-@_spi(AdyenInternal) @testable import AdyenUI
+@testable import Adyen
+@testable import AdyenCard
+@testable import AdyenCheckout
+@testable import AdyenComponents
+@testable import AdyenUI
 import PassKit
 import XCTest
 

@@ -8,7 +8,6 @@ import Foundation
 
 /// This is excluded from the Swift Package, since swift packages has different code to access internal resources.
 /// The Bundle extension in `BundleSPMExtension.swift` is used instead.
-@_spi(AdyenInternal)
 extension Bundle {
 
     /// The main bundle of the framework.

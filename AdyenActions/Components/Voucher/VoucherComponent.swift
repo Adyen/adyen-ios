@@ -20,20 +20,19 @@ internal protocol AnyVoucherActionHandler: ActionComponent, Cancellable {
 
 /// A component that handles voucher action.
 @MainActor
-public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent {
+package final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent {
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
-    
-    /// Delegates `PresentableComponent`'s presentation.
-    public weak var presentationDelegate: PresentationDelegate?
+    package let context: AdyenContext
 
-    public weak var delegate: ActionComponentDelegate?
-    
+    /// Delegates `PresentableComponent`'s presentation.
+    package weak var presentationDelegate: PresentationDelegate?
+
+    package weak var delegate: ActionComponentDelegate?
+
     /// The voucher component configurations.
     public struct Configuration {
-        
+
         /// The component UI style.
         public var style: VoucherComponentStyle = .init()
         
@@ -52,7 +51,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     }
     
     /// The voucher component configurations.
-    public var configuration: Configuration
+    package var configuration: Configuration
 
     internal var voucherShareableViewProvider: AnyVoucherShareableViewProvider
     
@@ -70,7 +69,7 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The voucher component configurations.
-    public convenience init(
+    package convenience init(
         context: AdyenContext,
         configuration: Configuration = Configuration()
     ) {
@@ -100,12 +99,12 @@ public final class VoucherComponent: AnyVoucherActionHandler, ShareableComponent
         self.passProvider = passProvider ?? AppleWalletPassProvider(context: context)
     }
 
-    public func didCancel() {}
+    package func didCancel() {}
 
     /// Handles await action.
     ///
     /// - Parameter action: The await action object.
-    public func handle(_ action: VoucherAction) {
+    package func handle(_ action: VoucherAction) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         fetchAndCacheAppleWalletPassIfNeeded(with: action.anyAction)
 

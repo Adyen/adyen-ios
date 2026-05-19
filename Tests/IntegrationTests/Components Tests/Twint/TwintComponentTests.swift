@@ -6,7 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenDropIn
-@testable @_spi(AdyenInternal) import AdyenTwint
+@testable import AdyenTwint
 import XCTest
 
 @MainActor

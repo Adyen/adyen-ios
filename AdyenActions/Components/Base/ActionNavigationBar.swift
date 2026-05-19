@@ -5,7 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.AnyNavigationBar
 #if canImport(AdyenUI)
     import AdyenUI
 #endif

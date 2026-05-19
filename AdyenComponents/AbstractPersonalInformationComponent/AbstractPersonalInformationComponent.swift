@@ -16,28 +16,26 @@ import UIKit
 /// An abstract class that needs to be subclassed to abstract away any component
 /// who's form consists of a combination of personal information pieces like first name, last name, phone, email, and billing address.
 @MainActor
-open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent {
+package class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent {
 
-    public typealias Configuration = PersonalInformationConfiguration
-    
+    package typealias Configuration = PersonalInformationConfiguration
+
     // MARK: - Properties
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
-    
-    public let paymentMethod: PaymentMethod
+    package let context: AdyenContext
 
-    public weak var delegate: PaymentComponentDelegate?
+    package let paymentMethod: PaymentMethod
 
-    public lazy var viewController: UIViewController = SecuredViewController(
+    package weak var delegate: PaymentComponentDelegate?
+
+    package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
     )
 
-    @_spi(AdyenInternal)
-    public var configuration: Configuration
-    
+    package var configuration: Configuration
+
     private let fields: [PersonalInformation]
 
     internal lazy var formViewController: FormViewController = {
@@ -62,8 +60,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     /// - Parameter context: The context object for this component.
     /// - Parameter fields: The component's fields.
     /// - Parameter configuration: The Component's configuration.
-    @_spi(AdyenInternal)
-    public init(
+    package init(
         paymentMethod: PaymentMethod,
         context: AdyenContext,
         fields: [PersonalInformation],
@@ -125,8 +122,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return injector
     }()
 
-    @_spi(AdyenInternal)
-    public var firstNameItem: FormTextInputItem? {
+    package var firstNameItem: FormTextInputItem? {
         firstNameItemInjector?.item
     }
 
@@ -144,8 +140,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return injector
     }()
 
-    @_spi(AdyenInternal)
-    public var lastNameItem: FormTextInputItem? {
+    package var lastNameItem: FormTextInputItem? {
         lastNameItemInjector?.item
     }
 
@@ -161,8 +156,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         return injector
     }()
 
-    @_spi(AdyenInternal)
-    public var emailItem: FormTextInputItem? {
+    package var emailItem: FormTextInputItem? {
         emailItemInjector?.item
     }
     
@@ -257,8 +251,7 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         Locale.current.regionCode ?? "US"
     }
     
-    @_spi(AdyenInternal)
-    public func showValidation() {
+    package func showValidation() {
         formViewController.showValidation()
     }
 
@@ -276,28 +269,26 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
     }
 }
 
-@_spi(AdyenInternal)
 extension AbstractPersonalInformationComponent: ViewControllerPresenter {
     
-    public func presentViewController(_ viewController: UIViewController, animated: Bool) {
+    package func presentViewController(_ viewController: UIViewController, animated: Bool) {
         self.viewController.presentViewController(viewController, animated: animated)
     }
     
-    public func dismissViewController(animated: Bool) {
+    package func dismissViewController(animated: Bool) {
         self.viewController.dismissViewController(animated: animated)
     }
 }
 
-@_spi(AdyenInternal)
 extension AbstractPersonalInformationComponent: ViewControllerDelegate {
 
     // MARK: - ViewControllerDelegate
 
-    public func viewWillAppear(viewController: UIViewController) {
+    package func viewWillAppear(viewController: UIViewController) {
         populateFields()
     }
     
-    public func viewDidLoad(viewController: UIViewController) {
+    package func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
         sendDidLoadEvent()
     }
@@ -307,11 +298,11 @@ extension AbstractPersonalInformationComponent: ViewControllerDelegate {
 
 extension AbstractPersonalInformationComponent: SubmittableComponent {
 
-    public func submit() {
+    package func submit() {
         didSelectSubmitButton()
     }
 
-    public func validate() -> Bool {
+    package func validate() -> Bool {
         formViewController.validate()
     }
 }

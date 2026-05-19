@@ -5,9 +5,9 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
+@testable import AdyenCard
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
-@testable @_spi(AdyenInternal) import AdyenCard
 
 /// Tests for card number validation display behavior.
 /// See FORM_VALIDATION_SPECS.md for use case definitions (UC5-UC9, UC13).
