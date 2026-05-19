@@ -21,7 +21,7 @@ import UIKit
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
 @MainActor
-public class CardComponent: PresentableComponent,
+package class CardComponent: PresentableComponent,
     PaymentMethodAware,
     LoadingComponent {
 

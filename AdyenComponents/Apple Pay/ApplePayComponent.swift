@@ -11,7 +11,7 @@ import PassKit
 
 /// A component that handles Apple Pay payments.
 @MainActor
-public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, FinalizableComponent {
+package class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, FinalizableComponent {
 
     /// The Apple Pay payment request. Kept on the configuration; exposed here as a
     /// convenience that returns the same `PKPaymentRequest` reference.
@@ -35,7 +35,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     public let context: AdyenContext
 
     /// The Apple Pay payment method.
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         applePayPaymentMethod
     }
 
@@ -44,8 +44,8 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     internal var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
-    
+    package weak var delegate: PaymentComponentDelegate?
+
     /// Initializes the component.
     ///
     /// After the shopper authorizes payment, the component suspends the Apple Pay sheet
@@ -61,7 +61,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// if user can't make payments on any of the payment request’s supported networks.
     /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplePay` if the current device's hardware doesn't support ApplePay.
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment` if user can't make payments on any of the supported networks.
-    public init(
+    package init(
         paymentMethod: ApplePayPaymentMethod,
         context: AdyenContext,
         configuration: ApplePayConfiguration
@@ -96,7 +96,7 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     ///
     /// - Important: Do not access this property after the component has been used and dismissed.
     ///   Create a new `ApplePayComponent` instance for each payment attempt.
-    public var viewController: UIViewController {
+    package var viewController: UIViewController {
         guard let controller = paymentAuthorizationViewController else {
             preconditionFailure(
                 "The Apple Pay view controller is no longer available. "
@@ -136,11 +136,10 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
     /// - Parameters:
     ///   - success: `true` if the payment succeeded, `false` otherwise.
     ///   - completion: Invoked once the continuation has been resumed.
-    public func didFinalize(with success: Bool, completion: (() -> Void)?) {
+    package func didFinalize(with success: Bool, completion: (() -> Void)?) {
         resumeContinuation(success: success)
         completion?()
     }
 }
 
-@_spi(AdyenInternal)
 extension ApplePayComponent: TrackableComponent {}

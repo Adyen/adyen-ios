@@ -14,20 +14,20 @@ public protocol InitiablePaymentComponent: PaymentComponent {
 
 /// A component that handles payment methods that don't need any payment detail to be filled.
 @MainActor
-public final class InstantPaymentComponent: InitiablePaymentComponent {
+package final class InstantPaymentComponent: InitiablePaymentComponent {
 
     /// The context object for this component.
     @_spi(AdyenInternal)
     public let context: AdyenContext
 
     /// The ready to submit payment data.
-    public let paymentData: PaymentComponentData
+    package let paymentData: PaymentComponentData
 
     /// The payment method.
-    public let paymentMethod: PaymentMethod
+    package let paymentMethod: PaymentMethod
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
 
     /// Initializes a new instance of `InstantPaymentComponent`.
     ///
@@ -35,7 +35,7 @@ public final class InstantPaymentComponent: InitiablePaymentComponent {
     ///   - paymentMethod: The payment method.
     ///   - paymentData: The ready to submit payment data.
     ///   - context: The context object for this component.
-    public init(
+    package init(
         paymentMethod: PaymentMethod,
         context: AdyenContext,
         paymentData: PaymentComponentData
@@ -51,7 +51,7 @@ public final class InstantPaymentComponent: InitiablePaymentComponent {
     ///   - paymentMethod: The payment method.
     ///   - context: The context object for this component.
     ///   - order: The partial order for this payment.
-    public init(
+    package init(
         paymentMethod: PaymentMethod,
         context: AdyenContext,
         order: PartialPaymentOrder?
@@ -68,7 +68,7 @@ public final class InstantPaymentComponent: InitiablePaymentComponent {
     }
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
-    public func initiatePayment(delegate: PaymentComponentDelegate) {
+    package func initiatePayment(delegate: PaymentComponentDelegate) {
         // We are not attempting to fetch the checkoutAttemptId as it won't be ready for the payment
         // and we don't want to block it for an analytics call.
         self.delegate = delegate

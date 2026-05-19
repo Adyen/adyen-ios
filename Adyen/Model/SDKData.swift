@@ -87,8 +87,7 @@ public extension PaymentComponent {
     }
 }
 
-@_spi(AdyenInternal)
-public extension InstantPaymentComponent {
+package extension InstantPaymentComponent {
 
     var paymentMethodBehavior: SDKData.PaymentMethodBehavior {
         .genericComponent

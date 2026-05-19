@@ -16,21 +16,21 @@ import UIKit
 /// An abstract class that needs to be subclassed to abstract away any component
 /// who's form consists of a combination of personal information pieces like first name, last name, phone, email, and billing address.
 @MainActor
-open class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent {
+package class AbstractPersonalInformationComponent: PaymentComponent, PresentableComponent {
 
-    public typealias Configuration = PersonalInformationConfiguration
-    
+    package typealias Configuration = PersonalInformationConfiguration
+
     // MARK: - Properties
 
     /// The context object for this component.
     @_spi(AdyenInternal)
     public let context: AdyenContext
     
-    public let paymentMethod: PaymentMethod
+    package let paymentMethod: PaymentMethod
 
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
 
-    public lazy var viewController: UIViewController = SecuredViewController(
+    package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
     )

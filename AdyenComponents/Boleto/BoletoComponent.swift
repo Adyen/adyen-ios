@@ -15,7 +15,7 @@ import UIKit
 
 /// A component that provides a form for Boleto payment.
 @MainActor
-public final class BoletoComponent: PaymentComponent,
+package final class BoletoComponent: PaymentComponent,
     LoadingComponent,
     PresentableComponent,
     AdyenObserver {
@@ -24,15 +24,15 @@ public final class BoletoComponent: PaymentComponent,
     @_spi(AdyenInternal)
     public let context: AdyenContext
 
-    public weak var delegate: PaymentComponentDelegate?
-        
-    public var paymentMethod: PaymentMethod {
+    package weak var delegate: PaymentComponentDelegate?
+
+    package var paymentMethod: PaymentMethod {
         boletoPaymentMethod
     }
     
     /// The Component's configuration.
-    public var configuration: Configuration
-    
+    package var configuration: Configuration
+
     internal let boletoPaymentMethod: BoletoPaymentMethod
     
     /// Initializes the Boleto Component
@@ -40,7 +40,7 @@ public final class BoletoComponent: PaymentComponent,
     ///   - paymentMethod: Boleto Payment Method
     ///   - context: The context object for this component.
     ///   - configuration: The Component's configuration.
-    public init(
+    package init(
         paymentMethod: BoletoPaymentMethod,
         context: AdyenContext,
         configuration: Configuration
@@ -105,8 +105,8 @@ public final class BoletoComponent: PaymentComponent,
         return component
     }()
     
-    public lazy var viewController: UIViewController = formComponent.viewController
-    
+    package lazy var viewController: UIViewController = formComponent.viewController
+
     /// Constructs the fields for the form based on the configuration
     private var formFields: [PersonalInformation] {
         var fields: [PersonalInformation] = [
@@ -171,19 +171,17 @@ public final class BoletoComponent: PaymentComponent,
         return nil
     }
 
-    // MARK: - Public
-    
-    public func stopLoading() {
+    package func stopLoading() {
         formComponent.stopLoading()
     }
 }
 
 extension BoletoComponent: SubmittableComponent {
-    public func submit() {
+    package func submit() {
         formComponent.submit()
     }
     
-    public func validate() -> Bool {
+    package func validate() -> Bool {
         formComponent.validate()
     }
 }
@@ -191,22 +189,20 @@ extension BoletoComponent: SubmittableComponent {
 @_spi(AdyenInternal)
 extension BoletoComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
 extension BoletoComponent: ViewControllerDelegate {
     
-    public func viewWillAppear(viewController: UIViewController) {
+    package func viewWillAppear(viewController: UIViewController) {
         prefillFields(for: formComponent)
     }
 }
 
-@_spi(AdyenInternal)
 extension BoletoComponent: PaymentComponentDelegate {
     
-    public func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
+    package func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
         submit(data: data, component: self)
     }
     
-    public func didFail(with error: Error, from component: PaymentComponent) {
+    package func didFail(with error: Error, from component: PaymentComponent) {
         delegate?.didFail(with: error, from: self)
     }
 }

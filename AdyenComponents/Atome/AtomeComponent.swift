@@ -15,10 +15,10 @@ import Adyen
 import UIKit
 
 /// A component that provides a form for Atome payment.
-public final class AtomeComponent: AbstractPersonalInformationComponent {
+package final class AtomeComponent: AbstractPersonalInformationComponent {
 
     /// Configuration for Atome Component
-    public typealias Configuration = PersonalInformationConfiguration
+    package typealias Configuration = PersonalInformationConfiguration
 
     private enum ViewIdentifier {
         static let billingAddress = "billingAddressItem"
@@ -35,7 +35,7 @@ public final class AtomeComponent: AbstractPersonalInformationComponent {
     ///   - paymentMethod: The Atome payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
-    public init(
+    package init(
         paymentMethod: PaymentMethod,
         context: AdyenContext,
         configuration: Configuration = .init()

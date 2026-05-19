@@ -20,20 +20,20 @@ internal protocol BACSDirectDebitRouterProtocol: AnyObject {
 
 /// A component that provides a form for BACS Direct Debit payments.
 @MainActor
-public final class BACSDirectDebitComponent: PaymentComponent, PresentableComponent {
+package final class BACSDirectDebitComponent: PaymentComponent, PresentableComponent {
 
     /// Configuration for BACS Direct Debit Component.
-    public typealias Configuration = BasicComponentConfiguration
-    
+    package typealias Configuration = BasicComponentConfiguration
+
     // MARK: - PresentableComponent
 
-    public let viewController: UIViewController
+    package let viewController: UIViewController
 
     /// The object that acts as the delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
 
     /// The BACS Direct Debit payment method.
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         bacsPaymentMethod
     }
 
@@ -42,10 +42,10 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     public let context: AdyenContext
 
     /// The object that acts as the presentation delegate of the component.
-    public weak var presentationDelegate: PresentationDelegate?
-    
+    package weak var presentationDelegate: PresentationDelegate?
+
     /// Component's configuration
-    public var configuration: Configuration
+    package var configuration: Configuration
 
     // MARK: - Properties
 
@@ -65,7 +65,7 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     ///   - paymentMethod: The BACS Direct Debit payment method.
     ///   - context: The context object for this component.
     ///   - configuration: Configuration for the component.
-    public init(
+    package init(
         paymentMethod: BACSDirectDebitPaymentMethod,
         context: AdyenContext,
         configuration: Configuration = .init()
@@ -166,7 +166,7 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 extension BACSDirectDebitComponent: LoadingComponent {
 
     /// Stops any processing animation that the component is running.
-    public func stopLoading() {
+    package func stopLoading() {
         confirmationPresenter?.stopLoading()
     }
 }
@@ -177,7 +177,7 @@ extension BACSDirectDebitComponent: LoadingComponent {
 extension BACSDirectDebitComponent: Cancellable {
 
     /// Called when the user cancels the component.
-    public func didCancel() {
+    package func didCancel() {
         if confirmationViewPresented == false {
             inputPresenter?.resetForm()
         } else {
