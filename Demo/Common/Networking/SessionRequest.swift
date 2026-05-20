@@ -38,8 +38,10 @@ internal struct SessionRequest: APIRequest {
         try container.encode(ConfigurationConstants.reference, forKey: .reference)
         try container.encode("ios", forKey: .channel)
         try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
-        try container.encode(ConfigurationConstants.mandate, forKey: .mandate)
-        
+
+        // We disable the mandate as it is not accepted in every single PM. Used to test PayTo
+        // try container.encode(ConfigurationConstants.mandate, forKey: .mandate)
+
         if ConfigurationConstants.current.cardSettings.enableInstallments {
             let installmentOptions = [
                 "card": InstallmentOptions(monthValues: [2, 3, 5], includesRevolving: false),

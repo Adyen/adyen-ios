@@ -194,6 +194,8 @@
 "adyen.upi.vpaWaitingMessage" = "Obriu la vostra aplicació UPI per confirmar el pagament";
 "adyen.upi.qrcode.timerMessage" = "Teniu %@ per aprovar";
 "adyen.upi.qrcode.instructions" = "Feu una captura de pantalla per pujar-la a l'aplicació UPI o escanegeu el codi QR mitjançant l'aplicació UPI preferida per completar el pagament.";
+"adyen.upi.intent.apps.title" = "Opcions";
+"adyen.upi.intent.apps.title.onDevice" = "En el teu dispositiu";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "En aquest dispositiu, no hi ha cap versió de TWINT instal·lada o la versió instal·lada és obsoleta. Instal·leu l'aplicació TWINT o actualitzeu-la.";

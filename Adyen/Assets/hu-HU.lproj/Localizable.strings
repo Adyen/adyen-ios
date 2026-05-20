@@ -194,6 +194,8 @@
 "adyen.upi.vpaWaitingMessage" = "A fizetés megerősítéséhez nyissa meg UPI-alkalmazást";
 "adyen.upi.qrcode.timerMessage" = "Jóváhagyásra rendelkezésre álló idő: %@";
 "adyen.upi.qrcode.instructions" = "A fizetés befejezéséhez készítsen képernyőképet és töltse fel az UPI-alkalmazásban, vagy a kívánt UPI-alkalmazással olvassa be a QR-kódot.";
+"adyen.upi.intent.apps.title" = "Lehetőségek";
+"adyen.upi.intent.apps.title.onDevice" = "Az eszközre";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Az eszközről hiányzik a TWINT, vagy egy elavult verziója van telepítve. Frissítse vagy telepítse a TWINT alkalmazást.";

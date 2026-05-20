@@ -194,6 +194,8 @@
 "adyen.upi.vpaWaitingMessage" = "Atveriet UPI lietotni, lai apstiprinātu maksājumu";
 "adyen.upi.qrcode.timerMessage" = "Jums ir %@, lai apstiprinātu";
 "adyen.upi.qrcode.instructions" = "Lai pabeigtu maksājumu, uzņemiet ekrānuzņēmumu un augšupielādējiet to UPI lietotnē, vai skenējiet QR kodu, izmantojot vēlamo UPI lietotni.";
+"adyen.upi.intent.apps.title" = "Opcijas";
+"adyen.upi.intent.apps.title.onDevice" = "Jūsu ierīcē";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "Šajā ierīcē nav instalēta vai ir instalēta novecojusi TWINT versija. Lūdzu, atjauniniet vai instalējiet lietotni TWINT.";

@@ -25,9 +25,9 @@ class UPIComponentUITests: XCTestCase {
     }
 
     private var upiApps: [Issuer] = [
-        Issuer(identifier: "bhim", name: "BHIM"),
-        Issuer(identifier: "gpay", name: "Google Pay"),
-        Issuer(identifier: "phonepe", name: "PhonePe")
+        Issuer(identifier: "bhim", name: "BHIM", appIdentifier: .init(scheme: "bhim")),
+        Issuer(identifier: "gpay", name: "Google Pay", appIdentifier: .init(scheme: "tez")),
+        Issuer(identifier: "phonepe", name: "PhonePe", appIdentifier: .init(scheme: "phonepe"))
     ]
 
     override func setUpWithError() throws {

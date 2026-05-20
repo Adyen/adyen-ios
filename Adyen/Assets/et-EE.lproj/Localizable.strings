@@ -194,6 +194,8 @@
 "adyen.upi.vpaWaitingMessage" = "Makse kinnitamiseks avage oma UPI rakendus";
 "adyen.upi.qrcode.timerMessage" = "Teil on kinnitamiseks %@";
 "adyen.upi.qrcode.instructions" = "Tehke UPI rakenduses üleslaadimiseks kuvatõmmis või skannige QR-kood, kasutades oma eelistatud UPI rakendust, et makse lõpule viia.";
+"adyen.upi.intent.apps.title" = "Valikud";
+"adyen.upi.intent.apps.title.onDevice" = "Teie seadmel";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "TWINT pole sellesse seadmesse installitud või on selle versioon aegunud. Installige TWINT või värskendage seda.";

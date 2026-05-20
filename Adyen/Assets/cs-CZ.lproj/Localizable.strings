@@ -194,6 +194,8 @@
 "adyen.upi.vpaWaitingMessage" = "Otevřete platební aplikaci UPI a potvrďte platbu";
 "adyen.upi.qrcode.timerMessage" = "Máte %@ na schválení";
 "adyen.upi.qrcode.instructions" = "Pořiďte snímek obrazovky a nahrajte ho v aplikaci UPI nebo naskenujte QR kód ve své oblíbené aplikaci UPI a dokončete platbu.";
+"adyen.upi.intent.apps.title" = "Možnosti";
+"adyen.upi.intent.apps.title.onDevice" = "Na vašem zařízení";
 "adyen.cashAppPay.title" = "";
 "adyen.cashAppPay.cashtag" = "";
 "adyen.twint.noAppsInstalled.message" = "V tomto zařízení není nainstalována žádná verze TWINT nebo je zastaralá. Aktualizujte nebo nainstalujte aplikaci TWINT.";

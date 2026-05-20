@@ -191,6 +191,8 @@
 "adyen.upi.vpaWaitingMessage" = "Abra a aplicação UPI para confirmar o pagamento";
 "adyen.upi.qrcode.timerMessage" = "Tem %@ para aprovar";
 "adyen.upi.qrcode.instructions" = "Faça uma captura de ecrã para carregar na aplicação UPI ou verificar o código QR usando a sua aplicação UPI preferida para concluir o pagamento.";
+"adyen.upi.intent.apps.title" = "Opções";
+"adyen.upi.intent.apps.title.onDevice" = "No seu dispositivo";
 "adyen.twint.noAppsInstalled.message" = "Nenhuma versão ou uma versão desatualizada do TWINT está instalada neste dispositivo. Atualize ou instale a app TWINT.";
 "adyen.threeds2.DA.registration.title" = "Finalização de compra segura";
 "adyen.threeds2.DA.biometrics" = "Biométrica";

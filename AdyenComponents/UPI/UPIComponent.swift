@@ -12,86 +12,73 @@ public final class UPIComponent: PaymentComponent,
     PresentableComponent,
     PaymentAware,
     LoadingComponent {
-    
-    /// The flow types for UPI component.
-    public enum UPIFlowType: Int {
-        /// Transaction handled through UPI-enabled apps.
-        @available(*, deprecated, renamed: "upiIntent", message: "Use `.upiIntent` instead.")
-        case upiApps = -1 // Old placeholder value
 
-        /// Transaction initiated by scanning a QR code.
-        @available(
-            *,
-            deprecated,
-            renamed: "upiCollect",
-            message: "The `.qrCode` is deprecated and not available any more. Use, `.upiIntent` instead."
-        )
-        case qrCode = -2 // Old placeholder value
+    // MARK: - Constants
 
-        /// Transaction handled through UPI-enabled apps.
-        case upiIntent = 0
-
-        /// Transaction initiated by a UPI ID.
-        case upiCollect = 1
-
-        internal var value: String {
-            switch self {
-            case .upiIntent, .upiApps:
-                return "upi_intent"
-            case .upiCollect, .qrCode:
-                return "upi_collect"
-            }
-        }
-    }
-        
     private enum ViewIdentifier {
         static let instructionsItem = "instructionsLabelItem"
         static let upiFlowSelectionItem = "upiFlowSelectionSegmentedControlItem"
+        static let appsListTitleItem = "appsListTitleItem"
         static let continueButtonItem = "continueButton"
         static let errorItem = "errorItem"
         static let vpaInputTitleItem = "vpaInputTitleItem"
         static let virtualPaymentAddressInputItem = "virtualPaymentAddressInputItem"
     }
-    
+
     internal enum Images {
         internal static let errorIcon = "error"
     }
-    
+
+    // MARK: - Properties
+
     /// Configuration for UPI Component.
     public typealias Configuration = BasicComponentConfiguration
-    
+
     /// The context object for this component.
     @_spi(AdyenInternal)
     public var context: AdyenContext
-    
+
     /// The payment method object for this component.
     public var paymentMethod: PaymentMethod {
         upiPaymentMethod
     }
-    
+
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate?
-    
+
     /// The view controller for the component.
     public lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
     )
-    
+
     /// This indicates that `viewController` expected to be presented modally,
     public var requiresModalPresentation: Bool = true
-    
+
     /// Component's configuration
     public var configuration: Configuration
-    
+
     private let upiPaymentMethod: UPIPaymentMethod
-    
+
     internal private(set) var currentSelectedItemIdentifier: String?
-    
+
+    internal let urlSchemeChecker: URLSchemeChecking
+
+    internal private(set) lazy var installedUPIApps: [Issuer] = {
+        upiApps.filter { isAppInstalled(scheme: $0.appIdentifier?.scheme) }
+    }()
+
+    /// If no UPI apps are installed, shows all apps from the payment method response.
+    internal private(set) lazy var availableUPIApps: [Issuer] = {
+        installedUPIApps.isEmpty ? upiApps : installedUPIApps
+    }()
+
     /// Represents the selected UPI (Unified Payments Interface) flow for the payment component.
     /// Determines the specific UPI transaction process to follow.
     @AdyenObservable(.upiIntent) public private(set) var selectedUPIFlow: UPIFlowType
-    
+
+    // MARK: - Initialization
+
     /// Initializes the UPI  component.
     ///
     /// - Parameter paymentMethod: The UPI payment method.
@@ -105,19 +92,35 @@ public final class UPIComponent: PaymentComponent,
         self.upiPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
-        
+        self.urlSchemeChecker = DefaultURLSchemeChecker()
+
         selectedUPIFlow = upiAppsList.isEmpty ? .upiCollect : .upiIntent
     }
-    
+
+    /// Internal initializer for testing purposes.
+    internal init(
+        paymentMethod: UPIPaymentMethod,
+        context: AdyenContext,
+        configuration: Configuration = .init(),
+        urlSchemeChecker: URLSchemeChecking
+    ) {
+        self.upiPaymentMethod = paymentMethod
+        self.context = context
+        self.configuration = configuration
+        self.urlSchemeChecker = urlSchemeChecker
+
+        selectedUPIFlow = upiAppsList.isEmpty ? .upiCollect : .upiIntent
+    }
+
     // MARK: - LoadingComponent
-    
+
     public func stopLoading() {
         continueButton.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
-    
-    // MARK: - Items
-    
+
+    // MARK: - Form Items
+
     /// The upi based payment instructions label item.
     internal lazy var modeInstructionsLabelItem: FormLabelItem = {
         let item = FormLabelItem(
@@ -135,7 +138,7 @@ public final class UPIComponent: PaymentComponent,
         )
         return item
     }()
-    
+
     /// The UPI selection segmented control item to choose the upi flow.
     internal lazy var upiFlowSelectionItem: FormSegmentedControlItem = {
         let item = FormSegmentedControlItem(
@@ -157,7 +160,7 @@ public final class UPIComponent: PaymentComponent,
         }
         return item
     }()
-    
+
     /// The  collect UPI instructions label item.
     internal lazy var collectInstructionsLabelItem: FormContainerItem<FormLabelItem> = {
         let item = FormLabelItem(
@@ -174,7 +177,7 @@ public final class UPIComponent: PaymentComponent,
         )
         return item.padding()
     }()
-    
+
     /// The  virtual payment address text input item (collect).
     internal lazy var vpaInputItem: FormTextInputItem = {
         let item = FormTextInputItem(style: configuration.style.textField)
@@ -193,7 +196,7 @@ public final class UPIComponent: PaymentComponent,
         )
         return item
     }()
-    
+
     /// The  intent UPI instructions label item.
     internal lazy var intentInstructionsLabelItem: FormContainerItem<FormLabelItem> = {
         let item = FormLabelItem(
@@ -210,14 +213,30 @@ public final class UPIComponent: PaymentComponent,
         )
         return item.padding()
     }()
-    
-    /// The UPI app list item.
-    internal lazy var upiAppsList: [SelectableFormItem] = {
-        guard let apps = upiPaymentMethod.apps, !apps.isEmpty else { return [] }
-        
-        return apps.map { selectableFormItem(from: $0) }
+
+    /// The UPI apps list title item.
+    internal lazy var appsListTitleItem: FormContainerItem<FormLabelItem> = {
+        let titleKey: LocalizationKey = installedUPIApps.isEmpty
+            ? .upiIntentAppsTitle
+            : .upiIntentAppsTitleOnDevice
+
+        let title = localizedString(titleKey, configuration.localizationParameters)
+        let item = FormLabelItem(
+            text: title,
+            style: configuration.style.sectionHeader
+        )
+        item.identifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: ViewIdentifier.appsListTitleItem
+        )
+        return item.padding()
     }()
-    
+
+    /// The UPI apps list item.
+    internal lazy var upiAppsList: [SelectableFormItem] = {
+        availableUPIApps.map { selectableFormItem(from: $0) }
+    }()
+
     /// The continue button item.
     internal lazy var continueButton: FormButtonItem = {
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
@@ -231,7 +250,7 @@ public final class UPIComponent: PaymentComponent,
         }
         return item
     }()
-    
+
     internal lazy var errorItem: FormErrorItem = {
         let errorMessage = localizedString(LocalizationKey.upiErrorNoAppSelected, configuration.localizationParameters)
         let item = FormErrorItem(message: errorMessage, iconName: Images.errorIcon)
@@ -242,9 +261,9 @@ public final class UPIComponent: PaymentComponent,
         item.isHidden.wrappedValue = true
         return item
     }()
-    
+
     // MARK: - Private
-    
+
     private func selectableFormItem(from app: Issuer) -> SelectableFormItem {
         let logoUrl = LogoURLProvider.logoURL(
             withName: "upi/\(app.identifier)",
@@ -265,36 +284,39 @@ public final class UPIComponent: PaymentComponent,
         }
         return selectableItem
     }
-    
+
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
             scrollEnabled: configuration.showsSubmitButton,
             style: configuration.style,
             localizationParameters: configuration.localizationParameters
         )
+        formViewController.delegate = self
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         formViewController.append(FormSpacerItem(numberOfSpaces: 1))
-        
+
         if !upiAppsList.isEmpty {
             formViewController.append(modeInstructionsLabelItem.padding())
             formViewController.append(FormSpacerItem(numberOfSpaces: 1))
             formViewController.append(upiFlowSelectionItem.padding())
             formViewController.append(FormSpacerItem(numberOfSpaces: 1))
             formViewController.append(intentInstructionsLabelItem)
+            formViewController.append(appsListTitleItem)
             formViewController.append(errorItem)
             upiAppsList.forEach { formViewController.append($0) }
         }
-        
+
         collectInstructionsLabelItem.isVisible = upiAppsList.isEmpty
         vpaInputItem.isVisible = upiAppsList.isEmpty
         formViewController.append(collectInstructionsLabelItem)
         formViewController.append(vpaInputItem)
-        
+
         if configuration.showsSubmitButton {
             formViewController.append(FormSpacerItem(numberOfSpaces: 2))
             formViewController.append(continueButton)
         }
-        
+        formViewController.append(FormSpacerItem(numberOfSpaces: 4))
+
         return formViewController
     }()
 }
@@ -302,79 +324,146 @@ public final class UPIComponent: PaymentComponent,
 // MARK: - Event Handling
 
 extension UPIComponent {
-    
+
     private func handleSelection(item: SelectableFormItem?) {
         self.currentSelectedItemIdentifier = item?.identifier
         self.updateSelection()
+
+        let selectedUPIApp = availableUPIApps.first { $0.identifier == item?.identifier }
+        sendUPIIntentAppSelectionEvent(for: selectedUPIApp)
     }
-    
+
     private func didSelectContinueButton() {
         guard validate() else { return }
-        
+
         guard canSubmit() else {
             showError()
             return
         }
-        
+
         continueButton.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
-        
+
         submitPayment()
     }
-    
+
     private func didChangeSegmentedControlIndex(_ index: Int) {
         AdyenAssertion.assert(message: "UPI flow type is out of range", condition: UPIFlowType(rawValue: index) == nil)
         selectedUPIFlow = UPIFlowType(rawValue: index) ?? .upiIntent
-        
+
         updateInterface()
     }
 }
 
-// MARK: - Private
+// MARK: - UPI App Detection
+
+internal extension UPIComponent {
+
+    func isAppInstalled(scheme: String?) -> Bool {
+        guard let scheme else { return false }
+        return urlSchemeChecker.canOpen(scheme: scheme)
+    }
+
+    var upiApps: [Issuer] {
+        upiPaymentMethod.apps ?? []
+    }
+}
+
+// MARK: - Analytics
 
 private extension UPIComponent {
-    
+
+    func sendDisplayedEventForCurrentFlow() {
+        switch selectedUPIFlow {
+        case .upiIntent, .upiApps:
+            sendUPIIntentDisplayedEvent()
+        case .upiCollect:
+            sendUPICollectDisplayedEvent()
+        default:
+            break
+        }
+    }
+
+    func sendUPIIntentDisplayedEvent() {
+        var infoEvent = AnalyticsEventInfo(
+            component: UPIFlowType.upiIntent.value,
+            type: .displayed
+        )
+        infoEvent.target = installedUPIApps.isEmpty ? .issuerList : .listDetected
+        infoEvent.presentedValues = availableUPIApps.map(\.identifier)
+        context.analyticsProvider?.add(info: infoEvent)
+    }
+
+    func sendUPIIntentAppSelectionEvent(for issuer: Issuer?) {
+        guard let issuer else { return }
+        var infoEvent = AnalyticsEventInfo(
+            component: UPIFlowType.upiIntent.value,
+            type: .selected
+        )
+        infoEvent.target = installedUPIApps.isEmpty ? .issuerList : .listDetected
+        infoEvent.issuer = issuer.identifier
+        context.analyticsProvider?.add(info: infoEvent)
+    }
+
+    func sendUPICollectDisplayedEvent() {
+        let infoEvent = AnalyticsEventInfo(
+            component: UPIFlowType.upiCollect.value,
+            type: .displayed
+        )
+        context.analyticsProvider?.add(info: infoEvent)
+    }
+}
+
+// MARK: - UI State Management
+
+private extension UPIComponent {
+
     var firstSegmentTitle: String {
         localizedString(
             .upiModePayByAnyUpi,
             configuration.localizationParameters
         )
     }
-    
+
     func updateSelection() {
-        upiAppsList.forEach { $0.isSelected = false }
-        upiAppsList.forEach { $0.isSeparatorViewShown = true }
-        
+        upiAppsList.forEach {
+            $0.isSelected = false
+            $0.isSeparatorViewShown = true
+        }
+
         if let currentSelectedItemIdentifier {
             upiAppsList.first(where: { $0.identifier == currentSelectedItemIdentifier })?.isSelected = true
         }
-        
+
         hideError()
     }
-    
+
     func updateInterface() {
         switch selectedUPIFlow {
         case .upiIntent, .upiApps:
             upiAppsList.forEach { $0.isHidden.wrappedValue = false }
             intentInstructionsLabelItem.isVisible = true
+            appsListTitleItem.isVisible = true
             collectInstructionsLabelItem.isVisible = false
             vpaInputItem.isVisible = false
-            focusVpaInput()
+            formViewController.view.endEditing(true)
         case .upiCollect, .qrCode:
             upiAppsList.forEach { $0.isHidden.wrappedValue = true }
             intentInstructionsLabelItem.isVisible = false
+            appsListTitleItem.isVisible = false
             collectInstructionsLabelItem.isVisible = true
             vpaInputItem.isVisible = true
             focusVpaInput()
         }
-        
+
         hideError()
+        sendDisplayedEventForCurrentFlow()
     }
-    
+
     func focusVpaInput() {
         vpaInputItem.focus()
     }
-    
+
     func showError() {
         errorItem.isHidden.wrappedValue = false
         UIAccessibility.post(
@@ -382,11 +471,11 @@ private extension UPIComponent {
             argument: "\(localizedString(.errorTitle, configuration.localizationParameters)): \(errorItem.message ?? "")"
         )
     }
-    
+
     func hideError() {
         errorItem.isHidden.wrappedValue = true
     }
-    
+
     func canSubmit() -> Bool {
         switch selectedUPIFlow {
         case .upiIntent, .upiApps:
@@ -395,7 +484,7 @@ private extension UPIComponent {
             return vpaInputItem.isValid()
         }
     }
-    
+
     func submitPayment() {
         switch selectedUPIFlow {
         case .upiIntent, .upiApps:
@@ -422,12 +511,32 @@ extension UPIComponent: AdyenObserver {}
 // MARK: - SubmitCustomizable
 
 extension UPIComponent: SubmittableComponent {
-    
+
     public func submit() {
         didSelectContinueButton()
     }
-    
+
     public func validate() -> Bool {
         formViewController.validate()
+    }
+}
+
+// MARK: - TrackableComponent
+
+@_spi(AdyenInternal)
+extension UPIComponent: TrackableComponent {}
+
+// MARK: - ViewControllerDelegate
+
+@_spi(AdyenInternal)
+extension UPIComponent: ViewControllerDelegate {
+
+    public func viewDidLoad(viewController: UIViewController) {
+        sendInitialAnalytics()
+        sendDidLoadEvent()
+    }
+
+    public func viewDidAppear(viewController: UIViewController) {
+        updateInterface()
     }
 }

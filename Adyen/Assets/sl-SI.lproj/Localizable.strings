@@ -190,6 +190,8 @@
 "adyen.upi.vpaWaitingMessage" = "Za potrditev plačila odprite svojo aplikacijo UPI";
 "adyen.upi.qrcode.timerMessage" = "Za odobritev imate %@";
 "adyen.upi.qrcode.instructions" = "Za dokončanje plačila naredite posnetek zaslona, ki ga naložite v aplikacijo UPI, ali poskenirajte kodo QR z želeno aplikacijo UPI.";
+"adyen.upi.intent.apps.title" = "Možnosti";
+"adyen.upi.intent.apps.title.onDevice" = "V vaši napravi";
 "adyen.twint.noAppsInstalled.message" = "V tej napravi ni nameščena različica aplikacije TWINT ali pa je zastarela. Posodobite ali namestite aplikacijo TWINT.";
 "adyen.threeds2.DA.registration.title" = "Secure Checkout";
 "adyen.threeds2.DA.biometrics" = "biometrični podatki";

@@ -30,5 +30,4 @@ public struct UPIPaymentMethod: PaymentMethod {
         case name
         case apps
     }
-
 }
