@@ -13,7 +13,7 @@ extension FormCardNumberItemView {
         static let imageName = "camera.fill"
     }
 
-    func makeCardScanAccessoryView(title: String, _ selector: Selector) -> UIView {
+    internal func makeCardScanAccessoryView(title: String, _ selector: Selector) -> UIView {
         let accessoryView = UIInputView(frame: .zero, inputViewStyle: .keyboard)
         accessoryView.translatesAutoresizingMaskIntoConstraints = false
         accessoryView.heightAnchor.constraint(equalToConstant: 44).isActive = true

@@ -7,21 +7,19 @@
 import Foundation
 
 /// Conforming types can publish observable events.
-public protocol EventPublisher: AnyObject {
-    
+package protocol EventPublisher: AnyObject {
+
     /// The type of event published.
     associatedtype Event
     
     /// The event handlers that are attached to the publisher.
     var eventHandlers: [EventHandlerToken: EventHandler<Event>] { get set }
     
-    @_spi(AdyenInternal)
     var eventHandlersLock: NSLock { get }
 }
 
-@_spi(AdyenInternal)
-public extension EventPublisher {
-    
+package extension EventPublisher {
+
     /// Adds an event handler.
     ///
     /// - Parameter eventHandler: The event handler to add.
@@ -64,9 +62,9 @@ public extension EventPublisher {
 }
 
 /// Alias for a closure that handles an event.
-public typealias EventHandler<Event> = (Event) -> Void
+package typealias EventHandler<Event> = (Event) -> Void
 
 /// Represents a token that references the event handler.
-public struct EventHandlerToken: Hashable {
+package struct EventHandlerToken: Hashable {
     private let uuid = UUID()
 }

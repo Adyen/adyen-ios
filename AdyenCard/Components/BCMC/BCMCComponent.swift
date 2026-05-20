@@ -10,14 +10,14 @@ import Foundation
 import UIKit
 
 /// A component that handles BCMC card payments.
-public final class BCMCComponent: CardComponent {
-    
+package final class BCMCComponent: CardComponent {
+
     /// Initializes the BCMC Component.
     /// - Parameters:
     ///   - paymentMethod: BCMC payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The configuration of the component.
-    public init(
+    package init(
         paymentMethod: BCMCPaymentMethod,
         context: AdyenContext,
         configuration: CardConfiguration = .init()

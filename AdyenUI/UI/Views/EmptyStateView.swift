@@ -22,14 +22,13 @@ public struct EmptyStateViewStyle: ViewStyle {
 }
 
 /// A generic empty view with title and generic subtitle
-@_spi(AdyenInternal)
-public class EmptyStateView<SubtitleLabel: UIView>: UIView, SearchResultsEmptyView {
-    
+package class EmptyStateView<SubtitleLabel: UIView>: UIView, SearchResultsEmptyView {
+
     internal let style: EmptyStateViewStyle
     internal let localizationParameters: LocalizationParameters?
     
-    public var searchTerm: String
-    
+    package var searchTerm: String
+
     internal lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.numberOfLines = 0

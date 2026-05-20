@@ -77,7 +77,7 @@ internal struct CardSettingsView: View {
 
 extension CardSettings.AddressFormType {
 
-    public var displayName: String {
+    internal var displayName: String {
         switch self {
         case .full: return "Full"
         case .lookup: return "Lookup (Dummy Data)"
@@ -90,7 +90,7 @@ extension CardSettings.AddressFormType {
 
 extension CardConfiguration.FieldVisibility {
 
-    public var displayName: String {
+    internal var displayName: String {
         self.rawValue.capitalized
     }
 }
