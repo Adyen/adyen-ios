@@ -645,7 +645,11 @@ final class CheckoutTests: XCTestCase {
             adyenContext: Dummy.context,
             presentationDelegate: nil,
             resultCallbacks: callbackStore,
-            callbackHandler: SessionCallbackHandler(session: session)
+            callbackHandler: BeforeSubmitCallbackHandler(
+                inner: SessionCallbackHandler(session: session),
+                session: session,
+                callbackStore: callbackStore
+            )
         )
     }
 

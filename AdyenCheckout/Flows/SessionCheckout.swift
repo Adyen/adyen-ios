@@ -17,4 +17,11 @@ public final class SessionCheckout: PaymentCheckout {
         self.callbackStore = callbackStore
         super.init(core: core, resultCallbacks: callbackStore)
     }
+
+    /// Sets the callback invoked before payment data is submitted to the session.
+    /// Use this to inspect or modify payment data, or to abort the submission.
+    public func onBeforeSubmit(_ handler: @escaping BeforeSubmitHandler) -> Self {
+        callbackStore.onBeforeSubmit = handler
+        return self
+    }
 }
