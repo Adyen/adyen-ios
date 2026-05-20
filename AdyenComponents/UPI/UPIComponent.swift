@@ -64,6 +64,15 @@ public final class UPIComponent: PaymentComponent,
 
     internal let urlSchemeChecker: URLSchemeChecking
 
+    internal private(set) lazy var installedUPIApps: [Issuer] = {
+        upiApps.filter { isAppInstalled(scheme: $0.appIdentifier?.scheme) }
+    }()
+
+    /// If no UPI apps are installed, shows all apps from the payment method response.
+    internal private(set) lazy var availableUPIApps: [Issuer] = {
+        installedUPIApps.isEmpty ? upiApps : installedUPIApps
+    }()
+
     /// Represents the selected UPI (Unified Payments Interface) flow for the payment component.
     /// Determines the specific UPI transaction process to follow.
     @AdyenObservable(.upiIntent) public private(set) var selectedUPIFlow: UPIFlowType
@@ -355,16 +364,7 @@ internal extension UPIComponent {
         return urlSchemeChecker.canOpen(scheme: scheme)
     }
 
-    var installedUPIApps: [Issuer] {
-        upiApps.filter { isAppInstalled(scheme: $0.appIdentifier?.scheme) }
-    }
-
-    var availableUPIApps: [Issuer] {
-        // If no UPI apps are installed in the device, show all apps from the response.
-        installedUPIApps.isEmpty ? upiApps : installedUPIApps
-    }
-
-    private var upiApps: [Issuer] {
+    var upiApps: [Issuer] {
         upiPaymentMethod.apps ?? []
     }
 }
