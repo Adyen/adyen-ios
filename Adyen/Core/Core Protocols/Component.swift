@@ -47,7 +47,7 @@ public protocol FinalizableComponent: Component {
     func didFinalize(with success: Bool, completion: (() -> Void)?)
 }
 
-extension Component {
+package extension Component {
 
     package var _isDropIn: Bool { // swiftlint:disable:this identifier_name
         get {

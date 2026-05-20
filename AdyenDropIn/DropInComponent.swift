@@ -68,7 +68,7 @@ public final class DropInComponent: NSObject,
     internal var selectedPaymentComponent: PaymentComponent?
 
     /// The payment methods to display.
-    internal(set) var paymentMethods: PaymentMethods
+    package internal(set) var paymentMethods: PaymentMethods
 
     /// The title text on the first page of drop in component.
     package let title: String
