@@ -17,8 +17,10 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 
     private var checkout: SessionCheckout?
     private var adyenComponent: CheckoutPaymentComponent?
+    private var latestApplePayAmount = ConfigurationConstants.current.amount
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
+    private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
 
     /// comes from demo app protocol, unused on new structure
     internal var context: AdyenContext?
@@ -27,10 +29,12 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 
     internal func start() {
         startLoading()
+        latestApplePayAmount = ConfigurationConstants.current.amount
 
         Task {
             do {
-                let sessionResponse = try await requestSessionInitialInfo()
+                let patchableSession = ConfigurationConstants.current.applePaySettings.onBeforeSubmitMode == .patchSession
+                let sessionResponse = try await requestSessionInitialInfo(payable: !patchableSession)
                 let component = try await applePayComponent(from: sessionResponse)
                 self.adyenComponent = component
                 hideLoading()
@@ -52,7 +56,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
             )
         ) {
             try ConfigurationConstants.current
-                .applePayConfiguration(using: .demo)
+                .applePayConfiguration(using: .demoWithShippingFields)
                 .onAuthorize { payment in
                     if ConfigurationConstants.current.applePaySettings.didAuthorizeSuccessful {
                         return PKPaymentAuthorizationResult(status: .success, errors: nil)
@@ -63,6 +67,58 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                         )
                         return PKPaymentAuthorizationResult(status: .failure, errors: [postalCodeError])
                     }
+                }.onShippingContactChange { contact, summaryItems in
+                    var items = summaryItems
+                    if let last = items.last {
+                        items = items.dropLast()
+                        let cityLabel = contact.postalAddress?.city ?? "Somewhere"
+                        items.append(.init(
+                            label: "Shipping \(cityLabel)",
+                            amount: NSDecimalNumber(value: 5.0)
+                        ))
+                        items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue + 5.0)))
+                    }
+                    self.updateLatestApplePayAmount(using: items)
+                    return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: items)
+                }
+                .onShippingMethodChange { shippingMethod, summaryItems in
+                    var items = summaryItems
+                    if let last = items.last {
+                        items = items.dropLast()
+                        items.append(shippingMethod)
+                        items.append(.init(
+                            label: last.label,
+                            amount: NSDecimalNumber(value: last.amount.floatValue + shippingMethod.amount.floatValue)
+                        ))
+                    }
+                    self.updateLatestApplePayAmount(using: items)
+                    return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: items)
+                }
+                .onCouponCodeChange { _, summaryItems in
+                    var items = summaryItems
+                    if let last = items.last {
+                        items = items.dropLast()
+                        // make sure your backend's amount and apple pay sheet amount are the same
+                        items.append(.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0)))
+                        items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue - 5.0)))
+                    }
+                    self.updateLatestApplePayAmount(using: items)
+                    return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: items)
+                }
+                .onPaymentMethodChange { paymentMethod, summaryItems in
+                    // Example: Add a processing fee based on card type
+                    var items = summaryItems
+                    if let last = items.last {
+                        items = items.dropLast()
+                        let cardType = paymentMethod.displayName ?? "Card"
+                        items.append(.init(
+                            label: "Processing Fee (\(cardType))",
+                            amount: NSDecimalNumber(value: 1.0)
+                        ))
+                        items.append(.init(label: last.label, amount: NSDecimalNumber(value: last.amount.floatValue + 1.0)))
+                    }
+                    self.updateLatestApplePayAmount(using: items)
+                    return PKPaymentRequestPaymentMethodUpdate(paymentSummaryItems: items)
                 }
         }
 
@@ -71,6 +127,25 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
             configuration: configuration,
             presentationDelegate: self
         )
+        .onBeforeSubmit { data in
+            print("onBeforeSubmit: shopperName: \(String(describing: data.shopperName))")
+            print("onBeforeSubmit: shopperEmail: \(String(describing: data.shopperEmail))")
+            print("onBeforeSubmit: billingAddress: \(String(describing: data.billingAddress))")
+            print("onBeforeSubmit: deliveryAddress: \(String(describing: data.deliveryAddress))")
+
+            switch ConfigurationConstants.current.applePaySettings.onBeforeSubmitMode {
+            case .updateData:
+                var updatedData = data
+                updatedData.shopperName = ShopperName(firstName: "Demo", lastName: "Shopper")
+                updatedData.shopperEmail = "updatedForDemo-\(ConfigurationConstants.shopperEmail)"
+                return .proceed(data: updatedData, sessionData: nil)
+            case .abort:
+                return .abort
+            case .patchSession:
+                let patchedSession = try await self.patchSession(using: sessionResponse)
+                return .proceed(data: data, sessionData: patchedSession.sessionData)
+            }
+        }
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
                 result.resultCode.isSuccess,
@@ -113,6 +188,33 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
             let title = success ? "Success" : "Error"
             self.presenter?.presentAlert(withTitle: title, message: message)
         }
+    }
+
+    private func patchSession(using sessionResponse: SessionResponse) async throws -> SessionPatchResponse {
+        let request = SessionPatchRequest(
+            sessionId: sessionResponse.id,
+            sessionData: sessionResponse.sessionData,
+            amount: latestApplePayAmount
+        )
+        return try await asyncApiClient.performAsync(request)
+    }
+
+    private func updateLatestApplePayAmount(using summaryItems: [PKPaymentSummaryItem]) {
+        guard let total = summaryItems.last else {
+            return
+        }
+
+        let currentAmount = ConfigurationConstants.current.amount
+        let updatedValue = AmountFormatter.minorUnitAmount(
+            from: total.amount.decimalValue,
+            currencyCode: currentAmount.currencyCode,
+            localeIdentifier: currentAmount.localeIdentifier
+        )
+        latestApplePayAmount = Amount(
+            value: updatedValue,
+            currencyCode: currentAmount.currencyCode,
+            localeIdentifier: currentAmount.localeIdentifier
+        )
     }
 }
 

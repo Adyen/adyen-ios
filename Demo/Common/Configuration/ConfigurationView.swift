@@ -10,7 +10,6 @@ import SwiftUI
 internal struct ConfigurationView: View {
     
     private enum ConfigurationSection: String, CaseIterable {
-        case apiVersion = "Api Version"
         case merchantAccount = "Merchant Account"
         case region = "Region"
         case payment = "Payment"
@@ -46,7 +45,6 @@ internal struct ConfigurationView: View {
     internal var body: some View {
         NavigationView {
             Form {
-                apiVersionSection
                 merchantAccountSection
                 regionSection
                 wrapInSection(view: paymentSection, section: .payment)
@@ -72,15 +70,6 @@ internal struct ConfigurationView: View {
         section: ConfigurationSection
     ) -> some View {
         Section(header: Text(section.rawValue.uppercased())) { view }
-    }
-    
-    private var apiVersionSection: some View {
-        TextFieldItemView(
-            title: "API Version",
-            value: $viewModel.apiVersion,
-            placeholder: ConfigurationSection.apiVersion.rawValue,
-            keyboardType: .numberPad
-        )
     }
     
     private var merchantAccountSection: some View {
