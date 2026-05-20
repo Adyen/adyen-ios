@@ -52,16 +52,16 @@ private class TestFormPickerItem: FormPickerItem<FormPickerElement> {
         )
     }
 
-    override public func resetValue() {
+    override func resetValue() {
         value = nil
         formattedValue = nil
     }
 
-    override public func updateValidationFailureMessage() {
+    override func updateValidationFailureMessage() {
         validationFailureMessage = "Please select a value"
     }
 
-    override public func updateFormattedValue() {
+    override func updateFormattedValue() {
         formattedValue = value?.title
     }
 }

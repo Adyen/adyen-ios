@@ -8,7 +8,7 @@
 import UIKit
 import XCTest
 
-public extension UIViewController {
+extension UIViewController {
 
     /// Returns the first child of the viewControllers children that matches the type
     ///
