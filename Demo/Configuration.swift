@@ -111,6 +111,7 @@ internal struct CardSettings: Codable {
     internal var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility = .auto
     internal var enableInstallments = false
     internal var showsInstallmentAmount = false
+    internal var onBeforeSubmitSuccessful = true
     
     internal enum AddressFormType: String, Codable, CaseIterable {
         case lookup
@@ -204,7 +205,8 @@ internal struct DemoAppSettings: Codable {
         socialSecurityNumberVisibility: .auto,
         koreanAuthenticationVisibility: .auto,
         enableInstallments: false,
-        showsInstallmentAmount: false
+        showsInstallmentAmount: false,
+        onBeforeSubmitSuccessful: true
     )
 
     internal static let defaultDropInSettings = DropInSettings(
