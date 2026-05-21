@@ -127,7 +127,7 @@ final class ApplePayPaymentMethodTests: XCTestCase {
         ApplePayPaymentMethod(
             type: .applePay,
             name: "ApplePay",
-            merchantProvidedDisplayInformation: nil,
+            
             brands: brands
         )
     }

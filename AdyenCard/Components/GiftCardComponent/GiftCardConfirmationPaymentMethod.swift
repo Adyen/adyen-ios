@@ -18,11 +18,6 @@ internal struct PartialConfirmationPaymentMethod: PaymentMethod {
         paymentMethod.name
     }
     
-    internal var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? {
-        get { paymentMethod.merchantProvidedDisplayInformation }
-        set { paymentMethod.merchantProvidedDisplayInformation = newValue }
-    }
-    
     private var paymentMethod: PartialPaymentMethod
     
     private let lastFour: String

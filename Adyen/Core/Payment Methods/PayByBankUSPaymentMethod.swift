@@ -12,8 +12,6 @@ public struct PayByBankUSPaymentMethod: PaymentMethod {
     
     public var name: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-    
     @_spi(AdyenInternal)
     public static var logoNames: [String] {
         ["US-1", "US-2", "US-3", "US-4"]

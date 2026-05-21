@@ -15,8 +15,6 @@ public struct StoredPayByBankUSPaymentMethod: StoredPaymentMethod {
     
     public let label: String?
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
     public let identifier: String
 
     public let supportedShopperInteractions: [ShopperInteraction]

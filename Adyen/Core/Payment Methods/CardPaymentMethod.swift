@@ -13,8 +13,6 @@ public struct CardPaymentMethod: AnyCardPaymentMethod {
     
     public let name: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-    
     public let fundingSource: CardFundingSource?
     
     /// An array containing the supported brands, such as `"mc"`, `"visa"`, `"amex"`, `"bcmc"`.
@@ -62,8 +60,6 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
     
     public let name: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
     public let identifier: String
 
     public var brands: [CardType] {

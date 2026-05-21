@@ -13,8 +13,6 @@ public struct PayToPaymentMethod: PaymentMethod {
 
     public let name: String
 
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
     @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
@@ -41,8 +39,6 @@ public struct StoredPayToPaymentMethod: StoredPaymentMethod {
     public let label: String
     
     public let supportedShopperInteractions: [ShopperInteraction]
-    
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
     
     @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {

@@ -14,8 +14,6 @@ public struct StoredCashAppPayPaymentMethod: StoredPaymentMethod {
     /// Public identifier for the customer on Cash App.
     public let cashtag: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
     public let identifier: String
 
     public let supportedShopperInteractions: [ShopperInteraction]

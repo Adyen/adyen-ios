@@ -652,7 +652,6 @@ class ComponentManagerTests: XCTestCase {
         struct DummyPaymentMethod: PaymentMethod {
             var type: PaymentMethodType = .achDirectDebit
             var name: String = ""
-            var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? = nil
             
             init() {}
             init(from decoder: Decoder) throws {}

@@ -40,8 +40,6 @@ package struct OrderPaymentMethod: PaymentMethod {
         String.Adyen.securedString + lastFour
     }
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
     public let lastFour: String
 
     public let type: PaymentMethodType

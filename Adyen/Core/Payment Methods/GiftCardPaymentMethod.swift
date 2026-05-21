@@ -13,8 +13,6 @@ public struct GiftCardPaymentMethod: PartialPaymentMethod {
 
     public let name: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
     /// The brand of the gift card.
     public let brand: String
 

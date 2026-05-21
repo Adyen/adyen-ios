@@ -17,11 +17,6 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod {
         storedCardPaymentMethod.name
     }
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? {
-        get { storedCardPaymentMethod.merchantProvidedDisplayInformation }
-        set { storedCardPaymentMethod.merchantProvidedDisplayInformation = newValue }
-    }
-
     public var identifier: String {
         storedCardPaymentMethod.identifier
     }

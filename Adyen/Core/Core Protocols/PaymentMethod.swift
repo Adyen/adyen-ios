@@ -15,10 +15,6 @@ public protocol PaymentMethod: Codable {
     /// The name of the payment method, such as `"Credit Card"`, `"iDEAL"`, `"Apple Pay"`.
     var name: String { get }
     
-    /// Describes a payment method display information thats provided by the merchant
-    /// and if not `nil`, will override the default display information.
-    var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? { get set }
-    
     /// Display information for the payment method, adapted for displaying in a list.
     ///
     /// - Parameters:
@@ -52,18 +48,7 @@ public protocol PartialPaymentMethod: PaymentMethod {}
 public extension PaymentMethod {
     
     func displayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        let defaultDisplayInformation = defaultDisplayInformation(using: parameters)
-        if let merchantProvidedDisplayInformation {
-            let subtitle = merchantProvidedDisplayInformation.subtitle ?? defaultDisplayInformation.subtitle
-            return DisplayInformation(
-                title: merchantProvidedDisplayInformation.title,
-                subtitle: subtitle,
-                logoName: defaultDisplayInformation.logoName,
-                trailingInfo: defaultDisplayInformation.trailingInfo,
-                footnoteText: defaultDisplayInformation.footnoteText
-            )
-        }
-        return defaultDisplayInformation
+        defaultDisplayInformation(using: parameters)
     }
 
     @_spi(AdyenInternal)
