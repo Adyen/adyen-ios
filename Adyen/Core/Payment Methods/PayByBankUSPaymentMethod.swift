@@ -7,7 +7,7 @@
 import Foundation
 
 /// PayByBank US payment method.
-public struct PayByBankUSPaymentMethod: PaymentMethod {
+public struct PayByBankUSPaymentMethod: PaymentMethod, PaymentMethodDisplayable {
     public let type: PaymentMethodType
     
     public var name: String
@@ -17,7 +17,7 @@ public struct PayByBankUSPaymentMethod: PaymentMethod {
         ["US-1", "US-2", "US-3", "US-4"]
     }
     
-    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         .init(
             title: name,
             subtitle: nil,

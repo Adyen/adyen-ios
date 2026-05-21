@@ -7,7 +7,7 @@
 import Foundation
 
 /// Stored PayByBank US payment method.
-public struct StoredPayByBankUSPaymentMethod: StoredPaymentMethod {
+public struct StoredPayByBankUSPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayable {
 
     public let type: PaymentMethodType
 
@@ -24,8 +24,7 @@ public struct StoredPayByBankUSPaymentMethod: StoredPaymentMethod {
         builder.build(paymentMethod: self)
     }
     
-    @_spi(AdyenInternal)
-    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let title: String
         let subtitle: String?
         

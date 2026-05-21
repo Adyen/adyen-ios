@@ -7,7 +7,7 @@
 import Foundation
 
 /// Stored Blik payment.
-public struct StoredBLIKPaymentMethod: StoredPaymentMethod {
+public struct StoredBLIKPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayable {
 
     public let type: PaymentMethodType
 
@@ -22,8 +22,7 @@ public struct StoredBLIKPaymentMethod: StoredPaymentMethod {
         builder.build(paymentMethod: self)
     }
     
-    @_spi(AdyenInternal)
-    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue)
     }
 

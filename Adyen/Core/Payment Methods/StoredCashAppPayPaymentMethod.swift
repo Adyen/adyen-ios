@@ -5,7 +5,7 @@
 //
 
 /// A stored Cash App Pay account.
-public struct StoredCashAppPayPaymentMethod: StoredPaymentMethod {
+public struct StoredCashAppPayPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayable {
     
     public let type: PaymentMethodType
 
@@ -23,8 +23,7 @@ public struct StoredCashAppPayPaymentMethod: StoredPaymentMethod {
         builder.build(paymentMethod: self)
     }
     
-    @_spi(AdyenInternal)
-    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let accessibilityLabel = [
             name,
             "\(localizedString(.cashAppPayCashtag, parameters)): \(cashtag)"

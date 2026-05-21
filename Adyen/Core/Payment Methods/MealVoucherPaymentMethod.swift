@@ -7,7 +7,7 @@
 import Foundation
 
 /// Any Mealvoucher payment method.
-public struct MealVoucherPaymentMethod: PartialPaymentMethod {
+public struct MealVoucherPaymentMethod: PartialPaymentMethod, PaymentMethodDisplayable {
 
     public let type: PaymentMethodType
 
@@ -18,7 +18,7 @@ public struct MealVoucherPaymentMethod: PartialPaymentMethod {
         builder.build(paymentMethod: self)
     }
 
-    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
     }
 

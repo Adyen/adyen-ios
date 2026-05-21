@@ -7,7 +7,7 @@
 import Foundation
 
 /// An ACH Direct Debit payment method.
-public struct ACHDirectDebitPaymentMethod: PaymentMethod {
+public struct ACHDirectDebitPaymentMethod: PaymentMethod, PaymentMethodDisplayable {
     
     public let type: PaymentMethodType
 
@@ -18,8 +18,7 @@ public struct ACHDirectDebitPaymentMethod: PaymentMethod {
         builder.build(paymentMethod: self)
     }
     
-    @_spi(AdyenInternal)
-    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue)
     }
 
@@ -33,7 +32,7 @@ public struct ACHDirectDebitPaymentMethod: PaymentMethod {
 }
 
 /// A stored ACH Direct Debit Account
-public struct StoredACHDirectDebitPaymentMethod: StoredPaymentMethod {
+public struct StoredACHDirectDebitPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayable {
     
     public let type: PaymentMethodType
 
@@ -48,8 +47,7 @@ public struct StoredACHDirectDebitPaymentMethod: StoredPaymentMethod {
         builder.build(paymentMethod: self)
     }
     
-    @_spi(AdyenInternal)
-    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let bankAccountLastFour = String(bankAccountNumber.suffix(4))
         let lastFourSeparated = bankAccountLastFour.map { String($0) }.joined(separator: ", ")
         let accessibilityLabel = [

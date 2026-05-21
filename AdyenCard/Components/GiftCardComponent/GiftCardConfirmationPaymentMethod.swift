@@ -8,7 +8,7 @@ import Adyen
 @_spi(AdyenInternal) import protocol Adyen.PaymentComponentBuilder
 
 /// A payment method wrapper, with custom `DisplayInformation`.
-internal struct PartialConfirmationPaymentMethod: PaymentMethod {
+internal struct PartialConfirmationPaymentMethod: PaymentMethod, PaymentMethodDisplayable {
     
     internal var type: PaymentMethodType {
         paymentMethod.type
@@ -28,7 +28,7 @@ internal struct PartialConfirmationPaymentMethod: PaymentMethod {
         paymentMethod.buildComponent(using: builder)
     }
     
-    internal func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let footnote = localizedString(
             .partialPaymentRemainingBalance,
             parameters,

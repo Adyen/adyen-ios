@@ -15,13 +15,6 @@ public protocol PaymentMethod: Codable {
     /// The name of the payment method, such as `"Credit Card"`, `"iDEAL"`, `"Apple Pay"`.
     var name: String { get }
     
-    /// Display information for the payment method, adapted for displaying in a list.
-    ///
-    /// - Parameters:
-    ///   - using: The localization parameters.
-    @_spi(AdyenInternal)
-    func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation
-    
     @_spi(AdyenInternal)
     func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent?
 }
@@ -44,19 +37,32 @@ public extension PaymentMethod {
 /// A protocol to define any partial payment method such as gift cards, `MealVoucher` etc.
 public protocol PartialPaymentMethod: PaymentMethod {}
 
-@_spi(AdyenInternal)
-public extension PaymentMethod {
-    
-    func displayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        defaultDisplayInformation(using: parameters)
-    }
+// MARK: - Display Information
 
-    @_spi(AdyenInternal)
-    func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
-    }
+/// Internal protocol for payment methods that provide custom display information.
+package protocol PaymentMethodDisplayable {
     
+    /// Display information for the payment method, adapted for displaying in a list.
+    ///
+    /// - Parameters:
+    ///   - parameters: The localization parameters.
+    func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation
 }
+
+package extension PaymentMethod {
+    
+    /// Returns the display information for this payment method.
+    /// If the payment method conforms to `PaymentMethodDisplayable`, its custom implementation is used.
+    /// Otherwise, returns the default display information based on name and type.
+    func displayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        if let displayable = self as? PaymentMethodDisplayable {
+            return displayable.defaultDisplayInformation(using: parameters)
+        }
+        return DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
+    }
+}
+
+// MARK: - Stored Payment Method
 
 /// A payment method that has been stored for later use.
 public protocol StoredPaymentMethod: PaymentMethod {
