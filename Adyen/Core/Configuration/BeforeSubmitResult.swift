@@ -12,7 +12,8 @@ public enum BeforeSubmitResult: Sendable {
     /// Continue the submission flow with the provided data.
     /// - Parameters:
     ///   - data: The submit data (pass back unchanged if unmodified).
-    ///   - sessionData: Optional. Pass the sessionData you received from your server's `PATCH` request.
+    ///   - sessionData: Optional. Pass the sessionData you received from your server's `PATCH` request
+    ///     so the SDK can update the current session state data before continuing.
     case proceed(data: BeforeSubmitData, sessionData: String?)
     
     /// Stop the submission and reset the state.

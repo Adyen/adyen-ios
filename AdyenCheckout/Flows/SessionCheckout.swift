@@ -22,7 +22,7 @@ public final class SessionCheckout: PaymentCheckout {
     /// Use this to inspect or modify payment data, patch the session on your server, or abort the submission.
     ///
     /// If you patch the session on your server during this callback, pass the returned `sessionData`
-    /// in `.proceed(data:sessionData:)` so the SDK can refresh the session state before continuing.
+    /// in `.proceed(data:sessionData:)` so the SDK can update the session state data before continuing.
     /// - Parameter handler: Callback invoked before the session performs the `/payments` call.
     ///   - data: The `BeforeSubmitData` containing shopper fields that can be validated, modified, or passed back unchanged.
     /// - Returns: A `BeforeSubmitResult`. Return `.proceed(data:sessionData:)` to continue or `.abort`
