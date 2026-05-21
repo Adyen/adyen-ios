@@ -13,9 +13,8 @@ import Foundation
 /// A configuration container for customizing the behavior of Drop-in and individual components.
 ///
 /// `CheckoutConfiguration` is the central entry point for defining custom behavior in your integration.
-/// It supports both default and advanced flows out of the box, allowing you to:
-/// - Override default behavior with callbacks such as `onSubmit`, `onAdditionalDetails`, `onComplete`, and `onError`.
-/// - Customize individual components (e.g., card, Apple Pay) by supplying specific `CheckoutComponentConfiguration` instances.
+/// It customizes component behavior by allowing you to:
+/// - Supply component-specific `CheckoutComponentConfiguration` instances.
 /// - Control presentation options such as whether to show the default submit button.
 ///
 /// You can add component configurations using a Swift DSL, enabling a declarative setup of your integration.
@@ -48,7 +47,6 @@ public struct CheckoutConfiguration {
     package var onComplete: CheckoutSuccessHandler?
 
     package var localizationProvider: (any CheckoutLocalizationProvider)?
-
     package var theme: CheckoutTheme
 
     package let amount: Amount?

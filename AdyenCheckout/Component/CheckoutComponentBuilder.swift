@@ -4,16 +4,17 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
 #if canImport(AdyenComponents)
-    @_spi(AdyenInternal) import AdyenComponents
+    import AdyenComponents
 #endif
 #if canImport(AdyenCard)
-    @_spi(AdyenInternal) import AdyenCard
+    import AdyenCard
 #endif
+import Foundation
 
 internal enum CheckoutComponentBuilder {
     

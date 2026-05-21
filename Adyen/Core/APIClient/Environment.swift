@@ -14,12 +14,10 @@ public struct Environment: AnyAPIEnvironment {
 
     /// Adyen's test environment.
     public static let test = Environment(baseURL: URL(string: "https://checkoutshopper-test.adyen.com/")!)
-    
-    @_spi(AdyenInternal)
-    public static let beta = Environment(baseURL: URL(string: "https://checkoutshopper-beta.adyen.com/")!)
-    
-    @_spi(AdyenInternal)
-    public static let local = Environment(baseURL: URL(string: "http://localhost:8080/")!)
+
+    package static let beta = Environment(baseURL: URL(string: "https://checkoutshopper-beta.adyen.com/")!)
+
+    package static let local = Environment(baseURL: URL(string: "http://localhost:8080/")!)
 
     /// Adyen's European live environment.
     public static let liveEurope = Environment(baseURL: URL(string: "https://checkoutshopper-live.adyen.com/")!)
@@ -40,8 +38,7 @@ public struct Environment: AnyAPIEnvironment {
     public static let liveNea = Environment(baseURL: URL(string: "https://checkoutshopper-live-nea.adyen.com/")!)
     
     /// Determines if the environment is one of Adyen's live environments.
-    @_spi(AdyenInternal)
-    public var isLive: Bool {
+    package var isLive: Bool {
         baseURL.absoluteString.hasPrefix("https://checkoutshopper-live")
     }
 
@@ -55,5 +52,4 @@ public struct Environment: AnyAPIEnvironment {
 
 }
 
-@_spi(AdyenInternal)
 extension Environment: Equatable {}

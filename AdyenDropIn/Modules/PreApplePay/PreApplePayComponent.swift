@@ -4,14 +4,16 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import protocol Adyen.PresentableComponent
+
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
 #endif
 import PassKit
 import UIKit
 #if canImport(AdyenComponents)
-    @_spi(AdyenInternal) import AdyenComponents
+    import AdyenComponents
 #endif
 
 // TODO: preapplepay is being removed

@@ -4,7 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import enum Adyen.ValidationStatus
 import UIKit
 
 @_spi(AdyenInternal)
@@ -69,7 +70,7 @@ open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> 
     ///   - style: The `FormTextItemStyle` UI style.
     ///   - localizationParameters: The localization parameters.
     ///   - identifier: The item identifier
-    public convenience init(
+    package convenience init(
         preselectedValue: Value?,
         selectableValues: [Value],
         title: String,

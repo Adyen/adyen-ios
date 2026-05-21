@@ -7,8 +7,7 @@
 import Foundation
 
 /// A generic validator for dates.
-@_spi(AdyenInternal)
-public final class DateValidator: Validator {
+package final class DateValidator: Validator {
 
     private let formatter: DateFormatter
 

@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 #if canImport(AdyenSession)
-    @_spi(AdyenInternal) import AdyenSession
+    import AdyenSession
 #endif
 import AdyenNetworking
 import Foundation
@@ -31,25 +31,25 @@ internal class CheckoutProvider: CheckoutProviding {
     internal func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
+        callbackStore: SessionCheckoutCallbackStore,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> Checkout {
-        
+    ) async throws -> CheckoutCoreProtocol {
+
         let apiClient = APIClient(apiContext: configuration.apiContext)
-
         let adyenContext = try await setupAdyenContext(configuration: configuration, apiClient: apiClient)
-
-        // create and store session and payment methods
-        async let session = setupSession(
+        let session = try await setupSession(
             with: sessionResponse,
             adyenContext: adyenContext,
             apiClient: apiClient
         )
 
-        return try await Checkout(
+        return await CheckoutCore(
             configuration: configuration,
             session: session,
             adyenContext: adyenContext,
-            presentationDelegate: presentationDelegate
+            presentationDelegate: presentationDelegate,
+            resultCallbacks: callbackStore,
+            callbackHandler: SessionCallbackHandler(session: session)
         )
     }
     
@@ -63,18 +63,20 @@ internal class CheckoutProvider: CheckoutProviding {
     internal func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
+        callbackStore: AdvancedCheckoutCallbackStore,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> Checkout {
+    ) async throws -> CheckoutCoreProtocol {
 
         let apiClient = APIClient(apiContext: configuration.apiContext)
-
         let adyenContext = try await setupAdyenContext(configuration: configuration, apiClient: apiClient)
 
-        return await Checkout(
+        return await CheckoutCore(
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: adyenContext,
-            presentationDelegate: presentationDelegate
+            presentationDelegate: presentationDelegate,
+            resultCallbacks: callbackStore,
+            callbackHandler: AdvancedCallbackHandler(callbackStore: callbackStore)
         )
     }
     
@@ -84,17 +86,19 @@ internal class CheckoutProvider: CheckoutProviding {
     ///   - presentationDelegate: A delegate for handling action UI presentation.
     internal func setup(
         configuration: CheckoutConfiguration,
+        callbackStore: ActionOnlyCheckoutCallbackStore,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> Checkout {
+    ) async throws -> CheckoutCoreProtocol {
 
         let apiClient = APIClient(apiContext: configuration.apiContext)
-
         let adyenContext = try await setupAdyenContext(configuration: configuration, apiClient: apiClient)
 
-        return await Checkout(
+        return await CheckoutCore(
             configuration: configuration,
             adyenContext: adyenContext,
-            presentationDelegate: presentationDelegate
+            presentationDelegate: presentationDelegate,
+            resultCallbacks: callbackStore,
+            callbackHandler: ActionOnlyCallbackHandler(callbackStore: callbackStore)
         )
     }
     
@@ -120,13 +124,16 @@ internal class CheckoutProvider: CheckoutProviding {
         let analyticsApiClient = configuration.analyticsApiContext.flatMap { APIClient(apiContext: $0) }
 
         // TODO: Improvement: Suggestion: instead of the checkout provider being aware of something as specific as checkoutAttemptId.
-        // - This could be wrapped in something related to Analytics ex: await AnalyticsProvider.init() and internally fetch what is required for analytics.
+        // - This could be wrapped in something related to Analytics ex: await AnalyticsProvider.init()
+        //   and internally fetch what is required for analytics.
         async let checkoutAttemptId = checkoutAttemptIdProvider.fetchCheckoutAttemptId(
             with: analyticsApiClient
         )
 
-        // TODO: Improvement: Suggestion: Instead of fetching the publicKey, which requires a bit of searching to understand that it is being used for encryption ex: card encryption.
-        // if there is a holding type like `await Encryptor.init(clientId:)` then we know that the Encryption is being setup and  key is being used for encryption and it is mapped to the clientId.
+        // TODO: Improvement: Suggestion: instead of fetching the publicKey, which requires a bit of searching to understand
+        // that it is being used for encryption ex: card encryption.
+        // If there is a holding type like `await Encryptor.init(clientId:)` then we know that the Encryption is being setup
+        // and key is being used for encryption and it is mapped to the clientId.
         async let publicKey = try await publicKeyProvider.fetchPublicKey(
             apiClient: apiClient,
             clientKey: configuration.apiContext.clientKey

@@ -4,42 +4,33 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 #if canImport(AdyenSession)
-    @_spi(AdyenInternal) import AdyenSession
-#endif
-#if canImport(AdyenDropIn)
-    @_spi(AdyenInternal) import AdyenDropIn
+    import AdyenSession
 #endif
 import AdyenNetworking
-
-@MainActor
-internal protocol CheckoutProtocol {
-    
-    func createPaymentComponent(for type: PaymentMethodType) throws -> CheckoutPaymentComponent
-    
-    func createPaymentComponent(for identifier: String) throws -> CheckoutPaymentComponent
-    
-    func createDropIn() -> DropInComponent?
-}
+import Foundation
 
 internal protocol CheckoutProviding: AdyenSessionProviding {
     func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
+        callbackStore: SessionCheckoutCallbackStore,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> Checkout
-    
+    ) async throws -> CheckoutCoreProtocol
+
     func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
+        callbackStore: AdvancedCheckoutCallbackStore,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> Checkout
-    
+    ) async throws -> CheckoutCoreProtocol
+
     func setup(
         configuration: CheckoutConfiguration,
+        callbackStore: ActionOnlyCheckoutCallbackStore,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> Checkout
+    ) async throws -> CheckoutCoreProtocol
 }
 
 internal protocol AdyenSessionProviding {

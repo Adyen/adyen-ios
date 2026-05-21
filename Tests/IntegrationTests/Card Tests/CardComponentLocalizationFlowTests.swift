@@ -89,7 +89,7 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
         componentProvider: (any CheckoutLocalizationProvider)? = nil,
         localizationParameters: LocalizationParameters? = nil
     ) throws -> CardComponent {
-        var cardConfiguration = CardComponentConfiguration()
+        var cardConfiguration = CardConfiguration()
         cardConfiguration.localizationProvider = componentProvider
         cardConfiguration.localizationParameters = localizationParameters
 
@@ -105,7 +105,7 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
     }
 
     private func makeBuiltCardComponent(checkoutConfiguration: CheckoutConfiguration) throws -> CardComponent {
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
             context: context

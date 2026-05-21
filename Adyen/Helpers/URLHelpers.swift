@@ -6,13 +6,11 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
 extension URL: AdyenCompatible {}
 
-@_spi(AdyenInternal)
 extension AdyenScope where Base == URL {
     
-    public var queryParameters: [String: String] {
+    package var queryParameters: [String: String] {
         let components = URLComponents(url: base, resolvingAgainstBaseURL: true)
         let queryItems = components?.queryItems ?? []
 
@@ -21,7 +19,7 @@ extension AdyenScope where Base == URL {
         })
     }
 
-    public var isHttp: Bool {
+    package var isHttp: Bool {
         base.scheme == "http" || base.scheme == "https"
     }
 }

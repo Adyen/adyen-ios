@@ -6,8 +6,7 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public enum AnalyticsFlavor {
+package enum AnalyticsFlavor {
     case components(type: PaymentMethodType)
     case dropIn(type: String = "dropin", paymentMethods: [String])
 

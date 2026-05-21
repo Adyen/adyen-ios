@@ -6,8 +6,7 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public final class PostalCodeValidator: LengthValidator, StatusValidator {
+package final class PostalCodeValidator: LengthValidator, StatusValidator {
     
     public func validate(_ value: String) -> ValidationStatus {
         if super.isValid(value) {

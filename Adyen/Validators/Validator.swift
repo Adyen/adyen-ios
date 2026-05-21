@@ -22,9 +22,8 @@ public protocol Validator {
     func maximumLength(for value: String) -> Int
 }
 
-@_spi(AdyenInternal)
-public protocol StatusValidator: Validator {
-    
+package protocol StatusValidator: Validator {
+
     /// Validates the value and returns the result.
     /// - Parameter value: The value to validate.
     /// - Returns: A `ValidationStatus` indicating the result.
@@ -32,14 +31,12 @@ public protocol StatusValidator: Validator {
 }
 
 /// Defines the `||` operator for two `Validator` operands.
-@_spi(AdyenInternal)
-public func || (lhs: Validator, rhs: Validator) -> Validator {
+package func || (lhs: Validator, rhs: Validator) -> Validator {
     ORValidator(firstValidator: lhs, secondValidator: rhs)
 }
 
 /// Defines the `&&` operator for two `Validator` operands.
-@_spi(AdyenInternal)
-public func && (lhs: Validator, rhs: Validator) -> Validator {
+package func && (lhs: Validator, rhs: Validator) -> Validator {
     ANDValidator(firstValidator: lhs, secondValidator: rhs)
 }
 
@@ -57,8 +54,7 @@ extension CombinedValidator {
 }
 
 /// A validator that is the logical `OR` combination of two `Validator` instances.
-@_spi(AdyenInternal)
-public final class ORValidator: CombinedValidator {
+package final class ORValidator: CombinedValidator {
     public let firstValidator: Validator
     public let secondValidator: Validator
     
@@ -73,8 +69,7 @@ public final class ORValidator: CombinedValidator {
 }
 
 /// A validator that is the logical `AND` combination of two `Validator` instances.
-@_spi(AdyenInternal)
-public final class ANDValidator: CombinedValidator {
+package final class ANDValidator: CombinedValidator {
     public let firstValidator: Validator
     public let secondValidator: Validator
     

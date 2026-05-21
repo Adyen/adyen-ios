@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import AdyenNetworking
-@_spi(AdyenInternal) import AdyenUI
+import AdyenUI
 import Foundation
 import UIKit
 
@@ -37,7 +37,7 @@ internal struct SessionRequest: APIRequest {
         try container.encode(currentConfiguration.amount, forKey: .amount)
         try container.encode(ConfigurationConstants.returnUrl.absoluteString, forKey: .returnUrl)
         try container.encode(ConfigurationConstants.reference, forKey: .reference)
-        try container.encode("iOS", forKey: .channel)
+        try container.encode("ios", forKey: .channel)
         try container.encode(ConfigurationConstants.lineItems, forKey: .lineItems)
         try container.encode(ConfigurationConstants.mandate, forKey: .mandate)
         
@@ -54,7 +54,7 @@ internal struct SessionRequest: APIRequest {
             )
         }
 
-        if ConfigurationConstants.current.cardSettings.showsStorePaymentMethodField {
+        if ConfigurationConstants.current.cardSettings.showStorePaymentMethod {
             AdyenAssertion.assert(
                 message: "API version should be v70 or above to apply card component's store payment method field",
                 condition: ConfigurationConstants.current.apiVersion < 70

@@ -4,7 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import protocol Adyen.Component
 import Foundation
 import UIKit
 
@@ -52,13 +53,13 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
         ///   - twint: Twint configurations.
         public init(
             style: ActionComponentStyle = .init(),
-            threeDS: ThreeDS2ActionConfiguration = .init(),
+            authentication: AuthenticationConfiguration = .init(),
             twint: TwintActionConfiguration? = nil
         ) {
             self.init(
                 localizationParameters: nil,
                 style: style,
-                threeDS: threeDS,
+                authentication: authentication,
                 twint: twint
             )
         }

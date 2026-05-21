@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Adyen3DS2
 import Foundation
-@_spi(AdyenInternal) import Adyen
 
 /// This is a wrapper class for the Objective C 3ds2 sdk.
 /// This translates simple non specific sdk bound types such as

@@ -78,13 +78,11 @@ package struct AnalyticsEventInfo: AnalyticsEvent {
 }
 
 /// Protocol that requires a string only dictionary for analytics. Only meant for analytics as it uses mirroring.
-@_spi(AdyenInternal)
-public protocol AnalyticsStringDictionaryConvertible: Encodable {
+package protocol AnalyticsStringDictionaryConvertible: Encodable {
     var stringOnlyDictionary: [String: String]? { get }
 }
 
-@_spi(AdyenInternal)
-public extension AnalyticsStringDictionaryConvertible {
+package extension AnalyticsStringDictionaryConvertible {
     var stringOnlyDictionary: [String: String]? {
         var dictionary = [String: String]()
         

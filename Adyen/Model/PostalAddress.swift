@@ -164,9 +164,8 @@ extension PostalAddress {
         
         return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
     }
-    
-    @_spi(AdyenInternal)
-    public var formattedStreet: String {
+
+    package var formattedStreet: String {
         let address = CNMutablePostalAddress()
         address.street = [street, houseNumberOrName, apartment]
             .compactMap { $0 }
@@ -175,7 +174,7 @@ extension PostalAddress {
         return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
             .replacingOccurrences(of: "\n", with: ", ")
     }
-    
+
     package func formattedLocation(using localizationParameters: LocalizationParameters?) -> String {
         let address = CNMutablePostalAddress()
         city.map { address.city = $0 }
