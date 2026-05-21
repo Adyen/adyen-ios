@@ -29,7 +29,7 @@ import UIKit
  [Implementation Reference](https://docs.adyen.com/online-payments/ios/drop-in)
  */
 @MainActor
-public final class DropInComponent: NSObject,
+package final class DropInComponent: NSObject,
     AnyDropInComponent,
     ActionHandlingComponent,
     LoadingComponent {
@@ -74,8 +74,7 @@ public final class DropInComponent: NSObject,
     package let title: String
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public var context: AdyenContext
+    package var context: AdyenContext
 
     /// Initializes the drop in component.
     ///
@@ -122,7 +121,7 @@ public final class DropInComponent: NSObject,
     // MARK: - Delegates
 
     /// The delegate of the drop in component.
-    public weak var delegate: DropInComponentDelegate?
+    package weak var delegate: DropInComponentDelegate?
 
     /// The partial payment flow delegate.
     package weak var partialPaymentDelegate: PartialPaymentDelegate?
@@ -139,7 +138,7 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Presentable Component Protocol
 
-    public private(set) lazy var viewController: UIViewController = {
+    package private(set) lazy var viewController: UIViewController = {
         router.rootViewController
     }()
 
@@ -148,7 +147,7 @@ public final class DropInComponent: NSObject,
     /// Handles an action to complete a payment.
     ///
     /// - Parameter action: The action to handle.
-    public func handle(_ action: Action) {
+    package func handle(_ action: Action) {
         dropInFlowManager.handle(action: action)
     }
 
@@ -174,7 +173,7 @@ public final class DropInComponent: NSObject,
     /// - Parameter order: The partial payment order.
     /// - Parameter paymentMethods: The new payment methods.
     /// - Throws: `PartialPaymentError.missingOrderData` in case `order.orderData` is `nil`.
-    public func reload(
+    package func reload(
         with order: PartialPaymentOrder,
         _ paymentMethods: PaymentMethods
     ) throws {
@@ -278,7 +277,7 @@ public final class DropInComponent: NSObject,
         }
     }
 
-    public func stopLoading() {
+    package func stopLoading() {
         paymentInProgress = false
         // TODO: - Handle loading logic in its own module
 //        (rootViewController as? ComponentLoader)?.stopLoading()
