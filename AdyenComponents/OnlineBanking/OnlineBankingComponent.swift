@@ -33,8 +33,7 @@ package final class OnlineBankingComponent: PaymentComponent,
     package typealias Configuration = BasicComponentConfiguration
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public var context: AdyenContext
+    package var context: AdyenContext
 
     package var paymentMethod: PaymentMethod {
         onlineBankingPaymentMethod

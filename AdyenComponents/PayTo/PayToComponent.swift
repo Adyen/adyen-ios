@@ -21,8 +21,7 @@ package final class PayToComponent: PaymentComponent, PresentableComponent, Adye
     package typealias Configuration = BasicComponentConfiguration
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public var context: AdyenContext
+    package var context: AdyenContext
 
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?

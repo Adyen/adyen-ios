@@ -54,8 +54,7 @@ package final class UPIComponent: PaymentComponent,
     package typealias Configuration = BasicComponentConfiguration
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public var context: AdyenContext
+    package var context: AdyenContext
 
     /// The payment method object for this component.
     package var paymentMethod: PaymentMethod {

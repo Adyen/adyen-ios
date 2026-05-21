@@ -23,20 +23,20 @@ package final class AwaitComponent: ActionComponent, Cancellable {
     internal var appLauncher: AnyAppLauncher = AppLauncher()
 
     /// The await component configurations.
-    public struct Configuration {
+    package struct Configuration {
         
         /// The component UI style.
-        public var style: AwaitComponentStyle
+        package var style: AwaitComponentStyle
         
         /// The localization parameters, leave it nil to use the default parameters.
-        public var localizationParameters: LocalizationParameters?
+        package var localizationParameters: LocalizationParameters?
         
         /// Initializes an instance of `Configuration`
         ///
         /// - Parameters:
         ///   - style: The Component UI style.
         ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
-        public init(
+        package init(
             style: AwaitComponentStyle = .init(),
             localizationParameters: LocalizationParameters? = nil
         ) {

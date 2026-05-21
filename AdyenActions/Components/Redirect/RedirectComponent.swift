@@ -36,17 +36,17 @@ package final class RedirectComponent: ActionComponent {
     }
     
     /// The component configurations.
-    public struct Configuration {
+    package struct Configuration {
         
         /// The component's UI style.
-        public var style: RedirectComponentStyle?
+        package var style: RedirectComponentStyle?
         
-        fileprivate let componentName = "redirect"
+        package let componentName = "redirect"
         
         /// Initializes an instance of `Configuration`
         ///
         /// - Parameter style: The component's UI style.
-        public init(style: RedirectComponentStyle? = nil) {
+        package init(style: RedirectComponentStyle? = nil) {
             self.style = style
         }
     }

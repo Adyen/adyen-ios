@@ -11,7 +11,7 @@ import Adyen
 import Foundation
 
 /// Configuration for Twint action handling.
-public struct TwintActionConfiguration: CheckoutComponentConfiguration {
+package struct TwintActionConfiguration: CheckoutComponentConfiguration {
     
     package let componentType: CheckoutComponentType = .action(.twint)
     
@@ -30,7 +30,7 @@ public struct TwintActionConfiguration: CheckoutComponentConfiguration {
     /// - Parameters:
     ///   - callbackAppScheme: The callback app scheme invoked once the Twint app is done with the payment.
     ///     Only provide the scheme, without a host/path/... (e.g. "my-app", not a full URL like "my-app://...").
-    public init(callbackAppScheme: String) {
+    package init(callbackAppScheme: String) {
         if !Self.isCallbackSchemeValid(callbackAppScheme) {
             AdyenAssertion.assertionFailure(message: "Format of provided callbackAppScheme '\(callbackAppScheme)' is incorrect.")
         }
@@ -63,7 +63,7 @@ extension TwintActionConfiguration {
     ///
     /// - Parameter maxIssuerNumber: The issuer number of the highest scheme listed.
     /// - Returns: A modified copy of the configuration.
-    public func maxIssuerNumber(_ maxIssuerNumber: Int) -> Self {
+    package func maxIssuerNumber(_ maxIssuerNumber: Int) -> Self {
         var copy = self
         copy.maxIssuerNumber = maxIssuerNumber
         return copy

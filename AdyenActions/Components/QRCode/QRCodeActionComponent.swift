@@ -36,20 +36,20 @@ package final class QRCodeActionComponent: ActionComponent, Cancellable, Shareab
     internal let presenterViewController = UIViewController()
 
     /// The QR code component configurations.
-    public struct Configuration {
+    package struct Configuration {
         
         /// The component UI style.
-        public var style: QRCodeComponentStyle = .init()
+        package var style: QRCodeComponentStyle = .init()
 
         /// The localization parameters, leave it nil to use the default parameters.
-        public var localizationParameters: LocalizationParameters?
+        package var localizationParameters: LocalizationParameters?
         
         /// Initializes an instance of `Configuration`
         ///
         /// - Parameters:
         ///   - style: The Component UI style.
         ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
-        public init(style: QRCodeComponentStyle = QRCodeComponentStyle(), localizationParameters: LocalizationParameters? = nil) {
+        package init(style: QRCodeComponentStyle = QRCodeComponentStyle(), localizationParameters: LocalizationParameters? = nil) {
             self.style = style
             self.localizationParameters = localizationParameters
         }
