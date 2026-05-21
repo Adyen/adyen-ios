@@ -124,8 +124,7 @@ extension Session {
 extension Session {
     
     package func refreshSessionState(with sessionData: String) async throws {
-        state.data = sessionData
-        state = try await refreshedState()
+        state = try await refreshedState(using: sessionData)
     }
     
     package func performSubmit(_ data: PaymentComponentData) async throws -> SubmitResult {
@@ -216,10 +215,10 @@ private extension Session {
         return newState
     }
     
-    func refreshedState() async throws -> State {
+    func refreshedState(using sessionData: String) async throws -> State {
         let initialInfo = SessionResponse(
             id: state.identifier,
-            sessionData: state.data
+            sessionData: sessionData
         )
         return try await Self.makeSetupCall(
             with: initialInfo,

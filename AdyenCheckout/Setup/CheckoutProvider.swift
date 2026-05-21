@@ -50,7 +50,7 @@ internal class CheckoutProvider: CheckoutProviding {
             presentationDelegate: presentationDelegate,
             resultCallbacks: callbackStore,
             callbackHandler: BeforeSubmitCallbackHandler(
-                inner: SessionCallbackHandler(session: session),
+                handler: SessionCallbackHandler(session: session),
                 session: session,
                 callbackStore: callbackStore
             )

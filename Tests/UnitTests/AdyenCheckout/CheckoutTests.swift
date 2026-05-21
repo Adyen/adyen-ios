@@ -345,7 +345,7 @@ final class CheckoutTests: XCTestCase {
         XCTAssertFalse(session.performSubmitCalled)
     }
     
-    func test_paymentComponentData_applying_shouldOverrideShopperFields() throws {
+    func test_paymentComponentData_replacingBeforeSubmitData_shouldOverrideShopperFields() throws {
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let original = PaymentComponentData(
             paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
@@ -365,7 +365,7 @@ final class CheckoutTests: XCTestCase {
             shopperEmail: "john@example.com"
         )
         
-        let updated = original.applying(overrides)
+        let updated = original.replacing(beforeSubmitData: overrides)
         
         XCTAssertEqual(updated.shopperName, ShopperName(firstName: "John", lastName: "Doe"))
         XCTAssertEqual(updated.emailAddress, "john@example.com")
@@ -811,7 +811,7 @@ final class CheckoutTests: XCTestCase {
             presentationDelegate: nil,
             resultCallbacks: callbackStore,
             callbackHandler: BeforeSubmitCallbackHandler(
-                inner: SessionCallbackHandler(session: session),
+                handler: SessionCallbackHandler(session: session),
                 session: session,
                 callbackStore: callbackStore
             )

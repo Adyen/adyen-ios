@@ -160,7 +160,7 @@ public struct PaymentComponentData {
         )
     }
 
-    package func applying(_ beforeSubmitData: BeforeSubmitData) -> PaymentComponentData {
+    package func replacing(beforeSubmitData: BeforeSubmitData) -> PaymentComponentData {
         var copy = self
         copy.beforeSubmitData = beforeSubmitData
         return copy

@@ -432,6 +432,50 @@ class SessionTests: XCTestCase {
         }
     }
 
+    func test_refreshSessionState_withSuccess_shouldReplaceState() async throws {
+        let apiClient = APIClientMock()
+        apiClient.mockedResults = [.success(SessionSetupResponse(
+            countryCode: "NL",
+            shopperLocale: "nl_NL",
+            paymentMethods: expectedPaymentMethods,
+            amount: .init(value: 500, currencyCode: "EUR"),
+            sessionData: "session_data_2",
+            configuration: .init(installmentOptions: nil, enableStoreDetails: false)
+        ))]
+        sut = initializeSession(expectedPaymentMethods: expectedPaymentMethods, apiClient: apiClient)
+
+        try await sut.refreshSessionState(with: "patched_session_data")
+
+        XCTAssertEqual(sut.state.data, "session_data_2")
+        XCTAssertEqual(sut.state.countryCode, "NL")
+        XCTAssertEqual(sut.state.shopperLocale, "nl_NL")
+        XCTAssertEqual(sut.state.amount, .init(value: 500, currencyCode: "EUR"))
+        XCTAssertFalse(sut.state.responseConfiguration.enableStoreDetails)
+    }
+
+    func test_refreshSessionState_withFailure_shouldNotMutateCurrentState() async {
+        let apiClient = APIClientMock()
+        apiClient.mockedResults = [.failure(Dummy.error)]
+        sut = initializeSession(expectedPaymentMethods: expectedPaymentMethods, apiClient: apiClient)
+
+        let previousState = sut.state
+
+        do {
+            try await sut.refreshSessionState(with: "patched_session_data")
+            XCTFail("Expected error to be thrown")
+        } catch {
+            XCTAssertTrue(error is Dummy)
+        }
+
+        XCTAssertEqual(sut.state.data, previousState.data)
+        XCTAssertEqual(sut.state.identifier, previousState.identifier)
+        XCTAssertEqual(sut.state.countryCode, previousState.countryCode)
+        XCTAssertEqual(sut.state.shopperLocale, previousState.shopperLocale)
+        XCTAssertEqual(sut.state.amount, previousState.amount)
+        XCTAssertEqual(sut.state.paymentMethods, previousState.paymentMethods)
+        XCTAssertEqual(sut.state.responseConfiguration.enableStoreDetails, previousState.responseConfiguration.enableStoreDetails)
+    }
+
     // MARK: - requestOrder
 
     func test_requestOrder_withSuccess_shouldReturnOrder() async throws {

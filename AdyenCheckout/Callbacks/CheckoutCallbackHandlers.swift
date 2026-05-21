@@ -40,45 +40,51 @@ package final class SessionCallbackHandler: CheckoutCallbackHandling {
 @MainActor
 package final class BeforeSubmitCallbackHandler: CheckoutCallbackHandling {
 
-    private let innerHandler: any CheckoutCallbackHandling
+    private let handler: any CheckoutCallbackHandling
     private let session: SessionProtocol
     private let callbackStore: SessionCheckoutCallbackStore
 
     package init(
-        inner: any CheckoutCallbackHandling,
+        handler: any CheckoutCallbackHandling,
         session: SessionProtocol,
         callbackStore: SessionCheckoutCallbackStore
     ) {
-        self.innerHandler = inner
+        self.handler = handler
         self.session = session
         self.callbackStore = callbackStore
     }
 
     package func handleSubmit(_ data: PaymentComponentData) async throws -> SubmitResult {
-        var submitData = data
-        if let onBeforeSubmit = callbackStore.onBeforeSubmit {
-            let inputData = BeforeSubmitData(
-                billingAddress: data.billingAddress,
-                deliveryAddress: data.deliveryAddress,
-                shopperName: data.shopperName,
-                shopperEmail: data.emailAddress
-            )
-            let result = try await onBeforeSubmit(inputData)
-            switch result {
-            case let .proceed(modifiedData, sessionData):
-                if let sessionData {
-                    try await session.refreshSessionState(with: sessionData)
-                }
-                submitData = data.applying(modifiedData)
-            case .abort:
-                throw CallbackError.beforeSubmitAborted
-            }
-        }
-        return try await innerHandler.handleSubmit(submitData)
+        let submitData = try await handleBeforeSubmit(for: data)
+        return try await handler.handleSubmit(submitData)
     }
 
     package func handleAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult {
-        try await innerHandler.handleAdditionalDetails(data)
+        try await handler.handleAdditionalDetails(data)
+    }
+
+    private func handleBeforeSubmit(for data: PaymentComponentData) async throws -> PaymentComponentData {
+        guard let onBeforeSubmit = callbackStore.onBeforeSubmit else {
+            return data
+        }
+
+        let inputData = BeforeSubmitData(
+            billingAddress: data.billingAddress,
+            deliveryAddress: data.deliveryAddress,
+            shopperName: data.shopperName,
+            shopperEmail: data.emailAddress
+        )
+        let result = try await onBeforeSubmit(inputData)
+
+        switch result {
+        case let .proceed(modifiedData, sessionData):
+            if let sessionData {
+                try await session.refreshSessionState(with: sessionData)
+            }
+            return data.replacing(beforeSubmitData: modifiedData)
+        case .abort:
+            throw CallbackError.beforeSubmitAborted
+        }
     }
 }
 
