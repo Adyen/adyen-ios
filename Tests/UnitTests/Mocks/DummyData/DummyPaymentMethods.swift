@@ -78,7 +78,21 @@ let applePayDictionary = [
 
 let idealDictionary = [
     "type": "ideal",
-    "name": "iDeal"
+    "name": "iDeal",
+    "issuers": [
+        ["id": "1121", "name": "Test Issuer"],
+        ["id": "1154", "name": "Test Issuer 2"]
+    ]
+] as [String: Any]
+
+let irisDictionary = [
+    "type": "iris",
+    "name": "IRIS",
+    "issuers": [
+        ["id": "PIRBGRAA", "name": "Piraeus Bank"],
+        ["id": "ERBKGRAA", "name": "Eurobank"],
+        ["id": "ETHNGRAA", "name": "National Bank of Greece"]
+    ]
 ] as [String: Any]
 
 let bcmcCardDictionary = [
@@ -631,4 +645,36 @@ let twint = [
 let payto = [
     "name": "payto",
     "type": "payto"
+]
+
+let payByBankInstant: [String: Any] = [
+    "name": "Pay by Bank",
+    "type": "paybybank"
+]
+
+let payByBankIssuerList: [String: Any] = [
+    "name": "Pay by Bank",
+    "type": "paybybank",
+    "issuers": [
+        [
+            "id": "uk-demobank-open-banking-handoff",
+            "disabled": false,
+            "name": "Tink Demo Bank"
+        ],
+        [
+            "id": "uk-demobank-open-banking-redirect",
+            "disabled": false,
+            "name": "Tink Demo Bank"
+        ],
+        [
+            "id": "uk-demobank-open-banking-redirect-aispis",
+            "disabled": false,
+            "name": "Tink Demo Bank"
+        ],
+        [
+            "id": "uk-demobank-open-banking-redirect-extendable",
+            "disabled": false,
+            "name": "Tink Demo Bank"
+        ]
+    ]
 ]
