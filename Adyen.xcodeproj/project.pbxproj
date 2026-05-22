@@ -1568,7 +1568,7 @@
 		0058691828B6451000B65A19 /* QRCodeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeViewModel.swift; sourceTree = "<group>"; };
 		0058691B28B6457700B65A19 /* QRCodeActionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeActionComponent.swift; sourceTree = "<group>"; };
 		0058692228B8C1FE00B65A19 /* QRCodeActionComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeActionComponentUITests.swift; sourceTree = "<group>"; };
-		00600F242E73030900637477 /* CoreBundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CoreBundleExtension.swift; path = "Adyen/Utilities/Non SPM Bundle Extension/CoreBundleExtension.swift"; sourceTree = SOURCE_ROOT; };
+		00600F242E73030900637477 /* CoreBundleExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreBundleExtension.swift; sourceTree = "<group>"; };
 		0067E73F296C161E005B8D76 /* UPIComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentTests.swift; sourceTree = "<group>"; };
 		00731C9E2E8589B60019BA29 /* AdyenStyleAssertions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdyenStyleAssertions.swift; sourceTree = "<group>"; };
 		007D790B2812C81400382D31 /* AtomeComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeComponentUITests.swift; sourceTree = "<group>"; };
@@ -3738,6 +3738,7 @@
 				E70859FF2625B46C00D0153B /* External */,
 				E702BDE22602148900280682 /* Debugging */,
 				E270FDE7225CC4A7006C2CD0 /* Observable */,
+				00600F242E73030900637477 /* CoreBundleExtension.swift */,
 				E97B972222B238C400505476 /* Analytics.swift */,
 				E9E3DB02222548E100697074 /* AdyenCoder.swift */,
 				E9E3DAFE2225488900697074 /* Completion.swift */,
@@ -3785,7 +3786,6 @@
 		E270FDE7225CC4A7006C2CD0 /* Observable */ = {
 			isa = PBXGroup;
 			children = (
-				00600F242E73030900637477 /* CoreBundleExtension.swift */,
 				E2B317A82265EBD200C1BB30 /* EventPublisher.swift */,
 				E270FDE3225CACB0006C2CD0 /* AdyenObservable.swift */,
 				E288EB952267652D000E960C /* AdyenObserver.swift */,
