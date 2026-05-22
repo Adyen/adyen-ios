@@ -134,6 +134,16 @@ public struct CheckoutConfiguration {
         configurations[.action(actionType)] as? T
     }
 
+    internal func resolvedLocalizationParameters(
+        merging base: LocalizationParameters? = nil
+    ) -> LocalizationParameters? {
+        guard let localizationProvider else {
+            return base
+        }
+
+        return (base ?? LocalizationParameters()).withProvider(localizationProvider)
+    }
+
     // TODO: Robert: Make public to private.
     // This public is not needed, but it currently supports providing
     // analyticsAPIContext in the Integration Examples.

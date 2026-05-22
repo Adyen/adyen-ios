@@ -21,7 +21,7 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     // These are here  to work with the current way,
     // to be changed with new styling/localization
 
-    var localizationParameters: LocalizationParameters? { get }
+    var localizationParameters: LocalizationParameters? { get set }
 
     var localizationProvider: (any CheckoutLocalizationProvider)? { get set }
 

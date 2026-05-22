@@ -58,22 +58,6 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
         )
     }
 
-    func test_cardComponent_builtFromCheckoutConfiguration_withComponentLevelProvider_shouldPreferComponentProviderForVisibleCardStrings() throws {
-        let globalProvider = CardComponentLocalizationFlowProviderMock(values: [.cardNumber: "Global number"])
-        let componentProvider = CardComponentLocalizationFlowProviderMock(values: [.cardNumber: "Component number"])
-
-        let sut = try makeSUT(
-            globalProvider: globalProvider,
-            componentProvider: componentProvider
-        )
-
-        expectVisibleTitles(
-            of: sut,
-            numberTitle: "Component number",
-            securityCodeTitle: localizedString(.cardCvcItemTitle, nil)
-        )
-    }
-
     func test_cardComponent_builtFromCheckoutConfiguration_withoutProvider_shouldUseSDKDefaultLocalization() throws {
         let sut = try makeSUT()
 
@@ -84,13 +68,23 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
         )
     }
 
+    func test_cardComponent_builtFromCheckoutConfiguration_withGlobalProvider_shouldRenderCoBadgedSelectorStrings() throws {
+        let provider = CardComponentLocalizationFlowProviderMock(values: [
+            .cardDualBrandSelectorTitle: "Pick your card",
+            .cardDualBrandSelectorDescription: "Choose the brand for this payment"
+        ])
+
+        let sut = try makeSUT(globalProvider: provider)
+
+        XCTAssertEqual(sut.cardViewController.items.coBadgedCardItem.title, "Pick your card")
+        XCTAssertEqual(sut.cardViewController.items.coBadgedCardItem.subtitle, "Choose the brand for this payment")
+    }
+
     private func makeSUT(
         globalProvider: (any CheckoutLocalizationProvider)? = nil,
-        componentProvider: (any CheckoutLocalizationProvider)? = nil,
         localizationParameters: LocalizationParameters? = nil
     ) throws -> CardComponent {
         var cardConfiguration = CardConfiguration()
-        cardConfiguration.localizationProvider = componentProvider
         cardConfiguration.localizationParameters = localizationParameters
 
         var checkoutConfiguration = makeCheckoutConfiguration(
