@@ -123,8 +123,7 @@ let package = Package(
             ],
             path: "AdyenActions",
             exclude: [
-                "Info.plist",
-                "Utilities/Non SPM Bundle Extension" // This is to exclude `BundleExtension.swift` file, since swift packages has different code to access internal resources.
+                "Info.plist"
             ]
         ),
         .target(
@@ -136,8 +135,7 @@ let package = Package(
             ],
             path: "AdyenCard",
             exclude: [
-                "Info.plist",
-                "Utilities/Non SPM Bundle Extension" // This is to exclude `BundleExtension.swift` file, since swift packages has different code to access internal resources.
+                "Info.plist"
             ]
         ),
         .target(
