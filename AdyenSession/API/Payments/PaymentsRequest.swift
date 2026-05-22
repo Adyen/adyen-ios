@@ -4,13 +4,26 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import AdyenNetworking
 #if canImport(AdyenActions)
-    @_spi(AdyenInternal) import AdyenActions
+    import AdyenActions
 #endif
-import CloudKit
 import Foundation
+
+internal enum SessionError: LocalizedError {
+    case unsupportedActionAfterDetails
+    case unsupportedOrderAfterDetails
+    
+    internal var errorDescription: String? {
+        switch self {
+        case .unsupportedActionAfterDetails:
+            return "Additional details response contained an unsupported follow-up action."
+        case .unsupportedOrderAfterDetails:
+            return "Additional details response contained an unsupported follow-up order."
+        }
+    }
+}
 
 internal struct PaymentsRequest: APIRequest {
     internal let path: String
@@ -95,5 +108,29 @@ internal struct PaymentsResponse: SessionDataAware, SessionResultAware {
         case sessionData
         case resultCode
         case sessionResult
+    }
+}
+
+internal extension PaymentsResponse {
+    func asSubmitResult(paymentMethods: PaymentMethods) -> SubmitResult {
+        if let action {
+            return .action(action)
+        }
+        if let order,
+           let remainingAmount = order.remainingAmount,
+           remainingAmount.value > 0 {
+            return .partialPayment(PartialPayment(order: order, paymentMethods: paymentMethods))
+        }
+        return .completion(resultCode: resultCode.rawValue)
+    }
+    
+    func asAdditionalDetailsResult() throws -> AdditionalDetailsResult {
+        if action != nil {
+            throw SessionError.unsupportedActionAfterDetails
+        }
+        if let order, let remainingAmount = order.remainingAmount, remainingAmount.value > 0 {
+            throw SessionError.unsupportedOrderAfterDetails
+        }
+        return .completion(resultCode: resultCode.rawValue)
     }
 }

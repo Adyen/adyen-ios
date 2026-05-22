@@ -7,8 +7,7 @@
 import UIKit
 
 /// Delegate to handle different viewController events.
-@_spi(AdyenInternal)
-public protocol ViewControllerDelegate: AnyObject {
+package protocol ViewControllerDelegate: AnyObject {
 
     /// Handles the UIViewController.viewDidLoad() event.
     func viewDidLoad(viewController: UIViewController)
@@ -20,12 +19,11 @@ public protocol ViewControllerDelegate: AnyObject {
     func viewWillAppear(viewController: UIViewController)
 }
 
-@_spi(AdyenInternal)
 extension ViewControllerDelegate {
 
-    public func viewDidLoad(viewController: UIViewController) { /* Empty implementation */ }
+    package func viewDidLoad(viewController: UIViewController) { /* Empty implementation */ }
 
-    public func viewDidAppear(viewController: UIViewController) { /* Empty implementation */ }
+    package func viewDidAppear(viewController: UIViewController) { /* Empty implementation */ }
 
-    public func viewWillAppear(viewController: UIViewController) { /* Empty implementation */ }
+    package func viewWillAppear(viewController: UIViewController) { /* Empty implementation */ }
 }

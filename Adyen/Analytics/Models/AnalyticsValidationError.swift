@@ -7,8 +7,7 @@
 import Foundation
 
 /// Protocol created specially for analytics related validation errors.
-@_spi(AdyenInternal)
-public protocol AnalyticsValidationError: ValidationError {
+package protocol AnalyticsValidationError: ValidationError {
     
     /// Code of the error for analytics.
     var analyticsErrorCode: Int { get }

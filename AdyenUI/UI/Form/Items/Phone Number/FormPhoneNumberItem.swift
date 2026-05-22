@@ -4,13 +4,13 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import Foundation
 
 /// Describes a phone number entry form item.
-@_spi(AdyenInternal)
-public final class FormPhoneNumberItem: FormTextItem {
-    
+package final class FormPhoneNumberItem: FormTextItem {
+
     /// The phone prefix picker item.
     internal let phonePrefixItem: FormPhoneExtensionPickerItem
     
@@ -28,7 +28,22 @@ public final class FormPhoneNumberItem: FormTextItem {
     /// - Parameter selectableValues: The list of values to select from.
     /// - Parameter style: The `FormTextItemStyle` UI style.
     /// - Parameter localizationParameters: Parameters for custom localization, leave it nil to use the default parameters.
-    public init(
+    package convenience init(
+        phoneNumber: PhoneNumber?,
+        selectableValues: [PhoneExtension],
+        style: FormTextItemStyle,
+        presenter: WeakReferenceViewControllerPresenter
+    ) {
+        self.init(
+            phoneNumber: phoneNumber,
+            selectableValues: selectableValues,
+            style: style,
+            localizationParameters: nil,
+            presenter: presenter
+        )
+    }
+
+    package init(
         phoneNumber: PhoneNumber?,
         selectableValues: [PhoneExtension],
         style: FormTextItemStyle,

@@ -4,7 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import protocol Adyen.ShopperInformation
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
@@ -155,8 +156,9 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
 @_spi(AdyenInternal)
 extension CardDetails: DelegatedAuthenticationAware {}
 
+@_spi(AdyenInternal)
 extension CardDetails: SDKDataAuthenticationProvider {
-    package var authentication: SDKData.Authentication {
+    public var authentication: SDKData.Authentication {
         .init(threeDS2SdkVersion: threeDS2SdkVersion)
     }
 }

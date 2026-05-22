@@ -15,12 +15,6 @@ public enum Action: Decodable {
     /// Indicates the user should be redirected to an SDK.
     case sdk(SDKAction)
     
-    /// Indicates a 3D Secure device fingerprint should be taken.
-    case threeDS2Fingerprint(ThreeDS2FingerprintAction)
-    
-    /// Indicates a 3D Secure challenge should be presented.
-    case threeDS2Challenge(ThreeDS2ChallengeAction)
-
     /// Indicates a full 3D Secure 2 flow should be executed including fingerprint collection,
     /// and potentially a challenge or a fallback to 3DS1.
     case threeDS2(ThreeDS2Action)
@@ -49,10 +43,6 @@ public enum Action: Decodable {
         switch type {
         case .redirect, .nativeRedirect:
             self = try .redirect(RedirectAction(from: decoder))
-        case .threeDS2Fingerprint:
-            self = try .threeDS2Fingerprint(ThreeDS2FingerprintAction(from: decoder))
-        case .threeDS2Challenge:
-            self = try .threeDS2Challenge(ThreeDS2ChallengeAction(from: decoder))
         case .threeDS2:
             self = try .threeDS2(ThreeDS2Action(from: decoder))
         case .sdk:
@@ -97,8 +87,6 @@ public enum Action: Decodable {
     private enum ActionType: String, Decodable {
         case redirect
         case nativeRedirect
-        case threeDS2Fingerprint
-        case threeDS2Challenge
         case threeDS2
         case sdk
         case qrCode

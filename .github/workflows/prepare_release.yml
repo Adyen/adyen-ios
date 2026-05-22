@@ -23,7 +23,7 @@ jobs:
   post-release-notes:
     name: "Create Release Pull Request"
     needs: get-release-notes
-    runs-on: macos-15-xlarge
+    runs-on: macos-26-xlarge
     steps:
     
     # Checking out the current branch
@@ -84,7 +84,7 @@ jobs:
         number: ${{ steps.create_pr.outputs.pull-request-number }}
 
     - name: Auto approve release PR
-      uses: hmarr/auto-approve-action@v3
+      uses: hmarr/auto-approve-action@v4.0.0
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}

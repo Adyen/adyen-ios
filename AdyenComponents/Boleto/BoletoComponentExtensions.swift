@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
 #endif
 import Foundation
 
@@ -21,7 +21,7 @@ extension BoletoComponent {
         /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
         internal let showsSubmitButton: Bool
 
-        public var localizationParameters: LocalizationParameters?
+        package var localizationParameters: LocalizationParameters?
         
         /// Pre-filled optional personal information about the shopper
         public let shopperInformation: PrefilledShopperInformation?
@@ -38,6 +38,21 @@ extension BoletoComponent {
         ///   - shopperInformation: Pre-filled optional personal information about the shopper
         ///   - showEmailAddress: Indicates whether to show `sendCopyByEmail` checkbox and email text field
         public init(
+            style: FormComponentStyle = FormComponentStyle(),
+            showsSubmitButton: Bool = true,
+            shopperInformation: PrefilledShopperInformation?,
+            showEmailAddress: Bool
+        ) {
+            self.init(
+                style: style,
+                showsSubmitButton: showsSubmitButton,
+                localizationParameters: nil,
+                shopperInformation: shopperInformation,
+                showEmailAddress: showEmailAddress
+            )
+        }
+
+        package init(
             style: FormComponentStyle = FormComponentStyle(),
             showsSubmitButton: Bool = true,
             localizationParameters: LocalizationParameters? = nil,

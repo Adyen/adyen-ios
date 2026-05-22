@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import struct AdyenCheckout.CheckoutConfiguration
 import AdyenNetworking
 import AdyenSession
@@ -46,8 +46,8 @@ extension InitialDataFlowProtocol {
         )
     }
     
-    internal func requestSessionInitialInfo() async throws -> SessionResponse {
-        let request = SessionRequest()
+    internal func requestSessionInitialInfo(payable: Bool = true) async throws -> SessionResponse {
+        let request = SessionRequest(payable: payable)
         return try await withCheckedThrowingContinuation { continuation in
             apiClient.perform(request) { result in
                 continuation.resume(with: result)

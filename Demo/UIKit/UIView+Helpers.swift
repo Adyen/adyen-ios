@@ -7,7 +7,6 @@
 import Foundation
 import UIKit
 
-@_spi(AdyenInternal)
 extension UIView {
     
     /// Attaches top, bottom, left and right anchors of this view to the corresponding anchors inside the specified view.
@@ -15,7 +14,7 @@ extension UIView {
     /// - Parameter view: Container view
     /// - Parameter padding: Padding values for each edge. Default is 0 on all edges.
     @discardableResult
-    public func anchor(inside view: UIView, with padding: UIEdgeInsets = .zero) -> [NSLayoutConstraint] {
+    func anchor(inside view: UIView, with padding: UIEdgeInsets = .zero) -> [NSLayoutConstraint] {
         anchor(inside: .view(view), edgeInsets: EdgeInsets(edgeInsets: padding))
     }
 
@@ -24,7 +23,7 @@ extension UIView {
     /// - Parameter margins: The layout guide to constraint to.
     /// - Parameter padding: Padding values for each edge. Default is 0 on all edges.
     @discardableResult
-    public func anchor(inside margins: UILayoutGuide, with padding: UIEdgeInsets = .zero) -> [NSLayoutConstraint] {
+    func anchor(inside margins: UILayoutGuide, with padding: UIEdgeInsets = .zero) -> [NSLayoutConstraint] {
         anchor(inside: .layoutGuide(margins), edgeInsets: EdgeInsets(edgeInsets: padding))
     }
     
@@ -33,7 +32,7 @@ extension UIView {
     ///   - anchorSource: The anchor source to contain this view.
     ///   - edgeInsets: Edges with inset values on which the views should be anchored. Defaults to all 4 edges with 0 inset each.
     @discardableResult
-    public func anchor(
+    func anchor(
         inside anchorSource: LayoutAnchorSource,
         edgeInsets: EdgeInsets = .zero
     ) -> [NSLayoutConstraint] {
@@ -72,7 +71,7 @@ extension UIView {
     /// Wrap the view inside a container view with certain edge insets
     ///
     /// - Parameter insets: The insets inside the container view.
-    public func wrapped(with insets: UIEdgeInsets = .zero) -> UIView {
+    func wrapped(with insets: UIEdgeInsets = .zero) -> UIView {
         let containerView = UIView()
         containerView.addSubview(self)
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -82,8 +81,8 @@ extension UIView {
     }
 
     /// An enum to specify an anchor source
-    public enum LayoutAnchorSource {
-        
+    enum LayoutAnchorSource {
+
         /// Regular `UIView` object
         case view(UIView)
         
@@ -101,8 +100,8 @@ extension UIView {
     }
     
     /// Inset distances for views that can be nil.
-    public struct EdgeInsets {
-        
+    struct EdgeInsets {
+
         public var top: CGFloat?
 
         public var left: CGFloat?

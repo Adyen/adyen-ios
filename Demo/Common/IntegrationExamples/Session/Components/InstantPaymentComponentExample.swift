@@ -78,7 +78,8 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
             let component = try instantPaymentComponent(from: session)
             instantPaymentComponent = component
             presenter?.showLoadingIndicator()
-            component.initiatePayment(delegate: session)
+            // TODO: Migrate to Checkout — Session no longer conforms to PaymentComponentDelegate in v6.
+            // component.initiatePayment(delegate: session)
         } catch {
             self.presentAlert(with: error)
         }
@@ -123,20 +124,7 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
 
 }
 
-extension InstantPaymentComponentExample: SessionDelegate {
-
-    func didComplete(with result: CheckoutResult, component: Component, session: Session) {
-        dismissAndShowAlert(result.resultCode.isSuccess, result.resultCode.rawValue)
-    }
-
-    func didFail(with error: Error, from component: Component, session: Session) {
-        dismissAndShowAlert(false, error.localizedDescription)
-    }
-
-    func didOpenExternalApplication(component: ActionComponent, session: Session) {
-        print(#function)
-    }
-}
+// TODO: Migrate to Checkout API — SessionDelegate has been removed in v6.
 
 extension InstantPaymentComponentExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {

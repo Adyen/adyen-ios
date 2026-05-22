@@ -5,119 +5,181 @@
 //
 
 import Adyen
+import AdyenCheckout
 import AdyenComponents
-import AdyenSession
+import Contacts
 import PassKit
 
+@MainActor
 internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 
-    // MARK: - Properties
-
-    internal var session: Session?
     internal weak var presenter: PresenterExampleProtocol?
-    internal var applePayComponent: ApplePayComponent?
-    
-    internal lazy var apiClient = ApiClientHelper.generateApiClient()
-    
-    internal var context: AdyenContext?
 
-    // MARK: - Initializers
+    private var checkout: SessionCheckout?
+    private var adyenComponent: CheckoutPaymentComponent?
+    private var latestApplePayAmount = ConfigurationConstants.current.amount
+
+    internal lazy var apiClient = ApiClientHelper.generateApiClient()
+    private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
+
+    /// comes from demo app protocol, unused on new structure
+    internal var context: AdyenContext?
 
     internal init() {}
 
     internal func start() {
-        presenter?.showLoadingIndicator()
+        startLoading()
+        latestApplePayAmount = ConfigurationConstants.current.amount
+
         Task {
             do {
-                try await initializeExampleAppAdyenContext()
-                loadSession { [weak self] response in
-                    guard let self else { return }
-
-                    self.presenter?.hideLoadingIndicator()
-
-                    switch response {
-                    case let .success(session):
-                        self.session = session
-                        self.presentComponent(with: session)
-
-                    case let .failure(error):
-                        self.presentAlert(with: error)
-                    }
-                }
-
+                let patchableSession = ConfigurationConstants.current.applePaySettings.onBeforeSubmitMode == .patchSession
+                let sessionResponse = try await requestSessionInitialInfo(payable: !patchableSession)
+                let component = try await applePayComponent(from: sessionResponse)
+                self.adyenComponent = component
+                hideLoading()
+                present(component: component)
             } catch {
-                self.presenter?.hideLoadingIndicator()
-                self.presentAlert(with: error)
-            }
-
-        }
-    }
-
-    // MARK: - Networking
-
-    internal func loadSession(completion: @escaping (Result<Session, Error>) -> Void) {
-        requestSessionInitialInfo { [weak self] response in
-            guard let self else { return }
-            switch response {
-            case let .success(model):
-//                Session.initialize(
-//                    with: configuration,
-//                    delegate: self,
-//                    presentationDelegate: self,
-//                    completion: completion
-//                )
-                break
-            case let .failure(error):
-                completion(.failure(error))
+                hideLoading()
+                handleError(error)
             }
         }
     }
 
-    // MARK: Presentation
-
-    internal func presentComponent(with session: Session) {
-        do {
-            let component = try applePayComponent(from: session)
-            let componentViewController = component.viewController
-            presenter?.present(viewController: componentViewController, completion: nil)
-            applePayComponent = component
-        } catch {
-            self.presentAlert(with: error)
+    private func applePayComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
+        let configuration = try CheckoutConfiguration(
+            environment: ConfigurationConstants.componentsEnvironment,
+            amount: ConfigurationConstants.current.amount,
+            clientKey: ConfigurationConstants.clientKey,
+            analyticsConfiguration: .init(
+                isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
+            )
+        ) {
+            try ConfigurationConstants.current
+                .applePayConfiguration(using: .demoWithShippingFields)
+                .onAuthorize { payment in
+                    if ConfigurationConstants.current.applePaySettings.didAuthorizeSuccessful {
+                        return PKPaymentAuthorizationResult(status: .success, errors: nil)
+                    } else {
+                        let postalCodeError = PKPaymentRequest.paymentShippingAddressInvalidError(
+                            withKey: CNPostalAddressPostalCodeKey,
+                            localizedDescription: "Wrong postal code"
+                        )
+                        return PKPaymentAuthorizationResult(status: .failure, errors: [postalCodeError])
+                    }
+                }.onShippingContactChange { contact, summaryItems in
+                    let cityLabel = contact.postalAddress?.city ?? "Somewhere"
+                    let items = self.updatedSummaryItems(
+                        from: summaryItems,
+                        appendedItems: [
+                            .init(
+                                label: "Shipping \(cityLabel)",
+                                amount: NSDecimalNumber(value: 5.0)
+                            )
+                        ],
+                        totalAmountDelta: 5.0
+                    )
+                    self.updateLatestApplePayAmount(using: items)
+                    return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: items)
+                }
+                .onShippingMethodChange { shippingMethod, summaryItems in
+                    let items = self.updatedSummaryItems(
+                        from: summaryItems,
+                        appendedItems: [shippingMethod],
+                        totalAmountDelta: shippingMethod.amount.doubleValue
+                    )
+                    self.updateLatestApplePayAmount(using: items)
+                    return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: items)
+                }
+                .onCouponCodeChange { _, summaryItems in
+                    // make sure your backend's amount and apple pay sheet amount are the same
+                    let items = self.updatedSummaryItems(
+                        from: summaryItems,
+                        appendedItems: [.init(label: "Coupon", amount: NSDecimalNumber(value: -5.0))],
+                        totalAmountDelta: -5.0
+                    )
+                    self.updateLatestApplePayAmount(using: items)
+                    return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: items)
+                }
+                .onPaymentMethodChange { paymentMethod, summaryItems in
+                    // Example: Add a processing fee based on card type
+                    let cardType = paymentMethod.displayName ?? "Card"
+                    let items = self.updatedSummaryItems(
+                        from: summaryItems,
+                        appendedItems: [
+                            .init(
+                                label: "Processing Fee (\(cardType))",
+                                amount: NSDecimalNumber(value: 1.0)
+                            )
+                        ],
+                        totalAmountDelta: 1.0
+                    )
+                    self.updateLatestApplePayAmount(using: items)
+                    return PKPaymentRequestPaymentMethodUpdate(paymentSummaryItems: items)
+                }
         }
-    }
 
-    internal func applePayComponent(from session: Session) throws -> ApplePayComponent {
-        let paymentMethods = session.state.paymentMethods
-        guard let paymentMethod = paymentMethods.paymentMethod(ofType: ApplePayPaymentMethod.self) else {
-            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self)
-        }
-        guard let context else {
-            fatalError("AdyenContext is not initialized")
-        }
-        let config = try ConfigurationConstants.current.applePayConfiguration(using: .demoWithShippingFields)
-
-        let component = try ApplePayComponent(
-            paymentMethod: paymentMethod,
-            context: context,
-            configuration: config
+        let checkout = try await Checkout.setup(
+            with: sessionResponse,
+            configuration: configuration,
+            presentationDelegate: self
         )
-        component.delegate = session
-        component.authorizationDelegate = self
-        return component
+        .onBeforeSubmit { data in
+            print("onBeforeSubmit: shopperName: \(String(describing: data.shopperName))")
+            print("onBeforeSubmit: shopperEmail: \(String(describing: data.shopperEmail))")
+            print("onBeforeSubmit: billingAddress: \(String(describing: data.billingAddress))")
+            print("onBeforeSubmit: deliveryAddress: \(String(describing: data.deliveryAddress))")
+
+            switch ConfigurationConstants.current.applePaySettings.onBeforeSubmitMode {
+            case .updateData:
+                let updatedData = data
+                    .replacing(shopperName: ShopperName(firstName: "Demo", lastName: "Shopper"))
+                    .replacing(shopperEmail: "updatedForDemo-\(ConfigurationConstants.shopperEmail)")
+                return .proceed(data: updatedData, sessionData: nil)
+            case .abort:
+                return .abort
+            case .patchSession:
+                let patchedSession = try await self.patchSession(using: sessionResponse)
+                return .proceed(data: data, sessionData: patchedSession.sessionData)
+            }
+        }
+        .onComplete { [weak self] result in
+            self?.dismissAndShowAlert(
+                result.resultCode.isSuccess,
+                result.resultCode.rawValue
+            )
+        }
+        .onError { [weak self] error in
+            self?.dismissAndShowAlert(false, error.localizedDescription)
+        }
+
+        self.checkout = checkout
+
+        return try checkout.createPaymentComponent(for: .applePay)
     }
 
-    private func present(_ component: PresentableComponent) {
-        presenter?.present(viewController: component.viewController, completion: nil)
+    private func startLoading() {
+        presenter?.showLoadingIndicator()
     }
 
-    // MARK: - Alert handling
-
-    internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
-        presenter?.presentAlert(with: error, retryHandler: retryHandler)
+    private func handleError(_ error: Error) {
+        presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
     }
 
-    internal func dismissAndShowAlert(_ success: Bool, _ message: String) {
-        // dismiss ourselves as the auto dismiss flag is false
+    private func hideLoading() {
+        presenter?.hideLoadingIndicator()
+    }
+
+    private func present(component: CheckoutPaymentComponent) {
+        guard let viewController = component.viewController else {
+            handleError(IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self))
+            return
+        }
+        // Apple Pay's PassKit sheet is presented as-is; no navigation wrapper.
+        presenter?.present(viewController: viewController, completion: nil)
+    }
+
+    private func dismissAndShowAlert(_ success: Bool, _ message: String) {
         presenter?.dismiss {
             // Payment is processed. Add your code here.
             let title = success ? "Success" : "Error"
@@ -125,42 +187,59 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
         }
     }
 
-}
+    private func updatedSummaryItems(
+        from summaryItems: [PKPaymentSummaryItem],
+        appendedItems: [PKPaymentSummaryItem],
+        totalAmountDelta: Double
+    ) -> [PKPaymentSummaryItem] {
+        guard let total = summaryItems.last else {
+            return summaryItems
+        }
 
-extension ApplePayComponentExample: SessionDelegate {
+        var updatedItems = Array(summaryItems.dropLast())
+        updatedItems.append(contentsOf: appendedItems)
+        updatedItems.append(
+            .init(
+                label: total.label,
+                amount: NSDecimalNumber(value: total.amount.doubleValue + totalAmountDelta)
+            )
+        )
+        return updatedItems
+    }
+
+    private func updateLatestApplePayAmount(using summaryItems: [PKPaymentSummaryItem]) {
+        guard let total = summaryItems.last else {
+            return
+        }
+
+        let currentAmount = ConfigurationConstants.current.amount
+        let updatedValue = AmountFormatter.minorUnitAmount(
+            from: total.amount.decimalValue,
+            currencyCode: currentAmount.currencyCode,
+            localeIdentifier: currentAmount.localeIdentifier
+        )
+        latestApplePayAmount = Amount(
+            value: updatedValue,
+            currencyCode: currentAmount.currencyCode,
+            localeIdentifier: currentAmount.localeIdentifier
+        )
+    }
     
-    func didComplete(with result: CheckoutResult, component: Component, session: Session) {
-        dismissAndShowAlert(result.resultCode.isSuccess, result.resultCode.rawValue)
+    // MARK: - Backend
+
+    private func patchSession(using sessionResponse: SessionResponse) async throws -> SessionPatchResponse {
+        let request = SessionPatchRequest(
+            sessionId: sessionResponse.id,
+            sessionData: sessionResponse.sessionData,
+            amount: latestApplePayAmount
+        )
+        return try await asyncApiClient.performAsync(request)
     }
-
-    func didFail(with error: Error, from component: Component, session: Session) {
-        dismissAndShowAlert(false, error.localizedDescription)
-    }
-
-    func didOpenExternalApplication(component: ActionComponent, session: Session) {}
-
 }
 
 extension ApplePayComponentExample: PresentationDelegate {
-    /// The implementation of this delegate method is not needed when using Session
-    internal func present(component: PresentableComponent) {}
 
-}
-
-extension ApplePayComponentExample: ApplePayAuthorizationDelegate {
-    
-    func didAuthorize(
-        payment: PKPayment,
-        completion: @escaping (PKPaymentAuthorizationResult) -> Void
-    ) {
-        if ConfigurationConstants.current.applePaySettings.didAuthorizeSuccessful {
-            completion(.init(status: .success, errors: nil))
-        } else {
-            let postalCodeError = PKPaymentRequest.paymentShippingAddressInvalidError(
-                withKey: CNPostalAddressPostalCodeKey,
-                localizedDescription: "Wrong postal code"
-            )
-            completion(.init(status: .failure, errors: [postalCodeError]))
-        }
+    func present(component: any PresentableComponent) {
+        presenter?.present(viewController: component.viewController, completion: nil)
     }
 }

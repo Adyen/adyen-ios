@@ -6,222 +6,187 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable @_spi(AdyenInternal) import AdyenCard
+@testable @_spi(AdyenInternal) import AdyenUI
 import XCTest
 
 @MainActor
 class StoredCardComponentTests: XCTestCase {
 
-    private var context = Dummy.context
+    // MARK: - UI Display
 
-    let method = StoredCardPaymentMethod(
-        type: .card,
-        name: "name",
-        identifier: "id",
-        fundingSource: .credit,
-        supportedShopperInteractions: [.shopperPresent],
-        brand: .visa,
-        lastFour: "1234",
-        expiryMonth: "12",
-        expiryYear: "22",
-        holderName: "holderName"
-    )
+    /// Verifies that the component displays a security code field, cancel button, and pay button.
+    func testUIWithClientKey() {
+        // Given
+        let sut = makeSUT()
+        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
 
-    // let payment = Payment(amount: Amount(value: 174, currencyCode: "EUR"), countryCode: "NL")
+        // When
+        proxy.present()
 
-    func testUIWithClientKey() throws {
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
-
-        presentOnRoot(sut.viewController)
-        
-        let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
-        let textField: UITextField! = try XCTUnwrap(alertController.textFields?.first)
-        XCTAssertNotNil(textField)
-
-        XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
-        XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: context.amount, style: .immediate, nil) })
-
-        alertController.dismiss(animated: false, completion: nil)
+        // Then
+        XCTAssertNotNil(proxy.securityCodeText)
+        XCTAssertTrue(proxy.hasPayButton)
     }
 
+    // MARK: - Payment Submit
+
+    /// Verifies that submitting a valid security code encrypts and submits card details to the delegate.
     func testPaymentSubmitWithValidPublicKey() throws {
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
-
-        let delegateExpectation = expectation(description: "expect delegate to be called.")
+        // Given
+        let sut = makeSUT()
+        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
         let delegate = PaymentComponentDelegateMock()
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-            XCTAssertNotNil(data.paymentMethod as? CardDetails)
-
-            let cardDetails = data.paymentMethod as! CardDetails
-            XCTAssertNotNil(cardDetails.encryptedSecurityCode)
-            XCTAssertNil(cardDetails.encryptedCardNumber)
-            XCTAssertNil(cardDetails.encryptedExpiryYear)
-            XCTAssertNil(cardDetails.encryptedExpiryMonth)
-
-            delegateExpectation.fulfill()
-        }
-        delegate.onDidFail = { _, _ in
-            XCTFail("delegate.didFail() should never be called.")
-        }
         sut.delegate = delegate
 
-        presentOnRoot(sut.viewController)
-        
-        let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
-        let textField: UITextField! = try XCTUnwrap(alertController.textFields?.first)
-        XCTAssertNotNil(textField)
+        let submitExpectation = expectation(description: "Expect didSubmit to be called")
+        delegate.onDidSubmit = { _, _ in submitExpectation.fulfill() }
+        delegate.onDidFail = { _, _ in XCTFail("didFail should not be called") }
 
-        textField?.text = "737"
-        textField?.sendActions(for: .editingChanged)
+        // When
+        proxy.present()
+        proxy.enterText("737")
+        proxy.tapPayButton()
 
-        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.amount, style: .immediate, nil) })
+        // Then
+        waitForExpectations(timeout: 1)
 
-        payAction.tap()
-        
-        XCTAssertTrue(try XCTUnwrap(textField?.text?.isEmpty))
-        XCTAssertFalse(payAction.isEnabled)
+        let args = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+        XCTAssertTrue(args.component === sut)
 
-        alertController.dismiss(animated: false, completion: nil)
-        
-        waitForExpectations(timeout: 10, handler: nil)
+        let cardDetails = try XCTUnwrap(args.data.paymentMethod as? CardDetails)
+        XCTAssertNotNil(cardDetails.encryptedSecurityCode)
+        XCTAssertNil(cardDetails.encryptedCardNumber)
+        XCTAssertNil(cardDetails.encryptedExpiryYear)
+        XCTAssertNil(cardDetails.encryptedExpiryMonth)
+
+        XCTAssertTrue(proxy.securityCodeText?.isEmpty == true)
+        // Button is disabled after submission because security code is cleared on submit in the UI.
+        XCTAssertFalse(proxy.isPayButtonEnabled)
     }
 
+    /// Verifies that encryption failure with an invalid public key calls didFail on the delegate.
     func testPaymentSubmitWithInvalidPublicKey() throws {
-        let contextWithInvalidKey = AdyenContext(
-            apiContext: Dummy.apiContext,
-            amount: Dummy.amount,
-            publicKey: "invalid_key",
-            analyticsProvider: AnalyticsProviderMock()
-        )
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: contextWithInvalidKey)
-
+        // Given
+        let sut = makeSUT(publicKey: "invalid_key")
+        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
         let delegate = PaymentComponentDelegateMock()
-        delegate.onDidSubmit = { _, _ in
-            XCTFail("delegate.didSubmit() should never be called.")
-        }
-        let delegateExpectation = expectation(description: "expect delegate to be called.")
-        delegate.onDidFail = { error, component in
-            XCTAssertTrue(component === sut)
-            delegateExpectation.fulfill()
-        }
         sut.delegate = delegate
 
-        presentOnRoot(sut.viewController)
-        
-        let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
-        let textField: UITextField! = try XCTUnwrap(alertController.textFields?.first)
-        XCTAssertNotNil(textField)
+        let failExpectation = expectation(description: "Expect didFail to be called")
+        delegate.onDidSubmit = { _, _ in XCTFail("didSubmit should not be called") }
+        delegate.onDidFail = { _, _ in failExpectation.fulfill() }
 
-        textField.text = "737"
-        textField.sendActions(for: .editingChanged)
+        // When
+        proxy.present()
+        proxy.enterText("737")
+        proxy.tapPayButton()
 
-        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.amount, style: .immediate, nil) })
+        // Then
+        waitForExpectations(timeout: 1)
 
-        payAction.tap()
-
-        alertController.dismiss(animated: false, completion: nil)
-        waitForExpectations(timeout: 10, handler: nil)
+        let args = try XCTUnwrap(delegate.didFailReceivedArguments)
+        XCTAssertTrue(args.component === sut)
     }
 
-    func testCVCLimitForAMEX() throws {
-        let method = StoredCardPaymentMethod(
-            type: .card,
-            name: "name",
-            identifier: "id",
-            fundingSource: .credit,
-            supportedShopperInteractions: [.shopperPresent],
-            brand: .americanExpress,
-            lastFour: "1234",
-            expiryMonth: "12",
-            expiryYear: "22",
-            holderName: "holderName"
-        )
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
+    // MARK: - CVC Validation
 
-        presentOnRoot(sut.viewController)
-        
-        let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
-        let textField: UITextField! = try XCTUnwrap(alertController.textFields?.first)
-        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.amount, style: .immediate, nil) })
+    /// Verifies that AMEX cards require exactly 4 digits for the security code.
+    func testCVCLimitForAMEX() {
+        // Given
+        let sut = makeSUT(brand: .americanExpress)
+        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
+        proxy.present()
 
-        textField.insertText("a")
-        textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.text, "")
+        // When / Then - non-numeric characters are filtered
+        proxy.enterText("a")
+        XCTAssertEqual(proxy.securityCodeText, "")
 
-        textField.insertText("1")
-        textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.text, "1")
+        // When / Then - build up to 4 digits
+        proxy.enterText("1")
+        XCTAssertEqual(proxy.securityCodeText, "1")
 
-        textField.insertText("1")
-        textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.text, "11")
+        proxy.enterText("1")
+        XCTAssertEqual(proxy.securityCodeText, "11")
 
-        textField.insertText("1")
-        textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.text, "111")
-        
-        XCTAssertEqual(payAction.isEnabled, false)
+        proxy.enterText("1")
+        XCTAssertEqual(proxy.securityCodeText, "111")
 
-        textField.insertText("1")
-        textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.text, "1111")
-        XCTAssertEqual(payAction.isEnabled, true)
+        proxy.enterText("1")
+        XCTAssertEqual(proxy.securityCodeText, "1111")
 
-        textField.insertText("1")
-        textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.text, "1111")
-
-        alertController.dismiss(animated: false, completion: nil)
+        // When / Then - cannot exceed 4 digits
+        proxy.enterText("1")
+        XCTAssertEqual(proxy.securityCodeText, "1111")
     }
 
-    func testCVCLimitForNonAMEX() throws {
-        let sut = StoredCardComponent(storedCardPaymentMethod: method, context: context)
+    /// Verifies that non-AMEX cards require exactly 3 digits for the security code.
+    func testCVCLimitForNonAMEX() {
+        // Given
+        let sut = makeSUT(brand: .visa)
+        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
+        proxy.present()
 
-        presentOnRoot(sut.viewController)
-        
-        let alertController = try XCTUnwrap(sut.viewController as? UIAlertController)
-        let textField: UITextField! = try XCTUnwrap(alertController.textFields?.first)
-        let payAction = try XCTUnwrap(alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: context.amount, style: .immediate, nil) })
+        // When / Then - build up to 3 digits
+        proxy.enterText("11")
+        XCTAssertEqual(proxy.securityCodeText, "11")
 
-        textField.insertText("11")
-        textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.text, "11")
+        proxy.enterText("1")
+        XCTAssertEqual(proxy.securityCodeText, "111")
+        XCTAssertTrue(proxy.isPayButtonEnabled)
 
-        textField.insertText("1")
-        textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.text, "111")
-        
-        XCTAssertEqual(payAction.isEnabled, true)
-
-        textField.insertText("1")
-        textField?.sendActions(for: .editingChanged)
-        XCTAssertEqual(textField.text, "111")
-        XCTAssertEqual(payAction.isEnabled, true)
-
-        alertController.dismiss(animated: false, completion: nil)
+        // When / Then - cannot exceed 3 digits
+        proxy.enterText("1")
+        XCTAssertEqual(proxy.securityCodeText, "111")
+        XCTAssertTrue(proxy.isPayButtonEnabled)
     }
 
+    // MARK: - Validation Errors
+
+    /// Verifies that entering an incomplete security code (2 digits) and tapping pay shows a validation error
+    /// and does NOT call the submit delegate.
+    func testPaymentSubmitWithIncompleteCVC_ShowsErrorAndDoesNotSubmit() {
+        // Given
+        let sut = makeSUT()
+        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+
+        delegate.onDidSubmit = { _, _ in XCTFail("didSubmit should not be called for invalid CVC") }
+        delegate.onDidFail = { _, _ in XCTFail("didFail should not be called") }
+
+        // When
+        proxy.present()
+        proxy.enterText("12") // Only 2 digits - invalid for any card type
+        proxy.tapPayButton()
+
+        // Then - wait for async submit to complete and trigger validation
+        wait(until: { proxy.securityCodeShowsError }, timeout: 1.0, retryInterval: .milliseconds(50))
+        XCTAssertNil(delegate.didSubmitReceivedArguments, "Delegate should not receive submit call")
+    }
+
+    // MARK: - Analytics
+
+    /// Verifies that accessing the view controller sends an initial analytics event.
     func testViewDidLoadShouldSendInitialEvent() {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
-        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
-        let paymentMethod = storedCardPaymentMethod(brand: .masterCard)
-        let sut = StoredCardComponent(
-            storedCardPaymentMethod: paymentMethod,
-            context: context
-        )
+        let sut = makeSUT(analyticsProvider: analyticsProviderMock)
 
         // When
-        sut.viewController.viewDidLoad()
+        _ = sut.viewController
 
         // Then
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
     }
 
-    // MARK: - Private
+    // MARK: - Helpers
 
-    private func storedCardPaymentMethod(brand: CardType) -> StoredCardPaymentMethod {
-        .init(
+    private func makeSUT(
+        brand: CardType = .visa,
+        publicKey: String = Dummy.publicKey,
+        analyticsProvider: AnyAnalyticsProvider? = nil
+    ) -> StoredCardComponent {
+        let paymentMethod = StoredCardPaymentMethod(
             type: .card,
             name: "name",
             identifier: "id",
@@ -233,17 +198,83 @@ class StoredCardComponentTests: XCTestCase {
             expiryYear: "22",
             holderName: "holderName"
         )
+
+        let context = AdyenContext(
+            apiContext: Dummy.apiContext,
+            amount: Dummy.amount,
+            publicKey: publicKey,
+            analyticsProvider: analyticsProvider ?? AnalyticsProviderMock()
+        )
+
+        return StoredCardComponent(
+            storedCardPaymentMethod: paymentMethod,
+            context: context,
+            theme: CheckoutTheme()
+        )
     }
 }
 
-extension UIAlertAction {
-    typealias AlertHandler = @convention(block) (UIAlertAction) -> Void
+// MARK: - StoredCardComponentProxy
 
-    func tap() {
-        let closure = self.value(forKey: "handler")
+@MainActor
+final class StoredCardComponentProxy {
 
-        let handler = unsafeBitCast(closure as AnyObject, to: AlertHandler.self)
+    let component: StoredCardComponent
+    private let testCase: XCTestCase
 
-        handler(self)
+    init(component: StoredCardComponent, testCase: XCTestCase) {
+        self.component = component
+        self.testCase = testCase
+    }
+
+    // MARK: - Presentation
+
+    func present() {
+        component.viewController.loadViewIfNeeded()
+        testCase.presentOnRoot(component.viewController)
+    }
+
+    // MARK: - Security Code
+
+    var securityCodeText: String? {
+        securityCodeItemView?.textField.text
+    }
+
+    var securityCodeShowsError: Bool {
+        securityCodeItemView?.accessory == .invalid
+    }
+
+    func enterText(_ code: String) {
+        guard let textField = securityCodeItemView?.textField else { return }
+        code.forEach { textField.insertText(String($0)) }
+        textField.sendActions(for: .editingChanged)
+    }
+
+    // MARK: - Buttons
+
+    var hasPayButton: Bool {
+        primaryButton != nil
+    }
+
+    var isPayButtonEnabled: Bool {
+        primaryButton?.isEnabled ?? false
+    }
+
+    func tapPayButton() {
+        primaryButton?.sendActions(for: .touchUpInside)
+    }
+
+    // MARK: - Private (StoredCardInputViewController implementation)
+
+    private var storedCardInputViewController: StoredCardInputViewController? {
+        component.viewController as? StoredCardInputViewController
+    }
+
+    private var securityCodeItemView: FormCardSecurityCodeItemView? {
+        storedCardInputViewController?.view.findView(by: "securityCodeItemView")
+    }
+
+    private var primaryButton: FormButton? {
+        storedCardInputViewController?.view.findView(by: "primaryButton")
     }
 }

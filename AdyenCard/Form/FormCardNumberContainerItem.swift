@@ -4,9 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
+    @_spi(AdyenInternal) import protocol AdyenUI.FormItem
+    @_spi(AdyenInternal) import class AdyenUI.FormItemView
 #endif
 import UIKit
 
@@ -22,7 +24,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     
     internal let style: FormTextItemStyle
     
-    internal let showsSupportedCardLogos: Bool
+    internal let showSupportedCardBrandLogos: Bool
     
     private let localizationParameters: LocalizationParameters?
     
@@ -30,7 +32,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
    
     internal lazy var subitems: [FormItem] = {
         var subItems: [FormItem] = [numberItem]
-        if showsSupportedCardLogos {
+        if showSupportedCardBrandLogos {
             subItems.append(supportedCardLogosItem)
         }
         return subItems
@@ -55,18 +57,18 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     
     internal init(
         cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
-        showsSupportedCardLogos: Bool = true,
+        showSupportedCardBrandLogos: Bool = true,
         style: FormTextItemStyle,
         localizationParameters: LocalizationParameters?,
         scanCardHandler: (() -> Void)?
     ) {
         self.cardTypeLogos = cardTypeLogos
-        self.showsSupportedCardLogos = showsSupportedCardLogos
+        self.showSupportedCardBrandLogos = showSupportedCardBrandLogos
         self.localizationParameters = localizationParameters
         self.style = style
         self.scanCardHandler = scanCardHandler
         
-        if showsSupportedCardLogos {
+        if showSupportedCardBrandLogos {
             observe(numberItem.$isActive) { [weak self] _ in
                 self?.updateLogosVisibility()
             }
@@ -81,7 +83,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     }
     
     private func updateLogosVisibility(state: ValidationState) {
-        guard showsSupportedCardLogos else { return }
+        guard showSupportedCardBrandLogos else { return }
         let brandDetected = !numberItem.detectedBrands.isEmpty
         let errorShown = state.shouldShowError
         supportedCardLogosItem.isHidden.wrappedValue =

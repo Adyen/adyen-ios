@@ -4,12 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import Foundation
 
-@_spi(AdyenInternal)
-public extension FormAddressItem {
-    
+package extension FormAddressItem {
+
     /// The configuration of the form address item
     struct Configuration {
         
@@ -28,7 +27,20 @@ public extension FormAddressItem {
         ///   - localizationParameters: The localization parameters.
         ///   - supportedCountryCodes: Supported country codes. If `nil`, all country codes are listed.
         ///   - showsHeader: Whether to show a title header.
-        public init(
+        package init(
+            style: AddressStyle = AddressStyle(),
+            supportedCountryCodes: [String]? = nil,
+            showsHeader: Bool = true
+        ) {
+            self.init(
+                style: style,
+                localizationParameters: nil,
+                supportedCountryCodes: supportedCountryCodes,
+                showsHeader: showsHeader
+            )
+        }
+
+        package init(
             style: AddressStyle = AddressStyle(),
             localizationParameters: LocalizationParameters? = nil,
             supportedCountryCodes: [String]? = nil,

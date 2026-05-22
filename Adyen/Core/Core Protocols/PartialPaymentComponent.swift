@@ -7,8 +7,7 @@
 import Foundation
 
 /// Any component that provides partial payments.
-@_spi(AdyenInternal)
-public protocol PartialPaymentComponent: AdyenContextAware {
+package protocol PartialPaymentComponent: AdyenContextAware {
 
     /// The delegate that handles partial payments.
     var partialPaymentDelegate: PartialPaymentDelegate? { get set }

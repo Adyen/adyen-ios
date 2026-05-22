@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
 #endif
 import Foundation
 
@@ -20,6 +20,8 @@ public struct TwintActionConfiguration: CheckoutComponentConfiguration {
     package var theme: CheckoutTheme = .default
     
     package var localizationParameters: LocalizationParameters?
+
+    package var localizationProvider: (any CheckoutLocalizationProvider)?
     
     package var callbackAppScheme: String
     

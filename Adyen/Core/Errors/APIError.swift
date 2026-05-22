@@ -8,23 +8,22 @@ import AdyenNetworking
 import Foundation
 
 /// Represents an API error object.
-@_spi(AdyenInternal)
-public struct APIError: ErrorResponse, LocalizedError {
-    
+package struct APIError: ErrorResponse, LocalizedError {
+
     /// The status.
-    public let status: Int?
-    
+    package let status: Int?
+
     /// The error code.
-    public let errorCode: String
-    
+    package let errorCode: String
+
     /// The error message.
-    public let errorMessage: String
-    
+    package let errorMessage: String
+
     /// The error type.
-    public let type: APIErrorType
-    
+    package let type: APIErrorType
+
     /// The error human readable description.
-    public var errorDescription: String? {
+    package var errorDescription: String? {
         errorMessage
     }
 
@@ -35,8 +34,7 @@ public struct APIError: ErrorResponse, LocalizedError {
 }
 
 /// Represents an API error type.
-@_spi(AdyenInternal)
-public enum APIErrorType: String, Decodable {
+package enum APIErrorType: String, Decodable {
     case `internal`
     case validation
     case security

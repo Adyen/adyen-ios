@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 /// Describes any entity that is UI localizable.
-public protocol Localizable {
+package protocol Localizable {
     
     /// Indicates the localization parameters, leave it nil to use the default parameters.
     var localizationParameters: LocalizationParameters? { get set }

@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
 #endif
 
 extension PayByBankUSComponent {
@@ -16,14 +16,18 @@ extension PayByBankUSComponent {
         /// The UI style of the component.
         public var style: PayByBankUSComponent.Style
         
-        public var localizationParameters: LocalizationParameters?
+        package var localizationParameters: LocalizationParameters?
         
         /// Initializes a new instance of `PayByBankUSComponent.Configuration`
         ///
         /// - Parameters:
         ///   - style: The form style.
         ///   - localizationParameters: The localization parameters.
-        public init(
+        public init(style: PayByBankUSComponent.Style = .init()) {
+            self.init(style: style, localizationParameters: nil)
+        }
+
+        package init(
             style: PayByBankUSComponent.Style = .init(),
             localizationParameters: LocalizationParameters? = nil
         ) {

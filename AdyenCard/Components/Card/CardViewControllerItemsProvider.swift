@@ -4,9 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
+    @_spi(AdyenInternal) import protocol AdyenUI.AddressViewModelBuilder
 #endif
 import UIKit
 
@@ -24,7 +26,7 @@ extension CardViewController {
         private let theme: CheckoutTheme
         private let amount: Amount?
         private var localizationParameters: LocalizationParameters?
-        private let configuration: CardComponentConfiguration
+        private let configuration: CardConfiguration
         private let shopperInformation: PrefilledShopperInformation?
         private let cardLogos: [FormCardLogosItem.CardTypeLogo]
         private let scope: String
@@ -41,7 +43,7 @@ extension CardViewController {
             formStyle: FormComponentStyle,
             theme: CheckoutTheme,
             amount: Amount?,
-            configuration: CardComponentConfiguration,
+            configuration: CardConfiguration,
             shopperInformation: PrefilledShopperInformation?,
             cardLogos: [FormCardLogosItem.CardTypeLogo],
             scope: String,
@@ -113,7 +115,7 @@ extension CardViewController {
         internal lazy var numberContainerItem: FormCardNumberContainerItem = {
             let item = FormCardNumberContainerItem(
                 cardTypeLogos: cardLogos,
-                showsSupportedCardLogos: configuration.showsSupportedCardLogos,
+                showSupportedCardBrandLogos: configuration.showSupportedCardBrandLogos,
                 style: formStyle.textField,
                 localizationParameters: localizationParameters,
                 scanCardHandler: scanCardHandler
@@ -199,7 +201,7 @@ extension CardViewController {
             additionalItem.autocapitalizationType = .none
             additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthCodeItem")
             additionalItem.keyboardType = .numberPad
-            additionalItem.isVisible = configuration.koreanAuthenticationMode == .show
+            additionalItem.isVisible = configuration.koreanAuthenticationVisibility == .show
             
             setupEventTriggers(for: additionalItem, target: .taxNumber)
 
@@ -215,7 +217,7 @@ extension CardViewController {
             additionalItem.autocapitalizationType = .none
             additionalItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "additionalAuthPasswordItem")
             additionalItem.keyboardType = .numberPad
-            additionalItem.isVisible = configuration.koreanAuthenticationMode == .show
+            additionalItem.isVisible = configuration.koreanAuthenticationVisibility == .show
             
             setupEventTriggers(for: additionalItem, target: .authPassWord)
 
@@ -232,7 +234,7 @@ extension CardViewController {
             securityNumberItem.autocapitalizationType = .none
             securityNumberItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "socialSecurityNumberItem")
             securityNumberItem.keyboardType = .numberPad
-            securityNumberItem.isVisible = configuration.socialSecurityNumberMode == .show
+            securityNumberItem.isVisible = configuration.socialSecurityNumberVisibility == .show
             
             setupEventTriggers(for: securityNumberItem, target: .boletoSocialSecurityNumber)
             

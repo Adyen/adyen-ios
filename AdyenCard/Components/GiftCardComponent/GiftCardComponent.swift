@@ -4,9 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
+    @_spi(AdyenInternal) import class AdyenUI.FormViewController
 #endif
 #if canImport(AdyenEncryption)
     import AdyenEncryption
@@ -63,7 +65,7 @@ public final class GiftCardComponent: PresentableComponent,
     public weak var readyToSubmitComponentDelegate: ReadyToSubmitPaymentComponentDelegate?
 
     /// The localization parameters.
-    public var localizationParameters: LocalizationParameters?
+    package var localizationParameters: LocalizationParameters?
 
     /// Indicates whether to show the security code field at all.
     internal let showsSecurityCodeField: Bool
@@ -471,7 +473,6 @@ extension GiftCardComponent {
     }
 }
 
-@_spi(AdyenInternal)
 extension GiftCardComponent: PartialPaymentComponent {}
 
 // MARK: - SubmitCustomizable

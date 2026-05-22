@@ -4,12 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import Foundation
 
-@_spi(AdyenInternal)
-public final class FormPostalCodeItem: FormTextItem {
-    
+package final class FormPostalCodeItem: FormTextItem {
+
     private enum Constants {
         static let minLength = 2
         static let maxLength = 30
@@ -18,13 +18,22 @@ public final class FormPostalCodeItem: FormTextItem {
     internal var localizationParameters: LocalizationParameters?
 
     /// Initializes the form postal code item.
-    public init(
+    override public init(style: FormTextItemStyle = FormTextItemStyle()) {
+        self.localizationParameters = nil
+        super.init(style: style)
+        setup()
+    }
+
+    package init(
         style: FormTextItemStyle = FormTextItemStyle(),
         localizationParameters: LocalizationParameters? = nil
     ) {
         self.localizationParameters = localizationParameters
         super.init(style: style)
-        
+        setup()
+    }
+
+    private func setup() {
         title = localizedString(.postalCodeFieldTitle, localizationParameters)
         placeholder = localizedString(.postalCodeFieldPlaceholder, localizationParameters)
         validator = PostalCodeValidator(minimumLength: Constants.minLength, maximumLength: Constants.maxLength)

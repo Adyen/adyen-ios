@@ -13,13 +13,13 @@ import AdyenNetworking
 
 internal class CheckoutProviderMock: CheckoutProviding {
     var setupSessionCalled = false
-    var setupWithSessionResult: Result<Checkout, Error>?
+    var setupWithSessionResult: Result<CheckoutCoreProtocol, Error>?
     
     var setupPaymentMethodsCalled = false
-    var setupWithPaymentMethodsResult: Result<Checkout, Error>?
+    var setupWithPaymentMethodsResult: Result<CheckoutCoreProtocol, Error>?
     
     var setupActionOnlyCalled = false
-    var setupActionOnlyResult: Result<Checkout, Error>?
+    var setupActionOnlyResult: Result<CheckoutCoreProtocol, Error>?
     
     /// For AdyenSessionProviding
     var mockedSessionResult: Result<SessionProtocol, Error>?
@@ -44,8 +44,9 @@ internal class CheckoutProviderMock: CheckoutProviding {
     func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
+        callbackStore: SessionCheckoutCallbackStore,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> Checkout {
+    ) async throws -> CheckoutCoreProtocol {
         setupSessionCalled = true
         
         switch setupWithSessionResult {
@@ -61,8 +62,9 @@ internal class CheckoutProviderMock: CheckoutProviding {
     func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
+        callbackStore: AdvancedCheckoutCallbackStore,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> Checkout {
+    ) async throws -> CheckoutCoreProtocol {
         setupPaymentMethodsCalled = true
         
         switch setupWithPaymentMethodsResult {
@@ -77,8 +79,9 @@ internal class CheckoutProviderMock: CheckoutProviding {
     
     func setup(
         configuration: CheckoutConfiguration,
+        callbackStore: ActionOnlyCheckoutCallbackStore,
         presentationDelegate: PresentationDelegate?
-    ) async throws -> Checkout {
+    ) async throws -> CheckoutCoreProtocol {
         setupActionOnlyCalled = true
         
         switch setupActionOnlyResult {

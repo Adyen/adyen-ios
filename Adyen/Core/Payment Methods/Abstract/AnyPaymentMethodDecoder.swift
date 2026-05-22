@@ -42,7 +42,6 @@ internal enum AnyPaymentMethodDecoder {
         .afterpay: UnsupportedPaymentMethodDecoder(),
         .androidPay: UnsupportedPaymentMethodDecoder(),
         .amazonPay: UnsupportedPaymentMethodDecoder(),
-        .bizum: UnsupportedPaymentMethodDecoder(),
         .upiQr: UnsupportedPaymentMethodDecoder(),
         .upiIntent: UnsupportedPaymentMethodDecoder(),
         .upiCollect: UnsupportedPaymentMethodDecoder(),
@@ -90,6 +89,7 @@ internal enum AnyPaymentMethodDecoder {
         .upi: UPIPaymentMethodDecoder(),
         .cashAppPay: CashAppPayPaymentMethodDecoder(),
         .twint: TwintPaymentMethodDecoder(),
+        .payByBank: PayByBankPaymentMethodDecoder(),
         .payByBankAISDD: PayByBankUSPaymentMethodDecoder(),
         .payTo: PayToPaymentMethodDecoder()
     ]
@@ -102,39 +102,20 @@ internal enum AnyPaymentMethodDecoder {
             let type = try PaymentMethodType(rawValue: container.decode(String.self, forKey: .type))
             let isStored = decoder.codingPath.contains { $0.stringValue == PaymentMethods.CodingKeys.stored.stringValue }
             let brand = try? container.decode(String.self, forKey: .brand)
-            let isIssuersList = try container.containsValue(.issuers)
-            
-            if type == .ideal {
-                return try InstantPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
-            }
-            
-            if isIssuersList {
-                if type == .onlineBankingCZ || type == .onlineBankingSK {
-                    return try OnlineBankingPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
-                }
-                
-                return try IssuerListPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
-            }
 
-            // This is a hack to handle stored Bancontact as a separate
-            // payment method, even though Bancontact is just another
-            // scheme of a card payment method,
-            // Since Bancontact doesn't need CVC.
-            // Please consider using a composite matching hashable struct,
-            // That includes brand, type, isStored, and requiresDetails,
-            // This matching struct will be used as the key to the decoders
-            // dictionary.
+            // Handle stored Bancontact separately - it's a card scheme that doesn't require CVC
             if isStored, brand == "bcmc", type == .scheme {
                 return try decoders[.bcmc, default: defaultDecoder].decode(from: decoder, isStored: true)
             }
-            
-            let paymentDecoder = type.map { decoders[$0, default: defaultDecoder] } ?? defaultDecoder
+
+            // Use type-specific decoder, falling back to default for unknown types
+            let paymentDecoder = type.flatMap { decoders[$0] } ?? defaultDecoder
             return try paymentDecoder.decode(from: decoder, isStored: isStored)
         } catch {
             return .none
         }
     }
-    
+
     internal static func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod {
         let paymentDecoder = decoders[paymentMethod.type] ?? defaultDecoder
         return paymentDecoder.anyPaymentMethod(from: paymentMethod) ?? .instant(paymentMethod)
@@ -343,6 +324,27 @@ private struct BLIKPaymentMethodDecoder: PaymentMethodDecoder {
             return .blik(method)
         }
         return nil
+    }
+}
+
+private struct PayByBankPaymentMethodDecoder: PaymentMethodDecoder {
+    func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
+        let container = try decoder.container(keyedBy: AnyPaymentMethod.CodingKeys.self)
+        let isIssuersList = container.contains(.issuers)
+
+        if isIssuersList {
+            return try IssuerListPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
+        }
+
+        return try InstantPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
+    }
+
+    func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
+        if let method = paymentMethod as? IssuerListPaymentMethod {
+            return .issuerList(method)
+        } else {
+            return InstantPaymentMethodDecoder().anyPaymentMethod(from: paymentMethod)
+        }
     }
 }
 

@@ -13,7 +13,7 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
     
     internal weak var presenter: PresenterExampleProtocol?
     
-    private var checkout: Checkout?
+    private var checkout: SessionCheckout?
     private var adyenComponent: CheckoutPaymentComponent?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
@@ -50,6 +50,12 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
         ) {
             BLIKComponentConfiguration()
         }
+        
+        let checkout = try await Checkout.setup(
+            with: sessionResponse,
+            configuration: configuration,
+            presentationDelegate: self
+        )
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
                 result.resultCode.isSuccess,
@@ -60,19 +66,9 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
         
-        let checkout = try await Checkout.setup(
-            with: sessionResponse,
-            configuration: configuration,
-            presentationDelegate: self
-        )
-        
         self.checkout = checkout
         
-        guard let component = checkout.createPaymentComponent(for: .blik) else {
-            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: BLIKPaymentMethod.self)
-        }
-        
-        return component
+        return try checkout.createPaymentComponent(for: .blik)
     }
     
     private func startLoading() {

@@ -12,13 +12,9 @@ import Foundation
 /// that doesn't compile in a normal xcode project.
 /// The Bundle extension in `BundleExtension.swift` is used instead.
 internal extension Bundle {
-    // swiftlint:disable explicit_acl
-
     /// The main bundle of the framework.
     static let actions: Bundle = .init(for: RedirectComponent.self)
 
     /// The bundle in which the framework's resources are located.
     static let actionsInternalResources: Bundle = .module
-
-    // swiftlint:enable explicit_acl
 }

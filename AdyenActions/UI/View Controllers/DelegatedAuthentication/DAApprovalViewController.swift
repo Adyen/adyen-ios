@@ -4,13 +4,14 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
+    @_spi(AdyenInternal) import class AdyenUI.FormButton
 #endif
 import UIKit
 
-@available(iOS 16.0, *)
 internal final class DAApprovalViewController: UIViewController {
     private let style: DelegatedAuthenticationComponentStyle
     private let localizationParameters: LocalizationParameters?
@@ -171,7 +172,6 @@ internal final class DAApprovalViewController: UIViewController {
     }
 }
 
-@available(iOS 16.0, *)
 extension DAApprovalViewController: DelegatedAuthenticationViewDelegate {
     internal func firstButtonTapped() {
         useBiometricsHandler()

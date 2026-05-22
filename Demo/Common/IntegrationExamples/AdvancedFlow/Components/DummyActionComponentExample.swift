@@ -12,10 +12,10 @@ internal final class DummyActionComponentExample: InitialDataAdvancedFlowProtoco
     
     internal weak var presenter: PresenterExampleProtocol?
     
-    private var checkout: Checkout?
+    private var checkout: ActionOnlyCheckout?
     
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
-    
+    private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
     /// comes from demo app protocol, unused on new structure
     internal var context: AdyenContext?
 
@@ -40,7 +40,7 @@ internal final class DummyActionComponentExample: InitialDataAdvancedFlowProtoco
         }
     }
     
-    private func createCheckout() async throws -> Checkout {
+    private func createCheckout() async throws -> ActionOnlyCheckout {
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
             amount: ConfigurationConstants.current.amount,
@@ -49,38 +49,28 @@ internal final class DummyActionComponentExample: InitialDataAdvancedFlowProtoco
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
             )
         ) {}
-            .onAdditionalDetails { [weak self] data, handler in
-                self?.callDetails(with: data, completion: handler)
-            }
-            .onError { [weak self] error in
-                self?.dismissAndShowAlert(false, error.localizedDescription)
-            }
         
         return try await Checkout.setup(
             configuration: configuration,
             presentationDelegate: self
         )
+        .onAdditionalDetails { [weak self] data in
+            guard let self else { throw CancellationError() }
+            return try await self.callDetails(with: data)
+        }
+        .onError { [weak self] error in
+            self?.dismissAndShowAlert(false, error.localizedDescription)
+        }
     }
-    
-    private func callDetails(with data: ActionComponentData, completion: PaymentsResponseHandler?) {
+
+    private func callDetails(with data: ActionComponentData) async throws -> AdditionalDetailsResult {
         let request = PaymentDetailsRequest(
             details: data.details,
             paymentData: data.paymentData,
             merchantAccount: ConfigurationConstants.current.merchantAccount
         )
-        apiClient.perform(request) { result in
-            switch result {
-            case let .success(response):
-                completion?(
-                    CheckoutPaymentsResponse(
-                        resultCode: response.resultCode, action: response.action
-                    )
-                )
-            case let .failure(error):
-                // TODO: add error handling but maybe after async callbacks
-                break
-            }
-        }
+        let response = try await asyncApiClient.performAsync(request)
+        return .completion(resultCode: response.resultCode.rawValue)
     }
     
     private func startLoading() {

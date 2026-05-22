@@ -4,13 +4,15 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import UIKit
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
+    @_spi(AdyenInternal) import class AdyenUI.FormViewController
 #endif
 
 internal protocol CardViewControllerProtocol {
@@ -20,7 +22,7 @@ internal protocol CardViewControllerProtocol {
 
 internal class CardViewController: FormViewController {
     
-    private let configuration: CardComponentConfiguration
+    private let configuration: CardConfiguration
     private let shopperInformation: PrefilledShopperInformation?
     private let supportedCardTypes: [CardType]
     private let formStyle: FormComponentStyle
@@ -87,7 +89,7 @@ internal class CardViewController: FormViewController {
     ///   - localizationParameters: Localization parameters.
     ///   - theme: The theme to use for styling.
     internal init(
-        configuration: CardComponentConfiguration,
+        configuration: CardConfiguration,
         shopperInformation: PrefilledShopperInformation?,
         formStyle: FormComponentStyle,
         amount: Amount?,
@@ -147,10 +149,10 @@ internal class CardViewController: FormViewController {
         
         return Card(
             number: items.numberContainerItem.numberItem.value,
-            securityCode: configuration.showsSecurityCodeField ? items.securityCodeItem.nonEmptyValue : nil,
+            securityCode: configuration.showSecurityCode ? items.securityCodeItem.nonEmptyValue : nil,
             expiryMonth: expiryMonth,
             expiryYear: expiryYear,
-            holder: configuration.showsHolderNameField ? items.holderNameItem.nonEmptyValue : nil
+            holder: configuration.showCardholderName ? items.holderNameItem.nonEmptyValue : nil
         )
     }
     
@@ -191,7 +193,7 @@ internal class CardViewController: FormViewController {
 
     internal var kcpDetails: KCPDetails? {
         guard
-            configuration.koreanAuthenticationMode != .hide,
+            configuration.koreanAuthenticationVisibility != .hide,
             let taxNumber = items.additionalAuthCodeItem.nonEmptyValue,
             let password = items.additionalAuthPasswordItem.nonEmptyValue
         else { return nil }
@@ -200,12 +202,12 @@ internal class CardViewController: FormViewController {
     }
 
     internal var socialSecurityNumber: String? {
-        guard configuration.socialSecurityNumberMode != .hide else { return nil }
+        guard configuration.socialSecurityNumberVisibility != .hide else { return nil }
         return items.socialSecurityNumberItem.nonEmptyValue
     }
     
     internal var storePayment: Bool? {
-        configuration.showsStorePaymentMethodField ? items.storeDetailsItem.value : nil
+        configuration.showStorePaymentMethod ? items.storeDetailsItem.value : nil
     }
     
     internal var installments: Installments? {
@@ -322,22 +324,22 @@ extension CardViewController {
 
         append(items.expiryDateItem)
         
-        if configuration.showsSecurityCodeField {
+        if configuration.showSecurityCode {
             append(items.securityCodeItem)
         }
         
-        if configuration.showsHolderNameField {
+        if configuration.showCardholderName {
             append(items.holderNameItem)
         }
 
         append(items.coBadgedCardItem)
 
-        if configuration.koreanAuthenticationMode != .hide {
+        if configuration.koreanAuthenticationVisibility != .hide {
             append(items.additionalAuthCodeItem)
             append(items.additionalAuthPasswordItem)
         }
         
-        if configuration.socialSecurityNumberMode != .hide {
+        if configuration.socialSecurityNumberVisibility != .hide {
             append(items.socialSecurityNumberItem)
         }
         
@@ -345,7 +347,7 @@ extension CardViewController {
             append(installmentsItem)
         }
         
-        if configuration.showsStorePaymentMethodField {
+        if configuration.showStorePaymentMethod {
             append(items.storeDetailsItem)
             append(FormSpacerItem())
         }
@@ -408,7 +410,7 @@ extension CardViewController {
     }
     
     private func shouldHideKcpItems(with countryCode: String?) -> Bool {
-        switch configuration.koreanAuthenticationMode {
+        switch configuration.koreanAuthenticationVisibility {
         case .show:
             return false
         case .hide:
@@ -420,7 +422,7 @@ extension CardViewController {
     
     private func shouldHideSocialSecurityItem(with brand: CardBrand?) -> Bool {
         guard let brand else { return true }
-        switch configuration.socialSecurityNumberMode {
+        switch configuration.socialSecurityNumberVisibility {
         case .show:
             return false
         case .hide:

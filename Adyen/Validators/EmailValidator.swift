@@ -7,8 +7,7 @@
 import Foundation
 
 /// Validates email addresses.
-@_spi(AdyenInternal)
-public class EmailValidator: RegularExpressionValidator {
+package class EmailValidator: RegularExpressionValidator {
     
     public init() {
         // Regex constructed according to the definition of an email address
