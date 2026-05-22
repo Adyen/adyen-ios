@@ -157,24 +157,22 @@ struct PaymentMethodListViewControllerTests {
         viewModelMock.setState(.loading)
         await Task.yield()
 
-        // Then - loading overlay should exist in the view hierarchy
-        // Note: Animation timing may affect alpha value, so we verify the overlay is added
-        let hasLoadingOverlay = sut.view.subviews.contains { view in
-            view.subviews.contains { $0 is UIActivityIndicatorView }
-        }
-        #expect(hasLoadingOverlay)
+        // Then - verify activity indicator exists in the view hierarchy
+        let activityIndicator = sut.view.findSubview(ofType: UIActivityIndicatorView.self)
+        #expect(activityIndicator != nil, "Loading overlay with activity indicator should be present")
     }
 
     @Test
     func viewDidLoad_shouldApplyThemeBackgroundColor() {
         // Given
         let (sut, _) = makeSUT()
+        let expectedBackgroundColor = CheckoutTheme.default.colors.background
 
         // When
         sut.loadViewIfNeeded()
 
-        // Then - background color should be set from theme
-        #expect(sut.view.backgroundColor != nil)
+        // Then - background color should match theme's background color
+        #expect(sut.view.backgroundColor == expectedBackgroundColor)
     }
 
     @Test
@@ -186,10 +184,8 @@ struct PaymentMethodListViewControllerTests {
         sut.loadViewIfNeeded()
 
         // Then - header view should be in the view hierarchy
-        let scrollView = sut.view.subviews.first { $0 is UIScrollView } as? UIScrollView
-        let contentStackView = scrollView?.subviews.first { $0 is UIStackView } as? UIStackView
-        let hasHeaderView = contentStackView?.arrangedSubviews.contains { $0 is PaymentMethodListHeaderView } ?? false
-        #expect(hasHeaderView)
+        let headerView = sut.view.findSubview(ofType: PaymentMethodListHeaderView.self)
+        #expect(headerView != nil, "Header view should be present in the view hierarchy")
     }
 
     @Test
@@ -216,12 +212,9 @@ struct PaymentMethodListViewControllerTests {
         viewModelMock.setState(.loaded(sections: [section1, section2]))
         await Task.yield()
 
-        // Then - section views should be added to the stack
-        let scrollView = sut.view.subviews.first { $0 is UIScrollView } as? UIScrollView
-        let contentStackView = scrollView?.subviews.first { $0 is UIStackView } as? UIStackView
-        let paymentMethodSectionsStackView = contentStackView?.arrangedSubviews.last { $0 is UIStackView } as? UIStackView
-        let sectionViewCount = paymentMethodSectionsStackView?.arrangedSubviews.count ?? 0
-        #expect(sectionViewCount == 2)
+        // Then - section views should be added
+        let sectionViews = sut.view.findAllSubviews(ofType: PaymentMethodSectionView.self)
+        #expect(sectionViews.count == 2, "Expected 2 section views but found \(sectionViews.count)")
     }
 
     @Test
@@ -247,11 +240,8 @@ struct PaymentMethodListViewControllerTests {
         await Task.yield()
 
         // Then - only the new sections should be present
-        let scrollView = sut.view.subviews.first { $0 is UIScrollView } as? UIScrollView
-        let contentStackView = scrollView?.subviews.first { $0 is UIStackView } as? UIStackView
-        let paymentMethodSectionsStackView = contentStackView?.arrangedSubviews.last { $0 is UIStackView } as? UIStackView
-        let sectionViewCount = paymentMethodSectionsStackView?.arrangedSubviews.count ?? 0
-        #expect(sectionViewCount == 1)
+        let sectionViews = sut.view.findAllSubviews(ofType: PaymentMethodSectionView.self)
+        #expect(sectionViews.count == 1, "Expected 1 section view after reload but found \(sectionViews.count)")
     }
 
     // MARK: - Helper
@@ -307,5 +297,35 @@ private class TestablePaymentMethodListViewModel: PaymentMethodListViewModelProt
 
     func didLoad() {
         didLoadCallsCount += 1
+    }
+}
+
+// MARK: - UIView Test Helpers
+
+private extension UIView {
+
+    /// Recursively finds the first subview of the specified type.
+    func findSubview<T: UIView>(ofType type: T.Type) -> T? {
+        for subview in subviews {
+            if let match = subview as? T {
+                return match
+            }
+            if let match = subview.findSubview(ofType: type) {
+                return match
+            }
+        }
+        return nil
+    }
+
+    /// Recursively finds all subviews of the specified type.
+    func findAllSubviews<T: UIView>(ofType type: T.Type) -> [T] {
+        var results: [T] = []
+        for subview in subviews {
+            if let match = subview as? T {
+                results.append(match)
+            }
+            results.append(contentsOf: subview.findAllSubviews(ofType: type))
+        }
+        return results
     }
 }
