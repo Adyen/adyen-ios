@@ -83,3 +83,21 @@ class InitiableComponentMock: PaymentComponentMock, InitiablePaymentComponent {
         onInitiatePayment?()
     }
 }
+
+class StoredComponentMock: PaymentComponentMock, StoredPaymentComponent, PresentableComponent {
+
+    var viewController: UIViewController
+    var order: PartialPaymentOrder?
+
+    override var type: PaymentComponentType {
+        .stored(self)
+    }
+
+    init(
+        paymentMethod: PaymentMethod,
+        viewController: UIViewController
+    ) {
+        self.viewController = viewController
+        super.init(paymentMethod: paymentMethod)
+    }
+}

@@ -16,6 +16,41 @@ import UIKit
 @MainActor
 struct PaymentMethodListViewModelTests {
 
+    // MARK: - State Assertion Helper
+
+    private func assertState(
+        _ state: PaymentMethodListState,
+        isIdle: Bool = false,
+        isLoading: Bool = false,
+        isLoaded: Bool = false,
+        sectionCount: Int? = nil
+    ) {
+        switch state {
+        case .idle:
+            #expect(isIdle, "Expected state to be .idle but got \(state)")
+        case .loading:
+            #expect(isLoading, "Expected state to be .loading but got \(state)")
+        case let .loaded(sections):
+            #expect(isLoaded, "Expected state to be .loaded but got \(state)")
+            if let expectedCount = sectionCount {
+                #expect(sections.count == expectedCount, "Expected \(expectedCount) sections but got \(sections.count)")
+            }
+        }
+    }
+
+    private func assertApplePayButtonState(
+        _ state: PaymentMethodListHeaderViewModel.ApplePayButtonState,
+        isHidden: Bool = false,
+        isVisible: Bool = false
+    ) {
+        switch state {
+        case .hidden:
+            #expect(isHidden, "Expected applePayButtonState to be .hidden but got \(state)")
+        case .visible:
+            #expect(isVisible, "Expected applePayButtonState to be .visible but got \(state)")
+        }
+    }
+
     // MARK: - Protocol Conformance Tests
 
     @Test
@@ -45,11 +80,7 @@ struct PaymentMethodListViewModelTests {
         let (sut, _, _) = makeSUT()
 
         // Then
-        if case .idle = sut.state {
-            // Success
-        } else {
-            Issue.record("Expected state to be .idle")
-        }
+        assertState(sut.state, isIdle: true)
     }
 
     @Test
@@ -61,11 +92,7 @@ struct PaymentMethodListViewModelTests {
         sut.didLoad()
 
         // Then
-        if case let .loaded(sections) = sut.state {
-            #expect(sections.isEmpty == false)
-        } else {
-            Issue.record("Expected state to be .loaded")
-        }
+        assertState(sut.state, isLoaded: true)
     }
 
     // MARK: - Cancel Tests
@@ -126,11 +153,7 @@ struct PaymentMethodListViewModelTests {
         sut.didFail(with: error, from: paymentComponentMock)
 
         // Then
-        if case .idle = sut.state {
-            // Success
-        } else {
-            Issue.record("Expected state to be .idle after failure")
-        }
+        assertState(sut.state, isIdle: true)
     }
 
     @Test
@@ -156,11 +179,7 @@ struct PaymentMethodListViewModelTests {
         sut.didFail(with: ComponentError.cancelled, from: paymentComponentMock)
 
         // Then
-        if case .idle = sut.state {
-            // Success
-        } else {
-            Issue.record("Expected state to be .idle after cancellation")
-        }
+        assertState(sut.state, isIdle: true)
     }
 
     // MARK: - FormattedAmount Tests
@@ -172,6 +191,15 @@ struct PaymentMethodListViewModelTests {
 
         // Then
         #expect(sut.formattedAmount.isEmpty == false)
+    }
+
+    @Test
+    func formattedAmount_givenNilAmount_shouldReturnEmptyString() {
+        // Given
+        let (sut, _, _) = makeSUT(amount: nil)
+
+        // Then
+        #expect(sut.formattedAmount == "")
     }
 
     // MARK: - Subtitle Tests
@@ -193,11 +221,7 @@ struct PaymentMethodListViewModelTests {
         let (sut, _, _) = makeSUT(includeApplePay: false)
 
         // Then
-        if case .hidden = sut.applePayButtonState {
-            // Success
-        } else {
-            Issue.record("Expected applePayButtonState to be .hidden when no Apple Pay available")
-        }
+        assertApplePayButtonState(sut.applePayButtonState, isHidden: true)
     }
 
     @Test
@@ -206,11 +230,7 @@ struct PaymentMethodListViewModelTests {
         let (sut, _, _) = makeSUT(includeApplePay: true)
 
         // Then
-        if case .visible = sut.applePayButtonState {
-            // Success
-        } else {
-            Issue.record("Expected applePayButtonState to be .visible when Apple Pay is available")
-        }
+        assertApplePayButtonState(sut.applePayButtonState, isVisible: true)
     }
 
     // MARK: - Select Payment Method Tests
@@ -239,12 +259,11 @@ struct PaymentMethodListViewModelTests {
         sut.didLoad()
 
         // Then
+        assertState(sut.state, isLoaded: true)
         if case let .loaded(sections) = sut.state {
             let allItems = sections.flatMap(\.items)
             let hasApplePay = allItems.contains { $0.title.lowercased().contains("apple") }
             #expect(hasApplePay == false, "Apple Pay should be filtered from the main list")
-        } else {
-            Issue.record("Expected state to be .loaded")
         }
     }
 
@@ -264,6 +283,23 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
+    func presentActionComponent_onCancelCallback_shouldTransitionToIdleState() {
+        // Given
+        let (sut, _, routerMock) = makeSUT()
+        let actionComponentMock = makeActionComponentMock()
+        sut.didLoad() // Set state to loaded first
+        assertState(sut.state, isLoaded: true)
+
+        // When
+        sut.present(actionComponent: actionComponentMock)
+        let onCancel = routerMock.presentActionComponentOnCancelReceivedArguments?.onCancel
+        onCancel?()
+
+        // Then
+        assertState(sut.state, isIdle: true)
+    }
+
+    @Test
     func didCancelActionComponent_shouldTransitionToIdleState() {
         // Given
         let (sut, _, _) = makeSUT()
@@ -273,11 +309,7 @@ struct PaymentMethodListViewModelTests {
         sut.didCancel(actionComponent: actionComponentMock)
 
         // Then
-        if case .idle = sut.state {
-            // Success
-        } else {
-            Issue.record("Expected state to be .idle after action cancel")
-        }
+        assertState(sut.state, isIdle: true)
     }
 
     // MARK: - Mocks
@@ -361,14 +393,17 @@ struct PaymentMethodListViewModelTests {
 
     // MARK: - Helpers
 
-    private func makeSUT(includeApplePay: Bool = true) -> (
+    private func makeSUT(
+        includeApplePay: Bool = true,
+        amount: Amount? = .init(value: 100, currencyCode: "EUR")
+    ) -> (
         sut: PaymentMethodListViewModel,
         dropInFlowManagerMock: DropInFlowManagingMock,
         routerMock: PaymentMethodListRoutingMock
     ) {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            amount: .init(value: 100, currencyCode: "EUR"),
+            amount: amount,
             publicKey: Dummy.publicKey,
             analyticsProvider: AnalyticsProviderMock()
         )

@@ -13,6 +13,8 @@ import UIKit
 @MainActor
 struct PaymentMethodListRouterTests {
 
+    // MARK: - Root ViewController Tests
+
     @Test("This test makes sure the component's view controller is the start of the navigation flow.")
     func rootViewController_shouldHave_componentViewController_asFirstView() throws {
         // Given
@@ -27,6 +29,8 @@ struct PaymentMethodListRouterTests {
         let receivedViewController = navigationController.viewControllers.first
         #expect(expectedViewController == receivedViewController)
     }
+
+    // MARK: - Dismiss Tests
 
     @Test
     func dismiss_shouldCall_listener_didDismissPaymentMethodList() {
@@ -54,6 +58,8 @@ struct PaymentMethodListRouterTests {
         // Then
         #expect(sut.childRouter == nil)
     }
+
+    // MARK: - Present Component Tests
 
     @Test
     func presentComponent_should_pushComponentContainerViewController() throws {
@@ -85,6 +91,8 @@ struct PaymentMethodListRouterTests {
         // Then - rootViewController is the navigationController, so it receives the present call
         #expect(navigationControllerSpy.presentCallsCount == 1)
     }
+
+    // MARK: - ComponentContainerRouterListener Tests
 
     @Test
     func didDismissComponentContainer_should_deallocatedChildRouter() throws {
@@ -242,57 +250,17 @@ struct PaymentMethodListRouterTests {
         return PresentableComponentWrapper(component: redirect, viewController: viewController)
     }
 
-    private func makeStoredPaymentComponentMock() -> StoredPresentableComponentMock {
+    private func makeStoredPaymentComponentMock() -> StoredComponentMock {
         let paymentMethodMock = PaymentMethodMock(type: .scheme, name: "Stored Card")
         let viewControllerMock = UIViewController()
-        return StoredPresentableComponentMock(
+        return StoredComponentMock(
             paymentMethod: paymentMethodMock,
             viewController: viewControllerMock
         )
     }
 
-    private func makeInitiablePaymentComponentMock() -> InitiablePresentableComponentMock {
+    private func makeInitiablePaymentComponentMock() -> InitiableComponentMock {
         let paymentMethodMock = PaymentMethodMock(type: .applePay, name: "Apple Pay")
-        return InitiablePresentableComponentMock(paymentMethod: paymentMethodMock)
-    }
-}
-
-// MARK: - Test Mocks
-
-private class StoredPresentableComponentMock: StoredPaymentComponent {
-    var context: AdyenContext = Dummy.context
-    var paymentMethod: PaymentMethod
-    weak var delegate: PaymentComponentDelegate?
-    var viewController: UIViewController
-    var order: PartialPaymentOrder?
-
-    var type: PaymentComponentType {
-        .stored(self)
-    }
-
-    init(paymentMethod: PaymentMethod, viewController: UIViewController) {
-        self.paymentMethod = paymentMethod
-        self.viewController = viewController
-    }
-}
-
-private class InitiablePresentableComponentMock: PaymentComponent, InitiablePaymentComponent {
-    var context: AdyenContext = Dummy.context
-    var paymentMethod: PaymentMethod
-    weak var delegate: PaymentComponentDelegate?
-    var order: PartialPaymentOrder?
-
-    var type: PaymentComponentType {
-        .initiable(self)
-    }
-
-    init(paymentMethod: PaymentMethod) {
-        self.paymentMethod = paymentMethod
-    }
-
-    func initiatePayment() {}
-
-    func initiatePayment(delegate: PaymentComponentDelegate) {
-        self.delegate = delegate
+        return InitiableComponentMock(paymentMethod: paymentMethodMock)
     }
 }

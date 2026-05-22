@@ -115,12 +115,15 @@ struct PaymentMethodListViewControllerTests {
         // Allow state to propagate on main queue
         await Task.yield()
 
-        // Then - verify state was set (UI updates are handled internally)
-        #expect(true)
+        // Then - verify section views are added to the stack
+        let scrollView = sut.view.subviews.first { $0 is UIScrollView } as? UIScrollView
+        let contentStackView = scrollView?.subviews.first { $0 is UIStackView } as? UIStackView
+        let paymentMethodSectionsStackView = contentStackView?.arrangedSubviews.last { $0 is UIStackView } as? UIStackView
+        #expect(paymentMethodSectionsStackView?.arrangedSubviews.isEmpty == false)
     }
 
     @Test
-    func stateIdle_shouldStopLoading() async {
+    func stateIdle_shouldHideLoadingOverlay() async {
         // Given
         let (sut, viewModelMock) = makeSUT()
         sut.loadViewIfNeeded()
@@ -139,8 +142,9 @@ struct PaymentMethodListViewControllerTests {
         viewModelMock.setState(.idle)
         await Task.yield()
 
-        // Then - stopLoading was called (no crash, state is idle)
-        #expect(true) // If we reach here, stopLoading didn't crash
+        // Then - loading overlay should be hidden (alpha == 0)
+        let loadingOverlay = sut.view.subviews.first { $0.backgroundColor?.cgColor.alpha ?? 1 < 1 }
+        #expect(loadingOverlay?.alpha == 0 || loadingOverlay == nil)
     }
 
     @Test
@@ -153,9 +157,12 @@ struct PaymentMethodListViewControllerTests {
         viewModelMock.setState(.loading)
         await Task.yield()
 
-        // Then - loading overlay should be visible (alpha > 0 after animation)
-        // We verify the state was set without crashing
-        #expect(true)
+        // Then - loading overlay should exist in the view hierarchy
+        // Note: Animation timing may affect alpha value, so we verify the overlay is added
+        let hasLoadingOverlay = sut.view.subviews.contains { view in
+            view.subviews.contains { $0 is UIActivityIndicatorView }
+        }
+        #expect(hasLoadingOverlay)
     }
 
     @Test
