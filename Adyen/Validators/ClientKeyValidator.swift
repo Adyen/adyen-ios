@@ -6,21 +6,6 @@
 
 import Foundation
 
-/// An error that occurred during the validation or use of a client key.
-public enum ClientKeyError: Error, LocalizedError {
-
-    /// An error that occurred during the validation
-    case invalidClientKey
-
-    public var errorDescription: String? {
-        """
-        The entered client key is invalid.
-        Valid client key starts with environment name (e.x. `live_XXXXXXXXXX`).
-        """
-    }
-
-}
-
 /// Validates a client key https://docs.adyen.com/user-management/client-side-authentication
 @_spi(AdyenInternal)
 public final class ClientKeyValidator: RegularExpressionValidator {

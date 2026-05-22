@@ -155,11 +155,17 @@ internal extension CheckoutCore {
     func finish(with error: Error, from component: (any PaymentComponent)?) {
         (component as? any FinalizableComponent)?.didFinalize(with: false, completion: nil)
         pendingPaymentComponent = nil
-        resultCallbacks.onError?(CheckoutError(error: error))
+        resultCallbacks.onError?(checkoutError(from: error))
     }
 }
 
 private extension CheckoutCore {
+
+    func checkoutError(from error: Error) -> CheckoutError {
+        if let checkoutError = error as? CheckoutError { return checkoutError }
+        if case ComponentError.cancelled = error { return CheckoutError(code: .cancelled, message: nil, underlyingError: error) }
+        return CheckoutError(code: .unknown, message: error.localizedDescription, underlyingError: error)
+    }
     
     func onSubmit(for data: PaymentComponentData) -> () async throws -> SubmitResult {
         let handler = callbackHandler

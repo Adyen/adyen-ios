@@ -908,6 +908,7 @@
 		E24FECF5226EF9AB00A65122 /* ComponentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24FECF4226EF9AB00A65122 /* ComponentsViewController.swift */; };
 		E24FECF7226EF9D800A65122 /* ComponentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24FECF6226EF9D800A65122 /* ComponentsView.swift */; };
 		E24FECFC226EFD3C00A65122 /* ComponentsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24FECFB226EFD3C00A65122 /* ComponentsItem.swift */; };
+		AA0000002222222222222222 /* CheckoutError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000001111111111111111 /* CheckoutError.swift */; };
 		E24FED0822704C9800A65122 /* ComponentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24FED0722704C9800A65122 /* ComponentError.swift */; };
 		E24FED0D2270915A00A65122 /* CodingHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24FED0C2270915A00A65122 /* CodingHelpers.swift */; };
 		E262128F22A90D8800F2B133 /* PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E262128E22A90D8800F2B133 /* PaymentMethod.swift */; };
@@ -3036,6 +3037,7 @@
 		F9E4725E28CF1A2100FF9550 /* ThreeDS2PlusDACoreActionHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDS2PlusDACoreActionHandlerTests.swift; sourceTree = "<group>"; };
 		F9EDB781239149AF00CFB3C9 /* CountryCodeValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCodeValidator.swift; sourceTree = "<group>"; };
 		F9EDB78323914B4400CFB3C9 /* CurrencyCodeValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyCodeValidator.swift; sourceTree = "<group>"; };
+		AA0000001111111111111111 /* CheckoutError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutError.swift; sourceTree = "<group>"; };
 		F9EDB7852391734200CFB3C9 /* UnknownError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnknownError.swift; sourceTree = "<group>"; };
 		F9EDB78823955ABF00CFB3C9 /* AdyenUIHost.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = AdyenUIHost.strings; sourceTree = "<group>"; };
 		F9EDB78A2395608D00CFB3C9 /* SEPADirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPADirectDebitComponentTests.swift; sourceTree = "<group>"; };
@@ -5737,6 +5739,7 @@
 				F9639B3A24E14A940073F38A /* APIError.swift */,
 				F9EDB7852391734200CFB3C9 /* UnknownError.swift */,
 				E24FED0722704C9800A65122 /* ComponentError.swift */,
+				AA0000001111111111111111 /* CheckoutError.swift */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
@@ -8780,6 +8783,7 @@
 				E95E24C022C2593900973184 /* ApplePayPaymentMethod.swift in Sources */,
 				A0BDF3F42BD6A82C001FF7E5 /* AnalyticsConstants.swift in Sources */,
 				E24FED0822704C9800A65122 /* ComponentError.swift in Sources */,
+				AA0000002222222222222222 /* CheckoutError.swift in Sources */,
 				C94632BE27BA6985003DD81F /* AnalyticsProvider.swift in Sources */,
 				F9172F742643E0D200985310 /* OrderStatusResponse.swift in Sources */,
 				E270FDE9225CC4B1006C2CD0 /* ObservationManager.swift in Sources */,

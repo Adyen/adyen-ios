@@ -20,6 +20,7 @@ public enum Checkout {
     ///   - configuration: The checkout configuration.
     ///   - presentationDelegate: Optional delegate for handling UI presentation.
     /// - Returns: A session checkout instance exposing session-compatible APIs.
+    /// - Throws: ``CheckoutError`` with code ``CheckoutError/Code/sessionSetupFailure`` if the session cannot be established.
     public static func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
@@ -39,6 +40,7 @@ public enum Checkout {
     ///   - configuration: The checkout configuration.
     ///   - presentationDelegate: Optional delegate for handling UI presentation.
     /// - Returns: An advanced checkout instance exposing advanced-flow APIs.
+    /// - Throws: ``CheckoutError`` if setup fails.
     public static func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
@@ -57,6 +59,7 @@ public enum Checkout {
     ///   - configuration: The checkout configuration.
     ///   - presentationDelegate: Optional delegate for handling UI presentation.
     /// - Returns: An action-only checkout instance exposing action handling APIs.
+    /// - Throws: ``CheckoutError`` if setup fails.
     public static func setup(
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil

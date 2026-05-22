@@ -56,7 +56,11 @@ public struct CheckoutConfiguration {
     ///   - clientKey: The client key that corresponds to the web service user you will use for initiating the payment.
     ///   - content: Configuration builder to provide the desired configuration instances.
     ///   See https://docs.adyen.com/user-management/client-side-authentication for more information.
-    /// - Throws: `ClientKeyError.invalidClientKey` if the client key is invalid.
+    /// - Throws: `CheckoutError` with one of the following codes if the configuration is invalid:
+    ///   - ``CheckoutError/Code/invalidClientKey`` — the client key is malformed.
+    ///   - ``CheckoutError/Code/invalidCurrencyCode`` — the currency code is not ISO 4217.
+    ///   - ``CheckoutError/Code/invalidLocale`` — the locale identifier is not supported.
+    ///   - ``CheckoutError/Code/invalidAmountValue`` — the amount value is negative.
     public init(
         environment: Environment,
         amount: Amount?,
@@ -65,6 +69,7 @@ public struct CheckoutConfiguration {
         @CheckoutConfigurationBuilder content: () throws -> CheckoutConfigurable
     ) throws {
         let apiContext = try APIContext(environment: environment, clientKey: clientKey)
+        if let amount { try Self.validateAmount(amount) }
         let analyticsApiContext = Self.createAnalyticsAPIContext(apiContext: apiContext)
 
         var configDictionary: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
@@ -146,6 +151,20 @@ public struct CheckoutConfiguration {
         }
 
         return analyticsApiContext
+    }
+    
+    private static func validateAmount(_ amount: Amount) throws {
+        guard Locale.Currency.isoCurrencies.contains(where: { $0.identifier == amount.currencyCode }) else {
+            throw CheckoutError(code: .invalidCurrencyCode, message: "Invalid currency code")
+        }
+        if let localeIdentifier = amount.localeIdentifier {
+            guard Locale.availableIdentifiers.contains(localeIdentifier) else {
+                throw CheckoutError(code: .invalidLocale, message: "Invalid locale")
+            }
+        }
+        guard amount.value >= 0 else {
+            throw CheckoutError(code: .invalidAmountValue, message: "Invalid amount value")
+        }
     }
 }
 
