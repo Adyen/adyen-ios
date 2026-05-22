@@ -4,8 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import Foundation
+@_spi(AdyenInternal) import protocol Adyen.ShopperInformation
 
 /// Collection of the generic personal details supplied by components.
 public struct BasicPersonalInfoFormDetails: PaymentMethodDetails, ShopperInformation {

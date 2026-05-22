@@ -78,12 +78,14 @@ public struct LocalizationKey {
     public static let cardCvcItemTitle = LocalizationKey(key: "adyen.card.cvcItem.title")
     /// Enter security code
     public static let cardSecurityCodeTitle = LocalizationKey(key: "adyen.card.securityCode.title")
-    /// Enter the security code for %@ to complete the payment of %@
+    /// Enter the security code for %@
     public static let cardSecurityCodeDescription = LocalizationKey(key: "adyen.card.securityCode.description")
     /// 123
     public static let cardCvcItemPlaceholder = LocalizationKey(key: "adyen.card.cvcItem.placeholder")
+    // TODO: Delete cardStoredTitle - no longer used after StoredCardAlertManager removal for v6
     /// Verify your card
     public static let cardStoredTitle = LocalizationKey(key: "adyen.card.stored.title")
+    // TODO: Delete cardStoredMessage - no longer used after StoredCardAlertManager removal for v6
     /// Please enter the CVC code for %@
     public static let cardStoredMessage = LocalizationKey(key: "adyen.card.stored.message")
     /// Expires %@
@@ -560,7 +562,7 @@ public struct LocalizationKey {
     public static let cardScannerCameraAccessDeniedAlertMessage = LocalizationKey(key: "adyen.card.scanner.camera.access.denied.alert.message")
     /// Open Settings
     public static let cardScannerCameraAccessDeniedAlertSettingsButtonTitle = LocalizationKey(key: "adyen.card.scanner.camera.access.denied.alert.settingsButton.title")
-    /// Use %@ to pay %@
+    /// Use %@
     public static let preselectedPaymentMethodSubtitle = LocalizationKey(key: "adyen.preselectedPaymentMethod.subtitle")
     /// Other payment options
     public static let preselectedPaymentMethodOtherOptions = LocalizationKey(key: "adyen.preselectedPaymentMethod.otherOptions")

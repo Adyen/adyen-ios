@@ -6,8 +6,8 @@
 
 import UIKit
 
-public extension AdyenScope where Base: UIApplication {
-    var mainKeyWindow: UIWindow? {
+extension AdyenScope where Base: UIApplication {
+    package var mainKeyWindow: UIWindow? {
         base.connectedScenes
             .flatMap { ($0 as? UIWindowScene)?.windows ?? [] }
             .first { $0.isKeyWindow }

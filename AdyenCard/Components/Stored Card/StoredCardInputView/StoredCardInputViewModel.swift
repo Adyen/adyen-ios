@@ -4,9 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import protocol Adyen.PaymentMethod
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
+    @_spi(AdyenInternal) import class AdyenUI.FormValueItem
 #endif
 #if canImport(AdyenEncryption)
     import AdyenEncryption
@@ -25,7 +27,7 @@ internal protocol StoredCardInputViewModelProtocol: AnyObject {
     var submitButtonTitle: String { get }
 
     @MainActor func submit() async
-    @MainActor func dismiss()
+    @MainActor func viewDidDisappear()
 
     var theme: CheckoutTheme { get }
 
@@ -46,6 +48,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     private let analyticsProvider: AnyAnalyticsProvider?
     private let amount: Amount?
     private let publicKey: String
+    private let cardBrand: CardType
 
     internal let theme: CheckoutTheme
     internal var onSecurityCodeValidationRequested: VoidCompletion?
@@ -57,8 +60,6 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
 
     /// This informs the status of the payment after submitting the security code.
     internal var cardDetailsCompletionHandler: Completion<Result<CardDetails, Error>>?
-    internal var otherPaymentOptionsHandler: VoidCompletion?
-    internal var closeHandler: VoidCompletion?
 
     internal init(
         theme: CheckoutTheme,
@@ -67,7 +68,8 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         publicKey: String,
         amount: Amount?,
         analyticsProvider: AnyAnalyticsProvider?,
-        localizationParameters: LocalizationParameters?
+        localizationParameters: LocalizationParameters?,
+        cardBrand: CardType
     ) {
         self.theme = theme
         self.storedCardPaymentMethod = storedCardPaymentMethod
@@ -76,6 +78,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         self.publicKey = publicKey
         self.localizationParameters = localizationParameters
         self.analyticsProvider = analyticsProvider
+        self.cardBrand = cardBrand
     }
 
     internal lazy var cardImageItem: CardImageItem = {
@@ -103,12 +106,12 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         localizedString(.cardSecurityCodeTitle, localizationParameters)
     }
 
-    /// We construct something like - Enter the security code for BOLD[Visa •••• 4556] to complete the payment of BOLD[$140.98]
     // TODO: Robert: StoredView: This & the pay button title needs to change according to the amount.
+    /// We construct something like - Enter the security code for BOLD[Visa •••• 4556]
     internal var subtitleText: NSAttributedString {
         let displayInformation = storedCardPaymentMethod.displayInformation(using: localizationParameters)
         let paymentMethodTitle = storedCardPaymentMethod.name + " " + displayInformation.title
-        let localizedString = localizedString(.cardSecurityCodeDescription, localizationParameters, paymentMethodTitle, formattedAmount)
+        let localizedString = localizedString(.cardSecurityCodeDescription, localizationParameters, paymentMethodTitle)
 
         let attributed = NSMutableAttributedString(string: localizedString)
 
@@ -116,35 +119,25 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         attributed.addAttribute(.font, value: theme.elements.labels.bodyEmphasized.font, range: range)
         attributed.addAttribute(.foregroundColor, value: theme.elements.labels.bodyEmphasized.color, range: range)
 
-        let amountRange = (localizedString as NSString).range(of: formattedAmount)
-        attributed.addAttribute(.font, value: theme.elements.labels.bodyEmphasized.font, range: amountRange)
-        attributed.addAttribute(.foregroundColor, value: theme.elements.labels.bodyEmphasized.color, range: amountRange)
-
         return attributed
     }
 
-    private var formattedAmount: String {
-        guard let amount,
-              let formatted = AmountFormatter.formatted(
-                  amount: amount.value,
-                  currencyCode: amount.currencyCode
-              ) else {
-            return ""
-        }
-        return formatted
-    }
-
     internal var submitButtonTitle: String {
-        localizedString(.submitButtonFormatted, localizationParameters, formattedAmount)
+        localizedSubmitButtonTitle(
+            with: amount,
+            style: .immediate,
+            localizationParameters
+        )
     }
 
     internal func viewDidLoad() {
         sendDidLoadEvent()
+        securityCodeItem.selectedCard = cardBrand
     }
 
-    @MainActor internal func dismiss() {
+    @MainActor internal func viewDidDisappear() {
         resetSecurityCodeField()
-        closeHandler?()
+        inProgress = false
     }
 
     // MARK: - Submit payment
@@ -158,9 +151,8 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         inProgress = true
         let securityCode: String = securityCodeItem.value
         resetSecurityCodeField()
-
         await submitPayment(securityCode: securityCode)
-        inProgress = false
+        // We do not know the result of the submit payment hence we keep the state as in progress.
     }
 
     internal func submitPayment(securityCode: String) async {

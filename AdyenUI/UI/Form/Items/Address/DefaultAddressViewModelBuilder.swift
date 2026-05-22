@@ -4,7 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import Foundation
 
 @_spi(AdyenInternal)
@@ -18,14 +19,12 @@ public protocol AddressViewModelBuilder {
     func build(context: AddressViewModelBuilderContext) -> AddressViewModel
 }
 
-@_spi(AdyenInternal)
-public struct DefaultAddressViewModelBuilder: AddressViewModelBuilder {
+package struct DefaultAddressViewModelBuilder: AddressViewModelBuilder {
 
-    public init() {}
+    package init() {}
 
     // swiftlint:disable function_body_length
-    @_spi(AdyenInternal)
-    public func build(context: AddressViewModelBuilderContext) -> AddressViewModel {
+    package func build(context: AddressViewModelBuilderContext) -> AddressViewModel {
         var viewModel = AddressViewModel(
             labels: [
                 .city: .cityFieldTitle,

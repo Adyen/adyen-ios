@@ -23,4 +23,12 @@ internal enum ApiClientHelper {
         apiClient.mockedResults = [.success(paymentMethodsResponse), .success(sessionResponse)]
         return apiClient
     }
+    
+    /// Returns an API client that exposes the async `perform` API.
+    /// Used by examples that have been migrated to the new async callback structure.
+    /// Note: Skips the `RetryAPIClient` wrapper and UI-test mock path; these can be
+    /// re-added once the async path gains broader adoption.
+    internal static func generateAsyncApiClient() -> AsyncAPIClientProtocol {
+        APIClient(apiContext: DemoAPIContext())
+    }
 }

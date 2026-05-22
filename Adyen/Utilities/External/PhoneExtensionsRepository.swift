@@ -6,8 +6,7 @@
 
 import Foundation
 
-@_spi(AdyenInternal)
-public enum PhoneNumberPaymentMethod {
+package enum PhoneNumberPaymentMethod {
 
     case qiwiWallet
 
@@ -61,25 +60,23 @@ public enum PhoneNumberPaymentMethod {
     }
 }
 
-@_spi(AdyenInternal)
-public struct PhoneExtensionsQuery {
+package struct PhoneExtensionsQuery {
 
-    public let codes: [String]
+    package let codes: [String]
 
-    public init(codes: [String]) {
+    package init(codes: [String]) {
         let validator = CountryCodeValidator()
         self.codes = codes.filter { validator.isValid($0) }
     }
 
-    public init(paymentMethod: PhoneNumberPaymentMethod) {
+    package init(paymentMethod: PhoneNumberPaymentMethod) {
         self.init(codes: paymentMethod.codes)
     }
 }
 
-@_spi(AdyenInternal)
-public enum PhoneExtensionsRepository {
+package enum PhoneExtensionsRepository {
 
-    public static func get(with query: PhoneExtensionsQuery) -> [PhoneExtension] {
+    package static func get(with query: PhoneExtensionsQuery) -> [PhoneExtension] {
         query.codes.compactMap {
             guard let phoneExtension = allCountriesPhoneExtensions[$0] else {
                 return nil

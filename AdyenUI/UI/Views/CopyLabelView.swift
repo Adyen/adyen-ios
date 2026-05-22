@@ -4,13 +4,14 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import UIKit
 
 @_spi(AdyenInternal)
 public final class CopyLabelView: UIView, Localizable {
 
-    public var localizationParameters: LocalizationParameters?
+    package var localizationParameters: LocalizationParameters?
 
     private let style: TextStyle
 

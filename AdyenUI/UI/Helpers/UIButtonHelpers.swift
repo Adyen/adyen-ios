@@ -4,26 +4,25 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import AdyenNetworking
 import UIKit
 
-@_spi(AdyenInternal)
 extension UIButton {
     
     /// Initializes UIButton with given `ButtonStyle`
     /// Sets `translatesAutoresizingMaskIntoConstraints` to `false`
     /// Sets `adjustsFontForContentSizeCategory` to the `titleLabel` to `true`
     /// - Parameter style: `ButtonStyle` to be applied
-    public convenience init(style: ButtonStyle) {
+    package convenience init(style: ButtonStyle) {
         self.init()
         translatesAutoresizingMaskIntoConstraints = false
         adyen.apply(style)
     }
 }
 
-public extension AdyenScope where Base: UIButton {
-    
+package extension AdyenScope where Base: UIButton {
+
     /// Applies given `ButtonStyle` to the UIButton
     /// Sets `translatesAutoresizingMaskIntoConstraints` to `false`
     /// Sets `adjustsFontForContentSizeCategory` to the `titleLabel` to `true`

@@ -4,11 +4,13 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import Foundation
 import UIKit
-@_spi(AdyenInternal) import Adyen
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
+    @_spi(AdyenInternal) import struct AdyenUI.ListSection
 #endif
 
 internal enum PaymentMethodListState {

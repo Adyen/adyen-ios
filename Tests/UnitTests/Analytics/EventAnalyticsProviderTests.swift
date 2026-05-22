@@ -135,7 +135,6 @@ final class EventAnalyticsProviderTests: XCTestCase {
     private func createSUT(apiClient: APIClientMock) -> EventAnalyticsProvider {
         EventAnalyticsProvider(
             apiClient: apiClient,
-            context: AnalyticsContext(),
             eventDataSource: eventDataSource,
             checkoutAttemptId: checkoutAttemptIdMockValue
         )

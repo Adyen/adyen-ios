@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import AdyenActions
 import AdyenCard
 import AdyenComponents
@@ -94,25 +94,25 @@ internal final class DropInExample: InitialDataFlowProtocol {
 
         let paymentMethods = session.state.paymentMethods
         let configuration = dropInConfiguration(from: paymentMethods)
-        let component = DropInComponent(
+        return DropInComponent(
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
             title: ConfigurationConstants.appName
         )
         
-        component.delegate = session
-        component.storedPaymentMethodsDelegate = session
-        component.partialPaymentDelegate = session
+        // TODO: Migrate to Checkout — Session no longer conforms to delegate protocols in v6.
+        // component.delegate = session
+        // component.storedPaymentMethodsDelegate = session
+        // component.partialPaymentDelegate = session
 
-        return component
     }
     
     private func dropInConfiguration(from paymentMethods: PaymentMethods) -> DropInComponent.Configuration {
         let configuration = ConfigurationConstants.current.dropInConfiguration
 
         configuration.applePay = try? ConfigurationConstants.current.applePayConfiguration(using: .demo)
-        configuration.actionComponent.threeDS.delegatedAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
+        configuration.actionComponent.authentication.delegatedAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
         configuration.card = ConfigurationConstants.current.cardDropInConfiguration
         return configuration
     }
@@ -133,23 +133,7 @@ internal final class DropInExample: InitialDataFlowProtocol {
 
 }
 
-extension DropInExample: SessionDelegate {
-
-    func didComplete(with result: CheckoutResult, component: Component, session: Session) {
-        dismissAndShowAlert(result.resultCode.isSuccess, result.resultCode.rawValue)
-    }
-
-    func didFail(with error: Error, from component: Component, session: Session) {
-        if (error as? ComponentError) == .cancelled {
-            presenter?.dismiss(completion: nil)
-        } else {
-            dismissAndShowAlert(false, error.localizedDescription)
-        }
-    }
-
-    func didOpenExternalApplication(component: ActionComponent, session: Session) {}
-
-}
+// TODO: Migrate to Checkout API — SessionDelegate has been removed in v6.
 
 extension DropInExample: PresentationDelegate {
     internal func present(component: PresentableComponent) {

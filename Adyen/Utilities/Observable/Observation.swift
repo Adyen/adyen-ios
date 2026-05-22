@@ -7,9 +7,8 @@
 import Foundation
 
 /// Represents the observation of an observer to an observable.
-@_spi(AdyenInternal)
-public struct Observation: Hashable {
-    
+package struct Observation: Hashable {
+
     /// The UUID of the observation.
     private let uuid = UUID()
     
@@ -28,13 +27,13 @@ public struct Observation: Hashable {
     
     // MARK: - Equatable
     
-    public static func == (lhs: Observation, rhs: Observation) -> Bool {
+    package static func == (lhs: Observation, rhs: Observation) -> Bool {
         lhs.uuid == rhs.uuid
     }
     
     // MARK: - Hashable
     
-    public func hash(into hasher: inout Hasher) {
+    package func hash(into hasher: inout Hasher) {
         uuid.hash(into: &hasher)
     }
     

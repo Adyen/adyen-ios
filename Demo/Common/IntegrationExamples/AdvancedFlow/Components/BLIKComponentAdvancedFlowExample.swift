@@ -15,10 +15,11 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var checkout: Checkout?
+    private var checkout: AdvancedCheckout?
     private var adyenComponent: CheckoutPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
+    private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
 
     /// comes from demo app protocol, unused on new structure
     internal var context: AdyenContext?
@@ -66,11 +67,19 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 )
                 .cornerRadius(8.0)
         )
-        .onSubmit { [weak self] data, handler in
-            self?.callPayments(with: data, completion: handler)
+
+        let checkout = try await Checkout.setup(
+            with: paymentMethods,
+            configuration: configuration,
+            presentationDelegate: self
+        )
+        .onSubmit { [weak self] data in
+            guard let self else { throw CancellationError() }
+            return try await self.callPayments(with: data)
         }
-        .onAdditionalDetails { [weak self] data, handler in
-            self?.callDetails(with: data, completion: handler)
+        .onAdditionalDetails { [weak self] data in
+            guard let self else { throw CancellationError() }
+            return try await self.callDetails(with: data)
         }
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
@@ -82,59 +91,30 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
 
-        let checkout = try await Checkout.setup(
-            with: paymentMethods,
-            configuration: configuration,
-            presentationDelegate: self
-        )
-
         self.checkout = checkout
 
-        guard let component = checkout.createPaymentComponent(for: .blik) else {
-            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: BLIKPaymentMethod.self)
-        }
-
-        return component
+        return try checkout.createPaymentComponent(for: .blik)
     }
 
     // MARK: - Backend calls
 
-    private func callPayments(with data: PaymentComponentData, completion: PaymentsResponseHandler?) {
+    private func callPayments(with data: PaymentComponentData) async throws -> SubmitResult {
         let request = PaymentsRequest(data: data)
-        apiClient.perform(request) { result in
-            switch result {
-            case let .success(response):
-                completion?(
-                    CheckoutPaymentsResponse(
-                        resultCode: response.resultCode, action: response.action
-                    )
-                )
-            case let .failure(error):
-                // TODO: change last parameter to accept error as well Result<CheckoutCallbackResult, Error>
-                break
-            }
+        let response = try await asyncApiClient.performAsync(request)
+        if let action = response.action {
+            return .action(action)
         }
+        return .completion(resultCode: response.resultCode.rawValue)
     }
 
-    private func callDetails(with data: ActionComponentData, completion: PaymentsResponseHandler?) {
+    private func callDetails(with data: ActionComponentData) async throws -> AdditionalDetailsResult {
         let request = PaymentDetailsRequest(
             details: data.details,
             paymentData: data.paymentData,
             merchantAccount: ConfigurationConstants.current.merchantAccount
         )
-        apiClient.perform(request) { result in
-            switch result {
-            case let .success(response):
-                completion?(
-                    CheckoutPaymentsResponse(
-                        resultCode: response.resultCode, action: response.action
-                    )
-                )
-            case let .failure(error):
-                // TODO: add error handling but maybe after async callbacks
-                break
-            }
-        }
+        let response = try await asyncApiClient.performAsync(request)
+        return .completion(resultCode: response.resultCode.rawValue)
     }
 
     // MARK: - Private

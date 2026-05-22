@@ -24,6 +24,9 @@ internal protocol PreselectedPaymentMethodRouting: AnyObject {
 
 @MainActor
 internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodRouting {
+    private enum Constants {
+        static let chevronBackwardImage = "chevron.backward"
+    }
 
     // MARK: - Properties
 
@@ -103,7 +106,25 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         _ component: PresentableComponent
     ) {
         let componentContainerViewController = componentContainerViewController(for: component)
-        rootViewController.present(componentContainerViewController, animated: true)
+
+        let navigationController = UINavigationController(rootViewController: componentContainerViewController)
+        setupNavigationBackButton(controller: componentContainerViewController)
+        rootViewController.present(navigationController, animated: true)
+    }
+
+    private func setupNavigationBackButton(controller: UIViewController) {
+        let backButton = UIBarButtonItem(
+            image: UIImage(systemName: Constants.chevronBackwardImage),
+            style: .plain,
+            target: self,
+            action: #selector(backTappedOnComponentContainerViewController)
+        )
+
+        controller.navigationItem.leftBarButtonItem = backButton
+    }
+
+    @objc private func backTappedOnComponentContainerViewController() {
+        rootViewController.dismiss(animated: true)
     }
 
     private func componentContainerViewController(

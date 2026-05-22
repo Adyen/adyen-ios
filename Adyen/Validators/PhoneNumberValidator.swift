@@ -7,8 +7,7 @@
 import Foundation
 
 /// Validates a phone number.
-@_spi(AdyenInternal)
-public final class PhoneNumberValidator: RegularExpressionValidator {
+package final class PhoneNumberValidator: RegularExpressionValidator {
     
     public init() {
         let regex = #"^[+]*[0-9]{1,4}[\s0-9]*$"#

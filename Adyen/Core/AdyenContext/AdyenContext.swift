@@ -79,7 +79,6 @@ public final class AdyenContext {
             let syncEventDataSource = ThreadSafeAnalyticsEventDataSource(dataSource: eventDataSource)
             eventAnalyticsProvider = EventAnalyticsProvider(
                 apiClient: analyticsApiClient,
-                context: analyticsConfiguration.context,
                 eventDataSource: syncEventDataSource,
                 checkoutAttemptId: checkoutAttemptId
             )

@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import Foundation
 import UIKit
 
@@ -26,6 +26,8 @@ public struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfig
     package var shopperInformation: PrefilledShopperInformation?
 
     package var localizationParameters: LocalizationParameters?
+
+    package var localizationProvider: (any CheckoutLocalizationProvider)?
 
     package var showStorePaymentMethodField: Bool
 
@@ -59,7 +61,7 @@ extension ACHDirectDebitComponentConfiguration {
     /// Sets the localization parameters.
     /// - Parameter localizationParameters: The localization parameters to use.
     /// - Returns: A modified configuration with the updated localization parameters.
-    public func localizationParameters(_ localizationParameters: LocalizationParameters?) -> Self {
+    package func localizationParameters(_ localizationParameters: LocalizationParameters?) -> Self {
         var config = self
         config.localizationParameters = localizationParameters
         return config

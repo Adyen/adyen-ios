@@ -4,9 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import protocol Adyen.PresentableComponent
+
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
+    @_spi(AdyenInternal) import class AdyenUI.SearchViewController
 #endif
 import Foundation
 import UIKit
@@ -177,13 +180,17 @@ extension IssuerListComponent {
         /// The UI style of the component.
         public var style: ListComponentStyle
 
-        public var localizationParameters: LocalizationParameters?
+        package var localizationParameters: LocalizationParameters?
         
         /// Initializes the configuration for Issuer list type components.
         /// - Parameters:
         ///   - style: The UI style of the component.
         ///   - localizationParameters: Localization parameters.
-        public init(
+        public init(style: ListComponentStyle = .init()) {
+            self.init(style: style, localizationParameters: nil)
+        }
+
+        package init(
             style: ListComponentStyle = .init(),
             localizationParameters: LocalizationParameters? = nil
         ) {

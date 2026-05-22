@@ -4,7 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import Foundation
 
 extension SearchViewController {
@@ -33,6 +34,21 @@ extension SearchViewController {
         ///   - shouldFocusSearchBarOnAppearance: Whether to focus the search bar on viewWillAppear.
         ///   - resultProvider: A closure to provide result list items for a search term.
         public init(
+            style: ViewStyle,
+            searchBarPlaceholder: String? = nil,
+            shouldFocusSearchBarOnAppearance: Bool = false,
+            resultProvider: @escaping ResultProvider
+        ) {
+            self.init(
+                localizationParameters: nil,
+                style: style,
+                searchBarPlaceholder: searchBarPlaceholder,
+                shouldFocusSearchBarOnAppearance: shouldFocusSearchBarOnAppearance,
+                resultProvider: resultProvider
+            )
+        }
+
+        package init(
             localizationParameters: LocalizationParameters? = nil,
             style: ViewStyle,
             searchBarPlaceholder: String? = nil,

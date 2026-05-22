@@ -5,7 +5,8 @@
 //
 
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
+    @_spi(AdyenInternal) import class AdyenUI.FormViewController
 #endif
 import Foundation
 

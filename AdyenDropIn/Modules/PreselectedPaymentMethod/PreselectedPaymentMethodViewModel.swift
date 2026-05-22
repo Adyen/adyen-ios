@@ -4,12 +4,13 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import Foundation
 import UIKit
-@_spi(AdyenInternal) import Adyen
 
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
 #endif
 
 @MainActor
@@ -101,20 +102,16 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
         return displayInformation.title
     }
 
-    private var formattedAmount: String {
-        guard let amount = component.context.amount,
-              let formatted = AmountFormatter.formatted(amount: amount.value, currencyCode: amount.currencyCode) else {
-            return ""
-        }
-        return formatted
-    }
-
     internal var subtitleText: String {
-        localizedString(.preselectedPaymentMethodSubtitle, localizationParameters, component.paymentMethod.name, formattedAmount)
+        localizedString(.preselectedPaymentMethodSubtitle, localizationParameters, component.paymentMethod.name)
     }
 
     internal var submitButtonTitle: String {
-        localizedString(.submitButtonFormatted, localizationParameters, formattedAmount)
+        localizedSubmitButtonTitle(
+            with: component.context.amount,
+            style: .immediate,
+            localizationParameters
+        )
     }
 
     internal func submitPayment() {

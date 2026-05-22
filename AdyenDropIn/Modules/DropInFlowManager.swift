@@ -4,7 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import protocol Adyen.PaymentComponent
 #if canImport(AdyenActions)
     import AdyenActions
 #endif
@@ -63,7 +64,7 @@ internal class DropInFlowManager: DropInFlowManaging {
         actionComponent.presentationDelegate = self
         actionComponent.configuration.style = configuration.style.actionComponent
         actionComponent.configuration.localizationParameters = configuration.localizationParameters
-        actionComponent.configuration.threeDS = configuration.actionComponent.threeDS
+        actionComponent.configuration.authentication = configuration.actionComponent.authentication
         actionComponent.configuration.twint = configuration.actionComponent.twint
         return actionComponent
     }()

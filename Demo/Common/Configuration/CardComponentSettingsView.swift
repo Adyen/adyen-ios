@@ -16,11 +16,11 @@ internal struct CardSettingsView: View {
         NavigationView {
             List {
                 Section(header: Text("Visibility")) {
-                    Toggle(isOn: $viewModel.showsHolderNameField) {
+                    Toggle(isOn: $viewModel.showCardholderName) {
                         Text("Holder Name")
                     }
                     
-                    Toggle(isOn: $viewModel.showsStorePaymentMethodField) {
+                    Toggle(isOn: $viewModel.showStorePaymentMethod) {
                         VStack(alignment: .leading) {
                             Text("Store Payment Method Toggle")
                             Text("(Requires API version 70 or higher)")
@@ -28,14 +28,16 @@ internal struct CardSettingsView: View {
                                 .font(.footnote)
                         }
                     }
-                    Toggle(isOn: $viewModel.showsSecurityCodeField) {
+                    Toggle(isOn: $viewModel.showSecurityCode) {
                         Text("Security Code")
                     }
                     Toggle(isOn: $viewModel.installmentsEnabled.animation()) {
-                        Text("Installments")
-                        Text("(Example values for installments)")
-                            .foregroundColor(.gray)
-                            .font(.footnote)
+                        VStack(alignment: .leading) {
+                            Text("Installments")
+                            Text("(Example values for installments)")
+                                .foregroundColor(.gray)
+                                .font(.footnote)
+                        }
                     }
                     if viewModel.installmentsEnabled {
                         Toggle(isOn: $viewModel.showInstallmentAmount) {
@@ -49,19 +51,19 @@ internal struct CardSettingsView: View {
                             Text($0.displayName)
                         }
                     }
-                    Picker("Social Security Number Mode", selection: $viewModel.socialSecurityNumberMode) {
-                        ForEach(CardComponentConfiguration.FieldVisibility.allCases, id: \.self) {
+                    Picker("Social Security Number Mode", selection: $viewModel.socialSecurityNumberVisibility) {
+                        ForEach(CardConfiguration.FieldVisibility.allCases, id: \.self) {
                             Text($0.displayName)
                         }
                     }
-                    Picker("Korean Authentication Mode", selection: $viewModel.koreanAuthenticationMode) {
-                        ForEach(CardComponentConfiguration.FieldVisibility.allCases, id: \.self) {
+                    Picker("Korean Authentication Mode", selection: $viewModel.koreanAuthenticationVisibility) {
+                        ForEach(CardConfiguration.FieldVisibility.allCases, id: \.self) {
                             Text($0.displayName)
                         }
                     }
                 }
                 Section(header: Text("Stored Card")) {
-                    Toggle(isOn: $viewModel.showsStoredCardSecurityCodeField) {
+                    Toggle(isOn: $viewModel.showSecurityCodeForStoredCard) {
                         Text("Security Code")
                     }
                 }
@@ -86,7 +88,7 @@ extension CardSettings.AddressFormType {
     }
 }
 
-extension CardComponentConfiguration.FieldVisibility {
+extension CardConfiguration.FieldVisibility {
 
     public var displayName: String {
         self.rawValue.capitalized

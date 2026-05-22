@@ -12,10 +12,6 @@ import Foundation
 /// that doesn't compile in a normal xcode project.
 /// The Bundle extension in `BundleExtension.swift` is used instead.
 internal extension Bundle {
-    // swiftlint:disable explicit_acl
-
     /// The bundle in which the framework's resources are located.
     static let cardInternalResources: Bundle = .module
-
-    // swiftlint:enable explicit_acl
 }

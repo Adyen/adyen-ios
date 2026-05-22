@@ -4,10 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
+@_spi(AdyenInternal) import protocol Adyen.PresentableComponent
 import AdyenNetworking
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
+    @_spi(AdyenInternal) import class AdyenUI.FormViewController
 #endif
 import Foundation
 import UIKit
@@ -47,7 +49,16 @@ public class CardComponent: PresentableComponent,
     public let supportedCardTypes: [CardType]
 
     /// Card component configuration.
-    public internal(set) var configuration: CardComponentConfiguration
+    public internal(set) var configuration: CardConfiguration
+
+    /// Localization parameters with the component-resolved ``CheckoutLocalizationProvider``
+    /// attached, used for all card UI string lookups.
+    private var resolvedLocalizationParameters: LocalizationParameters? {
+        guard let provider = configuration.localizationProvider else {
+            return configuration.localizationParameters
+        }
+        return (configuration.localizationParameters ?? LocalizationParameters()).withProvider(provider)
+    }
 
     /// The delegate of the component.
     public weak var delegate: PaymentComponentDelegate? {
@@ -61,7 +72,7 @@ public class CardComponent: PresentableComponent,
 
             if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
                storePaymentMethodAware.isSession {
-                configuration.showsStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
+                configuration.showStorePaymentMethod = storePaymentMethodAware.showStorePaymentMethodField ?? false
             }
         }
     }
@@ -87,7 +98,7 @@ public class CardComponent: PresentableComponent,
     public convenience init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
-        configuration: CardComponentConfiguration = .init()
+        configuration: CardConfiguration = .init()
     ) {
         let binInfoProvider = BinInfoProvider(
             apiClient: APIClient(apiContext: context.apiContext),
@@ -113,7 +124,7 @@ public class CardComponent: PresentableComponent,
     internal init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
-        configuration: CardComponentConfiguration,
+        configuration: CardConfiguration,
         binProvider: AnyBinInfoProvider
     ) {
         self.cardPaymentMethod = paymentMethod
@@ -121,7 +132,7 @@ public class CardComponent: PresentableComponent,
         self.configuration = configuration
         self.binInfoProvider = binProvider
 
-        self.supportedCardTypes = configuration.allowedCardTypes ?? paymentMethod.brands
+        self.supportedCardTypes = configuration.supportedCardBrands ?? paymentMethod.brands
     }
 
     // MARK: - Presentable Component Protocol
@@ -149,16 +160,16 @@ public class CardComponent: PresentableComponent,
             return nil
         }
         // TODO: FIX StoredCard UI
-        if configuration.stored.showsSecurityCodeField {
-            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context)
-            storedComponent.localizationParameters = configuration.localizationParameters
+        if configuration.showSecurityCodeForStoredCard {
+            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context, theme: configuration.theme)
+            storedComponent.localizationParameters = resolvedLocalizationParameters
             return storedComponent
         } else {
             let storedComponent = StoredPaymentMethodComponent(
                 paymentMethod: paymentMethod,
                 context: context
             )
-            storedComponent.localizationParameters = configuration.localizationParameters
+            storedComponent.localizationParameters = resolvedLocalizationParameters
             return storedComponent
         }
     }()
@@ -189,7 +200,7 @@ public class CardComponent: PresentableComponent,
             supportedCardTypes: supportedCardTypes,
             initialCountryCode: initialCountryCode,
             scope: String(describing: self),
-            localizationParameters: configuration.localizationParameters,
+            localizationParameters: resolvedLocalizationParameters,
             theme: configuration.theme,
             cardScannerAnalyticsHandler: { [weak self] logSubType in
                 self?.sendCardScannerLogEvent(logSubType)
@@ -198,7 +209,7 @@ public class CardComponent: PresentableComponent,
 
         formViewController.delegate = self
         formViewController.cardDelegate = self
-        formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
+        formViewController.title = paymentMethod.displayInformation(using: resolvedLocalizationParameters).title
 
         formViewController.items.onDidTriggerInfoEvent = { [weak self] infoEventData in
             self?.sendInfoEvent(with: infoEventData)
@@ -272,7 +283,7 @@ private extension CardComponent {
     }
 }
 
-private extension CardComponentConfiguration {
+private extension CardConfiguration {
 
     func addressLookupViewModel(
         with initialCountry: String,

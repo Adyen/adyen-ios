@@ -7,8 +7,7 @@
 import Foundation
 
 /// Any object that is aware of `DelegatedAuthenticationData`.
-@_spi(AdyenInternal)
-public protocol DelegatedAuthenticationAware {
+package protocol DelegatedAuthenticationAware {
     var delegatedAuthenticationData: DelegatedAuthenticationData? { get }
 }
 
