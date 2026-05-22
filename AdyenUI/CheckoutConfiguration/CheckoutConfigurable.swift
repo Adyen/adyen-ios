@@ -22,6 +22,9 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     // to be changed with new styling/localization
 
     var localizationParameters: LocalizationParameters? { get }
+
+    var localizationProvider: (any CheckoutLocalizationProvider)? { get set }
+
     //  var style: FormComponentStyle { get }
 
     var theme: CheckoutTheme { get set }

@@ -23,8 +23,14 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
     package var theme: CheckoutTheme = .default
 
     package var localizationParameters: LocalizationParameters?
+
+    package var localizationProvider: (any CheckoutLocalizationProvider)?
     
-    public init(
+    public init(style: FormComponentStyle) {
+        self.init(style: style, localizationParameters: nil)
+    }
+
+    package init(
         style: FormComponentStyle,
         localizationParameters: LocalizationParameters? = nil
     ) {
@@ -33,6 +39,13 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
     }
 
     public init(
+        theme: CheckoutTheme = .default,
+        style: FormComponentStyle = .init()
+    ) {
+        self.init(localizationParameters: nil, theme: theme, style: style)
+    }
+
+    package init(
         localizationParameters: LocalizationParameters? = nil,
         theme: CheckoutTheme = .default,
         style: FormComponentStyle = .init()

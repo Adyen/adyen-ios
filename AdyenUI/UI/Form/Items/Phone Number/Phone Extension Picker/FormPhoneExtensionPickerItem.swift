@@ -38,6 +38,25 @@ package final class FormPhoneExtensionPickerItem: FormPickerItem<PhoneExtension>
         selectableValues.count > 1
     }
     
+    package required convenience init(
+        preselectedExtension: PhoneExtension?,
+        selectableExtensions: [PhoneExtension],
+        validationFailureMessage: String?,
+        style: FormTextItemStyle,
+        presenter: WeakReferenceViewControllerPresenter,
+        identifier: String? = nil
+    ) {
+        self.init(
+            preselectedExtension: preselectedExtension,
+            selectableExtensions: selectableExtensions,
+            validationFailureMessage: validationFailureMessage,
+            style: style,
+            presenter: presenter,
+            localizationParameters: nil,
+            identifier: identifier
+        )
+    }
+
     package required init(
         preselectedExtension: PhoneExtension?,
         selectableExtensions: [PhoneExtension],

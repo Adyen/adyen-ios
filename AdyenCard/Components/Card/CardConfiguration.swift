@@ -27,6 +27,8 @@ public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInfo
     
     package var localizationParameters: LocalizationParameters?
 
+    package var localizationProvider: (any CheckoutLocalizationProvider)?
+
     /// Indicates if the field for entering the cardholder name should be displayed in the form. Defaults to false.
     internal var showCardholderName: Bool
 
@@ -71,7 +73,8 @@ public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInfo
     /// Called when card brand(s) are detected from the entered card number.
     internal var onBinLookup: (([CardBrand]) -> Void)?
     
-    // TODO: Add onFieldValidationChange closure that provides field validation updates including last 4 digits. or add it here after deciding on alignment
+    // TODO: Add onFieldValidationChange closure that provides field validation
+    // updates including last 4 digits, or add it here after deciding on alignment.
 
     /// Initializes a new instance of `CardComponentConfiguration`.
     public init() {
@@ -201,9 +204,9 @@ extension CardConfiguration {
     }
     
     // TODO: find out if this field is needed. doesn't seem used
-    /// Sets the requirement policy for billing address.
-    /// - Parameter policy: The requirement policy (required, optional, or optional for specific card types).
-    /// - Returns: A modified copy of the configuration.
+//    /// Sets the requirement policy for billing address.
+//    /// - Parameter policy: The requirement policy (required, optional, or optional for specific card types).
+//    /// - Returns: A modified copy of the configuration.
 //    public func billingAddressRequirementPolicy(_ policy: BillingAddressConfiguration.RequirementPolicy) -> Self {
 //        var copy = self
 //        copy.billingAddress.requirementPolicy = policy
