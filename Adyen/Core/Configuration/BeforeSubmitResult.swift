@@ -23,18 +23,18 @@ public enum BeforeSubmitResult: Sendable {
 public struct BeforeSubmitData: Sendable {
     
     /// Billing address of the shopper.
-    public var billingAddress: PostalAddress?
+    public private(set) var billingAddress: PostalAddress?
     
     /// Delivery address of the shopper.
-    public var deliveryAddress: PostalAddress?
+    public private(set) var deliveryAddress: PostalAddress?
     
     /// Name of the shopper.
-    public var shopperName: ShopperName?
+    public private(set) var shopperName: ShopperName?
     
     /// Email address of the shopper.
-    public var shopperEmail: String?
+    public private(set) var shopperEmail: String?
     
-    public init(
+    package init(
         billingAddress: PostalAddress? = nil,
         deliveryAddress: PostalAddress? = nil,
         shopperName: ShopperName? = nil,
@@ -44,5 +44,29 @@ public struct BeforeSubmitData: Sendable {
         self.deliveryAddress = deliveryAddress
         self.shopperName = shopperName
         self.shopperEmail = shopperEmail
+    }
+
+    public func replacing(billingAddress: PostalAddress) -> BeforeSubmitData {
+        var copy = self
+        copy.billingAddress = billingAddress
+        return copy
+    }
+
+    public func replacing(deliveryAddress: PostalAddress) -> BeforeSubmitData {
+        var copy = self
+        copy.deliveryAddress = deliveryAddress
+        return copy
+    }
+
+    public func replacing(shopperName: ShopperName) -> BeforeSubmitData {
+        var copy = self
+        copy.shopperName = shopperName
+        return copy
+    }
+
+    public func replacing(shopperEmail: String) -> BeforeSubmitData {
+        var copy = self
+        copy.shopperEmail = shopperEmail
+        return copy
     }
 }
