@@ -38,14 +38,6 @@ public struct CheckoutConfiguration {
     // TODO: how we store configurations may change
     package var configurations: [CheckoutComponentType: CheckoutComponentConfiguration]
     
-    package var onSubmit: SubmitHandler?
-    
-    package var onAdditionalDetails: AdditionalDetailsHandler?
-    
-    package var onError: CheckoutErrorHandler?
-    
-    package var onComplete: CheckoutSuccessHandler?
-
     package var localizationProvider: (any CheckoutLocalizationProvider)?
     package var theme: CheckoutTheme
 
