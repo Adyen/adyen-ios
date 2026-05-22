@@ -28,6 +28,10 @@ internal struct DemoAPIContext: AnyAPIContext {
 internal enum DemoCheckoutAPIEnvironment: String, AnyAPIEnvironment, CaseIterable {
     
     case test, local
+
+    private enum Constants {
+        static let localCheckoutAPIVersion = 72
+    }
     
     internal var baseURL: URL {
         switch self {
@@ -39,24 +43,22 @@ internal enum DemoCheckoutAPIEnvironment: String, AnyAPIEnvironment, CaseIterabl
     }
     
     internal var version: Int {
-        ConfigurationConstants.current.apiVersion
-    }
-    
-}
-
-internal enum DemoClassicAPIEnvironment: String, AnyAPIEnvironment, CaseIterable {
-    
-    case beta, test, local
-    
-    internal var baseURL: URL {
         switch self {
-        case .beta:
-            return URL(string: "https://pal-beta.adyen.com/pal/servlet/")!
         case .test:
-            return URL(string: "https://pal-test.adyen.com/pal/servlet/")!
+            // The test Checkout API version is taken from MERCHANT_SERVER_HOST in Demo/Secrets*.xcconfig.
+            return checkoutAPIVersion(from: ConfigurationConstants.serverUrl) ?? Constants.localCheckoutAPIVersion
         case .local:
-            return URL(string: "http://localhost:8080/pal/servlet/")!
+            return Constants.localCheckoutAPIVersion
         }
+    }
+
+    private func checkoutAPIVersion(from serverURL: String) -> Int? {
+        guard let match = serverURL.range(of: #"/checkout/v(\d+)"#, options: .regularExpression) else {
+            return nil
+        }
+
+        let versionComponent = serverURL[match].split(separator: "v").last
+        return versionComponent.flatMap { Int($0) }
     }
     
 }

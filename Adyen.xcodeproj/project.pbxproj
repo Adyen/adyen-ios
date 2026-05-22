@@ -477,6 +477,7 @@
 		A01B13782FBC89390081DA79 /* ActionOnlyCheckout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01B13732FBC89390081DA79 /* ActionOnlyCheckout.swift */; };
 		A01B137A2FBC89430081DA79 /* PaymentCheckout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01B13792FBC89430081DA79 /* PaymentCheckout.swift */; };
 		A01B137C2FBC89580081DA79 /* SessionCheckout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01B137B2FBC89580081DA79 /* SessionCheckout.swift */; };
+		A01B13A12FBCACB30081DA79 /* BeforeSubmitResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01B13A02FBCACAB0081DA79 /* BeforeSubmitResult.swift */; };
 		A01DCF0B26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01DCF0A26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift */; };
 		A01DFBBF2BA887BF00205881 /* ThreadSafeAnalyticsEventDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01DFBBE2BA887BF00205881 /* ThreadSafeAnalyticsEventDataSource.swift */; };
 		A01DFBC52BB6F9FA00205881 /* ValidationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01DFBC42BB6F9FA00205881 /* ValidationError.swift */; };
@@ -2181,6 +2182,7 @@
 		A01B13752FBC89390081DA79 /* BaseCheckout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCheckout.swift; sourceTree = "<group>"; };
 		A01B13792FBC89430081DA79 /* PaymentCheckout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentCheckout.swift; sourceTree = "<group>"; };
 		A01B137B2FBC89580081DA79 /* SessionCheckout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionCheckout.swift; sourceTree = "<group>"; };
+		A01B13A02FBCACAB0081DA79 /* BeforeSubmitResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeforeSubmitResult.swift; sourceTree = "<group>"; };
 		A01D775529B250C10075BD70 /* CashAppPayDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashAppPayDetails.swift; sourceTree = "<group>"; };
 		A01DCF0A26BD67BB00BC35B3 /* FormCardExpiryDateItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardExpiryDateItem.swift; sourceTree = "<group>"; };
 		A01DFBBE2BA887BF00205881 /* ThreadSafeAnalyticsEventDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadSafeAnalyticsEventDataSource.swift; sourceTree = "<group>"; };
@@ -3990,6 +3992,7 @@
 		A01948532D91AD7500AA27AC /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
+				A01B13A02FBCACAB0081DA79 /* BeforeSubmitResult.swift */,
 				81AA3B332ACD9CE800F5719D /* AddressLookupProvider.swift */,
 				A080E3E62EDC5F000031B09A /* AsyncAddressLookupProvider.swift */,
 				A0A26BF92DC101B600DB5B4E /* CheckoutBaseCallbacks.swift */,
@@ -8619,6 +8622,7 @@
 				A013F98126AFF72D00602633 /* BrazilSocialSecurityNumberFormatter.swift in Sources */,
 				A0A26BFA2DC101B800DB5B4E /* CheckoutBaseCallbacks.swift in Sources */,
 				A0A26C032DC101B800DB5B4E /* SubmitResult.swift in Sources */,
+				A01B13A12FBCACB30081DA79 /* BeforeSubmitResult.swift in Sources */,
 				A0A26C052DC101B800DB5B4E /* AdditionalDetailsResult.swift in Sources */,
 				E97B972322B238C400505476 /* Analytics.swift in Sources */,
 				A0BDF3EE2BD285E5001FF7E5 /* PostalCodeValidator.swift in Sources */,

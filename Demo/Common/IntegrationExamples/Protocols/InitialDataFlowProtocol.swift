@@ -46,8 +46,8 @@ extension InitialDataFlowProtocol {
         )
     }
     
-    internal func requestSessionInitialInfo() async throws -> SessionResponse {
-        let request = SessionRequest()
+    internal func requestSessionInitialInfo(payable: Bool = true) async throws -> SessionResponse {
+        let request = SessionRequest(payable: payable)
         return try await withCheckedThrowingContinuation { continuation in
             apiClient.perform(request) { result in
                 continuation.resume(with: result)

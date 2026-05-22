@@ -29,16 +29,17 @@ public struct PaymentComponentData {
     /// The installments object.
     public let installments: Installments?
     
+    /// Data applied via onBeforeSubmit callback. Takes priority for its fields.
+    private var beforeSubmitData: BeforeSubmitData?
+    
     /// Shopper name.
     public var shopperName: ShopperName? {
-        guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }
-        return shopperInfo.shopperName
+        beforeSubmitData?.shopperName ?? (paymentMethod as? ShopperInformation)?.shopperName
     }
 
     /// The email address.
     public var emailAddress: String? {
-        guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }
-        return shopperInfo.emailAddress
+        beforeSubmitData?.shopperEmail ?? (paymentMethod as? ShopperInformation)?.emailAddress
     }
 
     /// The telephone number.
@@ -52,14 +53,12 @@ public struct PaymentComponentData {
 
     /// The billing address information.
     public var billingAddress: PostalAddress? {
-        guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }
-        return shopperInfo.billingAddress
+        beforeSubmitData?.billingAddress ?? (paymentMethod as? ShopperInformation)?.billingAddress
     }
     
     /// The delivery address information.
     public var deliveryAddress: PostalAddress? {
-        guard let shopperInfo = paymentMethod as? ShopperInformation else { return nil }
-        return shopperInfo.deliveryAddress
+        beforeSubmitData?.deliveryAddress ?? (paymentMethod as? ShopperInformation)?.deliveryAddress
     }
     
     /// The social security number.
@@ -159,5 +158,11 @@ public struct PaymentComponentData {
             browserInfo: browserInfo,
             installments: installments
         )
+    }
+
+    package func replacing(beforeSubmitData: BeforeSubmitData) -> PaymentComponentData {
+        var copy = self
+        copy.beforeSubmitData = beforeSubmitData
+        return copy
     }
 }

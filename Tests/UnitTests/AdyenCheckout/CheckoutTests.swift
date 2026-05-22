@@ -208,6 +208,175 @@ final class CheckoutTests: XCTestCase {
         XCTAssertFalse(session.didSubmitCalled)
     }
     
+    // MARK: - onBeforeSubmit
+    
+    func test_didSubmit_withNoOnBeforeSubmit_shouldPerformSubmitDirectly() async throws {
+        let callbackStore = SessionCheckoutCallbackStore()
+        let onCompleteExpectation = expectation(description: "onComplete called")
+        let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
+        let paymentData = PaymentComponentData(
+            paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
+            amount: nil,
+            order: nil
+        )
+        let session = makeSessionMock()
+        session.performSubmitResult = .success(.completion(resultCode: CheckoutResultCode.authorised.rawValue))
+        callbackStore.onComplete = { _ in
+            onCompleteExpectation.fulfill()
+        }
+        let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
+        
+        sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
+        await fulfillment(of: [onCompleteExpectation], timeout: 1)
+        
+        XCTAssertTrue(session.performSubmitCalled)
+        XCTAssertFalse(session.refreshSessionStateCalled)
+    }
+    
+    func test_didSubmit_withOnBeforeSubmitProceed_shouldApplyModifiedData() async throws {
+        let callbackStore = SessionCheckoutCallbackStore()
+        let onCompleteExpectation = expectation(description: "onComplete called")
+        let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
+        let paymentData = PaymentComponentData(
+            paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
+            amount: nil,
+            order: nil
+        )
+        let session = makeSessionMock()
+        session.performSubmitResult = .success(.completion(resultCode: CheckoutResultCode.authorised.rawValue))
+        
+        let modifiedName = ShopperName(firstName: "Modified", lastName: "Name")
+        callbackStore.onBeforeSubmit = { data in
+            let modified = data
+                .replacing(shopperName: modifiedName)
+                .replacing(shopperEmail: "modified@test.com")
+            return .proceed(data: modified, sessionData: nil)
+        }
+        callbackStore.onComplete = { _ in
+            onCompleteExpectation.fulfill()
+        }
+        let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
+        
+        sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
+        await fulfillment(of: [onCompleteExpectation], timeout: 1)
+        
+        XCTAssertTrue(session.performSubmitCalled)
+        XCTAssertFalse(session.refreshSessionStateCalled)
+    }
+    
+    func test_didSubmit_withOnBeforeSubmitProceedAndSessionData_shouldRefreshSession() async throws {
+        let callbackStore = SessionCheckoutCallbackStore()
+        let onCompleteExpectation = expectation(description: "onComplete called")
+        let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
+        let paymentData = PaymentComponentData(
+            paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
+            amount: nil,
+            order: nil
+        )
+        let session = makeSessionMock()
+        session.performSubmitResult = .success(.completion(resultCode: CheckoutResultCode.authorised.rawValue))
+        
+        callbackStore.onBeforeSubmit = { data in
+            .proceed(data: data, sessionData: "patched_session_data")
+        }
+        callbackStore.onComplete = { _ in
+            onCompleteExpectation.fulfill()
+        }
+        let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
+        
+        sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
+        await fulfillment(of: [onCompleteExpectation], timeout: 1)
+        
+        XCTAssertTrue(session.refreshSessionStateCalled)
+        XCTAssertEqual(session.refreshSessionStateData, "patched_session_data")
+        XCTAssertTrue(session.performSubmitCalled)
+    }
+    
+    func test_didSubmit_withOnBeforeSubmitAbort_shouldStopLoadingAndNotCallOnError() async throws {
+        let callbackStore = SessionCheckoutCallbackStore()
+        let onErrorExpectation = expectation(description: "onError should NOT be called")
+        onErrorExpectation.isInverted = true
+        let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
+        let paymentData = PaymentComponentData(
+            paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
+            amount: nil,
+            order: nil
+        )
+        let session = makeSessionMock()
+        
+        callbackStore.onBeforeSubmit = { _ in
+            .abort
+        }
+        callbackStore.onError = { _ in
+            onErrorExpectation.fulfill()
+        }
+        let component = PresentableComponentMock(paymentMethod: blik, viewController: UIViewController())
+        let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
+        
+        sut.didSubmit(paymentData, from: component)
+        await fulfillment(of: [onErrorExpectation], timeout: 0.5)
+        
+        XCTAssertTrue(component.stopLoadingCalled)
+        XCTAssertFalse(session.performSubmitCalled)
+    }
+    
+    func test_didSubmit_withOnBeforeSubmitThrowing_shouldCallOnError() async throws {
+        let callbackStore = SessionCheckoutCallbackStore()
+        let onErrorExpectation = expectation(description: "onError called")
+        let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
+        let paymentData = PaymentComponentData(
+            paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
+            amount: nil,
+            order: nil
+        )
+        let session = makeSessionMock()
+        
+        callbackStore.onBeforeSubmit = { _ in
+            throw TestError()
+        }
+        callbackStore.onError = { _ in
+            onErrorExpectation.fulfill()
+        }
+        let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
+        
+        sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
+        await fulfillment(of: [onErrorExpectation], timeout: 1)
+        
+        XCTAssertFalse(session.performSubmitCalled)
+    }
+    
+    func test_paymentComponentData_replacingBeforeSubmitData_shouldOverrideShopperFields() throws {
+        let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
+        let original = PaymentComponentData(
+            paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
+            amount: nil,
+            order: nil
+        )
+        
+        XCTAssertNil(original.shopperName)
+        XCTAssertNil(original.emailAddress)
+        XCTAssertNil(original.billingAddress)
+        XCTAssertNil(original.deliveryAddress)
+        
+        let overrides = BeforeSubmitData(
+            billingAddress: nil,
+            deliveryAddress: nil,
+            shopperName: nil,
+            shopperEmail: nil
+        )
+        .replacing(billingAddress: PostalAddress(city: "Amsterdam", country: "NL"))
+        .replacing(deliveryAddress: PostalAddress(city: "Berlin", country: "DE"))
+        .replacing(shopperName: ShopperName(firstName: "John", lastName: "Doe"))
+        .replacing(shopperEmail: "john@example.com")
+        
+        let updated = original.replacing(beforeSubmitData: overrides)
+        
+        XCTAssertEqual(updated.shopperName, ShopperName(firstName: "John", lastName: "Doe"))
+        XCTAssertEqual(updated.emailAddress, "john@example.com")
+        XCTAssertEqual(updated.billingAddress?.city, "Amsterdam")
+        XCTAssertEqual(updated.deliveryAddress?.city, "Berlin")
+    }
+    
     func test_didSubmit_callsOnSubmit_whenSet() async throws {
         let callbackStore = AdvancedCheckoutCallbackStore()
         let expectation = expectation(description: "onSubmit called")
@@ -645,7 +814,11 @@ final class CheckoutTests: XCTestCase {
             adyenContext: Dummy.context,
             presentationDelegate: nil,
             resultCallbacks: callbackStore,
-            callbackHandler: SessionCallbackHandler(session: session)
+            callbackHandler: BeforeSubmitCallbackHandler(
+                handler: SessionCallbackHandler(session: session),
+                session: session,
+                callbackStore: callbackStore
+            )
         )
     }
 

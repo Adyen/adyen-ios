@@ -49,7 +49,11 @@ internal class CheckoutProvider: CheckoutProviding {
             adyenContext: adyenContext,
             presentationDelegate: presentationDelegate,
             resultCallbacks: callbackStore,
-            callbackHandler: SessionCallbackHandler(session: session)
+            callbackHandler: BeforeSubmitCallbackHandler(
+                handler: SessionCallbackHandler(session: session),
+                session: session,
+                callbackStore: callbackStore
+            )
         )
     }
     
