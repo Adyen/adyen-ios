@@ -129,7 +129,6 @@
 		5A15D5A1264BE1E500A8E3C7 /* PrefilledShopperInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */; };
 		5A22C279262D688600F12D97 /* QRCodeActionComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A22C26D262D686200F12D97 /* QRCodeActionComponentTests.swift */; };
 		5A22C2AD262EF99C00F12D97 /* ExpirationTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A22C2AC262EF99C00F12D97 /* ExpirationTimer.swift */; };
-		5A238C93263AEA0800758FEF /* PreApplePayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A238C92263AEA0800758FEF /* PreApplePayView.swift */; };
 		5A238C9F263BDEA200758FEF /* PreApplePayComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */; };
 		5A27AB032636A07900EF6F89 /* LocalizationKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A27AB022636A07900EF6F89 /* LocalizationKey.swift */; };
 		5A2D1951267368580082BCE9 /* ActionComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2D1950267368580082BCE9 /* ActionComponentStyle.swift */; };
@@ -316,7 +315,6 @@
 		A0290DFA2C480CE9005BE269 /* ExampleContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0290DF92C480CE9005BE269 /* ExampleContainer.swift */; };
 		A0290DFB2C480CE9005BE269 /* ExampleContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0290DF92C480CE9005BE269 /* ExampleContainer.swift */; };
 		A0290DFD2C4FD6D5005BE269 /* CardAnalyticsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0290DFC2C4FD6D5005BE269 /* CardAnalyticsConfiguration.swift */; };
-		A0290DFF2C57DBC1005BE269 /* DropInAnalyticsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0290DFE2C57DBC1005BE269 /* DropInAnalyticsConfiguration.swift */; };
 		A02AF3E8275A0D0900E1636C /* DocumentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02AF3E7275A0D0900E1636C /* DocumentComponent.swift */; };
 		A02B89AC2DD48A070083CE99 /* WeChatPaySDKData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91664F823E460CD00C10738 /* WeChatPaySDKData.swift */; };
 		A02B89AD2DD48A070083CE99 /* OXXOVoucherAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97842D426C2746500677458 /* OXXOVoucherAction.swift */; };
@@ -577,18 +575,11 @@
 		C901BB8B2D9ECB1C00406282 /* CardScannerViewMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C901BB8A2D9ECB1C00406282 /* CardScannerViewMock.swift */; };
 		C901BB8F2D9ED76A00406282 /* AppOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = C901BB8E2D9ED76A00406282 /* AppOpener.swift */; };
 		C901BB912D9ED96D00406282 /* AppOpenerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C901BB902D9ED96D00406282 /* AppOpenerMock.swift */; };
-		C9025A432DF3135700E0D191 /* DropInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9025A412DF3135700E0D191 /* DropInViewModel.swift */; };
-		C9025A452DF3167900E0D191 /* DropInAssembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9025A442DF3167900E0D191 /* DropInAssembler.swift */; };
-		C9025A4B2DF3188700E0D191 /* PreselectedPaymentMethodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9025A4A2DF3188700E0D191 /* PreselectedPaymentMethodViewController.swift */; };
-		C9025A4D2DF31E4700E0D191 /* PreselectedPaymentMethodAssembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9025A4C2DF31E4700E0D191 /* PreselectedPaymentMethodAssembler.swift */; };
 		C9037F102D563DCD003A5154 /* CardScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F0F2D563DCD003A5154 /* CardScannerViewModel.swift */; };
 		C9037F122D5A1976003A5154 /* CardScannerOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F112D5A1976003A5154 /* CardScannerOverlayView.swift */; };
 		C9037F142D5A19BD003A5154 /* ROIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F132D5A19BD003A5154 /* ROIView.swift */; };
 		C9037F162D5A1AC0003A5154 /* CardScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F152D5A1AC0003A5154 /* CardScannerViewController.swift */; };
-		C90494562E8FF2CE007C4EB5 /* LoadControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90494552E8FF2CE007C4EB5 /* LoadControllable.swift */; };
 		C9126051275A3A2800C03DC4 /* BACSItemsFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9126050275A3A2800C03DC4 /* BACSItemsFactoryTests.swift */; };
-		C9174FF32EB3A89800AA1609 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9174FF22EB3A89800AA1609 /* Router.swift */; };
-		C9174FF92EB3B20B00AA1609 /* ActionWrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9174FF72EB3B20B00AA1609 /* ActionWrapperViewController.swift */; };
 		C91BF2582D771667001F19DE /* CardImageParsingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91BF2572D771667001F19DE /* CardImageParsingMock.swift */; };
 		C91BF25A2D7716D4001F19DE /* CaptureSessionManagingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91BF2592D7716D4001F19DE /* CaptureSessionManagingMock.swift */; };
 		C91BF25C2D772233001F19DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C91BF25B2D772233001F19DE /* Assets.xcassets */; };
@@ -601,7 +592,6 @@
 		C923A8252E9001B9004AC234 /* QRCodeFlowType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923A8242E9001B9004AC234 /* QRCodeFlowType.swift */; };
 		C923E1992F0FF07400E38413 /* ViewControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923E1972F0FF07400E38413 /* ViewControllerSpy.swift */; };
 		C923E19B2F1548FC00E38413 /* PaymentMethodListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C923E19A2F1548FC00E38413 /* PaymentMethodListViewControllerTests.swift */; };
-		C924FB902ECF6E27009D57EC /* ActionPresentationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C924FB8F2ECF6E27009D57EC /* ActionPresentationHelper.swift */; };
 		C92665362C49346200D3D852 /* SubmittableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92665352C49346200D3D852 /* SubmittableComponent.swift */; };
 		C927083827590B7500D15EA0 /* BACSInputFormViewProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26B1275900B9001A488F /* BACSInputFormViewProtocolMock.swift */; };
 		C927083927590B7900D15EA0 /* BACSInputPresenterProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D26B32759048C001A488F /* BACSInputPresenterProtocolMock.swift */; };
@@ -619,33 +609,23 @@
 		C933BE592D91659600EBFF7E /* ExpirationDateFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C933BE582D91659600EBFF7E /* ExpirationDateFormatterTests.swift */; };
 		C93844732D79DF3B00B1E747 /* CardScannerViewModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93844722D79DF3B00B1E747 /* CardScannerViewModelMock.swift */; };
 		C93844752D7B1C4100B1E747 /* CardScannerViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93844742D7B1C4100B1E747 /* CardScannerViewControllerTests.swift */; };
-		C93DDAEE2E2A789A00B78DED /* ComponentContainerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93DDAED2E2A789A00B78DED /* ComponentContainerRouter.swift */; };
-		C941A51C2DF9C0B40014AFF1 /* PreselectedPaymentMethodRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C941A51B2DF9C0B40014AFF1 /* PreselectedPaymentMethodRouter.swift */; };
-		C941A51E2DF9C21F0014AFF1 /* PaymentMethodListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C941A51D2DF9C21F0014AFF1 /* PaymentMethodListRouter.swift */; };
-		C941A5202DF9C2C10014AFF1 /* PaymentMethodListAssembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C941A51F2DF9C2C10014AFF1 /* PaymentMethodListAssembler.swift */; };
-		C941A5242DF9CB350014AFF1 /* ComponentContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C941A5232DF9CB350014AFF1 /* ComponentContainerViewController.swift */; };
-		C941A5262DF9CB790014AFF1 /* ComponentContainerAssembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C941A5252DF9CB790014AFF1 /* ComponentContainerAssembler.swift */; };
 		C9454C37276A340B0086C218 /* BACSDirectDebitPresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9454C35276A33A00086C218 /* BACSDirectDebitPresentationDelegate.swift */; };
 		C9454C38276A34150086C218 /* BACSDirectDebitPresentationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9454C35276A33A00086C218 /* BACSDirectDebitPresentationDelegate.swift */; };
 		C94632BE27BA6985003DD81F /* AnalyticsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94632BD27BA6985003DD81F /* AnalyticsProvider.swift */; };
 		C94639D02D5F68BC004A1B0C /* CaptureSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94639CF2D5F68BC004A1B0C /* CaptureSessionManager.swift */; };
 		C948B6672D8AC5C9000331AA /* CardImageParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C948B6662D8AC5C9000331AA /* CardImageParserTests.swift */; };
 		C948B6692D8AD0CA000331AA /* ExpirationDateFormattingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C948B6682D8AD0CA000331AA /* ExpirationDateFormattingMock.swift */; };
-		C94E350B2E00561B00B89290 /* DropInRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94E350A2E00561B00B89290 /* DropInRouter.swift */; };
 		C95903DE275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95903DD275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift */; };
 		C96688BF26A6FC1C00DC7297 /* AffirmComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */; };
 		C9680BE62D6CAD590076B93D /* CardScannerAssembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9680BE52D6CAD590076B93D /* CardScannerAssembler.swift */; };
 		C96844892D7712DC001DB7F1 /* AdyenCardScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9FC2C3D2D50D0B700C9D0F3 /* AdyenCardScanner.framework */; };
 		C96844932D771328001DB7F1 /* CardScannerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96844922D771328001DB7F1 /* CardScannerViewModelTests.swift */; };
 		C96E07A3283B92E300345732 /* BACSDirectDebitComponentTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96E07A1283B92D500345732 /* BACSDirectDebitComponentTrackerTests.swift */; };
-		C96ECA302E2160B600A86C59 /* DropInRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96ECA2E2E2160B600A86C59 /* DropInRoot.swift */; };
-		C971DD612DF04FA80027711E /* PaymentMethodListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971DD602DF04FA80027711E /* PaymentMethodListViewModel.swift */; };
 		C97518882F0FC7620091DFE4 /* PaymentMethodListRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97518872F0FC7620091DFE4 /* PaymentMethodListRouterTests.swift */; };
 		C978F5EF2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */; };
 		C981254E2851E9AF006D1374 /* PaymentComponentSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981254C2851E903006D1374 /* PaymentComponentSubject.swift */; };
 		C98125502851E9E4006D1374 /* PaymentComponentSubjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C981254F2851E9E4006D1374 /* PaymentComponentSubjectTests.swift */; };
 		C982FFDC2694792F00AED849 /* AffirmPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */; };
-		C9838D8F2F48A56A00E6A7E9 /* PaymentMethodListConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9838D8E2F48A56A00E6A7E9 /* PaymentMethodListConfiguration.swift */; };
 		C98FF6672C5A793A00B0050D /* StoredTwintPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98FF6662C5A793A00B0050D /* StoredTwintPaymentMethod.swift */; };
 		C993EB652EE0707200353ECA /* ErrorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8122B9BC2B9A0FF3002FC4D6 /* ErrorMock.swift */; };
 		C99AA1422D6DF6480043AA96 /* CardScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99AA1412D6DF6480043AA96 /* CardScanner.swift */; };
@@ -663,10 +643,6 @@
 		C9BB460627622E9600E6730B /* BACSConfirmationPresenterProtocolMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB460527622E9600E6730B /* BACSConfirmationPresenterProtocolMock.swift */; };
 		C9BB460927622F4100E6730B /* BACSConfirmationPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB460827622F4100E6730B /* BACSConfirmationPresenterTests.swift */; };
 		C9C21914276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21913276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift */; };
-		C9C22D932DE5F9620028C23F /* ComponentContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22D902DE5F9620028C23F /* ComponentContainerViewModel.swift */; };
-		C9C22D9C2DE5F9BB0028C23F /* PreApplePayComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22D9A2DE5F9BB0028C23F /* PreApplePayComponent.swift */; };
-		C9C22D9F2DE5F9BE0028C23F /* PaymentMethodListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22D9D2DE5F9BE0028C23F /* PaymentMethodListViewController.swift */; };
-		C9C22DA12DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C22DA02DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift */; };
 		C9D5139A2F0E7A5C00F57DD6 /* PaymentMethodListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D513992F0E7A5C00F57DD6 /* PaymentMethodListViewModelTests.swift */; };
 		C9D5139C2F0E810500F57DD6 /* PaymentMethodsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D5139B2F0E810500F57DD6 /* PaymentMethodsMock.swift */; };
 		C9D8EBA2274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */; };
@@ -674,7 +650,6 @@
 		C9DA53DD2E97F65900D83C94 /* QRCodeViewModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53DC2E97F65900D83C94 /* QRCodeViewModelMock.swift */; };
 		C9DA53E12E97F6DE00D83C94 /* QRCodeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53DF2E97F6DE00D83C94 /* QRCodeViewControllerTests.swift */; };
 		C9DA53E32E97F71C00D83C94 /* QRCodeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */; };
-		C9DC5B132EC4BF6A00E75C93 /* DropInFlowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC5B122EC4BF6A00E75C93 /* DropInFlowManager.swift */; };
 		C9E4DF672ED9A9B5000B6CBE /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */; };
 		C9E4DF682ED9A9B5000B6CBE /* AutoMockable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */; };
 		C9E6C5C72F02C5C50030E6C5 /* ComponentContainerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C993EB632EE056F000353ECA /* ComponentContainerViewModelTests.swift */; };
@@ -780,14 +755,11 @@
 		E7D189B025D31936006AD3B7 /* DropInActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */; };
 		E7D3ED84243B667500E73F59 /* FormCardNumberItemViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D3ED83243B667500E73F59 /* FormCardNumberItemViewTests.swift */; };
 		E7D418B1286E4C5900E9A7F4 /* PaymentAwareComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D418B0286E4C5900E9A7F4 /* PaymentAwareComponent.swift */; };
-		E7D418B3286F531500E9A7F4 /* ComponentManager+PaymentComponentBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D418B2286F531500E9A7F4 /* ComponentManager+PaymentComponentBuilder.swift */; };
-		E7DE050627F7243000CB5F83 /* NavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DE050527F7243000CB5F83 /* NavigationDelegate.swift */; };
 		E7E0E2382762005B001DF0C9 /* NSConstraintHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7E0E2372762005B001DF0C9 /* NSConstraintHelper.swift */; };
 		E7F563EA28B7758D00082D4C /* DropInTestInternal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F563E928B7758D00082D4C /* DropInTestInternal.swift */; };
 		E9021DAA225789B1009CF7F4 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9021DA9225789B1009CF7F4 /* Localization.swift */; };
 		E9021DEE225CC46D009CF7F4 /* URLHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9021DED225CC46D009CF7F4 /* URLHelpers.swift */; };
 		E9021DF2225CC6D0009CF7F4 /* RedirectDetailsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9021DF1225CC6D0009CF7F4 /* RedirectDetailsTests.swift */; };
-		E9021DFC2260D626009CF7F4 /* PaymentMethodsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9021DFB2260D626009CF7F4 /* PaymentMethodsSection.swift */; };
 		E9021E022264C4C5009CF7F4 /* KeyedDecodingContainerHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9021E012264C4C5009CF7F4 /* KeyedDecodingContainerHelpers.swift */; };
 		E90933FF228AFC6600C9F04B /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90933FE228AFC6600C9F04B /* Environment.swift */; };
 		E9093401228C54CD00C9F04B /* LogoURLProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9093400228C54CD00C9F04B /* LogoURLProvider.swift */; };
@@ -803,14 +775,10 @@
 		E9AFF87A224A4C9C005A0D8D /* PaymentComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AFF879224A4C9C005A0D8D /* PaymentComponent.swift */; };
 		E9AFF887224E5872005A0D8D /* PresentableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9AFF886224E5872005A0D8D /* PresentableComponent.swift */; };
 		E9B36C9D223FDE4F00EAA368 /* PaymentMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B36C9C223FDE4F00EAA368 /* PaymentMethods.swift */; };
-		E9B36CAF2243B2FF00EAA368 /* AdyenDropIn.h in Headers */ = {isa = PBXBuildFile; fileRef = E9B36CAD2243B2FE00EAA368 /* AdyenDropIn.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E9B36CB22243B2FF00EAA368 /* AdyenDropIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9B36CAB2243B2FE00EAA368 /* AdyenDropIn.framework */; };
 		E9B36CB32243B2FF00EAA368 /* AdyenDropIn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E9B36CAB2243B2FE00EAA368 /* AdyenDropIn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E9B36CB82243B38A00EAA368 /* DropInComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B36CB72243B38A00EAA368 /* DropInComponent.swift */; };
 		E9B36CBD2243DA1400EAA368 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
 		E9B36CBF2243DA1400EAA368 /* AdyenCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E05F220982AE008616F6 /* AdyenCard.framework */; };
-		E9B36CC522451C7100EAA368 /* ComponentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B36CC422451C7100EAA368 /* ComponentManager.swift */; };
-		E9B36CC722451C8300EAA368 /* DropInConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B36CC622451C8300EAA368 /* DropInConfiguration.swift */; };
 		E9E3DAB2221D79C800697074 /* CardNumberFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAB1221D79C800697074 /* CardNumberFormatterTests.swift */; };
 		E9E3DAB3221D988200697074 /* CardComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAA5221C431A00697074 /* CardComponent.swift */; };
 		E9E3DAB4221D988200697074 /* CardNumberValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E3DAA7221C54BA00697074 /* CardNumberValidator.swift */; };
@@ -833,7 +801,6 @@
 		EBF200032F00000100CB0001 /* CheckoutCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF200022F00000100CB0001 /* CheckoutCore.swift */; };
 		EBF200052F00000100CB0001 /* CheckoutResultCallbackStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF200042F00000100CB0001 /* CheckoutResultCallbackStore.swift */; };
 		EBF200072F00000100CB0001 /* CheckoutCallbackHandlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF200062F00000100CB0001 /* CheckoutCallbackHandlers.swift */; };
-		F90E95F02726B625007E382B /* DropInComponentExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90E95EF2726B625007E382B /* DropInComponentExtensions.swift */; };
 		F90FB7BC2446E8C8005BFE0E /* BrowserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90FB7BB2446E8C8005BFE0E /* BrowserInfo.swift */; };
 		F913B3ED26B7FAA8008F6CD2 /* AdyenNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = F913B3EC26B7FAA8008F6CD2 /* AdyenNetworking */; };
 		F913B3F126B80D4E008F6CD2 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F913B3F026B80D4E008F6CD2 /* APIRequest.swift */; };
@@ -972,7 +939,6 @@
 		F96AE5052603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96AE5042603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift */; };
 		F96AE51B26038602009F82BD /* XCTestCase+FormTextItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96AE51A26038602009F82BD /* XCTestCase+FormTextItemView.swift */; };
 		F96F44CD23B257D700871C1F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44CC23B257D700871C1F /* Logger.swift */; };
-		F96F44CF23BDEC0200871C1F /* DropInComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44CE23BDEC0200871C1F /* DropInComponentStyle.swift */; };
 		F96F44DD23BE487500871C1F /* LocalizationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96F44DC23BE487500871C1F /* LocalizationParameters.swift */; };
 		F96F44DF23BF453800871C1F /* AdyenUIHostCustomSeparator.strings in Resources */ = {isa = PBXBuildFile; fileRef = F96F44DE23BF453800871C1F /* AdyenUIHostCustomSeparator.strings */; };
 		F970143925D139BE007E74D9 /* VoucherComponentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F970143825D139BE007E74D9 /* VoucherComponentStyle.swift */; };
@@ -1725,7 +1691,6 @@
 		5A15D5A0264BE1E500A8E3C7 /* PrefilledShopperInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefilledShopperInformation.swift; sourceTree = "<group>"; };
 		5A22C26D262D686200F12D97 /* QRCodeActionComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeActionComponentTests.swift; sourceTree = "<group>"; };
 		5A22C2AC262EF99C00F12D97 /* ExpirationTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationTimer.swift; sourceTree = "<group>"; };
-		5A238C92263AEA0800758FEF /* PreApplePayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayView.swift; sourceTree = "<group>"; };
 		5A238C9E263BDEA200758FEF /* PreApplePayComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayComponentTests.swift; sourceTree = "<group>"; };
 		5A27AB022636A07900EF6F89 /* LocalizationKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationKey.swift; sourceTree = "<group>"; };
 		5A2D1950267368580082BCE9 /* ActionComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionComponentStyle.swift; sourceTree = "<group>"; };
@@ -1852,7 +1817,6 @@
 		A0290DF72C413056005BE269 /* StoredPaymentMethodDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredPaymentMethodDelegateMock.swift; sourceTree = "<group>"; };
 		A0290DF92C480CE9005BE269 /* ExampleContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleContainer.swift; sourceTree = "<group>"; };
 		A0290DFC2C4FD6D5005BE269 /* CardAnalyticsConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardAnalyticsConfiguration.swift; sourceTree = "<group>"; };
-		A0290DFE2C57DBC1005BE269 /* DropInAnalyticsConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInAnalyticsConfiguration.swift; sourceTree = "<group>"; };
 		A02AF3E7275A0D0900E1636C /* DocumentComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentComponent.swift; sourceTree = "<group>"; };
 		A02AF3E9275A3A5100E1636C /* DocumentAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAction.swift; sourceTree = "<group>"; };
 		A02B89E02DD776330083CE99 /* CheckoutResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutResult.swift; sourceTree = "<group>"; };
@@ -1990,23 +1954,16 @@
 		C901BB8A2D9ECB1C00406282 /* CardScannerViewMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerViewMock.swift; sourceTree = "<group>"; };
 		C901BB8E2D9ED76A00406282 /* AppOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppOpener.swift; sourceTree = "<group>"; };
 		C901BB902D9ED96D00406282 /* AppOpenerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppOpenerMock.swift; sourceTree = "<group>"; };
-		C9025A412DF3135700E0D191 /* DropInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInViewModel.swift; sourceTree = "<group>"; };
-		C9025A442DF3167900E0D191 /* DropInAssembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInAssembler.swift; sourceTree = "<group>"; };
-		C9025A4A2DF3188700E0D191 /* PreselectedPaymentMethodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentMethodViewController.swift; sourceTree = "<group>"; };
-		C9025A4C2DF31E4700E0D191 /* PreselectedPaymentMethodAssembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentMethodAssembler.swift; sourceTree = "<group>"; };
 		C9037F0F2D563DCD003A5154 /* CardScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerViewModel.swift; sourceTree = "<group>"; };
 		C9037F112D5A1976003A5154 /* CardScannerOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerOverlayView.swift; sourceTree = "<group>"; };
 		C9037F132D5A19BD003A5154 /* ROIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ROIView.swift; sourceTree = "<group>"; };
 		C9037F152D5A1AC0003A5154 /* CardScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerViewController.swift; sourceTree = "<group>"; };
-		C90494552E8FF2CE007C4EB5 /* LoadControllable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadControllable.swift; sourceTree = "<group>"; };
 		C90AC76B2EE0F22500DF60EA /* ComponentContainerRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentContainerRouterTests.swift; sourceTree = "<group>"; };
 		C90AC7852EE1D47B00DF60EA /* ComponentContainerViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentContainerViewControllerTests.swift; sourceTree = "<group>"; };
 		C90D26B1275900B9001A488F /* BACSInputFormViewProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewProtocolMock.swift; sourceTree = "<group>"; };
 		C90D26B32759048C001A488F /* BACSInputPresenterProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputPresenterProtocolMock.swift; sourceTree = "<group>"; };
 		C90D26B5275905B8001A488F /* BACSItemsFactoryProtocolMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSItemsFactoryProtocolMock.swift; sourceTree = "<group>"; };
 		C9126050275A3A2800C03DC4 /* BACSItemsFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSItemsFactoryTests.swift; sourceTree = "<group>"; };
-		C9174FF22EB3A89800AA1609 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
-		C9174FF72EB3B20B00AA1609 /* ActionWrapperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionWrapperViewController.swift; sourceTree = "<group>"; };
 		C91BF2572D771667001F19DE /* CardImageParsingMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImageParsingMock.swift; sourceTree = "<group>"; };
 		C91BF2592D7716D4001F19DE /* CaptureSessionManagingMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSessionManagingMock.swift; sourceTree = "<group>"; };
 		C91BF25B2D772233001F19DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -2017,7 +1974,6 @@
 		C923A8242E9001B9004AC234 /* QRCodeFlowType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeFlowType.swift; sourceTree = "<group>"; };
 		C923E1972F0FF07400E38413 /* ViewControllerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerSpy.swift; sourceTree = "<group>"; };
 		C923E19A2F1548FC00E38413 /* PaymentMethodListViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListViewControllerTests.swift; sourceTree = "<group>"; };
-		C924FB8F2ECF6E27009D57EC /* ActionPresentationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionPresentationHelper.swift; sourceTree = "<group>"; };
 		C92665352C49346200D3D852 /* SubmittableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmittableComponent.swift; sourceTree = "<group>"; };
 		C927083D27590BDB00D15EA0 /* BACSInputFormViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputFormViewControllerTests.swift; sourceTree = "<group>"; };
 		C927083F27590FE800D15EA0 /* BACSInputPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSInputPresenterTests.swift; sourceTree = "<group>"; };
@@ -2031,26 +1987,17 @@
 		C933BE582D91659600EBFF7E /* ExpirationDateFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationDateFormatterTests.swift; sourceTree = "<group>"; };
 		C93844722D79DF3B00B1E747 /* CardScannerViewModelMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerViewModelMock.swift; sourceTree = "<group>"; };
 		C93844742D7B1C4100B1E747 /* CardScannerViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerViewControllerTests.swift; sourceTree = "<group>"; };
-		C93DDAED2E2A789A00B78DED /* ComponentContainerRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentContainerRouter.swift; sourceTree = "<group>"; };
-		C941A51B2DF9C0B40014AFF1 /* PreselectedPaymentMethodRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentMethodRouter.swift; sourceTree = "<group>"; };
-		C941A51D2DF9C21F0014AFF1 /* PaymentMethodListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListRouter.swift; sourceTree = "<group>"; };
-		C941A51F2DF9C2C10014AFF1 /* PaymentMethodListAssembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListAssembler.swift; sourceTree = "<group>"; };
-		C941A5232DF9CB350014AFF1 /* ComponentContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentContainerViewController.swift; sourceTree = "<group>"; };
-		C941A5252DF9CB790014AFF1 /* ComponentContainerAssembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentContainerAssembler.swift; sourceTree = "<group>"; };
 		C9454C35276A33A00086C218 /* BACSDirectDebitPresentationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitPresentationDelegate.swift; sourceTree = "<group>"; };
 		C94632BD27BA6985003DD81F /* AnalyticsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsProvider.swift; sourceTree = "<group>"; };
 		C94639CF2D5F68BC004A1B0C /* CaptureSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSessionManager.swift; sourceTree = "<group>"; };
 		C948B6662D8AC5C9000331AA /* CardImageParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImageParserTests.swift; sourceTree = "<group>"; };
 		C948B6682D8AD0CA000331AA /* ExpirationDateFormattingMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationDateFormattingMock.swift; sourceTree = "<group>"; };
-		C94E350A2E00561B00B89290 /* DropInRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInRouter.swift; sourceTree = "<group>"; };
 		C95903DD275A48D000E7D3BC /* BACSDirectDebitComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTests.swift; sourceTree = "<group>"; };
 		C96688BE26A6FC1C00DC7297 /* AffirmComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentTests.swift; sourceTree = "<group>"; };
 		C9680BE52D6CAD590076B93D /* CardScannerAssembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerAssembler.swift; sourceTree = "<group>"; };
 		C96844852D7712DC001DB7F1 /* AdyenCardScannerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdyenCardScannerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C96844922D771328001DB7F1 /* CardScannerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerViewModelTests.swift; sourceTree = "<group>"; };
 		C96E07A1283B92D500345732 /* BACSDirectDebitComponentTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitComponentTrackerTests.swift; sourceTree = "<group>"; };
-		C96ECA2E2E2160B600A86C59 /* DropInRoot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInRoot.swift; sourceTree = "<group>"; };
-		C971DD602DF04FA80027711E /* PaymentMethodListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListViewModel.swift; sourceTree = "<group>"; };
 		C97518872F0FC7620091DFE4 /* PaymentMethodListRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListRouterTests.swift; sourceTree = "<group>"; };
 		C978F5EE2732CD6A00F59B3C /* FormCardSecurityCodeItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardSecurityCodeItemViewTests.swift; sourceTree = "<group>"; };
 		C97C16A928059A5A00534419 /* AnalyticsEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsEventTests.swift; sourceTree = "<group>"; };
@@ -2058,7 +2005,6 @@
 		C981254C2851E903006D1374 /* PaymentComponentSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentSubject.swift; sourceTree = "<group>"; };
 		C981254F2851E9E4006D1374 /* PaymentComponentSubjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentComponentSubjectTests.swift; sourceTree = "<group>"; };
 		C982FFDB2694792F00AED849 /* AffirmPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmPaymentMethod.swift; sourceTree = "<group>"; };
-		C9838D8E2F48A56A00E6A7E9 /* PaymentMethodListConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListConfiguration.swift; sourceTree = "<group>"; };
 		C98FF6662C5A793A00B0050D /* StoredTwintPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoredTwintPaymentMethod.swift; sourceTree = "<group>"; };
 		C993EB632EE056F000353ECA /* ComponentContainerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentContainerViewModelTests.swift; sourceTree = "<group>"; };
 		C99AA1412D6DF6480043AA96 /* CardScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScanner.swift; sourceTree = "<group>"; };
@@ -2081,10 +2027,6 @@
 		C9C0005B280468E100CE2EEC /* AnalyticsProviderMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsProviderMock.swift; sourceTree = "<group>"; };
 		C9C0005D280474DF00CE2EEC /* AnalyticsProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsProviderTests.swift; sourceTree = "<group>"; };
 		C9C21913276767ED0042E9BE /* BACSConfirmationViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationViewControllerTests.swift; sourceTree = "<group>"; };
-		C9C22D902DE5F9620028C23F /* ComponentContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentContainerViewModel.swift; sourceTree = "<group>"; };
-		C9C22D9A2DE5F9BB0028C23F /* PreApplePayComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApplePayComponent.swift; sourceTree = "<group>"; };
-		C9C22D9D2DE5F9BE0028C23F /* PaymentMethodListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListViewController.swift; sourceTree = "<group>"; };
-		C9C22DA02DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentMethodViewModel.swift; sourceTree = "<group>"; };
 		C9D513992F0E7A5C00F57DD6 /* PaymentMethodListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListViewModelTests.swift; sourceTree = "<group>"; };
 		C9D5139B2F0E810500F57DD6 /* PaymentMethodsMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsMock.swift; sourceTree = "<group>"; };
 		C9D8EBA1274556ED006D8CA1 /* BACSDirectDebitPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSDirectDebitPaymentMethod.swift; sourceTree = "<group>"; };
@@ -2092,7 +2034,6 @@
 		C9DA53DC2E97F65900D83C94 /* QRCodeViewModelMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewModelMock.swift; sourceTree = "<group>"; };
 		C9DA53DF2E97F6DE00D83C94 /* QRCodeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewControllerTests.swift; sourceTree = "<group>"; };
 		C9DA53E22E97F71C00D83C94 /* QRCodeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeViewModelTests.swift; sourceTree = "<group>"; };
-		C9DC5B122EC4BF6A00E75C93 /* DropInFlowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInFlowManager.swift; sourceTree = "<group>"; };
 		C9E4DF652ED9A9B5000B6CBE /* AutoMockable.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoMockable.generated.swift; sourceTree = "<group>"; };
 		C9EEEFEA2D5516B300B7AFFC /* ExpirationDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationDateFormatter.swift; sourceTree = "<group>"; };
 		C9F9905C2DC2566C00D2BFB0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -2222,15 +2163,12 @@
 		E7D189AF25D31936006AD3B7 /* DropInActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInActionTests.swift; sourceTree = "<group>"; };
 		E7D3ED83243B667500E73F59 /* FormCardNumberItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardNumberItemViewTests.swift; sourceTree = "<group>"; };
 		E7D418B0286E4C5900E9A7F4 /* PaymentAwareComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentAwareComponent.swift; sourceTree = "<group>"; };
-		E7D418B2286F531500E9A7F4 /* ComponentManager+PaymentComponentBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ComponentManager+PaymentComponentBuilder.swift"; sourceTree = "<group>"; };
-		E7DE050527F7243000CB5F83 /* NavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationDelegate.swift; sourceTree = "<group>"; };
 		E7E0E2372762005B001DF0C9 /* NSConstraintHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSConstraintHelper.swift; sourceTree = "<group>"; };
 		E7F563E928B7758D00082D4C /* DropInTestInternal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInTestInternal.swift; sourceTree = "<group>"; };
 		E9021DA9225789B1009CF7F4 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		E9021DEB225CC44C009CF7F4 /* URLExtensionsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtensionsTest.swift; sourceTree = "<group>"; };
 		E9021DED225CC46D009CF7F4 /* URLHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLHelpers.swift; sourceTree = "<group>"; };
 		E9021DF1225CC6D0009CF7F4 /* RedirectDetailsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedirectDetailsTests.swift; sourceTree = "<group>"; };
-		E9021DFB2260D626009CF7F4 /* PaymentMethodsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodsSection.swift; sourceTree = "<group>"; };
 		E9021E012264C4C5009CF7F4 /* KeyedDecodingContainerHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyedDecodingContainerHelpers.swift; sourceTree = "<group>"; };
 		E9021E032264C55E009CF7F4 /* KeyedDecodingContainerExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyedDecodingContainerExtensionsTests.swift; sourceTree = "<group>"; };
 		E90933FE228AFC6600C9F04B /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
@@ -2262,11 +2200,6 @@
 		E9AFF886224E5872005A0D8D /* PresentableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentableComponent.swift; sourceTree = "<group>"; };
 		E9B36C9C223FDE4F00EAA368 /* PaymentMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethods.swift; sourceTree = "<group>"; };
 		E9B36CAB2243B2FE00EAA368 /* AdyenDropIn.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenDropIn.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E9B36CAD2243B2FE00EAA368 /* AdyenDropIn.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenDropIn.h; sourceTree = "<group>"; };
-		E9B36CAE2243B2FE00EAA368 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E9B36CB72243B38A00EAA368 /* DropInComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInComponent.swift; sourceTree = "<group>"; };
-		E9B36CC422451C7100EAA368 /* ComponentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentManager.swift; sourceTree = "<group>"; };
-		E9B36CC622451C8300EAA368 /* DropInConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInConfiguration.swift; sourceTree = "<group>"; };
 		E9E3DAA5221C431A00697074 /* CardComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponent.swift; sourceTree = "<group>"; };
 		E9E3DAA7221C54BA00697074 /* CardNumberValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardNumberValidator.swift; sourceTree = "<group>"; };
 		E9E3DAA9221C54C600697074 /* CardNumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardNumberFormatter.swift; sourceTree = "<group>"; };
@@ -2296,7 +2229,6 @@
 		EBF200022F00000100CB0001 /* CheckoutCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutCore.swift; sourceTree = "<group>"; };
 		EBF200042F00000100CB0001 /* CheckoutResultCallbackStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutResultCallbackStore.swift; sourceTree = "<group>"; };
 		EBF200062F00000100CB0001 /* CheckoutCallbackHandlers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutCallbackHandlers.swift; sourceTree = "<group>"; };
-		F90E95EF2726B625007E382B /* DropInComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInComponentExtensions.swift; sourceTree = "<group>"; };
 		F90FB7BB2446E8C8005BFE0E /* BrowserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserInfo.swift; sourceTree = "<group>"; };
 		F90FB7BD2446EBB9005BFE0E /* BrowserInfoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserInfoTests.swift; sourceTree = "<group>"; };
 		F913B3F026B80D4E008F6CD2 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
@@ -2413,7 +2345,6 @@
 		F96AE5042603814C009F82BD /* BasicPersonalInfoFormComponentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicPersonalInfoFormComponentTests.swift; sourceTree = "<group>"; };
 		F96AE51A26038602009F82BD /* XCTestCase+FormTextItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FormTextItemView.swift"; sourceTree = "<group>"; };
 		F96F44CC23B257D700871C1F /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
-		F96F44CE23BDEC0200871C1F /* DropInComponentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInComponentStyle.swift; sourceTree = "<group>"; };
 		F96F44DC23BE487500871C1F /* LocalizationParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationParameters.swift; sourceTree = "<group>"; };
 		F96F44DE23BF453800871C1F /* AdyenUIHostCustomSeparator.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = AdyenUIHostCustomSeparator.strings; sourceTree = "<group>"; };
 		F96F44E023BF5C2000871C1F /* LocalizationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationTests.swift; sourceTree = "<group>"; };
@@ -2597,6 +2528,16 @@
 			);
 			target = F9175E54259393E800D653BE /* AdyenComponents */;
 		};
+		219229512FC0776D00714902 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			publicHeaders = (
+				AdyenDropIn.h,
+			);
+			target = E9B36CAA2243B2FE00EAA368 /* AdyenDropIn */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -2607,6 +2548,7 @@
 		2192281C2FC0772200714902 /* AdyenEncryption */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (219228322FC0772300714902 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = AdyenEncryption; sourceTree = "<group>"; };
 		219228482FC0774900714902 /* AdyenSession */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (219228552FC0774A00714902 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = AdyenSession; sourceTree = "<group>"; };
 		219228B52FC0775500714902 /* AdyenComponents */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (219228FB2FC0775600714902 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = AdyenComponents; sourceTree = "<group>"; };
+		2192292D2FC0776C00714902 /* AdyenDropIn */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (219229512FC0776D00714902 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = AdyenDropIn; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3609,35 +3551,6 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
-		C9025A422DF3135700E0D191 /* Root */ = {
-			isa = PBXGroup;
-			children = (
-				C96ECA2F2E2160B600A86C59 /* Models */,
-				C9025A412DF3135700E0D191 /* DropInViewModel.swift */,
-				C9025A442DF3167900E0D191 /* DropInAssembler.swift */,
-				C94E350A2E00561B00B89290 /* DropInRouter.swift */,
-			);
-			path = Root;
-			sourceTree = "<group>";
-		};
-		C90494502E8FE5B4007C4EB5 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				C9174FF82EB3B20B00AA1609 /* Utilities */,
-				C90494522E8FE5CB007C4EB5 /* Protocols */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
-		C90494522E8FE5CB007C4EB5 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				C90494552E8FF2CE007C4EB5 /* LoadControllable.swift */,
-				C9174FF22EB3A89800AA1609 /* Router.swift */,
-			);
-			path = Protocols;
-			sourceTree = "<group>";
-		};
 		C90D26AF2757C270001A488F /* BACS Direct Debit */ = {
 			isa = PBXGroup;
 			children = (
@@ -3672,15 +3585,6 @@
 				C9126050275A3A2800C03DC4 /* BACSItemsFactoryTests.swift */,
 			);
 			path = Factories;
-			sourceTree = "<group>";
-		};
-		C9174FF82EB3B20B00AA1609 /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-				C9174FF72EB3B20B00AA1609 /* ActionWrapperViewController.swift */,
-				C924FB8F2ECF6E27009D57EC /* ActionPresentationHelper.swift */,
-			);
-			path = Utilities;
 			sourceTree = "<group>";
 		};
 		C91BF2562D7715D8001F19DE /* Mocks */ = {
@@ -3842,14 +3746,6 @@
 			path = Trackers;
 			sourceTree = "<group>";
 		};
-		C96ECA2F2E2160B600A86C59 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				C96ECA2E2E2160B600A86C59 /* DropInRoot.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		C978F5EC2732CD0800F59B3C /* CardNumberItem */ = {
 			isa = PBXGroup;
 			children = (
@@ -3949,62 +3845,6 @@
 				A00580A52CD8CBC300294F2E /* EventAnalyticsProviderTests.swift */,
 			);
 			path = Analytics;
-			sourceTree = "<group>";
-		};
-		C9C22D912DE5F9620028C23F /* ComponentContainer */ = {
-			isa = PBXGroup;
-			children = (
-				C941A5252DF9CB790014AFF1 /* ComponentContainerAssembler.swift */,
-				C93DDAED2E2A789A00B78DED /* ComponentContainerRouter.swift */,
-				C941A5232DF9CB350014AFF1 /* ComponentContainerViewController.swift */,
-				C9C22D902DE5F9620028C23F /* ComponentContainerViewModel.swift */,
-			);
-			path = ComponentContainer;
-			sourceTree = "<group>";
-		};
-		C9C22D922DE5F9620028C23F /* Modules */ = {
-			isa = PBXGroup;
-			children = (
-				C90494502E8FE5B4007C4EB5 /* Common */,
-				C9025A422DF3135700E0D191 /* Root */,
-				C9C22D9B2DE5F9BB0028C23F /* PreApplePay */,
-				C9C22D9E2DE5F9BE0028C23F /* PaymentMethodList */,
-				C9C22D962DE5F9920028C23F /* PreselectedPaymentMethod */,
-				C9C22D912DE5F9620028C23F /* ComponentContainer */,
-				C9DC5B122EC4BF6A00E75C93 /* DropInFlowManager.swift */,
-			);
-			path = Modules;
-			sourceTree = "<group>";
-		};
-		C9C22D962DE5F9920028C23F /* PreselectedPaymentMethod */ = {
-			isa = PBXGroup;
-			children = (
-				C9025A4C2DF31E4700E0D191 /* PreselectedPaymentMethodAssembler.swift */,
-				C941A51B2DF9C0B40014AFF1 /* PreselectedPaymentMethodRouter.swift */,
-				C9025A4A2DF3188700E0D191 /* PreselectedPaymentMethodViewController.swift */,
-				C9C22DA02DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift */,
-			);
-			path = PreselectedPaymentMethod;
-			sourceTree = "<group>";
-		};
-		C9C22D9B2DE5F9BB0028C23F /* PreApplePay */ = {
-			isa = PBXGroup;
-			children = (
-				C9C22D9A2DE5F9BB0028C23F /* PreApplePayComponent.swift */,
-			);
-			path = PreApplePay;
-			sourceTree = "<group>";
-		};
-		C9C22D9E2DE5F9BE0028C23F /* PaymentMethodList */ = {
-			isa = PBXGroup;
-			children = (
-				C941A51F2DF9C2C10014AFF1 /* PaymentMethodListAssembler.swift */,
-				C9C22D9D2DE5F9BE0028C23F /* PaymentMethodListViewController.swift */,
-				C941A51D2DF9C21F0014AFF1 /* PaymentMethodListRouter.swift */,
-				C971DD602DF04FA80027711E /* PaymentMethodListViewModel.swift */,
-				C9838D8E2F48A56A00E6A7E9 /* PaymentMethodListConfiguration.swift */,
-			);
-			path = PaymentMethodList;
 			sourceTree = "<group>";
 		};
 		C9CA0B68282E7E4A00C4E9C2 /* Requests */ = {
@@ -4291,7 +4131,7 @@
 				E2C0E060220982AE008616F6 /* AdyenCard */,
 				219228482FC0774900714902 /* AdyenSession */,
 				219228B52FC0775500714902 /* AdyenComponents */,
-				E9B36CAC2243B2FE00EAA368 /* AdyenDropIn */,
+				2192292D2FC0776C00714902 /* AdyenDropIn */,
 				F9620D8323C73B0D005209FC /* AdyenWeChatPay */,
 				A04F8C1F29E5950100F3F62B /* AdyenCashAppPay */,
 				00E5D6522AF4E99B00CDE118 /* AdyenTwint */,
@@ -4492,14 +4332,6 @@
 			path = Abstract;
 			sourceTree = "<group>";
 		};
-		E7484C2523B9FDC400CCF74F /* Presentation */ = {
-			isa = PBXGroup;
-			children = (
-				E7DE050527F7243000CB5F83 /* NavigationDelegate.swift */,
-			);
-			path = Presentation;
-			sourceTree = "<group>";
-		};
 		E759E1F325CB371800B1F8DC /* DropIn Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -4515,14 +4347,6 @@
 				A0290DF72C413056005BE269 /* StoredPaymentMethodDelegateMock.swift */,
 			);
 			path = "DropIn Tests";
-			sourceTree = "<group>";
-		};
-		E767F49925A5E9670077029E /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				5A238C92263AEA0800758FEF /* PreApplePayView.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		E76EC683241127B5009C6E2F /* Assets */ = {
@@ -4823,42 +4647,6 @@
 				E28098B0220DA78B0087928F /* Components */,
 			);
 			path = Core;
-			sourceTree = "<group>";
-		};
-		E9B36CAC2243B2FE00EAA368 /* AdyenDropIn */ = {
-			isa = PBXGroup;
-			children = (
-				C9C22D922DE5F9620028C23F /* Modules */,
-				E767F49925A5E9670077029E /* Views */,
-				E7484C2523B9FDC400CCF74F /* Presentation */,
-				E9B36CC322451C5B00EAA368 /* Utilities */,
-				E9B36CC122451C3000EAA368 /* Models */,
-				E9B36CAD2243B2FE00EAA368 /* AdyenDropIn.h */,
-				E9B36CAE2243B2FE00EAA368 /* Info.plist */,
-				E9B36CB72243B38A00EAA368 /* DropInComponent.swift */,
-				F90E95EF2726B625007E382B /* DropInComponentExtensions.swift */,
-			);
-			path = AdyenDropIn;
-			sourceTree = "<group>";
-		};
-		E9B36CC122451C3000EAA368 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				E9B36CC622451C8300EAA368 /* DropInConfiguration.swift */,
-				F96F44CE23BDEC0200871C1F /* DropInComponentStyle.swift */,
-				A0290DFE2C57DBC1005BE269 /* DropInAnalyticsConfiguration.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		E9B36CC322451C5B00EAA368 /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-				E9B36CC422451C7100EAA368 /* ComponentManager.swift */,
-				E9021DFB2260D626009CF7F4 /* PaymentMethodsSection.swift */,
-				E7D418B2286F531500E9A7F4 /* ComponentManager+PaymentComponentBuilder.swift */,
-			);
-			path = Utilities;
 			sourceTree = "<group>";
 		};
 		E9E3DAAB221D5BEF00697074 /* Validators */ = {
@@ -5717,7 +5505,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9B36CAF2243B2FF00EAA368 /* AdyenDropIn.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6072,6 +5859,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				2192292D2FC0776C00714902 /* AdyenDropIn */,
 			);
 			name = AdyenDropIn;
 			productName = AdyenDropIn;
@@ -7544,39 +7334,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F96F44CF23BDEC0200871C1F /* DropInComponentStyle.swift in Sources */,
-				C9025A4D2DF31E4700E0D191 /* PreselectedPaymentMethodAssembler.swift in Sources */,
-				E9021DFC2260D626009CF7F4 /* PaymentMethodsSection.swift in Sources */,
-				5A238C93263AEA0800758FEF /* PreApplePayView.swift in Sources */,
-				C941A5262DF9CB790014AFF1 /* ComponentContainerAssembler.swift in Sources */,
-				C9174FF32EB3A89800AA1609 /* Router.swift in Sources */,
-				E9B36CC722451C8300EAA368 /* DropInConfiguration.swift in Sources */,
-				C94E350B2E00561B00B89290 /* DropInRouter.swift in Sources */,
-				C96ECA302E2160B600A86C59 /* DropInRoot.swift in Sources */,
-				A0290DFF2C57DBC1005BE269 /* DropInAnalyticsConfiguration.swift in Sources */,
-				C93DDAEE2E2A789A00B78DED /* ComponentContainerRouter.swift in Sources */,
-				C924FB902ECF6E27009D57EC /* ActionPresentationHelper.swift in Sources */,
-				C9025A452DF3167900E0D191 /* DropInAssembler.swift in Sources */,
-				C9C22DA12DE5F9EE0028C23F /* PreselectedPaymentMethodViewModel.swift in Sources */,
-				C9174FF92EB3B20B00AA1609 /* ActionWrapperViewController.swift in Sources */,
-				F90E95F02726B625007E382B /* DropInComponentExtensions.swift in Sources */,
-				C9C22D9C2DE5F9BB0028C23F /* PreApplePayComponent.swift in Sources */,
-				C90494562E8FF2CE007C4EB5 /* LoadControllable.swift in Sources */,
-				C9DC5B132EC4BF6A00E75C93 /* DropInFlowManager.swift in Sources */,
-				C9025A4B2DF3188700E0D191 /* PreselectedPaymentMethodViewController.swift in Sources */,
-				C9025A432DF3135700E0D191 /* DropInViewModel.swift in Sources */,
-				E7D418B3286F531500E9A7F4 /* ComponentManager+PaymentComponentBuilder.swift in Sources */,
-				C9C22D9F2DE5F9BE0028C23F /* PaymentMethodListViewController.swift in Sources */,
-				C9838D8F2F48A56A00E6A7E9 /* PaymentMethodListConfiguration.swift in Sources */,
-				E9B36CB82243B38A00EAA368 /* DropInComponent.swift in Sources */,
-				C971DD612DF04FA80027711E /* PaymentMethodListViewModel.swift in Sources */,
-				C941A5202DF9C2C10014AFF1 /* PaymentMethodListAssembler.swift in Sources */,
-				C9C22D932DE5F9620028C23F /* ComponentContainerViewModel.swift in Sources */,
-				E7DE050627F7243000CB5F83 /* NavigationDelegate.swift in Sources */,
-				C941A5242DF9CB350014AFF1 /* ComponentContainerViewController.swift in Sources */,
-				E9B36CC522451C7100EAA368 /* ComponentManager.swift in Sources */,
-				C941A51E2DF9C21F0014AFF1 /* PaymentMethodListRouter.swift in Sources */,
-				C941A51C2DF9C0B40014AFF1 /* PreselectedPaymentMethodRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
