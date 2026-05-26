@@ -120,7 +120,7 @@ struct PaymentMethodListViewControllerTests {
     }
 
     @Test
-    func stateIdle_shouldStopLoading() async {
+    func stateIdle_shouldHideLoadingOverlay() async {
         // Given
         let (sut, viewModelMock) = makeSUT()
         sut.loadViewIfNeeded()
@@ -135,12 +135,17 @@ struct PaymentMethodListViewControllerTests {
         viewModelMock.setState(.loaded(sections: [section]))
         await Task.yield()
 
+        // First show loading overlay
+        viewModelMock.setState(.loading)
+        await Task.yield()
+
         // When
         viewModelMock.setState(.idle)
         await Task.yield()
 
-        // Then - stopLoading was called (no crash, state is idle)
-        #expect(true) // If we reach here, stopLoading didn't crash
+        // Then - loading overlay should be hidden (alpha = 0)
+        let loadingOverlay: UIView? = sut.view.findView(with: "paymentMethodList.loadingOverlay")
+        #expect(loadingOverlay?.alpha == 0, "Loading overlay should be hidden (alpha = 0) in idle state")
     }
 
     @Test
@@ -153,9 +158,10 @@ struct PaymentMethodListViewControllerTests {
         viewModelMock.setState(.loading)
         await Task.yield()
 
-        // Then - loading overlay should be visible (alpha > 0 after animation)
-        // We verify the state was set without crashing
-        #expect(true)
+        // Then - loading overlay should be visible (alpha = 1)
+        let loadingOverlay: UIView? = sut.view.findView(with: "paymentMethodList.loadingOverlay")
+        #expect(loadingOverlay != nil, "Loading overlay should be present")
+        #expect(loadingOverlay?.alpha == 1, "Loading overlay should be visible (alpha = 1) in loading state")
     }
 
     @Test
@@ -180,7 +186,7 @@ struct PaymentMethodListViewControllerTests {
         sut.loadViewIfNeeded()
 
         // Then - header view should be in the view hierarchy
-        let headerView = sut.view.findSubview(ofType: PaymentMethodListHeaderView.self)
+        let headerView: UIView? = sut.view.findView(with: "paymentMethodList.headerView")
         #expect(headerView != nil, "Header view should be present in the view hierarchy")
     }
 
@@ -209,7 +215,7 @@ struct PaymentMethodListViewControllerTests {
         await Task.yield()
 
         // Then - section views should be added
-        let sectionViews = sut.view.findAllSubviews(ofType: PaymentMethodSectionView.self)
+        let sectionViews: [UIView] = sut.view.findAllViews(with: "paymentMethodList.sectionView")
         #expect(sectionViews.count == 2, "Expected 2 section views but found \(sectionViews.count)")
     }
 
@@ -236,7 +242,7 @@ struct PaymentMethodListViewControllerTests {
         await Task.yield()
 
         // Then - only the new sections should be present
-        let sectionViews = sut.view.findAllSubviews(ofType: PaymentMethodSectionView.self)
+        let sectionViews: [UIView] = sut.view.findAllViews(with: "paymentMethodList.sectionView")
         #expect(sectionViews.count == 1, "Expected 1 section view after reload but found \(sectionViews.count)")
     }
 
@@ -293,35 +299,5 @@ private class TestablePaymentMethodListViewModel: PaymentMethodListViewModelProt
 
     func didLoad() {
         didLoadCallsCount += 1
-    }
-}
-
-// MARK: - UIView Test Helpers
-
-private extension UIView {
-
-    /// Recursively finds the first subview of the specified type.
-    func findSubview<T: UIView>(ofType type: T.Type) -> T? {
-        for subview in subviews {
-            if let match = subview as? T {
-                return match
-            }
-            if let match = subview.findSubview(ofType: type) {
-                return match
-            }
-        }
-        return nil
-    }
-
-    /// Recursively finds all subviews of the specified type.
-    func findAllSubviews<T: UIView>(ofType type: T.Type) -> [T] {
-        var results: [T] = []
-        for subview in subviews {
-            if let match = subview as? T {
-                results.append(match)
-            }
-            results.append(contentsOf: subview.findAllSubviews(ofType: type))
-        }
-        return results
     }
 }
