@@ -25,14 +25,15 @@ struct PaymentMethodListViewModelTests {
         isLoaded: Bool = false,
         sectionCount: Int? = nil
     ) {
+        let expectedState: String = isIdle ? ".idle" : isLoading ? ".loading" : isLoaded ? ".loaded" : "unknown"
         switch state {
         case .idle:
-            #expect(isIdle, "Expected state to be .idle but got \(state)")
+            #expect(isIdle, "Expected state to be \(expectedState) but got .idle")
         case .loading:
-            #expect(isLoading, "Expected state to be .loading but got \(state)")
+            #expect(isLoading, "Expected state to be \(expectedState) but got .loading")
         case let .loaded(sections):
-            #expect(isLoaded, "Expected state to be .loaded but got \(state)")
-            if let expectedCount = sectionCount {
+            #expect(isLoaded, "Expected state to be \(expectedState) but got .loaded")
+            if isLoaded, let expectedCount = sectionCount {
                 #expect(sections.count == expectedCount, "Expected \(expectedCount) sections but got \(sections.count)")
             }
         }
@@ -43,11 +44,12 @@ struct PaymentMethodListViewModelTests {
         isHidden: Bool = false,
         isVisible: Bool = false
     ) {
+        let expectedState: String = isHidden ? ".hidden" : isVisible ? ".visible" : "unknown"
         switch state {
         case .hidden:
-            #expect(isHidden, "Expected applePayButtonState to be .hidden but got \(state)")
+            #expect(isHidden, "Expected applePayButtonState to be \(expectedState) but got .hidden")
         case .visible:
-            #expect(isVisible, "Expected applePayButtonState to be .visible but got \(state)")
+            #expect(isVisible, "Expected applePayButtonState to be \(expectedState) but got .visible")
         }
     }
 

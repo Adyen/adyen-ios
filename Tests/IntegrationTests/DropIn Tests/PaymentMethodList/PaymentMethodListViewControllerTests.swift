@@ -115,11 +115,9 @@ struct PaymentMethodListViewControllerTests {
         // Allow state to propagate on main queue
         await Task.yield()
 
-        // Then - verify section views are added to the stack
-        let scrollView = sut.view.subviews.first { $0 is UIScrollView } as? UIScrollView
-        let contentStackView = scrollView?.subviews.first { $0 is UIStackView } as? UIStackView
-        let paymentMethodSectionsStackView = contentStackView?.arrangedSubviews.last { $0 is UIStackView } as? UIStackView
-        #expect(paymentMethodSectionsStackView?.arrangedSubviews.isEmpty == false)
+        // Then - verify section views are added to the view hierarchy
+        let sectionViews = sut.view.findAllSubviews(ofType: PaymentMethodSectionView.self)
+        #expect(sectionViews.isEmpty == false, "Section views should be present in the view hierarchy")
     }
 
     @Test
@@ -142,9 +140,10 @@ struct PaymentMethodListViewControllerTests {
         viewModelMock.setState(.idle)
         await Task.yield()
 
-        // Then - loading overlay should be hidden (alpha == 0)
-        let loadingOverlay = sut.view.subviews.first { $0.backgroundColor?.cgColor.alpha ?? 1 < 1 }
-        #expect(loadingOverlay?.alpha == 0 || loadingOverlay == nil)
+        // Then - activity indicator should not be animating or should be removed
+        let activityIndicator = sut.view.findSubview(ofType: UIActivityIndicatorView.self)
+        let isLoadingHidden = activityIndicator == nil || activityIndicator?.isAnimating == false
+        #expect(isLoadingHidden, "Loading indicator should be hidden in idle state")
     }
 
     @Test
