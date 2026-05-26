@@ -34,4 +34,16 @@ internal extension UIView {
         
         return nil
     }
+
+    func findAllViews<T: UIView>(with accessibilityIdentifier: String) -> [T] {
+        var results: [T] = []
+        if self.accessibilityIdentifier == accessibilityIdentifier, let view = self as? T {
+            results.append(view)
+        }
+        for subview in subviews {
+            let subviewResults: [T] = subview.findAllViews(with: accessibilityIdentifier)
+            results.append(contentsOf: subviewResults)
+        }
+        return results
+    }
 }

@@ -187,7 +187,7 @@ struct PaymentMethodListViewControllerTests {
         sut.loadViewIfNeeded()
 
         // Then - header view should be in the view hierarchy
-        let headerView = sut.view.findSubview(ofType: PaymentMethodListHeaderView.self)
+        let headerView: UIView? = sut.view.findView(with: "paymentMethodList.headerView")
         #expect(headerView != nil, "Header view should be present in the view hierarchy")
     }
 
@@ -216,7 +216,7 @@ struct PaymentMethodListViewControllerTests {
         await Task.yield()
 
         // Then - section views should be added
-        let sectionViews = sut.view.findAllSubviews(ofType: PaymentMethodSectionView.self)
+        let sectionViews: [UIView] = sut.view.findAllViews(with: "paymentMethodList.sectionView")
         #expect(sectionViews.count == 2, "Expected 2 section views but found \(sectionViews.count)")
     }
 
@@ -243,7 +243,7 @@ struct PaymentMethodListViewControllerTests {
         await Task.yield()
 
         // Then - only the new sections should be present
-        let sectionViews = sut.view.findAllSubviews(ofType: PaymentMethodSectionView.self)
+        let sectionViews: [UIView] = sut.view.findAllViews(with: "paymentMethodList.sectionView")
         #expect(sectionViews.count == 1, "Expected 1 section view after reload but found \(sectionViews.count)")
     }
 
@@ -300,35 +300,5 @@ private class TestablePaymentMethodListViewModel: PaymentMethodListViewModelProt
 
     func didLoad() {
         didLoadCallsCount += 1
-    }
-}
-
-// MARK: - UIView Test Helpers
-
-private extension UIView {
-
-    /// Recursively finds the first subview of the specified type.
-    func findSubview<T: UIView>(ofType type: T.Type) -> T? {
-        for subview in subviews {
-            if let match = subview as? T {
-                return match
-            }
-            if let match = subview.findSubview(ofType: type) {
-                return match
-            }
-        }
-        return nil
-    }
-
-    /// Recursively finds all subviews of the specified type.
-    func findAllSubviews<T: UIView>(ofType type: T.Type) -> [T] {
-        var results: [T] = []
-        for subview in subviews {
-            if let match = subview as? T {
-                results.append(match)
-            }
-            results.append(contentsOf: subview.findAllSubviews(ofType: type))
-        }
-        return results
     }
 }

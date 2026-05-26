@@ -62,6 +62,7 @@ internal final class PaymentMethodSectionView: UIView {
     // MARK: - Private
 
     private func setupView() {
+        accessibilityIdentifier = "paymentMethodList.sectionView"
         addSubview(containerStackView)
         
         containerStackView.addArrangedSubview(headerLabel)
