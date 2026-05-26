@@ -136,14 +136,17 @@ struct PaymentMethodListViewControllerTests {
         viewModelMock.setState(.loaded(sections: [section]))
         await Task.yield()
 
+        // First show loading overlay
+        viewModelMock.setState(.loading)
+        await Task.yield()
+
         // When
         viewModelMock.setState(.idle)
         await Task.yield()
 
-        // Then - activity indicator should not be animating or should be removed
-        let activityIndicator = sut.view.findSubview(ofType: UIActivityIndicatorView.self)
-        let isLoadingHidden = activityIndicator == nil || activityIndicator?.isAnimating == false
-        #expect(isLoadingHidden, "Loading indicator should be hidden in idle state")
+        // Then - loading overlay should be hidden (alpha = 0)
+        let loadingOverlay: UIView? = sut.view.findView(with: "paymentMethodList.loadingOverlay")
+        #expect(loadingOverlay?.alpha == 0, "Loading overlay should be hidden (alpha = 0) in idle state")
     }
 
     @Test
@@ -156,9 +159,10 @@ struct PaymentMethodListViewControllerTests {
         viewModelMock.setState(.loading)
         await Task.yield()
 
-        // Then - verify activity indicator exists in the view hierarchy
-        let activityIndicator = sut.view.findSubview(ofType: UIActivityIndicatorView.self)
-        #expect(activityIndicator != nil, "Loading overlay with activity indicator should be present")
+        // Then - loading overlay should be visible (alpha = 1)
+        let loadingOverlay: UIView? = sut.view.findView(with: "paymentMethodList.loadingOverlay")
+        #expect(loadingOverlay != nil, "Loading overlay should be present")
+        #expect(loadingOverlay?.alpha == 1, "Loading overlay should be visible (alpha = 1) in loading state")
     }
 
     @Test
