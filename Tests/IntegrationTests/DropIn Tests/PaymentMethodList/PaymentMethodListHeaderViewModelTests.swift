@@ -75,10 +75,12 @@ struct PaymentMethodListHeaderViewModelTests {
         )
 
         // When
-        if case let .visible(onTap) = sut.applePayButtonState {
-            onTap()
-            onTap()
+        guard case let .visible(onTap) = sut.applePayButtonState else {
+            Issue.record("Expected applePayButtonState to be .visible")
+            return
         }
+        onTap()
+        onTap()
 
         // Then
         #expect(tapCount == 2)
