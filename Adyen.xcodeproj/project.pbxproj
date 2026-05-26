@@ -2036,6 +2036,7 @@
 		21FAD6F82FC5CF8C00393726 /* UIKit */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (21FAD7022FC5CF8D00393726 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = UIKit; sourceTree = "<group>"; };
 		21FAD7102FC5D01800393726 /* SwiftUI */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (21FAD7192FC5D01900393726 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = SwiftUI; sourceTree = "<group>"; };
 		21FAD75C2FC5D03900393726 /* Common */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (21FAD7C32FC5D03A00393726 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Common; sourceTree = "<group>"; };
+		21FADE422FC5D0D200393726 /* Screenshots */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Screenshots; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3411,6 +3412,7 @@
 		E7E58BF725ADDF8400E869F9 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				21FADE422FC5D0D200393726 /* Screenshots */,
 				C92988562EE6F10300BD9DD7 /* README.md */,
 				B6244E0A2E3281B800F42780 /* Secrets.xcconfig */,
 				B6244DFF2E3224BE00F42780 /* Secrets.template.xcconfig */,
@@ -4347,6 +4349,7 @@
 			fileSystemSynchronizedGroups = (
 				21FAD6F82FC5CF8C00393726 /* UIKit */,
 				21FAD75C2FC5D03900393726 /* Common */,
+				21FADE422FC5D0D200393726 /* Screenshots */,
 			);
 			name = AdyenUIHost;
 			packageProductDependencies = (
@@ -4545,6 +4548,7 @@
 			fileSystemSynchronizedGroups = (
 				21FAD7102FC5D01800393726 /* SwiftUI */,
 				21FAD75C2FC5D03900393726 /* Common */,
+				21FADE422FC5D0D200393726 /* Screenshots */,
 			);
 			name = AdyenSwiftUIHost;
 			packageProductDependencies = (
