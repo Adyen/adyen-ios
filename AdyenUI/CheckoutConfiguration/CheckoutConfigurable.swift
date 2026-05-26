@@ -18,8 +18,8 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     
     var showsSubmitButton: Bool { get set }
     
-    // These are here  to work with the current way,
-    // to be changed with new styling/localization
+    // Internal runtime localization state. Merchant-facing checkout flows configure
+    // localization through `CheckoutConfiguration.localizationProvider(...)`.
 
     var localizationParameters: LocalizationParameters? { get set }
 

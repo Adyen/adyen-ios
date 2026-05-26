@@ -51,12 +51,12 @@ package final class CheckoutCore: CheckoutCoreProtocol {
             for: .threeDS2,
             defaultValue: AuthenticationConfiguration(theme: configuration.theme)
         )
-        authenticationConfiguration.localizationParameters = configuration.resolvedLocalizationParameters(
-            merging: authenticationConfiguration.localizationParameters
+        authenticationConfiguration.localizationParameters = configuration.resolvedCheckoutLocalizationParameters(
+            mergingExistingParameters: authenticationConfiguration.localizationParameters
         )
 
         let actionConfig = CheckoutActionComponent.Configuration(
-            localizationParameters: configuration.resolvedLocalizationParameters(),
+            localizationParameters: configuration.resolvedCheckoutLocalizationParameters(),
             authentication: authenticationConfiguration,
             twint: configuration.configuration(for: .twint)
         )

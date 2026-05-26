@@ -126,8 +126,8 @@ internal enum CheckoutComponentBuilder {
 
         componentConfiguration.showsSubmitButton = configuration.showsSubmitButton
         componentConfiguration.theme = configuration.theme
-        componentConfiguration.localizationParameters = configuration.resolvedLocalizationParameters(
-            merging: componentConfiguration.localizationParameters
+        componentConfiguration.localizationParameters = configuration.resolvedCheckoutLocalizationParameters(
+            mergingExistingParameters: componentConfiguration.localizationParameters
         )
 
         return try factory.create(
@@ -148,7 +148,7 @@ internal enum CheckoutComponentBuilder {
             context: context,
             theme: configuration.theme
         )
-        component.localizationParameters = configuration.resolvedLocalizationParameters()
+        component.localizationParameters = configuration.resolvedCheckoutLocalizationParameters()
 
         return component
     }
@@ -163,7 +163,7 @@ internal enum CheckoutComponentBuilder {
             paymentMethod: storedPaymentMethod,
             context: context
         )
-        component.localizationParameters = configuration.resolvedLocalizationParameters()
+        component.localizationParameters = configuration.resolvedCheckoutLocalizationParameters()
 
         return component
     }
