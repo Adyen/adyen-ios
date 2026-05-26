@@ -239,6 +239,7 @@ struct PaymentMethodListViewModelTests {
     func selectPaymentMethod_givenRegularComponent_shouldCallRouterPresent() throws {
         // Given
         let (sut, _, routerMock) = makeSUT()
+        sut.didLoad()
         let paymentMethod = try #require(sut.paymentMethodSections.flatMap(\.paymentMethods).first { $0.type == .scheme })
 
         // When
