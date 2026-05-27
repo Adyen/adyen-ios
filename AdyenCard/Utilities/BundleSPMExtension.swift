@@ -6,12 +6,17 @@
 
 import Foundation
 
-/// This is excluded from the normal xcode project file,
-/// and used only when built with Swift Package Manager,
-/// since swift packages has different code to access internal resources,
-/// that doesn't compile in a normal xcode project.
-/// The Bundle extension in `BundleExtension.swift` is used instead.
 internal extension Bundle {
-    /// The bundle in which the framework's resources are located.
-    static let cardInternalResources: Bundle = .module
+    #if SWIFT_PACKAGE
+        /// The bundle in which the framework's resources are located.
+        /// This will be available when using swift packages, open the `Package.swift` file and see.
+        static let cardInternalResources: Bundle = .module
+    #else
+        static let cardBundle: Bundle = .init(for: CardComponent.self)
+        static let cardInternalResources: Bundle = {
+            let url = cardBundle.url(forResource: "AdyenCard", withExtension: "bundle")
+            let bundle = url.flatMap { Bundle(url: $0) }
+            return bundle ?? cardBundle
+        }()
+    #endif
 }

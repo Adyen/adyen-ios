@@ -6,16 +6,17 @@
 
 import Foundation
 
-/// This is excluded from the normal xcode project file,
-/// and used only when built with Swift Package Manager,
-/// since swift packages has different code to access internal resources,
-/// that doesn't compile in a normal xcode project.
-/// The Bundle extension in `BundleExtension.swift` is used instead.
-extension Bundle {
-
-    /// The main bundle of the framework.
-    internal static let core: Bundle = .init(for: AdyenContext.self)
-
-    /// The bundle in which the framework's resources are located.
-    package static let coreInternalResources: Bundle = .module
+package extension Bundle {
+    #if SWIFT_PACKAGE
+        /// The bundle in which the framework's resources are located.
+        /// This will be available when using swift packages, open the `Package.swift` file and see.
+        static let coreInternalResources: Bundle = .module
+    #else
+        static let coreBundle: Bundle = .init(for: AdyenContext.self)
+        package static let coreInternalResources: Bundle = {
+            let url = coreBundle.url(forResource: "Adyen", withExtension: "bundle")
+            let bundle = url.flatMap { Bundle(url: $0) }
+            return bundle ?? coreBundle
+        }()
+    #endif
 }
