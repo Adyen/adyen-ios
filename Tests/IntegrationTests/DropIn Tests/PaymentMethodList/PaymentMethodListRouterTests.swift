@@ -60,7 +60,7 @@ struct PaymentMethodListRouterTests {
         // Given
         let (sut, _, navigationControllerSpy, _, componentContainerAssemblerMock) = makeSUT()
         let paymentComponent = makePaymentComponentMock()
-        let componentContainerRouter = componentContainerAssemblerMock.resolveComponentContainerRouterForDelegateOnCancelReturnValue
+        let componentContainerRouter = componentContainerAssemblerMock.resolveComponentContainerRouterForListenerReturnValue
         let expectedComponentContainerViewController = try #require(componentContainerRouter?.rootViewController)
 
         // When
@@ -101,35 +101,65 @@ struct PaymentMethodListRouterTests {
         #expect(sut.childRouter == nil)
     }
 
-    // MARK: - Mocks
+    @Test
+    func didDismissComponentContainer_shouldCallCompletion() {
+        // Given
+        let (sut, _, _, _, _) = makeSUT()
+        var completionCalled = false
 
-    private class PaymentMethodListRouterListenerMock: PaymentMethodListRouterListener {
-        var didDismissPaymentMethodListCompletionCallsCount = 0
-        var didDismissPaymentMethodListCompletionReceivedCompletion: (() -> Void)?
-
-        func didDismissPaymentMethodList(completion: (() -> Void)?) {
-            didDismissPaymentMethodListCompletionCallsCount += 1
-            didDismissPaymentMethodListCompletionReceivedCompletion = completion
-            completion?()
+        // When
+        sut.didDismissComponentContainer {
+            completionCalled = true
         }
+
+        // Then
+        #expect(completionCalled == true)
     }
 
-    private class ComponentContainerAssemblerProtocolMock: ComponentContainerAssemblerProtocol {
-        var resolveComponentContainerRouterForDelegateOnCancelReturnValue: Router?
-        var resolveComponentContainerRouterForDelegateOnCancelCallsCount = 0
+    @Test
+    func presentComponent_givenStoredComponent_shouldPresentComponentContainerModally() {
+        // Given
+        let (sut, _, navigationControllerSpy, _, componentContainerAssemblerMock) = makeSUT()
+        let storedPaymentComponent = makeStoredPaymentComponentMock()
+        let componentContainerRouter = componentContainerAssemblerMock.resolveComponentContainerRouterForListenerReturnValue
 
-        func resolveComponentContainerRouter(
-            for component: PresentableComponent,
-            listener: ComponentContainerRouterListener
-        ) -> Router {
-            resolveComponentContainerRouterForDelegateOnCancelCallsCount += 1
-            return resolveComponentContainerRouterForDelegateOnCancelReturnValue!
-        }
+        // When
+        sut.present(component: storedPaymentComponent)
+
+        // Then - stored components are presented modally, not pushed
+        #expect(navigationControllerSpy.pushViewControllerCallsCount == 0)
+        #expect(navigationControllerSpy.presentCallsCount == 1)
+        #expect(sut.childRouter === componentContainerRouter)
     }
 
-    private class RouterMock: Router {
-        var childRouter: Router?
-        var rootViewController: UIViewController = .init()
+    @Test
+    func presentComponent_givenInitiableComponent_shouldNotPresentAnything() {
+        // Given
+        let (sut, _, navigationControllerSpy, _, componentContainerAssemblerMock) = makeSUT()
+        let initiablePaymentComponent = makeInitiablePaymentComponentMock()
+
+        // When
+        sut.present(component: initiablePaymentComponent)
+
+        // Then - initiable components are not presented by the router
+        #expect(navigationControllerSpy.pushViewControllerCallsCount == 0)
+        #expect(navigationControllerSpy.presentCallsCount == 0)
+        #expect(componentContainerAssemblerMock.resolveComponentContainerRouterForListenerCallsCount == 0)
+        #expect(sut.childRouter == nil)
+    }
+
+    @Test
+    func presentViewController_shouldPresentModally() {
+        // Given
+        let (sut, _, navigationControllerSpy, _, _) = makeSUT()
+        let viewControllerToPresent = UIViewController()
+
+        // When
+        sut.present(viewController: viewControllerToPresent)
+
+        // Then
+        #expect(navigationControllerSpy.presentCallsCount == 1)
+        #expect(navigationControllerSpy.capturedPresentedViewController === viewControllerToPresent)
     }
 
     // MARK: - Helpers
@@ -148,7 +178,7 @@ struct PaymentMethodListRouterTests {
 
         let componentContainerRouterMock = RouterMock()
         let componentContainerAssemblerMock = ComponentContainerAssemblerProtocolMock()
-        componentContainerAssemblerMock.resolveComponentContainerRouterForDelegateOnCancelReturnValue = componentContainerRouterMock
+        componentContainerAssemblerMock.resolveComponentContainerRouterForListenerReturnValue = componentContainerRouterMock
 
         let sut = PaymentMethodListRouter(
             viewController: viewControllerSpy,
