@@ -293,10 +293,15 @@ struct PaymentMethodListViewModelTests {
         sut.didLoad() // Set state to loaded first
         assertState(sut.state, isLoaded: true)
 
+        // Capture the onCancel callback when present is called
+        var capturedOnCancel: (() -> Void)?
+        routerMock.presentActionComponentOnCancelClosure = { _, onCancel in
+            capturedOnCancel = onCancel
+        }
+
         // When
         sut.present(actionComponent: actionComponentMock)
-        let onCancel = routerMock.presentActionComponentOnCancelReceivedArguments?.onCancel
-        onCancel?()
+        capturedOnCancel?()
 
         // Then
         assertState(sut.state, isIdle: true)
