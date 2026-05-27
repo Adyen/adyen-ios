@@ -21,16 +21,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		000888822D510414009C03E1 /* PayToComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000888812D510412009C03E1 /* PayToComponentUITests.swift */; };
-		000888832D510414009C03E1 /* PayToComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000888812D510412009C03E1 /* PayToComponentUITests.swift */; };
 		0019C4BC2E6B06F800B0C3A3 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; platformFilter = ios; };
-		00220955299B8B1C00B2BACD /* BLIKComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00220953299B885600B2BACD /* BLIKComponentUITests.swift */; };
-		00220958299E5B1D00B2BACD /* MBWayComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00220957299E5B1D00B2BACD /* MBWayComponentUITests.swift */; };
-		0022095C29A4C65E00B2BACD /* BoletoComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0022095A29A4C3C600B2BACD /* BoletoComponentUITests.swift */; };
-		0022096429A8C39100B2BACD /* DokuComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0022096329A8C39100B2BACD /* DokuComponentUITests.swift */; };
 		003BDD212E15200A009177E0 /* AdyenUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 003BDD192E15200A009177E0 /* AdyenUI.framework */; };
 		003BDD222E15200A009177E0 /* AdyenUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 003BDD192E15200A009177E0 /* AdyenUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		003C03B0297AFFA30022269A /* UPIComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003C03AE297AFF9F0022269A /* UPIComponentUITests.swift */; };
 		0042EBCD2B9081A5001B1F6C /* AdyenTwint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */; };
 		00600F152E6F145D00637477 /* AdyenUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 003BDD192E15200A009177E0 /* AdyenUI.framework */; };
 		00600F182E6F14AA00637477 /* AdyenUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 003BDD192E15200A009177E0 /* AdyenUI.framework */; };
@@ -43,13 +36,8 @@
 		81088A1F2BDBACB7007FCDB9 /* AdyenTwint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */; };
 		81088A202BDBACB7007FCDB9 /* AdyenTwint.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8136619E2BE0F6F7009AA0CD /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = 8136619D2BE0F6F7009AA0CD /* Adyen3DS2 */; };
-		814044312B62BDBB00EB7FBA /* SecuredViewControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814044302B62BDBB00EB7FBA /* SecuredViewControllerUITests.swift */; };
 		8140A3762A3327B500896403 /* AdyenComponents.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9175E55259393E800D653BE /* AdyenComponents.framework */; };
-		814E154A2C87407F00D90D4B /* CardComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814E15492C87407F00D90D4B /* CardComponentUITests.swift */; };
-		814E154B2C87407F00D90D4B /* CardComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814E15492C87407F00D90D4B /* CardComponentUITests.swift */; };
 		8169B9EC2A0506CC00AAC9F8 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
-		817C90802C3D590C0072A202 /* GiftCardComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817C907F2C3D590C0072A202 /* GiftCardComponentUITests.swift */; };
-		817C90812C3D590C0072A202 /* GiftCardComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817C907F2C3D590C0072A202 /* GiftCardComponentUITests.swift */; };
 		8182AABD2B974E2B0087568E /* AdyenTwint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */; };
 		819BFB422BDBEEA10018DC9B /* AdyenActions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9175F8C2594986900D653BE /* AdyenActions.framework */; platformFilter = ios; };
 		819BFB462BDBEEB50018DC9B /* AdyenCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E05F220982AE008616F6 /* AdyenCard.framework */; platformFilter = ios; };
@@ -71,19 +59,6 @@
 		81BDD6E32B21CF5C0022250E /* AdyenWeChatPayInternal in Frameworks */ = {isa = PBXBuildFile; productRef = 81BDD6E22B21CF5C0022250E /* AdyenWeChatPayInternal */; };
 		81DC4D772BDBE8820048B9EF /* TwintSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6602AF527C200CDE118 /* TwintSDK.xcframework */; };
 		81DC5A552A77ED0400DBF2D1 /* Adyen3DS2 in Frameworks */ = {isa = PBXBuildFile; productRef = 81DC5A542A77ED0400DBF2D1 /* Adyen3DS2 */; };
-		81DF940A2BAAD8EB0001DCBC /* MBWayComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00220957299E5B1D00B2BACD /* MBWayComponentUITests.swift */; };
-		81DF940B2BAAD8EB0001DCBC /* AtomeComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007D790B2812C81400382D31 /* AtomeComponentUITests.swift */; };
-		81DF940D2BAAD8EB0001DCBC /* OnlineBankingComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBD328855D190082B360 /* OnlineBankingComponentUITests.swift */; };
-		81DF940E2BAAD8EB0001DCBC /* SecuredViewControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814044302B62BDBB00EB7FBA /* SecuredViewControllerUITests.swift */; };
-		81DF94152BAAD8EB0001DCBC /* UPIComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003C03AE297AFF9F0022269A /* UPIComponentUITests.swift */; };
-		81DF94192BAAD8EB0001DCBC /* DokuComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0022096329A8C39100B2BACD /* DokuComponentUITests.swift */; };
-		81DF941A2BAAD8EB0001DCBC /* IssuerListComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CCA3AC296DB0D200AD643D /* IssuerListComponentUITests.swift */; };
-		81DF941B2BAAD8EB0001DCBC /* AffirmComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007D791E2823A84C00382D31 /* AffirmComponentUITests.swift */; };
-		81DF941D2BAAD8EB0001DCBC /* BoletoComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0022095A29A4C3C600B2BACD /* BoletoComponentUITests.swift */; };
-		81DF941F2BAAD8EB0001DCBC /* XCTestCase+SnapshotTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CCA3DD296ED1F400AD643D /* XCTestCase+SnapshotTesting.swift */; };
-		81DF94212BAAD8EB0001DCBC /* QRCodeActionComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058692228B8C1FE00B65A19 /* QRCodeActionComponentUITests.swift */; };
-		81DF94232BAAD8EB0001DCBC /* BLIKComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00220953299B885600B2BACD /* BLIKComponentUITests.swift */; };
-		81DF94262BAAD8EB0001DCBC /* ListViewControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CCA3AF296EAD6100AD643D /* ListViewControllerUITests.swift */; };
 		81DF94292BAAD8EB0001DCBC /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 81DF94072BAAD8EB0001DCBC /* SnapshotTesting */; };
 		81EF13E72BE500B600EF752A /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; platformFilter = ios; };
 		A020EC4F29E6ECBD0050B2FE /* PayKit in Frameworks */ = {isa = PBXBuildFile; productRef = A020EC4E29E6ECBD0050B2FE /* PayKit */; };
@@ -157,14 +132,7 @@
 		F973A9192791C3B0005AA753 /* AdyenActions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9175F8C2594986900D653BE /* AdyenActions.framework */; };
 		F973A91A2791C3B0005AA753 /* AdyenActions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9175F8C2594986900D653BE /* AdyenActions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F9A2D01225DBF104008944BE /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A2D01125DBF104008944BE /* PassKit.framework */; };
-		F9CCA3C4296ECB9900AD643D /* AtomeComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007D790B2812C81400382D31 /* AtomeComponentUITests.swift */; };
-		F9CCA3C5296ECB9900AD643D /* ListViewControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CCA3AF296EAD6100AD643D /* ListViewControllerUITests.swift */; };
-		F9CCA3C6296ECB9900AD643D /* QRCodeActionComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0058692228B8C1FE00B65A19 /* QRCodeActionComponentUITests.swift */; };
-		F9CCA3C7296ECB9900AD643D /* AffirmComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007D791E2823A84C00382D31 /* AffirmComponentUITests.swift */; };
-		F9CCA3C8296ECB9900AD643D /* IssuerListComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CCA3AC296DB0D200AD643D /* IssuerListComponentUITests.swift */; };
-		F9CCA3C9296ECB9900AD643D /* OnlineBankingComponentUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00EACBD328855D190082B360 /* OnlineBankingComponentUITests.swift */; };
 		F9CCA3DA296ECDF900AD643D /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = F9CCA3D9296ECDF900AD643D /* SnapshotTesting */; };
-		F9CCA3DE296ED1F400AD643D /* XCTestCase+SnapshotTesting.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9CCA3DD296ED1F400AD643D /* XCTestCase+SnapshotTesting.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -681,22 +649,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		000888812D510412009C03E1 /* PayToComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayToComponentUITests.swift; sourceTree = "<group>"; };
-		00220953299B885600B2BACD /* BLIKComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLIKComponentUITests.swift; sourceTree = "<group>"; };
-		00220957299E5B1D00B2BACD /* MBWayComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MBWayComponentUITests.swift; sourceTree = "<group>"; };
-		0022095A29A4C3C600B2BACD /* BoletoComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoletoComponentUITests.swift; sourceTree = "<group>"; };
-		0022096329A8C39100B2BACD /* DokuComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DokuComponentUITests.swift; sourceTree = "<group>"; };
 		003BDD192E15200A009177E0 /* AdyenUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		003C03AE297AFF9F0022269A /* UPIComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPIComponentUITests.swift; sourceTree = "<group>"; };
-		0058692228B8C1FE00B65A19 /* QRCodeActionComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeActionComponentUITests.swift; sourceTree = "<group>"; };
-		007D790B2812C81400382D31 /* AtomeComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomeComponentUITests.swift; sourceTree = "<group>"; };
-		007D791E2823A84C00382D31 /* AffirmComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffirmComponentUITests.swift; sourceTree = "<group>"; };
 		00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenTwint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E5D6602AF527C200CDE118 /* TwintSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = TwintSDK.xcframework; path = XCFramework/Dynamic/TwintSDK.xcframework; sourceTree = "<group>"; };
-		00EACBD328855D190082B360 /* OnlineBankingComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineBankingComponentUITests.swift; sourceTree = "<group>"; };
-		814044302B62BDBB00EB7FBA /* SecuredViewControllerUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecuredViewControllerUITests.swift; sourceTree = "<group>"; };
-		814E15492C87407F00D90D4B /* CardComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardComponentUITests.swift; sourceTree = "<group>"; };
-		817C907F2C3D590C0072A202 /* GiftCardComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftCardComponentUITests.swift; sourceTree = "<group>"; };
 		81DF942E2BAAD8EB0001DCBC /* GenerateSnapshots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GenerateSnapshots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A04F8C1E29E5950100F3F62B /* AdyenCashAppPay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenCashAppPay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0F7498E2D958B3000014A05 /* AdyenCheckout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenCheckout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -733,10 +688,7 @@
 		F9789C6B23F18069000B4B2B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		F9A1B477283B689F005F3145 /* Adyen.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Adyen.docc; sourceTree = "<group>"; };
 		F9A2D01125DBF104008944BE /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
-		F9CCA3AC296DB0D200AD643D /* IssuerListComponentUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuerListComponentUITests.swift; sourceTree = "<group>"; };
-		F9CCA3AF296EAD6100AD643D /* ListViewControllerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewControllerUITests.swift; sourceTree = "<group>"; };
 		F9CCA3B5296ECB3E00AD643D /* SnapshotsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnapshotsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F9CCA3DD296ED1F400AD643D /* XCTestCase+SnapshotTesting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+SnapshotTesting.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -896,102 +848,6 @@
 			);
 			target = 81DF94042BAAD8EB0001DCBC /* GenerateSnapshots */;
 		};
-		21721E192FC710C2005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				APIClientMock.swift,
-				Helpers/ErrorMock.swift,
-				"Helpers/PaymentMethods+Equatable.swift",
-				"Helpers/String+UIImage.swift",
-				"Helpers/XCTestCase+Coder.swift",
-				"Helpers/XCTestCase+FirstResponder.swift",
-				"Helpers/XCTestCase+Result.swift",
-				"Helpers/XCTestCase+Wait.swift",
-				Mocks/ActionHandlingComponentMock.swift,
-				Mocks/AnalyticsProviderMock.swift,
-				Mocks/AppLauncherMock.swift,
-				Mocks/ApplePayNetworksProvidingMock.swift,
-				Mocks/CancellableMock.swift,
-				Mocks/CardPaymentMethodMock.swift,
-				Mocks/DummyData/Dummy.swift,
-				Mocks/DummyData/DummyPaymentMethods.swift,
-				Mocks/FormatterMock.swift,
-				Mocks/ImageLoaderMock.swift,
-				Mocks/MockAddressLookupProvider.swift,
-				Mocks/PaymentComponentDelegateMock.swift,
-				Mocks/PaymentComponentMock.swift,
-				Mocks/PaymentMethodMock.swift,
-				Mocks/PostalAddressMocks.swift,
-				Mocks/PresentationDelegateMock.swift,
-				Mocks/PresenterMock.swift,
-				Mocks/PresentingViewControllerMock.swift,
-				Mocks/StoredPaymentMethodMock.swift,
-				Mocks/URLProtocolMock.swift,
-				Mocks/ValidatorMock.swift,
-			);
-			target = B62D48AB2BBE8D79001EF01A /* UnitTests */;
-		};
-		21721E1A2FC710C2005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				APIClientMock.swift,
-				"Helpers/FormItemView+ValidationState.swift",
-				Helpers/FormViewExtractor.swift,
-				"Helpers/String+UIImage.swift",
-				Helpers/TestTheme.swift,
-				"Helpers/UIBarButtonItem+XCTest.swift",
-				"Helpers/UIView+Search.swift",
-				"Helpers/UIViewController+Search.swift",
-				"Helpers/XCTestCase+Coder.swift",
-				"Helpers/XCTestCase+FirstResponder.swift",
-				"Helpers/XCTestCase+FormAddressItem.swift",
-				"Helpers/XCTestCase+FormTextItemView.swift",
-				"Helpers/XCTestCase+RootViewController.swift",
-				"Helpers/XCTestCase+Wait.swift",
-				"Helpers/XCTestCase+Wait+UIKit.swift",
-				Mocks/AnalyticsProviderMock.swift,
-				Mocks/CancellableMock.swift,
-				Mocks/DummyData/Dummy.swift,
-				Mocks/DummyData/DummyPaymentMethods.swift,
-				Mocks/ImageLoaderMock.swift,
-				Mocks/PartialPaymentDelegateMock.swift,
-				Mocks/PaymentComponentDelegateMock.swift,
-				Mocks/PostalAddressMocks.swift,
-				Mocks/PresentationDelegateMock.swift,
-				Mocks/URLProtocolMock.swift,
-			);
-			target = F9CCA3B4296ECB3E00AD643D /* SnapshotsTests */;
-		};
-		21721E1B2FC710C2005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				APIClientMock.swift,
-				"Helpers/FormItemView+ValidationState.swift",
-				Helpers/FormViewExtractor.swift,
-				"Helpers/String+UIImage.swift",
-				Helpers/TestTheme.swift,
-				"Helpers/UIBarButtonItem+XCTest.swift",
-				"Helpers/UIView+Search.swift",
-				"Helpers/UIViewController+Search.swift",
-				"Helpers/XCTestCase+Coder.swift",
-				"Helpers/XCTestCase+FirstResponder.swift",
-				"Helpers/XCTestCase+FormAddressItem.swift",
-				"Helpers/XCTestCase+FormTextItemView.swift",
-				"Helpers/XCTestCase+RootViewController.swift",
-				"Helpers/XCTestCase+Wait.swift",
-				"Helpers/XCTestCase+Wait+UIKit.swift",
-				Mocks/AnalyticsProviderMock.swift,
-				Mocks/CancellableMock.swift,
-				Mocks/DummyData/Dummy.swift,
-				Mocks/DummyData/DummyPaymentMethods.swift,
-				Mocks/ImageLoaderMock.swift,
-				Mocks/PartialPaymentDelegateMock.swift,
-				Mocks/PaymentComponentDelegateMock.swift,
-				Mocks/PostalAddressMocks.swift,
-				Mocks/PresentationDelegateMock.swift,
-			);
-			target = 81DF94042BAAD8EB0001DCBC /* GenerateSnapshots */;
-		};
 		2172238E2FC72207005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -1013,6 +869,50 @@
 			);
 			target = E2C0E07C220B0399008616F6 /* AdyenUIHost */;
 		};
+		2172888D2FC73519005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Components/AffirmComponentUITests.swift,
+				Components/AtomeComponentUITests.swift,
+				Components/BLIKComponentUITests.swift,
+				Components/BoletoComponentUITests.swift,
+				Components/CardComponentUITests.swift,
+				Components/DokuComponentUITests.swift,
+				Components/GiftCardComponentUITests.swift,
+				Components/IssuerListComponentUITests.swift,
+				Components/MBWayComponentUITests.swift,
+				Components/OnlineBankingComponentUITests.swift,
+				Components/PayToComponentUITests.swift,
+				Components/QRCodeActionComponentUITests.swift,
+				Components/UPIComponentUITests.swift,
+				"Helpers/XCTestCase+SnapshotTesting.swift",
+				UI/ListViewControllerUITests.swift,
+				UI/SecuredViewControllerUITests.swift,
+			);
+			target = F9CCA3B4296ECB3E00AD643D /* SnapshotsTests */;
+		};
+		2172888E2FC73519005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Components/AffirmComponentUITests.swift,
+				Components/AtomeComponentUITests.swift,
+				Components/BLIKComponentUITests.swift,
+				Components/BoletoComponentUITests.swift,
+				Components/CardComponentUITests.swift,
+				Components/DokuComponentUITests.swift,
+				Components/GiftCardComponentUITests.swift,
+				Components/IssuerListComponentUITests.swift,
+				Components/MBWayComponentUITests.swift,
+				Components/OnlineBankingComponentUITests.swift,
+				Components/PayToComponentUITests.swift,
+				Components/QRCodeActionComponentUITests.swift,
+				Components/UPIComponentUITests.swift,
+				"Helpers/XCTestCase+SnapshotTesting.swift",
+				UI/ListViewControllerUITests.swift,
+				UI/SecuredViewControllerUITests.swift,
+			);
+			target = 81DF94042BAAD8EB0001DCBC /* GenerateSnapshots */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -1031,7 +931,7 @@
 		2172174A2FC70CEA005815D1 /* AdyenCardScanner */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (2172175C2FC70CEB005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = AdyenCardScanner; sourceTree = "<group>"; };
 		217217622FC70DBB005815D1 /* AdyenDelegatedAuthentication */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (217217662FC70DBC005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = AdyenDelegatedAuthentication; sourceTree = "<group>"; };
 		21721D302FC70E9E005815D1 /* Adyen */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (21721E152FC70E9F005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 21721E162FC70E9F005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 21721E172FC70E9F005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Adyen; sourceTree = "<group>"; };
-		21721E182FC710B8005815D1 /* Common */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (21721E192FC710C2005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 21721E1A2FC710C2005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 21721E1B2FC710C2005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Common; sourceTree = "<group>"; };
+		21721E182FC710B8005815D1 /* Common */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Common; sourceTree = "<group>"; };
 		21721E832FC712BC005815D1 /* TestPlans */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TestPlans; sourceTree = "<group>"; };
 		21721F662FC71378005815D1 /* UnitTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = UnitTests; sourceTree = "<group>"; };
 		217222DA2FC72206005815D1 /* IntegrationTests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (2172238E2FC72207005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = IntegrationTests; sourceTree = "<group>"; };
@@ -1040,6 +940,7 @@
 		217224CC2FC7240B005815D1 /* Common */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Common; sourceTree = "<group>"; };
 		2172253E2FC727CD005815D1 /* SwiftUI */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (217225472FC727CE005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = SwiftUI; sourceTree = "<group>"; };
 		217225522FC727D3005815D1 /* UIKit */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (2172255C2FC727D4005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = UIKit; sourceTree = "<group>"; };
+		2172886C2FC73518005815D1 /* SnapshotTests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (2172888D2FC73519005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 2172888E2FC73519005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = SnapshotTests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1282,44 +1183,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		007D790A2812C81400382D31 /* SnapshotTests */ = {
-			isa = PBXGroup;
-			children = (
-				F9CCA3AE296EAD4800AD643D /* UI */,
-				007D79202823BE4C00382D31 /* Helpers */,
-				007D79142812EFD300382D31 /* Components */,
-			);
-			path = SnapshotTests;
-			sourceTree = "<group>";
-		};
-		007D79142812EFD300382D31 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				0022096329A8C39100B2BACD /* DokuComponentUITests.swift */,
-				0022095A29A4C3C600B2BACD /* BoletoComponentUITests.swift */,
-				00220957299E5B1D00B2BACD /* MBWayComponentUITests.swift */,
-				00220953299B885600B2BACD /* BLIKComponentUITests.swift */,
-				003C03AE297AFF9F0022269A /* UPIComponentUITests.swift */,
-				817C907F2C3D590C0072A202 /* GiftCardComponentUITests.swift */,
-				F9CCA3AC296DB0D200AD643D /* IssuerListComponentUITests.swift */,
-				0058692228B8C1FE00B65A19 /* QRCodeActionComponentUITests.swift */,
-				00EACBD328855D190082B360 /* OnlineBankingComponentUITests.swift */,
-				007D790B2812C81400382D31 /* AtomeComponentUITests.swift */,
-				007D791E2823A84C00382D31 /* AffirmComponentUITests.swift */,
-				814E15492C87407F00D90D4B /* CardComponentUITests.swift */,
-				000888812D510412009C03E1 /* PayToComponentUITests.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		007D79202823BE4C00382D31 /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-				F9CCA3DD296ED1F400AD643D /* XCTestCase+SnapshotTesting.swift */,
-			);
-			path = Helpers;
-			sourceTree = "<group>";
-		};
 		81B28F092BCFCE6900CDFA70 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -1327,7 +1190,7 @@
 				21721E832FC712BC005815D1 /* TestPlans */,
 				21721F662FC71378005815D1 /* UnitTests */,
 				217222DA2FC72206005815D1 /* IntegrationTests */,
-				007D790A2812C81400382D31 /* SnapshotTests */,
+				2172886C2FC73518005815D1 /* SnapshotTests */,
 				217223902FC7225C005815D1 /* GeneratedMocks */,
 			);
 			path = Tests;
@@ -1421,15 +1284,6 @@
 				217224CC2FC7240B005815D1 /* Common */,
 			);
 			path = Demo;
-			sourceTree = "<group>";
-		};
-		F9CCA3AE296EAD4800AD643D /* UI */ = {
-			isa = PBXGroup;
-			children = (
-				F9CCA3AF296EAD6100AD643D /* ListViewControllerUITests.swift */,
-				814044302B62BDBB00EB7FBA /* SecuredViewControllerUITests.swift */,
-			);
-			path = UI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1601,6 +1455,9 @@
 			dependencies = (
 				81DF94052BAAD8EB0001DCBC /* PBXTargetDependency */,
 			);
+			fileSystemSynchronizedGroups = (
+				21721E182FC710B8005815D1 /* Common */,
+			);
 			name = GenerateSnapshots;
 			packageProductDependencies = (
 				81DF94072BAAD8EB0001DCBC /* SnapshotTesting */,
@@ -1681,6 +1538,7 @@
 				A069FDF82DDDC9B700A214B8 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				21721E182FC710B8005815D1 /* Common */,
 				21721F662FC71378005815D1 /* UnitTests */,
 				217223902FC7225C005815D1 /* GeneratedMocks */,
 			);
@@ -2090,6 +1948,9 @@
 			);
 			dependencies = (
 				F9CCA3BA296ECB3E00AD643D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				21721E182FC710B8005815D1 /* Common */,
 			);
 			name = SnapshotsTests;
 			packageProductDependencies = (
@@ -2536,22 +2397,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81DF940A2BAAD8EB0001DCBC /* MBWayComponentUITests.swift in Sources */,
-				81DF940B2BAAD8EB0001DCBC /* AtomeComponentUITests.swift in Sources */,
-				81DF940D2BAAD8EB0001DCBC /* OnlineBankingComponentUITests.swift in Sources */,
-				81DF940E2BAAD8EB0001DCBC /* SecuredViewControllerUITests.swift in Sources */,
-				814E154B2C87407F00D90D4B /* CardComponentUITests.swift in Sources */,
-				817C90812C3D590C0072A202 /* GiftCardComponentUITests.swift in Sources */,
-				81DF94152BAAD8EB0001DCBC /* UPIComponentUITests.swift in Sources */,
-				81DF94192BAAD8EB0001DCBC /* DokuComponentUITests.swift in Sources */,
-				81DF941A2BAAD8EB0001DCBC /* IssuerListComponentUITests.swift in Sources */,
-				000888832D510414009C03E1 /* PayToComponentUITests.swift in Sources */,
-				81DF941B2BAAD8EB0001DCBC /* AffirmComponentUITests.swift in Sources */,
-				81DF941D2BAAD8EB0001DCBC /* BoletoComponentUITests.swift in Sources */,
-				81DF941F2BAAD8EB0001DCBC /* XCTestCase+SnapshotTesting.swift in Sources */,
-				81DF94212BAAD8EB0001DCBC /* QRCodeActionComponentUITests.swift in Sources */,
-				81DF94232BAAD8EB0001DCBC /* BLIKComponentUITests.swift in Sources */,
-				81DF94262BAAD8EB0001DCBC /* ListViewControllerUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2685,22 +2530,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00220958299E5B1D00B2BACD /* MBWayComponentUITests.swift in Sources */,
-				F9CCA3C4296ECB9900AD643D /* AtomeComponentUITests.swift in Sources */,
-				F9CCA3C9296ECB9900AD643D /* OnlineBankingComponentUITests.swift in Sources */,
-				814044312B62BDBB00EB7FBA /* SecuredViewControllerUITests.swift in Sources */,
-				003C03B0297AFFA30022269A /* UPIComponentUITests.swift in Sources */,
-				0022096429A8C39100B2BACD /* DokuComponentUITests.swift in Sources */,
-				F9CCA3C8296ECB9900AD643D /* IssuerListComponentUITests.swift in Sources */,
-				F9CCA3C7296ECB9900AD643D /* AffirmComponentUITests.swift in Sources */,
-				0022095C29A4C65E00B2BACD /* BoletoComponentUITests.swift in Sources */,
-				814E154A2C87407F00D90D4B /* CardComponentUITests.swift in Sources */,
-				817C90802C3D590C0072A202 /* GiftCardComponentUITests.swift in Sources */,
-				F9CCA3DE296ED1F400AD643D /* XCTestCase+SnapshotTesting.swift in Sources */,
-				F9CCA3C6296ECB9900AD643D /* QRCodeActionComponentUITests.swift in Sources */,
-				00220955299B8B1C00B2BACD /* BLIKComponentUITests.swift in Sources */,
-				F9CCA3C5296ECB9900AD643D /* ListViewControllerUITests.swift in Sources */,
-				000888822D510414009C03E1 /* PayToComponentUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
