@@ -338,48 +338,6 @@ struct PreselectedPaymentMethodIntegrationTests {
 
 // MARK: - Mocks
 
-internal class DropInFlowManagingMock: DropInFlowManaging {
-    var submitFromActionPresenterCallsCount = 0
-    var submitFromActionPresenterCalled: Bool {
-        submitFromActionPresenterCallsCount > 0
-    }
-
-    var submitFromActionPresenterReceivedArguments: (
-        data: PaymentComponentData,
-        component: PaymentComponent,
-        actionPresenter: ActionPresenter
-    )?
-
-    func submit(_ data: PaymentComponentData, from component: PaymentComponent, actionPresenter: ActionPresenter) {
-        submitFromActionPresenterCallsCount += 1
-        submitFromActionPresenterReceivedArguments = (data, component, actionPresenter)
-    }
-
-    var failWithFromCallsCount = 0
-    var failWithFromCalled: Bool {
-        failWithFromCallsCount > 0
-    }
-
-    func fail(with error: Error, from component: PaymentComponent) {
-        failWithFromCallsCount += 1
-    }
-
-    var cancelComponentCallsCount = 0
-    var cancelComponentCalled: Bool {
-        cancelComponentCallsCount > 0
-    }
-
-    func cancel(component: PaymentComponent) {
-        cancelComponentCallsCount += 1
-    }
-
-    var handleActionCallsCount = 0
-
-    func handle(action: Action) {
-        handleActionCallsCount += 1
-    }
-}
-
 internal class PreselectedPaymentMethodRoutingMock: PreselectedPaymentMethodRouting {
     var presentPaymentMethodListCallsCount = 0
 

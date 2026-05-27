@@ -164,48 +164,6 @@ struct ComponentContainerViewModelTests {
 
     // MARK: - Mocks
 
-    private class DropInFlowManagingMock: DropInFlowManaging {
-        var submitFromActionPresenterCallsCount = 0
-        var submitFromActionPresenterReceivedArguments: (
-            data: PaymentComponentData,
-            component: PaymentComponent,
-            actionPresenter: ActionPresenter
-        )?
-
-        func submit(
-            _ data: PaymentComponentData,
-            from component: PaymentComponent,
-            actionPresenter: ActionPresenter
-        ) {
-            submitFromActionPresenterCallsCount += 1
-            submitFromActionPresenterReceivedArguments = (data, component, actionPresenter)
-        }
-
-        var failWithFromCallsCount = 0
-        var failWithFromReceivedArguments: (error: Error, component: PaymentComponent)?
-
-        func fail(with error: Error, from component: PaymentComponent) {
-            failWithFromCallsCount += 1
-            failWithFromReceivedArguments = (error, component)
-        }
-
-        var cancelComponentCallsCount = 0
-        var cancelComponentReceivedComponent: PaymentComponent?
-
-        func cancel(component: PaymentComponent) {
-            cancelComponentCallsCount += 1
-            cancelComponentReceivedComponent = component
-        }
-
-        var handleActionCallsCount = 0
-        var handleActionReceivedAction: Action?
-
-        func handle(action: Action) {
-            handleActionCallsCount += 1
-            handleActionReceivedAction = action
-        }
-    }
-
     private class ComponentContainerRoutingMock: ComponentContainerRouting {
         var presentPaymentComponentCallsCount = 0
         var presentPaymentComponentReceivedPaymentComponent: PresentableComponent?

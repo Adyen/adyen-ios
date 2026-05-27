@@ -822,6 +822,8 @@
 		C93B01B72760B03400D311A1 /* BACSConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93B01B62760B03400D311A1 /* BACSConfirmationViewController.swift */; };
 		C93B01B92760B06300D311A1 /* BACSConfirmationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93B01B82760B06300D311A1 /* BACSConfirmationPresenter.swift */; };
 		C93DDAEE2E2A789A00B78DED /* ComponentContainerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93DDAED2E2A789A00B78DED /* ComponentContainerRouter.swift */; };
+		C93DE1342FC6FD8800705B96 /* PaymentMethodListRoutingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93DE1332FC6FD8800705B96 /* PaymentMethodListRoutingMock.swift */; };
+		C93DE1372FC6FE6300705B96 /* DropInFlowManagingMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93DE1362FC6FE6300705B96 /* DropInFlowManagingMock.swift */; };
 		C941A51C2DF9C0B40014AFF1 /* PreselectedPaymentMethodRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C941A51B2DF9C0B40014AFF1 /* PreselectedPaymentMethodRouter.swift */; };
 		C941A51E2DF9C21F0014AFF1 /* PaymentMethodListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C941A51D2DF9C21F0014AFF1 /* PaymentMethodListRouter.swift */; };
 		C941A5202DF9C2C10014AFF1 /* PaymentMethodListAssembler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C941A51F2DF9C2C10014AFF1 /* PaymentMethodListAssembler.swift */; };
@@ -2416,6 +2418,8 @@
 		C93B01B62760B03400D311A1 /* BACSConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationViewController.swift; sourceTree = "<group>"; };
 		C93B01B82760B06300D311A1 /* BACSConfirmationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BACSConfirmationPresenter.swift; sourceTree = "<group>"; };
 		C93DDAED2E2A789A00B78DED /* ComponentContainerRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentContainerRouter.swift; sourceTree = "<group>"; };
+		C93DE1332FC6FD8800705B96 /* PaymentMethodListRoutingMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListRoutingMock.swift; sourceTree = "<group>"; };
+		C93DE1362FC6FE6300705B96 /* DropInFlowManagingMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropInFlowManagingMock.swift; sourceTree = "<group>"; };
 		C941A51B2DF9C0B40014AFF1 /* PreselectedPaymentMethodRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreselectedPaymentMethodRouter.swift; sourceTree = "<group>"; };
 		C941A51D2DF9C21F0014AFF1 /* PaymentMethodListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListRouter.swift; sourceTree = "<group>"; };
 		C941A51F2DF9C2C10014AFF1 /* PaymentMethodListAssembler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethodListAssembler.swift; sourceTree = "<group>"; };
@@ -4954,8 +4958,10 @@
 		C9D513A12F0E8A4A00F57DD6 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
+				C93DE1362FC6FE6300705B96 /* DropInFlowManagingMock.swift */,
 				E74CE3DE26727EB1008231D2 /* DropInComponentDelegateMock.swift */,
 				C9D5139B2F0E810500F57DD6 /* PaymentMethodsMock.swift */,
+				C93DE1332FC6FD8800705B96 /* PaymentMethodListRoutingMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -9023,6 +9029,7 @@
 				81F177AE2B4C49B9009CAD96 /* PresenterMock.swift in Sources */,
 				F924C072246BEEF0006DDAB8 /* CardDetailsTests.swift in Sources */,
 				21CBEF662D8B6B3A00178809 /* ThreeDSServiceProviderTests.swift in Sources */,
+				C93DE1342FC6FD8800705B96 /* PaymentMethodListRoutingMock.swift in Sources */,
 				F9FE39E32679E09200F02A9B /* LoadingViewTests.swift in Sources */,
 				B643C76A2EF444DF00EF8407 /* FormCardNumberValidationTests.swift in Sources */,
 				B6EE0F3D2BBEBF5100B9810D /* AnalyticsProviderMock.swift in Sources */,
@@ -9087,6 +9094,7 @@
 				F957AAA62552FDC10099AD73 /* ThreeDS2CompactActionHandlerTests.swift in Sources */,
 				F9B997A425C8554F00891084 /* DokuVoucherUITests.swift in Sources */,
 				B6C4C66A2ED0BEA600500BCD /* FormToggleItemViewThemeTests.swift in Sources */,
+				C93DE1372FC6FE6300705B96 /* DropInFlowManagingMock.swift in Sources */,
 				E9E3DAD3221EEFF700697074 /* CardExpiryDateValidatorTests.swift in Sources */,
 				81A6B4E72AD54F6C00A089A1 /* OpenExternalAppDetector+Mock.swift in Sources */,
 				81BBB34F2A694C9300AF1F9E /* FormPickerItemTests.swift in Sources */,
