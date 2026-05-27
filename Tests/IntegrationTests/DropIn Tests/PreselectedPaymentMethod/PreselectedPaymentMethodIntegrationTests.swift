@@ -61,7 +61,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         try preSelectedViewController.submitPayment()
         
         // Then - verify presentComponent is called
-        #expect(mockedRouter.presentComponentOnCancelCallsCount == 1)
+        #expect(mockedRouter.presentComponentCallsCount == 1)
         #expect(mockedRouter.presentPaymentMethodListCallsCount == 0)
     }
 
@@ -79,7 +79,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         
         // Then - verify payment method list is presented
         #expect(mockedRouter.presentPaymentMethodListCallsCount == 1)
-        #expect(mockedRouter.presentComponentOnCancelCallsCount == 0)
+        #expect(mockedRouter.presentComponentCallsCount == 0)
     }
 
     // MARK: - Sending event on didLoad
@@ -157,7 +157,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         let componentContainerAssemblerMock = ComponentContainerAssemblerProtocolMock()
         let componentContainerRouterMock = RouterMock()
         componentContainerRouterMock.rootViewController = UIViewController()
-        componentContainerAssemblerMock.resolveComponentContainerRouterForDelegateOnCancelReturnValue = componentContainerRouterMock
+        componentContainerAssemblerMock.resolveComponentContainerRouterForListenerReturnValue = componentContainerRouterMock
 
         let assembler = PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssemblerMock,
@@ -333,101 +333,6 @@ struct PreselectedPaymentMethodIntegrationTests {
         var showAllPaymentMethodsButtonText: String {
             "Other payment options"
         }
-    }
-}
-
-// MARK: - Mocks
-
-internal class DropInFlowManagingMock: DropInFlowManaging {
-    var submitFromActionPresenterCallsCount = 0
-    var submitFromActionPresenterCalled: Bool {
-        submitFromActionPresenterCallsCount > 0
-    }
-
-    var submitFromActionPresenterReceivedArguments: (
-        data: PaymentComponentData,
-        component: PaymentComponent,
-        actionPresenter: ActionPresenter
-    )?
-
-    func submit(_ data: PaymentComponentData, from component: PaymentComponent, actionPresenter: ActionPresenter) {
-        submitFromActionPresenterCallsCount += 1
-        submitFromActionPresenterReceivedArguments = (data, component, actionPresenter)
-    }
-
-    var failWithFromCallsCount = 0
-    var failWithFromCalled: Bool {
-        failWithFromCallsCount > 0
-    }
-
-    func fail(with error: Error, from component: PaymentComponent) {
-        failWithFromCallsCount += 1
-    }
-
-    var cancelComponentCallsCount = 0
-    var cancelComponentCalled: Bool {
-        cancelComponentCallsCount > 0
-    }
-
-    func cancel(component: PaymentComponent) {
-        cancelComponentCallsCount += 1
-    }
-
-    var handleActionCallsCount = 0
-
-    func handle(action: Action) {
-        handleActionCallsCount += 1
-    }
-}
-
-internal class PreselectedPaymentMethodRoutingMock: PreselectedPaymentMethodRouting {
-    var presentPaymentMethodListCallsCount = 0
-
-    func presentPaymentMethodList() {
-        presentPaymentMethodListCallsCount += 1
-    }
-
-    var presentComponentOnCancelCallsCount = 0
-
-    func present(component: PaymentComponent) {
-        presentComponentOnCancelCallsCount += 1
-    }
-
-    var presentActionComponentOnCancelCallsCount = 0
-
-    func present(actionComponent: PresentableComponent, onCancel: (() -> Void)?) {
-        presentActionComponentOnCancelCallsCount += 1
-    }
-
-    var dismissCompletionCallsCount = 0
-    var dismissCompletionCalled: Bool {
-        dismissCompletionCallsCount > 0
-    }
-
-    func dismiss(completion: (() -> Void)?) {
-        dismissCompletionCallsCount += 1
-        completion?()
-    }
-}
-
-internal class RouterMock: Router {
-    var childRouter: Router?
-    var rootViewController: UIViewController = .init()
-}
-
-internal class PaymentMethodListAssemblerProtocolMock: PaymentMethodListAssemblerProtocol {
-    var resolvePaymentMethodListRouterDelegateReturnValue: Router?
-
-    func resolvePaymentMethodListRouter(delegate: PaymentMethodListRouterListener?) -> Router {
-        resolvePaymentMethodListRouterDelegateReturnValue ?? RouterMock()
-    }
-}
-
-internal class ComponentContainerAssemblerProtocolMock: ComponentContainerAssemblerProtocol {
-    var resolveComponentContainerRouterForDelegateOnCancelReturnValue: Router?
-
-    func resolveComponentContainerRouter(for component: PresentableComponent, listener: ComponentContainerRouterListener) -> Router {
-        resolveComponentContainerRouterForDelegateOnCancelReturnValue ?? RouterMock()
     }
 }
 

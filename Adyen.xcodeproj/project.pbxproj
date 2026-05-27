@@ -780,6 +780,7 @@
 		C9037F142D5A19BD003A5154 /* ROIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F132D5A19BD003A5154 /* ROIView.swift */; };
 		C9037F162D5A1AC0003A5154 /* CardScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9037F152D5A1AC0003A5154 /* CardScannerViewController.swift */; };
 		C90494562E8FF2CE007C4EB5 /* LoadControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90494552E8FF2CE007C4EB5 /* LoadControllable.swift */; };
+		C90938812FC71B6100FE50D1 /* RouterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90938802FC71B6100FE50D1 /* RouterMock.swift */; };
 		C9126051275A3A2800C03DC4 /* BACSItemsFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9126050275A3A2800C03DC4 /* BACSItemsFactoryTests.swift */; };
 		C9174FF32EB3A89800AA1609 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9174FF22EB3A89800AA1609 /* Router.swift */; };
 		C9174FF92EB3B20B00AA1609 /* ActionWrapperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9174FF72EB3B20B00AA1609 /* ActionWrapperViewController.swift */; };
@@ -2374,6 +2375,7 @@
 		C9037F132D5A19BD003A5154 /* ROIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ROIView.swift; sourceTree = "<group>"; };
 		C9037F152D5A1AC0003A5154 /* CardScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardScannerViewController.swift; sourceTree = "<group>"; };
 		C90494552E8FF2CE007C4EB5 /* LoadControllable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadControllable.swift; sourceTree = "<group>"; };
+		C90938802FC71B6100FE50D1 /* RouterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouterMock.swift; sourceTree = "<group>"; };
 		C90AC76B2EE0F22500DF60EA /* ComponentContainerRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentContainerRouterTests.swift; sourceTree = "<group>"; };
 		C90AC7852EE1D47B00DF60EA /* ComponentContainerViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentContainerViewControllerTests.swift; sourceTree = "<group>"; };
 		C90D26A627565750001A488F /* FormViewController+ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormViewController+ViewProtocol.swift"; sourceTree = "<group>"; };
@@ -4956,6 +4958,7 @@
 			children = (
 				E74CE3DE26727EB1008231D2 /* DropInComponentDelegateMock.swift */,
 				C9D5139B2F0E810500F57DD6 /* PaymentMethodsMock.swift */,
+				C90938802FC71B6100FE50D1 /* RouterMock.swift */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -9025,6 +9028,7 @@
 				21CBEF662D8B6B3A00178809 /* ThreeDSServiceProviderTests.swift in Sources */,
 				F9FE39E32679E09200F02A9B /* LoadingViewTests.swift in Sources */,
 				B643C76A2EF444DF00EF8407 /* FormCardNumberValidationTests.swift in Sources */,
+				C90938812FC71B6100FE50D1 /* RouterMock.swift in Sources */,
 				B6EE0F3D2BBEBF5100B9810D /* AnalyticsProviderMock.swift in Sources */,
 				B60946132DA562FD00CEE6CF /* CardScannerProviderDispatchOnceTests.swift in Sources */,
 				A0290DF82C413056005BE269 /* StoredPaymentMethodDelegateMock.swift in Sources */,

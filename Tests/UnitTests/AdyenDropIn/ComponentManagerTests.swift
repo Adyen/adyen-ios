@@ -353,6 +353,45 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.regularComponents.filter { $0.order == order }.count, numberOfExpectedRegularComponents)
     }
 
+    func testOrderInjectionOnApplePay() throws {
+        // Given - an order with a remaining amount different from the original context amount
+        // Note: Dummy.createTestApplePayPaymentRequest() uses USD, so we use USD here for consistency
+        let originalAmount = Amount(value: 10000, currencyCode: "USD") // $100.00
+        let remainingAmount = Amount(value: 5000, currencyCode: "USD") // $50.00 (after partial payment)
+        
+        let order = PartialPaymentOrder(
+            pspReference: "test pspRef",
+            orderData: "test order data",
+            remainingAmount: remainingAmount
+        )
+        
+        let contextWithAmount = AdyenContext(
+            apiContext: Dummy.apiContext,
+            amount: originalAmount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
+        )
+        
+        configuration.applePay = try .init(paymentRequest: Dummy.createTestApplePayPaymentRequest())
+        
+        // When
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: contextWithAmount,
+            configuration: configuration,
+            order: order,
+            presentationDelegate: presentationDelegate
+        )
+        
+        // Then - Apple Pay component should use the order's remaining amount, not the original amount
+        let applePayComponent = try XCTUnwrap(
+            sut.regularComponents.first { $0.paymentMethod.type == .applePay } as? ApplePayComponent
+        )
+        
+        let applePayAmount = applePayComponent.configuration.currentAmount
+        XCTAssertEqual(applePayAmount, remainingAmount, "Apple Pay should use order.remainingAmount for partial payments")
+    }
+
     func testShopperInformationInjectionShouldSetShopperInformationOnAffirmComponent() throws {
         // Given
         configuration.shopperInformation = shopperInformation

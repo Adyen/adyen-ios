@@ -115,9 +115,9 @@ struct PaymentMethodListViewControllerTests {
         // Allow state to propagate on main queue
         await Task.yield()
 
-        // Then - verify section views are added to the view hierarchy
-        let sectionViews = sut.view.findAllSubviews(ofType: PaymentMethodSectionView.self)
-        #expect(sectionViews.isEmpty == false, "Section views should be present in the view hierarchy")
+        // Then - verify section view is added to the UI
+        let sectionViews: [UIView] = sut.view.findAllViews(with: "paymentMethodList.sectionView")
+        #expect(sectionViews.count == 1, "Expected 1 section view after loading state")
     }
 
     @Test
