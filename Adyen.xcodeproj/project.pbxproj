@@ -792,7 +792,6 @@
 		F9615FC0252F076A00FA8EDD /* payment_methods_response.json in Resources */ = {isa = PBXBuildFile; fileRef = F9615FBF252F076A00FA8EDD /* payment_methods_response.json */; };
 		F9615FC1252F076A00FA8EDD /* payment_methods_response.json in Resources */ = {isa = PBXBuildFile; fileRef = F9615FBF252F076A00FA8EDD /* payment_methods_response.json */; };
 		F9620D7B23C36082005209FC /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9620D7A23C36082005209FC /* Configuration.swift */; };
-		F9620D8623C73B0D005209FC /* AdyenWeChatPay.h in Headers */ = {isa = PBXBuildFile; fileRef = F9620D8423C73B0D005209FC /* AdyenWeChatPay.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F9620DB023C75430005209FC /* WeChatPayPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9620D9E23C7457F005209FC /* WeChatPayPaymentMethod.swift */; };
 		F9620DB323C75C19005209FC /* PaymentComponentBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9620DB123C75886005209FC /* PaymentComponentBuilder.swift */; };
 		F9639B2224DC2FF50073F38A /* PresentableComponentWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B2124DC2FF50073F38A /* PresentableComponentWrapper.swift */; };
@@ -817,8 +816,6 @@
 		F973A91A2791C3B0005AA753 /* AdyenActions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9175F8C2594986900D653BE /* AdyenActions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F97842D726C2758E00677458 /* InstantPaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97842D626C2758E00677458 /* InstantPaymentMethod.swift */; };
 		F97842D926C3D55200677458 /* OXXOShareableVoucherViewProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97842D826C3D55200677458 /* OXXOShareableVoucherViewProviderTests.swift */; };
-		F9789C6E23F18EBD000B4B2B /* WeChatPayActionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C6D23F18EBD000B4B2B /* WeChatPayActionComponent.swift */; };
-		F9789C7523F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */; };
 		F97BC2792668BEE200F1D242 /* AppleWalletError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2782668BEE200F1D242 /* AppleWalletError.swift */; };
 		F97BC2AD2668C63200F1D242 /* AppleWalletPassProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2AC2668C63200F1D242 /* AppleWalletPassProviderTests.swift */; };
 		F97BC2CE2668EB4500F1D242 /* VoucherViewDelegateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F97BC2B82668EAFD00F1D242 /* VoucherViewDelegateMock.swift */; };
@@ -2046,8 +2043,6 @@
 		F9615FBF252F076A00FA8EDD /* payment_methods_response.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = payment_methods_response.json; sourceTree = "<group>"; };
 		F9620D7A23C36082005209FC /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		F9620D8223C73B0D005209FC /* AdyenWeChatPay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AdyenWeChatPay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F9620D8423C73B0D005209FC /* AdyenWeChatPay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdyenWeChatPay.h; sourceTree = "<group>"; };
-		F9620D8523C73B0D005209FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F9620D9E23C7457F005209FC /* WeChatPayPaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatPayPaymentMethod.swift; sourceTree = "<group>"; };
 		F9620DA323C7483B005209FC /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/lib/libc++.tbd"; sourceTree = DEVELOPER_DIR; };
 		F9620DA523C74856005209FC /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/CoreTelephony.framework; sourceTree = DEVELOPER_DIR; };
@@ -2083,9 +2078,7 @@
 		F9789C6723F18048000B4B2B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
 		F9789C6923F18057000B4B2B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		F9789C6B23F18069000B4B2B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
-		F9789C6D23F18EBD000B4B2B /* WeChatPayActionComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatPayActionComponent.swift; sourceTree = "<group>"; };
 		F9789C7223F1A5C1000B4B2B /* WeChatPaySDKAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatPaySDKAction.swift; sourceTree = "<group>"; };
-		F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeChatPayAdditionalDetails.swift; sourceTree = "<group>"; };
 		F97BC2782668BEE200F1D242 /* AppleWalletError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppleWalletError.swift; sourceTree = "<group>"; };
 		F97BC2AC2668C63200F1D242 /* AppleWalletPassProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleWalletPassProviderTests.swift; sourceTree = "<group>"; };
 		F97BC2B82668EAFD00F1D242 /* VoucherViewDelegateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherViewDelegateMock.swift; sourceTree = "<group>"; };
@@ -2264,6 +2257,16 @@
 			);
 			target = E9B36CAA2243B2FE00EAA368 /* AdyenDropIn */;
 		};
+		217216D72FC70C98005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			publicHeaders = (
+				AdyenWeChatPay.h,
+			);
+			target = F9620D8123C73B0D005209FC /* AdyenWeChatPay */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -2276,6 +2279,7 @@
 		217215C32FC70C51005815D1 /* AdyenSession */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (217215D02FC70C52005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = AdyenSession; sourceTree = "<group>"; };
 		217216302FC70C61005815D1 /* AdyenComponents */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (217216762FC70C62005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = AdyenComponents; sourceTree = "<group>"; };
 		217216A82FC70C7C005815D1 /* AdyenDropIn */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (217216CC2FC70C7D005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = AdyenDropIn; sourceTree = "<group>"; };
+		217216D22FC70C97005815D1 /* AdyenWeChatPay */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (217216D72FC70C98005815D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = AdyenWeChatPay; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3705,7 +3709,7 @@
 				217215C32FC70C51005815D1 /* AdyenSession */,
 				217216302FC70C61005815D1 /* AdyenComponents */,
 				217216A82FC70C7C005815D1 /* AdyenDropIn */,
-				F9620D8323C73B0D005209FC /* AdyenWeChatPay */,
+				217216D22FC70C97005815D1 /* AdyenWeChatPay */,
 				A04F8C1F29E5950100F3F62B /* AdyenCashAppPay */,
 				00E5D6522AF4E99B00CDE118 /* AdyenTwint */,
 				F94D65DA2B0364AF0095D61E /* AdyenDelegatedAuthentication */,
@@ -4428,25 +4432,6 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		F9620D8323C73B0D005209FC /* AdyenWeChatPay */ = {
-			isa = PBXGroup;
-			children = (
-				F9620D9B23C74412005209FC /* WeChatPayActionComponent */,
-				F9620D8423C73B0D005209FC /* AdyenWeChatPay.h */,
-				F9620D8523C73B0D005209FC /* Info.plist */,
-			);
-			path = AdyenWeChatPay;
-			sourceTree = "<group>";
-		};
-		F9620D9B23C74412005209FC /* WeChatPayActionComponent */ = {
-			isa = PBXGroup;
-			children = (
-				F9789C6D23F18EBD000B4B2B /* WeChatPayActionComponent.swift */,
-				F9789C7423F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift */,
-			);
-			path = WeChatPayActionComponent;
-			sourceTree = "<group>";
-		};
 		F9639B2724DD69D60073F38A /* APIClient */ = {
 			isa = PBXGroup;
 			children = (
@@ -4758,7 +4743,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F9620D8623C73B0D005209FC /* AdyenWeChatPay.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5256,6 +5240,9 @@
 			);
 			dependencies = (
 				F9176007259499F900D653BE /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				217216D22FC70C97005815D1 /* AdyenWeChatPay */,
 			);
 			name = AdyenWeChatPay;
 			productName = AdyenWeChatPay;
@@ -6593,8 +6580,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F9789C7523F1A76D000B4B2B /* WeChatPayAdditionalDetails.swift in Sources */,
-				F9789C6E23F18EBD000B4B2B /* WeChatPayActionComponent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
