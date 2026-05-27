@@ -10,7 +10,7 @@ package extension Bundle {
     #if SWIFT_PACKAGE
         /// The bundle in which the framework's resources are located.
         /// This will be available when using swift packages, open the `Package.swift` file and see.
-        static let coreInternalResources: Bundle = .module
+        package static let coreInternalResources: Bundle = .module
     #else
         static let coreBundle: Bundle = .init(for: AdyenContext.self)
         package static let coreInternalResources: Bundle = {
