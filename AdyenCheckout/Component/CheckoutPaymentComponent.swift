@@ -64,4 +64,16 @@ public final class CheckoutPaymentComponent {
         )
         self.paymentComponent.delegate = delegate
     }
+
+    // TODO: - Instant Component
+
+    public var requiresUserInteraction: Bool {
+        return viewController != nil
+    }
+
+    public func submit() {
+        // TODO: - Build submit logic
+        guard let submittableComponent = paymentComponent as? SubmittableComponent else { return }
+        submittableComponent.submit()
+    }
 }
