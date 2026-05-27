@@ -46,4 +46,15 @@ internal extension UIView {
         }
         return results
     }
+
+    func findAllSubviews<T: UIView>(ofType type: T.Type) -> [T] {
+        var results: [T] = []
+        for subview in subviews {
+            if let match = subview as? T {
+                results.append(match)
+            }
+            results.append(contentsOf: subview.findAllSubviews(ofType: type))
+        }
+        return results
+    }
 }
