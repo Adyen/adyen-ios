@@ -248,6 +248,80 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         // Then - Should use factory's default configuration
         XCTAssertEqual(component.paymentMethod.type, .blik)
     }
+
+    func test_cardComponent_withLocalizationProviderOnCheckoutConfiguration_shouldReceiveProvider() throws {
+        // Given
+        let paymentMethod = try XCTUnwrap(createCardPaymentMethod())
+        let provider = CheckoutLocalizationProviderMock(result: "Localized card number")
+        checkoutConfiguration = makeCheckoutConfiguration().localizationProvider(provider)
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+
+        // Then
+        guard let cardComponent = component as? CardComponent else {
+            XCTFail("Component should be CardComponent")
+            return
+        }
+        guard let localizationProvider = cardComponent.configuration.localizationProvider else {
+            XCTFail("Localization provider should be propagated to the card configuration")
+            return
+        }
+
+        let locale = Locale(identifier: "nl-NL")
+        XCTAssertEqual(localizationProvider.localizedString(CheckoutLocalizationKey.cardNumber, locale: locale), "Localized card number")
+        XCTAssertEqual(provider.recordedCalls.count, 1)
+        XCTAssertEqual(provider.recordedCalls.first?.locale.identifier, locale.identifier)
+        XCTAssertTrue(provider.recordedCalls.contains { $0.key == CheckoutLocalizationKey.cardNumber })
+    }
+
+    func test_cardComponent_withLocalizationProviderOnCheckoutConfiguration_shouldRenderGlobalProviderValue() throws {
+        // Given
+        let paymentMethod = try XCTUnwrap(createCardPaymentMethod())
+        let provider = CheckoutLocalizationProviderMock(result: "Global number")
+        checkoutConfiguration = makeCheckoutConfiguration().localizationProvider(provider)
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+
+        // Then
+        let cardComponent = try XCTUnwrap(component as? CardComponent)
+        XCTAssertEqual(cardComponent.cardViewController.items.numberContainerItem.numberItem.title, "Global number")
+        XCTAssertTrue(provider.recordedCalls.contains { $0.key == CheckoutLocalizationKey.cardNumber })
+    }
+
+    func test_cardComponent_withComponentLevelLocalizationProvider_shouldOverrideCheckoutConfigurationProvider() throws {
+        // Given
+        let paymentMethod = try XCTUnwrap(createCardPaymentMethod())
+        let globalProvider = CheckoutLocalizationProviderMock(result: "Global number")
+        let componentProvider = CheckoutLocalizationProviderMock(result: "Component number")
+        var cardConfiguration = CardConfiguration()
+        cardConfiguration.localizationProvider = componentProvider
+        checkoutConfiguration = makeCheckoutConfiguration(
+            configurations: [.payment(.scheme): cardConfiguration]
+        ).localizationProvider(globalProvider)
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+
+        // Then
+        let cardComponent = try XCTUnwrap(component as? CardComponent)
+        XCTAssertEqual(cardComponent.cardViewController.items.numberContainerItem.numberItem.title, "Component number")
+        XCTAssertTrue(componentProvider.recordedCalls.contains { $0.key == CheckoutLocalizationKey.cardNumber })
+        XCTAssertTrue(globalProvider.recordedCalls.isEmpty)
+    }
     
     // MARK: - ACH Direct Debit Component Tests
 
@@ -335,7 +409,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let storedPaymentMethod = try XCTUnwrap(createStoredCardPaymentMethod())
         
         // When
-        let component = try CheckoutComponentBuilder.build(
+        let component = CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -359,7 +433,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let storedPaymentMethod = try XCTUnwrap(createStoredCardPaymentMethod())
         
         // When
-        let component = try CheckoutComponentBuilder.build(
+        let component = CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
             context: customContext
@@ -375,7 +449,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let storedPaymentMethod = try XCTUnwrap(createStoredPayPalPaymentMethod())
         
         // When
-        let component = try CheckoutComponentBuilder.build(
+        let component = CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -391,7 +465,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let storedPaymentMethod = try XCTUnwrap(createStoredBCMCPaymentMethod())
         
         // When
-        let component = try CheckoutComponentBuilder.build(
+        let component = CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -462,6 +536,15 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         ]
         return try? AdyenCoder.decode(dict) as ACHDirectDebitPaymentMethod
     }
+
+    private func createCardPaymentMethod() -> CardPaymentMethod? {
+        let dict: [String: Any] = [
+            "type": "scheme",
+            "name": "Cards",
+            "brands": ["mc", "visa"]
+        ]
+        return try? AdyenCoder.decode(dict) as CardPaymentMethod
+    }
     
     private func createApplePayPaymentMethod() -> ApplePayPaymentMethod? {
         try? AdyenCoder.decode(applePayDictionary) as ApplePayPaymentMethod
@@ -527,5 +610,20 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             analyticsConfiguration: .init(),
             configurations: configurations
         )
+    }
+}
+
+private final class CheckoutLocalizationProviderMock: CheckoutLocalizationProvider {
+    private(set) var recordedCalls: [(locale: Locale, key: CheckoutLocalizationKey)] = []
+
+    private let result: String?
+
+    init(result: String? = nil) {
+        self.result = result
+    }
+
+    func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String? {
+        recordedCalls.append((locale, key))
+        return result
     }
 }

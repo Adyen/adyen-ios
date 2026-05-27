@@ -49,7 +49,7 @@ public struct StoredPayToPaymentMethod: StoredPaymentMethod {
         builder.build(paymentMethod: self)
     }
     
-    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let accessibilityLabel = [
             name,
             label

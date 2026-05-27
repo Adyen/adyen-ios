@@ -24,6 +24,8 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
 
     package var localizationParameters: LocalizationParameters?
 
+    package var localizationProvider: (any CheckoutLocalizationProvider)?
+
     /// The flag to toggle onboarding.
     /// If true, allow the shopper to add cards to Apple Pay if none exists yet.
     /// If false, then Apple Pay is disabled if the shopper doesn't have supported cards on Apple Pay wallet.

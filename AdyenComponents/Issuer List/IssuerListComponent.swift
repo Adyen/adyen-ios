@@ -180,13 +180,17 @@ extension IssuerListComponent {
         /// The UI style of the component.
         public var style: ListComponentStyle
 
-        public var localizationParameters: LocalizationParameters?
+        package var localizationParameters: LocalizationParameters?
         
         /// Initializes the configuration for Issuer list type components.
         /// - Parameters:
         ///   - style: The UI style of the component.
         ///   - localizationParameters: Localization parameters.
-        public init(
+        public init(style: ListComponentStyle = .init()) {
+            self.init(style: style, localizationParameters: nil)
+        }
+
+        package init(
             style: ListComponentStyle = .init(),
             localizationParameters: LocalizationParameters? = nil
         ) {
