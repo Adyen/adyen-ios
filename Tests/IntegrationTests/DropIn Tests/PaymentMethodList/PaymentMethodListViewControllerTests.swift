@@ -115,8 +115,9 @@ struct PaymentMethodListViewControllerTests {
         // Allow state to propagate on main queue
         await Task.yield()
 
-        // Then - verify state was set (UI updates are handled internally)
-        #expect(true)
+        // Then - verify section view is added to the UI
+        let sectionViews: [UIView] = sut.view.findAllViews(with: "paymentMethodList.sectionView")
+        #expect(sectionViews.count == 1, "Expected 1 section view after loading state")
     }
 
     @Test
