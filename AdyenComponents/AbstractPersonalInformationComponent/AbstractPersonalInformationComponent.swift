@@ -303,9 +303,7 @@ extension AbstractPersonalInformationComponent: ViewControllerDelegate {
     }
 }
 
-// MARK: - SubmitCustomizable
-
-extension AbstractPersonalInformationComponent: SubmittableComponent {
+extension AbstractPersonalInformationComponent {
 
     public func submit() {
         didSelectSubmitButton()

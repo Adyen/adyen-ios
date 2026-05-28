@@ -322,9 +322,7 @@ extension ACHDirectDebitComponent: ViewControllerPresenter {
     }
 }
 
-// MARK: - SubmitCustomizable
-
-extension ACHDirectDebitComponent: SubmittableComponent {
+extension ACHDirectDebitComponent {
 
     package func submit() {
         didSelectSubmitButton()

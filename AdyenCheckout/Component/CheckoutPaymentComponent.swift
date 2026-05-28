@@ -73,7 +73,7 @@ public final class CheckoutPaymentComponent {
 
     public func submit() {
         // TODO: - Build submit logic
-        guard let submittableComponent = paymentComponent as? SubmittableComponent else { return }
-        submittableComponent.submit()
+        guard paymentComponent.validate() else { return }
+        paymentComponent.submit()
     }
 }

@@ -170,9 +170,7 @@ public final class OnlineBankingComponent: PaymentComponent,
 @_spi(AdyenInternal)
 extension OnlineBankingComponent: AdyenObserver {}
 
-// MARK: - SubmitCustomizable
-
-extension OnlineBankingComponent: SubmittableComponent {
+extension OnlineBankingComponent {
 
     public func submit() {
         didSelectContinueButton()

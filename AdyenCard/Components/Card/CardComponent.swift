@@ -323,9 +323,7 @@ private extension CardConfiguration {
     }
 }
 
-// MARK: - SubmitCustomizable
-
-extension CardComponent: SubmittableComponent {
+extension CardComponent {
 
     public func submit() {
         didSelectSubmitButton()

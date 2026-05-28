@@ -477,9 +477,7 @@ extension GiftCardComponent {
 
 extension GiftCardComponent: PartialPaymentComponent {}
 
-// MARK: - SubmitCustomizable
-
-extension GiftCardComponent: SubmittableComponent {
+extension GiftCardComponent {
 
     public func submit() {
         didSelectSubmitButton()

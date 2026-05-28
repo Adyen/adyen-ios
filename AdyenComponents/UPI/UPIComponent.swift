@@ -408,9 +408,7 @@ private extension UPIComponent {
 @_spi(AdyenInternal)
 extension UPIComponent: AdyenObserver {}
 
-// MARK: - SubmitCustomizable
-
-extension UPIComponent: SubmittableComponent {
+extension UPIComponent {
     
     public func submit() {
         didSelectContinueButton()

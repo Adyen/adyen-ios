@@ -158,9 +158,7 @@ extension SEPADirectDebitComponent: TrackableComponent {}
 @_spi(AdyenInternal)
 extension SEPADirectDebitComponent: ViewControllerDelegate {}
 
-// MARK: - SubmitCustomizable
-
-extension SEPADirectDebitComponent: SubmittableComponent {
+extension SEPADirectDebitComponent {
 
     public func submit() {
         didSelectSubmitButton()

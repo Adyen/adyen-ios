@@ -144,9 +144,7 @@ extension BLIKComponent: TrackableComponent {}
 @_spi(AdyenInternal)
 extension BLIKComponent: ViewControllerDelegate {}
 
-// MARK: - SubmitCustomizable
-
-extension BLIKComponent: SubmittableComponent {
+extension BLIKComponent {
 
     public func submit() {
         didSelectSubmitButton()

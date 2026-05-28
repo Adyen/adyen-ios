@@ -293,9 +293,7 @@ extension CashAppPayComponent: TrackableComponent {}
 @_spi(AdyenInternal)
 extension CashAppPayComponent: ViewControllerDelegate {}
 
-// MARK: - SubmitCustomizable
-
-extension CashAppPayComponent: SubmittableComponent {
+extension CashAppPayComponent {
 
     public func submit() {
         didSelectSubmitButton()

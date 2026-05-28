@@ -25,7 +25,7 @@ public enum PaymentComponentType {
 
 /// A component that handles the initial phase of getting payment details to initiate a payment.
 @MainActor
-public protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentMethodAware, SubmittableComponent {
+public protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentMethodAware {
 
     /// The delegate of the payment component.
     var delegate: PaymentComponentDelegate? { get set }
@@ -34,6 +34,29 @@ public protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentMe
 
     @_spi(AdyenInternal)
     var paymentMethodBehavior: SDKData.PaymentMethodBehavior { get }
+
+    /// Submits the payment request to initiate the payment process.
+    ///
+    /// This method starts the payment flow in the payment component. It triggers the validation of the form associated
+    /// with the payment component and initiates the loading state.
+    /// Ensure that the loading state is appropriately stopped once the payment process is complete.
+    ///
+    /// - Important:
+    ///    - Ensure that the payment component is properly configured before calling this method.
+    ///    - Handle stopping the loading state after the payment process is completed.
+    func submit()
+
+    /// Validates the component's form and triggers the associated validation UI.
+    ///
+    /// This method checks the validity of the form linked to the payment component. It ensures that all required fields are properly
+    /// filled out and conform to expected formats.
+    /// Additionally, it triggers the UI to visually indicate any validation errors to the user.
+    ///
+    /// - Returns: A Boolean value indicating whether the form is valid (`true`) or not (`false`).
+    ///
+    /// - Important:
+    ///    - Make sure to call this method before initiating the payment process to ensure that the form is correctly filled out.
+    func validate() -> Bool
 }
 
 public extension PaymentComponent where Self: PresentableComponent {

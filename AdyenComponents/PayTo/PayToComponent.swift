@@ -217,7 +217,7 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
     }
 }
 
-extension PayToComponent: SubmittableComponent {
+extension PayToComponent {
 
     public func submit() {
         didSelectContinueButton()

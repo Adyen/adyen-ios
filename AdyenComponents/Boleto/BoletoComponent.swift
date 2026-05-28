@@ -178,7 +178,7 @@ public final class BoletoComponent: PaymentComponent,
     }
 }
 
-extension BoletoComponent: SubmittableComponent {
+extension BoletoComponent {
     public func submit() {
         formComponent.submit()
     }
