@@ -11,7 +11,7 @@ import UIKit
 @_spi(AdyenInternal)
 public final class CopyLabelView: UIView, Localizable {
 
-    public var localizationParameters: LocalizationParameters?
+    package var localizationParameters: LocalizationParameters?
 
     private let style: TextStyle
 

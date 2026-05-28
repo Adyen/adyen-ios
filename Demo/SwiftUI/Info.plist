@@ -2,8 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LSMinimumSystemVersion</key>
-	<string>14.0.0</string>
+	<key>ADYEN_SERVER_API_KEY</key>
+	<string>$(ADYEN_SERVER_API_KEY)</string>
+	<key>APPLE_PAY_MERCHANT_IDENTIFIER</key>
+	<string>$(APPLE_PAY_MERCHANT_IDENTIFIER)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -78,8 +80,16 @@
 		<string>weixinULAPI</string>
 		<string>weixinURLParamsAPI</string>
 	</array>
+	<key>LSMinimumSystemVersion</key>
+	<string>14.0.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>MERCHANT_ACCOUNT</key>
+	<string>$(MERCHANT_ACCOUNT)</string>
+	<key>MERCHANT_CLIENT_KEY</key>
+	<string>$(MERCHANT_CLIENT_KEY)</string>
+	<key>MERCHANT_SERVER_HOST</key>
+	<string>$(MERCHANT_SERVER_HOST)</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Save vouchers to your photos library</string>
 	<key>UIApplicationSceneManifest</key>

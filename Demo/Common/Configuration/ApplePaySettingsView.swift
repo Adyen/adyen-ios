@@ -33,10 +33,28 @@ internal struct ApplePaySettingsView: View {
                             .font(.footnote)
                     }
                 }
+                Section(header: Text("Session Callbacks")) {
+                    Picker("onBeforeSubmit", selection: $viewModel.applePayOnBeforeSubmitMode) {
+                        ForEach(ApplePaySettings.OnBeforeSubmitMode.allCases, id: \.self) {
+                            Text($0.displayName)
+                        }
+                    }
+                }
             }
             .navigationBarTitle("")
             .navigationBarHidden(true)
         }
         .navigationViewStyle(.stack)
+    }
+}
+
+extension ApplePaySettings.OnBeforeSubmitMode {
+
+    public var displayName: String {
+        switch self {
+        case .updateData: return "Update data"
+        case .abort: return "Abort"
+        case .patchSession: return "Patch session"
+        }
     }
 }

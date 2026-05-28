@@ -22,8 +22,6 @@ internal enum ConfigurationConstants {
     /// Please use your own web server between your app and adyen checkout API.
     static let demoServerEnvironment = DemoCheckoutAPIEnvironment.test
     
-    static let classicAPIEnvironment = DemoClassicAPIEnvironment.test
-    
     static let componentsEnvironment = Environment.test
     
     static let appName = "Adyen Demo"
@@ -135,6 +133,13 @@ internal struct ApplePaySettings: Codable {
     internal var merchantIdentifier: String
     internal var allowOnboarding: Bool = false
     internal var didAuthorizeSuccessful: Bool = true
+    internal var onBeforeSubmitMode: OnBeforeSubmitMode = .updateData
+
+    internal enum OnBeforeSubmitMode: String, Codable, CaseIterable {
+        case updateData
+        case abort
+        case patchSession
+    }
 }
 
 internal struct AnalyticsSettings: Codable {
@@ -155,7 +160,6 @@ internal struct DemoAppSettings: Codable {
     internal var countryCode: String
     internal let value: Int
     internal var currencyCode: String
-    internal let apiVersion: Int
     internal let merchantAccount: String
     internal let cardSettings: CardSettings
     internal let dropInSettings: DropInSettings
@@ -185,7 +189,6 @@ internal struct DemoAppSettings: Codable {
         countryCode: "NL",
         value: 17408,
         currencyCode: "EUR",
-        apiVersion: 71,
         merchantAccount: ConfigurationConstants.merchantAccount,
         cardSettings: defaultCardSettings,
         dropInSettings: defaultDropInSettings,
@@ -220,7 +223,8 @@ internal struct DemoAppSettings: Codable {
     internal static let defaultApplePaySettings = ApplePaySettings(
         merchantIdentifier: ConfigurationConstants.applePayMerchantIdentifier,
         allowOnboarding: false,
-        didAuthorizeSuccessful: true
+        didAuthorizeSuccessful: true,
+        onBeforeSubmitMode: .updateData
     )
 
     internal static let defaultAnalyticsSettings = AnalyticsSettings(isEnabled: true)

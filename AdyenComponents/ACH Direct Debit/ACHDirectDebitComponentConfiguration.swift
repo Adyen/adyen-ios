@@ -27,6 +27,8 @@ public struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfig
 
     package var localizationParameters: LocalizationParameters?
 
+    package var localizationProvider: (any CheckoutLocalizationProvider)?
+
     package var showStorePaymentMethodField: Bool
 
     package var showBillingAddress: Bool
@@ -59,7 +61,7 @@ extension ACHDirectDebitComponentConfiguration {
     /// Sets the localization parameters.
     /// - Parameter localizationParameters: The localization parameters to use.
     /// - Returns: A modified configuration with the updated localization parameters.
-    public func localizationParameters(_ localizationParameters: LocalizationParameters?) -> Self {
+    package func localizationParameters(_ localizationParameters: LocalizationParameters?) -> Self {
         var config = self
         config.localizationParameters = localizationParameters
         return config

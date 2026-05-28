@@ -22,11 +22,11 @@ jobs:
   build:
     env:
       sonarToken: ${{ secrets.SONAR_TOKEN }}
-      destination: "name=iPhone 16,OS=18.6"
-      destination_iPad: "name=iPad (10th generation),OS=18.6"
+      destination: "platform=iOS Simulator,name=iPhone Air,OS=26.2"
+      destination_iPad: "platform=iOS Simulator,name=iPad Air,OS=26.2"
       project: "Adyen.xcodeproj"
       params: "-derivedDataPath ./DerivedData -skipPackagePluginValidation"
-    runs-on: macos-15-xlarge
+    runs-on: macos-26-xlarge
 
     steps:
     - uses: actions/checkout@v6
@@ -39,7 +39,7 @@ jobs:
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '16.4'
+        xcode-version: '26.2'
 
     - name: 🛠️ Install Tools
       run: |

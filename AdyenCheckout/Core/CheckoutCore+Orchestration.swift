@@ -36,6 +36,10 @@ internal enum CheckoutCallbackSource {
             dropInComponent
         }
     }
+    
+    internal func stopLoading() {
+        paymentComponent.stopLoading()
+    }
 }
 
 internal extension CheckoutCore {
@@ -58,6 +62,11 @@ internal extension CheckoutCore {
                 let submitResult = try await onSubmit()
                 guard !Task.isCancelled else { return }
                 self?.handle(submitResult: submitResult, source: source)
+            } catch CallbackError.beforeSubmitAborted {
+                // catch beforeSubmit abort here and reset the component UI
+                guard !Task.isCancelled else { return }
+                source.stopLoading()
+                self?.pendingPaymentComponent = nil
             } catch {
                 // Ignore if this was a cancellation (task superseded or Checkout torn down).
                 guard !(error is CancellationError), !Task.isCancelled else { return }

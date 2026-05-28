@@ -432,6 +432,24 @@ class SessionTests: XCTestCase {
         }
     }
 
+    func test_refreshSessionState_shouldOnlyUpdateSessionData() async throws {
+        let apiClient = APIClientMock()
+        sut = initializeSession(expectedPaymentMethods: expectedPaymentMethods, apiClient: apiClient)
+
+        let previousState = sut.state
+
+        try await sut.refreshSessionState(with: "patched_session_data")
+
+        XCTAssertEqual(sut.state.data, "patched_session_data")
+        XCTAssertEqual(sut.state.identifier, previousState.identifier)
+        XCTAssertEqual(sut.state.countryCode, previousState.countryCode)
+        XCTAssertEqual(sut.state.shopperLocale, previousState.shopperLocale)
+        XCTAssertEqual(sut.state.amount, previousState.amount)
+        XCTAssertEqual(sut.state.paymentMethods, previousState.paymentMethods)
+        XCTAssertEqual(sut.state.responseConfiguration.enableStoreDetails, previousState.responseConfiguration.enableStoreDetails)
+        XCTAssertEqual(apiClient.counter, 0)
+    }
+
     // MARK: - requestOrder
 
     func test_requestOrder_withSuccess_shouldReturnOrder() async throws {

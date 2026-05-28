@@ -65,6 +65,7 @@ private extension CardConfiguration {
         configuration.showSupportedCardBrandLogos = false
         configuration.binLookupType = .bcmc
         configuration.localizationParameters = localizationParameters
+        configuration.localizationProvider = localizationProvider
         return configuration
     }
 }
