@@ -726,7 +726,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				F9CCA3D8296ECDF900AD643D /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
-				21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */,
+				21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */,
 			);
 			preferredProjectObjectVersion = 90;
 			productRefGroup = E2C0E03422097917008616F6 /* Products */;
@@ -1864,9 +1864,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */ = {
+		21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = "../2-adyen-ios";
+			relativePath = .;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -1892,152 +1892,152 @@
 /* Begin XCSwiftPackageProductDependency section */
 		21A9640F2FC83833005588AA /* Adyen */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = Adyen;
 		};
 		21A964112FC83833005588AA /* AdyenActions */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenActions;
 		};
 		21A964132FC83833005588AA /* AdyenCard */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenCard;
 		};
 		21A964152FC83833005588AA /* AdyenCardScanner */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenCardScanner;
 		};
 		21A964172FC83833005588AA /* AdyenCashAppPay */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenCashAppPay;
 		};
 		21A964192FC83833005588AA /* AdyenCheckout */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenCheckout;
 		};
 		21A9641B2FC83833005588AA /* AdyenComponents */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenComponents;
 		};
 		21A9641D2FC83833005588AA /* AdyenDelegatedAuthentication */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenDelegatedAuthentication;
 		};
 		21A9641F2FC83833005588AA /* AdyenDropIn */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenDropIn;
 		};
 		21A964212FC83833005588AA /* AdyenEncryption */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenEncryption;
 		};
 		21A964232FC83833005588AA /* AdyenSession */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenSession;
 		};
 		21A964252FC83833005588AA /* AdyenSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenSwiftUI;
 		};
 		21A964272FC83833005588AA /* AdyenTwint */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenTwint;
 		};
 		21A964292FC83833005588AA /* AdyenUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenUI;
 		};
 		21A9642B2FC83833005588AA /* AdyenWeChatPay */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenWeChatPay;
 		};
 		21A9642D2FC8383D005588AA /* Adyen */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = Adyen;
 		};
 		21A9642F2FC8383D005588AA /* AdyenActions */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenActions;
 		};
 		21A964312FC8383D005588AA /* AdyenCard */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenCard;
 		};
 		21A964332FC8383D005588AA /* AdyenCardScanner */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenCardScanner;
 		};
 		21A964352FC8383D005588AA /* AdyenCashAppPay */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenCashAppPay;
 		};
 		21A964372FC8383D005588AA /* AdyenCheckout */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenCheckout;
 		};
 		21A964392FC8383D005588AA /* AdyenComponents */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenComponents;
 		};
 		21A9643B2FC8383D005588AA /* AdyenDelegatedAuthentication */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenDelegatedAuthentication;
 		};
 		21A9643D2FC8383D005588AA /* AdyenDropIn */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenDropIn;
 		};
 		21A9643F2FC8383D005588AA /* AdyenEncryption */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenEncryption;
 		};
 		21A964412FC8383D005588AA /* AdyenSession */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenSession;
 		};
 		21A964432FC8383D005588AA /* AdyenSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenSwiftUI;
 		};
 		21A964452FC8383D005588AA /* AdyenTwint */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenTwint;
 		};
 		21A964472FC8383D005588AA /* AdyenUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenUI;
 		};
 		21A964492FC8383D005588AA /* AdyenWeChatPay */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "../2-adyen-ios" */;
+			package = 21A9640E2FC8349B005588AA /* XCLocalSwiftPackageReference "." */;
 			productName = AdyenWeChatPay;
 		};
 		81DF94072BAAD8EB0001DCBC /* SnapshotTesting */ = {
