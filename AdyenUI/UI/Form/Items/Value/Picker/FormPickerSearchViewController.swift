@@ -8,6 +8,21 @@ import Adyen
 import UIKit
 
 package final class FormPickerSearchViewController<Option: FormPickable>: UINavigationController {
+    
+    package convenience init(
+        style: Style = .init(),
+        title: String?,
+        options: [Option],
+        selectionHandler: @escaping (Option) -> Void
+    ) {
+        self.init(
+            localizationParameters: nil,
+            style: style,
+            title: title,
+            options: options,
+            selectionHandler: selectionHandler
+        )
+    }
 
     package init(
         localizationParameters: LocalizationParameters? = nil,

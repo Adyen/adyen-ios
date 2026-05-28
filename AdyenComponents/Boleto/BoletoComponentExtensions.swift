@@ -40,6 +40,21 @@ extension BoletoComponent {
         package init(
             style: FormComponentStyle = FormComponentStyle(),
             showsSubmitButton: Bool = true,
+            shopperInformation: PrefilledShopperInformation?,
+            showEmailAddress: Bool
+        ) {
+            self.init(
+                style: style,
+                showsSubmitButton: showsSubmitButton,
+                localizationParameters: nil,
+                shopperInformation: shopperInformation,
+                showEmailAddress: showEmailAddress
+            )
+        }
+
+        package init(
+            style: FormComponentStyle = FormComponentStyle(),
+            showsSubmitButton: Bool = true,
             localizationParameters: LocalizationParameters? = nil,
             shopperInformation: PrefilledShopperInformation?,
             showEmailAddress: Bool

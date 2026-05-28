@@ -14,6 +14,7 @@ extension PayByBankUSComponent {
     package struct Configuration {
 
         /// The UI style of the component.
+        ///
         package var style: PayByBankUSComponent.Style
 
         package var localizationParameters: LocalizationParameters?
@@ -23,6 +24,10 @@ extension PayByBankUSComponent {
         /// - Parameters:
         ///   - style: The form style.
         ///   - localizationParameters: The localization parameters.
+        package init(style: PayByBankUSComponent.Style = .init()) {
+            self.init(style: style, localizationParameters: nil)
+        }
+
         package init(
             style: PayByBankUSComponent.Style = .init(),
             localizationParameters: LocalizationParameters? = nil

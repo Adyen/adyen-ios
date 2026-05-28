@@ -20,7 +20,7 @@ public struct BLIKPaymentMethod: PaymentMethod {
         builder.build(paymentMethod: self)
     }
     
-    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue)
     }
 

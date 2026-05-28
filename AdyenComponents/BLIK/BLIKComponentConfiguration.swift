@@ -23,13 +23,26 @@ package struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
     package var theme: CheckoutTheme = .default
 
     package var localizationParameters: LocalizationParameters?
+
+    package var localizationProvider: (any CheckoutLocalizationProvider)?
     
+    package init(style: FormComponentStyle) {
+        self.init(style: style, localizationParameters: nil)
+    }
+
     package init(
         style: FormComponentStyle,
         localizationParameters: LocalizationParameters? = nil
     ) {
         self.style = style
         self.localizationParameters = localizationParameters
+    }
+
+    package init(
+        theme: CheckoutTheme = .default,
+        style: FormComponentStyle = .init()
+    ) {
+        self.init(localizationParameters: nil, theme: theme, style: style)
     }
 
     package init(

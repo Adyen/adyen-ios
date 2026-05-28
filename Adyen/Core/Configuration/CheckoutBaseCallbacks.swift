@@ -8,17 +8,6 @@ import Foundation
 
 public typealias SubmitHandler = @MainActor @Sendable (_ data: PaymentComponentData) async throws -> SubmitResult
 public typealias AdditionalDetailsHandler = @MainActor @Sendable (_ data: ActionComponentData) async throws -> AdditionalDetailsResult
-public typealias CheckoutErrorHandler = (_ error: Error) -> Void
-public typealias CheckoutSuccessHandler = (_ result: CheckoutResult) -> Void
-
-/// Basic callbacks for all components.
-package protocol CheckoutBaseCallbacks {
-    
-    var onSubmit: SubmitHandler? { get set }
-    
-    var onAdditionalDetails: AdditionalDetailsHandler? { get set }
-    
-    var onError: CheckoutErrorHandler? { get set }
-    
-    var onComplete: CheckoutSuccessHandler? { get set }
-}
+public typealias BeforeSubmitHandler = @MainActor @Sendable (_ data: BeforeSubmitData) async throws -> BeforeSubmitResult
+public typealias CheckoutErrorHandler = @MainActor (_ error: Error) -> Void
+public typealias CheckoutSuccessHandler = @MainActor (_ result: CheckoutResult) -> Void

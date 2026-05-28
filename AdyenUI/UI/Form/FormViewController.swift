@@ -59,7 +59,18 @@ open class FormViewController: UIViewController, AdyenObserver {
     ///   - scrollEnabled: Boolean value that determines whether the form view contains a scroll view in its view hierarchy.
     ///   - style: The `FormViewController` UI style.
     ///   - localizationParameters: The localization parameters.
-    public init(
+    public convenience init(
+        scrollEnabled: Bool,
+        style: ViewStyle
+    ) {
+        self.init(
+            scrollEnabled: scrollEnabled,
+            style: style,
+            localizationParameters: nil
+        )
+    }
+
+    package init(
         scrollEnabled: Bool,
         style: ViewStyle,
         localizationParameters: LocalizationParameters?
@@ -189,7 +200,7 @@ open class FormViewController: UIViewController, AdyenObserver {
 
     // MARK: - Localizable
 
-    public let localizationParameters: LocalizationParameters?
+    package let localizationParameters: LocalizationParameters?
 
     // MARK: - Validity
 

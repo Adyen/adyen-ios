@@ -34,7 +34,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
 
         /// Localization parameters.
         package var localizationParameters: LocalizationParameters?
-
+        
         /// The UI style configurations.
         package var style: ActionComponentStyle = .init()
 
@@ -47,10 +47,22 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
         /// Initializes a new instance.
         ///
         /// - Parameters:
-        ///   - localizationParameters: Localization parameters.
         ///   - style: The UI style configurations.
         ///   - authentication: Authentication configuration.
         ///   - twint: Twint configurations.
+        package init(
+            style: ActionComponentStyle = .init(),
+            authentication: AuthenticationConfiguration = .init(),
+            twint: TwintActionConfiguration? = nil
+        ) {
+            self.init(
+                localizationParameters: nil,
+                style: style,
+                authentication: authentication,
+                twint: twint
+            )
+        }
+
         package init(
             localizationParameters: LocalizationParameters? = nil,
             style: ActionComponentStyle = .init(),

@@ -125,6 +125,36 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(items.button.title, localizedSubmitButtonTitle(with: context.amount, style: .immediate, sut.configuration.localizationParameters))
     }
 
+    func test_cardComponent_withLegacyLocalizationParameters_shouldRenderLocalizedTitles() {
+        var configuration = CardConfiguration()
+        configuration.showCardholderName = true
+        configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+        let items = sut.cardViewController.items
+
+        XCTAssertEqual(items.expiryDateItem.placeholder, localizedString(.cardExpiryItemPlaceholder, configuration.localizationParameters))
+        XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardCvcItemTitle, configuration.localizationParameters))
+        XCTAssertEqual(items.holderNameItem.title, localizedString(.cardNameItemTitle, configuration.localizationParameters))
+    }
+
+    func test_cardComponent_withLegacyLocalizationParameters_shouldRenderLocalizedSubmitButton() {
+        var configuration = CardConfiguration()
+        configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+
+        XCTAssertEqual(sut.cardViewController.items.button.title, "Test-Pay €1.00")
+    }
+
     func test_component_withCustomTheme_shouldApplyThemeStyles() {
         // Given - custom theme with distinctive colors and button styling
         let colorToTest = UIColor.blue
@@ -2465,5 +2495,90 @@ extension NSAttributedString {
     var font: UIFont? {
         var range = NSRange(location: 0, length: string.count)
         return attribute(NSAttributedString.Key.font, at: 0, effectiveRange: &range) as? UIFont
+    }
+}
+
+// MARK: - CheckoutLocalizationProvider wiring (Phase 3)
+
+extension CardComponentTests {
+
+    func test_cardComponent_withProviderOverride_shouldRenderCustomCardNumberTitle() {
+        var configuration = CardConfiguration()
+        configuration.localizationProvider = CardLocalizationProviderMock(values: [.cardNumber: "Custom number"])
+
+        let sut = CardComponent(paymentMethod: method, context: context, configuration: configuration)
+
+        XCTAssertEqual(sut.cardViewController.items.numberContainerItem.numberItem.title, "Custom number")
+    }
+
+    func test_cardComponent_withProviderOverride_shouldRenderCustomSecurityCodeTitle() {
+        var configuration = CardConfiguration()
+        configuration.localizationProvider = CardLocalizationProviderMock(values: [.cardSecurityCode: "Custom security code"])
+
+        let sut = CardComponent(paymentMethod: method, context: context, configuration: configuration)
+
+        XCTAssertEqual(sut.cardViewController.items.securityCodeItem.title, "Custom security code")
+    }
+
+    func test_cardComponent_withProviderOverride_shouldRenderCustomStorePaymentMethodTitle() {
+        var configuration = CardConfiguration()
+        configuration.localizationProvider = CardLocalizationProviderMock(values: [.cardStorePaymentMethod: "Remember this card"])
+
+        let sut = CardComponent(paymentMethod: method, context: context, configuration: configuration)
+
+        XCTAssertEqual(sut.cardViewController.items.storeDetailsItem.title, "Remember this card")
+    }
+
+    func test_cardComponent_withProviderReturningNil_shouldFallbackToSDKLocalization() {
+        var configuration = CardConfiguration()
+        configuration.localizationProvider = CardLocalizationProviderMock(values: [:])
+
+        let sut = CardComponent(paymentMethod: method, context: context, configuration: configuration)
+
+        XCTAssertEqual(
+            sut.cardViewController.items.numberContainerItem.numberItem.title,
+            localizedString(.cardNumberItemTitle, nil)
+        )
+    }
+
+    func test_cardComponent_withPartialOverride_shouldMixCustomAndFallbackStrings() {
+        var configuration = CardConfiguration()
+        configuration.localizationProvider = CardLocalizationProviderMock(values: [
+            .cardNumber: "Card #"
+        ])
+
+        let sut = CardComponent(paymentMethod: method, context: context, configuration: configuration)
+        let items = sut.cardViewController.items
+
+        XCTAssertEqual(items.numberContainerItem.numberItem.title, "Card #")
+        // Security code was not overridden — falls back to the SDK bundle.
+        XCTAssertEqual(items.securityCodeItem.title, localizedString(.cardCvcItemTitle, nil))
+    }
+
+    func test_cardComponent_withProviderAndEnforcedLocale_shouldReceiveEnforcedLocale() {
+        let provider = CardLocalizationProviderMock(values: [.cardNumber: "Numéro"])
+        var configuration = CardConfiguration()
+        configuration.localizationProvider = provider
+        configuration.localizationParameters = LocalizationParameters(enforcedLocale: "fr-FR")
+
+        let sut = CardComponent(paymentMethod: method, context: context, configuration: configuration)
+        _ = sut.cardViewController.items.numberContainerItem.numberItem.title
+
+        XCTAssertEqual(provider.lastLocale?.identifier, "fr-FR")
+    }
+}
+
+private final class CardLocalizationProviderMock: CheckoutLocalizationProvider {
+
+    private let values: [CheckoutLocalizationKey: String]
+    private(set) var lastLocale: Locale?
+
+    init(values: [CheckoutLocalizationKey: String]) {
+        self.values = values
+    }
+
+    func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String? {
+        lastLocale = locale
+        return values[key]
     }
 }

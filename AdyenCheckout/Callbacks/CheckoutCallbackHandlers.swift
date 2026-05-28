@@ -38,6 +38,57 @@ package final class SessionCallbackHandler: CheckoutCallbackHandling {
 }
 
 @MainActor
+package final class BeforeSubmitCallbackHandler: CheckoutCallbackHandling {
+
+    private let handler: any CheckoutCallbackHandling
+    private let session: SessionProtocol
+    private let callbackStore: SessionCheckoutCallbackStore
+
+    package init(
+        handler: any CheckoutCallbackHandling,
+        session: SessionProtocol,
+        callbackStore: SessionCheckoutCallbackStore
+    ) {
+        self.handler = handler
+        self.session = session
+        self.callbackStore = callbackStore
+    }
+
+    package func handleSubmit(_ data: PaymentComponentData) async throws -> SubmitResult {
+        let submitData = try await handleBeforeSubmit(for: data)
+        return try await handler.handleSubmit(submitData)
+    }
+
+    package func handleAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult {
+        try await handler.handleAdditionalDetails(data)
+    }
+
+    private func handleBeforeSubmit(for data: PaymentComponentData) async throws -> PaymentComponentData {
+        guard let onBeforeSubmit = callbackStore.onBeforeSubmit else {
+            return data
+        }
+
+        let inputData = BeforeSubmitData(
+            billingAddress: data.billingAddress,
+            deliveryAddress: data.deliveryAddress,
+            shopperName: data.shopperName,
+            shopperEmail: data.emailAddress
+        )
+        let result = try await onBeforeSubmit(inputData)
+
+        switch result {
+        case let .proceed(modifiedData, sessionData):
+            if let sessionData {
+                try await session.refreshSessionState(with: sessionData)
+            }
+            return data.replacing(beforeSubmitData: modifiedData)
+        case .abort:
+            throw CallbackError.beforeSubmitAborted
+        }
+    }
+}
+
+@MainActor
 package final class AdvancedCallbackHandler: CheckoutCallbackHandling {
     private let callbackStore: AdvancedCheckoutCallbackStore
 

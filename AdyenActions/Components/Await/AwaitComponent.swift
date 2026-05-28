@@ -31,11 +31,10 @@ package final class AwaitComponent: ActionComponent, Cancellable {
         /// The localization parameters, leave it nil to use the default parameters.
         package var localizationParameters: LocalizationParameters?
         
-        /// Initializes an instance of `Configuration`
-        ///
-        /// - Parameters:
-        ///   - style: The Component UI style.
-        ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
+        package init(style: AwaitComponentStyle = .init()) {
+            self.init(style: style, localizationParameters: nil)
+        }
+
         package init(
             style: AwaitComponentStyle = .init(),
             localizationParameters: LocalizationParameters? = nil

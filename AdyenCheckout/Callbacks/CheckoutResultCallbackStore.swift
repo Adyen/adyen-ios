@@ -14,6 +14,8 @@ package protocol CheckoutResultCallbackStore: AnyObject {
 }
 
 package final class SessionCheckoutCallbackStore: CheckoutResultCallbackStore {
+    package var onBeforeSubmit: BeforeSubmitHandler?
+
     package var onComplete: CheckoutSuccessHandler?
 
     package var onError: CheckoutErrorHandler?

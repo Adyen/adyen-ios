@@ -43,7 +43,6 @@ package extension DropInComponent {
 
         /// Indicates the localization parameters, leave it nil to use the default parameters.
         package var localizationParameters: LocalizationParameters?
-
         /// Determines whether to enable skipping payment list step
         /// when there is only one non-instant payment method.
         /// Default value: `false`.

@@ -16,6 +16,8 @@ internal struct SessionRequest: APIRequest {
     
     internal let path = "sessions"
     
+    internal let payable: Bool
+    
     internal var counter: UInt = 0
     
     internal var method: HTTPMethod = .post
@@ -24,11 +26,16 @@ internal struct SessionRequest: APIRequest {
     
     internal var queryParameters: [URLQueryItem] = []
     
+    internal init(payable: Bool = true) {
+        self.payable = payable
+    }
+    
     internal func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         let currentConfiguration = ConfigurationConstants.current
         
+        try container.encode(payable, forKey: .payable)
         try container.encode(currentConfiguration.countryCode, forKey: .countryCode)
         try container.encode(Locale.current.identifier, forKey: .shopperLocale)
         try container.encode(ConfigurationConstants.shopperEmail, forKey: .shopperEmail)
@@ -57,7 +64,7 @@ internal struct SessionRequest: APIRequest {
         if ConfigurationConstants.current.cardSettings.showStorePaymentMethod {
             AdyenAssertion.assert(
                 message: "API version should be v70 or above to apply card component's store payment method field",
-                condition: ConfigurationConstants.current.apiVersion < 70
+                condition: ConfigurationConstants.demoServerEnvironment.version < 70
             )
             try container.encode("enabled", forKey: .storePaymentMethodMode)
             try container.encode(ConfigurationConstants.recurringProcessingModel, forKey: .recurringProcessingModel)
@@ -80,6 +87,7 @@ internal struct SessionRequest: APIRequest {
         case merchantAccount
         case amount
         case order
+        case payable
         case returnUrl
         case reference
         case shopperLocale
@@ -99,7 +107,54 @@ internal struct SessionRequest: APIRequest {
     
 }
 
-extension SessionResponse: @retroactive Response {}
+internal struct SessionPatchRequest: APIRequest {
+    
+    internal typealias ResponseType = SessionPatchResponse
+    
+    internal let sessionId: String
+    
+    internal let sessionData: String
+    
+    internal let amount: Amount
+    
+    internal let payable = true
+    
+    internal var path: String {
+        "sessions/\(sessionId)"
+    }
+    
+    internal var counter: UInt = 0
+    
+    internal var method: HTTPMethod = .patch
+    
+    internal var headers: [String: String] = [:]
+    
+    internal var queryParameters: [URLQueryItem] = []
+    
+    internal func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(sessionData, forKey: .sessionData)
+        try container.encode(amount, forKey: .amount)
+        try container.encode(payable, forKey: .payable)
+    }
+    
+    internal enum CodingKeys: CodingKey {
+        case sessionData
+        case amount
+        case payable
+    }
+}
+
+extension SessionResponse: Response {}
+
+internal struct SessionPatchResponse: Response {
+    
+    internal let sessionData: String
+    
+    private enum CodingKeys: String, CodingKey {
+        case sessionData
+    }
+}
 
 private struct AuthenticationData: Encodable {
     struct ThreeDSRequestData: Encodable {

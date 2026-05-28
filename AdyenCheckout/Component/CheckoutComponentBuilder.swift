@@ -81,24 +81,21 @@ internal enum CheckoutComponentBuilder {
         configuration: CheckoutConfiguration,
         context: AdyenContext
     ) -> PaymentComponent {
-        
-        // TODO: stored components requires no configuration
-        // (when new localization is implemented, see if this needs to updated
-        
         switch storedPaymentMethod {
-            
+
         #if canImport(AdyenCard)
             case let storedCard as StoredCardPaymentMethod:
-                StoredCardComponent(
-                    storedCardPaymentMethod: storedCard,
-                    context: context,
-                    theme: configuration.theme
+                return createStoredCardComponent(
+                    storedPaymentMethod: storedCard,
+                    configuration: configuration,
+                    context: context
                 )
         #endif
-            
+
         default:
-            StoredPaymentMethodComponent(
-                paymentMethod: storedPaymentMethod,
+            return createStoredPaymentMethodComponent(
+                storedPaymentMethod: storedPaymentMethod,
+                configuration: configuration,
                 context: context
             )
         }
@@ -129,11 +126,45 @@ internal enum CheckoutComponentBuilder {
 
         componentConfiguration.showsSubmitButton = configuration.showsSubmitButton
         componentConfiguration.theme = configuration.theme
+        componentConfiguration.localizationParameters = configuration.resolvedCheckoutLocalizationParameters(
+            mergingExistingParameters: componentConfiguration.localizationParameters
+        )
 
         return try factory.create(
             with: paymentMethod,
             context: context,
             configuration: componentConfiguration
         )
+    }
+
+    @MainActor
+    private static func createStoredCardComponent(
+        storedPaymentMethod: StoredCardPaymentMethod,
+        configuration: CheckoutConfiguration,
+        context: AdyenContext
+    ) -> PaymentComponent {
+        var component = StoredCardComponent(
+            storedCardPaymentMethod: storedPaymentMethod,
+            context: context,
+            theme: configuration.theme
+        )
+        component.localizationParameters = configuration.resolvedCheckoutLocalizationParameters()
+
+        return component
+    }
+
+    @MainActor
+    private static func createStoredPaymentMethodComponent(
+        storedPaymentMethod: StoredPaymentMethod,
+        configuration: CheckoutConfiguration,
+        context: AdyenContext
+    ) -> PaymentComponent {
+        var component = StoredPaymentMethodComponent(
+            paymentMethod: storedPaymentMethod,
+            context: context
+        )
+        component.localizationParameters = configuration.resolvedCheckoutLocalizationParameters()
+
+        return component
     }
 }

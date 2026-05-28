@@ -9,6 +9,7 @@
 @testable import AdyenUI
 import XCTest
 
+@MainActor
 final class ACHDirectDebitComponentFactoryTests: XCTestCase {
 
     var sut: ACHDirectDebitComponentFactory!
@@ -111,7 +112,9 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         let customAmount = Amount(value: 999, currencyCode: "USD")
         let customContext = AdyenContext(
             apiContext: Dummy.apiContext,
-            amount: customAmount
+            amount: customAmount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
         )
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
         let configuration = ACHDirectDebitComponentConfiguration()

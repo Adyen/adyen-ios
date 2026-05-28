@@ -33,11 +33,10 @@ package final class DocumentComponent: ActionComponent, ShareableComponent {
         /// The localization parameters, leave it nil to use the default parameters.
         package var localizationParameters: LocalizationParameters?
         
-        /// Initializes an instance of `Configuration`
-        ///
-        /// - Parameters:
-        ///   - style: The Component UI style.
-        ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
+        package init(style: DocumentComponentStyle = DocumentComponentStyle()) {
+            self.init(style: style, localizationParameters: nil)
+        }
+
         package init(style: DocumentComponentStyle = DocumentComponentStyle(), localizationParameters: LocalizationParameters? = nil) {
             self.style = style
             self.localizationParameters = localizationParameters

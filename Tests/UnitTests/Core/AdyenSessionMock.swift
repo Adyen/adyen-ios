@@ -34,6 +34,14 @@ public final class AdyenSessionMock: SessionProtocol {
         self.presentationDelegate = presentationDelegate
     }
     
+    var refreshSessionStateCalled = false
+    var refreshSessionStateData: String?
+    
+    public func refreshSessionState(with sessionData: String) async throws {
+        refreshSessionStateCalled = true
+        refreshSessionStateData = sessionData
+    }
+    
     public func performSubmit(_ data: PaymentComponentData) async throws -> SubmitResult {
         performSubmitCalled = true
         guard let performSubmitResult else { throw AdyenSessionMockError.missingResult }

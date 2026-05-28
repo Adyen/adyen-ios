@@ -40,6 +40,17 @@ package struct BasicComponentConfiguration {
     ///   - localizationParameters: The localization parameters.
     package init(
         style: FormComponentStyle = FormComponentStyle(),
+        showsSubmitButton: Bool = true
+    ) {
+        self.init(
+            style: style,
+            showsSubmitButton: showsSubmitButton,
+            localizationParameters: nil
+        )
+    }
+
+    package init(
+        style: FormComponentStyle = FormComponentStyle(),
         showsSubmitButton: Bool = true,
         localizationParameters: LocalizationParameters? = nil
     ) {
@@ -74,6 +85,19 @@ package struct PersonalInformationConfiguration: AnyPersonalInformationConfigura
     ///   Defaults to `true`.
     ///   - shopperInformation: The shopper information to be prefilled.
     ///   - localizationParameters: The localization parameters.
+    package init(
+        style: FormComponentStyle = FormComponentStyle(),
+        showsSubmitButton: Bool = true,
+        shopperInformation: PrefilledShopperInformation? = nil
+    ) {
+        self.init(
+            style: style,
+            showsSubmitButton: showsSubmitButton,
+            shopperInformation: shopperInformation,
+            localizationParameters: nil
+        )
+    }
+
     package init(
         style: FormComponentStyle = FormComponentStyle(),
         showsSubmitButton: Bool = true,
