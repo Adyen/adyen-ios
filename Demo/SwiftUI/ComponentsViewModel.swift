@@ -6,6 +6,7 @@
 
 import SwiftUI
 
+@MainActor
 internal final class ComponentsViewModel: ObservableObject, Identifiable {
     
     private var currentExample: ExampleContainer?
