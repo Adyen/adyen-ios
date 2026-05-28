@@ -26,13 +26,13 @@ public struct AuthenticationConfiguration: CheckoutComponentConfiguration {
     package var redirectComponentStyle: RedirectComponentStyle?
     
     /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges.
-    package var requestorAppURL: URL?
-    
+    public var requestorAppURL: URL?
+
     /// The configuration for Delegated Authentication.
-    package var delegatedAuthentication: DelegatedAuthentication?
+    public var delegatedAuthentication: DelegatedAuthentication?
 
     /// Configuration for Delegated Authentication in 3D Secure 2.
-    package struct DelegatedAuthentication {
+    public struct DelegatedAuthentication {
 
         /// The relying party identifier that is used for PassKeys.
         /// See: https://developer.apple.com/documentation/xcode/supporting-associated-domains
@@ -49,7 +49,7 @@ public struct AuthenticationConfiguration: CheckoutComponentConfiguration {
         ///
         /// - Parameters:
         ///   - relyingPartyIdentifier: The relying party identifier that is used for PassKeys.
-        package init(relyingPartyIdentifier: String) {
+        public init(relyingPartyIdentifier: String) {
             self.relyingPartyIdentifier = relyingPartyIdentifier
             self.style = DelegatedAuthenticationComponentStyle()
         }

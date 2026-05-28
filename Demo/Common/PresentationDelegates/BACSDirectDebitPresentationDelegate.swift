@@ -7,6 +7,7 @@
 import Adyen
 import AdyenComponents
 import Foundation
+import UIKit
 
 @MainActor
 internal class BACSDirectDebitPresentationDelegate: PresentationDelegate {

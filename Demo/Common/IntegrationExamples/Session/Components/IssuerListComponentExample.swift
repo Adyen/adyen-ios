@@ -7,6 +7,7 @@
 import Adyen
 import AdyenComponents
 import AdyenSession
+import UIKit
 
 @MainActor
 internal final class IssuerListComponentExample: InitialDataFlowProtocol {

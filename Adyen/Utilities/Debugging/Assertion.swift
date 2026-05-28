@@ -10,12 +10,12 @@ import Foundation
 @_spi(AdyenInternal)
 public typealias AssertionListener = (String) -> Void
 
-package enum AdyenAssertion {
+public enum AdyenAssertion {
 
     internal static var listener: AssertionListener?
 
     /// Calls `assertionFailure` when not running Tests.
-    package static func assertionFailure(message: @autoclosure () -> String) {
+    public static func assertionFailure(message: @autoclosure () -> String) {
         if CommandLine.arguments.contains("-UITests") {
             listener?(message())
             return
@@ -24,7 +24,7 @@ package enum AdyenAssertion {
     }
 
     /// Calls `assertFailure(message:)` when condition is true.
-    package static func assert(message: @autoclosure () -> String, condition: @autoclosure () -> Bool) {
+    public static func assert(message: @autoclosure () -> String, condition: @autoclosure () -> Bool) {
         guard condition() else {
             return
         }

@@ -13,11 +13,11 @@ import Foundation
 
 /// ``Session`` manages the checkout session lifecycle, handling
 /// `/payments`, `/payment/details`, and partial payment calls internally.
-package final class Session: SessionProtocol {
-    
+public final class Session: SessionProtocol {
+
     /// The session context information.
-    package internal(set) var state: Session.State
-    
+    public internal(set) var state: Session.State
+
     /// The presentation delegate.
     package weak var presentationDelegate: PresentationDelegate?
     
@@ -230,8 +230,8 @@ private extension Session {
 extension Session {
     
     /// Current state/information of session that gets updated after each internal call.
-    package struct State {
-        
+    public struct State {
+
         /// The session data.
         package internal(set) var data: String
         
@@ -248,7 +248,7 @@ extension Session {
         package let amount: Amount
         
         /// The payment methods
-        package let paymentMethods: PaymentMethods
+        public let paymentMethods: PaymentMethods
         
         /// Result code from the latest API call
         internal var resultCode: CheckoutResultCode?

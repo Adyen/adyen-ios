@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import UIKit
 
 class PaymentComponentMock: PaymentComponent {
 

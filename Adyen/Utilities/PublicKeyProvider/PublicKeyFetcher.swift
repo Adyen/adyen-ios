@@ -14,14 +14,14 @@ package protocol PublicKeyFetching {
     func fetchPublicKey(apiClient: APIClientKeyRequestProtocol, clientKey: String) async throws -> String
 }
 
-package protocol APIClientKeyRequestProtocol {
+public protocol APIClientKeyRequestProtocol {
     func perform(request: ClientKeyRequest, completionHandler: @escaping (Result<ClientKeyResponse, Error>) -> Void)
 }
 
-package final class PublicKeyFetcher: PublicKeyFetching {
-    package init() {}
+public final class PublicKeyFetcher: PublicKeyFetching {
+    public init() {}
 
-    package func fetchPublicKey(apiClient: APIClientKeyRequestProtocol, clientKey: String, completion: @escaping (Result<String, Error>) -> Void) {
+    public func fetchPublicKey(apiClient: APIClientKeyRequestProtocol, clientKey: String, completion: @escaping (Result<String, Error>) -> Void) {
         let request = ClientKeyRequest(clientKey: clientKey)
         apiClient.perform(request: request) { result in
             switch result {
@@ -37,7 +37,7 @@ package final class PublicKeyFetcher: PublicKeyFetching {
         }
     }
 
-    package func fetchPublicKey(apiClient: APIClientKeyRequestProtocol, clientKey: String) async throws -> String {
+    public func fetchPublicKey(apiClient: APIClientKeyRequestProtocol, clientKey: String) async throws -> String {
         try await withCheckedThrowingContinuation { continuation in
             self.fetchPublicKey(apiClient: apiClient, clientKey: clientKey) { result in
                 continuation.resume(with: result)
@@ -55,13 +55,13 @@ package final class PublicKeyFetcher: PublicKeyFetching {
 }
 
 extension UniqueAssetAPIClient: APIClientKeyRequestProtocol where ResponseType == ClientKeyResponse {
-    package func perform(request: ClientKeyRequest, completionHandler: @escaping (Result<ClientKeyResponse, any Error>) -> Void) {
+    public func perform(request: ClientKeyRequest, completionHandler: @escaping (Result<ClientKeyResponse, any Error>) -> Void) {
         self.perform(request, completionHandler: completionHandler)
     }
 }
 
 extension APIClient: APIClientKeyRequestProtocol {
-    package func perform(request: ClientKeyRequest, completionHandler: @escaping (Result<ClientKeyResponse, any Error>) -> Void) {
+    public func perform(request: ClientKeyRequest, completionHandler: @escaping (Result<ClientKeyResponse, any Error>) -> Void) {
         self.perform(request, completionHandler: completionHandler)
     }
 }

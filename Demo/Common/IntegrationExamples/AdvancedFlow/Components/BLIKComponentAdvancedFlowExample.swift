@@ -9,6 +9,7 @@ import AdyenActions
 import AdyenCheckout
 import AdyenComponents
 import AdyenUI
+import UIKit
 
 @MainActor
 internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowProtocol {

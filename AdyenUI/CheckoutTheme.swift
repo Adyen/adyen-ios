@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2026 Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -19,7 +19,7 @@ public struct CheckoutTheme {
     /// Initializes the theme with optional color overrides.
     ///
     /// - Parameter colors: The color scheme. Defaults to `.default`.
-    package init(colors: AdyenColors = .default) {
+    public init(colors: AdyenColors = .default) {
         self.colors = colors
         self.attributes = .default
         self.elements = AdyenElements(colors: colors)
@@ -44,7 +44,7 @@ extension CheckoutTheme {
     /// Returns a new theme with the specified colors.
     /// - Parameter colors: The color scheme to apply.
     /// - Returns: A new `CheckoutTheme` instance.
-    package func colors(_ colors: AdyenColors) -> CheckoutTheme {
+    public func colors(_ colors: AdyenColors) -> CheckoutTheme {
         CheckoutTheme(
             colors: colors,
             elements: elements,
@@ -55,7 +55,7 @@ extension CheckoutTheme {
     /// Returns a new theme with the specified corner radius.
     /// - Parameter cornerRadius: The corner radius to apply to UI elements.
     /// - Returns: A new `CheckoutTheme` instance.
-    package func cornerRadius(_ cornerRadius: CGFloat) -> CheckoutTheme {
+    public func cornerRadius(_ cornerRadius: CGFloat) -> CheckoutTheme {
         CheckoutTheme(
             colors: colors,
             elements: elements,
@@ -66,7 +66,7 @@ extension CheckoutTheme {
     /// Returns a new theme with the specified attributes.
     /// - Parameter attributes: The UI attributes to apply.
     /// - Returns: A new `CheckoutTheme` instance.
-    internal func attributes(_ attributes: AdyenAttributes) -> CheckoutTheme {
+    package func attributes(_ attributes: AdyenAttributes) -> CheckoutTheme {
         CheckoutTheme(
             colors: colors,
             elements: elements,

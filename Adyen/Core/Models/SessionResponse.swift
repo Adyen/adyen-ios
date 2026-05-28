@@ -7,10 +7,10 @@
 /// Response data obtained from the `/sessions` call.
 public struct SessionResponse: Decodable, Sendable {
     
-    package let id: String
-    
-    package let sessionData: String
-    
+    public let id: String
+
+    public let sessionData: String
+
     /// Initializes a new SessionResponse object
     ///
     /// - Parameters:

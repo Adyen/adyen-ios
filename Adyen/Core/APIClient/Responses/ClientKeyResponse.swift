@@ -7,8 +7,8 @@
 import AdyenNetworking
 import Foundation
 
-package struct ClientKeyResponse: Response {
-    
+public struct ClientKeyResponse: Response {
+
     /// The card public key
     public let cardPublicKey: String
     

@@ -7,7 +7,7 @@
 import AdyenNetworking
 import Foundation
 
-package struct ClientKeyRequest: APIRequest {
+public struct ClientKeyRequest: APIRequest {
 
     public typealias ResponseType = ClientKeyResponse
     

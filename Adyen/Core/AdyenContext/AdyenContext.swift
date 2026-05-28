@@ -26,7 +26,7 @@ public final class AdyenContext {
 
     // MARK: - Initializers
     
-    package convenience init(
+    public convenience init(
         apiContext: APIContext,
         amount: Amount?,
         publicKey: String,

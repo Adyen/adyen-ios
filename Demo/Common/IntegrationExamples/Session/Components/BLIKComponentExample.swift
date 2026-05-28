@@ -7,6 +7,7 @@
 import Adyen
 import AdyenCheckout
 import AdyenComponents
+import UIKit
 
 @MainActor
 internal final class BLIKComponentExample: InitialDataFlowProtocol {

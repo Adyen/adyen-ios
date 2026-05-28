@@ -36,7 +36,7 @@ internal enum DefaultColorsDark {
     internal static let supportShadow = UIColor.color(hex: 0x070707)
 }
 
-package struct AdyenColors: Equatable {
+public struct AdyenColors: Equatable {
 
     package var background: UIColor
     package var container: UIColor
@@ -56,7 +56,7 @@ package struct AdyenColors: Equatable {
 
     // MARK: - Initializers
 
-    package static var `default`: AdyenColors = .init()
+    public static var `default`: AdyenColors = .init()
 
     private init() {
         self.background = UIColor { traitCollection in
@@ -119,7 +119,7 @@ package struct AdyenColors: Equatable {
         }
     }
 
-    package init(
+    public init(
         background: UIColor? = nil,
         container: UIColor? = nil,
         containerOutline: UIColor? = nil,

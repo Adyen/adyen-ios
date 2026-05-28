@@ -6,6 +6,7 @@
 
 import Adyen
 import AdyenNetworking
+import Foundation
 
 internal final class DemoAPIClientMock: APIClientProtocol {
 

@@ -7,6 +7,7 @@
 import Adyen
 import AdyenActions
 import AdyenCheckout
+import Foundation
 
 internal final class DummyActionComponentExample: InitialDataAdvancedFlowProtocol {
     

@@ -9,6 +9,7 @@ import AdyenActions
 import AdyenCard
 import AdyenCheckout
 import AdyenComponents
+import UIKit
 
 @MainActor
 internal final class CardComponentExample: InitialDataFlowProtocol {
