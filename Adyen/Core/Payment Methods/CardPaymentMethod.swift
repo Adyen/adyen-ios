@@ -33,7 +33,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod, PaymentMethodDisplayCusto
         builder.build(paymentMethod: self)
     }
     
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: "card")
     }
     
@@ -68,7 +68,7 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
 
     public var fundingSource: CardFundingSource?
 
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let expireDate = expiryMonth + "/" + String(expiryYear.suffix(2))
         let localizedExpiryDate = localizedString(.cardStoredExpires, parameters, expireDate)
         

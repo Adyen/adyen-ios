@@ -23,7 +23,7 @@ public struct StoredCashAppPayPaymentMethod: StoredPaymentMethod, PaymentMethodD
         builder.build(paymentMethod: self)
     }
     
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let accessibilityLabel = [
             name,
             "\(localizedString(.cashAppPayCashtag, parameters)): \(cashtag)"

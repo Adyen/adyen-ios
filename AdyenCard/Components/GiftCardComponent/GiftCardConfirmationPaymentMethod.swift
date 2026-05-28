@@ -28,7 +28,7 @@ internal struct PartialConfirmationPaymentMethod: PaymentMethod, PaymentMethodDi
         paymentMethod.buildComponent(using: builder)
     }
     
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let footnote = localizedString(
             .partialPaymentRemainingBalance,
             parameters,

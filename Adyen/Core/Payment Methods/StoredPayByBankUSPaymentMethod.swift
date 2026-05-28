@@ -24,7 +24,7 @@ public struct StoredPayByBankUSPaymentMethod: StoredPaymentMethod, PaymentMethod
         builder.build(paymentMethod: self)
     }
     
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let title: String
         let subtitle: String?
         

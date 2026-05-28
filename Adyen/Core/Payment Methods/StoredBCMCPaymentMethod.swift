@@ -21,7 +21,7 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod, PaymentMethodDisplay
         storedCardPaymentMethod.identifier
     }
 
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         storedCardPaymentMethod.displayInformation(using: parameters)
     }
     

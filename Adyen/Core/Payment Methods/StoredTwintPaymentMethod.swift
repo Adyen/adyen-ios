@@ -22,7 +22,7 @@ public struct StoredTwintPaymentMethod: StoredPaymentMethod, PaymentMethodDispla
         builder.build(paymentMethod: self)
     }
 
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(
             title: name,
             subtitle: nil,

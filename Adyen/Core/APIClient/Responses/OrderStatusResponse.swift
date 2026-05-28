@@ -34,7 +34,7 @@ package struct OrderStatusResponse: Response {
     }
 }
 
-package struct OrderPaymentMethod: PaymentMethod {
+package struct OrderPaymentMethod: PaymentMethod, PaymentMethodDisplayCustomizable {
 
     package var name: String {
         String.Adyen.securedString + lastFour
@@ -60,7 +60,7 @@ package struct OrderPaymentMethod: PaymentMethod {
         self.amount = amount
     }
 
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let disclosureText = AmountFormatter.formatted(
             amount: -amount.value,
             currencyCode: amount.currencyCode,

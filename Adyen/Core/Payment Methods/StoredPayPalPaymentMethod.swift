@@ -17,7 +17,7 @@ public struct StoredPayPalPaymentMethod: StoredPaymentMethod, PaymentMethodDispl
 
     public let supportedShopperInteractions: [ShopperInteraction]
 
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: emailAddress, logoName: type.rawValue)
     }
     

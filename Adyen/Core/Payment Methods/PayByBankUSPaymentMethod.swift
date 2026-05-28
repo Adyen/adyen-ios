@@ -17,7 +17,7 @@ public struct PayByBankUSPaymentMethod: PaymentMethod, PaymentMethodDisplayCusto
         ["US-1", "US-2", "US-3", "US-4"]
     }
     
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         .init(
             title: name,
             subtitle: nil,

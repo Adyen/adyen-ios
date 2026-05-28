@@ -129,7 +129,7 @@ import XCTest
 //        XCTAssertEqual(viewController?.actions.count, 2)
 //        XCTAssertEqual(viewController?.actions.first?.title, localizedString(.cancelButton, nil))
 //        XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, nil))
-//        XCTAssertEqual(viewController?.message, paymentMethod.defaultDisplayInformation(using: nil).title)
+//        XCTAssertEqual(viewController?.message, paymentMethod.customizedDisplayInformation(using: nil).title)
 //    }
 //
 //    func testStoredCashAppPay() {
@@ -167,7 +167,7 @@ import XCTest
 //        XCTAssertEqual(viewController?.actions.count, 2)
 //        XCTAssertEqual(viewController?.actions.first?.title, localizedString(.cancelButton, nil))
 //        XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, nil))
-//        XCTAssertEqual(viewController?.message, paymentMethod.defaultDisplayInformation(using: nil).title)
+//        XCTAssertEqual(viewController?.message, paymentMethod.customizedDisplayInformation(using: nil).title)
 //        XCTAssertEqual(viewController?.title, localizedString(.dropInStoredTitle, nil, paymentMethod.name))
 //    }
 //
@@ -187,7 +187,7 @@ import XCTest
 //        XCTAssertEqual(viewController?.actions.count, 2)
 //        XCTAssertEqual(viewController?.actions.first?.title, localizedString(.cancelButton, nil))
 //        XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, nil))
-//        XCTAssertEqual(viewController?.message, paymentMethod.defaultDisplayInformation(using: nil).title)
+//        XCTAssertEqual(viewController?.message, paymentMethod.customizedDisplayInformation(using: nil).title)
 //        XCTAssertEqual(viewController?.title, localizedString(.dropInStoredTitle, nil, paymentMethod.name))
 //    }
 //
