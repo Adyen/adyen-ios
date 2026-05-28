@@ -58,7 +58,7 @@ public final class PayByBankUSComponent: PaymentComponent, PresentableComponent 
             localizationParameters: configuration.localizationParameters,
             logoUrlProvider: logoUrlProvider,
             continueHandler: { [weak self] in
-                self?.initiatePayment()
+                self?.submit()
             }
         ))
     }()
@@ -83,8 +83,12 @@ public final class PayByBankUSComponent: PaymentComponent, PresentableComponent 
     // MARK: - PaymentInitiable
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
-    public func initiatePayment() {
+    public func submit() {
         submit(data: paymentData)
+    }
+
+    public func validate() -> Bool {
+        true
     }
 }
 

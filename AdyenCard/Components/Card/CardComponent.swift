@@ -21,8 +21,8 @@ import UIKit
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
 @MainActor
-public class CardComponent: PresentableComponent,
-    PaymentMethodAware,
+public class CardComponent: PaymentComponent,
+    PresentableComponent,
     LoadingComponent {
 
     internal enum Constant {

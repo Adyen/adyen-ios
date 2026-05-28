@@ -71,6 +71,14 @@ public final class TwintComponent: InitiablePaymentComponent {
         self.delegate = delegate
         submit(data: paymentData)
     }
+
+    public func submit() {
+        submit(data: paymentData)
+    }
+
+    public func validate() -> Bool {
+        true
+    }
 }
 
 @_spi(AdyenInternal)

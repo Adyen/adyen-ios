@@ -77,6 +77,20 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
 
         return StoredCardInputViewController(viewModel: viewModel)
     }()
+
+    // TODO: - Implement submit logic in  StoredCardComponent
+    public func submit() {
+//        let data = PaymentComponentData(
+//            paymentMethodDetails: details,
+//            amount: context.amount,
+//            order: order
+//            )
+//        submit(data: data)
+    }
+
+    public func validate() -> Bool {
+        true
+    }
 }
 
 /// :nodoc:

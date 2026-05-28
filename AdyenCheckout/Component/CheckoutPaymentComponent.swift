@@ -68,7 +68,7 @@ public final class CheckoutPaymentComponent {
     // TODO: - Instant Component
 
     public var requiresUserInteraction: Bool {
-        return viewController != nil
+        viewController != nil
     }
 
     public func submit() {

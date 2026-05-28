@@ -72,7 +72,6 @@ extension CardComponent {
     }
 }
 
-@_spi(AdyenInternal)
 extension CardComponent: TrackableComponent {
     
     public func sendDidLoadEvent() {

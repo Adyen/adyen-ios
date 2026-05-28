@@ -7,7 +7,6 @@
 import Adyen
 import UIKit
 
-@_spi(AdyenInternal)
 extension GiftCardComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)

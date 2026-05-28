@@ -5,6 +5,7 @@
 //
 
 import Adyen
+@_spi(AdyenInternal) import protocol Adyen.PaymentComponent
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 #if canImport(AdyenUI)
     import AdyenUI
@@ -17,7 +18,8 @@ import UIKit
 
 /// A component that provides a form for gift card payments.
 @MainActor
-public final class GiftCardComponent: PresentableComponent,
+public final class GiftCardComponent: PaymentComponent,
+    PresentableComponent,
     Localizable,
     LoadingComponent,
     AdyenObserver {

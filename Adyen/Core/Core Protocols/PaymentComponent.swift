@@ -25,8 +25,8 @@ public enum PaymentComponentType {
 
 /// A component that handles the initial phase of getting payment details to initiate a payment.
 @MainActor
-public protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentMethodAware {
-    
+public protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentMethodAware, SubmittableComponent {
+
     /// The delegate of the payment component.
     var delegate: PaymentComponentDelegate? { get set }
 

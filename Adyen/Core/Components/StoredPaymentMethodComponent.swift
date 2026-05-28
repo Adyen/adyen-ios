@@ -38,7 +38,21 @@ public final class StoredPaymentMethodComponent: StoredPaymentComponent, Localiz
     }
     
     private let storedPaymentMethod: StoredPaymentMethod
-    
+
+    public func submit() {
+        let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
+        let data = PaymentComponentData(
+            paymentMethodDetails: details,
+            amount: self.context.amount,
+            order: self.order
+        )
+        submit(data: data)
+    }
+
+    public func validate() -> Bool {
+        true
+    }
+
     // MARK: - PresentableComponent
 
     public lazy var viewController: UIViewController = {

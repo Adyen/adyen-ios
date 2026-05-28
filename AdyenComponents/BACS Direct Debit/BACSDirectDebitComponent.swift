@@ -103,6 +103,14 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
         inputFormViewController.presenter = inputPresenter
         
     }
+
+    public func submit() {
+        // TODO: - How to handle submit in BACS?
+    }
+
+    public func validate() -> Bool {
+        false
+    }
 }
 
 // MARK: - BACSDirectDebitRouterProtocol

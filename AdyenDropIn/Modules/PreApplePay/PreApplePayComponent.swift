@@ -5,6 +5,7 @@
 //
 
 import Adyen
+@_spi(AdyenInternal) import protocol Adyen.PaymentComponent
 @_spi(AdyenInternal) import protocol Adyen.PresentableComponent
 
 #if canImport(AdyenUI)
@@ -100,7 +101,14 @@ internal final class PreApplePayComponent: PresentableComponent,
     private func createModel(with amount: Amount) -> PreApplePayView.Model {
         PreApplePayView.Model(hint: amount.formatted, style: configuration.style)
     }
-    
+
+    internal func submit() {
+        pay()
+    }
+
+    internal func validate() -> Bool {
+        true
+    }
 }
 
 extension PreApplePayComponent: PaymentComponentDelegate {

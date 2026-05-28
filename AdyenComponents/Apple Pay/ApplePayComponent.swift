@@ -140,6 +140,14 @@ public class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent
         resumeContinuation(success: success)
         completion?()
     }
+
+    public func submit() {
+        // TODO: - Check where to perform submit in ApplePay. I dont think it applies here.
+    }
+
+    public func validate() -> Bool {
+        true
+    }
 }
 
 @_spi(AdyenInternal)

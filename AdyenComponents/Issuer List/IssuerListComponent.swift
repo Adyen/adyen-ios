@@ -58,7 +58,15 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
         self.configuration = configuration
         self.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
     }
-    
+
+    public func submit() {
+        // TODO: - What should we do in the IssuerListComponent?
+    }
+
+    public func validate() -> Bool {
+        true
+    }
+
     private let issuerListPaymentMethod: IssuerListPaymentMethod
 
     // MARK: - Presentable Component Protocol
