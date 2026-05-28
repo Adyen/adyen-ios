@@ -163,6 +163,92 @@ struct PaymentMethodListViewModelTests {
         }
     }
 
+    // MARK: - FormattedAmount Tests
+
+    @Test
+    func formattedAmount_shouldReturnFormattedContextAmount() {
+        // Given
+        let (sut, _, _) = makeSUT()
+
+        // Then
+        #expect(sut.formattedAmount.isEmpty == false)
+    }
+
+    // MARK: - Subtitle Tests
+
+    @Test
+    func subtitle_shouldReturnNonEmptyString() {
+        // Given
+        let (sut, _, _) = makeSUT()
+
+        // Then - verify subtitle is not empty (actual string may change with localization)
+        #expect(sut.subtitle.isEmpty == false, "Subtitle should not be empty")
+    }
+
+    // MARK: - ApplePayButtonState Tests
+
+    @Test
+    func applePayButtonState_givenNoApplePay_shouldReturnHidden() {
+        // Given - paymentMethods without Apple Pay
+        let (sut, _, _) = makeSUT(includeApplePay: false)
+
+        // Then
+        if case .hidden = sut.applePayButtonState {
+            // Success
+        } else {
+            Issue.record("Expected applePayButtonState to be .hidden when no Apple Pay available")
+        }
+    }
+
+    @Test
+    func applePayButtonState_givenApplePay_shouldReturnVisible() {
+        // Given - paymentMethods with Apple Pay
+        let (sut, _, _) = makeSUT(includeApplePay: true)
+
+        // Then
+        if case .visible = sut.applePayButtonState {
+            // Success
+        } else {
+            Issue.record("Expected applePayButtonState to be .visible when Apple Pay is available")
+        }
+    }
+
+    // MARK: - Select Payment Method Tests
+
+    @Test
+    func selectPaymentMethod_givenRegularComponent_shouldCallRouterPresent() throws {
+        // Given
+        let (sut, _, routerMock) = makeSUT()
+        sut.didLoad()
+        let paymentMethod = try #require(sut.paymentMethodSections.flatMap(\.paymentMethods).first { $0.type == .scheme })
+
+        // When
+        sut.select(paymentMethod: paymentMethod)
+
+        // Then
+        #expect(routerMock.presentComponentCallsCount == 1)
+    }
+
+    // MARK: - GetSections Tests
+
+    @Test
+    func didLoad_shouldFilterOutApplePayFromSections() {
+        // Given
+        let (sut, _, _) = makeSUT(includeApplePay: true)
+
+        // When
+        sut.didLoad()
+
+        // Then
+        if case let .loaded(sections) = sut.state {
+            let allItems = sections.flatMap(\.items)
+            let hasApplePay = allItems.contains { $0.title.lowercased().contains("apple") }
+            #expect(hasApplePay == false, "Apple Pay should be filtered from the main list")
+        } else {
+            Issue.record("Expected state to be .loaded")
+        }
+    }
+
     // MARK: - ActionPresenter Tests
 
     @Test
@@ -195,88 +281,9 @@ struct PaymentMethodListViewModelTests {
         }
     }
 
-    // MARK: - Mocks
-
-    private class DropInFlowManagingMock: DropInFlowManaging {
-        var submitFromActionPresenterCallsCount = 0
-        var submitFromActionPresenterReceivedArguments: (
-            data: PaymentComponentData,
-            component: PaymentComponent,
-            actionPresenter: ActionPresenter
-        )?
-
-        func submit(
-            _ data: PaymentComponentData,
-            from component: PaymentComponent,
-            actionPresenter: ActionPresenter
-        ) {
-            submitFromActionPresenterCallsCount += 1
-            submitFromActionPresenterReceivedArguments = (data, component, actionPresenter)
-        }
-
-        var failWithFromCallsCount = 0
-        var failWithFromReceivedArguments: (error: Error, component: PaymentComponent)?
-
-        func fail(with error: Error, from component: PaymentComponent) {
-            failWithFromCallsCount += 1
-            failWithFromReceivedArguments = (error, component)
-        }
-
-        var cancelComponentCallsCount = 0
-        var cancelComponentReceivedComponent: PaymentComponent?
-
-        func cancel(component: PaymentComponent) {
-            cancelComponentCallsCount += 1
-            cancelComponentReceivedComponent = component
-        }
-
-        var handleActionCallsCount = 0
-        var handleActionReceivedAction: Action?
-
-        func handle(action: Action) {
-            handleActionCallsCount += 1
-            handleActionReceivedAction = action
-        }
-    }
-
-    private class PaymentMethodListRoutingMock: PaymentMethodListRouting {
-        var presentComponentCallsCount = 0
-        var presentComponentReceivedComponent: PaymentComponent?
-
-        func present(component: PaymentComponent) {
-            presentComponentCallsCount += 1
-            presentComponentReceivedComponent = component
-        }
-
-        var presentViewControllerCallsCount = 0
-        var presentViewControllerReceivedViewController: UIViewController?
-
-        func present(viewController: UIViewController) {
-            presentViewControllerCallsCount += 1
-            presentViewControllerReceivedViewController = viewController
-        }
-
-        var presentActionComponentOnCancelCallsCount = 0
-        var presentActionComponentOnCancelReceivedArguments: (actionComponent: PresentableComponent, onCancel: (() -> Void)?)?
-
-        func present(actionComponent: PresentableComponent, onCancel: (() -> Void)?) {
-            presentActionComponentOnCancelCallsCount += 1
-            presentActionComponentOnCancelReceivedArguments = (actionComponent, onCancel)
-        }
-
-        var dismissCompletionCallsCount = 0
-        var dismissCompletionReceivedCompletion: (() -> Void)?
-
-        func dismiss(completion: (() -> Void)?) {
-            dismissCompletionCallsCount += 1
-            dismissCompletionReceivedCompletion = completion
-            completion?()
-        }
-    }
-
     // MARK: - Helpers
 
-    private func makeSUT() -> (
+    private func makeSUT(includeApplePay: Bool = true) -> (
         sut: PaymentMethodListViewModel,
         dropInFlowManagerMock: DropInFlowManagingMock,
         routerMock: PaymentMethodListRoutingMock
@@ -288,8 +295,9 @@ struct PaymentMethodListViewModelTests {
             analyticsProvider: AnalyticsProviderMock()
         )
 
+        let methods = includeApplePay ? paymentMethods : paymentMethodsWithoutApplePay
         let componentManagerMock = ComponentManager(
-            paymentMethods: paymentMethods,
+            paymentMethods: methods,
             context: context,
             configuration: .init(),
             order: nil,
@@ -342,6 +350,12 @@ struct PaymentMethodListViewModelTests {
     private var paymentMethods: PaymentMethods {
         let paymentMethodsDictionary = PaymentMethodsMock.paymentMethodsDictionary
         return try! AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
+    }
+
+    private var paymentMethodsWithoutApplePay: PaymentMethods {
+        var methods = paymentMethods
+        methods.regular = methods.regular.filter { $0.type != .applePay }
+        return methods
     }
 
     private func makePaymentComponentMock() -> PresentableComponentMock {

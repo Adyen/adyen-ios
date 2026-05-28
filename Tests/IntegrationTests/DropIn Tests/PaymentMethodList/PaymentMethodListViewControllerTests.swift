@@ -115,12 +115,13 @@ struct PaymentMethodListViewControllerTests {
         // Allow state to propagate on main queue
         await Task.yield()
 
-        // Then - verify state was set (UI updates are handled internally)
-        #expect(true)
+        // Then - verify section view is added to the UI
+        let sectionViews: [UIView] = sut.view.findAllViews(by: ".sectionView")
+        #expect(sectionViews.count == 1, "Expected 1 section view after loading state")
     }
 
     @Test
-    func stateIdle_shouldStopLoading() async {
+    func stateIdle_shouldHideLoadingOverlay() async {
         // Given
         let (sut, viewModelMock) = makeSUT()
         sut.loadViewIfNeeded()
@@ -135,12 +136,115 @@ struct PaymentMethodListViewControllerTests {
         viewModelMock.setState(.loaded(sections: [section]))
         await Task.yield()
 
+        // First show loading overlay
+        viewModelMock.setState(.loading)
+        await Task.yield()
+
         // When
         viewModelMock.setState(.idle)
         await Task.yield()
 
-        // Then - stopLoading was called (no crash, state is idle)
-        #expect(true) // If we reach here, stopLoading didn't crash
+        // Then - loading overlay should be hidden (alpha = 0)
+        let loadingOverlay: UIView? = sut.view.findView(by: ".loadingOverlay")
+        #expect(loadingOverlay?.alpha == 0, "Loading overlay should be hidden (alpha = 0) in idle state")
+    }
+
+    @Test
+    func stateLoading_shouldShowLoadingOverlay() async {
+        // Given
+        let (sut, viewModelMock) = makeSUT()
+        sut.loadViewIfNeeded()
+
+        // When
+        viewModelMock.setState(.loading)
+        await Task.yield()
+
+        // Then - loading overlay should be visible (alpha = 1)
+        let loadingOverlay: UIView? = sut.view.findView(by: ".loadingOverlay")
+        #expect(loadingOverlay != nil, "Loading overlay should be present")
+        #expect(loadingOverlay?.alpha == 1, "Loading overlay should be visible (alpha = 1) in loading state")
+    }
+
+    @Test
+    func viewDidLoad_shouldApplyThemeBackgroundColor() {
+        // Given
+        let (sut, _) = makeSUT()
+        let expectedBackgroundColor = CheckoutTheme.default.colors.background
+
+        // When
+        sut.loadViewIfNeeded()
+
+        // Then - background color should match theme's background color
+        #expect(sut.view.backgroundColor == expectedBackgroundColor)
+    }
+
+    @Test
+    func viewDidLoad_shouldSetupHeaderView() {
+        // Given
+        let (sut, _) = makeSUT()
+
+        // When
+        sut.loadViewIfNeeded()
+
+        // Then - header view should be in the view hierarchy
+        let headerView: UIView? = sut.view.findView(by: ".headerView")
+        #expect(headerView != nil, "Header view should be present in the view hierarchy")
+    }
+
+    @Test
+    func stateLoaded_shouldPopulatePaymentMethodSections() async {
+        // Given
+        let (sut, viewModelMock) = makeSUT()
+        sut.loadViewIfNeeded()
+
+        let logoURLProvider = LogoURLProvider(environment: Dummy.apiContext.environment)
+        let item1 = PaymentMethodItem(
+            title: "Card",
+            logoURLProvider: logoURLProvider,
+            theme: .init()
+        )
+        let item2 = PaymentMethodItem(
+            title: "iDEAL",
+            logoURLProvider: logoURLProvider,
+            theme: .init()
+        )
+        let section1 = PaymentMethodSection(items: [item1], theme: .init())
+        let section2 = PaymentMethodSection(items: [item2], theme: .init())
+
+        // When
+        viewModelMock.setState(.loaded(sections: [section1, section2]))
+        await Task.yield()
+
+        // Then - section views should be added
+        let sectionViews: [UIView] = sut.view.findAllViews(by: ".sectionView")
+        #expect(sectionViews.count == 2, "Expected 2 section views but found \(sectionViews.count)")
+    }
+
+    @Test
+    func stateLoaded_shouldClearPreviousSectionsBeforeReloading() async {
+        // Given
+        let (sut, viewModelMock) = makeSUT()
+        sut.loadViewIfNeeded()
+
+        let logoURLProvider = LogoURLProvider(environment: Dummy.apiContext.environment)
+        let item = PaymentMethodItem(
+            title: "Card",
+            logoURLProvider: logoURLProvider,
+            theme: .init()
+        )
+        let section = PaymentMethodSection(items: [item], theme: .init())
+
+        // Load initial sections
+        viewModelMock.setState(.loaded(sections: [section, section, section]))
+        await Task.yield()
+
+        // When - reload with fewer sections
+        viewModelMock.setState(.loaded(sections: [section]))
+        await Task.yield()
+
+        // Then - only the new sections should be present
+        let sectionViews: [UIView] = sut.view.findAllViews(by: ".sectionView")
+        #expect(sectionViews.count == 1, "Expected 1 section view after reload but found \(sectionViews.count)")
     }
 
     // MARK: - Helper

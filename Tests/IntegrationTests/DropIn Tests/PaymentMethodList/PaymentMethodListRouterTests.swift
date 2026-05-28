@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenActions
 @testable import AdyenDropIn
 import Testing
@@ -209,5 +209,59 @@ struct PaymentMethodListRouterTests {
         let redirect = RedirectComponent(context: context)
         let viewController = UIViewController()
         return PresentableComponentWrapper(component: redirect, viewController: viewController)
+    }
+
+    private func makeStoredPaymentComponentMock() -> StoredPresentableComponentMock {
+        let paymentMethodMock = PaymentMethodMock(type: .scheme, name: "Stored Card")
+        let viewControllerMock = UIViewController()
+        return StoredPresentableComponentMock(
+            paymentMethod: paymentMethodMock,
+            viewController: viewControllerMock
+        )
+    }
+
+    private func makeInitiablePaymentComponentMock() -> InitiablePresentableComponentMock {
+        let paymentMethodMock = PaymentMethodMock(type: .applePay, name: "Apple Pay")
+        return InitiablePresentableComponentMock(paymentMethod: paymentMethodMock)
+    }
+}
+
+// MARK: - Test Mocks
+
+private class StoredPresentableComponentMock: StoredPaymentComponent {
+    var context: AdyenContext = Dummy.context
+    var paymentMethod: PaymentMethod
+    weak var delegate: PaymentComponentDelegate?
+    var viewController: UIViewController
+    var order: PartialPaymentOrder?
+
+    var type: PaymentComponentType {
+        .stored(self)
+    }
+
+    init(paymentMethod: PaymentMethod, viewController: UIViewController) {
+        self.paymentMethod = paymentMethod
+        self.viewController = viewController
+    }
+}
+
+private class InitiablePresentableComponentMock: PaymentComponent, InitiablePaymentComponent {
+    var context: AdyenContext = Dummy.context
+    var paymentMethod: PaymentMethod
+    weak var delegate: PaymentComponentDelegate?
+    var order: PartialPaymentOrder?
+
+    var type: PaymentComponentType {
+        .initiable(self)
+    }
+
+    init(paymentMethod: PaymentMethod) {
+        self.paymentMethod = paymentMethod
+    }
+
+    func initiatePayment() {}
+
+    func initiatePayment(delegate: PaymentComponentDelegate) {
+        self.delegate = delegate
     }
 }
