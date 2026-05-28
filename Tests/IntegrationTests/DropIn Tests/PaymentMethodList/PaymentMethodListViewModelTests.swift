@@ -45,11 +45,7 @@ struct PaymentMethodListViewModelTests {
         let (sut, _, _) = makeSUT()
 
         // Then
-        if case .idle = sut.state {
-            // Success
-        } else {
-            Issue.record("Expected state to be .idle")
-        }
+        #expect(sut.state == .idle)
     }
 
     @Test
@@ -61,11 +57,7 @@ struct PaymentMethodListViewModelTests {
         sut.didLoad()
 
         // Then
-        if case let .loaded(sections) = sut.state {
-            #expect(sections.isEmpty == false)
-        } else {
-            Issue.record("Expected state to be .loaded")
-        }
+        #expect(sut.state.isLoaded)
     }
 
     // MARK: - Cancel Tests
@@ -126,11 +118,7 @@ struct PaymentMethodListViewModelTests {
         sut.didFail(with: error, from: paymentComponentMock)
 
         // Then
-        if case .idle = sut.state {
-            // Success
-        } else {
-            Issue.record("Expected state to be .idle after failure")
-        }
+        #expect(sut.state == .idle)
     }
 
     @Test
@@ -156,11 +144,7 @@ struct PaymentMethodListViewModelTests {
         sut.didFail(with: ComponentError.cancelled, from: paymentComponentMock)
 
         // Then
-        if case .idle = sut.state {
-            // Success
-        } else {
-            Issue.record("Expected state to be .idle after cancellation")
-        }
+        #expect(sut.state == .idle)
     }
 
     // MARK: - FormattedAmount Tests
@@ -172,6 +156,15 @@ struct PaymentMethodListViewModelTests {
 
         // Then
         #expect(sut.formattedAmount.isEmpty == false)
+    }
+
+    @Test
+    func formattedAmount_givenNilAmount_shouldReturnEmptyString() {
+        // Given
+        let (sut, _, _) = makeSUT(amount: nil)
+
+        // Then
+        #expect(sut.formattedAmount == "")
     }
 
     // MARK: - Subtitle Tests
@@ -193,11 +186,7 @@ struct PaymentMethodListViewModelTests {
         let (sut, _, _) = makeSUT(includeApplePay: false)
 
         // Then
-        if case .hidden = sut.applePayButtonState {
-            // Success
-        } else {
-            Issue.record("Expected applePayButtonState to be .hidden when no Apple Pay available")
-        }
+        #expect(sut.applePayButtonState == .hidden)
     }
 
     @Test
@@ -206,11 +195,7 @@ struct PaymentMethodListViewModelTests {
         let (sut, _, _) = makeSUT(includeApplePay: true)
 
         // Then
-        if case .visible = sut.applePayButtonState {
-            // Success
-        } else {
-            Issue.record("Expected applePayButtonState to be .visible when Apple Pay is available")
-        }
+        #expect(sut.applePayButtonState.isVisible)
     }
 
     // MARK: - Select Payment Method Tests
@@ -240,12 +225,11 @@ struct PaymentMethodListViewModelTests {
         sut.didLoad()
 
         // Then
+        #expect(sut.state.isLoaded)
         if case let .loaded(sections) = sut.state {
             let allItems = sections.flatMap(\.items)
             let hasApplePay = allItems.contains { $0.title.lowercased().contains("apple") }
             #expect(hasApplePay == false, "Apple Pay should be filtered from the main list")
-        } else {
-            Issue.record("Expected state to be .loaded")
         }
     }
 
@@ -265,6 +249,28 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
+    func presentActionComponent_onCancelCallback_shouldTransitionToIdleState() {
+        // Given
+        let (sut, _, routerMock) = makeSUT()
+        let actionComponentMock = makeActionComponentMock()
+        sut.didLoad() // Set state to loaded first
+        #expect(sut.state.isLoaded)
+
+        // Capture the onCancel callback when present is called
+        var capturedOnCancel: (() -> Void)?
+        routerMock.presentActionComponentOnCancelClosure = { _, onCancel in
+            capturedOnCancel = onCancel
+        }
+
+        // When
+        sut.present(actionComponent: actionComponentMock)
+        capturedOnCancel?()
+
+        // Then
+        #expect(sut.state == .idle)
+    }
+
+    @Test
     func didCancelActionComponent_shouldTransitionToIdleState() {
         // Given
         let (sut, _, _) = makeSUT()
@@ -274,23 +280,22 @@ struct PaymentMethodListViewModelTests {
         sut.didCancel(actionComponent: actionComponentMock)
 
         // Then
-        if case .idle = sut.state {
-            // Success
-        } else {
-            Issue.record("Expected state to be .idle after action cancel")
-        }
+        #expect(sut.state == .idle)
     }
 
     // MARK: - Helpers
 
-    private func makeSUT(includeApplePay: Bool = true) -> (
+    private func makeSUT(
+        includeApplePay: Bool = true,
+        amount: Amount? = .init(value: 100, currencyCode: "EUR")
+    ) -> (
         sut: PaymentMethodListViewModel,
         dropInFlowManagerMock: DropInFlowManagingMock,
         routerMock: PaymentMethodListRoutingMock
     ) {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
-            amount: .init(value: 100, currencyCode: "EUR"),
+            amount: amount,
             publicKey: Dummy.publicKey,
             analyticsProvider: AnalyticsProviderMock()
         )
@@ -387,4 +392,39 @@ struct PaymentMethodListViewModelTests {
         publicKey: Dummy.publicKey,
         analyticsProvider: AnalyticsProviderMock()
     )
+}
+
+// MARK: - PaymentMethodListState Test Helpers
+
+extension PaymentMethodListState: Equatable {
+
+    public static func == (lhs: PaymentMethodListState, rhs: PaymentMethodListState) -> Bool {
+        switch (lhs, rhs) {
+        case (.idle, .idle): true
+        case (.loading, .loading): true
+        case (.loaded, .loaded): true
+        default: false
+        }
+    }
+
+    var isLoaded: Bool {
+        if case .loaded = self { return true }
+        return false
+    }
+}
+
+extension PaymentMethodListHeaderViewModel.ApplePayButtonState: Equatable {
+
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.hidden, .hidden): true
+        case (.visible, .visible): true
+        default: false
+        }
+    }
+
+    var isVisible: Bool {
+        if case .visible = self { return true }
+        return false
+    }
 }
