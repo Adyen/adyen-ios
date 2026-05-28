@@ -96,7 +96,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     }()
 
     internal lazy var securityCodeItem: FormCardSecurityCodeItem = {
-        let item = FormCardSecurityCodeItem()
+        let item = FormCardSecurityCodeItem(localizationParameters: localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "securityCodeItem")
         return item
     }()
