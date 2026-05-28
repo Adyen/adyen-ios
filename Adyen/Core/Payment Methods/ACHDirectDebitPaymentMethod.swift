@@ -7,7 +7,7 @@
 import Foundation
 
 /// An ACH Direct Debit payment method.
-public struct ACHDirectDebitPaymentMethod: PaymentMethod, PaymentMethodDisplayable {
+public struct ACHDirectDebitPaymentMethod: PaymentMethod, PaymentMethodDisplayCustomizable {
     
     public let type: PaymentMethodType
 
@@ -32,7 +32,7 @@ public struct ACHDirectDebitPaymentMethod: PaymentMethod, PaymentMethodDisplayab
 }
 
 /// A stored ACH Direct Debit Account
-public struct StoredACHDirectDebitPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayable {
+public struct StoredACHDirectDebitPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayCustomizable {
     
     public let type: PaymentMethodType
 

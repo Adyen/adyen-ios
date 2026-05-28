@@ -5,7 +5,7 @@
 //
 
 /// A stored Cash App Pay account.
-public struct StoredCashAppPayPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayable {
+public struct StoredCashAppPayPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayCustomizable {
     
     public let type: PaymentMethodType
 

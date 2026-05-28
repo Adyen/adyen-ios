@@ -7,7 +7,7 @@
 import Foundation
 
 /// Stored Blik payment.
-public struct StoredBLIKPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayable {
+public struct StoredBLIKPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayCustomizable {
 
     public let type: PaymentMethodType
 

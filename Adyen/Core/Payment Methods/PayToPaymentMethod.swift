@@ -28,7 +28,7 @@ public struct PayToPaymentMethod: PaymentMethod {
 }
 
 /// A stored PayTo payment method.
-public struct StoredPayToPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayable {
+public struct StoredPayToPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayCustomizable {
    
     public let type: PaymentMethodType
     

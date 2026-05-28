@@ -7,7 +7,7 @@
 import Foundation
 
 /// A stored Bancontact account.
-public struct StoredBCMCPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayable {
+public struct StoredBCMCPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayCustomizable {
     
     private var storedCardPaymentMethod: StoredCardPaymentMethod
     

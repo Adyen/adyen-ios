@@ -7,7 +7,7 @@
 import Foundation
 
 /// Any Mealvoucher payment method.
-public struct MealVoucherPaymentMethod: PartialPaymentMethod, PaymentMethodDisplayable {
+public struct MealVoucherPaymentMethod: PartialPaymentMethod, PaymentMethodDisplayCustomizable {
 
     public let type: PaymentMethodType
 

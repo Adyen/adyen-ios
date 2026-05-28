@@ -8,7 +8,7 @@ import Adyen
 @_spi(AdyenInternal) import protocol Adyen.PaymentComponentBuilder
 
 /// A payment method wrapper, with custom `DisplayInformation`.
-internal struct PartialConfirmationPaymentMethod: PaymentMethod, PaymentMethodDisplayable {
+internal struct PartialConfirmationPaymentMethod: PaymentMethod, PaymentMethodDisplayCustomizable {
     
     internal var type: PaymentMethodType {
         paymentMethod.type

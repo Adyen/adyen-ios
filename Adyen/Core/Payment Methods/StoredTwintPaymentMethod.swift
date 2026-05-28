@@ -7,7 +7,7 @@
 import Foundation
 
 /// A stored TwintPaymentMethod.
-public struct StoredTwintPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayable {
+public struct StoredTwintPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayCustomizable {
 
     public let type: PaymentMethodType
 

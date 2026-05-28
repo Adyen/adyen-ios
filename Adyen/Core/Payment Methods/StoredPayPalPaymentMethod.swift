@@ -7,7 +7,7 @@
 import Foundation
 
 /// A stored PayPal account.
-public struct StoredPayPalPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayable {
+public struct StoredPayPalPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayCustomizable {
     
     public let type: PaymentMethodType
 

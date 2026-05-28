@@ -7,7 +7,7 @@
 import Foundation
 
 /// PayByBank US payment method.
-public struct PayByBankUSPaymentMethod: PaymentMethod, PaymentMethodDisplayable {
+public struct PayByBankUSPaymentMethod: PaymentMethod, PaymentMethodDisplayCustomizable {
     public let type: PaymentMethodType
     
     public var name: String

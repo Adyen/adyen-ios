@@ -7,7 +7,7 @@
 import Foundation
 
 /// A card payment method.
-public struct CardPaymentMethod: AnyCardPaymentMethod, PaymentMethodDisplayable {
+public struct CardPaymentMethod: AnyCardPaymentMethod, PaymentMethodDisplayCustomizable {
     
     public let type: PaymentMethodType
     
@@ -54,7 +54,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod, PaymentMethodDisplayable 
 }
 
 /// A stored card.
-public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod, PaymentMethodDisplayable {
+public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod, PaymentMethodDisplayCustomizable {
     
     public let type: PaymentMethodType
     

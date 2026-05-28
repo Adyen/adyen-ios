@@ -7,7 +7,7 @@
 import Foundation
 
 /// Any Gift Card payment method.
-public struct GiftCardPaymentMethod: PartialPaymentMethod, PaymentMethodDisplayable {
+public struct GiftCardPaymentMethod: PartialPaymentMethod, PaymentMethodDisplayCustomizable {
 
     public let type: PaymentMethodType
 
