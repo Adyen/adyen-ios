@@ -116,7 +116,7 @@ struct PaymentMethodListViewControllerTests {
         await Task.yield()
 
         // Then - verify section view is added to the UI
-        let sectionViews: [UIView] = sut.view.findAllViews(with: "paymentMethodList.sectionView")
+        let sectionViews: [UIView] = sut.view.findAllViews(by: ".sectionView")
         #expect(sectionViews.count == 1, "Expected 1 section view after loading state")
     }
 
@@ -145,7 +145,7 @@ struct PaymentMethodListViewControllerTests {
         await Task.yield()
 
         // Then - loading overlay should be hidden (alpha = 0)
-        let loadingOverlay: UIView? = sut.view.findView(with: "paymentMethodList.loadingOverlay")
+        let loadingOverlay: UIView? = sut.view.findView(by: ".loadingOverlay")
         #expect(loadingOverlay?.alpha == 0, "Loading overlay should be hidden (alpha = 0) in idle state")
     }
 
@@ -160,7 +160,7 @@ struct PaymentMethodListViewControllerTests {
         await Task.yield()
 
         // Then - loading overlay should be visible (alpha = 1)
-        let loadingOverlay: UIView? = sut.view.findView(with: "paymentMethodList.loadingOverlay")
+        let loadingOverlay: UIView? = sut.view.findView(by: ".loadingOverlay")
         #expect(loadingOverlay != nil, "Loading overlay should be present")
         #expect(loadingOverlay?.alpha == 1, "Loading overlay should be visible (alpha = 1) in loading state")
     }
@@ -187,7 +187,7 @@ struct PaymentMethodListViewControllerTests {
         sut.loadViewIfNeeded()
 
         // Then - header view should be in the view hierarchy
-        let headerView: UIView? = sut.view.findView(with: "paymentMethodList.headerView")
+        let headerView: UIView? = sut.view.findView(by: ".headerView")
         #expect(headerView != nil, "Header view should be present in the view hierarchy")
     }
 
@@ -216,7 +216,7 @@ struct PaymentMethodListViewControllerTests {
         await Task.yield()
 
         // Then - section views should be added
-        let sectionViews: [UIView] = sut.view.findAllViews(with: "paymentMethodList.sectionView")
+        let sectionViews: [UIView] = sut.view.findAllViews(by: ".sectionView")
         #expect(sectionViews.count == 2, "Expected 2 section views but found \(sectionViews.count)")
     }
 
@@ -243,7 +243,7 @@ struct PaymentMethodListViewControllerTests {
         await Task.yield()
 
         // Then - only the new sections should be present
-        let sectionViews: [UIView] = sut.view.findAllViews(with: "paymentMethodList.sectionView")
+        let sectionViews: [UIView] = sut.view.findAllViews(by: ".sectionView")
         #expect(sectionViews.count == 1, "Expected 1 section view after reload but found \(sectionViews.count)")
     }
 

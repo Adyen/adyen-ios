@@ -126,6 +126,21 @@ public struct CheckoutConfiguration {
         configurations[.action(actionType)] as? T
     }
 
+    /// Resolves runtime localization parameters from the checkout-wide provider only.
+    ///
+    /// Checkout flows do not define component-level localization-provider precedence.
+    /// Merchants configure provider-based overrides exclusively through
+    /// `CheckoutConfiguration.localizationProvider(...)`.
+    internal func resolvedCheckoutLocalizationParameters(
+        mergingExistingParameters base: LocalizationParameters? = nil
+    ) -> LocalizationParameters? {
+        guard let localizationProvider else {
+            return base
+        }
+
+        return (base ?? LocalizationParameters()).withProvider(localizationProvider)
+    }
+
     // TODO: Robert: Make public to private.
     // This public is not needed, but it currently supports providing
     // analyticsAPIContext in the Integration Examples.
@@ -162,6 +177,10 @@ extension CheckoutConfiguration {
     /// The provider is called for each string the SDK renders. Return a non-`nil` value
     /// to override the default, or return `nil` to let the SDK's standard localization
     /// fallback chain handle the key (app bundle → SDK bundle → English).
+    ///
+    /// In checkout flows, this is the only merchant-facing provider override. Checkout
+    /// resolves it into internal runtime localization parameters before constructing
+    /// payment and action components.
     ///
     /// - Note: To add support for a *completely new language*, place a `.strings` or
     ///   `.xcstrings` file with `adyen.*` keys in your app bundle instead of using this provider.

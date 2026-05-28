@@ -281,6 +281,18 @@ struct StoredCardInputViewModelTests {
         #expect(sut.submitButtonTitle == expectedSubmitButtonTitle)
     }
 
+    @Test
+    func securityCodeItem_usesProviderBackedLocalizationParameters() {
+        // Given
+        let localizationParameters = LocalizationParameters().withProvider(
+            StoredCardLocalizationProviderMock(values: [.cardSecurityCode: "Stored security code"])
+        )
+        let sut = makeSUT(localizationParameters: localizationParameters)
+
+        // Then
+        #expect(sut.securityCodeItem.title == "Stored security code")
+    }
+
     // MARK: - Helpers
 
     private func makeSUT(
@@ -315,6 +327,19 @@ struct StoredCardInputViewModelTests {
             localizationParameters: localizationParameters,
             cardBrand: brand
         )
+    }
+}
+
+private final class StoredCardLocalizationProviderMock: CheckoutLocalizationProvider {
+
+    private let values: [CheckoutLocalizationKey: String]
+
+    init(values: [CheckoutLocalizationKey: String]) {
+        self.values = values
+    }
+
+    func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String? {
+        values[key]
     }
 }
 

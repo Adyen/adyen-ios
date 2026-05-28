@@ -66,7 +66,7 @@ internal class PaymentMethodListViewController: UIViewController {
         view.backgroundColor = theme.colors.background.withAlphaComponent(0.6)
         view.alpha = 0
         view.isUserInteractionEnabled = true
-        view.accessibilityIdentifier = "paymentMethodList.loadingOverlay"
+        view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "loadingOverlay")
         
         let activityIndicator = UIActivityIndicatorView(style: .medium)
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false

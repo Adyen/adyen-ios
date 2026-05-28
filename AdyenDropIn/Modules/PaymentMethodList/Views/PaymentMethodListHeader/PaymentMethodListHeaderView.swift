@@ -91,7 +91,7 @@ internal final class PaymentMethodListHeaderView: UIView {
     
     private func setupView() {
         layoutMargins = .zero
-        accessibilityIdentifier = "paymentMethodList.headerView"
+        accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "headerView")
 
         addSubview(stackView)
         
