@@ -7,6 +7,7 @@
 #if canImport(AdyenCardScanner)
     @testable import AdyenCard
     @testable import AdyenCardScanner
+    import UIKit
 
     internal class CardScannerProviderSpy: CardScannerProviding {
         private var completion: ((Result<AdyenCardScanner.CardScanDetails, Error>) -> Void)?

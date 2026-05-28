@@ -8,6 +8,7 @@
 @_spi(AdyenInternal) @testable import AdyenCheckout
 @testable import AdyenEncryption
 @testable import AdyenNetworking
+import Foundation
 import Testing
 
 struct AdyenContextTests {

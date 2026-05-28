@@ -6,6 +6,7 @@
 
 import Adyen
 @testable import AdyenNetworking
+import Foundation
 
 internal typealias MockedResult = Result<Response, Error>
 

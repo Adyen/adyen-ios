@@ -6,7 +6,7 @@
 
 @_spi(AdyenInternal) @testable import AdyenActions
 import XCTest
-@_spi(AdyenInternal) import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 
 extension AuthenticationComponentTests {
     func testParsingTokenWithFeaturesInConfiguration() throws {

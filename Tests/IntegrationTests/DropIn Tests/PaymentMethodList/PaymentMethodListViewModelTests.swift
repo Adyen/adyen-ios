@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenActions
 @testable import AdyenDropIn
+@testable @_spi(AdyenInternal) import AdyenCard
 @testable import AdyenEncryption
 @_spi(AdyenInternal) @testable import AdyenUI
 import Combine

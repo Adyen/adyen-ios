@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenActions
 import Foundation
+import UIKit
 
 internal final class VoucherViewDelegateMock: VoucherViewDelegate {
     

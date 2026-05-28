@@ -7,6 +7,7 @@
 @testable import Adyen
 @testable import AdyenUI
 import Testing
+import UIKit
 
 @MainActor
 struct KeyboardScrollViewHandlerTests {
