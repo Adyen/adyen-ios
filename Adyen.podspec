@@ -69,7 +69,6 @@ Pod::Spec.new do |s|
     plugin.dependency 'Adyen/Encryption'
     plugin.dependency 'Adyen/CoreUI'
     plugin.source_files = 'AdyenCard/**/*.swift'
-    plugin.exclude_files = 'AdyenCard/**/BundleSPMExtension.swift'
     plugin.resource_bundles = {
         'AdyenCard' => [
             'AdyenCard/Assets/**/*.xcassets'
@@ -99,7 +98,6 @@ Pod::Spec.new do |s|
     plugin.dependency 'Adyen/CoreUI'
     plugin.dependency 'Adyen3DS2', '2.4.4'
     plugin.source_files = 'AdyenActions/**/*.swift'
-    plugin.exclude_files = 'AdyenActions/**/BundleSPMExtension.swift'
     plugin.resource_bundles = {
         'AdyenActions' => [
             'AdyenActions/Assets/**/*.xcassets'
@@ -127,7 +125,6 @@ Pod::Spec.new do |s|
 
   s.subspec 'Core' do |plugin|
     plugin.source_files = 'Adyen/**/*.swift'
-    plugin.exclude_files = 'Adyen/**/BundleSPMExtension.swift'
     plugin.dependency 'AdyenNetworking', '3.0.1'
     plugin.resource_bundles = {
         'Adyen' => [
