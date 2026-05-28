@@ -134,6 +134,14 @@ public final class CashAppPayComponent: PaymentComponent,
         self.configuration = configuration
     }
 
+    public func submit() {
+        didSelectSubmitButton()
+    }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
+
     private func didSelectSubmitButton() {
         guard validate() else { return }
     
@@ -292,14 +300,3 @@ extension CashAppPayComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)
 extension CashAppPayComponent: ViewControllerDelegate {}
-
-extension CashAppPayComponent {
-
-    public func submit() {
-        didSelectSubmitButton()
-    }
-
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
-}

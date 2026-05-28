@@ -51,6 +51,14 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
         self.context = context
         self.configuration = configuration
     }
+
+    public func submit() {
+        didSelectSubmitButton()
+    }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
     
     public func stopLoading() {
         button.showsActivityIndicator = false
@@ -143,14 +151,3 @@ extension BLIKComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)
 extension BLIKComponent: ViewControllerDelegate {}
-
-extension BLIKComponent {
-
-    public func submit() {
-        didSelectSubmitButton()
-    }
-
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
-}

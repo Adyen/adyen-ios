@@ -124,6 +124,14 @@ public final class OnlineBankingComponent: PaymentComponent,
         self.configuration = configuration
     }
 
+    public func submit() {
+        didSelectContinueButton()
+    }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
+
     public func stopLoading() {
         continueButton.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
@@ -169,14 +177,3 @@ public final class OnlineBankingComponent: PaymentComponent,
 
 @_spi(AdyenInternal)
 extension OnlineBankingComponent: AdyenObserver {}
-
-extension OnlineBankingComponent {
-
-    public func submit() {
-        didSelectContinueButton()
-    }
-
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
-}

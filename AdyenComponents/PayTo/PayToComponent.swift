@@ -104,6 +104,14 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
         self.configuration = configuration
     }
 
+    public func submit() {
+        didSelectContinueButton()
+    }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
+
     /// The payment flow selection title label item.
     internal lazy var flowSelectionTitleItem: FormLabelItem = {
         itemsProvider.createFlowSelectionTitleItem()
@@ -214,17 +222,6 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
     public func stopLoading() {
         continueButtonItem.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
-    }
-}
-
-extension PayToComponent {
-
-    public func submit() {
-        didSelectContinueButton()
-    }
-
-    public func validate() -> Bool {
-        formViewController.validate()
     }
 }
 

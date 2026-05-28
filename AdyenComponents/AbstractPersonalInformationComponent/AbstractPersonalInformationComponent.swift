@@ -75,6 +75,14 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         self.configuration = configuration
     }
 
+    public func submit() {
+        didSelectSubmitButton()
+    }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
+
     // MARK: - Private
 
     private func build(_ formViewController: FormViewController) {
@@ -300,16 +308,5 @@ extension AbstractPersonalInformationComponent: ViewControllerDelegate {
     public func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
         sendDidLoadEvent()
-    }
-}
-
-extension AbstractPersonalInformationComponent {
-
-    public func submit() {
-        didSelectSubmitButton()
-    }
-
-    public func validate() -> Bool {
-        formViewController.validate()
     }
 }

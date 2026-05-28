@@ -135,6 +135,14 @@ public class CardComponent: PaymentComponent,
         self.supportedCardTypes = configuration.supportedCardBrands ?? paymentMethod.brands
     }
 
+    public func submit() {
+        didSelectSubmitButton()
+    }
+
+    public func validate() -> Bool {
+        cardViewController.validate()
+    }
+
     // MARK: - Presentable Component Protocol
 
     public var viewController: UIViewController {
@@ -320,17 +328,6 @@ private extension CardConfiguration {
             handleShowSearch: nil,
             completionHandler: completionHandler
         )
-    }
-}
-
-extension CardComponent {
-
-    public func submit() {
-        didSelectSubmitButton()
-    }
-
-    public func validate() -> Bool {
-        cardViewController.validate()
     }
 }
 

@@ -51,6 +51,14 @@ public final class BoletoComponent: PaymentComponent,
         socialSecurityNumberItem.isHidden.wrappedValue = false
     }
 
+    public func submit() {
+        formComponent.submit()
+    }
+    
+    public func validate() -> Bool {
+        formComponent.validate()
+    }
+
     // MARK: - Private
     
     private lazy var socialSecurityNumberItem: FormTextInputItem = {
@@ -175,16 +183,6 @@ public final class BoletoComponent: PaymentComponent,
     
     public func stopLoading() {
         formComponent.stopLoading()
-    }
-}
-
-extension BoletoComponent {
-    public func submit() {
-        formComponent.submit()
-    }
-    
-    public func validate() -> Bool {
-        formComponent.validate()
     }
 }
 

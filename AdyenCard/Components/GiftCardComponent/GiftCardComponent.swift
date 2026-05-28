@@ -144,6 +144,14 @@ public final class GiftCardComponent: PaymentComponent,
         self.amount = amount
     }
 
+    public func submit() {
+        didSelectSubmitButton()
+    }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
+
     // MARK: - Presentable Component Protocol
 
     public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
@@ -476,14 +484,3 @@ extension GiftCardComponent {
 }
 
 extension GiftCardComponent: PartialPaymentComponent {}
-
-extension GiftCardComponent {
-
-    public func submit() {
-        didSelectSubmitButton()
-    }
-
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
-}

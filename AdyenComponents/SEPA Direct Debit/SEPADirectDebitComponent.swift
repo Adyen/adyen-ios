@@ -49,6 +49,14 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
         self.context = context
         self.configuration = configuration
     }
+
+    public func submit() {
+        didSelectSubmitButton()
+    }
+
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
     
     private let sepaDirectDebitPaymentMethod: SEPADirectDebitPaymentMethod
     
@@ -157,14 +165,3 @@ extension SEPADirectDebitComponent: TrackableComponent {}
 
 @_spi(AdyenInternal)
 extension SEPADirectDebitComponent: ViewControllerDelegate {}
-
-extension SEPADirectDebitComponent {
-
-    public func submit() {
-        didSelectSubmitButton()
-    }
-
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
-}

@@ -98,6 +98,14 @@ public final class UPIComponent: PaymentComponent,
         
         selectedUPIFlow = upiAppsList.isEmpty ? .upiCollect : .upiIntent
     }
+
+    public func submit() {
+        didSelectContinueButton()
+    }
+    
+    public func validate() -> Bool {
+        formViewController.validate()
+    }
     
     // MARK: - LoadingComponent
     
@@ -407,14 +415,3 @@ private extension UPIComponent {
 
 @_spi(AdyenInternal)
 extension UPIComponent: AdyenObserver {}
-
-extension UPIComponent {
-    
-    public func submit() {
-        didSelectContinueButton()
-    }
-    
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
-}
