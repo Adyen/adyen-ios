@@ -218,7 +218,7 @@ let component = try checkout.createPaymentComponent(for: .scheme)
 - component styling moves from per-component form styling to checkout-wide `CheckoutTheme`
 
 ## 5.5.0
-- `telephoneNumber` property of `PrefilledShopperInformation` has been deprecated. Use to `phoneNumber` property if needed.
+- `telephoneNumber` property of `PrefilledShopperInformation` has been deprecated. Use the `phoneNumber` property if needed.
 
 
 ## 5.3.0

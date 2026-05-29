@@ -1,28 +1,28 @@
 # Adyen iOS v6
 
-This guide covers the new v6 checkout entry points and the shared concepts used by all payment method docs.
+This guide covers the v6 checkout entry points and the shared concepts used by all payment method docs.
 
 For card-specific configuration and examples, see [card.md](card.md). For migration notes, see [../../MIGRATION.md](../../MIGRATION.md).
 
-## What changed in v6
+## Overview
 
 The public integration surface is centered around four concepts:
 
-- `Checkout.setup(...)` is the new entry point.
+- `Checkout.setup(...)` is the entry point for checkout flows.
 - `CheckoutConfiguration` is the shared configuration container.
-- Flow callbacks are configured with closures instead of delegates.
-- Payment components are created from `SessionCheckout` or `AdvancedCheckout` instead of being initialized directly.
+- Flow callbacks are configured with closures.
+- Payment components are created from `SessionCheckout` or `AdvancedCheckout`.
 
 ## Installation
 
-Import `AdyenCheckout` in addition to the modules you already use for payment methods and actions:
+Import `AdyenCheckout` together with the modules used by your flow:
 
 ```swift
 import Adyen
 import AdyenCheckout
 ```
 
-`AdyenCheckout` sits on top of the existing modules and gives you the new setup APIs for session, advanced, and action-only flows.
+`AdyenCheckout` provides the setup APIs for session, advanced, and action-only flows.
 
 ## CheckoutConfiguration
 
@@ -239,8 +239,7 @@ If checkout redirects the shopper out of your app, forward the return URL to `Re
 
 ```swift
 func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-    RedirectComponent.applicationDidOpen(from: url)
-    return true
+    return RedirectComponent.applicationDidOpen(from: url)
 }
 ```
 
