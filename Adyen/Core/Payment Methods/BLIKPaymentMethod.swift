@@ -7,7 +7,7 @@
 import Foundation
 
 /// A BLIK payment method.
-public struct BLIKPaymentMethod: PaymentMethod, PaymentMethodDisplayCustomizable {
+public struct BLIKPaymentMethod: PaymentMethod, PaymentMethodDisplayOverridable {
     
     public let type: PaymentMethodType
 
@@ -18,7 +18,7 @@ public struct BLIKPaymentMethod: PaymentMethod, PaymentMethodDisplayCustomizable
         builder.build(paymentMethod: self)
     }
     
-    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue)
     }
 

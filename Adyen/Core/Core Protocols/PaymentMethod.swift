@@ -40,18 +40,18 @@ public protocol PartialPaymentMethod: PaymentMethod {}
 // MARK: - Display Information
 
 /// Internal protocol for payment methods that provide custom display information.
-package protocol PaymentMethodDisplayCustomizable {
-    func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation
+package protocol PaymentMethodDisplayOverridable {
+    func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation
 }
 
 package extension PaymentMethod {
     
     /// Returns the display information for this payment method.
-    /// If the payment method conforms to `PaymentMethodDisplayCustomizable`, its custom implementation is used.
+    /// If the payment method conforms to `PaymentMethodDisplayOverridable`, its custom implementation is used.
     /// Otherwise, returns the default display information based on name and type.
     func displayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        if let displayable = self as? PaymentMethodDisplayCustomizable {
-            return displayable.customizedDisplayInformation(using: parameters)
+        if let displayable = self as? PaymentMethodDisplayOverridable {
+            return displayable.overriddenDisplayInformation(using: parameters)
         }
         return DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
     }

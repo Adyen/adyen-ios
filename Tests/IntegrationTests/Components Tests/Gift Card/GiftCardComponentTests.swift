@@ -585,7 +585,7 @@ class GiftCardComponentTests: XCTestCase {
 
         XCTAssertEqual(paymentMethod.type, giftCard.type)
 
-        let displayInformation = paymentMethod.customizedDisplayInformation(using: nil)
+        let displayInformation = paymentMethod.overriddenDisplayInformation(using: nil)
 
         XCTAssertEqual(displayInformation.title, "•••• 1234")
         XCTAssertEqual(displayInformation.logoName, giftCard.brand)

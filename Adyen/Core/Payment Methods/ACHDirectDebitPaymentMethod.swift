@@ -7,7 +7,7 @@
 import Foundation
 
 /// An ACH Direct Debit payment method.
-public struct ACHDirectDebitPaymentMethod: PaymentMethod, PaymentMethodDisplayCustomizable {
+public struct ACHDirectDebitPaymentMethod: PaymentMethod, PaymentMethodDisplayOverridable {
     
     public let type: PaymentMethodType
 
@@ -18,7 +18,7 @@ public struct ACHDirectDebitPaymentMethod: PaymentMethod, PaymentMethodDisplayCu
         builder.build(paymentMethod: self)
     }
     
-    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue)
     }
 
@@ -32,7 +32,7 @@ public struct ACHDirectDebitPaymentMethod: PaymentMethod, PaymentMethodDisplayCu
 }
 
 /// A stored ACH Direct Debit Account
-public struct StoredACHDirectDebitPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayCustomizable {
+public struct StoredACHDirectDebitPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayOverridable {
     
     public let type: PaymentMethodType
 
@@ -47,7 +47,7 @@ public struct StoredACHDirectDebitPaymentMethod: StoredPaymentMethod, PaymentMet
         builder.build(paymentMethod: self)
     }
     
-    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let bankAccountLastFour = String(bankAccountNumber.suffix(4))
         let lastFourSeparated = bankAccountLastFour.map { String($0) }.joined(separator: ", ")
         let accessibilityLabel = [

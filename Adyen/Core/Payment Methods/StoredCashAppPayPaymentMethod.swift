@@ -5,7 +5,7 @@
 //
 
 /// A stored Cash App Pay account.
-public struct StoredCashAppPayPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayCustomizable {
+public struct StoredCashAppPayPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayOverridable {
     
     public let type: PaymentMethodType
 
@@ -23,7 +23,7 @@ public struct StoredCashAppPayPaymentMethod: StoredPaymentMethod, PaymentMethodD
         builder.build(paymentMethod: self)
     }
     
-    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let accessibilityLabel = [
             name,
             "\(localizedString(.cashAppPayCashtag, parameters)): \(cashtag)"

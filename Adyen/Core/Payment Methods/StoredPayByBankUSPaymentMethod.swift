@@ -7,7 +7,7 @@
 import Foundation
 
 /// Stored PayByBank US payment method.
-public struct StoredPayByBankUSPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayCustomizable {
+public struct StoredPayByBankUSPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayOverridable {
 
     public let type: PaymentMethodType
 
@@ -24,7 +24,7 @@ public struct StoredPayByBankUSPaymentMethod: StoredPaymentMethod, PaymentMethod
         builder.build(paymentMethod: self)
     }
     
-    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let title: String
         let subtitle: String?
         

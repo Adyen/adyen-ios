@@ -7,7 +7,7 @@
 import Foundation
 
 /// A stored TwintPaymentMethod.
-public struct StoredTwintPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayCustomizable {
+public struct StoredTwintPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayOverridable {
 
     public let type: PaymentMethodType
 
@@ -22,7 +22,7 @@ public struct StoredTwintPaymentMethod: StoredPaymentMethod, PaymentMethodDispla
         builder.build(paymentMethod: self)
     }
 
-    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(
             title: name,
             subtitle: nil,

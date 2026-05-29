@@ -7,7 +7,7 @@
 import Foundation
 
 /// A stored Bancontact account.
-public struct StoredBCMCPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayCustomizable {
+public struct StoredBCMCPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayOverridable {
     
     private var storedCardPaymentMethod: StoredCardPaymentMethod
     
@@ -21,7 +21,7 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod, PaymentMethodDisplay
         storedCardPaymentMethod.identifier
     }
 
-    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         storedCardPaymentMethod.displayInformation(using: parameters)
     }
     

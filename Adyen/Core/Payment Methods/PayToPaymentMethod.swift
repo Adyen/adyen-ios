@@ -28,7 +28,7 @@ public struct PayToPaymentMethod: PaymentMethod {
 }
 
 /// A stored PayTo payment method.
-public struct StoredPayToPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayCustomizable {
+public struct StoredPayToPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayOverridable {
    
     public let type: PaymentMethodType
     
@@ -45,7 +45,7 @@ public struct StoredPayToPaymentMethod: StoredPaymentMethod, PaymentMethodDispla
         builder.build(paymentMethod: self)
     }
     
-    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let accessibilityLabel = [
             name,
             label

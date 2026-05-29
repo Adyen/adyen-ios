@@ -7,7 +7,7 @@
 import Foundation
 
 /// A card payment method.
-public struct CardPaymentMethod: AnyCardPaymentMethod, PaymentMethodDisplayCustomizable {
+public struct CardPaymentMethod: AnyCardPaymentMethod, PaymentMethodDisplayOverridable {
     
     public let type: PaymentMethodType
     
@@ -33,7 +33,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod, PaymentMethodDisplayCusto
         builder.build(paymentMethod: self)
     }
     
-    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: "card")
     }
     
@@ -54,7 +54,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod, PaymentMethodDisplayCusto
 }
 
 /// A stored card.
-public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod, PaymentMethodDisplayCustomizable {
+public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod, PaymentMethodDisplayOverridable {
     
     public let type: PaymentMethodType
     
@@ -68,7 +68,7 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
 
     public var fundingSource: CardFundingSource?
 
-    package func customizedDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let expireDate = expiryMonth + "/" + String(expiryYear.suffix(2))
         let localizedExpiryDate = localizedString(.cardStoredExpires, parameters, expireDate)
         
