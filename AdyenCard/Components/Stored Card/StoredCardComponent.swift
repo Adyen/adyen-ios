@@ -87,10 +87,6 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
 //            )
 //        submit(data: data)
     }
-
-    public func validate() -> Bool {
-        true
-    }
 }
 
 /// :nodoc:

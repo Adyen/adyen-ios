@@ -63,10 +63,6 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
         // TODO: - What should we do in the IssuerListComponent?
     }
 
-    public func validate() -> Bool {
-        true
-    }
-
     private let issuerListPaymentMethod: IssuerListPaymentMethod
 
     // MARK: - Presentable Component Protocol

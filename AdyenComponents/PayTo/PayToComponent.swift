@@ -108,10 +108,6 @@ public final class PayToComponent: PaymentComponent, PresentableComponent, Adyen
         didSelectContinueButton()
     }
 
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
-
     /// The payment flow selection title label item.
     internal lazy var flowSelectionTitleItem: FormLabelItem = {
         itemsProvider.createFlowSelectionTitleItem()
@@ -248,7 +244,7 @@ extension PayToComponent: ViewControllerPresenter {
 private extension PayToComponent {
 
     func didSelectContinueButton() {
-        guard validate() else { return }
+        guard formViewController.validate() else { return }
 
         startLoading()
 

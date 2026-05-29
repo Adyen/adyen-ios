@@ -103,10 +103,6 @@ public final class UPIComponent: PaymentComponent,
         didSelectContinueButton()
     }
     
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
-    
     // MARK: - LoadingComponent
     
     public func stopLoading() {
@@ -306,7 +302,7 @@ extension UPIComponent {
     }
     
     private func didSelectContinueButton() {
-        guard validate() else { return }
+        guard formViewController.validate() else { return }
         
         guard canSubmit() else {
             showError()

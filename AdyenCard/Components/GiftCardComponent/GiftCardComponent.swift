@@ -148,10 +148,6 @@ public final class GiftCardComponent: PaymentComponent,
         didSelectSubmitButton()
     }
 
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
-
     // MARK: - Presentable Component Protocol
 
     public lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
@@ -285,7 +281,7 @@ extension GiftCardComponent {
     
     internal func didSelectSubmitButton() {
         hideError()
-        guard validate() else {
+        guard formViewController.validate() else {
             return
         }
 

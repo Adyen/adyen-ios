@@ -105,10 +105,6 @@ internal final class PreApplePayComponent: PresentableComponent,
     internal func submit() {
         pay()
     }
-
-    internal func validate() -> Bool {
-        true
-    }
 }
 
 extension PreApplePayComponent: PaymentComponentDelegate {

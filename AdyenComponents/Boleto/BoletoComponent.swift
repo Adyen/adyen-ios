@@ -54,10 +54,6 @@ public final class BoletoComponent: PaymentComponent,
     public func submit() {
         formComponent.submit()
     }
-    
-    public func validate() -> Bool {
-        formComponent.validate()
-    }
 
     // MARK: - Private
     

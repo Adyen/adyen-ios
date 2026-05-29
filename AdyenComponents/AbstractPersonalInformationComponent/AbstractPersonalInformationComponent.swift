@@ -79,10 +79,6 @@ open class AbstractPersonalInformationComponent: PaymentComponent, PresentableCo
         didSelectSubmitButton()
     }
 
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
-
     // MARK: - Private
 
     private func build(_ formViewController: FormViewController) {

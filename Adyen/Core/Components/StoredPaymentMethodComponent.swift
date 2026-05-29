@@ -49,10 +49,6 @@ public final class StoredPaymentMethodComponent: StoredPaymentComponent, Localiz
         submit(data: data)
     }
 
-    public func validate() -> Bool {
-        true
-    }
-
     // MARK: - PresentableComponent
 
     public lazy var viewController: UIViewController = {

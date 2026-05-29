@@ -128,10 +128,6 @@ public final class OnlineBankingComponent: PaymentComponent,
         didSelectContinueButton()
     }
 
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
-
     public func stopLoading() {
         continueButton.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
@@ -140,7 +136,7 @@ public final class OnlineBankingComponent: PaymentComponent,
     // MARK: - Private
 
     private func didSelectContinueButton() {
-        guard validate() else { return }
+        guard formViewController.validate() else { return }
 
         let details = OnlineBankingDetails(
             paymentMethod: paymentMethod,

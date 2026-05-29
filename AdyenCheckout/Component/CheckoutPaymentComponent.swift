@@ -71,9 +71,16 @@ public final class CheckoutPaymentComponent {
         viewController != nil
     }
 
+    /// Submits the payment request to initiate the payment process.
+    ///
+    /// This method starts the payment flow in the payment component. It triggers the validation of the form associated
+    /// with the payment component and initiates the loading state.
+    /// Ensure that the loading state is appropriately stopped once the payment process is complete.
+    ///
+    /// - Important:
+    ///    - Ensure that the payment component is properly configured before calling this method.
+    ///    - Handle stopping the loading state after the payment process is completed.
     public func submit() {
-        // TODO: - Build submit logic
-        guard paymentComponent.validate() else { return }
         paymentComponent.submit()
     }
 }

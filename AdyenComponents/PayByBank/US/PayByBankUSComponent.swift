@@ -86,10 +86,6 @@ public final class PayByBankUSComponent: PaymentComponent, PresentableComponent 
     public func submit() {
         submit(data: paymentData)
     }
-
-    public func validate() -> Bool {
-        true
-    }
 }
 
 extension PayByBankUSComponent: TrackableComponent {}

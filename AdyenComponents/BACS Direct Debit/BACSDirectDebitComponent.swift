@@ -107,10 +107,6 @@ public final class BACSDirectDebitComponent: PaymentComponent, PresentableCompon
     public func submit() {
         // TODO: - How to handle submit in BACS?
     }
-
-    public func validate() -> Bool {
-        false
-    }
 }
 
 // MARK: - BACSDirectDebitRouterProtocol

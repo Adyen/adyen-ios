@@ -138,12 +138,8 @@ public final class CashAppPayComponent: PaymentComponent,
         didSelectSubmitButton()
     }
 
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
-
     private func didSelectSubmitButton() {
-        guard validate() else { return }
+        guard formViewController.validate() else { return }
     
         startLoading()
         startCashAppPayFlow()

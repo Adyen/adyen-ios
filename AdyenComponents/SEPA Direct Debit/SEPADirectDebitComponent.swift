@@ -53,10 +53,6 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     public func submit() {
         didSelectSubmitButton()
     }
-
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
     
     private let sepaDirectDebitPaymentMethod: SEPADirectDebitPaymentMethod
     
@@ -96,7 +92,7 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     // MARK: - Private
     
     private func didSelectSubmitButton() {
-        guard validate() else {
+        guard formViewController.validate() else {
             return
         }
         

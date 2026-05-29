@@ -75,10 +75,6 @@ public final class TwintComponent: InitiablePaymentComponent {
     public func submit() {
         submit(data: paymentData)
     }
-
-    public func validate() -> Bool {
-        true
-    }
 }
 
 @_spi(AdyenInternal)

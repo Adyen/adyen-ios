@@ -80,10 +80,6 @@ public final class InstantPaymentComponent: InitiablePaymentComponent {
     public func submit() {
         submit(data: paymentData)
     }
-
-    public func validate() -> Bool {
-        true
-    }
 }
 
 /// Describes a payment details that contains nothing but the payment method type name.

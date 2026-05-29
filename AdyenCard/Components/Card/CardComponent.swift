@@ -139,10 +139,6 @@ public class CardComponent: PaymentComponent,
         didSelectSubmitButton()
     }
 
-    public func validate() -> Bool {
-        cardViewController.validate()
-    }
-
     // MARK: - Presentable Component Protocol
 
     public var viewController: UIViewController {

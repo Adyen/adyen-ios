@@ -55,10 +55,6 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
     public func submit() {
         didSelectSubmitButton()
     }
-
-    public func validate() -> Bool {
-        formViewController.validate()
-    }
     
     public func stopLoading() {
         button.showsActivityIndicator = false
@@ -132,7 +128,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
     // MARK: - Private
 
     private func didSelectSubmitButton() {
-        guard validate() else { return }
+        guard formViewController.validate() else { return }
 
         let details = BLIKDetails(
             paymentMethod: paymentMethod,
