@@ -111,6 +111,28 @@ struct ComponentContainerRouterTests {
         }
     }
 
+    // MARK: - Mocks
+
+    private class ComponentContainerRouterListenerMock: ComponentContainerRouterListener {
+        var didDismissComponentContainerCompletionCallsCount = 0
+        var didDismissComponentContainerCompletionReceivedCompletion: (() -> Void)?
+
+        func didDismissComponentContainer(completion: (() -> Void)?) {
+            didDismissComponentContainerCompletionCallsCount += 1
+            didDismissComponentContainerCompletionReceivedCompletion = completion
+            completion?()
+        }
+    }
+
+    private class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtocol {
+        var componentViewController: UIViewController = .init()
+        var cancelCallsCount = 0
+
+        func cancel() {
+            cancelCallsCount += 1
+        }
+    }
+
     // MARK: - Helpers
 
     private func makeSUT() async -> (
@@ -119,7 +141,6 @@ struct ComponentContainerRouterTests {
         listenerMock: ComponentContainerRouterListenerMock
     ) {
         let viewModelMock = ComponentContainerViewModelProtocolMock()
-        viewModelMock.componentViewController = UIViewController()
 
         let viewControllerSpy = ViewControllerSpy(viewModel: viewModelMock)
         let listenerMock = ComponentContainerRouterListenerMock()

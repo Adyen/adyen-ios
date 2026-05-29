@@ -6,6 +6,9 @@
 
 import Adyen
 import AdyenNetworking
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import Foundation
 import UIKit
 
@@ -82,6 +85,10 @@ internal struct DropInAssembler {
         LocalizationParameters()
     }
 
+    private func resolveCheckoutTheme() -> CheckoutTheme {
+        CheckoutTheme.default
+    }
+
     private var preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
         PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssembler,
@@ -101,6 +108,7 @@ internal struct DropInAssembler {
             localizationParameters: resolveLocalizationProvider(),
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
+            theme: resolveCheckoutTheme(),
             partialPaymentDelegate: partialPaymentDelegate
         )
     }

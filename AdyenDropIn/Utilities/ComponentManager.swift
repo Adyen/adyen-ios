@@ -141,8 +141,7 @@ internal final class ComponentManager: ComponentManaging {
                 title: localizedString(.paymentMethodsPaidMethods, localizationParameters),
                 style: listStyle.sectionHeader
             ),
-            paymentMethods: paymentMethods.paid,
-            footer: ListSectionFooter(title: footerTitle, style: listStyle.partialPaymentSectionFooter)
+            paymentMethods: paymentMethods.paid
         )
     }()
 
@@ -150,14 +149,16 @@ internal final class ComponentManager: ComponentManaging {
         let allowDeleting = configuration.paymentMethodsList.allowDisablingStoredPaymentMethods
             && supportsEditingStoredPaymentMethods
 
+        let storedPaymentMethods = paymentMethods.stored
+            .filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
+
         return PaymentMethodsSection(
             header: ListSectionHeader(
                 title: localizedString(.paymentMethodsStoredMethods, localizationParameters),
                 editingStyle: allowDeleting ? .delete : .none,
                 style: listStyle.sectionHeader
             ),
-            paymentMethods: paymentMethods.stored,
-            footer: nil
+            paymentMethods: storedPaymentMethods
         )
     }()
 
@@ -173,8 +174,7 @@ internal final class ComponentManager: ComponentManaging {
 
         return PaymentMethodsSection(
             header: header,
-            paymentMethods: paymentMethods.regular,
-            footer: nil
+            paymentMethods: paymentMethods.regular
         )
     }()
 }

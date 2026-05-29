@@ -61,7 +61,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         try preSelectedViewController.submitPayment()
         
         // Then - verify presentComponent is called
-        #expect(mockedRouter.presentComponentOnCancelCallsCount == 1)
+        #expect(mockedRouter.presentComponentCallsCount == 1)
         #expect(mockedRouter.presentPaymentMethodListCallsCount == 0)
     }
 
@@ -79,7 +79,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         
         // Then - verify payment method list is presented
         #expect(mockedRouter.presentPaymentMethodListCallsCount == 1)
-        #expect(mockedRouter.presentComponentOnCancelCallsCount == 0)
+        #expect(mockedRouter.presentComponentCallsCount == 0)
     }
 
     // MARK: - Sending event on didLoad
@@ -95,7 +95,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         #expect(analyticsProviderMock.infos.count == 1)
         let infoEvent = try #require(analyticsProviderMock.infos.first)
         #expect(infoEvent.component == "dropin")
-        #expect(infoEvent.type == .rendered)
+        #expect(infoEvent.type == AnalyticsEventInfo.InfoType.rendered)
     }
 
     // MARK: - Cancel Tests
@@ -157,7 +157,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         let componentContainerAssemblerMock = ComponentContainerAssemblerProtocolMock()
         let componentContainerRouterMock = RouterMock()
         componentContainerRouterMock.rootViewController = UIViewController()
-        componentContainerAssemblerMock.resolveComponentContainerRouterForDelegateOnCancelReturnValue = componentContainerRouterMock
+        componentContainerAssemblerMock.resolveComponentContainerRouterForListenerReturnValue = componentContainerRouterMock
 
         let assembler = PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssemblerMock,
@@ -335,8 +335,6 @@ struct PreselectedPaymentMethodIntegrationTests {
         }
     }
 }
-
-// MARK: - Mocks
 
 internal class InitiablePaymentComponentMock: PaymentComponent, InitiablePaymentComponent {
 
