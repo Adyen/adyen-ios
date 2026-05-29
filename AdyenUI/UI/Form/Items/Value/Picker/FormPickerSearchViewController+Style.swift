@@ -8,11 +8,11 @@ import UIKit
 
 extension FormPickerSearchViewController {
     
-    public struct Style: ViewStyle {
-        
-        public var backgroundColor: UIColor = .Adyen.componentBackground
-        public var emptyView: EmptyView.Style = .init()
-        
-        public init() {}
+    package struct Style: ViewStyle {
+
+        package var backgroundColor: UIColor = .Adyen.componentBackground
+        package var emptyView: EmptyView.Style = .init()
+
+        package init() {}
     }
 }

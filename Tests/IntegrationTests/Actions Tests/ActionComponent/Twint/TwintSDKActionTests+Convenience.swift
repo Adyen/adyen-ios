@@ -4,9 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+@_spi(AdyenInternal) @testable import Adyen
+@testable import AdyenActions
 import XCTest
-@testable @_spi(AdyenInternal) import Adyen
-@testable @_spi(AdyenInternal) import AdyenActions
 
 #if canImport(TwintSDK)
     import TwintSDK

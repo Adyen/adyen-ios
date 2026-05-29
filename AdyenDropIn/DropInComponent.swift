@@ -29,7 +29,7 @@ import UIKit
  [Implementation Reference](https://docs.adyen.com/online-payments/ios/drop-in)
  */
 @MainActor
-public final class DropInComponent: NSObject,
+package final class DropInComponent: NSObject,
     AnyDropInComponent,
     ActionHandlingComponent,
     LoadingComponent {
@@ -68,14 +68,13 @@ public final class DropInComponent: NSObject,
     internal var selectedPaymentComponent: PaymentComponent?
 
     /// The payment methods to display.
-    public internal(set) var paymentMethods: PaymentMethods
+    package internal(set) var paymentMethods: PaymentMethods
 
     /// The title text on the first page of drop in component.
-    public let title: String
+    package let title: String
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public var context: AdyenContext
+    package var context: AdyenContext
 
     /// Initializes the drop in component.
     ///
@@ -85,7 +84,7 @@ public final class DropInComponent: NSObject,
     ///   - configuration: The payment method specific configuration.
     ///   - title: Name of the application. To be displayed on a first payment page.
     ///            If no external value provided, the Main Bundle's name would be used.
-    public init(
+    package init(
         paymentMethods: PaymentMethods,
         context: AdyenContext,
         configuration: Configuration = .init(),
@@ -122,13 +121,13 @@ public final class DropInComponent: NSObject,
     // MARK: - Delegates
 
     /// The delegate of the drop in component.
-    public weak var delegate: DropInComponentDelegate?
+    package weak var delegate: DropInComponentDelegate?
 
     /// The partial payment flow delegate.
-    public weak var partialPaymentDelegate: PartialPaymentDelegate?
+    package weak var partialPaymentDelegate: PartialPaymentDelegate?
 
     /// The stored payment methods delegate.
-    public weak var storedPaymentMethodsDelegate: StoredPaymentMethodsDelegate? {
+    package weak var storedPaymentMethodsDelegate: StoredPaymentMethodsDelegate? {
         didSet {
             guard let sessionAsStoredPaymentMethodsDelegate else { return }
 
@@ -139,7 +138,7 @@ public final class DropInComponent: NSObject,
 
     // MARK: - Presentable Component Protocol
 
-    public private(set) lazy var viewController: UIViewController = {
+    package private(set) lazy var viewController: UIViewController = {
         router.rootViewController
     }()
 
@@ -148,7 +147,7 @@ public final class DropInComponent: NSObject,
     /// Handles an action to complete a payment.
     ///
     /// - Parameter action: The action to handle.
-    public func handle(_ action: Action) {
+    package func handle(_ action: Action) {
         dropInFlowManager.handle(action: action)
     }
 
@@ -174,7 +173,7 @@ public final class DropInComponent: NSObject,
     /// - Parameter order: The partial payment order.
     /// - Parameter paymentMethods: The new payment methods.
     /// - Throws: `PartialPaymentError.missingOrderData` in case `order.orderData` is `nil`.
-    public func reload(
+    package func reload(
         with order: PartialPaymentOrder,
         _ paymentMethods: PaymentMethods
     ) throws {
@@ -278,7 +277,7 @@ public final class DropInComponent: NSObject,
         }
     }
 
-    public func stopLoading() {
+    package func stopLoading() {
         paymentInProgress = false
         // TODO: - Handle loading logic in its own module
 //        (rootViewController as? ComponentLoader)?.stopLoading()
@@ -312,25 +311,22 @@ private extension Bundle {
 
 }
 
-@_spi(AdyenInternal)
 extension DropInComponent: AdyenSessionAware {
-    public var isSession: Bool {
+    package var isSession: Bool {
         delegate is AdyenSessionAware
     }
 }
 
-@_spi(AdyenInternal)
 extension DropInComponent: StorePaymentMethodFieldAware {
 
-    public var showStorePaymentMethodField: Bool? {
+    package var showStorePaymentMethodField: Bool? {
         (delegate as? StorePaymentMethodFieldAware)?.showStorePaymentMethodField
     }
 }
 
-@_spi(AdyenInternal)
 extension DropInComponent: InstallmentConfigurationAware {
 
-    public var installmentConfiguration: InstallmentConfiguration? {
+    package var installmentConfiguration: InstallmentConfiguration? {
         (delegate as? InstallmentConfigurationAware)?.installmentConfiguration
     }
 }

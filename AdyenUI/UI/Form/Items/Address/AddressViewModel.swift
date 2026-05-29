@@ -8,8 +8,7 @@ import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import UIKit
 
-@_spi(AdyenInternal)
-public enum AddressField: String, CaseIterable {
+package enum AddressField: String, CaseIterable {
     case street
     case houseNumberOrName
     case apartment
@@ -31,8 +30,7 @@ package enum AddressFormScheme {
     case split(AddressField, AddressField)
 }
 
-@_spi(AdyenInternal)
-public struct AddressViewModel {
+package struct AddressViewModel {
 
     internal var labels: [AddressField: LocalizationKey]
     internal var placeholder: [AddressField: LocalizationKey]

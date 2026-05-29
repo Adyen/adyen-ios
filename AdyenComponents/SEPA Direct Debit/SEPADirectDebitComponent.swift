@@ -15,32 +15,31 @@ import UIKit
 
 /// A component that provides a form for SEPA Direct Debit payments.
 @MainActor
-public final class SEPADirectDebitComponent: PaymentComponent, PresentableComponent, LoadingComponent {
-    
+package final class SEPADirectDebitComponent: PaymentComponent, PresentableComponent, LoadingComponent {
+
     /// Configuration for SEPA Direct Debit Component
-    public typealias Configuration = BasicComponentConfiguration
-    
+    package typealias Configuration = BasicComponentConfiguration
+
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
-    
+    package let context: AdyenContext
+
     /// Component's configuration
-    public var configuration: Configuration
-    
+    package var configuration: Configuration
+
     /// The SEPA Direct Debit payment method.
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         sepaDirectDebitPaymentMethod
     }
     
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
-    
+    package weak var delegate: PaymentComponentDelegate?
+
     /// Initializes the SEPA Direct Debit component.
     ///
     /// - Parameter paymentMethod: The SEPA Direct Debit payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: Configuration for the component.
-    public init(
+    package init(
         paymentMethod: SEPADirectDebitPaymentMethod,
         context: AdyenContext,
         configuration: Configuration = .init()
@@ -54,12 +53,12 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
     
     // MARK: - Presentable Component Protocol
     
-    public lazy var viewController: UIViewController = SecuredViewController(
+    package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
     )
     
-    public func stopLoading() {
+    package func stopLoading() {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
@@ -152,21 +151,19 @@ public final class SEPADirectDebitComponent: PaymentComponent, PresentableCompon
 
 }
 
-@_spi(AdyenInternal)
 extension SEPADirectDebitComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
 extension SEPADirectDebitComponent: ViewControllerDelegate {}
 
 // MARK: - SubmitCustomizable
 
 extension SEPADirectDebitComponent: SubmittableComponent {
 
-    public func submit() {
+    package func submit() {
         didSelectSubmitButton()
     }
 
-    public func validate() -> Bool {
+    package func validate() -> Bool {
         formViewController.validate()
     }
 }

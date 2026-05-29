@@ -14,12 +14,12 @@ import UIKit
 
 /// A component that provides a upi flows for UPI component.
 @MainActor
-public final class UPIComponent: PaymentComponent,
+package final class UPIComponent: PaymentComponent,
     PresentableComponent,
     LoadingComponent {
     
     /// The flow types for UPI component.
-    public enum UPIFlowType: Int {
+    package enum UPIFlowType: Int {
 
         /// Transaction handled through UPI-enabled apps.
         case upiIntent = 0
@@ -51,43 +51,42 @@ public final class UPIComponent: PaymentComponent,
     }
     
     /// Configuration for UPI Component.
-    public typealias Configuration = BasicComponentConfiguration
-    
+    package typealias Configuration = BasicComponentConfiguration
+
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public var context: AdyenContext
-    
+    package var context: AdyenContext
+
     /// The payment method object for this component.
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         upiPaymentMethod
     }
     
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
-    
+    package weak var delegate: PaymentComponentDelegate?
+
     /// The view controller for the component.
-    public lazy var viewController: UIViewController = SecuredViewController(
+    package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
     )
     
     /// Component's configuration
-    public var configuration: Configuration
-    
+    package var configuration: Configuration
+
     private let upiPaymentMethod: UPIPaymentMethod
     
     internal private(set) var currentSelectedItemIdentifier: String?
     
     /// Represents the selected UPI (Unified Payments Interface) flow for the payment component.
     /// Determines the specific UPI transaction process to follow.
-    @AdyenObservable(.upiIntent) public private(set) var selectedUPIFlow: UPIFlowType
-    
+    @AdyenObservable(.upiIntent) package private(set) var selectedUPIFlow: UPIFlowType
+
     /// Initializes the UPI  component.
     ///
     /// - Parameter paymentMethod: The UPI payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(
+    package init(
         paymentMethod: UPIPaymentMethod,
         context: AdyenContext,
         configuration: Configuration = .init()
@@ -101,7 +100,7 @@ public final class UPIComponent: PaymentComponent,
     
     // MARK: - LoadingComponent
     
-    public func stopLoading() {
+    package func stopLoading() {
         continueButton.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
@@ -405,18 +404,17 @@ private extension UPIComponent {
     }
 }
 
-@_spi(AdyenInternal)
 extension UPIComponent: AdyenObserver {}
 
 // MARK: - SubmitCustomizable
 
 extension UPIComponent: SubmittableComponent {
     
-    public func submit() {
+    package func submit() {
         didSelectContinueButton()
     }
     
-    public func validate() -> Bool {
+    package func validate() -> Bool {
         formViewController.validate()
     }
 }

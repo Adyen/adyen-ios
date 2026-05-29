@@ -14,19 +14,19 @@ internal protocol APIRequest: Request where ErrorResponseType == APIError {}
 internal struct APIError: ErrorResponse, LocalizedError {
     
     /// The status.
-    public let status: Int?
-    
+    internal let status: Int?
+
     /// The error code.
-    public let errorCode: String
-    
+    internal let errorCode: String
+
     /// The error message.
-    public let errorMessage: String
-    
+    internal let errorMessage: String
+
     /// The error type.
-    public let type: APIErrorType
-    
+    internal let type: APIErrorType
+
     /// The error human readable description.
-    public var errorDescription: String? {
+    internal var errorDescription: String? {
         errorMessage
     }
 

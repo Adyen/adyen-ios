@@ -5,9 +5,9 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenCard
-@_spi(AdyenInternal) @testable import AdyenCheckout
-@_spi(AdyenInternal) @testable import AdyenComponents
+@testable import AdyenCard
+@testable import AdyenCheckout
+@testable import AdyenComponents
 @_spi(AdyenInternal) @testable import AdyenUI
 import PassKit
 import XCTest

@@ -8,9 +8,9 @@ import Foundation
 
 package struct UnknownError: Error, LocalizedError {
     
-    public var errorDescription: String?
-    
-    public init(errorDescription: String? = nil) {
+    package var errorDescription: String?
+
+    package init(errorDescription: String? = nil) {
         self.errorDescription = errorDescription
     }
 }

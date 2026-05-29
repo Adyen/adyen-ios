@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable @_spi(AdyenInternal) import Adyen
-@_spi(AdyenInternal) @testable import AdyenCheckout
+@testable import Adyen
+@testable import AdyenCheckout
 @testable import AdyenEncryption
 @testable import AdyenNetworking
 import Testing
