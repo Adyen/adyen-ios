@@ -7,8 +7,8 @@
 import Foundation
 
 #if canImport(AdyenAuthentication)
-    @_spi(AdyenInternal) @testable import Adyen
-    @_spi(AdyenInternal) @testable import AdyenActions
+    @testable import Adyen
+    @testable import AdyenActions
     import AdyenAuthentication
     import Foundation
     import UIKit

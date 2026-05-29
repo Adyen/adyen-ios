@@ -102,16 +102,16 @@ extension UIView {
     /// Inset distances for views that can be nil.
     struct EdgeInsets {
 
-        public var top: CGFloat?
+        internal var top: CGFloat?
 
-        public var left: CGFloat?
+        internal var left: CGFloat?
 
-        public var bottom: CGFloat?
+        internal var bottom: CGFloat?
 
-        public var right: CGFloat?
-        
+        internal var right: CGFloat?
+
         /// Creates insets with 0 on all 4 values.
-        public static var zero: EdgeInsets {
+        internal static var zero: EdgeInsets {
             .init(top: 0, left: 0, bottom: 0, right: 0)
         }
         
@@ -122,7 +122,7 @@ extension UIView {
             right = edgeInsets.right
         }
         
-        public init(top: CGFloat? = nil, left: CGFloat? = nil, bottom: CGFloat? = nil, right: CGFloat? = nil) {
+        internal init(top: CGFloat? = nil, left: CGFloat? = nil, bottom: CGFloat? = nil, right: CGFloat? = nil) {
             self.top = top
             self.left = left
             self.bottom = bottom

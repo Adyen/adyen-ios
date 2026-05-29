@@ -5,7 +5,7 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import enum Adyen.NavigationBarType
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import Foundation
 import LocalAuthentication
 import UIKit

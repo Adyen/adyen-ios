@@ -14,44 +14,43 @@ import UIKit
  An action handler component to perform any supported action out of the box.
  */
 @MainActor
-public final class CheckoutActionComponent: ActionComponent, ActionHandlingComponent {
-    
+package final class CheckoutActionComponent: ActionComponent, ActionHandlingComponent {
+
     /// :nodoc:
     /// The context object for this component.
-    public let context: AdyenContext
-    
+    package let context: AdyenContext
+
     /// The object that acts as the delegate of the action component.
-    public weak var delegate: ActionComponentDelegate?
-    
+    package weak var delegate: ActionComponentDelegate?
+
     /// The object that acts as the presentation delegate of the action component.
-    public weak var presentationDelegate: PresentationDelegate?
-    
+    package weak var presentationDelegate: PresentationDelegate?
+
     /// Action handling configurations.
-    public var configuration: Configuration
-    
+    package var configuration: Configuration
+
     /// Action handling configurations.
-    public struct Configuration: Localizable {
-        
+    package struct Configuration: Localizable {
+
         /// Localization parameters.
         package var localizationParameters: LocalizationParameters?
         
         /// The UI style configurations.
-        public var style: ActionComponentStyle = .init()
-        
+        package var style: ActionComponentStyle = .init()
+
         /// Authentication configuration.
-        public var authentication: AuthenticationConfiguration
+        package var authentication: AuthenticationConfiguration
 
         /// Twint configuration.
-        public var twint: TwintActionConfiguration?
-        
+        package var twint: TwintActionConfiguration?
+
         /// Initializes a new instance.
         ///
         /// - Parameters:
-        ///   - localizationParameters: Localization parameters.
         ///   - style: The UI style configurations.
         ///   - authentication: Authentication configuration.
         ///   - twint: Twint configurations.
-        public init(
+        package init(
             style: ActionComponentStyle = .init(),
             authentication: AuthenticationConfiguration = .init(),
             twint: TwintActionConfiguration? = nil
@@ -86,7 +85,7 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
     /// - Parameters:
     ///   - context: The context object.
     ///   - configuration: The configuration.
-    public init(
+    package init(
         context: AdyenContext,
         configuration: Configuration = Configuration()
     ) {
@@ -99,8 +98,8 @@ public final class CheckoutActionComponent: ActionComponent, ActionHandlingCompo
     /// Handles an action to complete a payment.
     ///
     /// - Parameter action: The action to handle.
-    public func handle(_ action: Action) {
-        
+    package func handle(_ action: Action) {
+
         sendHandleEvent(for: action)
         
         switch action {

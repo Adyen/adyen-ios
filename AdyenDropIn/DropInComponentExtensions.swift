@@ -44,8 +44,7 @@ extension DropInComponent: FinalizableComponent {
 
 extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
 
-    @_spi(AdyenInternal)
-    public func showConfirmation(for component: InstantPaymentComponent, with order: PartialPaymentOrder?) {
+    package func showConfirmation(for component: InstantPaymentComponent, with order: PartialPaymentOrder?) {
 //        let newRootViewController = resolvePreselectedPaymentMethodView(
 //            for: component,
 //            onCancel: { [weak self] in

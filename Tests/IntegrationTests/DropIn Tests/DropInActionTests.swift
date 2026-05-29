@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) import AdyenActions
+import AdyenActions
 import AdyenDropIn
 import SafariServices
 import XCTest

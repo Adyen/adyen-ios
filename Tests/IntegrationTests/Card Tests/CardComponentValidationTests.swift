@@ -5,11 +5,11 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenUI
-import XCTest
-@testable @_spi(AdyenInternal) import AdyenCard
+@testable import AdyenCard
 @testable import AdyenDropIn
 @testable import AdyenEncryption
+@_spi(AdyenInternal) @testable import AdyenUI
+import XCTest
 
 @MainActor
 class CardComponentValidationTests: XCTestCase {
