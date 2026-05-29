@@ -6,16 +6,9 @@
 
 import Foundation
 
-// TODO: - Remove this protocol
-@MainActor
-public protocol InitiablePaymentComponent: PaymentComponent {
-    /// Initiate the payment flow
-    func initiatePayment(delegate: PaymentComponentDelegate)
-}
-
 /// A component that handles payment methods that don't need any payment detail to be filled.
 @MainActor
-public final class InstantPaymentComponent: InitiablePaymentComponent {
+public final class InstantPaymentComponent: PaymentComponent {
 
     /// The context object for this component.
     @_spi(AdyenInternal)
@@ -68,15 +61,7 @@ public final class InstantPaymentComponent: InitiablePaymentComponent {
         )
     }
 
-    // TODO: - Remove initiatePayment as submit should be the default
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
-    public func initiatePayment(delegate: PaymentComponentDelegate) {
-        // We are not attempting to fetch the checkoutAttemptId as it won't be ready for the payment
-        // and we don't want to block it for an analytics call.
-        self.delegate = delegate
-        submit(data: paymentData)
-    }
-
     public func submit() {
         submit(data: paymentData)
     }

@@ -96,7 +96,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             }
         case let .initiable(initiablePaymentComponent):
             listItem(for: paymentMethod)?.startLoading()
-            initiablePaymentComponent.initiatePayment(delegate: self)
+            initiablePaymentComponent.submit()
         }
     }
 

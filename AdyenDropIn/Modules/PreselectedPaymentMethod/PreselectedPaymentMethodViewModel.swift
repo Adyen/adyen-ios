@@ -157,7 +157,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
                 self?.stopLoading()
             }
         case let .initiable(initiablePaymentComponent):
-            initiablePaymentComponent.initiatePayment(delegate: self)
+            initiablePaymentComponent.submit()
         }
     }
 
