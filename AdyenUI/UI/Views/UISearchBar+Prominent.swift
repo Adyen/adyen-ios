@@ -6,8 +6,7 @@
 
 import UIKit
 
-@_spi(AdyenInternal)
-public extension UISearchBar {
+package extension UISearchBar {
     
     static func prominent(
         placeholder: String?,

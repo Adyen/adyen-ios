@@ -14,20 +14,19 @@ import TwintSDK
 
 /// A component that handles a Twint payment.
 @MainActor
-public final class TwintComponent: InitiablePaymentComponent {
+package final class TwintComponent: InitiablePaymentComponent {
 
     /// Configuration for Twint Component.
-    public typealias Configuration = BasicComponentConfiguration
+    package typealias Configuration = BasicComponentConfiguration
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
+    package let context: AdyenContext
 
     /// The payment method object for this component.
-    public let paymentMethod: PaymentMethod
+    package let paymentMethod: PaymentMethod
 
     /// The ready to submit payment data.
-    public var paymentData: PaymentComponentData {
+    package var paymentData: PaymentComponentData {
         let details = TwintDetails(
             type: paymentMethod,
             subType: "sdk"
@@ -42,10 +41,10 @@ public final class TwintComponent: InitiablePaymentComponent {
     }
 
     /// Component's configuration
-    public var configuration: Configuration
+    package var configuration: Configuration
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
 
     // MARK: - Initializers
 
@@ -54,7 +53,7 @@ public final class TwintComponent: InitiablePaymentComponent {
     /// - Parameter paymentMethod: The Twint  payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(
+    package init(
         paymentMethod: TwintPaymentMethod,
         context: AdyenContext,
         configuration: Configuration = .init()
@@ -67,11 +66,10 @@ public final class TwintComponent: InitiablePaymentComponent {
     // MARK: - PaymentInitiable
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
-    public func initiatePayment(delegate: PaymentComponentDelegate) {
+    package func initiatePayment(delegate: PaymentComponentDelegate) {
         self.delegate = delegate
         submit(data: paymentData)
     }
 }
 
-@_spi(AdyenInternal)
 extension TwintComponent: TrackableComponent {}

@@ -8,10 +8,9 @@ import Adyen
 import UIKit
 
 /// A cell in a ListViewController.
-@_spi(AdyenInternal)
-public final class ListCell: UITableViewCell {
-    
-    override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+package final class ListCell: UITableViewCell {
+
+    override package init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         accessibilityTraits = .button
@@ -21,11 +20,11 @@ public final class ListCell: UITableViewCell {
     }
     
     @available(*, unavailable)
-    public required init?(coder aDecoder: NSCoder) {
+    package required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override public func setHighlighted(_ highlighted: Bool, animated: Bool) {
+    override package func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
             
         guard let highlightedBackgroundColor = item?.style.highlightedBackgroundColor else {
@@ -38,7 +37,7 @@ public final class ListCell: UITableViewCell {
     // MARK: - Item
     
     /// The item displayed in the cell cell.
-    public var item: ListItem? {
+    package var item: ListItem? {
         didSet {
             itemView.item = item
             itemView.accessibilityIdentifier = item?.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "itemView") }

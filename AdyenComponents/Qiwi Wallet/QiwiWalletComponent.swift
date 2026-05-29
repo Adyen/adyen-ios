@@ -13,11 +13,11 @@ import Adyen
 import UIKit
 
 /// A component that provides a form for Qiwi Wallet payments.
-public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
-    
+package final class QiwiWalletComponent: AbstractPersonalInformationComponent {
+
     /// Configuration for Qiwi Wallet Component
-    public typealias Configuration = PersonalInformationConfiguration
-    
+    package typealias Configuration = PersonalInformationConfiguration
+
     private let qiwiWalletPaymentMethod: QiwiWalletPaymentMethod
     
     /// Initializes the Qiwi Wallet component.
@@ -26,7 +26,7 @@ public final class QiwiWalletComponent: AbstractPersonalInformationComponent {
     ///   - paymentMethod: The Qiwi Wallet payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
-    public init(
+    package init(
         paymentMethod: QiwiWalletPaymentMethod,
         context: AdyenContext,
         configuration: Configuration = .init()
