@@ -21,62 +21,61 @@ import Foundation
 import PassKit
 
 // TODO: get rid of duplicate component configs inside dropin. they should be only one specified by merchant
-public extension DropInComponent {
-    
+package extension DropInComponent {
+
     /// Contains the configuration for the drop in component and the embedded payment method components.
     final class Configuration: AnyPersonalInformationConfiguration {
 
         /// Card component related configuration.
-        public var card = Card()
-        
+        package var card = Card()
+
         /// The Apple Pay configuration.
-        public var applePay: ApplePayConfiguration?
-        
+        package var applePay: ApplePayConfiguration?
+
         /// Payment methods list related configurations.
-        public var paymentMethodsList = PaymentMethodListConfiguration()
-        
+        package var paymentMethodsList = PaymentMethodListConfiguration()
+
         /// Action components related configurations.
-        public var actionComponent = ActionComponentConfiguration()
-        
+        package var actionComponent = ActionComponentConfiguration()
+
         /// Shopper related information
-        public var shopperInformation: PrefilledShopperInformation?
-        
+        package var shopperInformation: PrefilledShopperInformation?
+
         /// Indicates the localization parameters, leave it nil to use the default parameters.
         package var localizationParameters: LocalizationParameters?
-        
         /// Determines whether to enable skipping payment list step
         /// when there is only one non-instant payment method.
         /// Default value: `false`.
-        public var allowsSkippingPaymentList: Bool
+        package var allowsSkippingPaymentList: Bool
 
         /// Determines whether to enable preselected stored payment method view step.
         /// Default value: `true`.
-        public var allowPreselectedPaymentView: Bool
-        
+        package var allowPreselectedPaymentView: Bool
+
         /// Indicates the UI configuration of the drop in component.
-        public var style: DropInComponent.Style
+        package var style: DropInComponent.Style
 
         /// Indicates the UI style configuration of the drop in component.
-        public var theme: CheckoutTheme = .default
+        package var theme: CheckoutTheme = .default
 
         /// Boleto component configuration.
-        public var boleto: Boleto = .init()
+        package var boleto: Boleto = .init()
 
         /// Configuration for the Cash App Pay component
-        public var cashAppPay: CashAppPay?
+        package var cashAppPay: CashAppPay?
 
         /// The ACH Direct Debit configuration.
-        public var ach: ACH = .init()
+        package var ach: ACH = .init()
 
         /// Gift card component configuration
-        public var giftCard: GiftCard = .init()
+        package var giftCard: GiftCard = .init()
 
         /// Initializes the drop in configuration.
         /// - Parameters:
         ///   - style: The UI styles of the components.
         ///   - allowsSkippingPaymentList: Boolean to enable skipping payment list when there is only one one non-instant payment method.
         ///   - allowPreselectedPaymentView: Boolean to enable the preselected stored payment method view step.
-        public init(
+        package init(
             style: Style = Style(),
             theme: CheckoutTheme = .default,
             allowsSkippingPaymentList: Bool = false,
@@ -92,19 +91,19 @@ public extension DropInComponent {
     /// Action components related configurations.
     struct ActionComponentConfiguration {
         
-        public init() { /* Empty initializer */ }
-        
+        package init() { /* Empty initializer */ }
+
         /// Three DS configurations
-        public var authentication: AuthenticationConfiguration = .init()
+        package var authentication: AuthenticationConfiguration = .init()
 
         /// Twint configurations
-        public var twint: TwintActionConfiguration?
+        package var twint: TwintActionConfiguration?
     }
 
     /// Boleto component configuration.
     struct Boleto {
         /// Indicates whether to show sendCopyByEmail checkbox and email text field
-        public var showEmailAddress: Bool = true
+        package var showEmailAddress: Bool = true
     }
 
     /// ACH Component configuration specific to Drop In Component.
@@ -112,16 +111,16 @@ public extension DropInComponent {
         
         /// Indicates if the field for storing the card payment method should be displayed in the form.
         /// Defaults to `true`.
-        public var showsStorePaymentMethodField: Bool
-        
+        package var showsStorePaymentMethodField: Bool
+
         /// Determines whether the billing address should be displayed or not.
         /// Defaults to `true`.
-        public var showsBillingAddress: Bool
-        
+        package var showsBillingAddress: Bool
+
         /// List of ISO country codes that is supported for the billing address.
         /// Defaults to `["US", "PR"].
-        public var billingAddressCountryCodes: [String]
-        
+        package var billingAddressCountryCodes: [String]
+
         /// Configuration of the ACH component.
         ///
         /// - Parameters:
@@ -131,7 +130,7 @@ public extension DropInComponent {
         ///   Defaults to `true`.
         ///   - billingAddressCountryCodes: List of ISO country codes that is supported for the billing address.
         ///   Defaults to `["US", "PR"].
-        public init(
+        package init(
             showsStorePaymentMethodField: Bool = true,
             showsBillingAddress: Bool = true,
             billingAddressCountryCodes: [String] = ["US", "PR"]
@@ -145,7 +144,7 @@ public extension DropInComponent {
     /// Gift card component configuration.
     struct GiftCard {
         /// Indicates whether to show the security code field. Defaults to true.
-        public var showsSecurityCodeField: Bool = true
+        package var showsSecurityCodeField: Bool = true
     }
     
     // TODO: since these will be removed, changes on card config don't need to be added here
@@ -153,33 +152,33 @@ public extension DropInComponent {
     struct Card: AnyCardComponentConfiguration {
         
         /// Indicates if the field for entering the cardholder name should be displayed in the form. Defaults to false.
-        public var showCardholderName: Bool
+        package var showCardholderName: Bool
 
         /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
-        public var showStorePaymentMethod: Bool
+        package var showStorePaymentMethod: Bool
 
         /// Indicates whether to show the security code field at all. Defaults to true.
-        public var showSecurityCode: Bool
+        package var showSecurityCode: Bool
 
         /// Indicates whether to show the security fields for South Korea issued cards. Defaults to `auto`.
         /// In AUTO mode the field will appear only for card issued in "KR" (South Korea).
-        public var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility
+        package var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility
 
         /// Indicates the visibility mode for the social security number field (CPF/CNPJ) for Brazilian cards. Defaults to `auto`.
         /// In `auto` mode the field will appear based on card bin lookup.
-        public var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility
+        package var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility
 
         /// Indicates whether to show the security code field for stored cards. Defaults to true.
-        public var showSecurityCodeForStoredCard: Bool
+        package var showSecurityCodeForStoredCard: Bool
 
         /// The list of supported card brands.  Defaults to nil.
         /// By default list of supported brands is extracted from component's `AnyCardPaymentMethod`.
         /// Use this property to enforce a custom collection of card brands.
-        public var supportedCardBrands: [CardType]?
+        package var supportedCardBrands: [CardType]?
 
         /// Installments options to present to the user.
-        public var installmentConfiguration: InstallmentConfiguration?
-        
+        package var installmentConfiguration: InstallmentConfiguration?
+
         /// Configuration of Card component.
         ///
         /// - Parameters:
@@ -196,7 +195,7 @@ public extension DropInComponent {
         ///   - supportedCardBrands: The enforced list of supported card brands.
         ///   - installmentConfiguration: Configuration for installments. Defaults to `nil`.
         ///   - billingAddress: Billing address fields configurations.
-        public init(
+        package init(
             showCardholderName: Bool = false,
             showStorePaymentMethod: Bool = true,
             showSecurityCode: Bool = true,
@@ -226,18 +225,18 @@ public extension DropInComponent {
     struct CashAppPay: AnyCashAppPayConfiguration {
 
         /// The URL for Cash App to call in order to redirect back to your application.
-        public let redirectURL: URL
+        package let redirectURL: URL
 
         /// A reference to your system (for example, a cart or checkout identifier).
-        public let referenceId: String?
+        package let referenceId: String?
 
         /// Indicates if the field for storing the payment method should be displayed in the form. Defaults to `true`.
-        public var showsStorePaymentMethodField: Bool
-        
+        package var showsStorePaymentMethodField: Bool
+
         /// Determines whether to store this payment method. Defaults to `false`.
         /// Ignored if `showsStorePaymentMethodField` is `true`.
-        public var storePaymentMethod: Bool
-        
+        package var storePaymentMethod: Bool
+
         /// Initializes an instance of `CashAppPayComponent.Configuration`
         ///
         /// - Parameters:
@@ -246,7 +245,7 @@ public extension DropInComponent {
         ///   - showsStorePaymentMethodField: Determines the visibility of the field for storing the payment method.
         ///   - storePaymentMethod: Determines whether to store this payment method.
         ///   Ignored if `showsStorePaymentMethodField` is `true`.
-        public init(
+        package init(
             redirectURL: URL,
             referenceId: String? = nil,
             showsStorePaymentMethodField: Bool = true,

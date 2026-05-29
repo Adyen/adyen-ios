@@ -13,7 +13,7 @@ import UIKit
 public class FormLabelItem: FormItem {
     
     public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
-    
+
     public var subitems: [FormItem] = []
 
     public init(text: String, style: TextStyle, identifier: String? = nil) {

@@ -11,7 +11,8 @@ import UIKit
 
 #if canImport(AdyenUI)
     import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormButton
+    @_spi(AdyenInternal) import class AdyenUI.FormTextItemView
+
 #endif
 
 internal class StoredCardInputViewController: UIViewController {

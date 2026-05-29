@@ -47,10 +47,9 @@ public protocol FinalizableComponent: Component {
     func didFinalize(with success: Bool, completion: (() -> Void)?)
 }
 
-public extension Component {
-    
-    @_spi(AdyenInternal)
-    var _isDropIn: Bool { // swiftlint:disable:this identifier_name
+package extension Component {
+
+    package var _isDropIn: Bool { // swiftlint:disable:this identifier_name
         get {
             guard let value = objc_getAssociatedObject(self, &AssociatedKeys.isDropIn) as? Bool else {
                 return false

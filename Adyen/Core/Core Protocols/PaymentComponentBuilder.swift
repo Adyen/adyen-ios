@@ -9,7 +9,7 @@ import Foundation
 /// Builds a certain `PaymentComponent` based on the concrete `PaymentMethod`.
 @_spi(AdyenInternal)
 public protocol PaymentComponentBuilder: AdyenContextAware {
-    
+
     /// Builds a certain `PaymentComponent` based on a `StoredCardPaymentMethod`.
     func build(paymentMethod: StoredCardPaymentMethod) -> PaymentComponent?
     
