@@ -31,7 +31,7 @@ import AdyenCheckout
 - environment, amount, and client key
 - component-specific configuration objects
 - checkout-wide options such as `showsSubmitButton(_:)`
-- checkout-wide theming and localization
+- theming and localization configured through `CheckoutConfiguration`
 
 ```swift
 let configuration = try CheckoutConfiguration(
@@ -180,7 +180,7 @@ present(navigationController, animated: true)
 
 ## Theme
 
-Apply shared styling at the checkout level:
+Apply shared styling on `CheckoutConfiguration` before creating checkout:
 
 ```swift
 let theme = CheckoutTheme.default
@@ -205,7 +205,7 @@ The same theme is used by the payment components and action handling created fro
 
 ## Localization
 
-Use `localizationProvider(_:)` for programmatic string overrides across the checkout flow:
+Use `localizationProvider(_:)` on `CheckoutConfiguration` for programmatic string overrides across the checkout flow:
 
 ```swift
 struct DemoLocalizationProvider: CheckoutLocalizationProvider {
