@@ -21,7 +21,7 @@ import UIKit
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
 @MainActor
-public class CardComponent: PaymentComponent,
+package class CardComponent: PaymentComponent,
     PresentableComponent,
     LoadingComponent {
 
@@ -33,23 +33,22 @@ public class CardComponent: PaymentComponent,
     }
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
+    package let context: AdyenContext
 
     internal let cardPaymentMethod: AnyCardPaymentMethod
 
     internal let binInfoProvider: AnyBinInfoProvider
 
     /// The card payment method.
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         cardPaymentMethod
     }
 
     /// The supported card types.
-    public let supportedCardTypes: [CardType]
+    package let supportedCardTypes: [CardType]
 
     /// Card component configuration.
-    public internal(set) var configuration: CardConfiguration
+    package internal(set) var configuration: CardConfiguration
 
     /// Localization parameters with the component-resolved ``CheckoutLocalizationProvider``
     /// attached, used for all card UI string lookups.
@@ -61,7 +60,7 @@ public class CardComponent: PaymentComponent,
     }
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate? {
+    package weak var delegate: PaymentComponentDelegate? {
         didSet {
             storedCardComponent?.delegate = delegate
             // override installment config if using session (when session is set as delegate)
@@ -78,7 +77,7 @@ public class CardComponent: PaymentComponent,
     }
 
     /// The partial payment order if any.
-    public var order: PartialPaymentOrder? {
+    package var order: PartialPaymentOrder? {
         didSet {
             storedCardComponent?.order = order
         }
@@ -95,7 +94,7 @@ public class CardComponent: PaymentComponent,
     ///   - paymentMethod: The card payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The configuration of the component.
-    public convenience init(
+    package convenience init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
         configuration: CardConfiguration = .init()
@@ -141,14 +140,14 @@ public class CardComponent: PaymentComponent,
 
     // MARK: - Presentable Component Protocol
 
-    public var viewController: UIViewController {
+    package var viewController: UIViewController {
         if let storedCardComponent {
             return storedCardComponent.viewController
         }
         return securedViewController
     }
 
-    public func stopLoading() {
+    package func stopLoading() {
         // since storedCardComponent is instantiated through this class
         // cardViewController should not be accessed when it's the storedCardComponent
         // we should separate stored card component logic into its own
@@ -181,11 +180,11 @@ public class CardComponent: PaymentComponent,
     /// Updates the visibility of the store payment method switch.
     ///
     /// - Parameter isVisible: Indicates whether to show the switch if `true` or to hide it if `false`.
-    public func update(storePaymentMethodFieldVisibility isVisible: Bool) {
+    package func update(storePaymentMethodFieldVisibility isVisible: Bool) {
         cardViewController.update(storePaymentMethodFieldVisibility: isVisible)
     }
 
-    public func update(storePaymentMethodFieldValue isOn: Bool) {
+    package func update(storePaymentMethodFieldValue isOn: Bool) {
         cardViewController.update(storePaymentMethodFieldValue: isOn)
     }
 

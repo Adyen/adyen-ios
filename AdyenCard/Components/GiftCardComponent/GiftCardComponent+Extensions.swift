@@ -9,10 +9,9 @@ import UIKit
 
 extension GiftCardComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
 extension GiftCardComponent: ViewControllerDelegate {
 
-    public func viewDidLoad(viewController: UIViewController) {
+    package func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
         sendDidLoadEvent()
     }

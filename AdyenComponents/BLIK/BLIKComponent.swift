@@ -15,25 +15,24 @@ import UIKit
 
 /// A component that provides a form for BLIK payments.
 @MainActor
-public final class BLIKComponent: PaymentComponent, PresentableComponent, LoadingComponent {
-    
+package final class BLIKComponent: PaymentComponent, PresentableComponent, LoadingComponent {
+
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
-    
-    public var paymentMethod: PaymentMethod {
+    package let context: AdyenContext
+
+    package var paymentMethod: PaymentMethod {
         blikPaymentMethod
     }
 
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
 
-    public lazy var viewController: UIViewController = SecuredViewController(
+    package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         theme: configuration.theme
     )
     
     /// Component's configuration
-    public var configuration: BLIKComponentConfiguration
+    package var configuration: BLIKComponentConfiguration
 
     private let blikPaymentMethod: BLIKPaymentMethod
 
@@ -42,7 +41,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
     /// - Parameter paymentMethod: The BLIK payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(
+    package init(
         paymentMethod: BLIKPaymentMethod,
         context: AdyenContext,
         configuration: BLIKComponentConfiguration = .init()
@@ -56,7 +55,7 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
         didSelectSubmitButton()
     }
     
-    public func stopLoading() {
+    package func stopLoading() {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
@@ -142,8 +141,6 @@ public final class BLIKComponent: PaymentComponent, PresentableComponent, Loadin
     }
 }
 
-@_spi(AdyenInternal)
 extension BLIKComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
 extension BLIKComponent: ViewControllerDelegate {}

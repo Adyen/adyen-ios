@@ -8,7 +8,6 @@ import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 #if canImport(AdyenUI)
     import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormButton
 #endif
 import UIKit
 

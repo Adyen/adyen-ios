@@ -17,7 +17,7 @@ internal protocol PreselectedPaymentMethodRouterListener: AnyObject {
 @MainActor
 internal protocol PreselectedPaymentMethodRouting: AnyObject {
     func presentPaymentMethodList()
-    func present(component: PaymentComponent, onCancel: @escaping () -> Void)
+    func present(component: PaymentComponent)
     func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?)
     func dismiss(completion: (() -> Void)?)
 }
@@ -59,27 +59,24 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     }
 
     internal func present(
-        paymentComponent: any PresentableComponent,
-        onCancel: @escaping (() -> Void)
+        paymentComponent: any PresentableComponent
     ) {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: paymentComponent,
-            delegate: self,
-            onCancel: onCancel
+            listener: self
         )
         self.childRouter = componentContainerRouter
         rootViewController.present(componentContainerRouter.rootViewController, animated: true)
     }
 
     internal func present(
-        component: PaymentComponent,
-        onCancel: @escaping () -> Void
+        component: PaymentComponent
     ) {
         switch component.type {
         case let .regular(regularComponent):
-            presentModalComponent(regularComponent, onCancel: onCancel)
+            presentModalComponent(regularComponent)
         case let .stored(storedComponent):
-            presentModalComponent(storedComponent, onCancel: onCancel)
+            presentModalComponent(storedComponent)
         case .initiable:
             break
         }
@@ -106,10 +103,9 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     // MARK: - Private
 
     private func presentModalComponent(
-        _ component: PresentableComponent,
-        onCancel: @escaping () -> Void
+        _ component: PresentableComponent
     ) {
-        let componentContainerViewController = componentContainerViewController(for: component, onCancel: onCancel)
+        let componentContainerViewController = componentContainerViewController(for: component)
 
         let navigationController = UINavigationController(rootViewController: componentContainerViewController)
         setupNavigationBackButton(controller: componentContainerViewController)
@@ -132,13 +128,11 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     }
 
     private func componentContainerViewController(
-        for component: PresentableComponent,
-        onCancel: @escaping () -> Void
+        for component: PresentableComponent
     ) -> UIViewController {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: component,
-            delegate: self,
-            onCancel: onCancel
+            listener: self
         )
         childRouter = componentContainerRouter
         return componentContainerRouter.rootViewController

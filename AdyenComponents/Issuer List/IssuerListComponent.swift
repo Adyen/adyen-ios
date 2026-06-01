@@ -17,27 +17,26 @@ import UIKit
 /// A generic component for "issuer-based" payment methods, such as MOLPay.
 /// This component will provide a list in which the user can select their issuer.
 @MainActor
-public final class IssuerListComponent: PaymentComponent, PresentableComponent, LoadingComponent {
-    
+package final class IssuerListComponent: PaymentComponent, PresentableComponent, LoadingComponent {
+
     private enum Constants {
         static let searchDelay: TimeInterval = 1
     }
     
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
-    
+    package let context: AdyenContext
+
     /// The issuer list payment method.
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         issuerListPaymentMethod
     }
     
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
-    
+    package weak var delegate: PaymentComponentDelegate?
+
     /// Component's configuration.
-    public var configuration: Configuration
-    
+    package var configuration: Configuration
+
     /// The title of the view controller
     private let title: String
     
@@ -48,7 +47,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     /// - Parameter paymentMethod: The issuer list payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(
+    package init(
         paymentMethod: IssuerListPaymentMethod,
         context: AdyenContext,
         configuration: Configuration = .init()
@@ -67,7 +66,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
 
     // MARK: - Presentable Component Protocol
     
-    public var viewController: UIViewController {
+    package var viewController: UIViewController {
         let viewController = searchViewController
         viewController.title = title
         return viewController
@@ -94,7 +93,7 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
         return searchViewController
     }()
 
-    public func stopLoading() {
+    package func stopLoading() {
         searchViewController.resultsListViewController.stopLoading()
     }
 
@@ -170,27 +169,21 @@ public final class IssuerListComponent: PaymentComponent, PresentableComponent, 
     }
 }
 
-@_spi(AdyenInternal)
 extension IssuerListComponent: ViewControllerDelegate {}
 
-@_spi(AdyenInternal)
 extension IssuerListComponent: TrackableComponent {}
 
 extension IssuerListComponent {
     
     /// Configuration for Issuer List type components.
-    public struct Configuration {
-        
+    package struct Configuration {
+
         /// The UI style of the component.
-        public var style: ListComponentStyle
+        package var style: ListComponentStyle
 
         package var localizationParameters: LocalizationParameters?
-        
-        /// Initializes the configuration for Issuer list type components.
-        /// - Parameters:
-        ///   - style: The UI style of the component.
-        ///   - localizationParameters: Localization parameters.
-        public init(style: ListComponentStyle = .init()) {
+
+        package init(style: ListComponentStyle = .init()) {
             self.init(style: style, localizationParameters: nil)
         }
 
@@ -205,19 +198,19 @@ extension IssuerListComponent {
 }
 
 /// Provides an issuer selection list for MOLPay payments.
-public typealias MOLPayComponent = IssuerListComponent
+package typealias MOLPayComponent = IssuerListComponent
 
 /// Provides an issuer selection list for Dotpay payments.
-public typealias DotpayComponent = IssuerListComponent
+package typealias DotpayComponent = IssuerListComponent
 
 /// Provides an issuer selection list for EPS payments.
-public typealias EPSComponent = IssuerListComponent
+package typealias EPSComponent = IssuerListComponent
 
 /// Provides an issuer selection list for Entercash payments.
-public typealias EntercashComponent = IssuerListComponent
+package typealias EntercashComponent = IssuerListComponent
 
 /// Provides an issuer selection list for OpenBanking payments.
-public typealias OpenBankingComponent = IssuerListComponent
+package typealias OpenBankingComponent = IssuerListComponent
 
 /// Provides an issuer selection list for onlineBanking Poland .
-public typealias OnlineBankingPolandComponent = IssuerListComponent
+package typealias OnlineBankingPolandComponent = IssuerListComponent

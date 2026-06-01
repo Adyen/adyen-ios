@@ -8,20 +8,19 @@ import Foundation
 
 /// A component that handles payment methods that don't need any payment detail to be filled.
 @MainActor
-public final class InstantPaymentComponent: PaymentComponent {
+package final class InstantPaymentComponent: PaymentComponent {
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
+    package let context: AdyenContext
 
     /// The ready to submit payment data.
-    public let paymentData: PaymentComponentData
+    package let paymentData: PaymentComponentData
 
     /// The payment method.
-    public let paymentMethod: PaymentMethod
+    package let paymentMethod: PaymentMethod
 
     /// The delegate of the component.
-    public weak var delegate: PaymentComponentDelegate?
+    package weak var delegate: PaymentComponentDelegate?
 
     /// Initializes a new instance of `InstantPaymentComponent`.
     ///
@@ -29,7 +28,7 @@ public final class InstantPaymentComponent: PaymentComponent {
     ///   - paymentMethod: The payment method.
     ///   - paymentData: The ready to submit payment data.
     ///   - context: The context object for this component.
-    public init(
+    package init(
         paymentMethod: PaymentMethod,
         context: AdyenContext,
         paymentData: PaymentComponentData
@@ -45,7 +44,7 @@ public final class InstantPaymentComponent: PaymentComponent {
     ///   - paymentMethod: The payment method.
     ///   - context: The context object for this component.
     ///   - order: The partial order for this payment.
-    public init(
+    package init(
         paymentMethod: PaymentMethod,
         context: AdyenContext,
         order: PartialPaymentOrder?

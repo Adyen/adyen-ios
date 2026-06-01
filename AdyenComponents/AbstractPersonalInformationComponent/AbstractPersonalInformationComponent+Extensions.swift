@@ -14,7 +14,7 @@ import UIKit
 
 extension AbstractPersonalInformationComponent: LoadingComponent {
 
-    public func stopLoading() {
+    package func stopLoading() {
         button.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
@@ -37,11 +37,9 @@ extension AbstractPersonalInformationComponent: LoadingComponent {
     }
 }
 
-@_spi(AdyenInternal)
 extension AbstractPersonalInformationComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
-public enum PersonalInformation: Equatable {
+package enum PersonalInformation: Equatable {
     case firstName
     case lastName
     case email
@@ -50,7 +48,7 @@ public enum PersonalInformation: Equatable {
     case deliveryAddress
     case custom(FormItemInjector)
 
-    public static func == (lhs: PersonalInformation, rhs: PersonalInformation) -> Bool {
+    package static func == (lhs: PersonalInformation, rhs: PersonalInformation) -> Bool {
         switch (lhs, rhs) {
         case (.firstName, .firstName),
              (.lastName, .lastName),

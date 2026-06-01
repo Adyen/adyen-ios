@@ -15,7 +15,8 @@ import UIKit
 
 internal enum PaymentMethodListState {
     case idle
-    case loaded(sections: [ListSection])
+    case loading
+    case loaded(sections: [PaymentMethodSection])
 }
 
 // sourcery:AutoMockable
@@ -25,13 +26,24 @@ internal protocol PaymentMethodListViewModelProtocol {
     var title: String { get }
     var paymentMethodSections: [PaymentMethodsSection] { get }
     var statePublisher: Published<PaymentMethodListState>.Publisher { get }
+    var theme: CheckoutTheme { get }
     func cancel()
     func didLoad()
-    func listItemIdentifier(for paymentMethod: PaymentMethod) -> String
+
+    var formattedAmount: String { get }
+    var subtitle: String { get }
+    var applePayButtonState: PaymentMethodListHeaderViewModel.ApplePayButtonState { get }
 }
 
 @MainActor
 internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
+
+    // MARK: - Constants
+
+    private enum Constants {
+        /// Payment methods that are displayed separately (e.g., in the header) and should be filtered from the main list.
+        internal static let instantPaymentMethods: Set<PaymentMethodType> = [.applePay]
+    }
 
     // MARK: - Properties
 
@@ -41,6 +53,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     internal weak var router: PaymentMethodListRouting?
     private let dropInFlowManager: DropInFlowManaging
     private let logoURLProvider: LogoURLProvider
+    internal let theme: CheckoutTheme
 
     @Published internal private(set) var state: PaymentMethodListState = .idle
     internal var statePublisher: Published<PaymentMethodListState>.Publisher {
@@ -48,7 +61,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     internal let paymentMethodSections: [PaymentMethodsSection]
-    private let brandProtectedComponents: Set<PaymentMethodType> = [.applePay]
 
     // MARK: - Initializers
 
@@ -58,7 +70,8 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         componentManager: ComponentManaging,
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging,
-        logoURLProvider: LogoURLProvider
+        logoURLProvider: LogoURLProvider,
+        theme: CheckoutTheme
     ) {
         self.context = context
         self.localizationParameters = localizationParameters
@@ -66,6 +79,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         self.paymentMethodSections = componentManager.sections
         self.dropInFlowManager = dropInFlowManager
         self.logoURLProvider = logoURLProvider
+        self.theme = theme
     }
 
     // MARK: - PaymentMethodListViewModelProtocol
@@ -74,28 +88,59 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         localizedString(.paymentMethodsTitle, localizationParameters)
     }
 
+    internal var formattedAmount: String {
+        context.amount?.formatted ?? ""
+    }
+
+    internal var subtitle: String {
+        // TODO: - Add localization key for this string
+        "Select your preferred payment option to complete the payment"
+    }
+
+    internal var applePayButtonState: PaymentMethodListHeaderViewModel.ApplePayButtonState {
+        guard applePayPaymentMethod != nil else { return .hidden }
+        return .visible { [weak self] in
+            self?.startApplePay()
+        }
+    }
+
+    private var applePayPaymentMethod: PaymentMethod? {
+        paymentMethodSections
+            .flatMap(\.paymentMethods)
+            .first { $0.type == .applePay }
+    }
+
+    private var applePayComponent: PaymentComponent?
+
     internal func cancel() {
         router?.dismiss(completion: nil)
     }
 
     internal func didLoad() {
         // TODO: - Handle analytics on list load.
-        let listSections = getListSections()
-        state = .loaded(sections: listSections)
+        let sections = getSections()
+        state = .loaded(sections: sections)
     }
 
     // MARK: - Private
 
-    private func select(paymentMethod: PaymentMethod) {
+    private func startApplePay() {
+        guard applePayComponent == nil, let applePayPaymentMethod else { return }
+        self.applePayComponent = componentManager.buildComponent(for: applePayPaymentMethod)
+        applePayComponent?.delegate = self
+
+        guard let applePayViewController = (applePayComponent as? PresentableComponent)?.viewController else { return }
+        router?.present(viewController: applePayViewController)
+    }
+
+    internal func select(paymentMethod: PaymentMethod) {
         guard let component = componentManager.buildComponent(for: paymentMethod) else { return }
 
         switch component.type {
         case .regular, .stored:
-            router?.present(component: component) { [weak self] in
-                self?.state = .idle
-            }
+            router?.present(component: component)
         case let .initiable(initiablePaymentComponent):
-            listItem(for: paymentMethod)?.startLoading()
+            state = .loading
             initiablePaymentComponent.submit()
         }
     }
@@ -104,79 +149,50 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         // TODO: - Logic to delete stored payment method
     }
 
-    private func getListSections() -> [ListSection] {
+    private func getSections() -> [PaymentMethodSection] {
         paymentMethodSections.map { section in
-            let paymentMethods = section.paymentMethods
-            let paymentMethodItems = paymentMethods.map { listItem(from: $0) }
-            return ListSection(
-                header: section.header,
-                items: paymentMethodItems,
-                footer: section.footer
+            let items = section.paymentMethods.filter {
+                !Constants.instantPaymentMethods.contains($0.type)
+            }.map(paymentMethodItem(from:))
+            return PaymentMethodSection(
+                headerTitle: section.header?.title,
+                items: items,
+                theme: theme
             )
         }
     }
 
-    private func listItem(from paymentMethod: PaymentMethod) -> ListItem {
+    private func paymentMethodItem(from paymentMethod: PaymentMethod) -> PaymentMethodItem {
         let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
-        let isProtected = brandProtectedComponents.contains(paymentMethod.type)
         let imageURL = logoURLProvider.logoURL(withName: displayInformation.logoName)
 
-        let listItem = ListItem(
+        return PaymentMethodItem(
             title: displayInformation.title,
             subtitle: displayInformation.subtitle,
-            icon: .init(
-                url: imageURL,
-                canBeModified: !isProtected
-            ),
-            trailingInfo: displayInformation.trailingInfo?.forListItem(urlProvider: logoURLProvider),
-            style: .init(),
-            accessibilityLabel: displayInformation.accessibilityLabel
+            iconURL: imageURL,
+            trailingInfo: displayInformation.trailingInfo,
+            logoURLProvider: logoURLProvider,
+            accessibilityLabel: displayInformation.accessibilityLabel,
+            theme: theme,
+            selectionHandler: { [weak self] in
+                guard !(paymentMethod is OrderPaymentMethod) else { return }
+                self?.select(paymentMethod: paymentMethod)
+            }
         )
-        listItem.identifier = listItemIdentifier(for: paymentMethod)
-        listItem.selectionHandler = { [weak self] in
-            guard !(paymentMethod is OrderPaymentMethod) else { return }
-            self?.select(paymentMethod: paymentMethod)
-        }
-        listItem.deletionHandler = { [weak self] _, completion in
-            self?.delete(paymentMethod: paymentMethod, completion: completion)
-        }
-
-        return listItem
-    }
-
-    internal func listItemIdentifier(for paymentMethod: PaymentMethod) -> String {
-        let uniqueIdentifier: String
-        if let storedPaymentMethod = paymentMethod as? StoredPaymentMethod {
-            uniqueIdentifier = "\(paymentMethod.type.rawValue).\(storedPaymentMethod.identifier)"
-        } else {
-            uniqueIdentifier = paymentMethod.type.rawValue
-        }
-        return ViewIdentifierBuilder.build(
-            scopeInstance: "PaymentMethodListViewModel",
-            postfix: uniqueIdentifier
-        )
-    }
-
-    private func listItem(for paymentMethod: PaymentMethod) -> ListItem? {
-        guard case let .loaded(sections) = state else { return nil }
-        let expectedIdentifier = listItemIdentifier(for: paymentMethod)
-        return sections
-            .flatMap(\.items)
-            .first { $0.identifier == expectedIdentifier }
     }
 }
 
 // MARK: - PaymentComponentDelegate
 
 extension PaymentMethodListViewModel: PaymentComponentDelegate {
-    
+
     internal func didSubmit(
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
         dropInFlowManager.submit(data, from: component, actionPresenter: self)
     }
-    
+
     internal func didFail(
         with error: any Error,
         from component: any PaymentComponent
@@ -184,7 +200,7 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         defer { state = .idle }
 
         if case ComponentError.cancelled = error {
-            cancel()
+            applePayComponent = nil
         } else {
             dropInFlowManager.fail(with: error, from: component)
         }
@@ -203,17 +219,5 @@ extension PaymentMethodListViewModel: ActionPresenter {
 
     internal func didCancel(actionComponent: any ActionComponent) {
         state = .idle
-    }
-}
-
-internal extension DisplayInformation.TrailingInfoType {
-
-    func forListItem(urlProvider: LogoURLProvider) -> ListItem.TrailingInfoType {
-        switch self {
-        case let .text(string):
-            return .text(string)
-        case let .logos(logoNames, trailingText):
-            return .logos(urls: logoNames.map { urlProvider.logoURL(withName: $0) }, trailingText: trailingText)
-        }
     }
 }

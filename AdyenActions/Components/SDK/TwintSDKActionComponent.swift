@@ -14,23 +14,22 @@ import Foundation
 #if canImport(TwintSDK)
     /// A component that handles Twint SDK action's.
     @MainActor
-    public final class TwintSDKActionComponent: ActionComponent {
+    package final class TwintSDKActionComponent: ActionComponent {
 
         /// The context object for this component.
-        @_spi(AdyenInternal)
-        public let context: AdyenContext
+        package let context: AdyenContext
 
         /// Delegates `PresentableComponent`'s presentation.
-        public weak var presentationDelegate: PresentationDelegate?
+        package weak var presentationDelegate: PresentationDelegate?
 
-        public weak var delegate: ActionComponentDelegate?
+        package weak var delegate: ActionComponentDelegate?
 
         private let pollingComponentBuilder: AnyPollingHandlerProvider?
 
         private var pollingComponent: AnyPollingHandler?
 
         /// The twint component configurations.
-        public var configuration: TwintActionConfiguration
+        package var configuration: TwintActionConfiguration
 
         private let twint: Twint
 
@@ -38,7 +37,7 @@ import Foundation
         ///
         /// - Parameter context: The context object for this component.
         /// - Parameter configuration: The TwintSDK component configurations.
-        public init(
+        package init(
             context: AdyenContext,
             configuration: TwintActionConfiguration
         ) {
@@ -63,7 +62,7 @@ import Foundation
         /// Handles TwintSDK action.
         ///
         /// - Parameter action: The Twint SDK action object.
-        public func handle(_ action: TwintSDKAction) {
+        package func handle(_ action: TwintSDKAction) {
             AdyenAssertion.assert(message: "presentationDelegate is nil", condition: presentationDelegate == nil)
             twint.fetchInstalledAppConfigurations(maxIssuerNumber: configuration.maxIssuerNumber) { [weak self] installedApps in
                 guard let self else { return }
@@ -213,17 +212,16 @@ import Foundation
         }
     }
 
-    @_spi(AdyenInternal)
     extension TwintSDKActionComponent: ActionComponentDelegate {
 
-        public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
+        package func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
             cleanup()
             delegate?.didProvide(data, from: self)
         }
 
-        public func didComplete(from component: ActionComponent) {}
+        package func didComplete(from component: ActionComponent) {}
 
-        public func didFail(with error: Error, from component: ActionComponent) {
+        package func didFail(with error: Error, from component: ActionComponent) {
             cleanup()
             delegate?.didFail(with: error, from: self)
         }

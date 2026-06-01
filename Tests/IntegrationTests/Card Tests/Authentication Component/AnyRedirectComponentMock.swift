@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import AdyenActions
-@testable @_spi(AdyenInternal) import AdyenCard
+@testable import AdyenActions
+@testable import AdyenCard
 import Foundation
 
 final class AnyRedirectComponentMock: AnyRedirectComponent {
