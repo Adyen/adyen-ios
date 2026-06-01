@@ -120,7 +120,7 @@ internal class CheckoutProvider: CheckoutProviding {
                 context: adyenContext
             )
         } catch {
-            throw mapError(error, fallbackCode: .sessionSetupFailure, fallbackMessage: "Session setup failure")
+            throw CheckoutError.map(error, fallback: .sessionSetupFailure)
         }
     }
 
@@ -156,21 +156,8 @@ internal class CheckoutProvider: CheckoutProviding {
                 analyticsConfiguration: configuration.analyticsConfiguration
             )
         } catch {
-            throw mapError(error, fallbackCode: .unknown, fallbackMessage: error.localizedDescription)
+            throw CheckoutError.map(error)
         }
     }
 
-    // MARK: - Private
-
-    /// Maps an internal error to a ``CheckoutError``.
-    /// - If `error` is already a ``CheckoutError``, it is rethrown as-is.
-    /// - `PublicKeyFetcher.PublicKeyFetcherError.invalidClientKey` maps to ``CheckoutError/Code/invalidClientKey``.
-    /// - Any other error is wrapped with the provided `fallbackCode`.
-    private func mapError(_ error: Error, fallbackCode: CheckoutError.Code, fallbackMessage: String) -> CheckoutError {
-        if let checkoutError = error as? CheckoutError { return checkoutError }
-        if case PublicKeyFetcher.PublicKeyFetcherError.invalidClientKey = error {
-            return CheckoutError(code: .invalidClientKey, message: "Invalid client key", underlyingError: error)
-        }
-        return CheckoutError(code: fallbackCode, message: fallbackMessage, underlyingError: error)
-    }
 }

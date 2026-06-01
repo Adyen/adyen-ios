@@ -30,7 +30,7 @@ public class PaymentCheckout: BaseCheckout {
         do {
             return try core.createPaymentComponent(for: type)
         } catch {
-            throw (error as? CheckoutError) ?? CheckoutError(code: .unknown, message: error.localizedDescription, underlyingError: error)
+            throw CheckoutError.map(error)
         }
     }
 
@@ -44,7 +44,7 @@ public class PaymentCheckout: BaseCheckout {
         do {
             return try core.createPaymentComponent(for: identifier)
         } catch {
-            throw (error as? CheckoutError) ?? CheckoutError(code: .unknown, message: error.localizedDescription, underlyingError: error)
+            throw CheckoutError.map(error)
         }
     }
 

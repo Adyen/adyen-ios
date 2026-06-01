@@ -29,7 +29,8 @@ package final class PublicKeyFetcher: PublicKeyFetching {
                 completion(.success(response.cardPublicKey))
             case let .failure(error):
                 if error is DecodingError {
-                    completion(.failure(PublicKeyFetcherError.invalidClientKey))
+                    let message = "The client key was not found on the selected environment."
+                    completion(.failure(CheckoutError(code: .invalidClientKey, message: message, underlyingError: error)))
                 } else {
                     completion(.failure(error))
                 }
@@ -45,13 +46,6 @@ package final class PublicKeyFetcher: PublicKeyFetching {
         }
     }
 
-    package enum PublicKeyFetcherError: Swift.Error, LocalizedError {
-        case invalidClientKey
-
-        package var errorDescription: String? {
-            "Client key not found on the selected environment."
-        }
-    }
 }
 
 extension UniqueAssetAPIClient: APIClientKeyRequestProtocol where ResponseType == ClientKeyResponse {

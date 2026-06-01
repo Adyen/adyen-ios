@@ -41,7 +41,8 @@ public struct APIContext: AnyAPIContext {
     /// - Note: Always use the provided `Environment` type to ensure a correct environment.
     public init(environment: AnyAPIEnvironment, clientKey: String) throws {
         guard ClientKeyValidator().isValid(clientKey) else {
-            throw CheckoutError(code: .invalidClientKey, message: "Invalid client key")
+            let message = "The entered client key is invalid. Valid client key starts with the environment name (e.g. live_XXXXXXXXXX)."
+            throw CheckoutError(code: .invalidClientKey, message: message)
         }
 
         self.environment = environment

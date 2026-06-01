@@ -58,3 +58,21 @@ public extension CheckoutError {
         public static let unknown = Code(rawValue: "Unknown")
     }
 }
+
+package extension CheckoutError {
+
+    /// Maps any `Error` to a `CheckoutError`.
+    /// - If `error` is already a `CheckoutError`, it is returned as-is.
+    /// - Known SDK error types are mapped to their corresponding ``Code``.
+    /// - All other errors use `fallback` as the code (defaults to ``Code/unknown``).
+    /// - Parameter fallback: The code to use when no specific mapping is found.
+    static func map(_ error: Error, fallback: Code = .unknown) -> CheckoutError {
+        if let checkoutError = error as? CheckoutError { return checkoutError }
+        switch error {
+        case ComponentError.cancelled:
+            return CheckoutError(code: .cancelled, message: nil, underlyingError: error)
+        default:
+            return CheckoutError(code: fallback, message: error.localizedDescription, underlyingError: error)
+        }
+    }
+}
