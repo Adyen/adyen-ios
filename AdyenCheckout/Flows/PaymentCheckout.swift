@@ -25,7 +25,7 @@ public class PaymentCheckout: BaseCheckout {
     /// - Returns: A configured ``CheckoutPaymentComponent``.
     /// - Throws: ``CheckoutError`` with code ``CheckoutError/Code/unknown`` if the payment method
     ///   is not available in the current payment methods, is not supported, or cannot be
-    ///   initialised on this device (e.g. Apple Pay hardware check failed).
+    ///   initialized on this device (e.g. Apple Pay hardware check failed).
     public func createPaymentComponent(for type: PaymentMethodType) throws -> CheckoutPaymentComponent {
         do {
             return try core.createPaymentComponent(for: type)
