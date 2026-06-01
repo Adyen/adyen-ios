@@ -119,7 +119,7 @@ let configuration = try CheckoutConfiguration(
 ) {
     CardConfiguration()
         .billingAddressMode(.lookup(onAddressLookup: { searchTerm in
-            await addressProvider.searchAsync(searchTerm)
+            await yourAddressProvider.searchAsync(searchTerm)
         }))
         .onBinChange { bin in
             print("BIN: \(bin)")
