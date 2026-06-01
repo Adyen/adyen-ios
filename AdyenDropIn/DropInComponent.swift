@@ -290,7 +290,7 @@ package final class DropInComponent: NSObject,
 //        (component as? CardComponent)?.cardComponentDelegate = cardComponentDelegate
 //        (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
-        (component as? PreApplePayComponent)?.presentationDelegate = self
+//        (component as? PreApplePayComponent)?.presentationDelegate = self
 
         component._isDropIn = true
     }
