@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenActions
 @testable import AdyenDropIn
 import Testing
@@ -69,6 +69,17 @@ struct ComponentContainerViewControllerTests {
         #expect(sut.navigationItem.largeTitleDisplayMode == .always)
     }
 
+    // MARK: - Mocks
+
+    private class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtocol {
+        var componentViewController: UIViewController = .init()
+        var cancelCallsCount = 0
+
+        func cancel() {
+            cancelCallsCount += 1
+        }
+    }
+
     // MARK: - Helper
 
     private func makeSUT() async -> (
@@ -85,5 +96,4 @@ struct ComponentContainerViewControllerTests {
 
         return (sut, viewModelMock, componentViewControllerMock)
     }
-
 }

@@ -9,8 +9,7 @@ import UIKit
 
 /// Protocol specifying the interface of a view that is shown
 /// when the results of the ``SearchViewController`` are empty.
-@_spi(AdyenInternal)
-public protocol SearchResultsEmptyView: UIView {
+package protocol SearchResultsEmptyView: UIView {
     /// The searchTerm that caused the search results to be empty
     ///
     /// Use this value to update your messaging
@@ -18,9 +17,8 @@ public protocol SearchResultsEmptyView: UIView {
 }
 
 /// A view controller that shows search results in a ``ListViewController``
-@_spi(AdyenInternal)
-public class SearchViewController: UIViewController, AdyenObserver {
-    
+package class SearchViewController: UIViewController, AdyenObserver {
+
     internal lazy var keyboardObserver = KeyboardObserver()
     private var emptyViewBottomConstraint: NSLayoutConstraint?
 
@@ -37,7 +35,7 @@ public class SearchViewController: UIViewController, AdyenObserver {
     /// - Parameters:
     ///   - viewModel: The business logic of the search view controller
     ///   - emptyView: The view (conforming to ``SearchResultsEmptyView``) to show when the search results are empty.
-    public init(
+    package init(
         viewModel: ViewModel,
         emptyView: SearchResultsEmptyView
     ) {
@@ -68,7 +66,7 @@ public class SearchViewController: UIViewController, AdyenObserver {
         )
     }()
 
-    override public func viewDidLoad() {
+    override package func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = viewModel.style.backgroundColor
 
@@ -104,7 +102,7 @@ public class SearchViewController: UIViewController, AdyenObserver {
         viewModel.handleViewDidLoad()
     }
     
-    override public func viewWillAppear(_ animated: Bool) {
+    override package func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         delegate?.viewWillAppear(viewController: self)
@@ -194,7 +192,7 @@ public class SearchViewController: UIViewController, AdyenObserver {
         )
     }
 
-    override public var preferredContentSize: CGSize {
+    override package var preferredContentSize: CGSize {
         get {
             guard resultsListViewController.isViewLoaded else { return .zero }
             let innerSize = resultsListViewController.preferredContentSize
@@ -220,11 +218,11 @@ public class SearchViewController: UIViewController, AdyenObserver {
 
 extension SearchViewController: UISearchBarDelegate {
     
-    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    package func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.handleSearchTextDidChange(searchText)
     }
     
-    public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    package func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
     }
 }

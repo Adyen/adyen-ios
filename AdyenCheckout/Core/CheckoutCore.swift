@@ -47,16 +47,18 @@ package final class CheckoutCore: CheckoutCoreProtocol {
     package let callbackHandler: any CheckoutCallbackHandling
 
     internal lazy var actionHandlingComponent: ActionHandlingComponent = {
-        let authenticationConfiguration: AuthenticationConfiguration = configuration.configuration(
+        var authenticationConfiguration: AuthenticationConfiguration = configuration.configuration(
             for: .threeDS2,
             defaultValue: AuthenticationConfiguration(theme: configuration.theme)
         )
-
-        let twintConfig: TwintActionConfiguration? = configuration.configuration(for: .twint)
+        authenticationConfiguration.localizationParameters = configuration.resolvedCheckoutLocalizationParameters(
+            mergingExistingParameters: authenticationConfiguration.localizationParameters
+        )
 
         let actionConfig = CheckoutActionComponent.Configuration(
+            localizationParameters: configuration.resolvedCheckoutLocalizationParameters(),
             authentication: authenticationConfiguration,
-            twint: twintConfig
+            twint: configuration.configuration(for: .twint)
         )
 
         let handler = CheckoutActionComponent(

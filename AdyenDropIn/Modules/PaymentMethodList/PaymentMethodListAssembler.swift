@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import Foundation
 
 // sourcery:AutoMockable
@@ -24,6 +27,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     private let localizationParameters: LocalizationParameters
     private let configuration: DropInComponent.Configuration
     private let dropInFlowManager: DropInFlowManaging
+    private let theme: CheckoutTheme
     private let partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
@@ -35,6 +39,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         localizationParameters: LocalizationParameters,
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging,
+        theme: CheckoutTheme,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.componentContainerAssembler = componentContainerAssembler
@@ -43,6 +48,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         self.localizationParameters = localizationParameters
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
+        self.theme = theme
         self.partialPaymentDelegate = partialPaymentDelegate
     }
 
@@ -58,7 +64,8 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
             componentManager: componentManager,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
-            logoURLProvider: logoURLProvider
+            logoURLProvider: logoURLProvider,
+            theme: theme
         )
         let view = PaymentMethodListViewController(viewModel: viewModel)
         let router = PaymentMethodListRouter(

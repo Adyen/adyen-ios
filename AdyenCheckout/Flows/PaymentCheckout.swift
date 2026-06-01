@@ -49,7 +49,7 @@ public class PaymentCheckout: BaseCheckout {
     }
 
     /// Creates a Drop-in component with all available payment methods.
-    public func createDropIn() -> DropInComponent? {
+    public func createDropIn() -> (any AnyDropInComponent)? {
         core.createDropIn()
     }
 }

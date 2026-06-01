@@ -7,7 +7,6 @@
 import Foundation
 import UIKit
 
-// sourcery:AutoMockable
 @MainActor
 internal protocol Router: AnyObject {
     var childRouter: Router? { get }
