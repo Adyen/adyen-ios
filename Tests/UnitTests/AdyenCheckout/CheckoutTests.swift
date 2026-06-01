@@ -4,12 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import AdyenCheckout
 @_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenSession
-@_spi(AdyenInternal) @testable import AdyenDropIn
-@_spi(AdyenInternal) @testable import AdyenComponents
-@_spi(AdyenInternal) @testable import AdyenActions
+@testable import AdyenActions
+@testable import AdyenCheckout
+@testable import AdyenComponents
+@testable import AdyenDropIn
+@testable import AdyenSession
 import UIKit
 import XCTest
 
@@ -45,6 +45,25 @@ final class CheckoutTests: XCTestCase {
             analyticsConfiguration: .init()
         )
         paymentMethods = try! AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
+    }
+
+    func test_actionHandlingComponent_withCheckoutLocalizationProvider_shouldResolveLocalizationParametersForActionAndAuthenticationConfigurations() throws {
+        // Given
+        let provider = CheckoutLocalizationProviderMock(values: [
+            .awaitLoading: "Await custom",
+            .cardNumber: "Card number"
+        ])
+        configuration = configuration.localizationProvider(provider)
+        let sut = makeActionOnlyCheckoutCore()
+
+        // When
+        let actionComponent = try XCTUnwrap(sut.actionHandlingComponent as? CheckoutActionComponent)
+
+        // Then
+        let actionLocalizationParameters = try XCTUnwrap(actionComponent.configuration.localizationParameters)
+        let authenticationLocalizationParameters = try XCTUnwrap(actionComponent.configuration.authentication.localizationParameters)
+        XCTAssertEqual(localizedString(.awaitWaitForConfirmation, actionLocalizationParameters), "Await custom")
+        XCTAssertEqual(localizedString(.cardNumberItemTitle, authenticationLocalizationParameters), "Card number")
     }
 
     func testSetupWithSession_Success() async throws {
@@ -867,4 +886,17 @@ struct TestError: Error {}
 private final class ActionComponentMock: ActionComponent {
     var context: AdyenContext = Dummy.context
     var delegate: ActionComponentDelegate?
+}
+
+private final class CheckoutLocalizationProviderMock: CheckoutLocalizationProvider {
+
+    private let values: [CheckoutLocalizationKey: String]
+
+    init(values: [CheckoutLocalizationKey: String]) {
+        self.values = values
+    }
+
+    func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String? {
+        values[key]
+    }
 }

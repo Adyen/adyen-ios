@@ -11,7 +11,7 @@ import XCTest
 class FormErrorItemTests: XCTestCase {
 
     func testHidingAndShowing() {
-        let formViewController = FormViewController(style: FormComponentStyle())
+        let formViewController = FormViewController(scrollEnabled: false, style: FormComponentStyle())
 
         formViewController.loadViewIfNeeded()
 

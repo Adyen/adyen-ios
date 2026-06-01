@@ -4,11 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenComponents
-@_spi(AdyenInternal) @testable import AdyenUI
+@testable import Adyen
+@testable import AdyenComponents
+@testable import AdyenUI
 import XCTest
 
+@MainActor
 final class ACHDirectDebitComponentFactoryTests: XCTestCase {
 
     var sut: ACHDirectDebitComponentFactory!
@@ -111,7 +112,9 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         let customAmount = Amount(value: 999, currencyCode: "USD")
         let customContext = AdyenContext(
             apiContext: Dummy.apiContext,
-            amount: customAmount
+            amount: customAmount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: AnalyticsProviderMock()
         )
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
         let configuration = ACHDirectDebitComponentConfiguration()

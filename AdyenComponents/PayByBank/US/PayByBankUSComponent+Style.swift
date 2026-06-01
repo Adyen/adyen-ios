@@ -13,8 +13,8 @@ import UIKit
 
 extension PayByBankUSComponent {
     
-    public struct Style {
-        public var title: TextStyle = {
+    package struct Style {
+        package var title: TextStyle = {
             let titleSize = UIFont.preferredFont(forTextStyle: .title1).pointSize
             return TextStyle(
                 font: .systemFont(ofSize: titleSize, weight: .bold),
@@ -22,7 +22,7 @@ extension PayByBankUSComponent {
             )
         }()
         
-        public var subtitle: TextStyle = {
+        package var subtitle: TextStyle = {
             let subtitleSize: CGFloat = UIFont.preferredFont(forTextStyle: .subheadline).pointSize
             return TextStyle(
                 font: .systemFont(ofSize: subtitleSize, weight: .medium),
@@ -30,7 +30,7 @@ extension PayByBankUSComponent {
             )
         }()
         
-        public var message: TextStyle = {
+        package var message: TextStyle = {
             let messageSize: CGFloat = UIFont.preferredFont(forTextStyle: .subheadline).pointSize
             return TextStyle(
                 font: .systemFont(ofSize: messageSize, weight: .regular),
@@ -38,7 +38,7 @@ extension PayByBankUSComponent {
             )
         }()
         
-        public var headerImage: ImageStyle = .init(
+        package var headerImage: ImageStyle = .init(
             borderColor: UIColor.Adyen.componentSeparator,
             borderWidth: 0,
             cornerRadius: 8.0,
@@ -46,12 +46,12 @@ extension PayByBankUSComponent {
             contentMode: .scaleAspectFit
         )
         
-        public var submitButton: ButtonStyle = .init(
+        package var submitButton: ButtonStyle = .init(
             title: TextStyle(font: .preferredFont(forTextStyle: .headline), color: .white),
             cornerRounding: .fixed(8),
             background: UIColor.Adyen.defaultBlue
         )
         
-        public init() {}
+        package init() {}
     }
 }

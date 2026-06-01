@@ -17,25 +17,24 @@ import Foundation
 
     /// Action component to handle WeChat Pay SDK action.
     @MainActor
-    public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
+    package final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
 
         private static let universalLink = "https://www.adyen.com/"
 
-        @_spi(AdyenInternal)
-        public var context: AdyenContext
+        package var context: AdyenContext
     
-        public weak var delegate: ActionComponentDelegate?
+        package weak var delegate: ActionComponentDelegate?
     
         private var currentlyHandledAction: WeChatPaySDKAction?
         
         /// Initializes a new instance of `WeChatPaySDKActionComponent`
         ///
         /// - Parameter context: The context object.
-        public init(context: AdyenContext) {
+        package init(context: AdyenContext) {
             self.context = context
         }
     
-        public func handle(_ action: WeChatPaySDKAction) {
+        package func handle(_ action: WeChatPaySDKAction) {
             guard Self.isDeviceSupported() else {
                 delegate?.didFail(with: ComponentError.paymentMethodNotSupported, from: self)
                 return
@@ -62,7 +61,7 @@ import Foundation
         }
     
         /// Checks if the current device supports WeChat Pay.
-        public static func isDeviceSupported() -> Bool {
+        package static func isDeviceSupported() -> Bool {
             assertWeChatPayAppSchemeConfigured()
             WXApi.registerApp("", universalLink: WeChatPaySDKActionComponent.universalLink)
             return WXApi.isWXAppInstalled() && WXApi.isWXAppSupport()
@@ -79,10 +78,9 @@ import Foundation
 
     }
 
-    @_spi(AdyenInternal)
     extension WeChatPaySDKActionComponent: WXApiDelegate {
 
-        public func onResp(_ resp: BaseResp) {
+        package func onResp(_ resp: BaseResp) {
             guard let currentlyHandledAction else {
                 return AdyenAssertion.assertionFailure(message: "no WeChatPaySDKAction were handled")
             }
@@ -112,26 +110,25 @@ import Foundation
 
     /// Action component to handle WeChat Pay SDK action.
     @MainActor
-    public final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
+    package final class WeChatPaySDKActionComponent: NSObject, AnyWeChatPaySDKActionComponent {
 
-        @_spi(AdyenInternal)
-        public let context: AdyenContext
+        package let context: AdyenContext
 
-        public weak var delegate: ActionComponentDelegate?
+        package weak var delegate: ActionComponentDelegate?
 
         /// Initializes a new instance of `WeChatPaySDKActionComponent`
         ///
         /// - Parameter context: The context object.
-        public init(context: AdyenContext) {
+        package init(context: AdyenContext) {
             self.context = context
         }
 
-        public func handle(_ action: WeChatPaySDKAction) {
+        package func handle(_ action: WeChatPaySDKAction) {
             AdyenAssertion.assertionFailure(message: "WeChatPaySDKActionComponent can only work on a real device.")
         }
 
         /// Checks if the current device supports WeChat Pay.
-        public static func isDeviceSupported() -> Bool {
+        package static func isDeviceSupported() -> Bool {
             false
         }
 

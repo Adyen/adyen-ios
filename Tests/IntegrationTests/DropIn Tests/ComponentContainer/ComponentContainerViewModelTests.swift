@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@testable import Adyen
+@_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenActions
 @testable import AdyenDropIn
 @testable import AdyenEncryption
@@ -83,27 +83,6 @@ struct ComponentContainerViewModelTests {
     }
 
     @Test
-    func didFail_givenCancellation_shouldPerfomCancelCallback() async {
-        // Given
-        await withCheckedContinuation { continuation in
-            let onCancelCallback: () -> Void = {
-                continuation.resume()
-            }
-
-            Task {
-                let (sut, _, paymentComponentMock, _, _) = makeSUT(onCancel: onCancelCallback)
-
-                // When
-                let cancelledError = ComponentError.cancelled
-                sut.didFail(with: cancelledError, from: paymentComponentMock)
-            }
-        }
-
-        // Then
-        #expect(true)
-    }
-
-    @Test
     func didFail_givenCancellation_shouldCallRouterDismiss() {
         // Given
         let (sut, _, paymentComponentMock, _, routerMock) = makeSUT()
@@ -153,7 +132,7 @@ struct ComponentContainerViewModelTests {
         let viewControllerMock = UIViewController()
         let actionComponentMock = PresentableComponentWrapper(component: redirectComponent, viewController: viewControllerMock)
 
-        routerMock.presentActionComponentOnCancelClosure = { _, onCancel in
+        routerMock.presentActionComponentOnCancelClosure = { (_: PresentableComponent, onCancel: (() -> Void)?) in
             // Then
             onCancel?()
             #expect(paymentComponentMock.stopLoadingCallsCount == 1)
@@ -183,9 +162,40 @@ struct ComponentContainerViewModelTests {
         #expect(paymentComponentMock.stopLoadingCallsCount == 1)
     }
 
+    // MARK: - Mocks
+
+    private class ComponentContainerRoutingMock: ComponentContainerRouting {
+        var presentPaymentComponentCallsCount = 0
+        var presentPaymentComponentReceivedPaymentComponent: PresentableComponent?
+
+        func present(paymentComponent: PresentableComponent) {
+            presentPaymentComponentCallsCount += 1
+            presentPaymentComponentReceivedPaymentComponent = paymentComponent
+        }
+
+        var presentActionComponentOnCancelCallsCount = 0
+        var presentActionComponentOnCancelReceivedArguments: (actionComponent: PresentableComponent, onCancel: (() -> Void)?)?
+        var presentActionComponentOnCancelClosure: ((PresentableComponent, (() -> Void)?) -> Void)?
+
+        func present(actionComponent: PresentableComponent, onCancel: (() -> Void)?) {
+            presentActionComponentOnCancelCallsCount += 1
+            presentActionComponentOnCancelReceivedArguments = (actionComponent, onCancel)
+            presentActionComponentOnCancelClosure?(actionComponent, onCancel)
+        }
+
+        var dismissCompletionCallsCount = 0
+        var dismissCompletionReceivedCompletion: (() -> Void)?
+
+        func dismiss(completion: (() -> Void)?) {
+            dismissCompletionCallsCount += 1
+            dismissCompletionReceivedCompletion = completion
+            completion?()
+        }
+    }
+
     // MARK: - Helpers
 
-    private func makeSUT(onCancel: (() -> Void)? = nil) -> (
+    private func makeSUT() -> (
         sut: ComponentContainerViewModel,
         paymentMethodMock: CardPaymentMethodMock,
         paymentComponentMock: PresentableComponentMock,
@@ -210,8 +220,7 @@ struct ComponentContainerViewModelTests {
             component: paymentComponentMock,
             configuration: DropInComponent.Configuration(),
             dropInFlowManager: dropInFlowManagerMock,
-            partialPaymentDelegate: nil,
-            onCancel: onCancel
+            partialPaymentDelegate: nil
         )
 
         let routerMock = ComponentContainerRoutingMock()

@@ -14,17 +14,17 @@ import Foundation
 import UIKit
 
 /// A component that provides a form consisting of first name, last name, phone, and email.
-public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationComponent {
+package final class BasicPersonalInfoFormComponent: AbstractPersonalInformationComponent {
 
     /// Configuration for Basic Personal Information Component
-    public typealias Configuration = PersonalInformationConfiguration
-    
+    package typealias Configuration = PersonalInformationConfiguration
+
     /// Initializes the component.
     /// - Parameters:
     ///   - paymentMethod: The payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The component's configuration.
-    public init(
+    package init(
         paymentMethod: PaymentMethod,
         context: AdyenContext,
         configuration: Configuration = .init()
@@ -67,13 +67,13 @@ public final class BasicPersonalInfoFormComponent: AbstractPersonalInformationCo
 }
 
 /// Provides a form for personal information, required for E-context ATM  payments.
-public typealias EContextATMComponent = BasicPersonalInfoFormComponent
+package typealias EContextATMComponent = BasicPersonalInfoFormComponent
 
 /// Provides a form for personal information, required for E-context Store payments.
-public typealias EContextStoreComponent = BasicPersonalInfoFormComponent
+package typealias EContextStoreComponent = BasicPersonalInfoFormComponent
 
 /// Provides a form for personal information, required for E-context Online  payments.
-public typealias EContextOnlineComponent = BasicPersonalInfoFormComponent
+package typealias EContextOnlineComponent = BasicPersonalInfoFormComponent
 
 /// Provides a form for personal information, required for 7eleven  payments.
-public typealias SevenElevenComponent = BasicPersonalInfoFormComponent
+package typealias SevenElevenComponent = BasicPersonalInfoFormComponent

@@ -17,7 +17,8 @@ internal protocol PaymentMethodListRouterListener: AnyObject {
 // sourcery:AutoMockable
 @MainActor
 internal protocol PaymentMethodListRouting: AnyObject {
-    func present(component: PaymentComponent, onCancel: @escaping () -> Void)
+    func present(component: PaymentComponent)
+    func present(viewController: UIViewController)
     func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?)
     func dismiss(completion: (() -> Void)?)
 }
@@ -61,18 +62,19 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         listener?.didDismissPaymentMethodList(completion: completion)
     }
 
-    internal func present(
-        component: PaymentComponent,
-        onCancel: @escaping () -> Void
-    ) {
+    internal func present(component: PaymentComponent) {
         switch component.type {
         case let .regular(regularComponent):
-            pushComponent(regularComponent, onCancel: onCancel)
+            pushComponentContainer(with: regularComponent)
         case let .stored(storedComponent):
-            presentModalComponent(storedComponent, onCancel: onCancel)
+            presentComponentContainer(with: storedComponent)
         case .initiable:
             break
         }
+    }
+
+    internal func present(viewController: UIViewController) {
+        rootViewController.present(viewController, animated: true)
     }
 
     internal func present(
@@ -83,35 +85,31 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
             for: actionComponent,
             onCancel: onCancel
         )
-        viewController.present(actionViewController, animated: true)
+        rootViewController.present(actionViewController, animated: true)
     }
 
     // MARK: - Private
 
-    private func pushComponent(
-        _ component: PresentableComponent,
-        onCancel: @escaping () -> Void
+    private func pushComponentContainer(
+        with component: PresentableComponent
     ) {
-        let componentContainerViewController = componentContainerViewController(for: component, onCancel: onCancel)
+        let componentContainerViewController = componentContainerViewController(for: component)
         navigationController.pushViewController(componentContainerViewController, animated: true)
     }
     
-    private func presentModalComponent(
-        _ component: PresentableComponent,
-        onCancel: @escaping () -> Void
+    private func presentComponentContainer(
+        with component: PresentableComponent
     ) {
-        let componentContainerViewController = componentContainerViewController(for: component, onCancel: onCancel)
-        viewController.present(componentContainerViewController, animated: true)
+        let componentContainerViewController = componentContainerViewController(for: component)
+        rootViewController.present(componentContainerViewController, animated: true)
     }
 
     private func componentContainerViewController(
-        for component: PresentableComponent,
-        onCancel: @escaping () -> Void
+        for component: PresentableComponent
     ) -> UIViewController {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: component,
-            delegate: self,
-            onCancel: onCancel
+            listener: self
         )
         childRouter = componentContainerRouter
         return componentContainerRouter.rootViewController

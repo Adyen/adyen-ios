@@ -11,19 +11,20 @@ import Adyen
 
 extension PayByBankUSComponent {
     
-    public struct Configuration {
-        
+    package struct Configuration {
+
         /// The UI style of the component.
-        public var style: PayByBankUSComponent.Style
-        
+        ///
+        package var style: PayByBankUSComponent.Style
+
         package var localizationParameters: LocalizationParameters?
-        
+
         /// Initializes a new instance of `PayByBankUSComponent.Configuration`
         ///
         /// - Parameters:
         ///   - style: The form style.
         ///   - localizationParameters: The localization parameters.
-        public init(style: PayByBankUSComponent.Style = .init()) {
+        package init(style: PayByBankUSComponent.Style = .init()) {
             self.init(style: style, localizationParameters: nil)
         }
 

@@ -7,21 +7,20 @@
 import Foundation
 
 /// Throttles come code execution.
-@_spi(AdyenInternal)
-public final class Throttler {
-    
+package final class Throttler {
+
     private var workItem = DispatchWorkItem(block: { /* first work item is idle */ })
     private let queue: DispatchQueue
     private let minimumDelay: TimeInterval
     
-    public init(minimumDelay: TimeInterval, queue: DispatchQueue = DispatchQueue.main) {
+    package init(minimumDelay: TimeInterval, queue: DispatchQueue = DispatchQueue.main) {
         self.minimumDelay = minimumDelay
         self.queue = queue
     }
     
     /// Throttle a block of code after `minimumDelay`.
     /// - Parameter block: Block of code to be throttled.
-    public func throttle(_ block: @escaping () -> Void) {
+    package func throttle(_ block: @escaping () -> Void) {
         // Cancel any existing work item if it has not yet executed
         workItem.cancel()
         

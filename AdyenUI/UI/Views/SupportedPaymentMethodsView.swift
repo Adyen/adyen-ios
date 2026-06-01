@@ -8,13 +8,12 @@ import Adyen
 import AdyenNetworking
 import UIKit
 
-@_spi(AdyenInternal)
-public class SupportedPaymentMethodLogosView: UIView {
-    
-    public struct Style: ViewStyle {
-        public var backgroundColor: UIColor = .clear
-        
-        public var images: ImageStyle = .init(
+package class SupportedPaymentMethodLogosView: UIView {
+
+    package struct Style: ViewStyle {
+        package var backgroundColor: UIColor = .clear
+
+        package var images: ImageStyle = .init(
             borderColor: UIColor.Adyen.componentSeparator,
             borderWidth: 1.0 / UIScreen.main.nativeScale,
             cornerRadius: 3.0,
@@ -22,12 +21,12 @@ public class SupportedPaymentMethodLogosView: UIView {
             contentMode: .scaleAspectFit
         )
         
-        public var trailingText: TextStyle = .init(
+        package var trailingText: TextStyle = .init(
             font: .preferredFont(forTextStyle: .callout),
             color: UIColor.Adyen.componentSecondaryLabel
         )
         
-        public init() {}
+        package init() {}
     }
     
     internal let imageSize: CGSize
@@ -48,7 +47,7 @@ public class SupportedPaymentMethodLogosView: UIView {
     
     @AdyenDependency(\.imageLoader) private var imageLoader
     
-    public init(
+    package init(
         imageSize: CGSize = .init(width: 24, height: 16),
         imageUrls: [URL],
         trailingText: String?,
@@ -64,7 +63,7 @@ public class SupportedPaymentMethodLogosView: UIView {
         self.setContentHuggingPriority(.required, for: .horizontal)
     }
     
-    override public func willMove(toSuperview newSuperview: UIView?) {
+    override package func willMove(toSuperview newSuperview: UIView?) {
         super.willMove(toSuperview: newSuperview)
         
         if newSuperview != nil {
