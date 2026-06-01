@@ -1,6 +1,9 @@
 # Card component
 
-This guide covers the v6 card component API built around `Checkout.setup(...)`, `CheckoutConfiguration`, and `CardConfiguration`.
+This guide covers the shared card component API in v6. For flow-specific setup, use:
+
+- [Card component: session flow](card-session-flow.md)
+- [Card component: advanced flow](card-advanced-flow.md)
 
 For the shared v6 concepts, see [README.md](README.md).
 
@@ -67,94 +70,10 @@ let configuration = try CheckoutConfiguration(
 }
 ```
 
-## Session flow
+## Flow guides
 
-Use `Checkout.setup(with: SessionResponse, ...)` when your backend starts checkout with `/sessions`.
-
-```swift
-let configuration = try CheckoutConfiguration(
-    environment: .test,
-    amount: amount,
-    clientKey: clientKey
-) {
-    CardConfiguration()
-        .onBinChange { bin in
-            print("BIN: \(bin)")
-        }
-        .onBinLookup { brands in
-            print("Brands: \(brands)")
-        }
-    AuthenticationConfiguration()
-        .requestorAppURL(URL(string: "your-app://adyen")!)
-}
-
-let checkout = try await Checkout.setup(
-    with: sessionResponse,
-    configuration: configuration,
-    presentationDelegate: self
-)
-.onComplete { result in
-    print(result.resultCode)
-}
-.onError { error in
-    print(error.localizedDescription)
-}
-
-let component = try checkout.createPaymentComponent(for: .scheme)
-```
-
-Complete working example:
-
-- [Demo/Common/IntegrationExamples/Session/Components/CardComponentExample.swift](../../Demo/Common/IntegrationExamples/Session/Components/CardComponentExample.swift)
-
-## Advanced flow
-
-Use `Checkout.setup(with: PaymentMethods, ...)` when your backend handles `/payments` and `/payments/details`.
-
-```swift
-let configuration = try CheckoutConfiguration(
-    environment: .test,
-    amount: amount,
-    clientKey: clientKey
-) {
-    CardConfiguration()
-        .billingAddressMode(.lookup(onAddressLookup: { searchTerm in
-            await yourAddressProvider.searchAsync(searchTerm)
-        }))
-        .onBinChange { bin in
-            print("BIN: \(bin)")
-        }
-        .onBinLookup { brands in
-            print("Brands: \(brands)")
-        }
-}
-.localizationProvider(DemoLocalizationProvider())
-.theme(theme)
-
-let checkout = try await Checkout.setup(
-    with: paymentMethods,
-    configuration: configuration,
-    presentationDelegate: self
-)
-.onSubmit { data in
-    try await submitToYourServer(data)
-}
-.onAdditionalDetails { data in
-    try await submitAdditionalDetailsToYourServer(data)
-}
-.onComplete { result in
-    print(result.resultCode)
-}
-.onError { error in
-    print(error.localizedDescription)
-}
-
-let component = try checkout.createPaymentComponent(for: .scheme)
-```
-
-Complete working example:
-
-- [Demo/Common/IntegrationExamples/AdvancedFlow/Components/CardComponentAdvancedFlowExample.swift](../../Demo/Common/IntegrationExamples/AdvancedFlow/Components/CardComponentAdvancedFlowExample.swift)
+- Use [card-session-flow.md](card-session-flow.md) when your backend starts checkout with `/sessions`.
+- Use [card-advanced-flow.md](card-advanced-flow.md) when your backend starts checkout with `/paymentMethods` and handles `/payments` and `/payments/details`.
 
 ## Stored cards
 
@@ -175,4 +94,6 @@ For stored cards:
 ## Related docs
 
 - [v6 foundations](README.md)
+- [Card component: session flow](card-session-flow.md)
+- [Card component: advanced flow](card-advanced-flow.md)
 - [Migration notes](../../MIGRATION.md)

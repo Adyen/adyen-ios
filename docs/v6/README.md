@@ -2,7 +2,7 @@
 
 This guide covers the v6 checkout entry points and the shared concepts used by all payment method docs.
 
-For card-specific configuration and examples, see [card.md](card.md). For migration notes, see [../../MIGRATION.md](../../MIGRATION.md).
+For card-specific configuration and flow guides, see [card.md](card.md), [card-session-flow.md](card-session-flow.md), and [card-advanced-flow.md](card-advanced-flow.md). For migration notes, see [../../MIGRATION.md](../../MIGRATION.md).
 
 ## Overview
 
@@ -245,5 +245,7 @@ func application(_ app: UIApplication, open url: URL, options: [UIApplication.Op
 
 ## Next steps
 
-- [Card component guide](card.md)
+- [Card component overview](card.md)
+- [Card component: session flow](card-session-flow.md)
+- [Card component: advanced flow](card-advanced-flow.md)
 - [Migration notes](../../MIGRATION.md)
