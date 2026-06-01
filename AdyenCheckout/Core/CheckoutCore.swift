@@ -99,9 +99,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
 
     package func createPaymentComponent(for type: PaymentMethodType) throws -> CheckoutPaymentComponent {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: type) else {
-            throw UnknownError(
-                errorDescription: "Payment method \(type.rawValue) is not available in the current payment methods."
-            )
+            throw CheckoutError(code: .unknown, message: "Payment method \(type.rawValue) is not available in the current payment methods.")
         }
 
         return try CheckoutPaymentComponent(
@@ -114,9 +112,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
 
     package func createPaymentComponent(for identifier: String) throws -> CheckoutPaymentComponent {
         guard let storedPaymentMethod = paymentMethods?.stored.first(where: { $0.identifier == identifier }) else {
-            throw UnknownError(
-                errorDescription: "No stored payment method found for identifier \(identifier)."
-            )
+            throw CheckoutError(code: .unknown, message: "No stored payment method found for identifier \(identifier).")
         }
 
         return CheckoutPaymentComponent(
