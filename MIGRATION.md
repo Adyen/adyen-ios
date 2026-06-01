@@ -6,6 +6,7 @@ See also:
 
 - [docs/v6/README.md](docs/v6/README.md)
 - [docs/v6/card.md](docs/v6/card.md)
+- [docs/v6/theme.md](docs/v6/theme.md)
 
 ### Core objects
 

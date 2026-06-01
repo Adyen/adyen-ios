@@ -2,7 +2,7 @@
 
 This guide covers the v6 checkout entry points and the shared concepts used by all payment method docs.
 
-For card-specific configuration and flow guides, see [card.md](card.md), [card-session-flow.md](card-session-flow.md), and [card-advanced-flow.md](card-advanced-flow.md). For migration notes, see [../../MIGRATION.md](../../MIGRATION.md).
+For card-specific configuration and flow guides, see [card.md](card.md), [card-session-flow.md](card-session-flow.md), and [card-advanced-flow.md](card-advanced-flow.md). For theme customization, see [theme.md](theme.md). For migration notes, see [../../MIGRATION.md](../../MIGRATION.md).
 
 ## Overview
 
@@ -180,6 +180,8 @@ present(navigationController, animated: true)
 
 ## Theme
 
+For the full `CheckoutTheme` guide and the currently supported merchant-facing overrides, see [theme.md](theme.md).
+
 Apply shared styling on `CheckoutConfiguration` before creating checkout:
 
 ```swift
@@ -248,4 +250,5 @@ func application(_ app: UIApplication, open url: URL, options: [UIApplication.Op
 - [Card component overview](card.md)
 - [Card component: session flow](card-session-flow.md)
 - [Card component: advanced flow](card-advanced-flow.md)
+- [Checkout theme](theme.md)
 - [Migration notes](../../MIGRATION.md)

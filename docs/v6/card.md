@@ -89,11 +89,13 @@ For stored cards:
 
 - `createPaymentComponent(for: identifier)` looks up the stored payment method in the current checkout flow.
 - `showSecurityCodeForStoredCard(_:)` controls whether the shopper should enter CVC again.
-- theme and localization settings configured on `CheckoutConfiguration` still apply.
+- theme settings configured on `CheckoutConfiguration` still apply. See [theme.md](theme.md).
+- localization settings configured on `CheckoutConfiguration` still apply. See [README.md](README.md#localization).
 
 ## Related docs
 
 - [v6 foundations](README.md)
 - [Card component: session flow](card-session-flow.md)
 - [Card component: advanced flow](card-advanced-flow.md)
+- [Checkout theme](theme.md)
 - [Migration notes](../../MIGRATION.md)
