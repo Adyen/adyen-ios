@@ -14,17 +14,6 @@ public protocol PaymentMethod: Codable {
     
     /// The name of the payment method, such as `"Credit Card"`, `"iDEAL"`, `"Apple Pay"`.
     var name: String { get }
-    
-    /// Describes a payment method display information thats provided by the merchant
-    /// and if not `nil`, will override the default display information.
-    var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? { get set }
-    
-    /// Display information for the payment method, adapted for displaying in a list.
-    ///
-    /// - Parameters:
-    ///   - using: The localization parameters.
-    @_spi(AdyenInternal)
-    func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation
 }
 
 // TODO: Robert: This is a temporary protocol that will eventually be removed. Each Component should have its own factory see: `CardComponentFactory` for this every component should be migrated.
