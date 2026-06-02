@@ -15,11 +15,15 @@ The public integration surface is centered around four concepts:
 
 ## Installation
 
-Import `AdyenCheckout` together with the modules used by your flow:
+Import the modules used by these examples:
 
 ```swift
 import Adyen
+import AdyenActions
+import AdyenCard
 import AdyenCheckout
+import AdyenUI
+import UIKit
 ```
 
 `AdyenCheckout` provides the setup APIs for session, advanced, and action-only flows.
@@ -83,7 +87,6 @@ let component = try checkout.createPaymentComponent(for: .scheme)
 `SessionCheckout` can:
 
 - create an individual payment component with `createPaymentComponent(for:)`
-- create a Drop-in with `createDropIn()`
 - let you inspect or patch shopper data before submit with `onBeforeSubmit(_:)`
 
 ## Advanced flow
@@ -123,7 +126,6 @@ let component = try checkout.createPaymentComponent(for: .scheme)
 `AdvancedCheckout` can:
 
 - create an individual payment component with `createPaymentComponent(for:)`
-- create a Drop-in with `createDropIn()`
 - expose `onSubmit(_:)` for `/payments`
 - expose `onAdditionalDetails(_:)` for `/payments/details`
 
@@ -235,15 +237,23 @@ let configuration = try CheckoutConfiguration(
 
 Use app-bundle `.strings` or `.xcstrings` files when you want to add a fully new language. Use `localizationProvider(_:)` when you want targeted runtime overrides.
 
-## Redirects
+## Redirect return URLs
 
-If checkout redirects the shopper out of your app, forward the return URL to `RedirectComponent`:
+If you need to build redirect details from a return URL yourself, use the public `RedirectDetails` API:
 
 ```swift
 func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-    return RedirectComponent.applicationDidOpen(from: url)
+    guard let redirectDetails = try? RedirectDetails(returnURL: url) else {
+        return false
+    }
+
+    let actionData = ActionComponentData(details: redirectDetails, paymentData: nil)
+    // Submit actionData to your /payments/details handling.
+    return true
 }
 ```
+
+If your backend expects `paymentData`, use the value from your previous `/payments` response instead of `nil`.
 
 ## Next steps
 
