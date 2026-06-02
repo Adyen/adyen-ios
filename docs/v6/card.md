@@ -7,6 +7,17 @@ This guide covers the shared card component API in v6. For flow-specific setup, 
 
 For the shared v6 concepts, see [README.md](README.md).
 
+## Imports
+
+Import the modules used by the card guides:
+
+```swift
+import Adyen
+import AdyenActions
+import AdyenCard
+import AdyenCheckout
+```
+
 ## Configure the card component
 
 Register `CardConfiguration` inside `CheckoutConfiguration`:
@@ -77,17 +88,19 @@ let configuration = try CheckoutConfiguration(
 
 ## Stored cards
 
-If your checkout flow returns stored payment methods, create a component by stored payment method identifier:
+If your checkout flow returns stored payment methods, first select a stored card explicitly:
 
 ```swift
-guard let storedCard = checkout.paymentMethods?.stored.first else { return }
+guard let storedCard = checkout.paymentMethods?.stored
+    .compactMap({ $0 as? StoredCardPaymentMethod })
+    .first else { return }
 
 let component = try checkout.createPaymentComponent(for: storedCard.identifier)
 ```
 
 For stored cards:
 
-- `createPaymentComponent(for: identifier)` looks up the stored payment method in the current checkout flow.
+- `createPaymentComponent(for: identifier)` looks up the stored card you selected from the current checkout flow.
 - `showSecurityCodeForStoredCard(_:)` controls whether the shopper should enter CVC again.
 - theme settings configured on `CheckoutConfiguration` still apply. See [theme.md](theme.md).
 - localization settings configured on `CheckoutConfiguration` still apply. See [README.md](README.md#localization).
