@@ -13,8 +13,6 @@ public struct StoredInstantPaymentMethod: StoredPaymentMethod {
 
     public let name: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
     public let identifier: String
 
     public let supportedShopperInteractions: [ShopperInteraction]
