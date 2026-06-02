@@ -13,8 +13,6 @@ public struct AtomePaymentMethod: PaymentMethod {
     
     public let name: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-    
     // MARK: - Private
     
     private enum CodingKeys: String, CodingKey {

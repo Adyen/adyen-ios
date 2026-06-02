@@ -15,7 +15,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var checkout: Checkout?
+    private var checkout: AdvancedCheckout?
     private var adyenComponent: CheckoutPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
@@ -67,6 +67,12 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 )
                 .cornerRadius(8.0)
         )
+
+        let checkout = try await Checkout.setup(
+            with: paymentMethods,
+            configuration: configuration,
+            presentationDelegate: self
+        )
         .onSubmit { [weak self] data in
             guard let self else { throw CancellationError() }
             return try await self.callPayments(with: data)
@@ -84,12 +90,6 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         .onError { [weak self] error in
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
-
-        let checkout = try await Checkout.setup(
-            with: paymentMethods,
-            configuration: configuration,
-            presentationDelegate: self
-        )
 
         self.checkout = checkout
 

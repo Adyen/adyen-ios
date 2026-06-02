@@ -21,7 +21,7 @@ import UIKit
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
 @MainActor
-public class CardComponent: PresentableComponent,
+package class CardComponent: PresentableComponent,
     PaymentMethodAware,
     LoadingComponent {
 
@@ -33,23 +33,31 @@ public class CardComponent: PresentableComponent,
     }
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
+    package let context: AdyenContext
 
     internal let cardPaymentMethod: AnyCardPaymentMethod
 
     internal let binInfoProvider: AnyBinInfoProvider
 
     /// The card payment method.
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         cardPaymentMethod
     }
 
     /// The supported card types.
-    public let supportedCardTypes: [CardType]
+    package let supportedCardTypes: [CardType]
 
     /// Card component configuration.
-    public internal(set) var configuration: CardConfiguration
+    package internal(set) var configuration: CardConfiguration
+
+    /// Localization parameters with the component-resolved ``CheckoutLocalizationProvider``
+    /// attached, used for all card UI string lookups.
+    private var resolvedLocalizationParameters: LocalizationParameters? {
+        guard let provider = configuration.localizationProvider else {
+            return configuration.localizationParameters
+        }
+        return (configuration.localizationParameters ?? LocalizationParameters()).withProvider(provider)
+    }
 
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate? {
@@ -69,7 +77,7 @@ public class CardComponent: PresentableComponent,
     }
 
     /// The partial payment order if any.
-    public var order: PartialPaymentOrder? {
+    package var order: PartialPaymentOrder? {
         didSet {
             storedCardComponent?.order = order
         }
@@ -86,7 +94,7 @@ public class CardComponent: PresentableComponent,
     ///   - paymentMethod: The card payment method.
     ///   - context: The context object for this component.
     ///   - configuration: The configuration of the component.
-    public convenience init(
+    package convenience init(
         paymentMethod: AnyCardPaymentMethod,
         context: AdyenContext,
         configuration: CardConfiguration = .init()
@@ -128,14 +136,14 @@ public class CardComponent: PresentableComponent,
 
     // MARK: - Presentable Component Protocol
 
-    public var viewController: UIViewController {
+    package var viewController: UIViewController {
         if let storedCardComponent {
             return storedCardComponent.viewController
         }
         return securedViewController
     }
 
-    public func stopLoading() {
+    package func stopLoading() {
         // since storedCardComponent is instantiated through this class
         // cardViewController should not be accessed when it's the storedCardComponent
         // we should separate stored card component logic into its own
@@ -153,14 +161,14 @@ public class CardComponent: PresentableComponent,
         // TODO: FIX StoredCard UI
         if configuration.showSecurityCodeForStoredCard {
             let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context, theme: configuration.theme)
-            storedComponent.localizationParameters = configuration.localizationParameters
+            storedComponent.localizationParameters = resolvedLocalizationParameters
             return storedComponent
         } else {
             let storedComponent = StoredPaymentMethodComponent(
                 paymentMethod: paymentMethod,
                 context: context
             )
-            storedComponent.localizationParameters = configuration.localizationParameters
+            storedComponent.localizationParameters = resolvedLocalizationParameters
             return storedComponent
         }
     }()
@@ -168,11 +176,11 @@ public class CardComponent: PresentableComponent,
     /// Updates the visibility of the store payment method switch.
     ///
     /// - Parameter isVisible: Indicates whether to show the switch if `true` or to hide it if `false`.
-    public func update(storePaymentMethodFieldVisibility isVisible: Bool) {
+    package func update(storePaymentMethodFieldVisibility isVisible: Bool) {
         cardViewController.update(storePaymentMethodFieldVisibility: isVisible)
     }
 
-    public func update(storePaymentMethodFieldValue isOn: Bool) {
+    package func update(storePaymentMethodFieldValue isOn: Bool) {
         cardViewController.update(storePaymentMethodFieldValue: isOn)
     }
 
@@ -191,7 +199,7 @@ public class CardComponent: PresentableComponent,
             supportedCardTypes: supportedCardTypes,
             initialCountryCode: initialCountryCode,
             scope: String(describing: self),
-            localizationParameters: configuration.localizationParameters,
+            localizationParameters: resolvedLocalizationParameters,
             theme: configuration.theme,
             cardScannerAnalyticsHandler: { [weak self] logSubType in
                 self?.sendCardScannerLogEvent(logSubType)
@@ -200,7 +208,7 @@ public class CardComponent: PresentableComponent,
 
         formViewController.delegate = self
         formViewController.cardDelegate = self
-        formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
+        formViewController.title = paymentMethod.displayInformation(using: resolvedLocalizationParameters).title
 
         formViewController.items.onDidTriggerInfoEvent = { [weak self] infoEventData in
             self?.sendInfoEvent(with: infoEventData)
@@ -318,11 +326,11 @@ private extension CardConfiguration {
 
 extension CardComponent: SubmittableComponent {
 
-    public func submit() {
+    package func submit() {
         didSelectSubmitButton()
     }
 
-    public func validate() -> Bool {
+    package func validate() -> Bool {
         cardViewController.validate()
     }
 }

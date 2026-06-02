@@ -117,14 +117,14 @@ internal enum AnyPaymentMethod: Codable {
 
 extension AnyPaymentMethod {
     
-    init(_ paymentMethod: PaymentMethod) {
+    internal init(_ paymentMethod: PaymentMethod) {
         self = AnyPaymentMethodDecoder.anyPaymentMethod(from: paymentMethod)
     }
 }
 
 extension PaymentMethod {
     
-    var toAnyPaymentMethod: AnyPaymentMethod {
+    internal var toAnyPaymentMethod: AnyPaymentMethod {
         .init(self)
     }
 }

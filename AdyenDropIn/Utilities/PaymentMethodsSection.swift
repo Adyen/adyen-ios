@@ -13,5 +13,4 @@ import Adyen
 internal struct PaymentMethodsSection {
     internal var header: ListSectionHeader?
     internal var paymentMethods: [PaymentMethod]
-    internal var footer: ListSectionFooter?
 }

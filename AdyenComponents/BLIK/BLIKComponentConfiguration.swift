@@ -12,7 +12,7 @@ import UIKit
 #endif
 
 /// Configuration for BLIK Component.
-public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
+package struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
     
     package let componentType: Adyen.CheckoutComponentType = .payment(.blik)
     
@@ -23,8 +23,14 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
     package var theme: CheckoutTheme = .default
 
     package var localizationParameters: LocalizationParameters?
+
+    package var localizationProvider: (any CheckoutLocalizationProvider)?
     
-    public init(
+    package init(style: FormComponentStyle) {
+        self.init(style: style, localizationParameters: nil)
+    }
+
+    package init(
         style: FormComponentStyle,
         localizationParameters: LocalizationParameters? = nil
     ) {
@@ -32,7 +38,14 @@ public struct BLIKComponentConfiguration: CheckoutComponentConfiguration {
         self.localizationParameters = localizationParameters
     }
 
-    public init(
+    package init(
+        theme: CheckoutTheme = .default,
+        style: FormComponentStyle = .init()
+    ) {
+        self.init(localizationParameters: nil, theme: theme, style: style)
+    }
+
+    package init(
         localizationParameters: LocalizationParameters? = nil,
         theme: CheckoutTheme = .default,
         style: FormComponentStyle = .init()

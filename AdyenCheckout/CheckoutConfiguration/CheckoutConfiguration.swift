@@ -13,9 +13,8 @@ import Foundation
 /// A configuration container for customizing the behavior of Drop-in and individual components.
 ///
 /// `CheckoutConfiguration` is the central entry point for defining custom behavior in your integration.
-/// It supports both default and advanced flows out of the box, allowing you to:
-/// - Override default behavior with callbacks such as `onSubmit`, `onAdditionalDetails`, `onComplete`, and `onError`.
-/// - Customize individual components (e.g., card, Apple Pay) by supplying specific `CheckoutComponentConfiguration` instances.
+/// It customizes component behavior by allowing you to:
+/// - Supply component-specific `CheckoutComponentConfiguration` instances.
 /// - Control presentation options such as whether to show the default submit button.
 ///
 /// You can add component configurations using a Swift DSL, enabling a declarative setup of your integration.
@@ -39,14 +38,7 @@ public struct CheckoutConfiguration {
     // TODO: how we store configurations may change
     package var configurations: [CheckoutComponentType: CheckoutComponentConfiguration]
     
-    package var onSubmit: SubmitHandler?
-    
-    package var onAdditionalDetails: AdditionalDetailsHandler?
-    
-    package var onError: CheckoutErrorHandler?
-    
-    package var onComplete: CheckoutSuccessHandler?
-
+    package var localizationProvider: (any CheckoutLocalizationProvider)?
     package var theme: CheckoutTheme
 
     package let amount: Amount?
@@ -101,6 +93,7 @@ public struct CheckoutConfiguration {
         analyticsApiContext: APIContext?,
         analyticsConfiguration: AnalyticsConfiguration,
         configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:],
+        localizationProvider: (any CheckoutLocalizationProvider)? = nil,
         theme: CheckoutTheme = .default
     ) {
         self.analyticsConfiguration = analyticsConfiguration
@@ -108,6 +101,7 @@ public struct CheckoutConfiguration {
         self.amount = amount
         self.apiContext = apiContext
         self.configurations = configurations
+        self.localizationProvider = localizationProvider
         self.theme = theme
     }
     
@@ -132,7 +126,24 @@ public struct CheckoutConfiguration {
         configurations[.action(actionType)] as? T
     }
 
-    // TODO: Robert: Make public to private, This public is not needed. But currently using this to support providing analyticsAPIContext in the Integration Examples.
+    /// Resolves runtime localization parameters from the checkout-wide provider only.
+    ///
+    /// Checkout flows do not define component-level localization-provider precedence.
+    /// Merchants configure provider-based overrides exclusively through
+    /// `CheckoutConfiguration.localizationProvider(...)`.
+    internal func resolvedCheckoutLocalizationParameters(
+        mergingExistingParameters base: LocalizationParameters? = nil
+    ) -> LocalizationParameters? {
+        guard let localizationProvider else {
+            return base
+        }
+
+        return (base ?? LocalizationParameters()).withProvider(localizationProvider)
+    }
+
+    // TODO: Robert: Make public to private.
+    // This public is not needed, but it currently supports providing
+    // analyticsAPIContext in the Integration Examples.
     package static func createAnalyticsAPIContext(
         apiContext: APIContext
     ) -> APIContext? {
@@ -158,6 +169,24 @@ extension CheckoutConfiguration {
     public func showsSubmitButton(_ showsSubmitButton: Bool) -> Self {
         var copy = self
         copy.showsSubmitButton = showsSubmitButton
+        return copy
+    }
+
+    /// Sets a custom localization provider for programmatic string overrides.
+    ///
+    /// The provider is called for each string the SDK renders. Return a non-`nil` value
+    /// to override the default, or return `nil` to let the SDK's standard localization
+    /// fallback chain handle the key (app bundle → SDK bundle → English).
+    ///
+    /// In checkout flows, this is the only merchant-facing provider override. Checkout
+    /// resolves it into internal runtime localization parameters before constructing
+    /// payment and action components.
+    ///
+    /// - Note: To add support for a *completely new language*, place a `.strings` or
+    ///   `.xcstrings` file with `adyen.*` keys in your app bundle instead of using this provider.
+    public func localizationProvider(_ localizationProvider: any CheckoutLocalizationProvider) -> Self {
+        var copy = self
+        copy.localizationProvider = localizationProvider
         return copy
     }
 

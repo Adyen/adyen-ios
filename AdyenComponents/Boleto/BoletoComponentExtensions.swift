@@ -13,21 +13,21 @@ import Foundation
 extension BoletoComponent {
     
     /// Boleto component configuration.
-    public struct Configuration: AnyPersonalInformationConfiguration {
+    package struct Configuration: AnyPersonalInformationConfiguration {
         
         /// Describes the component's UI style.
-        public let style: FormComponentStyle
+        package let style: FormComponentStyle
 
         /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
-        internal let showsSubmitButton: Bool
+        package let showsSubmitButton: Bool
 
-        public var localizationParameters: LocalizationParameters?
+        package var localizationParameters: LocalizationParameters?
         
         /// Pre-filled optional personal information about the shopper
-        public let shopperInformation: PrefilledShopperInformation?
+        package let shopperInformation: PrefilledShopperInformation?
         
         /// Indicates whether to show `sendCopyByEmail` checkbox and email text field
-        internal let showEmailAddress: Bool
+        package let showEmailAddress: Bool
         
         /// Initializes the configuration for Boleto Component.
         /// - Parameters:
@@ -37,7 +37,22 @@ extension BoletoComponent {
         ///   - localizationParameters: Localization parameters.
         ///   - shopperInformation: Pre-filled optional personal information about the shopper
         ///   - showEmailAddress: Indicates whether to show `sendCopyByEmail` checkbox and email text field
-        public init(
+        package init(
+            style: FormComponentStyle = FormComponentStyle(),
+            showsSubmitButton: Bool = true,
+            shopperInformation: PrefilledShopperInformation?,
+            showEmailAddress: Bool
+        ) {
+            self.init(
+                style: style,
+                showsSubmitButton: showsSubmitButton,
+                localizationParameters: nil,
+                shopperInformation: shopperInformation,
+                showEmailAddress: showEmailAddress
+            )
+        }
+
+        package init(
             style: FormComponentStyle = FormComponentStyle(),
             showsSubmitButton: Bool = true,
             localizationParameters: LocalizationParameters? = nil,

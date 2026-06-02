@@ -13,8 +13,6 @@ public struct QiwiWalletPaymentMethod: PaymentMethod {
     
     public let name: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-    
     /// Qiwi Wallet details.
     public let phoneExtensions: [PhoneExtension]
     

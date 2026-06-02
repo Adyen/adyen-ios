@@ -16,8 +16,6 @@ public struct UPIPaymentMethod: PaymentMethod {
     /// The available UPI apps.
     public let apps: [Issuer]?
 
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
     // MARK: - Private
 
     private enum CodingKeys: String, CodingKey {

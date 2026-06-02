@@ -13,8 +13,6 @@ public struct PayToPaymentMethod: PaymentMethod {
 
     public let name: String
 
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
     // MARK: - Private
 
     private enum CodingKeys: String, CodingKey {
@@ -25,7 +23,7 @@ public struct PayToPaymentMethod: PaymentMethod {
 }
 
 /// A stored PayTo payment method.
-public struct StoredPayToPaymentMethod: StoredPaymentMethod {
+public struct StoredPayToPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayOverridable {
    
     public let type: PaymentMethodType
     
@@ -36,10 +34,8 @@ public struct StoredPayToPaymentMethod: StoredPaymentMethod {
     public let label: String
     
     public let supportedShopperInteractions: [ShopperInteraction]
-    
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
         
-    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let accessibilityLabel = [
             name,
             label

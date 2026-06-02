@@ -8,7 +8,7 @@ import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 
 /// A payment method wrapper, with custom `DisplayInformation`.
-internal struct PartialConfirmationPaymentMethod: PaymentMethod {
+internal struct PartialConfirmationPaymentMethod: PaymentMethod, PaymentMethodDisplayOverridable {
     
     internal var type: PaymentMethodType {
         paymentMethod.type
@@ -18,18 +18,13 @@ internal struct PartialConfirmationPaymentMethod: PaymentMethod {
         paymentMethod.name
     }
     
-    internal var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? {
-        get { paymentMethod.merchantProvidedDisplayInformation }
-        set { paymentMethod.merchantProvidedDisplayInformation = newValue }
-    }
-    
     private var paymentMethod: PartialPaymentMethod
     
     private let lastFour: String
     
     private let remainingAmount: Amount
         
-    internal func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let footnote = localizedString(
             .partialPaymentRemainingBalance,
             parameters,

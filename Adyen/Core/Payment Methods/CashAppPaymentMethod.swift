@@ -19,8 +19,6 @@ public struct CashAppPayPaymentMethod: PaymentMethod {
     /// ID of the client or brand account that will charge customers.
     public let scopeId: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.type = try container.decode(PaymentMethodType.self, forKey: .type)

@@ -13,8 +13,6 @@ public struct MBWayPaymentMethod: PaymentMethod {
     
     public let name: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
     private enum CodingKeys: String, CodingKey {
         case type
         case name

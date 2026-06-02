@@ -36,30 +36,27 @@ package protocol PaymentComponentBuildable {
 /// A protocol to define any partial payment method such as gift cards, `MealVoucher` etc.
 public protocol PartialPaymentMethod: PaymentMethod {}
 
-@_spi(AdyenInternal)
-public extension PaymentMethod {
-    
-    func displayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        let defaultDisplayInformation = defaultDisplayInformation(using: parameters)
-        if let merchantProvidedDisplayInformation {
-            let subtitle = merchantProvidedDisplayInformation.subtitle ?? defaultDisplayInformation.subtitle
-            return DisplayInformation(
-                title: merchantProvidedDisplayInformation.title,
-                subtitle: subtitle,
-                logoName: defaultDisplayInformation.logoName,
-                trailingInfo: defaultDisplayInformation.trailingInfo,
-                footnoteText: defaultDisplayInformation.footnoteText
-            )
-        }
-        return defaultDisplayInformation
-    }
+// MARK: - Display Information
 
-    @_spi(AdyenInternal)
-    func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
-    }
-    
+/// Internal protocol for payment methods that provide custom display information.
+package protocol PaymentMethodDisplayOverridable {
+    func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation
 }
+
+package extension PaymentMethod {
+    
+    /// Returns the display information for this payment method.
+    /// If the payment method conforms to `PaymentMethodDisplayOverridable`, its custom implementation is used.
+    /// Otherwise, returns the default display information based on name and type.
+    func displayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+        if let displayable = self as? PaymentMethodDisplayOverridable {
+            return displayable.overriddenDisplayInformation(using: parameters)
+        }
+        return DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
+    }
+}
+
+// MARK: - Stored Payment Method
 
 /// A payment method that has been stored for later use.
 public protocol StoredPaymentMethod: PaymentMethod {

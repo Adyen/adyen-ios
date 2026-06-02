@@ -92,24 +92,3 @@ public struct DisplayInformation: Equatable {
         self.accessibilityLabel = accessibilityLabel
     }
 }
-
-/// Describes a payment method display information that can be customized by the merchant.
-public struct MerchantCustomDisplayInformation {
-    /// The title for the payment method, adapted for displaying in a list.
-    public let title: String
-
-    /// The subtitle for the payment method, adapted for displaying in a list.
-    /// This property represents optional data that can help identify a payment method.
-    /// For example, this could be the expiration date of a stored credit card.
-    public let subtitle: String?
-    
-    /// Initializes an instance of `CustomDisplayInformation`.
-    ///
-    /// - Parameters:
-    ///   - title: The payment method list title.
-    ///   - subtitle: The payment method list subtitle.
-    public init(title: String, subtitle: String? = nil) {
-        self.title = title
-        self.subtitle = subtitle
-    }
-}

@@ -63,6 +63,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
     case cashAppPay
     case bizum
     case twint
+    case payByBank
     case payByBankAISDD
     case payTo
     case other(String)
@@ -144,6 +145,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case "cashapp": self = .cashAppPay
         case "bizum": self = .bizum
         case "twint": self = .twint
+        case "paybybank": self = .payByBank
         case "paybybank_AIS_DD": self = .payByBankAISDD
         case "payto": self = .payTo
         default: self = .other(rawValue)
@@ -212,6 +214,7 @@ public enum PaymentMethodType: RawRepresentable, Hashable, Codable {
         case .cashAppPay: return "cashapp"
         case .bizum: return "bizum"
         case .twint: return "twint"
+        case .payByBank: return "paybybank"
         case .payByBankAISDD: return "paybybank_AIS_DD"
         case .payTo: return "payto"
         case let .other(value): return value
@@ -224,8 +227,7 @@ extension PaymentMethodType {
     /// The brand name of the card type
     ///
     /// - Warning: Currently only intended to be used as `accessibilityLabel` as it's not localized
-    @_spi(AdyenInternal)
-    public var name: String {
+    package var name: String {
         switch self {
         case .card: return "card payment"
         case .scheme: return "scheme"
@@ -287,6 +289,7 @@ extension PaymentMethodType {
         case .cashAppPay: return "cash app"
         case .bizum: return "bizum"
         case .twint: return "twint"
+        case .payByBank: return "Pay by Bank"
         case .payByBankAISDD: return "Pay By Bank Direct Debit"
         case .payTo: return "payto"
         case let .other(name): return name.replacingOccurrences(of: "_", with: " ")

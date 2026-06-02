@@ -7,7 +7,7 @@
 import Foundation
 
 /// Stored PayByBank US payment method.
-public struct StoredPayByBankUSPaymentMethod: StoredPaymentMethod {
+public struct StoredPayByBankUSPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayOverridable {
 
     public let type: PaymentMethodType
 
@@ -15,14 +15,11 @@ public struct StoredPayByBankUSPaymentMethod: StoredPaymentMethod {
     
     public let label: String?
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
     public let identifier: String
 
     public let supportedShopperInteractions: [ShopperInteraction]
-
-    @_spi(AdyenInternal)
-    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let title: String
         let subtitle: String?
         

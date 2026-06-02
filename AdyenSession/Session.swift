@@ -123,6 +123,10 @@ extension Session {
 
 extension Session {
     
+    package func refreshSessionState(with sessionData: String) async throws {
+        state.data = sessionData
+    }
+    
     package func performSubmit(_ data: PaymentComponentData) async throws -> SubmitResult {
         let request = PaymentsRequest(
             sessionId: state.identifier,

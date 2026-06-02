@@ -8,9 +8,8 @@ import Adyen
 import UIKit
 
 /// The interface of the delegate of a text item view.
-@_spi(AdyenInternal)
-public protocol FormTextItemViewDelegate: AnyObject {
-    
+package protocol FormTextItemViewDelegate: AnyObject {
+
     /// Invoked when the text entered in the item view's text field has reached the maximum length.
     ///
     /// - Parameter itemView: The item view in which the maximum length was reached.
@@ -24,8 +23,7 @@ public protocol FormTextItemViewDelegate: AnyObject {
 }
 
 /// Defines any form text item view.
-@_spi(AdyenInternal)
-public protocol AnyFormTextItemView: AnyFormItemView {
+package protocol AnyFormTextItemView: AnyFormItemView {
 
     /// Delegate text related events.
     var delegate: FormTextItemViewDelegate? { get set }
@@ -99,8 +97,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     }
 
     /// Delegate text related events.
-    public weak var delegate: FormTextItemViewDelegate?
-    
+    package weak var delegate: FormTextItemViewDelegate?
+
     // MARK: - Stack View
     
     private lazy var textStackView: UIStackView = {

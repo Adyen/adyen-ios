@@ -12,9 +12,7 @@ public struct SEPADirectDebitPaymentMethod: PaymentMethod {
     public let type: PaymentMethodType
     
     public let name: String
-    
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
+        
     private enum CodingKeys: String, CodingKey {
         case type
         case name

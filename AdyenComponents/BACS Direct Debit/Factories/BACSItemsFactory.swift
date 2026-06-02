@@ -10,7 +10,6 @@ import Adyen
 #if canImport(AdyenUI)
     import AdyenUI
     @_spi(AdyenInternal) import class AdyenUI.FormTextInputItem
-    @_spi(AdyenInternal) import class AdyenUI.FormButtonItem
 #endif
 import Foundation
 

@@ -12,7 +12,6 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var countryCode: String = ""
     @Published internal var currencyCode: String = ""
     @Published internal var value: String = ""
-    @Published internal var apiVersion: String = ""
     @Published internal var merchantAccount: String = ""
     @Published internal var showCardholderName = false
     @Published internal var showStorePaymentMethod = true
@@ -31,6 +30,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var applePayMerchantIdentifier: String = ""
     @Published internal var applePayDidAuthorizeSuccessful: Bool = true
     @Published internal var allowOnboarding: Bool = false
+    @Published internal var applePayOnBeforeSubmitMode: ApplePaySettings.OnBeforeSubmitMode = .updateData
     @Published internal var analyticsIsEnabled: Bool = true
     @Published internal var installmentsEnabled: Bool = false
     @Published internal var showInstallmentAmount: Bool = false
@@ -53,7 +53,6 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.countryCode = configuration.countryCode
         self.currencyCode = configuration.currencyCode
         self.value = configuration.value.description
-        self.apiVersion = configuration.apiVersion.description
         self.merchantAccount = configuration.merchantAccount
         self.showCardholderName = configuration.cardSettings.showCardholderName
         self.showStorePaymentMethod = configuration.cardSettings.showStorePaymentMethod
@@ -69,6 +68,7 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.applePayMerchantIdentifier = configuration.applePaySettings.merchantIdentifier
         self.allowOnboarding = configuration.applePaySettings.allowOnboarding
         self.applePayDidAuthorizeSuccessful = configuration.applePaySettings.didAuthorizeSuccessful
+        self.applePayOnBeforeSubmitMode = configuration.applePaySettings.onBeforeSubmitMode
         self.analyticsIsEnabled = configuration.analyticsSettings.isEnabled
         self.installmentsEnabled = configuration.cardSettings.enableInstallments
         self.showInstallmentAmount = configuration.cardSettings.showsInstallmentAmount
@@ -88,7 +88,6 @@ internal final class ConfigurationViewModel: ObservableObject {
             countryCode: countryCode,
             value: Int(value) ?? configuration.value,
             currencyCode: currencyCode,
-            apiVersion: Int(apiVersion) ?? configuration.apiVersion,
             merchantAccount: merchantAccount,
             cardSettings: CardSettings(
                 showCardholderName: showCardholderName,
@@ -112,7 +111,8 @@ internal final class ConfigurationViewModel: ObservableObject {
             applePaySettings: ApplePaySettings(
                 merchantIdentifier: applePayMerchantIdentifier,
                 allowOnboarding: allowOnboarding,
-                didAuthorizeSuccessful: applePayDidAuthorizeSuccessful
+                didAuthorizeSuccessful: applePayDidAuthorizeSuccessful,
+                onBeforeSubmitMode: applePayOnBeforeSubmitMode
             ),
             analyticsSettings: AnalyticsSettings(isEnabled: analyticsIsEnabled),
             themeSettings: ThemeSettings(selectedTheme: selectedTheme.rawValue)

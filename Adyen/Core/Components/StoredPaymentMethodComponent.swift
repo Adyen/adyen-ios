@@ -85,7 +85,6 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent {
     
 }
 
-@_spi(AdyenInternal)
 extension StoredPaymentMethodComponent: TrackableComponent {}
 
 /// Store payment method details.

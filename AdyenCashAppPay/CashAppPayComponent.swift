@@ -16,12 +16,12 @@ import UIKit
 
 /// A component that handles a Cash App Pay payment.
 @MainActor
-public final class CashAppPayComponent: PaymentComponent,
+package final class CashAppPayComponent: PaymentComponent,
     PresentableComponent,
     LoadingComponent {
 
     /// The notification to post when returning back to your application from Cash App.
-    public static let RedirectNotification = CashAppPay.RedirectNotification
+    package static let RedirectNotification = CashAppPay.RedirectNotification
 
     private enum ViewIdentifier {
         static let storeDetailsItem = "storeDetailsItem"
@@ -35,11 +35,10 @@ public final class CashAppPayComponent: PaymentComponent,
     }
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public var context: AdyenContext
+    package var context: AdyenContext
 
     /// The payment method object for this component.
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         cashAppPayPaymentMethod
     }
 
@@ -54,9 +53,9 @@ public final class CashAppPayComponent: PaymentComponent,
     }
 
     /// Component's configuration
-    public var configuration: CashAppPayConfiguration
+    package var configuration: CashAppPayConfiguration
 
-    public lazy var viewController: UIViewController = SecuredViewController(
+    package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
     )
@@ -124,7 +123,7 @@ public final class CashAppPayComponent: PaymentComponent,
     /// - Parameter paymentMethod: The Cash App Pay  payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(
+    package init(
         paymentMethod: CashAppPayPaymentMethod,
         context: AdyenContext,
         configuration: CashAppPayConfiguration
@@ -146,7 +145,7 @@ public final class CashAppPayComponent: PaymentComponent,
         formViewController.view.isUserInteractionEnabled = false
     }
 
-    public func stopLoading() {
+    package func stopLoading() {
         cashAppPayButton.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
@@ -227,7 +226,7 @@ public final class CashAppPayComponent: PaymentComponent,
 
 extension CashAppPayComponent: CashAppPayObserver {
 
-    public func stateDidChange(to state: CashAppPayState) {
+    package func stateDidChange(to state: CashAppPayState) {
         switch state {
         case let .readyToAuthorize(request):
             cashAppPay.authorizeCustomerRequest(request)
@@ -270,13 +269,13 @@ extension CashAppPayComponent: CashAppPayObserver {
 extension CashAppPayComponent {
 
     /// Describes the errors that can occur during the Cash App Pay payment flow, in addition to Cash App Pay's own errors.
-    public enum Error: LocalizedError {
+    package enum Error: LocalizedError {
         /// Grants array of the customer request is empty
         case noGrant
         /// Payment was declined by the Cash App Pay app.
         case declined
     
-        public var errorDescription: String? {
+        package var errorDescription: String? {
             switch self {
             case .noGrant:
                 return "There was no grant object in the customer request."
@@ -287,21 +286,19 @@ extension CashAppPayComponent {
     }
 }
 
-@_spi(AdyenInternal)
 extension CashAppPayComponent: TrackableComponent {}
 
-@_spi(AdyenInternal)
 extension CashAppPayComponent: ViewControllerDelegate {}
 
 // MARK: - SubmitCustomizable
 
 extension CashAppPayComponent: SubmittableComponent {
 
-    public func submit() {
+    package func submit() {
         didSelectSubmitButton()
     }
 
-    public func validate() -> Bool {
+    package func validate() -> Bool {
         formViewController.validate()
     }
 }

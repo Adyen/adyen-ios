@@ -7,15 +7,13 @@
 import Foundation
 
 /// Any Mealvoucher payment method.
-public struct MealVoucherPaymentMethod: PartialPaymentMethod {
+public struct MealVoucherPaymentMethod: PartialPaymentMethod, PaymentMethodDisplayOverridable {
 
     public let type: PaymentMethodType
 
     public let name: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
-    public func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
     }
 

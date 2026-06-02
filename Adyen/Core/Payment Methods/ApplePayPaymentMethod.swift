@@ -12,26 +12,10 @@ public struct ApplePayPaymentMethod: PaymentMethod {
     public let type: PaymentMethodType
     
     public let name: String
-    
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
     /// List of networks enabled on CA.
     public let brands: [String]?
     
-    // MARK: - Initializers
-
-    internal init(
-        type: PaymentMethodType,
-        name: String,
-        merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? = nil,
-        brands: [String]?
-    ) {
-        self.type = type
-        self.name = name
-        self.merchantProvidedDisplayInformation = merchantProvidedDisplayInformation
-        self.brands = brands
-    }
-
     // MARK: - Private
 
     private enum CodingKeys: String, CodingKey {

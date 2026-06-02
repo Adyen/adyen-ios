@@ -4,11 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenActions
-@_spi(AdyenInternal) @testable import AdyenCheckout
-@_spi(AdyenInternal) @testable import AdyenComponents
-@_spi(AdyenInternal) @testable import AdyenUI
+@testable import Adyen
+@testable import AdyenActions
+@testable import AdyenCheckout
+@testable import AdyenComponents
+@testable import AdyenUI
 import XCTest
 
 final class CheckoutConfigurationTests: XCTestCase {
@@ -109,7 +109,23 @@ final class CheckoutConfigurationTests: XCTestCase {
         // Then - Default should be evaluated since no config exists
         XCTAssertTrue(defaultWasCalled, "Autoclosure should be evaluated when config is missing")
     }
-    
+
+    func test_checkoutConfiguration_withLocalizationProvider_shouldStoreProvider() {
+        // Given
+        let provider = CheckoutLocalizationProviderMock()
+
+        // When
+        let checkoutConfig = makeCheckoutConfiguration().localizationProvider(provider)
+
+        // Then
+        guard let storedProvider = checkoutConfig.localizationProvider as? CheckoutLocalizationProviderMock else {
+            XCTFail("Localization provider should be stored on checkout configuration")
+            return
+        }
+
+        XCTAssertTrue(storedProvider === provider)
+    }
+
     // MARK: - Legacy componentConfiguration Tests
     
     func testComponentConfiguration_WithExistingConfiguration_ReturnsConfiguration() throws {
@@ -302,5 +318,11 @@ final class CheckoutConfigurationTests: XCTestCase {
             analyticsConfiguration: .init(),
             configurations: configurations
         )
+    }
+}
+
+private final class CheckoutLocalizationProviderMock: CheckoutLocalizationProvider {
+    func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String? {
+        nil
     }
 }

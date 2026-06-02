@@ -5,7 +5,7 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import enum Adyen.NavigationBarType
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
@@ -16,48 +16,46 @@ internal enum QRCodeComponentError: LocalizedError {
     /// Indicates the QR code is not longer valid
     case qrCodeExpired
 
-    public var errorDescription: String? {
+    package var errorDescription: String? {
         "QR code is no longer valid"
     }
 }
 
 /// A component  for QRCode action.
 @MainActor
-public final class QRCodeActionComponent: ActionComponent, Cancellable, ShareableComponent {
-    
-    /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
-    
-    /// Delegates `PresentableComponent`'s presentation.
-    public weak var presentationDelegate: PresentationDelegate?
+package final class QRCodeActionComponent: ActionComponent, Cancellable, ShareableComponent {
 
-    public weak var delegate: ActionComponentDelegate?
+    /// The context object for this component.
+    package let context: AdyenContext
+
+    /// Delegates `PresentableComponent`'s presentation.
+    package weak var presentationDelegate: PresentationDelegate?
+
+    package weak var delegate: ActionComponentDelegate?
 
     internal let presenterViewController = UIViewController()
 
     /// The QR code component configurations.
-    public struct Configuration {
+    package struct Configuration {
         
         /// The component UI style.
-        public var style: QRCodeComponentStyle = .init()
-        
+        package var style: QRCodeComponentStyle = .init()
+
         /// The localization parameters, leave it nil to use the default parameters.
-        public var localizationParameters: LocalizationParameters?
+        package var localizationParameters: LocalizationParameters?
         
-        /// Initializes an instance of `Configuration`
-        ///
-        /// - Parameters:
-        ///   - style: The Component UI style.
-        ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
-        public init(style: QRCodeComponentStyle = QRCodeComponentStyle(), localizationParameters: LocalizationParameters? = nil) {
+        package init(style: QRCodeComponentStyle = QRCodeComponentStyle()) {
+            self.init(style: style, localizationParameters: nil)
+        }
+
+        package init(style: QRCodeComponentStyle = QRCodeComponentStyle(), localizationParameters: LocalizationParameters? = nil) {
             self.style = style
             self.localizationParameters = localizationParameters
         }
     }
     
     /// The QR code component configurations.
-    public var configuration: Configuration
+    package var configuration: Configuration
 
     private let pollingComponentBuilder: AnyPollingHandlerProvider?
     
@@ -73,7 +71,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The component configurations
-    public convenience init(
+    package convenience init(
         context: AdyenContext,
         configuration: Configuration = .init()
     ) {
@@ -102,7 +100,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     /// Handles QR code action.
     ///
     /// - Parameter action: The QR code action.
-    public func handle(_ action: QRCodeAction) {
+    package func handle(_ action: QRCodeAction) {
         AdyenAssertion.assert(message: "presentationDelegate is nil", condition: presentationDelegate == nil)
         
         let viewController = createViewController(with: action)
@@ -253,7 +251,7 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
         }
     }
 
-    public func didCancel() {
+    package func didCancel() {
         cleanup()
     }
     
@@ -263,17 +261,16 @@ public final class QRCodeActionComponent: ActionComponent, Cancellable, Shareabl
     }
 }
 
-@_spi(AdyenInternal)
 extension QRCodeActionComponent: ActionComponentDelegate {
 
-    public func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
+    package func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
         cleanup()
         delegate?.didProvide(data, from: self)
     }
 
-    public func didComplete(from component: ActionComponent) {}
+    package func didComplete(from component: ActionComponent) {}
 
-    public func didFail(with error: Error, from component: ActionComponent) {
+    package func didFail(with error: Error, from component: ActionComponent) {
         cleanup()
         delegate?.didFail(with: error, from: self)
     }

@@ -52,4 +52,19 @@ final class NavigationControllerSpy: UINavigationController {
         capturedPushedViewController = viewController
         pushAnimated = animated
     }
+
+    var presentCallsCount = 0
+    var capturedPresentedViewController: UIViewController?
+    var presentAnimated: Bool?
+
+    override func present(
+        _ viewControllerToPresent: UIViewController,
+        animated flag: Bool,
+        completion: (() -> Void)? = nil
+    ) {
+        presentCallsCount += 1
+        capturedPresentedViewController = viewControllerToPresent
+        presentAnimated = flag
+        completion?()
+    }
 }

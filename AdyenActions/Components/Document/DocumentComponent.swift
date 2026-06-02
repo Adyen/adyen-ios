@@ -14,40 +14,38 @@ import UIKit
 
 /// A component that handles document actions.
 @MainActor
-public final class DocumentComponent: ActionComponent, ShareableComponent {
+package final class DocumentComponent: ActionComponent, ShareableComponent {
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public let context: AdyenContext
-    
-    public weak var delegate: ActionComponentDelegate?
-    
+    package let context: AdyenContext
+
+    package weak var delegate: ActionComponentDelegate?
+
     /// Delegates `PresentableComponent`'s presentation.
-    public weak var presentationDelegate: PresentationDelegate?
-    
+    package weak var presentationDelegate: PresentationDelegate?
+
     /// The document component configurations.
-    public struct Configuration {
+    package struct Configuration {
         
         /// The component UI style.
-        public var style: DocumentComponentStyle
+        package var style: DocumentComponentStyle
         
         /// The localization parameters, leave it nil to use the default parameters.
-        public var localizationParameters: LocalizationParameters?
+        package var localizationParameters: LocalizationParameters?
         
-        /// Initializes an instance of `Configuration`
-        ///
-        /// - Parameters:
-        ///   - style: The Component UI style.
-        ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
-        public init(style: DocumentComponentStyle = DocumentComponentStyle(), localizationParameters: LocalizationParameters? = nil) {
+        package init(style: DocumentComponentStyle = DocumentComponentStyle()) {
+            self.init(style: style, localizationParameters: nil)
+        }
+
+        package init(style: DocumentComponentStyle = DocumentComponentStyle(), localizationParameters: LocalizationParameters? = nil) {
             self.style = style
             self.localizationParameters = localizationParameters
         }
     }
     
     /// The document component configurations.
-    public var configuration: Configuration = .init()
-    
+    package var configuration: Configuration = .init()
+
     internal let presenterViewController = UIViewController()
     
     private let componentName = "documentAction"
@@ -56,7 +54,7 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     ///
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The Component configurations.
-    public init(
+    package init(
         context: AdyenContext,
         configuration: Configuration = .init()
     ) {
@@ -67,7 +65,7 @@ public final class DocumentComponent: ActionComponent, ShareableComponent {
     /// Handles document action.
     ///
     /// - Parameter action: The document action object.
-    public func handle(_ action: DocumentAction) {
+    package func handle(_ action: DocumentAction) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
         
         let imageURL = LogoURLProvider.logoURL(

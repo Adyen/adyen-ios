@@ -96,6 +96,7 @@ jobs:
           -project "Adyen.xcodeproj" \
           -scheme "IntegrationUIKitTests" \
           -destination "$DEST" \
-          -skipPackagePluginValidation
+          -skipPackagePluginValidation \
+          SWIFT_VERSION=5
 
 

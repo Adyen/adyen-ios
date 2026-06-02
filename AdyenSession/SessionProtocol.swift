@@ -29,4 +29,5 @@ package protocol SessionProtocol: AnyObject {
     
     func disable(storedPaymentMethod: StoredPaymentMethod) async throws
     
+    func refreshSessionState(with sessionData: String) async throws
 }

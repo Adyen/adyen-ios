@@ -34,6 +34,21 @@ extension SearchViewController {
         ///   - shouldFocusSearchBarOnAppearance: Whether to focus the search bar on viewWillAppear.
         ///   - resultProvider: A closure to provide result list items for a search term.
         public init(
+            style: ViewStyle,
+            searchBarPlaceholder: String? = nil,
+            shouldFocusSearchBarOnAppearance: Bool = false,
+            resultProvider: @escaping ResultProvider
+        ) {
+            self.init(
+                localizationParameters: nil,
+                style: style,
+                searchBarPlaceholder: searchBarPlaceholder,
+                shouldFocusSearchBarOnAppearance: shouldFocusSearchBarOnAppearance,
+                resultProvider: resultProvider
+            )
+        }
+
+        package init(
             localizationParameters: LocalizationParameters? = nil,
             style: ViewStyle,
             searchBarPlaceholder: String? = nil,

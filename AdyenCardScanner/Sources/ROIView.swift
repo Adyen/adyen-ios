@@ -15,8 +15,6 @@ internal class ROIView: UIView {
     private var borderColor: UIColor = .white
     private var cornerRadius: CGFloat = 12.0
 
-    // MARK: - Public
-
     override internal func draw(_ rect: CGRect) {
         super.draw(rect)
 

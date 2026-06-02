@@ -14,7 +14,7 @@ import UIKit
 
 /// A component that provides a form for Online Banking payment.
 @MainActor
-public final class OnlineBankingComponent: PaymentComponent,
+package final class OnlineBankingComponent: PaymentComponent,
     PresentableComponent,
     LoadingComponent {
 
@@ -30,25 +30,24 @@ public final class OnlineBankingComponent: PaymentComponent,
     }
 
     /// Configuration for Online Banking Component.
-    public typealias Configuration = BasicComponentConfiguration
+    package typealias Configuration = BasicComponentConfiguration
 
     /// The context object for this component.
-    @_spi(AdyenInternal)
-    public var context: AdyenContext
+    package var context: AdyenContext
 
-    public var paymentMethod: PaymentMethod {
+    package var paymentMethod: PaymentMethod {
         onlineBankingPaymentMethod
     }
 
     package weak var delegate: PaymentComponentDelegate?
 
-    public lazy var viewController: UIViewController = SecuredViewController(
+    package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style
     )
 
     /// Component's configuration
-    public var configuration: Configuration
+    package var configuration: Configuration
 
     private let onlineBankingPaymentMethod: OnlineBankingPaymentMethod
 
@@ -114,7 +113,7 @@ public final class OnlineBankingComponent: PaymentComponent,
     /// - Parameter paymentMethod: The Online Banking payment method.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: The configuration for the component.
-    public init(
+    package init(
         paymentMethod: OnlineBankingPaymentMethod,
         context: AdyenContext,
         configuration: Configuration = .init()
@@ -124,7 +123,7 @@ public final class OnlineBankingComponent: PaymentComponent,
         self.configuration = configuration
     }
 
-    public func stopLoading() {
+    package func stopLoading() {
         continueButton.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
@@ -167,18 +166,17 @@ public final class OnlineBankingComponent: PaymentComponent,
 
 }
 
-@_spi(AdyenInternal)
 extension OnlineBankingComponent: AdyenObserver {}
 
 // MARK: - SubmitCustomizable
 
 extension OnlineBankingComponent: SubmittableComponent {
 
-    public func submit() {
+    package func submit() {
         didSelectContinueButton()
     }
 
-    public func validate() -> Bool {
+    package func validate() -> Bool {
         formViewController.validate()
     }
 }

@@ -25,7 +25,7 @@ class PaymentComponentSubject: PaymentComponent, PresentableComponent {
 
     // MARK: - Initializers
 
-    public init(
+    init(
         context: AdyenContext,
         delegate: PaymentComponentDelegate,
         order: PartialPaymentOrder?,

@@ -35,8 +35,6 @@ public struct OnlineBankingPaymentMethod: PaymentMethod {
 
     public let name: String
 
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-    
     /// The available issuers.
     public let issuers: [Issuer]
 

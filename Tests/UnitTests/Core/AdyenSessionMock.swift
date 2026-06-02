@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import AdyenSession
-@_spi(AdyenInternal) @testable import Adyen
+@testable import Adyen
+@testable import AdyenSession
 
 public final class AdyenSessionMock: SessionProtocol {
     public var state: Session.State
@@ -32,6 +32,14 @@ public final class AdyenSessionMock: SessionProtocol {
     ) {
         self.state = state
         self.presentationDelegate = presentationDelegate
+    }
+    
+    var refreshSessionStateCalled = false
+    var refreshSessionStateData: String?
+    
+    public func refreshSessionState(with sessionData: String) async throws {
+        refreshSessionStateCalled = true
+        refreshSessionStateData = sessionData
     }
     
     public func performSubmit(_ data: PaymentComponentData) async throws -> SubmitResult {

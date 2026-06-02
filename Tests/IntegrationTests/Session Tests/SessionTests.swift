@@ -4,14 +4,14 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import XCTest
-@_spi(AdyenInternal) @testable import AdyenSession
 @_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenActions
+@testable import AdyenActions
 @testable import AdyenCard
 import AdyenComponents
 @testable import AdyenEncryption
 import AdyenNetworking
+@testable import AdyenSession
+import XCTest
 
 @MainActor
 class SessionTests: XCTestCase {
@@ -430,6 +430,24 @@ class SessionTests: XCTestCase {
         } catch {
             XCTAssertTrue(error is Dummy)
         }
+    }
+
+    func test_refreshSessionState_shouldOnlyUpdateSessionData() async throws {
+        let apiClient = APIClientMock()
+        sut = initializeSession(expectedPaymentMethods: expectedPaymentMethods, apiClient: apiClient)
+
+        let previousState = sut.state
+
+        try await sut.refreshSessionState(with: "patched_session_data")
+
+        XCTAssertEqual(sut.state.data, "patched_session_data")
+        XCTAssertEqual(sut.state.identifier, previousState.identifier)
+        XCTAssertEqual(sut.state.countryCode, previousState.countryCode)
+        XCTAssertEqual(sut.state.shopperLocale, previousState.shopperLocale)
+        XCTAssertEqual(sut.state.amount, previousState.amount)
+        XCTAssertEqual(sut.state.paymentMethods, previousState.paymentMethods)
+        XCTAssertEqual(sut.state.responseConfiguration.enableStoreDetails, previousState.responseConfiguration.enableStoreDetails)
+        XCTAssertEqual(apiClient.counter, 0)
     }
 
     // MARK: - requestOrder

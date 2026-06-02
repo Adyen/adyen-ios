@@ -58,10 +58,36 @@ func infoPlistContent(for frameworkName: String) -> String {
 """
 }
 
+func packageVersion(for packageURL: String) -> String {
+    let packageSwiftURL = currentDirectoryURL.appending(path: "Package.swift")
+    let packageSwiftContent = try! String(contentsOf: packageSwiftURL, encoding: .utf8)
+    let lines = packageSwiftContent.components(separatedBy: .newlines)
+    guard let packageURLLineIndex = lines.firstIndex(where: { $0.contains(#"url: "\#(packageURL)""#) }) else {
+        fatalError("Could not find package URL \(packageURL) in Package.swift")
+    }
+    let dependencyLines = lines[packageURLLineIndex...].prefix(5)
+    guard let exactVersionLine = dependencyLines.first(where: { $0.contains("exact:") }),
+          let exactRange = exactVersionLine.range(of: "exact:"),
+          let start = exactVersionLine[exactRange.upperBound...].firstIndex(of: "\""),
+          let end = exactVersionLine[exactVersionLine.index(after: start)...].firstIndex(of: "\"") else {
+        fatalError("Could not find exact version for package URL \(packageURL) in Package.swift")
+    }
+    return String(exactVersionLine[exactVersionLine.index(after: start)..<end])
+}
+
 func packageFileContent(for frameworkNames: [String], scheme: String) -> String {
     
-    let dependencies = frameworkNames.map { ".byName(name: \"\($0)\")"}.joined(separator: ",\n")
-    let binaryTargets = frameworkNames.map { ".binaryTarget(name: \"\($0)\", path: \"\($0).xcframework\")"}.joined(separator: ",\n")
+    let externalDependencies: [(url: String, package: String, product: String)] = [
+        ("https://github.com/Adyen/adyen-3ds2-ios", "adyen-3ds2-ios", "Adyen3DS2"),
+        ("https://github.com/Adyen/adyen-networking-ios", "adyen-networking-ios", "AdyenNetworking")
+    ]
+    let packageDependencies = externalDependencies.map {
+        ".package(url: \"\($0.url)\", exact: \"\(packageVersion(for: $0.url))\")"
+    }.joined(separator: ",\n")
+    let targetDependencies = (frameworkNames.map { ".byName(name: \"\($0)\")" } + externalDependencies.map {
+        ".product(name: \"\($0.product)\", package: \"\($0.package)\")"
+    }).joined(separator: ",\n")
+    let binaryTargets = frameworkNames.map { ".binaryTarget(name: \"\($0)\", path: \"\($0).xcframework\")" }.joined(separator: ",\n")
     
     return """
 // swift-tools-version: 5.8
@@ -78,11 +104,14 @@ let package = Package(
             targets: ["Target"]
         )
     ],
+    dependencies: [
+        \(packageDependencies)
+    ],
     targets: [
         .target(
             name: "Target",
             dependencies: [
-                \(dependencies)
+                \(targetDependencies)
             ]
         ),
         \(binaryTargets)
