@@ -116,7 +116,7 @@ let checkout = try await Checkout.setup(
 - `Checkout.setup(...)` replaces `AdyenSession.initialize(...)` for the new public v6 flows.
 - `CheckoutConfiguration` replaces flow-specific setup objects as the main integration entry point.
 - Closure callbacks replace the public delegate-first flow setup for submission and completion handling.
-- `SessionCheckout` and `AdvancedCheckout` create payment components and Drop-in instances for the active flow.
+- `SessionCheckout` and `AdvancedCheckout` create payment components for the active flow.
 - Theme and localization are configured on `CheckoutConfiguration` through `theme(_:)` and `localizationProvider(_:)`.
 
 ### Card component

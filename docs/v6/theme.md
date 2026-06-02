@@ -4,6 +4,18 @@
 
 Theme customization in v6 is intentionally scoped to semantic overrides so the SDK can keep the overall checkout UI consistent while still adapting to your app.
 
+## Imports
+
+Import the modules used in this example:
+
+```swift
+import Adyen
+import AdyenCard
+import AdyenCheckout
+import AdyenUI
+import UIKit
+```
+
 ## Apply a theme
 
 Configure the theme on `CheckoutConfiguration` before calling `Checkout.setup(...)`:
