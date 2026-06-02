@@ -16,8 +16,6 @@ public struct UPIPaymentMethod: PaymentMethod {
     /// The available UPI apps.
     public let apps: [Issuer]?
 
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
     @_spi(AdyenInternal)
     public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)

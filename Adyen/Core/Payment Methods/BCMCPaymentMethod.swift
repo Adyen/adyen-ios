@@ -19,11 +19,6 @@ public struct BCMCPaymentMethod: AnyCardPaymentMethod {
         cardPaymentMethod.name
     }
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? {
-        get { cardPaymentMethod.merchantProvidedDisplayInformation }
-        set { cardPaymentMethod.merchantProvidedDisplayInformation = newValue }
-    }
-    
     /// An array containing the supported brands, such as `"mc"`, `"visa"`, `"amex"`, `"bcmc"`.
     ///
     /// Used to configure the `supportedCardBrands` on the `BCMCComponent`'s configuration
