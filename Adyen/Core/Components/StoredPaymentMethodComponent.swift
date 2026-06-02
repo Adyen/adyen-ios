@@ -10,7 +10,7 @@ import UIKit
 // TODO: Fix Stored PM UI
 ///  A component that handle stored payment methods.
 @MainActor
-package final class StoredPaymentMethodComponent: StoredPaymentComponent {
+package final class StoredPaymentMethodComponent: StoredPaymentComponent, Localizable {
 
     package var localizationParameters: LocalizationParameters?
 
