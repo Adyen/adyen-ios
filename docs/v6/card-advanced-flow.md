@@ -8,6 +8,15 @@ For shared card configuration, see [card.md](card.md). For shared v6 concepts, s
 
 Use advanced flow when your backend manages payment submission and additional details explicitly.
 
+Import the modules used in this example:
+
+```swift
+import Adyen
+import AdyenActions
+import AdyenCard
+import AdyenCheckout
+```
+
 ## Example
 
 ```swift

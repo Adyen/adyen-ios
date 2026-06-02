@@ -8,6 +8,15 @@ For shared card configuration, see [card.md](card.md). For shared v6 concepts, s
 
 Use session flow when you want Adyen to manage the checkout flow from a `SessionResponse`.
 
+Import the modules used in this example:
+
+```swift
+import Adyen
+import AdyenActions
+import AdyenCard
+import AdyenCheckout
+```
+
 ## Example
 
 ```swift
