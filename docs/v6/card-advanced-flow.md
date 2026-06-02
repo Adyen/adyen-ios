@@ -36,8 +36,6 @@ let configuration = try CheckoutConfiguration(
             print("Brands: \(brands)")
         }
 }
-.localizationProvider(DemoLocalizationProvider())
-.theme(theme)
 
 let checkout = try await Checkout.setup(
     with: paymentMethods,
@@ -60,7 +58,7 @@ let checkout = try await Checkout.setup(
 let component = try checkout.createPaymentComponent(for: .scheme)
 ```
 
-Theme and localization are configured on `CheckoutConfiguration` before calling `Checkout.setup(...)`. See [theme.md](theme.md) and [README.md](README.md#localization).
+Optionally apply `.theme(...)` and `.localizationProvider(...)` on `CheckoutConfiguration` before calling `Checkout.setup(...)`. See [theme.md](theme.md) and [README.md](README.md#localization).
 
 ## Complete working example
 

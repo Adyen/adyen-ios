@@ -35,8 +35,6 @@ let configuration = try CheckoutConfiguration(
     AuthenticationConfiguration()
         .requestorAppURL(URL(string: "your-app://adyen")!)
 }
-.theme(theme)
-.localizationProvider(DemoLocalizationProvider())
 
 let checkout = try await Checkout.setup(
     with: sessionResponse,
@@ -53,7 +51,7 @@ let checkout = try await Checkout.setup(
 let component = try checkout.createPaymentComponent(for: .scheme)
 ```
 
-Theme and localization are configured on `CheckoutConfiguration` before calling `Checkout.setup(...)`. See [theme.md](theme.md) and [README.md](README.md#localization).
+Optionally apply `.theme(...)` and `.localizationProvider(...)` on `CheckoutConfiguration` before calling `Checkout.setup(...)`. See [theme.md](theme.md) and [README.md](README.md#localization).
 
 ## Complete working example
 
