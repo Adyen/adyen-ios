@@ -43,7 +43,7 @@ let configuration = try CheckoutConfiguration(
 ) {
     CardConfiguration()
     AuthenticationConfiguration()
-        .requestorAppURL(URL(string: "your-app://adyen")!)
+        .requestorAppURL(URL(string: "https://your-domain.example/adyen")!)
 }
 
 let checkout = try await Checkout.setup(
@@ -98,10 +98,10 @@ let checkout = try await Checkout.setup(
     presentationDelegate: self
 )
 .onSubmit { data in
-    try await submitToYourServer(data)
+    try await callPayments(with: data)
 }
 .onAdditionalDetails { data in
-    try await submitAdditionalDetailsToYourServer(data)
+    try await callDetails(with: data)
 }
 .onComplete { result in
     print(result.resultCode)
@@ -110,6 +110,8 @@ let checkout = try await Checkout.setup(
     print(error.localizedDescription)
 }
 ```
+
+`callPayments(with:)` should return `SubmitResult`, and `callDetails(with:)` should return `AdditionalDetailsResult`.
 
 #### Summary
 
@@ -203,14 +205,16 @@ let checkout = try await Checkout.setup(
     presentationDelegate: self
 )
 .onSubmit { data in
-    try await submitToYourServer(data)
+    try await callPayments(with: data)
 }
 .onAdditionalDetails { data in
-    try await submitAdditionalDetailsToYourServer(data)
+    try await callDetails(with: data)
 }
 
 let component = try checkout.createPaymentComponent(for: .scheme)
 ```
+
+`callPayments(with:)` should return `SubmitResult`, and `callDetails(with:)` should return `AdditionalDetailsResult`.
 
 #### Callback migration
 

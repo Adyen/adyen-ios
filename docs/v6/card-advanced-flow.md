@@ -43,10 +43,10 @@ let checkout = try await Checkout.setup(
     presentationDelegate: self
 )
 .onSubmit { data in
-    try await submitToYourServer(data)
+    try await callPayments(with: data)
 }
 .onAdditionalDetails { data in
-    try await submitAdditionalDetailsToYourServer(data)
+    try await callDetails(with: data)
 }
 .onComplete { result in
     print(result.resultCode)
@@ -57,6 +57,8 @@ let checkout = try await Checkout.setup(
 
 let component = try checkout.createPaymentComponent(for: .scheme)
 ```
+
+`callPayments(with:)` should return `SubmitResult`, and `callDetails(with:)` should return `AdditionalDetailsResult`.
 
 Optionally apply `.theme(...)` and `.localizationProvider(...)` on `CheckoutConfiguration` before calling `Checkout.setup(...)`. See [theme.md](theme.md) and [README.md](README.md#localization).
 

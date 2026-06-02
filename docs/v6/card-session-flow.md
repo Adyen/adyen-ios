@@ -33,7 +33,7 @@ let configuration = try CheckoutConfiguration(
             print("Brands: \(brands)")
         }
     AuthenticationConfiguration()
-        .requestorAppURL(URL(string: "your-app://adyen")!)
+        .requestorAppURL(URL(string: "https://your-domain.example/adyen")!)
 }
 
 let checkout = try await Checkout.setup(

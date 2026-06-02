@@ -45,7 +45,7 @@ let configuration = try CheckoutConfiguration(
 ) {
     CardConfiguration()
     AuthenticationConfiguration()
-        .requestorAppURL(URL(string: "your-app://adyen")!)
+        .requestorAppURL(URL(string: "https://your-domain.example/adyen")!)
 }
 ```
 
@@ -63,7 +63,7 @@ let configuration = try CheckoutConfiguration(
 ) {
     CardConfiguration()
     AuthenticationConfiguration()
-        .requestorAppURL(URL(string: "your-app://adyen")!)
+        .requestorAppURL(URL(string: "https://your-domain.example/adyen")!)
 }
 
 let checkout = try await Checkout.setup(
@@ -108,10 +108,10 @@ let checkout = try await Checkout.setup(
     presentationDelegate: self
 )
 .onSubmit { data in
-    try await submitToYourServer(data)
+    try await callPayments(with: data)
 }
 .onAdditionalDetails { data in
-    try await submitAdditionalDetailsToYourServer(data)
+    try await callDetails(with: data)
 }
 .onComplete { result in
     print(result.resultCode)
@@ -122,6 +122,8 @@ let checkout = try await Checkout.setup(
 
 let component = try checkout.createPaymentComponent(for: .scheme)
 ```
+
+`callPayments(with:)` should return `SubmitResult`, and `callDetails(with:)` should return `AdditionalDetailsResult`.
 
 `AdvancedCheckout` can:
 
@@ -139,7 +141,7 @@ let checkout = try await Checkout.setup(
     presentationDelegate: self
 )
 .onAdditionalDetails { data in
-    try await submitAdditionalDetailsToYourServer(data)
+    try await callDetails(with: data)
 }
 .onComplete { result in
     print(result.resultCode)
@@ -148,6 +150,8 @@ let checkout = try await Checkout.setup(
     print(error.localizedDescription)
 }
 ```
+
+`callDetails(with:)` should return `AdditionalDetailsResult`.
 
 Call `checkout.handle(action:)` when your backend returns an action.
 

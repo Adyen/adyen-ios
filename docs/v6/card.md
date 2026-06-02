@@ -77,7 +77,7 @@ let configuration = try CheckoutConfiguration(
 ) {
     CardConfiguration()
     AuthenticationConfiguration()
-        .requestorAppURL(URL(string: "your-app://adyen")!)
+        .requestorAppURL(URL(string: "https://your-domain.example/adyen")!)
 }
 ```
 
