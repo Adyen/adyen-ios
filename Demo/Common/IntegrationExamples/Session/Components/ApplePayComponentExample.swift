@@ -139,8 +139,12 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
             case .abort:
                 return .abort
             case .patchSession:
-                let patchedSession = try await self.patchSession(using: sessionResponse)
-                return .proceed(data: data, sessionData: patchedSession.sessionData)
+                do {
+                    let patchedSession = try await self.patchSession(using: sessionResponse)
+                    return .proceed(data: data, sessionData: patchedSession.sessionData)
+                } catch {
+                    return .abort
+                }
             }
         }
         .onComplete { [weak self] result in
