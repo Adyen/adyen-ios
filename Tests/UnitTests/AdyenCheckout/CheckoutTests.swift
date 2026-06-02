@@ -674,8 +674,7 @@ final class CheckoutTests: XCTestCase {
         let callbackStore = AdvancedCheckoutCallbackStore()
         let onSubmitExpectation = expectation(description: "onSubmit called")
         let onCompleteExpectation = expectation(description: "onComplete called")
-        let onErrorExpectation = expectation(description: "onError should NOT be called")
-        onErrorExpectation.isInverted = true
+        var onErrorCalled = false
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let paymentData = PaymentComponentData(
             paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
@@ -691,19 +690,19 @@ final class CheckoutTests: XCTestCase {
             XCTAssertEqual(result.resultCode, .refused)
             onCompleteExpectation.fulfill()
         }
-        callbackStore.onError = { _ in onErrorExpectation.fulfill() }
+        callbackStore.onError = { _ in onErrorCalled = true }
 
         let sut = makeAdvancedCheckoutCore(callbackStore: callbackStore)
         sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
-        await fulfillment(of: [onSubmitExpectation, onCompleteExpectation, onErrorExpectation], timeout: 1)
+        await fulfillment(of: [onSubmitExpectation, onCompleteExpectation], timeout: 1)
+        XCTAssertFalse(onErrorCalled)
     }
 
     func test_didProvide_withErrorResultCode_callsOnComplete() async {
         let callbackStore = AdvancedCheckoutCallbackStore()
         let onAdditionalDetailsExpectation = expectation(description: "onAdditionalDetails called")
         let onCompleteExpectation = expectation(description: "onComplete called")
-        let onErrorExpectation = expectation(description: "onError should NOT be called")
-        onErrorExpectation.isInverted = true
+        var onErrorCalled = false
         let actionData = ActionComponentData(
             details: AwaitActionDetails(payload: "payload"),
             paymentData: "data"
@@ -717,11 +716,12 @@ final class CheckoutTests: XCTestCase {
             XCTAssertEqual(result.resultCode, .refused)
             onCompleteExpectation.fulfill()
         }
-        callbackStore.onError = { _ in onErrorExpectation.fulfill() }
+        callbackStore.onError = { _ in onErrorCalled = true }
 
         let sut = makeAdvancedCheckoutCore(callbackStore: callbackStore)
         sut.didProvide(actionData, from: ActionComponentMock())
-        await fulfillment(of: [onAdditionalDetailsExpectation, onCompleteExpectation, onErrorExpectation], timeout: 1)
+        await fulfillment(of: [onAdditionalDetailsExpectation, onCompleteExpectation], timeout: 1)
+        XCTAssertFalse(onErrorCalled)
     }
 
     private func makeSessionCheckoutCore(
