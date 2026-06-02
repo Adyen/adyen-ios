@@ -120,7 +120,7 @@ internal class CheckoutProvider: CheckoutProviding {
                 context: adyenContext
             )
         } catch {
-            throw CheckoutError.map(error, fallback: .sessionSetupFailure)
+            throw CheckoutError(error: error, fallback: .sessionSetupFailure)
         }
     }
 
@@ -156,7 +156,7 @@ internal class CheckoutProvider: CheckoutProviding {
                 analyticsConfiguration: configuration.analyticsConfiguration
             )
         } catch {
-            throw CheckoutError.map(error)
+            throw CheckoutError(error: error)
         }
     }
 

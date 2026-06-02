@@ -9,23 +9,27 @@ import Foundation
 
 package extension CheckoutError {
 
-    /// Maps any `Error` to a `CheckoutError`.
+    /// Creates a ``CheckoutError`` from any `Error`.
     ///
     /// `AdyenCheckout` is the boundary module that imports all internal SDK modules,
-    /// making it the single place where every internal error type can be exhaustively mapped.
+    /// making it the single place where every internal error type can be exhaustively converted.
     ///
-    /// - If `error` is already a `CheckoutError`, it is returned as-is.
+    /// - If `error` is already a `CheckoutError`, `self` is set to it directly.
     /// - Known SDK error types are mapped to their corresponding ``Code``.
     /// - All other errors use `fallback` as the code (defaults to ``Code/unknown``).
+    /// - Parameter error: The error to convert.
     /// - Parameter fallback: The code to use when no specific mapping is found.
-    static func map(_ error: Error, fallback: Code = .unknown) -> CheckoutError {
-        if let checkoutError = error as? CheckoutError { return checkoutError }
+    init(error: Error, fallback: Code = .unknown) {
+        if let checkoutError = error as? CheckoutError {
+            self = checkoutError
+            return
+        }
         switch error {
         // Adyen
         case ComponentError.cancelled:
-            return CheckoutError(code: .cancelled, message: nil, underlyingError: error)
+            self = .init(code: .cancelled, message: nil, underlyingError: error)
         default:
-            return CheckoutError(code: fallback, message: error.localizedDescription, underlyingError: error)
+            self = .init(code: fallback, message: error.localizedDescription, underlyingError: error)
         }
     }
 }

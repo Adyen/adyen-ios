@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2026 Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -155,7 +155,7 @@ internal extension CheckoutCore {
     func finish(with error: Error, from component: (any PaymentComponent)?) {
         (component as? any FinalizableComponent)?.didFinalize(with: false, completion: nil)
         pendingPaymentComponent = nil
-        resultCallbacks.onError?(CheckoutError.map(error))
+        resultCallbacks.onError?(CheckoutError(error: error))
     }
 }
 

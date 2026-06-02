@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2026 Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -20,7 +20,8 @@ public enum Checkout {
     ///   - configuration: The checkout configuration.
     ///   - presentationDelegate: Optional delegate for handling UI presentation.
     /// - Returns: A session checkout instance exposing session-compatible APIs.
-    /// - Throws: ``CheckoutError`` with code ``CheckoutError/Code/sessionSetupFailure`` if the session cannot be established.
+    /// - Throws: ``CheckoutError`` if the checkout session cannot be established.
+    ///   Inspect ``CheckoutError/code`` for the specific failure reason.
     public static func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
@@ -40,7 +41,7 @@ public enum Checkout {
     ///   - configuration: The checkout configuration.
     ///   - presentationDelegate: Optional delegate for handling UI presentation.
     /// - Returns: An advanced checkout instance exposing advanced-flow APIs.
-    /// - Throws: ``CheckoutError`` if setup fails.
+    /// - Throws: ``CheckoutError`` if checkout setup fails. Inspect ``CheckoutError/code`` for the specific failure reason.
     public static func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
@@ -59,7 +60,7 @@ public enum Checkout {
     ///   - configuration: The checkout configuration.
     ///   - presentationDelegate: Optional delegate for handling UI presentation.
     /// - Returns: An action-only checkout instance exposing action handling APIs.
-    /// - Throws: ``CheckoutError`` if setup fails.
+    /// - Throws: ``CheckoutError`` if checkout setup fails. Inspect ``CheckoutError/code`` for the specific failure reason.
     public static func setup(
         configuration: CheckoutConfiguration,
         presentationDelegate: PresentationDelegate? = nil

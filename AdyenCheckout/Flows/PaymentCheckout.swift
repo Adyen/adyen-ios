@@ -30,7 +30,7 @@ public class PaymentCheckout: BaseCheckout {
         do {
             return try core.createPaymentComponent(for: type)
         } catch {
-            throw CheckoutError.map(error)
+            throw CheckoutError(error: error)
         }
     }
 
@@ -44,7 +44,7 @@ public class PaymentCheckout: BaseCheckout {
         do {
             return try core.createPaymentComponent(for: identifier)
         } catch {
-            throw CheckoutError.map(error)
+            throw CheckoutError(error: error)
         }
     }
 
