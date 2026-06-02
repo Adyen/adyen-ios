@@ -7,19 +7,17 @@
 import Foundation
 
 /// A stored PayPal account.
-public struct StoredPayPalPaymentMethod: StoredPaymentMethod {
+public struct StoredPayPalPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayOverridable {
     
     public let type: PaymentMethodType
 
     public let name: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
     public let identifier: String
 
     public let supportedShopperInteractions: [ShopperInteraction]
 
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: emailAddress, logoName: type.rawValue)
     }
     
