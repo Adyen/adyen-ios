@@ -21,7 +21,6 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
     // MARK: - Mock Types for Testing
     
     struct MockPaymentMethod: PaymentMethod {
-        var merchantProvidedDisplayInformation: Adyen.MerchantCustomDisplayInformation?
         
         var type: PaymentMethodType {
             .other("mock")

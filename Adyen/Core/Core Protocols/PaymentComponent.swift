@@ -15,9 +15,9 @@ public protocol PaymentMethodAware {
 }
 
 /// A component that handles stored payment methods.
-public protocol StoredPaymentComponent: PaymentComponent, PresentableComponent {}
+package protocol StoredPaymentComponent: PaymentComponent, PresentableComponent {}
 
-public enum PaymentComponentType {
+package enum PaymentComponentType {
     case regular(PaymentComponent & PresentableComponent)
     case stored(StoredPaymentComponent)
     case initiable(PaymentComponent)
@@ -25,48 +25,46 @@ public enum PaymentComponentType {
 
 /// A component that handles the initial phase of getting payment details to initiate a payment.
 @MainActor
-public protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentMethodAware {
+package protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentMethodAware {
 
     /// The delegate of the payment component.
     var delegate: PaymentComponentDelegate? { get set }
 
     var type: PaymentComponentType { get }
 
-    @_spi(AdyenInternal)
     var paymentMethodBehavior: SDKData.PaymentMethodBehavior { get }
 
     func submit()
 }
 
-public extension PaymentComponent where Self: PresentableComponent {
+package extension PaymentComponent where Self: PresentableComponent {
 
     var type: PaymentComponentType {
         .regular(self)
     }
 }
 
-public extension StoredPaymentComponent {
+package extension StoredPaymentComponent {
 
     var type: PaymentComponentType {
         .stored(self)
     }
 }
 
-public extension PaymentComponent {
+package extension PaymentComponent {
 
     var type: PaymentComponentType {
         .initiable(self)
     }
 }
 
-@_spi(AdyenInternal)
 extension PaymentComponent {
     
     /// Submits payment data to the payment delegate.
     /// - Parameters:
     ///   - data: The Payment data to be submitted
     ///   - component: The component from which the payment originates.
-    public func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
+    package func submit(data: PaymentComponentData, component: PaymentComponent? = nil) {
         Task { [weak self] in
             guard let self else { return }
             sendSubmitEvent()
@@ -76,12 +74,12 @@ extension PaymentComponent {
         }
     }
     
-    public var checkoutAttemptId: String {
+    package var checkoutAttemptId: String {
         context.analyticsProvider?.checkoutAttemptId ?? AnalyticsConstants.fetchCheckoutAttemptIdFailed
     }
     
     /// Adds SDK related info to payment data object and returns the final data in the completion.
-    public func prepareSubmitData(from data: PaymentComponentData) async -> PaymentComponentData {
+    package func prepareSubmitData(from data: PaymentComponentData) async -> PaymentComponentData {
 
         let sdkData = SDKData(
             checkoutAttemptId: checkoutAttemptId,
@@ -103,8 +101,8 @@ extension PaymentComponent {
 
 /// Describes the methods a delegate of the payment component needs to implement.
 @MainActor
-public protocol PaymentComponentDelegate: AnyObject {
-    
+package protocol PaymentComponentDelegate: AnyObject {
+
     /// Invoked when the shopper submits the data needed for the payments call.
     ///
     /// - Parameters:

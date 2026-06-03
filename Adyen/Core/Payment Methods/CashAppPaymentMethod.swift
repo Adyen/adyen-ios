@@ -19,8 +19,6 @@ public struct CashAppPayPaymentMethod: PaymentMethod {
     /// ID of the client or brand account that will charge customers.
     public let scopeId: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.type = try container.decode(PaymentMethodType.self, forKey: .type)
@@ -41,12 +39,7 @@ public struct CashAppPayPaymentMethod: PaymentMethod {
         try configuration.encode(clientId, forKey: .clientId)
         try configuration.encode(scopeId, forKey: .scopeId)
     }
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
+
     // MARK: - Private
 
     private enum CodingKeys: String, CodingKey {
@@ -58,5 +51,13 @@ public struct CashAppPayPaymentMethod: PaymentMethod {
             case clientId
             case scopeId
         }
+    }
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension CashAppPayPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
     }
 }

@@ -191,7 +191,7 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         }
     }
 
-    public func sendDidLoadEvent() {
+    internal func sendDidLoadEvent() {
         var infoEvent = AnalyticsEventInfo(component: AnalyticsConstants.dropInComponentIdentifier, type: .rendered)
         infoEvent.configData = dropInAnalyticsConfiguration
         analyticsProvider?.add(info: infoEvent)

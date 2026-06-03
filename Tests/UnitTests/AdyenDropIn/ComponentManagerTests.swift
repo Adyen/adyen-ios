@@ -650,42 +650,6 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(achComponent.configuration.billingAddressCountryCodes, ["US", "UK"])
     }
     
-    func testMissingImplementationBuildComponent() {
-        
-        struct DummyPaymentMethod: PaymentMethod {
-            var type: PaymentMethodType = .achDirectDebit
-            var name: String = ""
-            var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation? = nil
-            
-            init() {}
-            init(from decoder: Decoder) throws {}
-            
-            enum CodingKeys: CodingKey {} // Satisfying Encoding requirement
-        }
-        
-        let dummy = DummyPaymentMethod()
-        
-        let expectation = expectation(description: "Access expectation")
-        expectation.expectedFulfillmentCount = 1
-        
-        AdyenAssertion.listener = { assertion in
-            XCTAssertEqual(assertion, "`@_spi(AdyenInternal) buildComponent(using:)` needs to be implemented on `DummyPaymentMethod`")
-            expectation.fulfill()
-        }
-        
-        let componentManager = ComponentManager(
-            paymentMethods: .init(regular: [], stored: []),
-            context: Dummy.context,
-            configuration: .init(),
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        _ = dummy.buildComponent(using: componentManager)
-        
-        wait(for: [expectation], timeout: 10)
-    }
-
     // MARK: - Private
 
     private var shopperInformation: PrefilledShopperInformation {

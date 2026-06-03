@@ -63,7 +63,7 @@ package final class UPIComponent: PaymentComponent,
     
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
-
+    
     /// The view controller for the component.
     package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,

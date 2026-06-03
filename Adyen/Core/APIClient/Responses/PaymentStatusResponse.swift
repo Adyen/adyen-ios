@@ -24,9 +24,9 @@ package enum PaymentResultCode: String, Decodable {
 package struct PaymentStatusResponse: Response {
     
     /// The payload.
-    public let payload: String
-    
+    package let payload: String
+
     /// The payment status.
-    public let resultCode: PaymentResultCode
-    
+    package let resultCode: PaymentResultCode
+
 }

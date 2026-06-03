@@ -124,7 +124,8 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
             configuration: configuration,
             presentationDelegate: self
         )
-        .onBeforeSubmit { data in
+        .onBeforeSubmit { [weak self] data in
+            guard let self else { return .abort }
             print("onBeforeSubmit: shopperName: \(String(describing: data.shopperName))")
             print("onBeforeSubmit: shopperEmail: \(String(describing: data.shopperEmail))")
             print("onBeforeSubmit: billingAddress: \(String(describing: data.billingAddress))")
@@ -139,8 +140,12 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
             case .abort:
                 return .abort
             case .patchSession:
-                let patchedSession = try await self.patchSession(using: sessionResponse)
-                return .proceed(data: data, sessionData: patchedSession.sessionData)
+                do {
+                    let patchedSession = try await self.patchSession(using: sessionResponse)
+                    return .proceed(data: data, sessionData: patchedSession.sessionData)
+                } catch {
+                    return .abort
+                }
             }
         }
         .onComplete { [weak self] result in

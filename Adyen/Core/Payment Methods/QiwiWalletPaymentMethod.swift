@@ -13,8 +13,6 @@ public struct QiwiWalletPaymentMethod: PaymentMethod {
     
     public let name: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-    
     /// Qiwi Wallet details.
     public let phoneExtensions: [PhoneExtension]
     
@@ -59,11 +57,6 @@ public struct QiwiWalletPaymentMethod: PaymentMethod {
         
         try nested.encode(CodingKeys.Details.phoneExtensionsKey, forKey: .key)
         try nested.encode(phoneExtensions, forKey: .items)
-    }
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
     }
     
     private enum CodingKeys: String, CodingKey {
@@ -111,4 +104,12 @@ public struct PhoneExtension: Codable, Equatable {
         case countryCode = "name"
     }
     
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension QiwiWalletPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
 }

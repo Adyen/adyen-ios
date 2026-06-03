@@ -12,8 +12,6 @@ struct PaymentMethodMock: PaymentMethod {
     
     var name: String
     
-    var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-    
     func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }

@@ -7,10 +7,10 @@
 import Foundation
 
 /// Payment methods list related configurations.
-public struct PaymentMethodListConfiguration {
+package struct PaymentMethodListConfiguration {
 
-    public init() { /* Empty initializer */ }
+    package init() { /* Empty initializer */ }
 
     /// Indicates whether to allow shoppers to disable/delete stored payment methods
-    public var allowDisablingStoredPaymentMethods: Bool = false
+    package var allowDisablingStoredPaymentMethods: Bool = false
 }
