@@ -8,8 +8,8 @@ import Foundation
 
 /// Defines the methods a delegate of the drop in component should implement.
 @MainActor
-public protocol DropInComponentDelegate: AnyObject {
-    
+package protocol DropInComponentDelegate: AnyObject {
+
     /// Invoked when a payment method is selected and the initial details have been filled.
     ///
     /// - Parameters:
@@ -76,7 +76,7 @@ public protocol DropInComponentDelegate: AnyObject {
 }
 
 /// Provides default empty implementations for some of the `DropInComponentDelegate` functions.
-public extension DropInComponentDelegate {
+package extension DropInComponentDelegate {
     
     func didCancel(component: PaymentComponent, from dropInComponent: AnyDropInComponent) {}
 

@@ -74,7 +74,7 @@ package final class BeforeSubmitCallbackHandler: CheckoutCallbackHandling {
             shopperName: data.shopperName,
             shopperEmail: data.emailAddress
         )
-        let result = try await onBeforeSubmit(inputData)
+        let result = await onBeforeSubmit(inputData)
 
         switch result {
         case let .proceed(modifiedData, sessionData):
@@ -98,12 +98,12 @@ package final class AdvancedCallbackHandler: CheckoutCallbackHandling {
 
     package func handleSubmit(_ data: PaymentComponentData) async throws -> SubmitResult {
         guard let onSubmit = callbackStore.onSubmit else { throw CallbackError.missingSubmitHandler }
-        return try await onSubmit(data)
+        return await onSubmit(data)
     }
 
     package func handleAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult {
         guard let onAdditionalDetails = callbackStore.onAdditionalDetails else { throw CallbackError.missingAdditionalDetailsHandler }
-        return try await onAdditionalDetails(data)
+        return await onAdditionalDetails(data)
     }
 }
 
@@ -121,6 +121,6 @@ package final class ActionOnlyCallbackHandler: CheckoutCallbackHandling {
 
     package func handleAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult {
         guard let onAdditionalDetails = callbackStore.onAdditionalDetails else { throw CallbackError.missingAdditionalDetailsHandler }
-        return try await onAdditionalDetails(data)
+        return await onAdditionalDetails(data)
     }
 }

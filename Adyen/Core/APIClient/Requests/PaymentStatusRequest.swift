@@ -10,22 +10,22 @@ import Foundation
 /// Represents a payment status request.
 package struct PaymentStatusRequest: APIRequest {
     
-    public typealias ResponseType = PaymentStatusResponse
-    
-    public let path: String = "checkoutshopper/services/PaymentInitiation/v1/status"
-    
-    public var counter: UInt = 0
-    
-    public var headers: [String: String] = [:]
-    
-    public let queryParameters: [URLQueryItem] = []
-    
-    public let method: HTTPMethod = .post
-    
-    /// The payment context data.
-    public let paymentData: String
+    package typealias ResponseType = PaymentStatusResponse
 
-    public init(paymentData: String) {
+    package let path: String = "checkoutshopper/services/PaymentInitiation/v1/status"
+
+    package var counter: UInt = 0
+
+    package var headers: [String: String] = [:]
+
+    package let queryParameters: [URLQueryItem] = []
+
+    package let method: HTTPMethod = .post
+
+    /// The payment context data.
+    package let paymentData: String
+
+    package init(paymentData: String) {
         self.paymentData = paymentData
     }
     

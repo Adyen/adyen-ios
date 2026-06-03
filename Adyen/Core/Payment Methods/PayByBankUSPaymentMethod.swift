@@ -7,19 +7,17 @@
 import Foundation
 
 /// PayByBank US payment method.
-public struct PayByBankUSPaymentMethod: PaymentMethod {
+public struct PayByBankUSPaymentMethod: PaymentMethod, PaymentMethodDisplayOverridable {
     public let type: PaymentMethodType
     
     public var name: String
-    
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
     
     @_spi(AdyenInternal)
     public static var logoNames: [String] {
         ["US-1", "US-2", "US-3", "US-4"]
     }
     
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         .init(
             title: name,
             subtitle: nil,
@@ -31,14 +29,17 @@ public struct PayByBankUSPaymentMethod: PaymentMethod {
             accessibilityLabel: name
         )
     }
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
+
     private enum CodingKeys: String, CodingKey {
         case type
         case name
+    }
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension PayByBankUSPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
     }
 }

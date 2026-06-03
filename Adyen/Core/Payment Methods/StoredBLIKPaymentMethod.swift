@@ -7,24 +7,17 @@
 import Foundation
 
 /// Stored Blik payment.
-public struct StoredBLIKPaymentMethod: StoredPaymentMethod {
+public struct StoredBLIKPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayOverridable {
 
     public let type: PaymentMethodType
 
     public let name: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
     public let identifier: String
 
     public let supportedShopperInteractions: [ShopperInteraction]
-
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
     
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue)
     }
 
@@ -37,4 +30,12 @@ public struct StoredBLIKPaymentMethod: StoredPaymentMethod {
         case supportedShopperInteractions
     }
 
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension StoredBLIKPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
 }

@@ -52,12 +52,7 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
     // MARK: - Presentation
 
     private func presentComponent(with paymentMethods: PaymentMethods) {
-        var _paymentMethods = paymentMethods
-        _paymentMethods.overrideDisplayInformation(
-            ofRegularPaymentMethod: .scheme,
-            with: .init(title: "Card", subtitle: "Pay with your credit card")
-        )
-        let dropIn = dropInComponent(from: _paymentMethods)
+        let dropIn = dropInComponent(from: paymentMethods)
         presenter?.present(viewController: dropIn.viewController, completion: nil)
         dropInComponent = dropIn
     }

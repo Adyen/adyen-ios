@@ -49,7 +49,7 @@ package final class PayByBankUSComponent: PaymentComponent, PresentableComponent
         let logoUrlProvider = LogoURLProvider(environment: context.apiContext.environment)
      
         return .init(model: .init(
-            title: paymentMethod.merchantProvidedDisplayInformation?.title ?? paymentMethod.name,
+            title: paymentMethod.name,
             headerImageUrl: logoUrlProvider.logoURL(withName: paymentMethod.type.rawValue),
             supportedBankLogoNames: PayByBankUSPaymentMethod.logoNames,
             style: configuration.style,
