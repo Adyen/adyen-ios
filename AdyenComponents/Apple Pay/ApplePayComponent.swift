@@ -141,7 +141,8 @@ package class ApplePayComponent: NSObject, PresentableComponent, PaymentComponen
     }
 
     public func submit() {
-        // TODO: - Check where to perform submit in ApplePay. I dont think it applies here.
+        // TODO: - Naufal: Check where to perform submit in ApplePay.
+        // Web triggers the ApplePay system view.
     }
 }
 

@@ -59,7 +59,8 @@ package final class IssuerListComponent: PaymentComponent, PresentableComponent,
     }
 
     public func submit() {
-        // TODO: - What should we do in the IssuerListComponent?
+        // TODO: - Naufal: What should we do in the IssuerListComponent?
+        // IssuerListComponent needs to be changed so it validates shopper issuer selection.
     }
 
     private let issuerListPaymentMethod: IssuerListPaymentMethod
