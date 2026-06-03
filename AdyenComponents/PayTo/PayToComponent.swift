@@ -103,7 +103,7 @@ package final class PayToComponent: PaymentComponent, PresentableComponent, Adye
         self.configuration = configuration
     }
 
-    public func submit() {
+    package func submit() {
         didSelectContinueButton()
     }
 

@@ -133,7 +133,7 @@ package final class CashAppPayComponent: PaymentComponent,
         self.configuration = configuration
     }
 
-    public func submit() {
+    package func submit() {
         didSelectSubmitButton()
     }
 

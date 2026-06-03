@@ -51,7 +51,7 @@ package final class BLIKComponent: PaymentComponent, PresentableComponent, Loadi
         self.configuration = configuration
     }
 
-    public func submit() {
+    package func submit() {
         didSelectSubmitButton()
     }
     

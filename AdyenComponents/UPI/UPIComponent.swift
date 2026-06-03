@@ -98,7 +98,7 @@ package final class UPIComponent: PaymentComponent,
         selectedUPIFlow = upiAppsList.isEmpty ? .upiCollect : .upiIntent
     }
 
-    public func submit() {
+    package func submit() {
         didSelectContinueButton()
     }
     

@@ -61,7 +61,7 @@ package final class InstantPaymentComponent: PaymentComponent {
     }
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
-    public func submit() {
+    package func submit() {
         submit(data: paymentData)
     }
 }

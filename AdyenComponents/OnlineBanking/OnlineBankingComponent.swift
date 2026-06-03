@@ -123,7 +123,7 @@ package final class OnlineBankingComponent: PaymentComponent,
         self.configuration = configuration
     }
 
-    public func submit() {
+    package func submit() {
         didSelectContinueButton()
     }
 

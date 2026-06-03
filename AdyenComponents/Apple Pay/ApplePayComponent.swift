@@ -140,7 +140,7 @@ package class ApplePayComponent: NSObject, PresentableComponent, PaymentComponen
         completion?()
     }
 
-    public func submit() {
+    package func submit() {
         // TODO: - Naufal: Check where to perform submit in ApplePay.
         // Web triggers the ApplePay system view.
     }

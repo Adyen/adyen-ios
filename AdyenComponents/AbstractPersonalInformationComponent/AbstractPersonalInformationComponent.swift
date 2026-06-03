@@ -72,7 +72,7 @@ package class AbstractPersonalInformationComponent: PaymentComponent, Presentabl
         self.configuration = configuration
     }
 
-    public func submit() {
+    package func submit() {
         didSelectSubmitButton()
     }
 

@@ -80,7 +80,7 @@ public final class CheckoutPaymentComponent {
     /// - Important:
     ///    - Ensure that the payment component is properly configured before calling this method.
     ///    - Handle stopping the loading state after the payment process is completed.
-    public func submit() {
+    package func submit() {
         paymentComponent.submit()
     }
 }

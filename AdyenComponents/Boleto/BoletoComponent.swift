@@ -50,7 +50,7 @@ package final class BoletoComponent: PaymentComponent,
         socialSecurityNumberItem.isHidden.wrappedValue = false
     }
 
-    public func submit() {
+    package func submit() {
         formComponent.submit()
     }
 

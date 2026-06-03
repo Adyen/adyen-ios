@@ -81,7 +81,7 @@ package final class PayByBankUSComponent: PaymentComponent, PresentableComponent
     // MARK: - PaymentInitiable
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
-    public func submit() {
+    package func submit() {
         submit(data: paymentData)
     }
 }

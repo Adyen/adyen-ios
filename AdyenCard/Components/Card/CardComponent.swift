@@ -134,7 +134,7 @@ package class CardComponent: PaymentComponent,
         self.supportedCardTypes = configuration.supportedCardBrands ?? paymentMethod.brands
     }
 
-    public func submit() {
+    package func submit() {
         didSelectSubmitButton()
     }
 

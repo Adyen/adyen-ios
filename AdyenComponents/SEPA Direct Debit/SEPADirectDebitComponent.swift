@@ -49,7 +49,7 @@ package final class SEPADirectDebitComponent: PaymentComponent, PresentableCompo
         self.configuration = configuration
     }
 
-    public func submit() {
+    package func submit() {
         didSelectSubmitButton()
     }
     

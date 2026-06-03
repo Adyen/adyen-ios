@@ -143,7 +143,7 @@ package final class GiftCardComponent: PaymentComponent,
         self.amount = amount
     }
 
-    public func submit() {
+    package func submit() {
         didSelectSubmitButton()
     }
 
