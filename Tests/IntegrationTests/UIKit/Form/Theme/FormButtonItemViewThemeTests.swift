@@ -8,9 +8,9 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
-final class FormButtonItemViewThemeTests: XCTestCase {
+internal final class FormButtonItemViewThemeTests: XCTestCase {
 
-    func test_formButtonItemView_withCustomTheme_shouldApplyThemeColors() throws {
+    internal func test_formButtonItemView_withCustomTheme_shouldApplyThemeColors() throws {
         // Given - expected colors and custom theme
         let expectedBackgroundColor: UIColor = .purple
         let expectedTextColor: UIColor = .yellow
@@ -35,7 +35,34 @@ final class FormButtonItemViewThemeTests: XCTestCase {
         XCTAssertEqual(titleLabel.textColor, expectedTextColor)
     }
 
-    func test_formButtonItemView_convenienceInitializer_shouldUseDefaultTheme() throws {
+    internal func test_formButtonItemView_withUpdatedColors_shouldRecreateButtonStyles() throws {
+        // Given - update colors via builder on an existing theme
+        let expectedBackgroundColor: UIColor = .systemPink
+        let expectedTextColor: UIColor = .black
+
+        let customTheme = CheckoutTheme.default
+            .colors(
+                CheckoutColors(
+                    primary: expectedBackgroundColor,
+                    textOnPrimary: expectedTextColor
+                )
+            )
+
+        // When - create view with updated theme
+        let item = FormButtonItem()
+        item.identifier = "testUpdatedColorsButtonView"
+        item.title = "Pay Now"
+        let sut = FormButtonItemView(item: item, theme: customTheme)
+
+        // Then - button styles should be recreated from the new colors
+        let button = try XCTUnwrap(sut.button)
+        XCTAssertEqual(button.backgroundColor, expectedBackgroundColor)
+
+        let titleLabel = try XCTUnwrap(button.titleLabel)
+        XCTAssertEqual(titleLabel.textColor, expectedTextColor)
+    }
+
+    internal func test_formButtonItemView_convenienceInitializer_shouldUseDefaultTheme() throws {
         // Given - using old init
         let item = FormButtonItem()
         item.title = "Submit"

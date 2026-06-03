@@ -31,7 +31,7 @@ public struct CheckoutTheme {
     public func colors(_ colors: CheckoutColors) -> CheckoutTheme {
         CheckoutTheme(
             colors: colors,
-            elements: elements,
+            elements: AdyenElements(colors: colors),
             attributes: attributes
         )
     }
