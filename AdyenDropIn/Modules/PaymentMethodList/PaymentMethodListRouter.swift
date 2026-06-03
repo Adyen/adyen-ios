@@ -26,10 +26,6 @@ internal protocol PaymentMethodListRouting: AnyObject {
 @MainActor
 internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
 
-    private enum Constants {
-        static let closeImage = "xmark"
-    }
-
     // MARK: - Properties
 
     private let viewController: UIViewController
@@ -111,12 +107,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     }
 
     private func setupCloseButton(controller: UIViewController) {
-        let closeButton = UIBarButtonItem(
-            image: UIImage(systemName: Constants.closeImage),
-            style: .plain,
-            target: self,
-            action: #selector(closeTappedOnComponentContainerViewController)
-        )
+        let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeTappedOnComponentContainerViewController))
         controller.navigationItem.leftBarButtonItem = closeButton
     }
 
