@@ -7,14 +7,12 @@
 import Foundation
 
 /// Any Gift Card payment method.
-public struct GiftCardPaymentMethod: PartialPaymentMethod {
+public struct GiftCardPaymentMethod: PartialPaymentMethod, PaymentMethodDisplayOverridable {
 
     public let type: PaymentMethodType
 
     public let name: String
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
-
     /// The brand of the gift card.
     public let brand: String
 
@@ -23,7 +21,7 @@ public struct GiftCardPaymentMethod: PartialPaymentMethod {
         builder.build(paymentMethod: self)
     }
 
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name, subtitle: nil, logoName: brand)
     }
 
