@@ -25,6 +25,10 @@ internal protocol PaymentMethodListRouting: AnyObject {
 @MainActor
 internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
 
+    private enum Constants {
+        static let closeImage = "xmark"
+    }
+
     // MARK: - Properties
 
     private let viewController: UIViewController
@@ -69,7 +73,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         case let .regular(regularComponent):
             pushComponent(regularComponent, onCancel: onCancel)
         case let .stored(storedComponent):
-            pushComponent(storedComponent, onCancel: onCancel)
+            presentModalComponent(storedComponent, onCancel: onCancel)
         case .initiable:
             break
         }
@@ -101,7 +105,23 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         onCancel: @escaping () -> Void
     ) {
         let componentContainerViewController = componentContainerViewController(for: component, onCancel: onCancel)
-        viewController.present(componentContainerViewController, animated: true)
+        setupCloseButton(controller: componentContainerViewController)
+        let modalNavigationController = UINavigationController(rootViewController: componentContainerViewController)
+        viewController.present(modalNavigationController, animated: true)
+    }
+
+    private func setupCloseButton(controller: UIViewController) {
+        let closeButton = UIBarButtonItem(
+            image: UIImage(systemName: Constants.closeImage),
+            style: .plain,
+            target: self,
+            action: #selector(closeTappedOnComponentContainerViewController)
+        )
+        controller.navigationItem.leftBarButtonItem = closeButton
+    }
+
+    @objc private func closeTappedOnComponentContainerViewController() {
+        viewController.dismiss(animated: true)
     }
 
     private func componentContainerViewController(
