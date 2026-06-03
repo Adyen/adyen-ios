@@ -42,10 +42,12 @@ public struct BCMCPaymentMethod: AnyCardPaymentMethod {
     public func encode(to encoder: Encoder) throws {
         try cardPaymentMethod.encode(to: encoder)
     }
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension BCMCPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
-    
 }

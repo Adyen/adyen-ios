@@ -13,11 +13,6 @@ public struct PayToPaymentMethod: PaymentMethod {
 
     public let name: String
 
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-
     // MARK: - Private
 
     private enum CodingKeys: String, CodingKey {
@@ -39,12 +34,7 @@ public struct StoredPayToPaymentMethod: StoredPaymentMethod, PaymentMethodDispla
     public let label: String
     
     public let supportedShopperInteractions: [ShopperInteraction]
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
+        
     package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let accessibilityLabel = [
             name,
@@ -65,5 +55,19 @@ public struct StoredPayToPaymentMethod: StoredPaymentMethod, PaymentMethodDispla
         case identifier = "id"
         case label
         case supportedShopperInteractions
+    }
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension PayToPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
+}
+
+extension StoredPayToPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
     }
 }

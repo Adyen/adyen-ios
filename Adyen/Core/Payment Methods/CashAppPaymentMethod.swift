@@ -39,12 +39,7 @@ public struct CashAppPayPaymentMethod: PaymentMethod {
         try configuration.encode(clientId, forKey: .clientId)
         try configuration.encode(scopeId, forKey: .scopeId)
     }
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
+
     // MARK: - Private
 
     private enum CodingKeys: String, CodingKey {
@@ -56,5 +51,13 @@ public struct CashAppPayPaymentMethod: PaymentMethod {
             case clientId
             case scopeId
         }
+    }
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension CashAppPayPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
     }
 }

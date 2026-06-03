@@ -5,7 +5,7 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PaymentComponentBuilder
+@_spi(AdyenInternal) import struct Adyen.LocalizationKey
 
 /// A payment method wrapper, with custom `DisplayInformation`.
 internal struct PartialConfirmationPaymentMethod: PaymentMethod, PaymentMethodDisplayOverridable {
@@ -23,11 +23,7 @@ internal struct PartialConfirmationPaymentMethod: PaymentMethod, PaymentMethodDi
     private let lastFour: String
     
     private let remainingAmount: Amount
-    
-    internal func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        paymentMethod.buildComponent(using: builder)
-    }
-    
+        
     package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let footnote = localizedString(
             .partialPaymentRemainingBalance,
@@ -71,5 +67,11 @@ internal struct PartialConfirmationPaymentMethod: PaymentMethod, PaymentMethodDi
         // We have to conform to Codable because `PaymentMethod` requires it
         // but this struct should never be encoded/decoded as it's an intermediate state
         fatalError("This class should never be encoded.")
+    }
+}
+
+extension PartialConfirmationPaymentMethod: PaymentComponentBuildable {
+    internal func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        (paymentMethod as? PaymentComponentBuildable)?.buildComponent(using: builder)
     }
 }

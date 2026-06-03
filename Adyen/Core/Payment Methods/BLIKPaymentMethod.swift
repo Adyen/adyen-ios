@@ -13,11 +13,6 @@ public struct BLIKPaymentMethod: PaymentMethod, PaymentMethodDisplayOverridable 
 
     public let name: String
     
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
     package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue)
     }
@@ -25,5 +20,13 @@ public struct BLIKPaymentMethod: PaymentMethod, PaymentMethodDisplayOverridable 
     private enum CodingKeys: String, CodingKey {
         case type
         case name
+    }
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension BLIKPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
     }
 }

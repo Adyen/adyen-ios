@@ -18,11 +18,6 @@ public struct StoredPayByBankUSPaymentMethod: StoredPaymentMethod, PaymentMethod
     public let identifier: String
 
     public let supportedShopperInteractions: [ShopperInteraction]
-
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
     
     package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let title: String
@@ -49,4 +44,12 @@ public struct StoredPayByBankUSPaymentMethod: StoredPaymentMethod, PaymentMethod
         case supportedShopperInteractions
     }
 
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension StoredPayByBankUSPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
 }

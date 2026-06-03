@@ -7,7 +7,7 @@
 import Foundation
 
 /// Any DropIn Component.
-public protocol AnyDropInComponent: PresentableComponent {
+package protocol AnyDropInComponent: PresentableComponent {
     
     /// The delegate of the DropIn component.
     var delegate: DropInComponentDelegate? { get set }

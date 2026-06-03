@@ -12,11 +12,6 @@ public struct EContextPaymentMethod: PaymentMethod {
     public let type: PaymentMethodType
 
     public let name: String
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
 
     private enum CodingKeys: String, CodingKey {
         case type
@@ -26,3 +21,11 @@ public struct EContextPaymentMethod: PaymentMethod {
 
 /// A 7eleven payment method.
 public typealias SevenElevenPaymentMethod = EContextPaymentMethod
+
+// MARK: - PaymentComponentBuildable
+
+extension EContextPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
+}

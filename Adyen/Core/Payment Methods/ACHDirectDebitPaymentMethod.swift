@@ -12,12 +12,7 @@ public struct ACHDirectDebitPaymentMethod: PaymentMethod, PaymentMethodDisplayOv
     public let type: PaymentMethodType
 
     public let name: String
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
+        
     package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(title: name.uppercased(), subtitle: nil, logoName: type.rawValue)
     }
@@ -41,12 +36,7 @@ public struct StoredACHDirectDebitPaymentMethod: StoredPaymentMethod, PaymentMet
     public let identifier: String
 
     public let supportedShopperInteractions: [ShopperInteraction]
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
+        
     package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let bankAccountLastFour = String(bankAccountNumber.suffix(4))
         let lastFourSeparated = bankAccountLastFour.map { String($0) }.joined(separator: ", ")
@@ -73,5 +63,19 @@ public struct StoredACHDirectDebitPaymentMethod: StoredPaymentMethod, PaymentMet
         case identifier = "id"
         case supportedShopperInteractions
         case bankAccountNumber
+    }
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension ACHDirectDebitPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
+}
+
+extension StoredACHDirectDebitPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
     }
 }
