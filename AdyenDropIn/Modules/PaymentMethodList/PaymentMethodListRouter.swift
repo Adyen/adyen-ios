@@ -101,7 +101,18 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         with component: PresentableComponent
     ) {
         let componentContainerViewController = componentContainerViewController(for: component)
-        rootViewController.present(componentContainerViewController, animated: true)
+        setupCloseButton(controller: componentContainerViewController)
+        let modalNavigationController = UINavigationController(rootViewController: componentContainerViewController)
+        viewController.present(modalNavigationController, animated: true)
+    }
+
+    private func setupCloseButton(controller: UIViewController) {
+        let closeButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(closeTappedOnComponentContainerViewController))
+        controller.navigationItem.leftBarButtonItem = closeButton
+    }
+
+    @objc private func closeTappedOnComponentContainerViewController() {
+        viewController.dismiss(animated: true)
     }
 
     private func componentContainerViewController(
