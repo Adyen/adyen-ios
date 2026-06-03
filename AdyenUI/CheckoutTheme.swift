@@ -9,7 +9,7 @@ import UIKit
 
 public struct CheckoutTheme {
 
-    package private(set) var colors: CheckoutColors
+    public private(set) var colors: CheckoutColors
     package private(set) var attributes: AdyenAttributes
     package private(set) var elements: AdyenElements
 
