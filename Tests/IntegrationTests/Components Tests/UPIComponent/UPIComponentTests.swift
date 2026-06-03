@@ -246,6 +246,28 @@ class UPIComponentTests: XCTestCase {
         XCTAssertTrue(childViewController.requiresKeyboardInput)
     }
 
+    func test_switchingToCollectFlow_shouldUpdatePreferredContentSize() throws {
+        // Given
+        let schemeChecker = URLSchemeCheckerMock()
+        schemeChecker.openableSchemes = []
+        let sut = try UPIComponent(
+            paymentMethod: AdyenCoder.decode(upiWithApps),
+            context: Dummy.context,
+            urlSchemeChecker: schemeChecker
+        )
+        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
+        setupRootViewController(sut.viewController)
+        formViewController.view.layoutIfNeeded()
+        let intentFlowContentSize = formViewController.preferredContentSize
+
+        // When
+        sut.upiFlowSelectionItem.selectionHandler?(1)
+        wait(for: .milliseconds(500))
+
+        // Then
+        XCTAssertLessThan(formViewController.preferredContentSize.height, intentFlowContentSize.height)
+    }
+
     func testSubmit_shouldCallPaymentDelegateDidSubmit() throws {
         // Given
         let paymentMethod: UPIPaymentMethod = try AdyenCoder.decode(upi)
