@@ -104,7 +104,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     private func presentComponentContainer(
         with component: PresentableComponent
     ) {
-        let componentContainerViewController = componentContainerViewController(for: component, onCancel: onCancel)
+        let componentContainerViewController = componentContainerViewController(for: component)
         setupCloseButton(controller: componentContainerViewController)
         let modalNavigationController = UINavigationController(rootViewController: componentContainerViewController)
         viewController.present(modalNavigationController, animated: true)
