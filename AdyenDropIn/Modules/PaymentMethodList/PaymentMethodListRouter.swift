@@ -103,7 +103,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         let componentContainerViewController = componentContainerViewController(for: component)
         setupCloseButton(controller: componentContainerViewController)
         let modalNavigationController = UINavigationController(rootViewController: componentContainerViewController)
-        navigationController.present(modalNavigationController, animated: true)
+        rootViewController.present(modalNavigationController, animated: true)
     }
 
     private func setupCloseButton(controller: UIViewController) {
@@ -116,7 +116,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     }
 
     @objc private func closeTappedOnComponentContainerViewController() {
-        navigationController.dismiss(animated: true)
+        rootViewController.dismiss(animated: true)
         childRouter = nil
     }
 
