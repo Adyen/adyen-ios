@@ -25,22 +25,6 @@ public struct CheckoutTheme {
         self.elements = AdyenElements(colors: colors)
     }
 
-    /// Internal initializer that accepts elements (for SDK use).
-    internal init(
-        colors: CheckoutColors = .default,
-        elements: AdyenElements = .default,
-        attributes: AdyenAttributes = .default
-    ) {
-        self.colors = colors
-        self.attributes = attributes
-        self.elements = elements
-    }
-}
-
-// MARK: - Builder Methods
-
-extension CheckoutTheme {
-
     /// Returns a new theme with the specified colors.
     /// - Parameter colors: The color scheme to apply.
     /// - Returns: A new `CheckoutTheme` instance.
@@ -50,6 +34,22 @@ extension CheckoutTheme {
             elements: elements,
             attributes: attributes
         )
+    }
+}
+
+// MARK: - Package/Internal Methods
+
+extension CheckoutTheme {
+
+    /// Internal initializer that accepts elements (for SDK use).
+    internal init(
+        colors: CheckoutColors = .default,
+        elements: AdyenElements = .default,
+        attributes: AdyenAttributes = .default
+    ) {
+        self.colors = colors
+        self.attributes = attributes
+        self.elements = elements
     }
 
     /// Returns a new theme with the specified corner radius.
@@ -85,7 +85,7 @@ extension CheckoutTheme {
     ///   - disabledColor: The disabled text color. Defaults to current value.
     ///   - textAlignment: The text alignment. Defaults to current value.
     /// - Returns: A new `CheckoutTheme` instance with the updated body label style.
-    public func bodyLabel(
+    package func bodyLabel(
         font: UIFont? = nil,
         color: UIColor? = nil,
         disabledColor: UIColor? = nil,
@@ -116,7 +116,7 @@ extension CheckoutTheme {
     ///   - disabledTextColor: The disabled text color. Defaults to current value.
     ///   - cornerRadius: The corner radius. Defaults to current value.
     /// - Returns: A new `CheckoutTheme` instance with the updated primary button style.
-    public func primaryButton(
+    package func primaryButton(
         backgroundColor: UIColor? = nil,
         textColor: UIColor? = nil,
         disabledBackgroundColor: UIColor? = nil,
@@ -140,7 +140,6 @@ extension CheckoutTheme {
         )
     }
 
-    // TODO: Robert: CheckoutTheme: Do we need to expose something like secondaryButton? similar to textSecondary
     /// Customizes the destructive button style using UIKit primitives.
     ///
     /// All parameters are optional and use smart merging - only the specified values are changed,
@@ -153,7 +152,7 @@ extension CheckoutTheme {
     ///   - disabledTextColor: The disabled text color. Defaults to current value.
     ///   - cornerRadius: The corner radius. Defaults to current value.
     /// - Returns: A new `CheckoutTheme` instance with the updated destructive button style.
-    public func destructiveButton(
+    package func destructiveButton(
         backgroundColor: UIColor? = nil,
         textColor: UIColor? = nil,
         disabledBackgroundColor: UIColor? = nil,
