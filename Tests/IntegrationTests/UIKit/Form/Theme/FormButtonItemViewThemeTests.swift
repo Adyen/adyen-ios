@@ -15,7 +15,7 @@ final class FormButtonItemViewThemeTests: XCTestCase {
         let expectedBackgroundColor: UIColor = .purple
         let expectedTextColor: UIColor = .yellow
 
-        let customColors = AdyenColors(
+        let customColors = CheckoutColors(
             primary: expectedBackgroundColor,
             textOnPrimary: expectedTextColor
         )
@@ -39,8 +39,8 @@ final class FormButtonItemViewThemeTests: XCTestCase {
         // Given - using old init
         let item = FormButtonItem()
         item.title = "Submit"
-        let expectedBackgroundColor = AdyenColors.default.primary
-        let expectedTextColor = AdyenColors.default.textOnPrimary
+        let expectedBackgroundColor = CheckoutColors.default.primary
+        let expectedTextColor = CheckoutColors.default.textOnPrimary
 
         // When
         let sut = FormButtonItemView(item: item)

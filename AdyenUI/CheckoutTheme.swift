@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2026 Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -9,7 +9,7 @@ import UIKit
 
 public struct CheckoutTheme {
 
-    package private(set) var colors: AdyenColors
+    package private(set) var colors: CheckoutColors
     package private(set) var attributes: AdyenAttributes
     package private(set) var elements: AdyenElements
 
@@ -19,15 +19,15 @@ public struct CheckoutTheme {
     /// Initializes the theme with optional color overrides.
     ///
     /// - Parameter colors: The color scheme. Defaults to `.default`.
-    package init(colors: AdyenColors = .default) {
+    package init(colors: CheckoutColors = .default) {
         self.colors = colors
         self.attributes = .default
         self.elements = AdyenElements(colors: colors)
     }
-    
+
     /// Internal initializer that accepts elements (for SDK use).
     internal init(
-        colors: AdyenColors = .default,
+        colors: CheckoutColors = .default,
         elements: AdyenElements = .default,
         attributes: AdyenAttributes = .default
     ) {
@@ -40,18 +40,18 @@ public struct CheckoutTheme {
 // MARK: - Builder Methods
 
 extension CheckoutTheme {
-    
+
     /// Returns a new theme with the specified colors.
     /// - Parameter colors: The color scheme to apply.
     /// - Returns: A new `CheckoutTheme` instance.
-    package func colors(_ colors: AdyenColors) -> CheckoutTheme {
+    package func colors(_ colors: CheckoutColors) -> CheckoutTheme {
         CheckoutTheme(
             colors: colors,
             elements: elements,
             attributes: attributes
         )
     }
-    
+
     /// Returns a new theme with the specified corner radius.
     /// - Parameter cornerRadius: The corner radius to apply to UI elements.
     /// - Returns: A new `CheckoutTheme` instance.
@@ -62,7 +62,7 @@ extension CheckoutTheme {
             attributes: AdyenAttributes(cornerRadius: cornerRadius)
         )
     }
-    
+
     /// Returns a new theme with the specified attributes.
     /// - Parameter attributes: The UI attributes to apply.
     /// - Returns: A new `CheckoutTheme` instance.
@@ -73,7 +73,7 @@ extension CheckoutTheme {
             attributes: attributes
         )
     }
-    
+
     /// Customizes the body label style using UIKit primitives.
     ///
     /// All parameters are optional and use smart merging - only the specified values are changed,
@@ -96,14 +96,14 @@ extension CheckoutTheme {
         newElements.labels.body.color = color ?? newElements.labels.body.color
         newElements.labels.body.disabledColor = disabledColor ?? newElements.labels.body.disabledColor
         newElements.labels.body.textAlignment = textAlignment ?? newElements.labels.body.textAlignment
-        
+
         return CheckoutTheme(
             colors: colors,
             elements: newElements,
             attributes: attributes
         )
     }
-    
+
     /// Customizes the primary button style using UIKit primitives.
     ///
     /// All parameters are optional and use smart merging - only the specified values are changed,
@@ -128,11 +128,11 @@ extension CheckoutTheme {
         newElements.buttons.primary.textColor = textColor ?? newElements.buttons.primary.textColor
         newElements.buttons.primary.disabledBackgroundColor = disabledBackgroundColor ?? newElements.buttons.primary.disabledBackgroundColor
         newElements.buttons.primary.disabledTextColor = disabledTextColor ?? newElements.buttons.primary.disabledTextColor
-        
+
         if let cornerRadius {
             newElements.buttons.primary.cornerRadius = .fixed(cornerRadius)
         }
-        
+
         return CheckoutTheme(
             colors: colors,
             elements: newElements,
@@ -163,13 +163,14 @@ extension CheckoutTheme {
         var newElements = elements
         newElements.buttons.destructive.backgroundColor = backgroundColor ?? newElements.buttons.destructive.backgroundColor
         newElements.buttons.destructive.textColor = textColor ?? newElements.buttons.destructive.textColor
-        newElements.buttons.destructive.disabledBackgroundColor = disabledBackgroundColor ?? newElements.buttons.destructive.disabledBackgroundColor
+        newElements.buttons.destructive.disabledBackgroundColor =
+            disabledBackgroundColor ?? newElements.buttons.destructive.disabledBackgroundColor
         newElements.buttons.destructive.disabledTextColor = disabledTextColor ?? newElements.buttons.destructive.disabledTextColor
-        
+
         if let cornerRadius {
             newElements.buttons.destructive.cornerRadius = .fixed(cornerRadius)
         }
-        
+
         return CheckoutTheme(
             colors: colors,
             elements: newElements,

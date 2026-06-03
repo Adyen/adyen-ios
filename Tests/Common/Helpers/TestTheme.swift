@@ -53,7 +53,7 @@ enum TestTheme {
 
     /// Creates a distinctive theme for UI testing with easily verifiable colors.
     static func distinctive() -> CheckoutTheme {
-        let colors = AdyenColors(
+        let colors = CheckoutColors(
             container: Colors.container,
             containerOutline: Colors.containerOutline,
             primary: Colors.primary,

@@ -324,7 +324,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         // Given
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
         let customTheme = CheckoutTheme()
-            .colors(AdyenColors(primary: .yellow))
+            .colors(CheckoutColors(primary: .yellow))
 
         checkoutConfiguration = makeCheckoutConfiguration()
         checkoutConfiguration.theme = customTheme
@@ -352,7 +352,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         let customTheme = CheckoutTheme()
-            .colors(AdyenColors(primary: .yellow))
+            .colors(CheckoutColors(primary: .yellow))
 
         checkoutConfiguration = makeCheckoutConfiguration()
         checkoutConfiguration.theme = customTheme

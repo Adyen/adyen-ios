@@ -111,7 +111,7 @@ internal enum ExampleAppTheme: String, CaseIterable {
     /// Midnight theme - Dark purple accent (Dynamic)
     private var midnightTheme: CheckoutTheme {
         CheckoutTheme(
-            colors: AdyenColors(
+            colors: CheckoutColors(
                 background: ExampleColors.darkBackground,
                 container: ExampleColors.darkContainer,
                 containerOutline: ExampleColors.white.withAlphaComponent(0.15),
@@ -146,7 +146,7 @@ internal enum ExampleAppTheme: String, CaseIterable {
     /// Sunset theme - Warm orange tones (Dynamic)
     private var sunsetTheme: CheckoutTheme {
         CheckoutTheme(
-            colors: AdyenColors(
+            colors: CheckoutColors(
                 background: ExampleColors.gray6,
                 container: ExampleColors.secondaryBackground,
                 containerOutline: ExampleColors.orange.withAlphaComponent(0.3),
@@ -188,7 +188,7 @@ internal enum ExampleAppTheme: String, CaseIterable {
         let brandDestructive = UIColor(red: 1.0, green: 0.23, blue: 0.19, alpha: 1.0) // #FF3B30
         
         return CheckoutTheme(
-            colors: AdyenColors(
+            colors: CheckoutColors(
                 background: brandBackground,
                 container: brandContainer,
                 containerOutline: brandPrimary.withAlphaComponent(0.2),

@@ -36,7 +36,7 @@ internal enum DefaultColorsDark {
     internal static let supportShadow = UIColor.color(hex: 0x070707)
 }
 
-package struct AdyenColors: Equatable {
+package struct CheckoutColors: Equatable {
 
     package var background: UIColor
     package var container: UIColor
@@ -56,7 +56,7 @@ package struct AdyenColors: Equatable {
 
     // MARK: - Initializers
 
-    package static var `default`: AdyenColors = .init()
+    package static var `default`: CheckoutColors = .init()
 
     private init() {
         self.background = UIColor { traitCollection in
@@ -86,7 +86,7 @@ package struct AdyenColors: Equatable {
         self.destructive = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.critical : DefaultColorsLight.critical
         }
-        
+
         self.success = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.success : DefaultColorsLight.success
         }
@@ -98,7 +98,7 @@ package struct AdyenColors: Equatable {
         self.disabled = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.backgroundDisabled : DefaultColorsLight.backgroundDisabled
         }
-        
+
         self.textOnDisabled = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.labelDisabled : DefaultColorsLight.labelDisabled
         }
@@ -114,6 +114,7 @@ package struct AdyenColors: Equatable {
         self.textSecondary = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.labelSecondary : DefaultColorsLight.labelSecondary
         }
+
         self.supportShadow = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.supportShadow : DefaultColorsLight.supportShadow
         }
@@ -136,7 +137,7 @@ package struct AdyenColors: Equatable {
         textSecondary: UIColor? = nil,
         supportShadow: UIColor? = nil
     ) {
-        let defaultScheme = AdyenColors.default
+        let defaultScheme = CheckoutColors.default
 
         self.background = background ?? defaultScheme.background
         self.container = container ?? defaultScheme.container
