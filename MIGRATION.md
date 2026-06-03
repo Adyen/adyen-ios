@@ -1,7 +1,229 @@
 #  Migration Notes
 
+## 6.0.0-alpha01
+
+See also:
+
+- [docs/v6/README.md](docs/v6/README.md)
+- [docs/v6/card.md](docs/v6/card.md)
+- [docs/v6/theme.md](docs/v6/theme.md)
+
+### Core objects
+
+#### Sessions flow
+
+##### Before (v5)
+
+```swift
+let apiContext = try APIContext(environment: .test, clientKey: clientKey)
+let context = AdyenContext(apiContext: apiContext, payment: payment)
+
+let configuration = AdyenSession.Configuration(
+    sessionIdentifier: response.sessionId,
+    initialSessionData: response.sessionData,
+    context: context
+)
+
+AdyenSession.initialize(
+    with: configuration,
+    delegate: self,
+    presentationDelegate: self
+) { result in
+    // store session
+}
+```
+
+##### After (v6)
+
+```swift
+let configuration = try CheckoutConfiguration(
+    environment: .test,
+    amount: amount,
+    clientKey: clientKey
+) {
+    CardConfiguration()
+    AuthenticationConfiguration()
+        .requestorAppURL(URL(string: "https://your-domain.example/adyen")!)
+}
+
+let checkout = try await Checkout.setup(
+    with: sessionResponse,
+    configuration: configuration,
+    presentationDelegate: self
+)
+.onBeforeSubmit { data in
+    .proceed(data: data, sessionData: nil)
+}
+.onComplete { result in
+    print(result.resultCode)
+}
+.onError { error in
+    print(error.localizedDescription)
+}
+```
+
+#### Advanced flow
+
+##### Before (v5)
+
+```swift
+let apiContext = try APIContext(environment: .test, clientKey: clientKey)
+let context = AdyenContext(apiContext: apiContext, payment: payment)
+
+let component = CardComponent(
+    paymentMethod: paymentMethod,
+    context: context,
+    configuration: cardConfiguration
+)
+
+component.delegate = self
+```
+
+`PaymentComponentDelegate` handled `/payments`, and a separate action component handled `/payments/details` and redirects.
+
+##### After (v6)
+
+```swift
+let configuration = try CheckoutConfiguration(
+    environment: .test,
+    amount: amount,
+    clientKey: clientKey
+) {
+    CardConfiguration()
+}
+
+let checkout = try await Checkout.setup(
+    with: paymentMethods,
+    configuration: configuration,
+    presentationDelegate: self
+)
+.onSubmit { data in
+    try await callPayments(with: data)
+}
+.onAdditionalDetails { data in
+    try await callDetails(with: data)
+}
+.onComplete { result in
+    print(result.resultCode)
+}
+.onError { error in
+    print(error.localizedDescription)
+}
+```
+
+`callPayments(with:)` should return `SubmitResult`, and `callDetails(with:)` should return `AdditionalDetailsResult`.
+
+#### Summary
+
+- `Checkout.setup(...)` replaces `AdyenSession.initialize(...)` for the new public v6 flows.
+- `CheckoutConfiguration` replaces flow-specific setup objects as the main integration entry point.
+- Closure callbacks replace the public delegate-first flow setup for submission and completion handling.
+- `SessionCheckout` and `AdvancedCheckout` create payment components for the active flow.
+- Theme and localization are configured on `CheckoutConfiguration` through `theme(_:)` and `localizationProvider(_:)`.
+
+### Card component
+
+#### Configuration object
+
+##### Before (v5)
+
+```swift
+var configuration = CardComponent.Configuration()
+configuration.showsHolderNameField = true
+configuration.showsStorePaymentMethodField = true
+configuration.showsSecurityCodeField = true
+configuration.allowedCardTypes = [.visa, .masterCard]
+configuration.koreanAuthenticationMode = .auto
+configuration.socialSecurityNumberMode = .auto
+```
+
+##### After (v6)
+
+```swift
+let configuration = CardConfiguration()
+    .showCardholderName(true)
+    .showStorePaymentMethod(true)
+    .showSecurityCode(true)
+    .supportedCardBrands([.visa, .masterCard])
+    .koreanAuthenticationVisibility(.auto)
+    .socialSecurityNumberVisibility(.auto)
+```
+
+#### Sessions flow
+
+##### Before (v5)
+
+```swift
+guard let paymentMethod = session.sessionContext.paymentMethods
+    .paymentMethod(ofType: CardPaymentMethod.self) else { return }
+
+let component = CardComponent(
+    paymentMethod: paymentMethod,
+    context: context,
+    configuration: cardConfiguration
+)
+
+component.delegate = session
+```
+
+##### After (v6)
+
+```swift
+let checkout = try await Checkout.setup(
+    with: sessionResponse,
+    configuration: configuration,
+    presentationDelegate: self
+)
+
+let component = try checkout.createPaymentComponent(for: .scheme)
+```
+
+#### Advanced flow
+
+##### Before (v5)
+
+```swift
+guard let paymentMethod = paymentMethods
+    .paymentMethod(ofType: CardPaymentMethod.self) else { return }
+
+let component = CardComponent(
+    paymentMethod: paymentMethod,
+    context: context,
+    configuration: cardConfiguration
+)
+
+component.cardComponentDelegate = self
+component.delegate = self
+```
+
+##### After (v6)
+
+```swift
+let checkout = try await Checkout.setup(
+    with: paymentMethods,
+    configuration: configuration,
+    presentationDelegate: self
+)
+.onSubmit { data in
+    try await callPayments(with: data)
+}
+.onAdditionalDetails { data in
+    try await callDetails(with: data)
+}
+
+let component = try checkout.createPaymentComponent(for: .scheme)
+```
+
+`callPayments(with:)` should return `SubmitResult`, and `callDetails(with:)` should return `AdditionalDetailsResult`.
+
+#### Callback migration
+
+- `CardComponentDelegate.didChangeBIN` -> `CardConfiguration.onBinChange(_:)`
+- card brand detection callbacks -> `CardConfiguration.onBinLookup(_:)`
+- component styling moves from per-component form styling to checkout-wide `CheckoutTheme`
+
 ## 5.5.0
-- `telephoneNumber` property of `PrefilledShopperInformation` has been deprecated. Use to `phoneNumber` property if needed.
+- `telephoneNumber` property of `PrefilledShopperInformation` has been deprecated. Use the `phoneNumber` property if needed.
 
 
 ## 5.3.0
