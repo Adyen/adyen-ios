@@ -186,30 +186,7 @@ present(navigationController, animated: true)
 
 ## Theme
 
-For the full `CheckoutTheme` guide and the currently supported merchant-facing overrides, see [theme.md](theme.md).
-
-Apply shared styling on `CheckoutConfiguration` before creating checkout:
-
-```swift
-let theme = CheckoutTheme.default
-    .bodyLabel(color: .secondaryLabel)
-    .primaryButton(
-        backgroundColor: .black,
-        textColor: .white,
-        cornerRadius: 12
-    )
-
-let configuration = try CheckoutConfiguration(
-    environment: .test,
-    amount: amount,
-    clientKey: clientKey
-) {
-    CardConfiguration()
-}
-.theme(theme)
-```
-
-The same theme is used by the payment components and action handling created from that checkout flow.
+For the full `CheckoutTheme` guide and the supported color overrides, see [theme.md](theme.md).
 
 ## Localization
 

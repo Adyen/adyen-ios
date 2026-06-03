@@ -21,13 +21,18 @@ import UIKit
 Configure the theme on `CheckoutConfiguration` before calling `Checkout.setup(...)`:
 
 ```swift
-let theme = CheckoutTheme.default
-    .bodyLabel(color: .secondaryLabel)
-    .primaryButton(
-        backgroundColor: .black,
-        textColor: .white,
-        cornerRadius: 12
+let theme = CheckoutTheme(
+    colors: CheckoutColors(
+        background: .systemBackground,
+        container: .secondarySystemBackground,
+        primary: .black,
+        textOnPrimary: .white,
+        highlight: .systemBlue,
+        destructive: .systemRed,
+        text: .label,
+        textSecondary: .secondaryLabel
     )
+)
 
 let configuration = try CheckoutConfiguration(
     environment: .test,
@@ -41,21 +46,31 @@ let configuration = try CheckoutConfiguration(
 
 The same theme is used by the payment components and action handling created from that checkout flow.
 
-## Merchant-facing builder methods
+## Color overrides
 
-Start from `CheckoutTheme.default` and override only the parts you need.
+Start from `CheckoutColors.default` and override only the tokens you need.
 
 | API | Purpose |
 | --- | --- |
-| `bodyLabel(font:color:disabledColor:textAlignment:)` | Customize the default body label style used across checkout UI. |
-| `primaryButton(backgroundColor:textColor:disabledBackgroundColor:disabledTextColor:cornerRadius:)` | Customize the primary action button style. |
-| `destructiveButton(backgroundColor:textColor:disabledBackgroundColor:disabledTextColor:cornerRadius:)` | Customize destructive action button styling. |
+| `background` | Background color for checkout screens and surfaces. |
+| `container` | Background color for secondary containers such as form fields. |
+| `containerOutline` | Outline color for bordered containers. |
+| `primary` | Primary action background color. |
+| `textOnPrimary` | Text color used on primary actions. |
+| `highlight` | Accent color for interactive highlights. |
+| `destructive` | Destructive action background or emphasis color. |
+| `textOnDestructive` | Text color used on destructive actions. |
+| `disabled` | Background color for disabled controls. |
+| `textOnDisabled` | Text color used on disabled controls. |
+| `separator` | Divider and border separator color. |
+| `text` | Primary text color across checkout UI. |
+| `textSecondary` | Secondary text color across checkout UI. |
 
 ## Scope
 
 - Configure the theme on `CheckoutConfiguration`, not on the `Checkout` flow instance.
 - Theme changes apply across payment components and action handling created from that checkout flow.
-- `CheckoutTheme` currently exposes a limited set of semantic style overrides to merchants.
+- `CheckoutTheme` currently exposes shared color palette overrides through `CheckoutColors`.
 - Localization is configured separately with `CheckoutConfiguration.localizationProvider(_:)`. See [README.md](README.md#localization).
 
 ## Related docs
