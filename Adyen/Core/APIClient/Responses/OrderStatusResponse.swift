@@ -10,17 +10,17 @@ import Foundation
 package struct OrderStatusResponse: Response {
 
     /// The remaining amount to be paid.
-    public let remainingAmount: Amount
+    package let remainingAmount: Amount
 
     /// The payment methods already used to partially pay.
-    public let paymentMethods: [OrderPaymentMethod]?
-    
+    package let paymentMethods: [OrderPaymentMethod]?
+
     /// Initializes an instance of `OrderStatusResponse`.
     ///
     /// - Parameters:
     ///   - remainingAmount: The remaining amount to be paid.
     ///   - paymentMethods: The payment methods already used to partially pay.
-    public init(
+    package init(
         remainingAmount: Amount,
         paymentMethods: [OrderPaymentMethod]?
     ) {
@@ -34,23 +34,21 @@ package struct OrderStatusResponse: Response {
     }
 }
 
-package struct OrderPaymentMethod: PaymentMethod {
+package struct OrderPaymentMethod: PaymentMethod, PaymentMethodDisplayOverridable {
 
-    public var name: String {
+    package var name: String {
         String.Adyen.securedString + lastFour
     }
     
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
+    package let lastFour: String
 
-    public let lastFour: String
+    package let type: PaymentMethodType
 
-    public let type: PaymentMethodType
+    package let transactionLimit: Amount?
 
-    public let transactionLimit: Amount?
+    package let amount: Amount
 
-    public let amount: Amount
-
-    public init(
+    package init(
         lastFour: String,
         type: PaymentMethodType,
         transactionLimit: Amount?,
@@ -62,7 +60,7 @@ package struct OrderPaymentMethod: PaymentMethod {
         self.amount = amount
     }
 
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let disclosureText = AmountFormatter.formatted(
             amount: -amount.value,
             currencyCode: amount.currencyCode,
@@ -84,8 +82,7 @@ package struct OrderPaymentMethod: PaymentMethod {
         )
     }
 
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
+    package func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         nil
     }
 

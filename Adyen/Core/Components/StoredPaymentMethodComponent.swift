@@ -85,7 +85,6 @@ public final class StoredPaymentMethodComponent: StoredPaymentComponent, Localiz
     
 }
 
-@_spi(AdyenInternal)
 extension StoredPaymentMethodComponent: TrackableComponent {}
 
 /// Store payment method details.

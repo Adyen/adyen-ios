@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) @testable import Adyen
+@testable import Adyen
 import XCTest
 
 class APIContextTests: XCTestCase {
@@ -26,8 +26,11 @@ class APIContextTests: XCTestCase {
             try APIContext(environment: environment, clientKey: clientKey),
             "Testing Invalid client key"
         ) { error in
-            XCTAssertTrue(error is ClientKeyError)
-            XCTAssertEqual(error as! ClientKeyError, ClientKeyError.invalidClientKey)
+            guard let checkoutError = error as? CheckoutError else {
+                XCTFail("Expected CheckoutError, got \(type(of: error))")
+                return
+            }
+            XCTAssertEqual(checkoutError.code, .invalidClientKey)
         }
     }
     

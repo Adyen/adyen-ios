@@ -7,13 +7,11 @@
 import Foundation
 
 /// A stored TwintPaymentMethod.
-public struct StoredTwintPaymentMethod: StoredPaymentMethod {
+public struct StoredTwintPaymentMethod: StoredPaymentMethod, PaymentMethodDisplayOverridable {
 
     public let type: PaymentMethodType
 
     public let name: String
-
-    public var merchantProvidedDisplayInformation: MerchantCustomDisplayInformation?
 
     public let identifier: String
 
@@ -24,7 +22,7 @@ public struct StoredTwintPaymentMethod: StoredPaymentMethod {
         builder.build(paymentMethod: self)
     }
 
-    package func defaultDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
+    package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         DisplayInformation(
             title: name,
             subtitle: nil,

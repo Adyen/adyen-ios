@@ -8,8 +8,7 @@ import Adyen
 import UIKit
 
 /// A rounded button for use in forms.
-@_spi(AdyenInternal)
-public final class FormButton: UIControl {
+package final class FormButton: UIControl {
     private enum Constants {
         static let leadingImageWidth: CGFloat = 24
         static let leadingImageHeight: CGFloat = 24
@@ -21,7 +20,7 @@ public final class FormButton: UIControl {
     /// Initializes the form button.
     ///
     /// - Parameter style: The `FormButton` UI style.
-    public init(style: ButtonStyle) {
+    package init(style: ButtonStyle) {
         self.style = style
         super.init(frame: .zero)
         
@@ -41,7 +40,7 @@ public final class FormButton: UIControl {
     /// Initializes the form button.
     /// - Parameter buttonStyle: The  new `FormButton` UI style.
     /// - Parameter style: The  old `FormButton` UI style.
-    public init(
+    package init(
         theme: CheckoutTheme,
         style: ButtonStyle = .init(title: .init(font: .preferredFont(forTextStyle: .body), color: .red))
     ) {
@@ -82,7 +81,7 @@ public final class FormButton: UIControl {
     }
 
     @available(*, unavailable)
-    public required init?(coder aDecoder: NSCoder) {
+    package required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -101,7 +100,7 @@ public final class FormButton: UIControl {
     // MARK: - Title Label
      
     /// The title of the submit button.
-    public var title: String? {
+    package var title: String? {
         didSet {
             titleLabel.text = title
             accessibilityLabel = title
@@ -121,7 +120,7 @@ public final class FormButton: UIControl {
     // MARK: - Leading Image
     
     /// The optional leading image displayed to the left of the title.
-    public var leadingImage: UIImage? {
+    package var leadingImage: UIImage? {
         didSet {
             leadingImageView.image = leadingImage
             leadingImageView.isHidden = leadingImage == nil
@@ -149,7 +148,7 @@ public final class FormButton: UIControl {
         return stackView
     }()
     
-    override public var accessibilityIdentifier: String? {
+    override package var accessibilityIdentifier: String? {
         didSet {
             titleLabel.accessibilityIdentifier = accessibilityIdentifier.map {
                 ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "titleLabel")
@@ -160,7 +159,7 @@ public final class FormButton: UIControl {
     // MARK: - Activity Indicator View
     
     /// Boolean value indicating whether an activity indicator should be shown.
-    public var showsActivityIndicator: Bool {
+    package var showsActivityIndicator: Bool {
         get {
             activityIndicatorView.isAnimating
         }
@@ -194,7 +193,7 @@ public final class FormButton: UIControl {
     
     // MARK: - Layout
     
-    override public func layoutSubviews() {
+    override package func layoutSubviews() {
         super.layoutSubviews()
         self.adyen.round(using: buttonStyle.cornerRadius ?? .fixed(AdyenUIConstants.defaultCornerRadius))
     }
@@ -227,7 +226,7 @@ public final class FormButton: UIControl {
     
     // MARK: - State
     
-    override public var isHighlighted: Bool {
+    override package var isHighlighted: Bool {
         didSet {
             backgroundView.isHighlighted = isHighlighted
         }

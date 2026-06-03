@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@testable @_spi(AdyenInternal) import AdyenCard
+@testable import AdyenCard
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
@@ -585,7 +585,7 @@ class GiftCardComponentTests: XCTestCase {
 
         XCTAssertEqual(paymentMethod.type, giftCard.type)
 
-        let displayInformation = paymentMethod.defaultDisplayInformation(using: nil)
+        let displayInformation = paymentMethod.overriddenDisplayInformation(using: nil)
 
         XCTAssertEqual(displayInformation.title, "•••• 1234")
         XCTAssertEqual(displayInformation.logoName, giftCard.brand)

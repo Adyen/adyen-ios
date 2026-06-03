@@ -133,7 +133,7 @@ extension FormCardLogosItemView {
             updateIcon()
         }
         
-        override public func didMoveToWindow() {
+        override package func didMoveToWindow() {
             super.didMoveToWindow()
             updateIcon()
         }

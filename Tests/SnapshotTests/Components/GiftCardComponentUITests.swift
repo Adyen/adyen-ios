@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@_spi(AdyenInternal) @testable import AdyenCard
+@testable import AdyenCard
 @testable import AdyenComponents
 import AdyenDropIn
 @_spi(AdyenInternal) @testable import AdyenUI

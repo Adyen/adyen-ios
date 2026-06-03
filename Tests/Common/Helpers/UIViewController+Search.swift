@@ -4,11 +4,11 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+@_spi(AdyenInternal) @testable import Adyen
 import UIKit
 import XCTest
-@_spi(AdyenInternal) @testable import Adyen
 
-public extension UIViewController {
+extension UIViewController {
 
     /// Returns the first child of the viewControllers children that matches the type
     ///
