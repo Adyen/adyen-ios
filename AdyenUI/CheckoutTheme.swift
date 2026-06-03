@@ -44,7 +44,7 @@ extension CheckoutTheme {
     /// Returns a new theme with the specified colors.
     /// - Parameter colors: The color scheme to apply.
     /// - Returns: A new `CheckoutTheme` instance.
-    package func colors(_ colors: CheckoutColors) -> CheckoutTheme {
+    public func colors(_ colors: CheckoutColors) -> CheckoutTheme {
         CheckoutTheme(
             colors: colors,
             elements: elements,
