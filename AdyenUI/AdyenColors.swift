@@ -36,27 +36,28 @@ internal enum DefaultColorsDark {
     internal static let supportShadow = UIColor.color(hex: 0x070707)
 }
 
-package struct CheckoutColors: Equatable {
+public struct CheckoutColors: Equatable {
 
-    package var background: UIColor
-    package var container: UIColor
-    package var containerOutline: UIColor
-    package var primary: UIColor
-    package var textOnPrimary: UIColor
-    package var highlight: UIColor
-    package var destructive: UIColor
+    public var background: UIColor
+    public var container: UIColor
+    public var containerOutline: UIColor
+    public var primary: UIColor
+    public var textOnPrimary: UIColor
+    public var highlight: UIColor
+    public var destructive: UIColor
+    public var textOnDestructive: UIColor
+    public var disabled: UIColor
+    public var textOnDisabled: UIColor
+    public var separator: UIColor
+    public var text: UIColor
+    public var textSecondary: UIColor
+
     package var success: UIColor
-    package var textOnDestructive: UIColor
-    package var disabled: UIColor
-    package var textOnDisabled: UIColor
-    package var separator: UIColor
-    package var text: UIColor
-    package var textSecondary: UIColor
     package var supportShadow: UIColor
 
     // MARK: - Initializers
 
-    package static var `default`: CheckoutColors = .init()
+    public static let `default` = CheckoutColors()
 
     private init() {
         self.background = UIColor { traitCollection in
@@ -120,7 +121,7 @@ package struct CheckoutColors: Equatable {
         }
     }
 
-    package init(
+    public init(
         background: UIColor? = nil,
         container: UIColor? = nil,
         containerOutline: UIColor? = nil,
@@ -128,14 +129,12 @@ package struct CheckoutColors: Equatable {
         textOnPrimary: UIColor? = nil,
         highlight: UIColor? = nil,
         destructive: UIColor? = nil,
-        success: UIColor? = nil,
         textOnDestructive: UIColor? = nil,
         disabled: UIColor? = nil,
         textOnDisabled: UIColor? = nil,
         separator: UIColor? = nil,
         text: UIColor? = nil,
-        textSecondary: UIColor? = nil,
-        supportShadow: UIColor? = nil
+        textSecondary: UIColor? = nil
     ) {
         let defaultScheme = CheckoutColors.default
 
@@ -144,7 +143,6 @@ package struct CheckoutColors: Equatable {
         self.containerOutline = containerOutline ?? defaultScheme.containerOutline
         self.primary = primary ?? defaultScheme.primary
         self.textOnPrimary = textOnPrimary ?? defaultScheme.textOnPrimary
-        self.success = success ?? defaultScheme.success
         self.highlight = highlight ?? defaultScheme.highlight
         self.destructive = destructive ?? defaultScheme.destructive
         self.textOnDestructive = textOnDestructive ?? defaultScheme.textOnDestructive
@@ -153,6 +151,7 @@ package struct CheckoutColors: Equatable {
         self.separator = separator ?? defaultScheme.separator
         self.text = text ?? defaultScheme.text
         self.textSecondary = textSecondary ?? defaultScheme.textSecondary
-        self.supportShadow = supportShadow ?? defaultScheme.supportShadow
+        self.success = defaultScheme.success
+        self.supportShadow = defaultScheme.supportShadow
     }
 }

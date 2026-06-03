@@ -111,7 +111,7 @@ internal enum ExampleAppTheme: String, CaseIterable {
     /// Midnight theme - Dark purple accent (Dynamic)
     private var midnightTheme: CheckoutTheme {
         CheckoutTheme(
-            colors: CheckoutColors(
+            colors: .init(
                 background: ExampleColors.darkBackground,
                 container: ExampleColors.darkContainer,
                 containerOutline: ExampleColors.white.withAlphaComponent(0.15),
@@ -119,7 +119,6 @@ internal enum ExampleAppTheme: String, CaseIterable {
                 textOnPrimary: ExampleColors.white,
                 highlight: ExampleColors.purple,
                 destructive: ExampleColors.red,
-                success: ExampleColors.green,
                 textOnDestructive: ExampleColors.white,
                 disabled: ExampleColors.gray,
                 textOnDisabled: ExampleColors.gray2,
@@ -146,7 +145,7 @@ internal enum ExampleAppTheme: String, CaseIterable {
     /// Sunset theme - Warm orange tones (Dynamic)
     private var sunsetTheme: CheckoutTheme {
         CheckoutTheme(
-            colors: CheckoutColors(
+            colors: .init(
                 background: ExampleColors.gray6,
                 container: ExampleColors.secondaryBackground,
                 containerOutline: ExampleColors.orange.withAlphaComponent(0.3),
@@ -188,7 +187,7 @@ internal enum ExampleAppTheme: String, CaseIterable {
         let brandDestructive = UIColor(red: 1.0, green: 0.23, blue: 0.19, alpha: 1.0) // #FF3B30
         
         return CheckoutTheme(
-            colors: CheckoutColors(
+            colors: .init(
                 background: brandBackground,
                 container: brandContainer,
                 containerOutline: brandPrimary.withAlphaComponent(0.2),
@@ -196,7 +195,6 @@ internal enum ExampleAppTheme: String, CaseIterable {
                 textOnPrimary: ExampleColors.staticWhite,
                 highlight: brandAccent,
                 destructive: brandDestructive,
-                success: UIColor(red: 0.2, green: 0.78, blue: 0.35, alpha: 1.0),
                 textOnDestructive: ExampleColors.staticWhite,
                 disabled: UIColor(red: 0.9, green: 0.9, blue: 0.92, alpha: 1.0),
                 textOnDisabled: UIColor(red: 0.6, green: 0.6, blue: 0.65, alpha: 1.0),

@@ -57,7 +57,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             BLIKComponentConfiguration()
         }
         .theme(
-            CheckoutTheme(colors: CheckoutColors(primary: .systemBlue))
+            CheckoutTheme(colors: .init(primary: .systemBlue))
                 .bodyLabel(font: AdyenFonts.default.bodyEmphasized)
                 .destructiveButton(
                     backgroundColor: .systemRed,

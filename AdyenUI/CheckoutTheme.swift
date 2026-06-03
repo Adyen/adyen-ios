@@ -16,10 +16,10 @@ public struct CheckoutTheme {
     /// A default instance of CheckoutTheme.
     public static let `default` = CheckoutTheme()
 
-    /// Initializes the theme with optional color overrides.
+    /// Initializes the theme with optional color palette overrides.
     ///
-    /// - Parameter colors: The color scheme. Defaults to `.default`.
-    package init(colors: CheckoutColors = .default) {
+    /// - Parameter colors: Shared checkout color tokens. Defaults to `.default`.
+    public init(colors: CheckoutColors = .default) {
         self.colors = colors
         self.attributes = .default
         self.elements = AdyenElements(colors: colors)
