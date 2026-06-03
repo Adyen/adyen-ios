@@ -84,12 +84,12 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             presentationDelegate: self
         )
         .onSubmit { [weak self] data in
-            guard let self else { throw CancellationError() }
-            return try await self.callPayments(with: data)
+            guard let self else { return .completion(resultCode: "Error") }
+            return await self.callPayments(with: data)
         }
         .onAdditionalDetails { [weak self] data in
-            guard let self else { throw CancellationError() }
-            return try await self.callDetails(with: data)
+            guard let self else { return .completion(resultCode: "Error") }
+            return await self.callDetails(with: data)
         }
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
@@ -108,23 +108,31 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
     // MARK: - Payment response handling
 
-    private func callPayments(with data: PaymentComponentData) async throws -> SubmitResult {
-        let request = PaymentsRequest(data: data)
-        let response = try await asyncApiClient.performAsync(request)
-        if let action = response.action {
-            return .action(action)
+    private func callPayments(with data: PaymentComponentData) async -> SubmitResult {
+        do {
+            let request = PaymentsRequest(data: data)
+            let response = try await asyncApiClient.performAsync(request)
+            if let action = response.action {
+                return .action(action)
+            }
+            return .completion(resultCode: response.resultCode.rawValue)
+        } catch {
+            return .completion(resultCode: "Error")
         }
-        return .completion(resultCode: response.resultCode.rawValue)
     }
 
-    private func callDetails(with data: ActionComponentData) async throws -> AdditionalDetailsResult {
-        let request = PaymentDetailsRequest(
-            details: data.details,
-            paymentData: data.paymentData,
-            merchantAccount: ConfigurationConstants.current.merchantAccount
-        )
-        let response = try await asyncApiClient.performAsync(request)
-        return .completion(resultCode: response.resultCode.rawValue)
+    private func callDetails(with data: ActionComponentData) async -> AdditionalDetailsResult {
+        do {
+            let request = PaymentDetailsRequest(
+                details: data.details,
+                paymentData: data.paymentData,
+                merchantAccount: ConfigurationConstants.current.merchantAccount
+            )
+            let response = try await asyncApiClient.performAsync(request)
+            return .completion(resultCode: response.resultCode.rawValue)
+        } catch {
+            return .completion(resultCode: "Error")
+        }
     }
     
     // MARK: - Private

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2026 Adyen N.V.
+// Copyright (c) 2025 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -160,7 +160,7 @@ internal extension CheckoutCore {
 }
 
 private extension CheckoutCore {
-    
+
     func onSubmit(for data: PaymentComponentData) -> () async throws -> SubmitResult {
         let handler = callbackHandler
         return { try await handler.handleSubmit(data) }

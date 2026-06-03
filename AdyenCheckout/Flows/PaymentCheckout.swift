@@ -20,13 +20,32 @@ public class PaymentCheckout: BaseCheckout {
     }
 
     /// Creates a payment component for the specified payment method type.
+    ///
+    /// - Parameter type: The type of payment method to create a component for.
+    /// - Returns: A configured ``CheckoutPaymentComponent``.
+    /// - Throws: ``CheckoutError`` with code ``CheckoutError/Code/unknown`` if the payment method
+    ///   is not available in the current payment methods, is not supported, or cannot be
+    ///   initialized on this device (e.g. Apple Pay hardware check failed).
     public func createPaymentComponent(for type: PaymentMethodType) throws -> CheckoutPaymentComponent {
-        try core.createPaymentComponent(for: type)
+        do {
+            return try core.createPaymentComponent(for: type)
+        } catch {
+            throw CheckoutError(error: error)
+        }
     }
 
     /// Creates a payment component for a stored payment method identifier.
+    ///
+    /// - Parameter identifier: The unique identifier of the stored payment method.
+    /// - Returns: A configured ``CheckoutPaymentComponent``.
+    /// - Throws: ``CheckoutError`` with code ``CheckoutError/Code/unknown`` if no stored
+    ///   payment method matching `identifier` exists.
     public func createPaymentComponent(for identifier: String) throws -> CheckoutPaymentComponent {
-        try core.createPaymentComponent(for: identifier)
+        do {
+            return try core.createPaymentComponent(for: identifier)
+        } catch {
+            throw CheckoutError(error: error)
+        }
     }
 
     // TODO: Dropin: When dropin is supported then we should expose this method.
