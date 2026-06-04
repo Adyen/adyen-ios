@@ -36,27 +36,28 @@ internal enum DefaultColorsDark {
     internal static let supportShadow = UIColor.color(hex: 0x070707)
 }
 
-package struct AdyenColors: Equatable {
+public struct CheckoutColors: Equatable {
 
-    package var background: UIColor
-    package var container: UIColor
-    package var containerOutline: UIColor
-    package var primary: UIColor
-    package var textOnPrimary: UIColor
-    package var highlight: UIColor
-    package var destructive: UIColor
+    public var background: UIColor
+    public var container: UIColor
+    public var containerOutline: UIColor
+    public var primary: UIColor
+    public var textOnPrimary: UIColor
+    public var highlight: UIColor
+    public var destructive: UIColor
+    public var textOnDestructive: UIColor
+    public var disabled: UIColor
+    public var textOnDisabled: UIColor
+    public var separator: UIColor
+    public var text: UIColor
+    public var textSecondary: UIColor
+
     package var success: UIColor
-    package var textOnDestructive: UIColor
-    package var disabled: UIColor
-    package var textOnDisabled: UIColor
-    package var separator: UIColor
-    package var text: UIColor
-    package var textSecondary: UIColor
     package var supportShadow: UIColor
 
     // MARK: - Initializers
 
-    package static var `default`: AdyenColors = .init()
+    public static let `default` = CheckoutColors()
 
     private init() {
         self.background = UIColor { traitCollection in
@@ -86,7 +87,7 @@ package struct AdyenColors: Equatable {
         self.destructive = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.critical : DefaultColorsLight.critical
         }
-        
+
         self.success = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.success : DefaultColorsLight.success
         }
@@ -98,7 +99,7 @@ package struct AdyenColors: Equatable {
         self.disabled = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.backgroundDisabled : DefaultColorsLight.backgroundDisabled
         }
-        
+
         self.textOnDisabled = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.labelDisabled : DefaultColorsLight.labelDisabled
         }
@@ -114,12 +115,13 @@ package struct AdyenColors: Equatable {
         self.textSecondary = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.labelSecondary : DefaultColorsLight.labelSecondary
         }
+
         self.supportShadow = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.supportShadow : DefaultColorsLight.supportShadow
         }
     }
 
-    package init(
+    public init(
         background: UIColor? = nil,
         container: UIColor? = nil,
         containerOutline: UIColor? = nil,
@@ -127,23 +129,20 @@ package struct AdyenColors: Equatable {
         textOnPrimary: UIColor? = nil,
         highlight: UIColor? = nil,
         destructive: UIColor? = nil,
-        success: UIColor? = nil,
         textOnDestructive: UIColor? = nil,
         disabled: UIColor? = nil,
         textOnDisabled: UIColor? = nil,
         separator: UIColor? = nil,
         text: UIColor? = nil,
-        textSecondary: UIColor? = nil,
-        supportShadow: UIColor? = nil
+        textSecondary: UIColor? = nil
     ) {
-        let defaultScheme = AdyenColors.default
+        let defaultScheme = CheckoutColors.default
 
         self.background = background ?? defaultScheme.background
         self.container = container ?? defaultScheme.container
         self.containerOutline = containerOutline ?? defaultScheme.containerOutline
         self.primary = primary ?? defaultScheme.primary
         self.textOnPrimary = textOnPrimary ?? defaultScheme.textOnPrimary
-        self.success = success ?? defaultScheme.success
         self.highlight = highlight ?? defaultScheme.highlight
         self.destructive = destructive ?? defaultScheme.destructive
         self.textOnDestructive = textOnDestructive ?? defaultScheme.textOnDestructive
@@ -152,6 +151,7 @@ package struct AdyenColors: Equatable {
         self.separator = separator ?? defaultScheme.separator
         self.text = text ?? defaultScheme.text
         self.textSecondary = textSecondary ?? defaultScheme.textSecondary
-        self.supportShadow = supportShadow ?? defaultScheme.supportShadow
+        self.success = defaultScheme.success
+        self.supportShadow = defaultScheme.supportShadow
     }
 }

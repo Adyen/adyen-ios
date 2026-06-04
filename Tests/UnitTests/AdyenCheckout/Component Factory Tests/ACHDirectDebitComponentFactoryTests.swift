@@ -139,7 +139,7 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         var configuration = ACHDirectDebitComponentConfiguration()
 
         let customTheme = CheckoutTheme()
-            .colors(AdyenColors(primary: .systemPink))
+            .colors(CheckoutColors(primary: .systemPink))
         configuration.theme = customTheme
 
         // When

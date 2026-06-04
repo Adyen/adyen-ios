@@ -16,7 +16,7 @@ package struct AdyenElements {
     /// This is the SINGLE SOURCE OF TRUTH for all default styling values.
     ///
     /// - Parameter colors: The color scheme to use.
-    internal init(colors: AdyenColors) {
+    internal init(colors: CheckoutColors) {
         // ALL default styling configuration is defined HERE in one place
 
         // Define labels first so we can reuse them
