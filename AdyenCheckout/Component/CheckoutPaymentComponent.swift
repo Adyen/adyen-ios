@@ -88,7 +88,7 @@ public final class CheckoutPaymentComponent {
     /// }
     ///
     /// // For custom pay button integration
-    /// @IBAction func payButtonTapped() {
+    /// func payButtonTapped() {
     ///     component.submit()
     /// }
     /// ```
