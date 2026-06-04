@@ -35,6 +35,17 @@ public struct CheckoutTheme {
             attributes: attributes
         )
     }
+
+    /// Returns a new theme with the specified corner radius.
+    /// - Parameter cornerRadius: The corner radius to apply to UI elements.
+    /// - Returns: A new `CheckoutTheme` instance.
+    public func cornerRadius(_ cornerRadius: CGFloat) -> CheckoutTheme {
+        CheckoutTheme(
+            colors: colors,
+            elements: elements,
+            attributes: AdyenAttributes(cornerRadius: cornerRadius)
+        )
+    }
 }
 
 // MARK: - Package/Internal Methods
@@ -50,17 +61,6 @@ extension CheckoutTheme {
         self.colors = colors
         self.attributes = attributes
         self.elements = elements
-    }
-
-    /// Returns a new theme with the specified corner radius.
-    /// - Parameter cornerRadius: The corner radius to apply to UI elements.
-    /// - Returns: A new `CheckoutTheme` instance.
-    package func cornerRadius(_ cornerRadius: CGFloat) -> CheckoutTheme {
-        CheckoutTheme(
-            colors: colors,
-            elements: elements,
-            attributes: AdyenAttributes(cornerRadius: cornerRadius)
-        )
     }
 
     /// Returns a new theme with the specified attributes.
