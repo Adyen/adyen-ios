@@ -211,7 +211,7 @@ extension CheckoutConfiguration {
 
     /// Sets the theme for the checkout configuration.
     ///
-    /// Use `CheckoutTheme` builder methods to customize colors, attributes, and elements:
+    /// Use `CheckoutTheme` to provide shared checkout color overrides, such as a custom `CheckoutColors` palette.
     ///
     /// - Parameter theme: The CheckoutTheme to apply to the checkout configuration.
     /// - Returns: A modified CheckoutConfiguration with the specified theme.

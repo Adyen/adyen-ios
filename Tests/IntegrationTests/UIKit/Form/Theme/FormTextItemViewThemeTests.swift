@@ -20,20 +20,20 @@ final class FormTextItemViewThemeTests: XCTestCase {
 
         // Then - trigger validation to show error state
         sut.showValidation()
-        XCTAssertEqual(sut.titleLabel.textColor, AdyenColors.default.primary)
-        XCTAssertEqual(sut.textField.textColor, AdyenColors.default.primary)
-        XCTAssertEqual(sut.footerLabel.textColor, AdyenColors.default.destructive)
+        XCTAssertEqual(sut.titleLabel.textColor, CheckoutColors.default.primary)
+        XCTAssertEqual(sut.textField.textColor, CheckoutColors.default.primary)
+        XCTAssertEqual(sut.footerLabel.textColor, CheckoutColors.default.destructive)
         XCTAssertEqual(sut.footerLabel.text, expectedErrorMessage)
 
         let containerView = getContainerView(from: sut)
-        XCTAssertEqual(containerView?.backgroundColor, AdyenColors.default.container)
+        XCTAssertEqual(containerView?.backgroundColor, CheckoutColors.default.container)
         // Error state should show destructive border color
-        XCTAssertEqual(containerView?.layer.borderColor, AdyenColors.default.destructive.cgColor)
+        XCTAssertEqual(containerView?.layer.borderColor, CheckoutColors.default.destructive.cgColor)
     }
 
     func test_formTextItemView_withCustomColors_shouldApplyToUI() {
         // Given - item with required validation that will fail when empty
-        let customColors = AdyenColors(
+        let customColors = CheckoutColors(
             container: .yellow,
             containerOutline: .systemPurple,
             primary: .magenta,
@@ -60,7 +60,7 @@ final class FormTextItemViewThemeTests: XCTestCase {
 
     func test_formTextItemView_borderColor_shouldUpdateOnEditingStateChange() {
         // Given
-        let customColors = AdyenColors(
+        let customColors = CheckoutColors(
             containerOutline: .systemGreen,
             primary: .orange
         )
@@ -85,7 +85,7 @@ final class FormTextItemViewThemeTests: XCTestCase {
 
     func test_formTextInputItemView_isEnabled_shouldApplyCorrectTextColor() {
         // Given
-        let customColors = AdyenColors(primary: .systemBlue)
+        let customColors = CheckoutColors(primary: .systemBlue)
         let item = FormTextInputItem()
         let sut = makeSUT(item: item, colors: customColors)
 
@@ -97,7 +97,7 @@ final class FormTextItemViewThemeTests: XCTestCase {
         setEnabled(false, on: item)
 
         // Then - disabled color applied (SDK default for disabled is textSecondary)
-        XCTAssertEqual(sut.textField.textColor, AdyenColors.default.textSecondary)
+        XCTAssertEqual(sut.textField.textColor, CheckoutColors.default.textSecondary)
         XCTAssertFalse(sut.textField.isEnabled)
 
         // When - re-enable
@@ -113,15 +113,15 @@ final class FormTextItemViewThemeTests: XCTestCase {
         let sut = FormTextItemView(item: FormTextInputItem())
 
         // Then
-        XCTAssertEqual(sut.titleLabel.textColor, AdyenColors.default.primary)
-        XCTAssertEqual(sut.textField.textColor, AdyenColors.default.primary)
+        XCTAssertEqual(sut.titleLabel.textColor, CheckoutColors.default.primary)
+        XCTAssertEqual(sut.textField.textColor, CheckoutColors.default.primary)
     }
 
     // MARK: - SUT Factory
 
     private func makeSUT(
         item: FormTextInputItem = FormTextInputItem(),
-        colors: AdyenColors = .default
+        colors: CheckoutColors = .default
     ) -> FormTextInputItemView {
         let theme = CheckoutTheme(colors: colors)
         return FormTextInputItemView(item: item, theme: theme)
