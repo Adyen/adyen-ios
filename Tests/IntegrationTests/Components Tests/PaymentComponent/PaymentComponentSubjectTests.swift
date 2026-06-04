@@ -314,6 +314,7 @@ class PaymentComponentSubjectTests: XCTestCase {
             context: context,
             paymentData: paymentData
         )
+        instantComponent.delegate = paymentComponentDelegate
 
         let didSubmitExpectation = expectation(description: "didSubmit should get called")
 
