@@ -61,7 +61,7 @@ jobs:
     # The github action automatically posts on a PR (if it's not a fork-PR)
     # and/or outputs the diff to the $GITHUB_STEP_SUMMARY
     - name: 🔍 Detect Changes
-      uses: Adyen/adyen-swift-public-api-diff@0.10.1
+      uses: Adyen/adyen-swift-public-api-diff@0.12.0
       with:
         platform: "iOS"
         new: ${{ env.NEW_VERSION }}
