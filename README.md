@@ -31,7 +31,7 @@ You can integrate with Adyen iOS in two ways:
 | Major version | State       | Deprecated    | End-of-life   |
 |---------------|-------------|---------------|---------------|
 | 5.x.x         | Active      | ---           | ---           |
-| 4.x.x         | Inactive    | June 2026     | June 2027     |
+| 4.x.x         | Inactive    | December 2026     | December 2027     |
 | 3.x.x         | End-of-life | November 2021 | November 2022 |
 
 More information about our versioning and the Drop-in/Components lifecycle can be found [here](https://docs.adyen.com/online-payments/upgrade-your-integration/).
