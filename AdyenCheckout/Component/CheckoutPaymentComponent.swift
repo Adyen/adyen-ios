@@ -60,7 +60,7 @@ public final class CheckoutPaymentComponent {
     /// Indicates whether the payment component requires user interaction before submitting.
     ///
     /// When `true`, the component has a UI that the shopper must interact with (e.g., filling in card details).
-    /// When `false`, the component can submit immediately without presenting any UI (e.g., instant payment methods).
+    /// When `false`, the component can submit immediately without presenting any UI (e.g., direct payment methods).
     ///
     /// Use this property to determine whether to present the component's `viewController` or call `submit()` directly.
     ///
@@ -78,11 +78,11 @@ public final class CheckoutPaymentComponent {
     /// Submits the payment request to initiate the payment process.
     ///
     /// Call this method to programmatically trigger the payment submission. For components with UI (`requiresUserInteraction == true`),
-    /// this validates the form and submits if valid. For instant payment methods (`requiresUserInteraction == false`),
+    /// this validates the form and submits if valid. For direct payment methods (`requiresUserInteraction == false`),
     /// this immediately initiates the payment.
     ///
     /// ```swift
-    /// // For instant payment methods (no UI)
+    /// // For direct payment methods (no UI)
     /// if !component.requiresUserInteraction {
     ///     component.submit()
     /// }
