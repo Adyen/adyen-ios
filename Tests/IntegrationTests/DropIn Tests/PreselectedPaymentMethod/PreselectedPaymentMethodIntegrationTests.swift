@@ -302,9 +302,7 @@ struct PreselectedPaymentMethodIntegrationTests {
 
             case .initiableBCMC:
                 let paymentMethod = try! AdyenCoder.decode(storedBcmcDictionary) as StoredBCMCPaymentMethod
-                // Need to create a Mock Component that implements both PaymentComponent and PaymentInitiable
-                // to check if the dropInFlowManager's submit is called
-                return InitiablePaymentComponentMock(paymentMethod: paymentMethod, context: Dummy.context)
+                return PaymentComponentMock(paymentMethod: paymentMethod)
             }
         }
 

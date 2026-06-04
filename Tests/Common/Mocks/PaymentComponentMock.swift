@@ -14,13 +14,22 @@ class PaymentComponentMock: PaymentComponent {
 
     var delegate: PaymentComponentDelegate?
 
-    /// Default type - subclasses provide their own implementation
-    var type: PaymentComponentType {
-        fatalError("Subclasses must override type")
-    }
-
     init(paymentMethod: PaymentMethod) {
         self.paymentMethod = paymentMethod
+    }
+
+    // MARK: - submit
+
+    var submitCallsCount = 0
+    var submitCalled: Bool {
+        submitCallsCount > 0
+    }
+
+    var submitClosure: (() -> Void)?
+
+    func submit() {
+        submitCallsCount += 1
+        submitClosure?()
     }
 }
 
@@ -29,10 +38,6 @@ class PresentableComponentMock: PaymentComponentMock, PresentableComponent, Load
     // MARK: - Properties
 
     var viewController: UIViewController
-
-    override var type: PaymentComponentType {
-        .regular(self)
-    }
 
     // MARK: - Initializers
 

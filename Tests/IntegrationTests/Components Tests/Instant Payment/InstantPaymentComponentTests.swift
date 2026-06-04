@@ -53,7 +53,7 @@ class InstantPaymentComponentTests: XCTestCase {
             delegateExpectation.fulfill()
         }
 
-        sut.initiatePayment(delegate: delegate)
+        sut.submit()
 
         waitForExpectations(timeout: 2, handler: nil)
     }
