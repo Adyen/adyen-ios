@@ -5,7 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PaymentComponent
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 #if canImport(AdyenUI)
     import AdyenUI
