@@ -150,7 +150,6 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
             options: [.beginFromCurrentState, .layoutSubviews],
             animations: { [weak self] in
                 self?.scrollView.contentInset.bottom = bottomInset
-                self?.view.layoutIfNeeded()
             }
         )
         view.adyen.animate(context: context)
