@@ -65,8 +65,8 @@ public final class CheckoutPaymentComponent {
     /// Use this property to determine whether to present the component's `viewController` or call `submit()` directly.
     ///
     /// ```swift
-    /// if component.requiresUserInteraction {
-    ///     present(component.viewController!, animated: true)
+    /// if component.requiresUserInteraction, let componentViewController = component.viewController {
+    ///     present(componentViewController, animated: true)
     /// } else {
     ///     component.submit()
     /// }
