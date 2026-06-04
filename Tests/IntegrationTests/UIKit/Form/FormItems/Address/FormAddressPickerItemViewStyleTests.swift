@@ -116,7 +116,7 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
     func test_customTheme_footerLabel_shouldUseCustomDestructiveColor() {
         // Given
         let expectedColor = UIColor.systemPurple
-        var customColors = AdyenColors()
+        var customColors = CheckoutColors()
         customColors.destructive = expectedColor
         let customTheme = CheckoutTheme(colors: customColors)
 

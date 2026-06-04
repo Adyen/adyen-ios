@@ -158,7 +158,7 @@ class CardComponentTests: XCTestCase {
     func test_component_withCustomTheme_shouldApplyThemeStyles() {
         // Given - custom theme with distinctive colors and button styling
         let colorToTest = UIColor.blue
-        let customColors = AdyenColors(
+        let customColors = CheckoutColors(
             container: .yellow,
             containerOutline: .purple,
             primary: colorToTest,
@@ -253,7 +253,7 @@ class CardComponentTests: XCTestCase {
         var configuration = CardConfiguration()
         configuration.showCardholderName = true
         configuration.theme = CheckoutTheme(
-            colors: AdyenColors(
+            colors: CheckoutColors(
                 containerOutline: expectedBorderColor,
                 primary: expectedActiveBorderColor
             )
@@ -291,7 +291,7 @@ class CardComponentTests: XCTestCase {
         var configuration = CardConfiguration()
         configuration.billingAddress.mode = .lookup(onAddressLookup: { _ in [] })
         configuration.theme = CheckoutTheme(
-            colors: AdyenColors(
+            colors: CheckoutColors(
                 containerOutline: expectedBorderColor
             )
         )
@@ -490,7 +490,7 @@ class CardComponentTests: XCTestCase {
 
         let tintColor = UIColor.black
         
-        configuration.theme = CheckoutTheme(colors: AdyenColors(primary: tintColor))
+        configuration.theme = CheckoutTheme(colors: CheckoutColors(primary: tintColor))
 
         let component = CardComponent(
             paymentMethod: method,
