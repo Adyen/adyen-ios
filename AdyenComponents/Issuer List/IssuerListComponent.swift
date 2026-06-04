@@ -42,6 +42,9 @@ package final class IssuerListComponent: PaymentComponent, PresentableComponent,
     
     private let searchThrottler = Throttler(minimumDelay: Constants.searchDelay)
     
+    private var selectedIssuer: Issuer?
+    private weak var selectedListItem: ListItem?
+    
     /// Initializes the issuer list component.
     ///
     /// - Parameter paymentMethod: The issuer list payment method.
@@ -59,8 +62,22 @@ package final class IssuerListComponent: PaymentComponent, PresentableComponent,
     }
 
     package func submit() {
-        // TODO: - Naufal: What should we do in the IssuerListComponent?
-        // IssuerListComponent needs to be changed so it validates shopper issuer selection.
+        guard let selectedIssuer else {
+            // TODO: Show validation error - no issuer selected
+            return
+        }
+        
+        let details = IssuerListDetails(
+            paymentMethod: issuerListPaymentMethod,
+            issuer: selectedIssuer.identifier
+        )
+        submit(data: PaymentComponentData(
+            paymentMethodDetails: details,
+            amount: context.amount,
+            order: order
+        ))
+        
+        selectedListItem?.startLoading()
     }
 
     private let issuerListPaymentMethod: IssuerListPaymentMethod
@@ -138,19 +155,11 @@ package final class IssuerListComponent: PaymentComponent, PresentableComponent,
             )
             listItem.selectionHandler = { [weak self, weak listItem] in
                 guard let self, let listItem else { return }
-                let details = IssuerListDetails(
-                    paymentMethod: self.issuerListPaymentMethod,
-                    issuer: issuer.identifier
-                )
-                self.submit(data: PaymentComponentData(
-                    paymentMethodDetails: details,
-                    amount: self.context.amount,
-                    order: self.order
-                ))
                 
+                self.selectedIssuer = issuer
+                self.selectedListItem = listItem
                 self.sendIssuerSelectedEvent(issuer)
-                
-                listItem.startLoading()
+                self.submit()
             }
             return listItem
         }
