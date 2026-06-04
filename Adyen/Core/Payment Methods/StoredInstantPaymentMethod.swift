@@ -16,12 +16,7 @@ public struct StoredInstantPaymentMethod: StoredPaymentMethod {
     public let identifier: String
 
     public let supportedShopperInteractions: [ShopperInteraction]
-    
-    @_spi(AdyenInternal)
-    public func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
-        builder.build(paymentMethod: self)
-    }
-    
+
     // MARK: - Decoding
     
     private enum CodingKeys: String, CodingKey {
@@ -31,4 +26,12 @@ public struct StoredInstantPaymentMethod: StoredPaymentMethod {
         case supportedShopperInteractions
     }
     
+}
+
+// MARK: - PaymentComponentBuildable
+
+extension StoredInstantPaymentMethod: PaymentComponentBuildable {
+    package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
+        builder.build(paymentMethod: self)
+    }
 }

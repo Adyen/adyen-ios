@@ -7,7 +7,7 @@
 import Foundation
 
 @MainActor
-public protocol InitiablePaymentComponent: PaymentComponent {
+package protocol InitiablePaymentComponent: PaymentComponent {
     /// Initiate the payment flow
     func initiatePayment(delegate: PaymentComponentDelegate)
 }

@@ -28,7 +28,7 @@ package enum AnalyticsEnvironment: String, AnyAPIEnvironment {
     
     case local = "http://localhost:8080/"
     
-    public var baseURL: URL {
+    package var baseURL: URL {
         URL(string: rawValue)!
     }
     

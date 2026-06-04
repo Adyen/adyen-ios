@@ -11,11 +11,11 @@ import Foundation
 
 extension CheckoutCore: PaymentComponentDelegate {
 
-    public func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
+    package func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         performSubmit(data, source: .component(component))
     }
 
-    public func didFail(with error: any Error, from component: any PaymentComponent) {
+    package func didFail(with error: any Error, from component: any PaymentComponent) {
         handle(error, from: component)
     }
 }

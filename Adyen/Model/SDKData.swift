@@ -79,8 +79,7 @@ public protocol SDKDataAuthenticationProvider {
     var authentication: SDKData.Authentication { get }
 }
 
-@_spi(AdyenInternal)
-public extension PaymentComponent {
+package extension PaymentComponent {
 
     var paymentMethodBehavior: SDKData.PaymentMethodBehavior {
         .nativeComponent

@@ -52,8 +52,6 @@ internal struct DropInAssembler {
         )
     }
 
-    // MARK: - Public
-
     internal func resolveDropInRouter() -> DropInRouting {
         let apiClient = resolveAPIClient()
 

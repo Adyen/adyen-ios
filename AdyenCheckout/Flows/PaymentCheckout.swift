@@ -48,8 +48,10 @@ public class PaymentCheckout: BaseCheckout {
         }
     }
 
-    /// Creates a Drop-in component with all available payment methods.
-    public func createDropIn() -> (any AnyDropInComponent)? {
-        core.createDropIn()
-    }
+    // TODO: Dropin: When dropin is supported then we should expose this method.
+    // Currently by exposing this method we make public all related types to AnyDropInComponent. Which are V5 api and not v6.
+//    /// Creates a Drop-in component with all available payment methods.
+//    public func createDropIn() -> (any AnyDropInComponent)? {
+//        core.createDropIn()
+//    }
 }
