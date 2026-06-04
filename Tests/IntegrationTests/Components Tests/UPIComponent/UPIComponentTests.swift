@@ -248,6 +248,9 @@ class UPIComponentTests: XCTestCase {
 
     func test_switchingToCollectFlow_shouldUpdatePreferredContentSize() throws {
         // Given
+        UIView.setAnimationsEnabled(false)
+        defer { UIView.setAnimationsEnabled(true) }
+
         let schemeChecker = URLSchemeCheckerMock()
         schemeChecker.openableSchemes = []
         let sut = try UPIComponent(
@@ -262,7 +265,7 @@ class UPIComponentTests: XCTestCase {
 
         // When
         sut.upiFlowSelectionItem.selectionHandler?(1)
-        wait(for: .milliseconds(500))
+        formViewController.view.layoutIfNeeded()
 
         // Then
         XCTAssertLessThan(formViewController.preferredContentSize.height, intentFlowContentSize.height)
