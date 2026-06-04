@@ -39,7 +39,12 @@ class PaymentComponentMock: PaymentComponent {
         submitClosure?()
 
         if shouldCallDelegateOnSubmit {
-            let details = InstantPaymentDetails(type: paymentMethod.type)
+            let details: PaymentMethodDetails
+            if let storedPaymentMethod = paymentMethod as? StoredPaymentMethod {
+                details = StoredPaymentDetails(paymentMethod: storedPaymentMethod)
+            } else {
+                details = InstantPaymentDetails(type: paymentMethod.type)
+            }
             let data = PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: nil)
             delegate?.didSubmit(data, from: self)
         }
