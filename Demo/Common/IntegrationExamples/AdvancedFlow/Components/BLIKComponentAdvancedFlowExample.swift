@@ -57,15 +57,16 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             BLIKComponentConfiguration()
         }
         .theme(
-            CheckoutTheme(colors: AdyenColors(primary: .systemBlue))
-                .bodyLabel(font: AdyenFonts.default.bodyEmphasized)
-                .destructiveButton(
-                    backgroundColor: .systemRed,
-                    textColor: .white,
-                    disabledBackgroundColor: .systemGray,
-                    disabledTextColor: .lightGray
+            CheckoutTheme(
+                colors: .init(
+                    primary: .systemBlue,
+                    destructive: .systemRed,
+                    textOnDestructive: .white,
+                    disabled: .systemGray,
+                    textOnDisabled: .lightGray
                 )
-                .cornerRadius(8.0)
+            )
+            .cornerRadius(8.0)
         )
 
         let checkout = try await Checkout.setup(
@@ -170,7 +171,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
 extension BLIKComponentAdvancedFlowExample: PresentationDelegate {
 
-    func present(component: any PresentableComponent) {
+    internal func present(component: any PresentableComponent) {
         presenter?.present(viewController: component.viewController, completion: nil)
     }
 }

@@ -32,7 +32,7 @@ package struct AdyenButtonStyle {
         self.cornerRadius = cornerRadius
     }
     
-    internal static func primary(for colors: AdyenColors) -> AdyenButtonStyle {
+    internal static func primary(for colors: CheckoutColors) -> AdyenButtonStyle {
         .init(
             backgroundColor: colors.primary,
             textColor: colors.textOnPrimary,
@@ -42,7 +42,7 @@ package struct AdyenButtonStyle {
         )
     }
     
-    internal static func secondary(for colors: AdyenColors) -> AdyenButtonStyle {
+    internal static func secondary(for colors: CheckoutColors) -> AdyenButtonStyle {
         .init(
             backgroundColor: colors.container,
             textColor: colors.text,
@@ -52,7 +52,7 @@ package struct AdyenButtonStyle {
         )
     }
     
-    internal static func tertiary(for colors: AdyenColors) -> AdyenButtonStyle {
+    internal static func tertiary(for colors: CheckoutColors) -> AdyenButtonStyle {
         .init(
             backgroundColor: .clear,
             textColor: colors.highlight,
@@ -62,7 +62,7 @@ package struct AdyenButtonStyle {
         )
     }
     
-    internal static func destructive(for colors: AdyenColors) -> AdyenButtonStyle {
+    internal static func destructive(for colors: CheckoutColors) -> AdyenButtonStyle {
         .init(
             backgroundColor: colors.destructive,
             textColor: colors.textOnDestructive,
