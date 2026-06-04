@@ -14,6 +14,10 @@ class PaymentComponentMock: PaymentComponent {
 
     var delegate: PaymentComponentDelegate?
 
+    var type: PaymentComponentType {
+        .initiable(self)
+    }
+
     init(paymentMethod: PaymentMethod) {
         self.paymentMethod = paymentMethod
     }
@@ -39,6 +43,10 @@ class PresentableComponentMock: PaymentComponentMock, PresentableComponent, Load
 
     var viewController: UIViewController
 
+    override var type: PaymentComponentType {
+        .regular(self)
+    }
+
     // MARK: - Initializers
 
     init(
@@ -61,31 +69,6 @@ class PresentableComponentMock: PaymentComponentMock, PresentableComponent, Load
     func stopLoading() {
         stopLoadingCallsCount += 1
         stopLoadingClosure?()
-    }
-}
-
-class InitiableComponentMock: PaymentComponentMock, InitiablePaymentComponent {
-
-    override var type: PaymentComponentType {
-        .initiable(self)
-    }
-
-    override init(paymentMethod: PaymentMethod) {
-        super.init(paymentMethod: paymentMethod)
-    }
-
-    // MARK: - initiatePayment
-
-    var initiatePaymentCallsCount = 0
-    var initiatePaymentCalled: Bool {
-        initiatePaymentCallsCount > 0
-    }
-
-    var onInitiatePayment: (() -> Void)?
-
-    func initiatePayment(delegate: any PaymentComponentDelegate) {
-        initiatePaymentCallsCount += 1
-        onInitiatePayment?()
     }
 }
 
