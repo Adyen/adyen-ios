@@ -31,9 +31,18 @@ class PaymentComponentMock: PaymentComponent {
 
     var submitClosure: (() -> Void)?
 
+    /// When true, calling submit() will trigger didSubmit on the delegate with mock payment data
+    var shouldCallDelegateOnSubmit = true
+
     func submit() {
         submitCallsCount += 1
         submitClosure?()
+
+        if shouldCallDelegateOnSubmit {
+            let details = InstantPaymentDetails(type: paymentMethod.type)
+            let data = PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: nil)
+            delegate?.didSubmit(data, from: self)
+        }
     }
 }
 
