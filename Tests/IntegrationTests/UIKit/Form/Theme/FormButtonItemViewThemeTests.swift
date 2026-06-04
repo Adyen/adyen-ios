@@ -56,7 +56,7 @@ internal final class FormButtonItemViewThemeTests: XCTestCase {
 
         // Then - button styles should be recreated from the new colors
         let button = try XCTUnwrap(sut.button)
-        XCTAssertEqual(button.backgroundColor, expectedBackgroundColor)
+        XCTAssertEqual(button.backgroundColor?.cgColor, expectedBackgroundColor.cgColor)
 
         let titleLabel = try XCTUnwrap(button.titleLabel)
         XCTAssertEqual(titleLabel.textColor, expectedTextColor)
