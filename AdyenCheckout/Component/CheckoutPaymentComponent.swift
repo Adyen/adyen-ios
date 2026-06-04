@@ -14,14 +14,6 @@ import UIKit
 /// ```swift
 /// let component = try checkout.createPaymentComponent(for: .scheme)
 /// ```
-///
-/// ## Custom Pay Button
-/// If you opted to use your own pay button, call
-/// ``submit()`` when the shopper taps your button.
-///
-/// ```swift
-/// component.submit()
-/// ```
 @MainActor
 public final class CheckoutPaymentComponent {
     
@@ -65,22 +57,43 @@ public final class CheckoutPaymentComponent {
         self.paymentComponent.delegate = delegate
     }
 
-    // TODO: - Instant Component
-
+    /// Indicates whether the payment component requires user interaction before submitting.
+    ///
+    /// When `true`, the component has a UI that the shopper must interact with (e.g., filling in card details).
+    /// When `false`, the component can submit immediately without presenting any UI (e.g., instant payment methods).
+    ///
+    /// Use this property to determine whether to present the component's `viewController` or call `submit()` directly.
+    ///
+    /// ```swift
+    /// if component.requiresUserInteraction {
+    ///     present(component.viewController!, animated: true)
+    /// } else {
+    ///     component.submit()
+    /// }
+    /// ```
     public var requiresUserInteraction: Bool {
         viewController != nil
     }
 
     /// Submits the payment request to initiate the payment process.
     ///
-    /// This method starts the payment flow in the payment component. It triggers the validation of the form associated
-    /// with the payment component and initiates the loading state.
-    /// Ensure that the loading state is appropriately stopped once the payment process is complete.
+    /// Call this method to programmatically trigger the payment submission. For components with UI (`requiresUserInteraction == true`),
+    /// this validates the form and submits if valid. For instant payment methods (`requiresUserInteraction == false`),
+    /// this immediately initiates the payment.
     ///
-    /// - Important:
-    ///    - Ensure that the payment component is properly configured before calling this method.
-    ///    - Handle stopping the loading state after the payment process is completed.
-    package func submit() {
+    /// ```swift
+    /// // For instant payment methods (no UI)
+    /// if !component.requiresUserInteraction {
+    ///     component.submit()
+    /// }
+    ///
+    /// // For custom pay button integration
+    /// @IBAction func payButtonTapped() {
+    ///     component.submit()
+    /// }
+    /// ```
+    ///
+    public func submit() {
         paymentComponent.submit()
     }
 }
