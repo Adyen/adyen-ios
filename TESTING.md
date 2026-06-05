@@ -326,4 +326,4 @@ This helper method pattern makes tests **~70% more concise** while maintaining c
 
 ## Mocking
 
-For guidance on generating and using mocks with Sourcery, see [MOCKING.md](MOCKING.md).
+When testing tasks require creating/updating a mock, refer to [MOCKING.md](MOCKING.md) for details.
