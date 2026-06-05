@@ -61,11 +61,13 @@ package final class IssuerListComponent: PaymentComponent, PresentableComponent,
         self.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
     }
 
+    /// Submits the currently selected issuer.
+    ///
+    /// - Note: This component automatically submits when an issuer is selected from the list.
+    /// Calling this method manually is typically unnecessary, but it will re-submit the selected
+    /// issuer if one has been chosen. If no issuer is selected, this method does nothing.
     package func submit() {
-        guard let selectedIssuer else {
-            // TODO: Show validation error - no issuer selected
-            return
-        }
+        guard let selectedIssuer else { return }
         
         let details = IssuerListDetails(
             paymentMethod: issuerListPaymentMethod,
