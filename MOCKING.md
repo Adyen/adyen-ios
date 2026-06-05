@@ -57,4 +57,4 @@ XCTAssertEqual(mock.processPaymentReceivedPayment?.amount, expectedAmount)
 
 ### Configuration
 
-Sourcery configuration is located at `Tools/Sourcery/.sourcery.yml`. The template (`AutoMockable.stencil`) automatically adds `@testable import` for `Adyen` and `AdyenDropIn` modules.
+Sourcery configuration is located at `Tools/Sourcery/.sourcery.yml`. The template (`AutoMockable.stencil`) automatically adds `@testable import` for the SDK modules (including `Adyen`, `AdyenCard`, `AdyenCheckout`, `AdyenDropIn`, and `AdyenUI`).
