@@ -63,7 +63,6 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
                     self.submit(
                         data: PaymentComponentData(
                             paymentMethodDetails: details,
-                            amount: context.amount,
                             order: order
                         )
                     )

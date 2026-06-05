@@ -34,7 +34,6 @@ package final class TwintComponent: InitiablePaymentComponent {
 
         return PaymentComponentData(
             paymentMethodDetails: details,
-            amount: context.amount,
             order: nil,
             storePaymentMethod: nil
         )
