@@ -11,7 +11,7 @@ import Adyen
 import Foundation
 
 /// Configuration for Cash App Pay Component.
-public struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
+package struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
 
     /// The URL for Cash App to call in order to redirect back to your application.
     public let redirectURL: URL

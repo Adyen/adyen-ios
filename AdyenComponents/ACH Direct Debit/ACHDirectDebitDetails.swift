@@ -8,30 +8,29 @@ import Adyen
 @_spi(AdyenInternal) import protocol Adyen.ShopperInformation
 
 /// Contains the details supplied by the ACH Direct Debit component.
-public struct ACHDirectDebitDetails: PaymentMethodDetails, ShopperInformation {
+package struct ACHDirectDebitDetails: PaymentMethodDetails, ShopperInformation {
     
-    @_spi(AdyenInternal)
-    public var checkoutAttemptId: String?
-    
+    package var checkoutAttemptId: String?
+
     /// The payment method type.
-    public let type: PaymentMethodType
+    package let type: PaymentMethodType
 
     /// The name of the bank account holder.
-    public let holderName: String
+    package let holderName: String
 
     /// The encrypted bank account number (without separators).
-    public let encryptedBankAccountNumber: String
+    package let encryptedBankAccountNumber: String
 
     /// The encrypted bank routing number of the account.
-    public let encryptedBankRoutingNumber: String?
-    
+    package let encryptedBankRoutingNumber: String?
+
     /// The shopper's billing address.
-    public let billingAddress: PostalAddress?
-    
+    package let billingAddress: PostalAddress?
+
     /// An encoded string containing important SDK-specific data.
     /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
-    public var sdkData: String?
-    
+    package var sdkData: String?
+
     /// Initializes the ACH Direct Debit details.
     /// - Parameters:
     ///   - paymentMethod: ACH Direct Debit payment method.
@@ -39,7 +38,7 @@ public struct ACHDirectDebitDetails: PaymentMethodDetails, ShopperInformation {
     ///   - encryptedBankAccountNumber: Encrypted bank account number.
     ///   - encryptedBankRoutingNumber: Encrypted bank routing number.
     ///   - billingAddress: Billing address.
-    public init(paymentMethod: ACHDirectDebitPaymentMethod, holderName: String, encryptedBankAccountNumber: String, encryptedBankRoutingNumber: String?, billingAddress: PostalAddress?) {
+    package init(paymentMethod: ACHDirectDebitPaymentMethod, holderName: String, encryptedBankAccountNumber: String, encryptedBankRoutingNumber: String?, billingAddress: PostalAddress?) {
         self.type = paymentMethod.type
         self.holderName = holderName
         self.encryptedBankAccountNumber = encryptedBankAccountNumber

@@ -9,36 +9,35 @@ import Foundation
 @_spi(AdyenInternal) import protocol Adyen.ShopperInformation
 
 /// Collection of the generic personal details supplied by components.
-public struct BasicPersonalInfoFormDetails: PaymentMethodDetails, ShopperInformation {
-    
-    @_spi(AdyenInternal)
-    public var checkoutAttemptId: String?
+package struct BasicPersonalInfoFormDetails: PaymentMethodDetails, ShopperInformation {
+
+    package var checkoutAttemptId: String?
 
     /// The payment method type.
-    public let type: PaymentMethodType
+    package let type: PaymentMethodType
 
     /// The shopper Name.
-    public var shopperName: ShopperName? {
+    package var shopperName: ShopperName? {
         guard let firstName else { return nil }
         guard let lastName else { return nil }
         return ShopperName(firstName: firstName, lastName: lastName)
     }
 
     /// The first Name.
-    public let firstName: String?
+    package let firstName: String?
 
     /// The last Name.
-    public let lastName: String?
+    package let lastName: String?
 
-    /// The email address.
-    public let emailAddress: String?
+    /// The email address.cd
+    package let emailAddress: String?
 
     /// The telephone number.
-    public let telephoneNumber: String?
-    
+    package let telephoneNumber: String?
+
     /// An encoded string containing important SDK-specific data.
     /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
-    public var sdkData: String?
+    package var sdkData: String?
 
     /// Initializes the  generic personal details.
     ///
@@ -49,7 +48,7 @@ public struct BasicPersonalInfoFormDetails: PaymentMethodDetails, ShopperInforma
     ///   - lastName: The last Name.
     ///   - emailAddress: The email address.
     ///   - telephoneNumber: The email address.
-    public init(
+    package init(
         paymentMethod: PaymentMethod,
         firstName: String,
         lastName: String,

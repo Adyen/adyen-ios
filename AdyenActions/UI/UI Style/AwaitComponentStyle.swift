@@ -12,10 +12,10 @@ import Foundation
 import UIKit
 
 /// Contains the styling customization options for the await component.
-public struct AwaitComponentStyle: ViewStyle {
-    
+package struct AwaitComponentStyle: ViewStyle {
+
     /// The image style.
-    public var image = ImageStyle(
+    package var image = ImageStyle(
         borderColor: nil,
         borderWidth: 0,
         cornerRadius: 0,
@@ -24,20 +24,20 @@ public struct AwaitComponentStyle: ViewStyle {
     )
     
     /// The style of message label.
-    public var message = TextStyle(
+    package var message = TextStyle(
         font: .preferredFont(forTextStyle: .callout),
         color: UIColor.Adyen.componentLabel
     )
     
     /// The style of the spinner title label.
-    public var spinnerTitle = TextStyle(
+    package var spinnerTitle = TextStyle(
         font: .preferredFont(forTextStyle: .footnote),
         color: UIColor.Adyen.componentLoadingMessageColor,
         textAlignment: .left
     )
     
-    public var backgroundColor = UIColor.Adyen.componentBackground
-    
+    package var backgroundColor = UIColor.Adyen.componentBackground
+
     /// Initializes the await component style with the default style.
-    public init() {}
+    package init() {}
 }

@@ -8,27 +8,26 @@ import Adyen
 import Foundation
 
 /// Contains the details supplied by the issuer list component.
-public struct IssuerListDetails: PaymentMethodDetails {
+package struct IssuerListDetails: PaymentMethodDetails {
     
-    @_spi(AdyenInternal)
-    public var checkoutAttemptId: String?
-    
+    package var checkoutAttemptId: String?
+
     /// The payment method type.
-    public let type: PaymentMethodType
-    
+    package let type: PaymentMethodType
+
     /// The selected issuer.
-    public let issuer: String
-    
+    package let issuer: String
+
     /// An encoded string containing important SDK-specific data.
     /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
-    public var sdkData: String?
-    
+    package var sdkData: String?
+
     /// Initializes the Issuer List details.
     ///
     /// - Parameters:
     ///   - paymentMethod: The issuer list payment method.
     ///   - issuer: The selected issuer.
-    public init(paymentMethod: IssuerListPaymentMethod, issuer: String) {
+    package init(paymentMethod: IssuerListPaymentMethod, issuer: String) {
         self.type = paymentMethod.type
         self.issuer = issuer
     }
@@ -36,19 +35,19 @@ public struct IssuerListDetails: PaymentMethodDetails {
 }
 
 /// Contains the details supplied by the MOLPay component.
-public typealias MOLPayDetails = IssuerListDetails
+package typealias MOLPayDetails = IssuerListDetails
 
 /// Contains the details supplied by the Dotpay component.
-public typealias DotpayDetails = IssuerListDetails
+package typealias DotpayDetails = IssuerListDetails
 
 /// Contains the details supplied by the EPS component.
-public typealias EPSDetails = IssuerListDetails
+package typealias EPSDetails = IssuerListDetails
 
 /// Contains the details supplied by the Entercash component.
-public typealias EntercashDetails = IssuerListDetails
+package typealias EntercashDetails = IssuerListDetails
 
 /// Contains the details supplied by the OpenBanking component.
-public typealias OpenBankingDetails = IssuerListDetails
+package typealias OpenBankingDetails = IssuerListDetails
 
 /// Contains the details supplied by the Online Banking Poland component.
-public typealias OnlineBankingPolandDetails = IssuerListDetails
+package typealias OnlineBankingPolandDetails = IssuerListDetails
