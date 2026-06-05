@@ -8,7 +8,7 @@ The project uses [Sourcery](https://github.com/krzysztofzablocki/Sourcery) to au
 
 ### Running the Generator
 
-Build the `GenerateSourcery` target to regenerate mocks:
+Build the `GenerateSourcery` scheme to regenerate mocks:
 
 ```bash
 xcodebuild -project Adyen.xcodeproj -scheme GenerateSourcery build
