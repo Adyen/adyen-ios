@@ -355,7 +355,6 @@ internal class InitiablePaymentComponentMock: PaymentComponent, InitiablePayment
         let details = StoredPaymentDetails(paymentMethod: paymentMethod as! StoredPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: details,
-            amount: context.amount,
             order: order
         )
         self.delegate?.didSubmit(data, from: self)
