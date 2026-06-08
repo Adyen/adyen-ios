@@ -7,7 +7,7 @@
 import Foundation
 
 /// Any object that holds shopper personal information.
-public protocol ShopperInformation {
+package protocol ShopperInformation {
 
     /// Shopper name.
     var shopperName: ShopperName? { get }
@@ -29,9 +29,8 @@ public protocol ShopperInformation {
 
 }
 
-@_spi(AdyenInternal)
-public extension ShopperInformation {
-    
+package extension ShopperInformation {
+
     var shopperName: ShopperName? {
         nil
     }

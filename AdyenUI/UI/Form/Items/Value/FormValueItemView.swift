@@ -80,8 +80,7 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
 }
 
 /// A type-erased form value item view.
-@_spi(AdyenInternal)
-public protocol AnyFormValueItemView: AnyFormItemView {
+package protocol AnyFormValueItemView: AnyFormItemView {
     
     /// Indicates if the item is currently being edited.
     var isEditing: Bool { get set }

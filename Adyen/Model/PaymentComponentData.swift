@@ -67,7 +67,7 @@ public struct PaymentComponentData {
         return shopperInfo.socialSecurityNumber
     }
     
-    public var delegatedAuthenticationData: DelegatedAuthenticationData? {
+    package var delegatedAuthenticationData: DelegatedAuthenticationData? {
         guard let paymentMethod = paymentMethod as? DelegatedAuthenticationAware else { return nil }
         return paymentMethod.delegatedAuthenticationData
     }

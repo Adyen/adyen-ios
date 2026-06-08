@@ -18,7 +18,7 @@ open class FormTextItem: FormValidatableValueItem<String>, InputViewRequiringFor
     }
 
     /// The formatter to use for formatting the text in the text field.
-    public var formatter: Adyen.Formatter?
+    package var formatter: Adyen.Formatter?
 
     /// The validator to use for validating the text in the text field.
     package var validator: Validator?

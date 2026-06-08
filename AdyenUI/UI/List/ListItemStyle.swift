@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 /// Contains the styling customization options for an item in a list.
-public struct ListItemStyle: ViewStyle {
+@_spi(AdyenInternal) public struct ListItemStyle: ViewStyle {
     
     /// The title style.
     public var title = TextStyle(

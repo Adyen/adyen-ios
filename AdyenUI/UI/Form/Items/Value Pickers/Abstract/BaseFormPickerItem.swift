@@ -8,14 +8,12 @@ import Adyen
 import UIKit
 
 /// Picker item identifier.
-@_spi(AdyenInternal)
-public protocol PickerElement: Equatable, CustomStringConvertible {
+package protocol PickerElement: Equatable, CustomStringConvertible {
 
     /// Picker item identifier.
     var identifier: String { get }
 }
 
-@_spi(AdyenInternal)
 public struct BasePickerElement<ElementType: CustomStringConvertible>: PickerElement {
 
     /// Picker item identifier.

@@ -7,7 +7,7 @@
 import Foundation
 
 /// An error that occurred during the use of a component.
-public enum ComponentError: Error {
+package enum ComponentError: Error {
 
     /// Indicates the component was cancelled by the user.
     case cancelled

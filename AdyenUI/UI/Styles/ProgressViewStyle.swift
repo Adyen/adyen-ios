@@ -7,22 +7,22 @@
 import UIKit
 
 /// Contains the styling customization options for any progress views
-public struct ProgressViewStyle: ViewStyle {
-    
+package struct ProgressViewStyle: ViewStyle {
+
     /// The color shown for the portion of the progress bar that is filled
-    public let progressTintColor: UIColor
-    
+    package let progressTintColor: UIColor
+
     /// The color shown for the portion of the progress bar that is not filled.
-    public let trackTintColor: UIColor
-    
-    public var backgroundColor = UIColor.clear
-    
+    package let trackTintColor: UIColor
+
+    package var backgroundColor = UIColor.clear
+
     /// Initializes the progress view style
     ///
     /// - Parameters:
     ///   - progressTintColor: The color shown for the portion of the progress bar that is filled
     ///   - trackTintColor: The color shown for the portion of the progress bar that is not filled.
-    public init(progressTintColor: UIColor, trackTintColor: UIColor) {
+    package init(progressTintColor: UIColor, trackTintColor: UIColor) {
         self.progressTintColor = progressTintColor
         self.trackTintColor = trackTintColor
     }

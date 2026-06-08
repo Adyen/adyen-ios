@@ -8,7 +8,7 @@ import Adyen
 @_spi(AdyenInternal) import protocol Adyen.Component
 import AdyenNetworking
 #if canImport(AdyenUI)
-    import AdyenUI
+    @_spi(AdyenInternal) import AdyenUI
 #endif
 import PassKit
 import UIKit
