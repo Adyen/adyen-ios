@@ -64,6 +64,36 @@ class StoredCardComponentTests: XCTestCase {
         XCTAssertFalse(proxy.isPayButtonEnabled)
     }
 
+    func testSubmitShouldCallPaymentDelegateDidSubmit() throws {
+        // Given
+        let sut = makeSUT()
+        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+
+        let submitExpectation = expectation(description: "Expect didSubmit to be called")
+        delegate.onDidSubmit = { _, _ in submitExpectation.fulfill() }
+        delegate.onDidFail = { _, _ in XCTFail("didFail should not be called") }
+
+        proxy.present()
+        proxy.enterText("737")
+
+        // When
+        sut.submit()
+
+        // Then
+        waitForExpectations(timeout: 1)
+
+        let args = try XCTUnwrap(delegate.didSubmitReceivedArguments)
+        XCTAssertTrue(args.component === sut)
+
+        let cardDetails = try XCTUnwrap(args.data.paymentMethod as? CardDetails)
+        XCTAssertNotNil(cardDetails.encryptedSecurityCode)
+        XCTAssertNil(cardDetails.encryptedCardNumber)
+        XCTAssertNil(cardDetails.encryptedExpiryYear)
+        XCTAssertNil(cardDetails.encryptedExpiryMonth)
+    }
+
     /// Verifies that encryption failure with an invalid public key calls didFail on the delegate.
     func testPaymentSubmitWithInvalidPublicKey() throws {
         // Given
