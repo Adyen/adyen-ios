@@ -62,7 +62,9 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
     }()
 
     package func submit() {
-        Task { await viewModel.submit() }
+        Task { [weak self] in
+            await self?.viewModel.submit()
+        }
     }
 
     // MARK: - Private
