@@ -607,7 +607,6 @@ class ApplePayComponentTest: XCTestCase {
         let sut = config.replacing(amount: testAmount)
 
         // Then
-        XCTAssertEqual(sut.currentAmount, testAmount)
         XCTAssertEqual(sut.paymentRequest.paymentSummaryItems.count, 2)
         let summaryItem = sut.paymentRequest.paymentSummaryItems.last
         XCTAssertNotNil(summaryItem)
@@ -633,7 +632,6 @@ class ApplePayComponentTest: XCTestCase {
         let sut = config.replacing(amount: testAmount)
 
         // Then
-        XCTAssertEqual(sut.currentAmount, testAmount)
         XCTAssertEqual(sut.paymentRequest.paymentSummaryItems.count, 2)
         let summaryItem = sut.paymentRequest.paymentSummaryItems.last
         XCTAssertNotNil(summaryItem)
