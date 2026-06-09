@@ -14,6 +14,7 @@ package protocol PickerElement: Equatable, CustomStringConvertible {
     var identifier: String { get }
 }
 
+@_spi(AdyenInternal)
 public struct BasePickerElement<ElementType: CustomStringConvertible>: PickerElement {
 
     /// Picker item identifier.
