@@ -88,6 +88,7 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
         let bacsViewModel = BACSViewModel(
             paymentMethod: bacsPaymentMethod,
             amount: context.amount,
+            configuration: configuration,
             tracker: tracker,
             itemsFactory: itemsFactory,
             onSubmit: { [weak self] details in

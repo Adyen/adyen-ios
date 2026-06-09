@@ -17,6 +17,7 @@ internal final class BACSViewModel {
 
     private let paymentMethod: BACSDirectDebitPaymentMethod
     private let amount: Amount?
+    private let configuration: BACSDirectDebitComponent.Configuration
     private let tracker: BACSDirectDebitComponentTrackerProtocol
     private let itemsFactory: BACSItemsFactoryProtocol
     private let onSubmit: (_ details: BACSDirectDebitDetails) -> Void
@@ -39,12 +40,14 @@ internal final class BACSViewModel {
     internal init(
         paymentMethod: BACSDirectDebitPaymentMethod,
         amount: Amount?,
+        configuration: BACSDirectDebitComponent.Configuration,
         tracker: BACSDirectDebitComponentTrackerProtocol,
         itemsFactory: BACSItemsFactoryProtocol,
         onSubmit: @escaping (_ details: BACSDirectDebitDetails) -> Void
     ) {
         self.amount = amount
         self.paymentMethod = paymentMethod
+        self.configuration = configuration
         self.tracker = tracker
         self.itemsFactory = itemsFactory
         self.onSubmit = onSubmit
