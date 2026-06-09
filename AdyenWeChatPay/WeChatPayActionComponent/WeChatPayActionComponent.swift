@@ -7,7 +7,7 @@
 #if canImport(AdyenActions)
     import AdyenActions
 #endif
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import Foundation
 
 #if !targetEnvironment(simulator) && canImport(AdyenWeChatPayInternal)
