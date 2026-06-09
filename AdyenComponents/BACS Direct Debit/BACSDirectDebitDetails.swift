@@ -18,9 +18,6 @@ public struct BACSDirectDebitDetails: PaymentMethodDetails {
     /// The BACS account's holder name.
     public let holderName: String
 
-    /// The BACS account's email.
-    public let shopperEmail: String
-
     /// The BACS account's number.
     public let bankAccountNumber: String
 
@@ -41,13 +38,11 @@ public struct BACSDirectDebitDetails: PaymentMethodDetails {
     public init(
         paymentMethod: BACSDirectDebitPaymentMethod,
         holderName: String,
-        shopperEmail: String,
         bankAccountNumber: String,
         bankLocationId: String
     ) {
         self.type = paymentMethod.type
         self.holderName = holderName
-        self.shopperEmail = shopperEmail
         self.bankAccountNumber = bankAccountNumber
         self.bankLocationId = bankLocationId
     }
@@ -57,7 +52,6 @@ public struct BACSDirectDebitDetails: PaymentMethodDetails {
     private enum CodingKeys: String, CodingKey {
         case type
         case holderName
-        case shopperEmail
         case bankAccountNumber
         case bankLocationId
         case sdkData

@@ -77,8 +77,7 @@ internal final class BACSViewModel {
 
         guard let holderName = holderNameItem?.value,
               let bankAccountNumber = bankAccountNumberItem?.value,
-              let sortCode = sortCodeItem?.value,
-              let shopperEmail = emailItem?.value else {
+              let sortCode = sortCodeItem?.value else {
             stopLoading()
             return
         }
@@ -86,7 +85,6 @@ internal final class BACSViewModel {
         let details = BACSDirectDebitDetails(
             paymentMethod: paymentMethod,
             holderName: holderName,
-            shopperEmail: shopperEmail,
             bankAccountNumber: bankAccountNumber,
             bankLocationId: sortCode
         )
