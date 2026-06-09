@@ -11,21 +11,21 @@ import Adyen
 #endif
 import Foundation
 
-internal protocol BACSInputPresenterProtocol: AnyObject {
-    var amount: Amount? { get set }
+internal protocol BACSViewModelProtocol: AnyObject {
     func viewDidLoad()
-    func viewWillAppear()
-    func resetForm()
+    func stopLoading()
+    func onSubmitButtonTap()
 }
 
-internal class BACSInputPresenter: BACSInputPresenterProtocol {
+internal class BACSViewModel: BACSViewModelProtocol {
 
     // MARK: - Properties
 
-    private let view: BACSInputFormViewProtocol
+    private let view: BACSView
     private let tracker: BACSDirectDebitComponentTrackerProtocol
-    private weak var router: BACSDirectDebitRouterProtocol?
-    private var data: BACSDirectDebitData?
+    internal let itemsFactory: BACSItemsFactoryProtocol
+    private let amount: Amount?
+    private let onSubmitTap: (_ data: BACSDirectDebitData) -> Void
 
     // MARK: - Items
 
@@ -35,28 +35,22 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
     internal var emailItem: FormTextInputItem?
     internal var amountConsentToggleItem: FormToggleItem?
     internal var legalConsentToggleItem: FormToggleItem?
-    internal var continueButtonItem: FormButtonItem?
-    
-    internal let itemsFactory: BACSItemsFactoryProtocol
-    
-    internal var amount: Amount? {
-        didSet {
-            amountConsentToggleItem?.title = itemsFactory.createConsentText(with: amount)
-        }
-    }
+    internal var submitButtonItem: FormButtonItem?
 
     // MARK: - Initializers
 
     internal init(
-        view: BACSInputFormViewProtocol,
-        router: BACSDirectDebitRouterProtocol,
+        view: BACSView,
         tracker: BACSDirectDebitComponentTrackerProtocol,
-        itemsFactory: BACSItemsFactoryProtocol
+        itemsFactory: BACSItemsFactoryProtocol,
+        amount: Amount?,
+        onSubmitTap: @escaping (_ data: BACSDirectDebitData) -> Void
     ) {
         self.view = view
-        self.router = router
         self.tracker = tracker
         self.itemsFactory = itemsFactory
+        self.amount = amount
+        self.onSubmitTap = onSubmitTap
     }
 
     // MARK: - BACSInputPresenterProtocol
@@ -68,22 +62,39 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
         setupView()
     }
 
-    internal func viewWillAppear() {
-        restoreFields()
+    internal func stopLoading() {
+        submitButtonItem?.showsActivityIndicator = false
     }
 
-    internal func resetForm() {
-        holderNameItem?.value = ""
-        bankAccountNumberItem?.value = ""
-        sortCodeItem?.value = ""
-        emailItem?.value = ""
+    internal func onSubmitButtonTap() {
+        startLoading()
 
-        amountConsentToggleItem?.value = false
-        legalConsentToggleItem?.value = false
-        data = nil
+        guard validateForm() else {
+            stopLoading()
+            return
+        }
+
+        guard let holderName = holderNameItem?.value,
+              let bankAccountNumber = bankAccountNumberItem?.value,
+              let sortCode = sortCodeItem?.value,
+              let shopperEmail = emailItem?.value else {
+            return
+        }
+
+        let bacsDirectDebitData = BACSDirectDebitData(
+            holderName: holderName,
+            bankAccountNumber: bankAccountNumber,
+            bankLocationId: sortCode,
+            shopperEmail: shopperEmail
+        )
+        onSubmitTap(bacsDirectDebitData)
     }
 
     // MARK: - Private
+
+    private func startLoading() {
+        submitButtonItem?.showsActivityIndicator = true
+    }
 
     private func createItems() {
         holderNameItem = itemsFactory.createHolderNameItem()
@@ -93,8 +104,8 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
         amountConsentToggleItem = itemsFactory.createAmountConsentToggle(amount: amount)
         legalConsentToggleItem = itemsFactory.createLegalConsentToggle()
 
-        continueButtonItem = itemsFactory.createContinueButton()
-        continueButtonItem?.buttonSelectionHandler = continuePayment
+        submitButtonItem = itemsFactory.createPaymentButton()
+        submitButtonItem?.buttonSelectionHandler = onSubmitButtonTap
     }
 
     private func setupView() {
@@ -107,7 +118,7 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
         view.add(item: FormSpacerItem(numberOfSpaces: 1))
         view.add(item: legalConsentToggleItem)
         view.add(item: FormSpacerItem(numberOfSpaces: 2))
-        view.add(item: continueButtonItem)
+        view.add(item: submitButtonItem)
         view.add(item: FormSpacerItem(numberOfSpaces: 1))
     }
 
@@ -127,36 +138,5 @@ internal class BACSInputPresenter: BACSInputPresenterProtocol {
             emailItem
         ].compactMap { $0 }
             .allSatisfy { $0.isValid() }
-    }
-
-    private func restoreFields() {
-        guard let data else { return }
-        holderNameItem?.value = data.holderName
-        bankAccountNumberItem?.value = data.bankAccountNumber
-        sortCodeItem?.value = data.bankLocationId
-        emailItem?.value = data.shopperEmail
-
-        amountConsentToggleItem?.value = true
-        legalConsentToggleItem?.value = true
-    }
-
-    private func continuePayment() {
-        guard validateForm() else { return }
-
-        guard let holderName = holderNameItem?.value,
-              let bankAccountNumber = bankAccountNumberItem?.value,
-              let sortCode = sortCodeItem?.value,
-              let shopperEmail = emailItem?.value else {
-            return
-        }
-
-        let bacsDirectDebitData = BACSDirectDebitData(
-            holderName: holderName,
-            bankAccountNumber: bankAccountNumber,
-            bankLocationId: sortCode,
-            shopperEmail: shopperEmail
-        )
-        self.data = bacsDirectDebitData
-        router?.presentConfirmation(with: bacsDirectDebitData)
     }
 }

@@ -67,7 +67,7 @@ class BACSDirectDebitComponentTests: XCTestCase {
             configuration: .init()
         )
 
-        let presenter: BACSInputPresenter = try XCTUnwrap(sut.inputPresenter as? BACSInputPresenter)
+        let presenter: BACSViewModel = try XCTUnwrap(sut.inputPresenter as? BACSViewModel)
         let expectedConsentTitle1 = presenter.itemsFactory.createConsentText(with: amount)
         setupRootViewController(sut.viewController)
         wait(for: .milliseconds(200))

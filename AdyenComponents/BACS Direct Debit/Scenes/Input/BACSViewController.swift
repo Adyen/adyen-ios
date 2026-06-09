@@ -11,13 +11,13 @@ import Adyen
 #endif
 import UIKit
 
-internal protocol BACSInputFormViewProtocol: FormViewProtocol {}
+internal protocol BACSView: FormViewProtocol {}
 
-internal class BACSInputFormViewController: FormViewController, BACSInputFormViewProtocol {
+internal class BACSViewController: FormViewController, BACSView {
 
     // MARK: - Properties
 
-    internal weak var presenter: BACSInputPresenterProtocol?
+    internal weak var viewModel: BACSViewModelProtocol?
 
     // MARK: - Initializers
 
@@ -39,11 +39,6 @@ internal class BACSInputFormViewController: FormViewController, BACSInputFormVie
 
     override internal func viewDidLoad() {
         super.viewDidLoad()
-        presenter?.viewDidLoad()
-    }
-
-    override internal func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        presenter?.viewWillAppear()
+        viewModel?.viewDidLoad()
     }
 }
