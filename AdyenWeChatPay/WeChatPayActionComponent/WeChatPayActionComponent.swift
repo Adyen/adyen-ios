@@ -8,7 +8,6 @@
     import AdyenActions
 #endif
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.Component
 import Foundation
 
 #if !targetEnvironment(simulator) && canImport(AdyenWeChatPayInternal)
