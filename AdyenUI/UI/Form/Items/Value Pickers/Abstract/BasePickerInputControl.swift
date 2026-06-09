@@ -8,6 +8,7 @@ import Adyen
 import UIKit
 
 /// Interface for a basic picker input control.
+@_spi(AdyenInternal)
 public protocol PickerTextInputControl: UIView {
 
     /// Executed when the view resigns as first responder.
