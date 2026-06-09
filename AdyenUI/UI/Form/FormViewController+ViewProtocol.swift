@@ -20,6 +20,11 @@ extension FormViewController: FormViewProtocol {
         append(item)
     }
 
+    package func add(item: (any FormItem)?) {
+        guard let item else { return }
+        append(item)
+    }
+
     package func displayValidation() {
         resignFirstResponder()
         showValidation()

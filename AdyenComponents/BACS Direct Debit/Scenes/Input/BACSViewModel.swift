@@ -17,15 +17,18 @@ internal protocol BACSViewModelProtocol: AnyObject {
     func onSubmitButtonTap()
 }
 
-internal class BACSViewModel: BACSViewModelProtocol {
+internal final class BACSViewModel: BACSViewModelProtocol {
 
     // MARK: - Properties
 
-    private let view: BACSView
-    private let tracker: BACSDirectDebitComponentTrackerProtocol
-    internal let itemsFactory: BACSItemsFactoryProtocol
+    private let paymentMethod: BACSDirectDebitPaymentMethod
     private let amount: Amount?
-    private let onSubmitTap: (_ data: BACSDirectDebitData) -> Void
+    private let tracker: BACSDirectDebitComponentTrackerProtocol
+    private let itemsFactory: BACSItemsFactoryProtocol
+    private let onSubmit: (_ details: BACSDirectDebitDetails) -> Void
+
+    @Published internal private(set) var items: [(any FormItem)?] = []
+    @Published internal private(set) var shouldShowValidation = false
 
     // MARK: - Items
 
@@ -40,17 +43,17 @@ internal class BACSViewModel: BACSViewModelProtocol {
     // MARK: - Initializers
 
     internal init(
-        view: BACSView,
+        paymentMethod: BACSDirectDebitPaymentMethod,
+        amount: Amount?,
         tracker: BACSDirectDebitComponentTrackerProtocol,
         itemsFactory: BACSItemsFactoryProtocol,
-        amount: Amount?,
-        onSubmitTap: @escaping (_ data: BACSDirectDebitData) -> Void
+        onSubmit: @escaping (_ details: BACSDirectDebitDetails) -> Void
     ) {
-        self.view = view
+        self.amount = amount
+        self.paymentMethod = paymentMethod
         self.tracker = tracker
         self.itemsFactory = itemsFactory
-        self.amount = amount
-        self.onSubmitTap = onSubmitTap
+        self.onSubmit = onSubmit
     }
 
     // MARK: - BACSInputPresenterProtocol
@@ -58,8 +61,7 @@ internal class BACSViewModel: BACSViewModelProtocol {
     internal func viewDidLoad() {
         tracker.sendInitialAnalytics()
         tracker.sendDidLoadEvent()
-        createItems()
-        setupView()
+        items = createItems()
     }
 
     internal func stopLoading() {
@@ -81,13 +83,13 @@ internal class BACSViewModel: BACSViewModelProtocol {
             return
         }
 
-        let bacsDirectDebitData = BACSDirectDebitData(
+        let details = BACSDirectDebitDetails(
+            paymentMethod: paymentMethod,
             holderName: holderName,
             bankAccountNumber: bankAccountNumber,
-            bankLocationId: sortCode,
-            shopperEmail: shopperEmail
+            bankLocationId: sortCode
         )
-        onSubmitTap(bacsDirectDebitData)
+        onSubmit(details)
     }
 
     // MARK: - Private
@@ -96,7 +98,7 @@ internal class BACSViewModel: BACSViewModelProtocol {
         submitButtonItem?.showsActivityIndicator = true
     }
 
-    private func createItems() {
+    private func createItems() -> [(any FormItem)?] {
         holderNameItem = itemsFactory.createHolderNameItem()
         bankAccountNumberItem = itemsFactory.createBankAccountNumberItem()
         sortCodeItem = itemsFactory.createSortCodeItem()
@@ -106,24 +108,24 @@ internal class BACSViewModel: BACSViewModelProtocol {
 
         submitButtonItem = itemsFactory.createPaymentButton()
         submitButtonItem?.buttonSelectionHandler = onSubmitButtonTap
-    }
 
-    private func setupView() {
-        view.add(item: holderNameItem)
-        view.add(item: bankAccountNumberItem)
-        view.add(item: sortCodeItem)
-        view.add(item: emailItem)
-        view.add(item: FormSpacerItem(numberOfSpaces: 2))
-        view.add(item: amountConsentToggleItem)
-        view.add(item: FormSpacerItem(numberOfSpaces: 1))
-        view.add(item: legalConsentToggleItem)
-        view.add(item: FormSpacerItem(numberOfSpaces: 2))
-        view.add(item: submitButtonItem)
-        view.add(item: FormSpacerItem(numberOfSpaces: 1))
+        return [
+            holderNameItem,
+            bankAccountNumberItem,
+            sortCodeItem,
+            emailItem,
+            FormSpacerItem(numberOfSpaces: 2),
+            amountConsentToggleItem,
+            FormSpacerItem(numberOfSpaces: 1),
+            legalConsentToggleItem,
+            FormSpacerItem(numberOfSpaces: 2),
+            submitButtonItem,
+            FormSpacerItem(numberOfSpaces: 1)
+        ]
     }
 
     private func validateForm() -> Bool {
-        view.displayValidation()
+        shouldShowValidation = true
 
         guard let amountTermsAccepted = amountConsentToggleItem?.value,
               let legalTermsAccepted = legalConsentToggleItem?.value,

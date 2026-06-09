@@ -177,12 +177,40 @@ open class FormViewController: UIViewController, AdyenObserver {
         addItemViewIfNeeded(itemView)
     }
 
+    /// Appends an existential item to the form.
+    ///
+    /// - Parameters:
+    ///   - item: The item to append.
+    @_spi(AdyenInternal)
+    public func append(_ item: any FormItem) {
+        let itemView = itemManager.append(item)
+        observerVisibility(of: item, and: itemView)
+        itemView.applyTextDelegateIfNeeded(delegate: self)
+        addItemViewIfNeeded(itemView)
+    }
+
     private func addItemViewIfNeeded(_ itemView: AnyFormItemView) {
         guard isViewLoaded else { return }
         formView.appendItemView(itemView)
     }
 
     private func observerVisibility(of item: some FormItem, and itemView: UIView) {
+        itemView.adyen.hide(
+            animationKey: String(describing: itemView),
+            hidden: item.isHidden.wrappedValue,
+            animated: false
+        )
+
+        observe(item.isHidden) { isHidden in
+            itemView.adyen.hide(
+                animationKey: String(describing: itemView),
+                hidden: isHidden,
+                animated: true
+            )
+        }
+    }
+
+    private func observerVisibility(of item: any FormItem, and itemView: UIView) {
         itemView.adyen.hide(
             animationKey: String(describing: itemView),
             hidden: item.isHidden.wrappedValue,

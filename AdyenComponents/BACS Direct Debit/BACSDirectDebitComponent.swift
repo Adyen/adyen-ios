@@ -22,7 +22,10 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
 
     // MARK: - PresentableComponent
 
-    package let viewController: UIViewController
+    package lazy var viewController: UIViewController = {
+        let bacsViewController = resolveBACSViewController()
+        return SecuredViewController(child: bacsViewController, style: configuration.style)
+    }()
 
     /// The object that acts as the delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
@@ -45,7 +48,6 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
 
     internal let bacsPaymentMethod: BACSDirectDebitPaymentMethod
 
-    internal let bacsViewController: BACSViewController
     internal private(set) var bacsViewModel: BACSViewModelProtocol?
     
     // MARK: - Initializers
@@ -63,16 +65,15 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
         self.bacsPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
-        self.bacsViewController = BACSViewController(
-            title: paymentMethod.name,
-            scrollEnabled: configuration.showsSubmitButton,
-            styleProvider: configuration.style
-        )
-        self.viewController = SecuredViewController(
-            child: bacsViewController,
-            style: configuration.style
-        )
-        
+    }
+
+    package func submit() {
+        bacsViewModel?.onSubmitButtonTap()
+    }
+
+    // MARK: - Private
+
+    private func resolveBACSViewController() -> UIViewController {
         let tracker = BACSDirectDebitComponentTracker(
             paymentMethod: bacsPaymentMethod,
             context: context,
@@ -84,31 +85,28 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
             scope: String(describing: self)
         )
 
-        self.bacsViewModel = BACSViewModel(
-            view: bacsViewController,
+        let bacsViewModel = BACSViewModel(
+            paymentMethod: bacsPaymentMethod,
+            amount: context.amount,
             tracker: tracker,
             itemsFactory: itemsFactory,
-            amount: context.amount,
-            onSubmitTap: { [weak self] data in
-                let details = BACSDirectDebitDetails(
-                    paymentMethod: paymentMethod,
-                    holderName: data.holderName,
-                    bankAccountNumber: data.bankAccountNumber,
-                    bankLocationId: data.bankLocationId
-                )
+            onSubmit: { [weak self] details in
                 let data = PaymentComponentData(
                     paymentMethodDetails: details,
-                    amount: context.amount,
+                    amount: self?.context.amount,
                     order: self?.order
                 )
                 self?.submit(data: data)
             }
         )
-        bacsViewController.viewModel = bacsViewModel
-    }
+        self.bacsViewModel = bacsViewModel
 
-    package func submit() {
-        bacsViewModel?.onSubmitButtonTap()
+        return BACSViewController(
+            title: paymentMethod.name,
+            scrollEnabled: configuration.showsSubmitButton,
+            styleProvider: configuration.style,
+            viewModel: bacsViewModel
+        )
     }
 }
 
