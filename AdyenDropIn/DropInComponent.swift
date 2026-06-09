@@ -214,8 +214,7 @@ package final class DropInComponent: NSObject,
             configuration: configuration,
             partialPaymentEnabled: partialPaymentDelegate != nil,
             order: order,
-            supportsEditingStoredPaymentMethods: storedPaymentMethodsDelegate != nil,
-            presentationDelegate: self
+            supportsEditingStoredPaymentMethods: storedPaymentMethodsDelegate != nil
         )
     }
 
