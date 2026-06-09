@@ -18,7 +18,7 @@ internal protocol BACSItemsFactoryProtocol {
     func createBankAccountNumberItem() -> FormTextInputItem
     func createSortCodeItem() -> FormTextInputItem
     func createEmailItem() -> FormTextInputItem
-    func createPaymentButton() -> FormButtonItem
+    func createPaymentButton(_ onSubmit: @escaping () -> Void) -> FormButtonItem
     func createAmountConsentToggle(amount: Amount?) -> FormToggleItem
     func createLegalConsentToggle() -> FormToggleItem
 }
@@ -148,8 +148,9 @@ internal struct BACSItemsFactory: BACSItemsFactoryProtocol {
         return textItem
     }
 
-    internal func createPaymentButton() -> FormButtonItem {
+    internal func createPaymentButton(_ onSubmit: @escaping () -> Void) -> FormButtonItem {
         let buttonItem = FormButtonItem(style: styleProvider.mainButtonItem)
+        buttonItem.buttonSelectionHandler = onSubmit
 
         let localizedTitle = localizedString(.bacsPaymentButtonTitle, localizationParameters)
         buttonItem.title = localizedTitle

@@ -11,13 +11,7 @@ import Adyen
 #endif
 import Foundation
 
-internal protocol BACSViewModelProtocol: AnyObject {
-    func viewDidLoad()
-    func stopLoading()
-    func onSubmitButtonTap()
-}
-
-internal final class BACSViewModel: BACSViewModelProtocol {
+internal final class BACSViewModel {
 
     // MARK: - Properties
 
@@ -68,7 +62,7 @@ internal final class BACSViewModel: BACSViewModelProtocol {
         submitButtonItem?.showsActivityIndicator = false
     }
 
-    internal func onSubmitButtonTap() {
+    internal func submit() {
         startLoading()
 
         guard validateForm() else {
@@ -106,8 +100,9 @@ internal final class BACSViewModel: BACSViewModelProtocol {
         amountConsentToggleItem = itemsFactory.createAmountConsentToggle(amount: amount)
         legalConsentToggleItem = itemsFactory.createLegalConsentToggle()
 
-        submitButtonItem = itemsFactory.createPaymentButton()
-        submitButtonItem?.buttonSelectionHandler = onSubmitButtonTap
+        submitButtonItem = itemsFactory.createPaymentButton { [weak self] in
+            self?.submit()
+        }
 
         return [
             holderNameItem,

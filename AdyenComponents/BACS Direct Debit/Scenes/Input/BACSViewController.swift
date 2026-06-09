@@ -41,10 +41,9 @@ internal final class BACSViewController: FormViewController {
 
     override internal func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.viewDidLoad()
-
         bindItems()
         bindValidation()
+        viewModel.viewDidLoad()
     }
 
     // MARK: - Private

@@ -48,7 +48,7 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
 
     internal let bacsPaymentMethod: BACSDirectDebitPaymentMethod
 
-    internal private(set) var bacsViewModel: BACSViewModelProtocol?
+    internal private(set) var bacsViewModel: BACSViewModel?
     
     // MARK: - Initializers
 
@@ -68,7 +68,7 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
     }
 
     package func submit() {
-        bacsViewModel?.onSubmitButtonTap()
+        bacsViewModel?.submit()
     }
 
     // MARK: - Private
