@@ -7,8 +7,8 @@
 import Foundation
 
 /// Alias for a completion handler with a single parameter of type T.
-public typealias Completion<T> = (T) -> Void
+package typealias Completion<T> = (T) -> Void
 
 /// Alias for a completion handler with no parameters.
 /// Note i cannot use the Completion<T> type as Completion<Void> as that would make the call site become completion(Void) or completion(())
-public typealias VoidCompletion = () -> Void
+package typealias VoidCompletion = () -> Void
