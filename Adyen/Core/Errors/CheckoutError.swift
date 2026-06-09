@@ -42,6 +42,8 @@ public extension CheckoutError {
             self.rawValue = rawValue
         }
 
+        /// A generic or unclassified error occurred.
+        public static let generic = Code(rawValue: "Generic")
         /// The provided client key is malformed or invalid.
         public static let invalidClientKey = Code(rawValue: "InvalidClientKey")
         /// The specified locale is not supported or malformed.
@@ -52,9 +54,11 @@ public extension CheckoutError {
         public static let invalidAmountValue = Code(rawValue: "InvalidAmountValue")
         /// Failed to establish a checkout session.
         public static let sessionSetupFailure = Code(rawValue: "SessionSetupFailure")
-        /// The user cancelled the payment.
-        public static let cancelled = Code(rawValue: "Cancelled")
-        /// An unknown or unexpected error occurred.
-        public static let unknown = Code(rawValue: "Unknown")
+        /// A network or HTTP-level error occurred.
+        public static let httpError = Code(rawValue: "HttpError")
+        /// A payment method is unavailable, unsupported, or cannot be used by the current device or user.
+        public static let paymentMethodFailure = Code(rawValue: "PaymentMethodFailure")
+        /// The component configuration contains invalid or missing values.
+        public static let invalidConfiguration = Code(rawValue: "InvalidConfiguration")
     }
 }

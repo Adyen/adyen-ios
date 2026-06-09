@@ -31,12 +31,8 @@ package struct ApplePayComponentFactory: PaymentComponentFactory {
         )
     }
 
-    // TODO: replace `UnknownError` with a typed `CheckoutError.missingConfiguration` case
-    // when CheckoutError is fully implemented.
+    /// - Throws: `ApplePayComponent.Error.missingConfiguration` if no Apple Pay configuration was provided.
     package func defaultConfiguration() throws -> ApplePayConfiguration {
-        throw UnknownError(
-            errorDescription: "Apple Pay has no usable default configuration. "
-                + "Provide an `ApplePayConfiguration` via the `CheckoutConfiguration` DSL."
-        )
+        throw ApplePayComponent.Error.missingConfiguration
     }
 }

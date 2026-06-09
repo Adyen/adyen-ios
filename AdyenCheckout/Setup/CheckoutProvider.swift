@@ -156,7 +156,7 @@ internal class CheckoutProvider: CheckoutProviding {
                 analyticsConfiguration: configuration.analyticsConfiguration
             )
         } catch {
-            throw CheckoutError(error: error)
+            throw CheckoutError(error: error, fallback: .httpError)
         }
     }
 

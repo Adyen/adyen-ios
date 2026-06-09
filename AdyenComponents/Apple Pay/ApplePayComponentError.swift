@@ -41,6 +41,13 @@ extension ApplePayComponent {
         /// Indicates that the token was generated incorrectly.
         case invalidToken
 
+        /// Indicates that no Apple Pay configuration was provided.
+        case missingConfiguration
+
+        /// Indicates that the payment authorization view controller could not be created,
+        /// typically because the payment request contains invalid or missing fields.
+        case invalidPaymentRequest
+
         public var errorDescription: String? {
             switch self {
             case .userCannotMakePayment:
@@ -61,6 +68,10 @@ extension ApplePayComponent {
                 return "The currency code is invalid."
             case .invalidToken:
                 return "The Apple Pay token is invalid. Make sure you are using physical device, not a Simulator."
+            case .missingConfiguration:
+                return "No Apple Pay configuration was provided. Supply an ApplePayConfiguration via the CheckoutConfiguration DSL."
+            case .invalidPaymentRequest:
+                return "The payment request is invalid or could not be used to create a payment authorization view controller."
             }
         }
     }
