@@ -11,19 +11,22 @@ public struct BACSDirectDebitDetails: PaymentMethodDetails {
     
     @_spi(AdyenInternal)
     public var checkoutAttemptId: String?
-    
+
     /// The payment method type.
     public let type: PaymentMethodType
 
     /// The BACS account's holder name.
     public let holderName: String
 
+    /// The BACS account's email.
+    public let shopperEmail: String
+
     /// The BACS account's number.
     public let bankAccountNumber: String
 
     /// The BACS location's ID.
     public let bankLocationId: String
-    
+
     /// An encoded string containing important SDK-specific data.
     /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
     public var sdkData: String?
@@ -32,16 +35,19 @@ public struct BACSDirectDebitDetails: PaymentMethodDetails {
     /// - Parameters:
     ///   - paymentMethod: The BACS Direct Debit payment method.
     ///   - holderName: The BACS account's holder name.
+    ///   - shopperEmail: The BACS account's email.
     ///   - bankAccountNumber: The BACS account's number.
     ///   - bankLocationId: The BACS location's ID.
     public init(
         paymentMethod: BACSDirectDebitPaymentMethod,
         holderName: String,
+        shopperEmail: String,
         bankAccountNumber: String,
         bankLocationId: String
     ) {
         self.type = paymentMethod.type
         self.holderName = holderName
+        self.shopperEmail = shopperEmail
         self.bankAccountNumber = bankAccountNumber
         self.bankLocationId = bankLocationId
     }
@@ -51,6 +57,7 @@ public struct BACSDirectDebitDetails: PaymentMethodDetails {
     private enum CodingKeys: String, CodingKey {
         case type
         case holderName
+        case shopperEmail
         case bankAccountNumber
         case bankLocationId
         case sdkData

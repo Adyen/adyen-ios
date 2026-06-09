@@ -17,10 +17,12 @@ internal final class BACSViewModel {
 
     private let paymentMethod: BACSDirectDebitPaymentMethod
     private let amount: Amount?
-    private let configuration: BACSDirectDebitComponent.Configuration
+    internal let configuration: BACSDirectDebitComponent.Configuration
     private let tracker: BACSDirectDebitComponentTrackerProtocol
     private let itemsFactory: BACSItemsFactoryProtocol
     private let onSubmit: (_ details: BACSDirectDebitDetails) -> Void
+
+    // MARK: - State
 
     @Published internal private(set) var items: [(any FormItem)?] = []
     @Published internal private(set) var shouldShowValidation = false
@@ -53,7 +55,7 @@ internal final class BACSViewModel {
         self.onSubmit = onSubmit
     }
 
-    // MARK: - BACSInputPresenterProtocol
+    // MARK: - Internal
 
     internal func viewDidLoad() {
         tracker.sendInitialAnalytics()
@@ -77,12 +79,14 @@ internal final class BACSViewModel {
               let bankAccountNumber = bankAccountNumberItem?.value,
               let sortCode = sortCodeItem?.value,
               let shopperEmail = emailItem?.value else {
+            stopLoading()
             return
         }
 
         let details = BACSDirectDebitDetails(
             paymentMethod: paymentMethod,
             holderName: holderName,
+            shopperEmail: shopperEmail,
             bankAccountNumber: bankAccountNumber,
             bankLocationId: sortCode
         )
@@ -103,8 +107,10 @@ internal final class BACSViewModel {
         amountConsentToggleItem = itemsFactory.createAmountConsentToggle(amount: amount)
         legalConsentToggleItem = itemsFactory.createLegalConsentToggle()
 
-        submitButtonItem = itemsFactory.createPaymentButton { [weak self] in
-            self?.submit()
+        if configuration.showsSubmitButton {
+            submitButtonItem = itemsFactory.createPaymentButton { [weak self] in
+                self?.submit()
+            }
         }
 
         return [

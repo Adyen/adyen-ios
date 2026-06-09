@@ -23,7 +23,7 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
     // MARK: - PresentableComponent
 
     package lazy var viewController: UIViewController = {
-        let bacsViewController = resolveBACSViewController()
+        let bacsViewController = createViewController()
         return SecuredViewController(child: bacsViewController, style: configuration.style)
     }()
 
@@ -44,12 +44,18 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
     /// Component's configuration
     package var configuration: Configuration
 
+    // MARK: - PaymentComponent
+
+    package func submit() {
+        bacsViewModel?.submit()
+    }
+
     // MARK: - Properties
 
     internal let bacsPaymentMethod: BACSDirectDebitPaymentMethod
 
     internal private(set) var bacsViewModel: BACSViewModel?
-    
+
     // MARK: - Initializers
 
     /// Creates and returns a BACS Direct Debit component.
@@ -67,13 +73,9 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
         self.configuration = configuration
     }
 
-    package func submit() {
-        bacsViewModel?.submit()
-    }
-
     // MARK: - Private
 
-    private func resolveBACSViewController() -> UIViewController {
+    private func createViewController() -> UIViewController {
         let tracker = BACSDirectDebitComponentTracker(
             paymentMethod: bacsPaymentMethod,
             context: context,
@@ -85,7 +87,7 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
             scope: String(describing: self)
         )
 
-        let bacsViewModel = BACSViewModel(
+        let viewModel = BACSViewModel(
             paymentMethod: bacsPaymentMethod,
             amount: context.amount,
             configuration: configuration,
@@ -100,13 +102,11 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
                 self?.submit(data: data)
             }
         )
-        self.bacsViewModel = bacsViewModel
+        self.bacsViewModel = viewModel
 
         return BACSViewController(
             title: paymentMethod.name,
-            scrollEnabled: configuration.showsSubmitButton,
-            styleProvider: configuration.style,
-            viewModel: bacsViewModel
+            viewModel: viewModel
         )
     }
 }
