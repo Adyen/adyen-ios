@@ -38,9 +38,6 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
     /// The context object for this component.
     package let context: AdyenContext
 
-    /// The object that acts as the presentation delegate of the component.
-    package weak var presentationDelegate: PresentationDelegate?
-
     /// Component's configuration
     package var configuration: Configuration
 
