@@ -23,16 +23,13 @@ internal final class BACSViewController: FormViewController {
 
     internal init(
         title: String,
-        scrollEnabled: Bool,
-        styleProvider: FormComponentStyle,
-        localizationParameters: LocalizationParameters? = nil,
         viewModel: BACSViewModel
     ) {
         self.viewModel = viewModel
         super.init(
-            scrollEnabled: scrollEnabled,
-            style: styleProvider,
-            localizationParameters: localizationParameters
+            scrollEnabled: viewModel.configuration.showsSubmitButton,
+            style: viewModel.configuration.style,
+            localizationParameters: viewModel.configuration.localizationParameters
         )
         self.title = title
     }
@@ -49,14 +46,14 @@ internal final class BACSViewController: FormViewController {
     // MARK: - Private
 
     private func bindItems() {
-        viewModel.$items.sink { items in
-            items.forEach { self.add(item: $0) }
+        viewModel.$items.sink { [weak self] items in
+            items.forEach { self?.add(item: $0) }
         }.store(in: &cancellables)
     }
 
     private func bindValidation() {
-        viewModel.$shouldShowValidation.sink { shouldShowValidation in
-            if shouldShowValidation { self.showValidation() }
+        viewModel.$shouldShowValidation.sink { [weak self] shouldShowValidation in
+            if shouldShowValidation { self?.showValidation() }
         }.store(in: &cancellables)
     }
 }
