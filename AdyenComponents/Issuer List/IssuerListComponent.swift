@@ -59,8 +59,7 @@ package final class IssuerListComponent: PaymentComponent, PresentableComponent,
     }
 
     package func submit() {
-        // TODO: - Naufal: What should we do in the IssuerListComponent?
-        // IssuerListComponent needs to be changed so it validates shopper issuer selection.
+        // TODO: - COSDK-1262: Implemenation will be done once the IssuerListComponent is redesigned to have a button.
     }
 
     private let issuerListPaymentMethod: IssuerListPaymentMethod
