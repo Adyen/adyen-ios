@@ -34,7 +34,7 @@ package protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentM
 
     var paymentMethodBehavior: SDKData.PaymentMethodBehavior { get }
 
-    func submit()
+    func performSubmit()
 }
 
 package extension PaymentComponent where Self: PresentableComponent {

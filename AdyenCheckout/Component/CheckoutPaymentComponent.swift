@@ -94,6 +94,6 @@ public final class CheckoutPaymentComponent {
     /// ```
     ///
     public func submit() {
-        paymentComponent.submit()
+        paymentComponent.performSubmit()
     }
 }

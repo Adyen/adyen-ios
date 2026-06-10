@@ -244,7 +244,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         self.populate(textItemView: nameItemView, with: "A. Klaassen")
 
         // When
-        sut.submit()
+        sut.performSubmit()
 
         // Then
         wait(for: [didSubmitExpectation], timeout: 10)

@@ -401,7 +401,7 @@ class PayToComponentTests: XCTestCase {
         try populateValidFields(sut: sut)
 
         // When
-        sut.submit()
+        sut.performSubmit()
 
         // Then
         wait(for: [didSubmitExpectation], timeout: 10)
@@ -499,7 +499,7 @@ class PayToComponentTests: XCTestCase {
         fill(sut)
         sut.firstNameInputItem.value = shopperName.firstName
         sut.lastNameInputItem.value = shopperName.lastName
-        sut.submit()
+        sut.performSubmit()
 
         waitForExpectations(timeout: 1.0)
     }

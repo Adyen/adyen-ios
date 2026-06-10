@@ -113,7 +113,7 @@ class BLIKComponentTests: XCTestCase {
         self.populate(textItemView: codeItemView, with: "123456")
 
         // When
-        sut.submit()
+        sut.performSubmit()
 
         // Then
         wait(for: [didSubmitExpectation], timeout: 10)

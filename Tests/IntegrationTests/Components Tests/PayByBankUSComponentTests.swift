@@ -34,7 +34,7 @@ class PayByBankUSComponentTests: XCTestCase {
         
         sut.delegate = delegate
         
-        sut.submit()
+        sut.performSubmit()
         
         wait(for: [delegateExpectation], timeout: 1)
     }

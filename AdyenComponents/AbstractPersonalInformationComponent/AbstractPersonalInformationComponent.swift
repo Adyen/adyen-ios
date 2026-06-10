@@ -72,10 +72,6 @@ package class AbstractPersonalInformationComponent: PaymentComponent, Presentabl
         self.configuration = configuration
     }
 
-    package func submit() {
-        didSelectSubmitButton()
-    }
-
     // MARK: - Private
 
     private func build(_ formViewController: FormViewController) {
@@ -226,7 +222,7 @@ package class AbstractPersonalInformationComponent: PaymentComponent, Presentabl
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = submitButtonTitle()
         item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectSubmitButton()
+            self?.performSubmit()
         }
         return item
     }()

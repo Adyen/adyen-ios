@@ -79,7 +79,7 @@ class StoredCardComponentTests: XCTestCase {
         proxy.enterText("737")
 
         // When
-        sut.submit()
+        sut.performSubmit()
 
         // Then
         waitForExpectations(timeout: 1)

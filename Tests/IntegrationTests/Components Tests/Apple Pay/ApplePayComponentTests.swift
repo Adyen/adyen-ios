@@ -205,7 +205,7 @@ class ApplePayComponentTest: XCTestCase {
             onDidFailExpectation.fulfill()
         }
 
-        sut.submit()
+        sut.performSubmit()
 
         waitForExpectations(timeout: 10)
     }

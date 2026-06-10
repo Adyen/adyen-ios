@@ -140,7 +140,7 @@ package class ApplePayComponent: NSObject, PresentableComponent, PaymentComponen
         completion?()
     }
 
-    package func submit() {
+    package func performSubmit() {
         delegate?.didFail(with: Error.submitNotSupported, from: self)
     }
 }

@@ -103,7 +103,7 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
         
     }
 
-    package func submit() {
+    package func performSubmit() {
         // TODO: - COSDK-1284: The confirmation screen will be removed.
     }
 }

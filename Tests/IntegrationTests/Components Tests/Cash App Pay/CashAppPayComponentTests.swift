@@ -278,7 +278,7 @@ import XCTest
             }
 
             // When
-            sut.submit()
+            sut.performSubmit()
             sut.submitApprovedRequest(with: [oneTimeGrant, onFileGrant], profile: .init(id: "testId", cashtag: "testtag"))
 
             // Then

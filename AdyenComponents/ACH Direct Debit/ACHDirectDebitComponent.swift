@@ -89,7 +89,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         formViewController.view.isUserInteractionEnabled = false
     }
 
-    private func didSelectSubmitButton() {
+    package func performSubmit() {
         guard formViewController.validate() else { return }
         
         startLoading()
@@ -257,7 +257,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
             configuration.localizationParameters
         )
         item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectSubmitButton()
+            self?.performSubmit()
         }
         return item
     }()
@@ -319,12 +319,5 @@ extension ACHDirectDebitComponent: ViewControllerPresenter {
     
     package func dismissViewController(animated: Bool) {
         self.viewController.dismissViewController(animated: animated)
-    }
-}
-
-extension ACHDirectDebitComponent {
-
-    package func submit() {
-        didSelectSubmitButton()
     }
 }
