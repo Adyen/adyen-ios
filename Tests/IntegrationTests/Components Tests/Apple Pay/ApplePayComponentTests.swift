@@ -196,6 +196,20 @@ class ApplePayComponentTest: XCTestCase {
         waitForExpectations(timeout: 10)
     }
 
+    func testSubmitShouldCallDelegateDidFailWithSubmitNotSupported() {
+        sut.delegate = mockDelegate
+        let onDidFailExpectation = expectation(description: "Wait for delegate call")
+        mockDelegate.onDidFail = { error, component in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .submitNotSupported)
+            XCTAssertTrue(component === self.sut)
+            onDidFailExpectation.fulfill()
+        }
+
+        sut.submit()
+
+        waitForExpectations(timeout: 10)
+    }
+
     func testApplePayShipping() async throws {
         var receivedMethod: PKShippingMethod?
         var configuration = try ApplePayConfiguration(

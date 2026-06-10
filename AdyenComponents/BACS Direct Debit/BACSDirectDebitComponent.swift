@@ -104,9 +104,7 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
     }
 
     package func submit() {
-        // TODO: - Naufal: How to handle submit in BACS?
-        // - submit() flow does not fit into a two step component.
-        // - Zero traffic on BACS. We either drop support or BACS has to be redesigned into a single step component.
+        // TODO: - COSDK-1284: The confirmation screen will be removed.
     }
 }
 
