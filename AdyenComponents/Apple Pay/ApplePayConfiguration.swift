@@ -107,15 +107,6 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
         }
     }
 
-    package var currentAmount: Amount? {
-        guard let lastItem = paymentRequest.paymentSummaryItems.last else { return nil }
-        let minorUnits = AmountFormatter.minorUnitAmount(
-            from: lastItem.amount.decimalValue,
-            currencyCode: paymentRequest.currencyCode
-        )
-        return Amount(value: minorUnits, currencyCode: paymentRequest.currencyCode)
-    }
-
     package func replacing(amount: Amount) -> Self {
         let newConfig = self
         guard let lastItem = newConfig.paymentRequest.paymentSummaryItems.last else { return newConfig }

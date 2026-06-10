@@ -61,7 +61,6 @@ package final class InstantPaymentComponent: InitiablePaymentComponent {
         let details = InstantPaymentDetails(type: paymentMethod.type)
         self.paymentData = PaymentComponentData(
             paymentMethodDetails: details,
-            amount: context.amount,
             order: order
         )
     }

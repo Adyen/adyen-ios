@@ -607,10 +607,15 @@ class ApplePayComponentTest: XCTestCase {
         let sut = config.replacing(amount: testAmount)
 
         // Then
-        XCTAssertEqual(sut.currentAmount, testAmount)
         XCTAssertEqual(sut.paymentRequest.paymentSummaryItems.count, 2)
         let summaryItem = sut.paymentRequest.paymentSummaryItems.last
         XCTAssertNotNil(summaryItem)
+        let expectedDecimalAmount = AmountFormatter.decimalAmount(
+            testAmount.value,
+            currencyCode: testAmount.currencyCode,
+            localeIdentifier: testAmount.localeIdentifier
+        )
+        XCTAssertEqual(summaryItem?.amount, expectedDecimalAmount)
         XCTAssertEqual(summaryItem?.amount, decimalAmount)
     }
 
@@ -633,10 +638,15 @@ class ApplePayComponentTest: XCTestCase {
         let sut = config.replacing(amount: testAmount)
 
         // Then
-        XCTAssertEqual(sut.currentAmount, testAmount)
         XCTAssertEqual(sut.paymentRequest.paymentSummaryItems.count, 2)
         let summaryItem = sut.paymentRequest.paymentSummaryItems.last
         XCTAssertNotNil(summaryItem)
+        let expectedDecimalAmount = AmountFormatter.decimalAmount(
+            testAmount.value,
+            currencyCode: testAmount.currencyCode,
+            localeIdentifier: testAmount.localeIdentifier
+        )
+        XCTAssertEqual(summaryItem?.amount, expectedDecimalAmount)
         XCTAssertEqual(summaryItem?.amount, decimalAmount)
     }
 

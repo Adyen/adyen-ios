@@ -263,7 +263,6 @@ private extension PayToComponent {
         submit(
             data: PaymentComponentData(
                 paymentMethodDetails: details,
-                amount: context.amount,
                 order: order
             )
         )

@@ -172,6 +172,14 @@ func test_submit_withValidPaymentData_shouldSucceed()
 
 ## Running Tests
 
+### Default Test Scheme
+
+**Use the `UnitTests` scheme** for running tests. This is the primary test target located at `Tests/UnitTests/`.
+
+Other test schemes (`IntegrationUIKitTests`, `SnapshotTests`) are available but consume more resources and are typically run in CI or when specifically needed.
+
+### Simulator Setup
+
 **List available simulators:**
 ```bash
 xcrun simctl list devices available
@@ -179,26 +187,19 @@ xcrun simctl list devices available
 
 Choose an available simulator name from the output (e.g., "iPhone 15 Pro", "iPhone 16", etc.) and use it in the commands below by replacing `<SIMULATOR_NAME>`.
 
-**Run unit tests:**
+### Running Tests
+
+**Run all unit tests:**
 ```bash
-# Option 1: Use a standard iPhone simulator (recommended)
 xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,name=<SIMULATOR_NAME>'
-
-# Option 2: Use specific device by ID (most reliable)
-xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,id=<DEVICE_ID>'
 ```
 
-**Run integration tests:**
-```bash
-xcodebuild test -project Adyen.xcodeproj -scheme IntegrationUIKitTests -destination 'platform=iOS Simulator,name=<SIMULATOR_NAME>'
-```
-
-**Run single test:**
+**Run a single test:**
 ```bash
 xcodebuild test -project Adyen.xcodeproj -scheme UnitTests -destination 'platform=iOS Simulator,name=<SIMULATOR_NAME>' -only-testing:UnitTests/TestClassName/testMethodName
 ```
 
-**Note:** Do not use `swift test` - it doesn't work well with the Xcode project structure. The `SnapshotTests` target is primarily for CI and not typically run during local development.
+**Note:** Do not use `swift test` - it doesn't work well with the Xcode project structure.
 
 ## Testing Form Views
 
@@ -322,3 +323,7 @@ private func getContainerView(from sut: FormTextItemView<FormTextInputItem>) -> 
 ### Benefits
 
 This helper method pattern makes tests **~70% more concise** while maintaining clarity and proper error reporting. Tests read like specifications rather than imperative code.
+
+## Mocking
+
+When testing tasks require creating/updating a mock, refer to [MOCKING.md](MOCKING.md) for details.
