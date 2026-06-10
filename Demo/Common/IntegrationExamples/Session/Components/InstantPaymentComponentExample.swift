@@ -5,144 +5,115 @@
 //
 
 import Adyen
+import AdyenCheckout
 import AdyenComponents
-import AdyenSession
 import Foundation
 
+@MainActor
 internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
 
-    // MARK: - Properties
-
-    internal var session: Session?
     internal weak var presenter: PresenterExampleProtocol?
-    internal var instantPaymentComponent: InstantPaymentComponent?
+
+    private var checkout: SessionCheckout?
+    private var adyenComponent: CheckoutPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
-    
-    internal var context: AdyenContext?
+    private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
 
-    // MARK: - Initializers
+    /// comes from demo app protocol, unused on new structure
+    internal var context: AdyenContext?
 
     internal init() {}
 
     internal func start() {
-        presenter?.showLoadingIndicator()
+        startLoading()
+
         Task {
             do {
-                try await initializeExampleAppAdyenContext()
-                loadSession { [weak self] response in
-                    guard let self else { return }
+                let sessionResponse = try await requestSessionInitialInfo()
+                let component = try await instantPaymentComponent(from: sessionResponse)
+                self.adyenComponent = component
+                hideLoading()
 
-                    self.presenter?.hideLoadingIndicator()
-
-                    switch response {
-                    case let .success(session):
-                        self.session = session
-                        self.presentComponent(with: session)
-
-                    case let .failure(error):
-                        self.presentAlert(with: error)
+                if component.requiresUserInteraction {
+                    // Present the component UI if user interaction is needed
+                    if let viewController = component.viewController {
+                        presenter?.present(viewController: viewController, completion: nil)
                     }
+                } else {
+                    // Submit directly for instant payment methods
+                    component.submit()
                 }
             } catch {
-                self.presenter?.hideLoadingIndicator()
-                self.presentAlert(with: error)
+                hideLoading()
+                handleError(error)
             }
         }
     }
 
-    // MARK: - Networking
-
-    internal func loadSession(completion: @escaping (Result<Session, Error>) -> Void) {
-        requestSessionInitialInfo { [weak self] response in
-            guard let self else { return }
-            switch response {
-            case let .success(model):
-//                AdyenSession.initialize(
-//                    with: configuration,
-//                    delegate: self,
-//                    presentationDelegate: self,
-//                    completion: completion
-//                )
-                break
-            case let .failure(error):
-                completion(.failure(error))
-            }
+    private func instantPaymentComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
+        let configuration = try CheckoutConfiguration(
+            environment: ConfigurationConstants.componentsEnvironment,
+            amount: ConfigurationConstants.current.amount,
+            clientKey: ConfigurationConstants.clientKey,
+            analyticsConfiguration: .init(
+                isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
+            )
+        ) {
+            // No component-specific configuration needed for instant payments
         }
-    }
 
-    // MARK: Presentation
-
-    internal func presentComponent(with session: Session) {
-        do {
-            let component = try instantPaymentComponent(from: session)
-            instantPaymentComponent = component
-            presenter?.showLoadingIndicator()
-            // TODO: Migrate to Checkout — Session no longer conforms to PaymentComponentDelegate in v6.
-            // component.initiatePayment(delegate: session)
-        } catch {
-            self.presentAlert(with: error)
+        let checkout = try await Checkout.setup(
+            with: sessionResponse,
+            configuration: configuration,
+            presentationDelegate: self
+        )
+        .onComplete { [weak self] result in
+            self?.dismissAndShowAlert(
+                result.resultCode.isSuccess,
+                result.resultCode.rawValue
+            )
         }
-    }
+        .onError { [weak self] error in
+            self?.dismissAndShowAlert(false, error.localizedDescription)
+        }
 
-    private func instantPaymentComponent(from session: Session) throws -> InstantPaymentComponent {
-        let paymentMethods = session.state.paymentMethods
-        
-        // Get the correct payment method from the paymentMethods object
-        // In this example the first supported `InstantPaymentMethod` is chosen
-        guard let paymentMethod = paymentMethods.paymentMethod(ofType: InstantPaymentMethod.self) else {
+        self.checkout = checkout
+
+        // Get the payment method type from the checkout's payment methods
+        guard let paymentMethod = checkout.paymentMethods?.paymentMethod(ofType: InstantPaymentMethod.self) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: InstantPaymentMethod.self)
         }
 
-        guard let context else {
-            fatalError("AdyenContext not initialized")
-        }
-
-        return InstantPaymentComponent(paymentMethod: paymentMethod, context: context, order: nil)
+        return try checkout.createPaymentComponent(for: paymentMethod.type)
     }
 
-    private func present(_ component: PresentableComponent) {
-        presenter?.hideLoadingIndicator()
-        presenter?.present(viewController: component.viewController, completion: nil)
+    // MARK: - Private
+
+    private func startLoading() {
+        presenter?.showLoadingIndicator()
     }
 
-    // MARK: - Alert handling
-
-    internal func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
-        presenter?.hideLoadingIndicator()
-        presenter?.presentAlert(with: error, retryHandler: retryHandler)
+    private func handleError(_ error: Error) {
+        presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
     }
 
-    internal func dismissAndShowAlert(_ success: Bool, _ message: String) {
+    private func hideLoading() {
         presenter?.hideLoadingIndicator()
+    }
+
+    private func dismissAndShowAlert(_ success: Bool, _ message: String) {
         presenter?.dismiss {
             // Payment is processed. Add your code here.
             let title = success ? "Success" : "Error"
             self.presenter?.presentAlert(withTitle: title, message: message)
         }
     }
-
 }
-
-// TODO: Migrate to Checkout API — SessionDelegate has been removed in v6.
 
 extension InstantPaymentComponentExample: PresentationDelegate {
-    internal func present(component: PresentableComponent) {
-        presenter?.hideLoadingIndicator()
-        let componentViewController = component.viewController
-        componentViewController.navigationItem.leftBarButtonItem = .init(
-            barButtonSystemItem: .cancel,
-            target: self,
-            action: #selector(cancelPressed)
-        )
-        presenter?.present(viewController: componentViewController, completion: nil)
-    }
-}
 
-private extension InstantPaymentComponentExample {
-
-    @objc private func cancelPressed() {
-        instantPaymentComponent?.cancel()
-        presenter?.dismiss(completion: nil)
+    func present(component: any PresentableComponent) {
+        presenter?.present(viewController: component.viewController, completion: nil)
     }
 }
