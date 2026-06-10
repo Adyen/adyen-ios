@@ -50,6 +50,10 @@ package final class BLIKComponent: PaymentComponent, PresentableComponent, Loadi
         self.context = context
         self.configuration = configuration
     }
+
+    package func submit() {
+        didSelectSubmitButton()
+    }
     
     package func stopLoading() {
         button.showsActivityIndicator = false
@@ -123,7 +127,7 @@ package final class BLIKComponent: PaymentComponent, PresentableComponent, Loadi
     // MARK: - Private
 
     private func didSelectSubmitButton() {
-        guard validate() else { return }
+        guard formViewController.validate() else { return }
 
         let details = BLIKDetails(
             paymentMethod: paymentMethod,
@@ -140,16 +144,3 @@ package final class BLIKComponent: PaymentComponent, PresentableComponent, Loadi
 extension BLIKComponent: TrackableComponent {}
 
 extension BLIKComponent: ViewControllerDelegate {}
-
-// MARK: - SubmitCustomizable
-
-extension BLIKComponent: SubmittableComponent {
-
-    package func submit() {
-        didSelectSubmitButton()
-    }
-
-    package func validate() -> Bool {
-        formViewController.validate()
-    }
-}

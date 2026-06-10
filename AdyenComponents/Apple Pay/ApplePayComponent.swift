@@ -139,6 +139,11 @@ package class ApplePayComponent: NSObject, PresentableComponent, PaymentComponen
         resumeContinuation(success: success)
         completion?()
     }
+
+    package func submit() {
+        // TODO: - Naufal: Check where to perform submit in ApplePay.
+        // Web triggers the ApplePay system view.
+    }
 }
 
 extension ApplePayComponent: TrackableComponent {}

@@ -72,6 +72,10 @@ package class AbstractPersonalInformationComponent: PaymentComponent, Presentabl
         self.configuration = configuration
     }
 
+    package func submit() {
+        didSelectSubmitButton()
+    }
+
     // MARK: - Private
 
     private func build(_ formViewController: FormViewController) {
@@ -291,18 +295,5 @@ extension AbstractPersonalInformationComponent: ViewControllerDelegate {
     package func viewDidLoad(viewController: UIViewController) {
         sendInitialAnalytics()
         sendDidLoadEvent()
-    }
-}
-
-// MARK: - SubmitCustomizable
-
-extension AbstractPersonalInformationComponent: SubmittableComponent {
-
-    package func submit() {
-        didSelectSubmitButton()
-    }
-
-    package func validate() -> Bool {
-        formViewController.validate()
     }
 }

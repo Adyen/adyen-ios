@@ -97,6 +97,10 @@ package final class UPIComponent: PaymentComponent,
         
         selectedUPIFlow = upiAppsList.isEmpty ? .upiCollect : .upiIntent
     }
+
+    package func submit() {
+        didSelectContinueButton()
+    }
     
     // MARK: - LoadingComponent
     
@@ -297,7 +301,7 @@ extension UPIComponent {
     }
     
     private func didSelectContinueButton() {
-        guard validate() else { return }
+        guard formViewController.validate() else { return }
         
         guard canSubmit() else {
             showError()
@@ -405,16 +409,3 @@ private extension UPIComponent {
 }
 
 extension UPIComponent: AdyenObserver {}
-
-// MARK: - SubmitCustomizable
-
-extension UPIComponent: SubmittableComponent {
-    
-    package func submit() {
-        didSelectContinueButton()
-    }
-    
-    package func validate() -> Bool {
-        formViewController.validate()
-    }
-}

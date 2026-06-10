@@ -228,8 +228,8 @@ struct PaymentMethodListRouterTests {
         )
     }
 
-    private func makeInitiablePaymentComponentMock() -> InitiableComponentMock {
+    private func makeInitiablePaymentComponentMock() -> PaymentComponentMock {
         let paymentMethodMock = PaymentMethodMock(type: .applePay, name: "Apple Pay")
-        return InitiableComponentMock(paymentMethod: paymentMethodMock)
+        return PaymentComponentMock(paymentMethod: paymentMethodMock)
     }
 }

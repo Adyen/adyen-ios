@@ -66,6 +66,20 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
             self.configValue = configuration.value
             self.order = nil
         }
+
+        // MARK: - submit
+
+        var submitCallsCount = 0
+        var submitCalled: Bool {
+            submitCallsCount > 0
+        }
+
+        var submitClosure: (() -> Void)?
+
+        func submit() {
+            submitCallsCount += 1
+            submitClosure?()
+        }
     }
     
     struct MockFactory: PaymentComponentFactory {

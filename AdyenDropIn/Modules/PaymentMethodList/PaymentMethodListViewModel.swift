@@ -141,7 +141,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             router?.present(component: component)
         case let .initiable(initiablePaymentComponent):
             state = .loading
-            initiablePaymentComponent.initiatePayment(delegate: self)
+            initiablePaymentComponent.submit()
         }
     }
 

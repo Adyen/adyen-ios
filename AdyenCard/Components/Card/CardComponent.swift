@@ -21,8 +21,8 @@ import UIKit
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
 @MainActor
-package class CardComponent: PresentableComponent,
-    PaymentMethodAware,
+package class CardComponent: PaymentComponent,
+    PresentableComponent,
     LoadingComponent {
 
     internal enum Constant {
@@ -132,6 +132,10 @@ package class CardComponent: PresentableComponent,
         self.binInfoProvider = binProvider
 
         self.supportedCardTypes = configuration.supportedCardBrands ?? paymentMethod.brands
+    }
+
+    package func submit() {
+        didSelectSubmitButton()
     }
 
     // MARK: - Presentable Component Protocol
@@ -319,19 +323,6 @@ private extension CardConfiguration {
             handleShowSearch: nil,
             completionHandler: completionHandler
         )
-    }
-}
-
-// MARK: - SubmitCustomizable
-
-extension CardComponent: SubmittableComponent {
-
-    package func submit() {
-        didSelectSubmitButton()
-    }
-
-    package func validate() -> Bool {
-        cardViewController.validate()
     }
 }
 

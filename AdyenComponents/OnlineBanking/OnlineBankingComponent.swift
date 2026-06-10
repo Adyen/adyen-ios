@@ -123,7 +123,11 @@ package final class OnlineBankingComponent: PaymentComponent,
         self.configuration = configuration
     }
 
-    package func stopLoading() {
+    package func submit() {
+        didSelectContinueButton()
+    }
+
+    public func stopLoading() {
         continueButton.showsActivityIndicator = false
         formViewController.view.isUserInteractionEnabled = true
     }
@@ -131,7 +135,7 @@ package final class OnlineBankingComponent: PaymentComponent,
     // MARK: - Private
 
     private func didSelectContinueButton() {
-        guard validate() else { return }
+        guard formViewController.validate() else { return }
 
         let details = OnlineBankingDetails(
             paymentMethod: paymentMethod,
@@ -167,16 +171,3 @@ package final class OnlineBankingComponent: PaymentComponent,
 }
 
 extension OnlineBankingComponent: AdyenObserver {}
-
-// MARK: - SubmitCustomizable
-
-extension OnlineBankingComponent: SubmittableComponent {
-
-    package func submit() {
-        didSelectContinueButton()
-    }
-
-    package func validate() -> Bool {
-        formViewController.validate()
-    }
-}

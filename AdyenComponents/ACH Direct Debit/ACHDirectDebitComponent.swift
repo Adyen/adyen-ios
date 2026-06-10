@@ -90,7 +90,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     }
 
     private func didSelectSubmitButton() {
-        guard validate() else { return }
+        guard formViewController.validate() else { return }
         
         startLoading()
         submitEncryptedData(publicKey: context.publicKey)
@@ -322,15 +322,9 @@ extension ACHDirectDebitComponent: ViewControllerPresenter {
     }
 }
 
-// MARK: - SubmitCustomizable
-
-extension ACHDirectDebitComponent: SubmittableComponent {
+extension ACHDirectDebitComponent {
 
     package func submit() {
         didSelectSubmitButton()
-    }
-
-    package func validate() -> Bool {
-        formViewController.validate()
     }
 }

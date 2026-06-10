@@ -133,8 +133,12 @@ package final class CashAppPayComponent: PaymentComponent,
         self.configuration = configuration
     }
 
+    package func submit() {
+        didSelectSubmitButton()
+    }
+
     private func didSelectSubmitButton() {
-        guard validate() else { return }
+        guard formViewController.validate() else { return }
     
         startLoading()
         startCashAppPayFlow()
@@ -289,16 +293,3 @@ extension CashAppPayComponent {
 extension CashAppPayComponent: TrackableComponent {}
 
 extension CashAppPayComponent: ViewControllerDelegate {}
-
-// MARK: - SubmitCustomizable
-
-extension CashAppPayComponent: SubmittableComponent {
-
-    package func submit() {
-        didSelectSubmitButton()
-    }
-
-    package func validate() -> Bool {
-        formViewController.validate()
-    }
-}

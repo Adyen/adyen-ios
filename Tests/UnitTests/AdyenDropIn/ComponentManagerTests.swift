@@ -650,7 +650,6 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(achComponent.configuration.billingAddressCountryCodes, ["US", "UK"])
     }
     
-
     // MARK: - Private
 
     private var shopperInformation: PrefilledShopperInformation {

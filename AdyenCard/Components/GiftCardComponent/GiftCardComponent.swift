@@ -17,7 +17,8 @@ import UIKit
 
 /// A component that provides a form for gift card payments.
 @MainActor
-package final class GiftCardComponent: PresentableComponent,
+package final class GiftCardComponent: PaymentComponent,
+    PresentableComponent,
     Localizable,
     LoadingComponent,
     AdyenObserver {
@@ -139,6 +140,10 @@ package final class GiftCardComponent: PresentableComponent,
         self.showsSubmitButton = showsSubmitButton
         self.showsSecurityCodeField = showsSecurityCodeField
         self.amount = amount
+    }
+
+    package func submit() {
+        didSelectSubmitButton()
     }
 
     // MARK: - Presentable Component Protocol
@@ -274,7 +279,7 @@ extension GiftCardComponent {
     
     internal func didSelectSubmitButton() {
         hideError()
-        guard validate() else {
+        guard formViewController.validate() else {
             return
         }
 
@@ -473,16 +478,3 @@ extension GiftCardComponent {
 }
 
 extension GiftCardComponent: PartialPaymentComponent {}
-
-// MARK: - SubmitCustomizable
-
-extension GiftCardComponent: SubmittableComponent {
-
-    package func submit() {
-        didSelectSubmitButton()
-    }
-
-    package func validate() -> Bool {
-        formViewController.validate()
-    }
-}

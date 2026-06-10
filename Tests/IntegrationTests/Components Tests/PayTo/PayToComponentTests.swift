@@ -385,50 +385,6 @@ class PayToComponentTests: XCTestCase {
         XCTAssertEqual(infoType, .rendered)
     }
 
-    func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
-        // Given
-        let paymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)
-        let configuration = PayToComponent.Configuration(showsSubmitButton: false)
-        let sut = PayToComponent(
-            paymentMethod: paymentMethod,
-            context: Dummy.context,
-            configuration: configuration
-        )
-
-        try populateValidFields(sut: sut)
-
-        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
-        let expectedResult = formViewController.validate()
-
-        // When
-        let validationResult = sut.validate()
-
-        // Then
-        XCTAssertTrue(validationResult)
-        XCTAssertEqual(expectedResult, validationResult)
-    }
-
-    func testValidateGivenInvalidInputShouldReturnFormViewControllerValidateResult() throws {
-        // Given
-        let paymentMethod: PayToPaymentMethod = try AdyenCoder.decode(payto)
-        let configuration = PayToComponent.Configuration(showsSubmitButton: false)
-        let sut = PayToComponent(
-            paymentMethod: paymentMethod,
-            context: Dummy.context,
-            configuration: configuration
-        )
-
-        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
-        let expectedResult = formViewController.validate()
-
-        // When
-        let validationResult = sut.validate()
-
-        // Then
-        XCTAssertFalse(validationResult)
-        XCTAssertEqual(expectedResult, validationResult)
-    }
-
     func testSubmit_shouldCallPaymentDelegateDidSubmit() throws {
         // Given
 

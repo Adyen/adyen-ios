@@ -103,6 +103,10 @@ package final class PayToComponent: PaymentComponent, PresentableComponent, Adye
         self.configuration = configuration
     }
 
+    package func submit() {
+        didSelectContinueButton()
+    }
+
     /// The payment flow selection title label item.
     internal lazy var flowSelectionTitleItem: FormLabelItem = {
         itemsProvider.createFlowSelectionTitleItem()
@@ -216,17 +220,7 @@ package final class PayToComponent: PaymentComponent, PresentableComponent, Adye
     }
 }
 
-extension PayToComponent: SubmittableComponent {
-
-    package func submit() {
-        didSelectContinueButton()
-    }
-
-    package func validate() -> Bool {
-        formViewController.validate()
-    }
-}
-
+@_spi(AdyenInternal)
 extension PayToComponent: ViewControllerDelegate {}
 
 extension PayToComponent: TrackableComponent {}
@@ -247,7 +241,7 @@ extension PayToComponent: ViewControllerPresenter {
 private extension PayToComponent {
 
     func didSelectContinueButton() {
-        guard validate() else { return }
+        guard formViewController.validate() else { return }
 
         startLoading()
 

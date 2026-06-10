@@ -20,7 +20,7 @@ extension AbstractPersonalInformationComponent: LoadingComponent {
     }
 
     internal func didSelectSubmitButton() {
-        guard validate() else { return }
+        guard formViewController.validate() else { return }
 
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false

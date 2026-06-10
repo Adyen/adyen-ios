@@ -77,6 +77,10 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
 
         return StoredCardInputViewController(viewModel: viewModel)
     }()
+
+    package func submit() {
+        // TODO: - Naufal: Implement submit logic in  StoredCardComponent
+    }
 }
 
 /// :nodoc:

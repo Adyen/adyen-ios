@@ -48,6 +48,10 @@ package final class SEPADirectDebitComponent: PaymentComponent, PresentableCompo
         self.context = context
         self.configuration = configuration
     }
+
+    package func submit() {
+        didSelectSubmitButton()
+    }
     
     private let sepaDirectDebitPaymentMethod: SEPADirectDebitPaymentMethod
     
@@ -87,7 +91,7 @@ package final class SEPADirectDebitComponent: PaymentComponent, PresentableCompo
     // MARK: - Private
     
     private func didSelectSubmitButton() {
-        guard validate() else {
+        guard formViewController.validate() else {
             return
         }
         
@@ -154,16 +158,3 @@ package final class SEPADirectDebitComponent: PaymentComponent, PresentableCompo
 extension SEPADirectDebitComponent: TrackableComponent {}
 
 extension SEPADirectDebitComponent: ViewControllerDelegate {}
-
-// MARK: - SubmitCustomizable
-
-extension SEPADirectDebitComponent: SubmittableComponent {
-
-    package func submit() {
-        didSelectSubmitButton()
-    }
-
-    package func validate() -> Bool {
-        formViewController.validate()
-    }
-}
