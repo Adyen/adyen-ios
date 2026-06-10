@@ -8,27 +8,25 @@ import Adyen
 import UIKit
 
 /// A form item that represents a separator line.
-@_spi(AdyenInternal)
-public final class FormSeparatorItem: FormItem {
+package final class FormSeparatorItem: FormItem {
 
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
-    
-    public var subitems: [FormItem] = []
-    
+    package var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+
+    package var subitems: [FormItem] = []
+
     /// Indicates the line color.
-    public let color: UIColor
-    
-    public var identifier: String?
-    
+    package let color: UIColor
+
+    package var identifier: String?
+
     /// Initializes the separator item.
     ///
     /// - Parameter style: Any `ViewStyle` UI style.
-    public init(color: UIColor) {
+    package init(color: UIColor) {
         self.color = color
     }
     
-    @_spi(AdyenInternal)
-    public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
     

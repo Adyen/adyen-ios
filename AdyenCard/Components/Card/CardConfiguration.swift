@@ -234,7 +234,7 @@ extension CardConfiguration {
 }
 
 /// Describes any configuration for the card component.
-public protocol AnyCardComponentConfiguration {
+package protocol AnyCardComponentConfiguration {
     
     /// Indicates if the field for entering the cardholder name should be displayed in the form. Defaults to false.
     var showCardholderName: Bool { get }

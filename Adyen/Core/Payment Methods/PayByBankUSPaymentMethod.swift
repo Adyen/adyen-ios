@@ -11,9 +11,8 @@ public struct PayByBankUSPaymentMethod: PaymentMethod, PaymentMethodDisplayOverr
     public let type: PaymentMethodType
     
     public var name: String
-    
-    @_spi(AdyenInternal)
-    public static var logoNames: [String] {
+
+    package static var logoNames: [String] {
         ["US-1", "US-2", "US-3", "US-4"]
     }
     

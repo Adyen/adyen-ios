@@ -7,8 +7,7 @@
 import Foundation
 
 /// A typealias for a closure that handles a URL through which the application was opened.
-@_spi(AdyenInternal)
-public typealias AssertionListener = (String) -> Void
+package typealias AssertionListener = (String) -> Void
 
 package enum AdyenAssertion {
 

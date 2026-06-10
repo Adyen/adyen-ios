@@ -5,8 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PaymentComponent
-
 #if canImport(AdyenUI)
     import AdyenUI
 #endif

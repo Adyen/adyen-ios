@@ -9,14 +9,13 @@ import Foundation
 import UIKit
 
 /// Simple form item that represent a single UILabel element.
-@_spi(AdyenInternal)
-public class FormLabelItem: FormItem {
-    
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
+package class FormLabelItem: FormItem {
 
-    public var subitems: [FormItem] = []
+    package var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
 
-    public init(text: String, style: TextStyle, identifier: String? = nil) {
+    package var subitems: [FormItem] = []
+
+    package init(text: String, style: TextStyle, identifier: String? = nil) {
         self.identifier = identifier
         self.style = style
         self.text = text
@@ -35,18 +34,18 @@ public class FormLabelItem: FormItem {
         self.style = TextStyle(font: .preferredFont(forTextStyle: .title1), color: .red)
     }
 
-    public var identifier: String?
+    package var identifier: String?
 
     /// The style of the label.
-    public var style: TextStyle
+    package var style: TextStyle
 
     /// The text of the label.
-    public var text: String
+    package var text: String
 
     /// The labelStyle from the adyen theme
     internal var labelStyle: AdyenLabelStyle = .init()
 
-    public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         FormLabelItemView(item: self, theme: builder.theme)
     }
 }

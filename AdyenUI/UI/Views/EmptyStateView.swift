@@ -8,17 +8,17 @@ import Adyen
 import UIKit
 
 /// The style of the empty state view
-public struct EmptyStateViewStyle: ViewStyle {
-    
-    public var title: TextStyle = .init(
+package struct EmptyStateViewStyle: ViewStyle {
+
+    package var title: TextStyle = .init(
         font: .preferredFont(forTextStyle: .headline),
         color: .Adyen.componentLabel
     )
-    public var subtitle: TextStyle = .init(
+    package var subtitle: TextStyle = .init(
         font: .preferredFont(forTextStyle: .subheadline),
         color: .Adyen.componentSecondaryLabel
     )
-    public var backgroundColor: UIColor = .Adyen.componentBackground
+    package var backgroundColor: UIColor = .Adyen.componentBackground
 }
 
 /// A generic empty view with title and generic subtitle
