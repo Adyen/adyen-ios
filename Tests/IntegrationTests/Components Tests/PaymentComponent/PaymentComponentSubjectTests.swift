@@ -51,7 +51,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         )
 
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, order: nil)
 
         let didSubmitExpectation = expectation(description: "didSubmit should get called")
 
@@ -79,7 +79,7 @@ class PaymentComponentSubjectTests: XCTestCase {
     func test_submit_sets_browserInfo() {
         // Given
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, order: nil)
 
         let didSubmitExpectation = expectation(description: "didSubmit should get called")
 
@@ -99,7 +99,7 @@ class PaymentComponentSubjectTests: XCTestCase {
 
     func test_submit_event() {
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, order: nil)
 
         let didSubmitExpectation = expectation(description: "didSubmit should get called")
 
@@ -120,7 +120,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         // Given
         let expectedCheckoutAttemptId = AnalyticsProviderMock.testCheckoutAttemptId
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, order: nil)
 
         let didSubmitExpectation = expectation(description: "didSubmit should get called")
 
@@ -152,7 +152,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         // Create a mock payment method that provides authentication
         let mockAuthProvider = MockSDKDataAuthenticationProvider()
         let paymentMethodDetails = MockAuthenticationPaymentDetails(authProvider: mockAuthProvider)
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, order: nil)
 
         let didSubmitExpectation = expectation(description: "didSubmit should get called")
 
@@ -182,7 +182,7 @@ class PaymentComponentSubjectTests: XCTestCase {
 
         // Use a payment method that doesn't provide authentication
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, order: nil)
 
         let didSubmitExpectation = expectation(description: "didSubmit should get called")
 
@@ -207,7 +207,7 @@ class PaymentComponentSubjectTests: XCTestCase {
     func test_submit_includes_sdkData_other_fields() {
         // Given
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
-        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, amount: nil, order: nil)
+        let paymentComponentData = PaymentComponentData(paymentMethodDetails: paymentMethodDetails, order: nil)
 
         let didSubmitExpectation = expectation(description: "didSubmit should get called")
 
@@ -237,7 +237,6 @@ class PaymentComponentSubjectTests: XCTestCase {
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
         let paymentComponentData = PaymentComponentData(
             paymentMethodDetails: paymentMethodDetails,
-            amount: nil,
             order: nil
         )
 
@@ -271,7 +270,6 @@ class PaymentComponentSubjectTests: XCTestCase {
         let paymentMethodDetails = MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "0284294824")
         let paymentComponentData = PaymentComponentData(
             paymentMethodDetails: paymentMethodDetails,
-            amount: nil,
             order: nil
         )
 
@@ -307,7 +305,7 @@ class PaymentComponentSubjectTests: XCTestCase {
 
         let instantPaymentMethod = InstantPaymentMethod(type: .other("test"), name: "Test")
         let instantPaymentDetails = InstantPaymentDetails(type: .other("test"))
-        let paymentData = PaymentComponentData(paymentMethodDetails: instantPaymentDetails, amount: nil, order: nil)
+        let paymentData = PaymentComponentData(paymentMethodDetails: instantPaymentDetails, order: nil)
 
         let instantComponent = InstantPaymentComponent(
             paymentMethod: instantPaymentMethod,

@@ -140,7 +140,7 @@ package final class OnlineBankingComponent: PaymentComponent,
         continueButton.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order))
+        submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
     }
 
     private lazy var formViewController: FormViewController = {

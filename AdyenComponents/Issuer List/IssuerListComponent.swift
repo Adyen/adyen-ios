@@ -139,7 +139,6 @@ package final class IssuerListComponent: PaymentComponent, PresentableComponent,
                 )
                 self.submit(data: PaymentComponentData(
                     paymentMethodDetails: details,
-                    amount: self.context.amount,
                     order: self.order
                 ))
                 

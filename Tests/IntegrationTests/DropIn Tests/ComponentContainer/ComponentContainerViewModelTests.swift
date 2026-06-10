@@ -246,7 +246,6 @@ struct ComponentContainerViewModelTests {
             holderName: "Katrina del Mar"
         )
 
-        let amount = Amount(value: amountValue, currencyCode: "EUR")
-        return PaymentComponentData(paymentMethodDetails: cardDetails, amount: amount, order: nil)
+        return PaymentComponentData(paymentMethodDetails: cardDetails, order: nil)
     }
 }

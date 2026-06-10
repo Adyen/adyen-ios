@@ -219,7 +219,6 @@ class SessionTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(expectedPaymentMethods.regular.last as? MBWayPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "telephone"),
-            amount: nil,
             order: nil
         )
 
@@ -250,7 +249,6 @@ class SessionTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(expectedPaymentMethods.regular.last as? MBWayPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "telephone"),
-            amount: nil,
             order: nil
         )
 
@@ -300,7 +298,6 @@ class SessionTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(expectedPaymentMethods.regular.last as? MBWayPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "telephone"),
-            amount: nil,
             order: nil
         )
 
@@ -327,7 +324,6 @@ class SessionTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(expectedPaymentMethods.regular.last as? MBWayPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: MBWayDetails(paymentMethod: paymentMethod, telephoneNumber: "telephone"),
-            amount: nil,
             order: nil
         )
 
@@ -378,7 +374,6 @@ class SessionTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(expectedPaymentMethods.regular.first as? GiftCardPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: GiftCardDetails(paymentMethod: paymentMethod, encryptedCardNumber: "card", encryptedSecurityCode: "cvc"),
-            amount: nil,
             order: nil
         )
 
@@ -400,7 +395,6 @@ class SessionTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(expectedPaymentMethods.regular.first as? GiftCardPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: GiftCardDetails(paymentMethod: paymentMethod, encryptedCardNumber: "card", encryptedSecurityCode: "cvc"),
-            amount: nil,
             order: nil
         )
 
@@ -420,7 +414,6 @@ class SessionTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(expectedPaymentMethods.regular.first as? GiftCardPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: GiftCardDetails(paymentMethod: paymentMethod, encryptedCardNumber: "card", encryptedSecurityCode: "cvc"),
-            amount: nil,
             order: nil
         )
 
@@ -569,7 +562,6 @@ class SessionTests: XCTestCase {
         let installments = Installments(totalMonths: 3, plan: .regular)
         let data = PaymentComponentData(
             paymentMethodDetails: cardDetails,
-            amount: nil,
             order: nil,
             installments: installments
         )
@@ -594,7 +586,6 @@ class SessionTests: XCTestCase {
         let cardDetails = makeTestCardDetails()
         let data = PaymentComponentData(
             paymentMethodDetails: cardDetails,
-            amount: nil,
             order: nil
         )
 
