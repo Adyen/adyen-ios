@@ -41,6 +41,7 @@ extension ApplePayComponent {
         /// Indicates that the token was generated incorrectly.
         case invalidToken
 
+        /// Indicates that calling submit is not supported for Apple Pay.
         case submitNotSupported
 
         public var errorDescription: String? {
@@ -64,7 +65,7 @@ extension ApplePayComponent {
             case .invalidToken:
                 return "The Apple Pay token is invalid. Make sure you are using physical device, not a Simulator."
             case .submitNotSupported:
-                return "Submit call is not supported"
+                return "Submit call is not supported."
             }
         }
     }

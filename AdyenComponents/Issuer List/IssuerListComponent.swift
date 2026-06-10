@@ -59,7 +59,7 @@ package final class IssuerListComponent: PaymentComponent, PresentableComponent,
     }
 
     package func submit() {
-        // TODO: - COSDK-1262: Implemenation will be done once the IssuerListComponent is redesigned to have a button.
+        // TODO: - COSDK-1262: Implementation will be done once the IssuerListComponent is redesigned to have a button.
     }
 
     private let issuerListPaymentMethod: IssuerListPaymentMethod
