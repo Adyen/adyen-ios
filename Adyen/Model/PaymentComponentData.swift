@@ -14,9 +14,6 @@ import Foundation
  */
 public struct PaymentComponentData {
 
-    /// The payment amount.
-    public let amount: Amount?
-    
     /// The payment method details submitted by the payment component.
     public let paymentMethod: PaymentMethodDetails
     
@@ -77,7 +74,6 @@ public struct PaymentComponentData {
     ///
     /// - Parameters:
     ///   - paymentMethodDetails: The payment method details submitted from the payment component.
-    ///   - amount: The payment amount.
     ///   - order: The partial payment order if any.
     ///   - storePaymentMethod: Whether the user has chosen to store the payment method.
     ///   - browserInfo: The device default browser info.
@@ -86,13 +82,11 @@ public struct PaymentComponentData {
     ///   - sdkData: The encoded SDK data if specified.
     package init(
         paymentMethodDetails: some PaymentMethodDetails,
-        amount: Amount?,
         order: PartialPaymentOrder?,
         storePaymentMethod: Bool? = nil,
         browserInfo: BrowserInfo? = nil,
         installments: Installments? = nil
     ) {
-        self.amount = amount
         self.paymentMethod = paymentMethodDetails
         self.order = order
         self.storePaymentMethod = storePaymentMethod
@@ -105,7 +99,6 @@ public struct PaymentComponentData {
         paymentMethodDetails.sdkData = sdkData.encodedValue
         return PaymentComponentData(
             paymentMethodDetails: paymentMethodDetails,
-            amount: amount,
             order: order,
             storePaymentMethod: storePaymentMethod,
             browserInfo: browserInfo,
@@ -116,18 +109,6 @@ public struct PaymentComponentData {
     package func replacing(order: PartialPaymentOrder) -> PaymentComponentData {
         PaymentComponentData(
             paymentMethodDetails: paymentMethod,
-            amount: amount,
-            order: order,
-            storePaymentMethod: storePaymentMethod,
-            browserInfo: browserInfo,
-            installments: installments
-        )
-    }
-
-    package func replacing(amount: Amount) -> PaymentComponentData {
-        PaymentComponentData(
-            paymentMethodDetails: paymentMethod,
-            amount: amount,
             order: order,
             storePaymentMethod: storePaymentMethod,
             browserInfo: browserInfo,
@@ -141,7 +122,6 @@ public struct PaymentComponentData {
         paymentMethod.checkoutAttemptId = checkoutAttemptId
         return PaymentComponentData(
             paymentMethodDetails: paymentMethod,
-            amount: amount,
             order: order,
             storePaymentMethod: storePaymentMethod,
             browserInfo: browserInfo,
@@ -152,7 +132,6 @@ public struct PaymentComponentData {
     package func replacing(browserInfo: BrowserInfo?) -> PaymentComponentData {
         PaymentComponentData(
             paymentMethodDetails: paymentMethod,
-            amount: amount,
             order: order,
             storePaymentMethod: storePaymentMethod,
             browserInfo: browserInfo,

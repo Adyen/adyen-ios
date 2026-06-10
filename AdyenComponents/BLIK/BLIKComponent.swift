@@ -132,7 +132,7 @@ package final class BLIKComponent: PaymentComponent, PresentableComponent, Loadi
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
-        let data = PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order)
+        let data = PaymentComponentData(paymentMethodDetails: details, order: order)
         submit(data: data)
     }
 }

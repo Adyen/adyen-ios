@@ -392,14 +392,14 @@ private extension UPIComponent {
                 virtualPaymentAddress: nil,
                 appId: currentSelectedItemIdentifier
             )
-            submit(data: PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order))
+            submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
         case .upiCollect:
             let details = UPIComponentDetails(
                 type: selectedUPIFlow.value,
                 virtualPaymentAddress: vpaInputItem.value,
                 appId: nil
             )
-            submit(data: PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order))
+            submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
         }
     }
 }

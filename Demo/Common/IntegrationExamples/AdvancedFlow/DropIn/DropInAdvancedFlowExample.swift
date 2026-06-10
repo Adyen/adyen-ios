@@ -219,7 +219,7 @@ extension DropInAdvancedFlowExample: PartialPaymentDelegate {
         component: Component,
         completion: @escaping (Result<Balance, Error>) -> Void
     ) {
-        let request = BalanceCheckRequest(data: data)
+        let request = BalanceCheckRequest(data: data, amount: ConfigurationConstants.current.amount)
         apiClient.perform(request) { [weak self] result in
             self?.handle(result: result, completion: completion)
         }

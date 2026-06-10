@@ -347,7 +347,6 @@ struct PaymentMethodListViewModelTests {
 
         return PaymentComponentData(
             paymentMethodDetails: cardDetails,
-            amount: Amount(value: 1000, currencyCode: "EUR"),
             order: nil
         )
     }

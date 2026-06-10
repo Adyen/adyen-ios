@@ -29,7 +29,6 @@ package final class PayByBankUSComponent: PaymentComponent, PresentableComponent
 
         return PaymentComponentData(
             paymentMethodDetails: details,
-            amount: context.amount,
             order: order
         )
     }
