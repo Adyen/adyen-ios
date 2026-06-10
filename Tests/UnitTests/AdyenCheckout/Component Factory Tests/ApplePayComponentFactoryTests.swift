@@ -35,7 +35,7 @@ final class ApplePayComponentFactoryTests: XCTestCase {
         // are merchant-specific and cannot be inferred. The factory must signal this
         // explicitly so callers cannot silently fall through.
         XCTAssertThrowsError(try factory.defaultConfiguration()) { error in
-            XCTAssertTrue(error is UnknownError)
+            XCTAssertEqual(error as? ApplePayComponent.Error, .missingConfiguration)
         }
     }
 
