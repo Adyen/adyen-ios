@@ -14,13 +14,40 @@ class PaymentComponentMock: PaymentComponent {
 
     var delegate: PaymentComponentDelegate?
 
-    /// Default type - subclasses provide their own implementation
     var type: PaymentComponentType {
-        fatalError("Subclasses must override type")
+        .initiable(self)
     }
 
     init(paymentMethod: PaymentMethod) {
         self.paymentMethod = paymentMethod
+    }
+
+    // MARK: - submit
+
+    var submitCallsCount = 0
+    var submitCalled: Bool {
+        submitCallsCount > 0
+    }
+
+    var submitClosure: (() -> Void)?
+
+    /// When true, calling submit() will trigger didSubmit on the delegate with mock payment data
+    var shouldCallDelegateOnSubmit = true
+
+    func submit() {
+        submitCallsCount += 1
+        submitClosure?()
+
+        if shouldCallDelegateOnSubmit {
+            let details: PaymentMethodDetails
+            if let storedPaymentMethod = paymentMethod as? StoredPaymentMethod {
+                details = StoredPaymentDetails(paymentMethod: storedPaymentMethod)
+            } else {
+                details = InstantPaymentDetails(type: paymentMethod.type)
+            }
+            let data = PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: nil)
+            delegate?.didSubmit(data, from: self)
+        }
     }
 }
 
@@ -56,31 +83,6 @@ class PresentableComponentMock: PaymentComponentMock, PresentableComponent, Load
     func stopLoading() {
         stopLoadingCallsCount += 1
         stopLoadingClosure?()
-    }
-}
-
-class InitiableComponentMock: PaymentComponentMock, InitiablePaymentComponent {
-
-    override var type: PaymentComponentType {
-        .initiable(self)
-    }
-
-    override init(paymentMethod: PaymentMethod) {
-        super.init(paymentMethod: paymentMethod)
-    }
-
-    // MARK: - initiatePayment
-
-    var initiatePaymentCallsCount = 0
-    var initiatePaymentCalled: Bool {
-        initiatePaymentCallsCount > 0
-    }
-
-    var onInitiatePayment: (() -> Void)?
-
-    func initiatePayment(delegate: any PaymentComponentDelegate) {
-        initiatePaymentCallsCount += 1
-        onInitiatePayment?()
     }
 }
 

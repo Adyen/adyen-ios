@@ -436,26 +436,5 @@ import XCTest
             sut.stateDidChange(to: .networkError(.noResponse))
             wait(for: [errorExpectation], timeout: 5)
         }
-        
-        func testValidateShouldReturnFormViewControllerValidateResult() throws {
-            // Given
-            let configuration = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")), showsSubmitButton: false)
-            let sut = CashAppPayComponent(
-                paymentMethod: paymentMethod,
-                context: context,
-                configuration: configuration
-            )
-            sut.viewController.loadViewIfNeeded()
-
-            let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
-            let expectedResult = formViewController.validate()
-
-            // When
-            let validationResult = sut.validate()
-
-            // Then
-            XCTAssertTrue(validationResult)
-            XCTAssertEqual(expectedResult, validationResult)
-        }
     }
 #endif

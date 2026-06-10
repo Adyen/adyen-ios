@@ -302,9 +302,7 @@ struct PreselectedPaymentMethodIntegrationTests {
 
             case .initiableBCMC:
                 let paymentMethod = try! AdyenCoder.decode(storedBcmcDictionary) as StoredBCMCPaymentMethod
-                // Need to create a Mock Component that implements both PaymentComponent and PaymentInitiable
-                // to check if the dropInFlowManager's submit is called
-                return InitiablePaymentComponentMock(paymentMethod: paymentMethod, context: Dummy.context)
+                return PaymentComponentMock(paymentMethod: paymentMethod)
             }
         }
 
@@ -333,31 +331,5 @@ struct PreselectedPaymentMethodIntegrationTests {
         var showAllPaymentMethodsButtonText: String {
             "Other payment options"
         }
-    }
-}
-
-internal class InitiablePaymentComponentMock: PaymentComponent, InitiablePaymentComponent {
-
-    var context: AdyenContext
-    var paymentMethod: PaymentMethod
-    weak var delegate: PaymentComponentDelegate?
-    var order: PartialPaymentOrder?
-
-    init(paymentMethod: PaymentMethod, context: AdyenContext) {
-        self.paymentMethod = paymentMethod
-        self.context = context
-    }
-
-    func initiatePayment() {}
-
-    func initiatePayment(delegate: PaymentComponentDelegate) {
-        self.delegate = delegate
-        let details = StoredPaymentDetails(paymentMethod: paymentMethod as! StoredPaymentMethod)
-        let data = PaymentComponentData(
-            paymentMethodDetails: details,
-            amount: context.amount,
-            order: order
-        )
-        self.delegate?.didSubmit(data, from: self)
     }
 }
