@@ -76,7 +76,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
 
         var submitClosure: (() -> Void)?
 
-        func submit() {
+        func performSubmit() {
             submitCallsCount += 1
             submitClosure?()
         }

@@ -50,10 +50,6 @@ package final class BLIKComponent: PaymentComponent, PresentableComponent, Loadi
         self.context = context
         self.configuration = configuration
     }
-
-    package func submit() {
-        didSelectSubmitButton()
-    }
     
     package func stopLoading() {
         button.showsActivityIndicator = false
@@ -119,14 +115,14 @@ package final class BLIKComponent: PaymentComponent, PresentableComponent, Loadi
             configuration.localizationParameters
         )
         item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectSubmitButton()
+            self?.performSubmit()
         }
         return item
     }()
 
     // MARK: - Private
 
-    private func didSelectSubmitButton() {
+    package func performSubmit() {
         guard formViewController.validate() else { return }
 
         let details = BLIKDetails(

@@ -95,7 +95,7 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
 
         self.checkout = checkout
 
-        return try checkout.createPaymentComponent(for: paymentMethod.type)
+        return try checkout.createPaymentComponent(for: PaymentMethodType.ideal)
     }
 
     // MARK: - Backend calls

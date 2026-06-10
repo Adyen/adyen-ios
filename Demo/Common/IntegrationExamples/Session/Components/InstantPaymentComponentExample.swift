@@ -80,12 +80,7 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
 
         self.checkout = checkout
 
-        // Get the payment method type from the checkout's payment methods
-        guard let paymentMethod = checkout.paymentMethods?.paymentMethod(ofType: InstantPaymentMethod.self) else {
-            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: InstantPaymentMethod.self)
-        }
-
-        return try checkout.createPaymentComponent(for: paymentMethod.type)
+        return try checkout.createPaymentComponent(for: PaymentMethodType.ideal)
     }
 
     // MARK: - Private

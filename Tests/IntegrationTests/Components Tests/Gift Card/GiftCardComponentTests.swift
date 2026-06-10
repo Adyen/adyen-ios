@@ -149,7 +149,7 @@ class GiftCardComponentTests: XCTestCase {
             XCTAssertGreaterThan(paymentMethod.encryptedSecurityCode.count, 0)
             expectation.fulfill()
         }
-        sut.didSelectSubmitButton()
+        sut.performSubmit()
         waitForExpectations(timeout: 10, handler: nil)
     }
 

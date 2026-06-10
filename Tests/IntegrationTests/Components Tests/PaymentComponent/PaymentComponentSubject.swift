@@ -37,5 +37,5 @@ class PaymentComponentSubject: PaymentComponent, PresentableComponent {
         self.paymentMethod = paymentMethod
     }
 
-    func submit() { /* Empty implementation */ }
+    func performSubmit() { /* Empty implementation */ }
 }

@@ -168,7 +168,7 @@ class BoletoComponentTests: XCTestCase {
         addressPickerItem.item.value = PostalAddressMocks.newYorkPostalAddress
 
         // When
-        sut.submit()
+        sut.performSubmit()
 
         // Then
         wait(for: [didSubmitExpectation], timeout: 10)

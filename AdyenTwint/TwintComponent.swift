@@ -64,7 +64,7 @@ package final class TwintComponent: PaymentComponent {
     }
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
-    package func submit() {
+    package func performSubmit() {
         submit(data: paymentData)
     }
 }

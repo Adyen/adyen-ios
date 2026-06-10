@@ -142,10 +142,6 @@ package final class GiftCardComponent: PaymentComponent,
         self.amount = amount
     }
 
-    package func submit() {
-        didSelectSubmitButton()
-    }
-
     // MARK: - Presentable Component Protocol
 
     package lazy var viewController: UIViewController = SecuredViewController(child: formViewController, style: style)
@@ -244,7 +240,7 @@ package final class GiftCardComponent: PaymentComponent,
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = localizedString(.cardApplyGiftcard, localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectSubmitButton()
+            self?.performSubmit()
         }
         return item
     }()
@@ -277,7 +273,7 @@ package final class GiftCardComponent: PaymentComponent,
 
 extension GiftCardComponent {
     
-    internal func didSelectSubmitButton() {
+    package func performSubmit() {
         hideError()
         guard formViewController.validate() else {
             return

@@ -338,7 +338,7 @@ class PaymentComponentSubjectTests: XCTestCase {
             didSubmitExpectation.fulfill()
         }
 
-        instantComponent.submit()
+        instantComponent.performSubmit()
 
         wait(for: [didSubmitExpectation], timeout: 3)
     }

@@ -88,7 +88,7 @@ class OnlineBankingComponentTests: XCTestCase {
         }
 
         // When
-        sut.submit()
+        sut.performSubmit()
 
         // Then
         wait(for: [didSubmitExpectation], timeout: 10)

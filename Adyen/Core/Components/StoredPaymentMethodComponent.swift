@@ -39,7 +39,7 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
     
     private let storedPaymentMethod: StoredPaymentMethod
 
-    package func submit() {
+    package func performSubmit() {
         let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: details,
