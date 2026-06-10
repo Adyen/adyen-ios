@@ -8,10 +8,10 @@ import Foundation
 import UIKit
 
 /// Contains the styling customization options for a list section footer.
-public struct ListSectionFooterStyle: ViewStyle {
+package struct ListSectionFooterStyle: ViewStyle {
 
     /// The title style.
-    public var title = TextStyle(
+    package var title = TextStyle(
         font: .preferredFont(forTextStyle: .footnote),
         color: UIColor.Adyen.paidSectionFooterTitleColor,
         textAlignment: .center,
@@ -20,18 +20,18 @@ public struct ListSectionFooterStyle: ViewStyle {
     )
 
     /// Separator Color.
-    public var separatorColor = UIColor.Adyen.componentSeparator
+    package var separatorColor = UIColor.Adyen.componentSeparator
 
-    public var backgroundColor = UIColor.Adyen.componentBackground
+    package var backgroundColor = UIColor.Adyen.componentBackground
 
     /// Initializes the list header style.
     ///
     /// - Parameter title: The title style.
-    public init(title: TextStyle) {
+    package init(title: TextStyle) {
         self.title = title
     }
 
     /// Initializes the list header style with the default style.
-    public init() {}
+    package init() {}
 
 }

@@ -8,7 +8,7 @@ import Adyen
 import UIKit
 
 /// A style of form elements in which a value can be entered.
-public protocol FormValueItemStyle: TintableStyle {
+@_spi(AdyenInternal) public protocol FormValueItemStyle: TintableStyle {
     
     /// The color of bottom line separating form elements.
     var separatorColor: UIColor? { get }

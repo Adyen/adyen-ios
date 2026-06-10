@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 /// Contains the styling customization options for any labels.
-public struct TextStyle: ViewStyle {
+@_spi(AdyenInternal) public struct TextStyle: ViewStyle {
     
     /// The font used to display the text.
     public var font: UIFont

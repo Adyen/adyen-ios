@@ -6,15 +6,15 @@
 
 import Adyen
 #if canImport(AdyenUI)
-    import AdyenUI
+    @_spi(AdyenInternal) import AdyenUI
 #endif
 import UIKit
 
 /// Contains the styling customization options for the document action component.
-public struct DocumentComponentStyle {
+package struct DocumentComponentStyle {
     
     /// The image style.
-    public var image = ImageStyle(
+    package var image = ImageStyle(
         borderColor: nil,
         borderWidth: 0,
         cornerRadius: 8,
@@ -23,7 +23,7 @@ public struct DocumentComponentStyle {
     )
     
     /// The done button style.
-    public var doneButton = ButtonStyle(
+    package var doneButton = ButtonStyle(
         title: TextStyle(
             font: .preferredFont(forTextStyle: .headline),
             color: UIColor.Adyen.defaultBlue
@@ -33,7 +33,7 @@ public struct DocumentComponentStyle {
     )
     
     /// The main button style.
-    public var mainButton = ButtonStyle(
+    package var mainButton = ButtonStyle(
         title: TextStyle(
             font: .preferredFont(forTextStyle: .headline),
             color: UIColor.Adyen.defaultBlue
@@ -43,14 +43,14 @@ public struct DocumentComponentStyle {
     )
     
     /// The message label style.
-    public var messageLabel = TextStyle(
+    package var messageLabel = TextStyle(
         font: .preferredFont(forTextStyle: .callout),
         color: UIColor.Adyen.componentLabel
     )
     
     /// The background color of the document action view.
-    public var backgroundColor = UIColor.Adyen.componentBackground
+    package var backgroundColor = UIColor.Adyen.componentBackground
     
     /// Initializes the document component style with the default style.
-    public init() {}
+    package init() {}
 }

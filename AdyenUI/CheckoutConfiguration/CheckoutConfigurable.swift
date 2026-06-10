@@ -30,8 +30,8 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     var theme: CheckoutTheme { get set }
 }
 
-public extension CheckoutConfigurable {
-    
+package extension CheckoutConfigurable {
+
     // TODO: add descriptions
     // having this function here instead of re writing it for all configurations
     // prevents duplication, but the returned value will be seen as CheckoutConfigurable

@@ -9,22 +9,22 @@ import PassKit
 import UIKit
 
 ///  Contains the styling options for Apple Pay components.
-public struct ApplePayStyle {
-    
+package struct ApplePayStyle {
+
     /// Style of the payment button. When nil, it's set to automatic based on Dark or Light Mode.
-    public var paymentButtonStyle: PKPaymentButtonStyle?
-    
+    package var paymentButtonStyle: PKPaymentButtonStyle?
+
     /// Type of the Apple Pay payment button. Default is `.inStore`
-    public var paymentButtonType: PKPaymentButtonType
-    
+    package var paymentButtonType: PKPaymentButtonType
+
     /// Corner radius for the payment button. iOS 12 or above. Defaults to 4 points.
-    public var cornerRadius: CGFloat
-    
+    package var cornerRadius: CGFloat
+
     /// Background color for the Apple Pay component.
-    public var backgroundColor: UIColor
-    
+    package var backgroundColor: UIColor
+
     /// Stying for the label that contains the formatted amount text.
-    public var hintLabel: TextStyle
+    package var hintLabel: TextStyle
 
     /// Initializes an Apple Pay style instance with default values.
     /// - Parameters:
@@ -33,7 +33,7 @@ public struct ApplePayStyle {
     ///   - cornerRadius: Corner radius for the payment button. iOS 12 or above. Defaults to 4 points.
     ///   - backgroundColor: Background color for the Apple Pay component.
     ///   - hintLabel: Stying for the label that contains the formatted amount text.
-    public init(
+    package init(
         paymentButtonStyle: PKPaymentButtonStyle? = nil,
         paymentButtonType: PKPaymentButtonType = .inStore,
         cornerRadius: CGFloat = 4,
