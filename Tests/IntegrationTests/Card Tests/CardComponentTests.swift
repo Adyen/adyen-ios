@@ -723,7 +723,42 @@ class CardComponentTests: XCTestCase {
 
         waitForExpectations(timeout: 10, handler: nil)
     }
-    
+
+    func test_performSubmit_withValidData_shouldCallDelegateDidSubmit() {
+        // Given
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: Dummy.context(with: nil),
+            configuration: CardConfiguration(),
+            binProvider: BinInfoProviderMock()
+        )
+
+        let delegate = PaymentComponentDelegateMock()
+        sut.delegate = delegate
+        setupRootViewController(sut.viewController)
+
+        let delegateExpectation = expectation(description: "Expect delegate.didSubmit() to be called.")
+        let finalizationExpectation = expectation(description: "Component should finalize.")
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            XCTAssertTrue(data.paymentMethod is CardDetails)
+
+            sut.finalizeIfNeeded(with: true, completion: {
+                finalizationExpectation.fulfill()
+            })
+            delegateExpectation.fulfill()
+        }
+
+        fillCard(on: sut.viewController.view, with: Dummy.visaCard)
+
+        // When
+        sut.performSubmit()
+
+        // Then
+        wait(for: [delegateExpectation, finalizationExpectation], timeout: 10)
+        XCTAssertEqual(delegate.didSubmitCallsCount, 1)
+    }
+
     func test_cardNumberField_whenComplete_shouldPassFocusToExpiryDate() throws {
         // Given
 
