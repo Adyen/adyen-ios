@@ -241,7 +241,7 @@ internal class CardViewController: FormViewController {
         issuingCountryCode = binInfo.issuingCountryCode
         items.numberContainerItem.update(brands: brands)
         
-        updateBillingAddressVisibility(for: brands)
+        updateAddressItemVisibility(basedOn: brands)
     }
 
     internal func handleSelection(_ selectedBrand: CardBrand) {
@@ -265,7 +265,7 @@ internal class CardViewController: FormViewController {
 
 extension CardViewController {
     
-    private func updateBillingAddressVisibility(for brands: [CardBrand]) {
+    private func updateAddressItemVisibility(basedOn brands: [CardBrand]) {
         let shouldHide = configuration.billingAddressMode.shouldHide(for: brands.map(\.type))
         switch configuration.billingAddressMode {
         case .lookup, .full:

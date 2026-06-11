@@ -36,7 +36,7 @@ final class CardComponentEventTests: XCTestCase {
         let configDataDict = try XCTUnwrap(info?.configData?.stringOnlyDictionary)
         XCTAssertEqual(configDataDict["socialSecurityNumberVisibility"], "auto")
         XCTAssertEqual(configDataDict["hasInstallmentOptions"], "false")
-        // billingAddressRequired removed in favor of hideForCardTypes
+        // TODO: Robert: billingAddressRequired removed in favor of hideForCardTypes. What should be the alternate way to receive this event?
         XCTAssertEqual(configDataDict["hideCVC"], "false")
         XCTAssertEqual(configDataDict["showCardholderName"], "false")
         XCTAssertEqual(configDataDict["showKCPType"], "auto")
