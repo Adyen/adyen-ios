@@ -45,7 +45,7 @@ class PaymentComponentMock: PaymentComponent {
             } else {
                 details = InstantPaymentDetails(type: paymentMethod.type)
             }
-            let data = PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: nil)
+            let data = PaymentComponentData(paymentMethodDetails: details, order: nil)
             delegate?.didSubmit(data, from: self)
         }
     }

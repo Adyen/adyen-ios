@@ -8,8 +8,7 @@ import Adyen
 import UIKit
 
 /// A space form item in terms of number of layout margins.
-@_spi(AdyenInternal)
-public final class FormSpacerItemView: FormItemView<FormSpacerItem> {
+package final class FormSpacerItemView: FormItemView<FormSpacerItem> {
 
     /// Initializes the spacer item view.
     ///

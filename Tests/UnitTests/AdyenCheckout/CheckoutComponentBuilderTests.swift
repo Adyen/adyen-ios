@@ -577,7 +577,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertTrue(component is ApplePayComponent, "Component should be ApplePayComponent")
     }
     
-    func testBuild_WithApplePayAndNoConfiguration_ThrowsUnknownError() throws {
+    func testBuild_WithApplePayAndNoConfiguration_ThrowsMissingConfigurationError() throws {
         // Given — no Apple Pay configuration supplied to the DSL
         let paymentMethod = try XCTUnwrap(createApplePayPaymentMethod())
         checkoutConfiguration = makeCheckoutConfiguration()
@@ -591,7 +591,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             ),
             "Builder should throw when Apple Pay has no default and no user-supplied config"
         ) { error in
-            XCTAssertTrue(error is UnknownError, "Expected UnknownError, got \(type(of: error))")
+            XCTAssertEqual(error as? ApplePayComponent.Error, .missingConfiguration)
         }
     }
     

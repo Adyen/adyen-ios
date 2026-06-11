@@ -7,7 +7,7 @@
 import Foundation
 
 /// Any Object that is aware of a `PaymentMethod`.
-public protocol PaymentMethodAware {
+package protocol PaymentMethodAware {
 
     /// The payment method for which to gather payment details.
     var paymentMethod: PaymentMethod { get }

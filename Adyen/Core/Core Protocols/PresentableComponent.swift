@@ -15,7 +15,7 @@ package protocol Localizable {
 }
 
 /// Represents any object than can handle a cancel event.
-public protocol Cancellable: AnyObject {
+package protocol Cancellable: AnyObject {
     
     /// Called when the user cancels the component.
     func didCancel()

@@ -30,9 +30,8 @@ internal struct PaymentsRequest: APIRequest {
 
         let currentConfiguration = ConfigurationConstants.current
 
-        // Important: for the demo purpose we are setting amount here.
-        // If you choose not to provide the amount to the payment component - it could be specified by your backend.
-        let amount = data.amount ?? currentConfiguration.amount
+        // Important: for demo purposes we set amount here. Merchants should update this value to match the final amount, for example after Apple Pay shipping/contact updates.
+        let amount = currentConfiguration.amount
         
         // If there is an order in the request, amount is optional
         if data.order == nil {

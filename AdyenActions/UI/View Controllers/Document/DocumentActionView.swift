@@ -6,7 +6,7 @@
 
 import Adyen
 #if canImport(AdyenUI)
-    import AdyenUI
+    @_spi(AdyenInternal) import AdyenUI
 #endif
 import Foundation
 import SwiftUI

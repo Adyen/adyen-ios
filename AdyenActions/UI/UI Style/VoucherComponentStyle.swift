@@ -6,28 +6,28 @@
 
 import Adyen
 #if canImport(AdyenUI)
-    import AdyenUI
+    @_spi(AdyenInternal) import AdyenUI
 #endif
 import Foundation
 import UIKit
 
 /// Contains the styling customization options for the voucher component.
-public struct VoucherComponentStyle: ViewStyle {
+package struct VoucherComponentStyle: ViewStyle {
     
     /// The amount label style.
-    public var amountLabel = TextStyle(
+    package var amountLabel = TextStyle(
         font: .preferredFont(forTextStyle: .largeTitle),
         color: UIColor.Adyen.componentLabel
     )
     
     /// The currency label style.
-    public var currencyLabel = TextStyle(
+    package var currencyLabel = TextStyle(
         font: .preferredFont(forTextStyle: .headline),
         color: UIColor.Adyen.componentLabel
     )
     
     /// The edit button style.
-    public var editButton = ButtonStyle(
+    package var editButton = ButtonStyle(
         title: TextStyle(
             font: .preferredFont(forTextStyle: .headline),
             color: UIColor.Adyen.defaultBlue
@@ -37,7 +37,7 @@ public struct VoucherComponentStyle: ViewStyle {
     )
     
     /// The done button style.
-    public var doneButton = ButtonStyle(
+    package var doneButton = ButtonStyle(
         title: TextStyle(
             font: .preferredFont(forTextStyle: .headline),
             color: UIColor.Adyen.defaultBlue
@@ -47,7 +47,7 @@ public struct VoucherComponentStyle: ViewStyle {
     )
 
     /// The main button style.
-    public var mainButton = ButtonStyle(
+    package var mainButton = ButtonStyle(
         title: TextStyle(
             font: .preferredFont(forTextStyle: .headline),
             color: .white
@@ -57,7 +57,7 @@ public struct VoucherComponentStyle: ViewStyle {
     )
 
     /// The secondary button style.
-    public var secondaryButton = ButtonStyle(
+    package var secondaryButton = ButtonStyle(
         title: TextStyle(
             font: .preferredFont(forTextStyle: .headline),
             color: UIColor.Adyen.defaultBlue
@@ -67,10 +67,10 @@ public struct VoucherComponentStyle: ViewStyle {
     )
     
     /// The secondary button copy code confirmation color
-    public var codeConfirmationColor = UIColor.Adyen.green40
+    package var codeConfirmationColor = UIColor.Adyen.green40
 
-    public var backgroundColor = UIColor.Adyen.componentBackground
+    package var backgroundColor = UIColor.Adyen.componentBackground
 
     /// Initializes the voucher component style with the default style.
-    public init() {}
+    package init() {}
 }

@@ -310,8 +310,7 @@ extension GiftCardComponent {
                             paymentData: paymentData
                         )
                     } else {
-                        let newPaymentData = paymentData.replacing(amount: balanceCheckResult.amountToPay)
-                        return self.startPartialPaymentFlow(paymentData: newPaymentData)
+                        return self.startPartialPaymentFlow(paymentData: paymentData)
                     }
                 }
                 .handle(success: { /* Do nothing.*/ }, failure: { self.handle(error: $0) })
@@ -453,7 +452,6 @@ extension GiftCardComponent {
 
             return .success(PaymentComponentData(
                 paymentMethodDetails: details,
-                amount: amount,
                 order: order,
                 storePaymentMethod: false
             ))

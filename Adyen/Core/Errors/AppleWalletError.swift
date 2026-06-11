@@ -7,7 +7,7 @@
 import Foundation
 
 /// An error that occurred during adding a pass to apple wallet.
-public enum AppleWalletError: LocalizedError {
+package enum AppleWalletError: LocalizedError {
 
     /// Indicates adding the pass to apple wallet failed.
     case failedToAddToAppleWallet

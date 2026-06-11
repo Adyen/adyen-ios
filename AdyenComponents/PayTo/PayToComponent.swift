@@ -120,7 +120,6 @@ package final class PayToComponent: PaymentComponent, PresentableComponent, Adye
         submit(
             data: PaymentComponentData(
                 paymentMethodDetails: details,
-                amount: context.amount,
                 order: order
             )
         )

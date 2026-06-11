@@ -43,7 +43,6 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
         let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: details,
-            amount: self.context.amount,
             order: self.order
         )
         submit(data: data)
@@ -84,7 +83,6 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
             let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
             self.submit(data: PaymentComponentData(
                 paymentMethodDetails: details,
-                amount: self.context.amount,
                 order: self.order
             ))
         }

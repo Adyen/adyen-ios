@@ -6,7 +6,7 @@
 
 @_spi(AdyenInternal) import Adyen
 #if canImport(AdyenSession)
-    @_spi(AdyenInternal) import AdyenSession
+    import AdyenSession
 #endif
 import UIKit
 
