@@ -35,15 +35,12 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
                 self.adyenComponent = component
                 hideLoading()
 
-                if component.requiresUserInteraction {
-                    // Present the component UI if user interaction is needed
-                    if let viewController = component.viewController {
-                        presenter?.present(viewController: viewController, completion: nil)
-                    }
-                } else {
-                    // Submit directly for instant payment methods
-                    component.submit()
+                guard !component.requiresUserInteraction else {
+                    // Instant payment methods don't require user interaction
+                    // For payment methods that require UI, see the card component example
+                    return
                 }
+                component.submit()
             } catch {
                 hideLoading()
                 handleError(error)
