@@ -262,9 +262,9 @@ final class CheckoutTests: XCTestCase {
         
         let modifiedName = ShopperName(firstName: "Modified", lastName: "Name")
         callbackStore.onBeforeSubmit = { data in
-            let modified = data
-                .replacing(shopperName: modifiedName)
-                .replacing(shopperEmail: "modified@test.com")
+            var modified = data
+            modified.shopperName = modifiedName
+            modified.shopperEmail = "modified@test.com"
             return .proceed(data: modified, sessionData: nil)
         }
         callbackStore.onComplete = { _ in
@@ -345,16 +345,11 @@ final class CheckoutTests: XCTestCase {
         XCTAssertNil(original.billingAddress)
         XCTAssertNil(original.deliveryAddress)
         
-        let overrides = BeforeSubmitData(
-            billingAddress: nil,
-            deliveryAddress: nil,
-            shopperName: nil,
-            shopperEmail: nil
-        )
-        .replacing(billingAddress: PostalAddress(city: "Amsterdam", country: "NL"))
-        .replacing(deliveryAddress: PostalAddress(city: "Berlin", country: "DE"))
-        .replacing(shopperName: ShopperName(firstName: "John", lastName: "Doe"))
-        .replacing(shopperEmail: "john@example.com")
+        var overrides = BeforeSubmitData()
+        overrides.billingAddress = PostalAddress(city: "Amsterdam", country: "NL")
+        overrides.deliveryAddress = PostalAddress(city: "Berlin", country: "DE")
+        overrides.shopperName = ShopperName(firstName: "John", lastName: "Doe")
+        overrides.shopperEmail = "john@example.com"
         
         let updated = original.replacing(beforeSubmitData: overrides)
         
