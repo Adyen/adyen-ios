@@ -25,8 +25,9 @@ public final class SessionCheckout: PaymentCheckout {
     /// in `.proceed(data:sessionData:)` so the SDK can update the session state data before continuing.
     /// - Parameter handler: Callback invoked before the session performs the `/payments` call.
     ///   - data: The `BeforeSubmitData` containing shopper fields that can be validated, modified, or passed back unchanged.
+    ///     Setting a field to `nil` has no effect; the original value collected by the component will be used instead.
     /// - Returns: A `BeforeSubmitResult`. Return `.proceed(data:sessionData:)` to continue or `.abort`
-    /// to stop the flow and reset the component state.
+    ///   to stop the flow and reset the component state.
     public func onBeforeSubmit(_ handler: @escaping BeforeSubmitHandler) -> Self {
         callbackStore.onBeforeSubmit = handler
         return self
