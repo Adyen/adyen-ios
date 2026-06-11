@@ -345,11 +345,12 @@ final class CheckoutTests: XCTestCase {
         XCTAssertNil(original.billingAddress)
         XCTAssertNil(original.deliveryAddress)
         
-        var overrides = BeforeSubmitData()
-        overrides.billingAddress = PostalAddress(city: "Amsterdam", country: "NL")
-        overrides.deliveryAddress = PostalAddress(city: "Berlin", country: "DE")
-        overrides.shopperName = ShopperName(firstName: "John", lastName: "Doe")
-        overrides.shopperEmail = "john@example.com"
+        let overrides = BeforeSubmitData(
+            billingAddress: PostalAddress(city: "Amsterdam", country: "NL"),
+            deliveryAddress: PostalAddress(city: "Berlin", country: "DE"),
+            shopperName: ShopperName(firstName: "John", lastName: "Doe"),
+            shopperEmail: "john@example.com"
+        )
         
         let updated = original.replacing(beforeSubmitData: overrides)
         
