@@ -318,6 +318,28 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertNotNil(achComponent, "Component should be ACHDirectDebitComponent")
     }
 
+    // MARK: - Instant Payment Component Tests
+
+    func test_build_withInstantPaymentMethod_returnsInstantPaymentComponent() throws {
+        // Given
+        let dict: [String: Any] = [
+            "type": "ideal",
+            "name": "iDEAL"
+        ]
+        let paymentMethod = try XCTUnwrap(try? AdyenCoder.decode(dict) as InstantPaymentMethod)
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+
+        // Then
+        XCTAssertEqual(component.paymentMethod.type, .ideal)
+        XCTAssertTrue(component is InstantPaymentComponent, "Component should be InstantPaymentComponent")
+    }
+
     // MARK: - Theme Propagation Tests
 
     func test_build_withCustomTheme_propagatesThemeToACHComponent() throws {
