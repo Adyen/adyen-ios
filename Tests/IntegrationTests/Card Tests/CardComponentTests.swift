@@ -724,7 +724,7 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
 
-    func test_performSubmit_withValidData_shouldCallDelegateDidSubmit() {
+    func testSubmit_withValidData_shouldCallDelegateDidSubmit() {
         // Given
         let sut = CardComponent(
             paymentMethod: method,
