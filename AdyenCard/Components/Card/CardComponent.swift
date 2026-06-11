@@ -270,13 +270,13 @@ private extension CardComponent {
 
         if
             let preferredCountry = configuration.shopperInformation?.billingAddress?.country,
-            let supportedCountryCodes = configuration.billingAddress.countryCodes,
+            let supportedCountryCodes = configuration.billingAddressMode.supportedCountryCodes,
             supportedCountryCodes.isEmpty || supportedCountryCodes.contains(preferredCountry) {
             return preferredCountry
         }
 
         return
-            configuration.billingAddress.countryCodes?.first ??
+            configuration.billingAddressMode.supportedCountryCodes?.first ??
             Locale.current.regionCode ??
             CardComponent.Constant.defaultCountryCode
     }
@@ -294,7 +294,7 @@ private extension CardConfiguration {
         .init(
             for: .billing,
             localizationParameters: localizationParameters,
-            supportedCountryCodes: billingAddress.countryCodes,
+            supportedCountryCodes: billingAddressMode.supportedCountryCodes,
             initialCountry: initialCountry,
             prefillAddress: prefillAddress,
             lookupProvider: lookupProvider,
@@ -314,7 +314,7 @@ private extension CardConfiguration {
             localizationParameters: localizationParameters,
             initialCountry: initialCountry,
             prefillAddress: prefillAddress,
-            supportedCountryCodes: billingAddress.countryCodes,
+            supportedCountryCodes: billingAddressMode.supportedCountryCodes,
             addressViewModelBuilder: DefaultAddressViewModelBuilder(),
             handleShowSearch: nil,
             completionHandler: completionHandler

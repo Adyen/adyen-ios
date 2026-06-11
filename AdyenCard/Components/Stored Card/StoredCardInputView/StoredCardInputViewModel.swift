@@ -151,11 +151,11 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         inProgress = true
         let securityCode: String = securityCodeItem.value
         resetSecurityCodeField()
-        await submitPayment(securityCode: securityCode)
+        submitPayment(securityCode: securityCode)
         // We do not know the result of the submit payment hence we keep the state as in progress.
     }
 
-    internal func submitPayment(securityCode: String) async {
+    internal func submitPayment(securityCode: String) {
         do {
             let encryptedCardDetails: CardDetails = try {
                 do {

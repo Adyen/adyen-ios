@@ -85,6 +85,7 @@ package final class FormAddressPickerItem: FormSelectableValueItem<PostalAddress
         }
     }
 
+    // TODO: Robert: BillingAddressModeConfiguration: I don't think this is needed anymore.
     package func updateOptionalStatus(isOptional: Bool) {
         context.isOptional = isOptional
     }
