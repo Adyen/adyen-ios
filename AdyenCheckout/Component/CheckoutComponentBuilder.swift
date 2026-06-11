@@ -65,12 +65,6 @@ internal enum CheckoutComponentBuilder {
                 // TODO: add other card methods like stored or write a generic one.
             
         #endif
-        case let instantPaymentMethod as InstantPaymentMethod:
-            return InstantPaymentComponent(
-                paymentMethod: instantPaymentMethod,
-                context: context,
-                order: nil
-            )
         default:
             break
         }
