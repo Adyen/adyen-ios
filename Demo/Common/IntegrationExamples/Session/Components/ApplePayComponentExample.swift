@@ -133,9 +133,9 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 
             switch ConfigurationConstants.current.applePaySettings.onBeforeSubmitMode {
             case .updateData:
-                let updatedData = data
-                    .replacing(shopperName: ShopperName(firstName: "Demo", lastName: "Shopper"))
-                    .replacing(shopperEmail: "updatedForDemo-\(ConfigurationConstants.shopperEmail)")
+                var updatedData = data
+                updatedData.shopperName = ShopperName(firstName: "Demo", lastName: "Shopper")
+                updatedData.shopperEmail = "updatedForDemo-\(ConfigurationConstants.shopperEmail)"
                 return .proceed(data: updatedData, sessionData: nil)
             case .abort:
                 return .abort
