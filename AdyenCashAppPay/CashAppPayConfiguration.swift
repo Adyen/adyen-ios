@@ -11,23 +11,23 @@ import Adyen
 import Foundation
 
 /// Configuration for Cash App Pay Component.
-public struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
+package struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
 
     /// The URL for Cash App to call in order to redirect back to your application.
-    public let redirectURL: URL
+    package let redirectURL: URL
 
     /// A reference to your system (for example, a cart or checkout identifier).
-    public let referenceId: String?
+    package let referenceId: String?
 
     /// Indicates if the field for storing the payment method should be displayed in the form. Defaults to `true`.
-    public var showsStorePaymentMethodField: Bool
-    
+    package var showsStorePaymentMethodField: Bool
+
     /// Determines whether to store this payment method. Defaults to `false`.
     /// Ignored if `showsStorePaymentMethodField` is `true`.
-    public var storePaymentMethod: Bool
+    package var storePaymentMethod: Bool
 
     /// Describes the component's UI style.
-    public var style: FormComponentStyle
+    package var style: FormComponentStyle
 
     /// A boolean value that determines whether the payment button is displayed. Defaults to `true`.
     internal let showsSubmitButton: Bool
@@ -47,7 +47,7 @@ public struct CashAppPayConfiguration: AnyCashAppPayConfiguration {
     ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
     ///   Defaults to `true`.
     ///   - localizationParameters: The localization parameters, leave it nil to use the default parameters.
-    public init(
+    package init(
         redirectURL: URL,
         referenceId: String? = nil,
         showsStorePaymentMethodField: Bool = true,

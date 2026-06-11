@@ -23,7 +23,7 @@ public class PaymentCheckout: BaseCheckout {
     ///
     /// - Parameter type: The type of payment method to create a component for.
     /// - Returns: A configured ``CheckoutPaymentComponent``.
-    /// - Throws: ``CheckoutError`` with code ``CheckoutError/Code/unknown`` if the payment method
+    /// - Throws: ``CheckoutError`` with code ``CheckoutError/Code/paymentMethodFailure`` if the payment method
     ///   is not available in the current payment methods, is not supported, or cannot be
     ///   initialized on this device (e.g. Apple Pay hardware check failed).
     public func createPaymentComponent(for type: PaymentMethodType) throws -> CheckoutPaymentComponent {
@@ -38,7 +38,7 @@ public class PaymentCheckout: BaseCheckout {
     ///
     /// - Parameter identifier: The unique identifier of the stored payment method.
     /// - Returns: A configured ``CheckoutPaymentComponent``.
-    /// - Throws: ``CheckoutError`` with code ``CheckoutError/Code/unknown`` if no stored
+    /// - Throws: ``CheckoutError`` with code ``CheckoutError/Code/paymentMethodFailure`` if no stored
     ///   payment method matching `identifier` exists.
     public func createPaymentComponent(for identifier: String) throws -> CheckoutPaymentComponent {
         do {

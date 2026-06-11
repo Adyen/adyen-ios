@@ -9,23 +9,22 @@ import Adyen
 import Foundation
 
 /// Validates birthdate (YYMMDD) or the Corporate registration number (10 digits) for KCP.
-@_spi(AdyenInternal)
-public final class CardKCPFieldValidator: CombinedValidator, StatusValidator {
-    
+package final class CardKCPFieldValidator: CombinedValidator, StatusValidator {
+
     private enum Constants {
         static let exactLength = 10
     }
     
-    public let firstValidator: Validator
-    
-    public let secondValidator: Validator
-    
-    public init() {
+    package let firstValidator: Validator
+
+    package let secondValidator: Validator
+
+    package init() {
         self.firstValidator = NumericStringValidator(exactLength: Constants.exactLength)
         self.secondValidator = DateValidator(format: DateValidator.Format.kcpFormat)
     }
     
-    public func validate(_ value: String) -> ValidationStatus {
+    package func validate(_ value: String) -> ValidationStatus {
         if value.isEmpty {
             return .invalid(CardValidationError.kcpFieldEmpty)
         }
@@ -40,23 +39,22 @@ public final class CardKCPFieldValidator: CombinedValidator, StatusValidator {
         return .valid
     }
     
-    public func isValid(_ value: String) -> Bool {
+    package func isValid(_ value: String) -> Bool {
         validate(value).isValid
     }
 }
 
-@_spi(AdyenInternal)
-public final class CardKCPPasswordValidator: LengthValidator, StatusValidator {
-    
+package final class CardKCPPasswordValidator: LengthValidator, StatusValidator {
+
     private enum Constants {
         static let exactLength = 2
     }
     
-    public init() {
+    package init() {
         super.init(exactLength: Constants.exactLength)
     }
     
-    public func validate(_ value: String) -> ValidationStatus {
+    package func validate(_ value: String) -> ValidationStatus {
         if super.isValid(value) {
             return .valid
         }
@@ -68,7 +66,7 @@ public final class CardKCPPasswordValidator: LengthValidator, StatusValidator {
         return .invalid(CardValidationError.kcpPasswordPartial)
     }
     
-    override public func isValid(_ value: String) -> Bool {
+    override package func isValid(_ value: String) -> Bool {
         validate(value).isValid
     }
     

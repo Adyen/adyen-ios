@@ -28,7 +28,6 @@ extension AbstractPersonalInformationComponent: LoadingComponent {
             let details = try createPaymentDetails()
             submit(data: PaymentComponentData(
                 paymentMethodDetails: details,
-                amount: context.amount,
                 order: order
             ))
         } catch {

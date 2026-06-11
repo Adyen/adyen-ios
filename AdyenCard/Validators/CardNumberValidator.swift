@@ -74,10 +74,9 @@ public final class CardNumberValidator: Validator {
     }
 }
 
-@_spi(AdyenInternal)
 extension CardNumberValidator: StatusValidator {
     
-    public func validate(_ value: String) -> ValidationStatus {
+    package func validate(_ value: String) -> ValidationStatus {
         // order of checks are important to return the correct error.
         
         if value.isEmpty {

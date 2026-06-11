@@ -8,7 +8,7 @@ import Foundation
 import UIKit
 
 /// The style of "Cancel" button.
-public enum CancelButtonStyle {
+package enum CancelButtonStyle {
 
     /// Default system style. Cross icon for iOS 13, system button "Cancel" for prior versions.
     case system
@@ -21,7 +21,7 @@ public enum CancelButtonStyle {
 }
 
 /// Modes for toolbar layout.
-public enum ToolbarMode {
+package enum ToolbarMode {
 
     /// Cancel button visually left aligned.
     case leftCancel
@@ -35,35 +35,35 @@ public enum ToolbarMode {
 }
 
 /// Indicates the navigation level style.
-public struct NavigationStyle: TintableStyle {
-    
+package struct NavigationStyle: TintableStyle {
+
     /// Indicates the navigation bar background color.
-    public var backgroundColor = UIColor.Adyen.componentBackground
-    
+    package var backgroundColor = UIColor.Adyen.componentBackground
+
     /// The color of the thin line at the bottom of the navigation bar.
     /// If value is nil, the default color would be used.
-    public var separatorColor: UIColor?
-    
+    package var separatorColor: UIColor?
+
     /// Indicates the navigation bar tint color.
-    public var tintColor: UIColor?
-    
+    package var tintColor: UIColor?
+
     /// Indicates the corner radius of navigation bar top corners.
-    public var cornerRadius: CGFloat = 10
-    
+    package var cornerRadius: CGFloat = 10
+
     /// Indicates the bar title text style.
-    public var barTitle = TextStyle(
+    package var barTitle = TextStyle(
         font: UIFont.AdyenCore.barTitle,
         color: UIColor.Adyen.componentLabel,
         textAlignment: .natural
     )
 
     /// The style of cancelButton. This property is not applicable to SFViewController in redirect component.
-    public var cancelButton = CancelButtonStyle.system
+    package var cancelButton = CancelButtonStyle.system
 
     /// The mode for toolbar layout. Defines positions cancel button.
-    public var toolbarMode = ToolbarMode.natural
-    
+    package var toolbarMode = ToolbarMode.natural
+
     /// Initializes the navigation style.
-    public init() {}
-    
+    package init() {}
+
 }

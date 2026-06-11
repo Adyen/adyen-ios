@@ -6,141 +6,132 @@
 
 import Adyen
 import AdyenActions
-import AdyenCheckout
 import AdyenComponents
 import Foundation
 
-@MainActor
 internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlowProtocol {
 
+    // MARK: - Properties
+
+    internal var instantPaymentComponent: InstantPaymentComponent?
+
     internal weak var presenter: PresenterExampleProtocol?
-
-    private var checkout: AdvancedCheckout?
-    private var adyenComponent: CheckoutPaymentComponent?
-
+    
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
-    private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
-
+    
     /// comes from demo app protocol, unused on new structure
     internal var context: AdyenContext?
+
+    // MARK: - Action Handling
+
+    private lazy var actionComponent: CheckoutActionComponent = {
+        guard let context else {
+            fatalError("Context not initialized")
+        }
+        let handler = CheckoutActionComponent(context: context)
+        handler.delegate = self
+        handler.presentationDelegate = self
+        return handler
+    }()
+
+    // MARK: - Initializers
 
     internal init() {}
 
     internal func start() {
-        startLoading()
-
+        presenter?.showLoadingIndicator()
         Task {
             do {
-                let paymentMethods = try await requestPaymentMethods(order: nil)
-                let component = try await instantPaymentComponent(from: paymentMethods)
-                self.adyenComponent = component
-                hideLoading()
+                try await initializeExampleAppAdyenContext()
+                requestPaymentMethods(order: nil) { [weak self] result in
+                    guard let self else { return }
 
-                if component.requiresUserInteraction {
-                    // Present the component UI if user interaction is needed
-                    if let viewController = component.viewController {
-                        presenter?.present(viewController: viewController, completion: nil)
+                    self.presenter?.hideLoadingIndicator()
+
+                    switch result {
+                    case let .success(paymentMethods):
+                        self.presentComponent(with: paymentMethods)
+
+                    case let .failure(error):
+                        self.presentAlert(with: error)
                     }
-                } else {
-                    // Submit directly for instant payment methods
-                    component.submit()
                 }
             } catch {
-                hideLoading()
-                handleError(error)
+                self.presenter?.hideLoadingIndicator()
+                self.presentAlert(with: error)
             }
+
         }
     }
-
-    private func instantPaymentComponent(from paymentMethods: PaymentMethods) async throws -> CheckoutPaymentComponent {
+    
+    // MARK: - Presentation
+    
+    private func presentComponent(with paymentMethods: PaymentMethods) {
+        do {
+            let component = try instantPaymentComponent(from: paymentMethods)
+            instantPaymentComponent = component
+            component.performSubmit()
+        } catch {
+            self.presentAlert(with: error)
+        }
+    }
+    
+    private func instantPaymentComponent(from paymentMethods: PaymentMethods) throws -> InstantPaymentComponent {
+        
         // Get the correct payment method from the paymentMethods object
         // In this example the first supported `InstantPaymentMethod` is chosen
         guard let paymentMethod = paymentMethods.paymentMethod(ofType: InstantPaymentMethod.self) else {
             throw IntegrationError.paymentMethodNotAvailable(paymentMethod: InstantPaymentMethod.self)
         }
-
-        let configuration = try CheckoutConfiguration(
-            environment: ConfigurationConstants.componentsEnvironment,
-            amount: ConfigurationConstants.current.amount,
-            clientKey: ConfigurationConstants.clientKey,
-            analyticsConfiguration: .init(
-                isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
-            )
-        ) {
-            // No component-specific configuration needed for instant payments
+        guard let context else {
+            fatalError("AdyenContext not initialized")
         }
-
-        let checkout = try await Checkout.setup(
-            with: paymentMethods,
-            configuration: configuration,
-            presentationDelegate: self
-        )
-        .onSubmit { [weak self] data in
-            guard let self else { return .completion(resultCode: "Error") }
-            return await self.callPayments(with: data)
-        }
-        .onAdditionalDetails { [weak self] data in
-            guard let self else { return .completion(resultCode: "Error") }
-            return await self.callDetails(with: data)
-        }
-        .onComplete { [weak self] result in
-            self?.dismissAndShowAlert(
-                result.resultCode.isSuccess,
-                result.resultCode.rawValue
-            )
-        }
-        .onError { [weak self] error in
-            self?.dismissAndShowAlert(false, error.localizedDescription)
-        }
-
-        self.checkout = checkout
-
-        return try checkout.createPaymentComponent(for: PaymentMethodType.ideal)
+        
+        return InstantPaymentComponent(paymentMethod: paymentMethod, context: context, order: nil)
     }
 
-    // MARK: - Backend calls
+    // MARK: - Payment response handling
 
-    private func callPayments(with data: PaymentComponentData) async -> SubmitResult {
-        do {
-            let request = PaymentsRequest(data: data)
-            let response = try await asyncApiClient.performAsync(request)
+    private func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
+        switch result {
+        case let .success(response):
             if let action = response.action {
-                return .action(action)
+                actionComponent.handle(action)
+            } else {
+                finish(with: response)
             }
-            return .completion(resultCode: response.resultCode.rawValue)
-        } catch {
-            return .completion(resultCode: "Error")
+        case let .failure(error):
+            finish(with: error)
         }
     }
 
-    private func callDetails(with data: ActionComponentData) async -> AdditionalDetailsResult {
-        do {
-            let request = PaymentDetailsRequest(
-                details: data.details,
-                paymentData: data.paymentData,
-                merchantAccount: ConfigurationConstants.current.merchantAccount
-            )
-            let response = try await asyncApiClient.performAsync(request)
-            return .completion(resultCode: response.resultCode.rawValue)
-        } catch {
-            return .completion(resultCode: "Error")
+    private func finish(with result: PaymentsResponse) {
+        let success = result.isAccepted
+        let message = "\(result.resultCode.rawValue) \(result.amount?.formatted ?? "")"
+        finalize(success, message)
+    }
+
+    private func finish(with error: Error) {
+        let message: String
+        if let componentError = (error as? ComponentError), componentError == ComponentError.cancelled {
+            message = "Cancelled"
+        } else {
+            message = error.localizedDescription
         }
+        finalize(false, message)
     }
 
-    // MARK: - Private
-
-    private func startLoading() {
-        presenter?.showLoadingIndicator()
-    }
-
-    private func handleError(_ error: Error) {
-        presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
-    }
-
-    private func hideLoading() {
-        presenter?.hideLoadingIndicator()
+    private func finalize(_ success: Bool, _ message: String) {
+        instantPaymentComponent?.finalizeIfNeeded(with: success) { [weak self] in
+            guard let self else { return }
+            self.dismissAndShowAlert(success, message)
+        }
     }
     
+    private func presentAlert(with error: Error, retryHandler: (() -> Void)? = nil) {
+        presenter?.presentAlert(with: error, retryHandler: retryHandler)
+    }
+
     private func dismissAndShowAlert(_ success: Bool, _ message: String) {
         presenter?.dismiss {
             // Payment is processed. Add your code here.
@@ -148,11 +139,65 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
             self.presenter?.presentAlert(withTitle: title, message: message)
         }
     }
+
+}
+
+extension InstantPaymentComponentAdvancedFlow: PaymentComponentDelegate {
+
+    internal func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
+        presenter?.showLoadingIndicator()
+        let request = PaymentsRequest(data: data)
+        apiClient.perform(request) { [weak self] result in
+            self?.presenter?.hideLoadingIndicator()
+            self?.paymentResponseHandler(result: result)
+        }
+    }
+
+    internal func didFail(with error: Error, from component: PaymentComponent) {
+        finish(with: error)
+    }
+
+}
+
+extension InstantPaymentComponentAdvancedFlow: ActionComponentDelegate {
+
+    internal func didFail(with error: Error, from component: ActionComponent) {
+        finish(with: error)
+    }
+
+    internal func didComplete(from component: ActionComponent) {
+        finish(with: .received)
+    }
+
+    internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
+        (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
+        let request = PaymentDetailsRequest(
+            details: data.details,
+            paymentData: data.paymentData,
+            merchantAccount: ConfigurationConstants.current.merchantAccount
+        )
+        apiClient.perform(request) { [weak self] result in
+            self?.paymentResponseHandler(result: result)
+        }
+    }
 }
 
 extension InstantPaymentComponentAdvancedFlow: PresentationDelegate {
+    internal func present(component: PresentableComponent) {
+        let componentViewController = component.viewController
+        componentViewController.navigationItem.leftBarButtonItem = .init(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(cancelPressed)
+        )
+        presenter?.present(viewController: componentViewController, completion: nil)
+    }
+}
 
-    func present(component: any PresentableComponent) {
-        presenter?.present(viewController: component.viewController, completion: nil)
+private extension InstantPaymentComponentAdvancedFlow {
+
+    @objc private func cancelPressed() {
+        instantPaymentComponent?.cancel()
+        presenter?.dismiss(completion: nil)
     }
 }

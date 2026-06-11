@@ -5,7 +5,7 @@
 //
 
 @testable import Adyen
-@testable import AdyenUI
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 class UIButtonHelperTests: XCTestCase {

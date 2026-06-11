@@ -61,6 +61,7 @@ public struct CheckoutConfiguration {
     ///   - ``CheckoutError/Code/invalidCurrencyCode`` — the currency code is not ISO 4217.
     ///   - ``CheckoutError/Code/invalidLocale`` — the locale identifier is not supported.
     ///   - ``CheckoutError/Code/invalidAmountValue`` — the amount value is negative.
+    ///   - ``CheckoutError/Code/invalidConfiguration`` — a component configuration (e.g. Apple Pay) is invalid.
     public init(
         environment: Environment,
         amount: Amount?,
@@ -73,22 +74,26 @@ public struct CheckoutConfiguration {
         let analyticsApiContext = Self.createAnalyticsAPIContext(apiContext: apiContext)
 
         var configDictionary: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
-        let content = try content()
-        let configArray = (content as? CompositeCheckoutConfiguration)?.configurations ?? []
+        let configurations: CheckoutConfigurable
+        do {
+            configurations = try content()
+        } catch {
+            throw CheckoutError(error: error, fallback: .invalidConfiguration)
+        }
+        let configArray = (configurations as? CompositeCheckoutConfiguration)?.configurations ?? []
         
         for configuration in configArray {
             if let configuration = configuration as? CheckoutComponentConfiguration {
                 configDictionary[configuration.componentType] = configuration
             }
         }
-        let configurations = configDictionary
 
         self.init(
             apiContext: apiContext,
             amount: amount,
             analyticsApiContext: analyticsApiContext,
             analyticsConfiguration: analyticsConfiguration,
-            configurations: configurations
+            configurations: configDictionary
         )
     }
     

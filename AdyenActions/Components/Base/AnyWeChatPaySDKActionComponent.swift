@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// Represents any structure/class that can be initialized without any parameters.
-public protocol APIContextInitializable {
+package protocol APIContextInitializable {
     /// Initializer that takes an `APIContext`.
     init(context: AdyenContext)
 }
