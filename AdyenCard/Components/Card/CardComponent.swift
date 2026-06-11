@@ -21,8 +21,8 @@ import UIKit
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
 @MainActor
-package class CardComponent: PresentableComponent,
-    PaymentMethodAware,
+package class CardComponent: PaymentComponent,
+    PresentableComponent,
     LoadingComponent {
 
     internal enum Constant {
@@ -242,6 +242,10 @@ package class CardComponent: PresentableComponent,
 
 extension CardComponent: CardViewControllerDelegate {
 
+    internal func didSelectSubmitButton() {
+        self.performSubmit()
+    }
+
     internal func didChange(pan: String) {
         panThrottler.throttle { [weak self] in
             self?.updateBrand(with: pan)
@@ -319,19 +323,6 @@ private extension CardConfiguration {
             handleShowSearch: nil,
             completionHandler: completionHandler
         )
-    }
-}
-
-// MARK: - SubmitCustomizable
-
-extension CardComponent: SubmittableComponent {
-
-    package func submit() {
-        didSelectSubmitButton()
-    }
-
-    package func validate() -> Bool {
-        cardViewController.validate()
     }
 }
 

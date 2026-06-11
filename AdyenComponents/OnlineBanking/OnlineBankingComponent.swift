@@ -82,7 +82,7 @@ package final class OnlineBankingComponent: PaymentComponent,
         )
         item.title = localizedString(.continueTitle, configuration.localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectContinueButton()
+            self?.performSubmit()
         }
         return item
     }()
@@ -123,15 +123,8 @@ package final class OnlineBankingComponent: PaymentComponent,
         self.configuration = configuration
     }
 
-    package func stopLoading() {
-        continueButton.showsActivityIndicator = false
-        formViewController.view.isUserInteractionEnabled = true
-    }
-
-    // MARK: - Private
-
-    private func didSelectContinueButton() {
-        guard validate() else { return }
+    package func performSubmit() {
+        guard formViewController.validate() else { return }
 
         let details = OnlineBankingDetails(
             paymentMethod: paymentMethod,
@@ -140,8 +133,15 @@ package final class OnlineBankingComponent: PaymentComponent,
         continueButton.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order))
+        submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
     }
+
+    public func stopLoading() {
+        continueButton.showsActivityIndicator = false
+        formViewController.view.isUserInteractionEnabled = true
+    }
+
+    // MARK: - Private
 
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
@@ -167,16 +167,3 @@ package final class OnlineBankingComponent: PaymentComponent,
 }
 
 extension OnlineBankingComponent: AdyenObserver {}
-
-// MARK: - SubmitCustomizable
-
-extension OnlineBankingComponent: SubmittableComponent {
-
-    package func submit() {
-        didSelectContinueButton()
-    }
-
-    package func validate() -> Bool {
-        formViewController.validate()
-    }
-}

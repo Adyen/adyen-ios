@@ -5,7 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.Component
 import Foundation
 
 internal protocol AnyRedirectComponent: ActionComponent {

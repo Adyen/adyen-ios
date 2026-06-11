@@ -55,6 +55,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
         component: PaymentComponent,
         title: String
     ) -> Router {
+        var component = component
         let viewModel = PreselectedPaymentMethodViewModel(
             component: component,
             theme: configuration.theme,
@@ -63,6 +64,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
             dropInAnalyticsConfiguration: DropInAnalyticsConfiguration(configuration: configuration),
             dropInFlowManager: dropInFlowManager
         )
+        component.delegate = viewModel
         let viewController = PreselectedPaymentMethodViewController(viewModel: viewModel)
         let router = PreselectedPaymentMethodRouter(
             viewController: viewController,

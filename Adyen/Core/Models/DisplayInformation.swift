@@ -7,10 +7,9 @@
 import Foundation
 
 /// Describes a payment method display information.
-public struct DisplayInformation: Equatable {
+package struct DisplayInformation: Equatable {
 
-    @_spi(AdyenInternal)
-    public enum TrailingInfoType: Equatable {
+    package enum TrailingInfoType: Equatable {
         case text(String)
         case logos(named: [String], trailingText: String?)
         
@@ -25,28 +24,24 @@ public struct DisplayInformation: Equatable {
     /// The title for the payment method, adapted for displaying in a list.
     /// In the case of stored payment methods, this will include information identifying the stored payment method.
     /// For example, this could be the last 4 digits of the card number, or the used email address.
-    public let title: String
+    package let title: String
 
     /// The subtitle for the payment method, adapted for displaying in a list.
     /// This property represents optional data that can help identify a payment method.
     /// For example, this could be the expiration date of a stored credit card.
-    public let subtitle: String?
+    package let subtitle: String?
 
     /// The name of the logo resource.
-    @_spi(AdyenInternal)
-    public let logoName: String
+    package let logoName: String
 
     /// The trailing info element
-    @_spi(AdyenInternal)
-    public let trailingInfo: TrailingInfoType?
+    package let trailingInfo: TrailingInfoType?
 
     /// The footnote if any.
-    @_spi(AdyenInternal)
-    public let footnoteText: String?
-    
+    package let footnoteText: String?
+
     /// An optional custom `accessibilityLabel` to use.
-    @_spi(AdyenInternal)
-    public let accessibilityLabel: String?
+    package let accessibilityLabel: String?
 
     /// Initializes a `DisplayInformation`
     ///
@@ -57,7 +52,7 @@ public struct DisplayInformation: Equatable {
     /// - Parameter footnoteText: The footnote text if any.
     /// - Parameter accessibilityLabel: An optional custom `accessibilityLabel` to use.
     /// Set this if the title / subtitle might not be sufficient enough to provide a good accessibility
-    public init(
+    package init(
         title: String,
         subtitle: String?,
         logoName: String,
@@ -75,8 +70,7 @@ public struct DisplayInformation: Equatable {
         )
     }
     
-    @_spi(AdyenInternal)
-    public init(
+    package init(
         title: String,
         subtitle: String?,
         logoName: String,

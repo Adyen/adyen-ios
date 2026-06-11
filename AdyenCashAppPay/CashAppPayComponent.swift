@@ -89,7 +89,7 @@ package final class CashAppPayComponent: PaymentComponent,
 
     internal lazy var cashAppPayButton: CashAppPayButtonItem = {
         let item = CashAppPayButtonItem { [weak self] in
-            self?.didSelectSubmitButton()
+            self?.performSubmit()
         }
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.cashAppButtonItem)
         return item
@@ -133,8 +133,8 @@ package final class CashAppPayComponent: PaymentComponent,
         self.configuration = configuration
     }
 
-    private func didSelectSubmitButton() {
-        guard validate() else { return }
+    package func performSubmit() {
+        guard formViewController.validate() else { return }
     
         startLoading()
         startCashAppPayFlow()
@@ -213,7 +213,6 @@ package final class CashAppPayComponent: PaymentComponent,
             let details = try cashAppPayDetails(from: grants, customerProfile: profile)
             submit(data: PaymentComponentData(
                 paymentMethodDetails: details,
-                amount: context.amount,
                 order: order,
                 storePaymentMethod: storePayment
             ))
@@ -289,16 +288,3 @@ extension CashAppPayComponent {
 extension CashAppPayComponent: TrackableComponent {}
 
 extension CashAppPayComponent: ViewControllerDelegate {}
-
-// MARK: - SubmitCustomizable
-
-extension CashAppPayComponent: SubmittableComponent {
-
-    package func submit() {
-        didSelectSubmitButton()
-    }
-
-    package func validate() -> Bool {
-        formViewController.validate()
-    }
-}

@@ -7,8 +7,8 @@
 import Foundation
 
 /// Formats a value for display purposes.
-public protocol Formatter: Sanitizer {
-    
+package protocol Formatter: Sanitizer {
+
     /// Formats the given value.
     ///
     /// - Parameter value: The value to format.
@@ -19,7 +19,7 @@ public protocol Formatter: Sanitizer {
 
 // Sanitizes (removes any illegal character)  string values.
 
-public protocol Sanitizer {
+package protocol Sanitizer {
 
     /// Sanitizes (removes any illegal character) the given value.
     ///

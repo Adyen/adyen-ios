@@ -57,7 +57,11 @@ package final class IssuerListComponent: PaymentComponent, PresentableComponent,
         self.configuration = configuration
         self.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
     }
-    
+
+    package func performSubmit() {
+        // TODO: - COSDK-1262: Implementation will be done once the IssuerListComponent is redesigned to have a button.
+    }
+
     private let issuerListPaymentMethod: IssuerListPaymentMethod
 
     // MARK: - Presentable Component Protocol
@@ -139,7 +143,6 @@ package final class IssuerListComponent: PaymentComponent, PresentableComponent,
                 )
                 self.submit(data: PaymentComponentData(
                     paymentMethodDetails: details,
-                    amount: self.context.amount,
                     order: self.order
                 ))
                 

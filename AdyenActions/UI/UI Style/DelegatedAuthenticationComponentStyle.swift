@@ -6,19 +6,18 @@
 
 import Adyen
 #if canImport(AdyenUI)
-    import AdyenUI
+    @_spi(AdyenInternal) import AdyenUI
 #endif
 import UIKit
 
-// TODO: make package
 /// Contains the styling customization options for Delegated Authentication Screens(Registration & Approval)
-public struct DelegatedAuthenticationComponentStyle {
+package struct DelegatedAuthenticationComponentStyle {
     
     /// The background color of the approval and the register screen
-    public var backgroundColor = UIColor.Adyen.componentBackground
+    package var backgroundColor = UIColor.Adyen.componentBackground
 
     /// The Image style of the approval and the register screen
-    public var imageStyle: ImageStyle = .init(
+    package var imageStyle: ImageStyle = .init(
         borderColor: nil,
         borderWidth: 0.0,
         cornerRadius: 0.0,
@@ -26,28 +25,28 @@ public struct DelegatedAuthenticationComponentStyle {
         contentMode: .scaleAspectFit
     )
     /// The text style of the header of the approval and the register screen
-    public var headerTextStyle = TextStyle(
+    package var headerTextStyle = TextStyle(
         font: .systemFont(ofSize: 24, weight: .bold),
         color: UIColor.Adyen.componentLabel,
         textAlignment: .center
     )
     
     /// The text style of the description of the approval and the register screen
-    public var descriptionTextStyle = TextStyle(
+    package var descriptionTextStyle = TextStyle(
         font: .preferredFont(forTextStyle: .body),
         color: UIColor.Adyen.componentSecondaryLabel,
         textAlignment: .center
     )
     
     /// The text style of the amount of the approval
-    public var amountTextStyle = TextStyle(
+    package var amountTextStyle = TextStyle(
         font: .systemFont(ofSize: 32),
         color: UIColor.Adyen.componentLabel,
         textAlignment: .center
     )
     
     /// The card type image style of the approval and the register screen
-    public var cardImageStyle: ImageStyle = .init(
+    package var cardImageStyle: ImageStyle = .init(
         borderColor: nil,
         borderWidth: 0.0,
         cornerRadius: 0.0,
@@ -56,14 +55,14 @@ public struct DelegatedAuthenticationComponentStyle {
     )
     
     /// The card number style of the approval and the register screen
-    public var cardNumberTextStyle = TextStyle(
+    package var cardNumberTextStyle = TextStyle(
         font: .systemFont(ofSize: 24, weight: .bold),
         color: UIColor.Adyen.componentLabel,
         textAlignment: .center
     )
     
     /// The image style of the register screen for the additional info section
-    public var infoImageStyle: ImageStyle = .init(
+    package var infoImageStyle: ImageStyle = .init(
         borderColor: nil,
         borderWidth: 0.0,
         cornerRadius: 0.0,
@@ -72,17 +71,17 @@ public struct DelegatedAuthenticationComponentStyle {
     )
     
     /// The text style of the register screen for the additional info section
-    public var additionalInformationTextStyle = TextStyle(
+    package var additionalInformationTextStyle = TextStyle(
         font: .preferredFont(forTextStyle: .caption1),
         color: UIColor.Adyen.componentLabel,
         textAlignment: .center
     )
     
     /// The background color of the approval and the register screen
-    public var errorBackgroundColor = UIColor.Adyen.componentBackground
+    package var errorBackgroundColor = UIColor.Adyen.componentBackground
 
     /// The image style for the error screen
-    public var errorImageStyle: ImageStyle = .init(
+    package var errorImageStyle: ImageStyle = .init(
         borderColor: nil,
         borderWidth: 0.0,
         cornerRadius: 0.0,
@@ -91,35 +90,35 @@ public struct DelegatedAuthenticationComponentStyle {
     )
     
     /// The error title style for the error screen
-    public var errorTitleStyle = TextStyle(
+    package var errorTitleStyle = TextStyle(
         font: .preferredFont(forTextStyle: .title1),
         color: UIColor.Adyen.componentLabel,
         textAlignment: .center
     )
     
     /// The error description style for the error screen
-    public var errorDescription = TextStyle(
+    package var errorDescription = TextStyle(
         font: .preferredFont(forTextStyle: .body),
         color: UIColor.Adyen.componentSecondaryLabel,
         textAlignment: .center
     )
     
     /// The title style for the troubleshooting message
-    public var troubleshootingTitleStyle = TextStyle(
+    package var troubleshootingTitleStyle = TextStyle(
         font: .preferredFont(forTextStyle: .subheadline),
         color: UIColor.Adyen.componentLabel,
         textAlignment: .center
     )
     
     /// The description style for the troubleshooting message
-    public var troubleshootingDescriptionStyle = TextStyle(
+    package var troubleshootingDescriptionStyle = TextStyle(
         font: .preferredFont(forTextStyle: .caption1),
         color: UIColor.Adyen.componentSecondaryLabel,
         textAlignment: .center
     )
     
     /// The button style for the troubleshooting message
-    public var troubleshootingButtonStyle = ButtonStyle(
+    package var troubleshootingButtonStyle = ButtonStyle(
         title: TextStyle(
             font: .preferredFont(forTextStyle: .headline),
             color: UIColor.Adyen.defaultBlue
@@ -129,7 +128,7 @@ public struct DelegatedAuthenticationComponentStyle {
     )
 
     /// The primary button style for the register & approve screens.
-    public var primaryButton = ButtonStyle(
+    package var primaryButton = ButtonStyle(
         title: TextStyle(
             font: .preferredFont(forTextStyle: .headline),
             color: .white
@@ -139,7 +138,7 @@ public struct DelegatedAuthenticationComponentStyle {
     )
 
     /// The secondary button style for the register & approve screens.
-    public var secondaryButton = ButtonStyle(
+    package var secondaryButton = ButtonStyle(
         title: TextStyle(
             font: .preferredFont(forTextStyle: .headline),
             color: UIColor.Adyen.defaultBlue
@@ -149,7 +148,7 @@ public struct DelegatedAuthenticationComponentStyle {
     )
     
     /// The primary button style for the error screen.
-    public var errorButton = ButtonStyle(
+    package var errorButton = ButtonStyle(
         title: TextStyle(
             font: .preferredFont(forTextStyle: .headline),
             color: .white
@@ -159,7 +158,7 @@ public struct DelegatedAuthenticationComponentStyle {
     )
 
     /// Creates a component style with the default styling
-    public init() {
+    package init() {
         imageStyle.tintColor = .systemGray
     }
 }

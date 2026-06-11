@@ -97,7 +97,21 @@ package final class UPIComponent: PaymentComponent,
         
         selectedUPIFlow = upiAppsList.isEmpty ? .upiCollect : .upiIntent
     }
-    
+
+    package func performSubmit() {
+        guard formViewController.validate() else { return }
+
+        guard canSubmit() else {
+            showError()
+            return
+        }
+
+        continueButton.showsActivityIndicator = true
+        formViewController.view.isUserInteractionEnabled = false
+
+        submitPayment()
+    }
+
     // MARK: - LoadingComponent
     
     package func stopLoading() {
@@ -216,14 +230,14 @@ package final class UPIComponent: PaymentComponent,
         )
         item.title = localizedString(.continueTitle, configuration.localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectContinueButton()
+            self?.performSubmit()
         }
         return item
     }()
     
     internal lazy var errorItem: FormErrorItem = {
         let errorMessage = localizedString(LocalizationKey.upiErrorNoAppSelected, configuration.localizationParameters)
-        let item = FormErrorItem(message: errorMessage, iconName: Images.errorIcon)
+        let item = FormErrorItem(message: errorMessage, iconName: Images.errorIcon, style: FormErrorItemStyle())
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifier.errorItem
@@ -294,20 +308,6 @@ extension UPIComponent {
     private func handleSelection(item: SelectableFormItem?) {
         self.currentSelectedItemIdentifier = item?.identifier
         self.updateSelection()
-    }
-    
-    private func didSelectContinueButton() {
-        guard validate() else { return }
-        
-        guard canSubmit() else {
-            showError()
-            return
-        }
-        
-        continueButton.showsActivityIndicator = true
-        formViewController.view.isUserInteractionEnabled = false
-        
-        submitPayment()
     }
     
     private func didChangeSegmentedControlIndex(_ index: Int) {
@@ -392,29 +392,16 @@ private extension UPIComponent {
                 virtualPaymentAddress: nil,
                 appId: currentSelectedItemIdentifier
             )
-            submit(data: PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order))
+            submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
         case .upiCollect:
             let details = UPIComponentDetails(
                 type: selectedUPIFlow.value,
                 virtualPaymentAddress: vpaInputItem.value,
                 appId: nil
             )
-            submit(data: PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order))
+            submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
         }
     }
 }
 
 extension UPIComponent: AdyenObserver {}
-
-// MARK: - SubmitCustomizable
-
-extension UPIComponent: SubmittableComponent {
-    
-    package func submit() {
-        didSelectContinueButton()
-    }
-    
-    package func validate() -> Bool {
-        formViewController.validate()
-    }
-}

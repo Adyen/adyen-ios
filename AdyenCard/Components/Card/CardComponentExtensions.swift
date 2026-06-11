@@ -5,26 +5,29 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PaymentComponent
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
 #if canImport(AdyenAuthentication)
     import AdyenAuthentication
 #endif
+#if canImport(AdyenUI)
+    import AdyenUI
+    @_spi(AdyenInternal) import class AdyenUI.FormViewController
+#endif
 import UIKit
 
 extension CardComponent {
     
-    internal func didSelectSubmitButton() {
-        guard validate() else {
+    package func performSubmit() {
+        guard cardViewController.validate() else {
             return
         }
         
         cardViewController.startLoading()
         submitEncryptedCardData(cardPublicKey: context.publicKey)
     }
-    
+
     private func submitEncryptedCardData(cardPublicKey: String) {
         do {
             let card = cardViewController.card
@@ -43,7 +46,6 @@ extension CardComponent {
             
             let data = PaymentComponentData(
                 paymentMethodDetails: details,
-                amount: context.amount,
                 order: order,
                 storePaymentMethod: cardViewController.storePayment,
                 installments: cardViewController.installments

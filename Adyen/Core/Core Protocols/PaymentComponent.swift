@@ -7,7 +7,7 @@
 import Foundation
 
 /// Any Object that is aware of a `PaymentMethod`.
-public protocol PaymentMethodAware {
+package protocol PaymentMethodAware {
 
     /// The payment method for which to gather payment details.
     var paymentMethod: PaymentMethod { get }
@@ -20,7 +20,7 @@ package protocol StoredPaymentComponent: PaymentComponent, PresentableComponent 
 package enum PaymentComponentType {
     case regular(PaymentComponent & PresentableComponent)
     case stored(StoredPaymentComponent)
-    case initiable(InitiablePaymentComponent)
+    case initiable(PaymentComponent)
 }
 
 /// A component that handles the initial phase of getting payment details to initiate a payment.
@@ -33,6 +33,8 @@ package protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentM
     var type: PaymentComponentType { get }
 
     var paymentMethodBehavior: SDKData.PaymentMethodBehavior { get }
+
+    func performSubmit()
 }
 
 package extension PaymentComponent where Self: PresentableComponent {
@@ -49,7 +51,7 @@ package extension StoredPaymentComponent {
     }
 }
 
-package extension InitiablePaymentComponent {
+package extension PaymentComponent {
 
     var type: PaymentComponentType {
         .initiable(self)

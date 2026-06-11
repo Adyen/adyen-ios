@@ -65,12 +65,18 @@ internal enum CheckoutComponentBuilder {
                 // TODO: add other card methods like stored or write a generic one.
             
         #endif
+        case let instantPaymentMethod as InstantPaymentMethod:
+            return InstantPaymentComponent(
+                paymentMethod: instantPaymentMethod,
+                context: context,
+                order: nil
+            )
         default:
             break
         }
         
         // TODO: for gift card, throw correct error code
-        throw CheckoutError(code: .unknown, message: "Payment method \(paymentMethod.type.rawValue) is not supported.")
+        throw CheckoutError(code: .paymentMethodFailure, message: "Payment method \(paymentMethod.type.rawValue) is not supported.")
     }
     
     /// Builds stored payment components.

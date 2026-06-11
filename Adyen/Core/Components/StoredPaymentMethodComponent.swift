@@ -38,7 +38,16 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
     }
     
     private let storedPaymentMethod: StoredPaymentMethod
-    
+
+    package func performSubmit() {
+        let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
+        let data = PaymentComponentData(
+            paymentMethodDetails: details,
+            order: self.order
+        )
+        submit(data: data)
+    }
+
     // MARK: - PresentableComponent
 
     package lazy var viewController: UIViewController = {
@@ -74,7 +83,6 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
             let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
             self.submit(data: PaymentComponentData(
                 paymentMethodDetails: details,
-                amount: self.context.amount,
                 order: self.order
             ))
         }

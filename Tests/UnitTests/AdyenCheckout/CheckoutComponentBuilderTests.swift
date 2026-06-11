@@ -318,6 +318,28 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertNotNil(achComponent, "Component should be ACHDirectDebitComponent")
     }
 
+    // MARK: - Instant Payment Component Tests
+
+    func test_build_withInstantPaymentMethod_returnsInstantPaymentComponent() throws {
+        // Given
+        let dict: [String: Any] = [
+            "type": "ideal",
+            "name": "iDEAL"
+        ]
+        let paymentMethod = try XCTUnwrap(try? AdyenCoder.decode(dict) as InstantPaymentMethod)
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+
+        // Then
+        XCTAssertEqual(component.paymentMethod.type, .ideal)
+        XCTAssertTrue(component is InstantPaymentComponent, "Component should be InstantPaymentComponent")
+    }
+
     // MARK: - Theme Propagation Tests
 
     func test_build_withCustomTheme_propagatesThemeToACHComponent() throws {
@@ -555,7 +577,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertTrue(component is ApplePayComponent, "Component should be ApplePayComponent")
     }
     
-    func testBuild_WithApplePayAndNoConfiguration_ThrowsUnknownError() throws {
+    func testBuild_WithApplePayAndNoConfiguration_ThrowsMissingConfigurationError() throws {
         // Given — no Apple Pay configuration supplied to the DSL
         let paymentMethod = try XCTUnwrap(createApplePayPaymentMethod())
         checkoutConfiguration = makeCheckoutConfiguration()
@@ -569,7 +591,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             ),
             "Builder should throw when Apple Pay has no default and no user-supplied config"
         ) { error in
-            XCTAssertTrue(error is UnknownError, "Expected UnknownError, got \(type(of: error))")
+            XCTAssertEqual(error as? ApplePayComponent.Error, .missingConfiguration)
         }
     }
     

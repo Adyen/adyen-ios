@@ -56,10 +56,9 @@ package class ApplePayComponent: NSObject, PresentableComponent, PaymentComponen
     /// - Parameter paymentMethod: The Apple Pay payment method. Must include country code.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: Apple Pay component configuration
-    /// - Throws: `ApplePayComponent.Error.userCannotMakePayment`.
-    /// if user can't make payments on any of the payment request’s supported networks.
     /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplePay` if the current device's hardware doesn't support ApplePay.
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment` if user can't make payments on any of the supported networks.
+    /// - Throws: `ApplePayComponent.Error.invalidPaymentRequest` if the payment authorization view controller could not be created.
     package init(
         paymentMethod: ApplePayPaymentMethod,
         context: AdyenContext,
@@ -81,10 +80,7 @@ package class ApplePayComponent: NSObject, PresentableComponent, PaymentComponen
 
         let controller = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest)
         guard let controller else {
-            throw UnknownError(
-                errorDescription: "Failed to instantiate PKPaymentAuthorizationViewController. "
-                    + "This usually indicates the payment request is missing required fields or contains invalid values."
-            )
+            throw Error.invalidPaymentRequest
         }
         controller.delegate = self
         self.paymentAuthorizationViewController = controller
@@ -138,6 +134,10 @@ package class ApplePayComponent: NSObject, PresentableComponent, PaymentComponen
     package func didFinalize(with success: Bool, completion: (() -> Void)?) {
         resumeContinuation(success: success)
         completion?()
+    }
+
+    package func performSubmit() {
+        delegate?.didFail(with: Error.submitNotSupported, from: self)
     }
 }
 

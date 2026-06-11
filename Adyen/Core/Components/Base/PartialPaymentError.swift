@@ -7,7 +7,7 @@
 import Foundation
 
 /// Indicates a partial payment related errors.
-public enum PartialPaymentError: LocalizedError {
+package enum PartialPaymentError: LocalizedError {
 
     /// Indicates that there is zero remaining amount to be paid.
     case zeroRemainingAmount
@@ -18,7 +18,7 @@ public enum PartialPaymentError: LocalizedError {
     /// Indicates that the partial payment flow is not supported with the current component.
     case notSupportedForComponent
 
-    public var errorDescription: String? {
+    package var errorDescription: String? {
         switch self {
         case .zeroRemainingAmount:
             return "There is no remaining amount to be paid."

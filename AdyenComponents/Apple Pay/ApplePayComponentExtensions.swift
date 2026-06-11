@@ -5,7 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PaymentComponent
 import Foundation
 import PassKit
 
@@ -107,8 +106,7 @@ extension ApplePayComponent {
             shippingMethod: payment.shippingMethod
         )
 
-        let amount = configuration.currentAmount
-        let data = PaymentComponentData(paymentMethodDetails: details, amount: amount, order: order)
+        let data = PaymentComponentData(paymentMethodDetails: details, order: order)
 
         // Store the continuation first, then submit. submit() is fire-and-forget — it triggers
         // the delegate's didSubmit which eventually leads to resolve(success:) being called.

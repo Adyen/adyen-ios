@@ -16,22 +16,20 @@ import UIKit
 @MainActor
 package final class StoredCardComponent: StoredPaymentComponent, Localizable {
 
-    /// The context object for this component.
+    // MARK: - Properties
+
     package let context: AdyenContext
-    
-    /// The card payment method.
     package var paymentMethod: PaymentMethod {
         storedCardPaymentMethod
     }
-    
-    /// The delegate of the component.
-    package weak var delegate: PaymentComponentDelegate?
-    
-    package var localizationParameters: LocalizationParameters?
-        
-    private let storedCardPaymentMethod: StoredCardPaymentMethod
 
+    package weak var delegate: PaymentComponentDelegate?
+    package var localizationParameters: LocalizationParameters?
+
+    private let storedCardPaymentMethod: StoredCardPaymentMethod
     private let theme: CheckoutTheme
+
+    // MARK: - Initializers
 
     package init(
         storedCardPaymentMethod: StoredCardPaymentMethod,
@@ -42,8 +40,8 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
         self.context = context
         self.theme = theme
     }
-    
-    package lazy var viewController: UIViewController = {
+
+    private lazy var viewModel: StoredCardInputViewModel = {
         let viewModel = StoredCardInputViewModel(
             theme: theme,
             storedCardPaymentMethod: storedCardPaymentMethod,
@@ -54,8 +52,25 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
             localizationParameters: localizationParameters,
             cardBrand: storedCardPaymentMethod.brand
         )
+        viewModel.cardDetailsCompletionHandler = makeCompletionHandler()
+        return viewModel
+    }()
 
-        viewModel.cardDetailsCompletionHandler = { [weak self] result in
+    package lazy var viewController: UIViewController = {
+        sendInitialAnalytics()
+        return StoredCardInputViewController(viewModel: viewModel)
+    }()
+
+    package func performSubmit() {
+        Task { [weak self] in
+            await self?.viewModel.submit()
+        }
+    }
+
+    // MARK: - Private
+
+    private func makeCompletionHandler() -> (Result<CardDetails, Error>) -> Void {
+        { [weak self] result in
             Task { @MainActor [weak self] in
                 guard let self else { return }
                 switch result {
@@ -63,21 +78,15 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
                     self.submit(
                         data: PaymentComponentData(
                             paymentMethodDetails: details,
-                            amount: context.amount,
                             order: order
                         )
                     )
                 case let .failure(error):
-                    delegate?.didFail(with: error, from: self)
+                    self.delegate?.didFail(with: error, from: self)
                 }
             }
         }
-
-        self.sendInitialAnalytics()
-
-        return StoredCardInputViewController(viewModel: viewModel)
-    }()
+    }
 }
 
-/// :nodoc:
 extension StoredCardComponent: TrackableComponent {}

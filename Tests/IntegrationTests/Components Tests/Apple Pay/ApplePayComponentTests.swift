@@ -196,6 +196,20 @@ class ApplePayComponentTest: XCTestCase {
         waitForExpectations(timeout: 10)
     }
 
+    func testSubmitShouldCallDelegateDidFailWithSubmitNotSupported() {
+        sut.delegate = mockDelegate
+        let onDidFailExpectation = expectation(description: "Wait for delegate call")
+        mockDelegate.onDidFail = { error, component in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .submitNotSupported)
+            XCTAssertTrue(component === self.sut)
+            onDidFailExpectation.fulfill()
+        }
+
+        sut.performSubmit()
+
+        waitForExpectations(timeout: 10)
+    }
+
     func testApplePayShipping() async throws {
         var receivedMethod: PKShippingMethod?
         var configuration = try ApplePayConfiguration(
@@ -607,10 +621,15 @@ class ApplePayComponentTest: XCTestCase {
         let sut = config.replacing(amount: testAmount)
 
         // Then
-        XCTAssertEqual(sut.currentAmount, testAmount)
         XCTAssertEqual(sut.paymentRequest.paymentSummaryItems.count, 2)
         let summaryItem = sut.paymentRequest.paymentSummaryItems.last
         XCTAssertNotNil(summaryItem)
+        let expectedDecimalAmount = AmountFormatter.decimalAmount(
+            testAmount.value,
+            currencyCode: testAmount.currencyCode,
+            localeIdentifier: testAmount.localeIdentifier
+        )
+        XCTAssertEqual(summaryItem?.amount, expectedDecimalAmount)
         XCTAssertEqual(summaryItem?.amount, decimalAmount)
     }
 
@@ -633,10 +652,15 @@ class ApplePayComponentTest: XCTestCase {
         let sut = config.replacing(amount: testAmount)
 
         // Then
-        XCTAssertEqual(sut.currentAmount, testAmount)
         XCTAssertEqual(sut.paymentRequest.paymentSummaryItems.count, 2)
         let summaryItem = sut.paymentRequest.paymentSummaryItems.last
         XCTAssertNotNil(summaryItem)
+        let expectedDecimalAmount = AmountFormatter.decimalAmount(
+            testAmount.value,
+            currencyCode: testAmount.currencyCode,
+            localeIdentifier: testAmount.localeIdentifier
+        )
+        XCTAssertEqual(summaryItem?.amount, expectedDecimalAmount)
         XCTAssertEqual(summaryItem?.amount, decimalAmount)
     }
 
