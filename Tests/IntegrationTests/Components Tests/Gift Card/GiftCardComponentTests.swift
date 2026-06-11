@@ -533,6 +533,36 @@ class GiftCardComponentTests: XCTestCase {
         XCTAssertEqual(infoType, .rendered)
     }
 
+    func testSubmit_shouldCallPartialPaymentDelegateOnCheckBalance() {
+        // Given
+        sut.readyToSubmitComponentDelegate = nil
+
+        let onCheckBalanceExpectation = expectation(description: "Expect partialPaymentDelegate.onCheckBalance to be called.")
+        let balance = Balance(availableAmount: .init(value: 200, currencyCode: "EUR"), transactionLimit: nil)
+        partialPaymentDelegate.onCheckBalance = { _, completion in
+            completion(.success(balance))
+            onCheckBalanceExpectation.fulfill()
+        }
+
+        let onSubmitExpectation = expectation(description: "Expect delegateMock.onDidSubmit to be called.")
+        delegateMock.onDidSubmit = { data, component in
+            XCTAssertTrue(component === self.sut)
+            XCTAssertTrue(data.paymentMethod is GiftCardDetails)
+            onSubmitExpectation.fulfill()
+        }
+
+        sut.viewController.loadViewIfNeeded()
+
+        populate(cardNumber: "60643650100000000000", pin: "73737")
+
+        // When
+        sut.performSubmit()
+
+        // Then
+        wait(for: [onCheckBalanceExpectation, onSubmitExpectation], timeout: 10)
+        XCTAssertEqual(delegateMock.didSubmitCallsCount, 1)
+    }
+
     func testGiftCardHidingSecurityCodeItemView() {
 
         // Given
