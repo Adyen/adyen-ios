@@ -29,6 +29,8 @@ package extension CheckoutError {
         }
         switch error {
         // Adyen
+        case ComponentError.cancelled:
+            self = .init(code: .cancelled, message: error.localizedDescription, underlyingError: error)
         case is URLError, is APIError:
             self = .init(code: .httpError, message: error.localizedDescription, underlyingError: error)
         // AdyenComponents

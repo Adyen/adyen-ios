@@ -54,6 +54,8 @@ public extension CheckoutError {
         public static let invalidAmountValue = Code(rawValue: "InvalidAmountValue")
         /// Failed to establish a checkout session.
         public static let sessionSetupFailure = Code(rawValue: "SessionSetupFailure")
+        /// The user cancelled the payment.
+        public static let cancelled = Code(rawValue: "Cancelled")
         /// A network or HTTP-level error occurred.
         public static let httpError = Code(rawValue: "HttpError")
         /// A payment method is unavailable, unsupported, or cannot be used by the current device or user.
