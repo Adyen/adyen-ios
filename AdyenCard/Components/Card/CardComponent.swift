@@ -134,10 +134,6 @@ package class CardComponent: PaymentComponent,
         self.supportedCardTypes = configuration.supportedCardBrands ?? paymentMethod.brands
     }
 
-    package func submit() {
-        didSelectSubmitButton()
-    }
-
     // MARK: - Presentable Component Protocol
 
     package var viewController: UIViewController {
@@ -245,6 +241,10 @@ package class CardComponent: PaymentComponent,
 }
 
 extension CardComponent: CardViewControllerDelegate {
+
+    internal func didSelectSubmitButton() {
+        self.performSubmit()
+    }
 
     internal func didChange(pan: String) {
         panThrottler.throttle { [weak self] in

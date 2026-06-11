@@ -131,7 +131,7 @@ final class DokuComponentUITests: XCTestCase {
         }
 
         // When
-        sut.submit()
+        sut.performSubmit()
 
         // Then
         waitForExpectations(timeout: 10)

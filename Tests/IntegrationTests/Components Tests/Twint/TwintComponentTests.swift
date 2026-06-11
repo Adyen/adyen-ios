@@ -53,7 +53,7 @@ class TwintComponentTests: XCTestCase {
         }
         sut.delegate = delegate
 
-        sut.submit()
+        sut.performSubmit()
 
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -72,7 +72,7 @@ class TwintComponentTests: XCTestCase {
         sut.delegate = paymentComponentDelegate
 
         // When
-        sut.submit()
+        sut.performSubmit()
 
         // Then
         wait(for: [didSubmitExpectation], timeout: 10)

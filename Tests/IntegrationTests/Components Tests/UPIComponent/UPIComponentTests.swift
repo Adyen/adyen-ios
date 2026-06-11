@@ -73,7 +73,7 @@ class UPIComponentTests: XCTestCase {
         self.populate(textItemView: vpaInputItem, with: "testvpa@icici")
 
         // When
-        sut.submit()
+        sut.performSubmit()
 
         // Then
         wait(for: [didSubmitExpectation], timeout: 10)

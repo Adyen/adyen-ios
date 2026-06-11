@@ -61,7 +61,7 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
         return StoredCardInputViewController(viewModel: viewModel)
     }()
 
-    package func submit() {
+    package func performSubmit() {
         Task { [weak self] in
             await self?.viewModel.submit()
         }

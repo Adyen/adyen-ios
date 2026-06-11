@@ -70,7 +70,7 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
         do {
             let component = try instantPaymentComponent(from: paymentMethods)
             instantPaymentComponent = component
-            component.submit()
+            component.performSubmit()
         } catch {
             self.presentAlert(with: error)
         }

@@ -286,7 +286,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         self.populate(textItemView: routingNumberItemView, with: "121000358")
 
         // When
-        sut.submit()
+        sut.performSubmit()
 
         // Then
         wait(for: [didSubmitExpectation], timeout: 10)

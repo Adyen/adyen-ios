@@ -103,8 +103,27 @@ package final class PayToComponent: PaymentComponent, PresentableComponent, Adye
         self.configuration = configuration
     }
 
-    package func submit() {
-        didSelectContinueButton()
+    package func performSubmit() {
+        guard formViewController.validate() else { return }
+
+        startLoading()
+
+        let details = PayToDetails(
+            paymentMethod: payToPaymentMethod,
+            accountIdentifier: selectedPaymentIdentifier(),
+            shopperName: .init(
+                firstName: firstNameInputItem.value,
+                lastName: lastNameInputItem.value
+            )
+        )
+
+        submit(
+            data: PaymentComponentData(
+                paymentMethodDetails: details,
+                amount: context.amount,
+                order: order
+            )
+        )
     }
 
     /// The payment flow selection title label item.
@@ -179,7 +198,7 @@ package final class PayToComponent: PaymentComponent, PresentableComponent, Adye
     internal lazy var continueButtonItem: FormButtonItem = {
         let item = itemsProvider.createContinueButtonItem()
         item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectContinueButton()
+            self?.performSubmit()
         }
         return item
     }()
@@ -239,29 +258,6 @@ extension PayToComponent: ViewControllerPresenter {
 // MARK: - Event Handling
 
 private extension PayToComponent {
-
-    func didSelectContinueButton() {
-        guard formViewController.validate() else { return }
-
-        startLoading()
-
-        let details = PayToDetails(
-            paymentMethod: payToPaymentMethod,
-            accountIdentifier: selectedPaymentIdentifier(),
-            shopperName: .init(
-                firstName: firstNameInputItem.value,
-                lastName: lastNameInputItem.value
-            )
-        )
-
-        submit(
-            data: PaymentComponentData(
-                paymentMethodDetails: details,
-                amount: context.amount,
-                order: order
-            )
-        )
-    }
 
     func startLoading() {
         continueButtonItem.showsActivityIndicator = true

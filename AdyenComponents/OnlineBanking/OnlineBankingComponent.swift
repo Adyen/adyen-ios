@@ -82,7 +82,7 @@ package final class OnlineBankingComponent: PaymentComponent,
         )
         item.title = localizedString(.continueTitle, configuration.localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectContinueButton()
+            self?.performSubmit()
         }
         return item
     }()
@@ -123,18 +123,7 @@ package final class OnlineBankingComponent: PaymentComponent,
         self.configuration = configuration
     }
 
-    package func submit() {
-        didSelectContinueButton()
-    }
-
-    public func stopLoading() {
-        continueButton.showsActivityIndicator = false
-        formViewController.view.isUserInteractionEnabled = true
-    }
-
-    // MARK: - Private
-
-    private func didSelectContinueButton() {
+    package func performSubmit() {
         guard formViewController.validate() else { return }
 
         let details = OnlineBankingDetails(
@@ -146,6 +135,13 @@ package final class OnlineBankingComponent: PaymentComponent,
 
         submit(data: PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order))
     }
+
+    public func stopLoading() {
+        continueButton.showsActivityIndicator = false
+        formViewController.view.isUserInteractionEnabled = true
+    }
+
+    // MARK: - Private
 
     private lazy var formViewController: FormViewController = {
         let formViewController = FormViewController(
