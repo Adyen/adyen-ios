@@ -7,8 +7,7 @@
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 #if canImport(AdyenUI)
-    import AdyenUI
-    @_spi(AdyenInternal) import class AdyenUI.FormLabelItem
+    @_spi(AdyenInternal) import AdyenUI
 #endif
 import UIKit
 

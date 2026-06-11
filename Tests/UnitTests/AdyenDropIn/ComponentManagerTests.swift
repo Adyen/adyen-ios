@@ -388,8 +388,14 @@ class ComponentManagerTests: XCTestCase {
             sut.regularComponents.first { $0.paymentMethod.type == .applePay } as? ApplePayComponent
         )
         
-        let applePayAmount = applePayComponent.configuration.currentAmount
-        XCTAssertEqual(applePayAmount, remainingAmount, "Apple Pay should use order.remainingAmount for partial payments")
+        // Verify via the payment request's last summary item amount (converted from minor units to decimal)
+        let expectedDecimalAmount = AmountFormatter.decimalAmount(
+            remainingAmount.value,
+            currencyCode: remainingAmount.currencyCode,
+            localeIdentifier: remainingAmount.localeIdentifier
+        )
+        let actualAmount = applePayComponent.configuration.paymentRequest.paymentSummaryItems.last?.amount
+        XCTAssertEqual(actualAmount, expectedDecimalAmount, "Apple Pay should use order.remainingAmount for partial payments")
     }
 
     func testShopperInformationInjectionShouldSetShopperInformationOnAffirmComponent() throws {

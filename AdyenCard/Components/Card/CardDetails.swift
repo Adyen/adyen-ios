@@ -156,9 +156,8 @@ public struct CardDetails: PaymentMethodDetails, ShopperInformation {
 @_spi(AdyenInternal)
 extension CardDetails: DelegatedAuthenticationAware {}
 
-@_spi(AdyenInternal)
 extension CardDetails: SDKDataAuthenticationProvider {
-    public var authentication: SDKData.Authentication {
+    package var authentication: SDKData.Authentication {
         .init(threeDS2SdkVersion: threeDS2SdkVersion)
     }
 }

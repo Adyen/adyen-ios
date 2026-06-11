@@ -5,8 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PaymentComponent
-
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
@@ -34,7 +32,6 @@ package final class TwintComponent: PaymentComponent {
 
         return PaymentComponentData(
             paymentMethodDetails: details,
-            amount: context.amount,
             order: nil,
             storePaymentMethod: nil
         )

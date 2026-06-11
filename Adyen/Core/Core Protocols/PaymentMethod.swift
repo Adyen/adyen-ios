@@ -58,8 +58,7 @@ public protocol StoredPaymentMethod: PaymentMethod {
     
 }
 
-@_spi(AdyenInternal)
-public func == (lhs: StoredPaymentMethod, rhs: StoredPaymentMethod) -> Bool {
+package func == (lhs: StoredPaymentMethod, rhs: StoredPaymentMethod) -> Bool {
     lhs.type == rhs.type &&
         lhs.name == rhs.name &&
         lhs.identifier == rhs.identifier &&
@@ -67,19 +66,16 @@ public func == (lhs: StoredPaymentMethod, rhs: StoredPaymentMethod) -> Bool {
         String(describing: type(of: lhs)) == String(describing: type(of: rhs))
 }
 
-@_spi(AdyenInternal)
-public func != (lhs: StoredPaymentMethod, rhs: StoredPaymentMethod) -> Bool {
+package func != (lhs: StoredPaymentMethod, rhs: StoredPaymentMethod) -> Bool {
     !(lhs == rhs)
 }
 
-@_spi(AdyenInternal)
-public func == (lhs: PaymentMethod, rhs: PaymentMethod) -> Bool {
+package func == (lhs: PaymentMethod, rhs: PaymentMethod) -> Bool {
     lhs.type == rhs.type &&
         lhs.name == rhs.name &&
         String(describing: type(of: lhs)) == String(describing: type(of: rhs))
 }
 
-@_spi(AdyenInternal)
-public func != (lhs: PaymentMethod, rhs: PaymentMethod) -> Bool {
+package func != (lhs: PaymentMethod, rhs: PaymentMethod) -> Bool {
     !(lhs == rhs)
 }

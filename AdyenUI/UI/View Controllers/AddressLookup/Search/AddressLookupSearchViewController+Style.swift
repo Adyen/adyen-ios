@@ -7,17 +7,17 @@
 import UIKit
 
 /// The style of the search screen for address lookup
-public struct AddressLookupSearchStyle: ViewStyle {
-    
-    public var backgroundColor: UIColor = .Adyen.componentBackground
-    
-    public var manualEntryListItem: ListItemStyle = {
+package struct AddressLookupSearchStyle: ViewStyle {
+
+    package var backgroundColor: UIColor = .Adyen.componentBackground
+
+    package var manualEntryListItem: ListItemStyle = {
         var listItemStyle = ListItemStyle()
         listItemStyle.title.color = .Adyen.defaultBlue
         return listItemStyle
     }()
     
-    public var emptyView: EmptyStateViewStyle = .init()
-    
-    public init() {}
+    package var emptyView: EmptyStateViewStyle = .init()
+
+    package init() {}
 }

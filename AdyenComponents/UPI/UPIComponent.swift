@@ -237,7 +237,7 @@ package final class UPIComponent: PaymentComponent,
     
     internal lazy var errorItem: FormErrorItem = {
         let errorMessage = localizedString(LocalizationKey.upiErrorNoAppSelected, configuration.localizationParameters)
-        let item = FormErrorItem(message: errorMessage, iconName: Images.errorIcon)
+        let item = FormErrorItem(message: errorMessage, iconName: Images.errorIcon, style: FormErrorItemStyle())
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifier.errorItem
@@ -392,14 +392,14 @@ private extension UPIComponent {
                 virtualPaymentAddress: nil,
                 appId: currentSelectedItemIdentifier
             )
-            submit(data: PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order))
+            submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
         case .upiCollect:
             let details = UPIComponentDetails(
                 type: selectedUPIFlow.value,
                 virtualPaymentAddress: vpaInputItem.value,
                 appId: nil
             )
-            submit(data: PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order))
+            submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
         }
     }
 }

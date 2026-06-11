@@ -70,7 +70,7 @@ internal enum CheckoutComponentBuilder {
         }
         
         // TODO: for gift card, throw correct error code
-        throw CheckoutError(code: .unknown, message: "Payment method \(paymentMethod.type.rawValue) is not supported.")
+        throw CheckoutError(code: .paymentMethodFailure, message: "Payment method \(paymentMethod.type.rawValue) is not supported.")
     }
     
     /// Builds stored payment components.

@@ -213,7 +213,6 @@ package final class CashAppPayComponent: PaymentComponent,
             let details = try cashAppPayDetails(from: grants, customerProfile: profile)
             submit(data: PaymentComponentData(
                 paymentMethodDetails: details,
-                amount: context.amount,
                 order: order,
                 storePaymentMethod: storePayment
             ))

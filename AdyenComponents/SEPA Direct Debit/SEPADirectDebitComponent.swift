@@ -62,7 +62,7 @@ package final class SEPADirectDebitComponent: PaymentComponent, PresentableCompo
         button.showsActivityIndicator = true
         formViewController.view.isUserInteractionEnabled = false
 
-        submit(data: PaymentComponentData(paymentMethodDetails: details, amount: context.amount, order: order))
+        submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
     }
 
     private let sepaDirectDebitPaymentMethod: SEPADirectDebitPaymentMethod

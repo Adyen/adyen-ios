@@ -8,22 +8,22 @@ import Adyen
 import UIKit
 
 /// /// Contains the styling customization options for various Action Components.
-public struct ActionComponentStyle {
-    
+package struct ActionComponentStyle {
+
     /// Indicates the UI configuration of the redirect component.
-    public var redirectComponentStyle: RedirectComponentStyle
-    
+    package var redirectComponentStyle: RedirectComponentStyle
+
     /// Indicates the UI configuration of the await component.
-    public var awaitComponentStyle: AwaitComponentStyle
-    
+    package var awaitComponentStyle: AwaitComponentStyle
+
     /// Indicates the UI configuration of the voucher component.
-    public var voucherComponentStyle: VoucherComponentStyle
-    
+    package var voucherComponentStyle: VoucherComponentStyle
+
     /// Indicates the UI configuration of the QR code component.
-    public var qrCodeComponentStyle: QRCodeComponentStyle
-    
+    package var qrCodeComponentStyle: QRCodeComponentStyle
+
     /// Indicates the UI configuration of the document action component.
-    public var documentActionComponentStyle: DocumentComponentStyle
+    package var documentActionComponentStyle: DocumentComponentStyle
 
     /// Initializes the
     /// - Parameters:
@@ -32,7 +32,7 @@ public struct ActionComponentStyle {
     ///   - voucherComponentStyle: The UI configuration of the voucher component.
     ///   - qrCodeComponentStyle: The UI configuration of the QR code component.
     ///   - documentActionComponentStyle: The UI configuration of the document action component.
-    public init(
+    package init(
         redirectComponentStyle: RedirectComponentStyle = RedirectComponentStyle(),
         awaitComponentStyle: AwaitComponentStyle = AwaitComponentStyle(),
         voucherComponentStyle: VoucherComponentStyle = VoucherComponentStyle(),

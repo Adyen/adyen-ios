@@ -8,26 +8,25 @@ import Adyen
 import Foundation
 
 /// A space form item in terms of number of layout margins.
-@_spi(AdyenInternal)
-public final class FormSpacerItem: FormItem {
+package final class FormSpacerItem: FormItem {
 
-    public var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
-    
-    public var identifier: String?
+    package var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
 
-    public let subitems: [FormItem] = []
+    package var identifier: String?
+
+    package let subitems: [FormItem] = []
 
     /// Indicates number of layout margins.
-    public let standardSpaceMultiplier: Int
+    package let standardSpaceMultiplier: Int
 
     /// Initializes a `FormSpacerItem`.
     ///
     /// - Parameter standardSpaceMultiplier: The number of layout margins.
-    public init(numberOfSpaces: Int = 1) {
+    package init(numberOfSpaces: Int = 1) {
         self.standardSpaceMultiplier = numberOfSpaces
     }
 
-    public func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
+    package func build(with builder: FormItemViewBuilder) -> AnyFormItemView {
         builder.build(with: self)
     }
 }

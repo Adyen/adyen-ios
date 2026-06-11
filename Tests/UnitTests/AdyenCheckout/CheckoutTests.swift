@@ -186,7 +186,6 @@ final class CheckoutTests: XCTestCase {
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let paymentData = PaymentComponentData(
             paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
-            amount: nil,
             order: nil
         )
         let session = makeSessionMock()
@@ -210,7 +209,6 @@ final class CheckoutTests: XCTestCase {
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let paymentData = PaymentComponentData(
             paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
-            amount: nil,
             order: nil
         )
         let session = makeSessionMock()
@@ -235,7 +233,6 @@ final class CheckoutTests: XCTestCase {
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let paymentData = PaymentComponentData(
             paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
-            amount: nil,
             order: nil
         )
         let session = makeSessionMock()
@@ -258,7 +255,6 @@ final class CheckoutTests: XCTestCase {
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let paymentData = PaymentComponentData(
             paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
-            amount: nil,
             order: nil
         )
         let session = makeSessionMock()
@@ -289,7 +285,6 @@ final class CheckoutTests: XCTestCase {
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let paymentData = PaymentComponentData(
             paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
-            amount: nil,
             order: nil
         )
         let session = makeSessionMock()
@@ -318,7 +313,6 @@ final class CheckoutTests: XCTestCase {
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let paymentData = PaymentComponentData(
             paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
-            amount: nil,
             order: nil
         )
         let session = makeSessionMock()
@@ -343,7 +337,6 @@ final class CheckoutTests: XCTestCase {
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let original = PaymentComponentData(
             paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
-            amount: nil,
             order: nil
         )
         
@@ -382,7 +375,6 @@ final class CheckoutTests: XCTestCase {
         )
         let paymentData = PaymentComponentData(
             paymentMethodDetails: blikDetails,
-            amount: nil,
             order: nil
         )
         
@@ -545,7 +537,6 @@ final class CheckoutTests: XCTestCase {
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let paymentData = PaymentComponentData(
             paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
-            amount: nil,
             order: nil
         )
         
@@ -678,7 +669,6 @@ final class CheckoutTests: XCTestCase {
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let paymentData = PaymentComponentData(
             paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
-            amount: nil,
             order: nil
         )
 
