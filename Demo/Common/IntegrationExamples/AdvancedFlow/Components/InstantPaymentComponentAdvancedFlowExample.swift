@@ -53,12 +53,6 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
     }
 
     private func instantPaymentComponent(from paymentMethods: PaymentMethods) async throws -> CheckoutPaymentComponent {
-        // Get the correct payment method from the paymentMethods object
-        // In this example the first supported `InstantPaymentMethod` is chosen
-        guard let paymentMethod = paymentMethods.paymentMethod(ofType: InstantPaymentMethod.self) else {
-            throw IntegrationError.paymentMethodNotAvailable(paymentMethod: InstantPaymentMethod.self)
-        }
-
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
             amount: ConfigurationConstants.current.amount,
