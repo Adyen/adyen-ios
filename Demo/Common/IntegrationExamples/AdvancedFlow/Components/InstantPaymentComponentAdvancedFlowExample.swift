@@ -80,7 +80,7 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
                 result.resultCode.rawValue
             )
         }
-        .onError { [weak self] error in
+        .onFailure { [weak self] error in
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
 
