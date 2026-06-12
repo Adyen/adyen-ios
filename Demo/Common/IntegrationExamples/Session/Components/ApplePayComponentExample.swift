@@ -67,7 +67,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                         )
                         return PKPaymentAuthorizationResult(status: .failure, errors: [postalCodeError])
                     }
-                }.onShippingContactChange { contact, summaryItems in
+                }.onSelectShippingContact { contact, summaryItems in
                     let cityLabel = contact.postalAddress?.city ?? "Somewhere"
                     let items = self.updatedSummaryItems(
                         from: summaryItems,
@@ -82,7 +82,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                     self.updateLatestApplePayAmount(using: items)
                     return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: items)
                 }
-                .onShippingMethodChange { shippingMethod, summaryItems in
+                .onSelectShippingMethod { shippingMethod, summaryItems in
                     let items = self.updatedSummaryItems(
                         from: summaryItems,
                         appendedItems: [shippingMethod],
@@ -91,7 +91,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                     self.updateLatestApplePayAmount(using: items)
                     return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: items)
                 }
-                .onCouponCodeChange { _, summaryItems in
+                .onChangeCouponCode { _, summaryItems in
                     // make sure your backend's amount and apple pay sheet amount are the same
                     let items = self.updatedSummaryItems(
                         from: summaryItems,
@@ -154,7 +154,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                 result.resultCode.rawValue
             )
         }
-        .onError { [weak self] error in
+        .onFailure { [weak self] error in
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
 

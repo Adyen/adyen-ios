@@ -66,7 +66,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
                         return PKPaymentAuthorizationResult(status: .failure, errors: [postalCodeError])
                     }
                 }
-                .onShippingContactChange { contact, summaryItems in
+                .onSelectShippingContact { contact, summaryItems in
                     var items = summaryItems
                     if let last = items.last {
                         items = items.dropLast()
@@ -79,7 +79,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
                     }
                     return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: items)
                 }
-                .onShippingMethodChange { shippingMethod, summaryItems in
+                .onSelectShippingMethod { shippingMethod, summaryItems in
                     var items = summaryItems
                     if let last = items.last {
                         items = items.dropLast()
@@ -91,7 +91,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
                     }
                     return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: items)
                 }
-                .onCouponCodeChange { _, summaryItems in
+                .onChangeCouponCode { _, summaryItems in
                     var items = summaryItems
                     if let last = items.last {
                         items = items.dropLast()
@@ -136,7 +136,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
                 result.resultCode.rawValue
             )
         }
-        .onError { [weak self] error in
+        .onFailure { [weak self] error in
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
 

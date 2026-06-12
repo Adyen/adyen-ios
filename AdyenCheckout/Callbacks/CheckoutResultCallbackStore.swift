@@ -10,7 +10,7 @@ import Foundation
 package protocol CheckoutResultCallbackStore: AnyObject {
     var onComplete: CheckoutSuccessHandler? { get set }
 
-    var onError: CheckoutErrorHandler? { get set }
+    var onFailure: CheckoutErrorHandler? { get set }
 }
 
 package final class SessionCheckoutCallbackStore: CheckoutResultCallbackStore {
@@ -18,7 +18,7 @@ package final class SessionCheckoutCallbackStore: CheckoutResultCallbackStore {
 
     package var onComplete: CheckoutSuccessHandler?
 
-    package var onError: CheckoutErrorHandler?
+    package var onFailure: CheckoutErrorHandler?
 }
 
 package final class AdvancedCheckoutCallbackStore: CheckoutResultCallbackStore {
@@ -28,7 +28,7 @@ package final class AdvancedCheckoutCallbackStore: CheckoutResultCallbackStore {
 
     package var onComplete: CheckoutSuccessHandler?
 
-    package var onError: CheckoutErrorHandler?
+    package var onFailure: CheckoutErrorHandler?
 }
 
 package final class ActionOnlyCheckoutCallbackStore: CheckoutResultCallbackStore {
@@ -36,5 +36,5 @@ package final class ActionOnlyCheckoutCallbackStore: CheckoutResultCallbackStore
 
     package var onComplete: CheckoutSuccessHandler?
 
-    package var onError: CheckoutErrorHandler?
+    package var onFailure: CheckoutErrorHandler?
 }

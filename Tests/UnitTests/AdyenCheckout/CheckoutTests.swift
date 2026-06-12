@@ -203,9 +203,9 @@ final class CheckoutTests: XCTestCase {
         XCTAssertFalse(session.didSubmitCalled)
     }
     
-    func test_didSubmit_withSessionPerformSubmitError_shouldCallOnError() async throws {
+    func test_didSubmit_withSessionPerformSubmitError_shouldCallOnFailure() async throws {
         let callbackStore = SessionCheckoutCallbackStore()
-        let onErrorExpectation = expectation(description: "onError called")
+        let onFailureExpectation = expectation(description: "onFailure called")
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let paymentData = PaymentComponentData(
             paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
@@ -213,13 +213,13 @@ final class CheckoutTests: XCTestCase {
         )
         let session = makeSessionMock()
         session.performSubmitResult = .failure(TestError())
-        callbackStore.onError = { _ in
-            onErrorExpectation.fulfill()
+        callbackStore.onFailure = { _ in
+            onFailureExpectation.fulfill()
         }
         let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
         
         sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
-        await fulfillment(of: [onErrorExpectation], timeout: 1)
+        await fulfillment(of: [onFailureExpectation], timeout: 1)
         
         XCTAssertTrue(session.performSubmitCalled)
         XCTAssertFalse(session.didSubmitCalled)
@@ -306,10 +306,10 @@ final class CheckoutTests: XCTestCase {
         XCTAssertTrue(session.performSubmitCalled)
     }
     
-    func test_didSubmit_withOnBeforeSubmitAbort_shouldStopLoadingAndNotCallOnError() async throws {
+    func test_didSubmit_withOnBeforeSubmitAbort_shouldStopLoadingAndNotCallOnFailure() async throws {
         let callbackStore = SessionCheckoutCallbackStore()
-        let onErrorExpectation = expectation(description: "onError should NOT be called")
-        onErrorExpectation.isInverted = true
+        let onFailureExpectation = expectation(description: "onFailure should NOT be called")
+        onFailureExpectation.isInverted = true
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let paymentData = PaymentComponentData(
             paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
@@ -320,14 +320,14 @@ final class CheckoutTests: XCTestCase {
         callbackStore.onBeforeSubmit = { _ in
             .abort
         }
-        callbackStore.onError = { _ in
-            onErrorExpectation.fulfill()
+        callbackStore.onFailure = { _ in
+            onFailureExpectation.fulfill()
         }
         let component = PresentableComponentMock(paymentMethod: blik, viewController: UIViewController())
         let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
         
         sut.didSubmit(paymentData, from: component)
-        await fulfillment(of: [onErrorExpectation], timeout: 0.5)
+        await fulfillment(of: [onFailureExpectation], timeout: 0.5)
         
         XCTAssertTrue(component.stopLoadingCalled)
         XCTAssertFalse(session.performSubmitCalled)
@@ -661,7 +661,7 @@ final class CheckoutTests: XCTestCase {
         let callbackStore = AdvancedCheckoutCallbackStore()
         let onSubmitExpectation = expectation(description: "onSubmit called")
         let onCompleteExpectation = expectation(description: "onComplete called")
-        var onErrorCalled = false
+        var onFailureCalled = false
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let paymentData = PaymentComponentData(
             paymentMethodDetails: BLIKDetails(paymentMethod: blik, blikCode: "code"),
@@ -676,19 +676,19 @@ final class CheckoutTests: XCTestCase {
             XCTAssertEqual(result.resultCode, .refused)
             onCompleteExpectation.fulfill()
         }
-        callbackStore.onError = { _ in onErrorCalled = true }
+        callbackStore.onFailure = { _ in onFailureCalled = true }
 
         let sut = makeAdvancedCheckoutCore(callbackStore: callbackStore)
         sut.didSubmit(paymentData, from: PaymentComponentMock(paymentMethod: blik))
         await fulfillment(of: [onSubmitExpectation, onCompleteExpectation], timeout: 1)
-        XCTAssertFalse(onErrorCalled)
+        XCTAssertFalse(onFailureCalled)
     }
 
     func test_didProvide_withErrorResultCode_callsOnComplete() async {
         let callbackStore = AdvancedCheckoutCallbackStore()
         let onAdditionalDetailsExpectation = expectation(description: "onAdditionalDetails called")
         let onCompleteExpectation = expectation(description: "onComplete called")
-        var onErrorCalled = false
+        var onFailureCalled = false
         let actionData = ActionComponentData(
             details: AwaitActionDetails(payload: "payload"),
             paymentData: "data"
@@ -702,12 +702,12 @@ final class CheckoutTests: XCTestCase {
             XCTAssertEqual(result.resultCode, .refused)
             onCompleteExpectation.fulfill()
         }
-        callbackStore.onError = { _ in onErrorCalled = true }
+        callbackStore.onFailure = { _ in onFailureCalled = true }
 
         let sut = makeAdvancedCheckoutCore(callbackStore: callbackStore)
         sut.didProvide(actionData, from: ActionComponentMock())
         await fulfillment(of: [onAdditionalDetailsExpectation, onCompleteExpectation], timeout: 1)
-        XCTAssertFalse(onErrorCalled)
+        XCTAssertFalse(onFailureCalled)
     }
 
     private func makeSessionCheckoutCore(
