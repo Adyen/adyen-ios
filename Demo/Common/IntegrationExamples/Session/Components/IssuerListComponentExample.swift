@@ -122,17 +122,17 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
 // TODO: Migrate to Checkout API — SessionDelegate has been removed in v6.
 
 extension IssuerListComponentExample: PresentationDelegate {
-    internal func present(component: PresentableComponent) {
-        let componentViewController = viewController(for: component)
-        presenter?.present(viewController: componentViewController, completion: nil)
+    internal func present(viewController: UIViewController) {
+        presenter?.present(viewController: viewController, completion: nil)
     }
 }
 
 private extension IssuerListComponentExample {
     
     func viewController(for component: PresentableComponent) -> UIViewController {
-        let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.leftBarButtonItem = .init(
+        let viewController = component.viewController
+        let navigation = UINavigationController(rootViewController: viewController)
+        viewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
             target: self,
             action: #selector(cancelPressed)

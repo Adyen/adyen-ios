@@ -8,16 +8,16 @@ import Adyen
 import Foundation
 import SafariServices
 
-/// A centralized helper to prepare an action `PresentableComponent` for presentation.
+/// A centralized helper to prepare an action view controller for presentation.
 /// Wraps the action component in `ActionWrapperViewController` only if needed.
 @MainActor
 internal enum ActionPresentationHelper {
 
     internal static func viewController(
-        for actionComponent: PresentableComponent,
+        for actionViewController: UIViewController,
         onCancel: (() -> Void)? = nil
     ) -> UIViewController {
-        let viewController = actionComponent.viewController
+        let viewController = actionViewController
 
         // If the action component already manages its own navigation controller, return as-is
         if viewController is SFSafariViewController {
@@ -25,7 +25,7 @@ internal enum ActionPresentationHelper {
         }
 
         return ActionWrapperViewController(
-            actionComponent: actionComponent,
+            actionViewController: actionViewController,
             onCancel: onCancel
         )
     }

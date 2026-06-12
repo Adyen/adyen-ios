@@ -180,17 +180,17 @@ extension IssuerListComponentAdvancedFlowExample: ActionComponentDelegate {
 }
 
 extension IssuerListComponentAdvancedFlowExample: PresentationDelegate {
-    internal func present(component: PresentableComponent) {
-        let componentViewController = viewController(for: component)
-        presenter?.present(viewController: componentViewController, completion: nil)
+    internal func present(viewController: UIViewController) {
+        presenter?.present(viewController: viewController, completion: nil)
     }
 }
 
 private extension IssuerListComponentAdvancedFlowExample {
     
     private func viewController(for component: PresentableComponent) -> UIViewController {
-        let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.leftBarButtonItem = .init(
+        let viewController = component.viewController
+        let navigation = UINavigationController(rootViewController: viewController)
+        viewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
             target: self,
             action: #selector(cancelPressed)

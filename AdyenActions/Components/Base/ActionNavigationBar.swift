@@ -5,13 +5,14 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.AnyNavigationBar
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
 import UIKit
 
-internal protocol AnyActionNavigationBar: AnyNavigationBar {
+internal protocol AnyActionNavigationBar: AnyObject {
+    
+    var onCancelHandler: (() -> Void)? { get set }
     
     var model: AnyActionNavigationBarModel { get }
     

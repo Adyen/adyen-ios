@@ -116,8 +116,8 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
 }
 
 extension CardComponentExample: PresentationDelegate {
-    internal func present(component: PresentableComponent) {
-        presenter?.present(viewController: component.viewController, completion: nil)
+    internal func present(viewController: UIViewController) {
+        presenter?.present(viewController: viewController, completion: nil)
     }
 }
 

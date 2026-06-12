@@ -7,9 +7,9 @@
 import Foundation
 import UIKit
 
-/// A component that wraps any `Component` to make it a `PresentableComponent`.
+/// A component that wraps any `Component` together with its action view controller.
 @MainActor
-package final class PresentableComponentWrapper: PresentableComponent,
+package final class ActionViewWrapper:
     Cancellable,
     FinalizableComponent,
     LoadingComponent {
@@ -28,21 +28,16 @@ package final class PresentableComponentWrapper: PresentableComponent,
     /// The wrapped component.
     package let component: Component
 
-    package var navBarType: NavigationBarType
-
     /// Initializes the wrapper component.
     ///
     /// - Parameter component: The wrapped component.
-    /// - Parameter viewController: The `ViewController` used as the UI of the `PresentableComponent`.
-    /// - Parameter navBarType: Type of the navigation bar to use.
+    /// - Parameter viewController: The `ViewController` used as the UI of the wrapped action.
     package init(
         component: Component,
-        viewController: UIViewController,
-        navBarType: NavigationBarType = .regular
+        viewController: UIViewController
     ) {
         self.component = component
         self.viewController = viewController
-        self.navBarType = navBarType
     }
 
     package func didCancel() {
