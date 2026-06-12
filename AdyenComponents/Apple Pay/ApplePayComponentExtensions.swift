@@ -40,7 +40,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         _ controller: PKPaymentAuthorizationViewController,
         didSelect paymentMethod: PKPaymentMethod
     ) async -> PKPaymentRequestPaymentMethodUpdate {
-        await handlePaymentMethodChange(paymentMethod)
+        await handleSelectPaymentMethod(paymentMethod)
     }
 
     // MARK: - Shipping Contact (async)
@@ -49,7 +49,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         _ controller: PKPaymentAuthorizationViewController,
         didSelectShippingContact contact: PKContact
     ) async -> PKPaymentRequestShippingContactUpdate {
-        await handleDidSelectShippingContact(contact)
+        await handleSelectShippingContact(contact)
     }
 
     // MARK: - Shipping Method (async)
@@ -58,7 +58,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         _ controller: PKPaymentAuthorizationViewController,
         didSelect shippingMethod: PKShippingMethod
     ) async -> PKPaymentRequestShippingMethodUpdate {
-        await handleDidSelectShippingMethod(shippingMethod)
+        await handleSelectShippingMethod(shippingMethod)
     }
 
     // MARK: - Coupon Code (async)
@@ -67,7 +67,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         _ controller: PKPaymentAuthorizationViewController,
         didChangeCouponCode couponCode: String
     ) async -> PKPaymentRequestCouponCodeUpdate {
-        await handleDidChangeCouponCode(couponCode)
+        await handleChangeCouponCode(couponCode)
     }
 }
 
@@ -119,7 +119,7 @@ extension ApplePayComponent {
         return PKPaymentAuthorizationResult(status: success ? .success : .failure, errors: nil)
     }
 
-    private func handleDidSelectShippingContact(_ contact: PKContact) async -> PKPaymentRequestShippingContactUpdate {
+    private func handleSelectShippingContact(_ contact: PKContact) async -> PKPaymentRequestShippingContactUpdate {
         guard let onSelectShippingContact = configuration.onSelectShippingContact else {
             return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
         }
@@ -129,7 +129,7 @@ extension ApplePayComponent {
         return result
     }
 
-    private func handleDidSelectShippingMethod(_ shippingMethod: PKShippingMethod) async -> PKPaymentRequestShippingMethodUpdate {
+    private func handleSelectShippingMethod(_ shippingMethod: PKShippingMethod) async -> PKPaymentRequestShippingMethodUpdate {
         guard let onSelectShippingMethod = configuration.onSelectShippingMethod else {
             return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
         }
@@ -139,7 +139,7 @@ extension ApplePayComponent {
         return result
     }
 
-    private func handleDidChangeCouponCode(_ couponCode: String) async -> PKPaymentRequestCouponCodeUpdate {
+    private func handleChangeCouponCode(_ couponCode: String) async -> PKPaymentRequestCouponCodeUpdate {
         guard let onChangeCouponCode = configuration.onChangeCouponCode else {
             return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
         }
@@ -149,7 +149,7 @@ extension ApplePayComponent {
         return result
     }
 
-    private func handlePaymentMethodChange(_ paymentMethod: PKPaymentMethod) async -> PKPaymentRequestPaymentMethodUpdate {
+    private func handleSelectPaymentMethod(_ paymentMethod: PKPaymentMethod) async -> PKPaymentRequestPaymentMethodUpdate {
         guard let onPaymentMethodChange = configuration.onPaymentMethodChange else {
             return PKPaymentRequestPaymentMethodUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
         }
