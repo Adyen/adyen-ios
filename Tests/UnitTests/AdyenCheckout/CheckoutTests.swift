@@ -306,7 +306,7 @@ final class CheckoutTests: XCTestCase {
         XCTAssertTrue(session.performSubmitCalled)
     }
     
-    func test_didSubmit_withOnBeforeSubmitAbort_shouldStopLoadingAndNotCallOnError() async throws {
+    func test_didSubmit_withOnBeforeSubmitAbort_shouldStopLoadingAndNotCallOnFailure() async throws {
         let callbackStore = SessionCheckoutCallbackStore()
         let onFailureExpectation = expectation(description: "onFailure should NOT be called")
         onFailureExpectation.isInverted = true
