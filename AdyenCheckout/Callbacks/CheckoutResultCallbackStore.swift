@@ -22,7 +22,10 @@ package final class SessionCheckoutCallbackStore: CheckoutResultCallbackStore {
     package var onFailure: CheckoutFailureHandler?
 
     package func handleCompletion(resultCode: CheckoutResultCode, sessionId: String?, sessionResult: String?) {
-        guard let sessionId, let sessionResult else { return }
+        guard let sessionId, let sessionResult else {
+            AdyenAssertion.assertionFailure(message: "Session completion called without sessionId or sessionResult.")
+            return
+        }
         onComplete?(SessionCheckoutResult(resultCode: resultCode, sessionId: sessionId, sessionResult: sessionResult))
     }
 }
