@@ -312,6 +312,7 @@ class PaymentComponentSubjectTests: XCTestCase {
             context: context,
             paymentData: paymentData
         )
+        instantComponent.delegate = paymentComponentDelegate
 
         let didSubmitExpectation = expectation(description: "didSubmit should get called")
 
@@ -335,7 +336,7 @@ class PaymentComponentSubjectTests: XCTestCase {
             didSubmitExpectation.fulfill()
         }
 
-        instantComponent.initiatePayment(delegate: paymentComponentDelegate)
+        instantComponent.performSubmit()
 
         wait(for: [didSubmitExpectation], timeout: 3)
     }

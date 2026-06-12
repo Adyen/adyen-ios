@@ -111,6 +111,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     private var applePayComponent: PaymentComponent?
+    private var initiablePaymentComponent: PaymentComponent?
 
     internal func cancel() {
         router?.dismiss(completion: nil)
@@ -141,7 +142,9 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             router?.present(component: component)
         case let .initiable(initiablePaymentComponent):
             state = .loading
-            initiablePaymentComponent.initiatePayment(delegate: self)
+            self.initiablePaymentComponent = initiablePaymentComponent
+            initiablePaymentComponent.delegate = self
+            initiablePaymentComponent.performSubmit()
         }
     }
 
@@ -190,6 +193,7 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
+        initiablePaymentComponent = nil
         dropInFlowManager.submit(data, from: component, actionPresenter: self)
     }
 
@@ -197,7 +201,10 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         with error: any Error,
         from component: any PaymentComponent
     ) {
-        defer { state = .idle }
+        defer {
+            state = .idle
+            initiablePaymentComponent = nil
+        }
 
         if case ComponentError.cancelled = error {
             applePayComponent = nil

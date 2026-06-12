@@ -115,15 +115,15 @@ package final class BLIKComponent: PaymentComponent, PresentableComponent, Loadi
             configuration.localizationParameters
         )
         item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectSubmitButton()
+            self?.performSubmit()
         }
         return item
     }()
 
     // MARK: - Private
 
-    private func didSelectSubmitButton() {
-        guard validate() else { return }
+    package func performSubmit() {
+        guard formViewController.validate() else { return }
 
         let details = BLIKDetails(
             paymentMethod: paymentMethod,
@@ -140,16 +140,3 @@ package final class BLIKComponent: PaymentComponent, PresentableComponent, Loadi
 extension BLIKComponent: TrackableComponent {}
 
 extension BLIKComponent: ViewControllerDelegate {}
-
-// MARK: - SubmitCustomizable
-
-extension BLIKComponent: SubmittableComponent {
-
-    package func submit() {
-        didSelectSubmitButton()
-    }
-
-    package func validate() -> Bool {
-        formViewController.validate()
-    }
-}

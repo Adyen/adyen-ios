@@ -97,7 +97,21 @@ package final class UPIComponent: PaymentComponent,
         
         selectedUPIFlow = upiAppsList.isEmpty ? .upiCollect : .upiIntent
     }
-    
+
+    package func performSubmit() {
+        guard formViewController.validate() else { return }
+
+        guard canSubmit() else {
+            showError()
+            return
+        }
+
+        continueButton.showsActivityIndicator = true
+        formViewController.view.isUserInteractionEnabled = false
+
+        submitPayment()
+    }
+
     // MARK: - LoadingComponent
     
     package func stopLoading() {
@@ -216,7 +230,7 @@ package final class UPIComponent: PaymentComponent,
         )
         item.title = localizedString(.continueTitle, configuration.localizationParameters)
         item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectContinueButton()
+            self?.performSubmit()
         }
         return item
     }()
@@ -294,20 +308,6 @@ extension UPIComponent {
     private func handleSelection(item: SelectableFormItem?) {
         self.currentSelectedItemIdentifier = item?.identifier
         self.updateSelection()
-    }
-    
-    private func didSelectContinueButton() {
-        guard validate() else { return }
-        
-        guard canSubmit() else {
-            showError()
-            return
-        }
-        
-        continueButton.showsActivityIndicator = true
-        formViewController.view.isUserInteractionEnabled = false
-        
-        submitPayment()
     }
     
     private func didChangeSegmentedControlIndex(_ index: Int) {
@@ -405,16 +405,3 @@ private extension UPIComponent {
 }
 
 extension UPIComponent: AdyenObserver {}
-
-// MARK: - SubmitCustomizable
-
-extension UPIComponent: SubmittableComponent {
-    
-    package func submit() {
-        didSelectContinueButton()
-    }
-    
-    package func validate() -> Bool {
-        formViewController.validate()
-    }
-}

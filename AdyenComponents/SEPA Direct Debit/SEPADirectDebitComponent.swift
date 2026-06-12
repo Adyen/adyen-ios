@@ -48,7 +48,23 @@ package final class SEPADirectDebitComponent: PaymentComponent, PresentableCompo
         self.context = context
         self.configuration = configuration
     }
-    
+
+    package func performSubmit() {
+        guard formViewController.validate() else {
+            return
+        }
+
+        let details = SEPADirectDebitDetails(
+            paymentMethod: sepaDirectDebitPaymentMethod,
+            iban: ibanItem.value,
+            ownerName: nameItem.value
+        )
+        button.showsActivityIndicator = true
+        formViewController.view.isUserInteractionEnabled = false
+
+        submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
+    }
+
     private let sepaDirectDebitPaymentMethod: SEPADirectDebitPaymentMethod
     
     // MARK: - Presentable Component Protocol
@@ -83,25 +99,7 @@ package final class SEPADirectDebitComponent: PaymentComponent, PresentableCompo
 
         return formViewController
     }()
-    
-    // MARK: - Private
-    
-    private func didSelectSubmitButton() {
-        guard validate() else {
-            return
-        }
-        
-        let details = SEPADirectDebitDetails(
-            paymentMethod: sepaDirectDebitPaymentMethod,
-            iban: ibanItem.value,
-            ownerName: nameItem.value
-        )
-        button.showsActivityIndicator = true
-        formViewController.view.isUserInteractionEnabled = false
-        
-        submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
-    }
-    
+
     // MARK: - Form Items
     
     internal lazy var nameItem: FormTextInputItem = {
@@ -144,7 +142,7 @@ package final class SEPADirectDebitComponent: PaymentComponent, PresentableCompo
             configuration.localizationParameters
         )
         item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectSubmitButton()
+            self?.performSubmit()
         }
         return item
     }()
@@ -154,16 +152,3 @@ package final class SEPADirectDebitComponent: PaymentComponent, PresentableCompo
 extension SEPADirectDebitComponent: TrackableComponent {}
 
 extension SEPADirectDebitComponent: ViewControllerDelegate {}
-
-// MARK: - SubmitCustomizable
-
-extension SEPADirectDebitComponent: SubmittableComponent {
-
-    package func submit() {
-        didSelectSubmitButton()
-    }
-
-    package func validate() -> Bool {
-        formViewController.validate()
-    }
-}

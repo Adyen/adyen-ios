@@ -36,4 +36,6 @@ class PaymentComponentSubject: PaymentComponent, PresentableComponent {
         self.order = order
         self.paymentMethod = paymentMethod
     }
+
+    func performSubmit() { /* Empty implementation */ }
 }

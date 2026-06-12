@@ -113,60 +113,10 @@ class BLIKComponentTests: XCTestCase {
         self.populate(textItemView: codeItemView, with: "123456")
 
         // When
-        sut.submit()
+        sut.performSubmit()
 
         // Then
         wait(for: [didSubmitExpectation], timeout: 10)
         XCTAssertEqual(paymentDelegateMock.didSubmitCallsCount, 1)
-    }
-
-    func testValidateGivenValidInputShouldReturnFormViewControllerValidateResult() throws {
-        // Given
-        var configuration = BLIKComponentConfiguration()
-        configuration.showsSubmitButton = false
-        let sut = BLIKComponent(
-            paymentMethod: paymentMethod,
-            context: context,
-            configuration: configuration
-        )
-
-        sut.viewController.loadViewIfNeeded()
-
-        let codeItemView: FormTextItemView<FormTextInputItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenComponents.BLIKComponent.blikCodeItem"))
-
-        self.populate(textItemView: codeItemView, with: "123456")
-
-        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
-        let expectedResult = formViewController.validate()
-
-        // When
-        let validationResult = sut.validate()
-
-        // Then
-        XCTAssertTrue(validationResult)
-        XCTAssertEqual(expectedResult, validationResult)
-    }
-
-    func testValidateGivenInvalidInputShouldReturnFormViewControllerValidateResult() throws {
-        // Given
-        var configuration = BLIKComponentConfiguration()
-        configuration.showsSubmitButton = false
-        let sut = BLIKComponent(
-            paymentMethod: paymentMethod,
-            context: context,
-            configuration: configuration
-        )
-
-        sut.viewController.loadViewIfNeeded()
-
-        let formViewController = try XCTUnwrap((sut.viewController as? SecuredViewController<FormViewController>)?.childViewController)
-        let expectedResult = formViewController.validate()
-
-        // When
-        let validationResult = sut.validate()
-
-        // Then
-        XCTAssertFalse(validationResult)
-        XCTAssertEqual(expectedResult, validationResult)
     }
 }

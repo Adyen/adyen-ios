@@ -50,6 +50,10 @@ package final class BoletoComponent: PaymentComponent,
         socialSecurityNumberItem.isHidden.wrappedValue = false
     }
 
+    package func performSubmit() {
+        formComponent.performSubmit()
+    }
+
     // MARK: - Private
     
     private lazy var socialSecurityNumberItem: FormTextInputItem = {
@@ -172,16 +176,6 @@ package final class BoletoComponent: PaymentComponent,
 
     package func stopLoading() {
         formComponent.stopLoading()
-    }
-}
-
-extension BoletoComponent: SubmittableComponent {
-    package func submit() {
-        formComponent.submit()
-    }
-    
-    package func validate() -> Bool {
-        formComponent.validate()
     }
 }
 

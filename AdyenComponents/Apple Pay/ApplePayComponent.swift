@@ -135,6 +135,10 @@ package class ApplePayComponent: NSObject, PresentableComponent, PaymentComponen
         resumeContinuation(success: success)
         completion?()
     }
+
+    package func performSubmit() {
+        delegate?.didFail(with: Error.submitNotSupported, from: self)
+    }
 }
 
 extension ApplePayComponent: TrackableComponent {}

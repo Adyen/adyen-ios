@@ -89,8 +89,8 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         formViewController.view.isUserInteractionEnabled = false
     }
 
-    private func didSelectSubmitButton() {
-        guard validate() else { return }
+    package func performSubmit() {
+        guard formViewController.validate() else { return }
         
         startLoading()
         submitEncryptedData(publicKey: context.publicKey)
@@ -256,7 +256,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
             configuration.localizationParameters
         )
         item.buttonSelectionHandler = { [weak self] in
-            self?.didSelectSubmitButton()
+            self?.performSubmit()
         }
         return item
     }()
@@ -318,18 +318,5 @@ extension ACHDirectDebitComponent: ViewControllerPresenter {
     
     package func dismissViewController(animated: Bool) {
         self.viewController.dismissViewController(animated: animated)
-    }
-}
-
-// MARK: - SubmitCustomizable
-
-extension ACHDirectDebitComponent: SubmittableComponent {
-
-    package func submit() {
-        didSelectSubmitButton()
-    }
-
-    package func validate() -> Bool {
-        formViewController.validate()
     }
 }

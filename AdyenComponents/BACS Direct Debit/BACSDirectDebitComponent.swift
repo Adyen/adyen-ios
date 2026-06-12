@@ -102,6 +102,10 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
         inputFormViewController.presenter = inputPresenter
         
     }
+
+    package func performSubmit() {
+        // TODO: - COSDK-1284: The confirmation screen will be removed.
+    }
 }
 
 // MARK: - BACSDirectDebitRouterProtocol

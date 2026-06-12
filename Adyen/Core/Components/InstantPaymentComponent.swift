@@ -6,15 +6,9 @@
 
 import Foundation
 
-@MainActor
-package protocol InitiablePaymentComponent: PaymentComponent {
-    /// Initiate the payment flow
-    func initiatePayment(delegate: PaymentComponentDelegate)
-}
-
 /// A component that handles payment methods that don't need any payment detail to be filled.
 @MainActor
-package final class InstantPaymentComponent: InitiablePaymentComponent {
+package final class InstantPaymentComponent: PaymentComponent {
 
     /// The context object for this component.
     package let context: AdyenContext
@@ -66,10 +60,7 @@ package final class InstantPaymentComponent: InitiablePaymentComponent {
     }
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
-    package func initiatePayment(delegate: PaymentComponentDelegate) {
-        // We are not attempting to fetch the checkoutAttemptId as it won't be ready for the payment
-        // and we don't want to block it for an analytics call.
-        self.delegate = delegate
+    package func performSubmit() {
         submit(data: paymentData)
     }
 }

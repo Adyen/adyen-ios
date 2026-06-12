@@ -51,8 +51,9 @@ class TwintComponentTests: XCTestCase {
             XCTAssertEqual(details.subType, "sdk")
             delegateExpectation.fulfill()
         }
+        sut.delegate = delegate
 
-        sut.initiatePayment(delegate: delegate)
+        sut.performSubmit()
 
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -68,9 +69,10 @@ class TwintComponentTests: XCTestCase {
 
             didSubmitExpectation.fulfill()
         }
+        sut.delegate = paymentComponentDelegate
 
         // When
-        sut.initiatePayment(delegate: paymentComponentDelegate)
+        sut.performSubmit()
 
         // Then
         wait(for: [didSubmitExpectation], timeout: 10)

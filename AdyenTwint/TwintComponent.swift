@@ -12,7 +12,7 @@ import TwintSDK
 
 /// A component that handles a Twint payment.
 @MainActor
-package final class TwintComponent: InitiablePaymentComponent {
+package final class TwintComponent: PaymentComponent {
 
     /// Configuration for Twint Component.
     package typealias Configuration = BasicComponentConfiguration
@@ -60,11 +60,8 @@ package final class TwintComponent: InitiablePaymentComponent {
         self.configuration = configuration
     }
 
-    // MARK: - PaymentInitiable
-
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
-    package func initiatePayment(delegate: PaymentComponentDelegate) {
-        self.delegate = delegate
+    package func performSubmit() {
         submit(data: paymentData)
     }
 }
