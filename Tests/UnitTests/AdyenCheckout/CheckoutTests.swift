@@ -190,6 +190,7 @@ final class CheckoutTests: XCTestCase {
         )
         let session = makeSessionMock()
         session.performSubmitResult = .success(.completion(resultCode: CheckoutResultCode.authorised.rawValue))
+        session.state.sessionResult = "test-session-result"
         callbackStore.onComplete = { result in
             XCTAssertEqual(result.resultCode, .authorised)
             XCTAssertEqual(result.sessionId, "test_session_id")
@@ -239,6 +240,7 @@ final class CheckoutTests: XCTestCase {
         )
         let session = makeSessionMock()
         session.performSubmitResult = .success(.completion(resultCode: CheckoutResultCode.authorised.rawValue))
+        session.state.sessionResult = "test-session-result"
         callbackStore.onComplete = { _ in
             onCompleteExpectation.fulfill()
         }
@@ -261,6 +263,7 @@ final class CheckoutTests: XCTestCase {
         )
         let session = makeSessionMock()
         session.performSubmitResult = .success(.completion(resultCode: CheckoutResultCode.authorised.rawValue))
+        session.state.sessionResult = "test-session-result"
         
         let modifiedName = ShopperName(firstName: "Modified", lastName: "Name")
         callbackStore.onBeforeSubmit = { data in
@@ -291,6 +294,7 @@ final class CheckoutTests: XCTestCase {
         )
         let session = makeSessionMock()
         session.performSubmitResult = .success(.completion(resultCode: CheckoutResultCode.authorised.rawValue))
+        session.state.sessionResult = "test-session-result"
         
         callbackStore.onBeforeSubmit = { data in
             .proceed(data: data, sessionData: "patched_session_data")
@@ -565,6 +569,7 @@ final class CheckoutTests: XCTestCase {
         )
         let session = makeSessionMock()
         session.performAdditionalDetailsResult = .success(.completion(resultCode: CheckoutResultCode.authorised.rawValue))
+        session.state.sessionResult = "test-session-result"
         callbackStore.onComplete = { result in
             XCTAssertEqual(result.resultCode, .authorised)
             onCompleteExpectation.fulfill()
