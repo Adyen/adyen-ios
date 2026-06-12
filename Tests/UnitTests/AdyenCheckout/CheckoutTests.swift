@@ -192,6 +192,8 @@ final class CheckoutTests: XCTestCase {
         session.performSubmitResult = .success(.completion(resultCode: CheckoutResultCode.authorised.rawValue))
         callbackStore.onComplete = { result in
             XCTAssertEqual(result.resultCode, .authorised)
+            XCTAssertEqual(result.sessionId, "test_session_id")
+            XCTAssertEqual(result.sessionResult, "test-session-result")
             onCompleteExpectation.fulfill()
         }
         let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
@@ -582,7 +584,8 @@ final class CheckoutTests: XCTestCase {
         let onCompleteExpectation = expectation(description: "onComplete called")
         let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
         let session = makeSessionMock()
-        session.currentResult = CheckoutResult(resultCode: .authorised)
+        session.state.resultCode = .authorised
+        session.state.sessionResult = "test-session-result"
         callbackStore.onComplete = { result in
             XCTAssertEqual(result.resultCode, .authorised)
             onCompleteExpectation.fulfill()
