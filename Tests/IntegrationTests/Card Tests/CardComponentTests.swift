@@ -790,7 +790,7 @@ class CardComponentTests: XCTestCase {
         
         setupRootViewController(component.viewController)
         
-        let view: UIView = viewController.view
+        let view: UIView = component.viewController.view
         let expiryDateItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.expiryDateItem"))
         let securityCodeItemView: FormTextItemView<FormCardSecurityCodeItem> = try XCTUnwrap(view.findView(with: "AdyenCard.CardComponent.securityCodeItem"))
         

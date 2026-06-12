@@ -39,7 +39,7 @@ struct ComponentContainerRouterTests {
         let actionComponent = await makeActionComponent()
 
         // When
-        sut.present(actionComponent: actionComponent, onCancel: nil)
+        sut.present(actionViewController: actionComponent, onCancel: nil)
 
         // Then
         #expect(viewControllerSpy.presentedViewControllerCaptured != nil)
@@ -55,7 +55,7 @@ struct ComponentContainerRouterTests {
         let cancelCallback = { cancelWasCalled = true }
 
         // When
-        sut.present(actionComponent: actionComponent, onCancel: cancelCallback)
+        sut.present(actionViewController: actionComponent, onCancel: cancelCallback)
 
         // Then
         let wrapper = try #require(
@@ -166,15 +166,13 @@ struct ComponentContainerRouterTests {
         )
     }
 
-    private func makeActionComponent() async -> PresentableComponent {
+    private func makeActionComponent() async -> UIViewController {
         let context = AdyenContext(
             apiContext: Dummy.apiContext,
             amount: .init(value: 100, currencyCode: "EUR"),
             publicKey: Dummy.publicKey,
             analyticsProvider: AnalyticsProviderMock()
         )
-        let redirect = RedirectComponent(context: context)
-        let viewController = UIViewController()
-        return PresentableComponentWrapper(component: redirect, viewController: viewController)
+        return UIViewController()
     }
 }

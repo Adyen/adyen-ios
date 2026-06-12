@@ -108,10 +108,10 @@ struct ComponentContainerViewModelTests {
         )
         let redirectComponent = RedirectComponent(context: contextMock)
         let viewControllerMock = UIViewController()
-        let actionComponentMock = PresentableComponentWrapper(component: redirectComponent, viewController: viewControllerMock)
+        let actionComponentMock = viewControllerMock
 
         // When
-        sut.present(actionComponent: actionComponentMock)
+        sut.present(actionViewController: actionComponentMock)
 
         // Then
         #expect(routerMock.presentActionComponentOnCancelCallsCount == 1)
@@ -130,16 +130,16 @@ struct ComponentContainerViewModelTests {
         )
         let redirectComponent = RedirectComponent(context: contextMock)
         let viewControllerMock = UIViewController()
-        let actionComponentMock = PresentableComponentWrapper(component: redirectComponent, viewController: viewControllerMock)
+        let actionComponentMock = viewControllerMock
 
-        routerMock.presentActionComponentOnCancelClosure = { (_: PresentableComponent, onCancel: (() -> Void)?) in
+        routerMock.presentActionComponentOnCancelClosure = { (_: UIViewController, onCancel: (() -> Void)?) in
             // Then
             onCancel?()
             #expect(paymentComponentMock.stopLoadingCallsCount == 1)
         }
 
         // When
-        sut.present(actionComponent: actionComponentMock)
+        sut.present(actionViewController: actionComponentMock)
     }
 
     @Test
@@ -174,13 +174,13 @@ struct ComponentContainerViewModelTests {
         }
 
         var presentActionComponentOnCancelCallsCount = 0
-        var presentActionComponentOnCancelReceivedArguments: (actionComponent: PresentableComponent, onCancel: (() -> Void)?)?
-        var presentActionComponentOnCancelClosure: ((PresentableComponent, (() -> Void)?) -> Void)?
+        var presentActionComponentOnCancelReceivedArguments: (actionViewController: UIViewController, onCancel: (() -> Void)?)?
+        var presentActionComponentOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
 
-        func present(actionComponent: PresentableComponent, onCancel: (() -> Void)?) {
+        func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
             presentActionComponentOnCancelCallsCount += 1
-            presentActionComponentOnCancelReceivedArguments = (actionComponent, onCancel)
-            presentActionComponentOnCancelClosure?(actionComponent, onCancel)
+            presentActionComponentOnCancelReceivedArguments = (actionViewController, onCancel)
+            presentActionComponentOnCancelClosure?(actionViewController, onCancel)
         }
 
         var dismissCompletionCallsCount = 0

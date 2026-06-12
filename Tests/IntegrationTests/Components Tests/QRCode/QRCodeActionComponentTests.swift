@@ -71,9 +71,9 @@ class QRCodeActionComponentTests: XCTestCase {
         }
         
         let presentationDelegate = PresentationDelegateMock()
-        presentationDelegate.doPresent = { component in
-            XCTAssertNotNil(component.viewController as? QRCodeViewController)
-            let viewController = component.viewController as! QRCodeViewController
+        presentationDelegate.doPresent = { viewController in
+            XCTAssertNotNil(viewController as? QRCodeViewController)
+            let viewController = viewController as! QRCodeViewController
             
             self.setupRootViewController(viewController)
         }
@@ -119,9 +119,9 @@ class QRCodeActionComponentTests: XCTestCase {
         }
         
         let presentationDelegate = PresentationDelegateMock()
-        presentationDelegate.doPresent = { component in
-            XCTAssertNotNil(component.viewController as? QRCodeViewController)
-            let viewController = component.viewController as! QRCodeViewController
+        presentationDelegate.doPresent = { viewController in
+            XCTAssertNotNil(viewController as? QRCodeViewController)
+            let viewController = viewController as! QRCodeViewController
             self.setupRootViewController(viewController)
         }
         
