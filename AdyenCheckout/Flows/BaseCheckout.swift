@@ -40,8 +40,8 @@ public class BaseCheckout {
     /// Sets the callback invoked when checkout fails.
     /// - Parameter handler: Callback invoked with the checkout failure.
     ///   - error: The `Error` describing why the checkout flow failed.
-    public func onError(_ handler: @escaping CheckoutErrorHandler) -> Self {
-        resultCallbacks.onError = handler
+    public func onFailure(_ handler: @escaping CheckoutErrorHandler) -> Self {
+        resultCallbacks.onFailure = handler
         return self
     }
 

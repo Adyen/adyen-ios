@@ -58,7 +58,7 @@ internal final class DummyActionComponentExample: InitialDataAdvancedFlowProtoco
             guard let self else { return .completion(resultCode: "Error") }
             return await self.callDetails(with: data)
         }
-        .onError { [weak self] error in
+        .onFailure { [weak self] error in
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
     }

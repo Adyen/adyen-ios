@@ -97,7 +97,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 result.resultCode.rawValue
             )
         }
-        .onError { [weak self] error in
+        .onFailure { [weak self] error in
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
 

@@ -49,7 +49,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         _ controller: PKPaymentAuthorizationViewController,
         didSelectShippingContact contact: PKContact
     ) async -> PKPaymentRequestShippingContactUpdate {
-        await handleShippingContactChange(contact)
+        await handleDidSelectShippingContact(contact)
     }
 
     // MARK: - Shipping Method (async)
@@ -58,7 +58,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         _ controller: PKPaymentAuthorizationViewController,
         didSelect shippingMethod: PKShippingMethod
     ) async -> PKPaymentRequestShippingMethodUpdate {
-        await handleShippingMethodChange(shippingMethod)
+        await handleDidSelectShippingMethod(shippingMethod)
     }
 
     // MARK: - Coupon Code (async)
@@ -67,7 +67,7 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
         _ controller: PKPaymentAuthorizationViewController,
         didChangeCouponCode couponCode: String
     ) async -> PKPaymentRequestCouponCodeUpdate {
-        await handleCouponCodeChange(couponCode)
+        await handleDidChangeCouponCode(couponCode)
     }
 }
 
@@ -119,32 +119,32 @@ extension ApplePayComponent {
         return PKPaymentAuthorizationResult(status: success ? .success : .failure, errors: nil)
     }
 
-    private func handleShippingContactChange(_ contact: PKContact) async -> PKPaymentRequestShippingContactUpdate {
-        guard let onShippingContactChange = configuration.onShippingContactChange else {
+    private func handleDidSelectShippingContact(_ contact: PKContact) async -> PKPaymentRequestShippingContactUpdate {
+        guard let onSelectShippingContact = configuration.onSelectShippingContact else {
             return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
         }
 
-        let result = await onShippingContactChange(contact, paymentRequest.paymentSummaryItems)
+        let result = await onSelectShippingContact(contact, paymentRequest.paymentSummaryItems)
         result.paymentSummaryItems = validSummaryItems(from: result)
         return result
     }
 
-    private func handleShippingMethodChange(_ shippingMethod: PKShippingMethod) async -> PKPaymentRequestShippingMethodUpdate {
-        guard let onShippingMethodChange = configuration.onShippingMethodChange else {
+    private func handleDidSelectShippingMethod(_ shippingMethod: PKShippingMethod) async -> PKPaymentRequestShippingMethodUpdate {
+        guard let onSelectShippingMethod = configuration.onSelectShippingMethod else {
             return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
         }
 
-        let result = await onShippingMethodChange(shippingMethod, paymentRequest.paymentSummaryItems)
+        let result = await onSelectShippingMethod(shippingMethod, paymentRequest.paymentSummaryItems)
         result.paymentSummaryItems = validSummaryItems(from: result)
         return result
     }
 
-    private func handleCouponCodeChange(_ couponCode: String) async -> PKPaymentRequestCouponCodeUpdate {
-        guard let onCouponCodeChange = configuration.onCouponCodeChange else {
+    private func handleDidChangeCouponCode(_ couponCode: String) async -> PKPaymentRequestCouponCodeUpdate {
+        guard let onChangeCouponCode = configuration.onChangeCouponCode else {
             return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
         }
 
-        let result = await onCouponCodeChange(couponCode, paymentRequest.paymentSummaryItems)
+        let result = await onChangeCouponCode(couponCode, paymentRequest.paymentSummaryItems)
         result.paymentSummaryItems = validSummaryItems(from: result)
         return result
     }
