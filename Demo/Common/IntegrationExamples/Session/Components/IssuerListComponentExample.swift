@@ -77,7 +77,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
     internal func presentComponent(with session: Session) {
         do {
             let component = try issuerListComponent(from: session)
-            let componentViewController = viewController(for: component)
+            let componentViewController = viewController(wrapping: component.viewController)
             presenter?.present(viewController: componentViewController, completion: nil)
             issuerListComponent = component
         } catch {
@@ -123,14 +123,14 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
 
 extension IssuerListComponentExample: PresentationDelegate {
     internal func present(viewController: UIViewController) {
-        presenter?.present(viewController: viewController, completion: nil)
+        let wrappedViewController = self.viewController(wrapping: viewController)
+        presenter?.present(viewController: wrappedViewController, completion: nil)
     }
 }
 
 private extension IssuerListComponentExample {
     
-    func viewController(for component: PresentableComponent) -> UIViewController {
-        let viewController = component.viewController
+    func viewController(wrapping viewController: UIViewController) -> UIViewController {
         let navigation = UINavigationController(rootViewController: viewController)
         viewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,

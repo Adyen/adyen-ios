@@ -67,7 +67,7 @@ internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvanced
     private func presentComponent(with paymentMethods: PaymentMethods) {
         do {
             let component = try issuerListComponent(from: paymentMethods)
-            let componentViewController = viewController(for: component)
+            let componentViewController = viewController(wrapping: component.viewController)
             presenter?.present(viewController: componentViewController, completion: nil)
             issuerListComponent = component
         } catch {
@@ -181,14 +181,14 @@ extension IssuerListComponentAdvancedFlowExample: ActionComponentDelegate {
 
 extension IssuerListComponentAdvancedFlowExample: PresentationDelegate {
     internal func present(viewController: UIViewController) {
-        presenter?.present(viewController: viewController, completion: nil)
+        let wrappedViewController = self.viewController(wrapping: viewController)
+        presenter?.present(viewController: wrappedViewController, completion: nil)
     }
 }
 
 private extension IssuerListComponentAdvancedFlowExample {
     
-    private func viewController(for component: PresentableComponent) -> UIViewController {
-        let viewController = component.viewController
+    private func viewController(wrapping viewController: UIViewController) -> UIViewController {
         let navigation = UINavigationController(rootViewController: viewController)
         viewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
