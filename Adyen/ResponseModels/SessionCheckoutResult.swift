@@ -16,6 +16,8 @@ public struct SessionCheckoutResult {
     public let sessionId: String
 
     /// An encoded string that can be used to get the payment outcome on your server.
+    /// Pass this value as the `sessionResult` query parameter to the `/sessions/{sessionId}` endpoint,
+    /// where `sessionId` is the ``SessionCheckoutResult/sessionId`` property on this result type.
     public let sessionResult: String
 
     package init(resultCode: CheckoutResultCode, sessionId: String, sessionResult: String) {

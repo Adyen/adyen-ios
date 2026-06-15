@@ -40,6 +40,7 @@ package final class AdvancedCheckoutCallbackStore: CheckoutResultCallbackStore {
     package var onFailure: CheckoutFailureHandler?
 
     package func handleCompletion(resultCode: CheckoutResultCode, sessionId: String?, sessionResult: String?) {
+        // sessionId and sessionResult are session-specific and not applicable to the advanced flow.
         onComplete?(AdvancedCheckoutResult(resultCode: resultCode))
     }
 }
@@ -52,6 +53,7 @@ package final class ActionOnlyCheckoutCallbackStore: CheckoutResultCallbackStore
     package var onFailure: CheckoutFailureHandler?
 
     package func handleCompletion(resultCode: CheckoutResultCode, sessionId: String?, sessionResult: String?) {
+        // sessionId and sessionResult are session-specific and not applicable to the action-only flow.
         onComplete?(AdvancedCheckoutResult(resultCode: resultCode))
     }
 }
