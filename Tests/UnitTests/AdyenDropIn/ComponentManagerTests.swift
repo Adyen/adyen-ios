@@ -78,20 +78,17 @@ class ComponentManagerTests: XCTestCase {
     let numberOfExpectedRegularComponents = 28
     let numberOfExpectedStoredComponent = 7
 
-    var presentationDelegate: PresentationDelegateMock!
     var context: AdyenContext!
     var configuration: DropInComponent.Configuration!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        presentationDelegate = PresentationDelegateMock()
         context = Dummy.context
         configuration = DropInComponent.Configuration()
     }
 
     override func tearDownWithError() throws {
         AdyenAssertion.listener = nil
-        presentationDelegate = nil
         context = nil
         configuration = nil
         try super.tearDownWithError()
@@ -102,8 +99,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         XCTAssertEqual(sut.storedComponents.count, numberOfExpectedStoredComponent)
@@ -123,8 +119,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         XCTAssertEqual(sut.storedComponents.count, numberOfExpectedStoredComponent)
@@ -140,8 +135,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "TestValue", keySeparator: nil)
@@ -155,8 +149,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "TestValue", keySeparator: nil)
 
@@ -170,8 +163,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
         
         let paymentComponent = sut.regularComponents.first { $0.paymentMethod.type.rawValue == "cashapp" }
@@ -189,8 +181,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
         
         // When
@@ -211,8 +202,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         // When
@@ -234,8 +224,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         // When
@@ -251,8 +240,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         // When
@@ -267,8 +255,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         // When
@@ -285,8 +272,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
         
         XCTAssertEqual(sut.storedComponents.count, numberOfExpectedStoredComponent)
@@ -303,8 +289,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
         
         XCTAssertEqual(sut.storedComponents.count, numberOfExpectedStoredComponent)
@@ -337,8 +322,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: order,
-            presentationDelegate: presentationDelegate
+            order: order
         )
 
         // Paid section should contain the paid payment methods
@@ -379,8 +363,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: contextWithAmount,
             configuration: configuration,
-            order: order,
-            presentationDelegate: presentationDelegate
+            order: order
         )
         
         // Then - Apple Pay component should use the order's remaining amount, not the original amount
@@ -405,8 +388,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         // When
@@ -425,8 +407,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         // When
@@ -445,8 +426,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         // When
@@ -465,8 +445,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         // When
@@ -485,8 +464,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         // When
@@ -504,8 +482,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         // When
@@ -518,14 +495,12 @@ class ComponentManagerTests: XCTestCase {
     
     func testShopperInformationInjectionShouldSetShopperInformationOnAtomeComponent() throws {
         // Given
-
         configuration.shopperInformation = shopperInformation
         let sut = ComponentManager(
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         // Action
@@ -544,8 +519,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         // When
@@ -562,8 +536,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         // When
@@ -582,8 +555,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         // When
@@ -600,8 +572,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         // When
@@ -620,8 +591,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         // When
@@ -642,8 +612,7 @@ class ComponentManagerTests: XCTestCase {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: nil
         )
 
         // When
