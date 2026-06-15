@@ -7,6 +7,7 @@
 import Adyen
 import Foundation
 
+// sourcery:AutoMockable
 internal protocol BACSDirectDebitComponentTrackerProtocol: AnyObject {
     func sendInitialAnalytics()
     func sendDidLoadEvent()

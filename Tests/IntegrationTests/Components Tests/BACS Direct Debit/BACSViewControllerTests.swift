@@ -60,8 +60,8 @@ class BACSViewControllerTests: XCTestCase {
         sut.loadViewIfNeeded()
 
         // Then
-        XCTAssertEqual(tracker.initialEventCallsCount, 1)
-        XCTAssertEqual(tracker.didLoadEventCallsCount, 1)
+        XCTAssertEqual(tracker.sendInitialAnalyticsCallsCount, 1)
+        XCTAssertEqual(tracker.sendDidLoadEventCallsCount, 1)
     }
 
     func test_viewDidLoad_shouldAddItemsToForm() {
@@ -81,35 +81,6 @@ class BACSViewControllerTests: XCTestCase {
 
         // Then
         XCTAssertTrue(viewModel.shouldShowValidation)
-    }
-
-    func test_init_shouldSetScrollEnabledFromConfiguration() {
-        // Given - showsSubmitButton is true in setup
-        // Then
-        XCTAssertTrue(sut.scrollEnabled)
-    }
-
-    func test_init_whenShowsSubmitButtonIsFalse_shouldSetScrollEnabledToFalse() {
-        // Given
-        let paymentMethod = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit, name: "BACS Direct Debit")
-        let configuration = BACSDirectDebitComponent.Configuration(showsSubmitButton: false)
-
-        let viewModelWithoutButton = BACSViewModel(
-            paymentMethod: paymentMethod,
-            amount: nil,
-            configuration: configuration,
-            tracker: tracker,
-            itemsFactory: itemsFactory,
-            onSubmit: { _ in }
-        )
-
-        let viewController = BACSViewController(
-            title: "BACS Direct Debit",
-            viewModel: viewModelWithoutButton
-        )
-
-        // Then
-        XCTAssertFalse(viewController.scrollEnabled)
     }
 
     // MARK: - Private

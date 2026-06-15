@@ -19,6 +19,7 @@ import Foundation
 @testable import Adyen
 @testable import AdyenCard
 @testable import AdyenCheckout
+@testable import AdyenComponents
 @testable import AdyenDropIn
 @testable import AdyenUI
 
@@ -120,6 +121,38 @@ public class AnyEventAnalyticsProviderMock: AnyEventAnalyticsProvider {
         addErrorReceivedError = error
         addErrorReceivedInvocations.append(error)
         addErrorClosure?(error)
+    }
+
+}
+
+class BACSDirectDebitComponentTrackerProtocolMock: BACSDirectDebitComponentTrackerProtocol {
+
+    // MARK: - sendInitialAnalytics
+
+    var sendInitialAnalyticsCallsCount = 0
+    var sendInitialAnalyticsCalled: Bool {
+        sendInitialAnalyticsCallsCount > 0
+    }
+
+    var sendInitialAnalyticsClosure: (() -> Void)?
+
+    func sendInitialAnalytics() {
+        sendInitialAnalyticsCallsCount += 1
+        sendInitialAnalyticsClosure?()
+    }
+
+    // MARK: - sendDidLoadEvent
+
+    var sendDidLoadEventCallsCount = 0
+    var sendDidLoadEventCalled: Bool {
+        sendDidLoadEventCallsCount > 0
+    }
+
+    var sendDidLoadEventClosure: (() -> Void)?
+
+    func sendDidLoadEvent() {
+        sendDidLoadEventCallsCount += 1
+        sendDidLoadEventClosure?()
     }
 
 }

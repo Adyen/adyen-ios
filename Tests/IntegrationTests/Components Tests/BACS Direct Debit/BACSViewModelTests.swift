@@ -78,8 +78,8 @@ class BACSViewModelTests: XCTestCase {
         sut.viewDidLoad()
 
         // Then
-        XCTAssertEqual(tracker.initialEventCallsCount, 1)
-        XCTAssertEqual(tracker.didLoadEventCallsCount, 1)
+        XCTAssertEqual(tracker.sendInitialAnalyticsCallsCount, 1)
+        XCTAssertEqual(tracker.sendDidLoadEventCallsCount, 1)
     }
 
     func test_submit_whenButtonTapped_shouldSetShouldShowValidation() {
