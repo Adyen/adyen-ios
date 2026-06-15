@@ -44,7 +44,7 @@ let checkout = try await Checkout.setup(
 .onComplete { result in
     print(result.resultCode)
 }
-.onError { error in
+.onFailure { error in
     print(error.localizedDescription)
 }
 
