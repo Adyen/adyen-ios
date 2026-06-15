@@ -64,6 +64,54 @@ class BACSViewControllerTests: XCTestCase {
         XCTAssertEqual(tracker.didLoadEventCallsCount, 1)
     }
 
+    func test_viewDidLoad_shouldAddItemsToForm() {
+        // When
+        sut.loadViewIfNeeded()
+
+        // Then - items should be added (11 items from viewModel.createItems())
+        XCTAssertEqual(viewModel.items.count, 11)
+    }
+
+    func test_viewDidLoad_whenShouldShowValidationChanges_shouldShowValidation() {
+        // Given
+        sut.loadViewIfNeeded()
+
+        // When - trigger validation by submitting with invalid data
+        viewModel.submit()
+
+        // Then
+        XCTAssertTrue(viewModel.shouldShowValidation)
+    }
+
+    func test_init_shouldSetScrollEnabledFromConfiguration() {
+        // Given - showsSubmitButton is true in setup
+        // Then
+        XCTAssertTrue(sut.scrollEnabled)
+    }
+
+    func test_init_whenShowsSubmitButtonIsFalse_shouldSetScrollEnabledToFalse() {
+        // Given
+        let paymentMethod = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit, name: "BACS Direct Debit")
+        let configuration = BACSDirectDebitComponent.Configuration(showsSubmitButton: false)
+
+        let viewModelWithoutButton = BACSViewModel(
+            paymentMethod: paymentMethod,
+            amount: nil,
+            configuration: configuration,
+            tracker: tracker,
+            itemsFactory: itemsFactory,
+            onSubmit: { _ in }
+        )
+
+        let viewController = BACSViewController(
+            title: "BACS Direct Debit",
+            viewModel: viewModelWithoutButton
+        )
+
+        // Then
+        XCTAssertFalse(viewController.scrollEnabled)
+    }
+
     // MARK: - Private
 
     private func makeItemsFactoryMock() -> BACSItemsFactoryProtocolMock {
