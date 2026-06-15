@@ -43,7 +43,7 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
 
     // MARK: - PaymentComponent
 
-    package func submit() {
+    package func performSubmit() {
         bacsViewModel?.submit()
     }
 
@@ -93,7 +93,6 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
             onSubmit: { [weak self] details in
                 let data = PaymentComponentData(
                     paymentMethodDetails: details,
-                    amount: self?.context.amount,
                     order: self?.order
                 )
                 self?.submit(data: data)

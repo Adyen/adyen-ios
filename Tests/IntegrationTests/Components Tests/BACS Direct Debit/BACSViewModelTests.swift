@@ -11,40 +11,47 @@ import XCTest
 
 class BACSViewModelTests: XCTestCase {
 
-    var view: BACSInputFormViewProtocolMock!
-    var router: BACSRouterProtocolMock!
     var tracker: BACSDirectDebitComponentTrackerProtocolMock!
     var itemsFactory: BACSItemsFactoryProtocolMock!
     var sut: BACSViewModel!
+    var onSubmitCallsCount: Int = 0
+    var onSubmitReceivedDetails: BACSDirectDebitDetails?
 
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        view = BACSInputFormViewProtocolMock()
-        router = BACSRouterProtocolMock()
         tracker = BACSDirectDebitComponentTrackerProtocolMock()
         itemsFactory = itemsFactoryMock
         let amount = Amount(value: 105.7, currencyCode: "USD", localeIdentifier: nil)
+        let paymentMethod = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit, name: "BACS Direct Debit")
+        let configuration = BACSDirectDebitComponent.Configuration(showsSubmitButton: true)
+
+        onSubmitCallsCount = 0
+        onSubmitReceivedDetails = nil
 
         sut = BACSViewModel(
-            view: view,
-            router: router,
+            paymentMethod: paymentMethod,
+            amount: amount,
+            configuration: configuration,
             tracker: tracker,
-            itemsFactory: itemsFactory
+            itemsFactory: itemsFactory,
+            onSubmit: { [weak self] details in
+                self?.onSubmitCallsCount += 1
+                self?.onSubmitReceivedDetails = details
+            }
         )
-        sut.amount = amount
     }
 
     override func tearDownWithError() throws {
-        view = nil
-        router = nil
         tracker = nil
         itemsFactory = nil
         sut = nil
+        onSubmitCallsCount = 0
+        onSubmitReceivedDetails = nil
         try super.tearDownWithError()
     }
 
-    func testViewDidLoadShouldCreateItems() {
+    func test_viewDidLoad_shouldCreateItems() {
         // When
         sut.viewDidLoad()
 
@@ -53,211 +60,147 @@ class BACSViewModelTests: XCTestCase {
         XCTAssertEqual(itemsFactory.createBankAccountNumberItemCallsCount, 1)
         XCTAssertEqual(itemsFactory.createSortCodeItemCallsCount, 1)
         XCTAssertEqual(itemsFactory.createEmailItemCallsCount, 1)
-        XCTAssertEqual(itemsFactory.createContinueButtonCallsCount, 1)
+        XCTAssertEqual(itemsFactory.createPaymentButtonCallsCount, 1)
         XCTAssertEqual(itemsFactory.createAmountConsentToggleAmountCallsCount, 1)
         XCTAssertEqual(itemsFactory.createLegalConsentToggleCallsCount, 1)
     }
 
-    func testViewDidLoadShouldAddItemsToFormView() {
+    func test_viewDidLoad_shouldPopulateItems() {
         // When
         sut.viewDidLoad()
 
         // Then
-        XCTAssertEqual(view.addItemCallsCount, 11)
+        XCTAssertEqual(sut.items.count, 11)
     }
 
-    func testViewDidLoadShouldCallTrackerSendEvent() {
+    func test_viewDidLoad_shouldCallTrackerSendEvent() {
         // When
         sut.viewDidLoad()
 
         // Then
         XCTAssertEqual(tracker.initialEventCallsCount, 1)
+        XCTAssertEqual(tracker.didLoadEventCallsCount, 1)
     }
 
-    func testContinuePaymentWhenButtonTappedShouldDisplayValidationOnView() {
+    func test_submit_whenButtonTapped_shouldSetShouldShowValidation() {
         // When
         sut.viewDidLoad()
         sut.submitButtonItem?.buttonSelectionHandler?()
 
         // Then
-        XCTAssertEqual(view.displayValidationCallsCount, 1)
+        XCTAssertTrue(sut.shouldShowValidation)
     }
 
-    func testContinuePaymentWhenAnyTextItemIsNotValidShouldNotCallRouterPresentConfirmation() {
+    func test_submit_whenAnyTextItemIsNotValid_shouldNotCallOnSubmit() {
         // Given
         sut.viewDidLoad()
         sut.amountConsentToggleItem?.value = true
         sut.legalConsentToggleItem?.value = true
 
-        sut.holderNameItem?.value = bacsDataMock.holderName
-        sut.bankAccountNumberItem?.value = bacsDataMock.bankAccountNumber
-        sut.sortCodeItem?.value = bacsDataMock.bankLocationId
+        sut.holderNameItem?.value = mockHolderName
+        sut.bankAccountNumberItem?.value = mockBankAccountNumber
+        sut.sortCodeItem?.value = mockBankLocationId
         sut.emailItem?.value = "mail"
 
         // When
         sut.submitButtonItem?.buttonSelectionHandler?()
 
         // Then
-        XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 0)
+        XCTAssertEqual(onSubmitCallsCount, 0)
     }
 
-    func testContinuePaymentWhenAmountConsentItemIsDisabledShouldNotCallRouterPresentConfirmation() {
+    func test_submit_whenAmountConsentItemIsDisabled_shouldNotCallOnSubmit() {
         // Given
         sut.viewDidLoad()
         sut.amountConsentToggleItem?.value = false
         sut.legalConsentToggleItem?.value = true
 
-        sut.holderNameItem?.value = bacsDataMock.holderName
-        sut.bankAccountNumberItem?.value = bacsDataMock.bankAccountNumber
-        sut.sortCodeItem?.value = bacsDataMock.bankLocationId
-        sut.emailItem?.value = bacsDataMock.shopperEmail
+        sut.holderNameItem?.value = mockHolderName
+        sut.bankAccountNumberItem?.value = mockBankAccountNumber
+        sut.sortCodeItem?.value = mockBankLocationId
+        sut.emailItem?.value = mockShopperEmail
 
         // When
         sut.submitButtonItem?.buttonSelectionHandler?()
 
         // Then
-        XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 0)
+        XCTAssertEqual(onSubmitCallsCount, 0)
     }
 
-    func testContinuePaymentWhenLegalConsentItemIsDisabledShouldNotCallRouterPresentConfirmation() {
+    func test_submit_whenLegalConsentItemIsDisabled_shouldNotCallOnSubmit() {
         // Given
         sut.viewDidLoad()
         sut.amountConsentToggleItem?.value = true
         sut.legalConsentToggleItem?.value = false
 
-        sut.holderNameItem?.value = bacsDataMock.holderName
-        sut.bankAccountNumberItem?.value = bacsDataMock.bankAccountNumber
-        sut.sortCodeItem?.value = bacsDataMock.bankLocationId
-        sut.emailItem?.value = bacsDataMock.shopperEmail
+        sut.holderNameItem?.value = mockHolderName
+        sut.bankAccountNumberItem?.value = mockBankAccountNumber
+        sut.sortCodeItem?.value = mockBankLocationId
+        sut.emailItem?.value = mockShopperEmail
 
         // When
         sut.submitButtonItem?.buttonSelectionHandler?()
 
         // Then
-        XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 0)
+        XCTAssertEqual(onSubmitCallsCount, 0)
     }
 
-    func testContinuePaymentWhenAnyItemValueIsNilShouldNotCallRouterPresentConfirmation() {
+    func test_submit_whenAnyItemValueIsNil_shouldNotCallOnSubmit() {
         // Given
         sut.viewDidLoad()
         sut.amountConsentToggleItem?.value = true
         sut.legalConsentToggleItem?.value = false
 
         // Missing bank holder name value
-        sut.bankAccountNumberItem?.value = bacsDataMock.bankAccountNumber
-        sut.sortCodeItem?.value = bacsDataMock.bankLocationId
-        sut.emailItem?.value = bacsDataMock.shopperEmail
+        sut.bankAccountNumberItem?.value = mockBankAccountNumber
+        sut.sortCodeItem?.value = mockBankLocationId
+        sut.emailItem?.value = mockShopperEmail
 
         // When
         sut.submitButtonItem?.buttonSelectionHandler?()
 
         // Then
-        XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 0)
+        XCTAssertEqual(onSubmitCallsCount, 0)
     }
 
-    func testContinuePaymentWhenAllItemsAreValidShouldCallRouterPresentConfirmation() {
+    func test_submit_whenAllItemsAreValid_shouldCallOnSubmit() {
         // Given
         sut.viewDidLoad()
-        sut.amountConsentToggleItem?.value = true
-        sut.legalConsentToggleItem?.value = true
-
-        sut.holderNameItem?.value = bacsDataMock.holderName
-        sut.bankAccountNumberItem?.value = bacsDataMock.bankAccountNumber
-        sut.sortCodeItem?.value = bacsDataMock.bankLocationId
-        sut.emailItem?.value = bacsDataMock.shopperEmail
+        populateValidFormData()
 
         // When
         sut.submitButtonItem?.buttonSelectionHandler?()
 
         // Then
-        XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 1)
+        XCTAssertEqual(onSubmitCallsCount, 1)
     }
 
-    func testContinuePaymentShouldCreateBacsDataWithCorrectValues() {
+    func test_submit_whenAllItemsAreValid_shouldCreateDetailsWithCorrectValues() {
         // Given
         sut.viewDidLoad()
-        let expectedBacsData = bacsDataMock
-
-        sut.amountConsentToggleItem?.value = true
-        sut.legalConsentToggleItem?.value = true
-
-        sut.holderNameItem?.value = expectedBacsData.holderName
-        sut.bankAccountNumberItem?.value = expectedBacsData.bankAccountNumber
-        sut.sortCodeItem?.value = expectedBacsData.bankLocationId
-        sut.emailItem?.value = expectedBacsData.shopperEmail
+        populateValidFormData()
 
         // When
         sut.submitButtonItem?.buttonSelectionHandler?()
 
         // Then
-        let receivedBacsData = router.presentConfirmationWithDataReceivedData
-        XCTAssertNotNil(receivedBacsData)
-        XCTAssertEqual(expectedBacsData, receivedBacsData)
-    }
-
-    func testViewWillAppearWhenThereIsDataInputShouldRestoreFields() throws {
-        // Given
-        sut.viewDidLoad()
-        let expectedBacsData = bacsDataMock
-
-        sut.amountConsentToggleItem?.value = true
-        sut.legalConsentToggleItem?.value = true
-
-        sut.holderNameItem?.value = expectedBacsData.holderName
-        sut.bankAccountNumberItem?.value = expectedBacsData.bankAccountNumber
-        sut.sortCodeItem?.value = expectedBacsData.bankLocationId
-        sut.emailItem?.value = expectedBacsData.shopperEmail
-
-        // When
-        sut.submitButtonItem?.buttonSelectionHandler?()
-        sut.viewWillAppear()
-
-        // Then
-        let amountConsentValue = try XCTUnwrap(sut.amountConsentToggleItem?.value)
-        let legalConsentValue = try XCTUnwrap(sut.legalConsentToggleItem?.value)
-        XCTAssertTrue(amountConsentValue)
-        XCTAssertTrue(legalConsentValue)
-        XCTAssertEqual(expectedBacsData.holderName, sut.holderNameItem?.value)
-        XCTAssertEqual(expectedBacsData.bankAccountNumber, sut.bankAccountNumberItem?.value)
-        XCTAssertEqual(expectedBacsData.bankLocationId, sut.sortCodeItem?.value)
-        XCTAssertEqual(expectedBacsData.shopperEmail, sut.emailItem?.value)
-    }
-
-    func testResetFormShouldResetFormItems() throws {
-        // Given
-        sut.viewDidLoad()
-        sut.amountConsentToggleItem?.value = true
-        sut.legalConsentToggleItem?.value = true
-
-        sut.holderNameItem?.value = bacsDataMock.holderName
-        sut.bankAccountNumberItem?.value = bacsDataMock.bankAccountNumber
-        sut.sortCodeItem?.value = bacsDataMock.bankLocationId
-        sut.emailItem?.value = bacsDataMock.shopperEmail
-
-        // When
-        sut.resetForm()
-
-        // Then
-        let holderName = try XCTUnwrap(sut.holderNameItem?.value)
-        XCTAssertTrue(holderName.isEmpty)
-
-        let bankAccountNumber = try XCTUnwrap(sut.bankAccountNumberItem?.value)
-        XCTAssertTrue(bankAccountNumber.isEmpty)
-
-        let sortCode = try XCTUnwrap(sut.sortCodeItem?.value)
-        XCTAssertTrue(sortCode.isEmpty)
-
-        let email = try XCTUnwrap(sut.emailItem?.value)
-        XCTAssertTrue(email.isEmpty)
-
-        let amountConsentValue = try XCTUnwrap(sut.amountConsentToggleItem?.value)
-        XCTAssertFalse(amountConsentValue)
-
-        let legalConsentValue = try XCTUnwrap(sut.legalConsentToggleItem?.value)
-        XCTAssertFalse(legalConsentValue)
+        let receivedDetails = onSubmitReceivedDetails
+        XCTAssertNotNil(receivedDetails)
+        XCTAssertEqual(mockHolderName, receivedDetails?.holderName)
+        XCTAssertEqual(mockBankAccountNumber, receivedDetails?.bankAccountNumber)
+        XCTAssertEqual(mockBankLocationId, receivedDetails?.bankLocationId)
     }
 
     // MARK: - Private
+
+    private func populateValidFormData() {
+        sut.amountConsentToggleItem?.value = true
+        sut.legalConsentToggleItem?.value = true
+        sut.holderNameItem?.value = mockHolderName
+        sut.bankAccountNumberItem?.value = mockBankAccountNumber
+        sut.sortCodeItem?.value = mockBankLocationId
+        sut.emailItem?.value = mockShopperEmail
+    }
 
     private var itemsFactoryMock: BACSItemsFactoryProtocolMock {
         let styleProvider = FormComponentStyle()
@@ -280,20 +223,27 @@ class BACSViewModelTests: XCTestCase {
         emailItem.validator = EmailValidator()
         itemsFactory.createEmailItemReturnValue = emailItem
 
-        itemsFactory.createContinueButtonReturnValue = FormButtonItem(style: styleProvider.mainButtonItem)
+        itemsFactory.createPaymentButtonReturnValue = FormButtonItem(style: styleProvider.mainButtonItem)
         itemsFactory.createAmountConsentToggleAmountReturnValue = FormToggleItem()
         itemsFactory.createLegalConsentToggleReturnValue = FormToggleItem()
 
         return itemsFactory
     }
 
-    private var bacsDataMock: BACSDirectDebitData {
-        BACSDirectDebitData(
-            holderName: "Katrina del Mar",
-            bankAccountNumber: "90583742",
-            bankLocationId: "743082",
-            shopperEmail: "katrina.mar@mail.com"
-        )
+    private var mockHolderName: String {
+        "Katrina del Mar"
+    }
+
+    private var mockBankAccountNumber: String {
+        "90583742"
+    }
+
+    private var mockBankLocationId: String {
+        "743082"
+    }
+
+    private var mockShopperEmail: String {
+        "katrina.mar@mail.com"
     }
 
 }
