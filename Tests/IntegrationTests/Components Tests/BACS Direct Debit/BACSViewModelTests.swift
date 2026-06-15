@@ -191,6 +191,40 @@ class BACSViewModelTests: XCTestCase {
         XCTAssertEqual(mockBankLocationId, receivedDetails?.bankLocationId)
     }
 
+    func test_stopLoading_shouldSetActivityIndicatorToFalse() {
+        // Given
+        sut.viewDidLoad()
+        sut.submitButtonItem?.showsActivityIndicator = true
+
+        // When
+        sut.stopLoading()
+
+        // Then
+        XCTAssertEqual(sut.submitButtonItem?.showsActivityIndicator, false)
+    }
+
+    func test_viewDidLoad_whenShowsSubmitButtonIsFalse_shouldNotCreateSubmitButton() {
+        // Given
+        let paymentMethod = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit, name: "BACS Direct Debit")
+        let configuration = BACSDirectDebitComponent.Configuration(showsSubmitButton: false)
+
+        let viewModel = BACSViewModel(
+            paymentMethod: paymentMethod,
+            amount: nil,
+            configuration: configuration,
+            tracker: tracker,
+            itemsFactory: itemsFactory,
+            onSubmit: { _ in }
+        )
+
+        // When
+        viewModel.viewDidLoad()
+
+        // Then
+        XCTAssertNil(viewModel.submitButtonItem)
+        XCTAssertEqual(itemsFactory.createPaymentButtonCallsCount, 0)
+    }
+
     // MARK: - Private
 
     private func populateValidFormData() {
