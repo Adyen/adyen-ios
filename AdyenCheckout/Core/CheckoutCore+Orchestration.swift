@@ -99,11 +99,11 @@ internal extension CheckoutCore {
     }
 
     func completeAction(from component: (any PaymentComponent)?) {
-        guard let result = session?.currentResult else {
+        guard let resultCode = session?.state.resultCode else {
             // TODO: need a result code for advanced non-session action flows.
             return
         }
-        finish(with: result, from: component)
+        finish(with: resultCode, from: component)
     }
 
     func handle(submitResult: SubmitResult, source: CheckoutCallbackSource) {
@@ -111,7 +111,7 @@ internal extension CheckoutCore {
         case let .action(action):
             handle(action, source: source)
         case let .completion(resultCode):
-            finish(with: CheckoutResult(resultCode: CheckoutResultCode(rawValue: resultCode)), from: source.paymentComponent)
+            finish(with: CheckoutResultCode(rawValue: resultCode), from: source.paymentComponent)
         case .retry:
             // TODO: Re-prompt the shopper at payment-method selection. Optionally surface
             // `errorMessage` in the UI before re-prompting.
@@ -124,7 +124,7 @@ internal extension CheckoutCore {
     func handle(additionalDetailsResult: AdditionalDetailsResult, from component: (any PaymentComponent)?) {
         switch additionalDetailsResult {
         case let .completion(resultCode):
-            finish(with: CheckoutResult(resultCode: CheckoutResultCode(rawValue: resultCode)), from: component)
+            finish(with: CheckoutResultCode(rawValue: resultCode), from: component)
         }
     }
 
@@ -146,10 +146,14 @@ internal extension CheckoutCore {
     // the integrator callbacks. Then every final path below — normal success/failure,
     // invalid-token in handleDidAuthorize, action-component errors, session errors — is
     // trivially correct with no per-path special casing.
-    func finish(with result: CheckoutResult, from component: (any PaymentComponent)?) {
-        (component as? any FinalizableComponent)?.didFinalize(with: result.resultCode.isSuccessful, completion: nil)
+    func finish(with resultCode: CheckoutResultCode, from component: (any PaymentComponent)?) {
+        (component as? any FinalizableComponent)?.didFinalize(with: resultCode.isSuccessful, completion: nil)
         pendingPaymentComponent = nil
-        resultCallbacks.onComplete?(result)
+        resultCallbacks.handleCompletion(
+            resultCode: resultCode,
+            sessionId: session?.state.identifier,
+            sessionResult: session?.state.sessionResult
+        )
     }
 
     func finish(with error: Error, from component: (any PaymentComponent)?) {

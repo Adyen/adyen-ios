@@ -9,7 +9,6 @@
 
 public final class AdyenSessionMock: SessionProtocol {
     public var state: Session.State
-    public var currentResult: CheckoutResult?
     public var presentationDelegate: PresentationDelegate?
     public var showRemovePaymentMethodButton = false
 
