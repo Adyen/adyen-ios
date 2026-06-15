@@ -215,7 +215,7 @@ class ApplePayComponentTest: XCTestCase {
         var configuration = try ApplePayConfiguration(
             paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
-        configuration.onShippingMethodChange = { method, _ in
+        configuration.onSelectShippingMethod = { method, _ in
             receivedMethod = method
             return PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: [
                 PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
@@ -253,7 +253,7 @@ class ApplePayComponentTest: XCTestCase {
         var configuration = try ApplePayConfiguration(
             paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
-        configuration.onShippingContactChange = { contact, _ in
+        configuration.onSelectShippingContact = { contact, _ in
             receivedContact = contact
             return PKPaymentRequestShippingContactUpdate(paymentSummaryItems: [
                 PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
@@ -290,7 +290,7 @@ class ApplePayComponentTest: XCTestCase {
         var configuration = try ApplePayConfiguration(
             paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
-        configuration.onCouponCodeChange = { coupon, _ in
+        configuration.onChangeCouponCode = { coupon, _ in
             receivedCoupon = coupon
             return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: [
                 PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
@@ -359,7 +359,7 @@ class ApplePayComponentTest: XCTestCase {
         var configuration = try ApplePayConfiguration(
             paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
-        configuration.onShippingMethodChange = { _, _ in
+        configuration.onSelectShippingMethod = { _, _ in
             PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: [
                 PKPaymentSummaryItem(label: "Item", amount: 10.0),
                 PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(value: -1.0))
@@ -394,7 +394,7 @@ class ApplePayComponentTest: XCTestCase {
         var configuration = try ApplePayConfiguration(
             paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
-        configuration.onShippingContactChange = { _, _ in
+        configuration.onSelectShippingContact = { _, _ in
             PKPaymentRequestShippingContactUpdate(paymentSummaryItems: [
                 PKPaymentSummaryItem(label: "Item", amount: NSDecimalNumber.notANumber),
                 PKPaymentSummaryItem(label: "Total", amount: 10.0)
@@ -429,7 +429,7 @@ class ApplePayComponentTest: XCTestCase {
         var configuration = try ApplePayConfiguration(
             paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
-        configuration.onCouponCodeChange = { _, _ in
+        configuration.onChangeCouponCode = { _, _ in
             PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: [])
         }
 

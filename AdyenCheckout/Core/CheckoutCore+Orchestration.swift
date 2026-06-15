@@ -135,7 +135,7 @@ internal extension CheckoutCore {
         finish(with: error, from: component)
     }
 
-    // TODO: `onComplete` / `onError` currently fire synchronously right after finalization,
+    // TODO: `onComplete` / `onFailure` currently fire synchronously right after finalization,
     // which for Apple Pay means they fire while PK is still animating its success/failure
     // result and has not yet dismissed the sheet. If a merchant's callback presents any
     // UI (alert, navigation, etc.), that presentation wedges UIKit's transition machinery
@@ -155,7 +155,7 @@ internal extension CheckoutCore {
     func finish(with error: Error, from component: (any PaymentComponent)?) {
         (component as? any FinalizableComponent)?.didFinalize(with: false, completion: nil)
         pendingPaymentComponent = nil
-        resultCallbacks.onError?(CheckoutError(error: error))
+        resultCallbacks.onFailure?(CheckoutError(error: error))
     }
 }
 
