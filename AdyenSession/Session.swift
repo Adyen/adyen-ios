@@ -23,11 +23,6 @@ package final class Session: SessionProtocol {
     
     internal let context: AdyenContext
     
-    package var currentResult: CheckoutResult? {
-        guard let resultCode = state.resultCode else { return nil }
-        return CheckoutResult(resultCode: resultCode, sessionResult: state.sessionResult)
-    }
-    
     package var showRemovePaymentMethodButton: Bool {
         state.responseConfiguration.showRemovePaymentMethodButton
     }
@@ -251,10 +246,10 @@ extension Session {
         package let paymentMethods: PaymentMethods
         
         /// Result code from the latest API call
-        internal var resultCode: CheckoutResultCode?
+        package internal(set) var resultCode: CheckoutResultCode?
         
         /// Encoded result string from the latest API call
-        internal var sessionResult: String?
+        package internal(set) var sessionResult: String?
         
         /// Component related configuration object
         internal let responseConfiguration: SessionSetupResponse.Configuration

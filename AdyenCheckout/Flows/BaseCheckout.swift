@@ -29,18 +29,10 @@ public class BaseCheckout {
         self.resultCallbacks = resultCallbacks
     }
 
-    /// Sets the callback invoked when checkout completes successfully.
-    /// - Parameter handler: Callback invoked with the final checkout result.
-    ///   - result: The `CheckoutResult` containing the payment `resultCode` and, for session flows, an optional `sessionResult` that can be used on your server to retrieve the payment outcome.
-    public func onComplete(_ handler: @escaping CheckoutSuccessHandler) -> Self {
-        resultCallbacks.onComplete = handler
-        return self
-    }
-
     /// Sets the callback invoked when checkout fails.
     /// - Parameter handler: Callback invoked with the checkout failure.
-    ///   - error: The `Error` describing why the checkout flow failed.
-    public func onFailure(_ handler: @escaping CheckoutErrorHandler) -> Self {
+    ///   - error: The `CheckoutError` describing why the checkout flow failed.
+    public func onFailure(_ handler: @escaping @MainActor (_ error: CheckoutError) -> Void) -> Self {
         resultCallbacks.onFailure = handler
         return self
     }
