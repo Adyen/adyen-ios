@@ -9,7 +9,7 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
-class BACSInputPresenterTests: XCTestCase {
+class BACSViewModelTests: XCTestCase {
 
     var view: BACSInputFormViewProtocolMock!
     var router: BACSRouterProtocolMock!
