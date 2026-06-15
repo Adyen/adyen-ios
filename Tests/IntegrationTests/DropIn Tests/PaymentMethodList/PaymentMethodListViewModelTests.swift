@@ -305,8 +305,7 @@ struct PaymentMethodListViewModelTests {
             paymentMethods: methods,
             context: context,
             configuration: .init(),
-            order: nil,
-            presentationDelegate: nil
+            order: nil
         )
         let dropInFlowManagerMock = DropInFlowManagingMock()
         let logoURLProvider = LogoURLProvider(environment: context.apiContext.environment)

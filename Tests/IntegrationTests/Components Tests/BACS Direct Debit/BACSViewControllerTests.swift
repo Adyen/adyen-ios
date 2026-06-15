@@ -57,7 +57,7 @@ class BACSViewControllerTests: XCTestCase {
 
     func test_viewDidLoad_shouldCallViewModelViewDidLoad() {
         // When
-        sut.viewDidLoad()
+        sut.loadViewIfNeeded()
 
         // Then
         XCTAssertEqual(tracker.initialEventCallsCount, 1)
