@@ -41,20 +41,6 @@ internal final class FormViewItemManager {
 
         return itemView
     }
-
-    /// Appends an existential item to the list of managed items.
-    ///
-    /// - Parameters:
-    ///   - item: The item to append.
-    /// - Returns: The view instance correspondent to a selected item.
-    @discardableResult internal func append(_ item: any FormItem) -> AnyFormItemView {
-        topLevelItem.append(item)
-
-        let itemView = newItemView(for: item)
-        topLevelItemViews.append(itemView)
-
-        return itemView
-    }
     
     // MARK: - Item Views
     
@@ -67,7 +53,7 @@ internal final class FormViewItemManager {
         topLevelItemViews.flatMap(\.flatSubitemViews)
     }
 
-    private func newItemView(for item: any FormItem) -> AnyFormItemView {
+    private func newItemView(for item: some FormItem) -> AnyFormItemView {
         item.build(with: FormItemViewBuilder(theme: theme))
     }
 }
