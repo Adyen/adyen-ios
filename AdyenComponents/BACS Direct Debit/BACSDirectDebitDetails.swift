@@ -7,7 +7,7 @@
 import Adyen
 
 /// Contains the details supplied by the BACS Direct Debit component.
-public struct BACSDirectDebitDetails: PaymentMethodDetails {
+public struct BACSDirectDebitDetails: PaymentMethodDetails, ShopperInformation {
     
     @_spi(AdyenInternal)
     public var checkoutAttemptId: String?
@@ -24,6 +24,9 @@ public struct BACSDirectDebitDetails: PaymentMethodDetails {
     /// The BACS location's ID.
     public let bankLocationId: String
 
+    /// The shopper's email address.
+    public let shopperEmail: String?
+
     /// An encoded string containing important SDK-specific data.
     /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
     public var sdkData: String?
@@ -34,16 +37,25 @@ public struct BACSDirectDebitDetails: PaymentMethodDetails {
     ///   - holderName: The BACS account's holder name.
     ///   - bankAccountNumber: The BACS account's number.
     ///   - bankLocationId: The BACS location's ID.
+    ///   - shopperEmail: The shopper's email address.
     public init(
         paymentMethod: BACSDirectDebitPaymentMethod,
         holderName: String,
         bankAccountNumber: String,
-        bankLocationId: String
+        bankLocationId: String,
+        shopperEmail: String? = nil
     ) {
         self.type = paymentMethod.type
         self.holderName = holderName
         self.bankAccountNumber = bankAccountNumber
         self.bankLocationId = bankLocationId
+        self.shopperEmail = shopperEmail
+    }
+
+    // MARK: - ShopperInformation
+
+    package var emailAddress: String? {
+        shopperEmail
     }
 
     // MARK: - Private
