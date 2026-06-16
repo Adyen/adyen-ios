@@ -86,7 +86,8 @@ internal final class BACSViewModel {
             paymentMethod: paymentMethod,
             holderName: holderName,
             bankAccountNumber: bankAccountNumber,
-            bankLocationId: sortCode
+            bankLocationId: sortCode,
+            shopperEmail: emailItem?.value
         )
         onSubmit(details)
     }
