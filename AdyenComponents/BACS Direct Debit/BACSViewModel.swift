@@ -24,7 +24,7 @@ internal final class BACSViewModel {
 
     // MARK: - State
 
-    @Published internal private(set) var items: [(any FormItem)?] = []
+    internal private(set) var items: [(any FormItem)?] = []
     @Published internal private(set) var shouldShowValidation = false
 
     // MARK: - Items
@@ -67,7 +67,7 @@ internal final class BACSViewModel {
         submitButtonItem?.showsActivityIndicator = false
     }
 
-    internal func submit() {
+    internal func performSubmit() {
         startLoading()
 
         guard validateForm() else {
@@ -107,7 +107,7 @@ internal final class BACSViewModel {
 
         if configuration.showsSubmitButton {
             submitButtonItem = itemsFactory.createPaymentButton { [weak self] in
-                self?.submit()
+                self?.performSubmit()
             }
         }
 

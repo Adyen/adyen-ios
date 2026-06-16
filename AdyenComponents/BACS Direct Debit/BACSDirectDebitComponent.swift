@@ -44,7 +44,7 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
     // MARK: - PaymentComponent
 
     package func performSubmit() {
-        bacsViewModel?.submit()
+        bacsViewModel?.performSubmit()
     }
 
     // MARK: - Properties
