@@ -77,7 +77,7 @@ class BACSViewControllerTests: XCTestCase {
         sut.loadViewIfNeeded()
 
         // When - trigger validation by submitting with invalid data
-        viewModel.submit()
+        viewModel.performSubmit()
 
         // Then
         XCTAssertTrue(viewModel.shouldShowValidation)
