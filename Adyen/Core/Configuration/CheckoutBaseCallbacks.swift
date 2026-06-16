@@ -9,5 +9,7 @@ import Foundation
 public typealias SubmitHandler = @MainActor @Sendable (_ data: PaymentComponentData) async -> SubmitResult
 public typealias AdditionalDetailsHandler = @MainActor @Sendable (_ data: ActionComponentData) async -> AdditionalDetailsResult
 public typealias BeforeSubmitHandler = @MainActor @Sendable (_ data: BeforeSubmitData) async -> BeforeSubmitResult
-public typealias CheckoutErrorHandler = @MainActor (_ error: CheckoutError) -> Void
-public typealias CheckoutSuccessHandler = @MainActor (_ result: CheckoutResult) -> Void
+
+package typealias SessionCheckoutCompletionHandler = @MainActor (_ result: SessionCheckoutResult) -> Void
+package typealias AdvancedCheckoutCompletionHandler = @MainActor (_ result: AdvancedCheckoutResult) -> Void
+package typealias CheckoutFailureHandler = @MainActor (_ error: CheckoutError) -> Void
