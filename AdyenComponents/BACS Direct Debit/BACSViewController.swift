@@ -38,17 +38,15 @@ internal final class BACSViewController: FormViewController {
 
     override internal func viewDidLoad() {
         super.viewDidLoad()
-        bindItems()
-        bindValidation()
         viewModel.viewDidLoad()
+        bindValidation()
+        setupItems()
     }
 
     // MARK: - Private
 
-    private func bindItems() {
-        viewModel.$items.sink { [weak self] items in
-            items.forEach { self?.add(item: $0) }
-        }.store(in: &cancellables)
+    private func setupItems() {
+        viewModel.items.forEach { add(item: $0) }
     }
 
     private func bindValidation() {
