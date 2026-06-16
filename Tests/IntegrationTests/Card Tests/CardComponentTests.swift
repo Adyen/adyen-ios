@@ -289,7 +289,12 @@ class CardComponentTests: XCTestCase {
         let expectedBorderColor = dynamicColor(light: .systemGreen, dark: .systemBlue)
 
         var configuration = CardConfiguration()
-        configuration.billingAddressMode = .lookup(onAddressLookup: { _ in [] })
+        configuration.billingAddressMode = .lookup(
+            onAddressLookup: { _ in [] },
+            onAddressSelected: nil,
+            hideForCardTypes: []
+        )
+        configuration.billingAddressMode = .lookup(onAddressLookup: { _ in [] }, onAddressSelected: nil, hideForCardTypes: [])
         configuration.theme = CheckoutTheme(
             colors: CheckoutColors(
                 containerOutline: expectedBorderColor
@@ -424,8 +429,12 @@ class CardComponentTests: XCTestCase {
             onAddressLookup: { searchTerm in
                 XCTFail("Lookup handler should not be called")
                 return []
-            }
+
+            },
+            onAddressSelected: nil,
+            hideForCardTypes: []
         )
+
         configuration.shopperInformation = shopperInformation
 
         let component = CardComponent(
@@ -672,7 +681,7 @@ class CardComponentTests: XCTestCase {
     func test_submit_withValidData_shouldCallDelegateWithPaymentData() throws {
         // Given
         var configuration = CardConfiguration()
-        configuration.billingAddressMode = .full()
+        configuration.billingAddressMode = .full(supportedCountryCodes: [], hideForCardTypes: [])
         let sut = CardComponent(
             paymentMethod: method,
             context: Dummy.context(with: nil),
@@ -809,7 +818,7 @@ class CardComponentTests: XCTestCase {
     func test_postalCodeField_withPostalCodeMode_shouldBeVisibleAndValidate() throws {
         // Given
         var configuration = CardConfiguration()
-        configuration.billingAddressMode = .postalCode()
+        configuration.billingAddressMode = .postalCode(hideForCardTypes: [])
 
         let sut = CardComponent(
             paymentMethod: method,
@@ -1568,8 +1577,11 @@ class CardComponentTests: XCTestCase {
         configuration.billingAddressMode = .lookup(
             onAddressLookup: { searchTerm in
                 [.init(identifier: searchTerm, postalAddress: .init(city: searchTerm))]
-            }
+            },
+            onAddressSelected: nil,
+            hideForCardTypes: []
         )
+
         configuration.shopperInformation = shopperInformation
 
         let component = CardComponent(
@@ -1605,7 +1617,7 @@ class CardComponentTests: XCTestCase {
         // Given
         var configuration = CardConfiguration()
         configuration.showCardholderName = true
-        configuration.billingAddressMode = .full()
+        configuration.billingAddressMode = .full(supportedCountryCodes: [], hideForCardTypes: [])
         configuration.shopperInformation = shopperInformation
 
         let sut = CardComponent(
@@ -1641,7 +1653,7 @@ class CardComponentTests: XCTestCase {
 
         var configuration = CardConfiguration()
         configuration.showCardholderName = true
-        configuration.billingAddressMode = .postalCode()
+        configuration.billingAddressMode = .postalCode(hideForCardTypes: [])
         configuration.shopperInformation = shopperInformation
 
         let prefilledSut = CardComponent(
@@ -1676,7 +1688,7 @@ class CardComponentTests: XCTestCase {
         // Given
         var configuration = CardConfiguration()
         configuration.showCardholderName = true
-        configuration.billingAddressMode = .full()
+        configuration.billingAddressMode = .full(supportedCountryCodes: [], hideForCardTypes: [])
 
         let sut = CardComponent(
             paymentMethod: method,
@@ -1707,7 +1719,7 @@ class CardComponentTests: XCTestCase {
         // Given
         var configuration = CardConfiguration()
         configuration.showCardholderName = true
-        configuration.billingAddressMode = .postalCode()
+        configuration.billingAddressMode = .postalCode(hideForCardTypes: [])
 
         let sut = CardComponent(
             paymentMethod: method,
@@ -1736,7 +1748,7 @@ class CardComponentTests: XCTestCase {
     
     func test_billingAddress_withSupportedCountries_shouldFilterCountryList() throws {
         var configuration = CardConfiguration()
-        configuration.billingAddressMode = .full(supportedCountryCodes: ["UK"])
+        configuration.billingAddressMode = .full(supportedCountryCodes: ["UK"], hideForCardTypes: [])
 
         let component = CardComponent(
             paymentMethod: method,
@@ -1767,7 +1779,7 @@ class CardComponentTests: XCTestCase {
     
     func test_billingAddress_withSupportedCountriesAndMatchingPrefill_shouldUsePrefillData() throws {
         var configuration = CardConfiguration()
-        configuration.billingAddressMode = .full(supportedCountryCodes: ["US", "JP"])
+        configuration.billingAddressMode = .full(supportedCountryCodes: ["US", "JP"], hideForCardTypes: [])
         configuration.shopperInformation = shopperInformation
 
         let component = CardComponent(
@@ -1802,7 +1814,7 @@ class CardComponentTests: XCTestCase {
     
     func test_billingAddress_withSupportedCountriesAndNonMatchingPrefill_shouldUseFirstSupportedCountry() throws {
         var configuration = CardConfiguration()
-        configuration.billingAddressMode = .full(supportedCountryCodes: ["UK"])
+        configuration.billingAddressMode = .full(supportedCountryCodes: ["UK"], hideForCardTypes: [])
         configuration.shopperInformation = shopperInformation
 
         let component = CardComponent(
@@ -1830,7 +1842,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(inputForm.addressItem.countryPickerItem.value?.identifier, "UK")
     }
     
-    func test_billingAddress_withHideForCardTypes_shouldHideAddressForMatchingCard() throws {
+    func test_billingAddress_withOptionalPolicyAndInvalidAddress_shouldAllowSubmit() throws {
         var configuration = CardConfiguration()
         configuration.billingAddressMode = .full(supportedCountryCodes: ["US"], hideForCardTypes: [.visa])
 
@@ -1862,15 +1874,17 @@ class CardComponentTests: XCTestCase {
 
         let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
         
-        // Initially visible
-        XCTAssertTrue(billingAddressView.item.isVisible)
-        
         populate(textItemView: securityCodeField, with: "737")
         populate(textItemView: numberField, with: "4111 1120 1426 7661")
         populate(textItemView: expiryDateField, with: "12/30")
         
-        // After entering Visa card number, billing address should be hidden
-        wait(until: billingAddressView.item, at: \.isVisible, is: false)
+        billingAddressView.item.value = PostalAddress(
+            city: "City",
+            postalCode: "123",
+            stateOrProvince: "AZ"
+        )
+        
+        wait(until: billingAddressView, at: \.isValid, is: true)
         
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidFail = { error, component in XCTFail("should not fail") }
@@ -1878,8 +1892,10 @@ class CardComponentTests: XCTestCase {
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is CardDetails)
 
-            // No billing address should be included since it was hidden
-            XCTAssertNil(sut.cardViewController.validAddress)
+            XCTAssertNotNil(sut.cardViewController.validAddress)
+            XCTAssertEqual(data.billingAddress?.country, billingAddressView.item.value?.country)
+            XCTAssertEqual(data.billingAddress?.city, billingAddressView.item.value?.city)
+            XCTAssertEqual(data.billingAddress?.stateOrProvince, billingAddressView.item.value?.stateOrProvince)
 
             sut.stopLoading()
             delegateExpectation.fulfill()
@@ -1890,9 +1906,9 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func test_billingAddress_withHideForCardTypes_shouldShowAddressForNonMatchingCard() throws {
+    func test_billingAddress_withOptionalPolicyAndValidAddress_shouldIncludeInPaymentData() throws {
         var configuration = CardConfiguration()
-        configuration.billingAddressMode = .full(supportedCountryCodes: ["US"], hideForCardTypes: [.jcb])
+        configuration.billingAddressMode = .full(supportedCountryCodes: ["US"], hideForCardTypes: [.visa])
         configuration.shopperInformation = shopperInformation
 
         let cardTypeProviderMock = BinInfoProviderMock()
@@ -1920,14 +1936,10 @@ class CardComponentTests: XCTestCase {
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
         let expiryDateField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
         let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
-        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
         
         populate(textItemView: securityCodeField, with: "737")
         populate(textItemView: numberField, with: "4111 1120 1426 7661")
         populate(textItemView: expiryDateField, with: "12/30")
-        
-        // Billing address should remain visible for Visa (not in hideForCardTypes)
-        XCTAssertTrue(billingAddressView.item.isVisible)
         
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidFail = { error, component in XCTFail("should not fail") }
@@ -1946,7 +1958,7 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func test_postalCode_withHideForCardTypes_shouldHidePostalCodeForMatchingCard() throws {
+    func test_postalCode_withOptionalPolicyAndValidValue_shouldIncludeInPaymentData() throws {
 
         var configuration = CardConfiguration()
         configuration.billingAddressMode = .postalCode(hideForCardTypes: [.visa])
@@ -1977,17 +1989,12 @@ class CardComponentTests: XCTestCase {
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
         let expiryDateField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
         let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
-        let postalCodeItem = sut.cardViewController.items.postalCodeItem
-        
-        // Initially visible
-        XCTAssertTrue(postalCodeItem.isVisible)
+        let postalCodeField: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.zipCode))
         
         populate(textItemView: securityCodeField, with: "737")
         populate(textItemView: numberField, with: "4111 1120 1426 7661")
         populate(textItemView: expiryDateField, with: "12/30")
-        
-        // After entering Visa card number, postal code should be hidden
-        wait(until: postalCodeItem, at: \.isVisible, is: false)
+        populate(textItemView: postalCodeField, with: "123")
         
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidFail = { error, component in XCTFail("should not fail") }
@@ -1995,8 +2002,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is CardDetails)
 
-            // No billing address should be included since postal code was hidden
-            XCTAssertNil(data.billingAddress)
+            XCTAssertEqual(data.billingAddress, PostalAddress(postalCode: "123"))
 
             sut.stopLoading()
             delegateExpectation.fulfill()
@@ -2007,10 +2013,10 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
-    func test_postalCode_withHideForCardTypes_shouldShowPostalCodeForNonMatchingCard() throws {
+    func test_postalCode_withOptionalPolicyAndInvalidValue_shouldAllowSubmit() throws {
         
         var configuration = CardConfiguration()
-        configuration.billingAddressMode = .postalCode(hideForCardTypes: [.jcb])
+        configuration.billingAddressMode = .postalCode(hideForCardTypes: [.visa])
 
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
@@ -2038,15 +2044,12 @@ class CardComponentTests: XCTestCase {
         let expiryDateField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
         let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
         let postalCodeField: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.zipCode))
-        let postalCodeItem = sut.cardViewController.items.postalCodeItem
         
         populate(textItemView: securityCodeField, with: "737")
         populate(textItemView: numberField, with: "4111 1120 1426 7661")
         populate(textItemView: expiryDateField, with: "12/30")
-        populate(textItemView: postalCodeField, with: "12345")
         
-        // Postal code should remain visible for Visa (not in hideForCardTypes)
-        XCTAssertTrue(postalCodeItem.isVisible)
+        wait(until: postalCodeField, at: \.isValid, is: true)
         
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidFail = { error, component in XCTFail("should not fail") }
@@ -2054,7 +2057,7 @@ class CardComponentTests: XCTestCase {
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is CardDetails)
 
-            XCTAssertEqual(data.billingAddress, PostalAddress(postalCode: "12345"))
+            XCTAssertNil(data.billingAddress)
 
             sut.stopLoading()
             delegateExpectation.fulfill()
@@ -2062,127 +2065,6 @@ class CardComponentTests: XCTestCase {
         
         tapSubmitButton(on: sut.viewController.view)
 
-        waitForExpectations(timeout: 10, handler: nil)
-    }
-    
-    func test_lookup_withHideForCardTypes_shouldHideLookupForMatchingCard() throws {
-        var configuration = CardConfiguration()
-        configuration.billingAddressMode = .lookup(
-            onAddressLookup: { _ in [] },
-            hideForCardTypes: [.visa]
-        )
-        
-        let cardTypeProviderMock = BinInfoProviderMock()
-        cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(
-                brands: [CardBrand(type: .visa)],
-                issuingCountryCode: "US"
-            ))
-        }
-        
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: configuration,
-            binProvider: cardTypeProviderMock
-        )
-        
-        let delegate = PaymentComponentDelegateMock()
-        sut.delegate = delegate
-        
-        setupRootViewController(sut.viewController)
-        
-        let view: UIView = sut.cardViewController.view
-        
-        let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
-        let expiryDateField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
-        let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
-        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
-        
-        // Initially visible
-        XCTAssertTrue(billingAddressView.item.isVisible)
-        
-        populate(textItemView: securityCodeField, with: "737")
-        populate(textItemView: numberField, with: "4111 1120 1426 7661")
-        populate(textItemView: expiryDateField, with: "12/30")
-        
-        // After entering Visa card number, billing address lookup should be hidden
-        wait(until: billingAddressView.item, at: \.isVisible, is: false)
-        
-        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.onDidFail = { error, component in XCTFail("should not fail") }
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-            XCTAssertTrue(data.paymentMethod is CardDetails)
-            
-            // No billing address should be included since lookup was hidden
-            XCTAssertNil(sut.cardViewController.validAddress)
-            
-            sut.stopLoading()
-            delegateExpectation.fulfill()
-        }
-        
-        tapSubmitButton(on: sut.viewController.view)
-        
-        waitForExpectations(timeout: 10, handler: nil)
-    }
-    
-    func test_lookup_withHideForCardTypes_shouldShowLookupForNonMatchingCard() throws {
-        var configuration = CardConfiguration()
-        configuration.billingAddressMode = .lookup(
-            onAddressLookup: { _ in [] },
-            hideForCardTypes: [.jcb]
-        )
-        configuration.shopperInformation = shopperInformation
-        
-        let cardTypeProviderMock = BinInfoProviderMock()
-        cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(
-                brands: [CardBrand(type: .visa)],
-                issuingCountryCode: "US"
-            ))
-        }
-        
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: configuration,
-            binProvider: cardTypeProviderMock
-        )
-        
-        let delegate = PaymentComponentDelegateMock()
-        sut.delegate = delegate
-        
-        setupRootViewController(sut.viewController)
-        
-        let view: UIView = sut.cardViewController.view
-        
-        let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
-        let expiryDateField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
-        let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
-        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
-        
-        populate(textItemView: securityCodeField, with: "737")
-        populate(textItemView: numberField, with: "4111 1120 1426 7661")
-        populate(textItemView: expiryDateField, with: "12/30")
-        
-        // Billing address lookup should remain visible for Visa (not in hideForCardTypes)
-        XCTAssertTrue(billingAddressView.item.isVisible)
-        
-        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.onDidFail = { error, component in XCTFail("should not fail") }
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-            XCTAssertTrue(data.paymentMethod is CardDetails)
-            
-            XCTAssertEqual(data.billingAddress, self.shopperInformation.billingAddress)
-            
-            sut.stopLoading()
-            delegateExpectation.fulfill()
-        }
-        
-        tapSubmitButton(on: sut.viewController.view)
-        
         waitForExpectations(timeout: 10, handler: nil)
     }
 
@@ -2265,7 +2147,7 @@ class CardComponentTests: XCTestCase {
 
     func test_billingAddress_withEmptyApartment_shouldSubmitNilApartment() throws {
         var configuration = CardConfiguration()
-        configuration.billingAddressMode = .full(supportedCountryCodes: ["US"])
+        configuration.billingAddressMode = .full(supportedCountryCodes: ["US"], hideForCardTypes: [])
 
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
@@ -2319,7 +2201,7 @@ class CardComponentTests: XCTestCase {
 
     func test_billingAddress_withApartmentValue_shouldIncludeApartmentInPaymentData() throws {
         var configuration = CardConfiguration()
-        configuration.billingAddressMode = .full(supportedCountryCodes: ["US"])
+        configuration.billingAddressMode = .full(supportedCountryCodes: ["US"], hideForCardTypes: [])
 
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
@@ -2379,7 +2261,7 @@ class CardComponentTests: XCTestCase {
 
     func test_billingAddress_forCountryWithoutStateProvince_shouldNotIncludeStateOrProvince() throws {
         var configuration = CardConfiguration()
-        configuration.billingAddressMode = .full(supportedCountryCodes: ["GB"])
+        configuration.billingAddressMode = .full(supportedCountryCodes: ["GB"], hideForCardTypes: [])
 
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
@@ -2457,7 +2339,7 @@ class CardComponentTests: XCTestCase {
     func test_validate_withValidInput_shouldReturnTrue() throws {
         // Given
         var configuration = CardConfiguration()
-        configuration.billingAddressMode = .none
+        configuration.billingAddress.mode = .none
         let sut = CardComponent(
             paymentMethod: method,
             context: Dummy.context(with: nil),
@@ -2483,7 +2365,7 @@ class CardComponentTests: XCTestCase {
     func test_validate_withInvalidInput_shouldReturnFalse() throws {
         // Given
         var configuration = CardConfiguration()
-        configuration.billingAddressMode = .none
+        configuration.billingAddress.mode = .none
         let sut = CardComponent(
             paymentMethod: method,
             context: Dummy.context(with: nil),
