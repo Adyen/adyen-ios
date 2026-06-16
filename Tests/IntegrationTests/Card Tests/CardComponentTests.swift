@@ -2339,7 +2339,7 @@ class CardComponentTests: XCTestCase {
     func test_validate_withValidInput_shouldReturnTrue() throws {
         // Given
         var configuration = CardConfiguration()
-        configuration.billingAddress.mode = .none
+        configuration.billingAddressMode = .none
         let sut = CardComponent(
             paymentMethod: method,
             context: Dummy.context(with: nil),
@@ -2365,7 +2365,7 @@ class CardComponentTests: XCTestCase {
     func test_validate_withInvalidInput_shouldReturnFalse() throws {
         // Given
         var configuration = CardConfiguration()
-        configuration.billingAddress.mode = .none
+        configuration.billingAddressMode = .none
         let sut = CardComponent(
             paymentMethod: method,
             context: Dummy.context(with: nil),
