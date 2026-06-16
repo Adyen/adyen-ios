@@ -20,7 +20,7 @@ internal enum ActionPresentationHelper {
         let viewController = actionViewController
 
         // If the action component already manages its own navigation controller, return as-is
-        if viewController is SFSafariViewController {
+        if viewController is SFSafariViewController || viewController is UINavigationController {
             return viewController
         }
 
