@@ -24,7 +24,7 @@ internal final class BACSViewModel {
 
     // MARK: - State
 
-    internal private(set) var items: [(any FormItem)?] = []
+    internal private(set) var items: [any FormItem] = []
     @Published internal private(set) var shouldShowValidation = false
 
     // MARK: - Items
@@ -97,7 +97,7 @@ internal final class BACSViewModel {
         submitButtonItem?.showsActivityIndicator = true
     }
 
-    private func createItems() -> [(any FormItem)?] {
+    private func createItems() -> [any FormItem] {
         holderNameItem = itemsFactory.createHolderNameItem()
         bankAccountNumberItem = itemsFactory.createBankAccountNumberItem()
         sortCodeItem = itemsFactory.createSortCodeItem()
@@ -111,7 +111,7 @@ internal final class BACSViewModel {
             }
         }
 
-        return [
+        let allItems: [(any FormItem)?] = [
             holderNameItem,
             bankAccountNumberItem,
             sortCodeItem,
@@ -124,6 +124,7 @@ internal final class BACSViewModel {
             submitButtonItem,
             FormSpacerItem(numberOfSpaces: 1)
         ]
+        return allItems.compactMap { $0 }
     }
 
     private func validateForm() -> Bool {

@@ -40,7 +40,7 @@ internal final class BACSViewController: FormViewController {
         super.viewDidLoad()
         viewModel.viewDidLoad()
         bindValidation()
-        viewModel.items.forEach { add(item: $0) }
+        viewModel.items.forEach { append($0) }
     }
 
     // MARK: - Private
