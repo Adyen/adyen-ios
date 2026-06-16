@@ -67,10 +67,6 @@ internal final class FormViewItemManager {
         topLevelItemViews.flatMap(\.flatSubitemViews)
     }
 
-    private func newItemView(for item: some FormItem) -> AnyFormItemView {
-        item.build(with: FormItemViewBuilder(theme: theme))
-    }
-
     private func newItemView(for item: any FormItem) -> AnyFormItemView {
         item.build(with: FormItemViewBuilder(theme: theme))
     }

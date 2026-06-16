@@ -194,22 +194,6 @@ open class FormViewController: UIViewController, AdyenObserver {
         formView.appendItemView(itemView)
     }
 
-    private func observerVisibility(of item: some FormItem, and itemView: UIView) {
-        itemView.adyen.hide(
-            animationKey: String(describing: itemView),
-            hidden: item.isHidden.wrappedValue,
-            animated: false
-        )
-
-        observe(item.isHidden) { isHidden in
-            itemView.adyen.hide(
-                animationKey: String(describing: itemView),
-                hidden: isHidden,
-                animated: true
-            )
-        }
-    }
-
     private func observerVisibility(of item: any FormItem, and itemView: UIView) {
         itemView.adyen.hide(
             animationKey: String(describing: itemView),

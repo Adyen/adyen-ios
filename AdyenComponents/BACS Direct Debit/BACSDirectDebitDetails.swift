@@ -32,7 +32,6 @@ public struct BACSDirectDebitDetails: PaymentMethodDetails {
     /// - Parameters:
     ///   - paymentMethod: The BACS Direct Debit payment method.
     ///   - holderName: The BACS account's holder name.
-    ///   - shopperEmail: The BACS account's email.
     ///   - bankAccountNumber: The BACS account's number.
     ///   - bankLocationId: The BACS location's ID.
     public init(
