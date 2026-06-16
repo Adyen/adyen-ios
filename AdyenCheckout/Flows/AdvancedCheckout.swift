@@ -18,6 +18,15 @@ public final class AdvancedCheckout: PaymentCheckout {
         super.init(core: core, resultCallbacks: callbackStore)
     }
 
+    /// Sets the callback invoked when checkout completes successfully.
+    /// - Parameter handler: Callback invoked with the final checkout result.
+    ///   - result: The ``AdvancedCheckoutResult`` containing the payment ``AdvancedCheckoutResult/resultCode``
+    ///     indicating the outcome of the payment.
+    public func onComplete(_ handler: @escaping @MainActor (_ result: AdvancedCheckoutResult) -> Void) -> Self {
+        callbackStore.onComplete = handler
+        return self
+    }
+
     /// Sets the callback invoked when payment data is submitted.
     /// - Parameter handler: Callback invoked when a payment component submits payment data.
     ///   - data: The `PaymentComponentData` containing the selected payment method details and any shopper or browser information collected by the component.
