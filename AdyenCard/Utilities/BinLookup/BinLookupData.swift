@@ -14,16 +14,6 @@ public struct BinLookupData: Decodable, Equatable {
 
     /// The card brands detected from the BIN. Empty when no brands are detected.
     public let brands: [BinLookupBrand]
-
-    public init(issuingCountryCode: String?, brands: [BinLookupBrand]) {
-        self.issuingCountryCode = issuingCountryCode
-        self.brands = brands
-    }
-
-    private enum CodingKeys: String, CodingKey {
-        case issuingCountryCode
-        case brands
-    }
 }
 
 /// Describes a single card brand entry in a BIN lookup result.
@@ -37,16 +27,4 @@ public struct BinLookupBrand: Decodable, Equatable {
 
     /// The payment method variant, if provided by the backend.
     public let paymentMethodVariant: String?
-
-    public init(brand: String, supported: Bool, paymentMethodVariant: String?) {
-        self.brand = brand
-        self.supported = supported
-        self.paymentMethodVariant = paymentMethodVariant
-    }
-
-    private enum CodingKeys: String, CodingKey {
-        case brand
-        case supported
-        case paymentMethodVariant
-    }
 }
