@@ -40,14 +40,10 @@ internal final class BACSViewController: FormViewController {
         super.viewDidLoad()
         viewModel.viewDidLoad()
         bindValidation()
-        setupItems()
+        viewModel.items.forEach { add(item: $0) }
     }
 
     // MARK: - Private
-
-    private func setupItems() {
-        viewModel.items.forEach { add(item: $0) }
-    }
 
     private func bindValidation() {
         viewModel.$shouldShowValidation.sink { [weak self] shouldShowValidation in
