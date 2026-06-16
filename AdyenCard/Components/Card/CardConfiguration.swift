@@ -71,7 +71,7 @@ public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInfo
     internal var onBinChange: ((String) -> Void)?
     
     /// Called when card brand(s) are detected from the entered card number.
-    internal var onBinLookup: (([CardBrand]) -> Void)?
+    internal var onBinLookup: ((BinLookupData) -> Void)?
     
     // TODO: Add onFieldValidationChange closure that provides field validation
     // updates including last 4 digits, or add it here after deciding on alignment.
@@ -224,9 +224,9 @@ extension CardConfiguration {
     }
     
     /// Sets the handler to be called when card brand(s) are detected.
-    /// - Parameter onBinLookup: The closure to call with the detected card brands.
+    /// - Parameter onBinLookup: The closure to call with the BIN lookup result.
     /// - Returns: A modified copy of the configuration.
-    public func onBinLookup(_ onBinLookup: @escaping ([CardBrand]) -> Void) -> Self {
+    public func onBinLookup(_ onBinLookup: @escaping (BinLookupData) -> Void) -> Self {
         var copy = self
         copy.onBinLookup = onBinLookup
         return copy

@@ -71,8 +71,8 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 .onBinChange { bin in
                     print("Here is the bin \(bin)")
                 }
-                .onBinLookup { brands in
-                    print("Bin lookup response \(brands)")
+                .onBinLookup { data in
+                    print("Bin lookup response \(data)")
                 }
         }
         .localizationProvider(DemoLocalizationProvider())

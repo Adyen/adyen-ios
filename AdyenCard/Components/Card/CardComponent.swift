@@ -263,7 +263,11 @@ extension CardComponent: CardViewControllerDelegate {
         binInfoProvider.provide(for: pan, supportedTypes: supportedCardTypes) { [weak self] binInfo in
             guard let self else { return }
             self.cardViewController.update(binInfo: binInfo)
-            self.configuration.onBinLookup?(binInfo.brands ?? [])
+            guard !binInfo.isCreatedLocally else { return }
+            let brands = (binInfo.brands ?? []).map {
+                BinLookupBrand(brand: $0.type.rawValue, supported: $0.isSupported, paymentMethodVariant: $0.paymentMethodVariant)
+            }
+            self.configuration.onBinLookup?(BinLookupData(issuingCountryCode: binInfo.issuingCountryCode, brands: brands))
         }
     }
 }

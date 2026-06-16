@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// Describes the Card brand.
-public struct CardBrand: Decodable {
+package struct CardBrand: Decodable {
     
     /// Indicates the requirement level of a field.
     internal enum RequirementPolicy: String, Decodable {
@@ -24,10 +24,10 @@ public struct CardBrand: Decodable {
     }
 
     /// Indicates the card brand type.
-    public let type: CardType
+    package let type: CardType
 
     /// Indicates whether its supported by the merchant or not.
-    public let isSupported: Bool
+    package let isSupported: Bool
 
     /// Indicates the cvc policy of the brand.
     internal let cvcPolicy: RequirementPolicy
@@ -46,6 +46,9 @@ public struct CardBrand: Decodable {
     
     /// The length of the PAN of the card brand.
     internal let panLength: Int?
+
+    /// The payment method variant, if provided by the backend.
+    internal let paymentMethodVariant: String?
     
     private enum Constants {
         static let plccText = "plcc"
@@ -69,7 +72,8 @@ public struct CardBrand: Decodable {
         isLuhnCheckEnabled: Bool = true,
         showSocialSecurityNumber: Bool = false,
         panLength: Int? = nil,
-        localeBrand: String? = nil
+        localeBrand: String? = nil,
+        paymentMethodVariant: String? = nil
     ) {
         self.type = type
         self.isSupported = isSupported
@@ -79,6 +83,7 @@ public struct CardBrand: Decodable {
         self.showsSocialSecurityNumber = showSocialSecurityNumber
         self.panLength = panLength
         self.localeBrand = localeBrand
+        self.paymentMethodVariant = paymentMethodVariant
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -90,6 +95,7 @@ public struct CardBrand: Decodable {
         case expiryDatePolicy
         case panLength
         case localeBrand
+        case paymentMethodVariant
     }
     
     internal var isCVCOptional: Bool {

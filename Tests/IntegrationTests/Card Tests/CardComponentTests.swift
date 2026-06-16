@@ -384,7 +384,7 @@ class CardComponentTests: XCTestCase {
     func test_onBinChangeAndOnBinLookup_whenCardNumberEntered_shouldBeCalledWithCorrectValues() {
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(brands: [CardBrand(type: .americanExpress)]))
+            $0(BinLookupResponse(brands: [CardBrand(type: .americanExpress)], isCreatedLocally: false))
         }
 
         let sut = CardComponent(
@@ -405,7 +405,11 @@ class CardComponentTests: XCTestCase {
                 expectationBin.fulfill()
             }
             .onBinLookup { value in
-                XCTAssertEqual(value, [CardBrand(type: .americanExpress)])
+                let expected = BinLookupData(
+                    issuingCountryCode: "NL",
+                    brands: [BinLookupBrand(brand: "amex", supported: true, paymentMethodVariant: nil)]
+                )
+                XCTAssertEqual(value, expected)
                 expectationCardType.fulfill()
             }
         
