@@ -190,6 +190,7 @@ class BACSViewModelTests: XCTestCase {
         XCTAssertEqual(mockHolderName, receivedDetails?.holderName)
         XCTAssertEqual(mockBankAccountNumber, receivedDetails?.bankAccountNumber)
         XCTAssertEqual(mockBankLocationId, receivedDetails?.bankLocationId)
+        XCTAssertEqual(mockShopperEmail, receivedDetails?.shopperEmail)
     }
 
     func test_stopLoading_shouldSetActivityIndicatorToFalse() {
