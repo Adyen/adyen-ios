@@ -254,7 +254,7 @@ class BCMCComponentTests: XCTestCase {
         wait(for: [didSubmitExpectation], timeout: 10)
     }
     
-    func test_onBinLookup_withCorrectCard_shouldReturnMatchingBrands() throws {
+    func test_onBinLookup_withLessThan11Digits_shouldNotBeCalled() throws {
         let brands: [CardType] = [.bcmc]
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
@@ -262,21 +262,20 @@ class BCMCComponentTests: XCTestCase {
             paymentMethod: paymentMethod,
             context: context
         )
-        
+
         sut.viewController.loadViewIfNeeded()
-        
-        let expectationCardType = XCTestExpectation(description: "CardType Expectation")
-        let mockedBrands = [CardBrand(type: .bcmc, cvcPolicy: .optional)]
+
+        let expectation = XCTestExpectation(description: "onBinLookup should not fire for < 11 digits")
+        expectation.isInverted = true
         sut.configuration = sut.configuration
-            .onBinLookup { value in
-                XCTAssertEqual(value, mockedBrands)
-                expectationCardType.fulfill()
+            .onBinLookup { _ in
+                expectation.fulfill()
             }
-        
+
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
         try self.populate(textItemView: XCTUnwrap(cardNumberItemView), with: "67034")
-        
-        wait(for: [expectationCardType], timeout: 10)
+
+        wait(for: [expectation], timeout: 2)
     }
 
     func test_onBinChange_withCorrectBIN_shouldReturnBINValue() throws {
@@ -379,7 +378,7 @@ class BCMCComponentTests: XCTestCase {
         wait(for: [expectationBin], timeout: 10)
     }
     
-    func test_onBinLookup_withIncorrectCard_shouldReturnEmptyBrands() throws {
+    func test_onBinLookup_withIncorrectCardAndLessThan11Digits_shouldNotBeCalled() throws {
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.argencard])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(
@@ -388,20 +387,20 @@ class BCMCComponentTests: XCTestCase {
         )
 
         sut.viewController.loadViewIfNeeded()
-        
-        let expectationCardType = XCTestExpectation(description: "CardType Expectation")
+
+        let expectation = XCTestExpectation(description: "onBinLookup should not fire for < 11 digits")
+        expectation.isInverted = true
         sut.configuration = sut.configuration
-            .onBinLookup { value in
-                XCTAssertEqual(value, [])
-                expectationCardType.fulfill()
+            .onBinLookup { _ in
+                expectation.fulfill()
             }
-        
+
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
         try self.populate(textItemView: XCTUnwrap(cardNumberItemView), with: "32145")
-        
-        wait(for: [expectationCardType], timeout: 10)
+
+        wait(for: [expectation], timeout: 2)
     }
-    
+
     func test_submit_withInvalidCardNumber_shouldShowValidationError() throws {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.maestro])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
