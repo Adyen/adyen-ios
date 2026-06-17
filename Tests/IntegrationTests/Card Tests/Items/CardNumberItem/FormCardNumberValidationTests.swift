@@ -81,7 +81,7 @@ class FormCardNumberValidationTests: XCTestCase {
         )
 
         // When - brand is detected (simulating typing "4")
-        containerItem.update(brands: [CardBrand(type: .visa)])
+        containerItem.update(brands: [DetectedCardBrand(type: .visa)])
 
         // Then - logos should be hidden (brand is known, placeholder not needed)
         XCTAssertTrue(
@@ -303,7 +303,7 @@ class FormCardNumberValidationTests: XCTestCase {
         )
 
         // When brands are detected (valid brand)
-        containerItem.update(brands: [CardBrand(type: .visa)])
+        containerItem.update(brands: [DetectedCardBrand(type: .visa)])
 
         // Then logos should be hidden (brand detected)
         XCTAssertTrue(

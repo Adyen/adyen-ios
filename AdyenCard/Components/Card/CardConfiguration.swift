@@ -259,6 +259,7 @@ package protocol AnyCardComponentConfiguration {
     /// Indicates whether to show the security code field for stored cards. Defaults to true.
     var showSecurityCodeForStoredCard: Bool { get }
 
+    // TODO: Rename CardType to CardBrand once the internal CardBrand struct conflict is resolved.
     /// The list of supported card brands.  Defaults to nil.
     /// By default list of supported brands is extracted from component's `AnyCardPaymentMethod`.
     /// Use this property to enforce a custom collection of card brands.

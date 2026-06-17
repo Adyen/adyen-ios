@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// Describes the Card brand.
-package struct CardBrand: Decodable {
+package struct DetectedCardBrand: Decodable {
     
     /// Indicates the requirement level of a field.
     internal enum RequirementPolicy: String, Decodable {
@@ -55,7 +55,7 @@ package struct CardBrand: Decodable {
         static let cbccText = "cbcc"
     }
 
-    /// Initializes a CardBrand.
+    /// Initializes a DetectedCardBrand.
     ///
     /// - Parameters:
     ///   - type: Indicates the card brand type.
@@ -122,4 +122,4 @@ package struct CardBrand: Decodable {
     }
 }
 
-extension CardBrand: Equatable {}
+extension DetectedCardBrand: Equatable {}

@@ -38,7 +38,7 @@ class CardBrandProviderTests: XCTestCase {
     }
 
     func testRemoteCardTypeFetch() {
-        let mockedBrands = [CardBrand(type: .solo)]
+        let mockedBrands = [DetectedCardBrand(type: .solo)]
         apiClientMock.mockedResults = [.success(BinLookupResponse(brands: mockedBrands))]
 
         sut.provide(for: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro]) { result in
