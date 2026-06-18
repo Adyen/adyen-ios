@@ -1449,11 +1449,11 @@ class CardComponentTests: XCTestCase {
         let newResponse = BinLookupResponse(
             brands: [
                 DetectedCardBrand(
-                    brand: .bcmc,
+                    type: .bcmc,
                     localeBrand: "Bancontact card"
                 ),
                 DetectedCardBrand(
-                    brand: .maestro,
+                    type: .maestro,
                     localeBrand: nil
                 )
             ],
