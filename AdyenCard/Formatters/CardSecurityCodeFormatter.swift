@@ -29,7 +29,7 @@ public final class CardSecurityCodeFormatter: NumericFormatter {
     }
     
     /// Initiate new instance of CardSecurityCodeValidator with a fixed ``CardBrand``
-    /// - Parameter cardBrand: The card type to format the security code for
+    /// - Parameter cardBrand: The card brand to format the security code for
     public init(cardBrand: CardBrand) {
         super.init()
         self.cardBrand = cardBrand

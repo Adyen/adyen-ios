@@ -88,7 +88,7 @@ public struct InstallmentConfiguration: Decodable {
     /// Creates a new installment configuration by providing both the card type based options
     ///  and default options for the rest of the card types.
     /// - Parameters:
-    ///   - cardBasedOptions: Options based on the card type. Must not be empty.
+    ///   - cardBasedOptions: Options based on the card brand. Must not be empty.
     ///   - defaultOptions: Default options for cards that are not specified in `cardBasedOptions`.
     ///   - showInstallmentAmount: Determines whether to show the amount next to the installment value.
     public init(
@@ -104,7 +104,7 @@ public struct InstallmentConfiguration: Decodable {
     
     /// Creates a new installment configuration by providing the card based options.
     /// - Parameters:
-    ///   - cardBasedOptions:  Options based on the card type. Must not be empty.
+    ///   - cardBasedOptions:  Options based on the card brand. Must not be empty.
     ///   - showInstallmentAmount: Determines whether to show the amount next to the installment value.
     public init(
         cardBasedOptions: [CardBrand: InstallmentOptions],

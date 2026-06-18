@@ -15,22 +15,22 @@ extension Array: AdyenCompatible {}
 
 package extension AdyenScope where Base == [CardBrand] {
     
-    /// Detects the type for a given card number.
-    /// The card type detections are always estimations, as a card type
+    /// Detects all possible brands for a given card number.
+    /// The card brand detections are always estimations, as a card brand
     /// can never be detected with 100% accuracy on the client side.
     ///
-    /// - Parameter cardNumber: The card number to retrieve the type of. The number is expected to be sanitized (digits only).
-    /// - Returns: The type for the given card number, or `nil` if it could not be found.
+    /// - Parameter cardNumber: The card number to retrieve the brands of. The number is expected to be sanitized (digits only).
+    /// - Returns: The possible brands for the given card number.
     func types(forCardNumber cardNumber: String) -> [CardBrand] {
         base.filter { $0.matches(cardNumber: cardNumber) }
     }
     
-    /// Detects all possible types for a given card number.
-    /// The card type detections are always estimations, as a card type
+    /// Detects the brand for a given card number.
+    /// The card brand detections are always estimations, as a card brand
     /// can never be detected with 100% accuracy on the client side.
     ///
-    /// - Parameter cardNumber: The card number to retrieve the types for. The number is expected to be sanitized (digits only).
-    /// - Returns: The possible types for the given card number.
+    /// - Parameter cardNumber: The card number to retrieve the brand of. The number is expected to be sanitized (digits only).
+    /// - Returns: The brand for the given card number, or `nil` if it could not be found.
     func type(forCardNumber cardNumber: String) -> CardBrand? {
         base.first { $0.matches(cardNumber: cardNumber) }
     }

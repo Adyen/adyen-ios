@@ -29,7 +29,7 @@ public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObser
     }
     
     /// Initiate new instance of CardSecurityCodeValidator with a fixed ``CardBrand``
-    /// - Parameter cardBrand: The card type to validate the security code for
+    /// - Parameter cardBrand: The card brand to validate the security code for
     public init(cardBrand: CardBrand) {
         super.init(minimumLength: 3, maximumLength: 4)
         

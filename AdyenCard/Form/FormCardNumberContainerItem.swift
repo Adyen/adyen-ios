@@ -148,7 +148,7 @@ extension FormCardLogosItem {
         
         /// Initializes the card type logo.
         ///
-        /// - Parameter cardBrand: The card type for which to initialize the logo.
+        /// - Parameter cardBrand: The card brand for which to initialize the logo.
         internal init(url: URL, brand: CardBrand) {
             self.url = url
             self.brand = brand
