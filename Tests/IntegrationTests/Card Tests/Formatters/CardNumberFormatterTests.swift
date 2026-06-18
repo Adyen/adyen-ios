@@ -20,7 +20,7 @@ class CardNumberFormatterTests: XCTestCase {
     
     func testAmexFormatting() {
         let formatter = CardNumberFormatter()
-        formatter.cardType = CardType.americanExpress
+        formatter.cardBrand = CardBrand.americanExpress
         
         XCTAssertEqual(formatter.formattedValue(for: "37000"), "3700 0")
         XCTAssertEqual(formatter.formattedValue(for: "37000000000"), "3700 000000 0")

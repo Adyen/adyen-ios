@@ -18,26 +18,26 @@ public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObser
     
     /// Initiate new instance of CardSecurityCodeValidator
     /// - Parameter publisher: Observable of a card type
-    public init(publisher: AdyenObservable<CardType?>) {
+    public init(publisher: AdyenObservable<CardBrand?>) {
         super.init(minimumLength: 3, maximumLength: 4)
         
         updateExpectedLength(from: publisher.wrappedValue)
         
-        observe(publisher) { [weak self] cardType in
-            self?.updateExpectedLength(from: cardType)
+        observe(publisher) { [weak self] cardBrand in
+            self?.updateExpectedLength(from: cardBrand)
         }
     }
     
-    /// Initiate new instance of CardSecurityCodeValidator with a fixed ``CardType``
-    /// - Parameter cardType: The card type to validate the security code for
-    public init(cardType: CardType) {
+    /// Initiate new instance of CardSecurityCodeValidator with a fixed ``CardBrand``
+    /// - Parameter cardBrand: The card type to validate the security code for
+    public init(cardBrand: CardBrand) {
         super.init(minimumLength: 3, maximumLength: 4)
         
-        updateExpectedLength(from: cardType)
+        updateExpectedLength(from: cardBrand)
     }
     
-    private func updateExpectedLength(from cardType: CardType?) {
-        let length = cardType == .americanExpress ? 4 : 3
+    private func updateExpectedLength(from cardBrand: CardBrand?) {
+        let length = cardBrand == .americanExpress ? 4 : 3
         maximumLength = length
         minimumLength = length
     }

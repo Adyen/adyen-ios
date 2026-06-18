@@ -16,7 +16,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     internal var isHidden: AdyenObservable<Bool> = AdyenObservable(false)
 
     /// The supported card type logos.
-    internal let cardTypeLogos: [FormCardLogosItem.CardTypeLogo]
+    internal let cardBrandLogos: [FormCardLogosItem.CardBrandLogo]
     
     internal var identifier: String?
     
@@ -38,7 +38,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     
     internal lazy var numberItem: FormCardNumberItem = {
         let item = FormCardNumberItem(
-            cardTypeLogos: cardTypeLogos,
+            cardBrandLogos: cardBrandLogos,
             style: style,
             localizationParameters: localizationParameters,
             scanCardHandler: scanCardHandler
@@ -48,19 +48,19 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
     }()
     
     internal lazy var supportedCardLogosItem: FormCardLogosItem = {
-        let item = FormCardLogosItem(cardLogos: cardTypeLogos, style: style)
+        let item = FormCardLogosItem(cardLogos: cardBrandLogos, style: style)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "supportedCardLogosItem")
         return item
     }()
     
     internal init(
-        cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
+        cardBrandLogos: [FormCardLogosItem.CardBrandLogo],
         showSupportedCardBrandLogos: Bool = true,
         style: FormTextItemStyle,
         localizationParameters: LocalizationParameters?,
         scanCardHandler: (() -> Void)?
     ) {
-        self.cardTypeLogos = cardTypeLogos
+        self.cardBrandLogos = cardBrandLogos
         self.showSupportedCardBrandLogos = showSupportedCardBrandLogos
         self.localizationParameters = localizationParameters
         self.style = style
@@ -114,9 +114,9 @@ internal final class FormCardLogosItem: FormItem {
     
     internal let style: FormTextItemStyle
     
-    internal var cardLogos: [CardTypeLogo]
+    internal var cardLogos: [CardBrandLogo]
     
-    internal init(cardLogos: [CardTypeLogo], style: FormTextItemStyle) {
+    internal init(cardLogos: [CardBrandLogo], style: FormTextItemStyle) {
         self.style = style
         self.cardLogos = cardLogos
     }
@@ -139,19 +139,19 @@ extension FormItemViewBuilder {
 
 extension FormCardLogosItem {
     /// Describes a card type logo shown in the card number form item.
-    internal struct CardTypeLogo: Equatable {
+    internal struct CardBrandLogo: Equatable {
         
-        internal let type: CardType
+        internal let brand: CardBrand
         
         /// The URL of the card type logo.
         internal let url: URL
         
         /// Initializes the card type logo.
         ///
-        /// - Parameter cardType: The card type for which to initialize the logo.
-        internal init(url: URL, type: CardType) {
+        /// - Parameter cardBrand: The card type for which to initialize the logo.
+        internal init(url: URL, brand: CardBrand) {
             self.url = url
-            self.type = type
+            self.brand = brand
         }
         
     }

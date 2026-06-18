@@ -382,22 +382,22 @@ class CardComponentTests: XCTestCase {
     }
 
     func test_onBinChangeAndOnBinLookup_whenCardNumberEntered_shouldBeCalledWithCorrectValues() {
-        let cardTypeProviderMock = BinInfoProviderMock()
-        cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(brands: [DetectedCardBrand(type: .americanExpress)], isCreatedLocally: false))
+        let cardBrandProviderMock = BinInfoProviderMock()
+        cardBrandProviderMock.onFetch = {
+            $0(BinLookupResponse(brands: [DetectedCardBrand(brand: .americanExpress)], isCreatedLocally: false))
         }
 
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
             configuration: CardConfiguration(),
-            binProvider: cardTypeProviderMock
+            binProvider: cardBrandProviderMock
         )
 
         setupRootViewController(sut.viewController)
 
         let expectationBin = XCTestExpectation(description: "Bin Expectation")
-        let expectationCardType = XCTestExpectation(description: "CardType Expectation")
+        let expectationCardBrand = XCTestExpectation(description: "CardBrand Expectation")
         
         sut.configuration = sut.configuration
             .onBinChange { value in
@@ -410,13 +410,13 @@ class CardComponentTests: XCTestCase {
                     brands: [BinLookupBrand(brand: "amex", supported: true, paymentMethodVariant: nil)]
                 )
                 XCTAssertEqual(value, expected)
-                expectationCardType.fulfill()
+                expectationCardBrand.fulfill()
             }
         
         self.fillCard(on: sut.viewController.view, with: Dummy.amexCard)
         self.tapSubmitButton(on: sut.viewController.view)
 
-        wait(for: [expectationBin, expectationCardType], timeout: 10)
+        wait(for: [expectationBin, expectationCardBrand], timeout: 10)
     }
     
     func test_billingAddress_withPrefillData_shouldShowPrefilledAddress() throws {
@@ -458,7 +458,7 @@ class CardComponentTests: XCTestCase {
         )
     }
 
-    func test_securityCodeFormatter_whenCardTypeChanges_shouldUpdateMaxLength() throws {
+    func test_securityCodeFormatter_whenCardBrandChanges_shouldUpdateMaxLength() throws {
         
         let sut = CardComponent(
             paymentMethod: method,
@@ -629,7 +629,7 @@ class CardComponentTests: XCTestCase {
 //        XCTAssertNotNil(sut.storedCardComponent as? StoredPaymentMethodComponent)
 //    }
 
-    func test_cardLogos_onInit_shouldShowUpTo4CardTypes() throws {
+    func test_cardLogos_onInit_shouldShowUpTo4CardBrands() throws {
         // Given
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.visa, .americanExpress, .masterCard, .maestro, .jcb, .chinaUnionPay])
         let sut = CardComponent(
@@ -646,7 +646,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(cardLogoView)
         let cardNumberItem = try XCTUnwrap(cardNumberItemView?.item)
         
-        XCTAssertEqual(cardNumberItem.cardTypeLogos.count, 6)
+        XCTAssertEqual(cardNumberItem.cardBrandLogos.count, 6)
         XCTAssertFalse(cardLogoView.primaryLogoView.isHidden)
         XCTAssertTrue(cardLogoView.secondaryLogoView.isHidden)
     }
@@ -668,7 +668,7 @@ class CardComponentTests: XCTestCase {
         
         self.populate(textItemView: cardNumberItemView, with: "3400")
         
-        wait(until: cardNumberItem, at: \.cardTypeLogos.count, is: 3)
+        wait(until: cardNumberItem, at: \.cardBrandLogos.count, is: 3)
         wait(until: cardLogoView, at: \.primaryLogoView.isHidden, is: false)
         wait(until: cardLogoView, at: \.secondaryLogoView.isHidden, is: true)
     }
@@ -744,7 +744,7 @@ class CardComponentTests: XCTestCase {
 
         // no focus change without panglength till max (19)
         
-        var newResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .americanExpress)])
+        var newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .americanExpress)])
         sut.cardViewController.update(binInfo: newResponse)
         cardNumberItemView.becomeFirstResponder()
         
@@ -756,7 +756,7 @@ class CardComponentTests: XCTestCase {
         wait(until: cardNumberItemView, at: \.isFirstResponder, is: true)
         
         // focus should change with pan length set
-        newResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .americanExpress, panLength: 15)])
+        newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .americanExpress, panLength: 15)])
         sut.cardViewController.update(binInfo: newResponse)
         cardNumberItemView.becomeFirstResponder()
         
@@ -768,7 +768,7 @@ class CardComponentTests: XCTestCase {
         wait(until: expiryDateItemView, at: \.isFirstResponder, is: true)
 
         // focus should also change when reaching default max length 19
-        newResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .maestro)])
+        newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .maestro)])
         sut.cardViewController.update(binInfo: newResponse)
         cardNumberItemView.becomeFirstResponder()
         
@@ -861,10 +861,10 @@ class CardComponentTests: XCTestCase {
         // Given
         var configuration = CardConfiguration()
         configuration.koreanAuthenticationVisibility = .auto
-        let cardTypeProviderMock = BinInfoProviderMock()
-        cardTypeProviderMock.onFetch = {
+        let cardBrandProviderMock = BinInfoProviderMock()
+        cardBrandProviderMock.onFetch = {
             $0(BinLookupResponse(
-                brands: [DetectedCardBrand(type: .koreanLocalCard)],
+                brands: [DetectedCardBrand(brand: .koreanLocalCard)],
                 issuingCountryCode: "KR"
             ))
         }
@@ -873,7 +873,7 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            binProvider: cardTypeProviderMock
+            binProvider: cardBrandProviderMock
         )
         setupRootViewController(sut.viewController)
 
@@ -921,10 +921,10 @@ class CardComponentTests: XCTestCase {
         // Given
         var configuration = CardConfiguration()
         configuration.socialSecurityNumberVisibility = .auto
-        let cardTypeProviderMock = BinInfoProviderMock()
-        cardTypeProviderMock.onFetch = {
+        let cardBrandProviderMock = BinInfoProviderMock()
+        cardBrandProviderMock.onFetch = {
             $0(BinLookupResponse(
-                brands: [DetectedCardBrand(type: .elo, showSocialSecurityNumber: true)],
+                brands: [DetectedCardBrand(brand: .elo, showSocialSecurityNumber: true)],
                 issuingCountryCode: "BR"
             ))
         }
@@ -933,7 +933,7 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            binProvider: cardTypeProviderMock
+            binProvider: cardBrandProviderMock
         )
         setupRootViewController(sut.viewController)
 
@@ -964,7 +964,7 @@ class CardComponentTests: XCTestCase {
 
         tapSubmitButton(on: sut.viewController.view)
         
-        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .elo, showSocialSecurityNumber: false)])
+        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .elo, showSocialSecurityNumber: false)])
         sut.cardViewController.update(binInfo: newResponse)
 
         wait(until: brazilSSNItemView, at: \.isHidden, is: true)
@@ -986,7 +986,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNil(brazilSSNItemView)
         
         // config is always hide, so item is not added to view
-        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .elo, showSocialSecurityNumber: true)])
+        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .elo, showSocialSecurityNumber: true)])
         sut.cardViewController.update(binInfo: newResponse)
         
         XCTAssertNil(brazilSSNItemView)
@@ -1008,7 +1008,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(try XCTUnwrap(brazilSSNItemView?.isHidden))
         
         // config is always show, so bin response is ignored
-        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .elo, showSocialSecurityNumber: false)])
+        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .elo, showSocialSecurityNumber: false)])
         sut.cardViewController.update(binInfo: newResponse)
         
         XCTAssertFalse(try XCTUnwrap(brazilSSNItemView?.isHidden))
@@ -1022,8 +1022,8 @@ class CardComponentTests: XCTestCase {
         )
         
         let brands = [
-            DetectedCardBrand(type: .visa, isLuhnCheckEnabled: true),
-            DetectedCardBrand(type: .masterCard, isLuhnCheckEnabled: false)
+            DetectedCardBrand(brand: .visa, isLuhnCheckEnabled: true),
+            DetectedCardBrand(brand: .masterCard, isLuhnCheckEnabled: false)
         ]
         
         let cardNumberItem = sut.cardViewController.items.numberContainerItem.numberItem
@@ -1060,7 +1060,7 @@ class CardComponentTests: XCTestCase {
         
         fillCard(on: sut.viewController.view, with: Dummy.visaCard)
         
-        let binResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .visa, isSupported: true)])
+        let binResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .visa, isSupported: true)])
         sut.cardViewController.update(binInfo: binResponse)
 
         wait(until: supportedCardLogosItem, at: \.isHidden, is: true)
@@ -1068,9 +1068,9 @@ class CardComponentTests: XCTestCase {
 
     func test_securityCodeField_withDifferentCVCPolicies_shouldUpdateDisplayMode() {
         let brands = [
-            DetectedCardBrand(type: .visa, cvcPolicy: .required),
-            DetectedCardBrand(type: .americanExpress, cvcPolicy: .optional),
-            DetectedCardBrand(type: .masterCard, cvcPolicy: .hidden)
+            DetectedCardBrand(brand: .visa, cvcPolicy: .required),
+            DetectedCardBrand(brand: .americanExpress, cvcPolicy: .optional),
+            DetectedCardBrand(brand: .masterCard, cvcPolicy: .hidden)
         ]
 
         let method = CardPaymentMethod(
@@ -1123,9 +1123,9 @@ class CardComponentTests: XCTestCase {
         )
         
         let brands = [
-            DetectedCardBrand(type: .visa, expiryDatePolicy: .required),
-            DetectedCardBrand(type: .americanExpress, expiryDatePolicy: .optional),
-            DetectedCardBrand(type: .masterCard, expiryDatePolicy: .hidden)
+            DetectedCardBrand(brand: .visa, expiryDatePolicy: .required),
+            DetectedCardBrand(brand: .americanExpress, expiryDatePolicy: .optional),
+            DetectedCardBrand(brand: .masterCard, expiryDatePolicy: .hidden)
         ]
         
         let expDateItem = sut.cardViewController.items.expiryDateItem
@@ -1167,7 +1167,7 @@ class CardComponentTests: XCTestCase {
     }
     
     func test_installmentsField_withDefaultAndCardBasedOptions_shouldShowCorrectOptions() throws {
-        let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [
+        let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
             .visa:
                 InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
         ]
@@ -1178,13 +1178,13 @@ class CardComponentTests: XCTestCase {
             cardBasedOptions: cardBasedInstallmentOptions,
             defaultOptions: defaultInstallmentOptions
         )
-        let cardTypeProviderMock = BinInfoProviderMock()
+        let cardBrandProviderMock = BinInfoProviderMock()
 
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            binProvider: cardTypeProviderMock
+            binProvider: cardBrandProviderMock
         )
         setupRootViewController(sut.viewController)
         
@@ -1193,13 +1193,13 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
         XCTAssertFalse(try XCTUnwrap(installmentItemView?.isHidden))
         
-        sut.cardViewController.items.installmentsItem?.update(cardType: .visa)
+        sut.cardViewController.items.installmentsItem?.update(cardBrand: .visa)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 9)
         try installmentItemView?.select(value: XCTUnwrap(sut.cardViewController.items.installmentsItem?.selectableValues[2]))
         XCTAssertEqual(installmentItemView?.inputControl.label, "2 months")
         XCTAssertNotNil(sut.cardViewController.installments)
         
-        sut.cardViewController.items.installmentsItem?.update(cardType: .americanExpress)
+        sut.cardViewController.items.installmentsItem?.update(cardBrand: .americanExpress)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 5)
         XCTAssertFalse(try XCTUnwrap(installmentItemView?.isHidden))
         XCTAssertNil(sut.cardViewController.installments)
@@ -1209,7 +1209,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(sut.cardViewController.installments)
         
         // nil card type refers to default options if exists
-        sut.cardViewController.items.installmentsItem?.update(cardType: nil)
+        sut.cardViewController.items.installmentsItem?.update(cardBrand: nil)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 5)
         XCTAssertFalse(try XCTUnwrap(installmentItemView?.isHidden))
         XCTAssertEqual(installmentItemView?.inputControl.label, "6 months")
@@ -1220,13 +1220,13 @@ class CardComponentTests: XCTestCase {
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
         var configuration = CardConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(defaultOptions: defaultInstallmentOptions)
-        let cardTypeProviderMock = BinInfoProviderMock()
+        let cardBrandProviderMock = BinInfoProviderMock()
 
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            binProvider: cardTypeProviderMock
+            binProvider: cardBrandProviderMock
         )
         setupRootViewController(sut.viewController)
         
@@ -1235,7 +1235,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
         XCTAssertFalse(try XCTUnwrap(installmentItemView?.isHidden))
         
-        sut.cardViewController.items.installmentsItem?.update(cardType: .americanExpress)
+        sut.cardViewController.items.installmentsItem?.update(cardBrand: .americanExpress)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 5)
         XCTAssertFalse(try XCTUnwrap(installmentItemView?.isHidden))
         XCTAssertNil(sut.cardViewController.installments)
@@ -1245,26 +1245,26 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(installmentItemView?.inputControl.label, "6 months")
         XCTAssertNotNil(sut.cardViewController.installments)
         
-        sut.cardViewController.items.installmentsItem?.update(cardType: .visa)
+        sut.cardViewController.items.installmentsItem?.update(cardBrand: .visa)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 5)
         XCTAssertEqual(installmentItemView?.inputControl.label, "6 months")
         XCTAssertNotNil(sut.cardViewController.installments)
     }
 
     func test_installmentsField_withCardBasedOptions_shouldShowCardSpecificOptions() throws {
-        let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [
+        let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
             .visa:
                 InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
         ]
         var configuration = CardConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions)
-        let cardTypeProviderMock = BinInfoProviderMock()
+        let cardBrandProviderMock = BinInfoProviderMock()
 
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            binProvider: cardTypeProviderMock
+            binProvider: cardBrandProviderMock
         )
         setupRootViewController(sut.viewController)
         
@@ -1273,14 +1273,14 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
         XCTAssertTrue(try XCTUnwrap(installmentItemView?.isHidden))
         
-        sut.cardViewController.items.installmentsItem?.update(cardType: .americanExpress)
+        sut.cardViewController.items.installmentsItem?.update(cardBrand: .americanExpress)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 1)
         XCTAssertTrue(try XCTUnwrap(installmentItemView?.isHidden))
         XCTAssertNil(sut.cardViewController.installments)
         XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
         
         // set card type one that has installment options
-        sut.cardViewController.items.installmentsItem?.update(cardType: .visa)
+        sut.cardViewController.items.installmentsItem?.update(cardBrand: .visa)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 9)
         XCTAssertFalse(try XCTUnwrap(installmentItemView?.isHidden))
         XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
@@ -1295,27 +1295,27 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(sut.cardViewController.installments)
         
         // nil card type means no options since there is no default option
-        sut.cardViewController.items.installmentsItem?.update(cardType: nil)
+        sut.cardViewController.items.installmentsItem?.update(cardBrand: nil)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 1)
         XCTAssertFalse(try XCTUnwrap(installmentItemView?.isHidden))
         XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
     }
     
     func test_installmentsField_withAmountShown_shouldDisplayInstallmentAmounts() throws {
-        let cardBasedInstallmentOptions: [CardType: InstallmentOptions] = [
+        let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
             .visa:
                 InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
         ]
 
         var configuration = CardConfiguration()
         configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions, showInstallmentAmount: true)
-        let cardTypeProviderMock = BinInfoProviderMock()
+        let cardBrandProviderMock = BinInfoProviderMock()
 
         let sut = CardComponent(
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            binProvider: cardTypeProviderMock
+            binProvider: cardBrandProviderMock
         )
         setupRootViewController(sut.viewController)
         
@@ -1324,14 +1324,14 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
         XCTAssertTrue(try XCTUnwrap(installmentItemView?.isHidden))
         
-        sut.cardViewController.items.installmentsItem?.update(cardType: .americanExpress)
+        sut.cardViewController.items.installmentsItem?.update(cardBrand: .americanExpress)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 1)
         XCTAssertTrue(try XCTUnwrap(installmentItemView?.isHidden))
         XCTAssertNil(sut.cardViewController.installments)
         XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
         
         // set card type one that has installment options
-        sut.cardViewController.items.installmentsItem?.update(cardType: .visa)
+        sut.cardViewController.items.installmentsItem?.update(cardBrand: .visa)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 9)
         XCTAssertFalse(try XCTUnwrap(installmentItemView?.isHidden))
         XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
@@ -1350,7 +1350,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(sut.cardViewController.installments)
         
         // nil card type means no options since there is no default option
-        sut.cardViewController.items.installmentsItem?.update(cardType: nil)
+        sut.cardViewController.items.installmentsItem?.update(cardBrand: nil)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 1)
         XCTAssertFalse(try XCTUnwrap(installmentItemView?.isHidden))
         XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
@@ -1404,7 +1404,7 @@ class CardComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .visa), DetectedCardBrand(type: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
+        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .visa), DetectedCardBrand(brand: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
 
         try sut.cardViewController.showCoBadgedCardsUI(for: XCTUnwrap(newResponse.brands))
 
@@ -1425,7 +1425,7 @@ class CardComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .masterCard), DetectedCardBrand(type: .other(named: "eftpos_australia"))], issuingCountryCode: "AU", isCreatedLocally: false)
+        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .masterCard), DetectedCardBrand(brand: .other(named: "eftpos_australia"))], issuingCountryCode: "AU", isCreatedLocally: false)
 
         try sut.cardViewController.showCoBadgedCardsUI(for: XCTUnwrap(newResponse.brands))
 
@@ -1468,7 +1468,7 @@ class CardComponentTests: XCTestCase {
         // Then
         XCTAssertFalse(sut.cardViewController.items.coBadgedCardItem.isHidden.wrappedValue)
         XCTAssertEqual(sut.cardViewController.items.coBadgedCardItem.selectableFormItems[0].title, newResponse.brands?[0].localeBrand)
-        XCTAssertEqual(sut.cardViewController.items.coBadgedCardItem.selectableFormItems[1].title, newResponse.brands?[1].type.rawValue)
+        XCTAssertEqual(sut.cardViewController.items.coBadgedCardItem.selectableFormItems[1].title, newResponse.brands?[1].brand.rawValue)
     }
 
     func test_coBadgedCardsUI_whenDisplayed_shouldSendAnalyticsInfo() {
@@ -1486,7 +1486,7 @@ class CardComponentTests: XCTestCase {
             configuration: CardConfiguration()
         )
 
-        let brands = [DetectedCardBrand(type: .visa), DetectedCardBrand(type: .carteBancaire)]
+        let brands = [DetectedCardBrand(brand: .visa), DetectedCardBrand(brand: .carteBancaire)]
         sut.viewController.loadViewIfNeeded()
 
         sut.cardViewController.items.coBadgedCardItem.updatedCardBrands = brands
@@ -1514,7 +1514,7 @@ class CardComponentTests: XCTestCase {
 
         setupRootViewController(sut.viewController)
 
-        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .visa), DetectedCardBrand(type: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
+        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .visa), DetectedCardBrand(brand: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
 
         sut.cardViewController.update(binInfo: newResponse)
         sut.cardViewController.items.coBadgedCardItem.selectableFormItems.first?.selectionHandler?()
@@ -1525,7 +1525,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
         let dualBrandSelectedCalled = analyticsProviderMock.infos.filter { $0.type == .selected }.first
         XCTAssertNotNil(dualBrandSelectedCalled)
-        XCTAssertEqual(dualBrandSelectedCalled?.brand, newResponse.brands?.first?.type.rawValue)
+        XCTAssertEqual(dualBrandSelectedCalled?.brand, newResponse.brands?.first?.brand.rawValue)
         XCTAssertEqual(dualBrandSelectedCalled?.target, .dualBrandButton)
         XCTAssertNil(dualBrandSelectedCalled?.configData)
     }
@@ -1841,12 +1841,12 @@ class CardComponentTests: XCTestCase {
         var configuration = CardConfiguration()
         configuration.billingAddress.mode = .full
         configuration.billingAddress.countryCodes = ["US"]
-        configuration.billingAddress.requirementPolicy = .optionalForCardTypes([.visa])
+        configuration.billingAddress.requirementPolicy = .optionalForCardBrands([.visa])
 
-        let cardTypeProviderMock = BinInfoProviderMock()
-        cardTypeProviderMock.onFetch = {
+        let cardBrandProviderMock = BinInfoProviderMock()
+        cardBrandProviderMock.onFetch = {
             $0(BinLookupResponse(
-                brands: [DetectedCardBrand(type: .visa)],
+                brands: [DetectedCardBrand(brand: .visa)],
                 issuingCountryCode: "US"
             ))
         }
@@ -1855,7 +1855,7 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            binProvider: cardTypeProviderMock
+            binProvider: cardBrandProviderMock
         )
         
         let delegate = PaymentComponentDelegateMock()
@@ -1907,13 +1907,13 @@ class CardComponentTests: XCTestCase {
         var configuration = CardConfiguration()
         configuration.billingAddress.mode = .full
         configuration.billingAddress.countryCodes = ["US"]
-        configuration.billingAddress.requirementPolicy = .optionalForCardTypes([.visa])
+        configuration.billingAddress.requirementPolicy = .optionalForCardBrands([.visa])
         configuration.shopperInformation = shopperInformation
 
-        let cardTypeProviderMock = BinInfoProviderMock()
-        cardTypeProviderMock.onFetch = {
+        let cardBrandProviderMock = BinInfoProviderMock()
+        cardBrandProviderMock.onFetch = {
             $0(BinLookupResponse(
-                brands: [DetectedCardBrand(type: .visa)],
+                brands: [DetectedCardBrand(brand: .visa)],
                 issuingCountryCode: "US"
             ))
         }
@@ -1922,7 +1922,7 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            binProvider: cardTypeProviderMock
+            binProvider: cardBrandProviderMock
         )
         
         let delegate = PaymentComponentDelegateMock()
@@ -1962,13 +1962,13 @@ class CardComponentTests: XCTestCase {
         var configuration = CardConfiguration()
         configuration.billingAddress.mode = .postalCode
         configuration.billingAddress.countryCodes = ["US"]
-        configuration.billingAddress.requirementPolicy = .optionalForCardTypes([.visa])
+        configuration.billingAddress.requirementPolicy = .optionalForCardBrands([.visa])
         configuration.shopperInformation = shopperInformation
         
-        let cardTypeProviderMock = BinInfoProviderMock()
-        cardTypeProviderMock.onFetch = {
+        let cardBrandProviderMock = BinInfoProviderMock()
+        cardBrandProviderMock.onFetch = {
             $0(BinLookupResponse(
-                brands: [DetectedCardBrand(type: .visa)],
+                brands: [DetectedCardBrand(brand: .visa)],
                 issuingCountryCode: "US"
             ))
         }
@@ -1977,7 +1977,7 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            binProvider: cardTypeProviderMock
+            binProvider: cardBrandProviderMock
         )
         
         let delegate = PaymentComponentDelegateMock()
@@ -2019,12 +2019,12 @@ class CardComponentTests: XCTestCase {
         var configuration = CardConfiguration()
         configuration.billingAddress.mode = .postalCode
         configuration.billingAddress.countryCodes = ["US"]
-        configuration.billingAddress.requirementPolicy = .optionalForCardTypes([.visa])
+        configuration.billingAddress.requirementPolicy = .optionalForCardBrands([.visa])
 
-        let cardTypeProviderMock = BinInfoProviderMock()
-        cardTypeProviderMock.onFetch = {
+        let cardBrandProviderMock = BinInfoProviderMock()
+        cardBrandProviderMock.onFetch = {
             $0(BinLookupResponse(
-                brands: [DetectedCardBrand(type: .visa)],
+                brands: [DetectedCardBrand(brand: .visa)],
                 issuingCountryCode: "US"
             ))
         }
@@ -2033,7 +2033,7 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            binProvider: cardTypeProviderMock
+            binProvider: cardBrandProviderMock
         )
         
         let delegate = PaymentComponentDelegateMock()
@@ -2153,10 +2153,10 @@ class CardComponentTests: XCTestCase {
         configuration.billingAddress.mode = .full
         configuration.billingAddress.countryCodes = ["US"]
 
-        let cardTypeProviderMock = BinInfoProviderMock()
-        cardTypeProviderMock.onFetch = {
+        let cardBrandProviderMock = BinInfoProviderMock()
+        cardBrandProviderMock.onFetch = {
             $0(BinLookupResponse(
-                brands: [DetectedCardBrand(type: .visa)],
+                brands: [DetectedCardBrand(brand: .visa)],
                 issuingCountryCode: "US"
             ))
         }
@@ -2165,7 +2165,7 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            binProvider: cardTypeProviderMock
+            binProvider: cardBrandProviderMock
         )
 
         let delegate = PaymentComponentDelegateMock()
@@ -2208,10 +2208,10 @@ class CardComponentTests: XCTestCase {
         configuration.billingAddress.mode = .full
         configuration.billingAddress.countryCodes = ["US"]
 
-        let cardTypeProviderMock = BinInfoProviderMock()
-        cardTypeProviderMock.onFetch = {
+        let cardBrandProviderMock = BinInfoProviderMock()
+        cardBrandProviderMock.onFetch = {
             $0(BinLookupResponse(
-                brands: [DetectedCardBrand(type: .visa)],
+                brands: [DetectedCardBrand(brand: .visa)],
                 issuingCountryCode: "US"
             ))
         }
@@ -2220,7 +2220,7 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            binProvider: cardTypeProviderMock
+            binProvider: cardBrandProviderMock
         )
 
         let delegate = PaymentComponentDelegateMock()
@@ -2269,10 +2269,10 @@ class CardComponentTests: XCTestCase {
         configuration.billingAddress.mode = .full
         configuration.billingAddress.countryCodes = ["GB"]
 
-        let cardTypeProviderMock = BinInfoProviderMock()
-        cardTypeProviderMock.onFetch = {
+        let cardBrandProviderMock = BinInfoProviderMock()
+        cardBrandProviderMock.onFetch = {
             $0(BinLookupResponse(
-                brands: [DetectedCardBrand(type: .bijenkorfCard)],
+                brands: [DetectedCardBrand(brand: .bijenkorfCard)],
                 issuingCountryCode: "GB"
             ))
         }
@@ -2281,7 +2281,7 @@ class CardComponentTests: XCTestCase {
             paymentMethod: method,
             context: context,
             configuration: configuration,
-            binProvider: cardTypeProviderMock
+            binProvider: cardBrandProviderMock
         )
 
         let delegate = PaymentComponentDelegateMock()

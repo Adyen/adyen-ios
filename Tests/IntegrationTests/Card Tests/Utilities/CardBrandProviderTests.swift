@@ -27,30 +27,30 @@ class CardBrandProviderTests: XCTestCase {
         sut = nil
     }
 
-    func testLocalCardTypeFetch() {
+    func testLocalCardBrandFetch() {
         apiClientMock.onExecute = { _ in
             XCTFail("Should not call APIClient")
         }
 
         sut.provide(for: "56", supportedTypes: [.masterCard, .visa, .maestro]) { result in
-            XCTAssertEqual(result.brands!.map(\.type), [.maestro])
+            XCTAssertEqual(result.brands!.map(\.brand), [.maestro])
         }
     }
 
-    func testRemoteCardTypeFetch() {
-        let mockedBrands = [DetectedCardBrand(type: .solo)]
+    func testRemoteCardBrandFetch() {
+        let mockedBrands = [DetectedCardBrand(brand: .solo)]
         apiClientMock.mockedResults = [.success(BinLookupResponse(brands: mockedBrands))]
 
         sut.provide(for: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro]) { result in
-            XCTAssertEqual(result.brands!.map(\.type), [.solo])
+            XCTAssertEqual(result.brands!.map(\.brand), [.solo])
         }
     }
 
-    func testRemoteCardTypeFetchWithAPIFailure() {
+    func testRemoteCardBrandFetchWithAPIFailure() {
         apiClientMock.mockedResults = [.failure(Dummy.error)]
 
         sut.provide(for: "5656565656565656", supportedTypes: [.masterCard, .visa, .maestro]) { result in
-            XCTAssertEqual(result.brands!.map(\.type), [.maestro])
+            XCTAssertEqual(result.brands!.map(\.brand), [.maestro])
         }
     }
 

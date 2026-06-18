@@ -24,7 +24,7 @@ package struct DetectedCardBrand: Decodable {
     }
 
     /// Indicates the card brand type.
-    package let type: CardType
+    package let brand: CardBrand
 
     /// Indicates whether its supported by the merchant or not.
     package let isSupported: Bool
@@ -58,14 +58,14 @@ package struct DetectedCardBrand: Decodable {
     /// Initializes a DetectedCardBrand.
     ///
     /// - Parameters:
-    ///   - type: Indicates the card brand type.
+    ///   - brand: Indicates the card brand type.
     ///   - isSupported: Indicates whether its supported by the merchant or not.
     ///   - cvcPolicy: Indicates the cvc policy of the brand.
     ///   - expiryDatePolicy: Indicates the expiry date policy of the brand.
     ///   - isLuhnCheckEnabled: Indicates whether Luhn check applies to card numbers of this brand.
     ///   - showsSocialSecurityNumber: Indicates whether to show social security number field or not.
     internal init(
-        type: CardType,
+        brand: CardBrand,
         isSupported: Bool = true,
         cvcPolicy: RequirementPolicy = .required,
         expiryDatePolicy: RequirementPolicy = .required,
@@ -75,7 +75,7 @@ package struct DetectedCardBrand: Decodable {
         localeBrand: String? = nil,
         paymentMethodVariant: String? = nil
     ) {
-        self.type = type
+        self.brand = brand
         self.isSupported = isSupported
         self.cvcPolicy = cvcPolicy
         self.expiryDatePolicy = expiryDatePolicy
@@ -87,7 +87,7 @@ package struct DetectedCardBrand: Decodable {
     }
 
     private enum CodingKeys: String, CodingKey {
-        case type = "brand"
+        case brand
         case isSupported = "supported"
         case cvcPolicy
         case isLuhnCheckEnabled = "enableLuhnCheck"
@@ -118,7 +118,7 @@ package struct DetectedCardBrand: Decodable {
     
     /// Determines if the brand is a private labeled card.
     internal var isPrivateLabeled: Bool {
-        type.rawValue.contains(Constants.plccText) || type.rawValue.contains(Constants.cbccText)
+        brand.rawValue.contains(Constants.plccText) || brand.rawValue.contains(Constants.cbccText)
     }
 }
 

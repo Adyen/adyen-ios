@@ -11,9 +11,9 @@ import Foundation
 public final class CardSecurityCodeFormatter: NumericFormatter {
     
     /// Indicate is validating CVV belong to a Amex card
-    private var cardType: CardType?
+    private var cardBrand: CardBrand?
     private var expectedLength: Int {
-        cardType == CardType.americanExpress ? 4 : 3
+        cardBrand == CardBrand.americanExpress ? 4 : 3
     }
     
     /// Initiate new instance of CardSecurityCodeValidator
@@ -23,16 +23,16 @@ public final class CardSecurityCodeFormatter: NumericFormatter {
     
     /// Initiate new instance of CardSecurityCodeValidator
     /// - Parameter publisher: observer of a card type.
-    public init(publisher: AdyenObservable<CardType?>) {
+    public init(publisher: AdyenObservable<CardBrand?>) {
         super.init()
-        bind(publisher, to: self, at: \.cardType)
+        bind(publisher, to: self, at: \.cardBrand)
     }
     
-    /// Initiate new instance of CardSecurityCodeValidator with a fixed ``CardType``
-    /// - Parameter cardType: The card type to format the security code for
-    public init(cardType: CardType) {
+    /// Initiate new instance of CardSecurityCodeValidator with a fixed ``CardBrand``
+    /// - Parameter cardBrand: The card type to format the security code for
+    public init(cardBrand: CardBrand) {
         super.init()
-        self.cardType = cardType
+        self.cardBrand = cardBrand
     }
     
     override public func formattedValue(for value: String) -> String {

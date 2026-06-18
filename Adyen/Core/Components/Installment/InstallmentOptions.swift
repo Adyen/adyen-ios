@@ -78,7 +78,7 @@ public struct InstallmentConfiguration: Decodable {
     package let defaultOptions: InstallmentOptions?
 
     /// Options that are specific to given card types
-    package let cardBasedOptions: [CardType: InstallmentOptions]?
+    package let cardBasedOptions: [CardBrand: InstallmentOptions]?
 
     /// Determines whether to show the amount next to the installment value.
     /// For example, `3 months X 500 USD` or `3 months`.
@@ -92,7 +92,7 @@ public struct InstallmentConfiguration: Decodable {
     ///   - defaultOptions: Default options for cards that are not specified in `cardBasedOptions`.
     ///   - showInstallmentAmount: Determines whether to show the amount next to the installment value.
     public init(
-        cardBasedOptions: [CardType: InstallmentOptions],
+        cardBasedOptions: [CardBrand: InstallmentOptions],
         defaultOptions: InstallmentOptions,
         showInstallmentAmount: Bool = false
     ) {
@@ -107,7 +107,7 @@ public struct InstallmentConfiguration: Decodable {
     ///   - cardBasedOptions:  Options based on the card type. Must not be empty.
     ///   - showInstallmentAmount: Determines whether to show the amount next to the installment value.
     public init(
-        cardBasedOptions: [CardType: InstallmentOptions],
+        cardBasedOptions: [CardBrand: InstallmentOptions],
         showInstallmentAmount: Bool = false
     ) {
         assert(!cardBasedOptions.isEmpty, "This dictionary must not be empty.")
@@ -133,15 +133,15 @@ public struct InstallmentConfiguration: Decodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: DynamicKey.self)
         var defaultOptions: InstallmentOptions?
-        var cardBased = [CardType: InstallmentOptions]()
+        var cardBased = [CardBrand: InstallmentOptions]()
         
         for key in container.allKeys {
             switch key.stringValue {
             case Constants.regularCards:
                 defaultOptions = try container.decodeIfPresent(InstallmentOptions.self, forKey: key)
             default:
-                let cardType = CardType(rawValue: key.stringValue)
-                cardBased[cardType] = try container.decodeIfPresent(InstallmentOptions.self, forKey: key)
+                let cardBrand = CardBrand(rawValue: key.stringValue)
+                cardBased[cardBrand] = try container.decodeIfPresent(InstallmentOptions.self, forKey: key)
             }
         }
         self.defaultOptions = defaultOptions
