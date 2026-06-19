@@ -36,10 +36,10 @@ internal final class FormCoBadgedCardItem: FormItem {
     internal var style: FormCoBadgedCardItemStyle
 
     /// The callback to send the selected brand to the Card Viewcontroller
-    internal var onCardBrandSelection: ((CardBrand) -> Void)?
+    internal var onCardBrandSelection: ((DetectedCardBrand) -> Void)?
 
     /// Brands set after coBadgedCardItems are displayed on the view
-    @AdyenObservable(nil) internal var updatedCardBrands: [CardBrand]?
+    @AdyenObservable(nil) internal var updatedCardBrands: [DetectedCardBrand]?
 
     /// Initializes the FormCoBadged card item.
     ///
@@ -73,9 +73,9 @@ internal final class FormCoBadgedCardItem: FormItem {
     }
 
     internal func selectableFormItems(
-        from brands: [CardBrand],
+        from brands: [DetectedCardBrand],
         cardLogos: [FormCardLogosItem.CardTypeLogo],
-        defaultSelectedBrand: CardBrand
+        defaultSelectedBrand: DetectedCardBrand
     ) -> [SelectableFormItem] {
         brands.map { brand in
             let brandLogoURL = cardLogos.first(where: { $0.type == brand.type })?.url
@@ -97,7 +97,7 @@ internal final class FormCoBadgedCardItem: FormItem {
         }
     }
 
-    internal func updateItems(_ brands: [CardBrand], cardLogos: [FormCardLogosItem.CardTypeLogo]) {
+    internal func updateItems(_ brands: [DetectedCardBrand], cardLogos: [FormCardLogosItem.CardTypeLogo]) {
         selectableFormItems = []
         updatedCardBrands = []
         if brands.count == 2, brands.allSatisfy(\.isSupported) {
@@ -116,7 +116,7 @@ internal final class FormCoBadgedCardItem: FormItem {
         }
     }
 
-    internal func updateSelection(_ selectedBrand: CardBrand) {
+    internal func updateSelection(_ selectedBrand: DetectedCardBrand) {
         selectableFormItems.forEach { $0.isSelected = false }
         selectableFormItems.first(where: { $0.identifier == selectedBrand.type.rawValue })?.isSelected = true
     }

@@ -102,7 +102,7 @@ class BCMCComponentTests: XCTestCase {
         
         fillCard(on: sut.viewController.view, with: Dummy.bancontactCard)
         
-        let binResponse = BinLookupResponse(brands: [CardBrand(type: .bcmc, isSupported: true)])
+        let binResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .bcmc, isSupported: true)])
         sut.cardViewController.update(binInfo: binResponse)
 
         wait(for: .milliseconds(30))
@@ -231,7 +231,7 @@ class BCMCComponentTests: XCTestCase {
             XCTFail("delegate.didFail() must not be called")
         }
         
-        let binResponse = BinLookupResponse(brands: [CardBrand(type: .bcmc, isSupported: true, cvcPolicy: .optional)])
+        let binResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .bcmc, isSupported: true, cvcPolicy: .optional)])
         sut.cardViewController.update(binInfo: binResponse)
         
         // Enter Card Number
@@ -334,7 +334,7 @@ class BCMCComponentTests: XCTestCase {
         let expectationBinLookup = XCTestExpectation(description: "Bin Lookup Expectation")
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(brands: [CardBrand(type: .bcmc, cvcPolicy: .optional, panLength: 19)]))
+            $0(BinLookupResponse(brands: [DetectedCardBrand(type: .bcmc, cvcPolicy: .optional, panLength: 19)]))
             expectationBinLookup.fulfill()
         }
         
@@ -371,7 +371,7 @@ class BCMCComponentTests: XCTestCase {
         let expectationBinLookup = XCTestExpectation(description: "Bin Lookup Expectation")
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(brands: [CardBrand(type: .bcmc, cvcPolicy: .optional, isLuhnCheckEnabled: false)]))
+            $0(BinLookupResponse(brands: [DetectedCardBrand(type: .bcmc, cvcPolicy: .optional, isLuhnCheckEnabled: false)]))
             expectationBinLookup.fulfill()
         }
         

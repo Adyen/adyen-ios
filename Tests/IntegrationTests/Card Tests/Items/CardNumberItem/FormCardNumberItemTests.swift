@@ -112,7 +112,7 @@ class FormCardNumberItemTests: XCTestCase {
     }
 
     func testExternalBinLookupHappyFlow() {
-        let mockedBrands = [CardBrand(type: .masterCard)]
+        let mockedBrands = [DetectedCardBrand(type: .masterCard)]
         apiClient.mockedResults = [
             .success(BinLookupResponse(brands: mockedBrands)),
             .success(BinLookupResponse(brands: []))

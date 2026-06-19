@@ -384,7 +384,7 @@ class CardComponentTests: XCTestCase {
     func test_onBinChangeAndOnBinLookup_whenCardNumberEntered_shouldBeCalledWithCorrectValues() {
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(brands: [CardBrand(type: .americanExpress)], isCreatedLocally: false))
+            $0(BinLookupResponse(brands: [DetectedCardBrand(type: .americanExpress)], isCreatedLocally: false))
         }
 
         let sut = CardComponent(
@@ -744,7 +744,7 @@ class CardComponentTests: XCTestCase {
 
         // no focus change without panglength till max (19)
         
-        var newResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress)])
+        var newResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .americanExpress)])
         sut.cardViewController.update(binInfo: newResponse)
         cardNumberItemView.becomeFirstResponder()
         
@@ -756,7 +756,7 @@ class CardComponentTests: XCTestCase {
         wait(until: cardNumberItemView, at: \.isFirstResponder, is: true)
         
         // focus should change with pan length set
-        newResponse = BinLookupResponse(brands: [CardBrand(type: .americanExpress, panLength: 15)])
+        newResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .americanExpress, panLength: 15)])
         sut.cardViewController.update(binInfo: newResponse)
         cardNumberItemView.becomeFirstResponder()
         
@@ -768,7 +768,7 @@ class CardComponentTests: XCTestCase {
         wait(until: expiryDateItemView, at: \.isFirstResponder, is: true)
 
         // focus should also change when reaching default max length 19
-        newResponse = BinLookupResponse(brands: [CardBrand(type: .maestro)])
+        newResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .maestro)])
         sut.cardViewController.update(binInfo: newResponse)
         cardNumberItemView.becomeFirstResponder()
         
@@ -864,7 +864,7 @@ class CardComponentTests: XCTestCase {
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(
-                brands: [CardBrand(type: .koreanLocalCard)],
+                brands: [DetectedCardBrand(type: .koreanLocalCard)],
                 issuingCountryCode: "KR"
             ))
         }
@@ -924,7 +924,7 @@ class CardComponentTests: XCTestCase {
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(
-                brands: [CardBrand(type: .elo, showSocialSecurityNumber: true)],
+                brands: [DetectedCardBrand(type: .elo, showSocialSecurityNumber: true)],
                 issuingCountryCode: "BR"
             ))
         }
@@ -964,7 +964,7 @@ class CardComponentTests: XCTestCase {
 
         tapSubmitButton(on: sut.viewController.view)
         
-        let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: false)])
+        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .elo, showSocialSecurityNumber: false)])
         sut.cardViewController.update(binInfo: newResponse)
 
         wait(until: brazilSSNItemView, at: \.isHidden, is: true)
@@ -986,7 +986,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertNil(brazilSSNItemView)
         
         // config is always hide, so item is not added to view
-        let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: true)])
+        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .elo, showSocialSecurityNumber: true)])
         sut.cardViewController.update(binInfo: newResponse)
         
         XCTAssertNil(brazilSSNItemView)
@@ -1008,7 +1008,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(try XCTUnwrap(brazilSSNItemView?.isHidden))
         
         // config is always show, so bin response is ignored
-        let newResponse = BinLookupResponse(brands: [CardBrand(type: .elo, showSocialSecurityNumber: false)])
+        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .elo, showSocialSecurityNumber: false)])
         sut.cardViewController.update(binInfo: newResponse)
         
         XCTAssertFalse(try XCTUnwrap(brazilSSNItemView?.isHidden))
@@ -1022,8 +1022,8 @@ class CardComponentTests: XCTestCase {
         )
         
         let brands = [
-            CardBrand(type: .visa, isLuhnCheckEnabled: true),
-            CardBrand(type: .masterCard, isLuhnCheckEnabled: false)
+            DetectedCardBrand(type: .visa, isLuhnCheckEnabled: true),
+            DetectedCardBrand(type: .masterCard, isLuhnCheckEnabled: false)
         ]
         
         let cardNumberItem = sut.cardViewController.items.numberContainerItem.numberItem
@@ -1060,7 +1060,7 @@ class CardComponentTests: XCTestCase {
         
         fillCard(on: sut.viewController.view, with: Dummy.visaCard)
         
-        let binResponse = BinLookupResponse(brands: [CardBrand(type: .visa, isSupported: true)])
+        let binResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .visa, isSupported: true)])
         sut.cardViewController.update(binInfo: binResponse)
 
         wait(until: supportedCardLogosItem, at: \.isHidden, is: true)
@@ -1068,9 +1068,9 @@ class CardComponentTests: XCTestCase {
 
     func test_securityCodeField_withDifferentCVCPolicies_shouldUpdateDisplayMode() {
         let brands = [
-            CardBrand(type: .visa, cvcPolicy: .required),
-            CardBrand(type: .americanExpress, cvcPolicy: .optional),
-            CardBrand(type: .masterCard, cvcPolicy: .hidden)
+            DetectedCardBrand(type: .visa, cvcPolicy: .required),
+            DetectedCardBrand(type: .americanExpress, cvcPolicy: .optional),
+            DetectedCardBrand(type: .masterCard, cvcPolicy: .hidden)
         ]
 
         let method = CardPaymentMethod(
@@ -1123,9 +1123,9 @@ class CardComponentTests: XCTestCase {
         )
         
         let brands = [
-            CardBrand(type: .visa, expiryDatePolicy: .required),
-            CardBrand(type: .americanExpress, expiryDatePolicy: .optional),
-            CardBrand(type: .masterCard, expiryDatePolicy: .hidden)
+            DetectedCardBrand(type: .visa, expiryDatePolicy: .required),
+            DetectedCardBrand(type: .americanExpress, expiryDatePolicy: .optional),
+            DetectedCardBrand(type: .masterCard, expiryDatePolicy: .hidden)
         ]
         
         let expDateItem = sut.cardViewController.items.expiryDateItem
@@ -1404,7 +1404,7 @@ class CardComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        let newResponse = BinLookupResponse(brands: [CardBrand(type: .visa), CardBrand(type: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
+        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .visa), DetectedCardBrand(type: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
 
         try sut.cardViewController.showCoBadgedCardsUI(for: XCTUnwrap(newResponse.brands))
 
@@ -1425,7 +1425,7 @@ class CardComponentTests: XCTestCase {
 
         sut.viewController.loadViewIfNeeded()
 
-        let newResponse = BinLookupResponse(brands: [CardBrand(type: .masterCard), CardBrand(type: .other(named: "eftpos_australia"))], issuingCountryCode: "AU", isCreatedLocally: false)
+        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .masterCard), DetectedCardBrand(type: .other(named: "eftpos_australia"))], issuingCountryCode: "AU", isCreatedLocally: false)
 
         try sut.cardViewController.showCoBadgedCardsUI(for: XCTUnwrap(newResponse.brands))
 
@@ -1448,11 +1448,11 @@ class CardComponentTests: XCTestCase {
 
         let newResponse = BinLookupResponse(
             brands: [
-                CardBrand(
+                DetectedCardBrand(
                     type: .bcmc,
                     localeBrand: "Bancontact card"
                 ),
-                CardBrand(
+                DetectedCardBrand(
                     type: .maestro,
                     localeBrand: nil
                 )
@@ -1486,7 +1486,7 @@ class CardComponentTests: XCTestCase {
             configuration: CardConfiguration()
         )
 
-        let brands = [CardBrand(type: .visa), CardBrand(type: .carteBancaire)]
+        let brands = [DetectedCardBrand(type: .visa), DetectedCardBrand(type: .carteBancaire)]
         sut.viewController.loadViewIfNeeded()
 
         sut.cardViewController.items.coBadgedCardItem.updatedCardBrands = brands
@@ -1514,7 +1514,7 @@ class CardComponentTests: XCTestCase {
 
         setupRootViewController(sut.viewController)
 
-        let newResponse = BinLookupResponse(brands: [CardBrand(type: .visa), CardBrand(type: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
+        let newResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .visa), DetectedCardBrand(type: .carteBancaire)], issuingCountryCode: "FR", isCreatedLocally: false)
 
         sut.cardViewController.update(binInfo: newResponse)
         sut.cardViewController.items.coBadgedCardItem.selectableFormItems.first?.selectionHandler?()
@@ -1846,7 +1846,7 @@ class CardComponentTests: XCTestCase {
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(
-                brands: [CardBrand(type: .visa)],
+                brands: [DetectedCardBrand(type: .visa)],
                 issuingCountryCode: "US"
             ))
         }
@@ -1913,7 +1913,7 @@ class CardComponentTests: XCTestCase {
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(
-                brands: [CardBrand(type: .visa)],
+                brands: [DetectedCardBrand(type: .visa)],
                 issuingCountryCode: "US"
             ))
         }
@@ -1968,7 +1968,7 @@ class CardComponentTests: XCTestCase {
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(
-                brands: [CardBrand(type: .visa)],
+                brands: [DetectedCardBrand(type: .visa)],
                 issuingCountryCode: "US"
             ))
         }
@@ -2024,7 +2024,7 @@ class CardComponentTests: XCTestCase {
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(
-                brands: [CardBrand(type: .visa)],
+                brands: [DetectedCardBrand(type: .visa)],
                 issuingCountryCode: "US"
             ))
         }
@@ -2156,7 +2156,7 @@ class CardComponentTests: XCTestCase {
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(
-                brands: [CardBrand(type: .visa)],
+                brands: [DetectedCardBrand(type: .visa)],
                 issuingCountryCode: "US"
             ))
         }
@@ -2211,7 +2211,7 @@ class CardComponentTests: XCTestCase {
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(
-                brands: [CardBrand(type: .visa)],
+                brands: [DetectedCardBrand(type: .visa)],
                 issuingCountryCode: "US"
             ))
         }
@@ -2272,7 +2272,7 @@ class CardComponentTests: XCTestCase {
         let cardTypeProviderMock = BinInfoProviderMock()
         cardTypeProviderMock.onFetch = {
             $0(BinLookupResponse(
-                brands: [CardBrand(type: .bijenkorfCard)],
+                brands: [DetectedCardBrand(type: .bijenkorfCard)],
                 issuingCountryCode: "GB"
             ))
         }

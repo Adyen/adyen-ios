@@ -92,7 +92,7 @@ internal final class FormCardNumberContainerItem: FormItem, AdyenObserver {
         builder.build(with: self)
     }
     
-    internal func update(brands: [CardBrand]) {
+    internal func update(brands: [DetectedCardBrand]) {
         numberItem.update(brands: brands)
         
         updateLogosVisibility()
