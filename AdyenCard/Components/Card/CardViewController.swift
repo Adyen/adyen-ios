@@ -227,7 +227,7 @@ internal class CardViewController: FormViewController {
     }
     
     internal func update(binInfo: BinLookupResponse) {
-        var brands: [CardBrand] = []
+        var brands: [DetectedCardBrand] = []
 
         // no dual branding if response is from regex (fallback)
         if binInfo.isCreatedLocally, let firstBrand = binInfo.brands?.first {
@@ -244,14 +244,14 @@ internal class CardViewController: FormViewController {
         updateBillingAddressOptionalStatus(brands: brands)
     }
 
-    internal func handleSelection(_ selectedBrand: CardBrand) {
+    internal func handleSelection(_ selectedBrand: DetectedCardBrand) {
         items.coBadgedCardItem.updateSelection(selectedBrand)
         items.numberContainerItem.numberItem.selectBrand(cardBrand: selectedBrand)
 
         items.triggerInfoEvent(of: .selected, target: .dualBrandButton, brands: [selectedBrand])
     }
 
-    internal func showCoBadgedCardsUI(for brands: [CardBrand]) {
+    internal func showCoBadgedCardsUI(for brands: [DetectedCardBrand]) {
         let coBadgedBrands = brands.filter { brand in
             allowedCoBadgedCardTypes.contains(brand.type)
         }
@@ -265,7 +265,7 @@ internal class CardViewController: FormViewController {
 
 extension CardViewController {
     
-    private func updateBillingAddressOptionalStatus(brands: [CardBrand]) {
+    private func updateBillingAddressOptionalStatus(brands: [DetectedCardBrand]) {
         let isOptional = configuration.billingAddress.isOptional(for: brands.map(\.type))
         switch configuration.billingAddress.mode {
         case .lookup, .full:
@@ -306,7 +306,7 @@ extension CardViewController {
     }
 
     /// Updates relevant other fields after number field changes
-    private func updateFields(from brand: CardBrand?) {
+    private func updateFields(from brand: DetectedCardBrand?) {
         items.securityCodeItem.displayMode = brand?.securityCodeItemDisplayMode ?? .required
         items.expiryDateItem.isOptional = brand?.isExpiryDateOptional ?? false
         
@@ -420,7 +420,7 @@ extension CardViewController {
         }
     }
     
-    private func shouldHideSocialSecurityItem(with brand: CardBrand?) -> Bool {
+    private func shouldHideSocialSecurityItem(with brand: DetectedCardBrand?) -> Bool {
         guard let brand else { return true }
         switch configuration.socialSecurityNumberVisibility {
         case .show:
@@ -483,7 +483,7 @@ extension CardViewController {
     }
 }
 
-extension CardBrand {
+extension DetectedCardBrand {
     
     internal var securityCodeItemDisplayMode: FormCardSecurityCodeItem.DisplayMode {
         switch self.cvcPolicy {

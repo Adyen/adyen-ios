@@ -17,7 +17,7 @@ extension CardViewController {
     internal struct InfoEventData {
         internal let type: AnalyticsEventInfo.InfoType
         internal let target: AnalyticsEventTarget
-        internal let brands: [CardBrand]?
+        internal let brands: [DetectedCardBrand]?
         internal let error: AnalyticsValidationError?
     }
 
@@ -276,7 +276,7 @@ extension CardViewController {
         internal func triggerInfoEvent(
             of type: AnalyticsEventInfo.InfoType,
             target: AnalyticsEventTarget,
-            brands: [CardBrand]? = nil,
+            brands: [DetectedCardBrand]? = nil,
             error: AnalyticsValidationError? = nil
         ) {
             let infoEventData = InfoEventData(
