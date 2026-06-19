@@ -293,7 +293,9 @@ class BCMCComponentTests: XCTestCase {
             .onBinChange { value in
                 XCTAssertTrue("67034444".hasPrefix(value))
                 XCTAssertTrue(value.count <= 8)
-                expectationBin.fulfill()
+                if value == "67034444" {
+                    expectationBin.fulfill()
+                }
             }
         
         let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
