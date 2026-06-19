@@ -218,7 +218,6 @@ package class CardComponent: PaymentComponent,
     }()
 
     private let panThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
-    private let binThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
 
     private func sendInfoEvent(with data: CardViewController.InfoEventData) {
         var infoEvent = AnalyticsEventInfo(
@@ -253,10 +252,7 @@ extension CardComponent: CardViewControllerDelegate {
     }
 
     internal func didChange(bin: String) {
-        binThrottler.throttle { [weak self] in
-            guard let self else { return }
-            self.configuration.onBinChange?(bin)
-        }
+        configuration.onBinChange?(bin)
     }
 
     private func updateBrand(with pan: String) {

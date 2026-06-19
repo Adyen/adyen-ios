@@ -289,8 +289,6 @@ class BCMCComponentTests: XCTestCase {
         sut.viewController.loadViewIfNeeded()
 
         let expectationBin = XCTestExpectation(description: "Bin Expectation")
-        expectationBin.expectedFulfillmentCount = 1
-        expectationBin.assertForOverFulfill = true
         sut.configuration = sut.configuration
             .onBinChange { value in
                 XCTAssertTrue("67034444".hasPrefix(value))
@@ -302,6 +300,31 @@ class BCMCComponentTests: XCTestCase {
         try populate(textItemView: XCTUnwrap(cardNumberItemView), with: XCTUnwrap(Dummy.bancontactCard.number))
 
         wait(for: [expectationBin], timeout: 10)
+    }
+
+    func test_onBinChange_whenTypingDigits_shouldFirePerDigitUpToSixThenStopWithoutThrottling() throws {
+        let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: [.masterCard])
+        let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
+        let sut = BCMCComponent(
+            paymentMethod: paymentMethod,
+            context: context
+        )
+
+        sut.viewController.loadViewIfNeeded()
+
+        var receivedBins: [String] = []
+        sut.configuration = sut.configuration
+            .onBinChange { value in
+                receivedBins.append(value)
+            }
+
+        let cardNumberItemView: FormCardNumberItemView? = sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem")
+        // Typing 7 digits one by one. Without throttling each distinct BIN must be
+        // reported (no coalescing of rapid keystrokes), but the BIN is capped at 6
+        // digits, so the 7th digit produces no new value and must not fire again.
+        try populateSimulatingKeystrokes(textItemView: XCTUnwrap(cardNumberItemView), with: "6703444")
+
+        XCTAssertEqual(receivedBins, ["6", "67", "670", "6703", "67034", "670344"])
     }
     
     func test_onBinChange_with6DigitsBIN_shouldReturn6Digits() {
