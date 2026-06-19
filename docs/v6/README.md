@@ -220,21 +220,31 @@ Use app-bundle `.strings` or `.xcstrings` files when you want to add a fully new
 
 ## Redirect return URLs
 
-If you need to build redirect details from a return URL yourself, use the public `RedirectDetails` API:
+Pass incoming URLs to the SDK so active redirect actions can resume after the shopper returns from a browser or external app.
 
+**UIKit - AppDelegate:**
 ```swift
 func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-    guard let redirectDetails = try? RedirectDetails(returnURL: url) else {
-        return false
-    }
-
-    let actionData = ActionComponentData(details: redirectDetails, paymentData: nil)
-    // Submit actionData to your /payments/details handling.
+    Checkout.handleReturn(url: url)
     return true
 }
 ```
 
-If your backend expects `paymentData`, use the value from your previous `/payments` response instead of `nil`.
+**UIKit - SceneDelegate:**
+```swift
+func scene(_ scene: UIScene, openURLContexts contexts: Set<UIOpenURLContext>) {
+    guard let url = contexts.first?.url else { return }
+    Checkout.handleReturn(url: url)
+}
+```
+
+**SwiftUI:**
+```swift
+ContentView()
+    .onOpenURL { url in Checkout.handleReturn(url: url) }
+```
+
+It is safe to pass all incoming URLs; any URL not belonging to an active checkout redirect is ignored.
 
 ## Next steps
 
