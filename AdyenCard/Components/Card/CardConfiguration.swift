@@ -49,11 +49,10 @@ public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInfo
     /// Indicates whether to show the security code field for stored cards. Defaults to true.
     internal var showSecurityCodeForStoredCard: Bool
 
-    // TODO: Rename CardType to CardBrand once the internal CardBrand struct conflict is resolved.
     /// The list of supported card brands.  Defaults to nil.
     /// By default list of supported brands is extracted from component's `AnyCardPaymentMethod`.
     /// Use this property to enforce a custom collection of card brands.
-    internal var supportedCardBrands: [CardType]?
+    internal var supportedCardBrands: [CardBrand]?
 
     /// Installments options to present to the user.
     internal var installmentConfiguration: InstallmentConfiguration?
@@ -170,7 +169,7 @@ extension CardConfiguration {
     /// Use this to enforce a custom collection of card brands.
     /// - Parameter supportedCardBrands: The list of supported card brands, or `nil` to use the default.
     /// - Returns: A modified copy of the configuration.
-    public func supportedCardBrands(_ supportedCardBrands: [CardType]?) -> Self {
+    public func supportedCardBrands(_ supportedCardBrands: [CardBrand]?) -> Self {
         var copy = self
         copy.supportedCardBrands = supportedCardBrands
         return copy
@@ -259,11 +258,10 @@ package protocol AnyCardComponentConfiguration {
     /// Indicates whether to show the security code field for stored cards. Defaults to true.
     var showSecurityCodeForStoredCard: Bool { get }
 
-    // TODO: Rename CardType to CardBrand once the internal CardBrand struct conflict is resolved.
     /// The list of supported card brands.  Defaults to nil.
     /// By default list of supported brands is extracted from component's `AnyCardPaymentMethod`.
     /// Use this property to enforce a custom collection of card brands.
-    var supportedCardBrands: [CardType]? { get }
+    var supportedCardBrands: [CardBrand]? { get }
 
     /// Installments options to present to the user.
     var installmentConfiguration: InstallmentConfiguration? { get }

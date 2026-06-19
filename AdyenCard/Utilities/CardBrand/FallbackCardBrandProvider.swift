@@ -10,12 +10,12 @@ import Foundation
 /// Fall back to local regex-based detector if API not available or BIN too short.
 internal final class FallbackBinInfoProvider: AnyBinInfoProvider {
 
-    internal func provide(for bin: String, supportedTypes: [CardType], completion: @escaping (BinLookupResponse) -> Void) {
+    internal func provide(for bin: String, supportedTypes: [CardBrand], completion: @escaping (BinLookupResponse) -> Void) {
         // only return result out of the given supported types.
-        let result: [DetectedCardBrand] = supportedTypes.adyen.types(forCardNumber: bin).map { type in
+        let result: [DetectedCardBrand] = supportedTypes.adyen.types(forCardNumber: bin).map { brand in
 
             let cvcPolicy: DetectedCardBrand.RequirementPolicy
-            switch type {
+            switch brand {
             case .laser,
                  .bcmc,
                  .maestro,
@@ -28,7 +28,7 @@ internal final class FallbackBinInfoProvider: AnyBinInfoProvider {
                 cvcPolicy = .required
             }
 
-            return DetectedCardBrand(type: type, cvcPolicy: cvcPolicy)
+            return DetectedCardBrand(brand: brand, cvcPolicy: cvcPolicy)
         }
         completion(BinLookupResponse(brands: result))
     }

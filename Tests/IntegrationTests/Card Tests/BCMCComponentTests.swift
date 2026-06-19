@@ -58,7 +58,7 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func test_component_withDefaultConfig_shouldShowAllRequiredFields() {
-        let brands: [CardType] = [.bcmc, .visa, .maestro]
+        let brands: [CardBrand] = [.bcmc, .visa, .maestro]
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(
@@ -70,7 +70,7 @@ class BCMCComponentTests: XCTestCase {
         sut.viewController.loadViewIfNeeded()
         
         XCTAssertEqual(sut.configuration.supportedCardBrands, nil)
-        XCTAssertEqual(sut.supportedCardTypes, brands)
+        XCTAssertEqual(sut.supportedCardBrands, brands)
         
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.supportedCardLogosItem"))
@@ -102,7 +102,7 @@ class BCMCComponentTests: XCTestCase {
         
         fillCard(on: sut.viewController.view, with: Dummy.bancontactCard)
         
-        let binResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .bcmc, isSupported: true)])
+        let binResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .bcmc, isSupported: true)])
         sut.cardViewController.update(binInfo: binResponse)
 
         wait(for: .milliseconds(30))
@@ -112,7 +112,7 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func test_holderNameField_whenConfigured_shouldBeVisible() {
-        let brands: [CardType] = [.argencard]
+        let brands: [CardBrand] = [.argencard]
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         var configuration = CardConfiguration()
@@ -126,7 +126,7 @@ class BCMCComponentTests: XCTestCase {
         sut.viewController.loadViewIfNeeded()
         
         XCTAssertEqual(sut.configuration.supportedCardBrands, nil)
-        XCTAssertEqual(sut.supportedCardTypes, brands)
+        XCTAssertEqual(sut.supportedCardBrands, brands)
         
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.holderNameItem"))
@@ -136,7 +136,7 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func test_storePaymentMethodField_whenConfiguredToHide_shouldNotBeVisible() {
-        let brands: [CardType] = [.bcmc]
+        let brands: [CardBrand] = [.bcmc]
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         var configuration = CardConfiguration()
@@ -150,7 +150,7 @@ class BCMCComponentTests: XCTestCase {
         sut.viewController.loadViewIfNeeded()
         
         XCTAssertEqual(sut.configuration.supportedCardBrands, nil)
-        XCTAssertEqual(sut.supportedCardTypes, brands)
+        XCTAssertEqual(sut.supportedCardBrands, brands)
         
         XCTAssertNotNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.holderNameItem"))
@@ -159,8 +159,8 @@ class BCMCComponentTests: XCTestCase {
         XCTAssertNil(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.storeDetailsItem"))
     }
     
-    func test_cardNumber_withValidBCMCCard_shouldDetectCardType() throws {
-        let brands: [CardType] = [.bcmc]
+    func test_cardNumber_withValidBCMCCard_shouldDetectCardBrand() throws {
+        let brands: [CardBrand] = [.bcmc]
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(
@@ -173,13 +173,13 @@ class BCMCComponentTests: XCTestCase {
         let cardNumberItemView: FormCardNumberItemView = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.BCMCComponent.numberContainerItem.numberItem"))
         try self.populate(textItemView: cardNumberItemView, with: XCTUnwrap(Dummy.bancontactCard.number))
         
-        XCTAssertEqual(cardNumberItemView.item.cardTypeLogos.count, 1)
-        XCTAssertEqual(cardNumberItemView.item.cardTypeLogos.first?.url, try LogoURLProvider.logoURL(withName: XCTUnwrap(brands.first?.rawValue), environment: context.apiContext.environment))
+        XCTAssertEqual(cardNumberItemView.item.cardBrandLogos.count, 1)
+        XCTAssertEqual(cardNumberItemView.item.cardBrandLogos.first?.url, try LogoURLProvider.logoURL(withName: XCTUnwrap(brands.first?.rawValue), environment: context.apiContext.environment))
 
         wait(for: .aMoment)
     }
     
-    func test_cardNumber_withInvalidCard_shouldNotDetectCardType() throws {
+    func test_cardNumber_withInvalidCard_shouldNotDetectCardBrand() throws {
         let cardPaymentMethod = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .credit, brands: [.maestro])
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: cardPaymentMethod)
         let sut = BCMCComponent(
@@ -231,7 +231,7 @@ class BCMCComponentTests: XCTestCase {
             XCTFail("delegate.didFail() must not be called")
         }
         
-        let binResponse = BinLookupResponse(brands: [DetectedCardBrand(type: .bcmc, isSupported: true, cvcPolicy: .optional)])
+        let binResponse = BinLookupResponse(brands: [DetectedCardBrand(brand: .bcmc, isSupported: true, cvcPolicy: .optional)])
         sut.cardViewController.update(binInfo: binResponse)
         
         // Enter Card Number
@@ -255,7 +255,7 @@ class BCMCComponentTests: XCTestCase {
     }
     
     func test_onBinLookup_withLessThan11Digits_shouldNotBeCalled() throws {
-        let brands: [CardType] = [.bcmc]
+        let brands: [CardBrand] = [.bcmc]
         let method = CardPaymentMethod(type: .bcmc, name: "Test name", fundingSource: .debit, brands: brands)
         let paymentMethod = BCMCPaymentMethod(cardPaymentMethod: method)
         let sut = BCMCComponent(
@@ -307,9 +307,9 @@ class BCMCComponentTests: XCTestCase {
     func test_onBinChange_with6DigitsBIN_shouldReturn6Digits() {
         
         let expectationBinLookup = XCTestExpectation(description: "Bin Lookup Expectation")
-        let cardTypeProviderMock = BinInfoProviderMock()
-        cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(brands: [DetectedCardBrand(type: .bcmc, cvcPolicy: .optional, panLength: 19)]))
+        let cardBrandProviderMock = BinInfoProviderMock()
+        cardBrandProviderMock.onFetch = {
+            $0(BinLookupResponse(brands: [DetectedCardBrand(brand: .bcmc, cvcPolicy: .optional, panLength: 19)]))
             expectationBinLookup.fulfill()
         }
         
@@ -319,7 +319,7 @@ class BCMCComponentTests: XCTestCase {
             paymentMethod: paymentMethod,
             context: context,
             configuration: .init(),
-            binProvider: cardTypeProviderMock
+            binProvider: cardBrandProviderMock
         )
 
         sut.viewController.loadViewIfNeeded()
@@ -344,9 +344,9 @@ class BCMCComponentTests: XCTestCase {
     func test_onBinChange_with8DigitsBIN_shouldReturn8Digits() {
         
         let expectationBinLookup = XCTestExpectation(description: "Bin Lookup Expectation")
-        let cardTypeProviderMock = BinInfoProviderMock()
-        cardTypeProviderMock.onFetch = {
-            $0(BinLookupResponse(brands: [DetectedCardBrand(type: .bcmc, cvcPolicy: .optional, isLuhnCheckEnabled: false)]))
+        let cardBrandProviderMock = BinInfoProviderMock()
+        cardBrandProviderMock.onFetch = {
+            $0(BinLookupResponse(brands: [DetectedCardBrand(brand: .bcmc, cvcPolicy: .optional, isLuhnCheckEnabled: false)]))
             expectationBinLookup.fulfill()
         }
         
@@ -356,7 +356,7 @@ class BCMCComponentTests: XCTestCase {
             paymentMethod: paymentMethod,
             context: context,
             configuration: .init(),
-            binProvider: cardTypeProviderMock
+            binProvider: cardBrandProviderMock
         )
 
         sut.viewController.loadViewIfNeeded()

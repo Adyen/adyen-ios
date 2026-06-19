@@ -56,7 +56,7 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem>, UIC
         if let cell = cell as? CardLogoCell, let logo = item.cardLogos.adyen[safeIndex: indexPath.row] {
             cell.update(
                 imageUrl: logo.url,
-                altText: logo.type.name,
+                altText: logo.brand.name,
                 separatorColor: theme.colors.separator,
                 imageLoader: imageLoader
             )

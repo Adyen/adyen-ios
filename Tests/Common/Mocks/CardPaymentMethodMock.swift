@@ -13,7 +13,7 @@ struct CardPaymentMethodMock: AnyCardPaymentMethod {
     
     var name: String
     
-    var brands: [CardType]
+    var brands: [CardBrand]
     
     func buildComponent(using builder: PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)

@@ -24,10 +24,10 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     private let cardNumberFormatter = CardNumberFormatter()
 
     /// The supported card types.
-    private let supportedCardTypes: [CardType]
+    private let supportedCardBrands: [CardBrand]
     
     /// Supported card type logos.
-    internal let cardTypeLogos: [FormCardLogosItem.CardTypeLogo]
+    internal let cardBrandLogos: [FormCardLogosItem.CardBrandLogo]
     
     /// The card's BIN value up to 8 digits.
     /// Reported with every entered digit.
@@ -40,7 +40,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     @AdyenObservable(nil) internal private(set) var selectedDualBrand: DetectedCardBrand?
     
     /// Detected brand logo(s) for the entered bin.
-    @AdyenObservable([]) internal private(set) var detectedBrandLogos: [FormCardLogosItem.CardTypeLogo]
+    @AdyenObservable([]) internal private(set) var detectedBrandLogos: [FormCardLogosItem.CardBrandLogo]
     
     /// Determines whether the item is currently the focused one (first responder).
     @AdyenObservable(false) internal var isActive
@@ -67,20 +67,20 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
 
     /// Initializes the form card number item.
     internal init(
-        cardTypeLogos: [FormCardLogosItem.CardTypeLogo],
+        cardBrandLogos: [FormCardLogosItem.CardBrandLogo],
         style: FormTextItemStyle = FormTextItemStyle(),
         localizationParameters: LocalizationParameters? = nil,
         scanCardHandler: (() -> Void)? = nil
     ) {
         // these 4 US debit brands are not to be displayed
         // but should be supported so it's done here for now
-        self.cardTypeLogos = cardTypeLogos.filter { logo in
-            logo.type != .accel &&
-                logo.type != .pulse &&
-                logo.type != .star &&
-                logo.type != .nyce
+        self.cardBrandLogos = cardBrandLogos.filter { logo in
+            logo.brand != .accel &&
+                logo.brand != .pulse &&
+                logo.brand != .star &&
+                logo.brand != .nyce
         }
-        self.supportedCardTypes = cardTypeLogos.map(\.type)
+        self.supportedCardBrands = cardBrandLogos.map(\.brand)
         self.localizationParameters = localizationParameters
         self.scanCardHandler = scanCardHandler
         self.scanYourCardButtonTitle = localizedString(.cardScanYourCardButton, localizationParameters)
@@ -101,7 +101,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
     // MARK: - Value
     
     private func valueDidChange(_ value: String) {
-        cardNumberFormatter.cardType = supportedCardTypes.adyen.type(forCardNumber: value)
+        cardNumberFormatter.cardBrand = supportedCardBrands.adyen.type(forCardNumber: value)
         updateBINIfNeeded()
     }
     
@@ -192,7 +192,7 @@ internal final class FormCardNumberItem: FormTextItem, AdyenObserver {
         
         detectedBrandLogos = brands.filter(\.isSupported)
             .compactMap { brand in
-                cardTypeLogos.first { $0.type == brand.type }
+                cardBrandLogos.first { $0.brand == brand.brand }
             }
     }
 

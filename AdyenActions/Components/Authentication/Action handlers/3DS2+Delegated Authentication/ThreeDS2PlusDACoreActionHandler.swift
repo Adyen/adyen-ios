@@ -117,7 +117,7 @@ internal typealias VoidHandler = () -> Void
                     
                     self.startApprovalFlow(
                         payloadForDA.sdkInput,
-                        cardType: payloadForDA.cardType,
+                        cardBrand: payloadForDA.cardBrand,
                         cardNumber: payloadForDA.cardNumber,
                         amount: payloadForDA.amount
                     ) { [weak self] result in
@@ -149,7 +149,7 @@ internal typealias VoidHandler = () -> Void
         private struct ApprovalPayload {
             let sdkInput: String
             let cardNumber: String?
-            let cardType: CardType?
+            let cardBrand: CardBrand?
             let amount: Amount?
         }
         
@@ -164,7 +164,7 @@ internal typealias VoidHandler = () -> Void
             return ApprovalPayload(
                 sdkInput: sdkInput,
                 cardNumber: securedCardNumber(lastFour: token.paymentInfo?.lastFour),
-                cardType: token.paymentInfo?.cardType,
+                cardBrand: token.paymentInfo?.cardBrand,
                 amount: token.paymentInfo?.amount ?? context.amount
             )
         }
@@ -191,7 +191,7 @@ internal typealias VoidHandler = () -> Void
         /// else calls the completion with a failure.
         private func startApprovalFlow(
             _ delegatedAuthenticationInput: String,
-            cardType: CardType?,
+            cardBrand: CardBrand?,
             cardNumber: String?,
             amount: Amount?,
             completion: @escaping (Result<(daOutput: String, delete: Bool?), ApprovalFlowError>) -> Void
@@ -201,7 +201,7 @@ internal typealias VoidHandler = () -> Void
                 if registered {
                     self.showApprovalScreen(
                         delegatedAuthenticationInput: delegatedAuthenticationInput,
-                        cardType: cardType,
+                        cardBrand: cardBrand,
                         cardNumber: cardNumber,
                         amount: amount,
                         completion: completion
@@ -225,7 +225,7 @@ internal typealias VoidHandler = () -> Void
         
         private func showApprovalScreen(
             delegatedAuthenticationInput: String,
-            cardType: CardType?,
+            cardBrand: CardBrand?,
             cardNumber: String?,
             amount: Amount?,
             completion: @escaping (
@@ -234,7 +234,7 @@ internal typealias VoidHandler = () -> Void
         ) {
             presenter.showApprovalScreen(
                 component: self,
-                cardDetails: (cardNumber, cardType),
+                cardDetails: (cardNumber, cardBrand),
                 amount: amount,
                 approveAuthenticationHandler: { [weak self] in
                     guard let self else { return }
@@ -436,7 +436,7 @@ internal typealias VoidHandler = () -> Void
                     self.startRegistrationFlow(
                         delegatedAuthenticationInput: registrationPayload.sdkInput,
                         cardNumber: registrationPayload.cardNumber,
-                        cardType: registrationPayload.cardType
+                        cardBrand: registrationPayload.cardBrand
                     ) { result in
                         switch result {
                         case let .success(registrationSDKOutput):
@@ -470,12 +470,12 @@ internal typealias VoidHandler = () -> Void
         private func startRegistrationFlow(
             delegatedAuthenticationInput: String,
             cardNumber: String?,
-            cardType: CardType?,
+            cardBrand: CardBrand?,
             completionHandler: @escaping (Result<String, RegistrationFlowError>) -> Void
         ) {
             presenter.showRegistrationScreen(
                 component: self,
-                cardDetails: (cardNumber, cardType),
+                cardDetails: (cardNumber, cardBrand),
                 registerDelegatedAuthenticationHandler: { [weak self] in
                     guard let self else { return }
                     self.userChoseToRegister(
@@ -515,7 +515,7 @@ internal typealias VoidHandler = () -> Void
         private struct RegistrationPayload {
             let sdkInput: String
             let cardNumber: String?
-            let cardType: CardType?
+            let cardBrand: CardBrand?
         }
         
         private func daPayload(_ challengeAction: ThreeDS2ChallengeAction) -> RegistrationPayload? {
@@ -526,7 +526,7 @@ internal typealias VoidHandler = () -> Void
             return RegistrationPayload(
                 sdkInput: sdkInput,
                 cardNumber: securedCardNumber(lastFour: token.paymentInfo?.lastFour),
-                cardType: token.paymentInfo?.cardType
+                cardBrand: token.paymentInfo?.cardBrand
             )
         }
         
