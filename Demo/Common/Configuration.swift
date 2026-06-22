@@ -235,6 +235,12 @@ internal struct DemoAppSettings: Codable {
         var config = UserDefaults.standard.data(forKey: defaultsKey)
             .flatMap { try? JSONDecoder().decode(DemoAppSettings.self, from: $0) }
             ?? defaultConfiguration
+
+        // Apply external configuration from launch arguments (passed by e2e tests via Base64-encoded JSON)
+        if let external = ExternalConfigurationReader.readFromLaunchArguments() {
+            config = config.applying(external)
+        }
+
         switch CommandLine.arguments.first {
         case "SG":
             config.countryCode = "SG"

@@ -217,6 +217,13 @@ package extension DropInComponent {
         
         internal var cardConfiguration: CardConfiguration {
             CardConfiguration()
+                .showCardholderName(showCardholderName)
+                .showStorePaymentMethod(showStorePaymentMethod)
+                .showSecurityCode(showSecurityCode)
+                .koreanAuthenticationVisibility(koreanAuthenticationVisibility)
+                .socialSecurityNumberVisibility(socialSecurityNumberVisibility)
+                .showSecurityCodeForStoredCard(showSecurityCodeForStoredCard)
+                .installmentConfiguration(installmentConfiguration)
         }
         
     }
