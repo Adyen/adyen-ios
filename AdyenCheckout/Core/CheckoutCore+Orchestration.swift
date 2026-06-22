@@ -149,11 +149,19 @@ internal extension CheckoutCore {
     func finish(with resultCode: CheckoutResultCode, from component: (any PaymentComponent)?) {
         (component as? any FinalizableComponent)?.didFinalize(with: resultCode.isSuccessful, completion: nil)
         pendingPaymentComponent = nil
-        resultCallbacks.handleCompletion(
-            resultCode: resultCode,
-            sessionId: session?.state.identifier,
-            sessionResult: session?.state.sessionResult
-        )
+        if let session {
+            guard let sessionResult = session.state.sessionResult else {
+                AdyenAssertion.assertionFailure(message: "Session completion called without sessionResult.")
+                return
+            }
+            resultCallbacks.handleCompletion(.session(
+                resultCode: resultCode,
+                sessionId: session.state.identifier,
+                sessionResult: sessionResult
+            ))
+        } else {
+            resultCallbacks.handleCompletion(.advanced(resultCode: resultCode))
+        }
     }
 
     func finish(with error: Error, from component: (any PaymentComponent)?) {

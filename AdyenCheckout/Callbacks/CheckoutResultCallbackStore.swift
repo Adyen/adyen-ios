@@ -7,9 +7,14 @@
 import Adyen
 import Foundation
 
+package enum CheckoutCompletion {
+    case session(resultCode: CheckoutResultCode, sessionId: String, sessionResult: String)
+    case advanced(resultCode: CheckoutResultCode)
+}
+
 package protocol CheckoutResultCallbackStore: AnyObject {
     @MainActor
-    func handleCompletion(resultCode: CheckoutResultCode, sessionId: String?, sessionResult: String?)
+    func handleCompletion(_ completion: CheckoutCompletion)
 
     var onFailure: CheckoutFailureHandler? { get set }
 }
@@ -21,8 +26,8 @@ package final class SessionCheckoutCallbackStore: CheckoutResultCallbackStore {
 
     package var onFailure: CheckoutFailureHandler?
 
-    package func handleCompletion(resultCode: CheckoutResultCode, sessionId: String?, sessionResult: String?) {
-        guard let sessionId, let sessionResult else {
+    package func handleCompletion(_ completion: CheckoutCompletion) {
+        guard case let .session(resultCode, sessionId, sessionResult) = completion else {
             AdyenAssertion.assertionFailure(message: "Session completion called without sessionId or sessionResult.")
             return
         }
@@ -39,8 +44,11 @@ package final class AdvancedCheckoutCallbackStore: CheckoutResultCallbackStore {
 
     package var onFailure: CheckoutFailureHandler?
 
-    package func handleCompletion(resultCode: CheckoutResultCode, sessionId: String?, sessionResult: String?) {
-        // sessionId and sessionResult are session-specific and not applicable to the advanced flow.
+    package func handleCompletion(_ completion: CheckoutCompletion) {
+        guard case let .advanced(resultCode) = completion else {
+            AdyenAssertion.assertionFailure(message: "Advanced completion called with session result.")
+            return
+        }
         onComplete?(AdvancedCheckoutResult(resultCode: resultCode))
     }
 }
@@ -52,8 +60,11 @@ package final class ActionOnlyCheckoutCallbackStore: CheckoutResultCallbackStore
 
     package var onFailure: CheckoutFailureHandler?
 
-    package func handleCompletion(resultCode: CheckoutResultCode, sessionId: String?, sessionResult: String?) {
-        // sessionId and sessionResult are session-specific and not applicable to the action-only flow.
+    package func handleCompletion(_ completion: CheckoutCompletion) {
+        guard case let .advanced(resultCode) = completion else {
+            AdyenAssertion.assertionFailure(message: "Action-only completion called with session result.")
+            return
+        }
         onComplete?(AdvancedCheckoutResult(resultCode: resultCode))
     }
 }
