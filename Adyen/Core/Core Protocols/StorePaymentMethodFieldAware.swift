@@ -7,6 +7,7 @@
 import Foundation
 
 /// Describes the interface to display a field to store the payment method.
+@MainActor
 package protocol StorePaymentMethodFieldAware: AdyenSessionAware {
     var showStorePaymentMethodField: Bool? { get }
 }

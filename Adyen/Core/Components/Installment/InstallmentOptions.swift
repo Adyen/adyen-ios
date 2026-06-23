@@ -7,6 +7,7 @@
 import Foundation
 
 /// Describes the interface to have an installments configuration.
+@MainActor
 package protocol InstallmentConfigurationAware: AdyenSessionAware {
     var installmentConfiguration: InstallmentConfiguration? { get }
 }
