@@ -25,7 +25,7 @@ internal enum ExternalConfigurationReader {
         }
 
         let base64 = arguments[configIndex + 1]
-        guard let data = Data(base64Encoded: base64) else {
+        guard let data = Data(base64Encoded: base64, options: .ignoreUnknownCharacters) else {
             return nil
         }
 

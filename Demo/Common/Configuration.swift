@@ -252,6 +252,8 @@ internal struct DemoAppSettings: Codable {
     }
     
     fileprivate static func saveConfiguration(_ configuration: DemoAppSettings) {
+        // Skip saving when launched with external config (e2e tests) to prevent test pollution
+        guard !CommandLine.arguments.contains("-config") else { return }
         if let configurationData = try? JSONEncoder().encode(configuration) {
             UserDefaults.standard.setValue(configurationData, forKey: defaultsKey)
         }
