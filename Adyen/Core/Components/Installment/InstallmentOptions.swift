@@ -7,6 +7,7 @@
 import Foundation
 
 /// Describes the interface to have an installments configuration.
+@MainActor
 package protocol InstallmentConfigurationAware: AdyenSessionAware {
     var installmentConfiguration: InstallmentConfiguration? { get }
 }
@@ -72,7 +73,7 @@ public struct InstallmentOptions: Equatable, Codable {
 }
 
 /// Configuration type to specify installment options.
-public struct InstallmentConfiguration: Decodable {
+public struct InstallmentConfiguration: Decodable, Equatable {
     
     /// The option that apply to all card types, unless included `cardTypeBased` options.
     package let defaultOptions: InstallmentOptions?
