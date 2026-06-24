@@ -48,7 +48,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     private let analyticsProvider: AnyAnalyticsProvider?
     private let amount: Amount?
     private let publicKey: String
-    private let cardBrand: CardType
+    private let cardBrand: CardBrand
 
     internal let theme: CheckoutTheme
     internal var onSecurityCodeValidationRequested: VoidCompletion?
@@ -69,7 +69,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         amount: Amount?,
         analyticsProvider: AnyAnalyticsProvider?,
         localizationParameters: LocalizationParameters?,
-        cardBrand: CardType
+        cardBrand: CardBrand
     ) {
         self.theme = theme
         self.storedCardPaymentMethod = storedCardPaymentMethod

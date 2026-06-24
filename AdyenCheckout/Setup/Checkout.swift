@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenActions)
+    import AdyenActions
+#endif
 #if canImport(AdyenSession)
     import AdyenSession
 #endif
@@ -71,6 +74,43 @@ public enum Checkout {
             provider: CheckoutProvider.default
         )
     }
+
+    #if canImport(AdyenActions)
+        /// Passes a URL to the SDK to resume an active redirect action after the shopper returns from a browser or external app.
+        ///
+        /// Call this from every entry point where your app receives incoming URLs:
+        ///
+        /// **UIKit - AppDelegate:**
+        /// ```swift
+        /// func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        ///     Checkout.handleReturn(url: url)
+        ///     return true
+        /// }
+        /// ```
+        ///
+        /// **UIKit - SceneDelegate:**
+        /// ```swift
+        /// func scene(_ scene: UIScene, openURLContexts contexts: Set<UIOpenURLContext>) {
+        ///     guard let url = contexts.first?.url else { return }
+        ///     Checkout.handleReturn(url: url)
+        /// }
+        /// ```
+        ///
+        /// **SwiftUI:**
+        /// ```swift
+        /// ContentView()
+        ///     .onOpenURL { url in Checkout.handleReturn(url: url) }
+        /// ```
+        ///
+        /// It is safe to pass all incoming URLs; any URL not belonging to an active checkout redirect is ignored.
+        ///
+        /// - Parameter url: The URL received when the shopper returns to the app.
+        /// - Returns: `true` if the URL was handled by an active checkout redirect; `false` otherwise.
+        @discardableResult
+        public static func handleReturn(url: URL) -> Bool {
+            RedirectComponent.applicationDidOpen(from: url)
+        }
+    #endif
 }
 
 internal extension Checkout {

@@ -12,7 +12,7 @@ import XCTest
 class FormCardNumberItemTests: XCTestCase {
 
     var apiClient: APIClientMock!
-    let supportedCardTypes: [CardType] = [.visa, .masterCard, .americanExpress, .chinaUnionPay, .maestro]
+    let supportedCardBrands: [CardBrand] = [.visa, .masterCard, .americanExpress, .chinaUnionPay, .maestro]
     var cardBrandProvider: BinInfoProvider!
 
     override func setUp() {
@@ -32,31 +32,31 @@ class FormCardNumberItemTests: XCTestCase {
 
     func testInternalBinLookup() {
 
-        let cardTypeLogos = supportedCardTypes.map {
-            FormCardLogosItem.CardTypeLogo(url: URL(string: "https://google.com")!, type: $0)
+        let cardBrandLogos = supportedCardBrands.map {
+            FormCardLogosItem.CardBrandLogo(url: URL(string: "https://google.com")!, brand: $0)
         }
-        let item = FormCardNumberItem(cardTypeLogos: cardTypeLogos)
-        XCTAssertEqual(item.cardTypeLogos.count, 5)
+        let item = FormCardNumberItem(cardBrandLogos: cardBrandLogos)
+        XCTAssertEqual(item.cardBrandLogos.count, 5)
         
-        let visa = item.cardTypeLogos[0]
-        let mc = item.cardTypeLogos[1]
-        let amex = item.cardTypeLogos[2]
-        let cup = item.cardTypeLogos[3]
-        let maestro = item.cardTypeLogos[4]
+        let visa = item.cardBrandLogos[0]
+        let mc = item.cardBrandLogos[1]
+        let amex = item.cardBrandLogos[2]
+        let cup = item.cardBrandLogos[3]
+        let maestro = item.cardBrandLogos[4]
         
         // Initially, only placeholder should be visible
         XCTAssertEqual(item.detectedBrandLogos.count, 0)
         
         // When typing unknown combination, still show placeholder
         item.value = "5"
-        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardBrands) { response in
             item.update(brands: response.brands!)
             XCTAssertEqual(item.detectedBrandLogos.count, 0)
         }
         
         // When typing Maestro pattern, only Maestro should be visible.
         item.value = "56"
-        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardBrands) { response in
             item.update(brands: response.brands!)
             XCTAssertEqual(item.detectedBrandLogos.count, 1)
             XCTAssertEqual(item.detectedBrandLogos[0], maestro)
@@ -64,7 +64,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing Mastercard pattern, only Mastercard should be visible.
         item.value = "55"
-        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardBrands) { response in
             item.update(brands: response.brands!)
             XCTAssertEqual(item.detectedBrandLogos.count, 1)
             XCTAssertEqual(item.detectedBrandLogos[0], mc)
@@ -72,7 +72,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When continuing to type, Mastercard should remain visible.
         item.value = "5555"
-        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardBrands) { response in
             item.update(brands: response.brands!)
             XCTAssertEqual(item.detectedBrandLogos.count, 1)
             XCTAssertEqual(item.detectedBrandLogos[0], mc)
@@ -80,14 +80,14 @@ class FormCardNumberItemTests: XCTestCase {
         
         // Clearing the field should bring back placeholder
         item.value = ""
-        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardBrands) { response in
             item.update(brands: response.brands!)
             XCTAssertEqual(item.detectedBrandLogos.count, 0)
         }
         
         // When typing VISA pattern, only VISA should be visible.
         item.value = "4"
-        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardBrands) { response in
             item.update(brands: response.brands!)
             XCTAssertEqual(item.detectedBrandLogos.count, 1)
             XCTAssertEqual(item.detectedBrandLogos[0], visa)
@@ -95,7 +95,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing Amex pattern, only Amex should be visible.
         item.value = "34"
-        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardBrands) { response in
             item.update(brands: response.brands!)
             XCTAssertEqual(item.detectedBrandLogos.count, 1)
             XCTAssertEqual(item.detectedBrandLogos[0], amex)
@@ -103,7 +103,7 @@ class FormCardNumberItemTests: XCTestCase {
         
         // When typing common pattern, all matching cards should be visible.
         item.value = "62"
-        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardBrands) { response in
             item.update(brands: response.brands!)
             XCTAssertEqual(item.detectedBrandLogos.count, 2)
             XCTAssertEqual(item.detectedBrandLogos[0], cup)
@@ -112,20 +112,20 @@ class FormCardNumberItemTests: XCTestCase {
     }
 
     func testExternalBinLookupHappyFlow() {
-        let mockedBrands = [CardBrand(type: .masterCard)]
+        let mockedBrands = [DetectedCardBrand(brand: .masterCard)]
         apiClient.mockedResults = [
             .success(BinLookupResponse(brands: mockedBrands)),
             .success(BinLookupResponse(brands: []))
         ]
 
-        let cardTypeLogos = supportedCardTypes.map {
-            FormCardLogosItem.CardTypeLogo(url: URL(string: "https://google.com")!, type: $0)
+        let cardBrandLogos = supportedCardBrands.map {
+            FormCardLogosItem.CardBrandLogo(url: URL(string: "https://google.com")!, brand: $0)
         }
-        let item = FormCardNumberItem(cardTypeLogos: cardTypeLogos)
-        XCTAssertEqual(item.cardTypeLogos.count, 5)
+        let item = FormCardNumberItem(cardBrandLogos: cardBrandLogos)
+        XCTAssertEqual(item.cardBrandLogos.count, 5)
 
         item.value = "1234567890"
-        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardBrands) { response in
             item.update(brands: response.brands!)
             XCTAssertEqual(item.detectedBrandLogos.count, 0)
         }
@@ -134,23 +134,23 @@ class FormCardNumberItemTests: XCTestCase {
     func testExternalBinLookupFallback() {
         apiClient.mockedResults = [.failure(Dummy.error), .failure(Dummy.error)]
 
-        let cardTypeLogos = supportedCardTypes.map {
-            FormCardLogosItem.CardTypeLogo(url: URL(string: "https://google.com")!, type: $0)
+        let cardBrandLogos = supportedCardBrands.map {
+            FormCardLogosItem.CardBrandLogo(url: URL(string: "https://google.com")!, brand: $0)
         }
-        let item = FormCardNumberItem(cardTypeLogos: cardTypeLogos)
-        XCTAssertEqual(item.cardTypeLogos.count, 5)
+        let item = FormCardNumberItem(cardBrandLogos: cardBrandLogos)
+        XCTAssertEqual(item.cardBrandLogos.count, 5)
 
         // When entering PAN, Mastercard should remain visible.
         item.value = "5577000055770004"
-        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardBrands) { response in
             item.update(brands: response.brands!)
             XCTAssertEqual(item.detectedBrandLogos.count, 1)
-            XCTAssertEqual(item.detectedBrandLogos[0].type, .masterCard)
+            XCTAssertEqual(item.detectedBrandLogos[0].brand, .masterCard)
         }
 
         // When entering too long PAN, all logos should be hidden.
         item.value = "55770000557700040"
-        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardTypes) { response in
+        cardBrandProvider.provide(for: item.value, supportedTypes: supportedCardBrands) { response in
             item.update(brands: response.brands!)
             XCTAssertEqual(item.detectedBrandLogos.count, 0)
         }
@@ -158,7 +158,7 @@ class FormCardNumberItemTests: XCTestCase {
     
     func testLocalizationWithCustomTableName() {
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        let sut = FormCardNumberItem(cardTypeLogos: [], localizationParameters: expectedLocalizationParameters)
+        let sut = FormCardNumberItem(cardBrandLogos: [], localizationParameters: expectedLocalizationParameters)
         
         XCTAssertEqual(sut.title, localizedString(.cardNumberItemTitle, expectedLocalizationParameters))
         XCTAssertNil(sut.placeholder) // Brand icons are used instead of a placeholder
@@ -167,7 +167,7 @@ class FormCardNumberItemTests: XCTestCase {
     
     func testLocalizationWithCustomKeySeparator() {
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-        let sut = FormCardNumberItem(cardTypeLogos: [], localizationParameters: expectedLocalizationParameters)
+        let sut = FormCardNumberItem(cardBrandLogos: [], localizationParameters: expectedLocalizationParameters)
         
         XCTAssertEqual(sut.title, localizedString(LocalizationKey(key: "adyen_card_numberItem_title"), expectedLocalizationParameters))
         XCTAssertNil(sut.placeholder) // Brand icons are used instead of a placeholder
@@ -179,7 +179,7 @@ class FormCardNumberItemTests: XCTestCase {
         let textField = UITextField()
         textField.becomeFirstResponder()
         
-        let item = FormCardNumberItem(cardTypeLogos: [])
+        let item = FormCardNumberItem(cardBrandLogos: [])
         
         // Desired behavior
         //

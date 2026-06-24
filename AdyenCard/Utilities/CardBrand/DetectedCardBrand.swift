@@ -8,7 +8,7 @@ import Adyen
 import Foundation
 
 /// Describes the Card brand.
-public struct CardBrand: Decodable {
+package struct DetectedCardBrand: Decodable {
     
     /// Indicates the requirement level of a field.
     internal enum RequirementPolicy: String, Decodable {
@@ -24,10 +24,10 @@ public struct CardBrand: Decodable {
     }
 
     /// Indicates the card brand type.
-    public let type: CardType
+    package let brand: CardBrand
 
     /// Indicates whether its supported by the merchant or not.
-    public let isSupported: Bool
+    package let isSupported: Bool
 
     /// Indicates the cvc policy of the brand.
     internal let cvcPolicy: RequirementPolicy
@@ -46,32 +46,36 @@ public struct CardBrand: Decodable {
     
     /// The length of the PAN of the card brand.
     internal let panLength: Int?
+
+    /// The payment method variant, if provided by the backend.
+    internal let paymentMethodVariant: String?
     
     private enum Constants {
         static let plccText = "plcc"
         static let cbccText = "cbcc"
     }
 
-    /// Initializes a CardBrand.
+    /// Initializes a DetectedCardBrand.
     ///
     /// - Parameters:
-    ///   - type: Indicates the card brand type.
+    ///   - brand: Indicates the card brand type.
     ///   - isSupported: Indicates whether its supported by the merchant or not.
     ///   - cvcPolicy: Indicates the cvc policy of the brand.
     ///   - expiryDatePolicy: Indicates the expiry date policy of the brand.
     ///   - isLuhnCheckEnabled: Indicates whether Luhn check applies to card numbers of this brand.
     ///   - showsSocialSecurityNumber: Indicates whether to show social security number field or not.
     internal init(
-        type: CardType,
+        brand: CardBrand,
         isSupported: Bool = true,
         cvcPolicy: RequirementPolicy = .required,
         expiryDatePolicy: RequirementPolicy = .required,
         isLuhnCheckEnabled: Bool = true,
         showSocialSecurityNumber: Bool = false,
         panLength: Int? = nil,
-        localeBrand: String? = nil
+        localeBrand: String? = nil,
+        paymentMethodVariant: String? = nil
     ) {
-        self.type = type
+        self.brand = brand
         self.isSupported = isSupported
         self.cvcPolicy = cvcPolicy
         self.expiryDatePolicy = expiryDatePolicy
@@ -79,10 +83,11 @@ public struct CardBrand: Decodable {
         self.showsSocialSecurityNumber = showSocialSecurityNumber
         self.panLength = panLength
         self.localeBrand = localeBrand
+        self.paymentMethodVariant = paymentMethodVariant
     }
 
     private enum CodingKeys: String, CodingKey {
-        case type = "brand"
+        case brand
         case isSupported = "supported"
         case cvcPolicy
         case isLuhnCheckEnabled = "enableLuhnCheck"
@@ -90,6 +95,7 @@ public struct CardBrand: Decodable {
         case expiryDatePolicy
         case panLength
         case localeBrand
+        case paymentMethodVariant
     }
     
     internal var isCVCOptional: Bool {
@@ -112,8 +118,8 @@ public struct CardBrand: Decodable {
     
     /// Determines if the brand is a private labeled card.
     internal var isPrivateLabeled: Bool {
-        type.rawValue.contains(Constants.plccText) || type.rawValue.contains(Constants.cbccText)
+        brand.rawValue.contains(Constants.plccText) || brand.rawValue.contains(Constants.cbccText)
     }
 }
 
-extension CardBrand: Equatable {}
+extension DetectedCardBrand: Equatable {}

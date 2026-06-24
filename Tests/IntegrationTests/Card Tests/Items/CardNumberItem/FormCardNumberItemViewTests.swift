@@ -274,9 +274,9 @@ private extension FormCardNumberItemViewTests {
         validator: Validator = ValidatorMock(),
         formatter: Adyen.Formatter = CardNumberFormatter()
     ) -> FormCardNumberItemView {
-        let item = FormCardNumberItem(cardTypeLogos: [
-            .init(url: Self.url, type: .visa),
-            .init(url: Self.url, type: .masterCard)
+        let item = FormCardNumberItem(cardBrandLogos: [
+            .init(url: Self.url, brand: .visa),
+            .init(url: Self.url, brand: .masterCard)
         ])
         item.validator = validator
         item.formatter = formatter

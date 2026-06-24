@@ -45,7 +45,7 @@ package class CardComponent: PaymentComponent,
     }
 
     /// The supported card types.
-    package let supportedCardTypes: [CardType]
+    package let supportedCardBrands: [CardBrand]
 
     /// Card component configuration.
     package internal(set) var configuration: CardConfiguration
@@ -131,7 +131,7 @@ package class CardComponent: PaymentComponent,
         self.configuration = configuration
         self.binInfoProvider = binProvider
 
-        self.supportedCardTypes = configuration.supportedCardBrands ?? paymentMethod.brands
+        self.supportedCardBrands = configuration.supportedCardBrands ?? paymentMethod.brands
     }
 
     // MARK: - Presentable Component Protocol
@@ -196,7 +196,7 @@ package class CardComponent: PaymentComponent,
             formStyle: configuration.style,
             amount: context.amount,
             logoProvider: LogoURLProvider(environment: context.apiContext.environment),
-            supportedCardTypes: supportedCardTypes,
+            supportedCardBrands: supportedCardBrands,
             initialCountryCode: initialCountryCode,
             scope: String(describing: self),
             localizationParameters: resolvedLocalizationParameters,
@@ -218,7 +218,6 @@ package class CardComponent: PaymentComponent,
     }()
 
     private let panThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
-    private let binThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
 
     private func sendInfoEvent(with data: CardViewController.InfoEventData) {
         var infoEvent = AnalyticsEventInfo(
@@ -226,11 +225,11 @@ package class CardComponent: PaymentComponent,
             type: data.type
         )
         infoEvent.target = data.target
-        infoEvent.brand = data.brands?.first?.type.rawValue
+        infoEvent.brand = data.brands?.first?.brand.rawValue
 
         // Send configData only when co-badged cards are displayed
         if data.type == .displayed, infoEvent.target == .dualBrandButton {
-            infoEvent.configData = CoBadgedCardAnalyticsConfiguration(dualBrands: data.brands?.map(\.type.rawValue).joined(separator: ","))
+            infoEvent.configData = CoBadgedCardAnalyticsConfiguration(dualBrands: data.brands?.map(\.brand.rawValue).joined(separator: ","))
         }
         if let errorCode = data.error?.analyticsErrorCode {
             infoEvent.validationErrorCode = String(errorCode)
@@ -253,17 +252,18 @@ extension CardComponent: CardViewControllerDelegate {
     }
 
     internal func didChange(bin: String) {
-        binThrottler.throttle { [weak self] in
-            guard let self else { return }
-            self.configuration.onBinChange?(bin)
-        }
+        configuration.onBinChange?(bin)
     }
 
     private func updateBrand(with pan: String) {
-        binInfoProvider.provide(for: pan, supportedTypes: supportedCardTypes) { [weak self] binInfo in
+        binInfoProvider.provide(for: pan, supportedTypes: supportedCardBrands) { [weak self] binInfo in
             guard let self else { return }
             self.cardViewController.update(binInfo: binInfo)
-            self.configuration.onBinLookup?(binInfo.brands ?? [])
+            guard !binInfo.isCreatedLocally else { return }
+            let brands = (binInfo.brands ?? []).map {
+                BinLookupBrand(brand: $0.brand.rawValue, supported: $0.isSupported, paymentMethodVariant: $0.paymentMethodVariant)
+            }
+            self.configuration.onBinLookup?(BinLookupData(issuingCountryCode: binInfo.issuingCountryCode, brands: brands))
         }
     }
 }

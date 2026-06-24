@@ -36,10 +36,10 @@ internal final class FormCoBadgedCardItem: FormItem {
     internal var style: FormCoBadgedCardItemStyle
 
     /// The callback to send the selected brand to the Card Viewcontroller
-    internal var onCardBrandSelection: ((CardBrand) -> Void)?
+    internal var onCardBrandSelection: ((DetectedCardBrand) -> Void)?
 
     /// Brands set after coBadgedCardItems are displayed on the view
-    @AdyenObservable(nil) internal var updatedCardBrands: [CardBrand]?
+    @AdyenObservable(nil) internal var updatedCardBrands: [DetectedCardBrand]?
 
     /// Initializes the FormCoBadged card item.
     ///
@@ -73,21 +73,21 @@ internal final class FormCoBadgedCardItem: FormItem {
     }
 
     internal func selectableFormItems(
-        from brands: [CardBrand],
-        cardLogos: [FormCardLogosItem.CardTypeLogo],
-        defaultSelectedBrand: CardBrand
+        from brands: [DetectedCardBrand],
+        cardLogos: [FormCardLogosItem.CardBrandLogo],
+        defaultSelectedBrand: DetectedCardBrand
     ) -> [SelectableFormItem] {
         brands.map { brand in
-            let brandLogoURL = cardLogos.first(where: { $0.type == brand.type })?.url
+            let brandLogoURL = cardLogos.first(where: { $0.brand == brand.brand })?.url
 
-            let isSelected = brand.type.rawValue == defaultSelectedBrand.type.rawValue ? true : false
+            let isSelected = brand.brand.rawValue == defaultSelectedBrand.brand.rawValue ? true : false
 
             // Title should be 'localeBrand' and if it is nil then use 'brand' property from binLookup
             let selectableItem = SelectableFormItem(
-                title: brand.localeBrand ?? brand.type.rawValue,
+                title: brand.localeBrand ?? brand.brand.rawValue,
                 imageUrl: brandLogoURL,
                 isSelected: isSelected,
-                identifier: brand.type.rawValue
+                identifier: brand.brand.rawValue
             )
             selectableItem.selectionHandler = { [weak self] in
                 guard let self else { return }
@@ -97,7 +97,7 @@ internal final class FormCoBadgedCardItem: FormItem {
         }
     }
 
-    internal func updateItems(_ brands: [CardBrand], cardLogos: [FormCardLogosItem.CardTypeLogo]) {
+    internal func updateItems(_ brands: [DetectedCardBrand], cardLogos: [FormCardLogosItem.CardBrandLogo]) {
         selectableFormItems = []
         updatedCardBrands = []
         if brands.count == 2, brands.allSatisfy(\.isSupported) {
@@ -116,9 +116,9 @@ internal final class FormCoBadgedCardItem: FormItem {
         }
     }
 
-    internal func updateSelection(_ selectedBrand: CardBrand) {
+    internal func updateSelection(_ selectedBrand: DetectedCardBrand) {
         selectableFormItems.forEach { $0.isSelected = false }
-        selectableFormItems.first(where: { $0.identifier == selectedBrand.type.rawValue })?.isSelected = true
+        selectableFormItems.first(where: { $0.identifier == selectedBrand.brand.rawValue })?.isSelected = true
     }
 
     internal func resetItems() {

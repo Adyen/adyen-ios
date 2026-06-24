@@ -69,26 +69,13 @@ internal final class BACSViewModel {
 
     internal func performSubmit() {
         startLoading()
+        shouldShowValidation = true
 
-        guard validateForm() else {
+        guard let details = makeDetails() else {
             stopLoading()
             return
         }
 
-        guard let holderName = holderNameItem?.value,
-              let bankAccountNumber = bankAccountNumberItem?.value,
-              let sortCode = sortCodeItem?.value else {
-            stopLoading()
-            return
-        }
-
-        let details = BACSDirectDebitDetails(
-            paymentMethod: paymentMethod,
-            holderName: holderName,
-            bankAccountNumber: bankAccountNumber,
-            bankLocationId: sortCode,
-            shopperEmail: emailItem?.value
-        )
         onSubmit(details)
     }
 
@@ -128,21 +115,31 @@ internal final class BACSViewModel {
         return allItems.compactMap { $0 }
     }
 
-    private func validateForm() -> Bool {
-        shouldShowValidation = true
-
+    private func makeDetails() -> BACSDirectDebitDetails? {
         guard let amountTermsAccepted = amountConsentToggleItem?.value,
               let legalTermsAccepted = legalConsentToggleItem?.value,
               amountTermsAccepted, legalTermsAccepted else {
-            return false
+            return nil
         }
 
-        return [
-            holderNameItem,
-            bankAccountNumberItem,
-            sortCodeItem,
-            emailItem
-        ].compactMap { $0 }
-            .allSatisfy { $0.isValid() }
+        guard [holderNameItem, bankAccountNumberItem, sortCodeItem, emailItem]
+            .compactMap({ $0 })
+            .allSatisfy({ $0.isValid() }) else {
+            return nil
+        }
+
+        guard let holderName = holderNameItem?.value,
+              let bankAccountNumber = bankAccountNumberItem?.value,
+              let sortCode = sortCodeItem?.value else {
+            return nil
+        }
+
+        return BACSDirectDebitDetails(
+            paymentMethod: paymentMethod,
+            holderName: holderName,
+            bankAccountNumber: bankAccountNumber,
+            bankLocationId: sortCode,
+            shopperEmail: emailItem?.value
+        )
     }
 }

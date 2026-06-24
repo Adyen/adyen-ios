@@ -8,12 +8,12 @@ import Adyen
 import Foundation
 
 internal struct PaymentInfo: Decodable {
-    internal let cardType: CardType?
+    internal let cardBrand: CardBrand?
     internal let lastFour: String?
     internal let amount: Amount?
     
     private enum CodingKeys: String, CodingKey {
-        case cardType = "brand"
+        case cardBrand = "brand"
         case lastFour
         case amount
     }
