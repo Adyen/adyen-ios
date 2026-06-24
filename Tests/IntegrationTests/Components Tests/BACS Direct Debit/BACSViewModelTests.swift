@@ -150,7 +150,7 @@ class BACSViewModelTests: XCTestCase {
         // Given
         sut.viewDidLoad()
         sut.amountConsentToggleItem?.value = true
-        sut.legalConsentToggleItem?.value = false
+        sut.legalConsentToggleItem?.value = true
 
         // Missing bank holder name value
         sut.bankAccountNumberItem?.value = mockBankAccountNumber
