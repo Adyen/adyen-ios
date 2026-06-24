@@ -49,11 +49,10 @@ public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInfo
     /// Indicates whether to show the security code field for stored cards. Defaults to true.
     internal var showSecurityCodeForStoredCard: Bool
 
-    // TODO: Rename CardType to CardBrand once the internal CardBrand struct conflict is resolved.
     /// The list of supported card brands.  Defaults to nil.
     /// By default list of supported brands is extracted from component's `AnyCardPaymentMethod`.
     /// Use this property to enforce a custom collection of card brands.
-    internal var supportedCardBrands: [CardType]?
+    internal var supportedCardBrands: [CardBrand]?
 
     /// Installments options to present to the user.
     internal var installmentConfiguration: InstallmentConfiguration?
@@ -71,7 +70,7 @@ public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInfo
     internal var onBinChange: ((String) -> Void)?
     
     /// Called when card brand(s) are detected from the entered card number.
-    internal var onBinLookup: (([CardBrand]) -> Void)?
+    internal var onBinLookup: ((BinLookupData) -> Void)?
     
     // TODO: Add onFieldValidationChange closure that provides field validation
     // updates including last 4 digits, or add it here after deciding on alignment.
@@ -170,7 +169,7 @@ extension CardConfiguration {
     /// Use this to enforce a custom collection of card brands.
     /// - Parameter supportedCardBrands: The list of supported card brands, or `nil` to use the default.
     /// - Returns: A modified copy of the configuration.
-    public func supportedCardBrands(_ supportedCardBrands: [CardType]?) -> Self {
+    public func supportedCardBrands(_ supportedCardBrands: [CardBrand]?) -> Self {
         var copy = self
         copy.supportedCardBrands = supportedCardBrands
         return copy
@@ -224,9 +223,9 @@ extension CardConfiguration {
     }
     
     /// Sets the handler to be called when card brand(s) are detected.
-    /// - Parameter onBinLookup: The closure to call with the detected card brands.
+    /// - Parameter onBinLookup: The closure to call with the BIN lookup result.
     /// - Returns: A modified copy of the configuration.
-    public func onBinLookup(_ onBinLookup: @escaping ([CardBrand]) -> Void) -> Self {
+    public func onBinLookup(_ onBinLookup: @escaping (BinLookupData) -> Void) -> Self {
         var copy = self
         copy.onBinLookup = onBinLookup
         return copy
@@ -262,7 +261,7 @@ package protocol AnyCardComponentConfiguration {
     /// The list of supported card brands.  Defaults to nil.
     /// By default list of supported brands is extracted from component's `AnyCardPaymentMethod`.
     /// Use this property to enforce a custom collection of card brands.
-    var supportedCardBrands: [CardType]? { get }
+    var supportedCardBrands: [CardBrand]? { get }
 
     /// Installments options to present to the user.
     var installmentConfiguration: InstallmentConfiguration? { get }

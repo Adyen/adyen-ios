@@ -21,7 +21,7 @@ jobs:
   pods:
     runs-on: macos-26-xlarge
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 
     - name: Select latest Xcode
       uses: maxim-lobanov/setup-xcode@v1

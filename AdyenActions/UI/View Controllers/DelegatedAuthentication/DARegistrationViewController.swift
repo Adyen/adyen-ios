@@ -13,7 +13,7 @@ import UIKit
 
 internal final class DARegistrationViewController: UIViewController {
     private let cardNumber: String?
-    private let cardType: CardType?
+    private let cardBrand: CardBrand?
     private let biometricName: String
     private let enableCheckoutHandler: VoidHandler
     private let notNowHandler: VoidHandler
@@ -32,7 +32,7 @@ internal final class DARegistrationViewController: UIViewController {
         localizationParameters: LocalizationParameters?,
         logoProvider: LogoURLProvider,
         cardNumber: String?,
-        cardType: CardType?,
+        cardBrand: CardBrand?,
         biometricName: String,
         enableCheckoutHandler: @escaping VoidHandler,
         notNowHandler: @escaping VoidHandler
@@ -40,11 +40,11 @@ internal final class DARegistrationViewController: UIViewController {
         self.style = style
         self.localizationParameters = localizationParameters
         self.cardNumber = cardNumber
-        self.cardType = cardType
+        self.cardBrand = cardBrand
         self.enableCheckoutHandler = enableCheckoutHandler
         self.biometricName = biometricName
         self.notNowHandler = notNowHandler
-        self.cardLogoURL = cardType.map(\.rawValue).map { logoProvider.logoURL(withName: $0) }
+        self.cardLogoURL = cardBrand.map(\.rawValue).map { logoProvider.logoURL(withName: $0) }
         super.init(nibName: nil, bundle: Bundle(for: DARegistrationViewController.self))
         registrationView.delegate = self
     }
