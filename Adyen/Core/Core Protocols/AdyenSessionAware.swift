@@ -6,6 +6,7 @@
 
 import Foundation
 
+@MainActor
 package protocol AdyenSessionAware {
     var isSession: Bool { get }
 }

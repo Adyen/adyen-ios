@@ -22,7 +22,7 @@ public struct BCMCPaymentMethod: AnyCardPaymentMethod {
     /// An array containing the supported brands, such as `"mc"`, `"visa"`, `"amex"`, `"bcmc"`.
     ///
     /// Used to configure the `supportedCardBrands` on the `BCMCComponent`'s configuration
-    public var brands: [CardType] {
+    public var brands: [CardBrand] {
         cardPaymentMethod.brands
     }
     

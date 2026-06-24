@@ -26,7 +26,7 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         
         observe(item.$selectedCard) { [weak self] cardsType in
             guard let self else { return }
-            let number = cardsType == CardType.americanExpress ? "4" : "3"
+            let number = cardsType == CardBrand.americanExpress ? "4" : "3"
             let localizedPlaceholder = localizedString(.cardCvcItemPlaceholderDigits, item.localizationParameters, number)
             
             // Set placeholder on item - it will be shown in footer label reactively
@@ -100,7 +100,7 @@ extension FormCardSecurityCodeItemView {
             image = UIImage(named: logoResource, in: self.bundle, compatibleWith: nil)
             translatesAutoresizingMaskIntoConstraints = false
             setupConstraints()
-            observe(item.$selectedCard) { [weak self] cardType in self?.flipCard(toFront: cardType == CardType.americanExpress) }
+            observe(item.$selectedCard) { [weak self] cardBrand in self?.flipCard(toFront: cardBrand == CardBrand.americanExpress) }
         }
         
         @available(*, unavailable)
