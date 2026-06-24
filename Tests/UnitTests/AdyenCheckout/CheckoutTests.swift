@@ -718,6 +718,36 @@ final class CheckoutTests: XCTestCase {
         XCTAssertFalse(onFailureCalled)
     }
 
+    // MARK: - handleReturn
+
+    func test_handleReturn_withRegisteredHandler_returnsTrue() throws {
+        // Given
+        let url = try XCTUnwrap(URL(string: "adyen://redirect?payload=test"))
+        let handlerExpectation = expectation(description: "URL handler called")
+        RedirectListener.registerForURL { receivedURL in
+            XCTAssertEqual(receivedURL, url)
+            handlerExpectation.fulfill()
+        }
+
+        // When
+        let result = Checkout.handleReturn(url: url)
+
+        // Then
+        XCTAssertTrue(result)
+        waitForExpectations(timeout: 1)
+    }
+
+    func test_handleReturn_withNoRegisteredHandler_returnsFalse() throws {
+        // Given
+        let url = try XCTUnwrap(URL(string: "adyen://redirect?payload=test"))
+
+        // When
+        let result = Checkout.handleReturn(url: url)
+
+        // Then
+        XCTAssertFalse(result)
+    }
+
     private func makeSessionCheckoutCore(
         session: SessionProtocol,
         callbackStore: SessionCheckoutCallbackStore = SessionCheckoutCallbackStore()

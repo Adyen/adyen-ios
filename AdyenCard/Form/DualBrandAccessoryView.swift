@@ -68,7 +68,7 @@ extension FormCardNumberItemView {
             primaryLogoView.image = Constant.placeholderImage
         }
         
-        internal func updateCurrentLogos(_ logos: [FormCardLogosItem.CardTypeLogo]) {
+        internal func updateCurrentLogos(_ logos: [FormCardLogosItem.CardBrandLogo]) {
             resetLogos()
             guard !logos.isEmpty else {
                 setPlaceholderView()
@@ -77,18 +77,18 @@ extension FormCardNumberItemView {
             setupLogoViews(from: logos)
         }
         
-        private func setupLogoViews(from logos: [FormCardLogosItem.CardTypeLogo]) {
+        private func setupLogoViews(from logos: [FormCardLogosItem.CardBrandLogo]) {
             guard let firstLogo = logos.first else { return }
             let secondLogo = logos.adyen[safeIndex: 1]
             
             primaryLogoUrl = firstLogo.url
             secondaryLogoUrl = secondLogo?.url
 
-            primaryLogoView.accessibilityValue = firstLogo.type.name
+            primaryLogoView.accessibilityValue = firstLogo.brand.name
             primaryLogoView.isAccessibilityElement = true
 
             if let secondLogo {
-                secondaryLogoView.accessibilityValue = secondLogo.type.name
+                secondaryLogoView.accessibilityValue = secondLogo.brand.name
                 secondaryLogoView.isHidden = false
             }
             
