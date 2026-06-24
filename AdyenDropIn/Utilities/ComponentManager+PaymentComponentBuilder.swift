@@ -376,13 +376,11 @@ private extension ComponentManager {
             style: configuration.style.formComponent,
             localizationParameters: configuration.localizationParameters
         )
-        let bacsDirectDebitComponent = BACSDirectDebitComponent(
+        return BACSDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
             configuration: bacsConfiguration
         )
-        bacsDirectDebitComponent.presentationDelegate = presentationDelegate
-        return bacsDirectDebitComponent
     }
 
     func createACHDirectDebitComponent(_ paymentMethod: ACHDirectDebitPaymentMethod) -> ACHDirectDebitComponent {

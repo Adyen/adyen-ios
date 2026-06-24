@@ -7,7 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
 
-class BACSInputPresenterProtocolMock: BACSInputPresenterProtocol {
+class BACSInputPresenterProtocolMock: BACSViewModelProtocol {
 
     // MARK: - viewDidLoad
     

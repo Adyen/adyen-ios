@@ -38,8 +38,7 @@ internal final class ComponentManager: ComponentManaging {
     internal let context: AdyenContext
     internal let order: PartialPaymentOrder?
     internal let partialPaymentEnabled: Bool
-    internal weak var presentationDelegate: PresentationDelegate?
-    
+
     private let supportsEditingStoredPaymentMethods: Bool
     
     private var localizationParameters: LocalizationParameters? {
@@ -58,8 +57,7 @@ internal final class ComponentManager: ComponentManaging {
         configuration: DropInComponent.Configuration,
         partialPaymentEnabled: Bool = true,
         order: PartialPaymentOrder?,
-        supportsEditingStoredPaymentMethods: Bool = false,
-        presentationDelegate: PresentationDelegate?
+        supportsEditingStoredPaymentMethods: Bool = false
     ) {
         self.paymentMethods = paymentMethods
         self.context = context
@@ -67,7 +65,6 @@ internal final class ComponentManager: ComponentManaging {
         self.partialPaymentEnabled = partialPaymentEnabled
         self.order = order
         self.supportsEditingStoredPaymentMethods = supportsEditingStoredPaymentMethods
-        self.presentationDelegate = presentationDelegate
 
         updateContextAmountIfNeeded()
     }

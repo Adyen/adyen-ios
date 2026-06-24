@@ -47,8 +47,7 @@ internal struct DropInAssembler {
             configuration: configuration,
             partialPaymentEnabled: false, // TODO: - Set partial payment flow
             order: nil,
-            supportsEditingStoredPaymentMethods: false, // TODO: - Support editing stored PMs
-            presentationDelegate: nil
+            supportsEditingStoredPaymentMethods: false // TODO: - Support editing stored PMs
         )
     }
 
