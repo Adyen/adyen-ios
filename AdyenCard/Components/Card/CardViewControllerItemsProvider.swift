@@ -17,7 +17,7 @@ extension CardViewController {
     internal struct InfoEventData {
         internal let type: AnalyticsEventInfo.InfoType
         internal let target: AnalyticsEventTarget
-        internal let brands: [CardBrand]?
+        internal let brands: [DetectedCardBrand]?
         internal let error: AnalyticsValidationError?
     }
 
@@ -28,7 +28,7 @@ extension CardViewController {
         private var localizationParameters: LocalizationParameters?
         private let configuration: CardConfiguration
         private let shopperInformation: PrefilledShopperInformation?
-        private let cardLogos: [FormCardLogosItem.CardTypeLogo]
+        private let cardLogos: [FormCardLogosItem.CardBrandLogo]
         private let scope: String
         private let initialCountry: String
         private let addressViewModelBuilder: AddressViewModelBuilder
@@ -45,7 +45,7 @@ extension CardViewController {
             amount: Amount?,
             configuration: CardConfiguration,
             shopperInformation: PrefilledShopperInformation?,
-            cardLogos: [FormCardLogosItem.CardTypeLogo],
+            cardLogos: [FormCardLogosItem.CardBrandLogo],
             scope: String,
             initialCountryCode: String,
             localizationParameters: LocalizationParameters?,
@@ -114,7 +114,7 @@ extension CardViewController {
 
         internal lazy var numberContainerItem: FormCardNumberContainerItem = {
             let item = FormCardNumberContainerItem(
-                cardTypeLogos: cardLogos,
+                cardBrandLogos: cardLogos,
                 showSupportedCardBrandLogos: configuration.showSupportedCardBrandLogos,
                 style: formStyle.textField,
                 localizationParameters: localizationParameters,
@@ -276,7 +276,7 @@ extension CardViewController {
         internal func triggerInfoEvent(
             of type: AnalyticsEventInfo.InfoType,
             target: AnalyticsEventTarget,
-            brands: [CardBrand]? = nil,
+            brands: [DetectedCardBrand]? = nil,
             error: AnalyticsValidationError? = nil
         ) {
             let infoEventData = InfoEventData(

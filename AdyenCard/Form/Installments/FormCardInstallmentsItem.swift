@@ -23,16 +23,16 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
     private let localizationParameters: LocalizationParameters?
     
     /// Current card type for which to determine the installments.
-    internal private(set) var cardType: CardType? {
+    internal private(set) var cardBrand: CardBrand? {
         didSet {
             updatePickerContent()
         }
     }
     
     private var currentInstallmentOptions: InstallmentOptions? {
-        guard let cardType else { return installmentConfiguration.defaultOptions }
+        guard let cardBrand else { return installmentConfiguration.defaultOptions }
         
-        return installmentConfiguration.cardBasedOptions?[cardType] ?? installmentConfiguration.defaultOptions
+        return installmentConfiguration.cardBasedOptions?[cardBrand] ?? installmentConfiguration.defaultOptions
     }
     
     /// Default picker option.
@@ -86,8 +86,8 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
     }
 
     /// Updates the card type to the given type and triggers a reload on the element.
-    internal func update(cardType: CardType?) {
-        self.cardType = cardType
+    internal func update(cardBrand: CardBrand?) {
+        self.cardBrand = cardBrand
     }
 
     private func updatePickerContent() {

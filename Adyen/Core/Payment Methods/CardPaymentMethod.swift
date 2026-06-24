@@ -16,7 +16,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod, PaymentMethodDisplayOverr
     public let fundingSource: CardFundingSource?
     
     /// An array containing the supported brands, such as `"mc"`, `"visa"`, `"amex"`, `"bcmc"`.
-    public let brands: [CardType]
+    public let brands: [CardBrand]
     
     // MARK: - Decoding
     
@@ -24,7 +24,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod, PaymentMethodDisplayOverr
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.type = try container.decode(PaymentMethodType.self, forKey: .type)
         self.name = try container.decode(String.self, forKey: .name)
-        self.brands = try container.decodeIfPresent([CardType].self, forKey: .brands) ?? []
+        self.brands = try container.decodeIfPresent([CardBrand].self, forKey: .brands) ?? []
         self.fundingSource = try container.decodeIfPresent(CardFundingSource.self, forKey: .fundingSource)
     }
     
@@ -32,7 +32,7 @@ public struct CardPaymentMethod: AnyCardPaymentMethod, PaymentMethodDisplayOverr
         DisplayInformation(title: name, subtitle: nil, logoName: "card")
     }
     
-    internal init(type: PaymentMethodType, name: String, fundingSource: CardFundingSource, brands: [CardType]) {
+    internal init(type: PaymentMethodType, name: String, fundingSource: CardFundingSource, brands: [CardBrand]) {
         self.type = type
         self.name = name
         self.brands = brands
@@ -57,7 +57,7 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
     
     public let identifier: String
 
-    public var brands: [CardType] {
+    public var brands: [CardBrand] {
         [brand]
     }
 
@@ -85,7 +85,7 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
     public let supportedShopperInteractions: [ShopperInteraction]
     
     /// The brand of the stored card, such as `"mc"` or `"visa"`.
-    public let brand: CardType
+    public let brand: CardBrand
     
     /// The last four digits of the card number.
     public let lastFour: String

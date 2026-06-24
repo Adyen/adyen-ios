@@ -29,7 +29,7 @@ internal struct BinLookupRequest: APIRequest {
     
     internal var encryptedBin: String
 
-    internal var supportedBrands: [CardType]
+    internal var supportedBrands: [CardBrand]
     
     internal let requestId = UUID().uuidString
     

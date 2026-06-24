@@ -24,14 +24,14 @@ internal class CardViewController: FormViewController {
     
     private let configuration: CardConfiguration
     private let shopperInformation: PrefilledShopperInformation?
-    private let supportedCardTypes: [CardType]
+    private let supportedCardBrands: [CardBrand]
     private let formStyle: FormComponentStyle
     private var issuingCountryCode: String?
     private let amount: Amount?
     private let initialCountryCode: String
     private let scope: String
-    private let cardLogos: [FormCardLogosItem.CardTypeLogo]
-    private let allowedCoBadgedCardTypes: [CardType] = [.carteBancaire, .bcmc, .dankort]
+    private let cardLogos: [FormCardLogosItem.CardBrandLogo]
+    private let allowedCoBadgedCardBrands: [CardBrand] = [.carteBancaire, .bcmc, .dankort]
     private let cardScannerAnalyticsHandler: CardScannerAnalyticsHandler
     private lazy var cardScannerController: CardScannerControlling = {
         var controller: CardScannerControlling = CardScannerController(presenter: self, analyticsHandler: cardScannerAnalyticsHandler)
@@ -83,7 +83,7 @@ internal class CardViewController: FormViewController {
     ///   - formStyle: The style of form view controller.
     ///   - amount: The payment amount.
     ///   - logoProvider: The provider for logo image URLs.
-    ///   - supportedCardTypes: The list of supported cards.
+    ///   - supportedCardBrands: The list of supported cards.
     ///   - initialCountryCode: The initially used country code for the billing address
     ///   - scope: The view's scope.
     ///   - localizationParameters: Localization parameters.
@@ -94,7 +94,7 @@ internal class CardViewController: FormViewController {
         formStyle: FormComponentStyle,
         amount: Amount?,
         logoProvider: LogoURLProvider,
-        supportedCardTypes: [CardType],
+        supportedCardBrands: [CardBrand],
         initialCountryCode: String,
         scope: String,
         localizationParameters: LocalizationParameters?,
@@ -103,15 +103,15 @@ internal class CardViewController: FormViewController {
     ) {
         self.configuration = configuration
         self.shopperInformation = shopperInformation
-        self.supportedCardTypes = supportedCardTypes
+        self.supportedCardBrands = supportedCardBrands
         self.formStyle = formStyle
         self.scope = scope
         self.initialCountryCode = initialCountryCode
         self.amount = amount
         self.cardScannerAnalyticsHandler = cardScannerAnalyticsHandler
 
-        self.cardLogos = supportedCardTypes.map {
-            .init(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
+        self.cardLogos = supportedCardBrands.map {
+            .init(url: logoProvider.logoURL(withName: $0.rawValue), brand: $0)
         }
 
         super.init(
@@ -157,7 +157,7 @@ internal class CardViewController: FormViewController {
     }
     
     internal var selectedBrand: String? {
-        items.numberContainerItem.numberItem.currentBrand?.type.rawValue
+        items.numberContainerItem.numberItem.currentBrand?.brand.rawValue
     }
     
     internal var cardBIN: String {
@@ -227,7 +227,7 @@ internal class CardViewController: FormViewController {
     }
     
     internal func update(binInfo: BinLookupResponse) {
-        var brands: [CardBrand] = []
+        var brands: [DetectedCardBrand] = []
 
         // no dual branding if response is from regex (fallback)
         if binInfo.isCreatedLocally, let firstBrand = binInfo.brands?.first {
@@ -244,16 +244,16 @@ internal class CardViewController: FormViewController {
         updateBillingAddressOptionalStatus(brands: brands)
     }
 
-    internal func handleSelection(_ selectedBrand: CardBrand) {
+    internal func handleSelection(_ selectedBrand: DetectedCardBrand) {
         items.coBadgedCardItem.updateSelection(selectedBrand)
         items.numberContainerItem.numberItem.selectBrand(cardBrand: selectedBrand)
 
         items.triggerInfoEvent(of: .selected, target: .dualBrandButton, brands: [selectedBrand])
     }
 
-    internal func showCoBadgedCardsUI(for brands: [CardBrand]) {
+    internal func showCoBadgedCardsUI(for brands: [DetectedCardBrand]) {
         let coBadgedBrands = brands.filter { brand in
-            allowedCoBadgedCardTypes.contains(brand.type)
+            allowedCoBadgedCardBrands.contains(brand.brand)
         }
         if !coBadgedBrands.isEmpty { // Check if there are any co-badged brands
             items.coBadgedCardItem.updateItems(brands, cardLogos: cardLogos)
@@ -265,8 +265,8 @@ internal class CardViewController: FormViewController {
 
 extension CardViewController {
     
-    private func updateBillingAddressOptionalStatus(brands: [CardBrand]) {
-        let isOptional = configuration.billingAddress.isOptional(for: brands.map(\.type))
+    private func updateBillingAddressOptionalStatus(brands: [DetectedCardBrand]) {
+        let isOptional = configuration.billingAddress.isOptional(for: brands.map(\.brand))
         switch configuration.billingAddress.mode {
         case .lookup, .full:
             items.billingAddressPickerItem?.updateOptionalStatus(isOptional: isOptional)
@@ -306,7 +306,7 @@ extension CardViewController {
     }
 
     /// Updates relevant other fields after number field changes
-    private func updateFields(from brand: CardBrand?) {
+    private func updateFields(from brand: DetectedCardBrand?) {
         items.securityCodeItem.displayMode = brand?.securityCodeItemDisplayMode ?? .required
         items.expiryDateItem.isOptional = brand?.isExpiryDateOptional ?? false
         
@@ -314,7 +314,7 @@ extension CardViewController {
         items.additionalAuthPasswordItem.isHidden.wrappedValue = kcpItemsHidden
         items.additionalAuthCodeItem.isHidden.wrappedValue = kcpItemsHidden
         items.socialSecurityNumberItem.isHidden.wrappedValue = shouldHideSocialSecurityItem(with: brand)
-        items.installmentsItem?.update(cardType: brand?.type)
+        items.installmentsItem?.update(cardBrand: brand?.brand)
     }
     
     // MARK: Private methods
@@ -401,7 +401,7 @@ extension CardViewController {
     }
     
     private func didChange(pan: String) {
-        items.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: pan)
+        items.securityCodeItem.selectedCard = supportedCardBrands.adyen.type(forCardNumber: pan)
         cardDelegate?.didChange(pan: pan)
     }
     
@@ -420,7 +420,7 @@ extension CardViewController {
         }
     }
     
-    private func shouldHideSocialSecurityItem(with brand: CardBrand?) -> Bool {
+    private func shouldHideSocialSecurityItem(with brand: DetectedCardBrand?) -> Bool {
         guard let brand else { return true }
         switch configuration.socialSecurityNumberVisibility {
         case .show:
@@ -483,7 +483,7 @@ extension CardViewController {
     }
 }
 
-extension CardBrand {
+extension DetectedCardBrand {
     
     internal var securityCodeItemDisplayMode: FormCardSecurityCodeItem.DisplayMode {
         switch self.cvcPolicy {

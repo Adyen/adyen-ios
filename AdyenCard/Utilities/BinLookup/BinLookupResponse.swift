@@ -10,7 +10,7 @@ import Foundation
 
 internal struct BinLookupResponse: Response {
 
-    internal var brands: [CardBrand]?
+    internal var brands: [DetectedCardBrand]?
 
     internal let requestId: String
 
@@ -19,7 +19,7 @@ internal struct BinLookupResponse: Response {
     internal var isCreatedLocally: Bool = false
     
     internal init(
-        brands: [CardBrand]? = nil,
+        brands: [DetectedCardBrand]? = nil,
         requestId: String = UUID().uuidString,
         issuingCountryCode: String? = "NL",
         isCreatedLocally: Bool = true

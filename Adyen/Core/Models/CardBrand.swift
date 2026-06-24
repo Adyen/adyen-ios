@@ -7,7 +7,7 @@
 import Foundation
 
 /// Enum containing most known types of credit and debit cards.
-public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
+public enum CardBrand: RawRepresentable, Codable, Equatable, Hashable {
     
     /// Accel
     case accel
@@ -294,7 +294,7 @@ public enum CardType: RawRepresentable, Codable, Equatable, Hashable {
     // swiftlint:enable cyclomatic_complexity function_body_length
 }
 
-extension CardType {
+extension CardBrand {
     
     internal var pattern: String? {
         switch self { // NOSONAR
@@ -383,7 +383,7 @@ extension CardType {
     }
 }
 
-extension CardType {
+extension CardBrand {
 
     package func matches(cardNumber: String) -> Bool {
         guard let pattern else {
