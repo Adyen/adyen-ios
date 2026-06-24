@@ -18,7 +18,7 @@ struct StoredCardInputViewModelTests {
     // MARK: - Analytics Events
 
     @Test(arguments: StoredCardTestData.allBrands)
-    func viewDidLoad_sendsDidLoadEvent(brand: CardType) throws {
+    func viewDidLoad_sendsDidLoadEvent(brand: CardBrand) throws {
         // Given
         let analyticsProviderMock = AnalyticsProviderMock()
         let sut = makeSUT(brand: brand, analyticsProvider: analyticsProviderMock)
@@ -298,7 +298,7 @@ struct StoredCardInputViewModelTests {
     private func makeSUT(
         name: String = "VISA",
         lastFour: String = "1111",
-        brand: CardType = .visa,
+        brand: CardBrand = .visa,
         amount: Amount? = Amount(value: 100, currencyCode: "EUR"),
         publicKey: String = Dummy.publicKey,
         analyticsProvider: AnyAnalyticsProvider? = AnalyticsProviderMock(),
@@ -347,7 +347,7 @@ private final class StoredCardLocalizationProviderMock: CheckoutLocalizationProv
 
 enum StoredCardTestData {
 
-    static let allBrands: [CardType] = [.visa, .masterCard, .americanExpress, .other(named: "abcdef")]
+    static let allBrands: [CardBrand] = [.visa, .masterCard, .americanExpress, .other(named: "abcdef")]
 
     struct AmountData: CustomTestStringConvertible {
         let amount: Amount

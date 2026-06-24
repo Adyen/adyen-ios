@@ -40,12 +40,12 @@ import Foundation
     
         let showRegistrationReturnState: ShowRegistrationScreenMockState
         var onShowRegistrationScreen: ((
-            (number: String?, type: Adyen.CardType?)
+            (number: String?, brand: Adyen.CardBrand?)
         ) -> Void)?
 
         func showRegistrationScreen(
             component: any Adyen.Component,
-            cardDetails: (number: String?, type: Adyen.CardType?),
+            cardDetails: (number: String?, brand: Adyen.CardBrand?),
             registerDelegatedAuthenticationHandler: @escaping VoidHandler,
             fallbackHandler: @escaping VoidHandler
         ) {
@@ -67,13 +67,13 @@ import Foundation
         let showApprovalScreenReturnState: ShowApprovalScreenMockState
     
         var onShowApprovalScreen: ((
-            (number: String?, type: Adyen.CardType?),
+            (number: String?, brand: Adyen.CardBrand?),
             Adyen.Amount?
         ) -> Void)?
         
         func showApprovalScreen(
             component: any Adyen.Component,
-            cardDetails: (number: String?, type: Adyen.CardType?),
+            cardDetails: (number: String?, brand: Adyen.CardBrand?),
             amount: Adyen.Amount?,
             approveAuthenticationHandler: @escaping VoidHandler,
             fallbackHandler: @escaping VoidHandler,

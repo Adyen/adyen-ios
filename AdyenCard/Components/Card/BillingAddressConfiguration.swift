@@ -47,7 +47,7 @@ package struct BillingAddressConfiguration {
         case optional
 
         /// Field is optional only for provided card types.
-        case optionalForCardTypes(Set<CardType>)
+        case optionalForCardBrands(Set<CardBrand>)
     }
     
     /// Initializes a new instance of `BillingAddressConfiguration`.
@@ -67,14 +67,14 @@ package struct BillingAddressConfiguration {
     /// Indicates the requirement level of a field.
     package var requirementPolicy: RequirementPolicy = .required
     
-    package func isOptional(for cardTypes: [CardType]) -> Bool {
+    package func isOptional(for cardBrands: [CardBrand]) -> Bool {
         switch requirementPolicy {
         case .required:
             return false
         case .optional:
             return true
-        case let .optionalForCardTypes(optionalCardTypes):
-            return !optionalCardTypes.isDisjoint(with: cardTypes)
+        case let .optionalForCardBrands(optionalCardBrands):
+            return !optionalCardBrands.isDisjoint(with: cardBrands)
         }
     }
 }
