@@ -53,18 +53,21 @@ struct BillingAddressModeTests {
 
     @Test
     func full_hideForNonMatchingCard_showsAddress_submitsAddress() async throws {
+        let expectedAddress = PostalAddressMocks.newYorkPostalAddress
+
         let proxy = makeSUT(
             billingAddressMode: .full(supportedCountryCodes: ["US"], hideForCardBrands: [CardBrand.jcb]),
-            detectedBrand: CardBrand.visa,
-            shopperInformation: Self.shopperInformation
+            detectedBrand: CardBrand.visa
         )
 
         await proxy.load()
         proxy.fill(card: .visa)
         #expect(proxy.isBillingAddressPickerVisible == true)
 
+        try await proxy.fillBillingAddressViaForm(with: expectedAddress)
+
         let submittedData = try await proxy.submitAndAwait()
-        #expect(submittedData.billingAddress == Self.shopperInformation.billingAddress)
+        #expect(submittedData.billingAddress == expectedAddress)
     }
 
     // MARK: - hideForCardBrands Tests for .postalCode mode
@@ -123,35 +126,24 @@ struct BillingAddressModeTests {
 
     @Test
     func lookup_hideForNonMatchingCard_showsLookup_submitsAddress() async throws {
+        let expectedAddress = PostalAddressMocks.newYorkPostalAddress
+
         let proxy = makeSUT(
             billingAddressMode: .lookup(onAddressLookup: { _ in [] }, hideForCardBrands: [CardBrand.jcb]),
-            detectedBrand: CardBrand.visa,
-            shopperInformation: Self.shopperInformation
+            detectedBrand: CardBrand.visa
         )
 
         await proxy.load()
         proxy.fill(card: .visa)
         #expect(proxy.isBillingAddressPickerVisible == true)
 
+        try await proxy.fillBillingAddressViaLookup(with: expectedAddress)
+
         let submittedData = try await proxy.submitAndAwait()
-        #expect(submittedData.billingAddress == Self.shopperInformation.billingAddress)
+        #expect(submittedData.billingAddress == expectedAddress)
     }
 
     // MARK: - Helpers
-
-    private static var shopperInformation: PrefilledShopperInformation {
-        let billingAddress = PostalAddressMocks.newYorkPostalAddress
-        let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
-        return .init(
-            shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
-            emailAddress: "katrina@mail.com",
-            phoneNumber: .init(value: "1234567890", callingCode: "+1"),
-            billingAddress: billingAddress,
-            deliveryAddress: deliveryAddress,
-            socialSecurityNumber: "78542134370",
-            card: .init(holderName: "Katrina del Mar")
-        )
-    }
 
     private func makeSUT(
         billingAddressMode: BillingAddressMode,
@@ -269,6 +261,41 @@ private struct BillingAddressModeProxy {
         populate(postalCodeField, with: value)
     }
 
+    /// Simulates the user flow for `.full` mode:
+    /// tap billing address picker -> fill address in the presented form -> tap Done.
+    func fillBillingAddressViaForm(with address: PostalAddress) async throws {
+        let pickerItem = try #require(
+            component.cardViewController.items.billingAddressPickerItem,
+            "billingAddressPickerItem should exist for .full mode"
+        )
+
+        pickerItem.selectionHandler()
+
+        let addressFormVC = try await waitForPresentedAddressInputForm()
+        addressFormVC.addressItem.value = address
+        addressFormVC.submitTapped()
+
+        await pollUntil({ component.viewController.presentedViewController == nil }, timeout: 3)
+    }
+
+    /// Simulates the user flow for `.lookup` mode:
+    /// tap billing address picker -> navigate to manual entry form -> fill address -> tap Done.
+    func fillBillingAddressViaLookup(with address: PostalAddress) async throws {
+        let pickerItem = try #require(
+            component.cardViewController.items.billingAddressPickerItem,
+            "billingAddressPickerItem should exist for .lookup mode"
+        )
+
+        pickerItem.selectionHandler()
+
+        let lookupVC = try await waitForPresentedAddressLookupVC()
+        let addressFormVC = try await navigateToManualEntryForm(in: lookupVC)
+        addressFormVC.addressItem.value = address
+        addressFormVC.submitTapped()
+
+        await pollUntil({ component.viewController.presentedViewController == nil }, timeout: 3)
+    }
+
     func submitAndAwait(timeout: TimeInterval = 3) async throws -> PaymentComponentData {
         delegate.onDidFail = { _, _ in Issue.record("Should not fail") }
 
@@ -322,13 +349,67 @@ private struct BillingAddressModeProxy {
         payButton?.sendActions(for: .touchUpInside)
     }
 
+    /// Waits for the `.full` mode address form to be presented and returns the `AddressInputFormViewController`.
+    private func waitForPresentedAddressInputForm(timeout: TimeInterval = 3) async throws -> AddressInputFormViewController {
+        await pollUntil({ component.viewController.presentedViewController != nil }, timeout: timeout)
+
+        let securedVC = try #require(
+            component.viewController.presentedViewController as? SecuredViewController<UIViewController>,
+            "Expected SecuredViewController to be presented"
+        )
+        let navController = try #require(
+            securedVC.childViewController as? UINavigationController,
+            "Expected UINavigationController inside SecuredViewController"
+        )
+        return try #require(
+            navController.viewControllers.first as? AddressInputFormViewController,
+            "Expected AddressInputFormViewController as root of UINavigationController"
+        )
+    }
+
+    /// Waits for the `.lookup` mode address lookup VC to be presented and returns the `AddressLookupViewController`.
+    private func waitForPresentedAddressLookupVC(timeout: TimeInterval = 3) async throws -> AddressLookupViewController {
+        await pollUntil({ component.viewController.presentedViewController != nil }, timeout: timeout)
+
+        let securedVC = try #require(
+            component.viewController.presentedViewController as? SecuredViewController<UIViewController>,
+            "Expected SecuredViewController to be presented"
+        )
+        return try #require(
+            securedVC.childViewController as? AddressLookupViewController,
+            "Expected AddressLookupViewController inside SecuredViewController"
+        )
+    }
+
+    /// Navigates to manual entry form inside the `AddressLookupViewController` by tapping "Enter address manually".
+    private func navigateToManualEntryForm(
+        in lookupVC: AddressLookupViewController,
+        timeout: TimeInterval = 3
+    ) async throws -> AddressInputFormViewController {
+        // The lookup VC starts in search state when there's no prefill.
+        // The search screen has a "manual entry" link in its empty state.
+        // Trigger the manual entry transition by switching to form state.
+        lookupVC.viewModel.handleSwitchToManualEntryTapped()
+
+        // Wait for the form view controller to appear
+        await pollUntil(
+            { lookupVC.viewControllers.last is AddressInputFormViewController },
+            timeout: timeout
+        )
+
+        return try #require(
+            lookupVC.viewControllers.last as? AddressInputFormViewController,
+            "Expected AddressInputFormViewController in AddressLookupViewController stack"
+        )
+    }
+
     private func yieldTasks(count: Int) async {
         for _ in 0..<count {
             await Task.yield()
         }
     }
 
-    private func pollUntil(_ condition: @Sendable () -> Bool, timeout: TimeInterval) async {
+    private func pollUntil(_ condition: () -> Bool, timeout: TimeInterval) async {
         let deadline = Date().addingTimeInterval(timeout)
         while !condition(), Date() < deadline {
             await yieldTasks(count: 10)
