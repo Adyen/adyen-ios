@@ -9,7 +9,6 @@
 @_spi(AdyenInternal) @testable import AdyenUI
 import Testing
 import UIKit
-import XCTest
 
 /// Tests for `BillingAddressMode` configuration options including `hideForCardBrands`.
 @MainActor
@@ -18,123 +17,123 @@ struct BillingAddressModeTests {
     // MARK: - .none mode
 
     @Test
-    func none_noBillingAddressShown_submitsNilBillingAddress() throws {
+    func none_noBillingAddressShown_submitsNilBillingAddress() async throws {
         let proxy = makeSUT(
             billingAddressMode: BillingAddressMode.none,
             detectedBrand: CardBrand.visa
         )
 
-        proxy.load()
-        #expect(proxy.isBillingAddressPickerVisible == nil)
+        await proxy.load()
+        #expect(proxy.isBillingAddressPickerVisible == false)
 
         proxy.fill(card: .visa)
 
-        let submittedData = try proxy.submitAndAwait()
+        let submittedData = try await proxy.submitAndAwait()
         #expect(submittedData.billingAddress == nil)
     }
 
     // MARK: - hideForCardBrands Tests for .full mode
 
     @Test
-    func full_hideForMatchingCard_hidesAddress_submitsNilBillingAddress() throws {
+    func full_hideForMatchingCard_hidesAddress_submitsNilBillingAddress() async throws {
         let proxy = makeSUT(
             billingAddressMode: .full(supportedCountryCodes: ["US"], hideForCardBrands: [CardBrand.visa]),
             detectedBrand: CardBrand.visa
         )
 
-        proxy.load()
+        await proxy.load()
         #expect(proxy.isBillingAddressPickerVisible == true)
 
         proxy.fill(card: .visa)
-        proxy.waitUntilBillingAddressPickerVisibility(is: false)
+        await proxy.waitUntilBillingAddressPickerVisibility(is: false)
 
-        let submittedData = try proxy.submitAndAwait()
+        let submittedData = try await proxy.submitAndAwait()
         #expect(submittedData.billingAddress == nil)
     }
 
     @Test
-    func full_hideForNonMatchingCard_showsAddress_submitsAddress() throws {
+    func full_hideForNonMatchingCard_showsAddress_submitsAddress() async throws {
         let proxy = makeSUT(
             billingAddressMode: .full(supportedCountryCodes: ["US"], hideForCardBrands: [CardBrand.jcb]),
             detectedBrand: CardBrand.visa,
             shopperInformation: Self.shopperInformation
         )
 
-        proxy.load()
+        await proxy.load()
         proxy.fill(card: .visa)
         #expect(proxy.isBillingAddressPickerVisible == true)
 
-        let submittedData = try proxy.submitAndAwait()
+        let submittedData = try await proxy.submitAndAwait()
         #expect(submittedData.billingAddress == Self.shopperInformation.billingAddress)
     }
 
     // MARK: - hideForCardBrands Tests for .postalCode mode
 
     @Test
-    func postalCode_hideForMatchingCard_hidesPostalCode_submitsNilBillingAddress() throws {
+    func postalCode_hideForMatchingCard_hidesPostalCode_submitsNilBillingAddress() async throws {
         let proxy = makeSUT(
             billingAddressMode: .postalCode(hideForCardBrands: [CardBrand.visa]),
             detectedBrand: CardBrand.visa
         )
 
-        proxy.load()
+        await proxy.load()
         #expect(proxy.isPostalCodeVisible == true)
 
         proxy.fill(card: .visa)
-        proxy.waitUntilPostalCodeVisibility(is: false)
+        await proxy.waitUntilPostalCodeVisibility(is: false)
 
-        let submittedData = try proxy.submitAndAwait()
+        let submittedData = try await proxy.submitAndAwait()
         #expect(submittedData.billingAddress == nil)
     }
 
     @Test
-    func postalCode_hideForNonMatchingCard_showsPostalCode_submitsPostalCode() throws {
+    func postalCode_hideForNonMatchingCard_showsPostalCode_submitsPostalCode() async throws {
         let proxy = makeSUT(
             billingAddressMode: .postalCode(hideForCardBrands: [CardBrand.jcb]),
             detectedBrand: CardBrand.visa
         )
 
-        proxy.load()
+        await proxy.load()
         proxy.fill(card: .visa)
         proxy.fillPostalCode("12345")
         #expect(proxy.isPostalCodeVisible == true)
 
-        let submittedData = try proxy.submitAndAwait()
+        let submittedData = try await proxy.submitAndAwait()
         #expect(submittedData.billingAddress == PostalAddress(postalCode: "12345"))
     }
 
     // MARK: - hideForCardBrands Tests for .lookup mode
 
     @Test
-    func lookup_hideForMatchingCard_hidesLookup_submitsNilBillingAddress() throws {
+    func lookup_hideForMatchingCard_hidesLookup_submitsNilBillingAddress() async throws {
         let proxy = makeSUT(
             billingAddressMode: .lookup(onAddressLookup: { _ in [] }, hideForCardBrands: [CardBrand.visa]),
             detectedBrand: CardBrand.visa
         )
 
-        proxy.load()
+        await proxy.load()
         #expect(proxy.isBillingAddressPickerVisible == true)
 
         proxy.fill(card: .visa)
-        proxy.waitUntilBillingAddressPickerVisibility(is: false)
+        await proxy.waitUntilBillingAddressPickerVisibility(is: false)
 
-        let submittedData = try proxy.submitAndAwait()
+        let submittedData = try await proxy.submitAndAwait()
         #expect(submittedData.billingAddress == nil)
     }
 
     @Test
-    func lookup_hideForNonMatchingCard_showsLookup_submitsAddress() throws {
+    func lookup_hideForNonMatchingCard_showsLookup_submitsAddress() async throws {
         let proxy = makeSUT(
             billingAddressMode: .lookup(onAddressLookup: { _ in [] }, hideForCardBrands: [CardBrand.jcb]),
             detectedBrand: CardBrand.visa,
             shopperInformation: Self.shopperInformation
         )
 
-        proxy.load()
+        await proxy.load()
         proxy.fill(card: .visa)
         #expect(proxy.isBillingAddressPickerVisible == true)
 
-        let submittedData = try proxy.submitAndAwait()
+        let submittedData = try await proxy.submitAndAwait()
         #expect(submittedData.billingAddress == Self.shopperInformation.billingAddress)
     }
 
@@ -234,17 +233,17 @@ private struct BillingAddressModeProxy {
 
     // MARK: - Lifecycle
 
-    func load() {
+    func load() async {
         window.rootViewController = component.viewController
         window.makeKeyAndVisible()
         window.layer.speed = 10
-        waitForDuration(.milliseconds(100))
+        await yieldTasks(count: 10)
     }
 
     // MARK: - Readable State
 
-    var isBillingAddressPickerVisible: Bool? {
-        component.cardViewController.items.billingAddressPickerItem?.isVisible
+    var isBillingAddressPickerVisible: Bool {
+        component.cardViewController.items.billingAddressPickerItem?.isVisible ?? false
     }
 
     var isPostalCodeVisible: Bool {
@@ -270,42 +269,42 @@ private struct BillingAddressModeProxy {
         populate(postalCodeField, with: value)
     }
 
-    func submitAndAwait(timeout: TimeInterval = 10) throws -> PaymentComponentData {
-        let submitExpectation = XCTestExpectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-
-        var submittedData: PaymentComponentData?
-
+    func submitAndAwait(timeout: TimeInterval = 3) async throws -> PaymentComponentData {
         delegate.onDidFail = { _, _ in Issue.record("Should not fail") }
-        delegate.onDidSubmit = { data, _ in
-            submittedData = data
-            self.component.stopLoading()
-            submitExpectation.fulfill()
+
+        return try await withCheckedThrowingContinuation { continuation in
+            var didResume = false
+
+            delegate.onDidSubmit = { data, _ in
+                guard !didResume else { return }
+                didResume = true
+                self.component.stopLoading()
+                continuation.resume(returning: data)
+            }
+
+            tapSubmitButton()
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
+                guard !didResume else { return }
+                didResume = true
+                continuation.resume(throwing: TimeoutError())
+            }
         }
-
-        tapSubmitButton()
-
-        let waiter = XCTWaiter()
-        let result = waiter.wait(for: [submitExpectation], timeout: timeout)
-        if result != .completed {
-            Issue.record("Submit expectation was not fulfilled within \(timeout)s")
-        }
-
-        return try #require(submittedData, "Expected submitted data but none was received")
     }
 
     // MARK: - Waiting
 
-    func waitUntilBillingAddressPickerVisibility(is expected: Bool, timeout: TimeInterval = 60) {
+    func waitUntilBillingAddressPickerVisibility(is expected: Bool, timeout: TimeInterval = 3) async {
         guard let item = component.cardViewController.items.billingAddressPickerItem else {
             Issue.record("billingAddressPickerItem is nil")
             return
         }
-        pollUntil({ item.isVisible == expected }, timeout: timeout)
+        await pollUntil({ item.isVisible == expected }, timeout: timeout)
     }
 
-    func waitUntilPostalCodeVisibility(is expected: Bool, timeout: TimeInterval = 60) {
+    func waitUntilPostalCodeVisibility(is expected: Bool, timeout: TimeInterval = 3) async {
         let item = component.cardViewController.items.postalCodeItem
-        pollUntil({ item.isVisible == expected }, timeout: timeout)
+        await pollUntil({ item.isVisible == expected }, timeout: timeout)
     }
 
     // MARK: - Private Helpers
@@ -323,17 +322,19 @@ private struct BillingAddressModeProxy {
         payButton?.sendActions(for: .touchUpInside)
     }
 
-    private func waitForDuration(_ interval: DispatchTimeInterval) {
-        let exp = XCTestExpectation(description: "wait")
-        DispatchQueue.main.asyncAfter(deadline: .now() + interval) { exp.fulfill() }
-        XCTWaiter().wait(for: [exp], timeout: 10)
+    private func yieldTasks(count: Int) async {
+        for _ in 0..<count {
+            await Task.yield()
+        }
     }
 
-    private func pollUntil(_ condition: () -> Bool, timeout: TimeInterval) {
+    private func pollUntil(_ condition: @Sendable () -> Bool, timeout: TimeInterval) async {
         let deadline = Date().addingTimeInterval(timeout)
         while !condition(), Date() < deadline {
-            waitForDuration(.seconds(1))
+            await yieldTasks(count: 10)
         }
         #expect(condition())
     }
 }
+
+private struct TimeoutError: Error {}
