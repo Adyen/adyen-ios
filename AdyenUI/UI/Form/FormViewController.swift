@@ -235,10 +235,18 @@ open class FormViewController: UIViewController, AdyenObserver {
         }
     }
 
+    /// Returns all validatable items that should be validated.
+    ///
+    /// Two visibility filters are applied:
+    /// 1. First filter excludes hidden top-level items (e.g., entire sections)
+    /// 2. Second filter excludes hidden nested items within visible containers
+    ///    (e.g., a billing address picker hidden inside a visible section header
+    ///    when `hideForCardTypes` matches the detected card type)
     private func getAllValidatableItems() -> [ValidatableFormItem] {
         itemManager.topLevelItem
             .filter(\.isVisible)
             .flatMap(\.flatSubitems)
+            .filter(\.isVisible)
             .compactMap { $0 as? ValidatableFormItem }
     }
 
