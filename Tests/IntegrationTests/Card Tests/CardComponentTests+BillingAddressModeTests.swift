@@ -591,17 +591,27 @@ private struct BillingAddressModeProxy {
     // MARK: - Visibility Assertions
 
     func expectBillingAddressPickerVisible(_ expected: Bool, timeout: TimeInterval = 3) async {
-        let billingAddressView: FormAddressPickerItemView? = cardView.findView(by: ViewIdentifier.billingAddress)
-        if billingAddressView == nil {
-            #expect(expected == false, "billingAddressPickerItem view not found, expected visible=\(expected)")
-            return
-        }
-        await pollUntil({ billingAddressView?.item.isVisible == expected }, timeout: timeout)
+        await pollUntil({
+            let view: FormAddressPickerItemView? = self.cardView.findView(by: ViewIdentifier.billingAddress)
+            return self.isViewVisibleOnScreen(view) == expected
+        }, timeout: timeout)
     }
 
     func expectPostalCodeVisible(_ expected: Bool, timeout: TimeInterval = 3) async {
-        let postalCodeView: FormTextItemView<FormPostalCodeItem>? = cardView.findView(by: ViewIdentifier.postalCode)
-        await pollUntil({ postalCodeView?.item.isVisible == expected }, timeout: timeout)
+        await pollUntil({
+            let view: FormTextItemView<FormPostalCodeItem>? = self.cardView.findView(by: ViewIdentifier.postalCode)
+            return self.isViewVisibleOnScreen(view) == expected
+        }, timeout: timeout)
+    }
+
+    private func isViewVisibleOnScreen(_ view: UIView?) -> Bool {
+        guard let view, view.window != nil else { return false }
+        var current: UIView? = view
+        while let candidate = current {
+            if candidate.isHidden || candidate.alpha < 0.01 { return false }
+            current = candidate.superview
+        }
+        return true
     }
 
     /// Opens address form, asserts country picker contains exactly these codes, then dismisses.

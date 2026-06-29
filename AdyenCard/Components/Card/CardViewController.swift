@@ -27,6 +27,7 @@ internal class CardViewController: FormViewController {
     private let supportedCardBrands: [CardBrand]
     private let formStyle: FormComponentStyle
     private var issuingCountryCode: String?
+    private var billingAddressSectionItem: FormItem?
     private let amount: Amount?
     private let initialCountryCode: String
     private let scope: String
@@ -272,6 +273,7 @@ extension CardViewController {
         switch configuration.billingAddressMode {
         case .lookup, .full:
             items.billingAddressPickerItem?.isVisible = !shouldHide
+            billingAddressSectionItem?.isVisible = !shouldHide
         case .postalCode:
             items.postalCodeItem.isVisible = !shouldHide
         case .none:
@@ -354,6 +356,7 @@ extension CardViewController {
         }
         
         if let billingAddressItem {
+            billingAddressSectionItem = billingAddressItem
             append(billingAddressItem)
         }
         
