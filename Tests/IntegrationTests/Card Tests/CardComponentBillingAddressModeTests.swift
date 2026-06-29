@@ -12,7 +12,7 @@ import UIKit
 
 /// Tests for `BillingAddressMode` configuration options.
 @MainActor
-struct BillingAddressModeTests {
+struct CardComponentBillingAddressModeTests {
 
     // MARK: - Arbitrary test values (do not influence outcomes)
 
@@ -186,6 +186,46 @@ struct BillingAddressModeTests {
         #expect(configData["billingAddressHideForCardBrands"] == "mc,visa")
     }
 
+    @Test
+    func full_withPrefilledBillingAddress_prefillsAndSubmitsAddress() async throws {
+        let prefilledAddress = PostalAddressMocks.newYorkPostalAddress
+
+        let proxy = makeSUT(
+            billingAddressMode: .full(supportedCountryCodes: Self.anySupportedCountryCodes, hideForCardBrands: []),
+            shopperInformation: PrefilledShopperInformation(billingAddress: prefilledAddress)
+        )
+
+        await proxy.load()
+        proxy.fillCardDetails()
+        await proxy.expectBillingAddressPickerVisible(true)
+
+        // No manual address entry — the prefilled value should be submitted as-is.
+        let submittedData = try await proxy.submit()
+        #expect(submittedData.billingAddress == prefilledAddress)
+    }
+
+    @Test
+    func full_withPrefilledBillingAddress_andHiddenBrand_hidesAndSubmitsNil() async throws {
+        let prefilledAddress = PostalAddressMocks.newYorkPostalAddress
+
+        let proxy = makeSUT(
+            billingAddressMode: .full(supportedCountryCodes: Self.anySupportedCountryCodes, hideForCardBrands: [CardBrand.visa]),
+            detectedBrand: CardBrand.visa,
+            shopperInformation: PrefilledShopperInformation(billingAddress: prefilledAddress)
+        )
+
+        await proxy.load()
+        await proxy.expectBillingAddressPickerVisible(true)
+
+        // A card whose brand is configured to hide the address must hide it even though it was
+        // prefilled, and the prefilled value must not be submitted.
+        proxy.fillCardDetails()
+        await proxy.expectBillingAddressPickerVisible(false)
+
+        let submittedData = try await proxy.submit()
+        #expect(submittedData.billingAddress == nil)
+    }
+
     // MARK: - .postalCode
 
     @Test
@@ -273,6 +313,24 @@ struct BillingAddressModeTests {
 
         #expect(configData["billingAddressMode"] == "partial")
         #expect(configData["billingAddressHideForCardBrands"] == "visa")
+    }
+
+    @Test
+    func postalCode_withPrefilledBillingAddress_prefillsAndSubmitsPostalCode() async throws {
+        let prefilledAddress = PostalAddressMocks.newYorkPostalAddress
+
+        let proxy = makeSUT(
+            billingAddressMode: .postalCode(hideForCardBrands: []),
+            shopperInformation: PrefilledShopperInformation(billingAddress: prefilledAddress)
+        )
+
+        await proxy.load()
+        proxy.fillCardDetails()
+        await proxy.expectPostalCodeVisible(true)
+
+        // Postal code mode only submits the postal code portion of the prefilled address.
+        let submittedData = try await proxy.submit()
+        #expect(submittedData.billingAddress == PostalAddress(postalCode: prefilledAddress.postalCode))
     }
 
     // MARK: - .lookup
@@ -480,6 +538,24 @@ struct BillingAddressModeTests {
         #expect(configData["billingAddressHideForCardBrands"] == "jcb")
     }
 
+    @Test
+    func lookup_withPrefilledBillingAddress_prefillsAndSubmitsAddress() async throws {
+        let prefilledAddress = PostalAddressMocks.newYorkPostalAddress
+
+        let proxy = makeSUT(
+            billingAddressMode: .lookup(onAddressLookup: Self.anyOnAddressLookup, hideForCardBrands: []),
+            shopperInformation: PrefilledShopperInformation(billingAddress: prefilledAddress)
+        )
+
+        await proxy.load()
+        proxy.fillCardDetails()
+        await proxy.expectBillingAddressPickerVisible(true)
+
+        // No manual lookup/selection — the prefilled value should be submitted as-is.
+        let submittedData = try await proxy.submit()
+        #expect(submittedData.billingAddress == prefilledAddress)
+    }
+
     // MARK: - Helpers
 
     /// Returns the analytics `configData` dictionary for a given billing address mode.
@@ -509,8 +585,8 @@ struct BillingAddressModeTests {
         billingAddressMode: BillingAddressMode,
         detectedBrand: CardBrand = anyCardBrand,
         shopperInformation: PrefilledShopperInformation? = nil
-    ) -> BillingAddressModeProxy {
-        var proxy: BillingAddressModeProxy!
+    ) -> CardComponentProxy {
+        var proxy: CardComponentProxy!
         AdyenDependencyValues.runTestWithValues {
             $0.imageLoader = ImageLoaderMock()
         } perform: {
@@ -542,7 +618,7 @@ struct BillingAddressModeTests {
                 binProvider: binProvider
             )
 
-            proxy = BillingAddressModeProxy(component: component)
+            proxy = CardComponentProxy(component: component)
         }
         return proxy
     }
@@ -559,10 +635,10 @@ private enum ViewIdentifier {
     static let payButton = "AdyenCard.CardComponent.payButtonItem.button"
 }
 
-// MARK: - BillingAddressModeProxy
+// MARK: - CardComponentProxy
 
 @MainActor
-private struct BillingAddressModeProxy {
+private struct CardComponentProxy {
 
     let component: CardComponent
 
