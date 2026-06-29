@@ -289,11 +289,6 @@ class CardComponentTests: XCTestCase {
         let expectedBorderColor = dynamicColor(light: .systemGreen, dark: .systemBlue)
 
         var configuration = CardConfiguration()
-        configuration.billingAddressMode = .lookup(
-            onAddressLookup: { _ in [] },
-            onAddressSelected: nil,
-            hideForCardBrands: []
-        )
         configuration.billingAddressMode = .lookup(onAddressLookup: { _ in [] }, onAddressSelected: nil, hideForCardBrands: [])
         configuration.theme = CheckoutTheme(
             colors: CheckoutColors(
