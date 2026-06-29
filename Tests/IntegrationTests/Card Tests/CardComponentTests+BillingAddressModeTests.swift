@@ -24,11 +24,11 @@ struct BillingAddressModeTests {
         )
 
         await proxy.load()
-        #expect(proxy.isBillingAddressPickerVisible == false)
+        await proxy.expectBillingAddressPickerVisible(false)
 
         proxy.fill(card: .visa)
 
-        let submittedData = try await proxy.submitAndAwait()
+        let submittedData = try await proxy.submit()
         #expect(submittedData.billingAddress == nil)
     }
 
@@ -42,12 +42,12 @@ struct BillingAddressModeTests {
         )
 
         await proxy.load()
-        #expect(proxy.isBillingAddressPickerVisible == true)
+        await proxy.expectBillingAddressPickerVisible(true)
 
         proxy.fill(card: .visa)
-        await proxy.waitUntilBillingAddressPickerVisibility(is: false)
+        await proxy.expectBillingAddressPickerVisible(false)
 
-        let submittedData = try await proxy.submitAndAwait()
+        let submittedData = try await proxy.submit()
         #expect(submittedData.billingAddress == nil)
     }
 
@@ -62,11 +62,11 @@ struct BillingAddressModeTests {
 
         await proxy.load()
         proxy.fill(card: .visa)
-        #expect(proxy.isBillingAddressPickerVisible == true)
+        await proxy.expectBillingAddressPickerVisible(true)
 
         try await proxy.fillBillingAddressViaForm(with: expectedAddress)
 
-        let submittedData = try await proxy.submitAndAwait()
+        let submittedData = try await proxy.submit()
         #expect(submittedData.billingAddress == expectedAddress)
     }
 
@@ -80,12 +80,12 @@ struct BillingAddressModeTests {
         )
 
         await proxy.load()
-        #expect(proxy.isPostalCodeVisible == true)
+        await proxy.expectPostalCodeVisible(true)
 
         proxy.fill(card: .visa)
-        await proxy.waitUntilPostalCodeVisibility(is: false)
+        await proxy.expectPostalCodeVisible(false)
 
-        let submittedData = try await proxy.submitAndAwait()
+        let submittedData = try await proxy.submit()
         #expect(submittedData.billingAddress == nil)
     }
 
@@ -99,9 +99,9 @@ struct BillingAddressModeTests {
         await proxy.load()
         proxy.fill(card: .visa)
         proxy.fillPostalCode("12345")
-        #expect(proxy.isPostalCodeVisible == true)
+        await proxy.expectPostalCodeVisible(true)
 
-        let submittedData = try await proxy.submitAndAwait()
+        let submittedData = try await proxy.submit()
         #expect(submittedData.billingAddress == PostalAddress(postalCode: "12345"))
     }
 
@@ -115,12 +115,12 @@ struct BillingAddressModeTests {
         )
 
         await proxy.load()
-        #expect(proxy.isBillingAddressPickerVisible == true)
+        await proxy.expectBillingAddressPickerVisible(true)
 
         proxy.fill(card: .visa)
-        await proxy.waitUntilBillingAddressPickerVisibility(is: false)
+        await proxy.expectBillingAddressPickerVisible(false)
 
-        let submittedData = try await proxy.submitAndAwait()
+        let submittedData = try await proxy.submit()
         #expect(submittedData.billingAddress == nil)
     }
 
@@ -135,11 +135,11 @@ struct BillingAddressModeTests {
 
         await proxy.load()
         proxy.fill(card: .visa)
-        #expect(proxy.isBillingAddressPickerVisible == true)
+        await proxy.expectBillingAddressPickerVisible(true)
 
         try await proxy.fillBillingAddressViaLookup(with: expectedAddress)
 
-        let submittedData = try await proxy.submitAndAwait()
+        let submittedData = try await proxy.submit()
         #expect(submittedData.billingAddress == expectedAddress)
     }
 
@@ -234,12 +234,17 @@ private struct BillingAddressModeProxy {
 
     // MARK: - Readable State
 
-    var isBillingAddressPickerVisible: Bool {
-        component.cardViewController.items.billingAddressPickerItem?.isVisible ?? false
+    func expectBillingAddressPickerVisible(_ expected: Bool, timeout: TimeInterval = 3) async {
+        guard let item = component.cardViewController.items.billingAddressPickerItem else {
+            #expect(expected == false, "billingAddressPickerItem is nil, expected visible=\(expected)")
+            return
+        }
+        await pollUntil({ item.isVisible == expected }, timeout: timeout)
     }
 
-    var isPostalCodeVisible: Bool {
-        component.cardViewController.items.postalCodeItem.isVisible
+    func expectPostalCodeVisible(_ expected: Bool, timeout: TimeInterval = 3) async {
+        let item = component.cardViewController.items.postalCodeItem
+        await pollUntil({ item.isVisible == expected }, timeout: timeout)
     }
 
     // MARK: - User Actions
@@ -296,7 +301,7 @@ private struct BillingAddressModeProxy {
         await pollUntil({ component.viewController.presentedViewController == nil }, timeout: 3)
     }
 
-    func submitAndAwait(timeout: TimeInterval = 3) async throws -> PaymentComponentData {
+    func submit(timeout: TimeInterval = 3) async throws -> PaymentComponentData {
         delegate.onDidFail = { _, _ in Issue.record("Should not fail") }
 
         return try await withCheckedThrowingContinuation { continuation in
@@ -317,21 +322,6 @@ private struct BillingAddressModeProxy {
                 continuation.resume(throwing: TimeoutError())
             }
         }
-    }
-
-    // MARK: - Waiting
-
-    func waitUntilBillingAddressPickerVisibility(is expected: Bool, timeout: TimeInterval = 3) async {
-        guard let item = component.cardViewController.items.billingAddressPickerItem else {
-            Issue.record("billingAddressPickerItem is nil")
-            return
-        }
-        await pollUntil({ item.isVisible == expected }, timeout: timeout)
-    }
-
-    func waitUntilPostalCodeVisibility(is expected: Bool, timeout: TimeInterval = 3) async {
-        let item = component.cardViewController.items.postalCodeItem
-        await pollUntil({ item.isVisible == expected }, timeout: timeout)
     }
 
     // MARK: - Private Helpers
