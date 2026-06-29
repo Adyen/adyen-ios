@@ -1749,7 +1749,11 @@ class CardComponentTests: XCTestCase {
         let postalCode = postalCodeView.item.value
         XCTAssertTrue(postalCode.isEmpty)
     }
-    
+
+    // TODO: Robert: BillingAddressMode Configuration: The below tests would be duplicated in CardComponentTests+BillingAddressModeTests.
+    // I've kept them at both places and at a later MR will remove the duplicates from here and keep billingAddress tests separately.
+    // The reason being that by keeping the below tests the existing logic is validated and reviewable easily as compared to reviewing a new test file.
+
     func test_billingAddress_withSupportedCountries_shouldFilterCountryList() throws {
         var configuration = CardConfiguration()
         configuration.billingAddressMode = .full(supportedCountryCodes: ["UK"], hideForCardBrands: [])
