@@ -45,7 +45,7 @@ struct CardComponentBillingAddressModeTests {
 
         #expect(configData["billingAddressMode"] == nil)
         #expect(configData["billingAddressAllowedCountries"] == nil)
-        #expect(configData["billingAddressHideForCardBrands"] == nil)
+        #expect(configData["billingAddressHideForCardBrands"] == "")
     }
 
     // MARK: - .full
@@ -173,7 +173,7 @@ struct CardComponentBillingAddressModeTests {
 
         #expect(configData["billingAddressMode"] == "full")
         #expect(configData["billingAddressAllowedCountries"] == "US,NL")
-        #expect(configData["billingAddressHideForCardBrands"] == nil)
+        #expect(configData["billingAddressHideForCardBrands"] == "")
     }
 
     @Test
@@ -304,7 +304,7 @@ struct CardComponentBillingAddressModeTests {
 
         #expect(configData["billingAddressMode"] == "partial")
         #expect(configData["billingAddressAllowedCountries"] == nil)
-        #expect(configData["billingAddressHideForCardBrands"] == nil)
+        #expect(configData["billingAddressHideForCardBrands"] == "")
     }
 
     @Test
@@ -513,7 +513,7 @@ struct CardComponentBillingAddressModeTests {
 
         #expect(configData["billingAddressMode"] == "lookup")
         #expect(configData["billingAddressAllowedCountries"] == nil)
-        #expect(configData["billingAddressHideForCardBrands"] == nil)
+        #expect(configData["billingAddressHideForCardBrands"] == "")
     }
 
     @Test

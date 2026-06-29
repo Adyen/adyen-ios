@@ -28,13 +28,12 @@ internal struct CardAnalyticsConfiguration: AnalyticsStringDictionaryConvertible
         self.billingAddressMode = configuration.billingAddressMode.analyticsDescription
         self.billingAddressAllowedCountries = configuration.billingAddressMode.supportedCountryCodes?
             .joined(separator: Constants.stringSeparator)
-        let hideForCardBrands = configuration.billingAddressMode.hideForCardBrands
-        self.billingAddressHideForCardBrands = hideForCardBrands.isEmpty
-            ? nil
-            : hideForCardBrands
+
+        self.billingAddressHideForCardBrands = configuration.billingAddressMode.hideForCardBrands
             .map(\.rawValue)
             .sorted()
             .joined(separator: Constants.stringSeparator)
+
         self.showCardholderName = configuration.showCardholderName
         self.hideCVC = !configuration.showSecurityCode
         self.enableStoredDetails = configuration.showStorePaymentMethod
