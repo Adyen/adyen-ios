@@ -61,6 +61,11 @@ extension BillingAddressMode {
             return nil
         }
     }
+
+    internal func supports(countryCode: String) -> Bool {
+        guard let supportedCountryCodes else { return true } // nil == all countries supported
+        return supportedCountryCodes.contains(countryCode)
+    }
     
     internal var hideForCardBrands: Set<CardBrand> {
         switch self {

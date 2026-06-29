@@ -274,8 +274,7 @@ private extension CardComponent {
 
         if
             let preferredCountry = configuration.shopperInformation?.billingAddress?.country,
-            let supportedCountryCodes = configuration.billingAddressMode.supportedCountryCodes,
-            supportedCountryCodes.isEmpty || supportedCountryCodes.contains(preferredCountry) {
+            configuration.billingAddressMode.supports(countryCode: preferredCountry) {
             return preferredCountry
         }
 
