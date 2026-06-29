@@ -2393,7 +2393,7 @@ class CardComponentTests: XCTestCase {
         wait(until: textItemView.textField, at: \.isFirstResponder, is: true)
     }
 
-    private enum CardViewIdentifier {
+    enum CardViewIdentifier {
         static let holdername = "AdyenCard.CardComponent.holderNameItem"
         static let billingAddress = "AdyenCard.CardComponent.billingAddress"
         static let zipCode = "AdyenCard.CardComponent.postalCodeItem"
@@ -2408,7 +2408,7 @@ class CardComponentTests: XCTestCase {
         static let cardNumber = "AdyenCard.FormCardNumberContainerItem.numberItem"
     }
 
-    private var shopperInformation: PrefilledShopperInformation {
+    var shopperInformation: PrefilledShopperInformation {
         let billingAddress = PostalAddressMocks.newYorkPostalAddress
         let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
         return .init(

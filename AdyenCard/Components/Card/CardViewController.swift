@@ -172,6 +172,7 @@ internal class CardViewController: FormViewController {
         case .lookup, .full:
             guard
                 let billingAddressItem = items.billingAddressPickerItem,
+                billingAddressItem.isVisible,
                 let lookupBillingAddress = billingAddressItem.value
             else { return nil }
             
@@ -179,6 +180,7 @@ internal class CardViewController: FormViewController {
             requiredFields = billingAddressItem.addressViewModel.requiredFields
             
         case .postalCode:
+            guard items.postalCodeItem.isVisible else { return nil }
             address = PostalAddress(postalCode: items.postalCodeItem.value)
             requiredFields = [.postalCode]
             
