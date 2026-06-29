@@ -443,19 +443,7 @@ struct CardComponentBillingAddressModeTests {
         await proxy.load()
         proxy.fillCardDetails()
 
-        let lookupVC = try await proxy.openBillingAddressLookup()
-
-        // Trigger search and select the first result via the lookup ViewModel
-        try await proxy.searchAndSelectResult(in: lookupVC, searchTerm: "New York", resultIndex: 1)
-
-        // Wait for the form to appear with the prefilled address
-        await proxy.pollUntil(
-            { lookupVC.viewControllers.last is AddressInputFormViewController },
-            timeout: 3
-        )
-        let addressFormVC = try #require(
-            lookupVC.viewControllers.last as? AddressInputFormViewController
-        )
+        let addressFormVC = try await proxy.searchAndSelectAddressFromLookup(searchTerm: "New York")
         #expect(addressFormVC.addressItem.value == expectedAddress)
 
         // Tap Done on the form
@@ -767,20 +755,7 @@ private struct CardComponentProxy {
     /// Simulates the `.lookup` mode user flow:
     /// tap billing address picker -> search -> select result -> form prefilled -> tap Done.
     func fillBillingAddressViaLookup(searchTerm: String) async throws {
-        let lookupVC = try await openBillingAddressLookup()
-
-        // Trigger a search and select the first result (index 1, since index 0 is "manual entry")
-        try await searchAndSelectResult(in: lookupVC, searchTerm: searchTerm, resultIndex: 1)
-
-        // Wait for the form to appear with the prefilled address
-        await pollUntil(
-            { lookupVC.viewControllers.last is AddressInputFormViewController },
-            timeout: 3
-        )
-        let addressFormVC = try #require(
-            lookupVC.viewControllers.last as? AddressInputFormViewController
-        )
-
+        let addressFormVC = try await searchAndSelectAddressFromLookup(searchTerm: searchTerm)
         addressFormVC.submitTapped()
         await waitForDismissal()
     }
@@ -803,6 +778,18 @@ private struct CardComponentProxy {
         )
         tap(billingAddressView)
         return try await waitForPresentedAddressLookupVC()
+    }
+
+    /// Opens the lookup picker, searches, selects the result at `resultIndex` (index 0 is manual entry),
+    /// and returns the resulting address form prefilled with the selection.
+    func searchAndSelectAddressFromLookup(
+        searchTerm: String,
+        resultIndex: Int = 1
+    ) async throws -> AddressInputFormViewController {
+        let lookupVC = try await openBillingAddressLookup()
+        try await searchAndSelectResult(in: lookupVC, searchTerm: searchTerm, resultIndex: resultIndex)
+        await pollUntil({ lookupVC.viewControllers.last is AddressInputFormViewController }, timeout: 3)
+        return try #require(lookupVC.viewControllers.last as? AddressInputFormViewController)
     }
 
     /// Programmatically triggers a search on the lookup ViewModel and selects a result at the given index.

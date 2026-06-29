@@ -424,6 +424,7 @@ class CardComponentTests: XCTestCase {
         wait(for: [expectationBin, expectationCardBrand], timeout: 10)
     }
     
+    // TODO: Robert: Duplicate — covered by `lookup_withPrefilledBillingAddress_prefillsAndSubmitsAddress` in CardComponentBillingAddressModeTests; remove in next iteration.
     func test_billingAddress_withPrefillData_shouldShowPrefilledAddress() throws {
         
         // Given
@@ -819,6 +820,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(securityCodeItemView.textField.isFirstResponder)
     }
 
+    // TODO: Robert: Duplicate — covered by `postalCode_submitWithoutPostalCode_showsValidationError_thenSucceedsAfterFilling` in CardComponentBillingAddressModeTests; remove in next iteration.
     func test_postalCodeField_withPostalCodeMode_shouldBeVisibleAndValidate() throws {
         // Given
         var configuration = CardConfiguration()
@@ -1574,6 +1576,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(cardViewController.items.storeDetailsItem.value)
     }
     
+    // TODO: Robert: Billing-address prefill covered by `lookup_withPrefilledBillingAddress_prefillsAndSubmitsAddress` in CardComponentBillingAddressModeTests (this also asserts holderName/SSN prefill); trim/remove in next iteration.
     func test_prefilling_withBillingAddressInLookupMode_shouldPrefillItems() throws {
         // Given
         var configuration = CardConfiguration()
@@ -1617,6 +1620,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(expectedBillingAddress, billingAddress)
     }
 
+    // TODO: Robert: Billing-address prefill covered by `full_withPrefilledBillingAddress_prefillsAndSubmitsAddress` in CardComponentBillingAddressModeTests (this also asserts holderName/SSN prefill); trim/remove in next iteration.
     func test_prefilling_withBillingAddressInFullMode_shouldPrefillItems() throws {
         // Given
         var configuration = CardConfiguration()
@@ -1652,6 +1656,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(expectedBillingAddress, billingAddress)
     }
 
+    // TODO: Robert: Billing-address prefill covered by `postalCode_withPrefilledBillingAddress_prefillsAndSubmitsPostalCode` in CardComponentBillingAddressModeTests (this also asserts holderName/SSN prefill); trim/remove in next iteration.
     func test_prefilling_withBillingAddressInPostalCodeMode_shouldPrefillItems() throws {
         // Given
 
@@ -1750,10 +1755,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(postalCode.isEmpty)
     }
 
-    // TODO: Robert: BillingAddressMode Configuration: The below tests would be duplicated in CardComponentTests+BillingAddressModeTests.
-    // I've kept them at both places and at a later MR will remove the duplicates from here and keep billingAddress tests separately.
-    // The reason being that by keeping the below tests the existing logic is validated and reviewable easily as compared to reviewing a new test file.
-
+    // TODO: Robert: Duplicate — covered by `full_supportedCountryCodes_filtersCountryList` in CardComponentBillingAddressModeTests; remove in next iteration.
     func test_billingAddress_withSupportedCountries_shouldFilterCountryList() throws {
         var configuration = CardConfiguration()
         configuration.billingAddressMode = .full(supportedCountryCodes: ["UK"], hideForCardBrands: [])
@@ -1785,6 +1787,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(inputForm.addressItem.countryPickerItem.value?.identifier, "UK")
     }
     
+    // TODO: Robert: Covered by `full_withPrefilledBillingAddress_prefillsAndSubmitsAddress` + `full_supportedCountryCodes_filtersCountryList` in CardComponentBillingAddressModeTests; remove in next iteration.
     func test_billingAddress_withSupportedCountriesAndMatchingPrefill_shouldUsePrefillData() throws {
         var configuration = CardConfiguration()
         configuration.billingAddressMode = .full(supportedCountryCodes: ["US", "JP"], hideForCardBrands: [])
@@ -1850,6 +1853,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(inputForm.addressItem.countryPickerItem.value?.identifier, "UK")
     }
     
+    // TODO: Robert: Duplicate — covered by `full_hideForMatchingCard_hidesAddress_submitsNilBillingAddress` in CardComponentBillingAddressModeTests; remove in next iteration.
     func test_billingAddress_withHideForCardBrandsAndMatchingCard_shouldAllowSubmitWithoutAddress() throws {
         var configuration = CardConfiguration()
         configuration.billingAddressMode = .full(supportedCountryCodes: ["US"], hideForCardBrands: [.visa])
@@ -2013,6 +2017,7 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
+    // TODO: Robert: Duplicate — covered by `postalCode_hideForMatchingCard_hidesPostalCode_submitsNilBillingAddress` in CardComponentBillingAddressModeTests; remove in next iteration.
     func test_postalCode_withOptionalPolicyAndInvalidValue_shouldAllowSubmit() throws {
         
         var configuration = CardConfiguration()
