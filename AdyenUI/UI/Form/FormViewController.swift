@@ -239,6 +239,7 @@ open class FormViewController: UIViewController, AdyenObserver {
         itemManager.topLevelItem
             .filter(\.isVisible)
             .flatMap(\.flatSubitems)
+            .filter(\.isVisible)
             .compactMap { $0 as? ValidatableFormItem }
     }
 

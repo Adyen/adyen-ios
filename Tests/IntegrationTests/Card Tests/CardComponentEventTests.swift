@@ -36,12 +36,35 @@ final class CardComponentEventTests: XCTestCase {
         let configDataDict = try XCTUnwrap(info?.configData?.stringOnlyDictionary)
         XCTAssertEqual(configDataDict["socialSecurityNumberVisibility"], "auto")
         XCTAssertEqual(configDataDict["hasInstallmentOptions"], "false")
-        XCTAssertEqual(configDataDict["billingAddressRequired"], "true")
         XCTAssertEqual(configDataDict["hideCVC"], "false")
         XCTAssertEqual(configDataDict["showCardholderName"], "false")
         XCTAssertEqual(configDataDict["showKCPType"], "auto")
         XCTAssertEqual(configDataDict["enableStoredDetails"], "true")
-        XCTAssertEqual(configDataDict.keys.count, 7)
+        XCTAssertEqual(configDataDict.keys.count, 6)
+    }
+
+    // EVT-UC9: Component Rendered - Send Initial Event with hideForCardBrands
+    func test_viewDidLoad_withHideForCardBrands_shouldIncludeHideForCardBrandsInAnalytics() throws {
+        // Given
+        let analyticsProviderMock = AnalyticsProviderMock()
+        let context = Dummy.context(analyticsProvider: analyticsProviderMock)
+        var configuration = CardConfiguration()
+        configuration.billingAddressMode = .full(supportedCountryCodes: ["US"], hideForCardBrands: [.visa])
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+
+        // When
+        sut.viewDidLoad(viewController: sut.cardViewController)
+
+        // Then
+        let info = analyticsProviderMock.infos.first
+        let configDataDict = try XCTUnwrap(info?.configData?.stringOnlyDictionary)
+        XCTAssertEqual(configDataDict["billingAddressMode"], "full")
+        XCTAssertEqual(configDataDict["billingAddressAllowedCountries"], "US")
+        XCTAssertEqual(configDataDict["billingAddressHideForCardBrands"], "visa")
     }
 
     // MARK: - Focus/unfocus events
@@ -178,7 +201,7 @@ final class CardComponentEventTests: XCTestCase {
     func test_postalCode_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardConfiguration()
-        config.billingAddress.mode = .postalCode
+        config.billingAddressMode = .postalCode()
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
         let postalCodeItemView: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(
@@ -340,7 +363,7 @@ final class CardComponentEventTests: XCTestCase {
     func test_postalCode_withInvalidValue_shouldSendValidationErrorEvent() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardConfiguration()
-        config.billingAddress.mode = .postalCode
+        config.billingAddressMode = .postalCode()
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
         let postalCodeItemView: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(
