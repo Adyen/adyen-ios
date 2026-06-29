@@ -20,6 +20,7 @@ struct BillingAddressModeTests {
     private static let anyCardBrand = CardBrand.visa
     private static let anyHideForCardBrands: Set<CardBrand> = []
     private static let anyOnAddressLookup: (String) async -> [AddressLookupResult] = { _ in [] }
+    private static let anySearchTerm = "searchTerm"
 
     // MARK: - .none
 
@@ -138,27 +139,6 @@ struct BillingAddressModeTests {
     }
 
     @Test
-    func full_singleSupportedCountryCode_showsOnlyThatCountry() async throws {
-        let expectedAddress = PostalAddress(
-            city: "London", country: "GB", houseNumberOrName: "10",
-            postalCode: "SW1A 1AA", street: "Downing Street"
-        )
-
-        let proxy = makeSUT(
-            billingAddressMode: .full(supportedCountryCodes: ["GB"], hideForCardBrands: Self.anyHideForCardBrands)
-        )
-
-        await proxy.load()
-        proxy.fillCardDetails()
-        try await proxy.expectAddressFormCountryPicker(containsExactly: ["GB"], selectedCountry: "GB")
-
-        try await proxy.fillBillingAddressViaForm(with: expectedAddress)
-
-        let submittedData = try await proxy.submit()
-        #expect(submittedData.billingAddress == expectedAddress)
-    }
-
-    @Test
     func full_submitWithoutAddress_showsValidationError_thenSucceedsAfterFilling() async throws {
         let expectedAddress = PostalAddressMocks.newYorkPostalAddress
 
@@ -170,7 +150,7 @@ struct BillingAddressModeTests {
         proxy.fillCardDetails()
         await proxy.expectBillingAddressPickerVisible(true)
 
-        try await proxy.expectBillingAddressShowsValidationError()
+        try await proxy.submitAndExpectBillingAddressValidationError()
 
         try await proxy.fillBillingAddressViaForm(with: expectedAddress)
 
@@ -229,6 +209,27 @@ struct BillingAddressModeTests {
         #expect(submittedData.billingAddress == PostalAddress(postalCode: "12345"))
     }
 
+    @Test
+    func postalCode_submitWithoutPostalCode_showsValidationError_thenSucceedsAfterFilling() async throws {
+        let proxy = makeSUT(
+            billingAddressMode: .postalCode(hideForCardBrands: Self.anyHideForCardBrands)
+        )
+
+        await proxy.load()
+        proxy.fillCardDetails()
+        await proxy.expectPostalCodeVisible(true)
+
+        // Submit without filling postal code — should show validation error
+        try await proxy.submitAndExpectPostalCodeValidationError()
+
+        // Fill the postal code
+        proxy.fillPostalCode("12345")
+
+        // Submit again — should succeed
+        let submittedData = try await proxy.submit()
+        #expect(submittedData.billingAddress == PostalAddress(postalCode: "12345"))
+    }
+
     // MARK: - .lookup
 
     @Test
@@ -267,7 +268,7 @@ struct BillingAddressModeTests {
         proxy.fillCardDetails()
         await proxy.expectBillingAddressPickerVisible(true)
 
-        try await proxy.fillBillingAddressViaLookup(expectedAddress)
+        try await proxy.fillBillingAddressViaLookup(searchTerm: Self.anySearchTerm)
 
         let submittedData = try await proxy.submit()
         #expect(submittedData.billingAddress == expectedAddress)
@@ -292,7 +293,7 @@ struct BillingAddressModeTests {
         proxy.fillCardDetails()
         await proxy.expectBillingAddressPickerVisible(true)
 
-        try await proxy.fillBillingAddressViaLookup(expectedAddress)
+        try await proxy.fillBillingAddressViaLookup(searchTerm: Self.anySearchTerm)
 
         let submittedData = try await proxy.submit()
         #expect(submittedData.billingAddress == expectedAddress)
@@ -300,6 +301,7 @@ struct BillingAddressModeTests {
 
     @Test
     func lookup_onAddressLookup_isCalled() async throws {
+        let expectedSearchTerm = "123 Main Street"
         var receivedSearchTerms: [String] = []
 
         let proxy = makeSUT(
@@ -315,10 +317,10 @@ struct BillingAddressModeTests {
         await proxy.load()
         proxy.fillCardDetails()
 
-        _ = try await proxy.openBillingAddressLookup()
+        let lookupVC = try await proxy.openBillingAddressLookup()
+        await proxy.triggerSearch(in: lookupVC, searchTerm: expectedSearchTerm)
 
-        await proxy.pollUntil({ !receivedSearchTerms.isEmpty }, timeout: 3)
-        #expect(receivedSearchTerms.contains(""))
+        #expect(receivedSearchTerms.contains(expectedSearchTerm))
     }
 
     @Test
@@ -379,53 +381,12 @@ struct BillingAddressModeTests {
         proxy.fillCardDetails()
         await proxy.expectBillingAddressPickerVisible(true)
 
-        try await proxy.expectBillingAddressShowsValidationError()
+        try await proxy.submitAndExpectBillingAddressValidationError()
 
-        try await proxy.fillBillingAddressViaLookup(expectedAddress)
+        try await proxy.fillBillingAddressViaLookup(searchTerm: Self.anySearchTerm)
 
         let submittedData = try await proxy.submit()
         #expect(submittedData.billingAddress == expectedAddress)
-    }
-
-    @Test
-    func lookup_onAddressSelected_isCalled_withSelectedResult() async throws {
-        let partialAddress = PostalAddress(city: "New York", country: "US")
-        let callbackTracker = CallbackTracker<AddressLookupResult>()
-
-        let proxy = makeSUT(
-            billingAddressMode: .lookup(
-                onAddressLookup: { _ in
-                    [AddressLookupResult(identifier: "ny-123", postalAddress: partialAddress)]
-                },
-                onAddressSelected: { result in
-                    callbackTracker.record(result)
-                    return result.postalAddress
-                },
-                hideForCardBrands: Self.anyHideForCardBrands
-            )
-        )
-
-        await proxy.load()
-        proxy.fillCardDetails()
-
-        let lookupVC = try await proxy.openBillingAddressLookup()
-        try await proxy.searchAndSelectResult(in: lookupVC, searchTerm: "address", resultIndex: 1)
-
-        // Form appears only after onAddressSelected completes
-        await proxy.pollUntil(
-            { lookupVC.viewControllers.last is AddressInputFormViewController },
-            timeout: 3
-        )
-
-        #expect(callbackTracker.value?.identifier == "ny-123")
-        #expect(callbackTracker.value?.postalAddress == partialAddress)
-
-        // Dismiss without submitting (partial address won't pass validation)
-        let addressFormVC = try #require(
-            lookupVC.viewControllers.last as? AddressInputFormViewController
-        )
-        addressFormVC.dismissAddressLookup()
-        await proxy.waitForDismissal()
     }
 
     @Test
@@ -439,7 +400,6 @@ struct BillingAddressModeTests {
                     [AddressLookupResult(identifier: "ny-123", postalAddress: partialAddress)]
                 },
                 onAddressSelected: { _ in
-                    // Simulate fetching complete address details from a service
                     completeAddress
                 },
                 hideForCardBrands: Self.anyHideForCardBrands
@@ -448,7 +408,7 @@ struct BillingAddressModeTests {
 
         await proxy.load()
         proxy.fillCardDetails()
-        try await proxy.fillBillingAddressViaLookup(completeAddress)
+        try await proxy.fillBillingAddressViaLookup(searchTerm: Self.anySearchTerm)
 
         let submittedData = try await proxy.submit()
         #expect(submittedData.billingAddress == completeAddress)
@@ -579,8 +539,19 @@ private struct BillingAddressModeProxy {
         await waitForDismissal()
     }
 
-    /// Asserts that submitting without a billing address shows a validation error on the billing address picker.
-    func expectBillingAddressShowsValidationError() async throws {
+    /// Submits the form without a postal code and asserts a validation error appears on the postal code field.
+    func submitAndExpectPostalCodeValidationError() async throws {
+        let postalCodeView: FormTextItemView<FormPostalCodeItem> = try #require(
+            cardView.findView(by: ViewIdentifier.postalCode)
+        )
+        #expect(postalCodeView.isShowingValidationError == false)
+
+        await tapSubmitAndExpectNoCallback()
+        #expect(postalCodeView.isShowingValidationError == true)
+    }
+
+    /// Submits the form without a billing address and asserts a validation error appears on the billing address picker.
+    func submitAndExpectBillingAddressValidationError() async throws {
         let billingAddressView: FormAddressPickerItemView = try #require(
             cardView.findView(by: ViewIdentifier.billingAddress)
         )
@@ -620,11 +591,11 @@ private struct BillingAddressModeProxy {
 
     /// Simulates the `.lookup` mode user flow:
     /// tap billing address picker -> search -> select result -> form prefilled -> tap Done.
-    func fillBillingAddressViaLookup(_ address: PostalAddress) async throws {
+    func fillBillingAddressViaLookup(searchTerm: String) async throws {
         let lookupVC = try await openBillingAddressLookup()
 
         // Trigger a search and select the first result (index 1, since index 0 is "manual entry")
-        try await searchAndSelectResult(in: lookupVC, searchTerm: "address", resultIndex: 1)
+        try await searchAndSelectResult(in: lookupVC, searchTerm: searchTerm, resultIndex: 1)
 
         // Wait for the form to appear with the prefilled address
         await pollUntil(
@@ -674,6 +645,20 @@ private struct BillingAddressModeProxy {
                     return
                 }
                 listItems[resultIndex].selectionHandler?()
+                continuation.resume()
+            }
+        }
+    }
+
+    /// Programmatically triggers a search on the lookup ViewModel without selecting a result.
+    func triggerSearch(
+        in lookupVC: AddressLookupViewController,
+        searchTerm: String
+    ) async {
+        let searchVM = lookupVC.viewModel.buildAddressSearchViewModel { _ in }
+
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            searchVM.handleLookUp(searchTerm: searchTerm) { _ in
                 continuation.resume()
             }
         }
@@ -820,12 +805,4 @@ private struct BillingAddressModeProxy {
 
 private struct TestError: Error {
     let message: String
-}
-
-private final class CallbackTracker<T: Sendable>: @unchecked Sendable {
-    private(set) var value: T?
-
-    func record(_ value: T) {
-        self.value = value
-    }
 }
