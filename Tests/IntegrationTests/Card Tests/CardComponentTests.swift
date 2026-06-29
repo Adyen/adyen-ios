@@ -289,7 +289,12 @@ class CardComponentTests: XCTestCase {
         let expectedBorderColor = dynamicColor(light: .systemGreen, dark: .systemBlue)
 
         var configuration = CardConfiguration()
-        configuration.billingAddress.mode = .lookup(onAddressLookup: { _ in [] })
+        configuration.billingAddressMode = .lookup(
+            onAddressLookup: { _ in [] },
+            onAddressSelected: nil,
+            hideForCardBrands: []
+        )
+        configuration.billingAddressMode = .lookup(onAddressLookup: { _ in [] }, onAddressSelected: nil, hideForCardBrands: [])
         configuration.theme = CheckoutTheme(
             colors: CheckoutColors(
                 containerOutline: expectedBorderColor
@@ -419,17 +424,22 @@ class CardComponentTests: XCTestCase {
         wait(for: [expectationBin, expectationCardBrand], timeout: 10)
     }
     
+    // TODO: Robert: Duplicate — covered by `lookup_withPrefilledBillingAddress_prefillsAndSubmitsAddress` in CardComponentBillingAddressModeTests; remove in next iteration.
     func test_billingAddress_withPrefillData_shouldShowPrefilledAddress() throws {
         
         // Given
         var configuration = CardConfiguration()
         configuration.showCardholderName = true
-        configuration.billingAddress.mode = .lookup(
+        configuration.billingAddressMode = .lookup(
             onAddressLookup: { searchTerm in
                 XCTFail("Lookup handler should not be called")
                 return []
-            }
+
+            },
+            onAddressSelected: nil,
+            hideForCardBrands: []
         )
+
         configuration.shopperInformation = shopperInformation
 
         let component = CardComponent(
@@ -676,7 +686,7 @@ class CardComponentTests: XCTestCase {
     func test_submit_withValidData_shouldCallDelegateWithPaymentData() throws {
         // Given
         var configuration = CardConfiguration()
-        configuration.billingAddress.mode = .full
+        configuration.billingAddressMode = .full(supportedCountryCodes: [], hideForCardBrands: [])
         let sut = CardComponent(
             paymentMethod: method,
             context: Dummy.context(with: nil),
@@ -810,10 +820,11 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(securityCodeItemView.textField.isFirstResponder)
     }
 
+    // TODO: Robert: Duplicate — covered by `postalCode_submitWithoutPostalCode_showsValidationError_thenSucceedsAfterFilling` in CardComponentBillingAddressModeTests; remove in next iteration.
     func test_postalCodeField_withPostalCodeMode_shouldBeVisibleAndValidate() throws {
         // Given
         var configuration = CardConfiguration()
-        configuration.billingAddress.mode = .postalCode
+        configuration.billingAddressMode = .postalCode(hideForCardBrands: [])
 
         let sut = CardComponent(
             paymentMethod: method,
@@ -1565,15 +1576,19 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(cardViewController.items.storeDetailsItem.value)
     }
     
+    // TODO: Robert: Billing-address prefill covered by `lookup_withPrefilledBillingAddress_prefillsAndSubmitsAddress` in CardComponentBillingAddressModeTests (this also asserts holderName/SSN prefill); trim/remove in next iteration.
     func test_prefilling_withBillingAddressInLookupMode_shouldPrefillItems() throws {
         // Given
         var configuration = CardConfiguration()
         configuration.showCardholderName = true
-        configuration.billingAddress.mode = .lookup(
+        configuration.billingAddressMode = .lookup(
             onAddressLookup: { searchTerm in
                 [.init(identifier: searchTerm, postalAddress: .init(city: searchTerm))]
-            }
+            },
+            onAddressSelected: nil,
+            hideForCardBrands: []
         )
+
         configuration.shopperInformation = shopperInformation
 
         let component = CardComponent(
@@ -1605,11 +1620,12 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(expectedBillingAddress, billingAddress)
     }
 
+    // TODO: Robert: Billing-address prefill covered by `full_withPrefilledBillingAddress_prefillsAndSubmitsAddress` in CardComponentBillingAddressModeTests (this also asserts holderName/SSN prefill); trim/remove in next iteration.
     func test_prefilling_withBillingAddressInFullMode_shouldPrefillItems() throws {
         // Given
         var configuration = CardConfiguration()
         configuration.showCardholderName = true
-        configuration.billingAddress.mode = .full
+        configuration.billingAddressMode = .full(supportedCountryCodes: [], hideForCardBrands: [])
         configuration.shopperInformation = shopperInformation
 
         let sut = CardComponent(
@@ -1640,12 +1656,13 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(expectedBillingAddress, billingAddress)
     }
 
+    // TODO: Robert: Billing-address prefill covered by `postalCode_withPrefilledBillingAddress_prefillsAndSubmitsPostalCode` in CardComponentBillingAddressModeTests (this also asserts holderName/SSN prefill); trim/remove in next iteration.
     func test_prefilling_withBillingAddressInPostalCodeMode_shouldPrefillItems() throws {
         // Given
 
         var configuration = CardConfiguration()
         configuration.showCardholderName = true
-        configuration.billingAddress.mode = .postalCode
+        configuration.billingAddressMode = .postalCode(hideForCardBrands: [])
         configuration.shopperInformation = shopperInformation
 
         let prefilledSut = CardComponent(
@@ -1680,7 +1697,7 @@ class CardComponentTests: XCTestCase {
         // Given
         var configuration = CardConfiguration()
         configuration.showCardholderName = true
-        configuration.billingAddress.mode = .full
+        configuration.billingAddressMode = .full(supportedCountryCodes: [], hideForCardBrands: [])
 
         let sut = CardComponent(
             paymentMethod: method,
@@ -1711,7 +1728,7 @@ class CardComponentTests: XCTestCase {
         // Given
         var configuration = CardConfiguration()
         configuration.showCardholderName = true
-        configuration.billingAddress.mode = .postalCode
+        configuration.billingAddressMode = .postalCode(hideForCardBrands: [])
 
         let sut = CardComponent(
             paymentMethod: method,
@@ -1737,11 +1754,11 @@ class CardComponentTests: XCTestCase {
         let postalCode = postalCodeView.item.value
         XCTAssertTrue(postalCode.isEmpty)
     }
-    
+
+    // TODO: Robert: Duplicate — covered by `full_supportedCountryCodes_filtersCountryList` in CardComponentBillingAddressModeTests; remove in next iteration.
     func test_billingAddress_withSupportedCountries_shouldFilterCountryList() throws {
         var configuration = CardConfiguration()
-        configuration.billingAddress.mode = .full
-        configuration.billingAddress.countryCodes = ["UK"]
+        configuration.billingAddressMode = .full(supportedCountryCodes: ["UK"], hideForCardBrands: [])
 
         let component = CardComponent(
             paymentMethod: method,
@@ -1770,10 +1787,10 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(inputForm.addressItem.countryPickerItem.value?.identifier, "UK")
     }
     
+    // TODO: Robert: Covered by `full_withPrefilledBillingAddress_prefillsAndSubmitsAddress` + `full_supportedCountryCodes_filtersCountryList` in CardComponentBillingAddressModeTests; remove in next iteration.
     func test_billingAddress_withSupportedCountriesAndMatchingPrefill_shouldUsePrefillData() throws {
         var configuration = CardConfiguration()
-        configuration.billingAddress.mode = .full
-        configuration.billingAddress.countryCodes = ["US", "JP"]
+        configuration.billingAddressMode = .full(supportedCountryCodes: ["US", "JP"], hideForCardBrands: [])
         configuration.shopperInformation = shopperInformation
 
         let component = CardComponent(
@@ -1808,8 +1825,7 @@ class CardComponentTests: XCTestCase {
     
     func test_billingAddress_withSupportedCountriesAndNonMatchingPrefill_shouldUseFirstSupportedCountry() throws {
         var configuration = CardConfiguration()
-        configuration.billingAddress.mode = .full
-        configuration.billingAddress.countryCodes = ["UK"]
+        configuration.billingAddressMode = .full(supportedCountryCodes: ["UK"], hideForCardBrands: [])
         configuration.shopperInformation = shopperInformation
 
         let component = CardComponent(
@@ -1837,11 +1853,10 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(inputForm.addressItem.countryPickerItem.value?.identifier, "UK")
     }
     
-    func test_billingAddress_withOptionalPolicyAndInvalidAddress_shouldAllowSubmit() throws {
+    // TODO: Robert: Duplicate — covered by `full_hideForMatchingCard_hidesAddress_submitsNilBillingAddress` in CardComponentBillingAddressModeTests; remove in next iteration.
+    func test_billingAddress_withHideForCardBrandsAndMatchingCard_shouldAllowSubmitWithoutAddress() throws {
         var configuration = CardConfiguration()
-        configuration.billingAddress.mode = .full
-        configuration.billingAddress.countryCodes = ["US"]
-        configuration.billingAddress.requirementPolicy = .optionalForCardBrands([.visa])
+        configuration.billingAddressMode = .full(supportedCountryCodes: ["US"], hideForCardBrands: [.visa])
 
         let cardBrandProviderMock = BinInfoProviderMock()
         cardBrandProviderMock.onFetch = {
@@ -1868,20 +1883,14 @@ class CardComponentTests: XCTestCase {
         let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
         let expiryDateField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
         let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
-
-        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
+        let billingAddressItem = sut.cardViewController.items.billingAddressPickerItem
         
         populate(textItemView: securityCodeField, with: "737")
         populate(textItemView: numberField, with: "4111 1120 1426 7661")
         populate(textItemView: expiryDateField, with: "12/30")
         
-        billingAddressView.item.value = PostalAddress(
-            city: "City",
-            postalCode: "123",
-            stateOrProvince: "AZ"
-        )
-        
-        wait(until: billingAddressView, at: \.isValid, is: true)
+        // After entering Visa card number, billing address should be hidden
+        try wait(until: XCTUnwrap(billingAddressItem), at: \.isVisible, is: false)
         
         let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
         delegate.onDidFail = { error, component in XCTFail("should not fail") }
@@ -1889,10 +1898,8 @@ class CardComponentTests: XCTestCase {
             XCTAssertTrue(component === sut)
             XCTAssertTrue(data.paymentMethod is CardDetails)
 
-            XCTAssertNotNil(sut.cardViewController.validAddress)
-            XCTAssertEqual(data.billingAddress?.country, billingAddressView.item.value?.country)
-            XCTAssertEqual(data.billingAddress?.city, billingAddressView.item.value?.city)
-            XCTAssertEqual(data.billingAddress?.stateOrProvince, billingAddressView.item.value?.stateOrProvince)
+            // Billing address should be nil since it was hidden for Visa
+            XCTAssertNil(data.billingAddress)
 
             sut.stopLoading()
             delegateExpectation.fulfill()
@@ -1905,9 +1912,7 @@ class CardComponentTests: XCTestCase {
     
     func test_billingAddress_withOptionalPolicyAndValidAddress_shouldIncludeInPaymentData() throws {
         var configuration = CardConfiguration()
-        configuration.billingAddress.mode = .full
-        configuration.billingAddress.countryCodes = ["US"]
-        configuration.billingAddress.requirementPolicy = .optionalForCardBrands([.visa])
+        configuration.billingAddressMode = .full(supportedCountryCodes: ["US"], hideForCardBrands: [.visa])
         configuration.shopperInformation = shopperInformation
 
         let cardBrandProviderMock = BinInfoProviderMock()
@@ -1960,9 +1965,7 @@ class CardComponentTests: XCTestCase {
     func test_postalCode_withOptionalPolicyAndValidValue_shouldIncludeInPaymentData() throws {
 
         var configuration = CardConfiguration()
-        configuration.billingAddress.mode = .postalCode
-        configuration.billingAddress.countryCodes = ["US"]
-        configuration.billingAddress.requirementPolicy = .optionalForCardBrands([.visa])
+        configuration.billingAddressMode = .postalCode(hideForCardBrands: [.visa])
         configuration.shopperInformation = shopperInformation
         
         let cardBrandProviderMock = BinInfoProviderMock()
@@ -2014,12 +2017,11 @@ class CardComponentTests: XCTestCase {
         waitForExpectations(timeout: 10, handler: nil)
     }
     
+    // TODO: Robert: Duplicate — covered by `postalCode_hideForMatchingCard_hidesPostalCode_submitsNilBillingAddress` in CardComponentBillingAddressModeTests; remove in next iteration.
     func test_postalCode_withOptionalPolicyAndInvalidValue_shouldAllowSubmit() throws {
         
         var configuration = CardConfiguration()
-        configuration.billingAddress.mode = .postalCode
-        configuration.billingAddress.countryCodes = ["US"]
-        configuration.billingAddress.requirementPolicy = .optionalForCardBrands([.visa])
+        configuration.billingAddressMode = .postalCode(hideForCardBrands: [.visa])
 
         let cardBrandProviderMock = BinInfoProviderMock()
         cardBrandProviderMock.onFetch = {
@@ -2150,8 +2152,7 @@ class CardComponentTests: XCTestCase {
 
     func test_billingAddress_withEmptyApartment_shouldSubmitNilApartment() throws {
         var configuration = CardConfiguration()
-        configuration.billingAddress.mode = .full
-        configuration.billingAddress.countryCodes = ["US"]
+        configuration.billingAddressMode = .full(supportedCountryCodes: ["US"], hideForCardBrands: [])
 
         let cardBrandProviderMock = BinInfoProviderMock()
         cardBrandProviderMock.onFetch = {
@@ -2205,8 +2206,7 @@ class CardComponentTests: XCTestCase {
 
     func test_billingAddress_withApartmentValue_shouldIncludeApartmentInPaymentData() throws {
         var configuration = CardConfiguration()
-        configuration.billingAddress.mode = .full
-        configuration.billingAddress.countryCodes = ["US"]
+        configuration.billingAddressMode = .full(supportedCountryCodes: ["US"], hideForCardBrands: [])
 
         let cardBrandProviderMock = BinInfoProviderMock()
         cardBrandProviderMock.onFetch = {
@@ -2266,8 +2266,7 @@ class CardComponentTests: XCTestCase {
 
     func test_billingAddress_forCountryWithoutStateProvince_shouldNotIncludeStateOrProvince() throws {
         var configuration = CardConfiguration()
-        configuration.billingAddress.mode = .full
-        configuration.billingAddress.countryCodes = ["GB"]
+        configuration.billingAddressMode = .full(supportedCountryCodes: ["GB"], hideForCardBrands: [])
 
         let cardBrandProviderMock = BinInfoProviderMock()
         cardBrandProviderMock.onFetch = {

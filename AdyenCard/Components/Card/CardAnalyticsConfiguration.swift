@@ -15,7 +15,7 @@ internal struct CardAnalyticsConfiguration: AnalyticsStringDictionaryConvertible
     
     private let billingAddressMode: String?
     private let billingAddressAllowedCountries: String?
-    private let billingAddressRequired: Bool
+    private let billingAddressHideForCardBrands: String?
     private let showCardholderName: Bool
     private let hideCVC: Bool
     private let showKCPType: String
@@ -25,13 +25,16 @@ internal struct CardAnalyticsConfiguration: AnalyticsStringDictionaryConvertible
     private let brands: String?
     
     internal init(configuration: CardConfiguration) {
-        self.billingAddressMode = configuration.billingAddress.mode.analyticsDescription
-        self.billingAddressAllowedCountries = configuration.billingAddress.countryCodes?.joined(separator: Constants.stringSeparator)
-        if case .required = configuration.billingAddress.requirementPolicy {
-            self.billingAddressRequired = true
-        } else {
-            self.billingAddressRequired = false
-        }
+        self.billingAddressMode = configuration.billingAddressMode.analyticsDescription
+        self.billingAddressAllowedCountries = configuration.billingAddressMode.supportedCountryCodes?
+            .joined(separator: Constants.stringSeparator)
+        let hideForCardBrands = configuration.billingAddressMode.hideForCardBrands
+        self.billingAddressHideForCardBrands = hideForCardBrands.isEmpty
+            ? nil
+            : hideForCardBrands
+            .map(\.rawValue)
+            .sorted()
+            .joined(separator: Constants.stringSeparator)
         self.showCardholderName = configuration.showCardholderName
         self.hideCVC = !configuration.showSecurityCode
         self.enableStoredDetails = configuration.showStorePaymentMethod
