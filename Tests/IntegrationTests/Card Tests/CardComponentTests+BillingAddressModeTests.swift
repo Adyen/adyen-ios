@@ -39,6 +39,15 @@ struct BillingAddressModeTests {
         #expect(submittedData.billingAddress == nil)
     }
 
+    @Test
+    func none_analytics_excludesBillingAddressKeys() throws {
+        let configData = try analyticsConfigData(for: BillingAddressMode.none)
+
+        #expect(configData["billingAddressMode"] == nil)
+        #expect(configData["billingAddressAllowedCountries"] == nil)
+        #expect(configData["billingAddressHideForCardBrands"] == nil)
+    }
+
     // MARK: - .full
 
     @Test
@@ -158,6 +167,25 @@ struct BillingAddressModeTests {
         #expect(submittedData.billingAddress == expectedAddress)
     }
 
+    @Test
+    func full_analytics_reportsModeAndCountries() throws {
+        let configData = try analyticsConfigData(for: .full(supportedCountryCodes: ["US", "NL"], hideForCardBrands: Self.anyHideForCardBrands))
+
+        #expect(configData["billingAddressMode"] == "full")
+        #expect(configData["billingAddressAllowedCountries"] == "US,NL")
+        #expect(configData["billingAddressHideForCardBrands"] == nil)
+    }
+
+    @Test
+    func full_analytics_withHideForCardBrands_reportsSortedBrands() throws {
+        let configData = try analyticsConfigData(
+            for: .full(supportedCountryCodes: Self.anySupportedCountryCodes, hideForCardBrands: [.visa, .masterCard])
+        )
+
+        #expect(configData["billingAddressMode"] == "full")
+        #expect(configData["billingAddressHideForCardBrands"] == "mc,visa")
+    }
+
     // MARK: - .postalCode
 
     @Test
@@ -230,6 +258,23 @@ struct BillingAddressModeTests {
         #expect(submittedData.billingAddress == PostalAddress(postalCode: "12345"))
     }
 
+    @Test
+    func postalCode_analytics_reportsModeAsPartial() throws {
+        let configData = try analyticsConfigData(for: .postalCode(hideForCardBrands: Self.anyHideForCardBrands))
+
+        #expect(configData["billingAddressMode"] == "partial")
+        #expect(configData["billingAddressAllowedCountries"] == nil)
+        #expect(configData["billingAddressHideForCardBrands"] == nil)
+    }
+
+    @Test
+    func postalCode_analytics_withHideForCardBrands_reportsBrands() throws {
+        let configData = try analyticsConfigData(for: .postalCode(hideForCardBrands: [.visa]))
+
+        #expect(configData["billingAddressMode"] == "partial")
+        #expect(configData["billingAddressHideForCardBrands"] == "visa")
+    }
+
     // MARK: - .lookup
 
     @Test
@@ -284,7 +329,7 @@ struct BillingAddressModeTests {
                     [AddressLookupResult(identifier: "ny", postalAddress: expectedAddress)]
                 },
                 onAddressSelected: { $0.postalAddress },
-                hideForCardBrands: Self.anyHideForCardBrands
+                hideForCardBrands: []
             ),
             detectedBrand: detectedBrand
         )
@@ -414,7 +459,51 @@ struct BillingAddressModeTests {
         #expect(submittedData.billingAddress == completeAddress)
     }
 
+    @Test
+    func lookup_analytics_reportsModeAsLookup() throws {
+        let configData = try analyticsConfigData(
+            for: .lookup(onAddressLookup: Self.anyOnAddressLookup, hideForCardBrands: Self.anyHideForCardBrands)
+        )
+
+        #expect(configData["billingAddressMode"] == "lookup")
+        #expect(configData["billingAddressAllowedCountries"] == nil)
+        #expect(configData["billingAddressHideForCardBrands"] == nil)
+    }
+
+    @Test
+    func lookup_analytics_withHideForCardBrands_reportsBrands() throws {
+        let configData = try analyticsConfigData(
+            for: .lookup(onAddressLookup: Self.anyOnAddressLookup, hideForCardBrands: [.jcb])
+        )
+
+        #expect(configData["billingAddressMode"] == "lookup")
+        #expect(configData["billingAddressHideForCardBrands"] == "jcb")
+    }
+
     // MARK: - Helpers
+
+    /// Returns the analytics `configData` dictionary for a given billing address mode.
+    private func analyticsConfigData(for billingAddressMode: BillingAddressMode) throws -> [String: String] {
+        let analyticsProvider = AnalyticsProviderMock()
+        var configuration = CardConfiguration()
+        configuration.billingAddressMode = billingAddressMode
+
+        let method = CardPaymentMethod(
+            type: .bcmc,
+            name: "Test name",
+            fundingSource: .credit,
+            brands: [.visa, .americanExpress, .masterCard]
+        )
+
+        let component = CardComponent(
+            paymentMethod: method,
+            context: Dummy.context(analyticsProvider: analyticsProvider),
+            configuration: configuration
+        )
+        component.viewDidLoad(viewController: component.cardViewController)
+
+        return try #require(analyticsProvider.infos.first?.configData?.stringOnlyDictionary)
+    }
 
     private func makeSUT(
         billingAddressMode: BillingAddressMode,
