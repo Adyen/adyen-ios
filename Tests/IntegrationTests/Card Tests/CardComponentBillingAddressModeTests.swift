@@ -841,13 +841,14 @@ private struct CardComponentProxy {
     func submit(timeout: TimeInterval = 3) async throws -> PaymentComponentData {
         delegate.onDidFail = { _, _ in Issue.record("Should not fail") }
 
+        let component = self.component
         return try await withCheckedThrowingContinuation { continuation in
             var didResume = false
 
             delegate.onDidSubmit = { data, _ in
                 guard !didResume else { return }
                 didResume = true
-                self.component.stopLoading()
+                component.stopLoading()
                 continuation.resume(returning: data)
             }
 
