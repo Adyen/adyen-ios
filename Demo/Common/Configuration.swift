@@ -104,18 +104,43 @@ internal struct CardSettings: Codable {
     internal var showStorePaymentMethod = true
     internal var showSecurityCodeForStoredCard = true
     internal var showSecurityCode = true
-    internal var addressMode: AddressFormType = .none
+    internal var addressSettings = AddressSettings()
     internal var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility = .auto
     internal var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility = .auto
     internal var enableInstallments = false
     internal var showsInstallmentAmount = false
-    
+}
+
+internal struct AddressSettings: Codable {
+    internal var mode: AddressFormType = .none
+    internal var hideForCardBrands: Set<String> = []
+    internal var supportedCountryCodes: [String] = []
+
     internal enum AddressFormType: String, Codable, CaseIterable {
         case lookup
         case lookupMapKit
         case full
         case postalCode
         case none
+    }
+}
+
+extension AddressSettings {
+
+    internal mutating func toggleBrand(_ rawValue: String) {
+        if hideForCardBrands.contains(rawValue) {
+            hideForCardBrands.remove(rawValue)
+        } else {
+            hideForCardBrands.insert(rawValue)
+        }
+    }
+
+    internal mutating func toggleCountryCode(_ code: String) {
+        if let index = supportedCountryCodes.firstIndex(of: code) {
+            supportedCountryCodes.remove(at: index)
+        } else {
+            supportedCountryCodes.append(code)
+        }
     }
 }
 
@@ -203,7 +228,7 @@ internal struct DemoAppSettings: Codable {
         showStorePaymentMethod: true,
         showSecurityCodeForStoredCard: true,
         showSecurityCode: true,
-        addressMode: .none,
+        addressSettings: AddressSettings(),
         socialSecurityNumberVisibility: .auto,
         koreanAuthenticationVisibility: .auto,
         enableInstallments: false,
@@ -260,7 +285,7 @@ internal struct DemoAppSettings: Codable {
             .socialSecurityNumberVisibility(cardSettings.socialSecurityNumberVisibility)
             .showSecurityCodeForStoredCard(cardSettings.showSecurityCodeForStoredCard)
             .installmentConfiguration(installmentConfiguration)
-            .billingAddressMode(billingAddressMode(from: cardSettings.addressMode))
+            .billingAddressMode(billingAddressMode(from: cardSettings.addressSettings))
     }
 
     internal var cardDropInConfiguration: DropInComponent.Card {
@@ -310,11 +335,17 @@ internal struct DemoAppSettings: Codable {
 
 private extension DemoAppSettings {
     
-    private func billingAddressMode(from addressFormType: CardSettings.AddressFormType) -> BillingAddressMode {
-        switch addressFormType {
+    private var billingAddressBrands: Set<CardBrand> {
+        Set(cardSettings.addressSettings.hideForCardBrands.map { CardBrand(rawValue: $0) })
+    }
+
+    private func billingAddressMode(from addressSettings: AddressSettings) -> BillingAddressMode {
+        let brands = billingAddressBrands
+        switch addressSettings.mode {
         case .lookup:
             let provider = DemoAddressLookupProvider()
             return .lookup(
+                hideForCardBrands: brands,
                 onAddressLookup: { searchTerm in
                     await provider.searchAsync(searchTerm)
                 },
@@ -325,14 +356,18 @@ private extension DemoAppSettings {
         case .lookupMapKit:
             let provider = MapkitAddressLookupProvider()
             return .lookup(
+                hideForCardBrands: brands,
                 onAddressLookup: { searchTerm in
                     await provider.searchAsync(searchTerm)
                 }
             )
         case .full:
-            return .full()
+            return .full(
+                supportedCountryCodes: addressSettings.supportedCountryCodes,
+                hideForCardBrands: brands
+            )
         case .postalCode:
-            return .postalCode()
+            return .postalCode(hideForCardBrands: brands)
         case .none:
             return .none
         }

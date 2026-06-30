@@ -10,6 +10,19 @@
     "(Requires API version 70 or higher)" : {
 
     },
+    "%@ — %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ — %2$@"
+          }
+        }
+      }
+    },
+    "%lld" : {
+
+    },
     "adyen.card.stored.title" : {
       "extractionState" : "manual"
     },
@@ -58,7 +71,7 @@
     "Apple Pay" : {
 
     },
-    "Billing Address mode" : {
+    "Billing Address" : {
 
     },
     "Card Component" : {
@@ -68,6 +81,9 @@
 
     },
     "Configuration" : {
+
+    },
+    "Countries: %@" : {
 
     },
     "Default" : {
@@ -80,6 +96,12 @@
 
     },
     "Force Card RedirectAction" : {
+
+    },
+    "Hide For Card Brands" : {
+
+    },
+    "Hide: %@" : {
 
     },
     "Holder Name" : {
@@ -100,7 +122,13 @@
     "Korean Authentication Mode" : {
 
     },
+    "Mode" : {
+
+    },
     "onBeforeSubmit" : {
+
+    },
+    "Restricts the country picker to selected countries. When none are selected, all countries are available." : {
 
     },
     "Return success from didAuthorize" : {
@@ -133,6 +161,9 @@
     "Stored Payment Method Removal" : {
 
     },
+    "Supported Country Codes" : {
+
+    },
     "Theme" : {
 
     },
@@ -140,6 +171,9 @@
 
     },
     "Visibility" : {
+
+    },
+    "When a detected card brand matches, the billing address form is hidden." : {
 
     },
     "When false, simulates a shipping error returned from the didAuthorize delegate method." : {

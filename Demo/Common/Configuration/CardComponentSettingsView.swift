@@ -12,70 +12,64 @@ internal struct CardSettingsView: View {
     @ObservedObject internal var viewModel: ConfigurationViewModel
     
     internal var body: some View {
-
-        NavigationView {
-            List {
-                Section(header: Text("Visibility")) {
-                    Toggle(isOn: $viewModel.showCardholderName) {
-                        Text("Holder Name")
-                    }
-                    
-                    Toggle(isOn: $viewModel.showStorePaymentMethod) {
-                        VStack(alignment: .leading) {
-                            Text("Store Payment Method Toggle")
-                            Text("(Requires API version 70 or higher)")
-                                .foregroundColor(.gray)
-                                .font(.footnote)
-                        }
-                    }
-                    Toggle(isOn: $viewModel.showSecurityCode) {
-                        Text("Security Code")
-                    }
-                    Toggle(isOn: $viewModel.installmentsEnabled.animation()) {
-                        VStack(alignment: .leading) {
-                            Text("Installments")
-                            Text("(Example values for installments)")
-                                .foregroundColor(.gray)
-                                .font(.footnote)
-                        }
-                    }
-                    if viewModel.installmentsEnabled {
-                        Toggle(isOn: $viewModel.showInstallmentAmount) {
-                            Text("Installment Amount")
-                        }
+        List {
+            Section(header: Text("Visibility")) {
+                Toggle(isOn: $viewModel.showCardholderName) {
+                    Text("Holder Name")
+                }
+                
+                Toggle(isOn: $viewModel.showStorePaymentMethod) {
+                    VStack(alignment: .leading) {
+                        Text("Store Payment Method Toggle")
+                        Text("(Requires API version 70 or higher)")
+                            .foregroundColor(.gray)
+                            .font(.footnote)
                     }
                 }
-                Section(header: Text("Input Modes")) {
-                    Picker("Billing Address mode", selection: $viewModel.addressMode) {
-                        ForEach(CardSettings.AddressFormType.allCases, id: \.self) {
-                            Text($0.displayName)
-                        }
-                    }
-                    Picker("Social Security Number Mode", selection: $viewModel.socialSecurityNumberVisibility) {
-                        ForEach(CardConfiguration.FieldVisibility.allCases, id: \.self) {
-                            Text($0.displayName)
-                        }
-                    }
-                    Picker("Korean Authentication Mode", selection: $viewModel.koreanAuthenticationVisibility) {
-                        ForEach(CardConfiguration.FieldVisibility.allCases, id: \.self) {
-                            Text($0.displayName)
-                        }
+                Toggle(isOn: $viewModel.showSecurityCode) {
+                    Text("Security Code")
+                }
+                Toggle(isOn: $viewModel.installmentsEnabled.animation()) {
+                    VStack(alignment: .leading) {
+                        Text("Installments")
+                        Text("(Example values for installments)")
+                            .foregroundColor(.gray)
+                            .font(.footnote)
                     }
                 }
-                Section(header: Text("Stored Card")) {
-                    Toggle(isOn: $viewModel.showSecurityCodeForStoredCard) {
-                        Text("Security Code")
+                if viewModel.installmentsEnabled {
+                    Toggle(isOn: $viewModel.showInstallmentAmount) {
+                        Text("Installment Amount")
                     }
                 }
             }
-            .navigationBarTitle("")
-            .navigationBarHidden(true)
+            Section(header: Text("Input Modes")) {
+                NavigationLink {
+                    BillingAddressModeSettingsView(addressSettings: $viewModel.addressSettings)
+                } label: {
+                    BillingAddressSummary(addressSettings: viewModel.addressSettings)
+                }
+                Picker("Social Security Number Mode", selection: $viewModel.socialSecurityNumberVisibility) {
+                    ForEach(CardConfiguration.FieldVisibility.allCases, id: \.self) {
+                        Text($0.displayName)
+                    }
+                }
+                Picker("Korean Authentication Mode", selection: $viewModel.koreanAuthenticationVisibility) {
+                    ForEach(CardConfiguration.FieldVisibility.allCases, id: \.self) {
+                        Text($0.displayName)
+                    }
+                }
+            }
+            Section(header: Text("Stored Card")) {
+                Toggle(isOn: $viewModel.showSecurityCodeForStoredCard) {
+                    Text("Security Code")
+                }
+            }
         }
-        .navigationViewStyle(.stack)
     }
 }
 
-extension CardSettings.AddressFormType {
+extension AddressSettings.AddressFormType {
 
     internal var displayName: String {
         switch self {
