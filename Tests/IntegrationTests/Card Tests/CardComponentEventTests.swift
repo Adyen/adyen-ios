@@ -36,7 +36,6 @@ final class CardComponentEventTests: XCTestCase {
         let configDataDict = try XCTUnwrap(info?.configData?.stringOnlyDictionary)
         XCTAssertEqual(configDataDict["socialSecurityNumberVisibility"], "auto")
         XCTAssertEqual(configDataDict["hasInstallmentOptions"], "false")
-        XCTAssertEqual(configDataDict["billingAddressRequired"], "true")
         XCTAssertEqual(configDataDict["hideCVC"], "false")
         XCTAssertEqual(configDataDict["showCardholderName"], "false")
         XCTAssertEqual(configDataDict["showKCPType"], "auto")
@@ -178,7 +177,7 @@ final class CardComponentEventTests: XCTestCase {
     func test_postalCode_onFocusAndUnfocus_shouldSendFocusEvents() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardConfiguration()
-        config.billingAddress.mode = .postalCode
+        config.billingAddressMode = .postalCode()
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
         let postalCodeItemView: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(
@@ -340,7 +339,7 @@ final class CardComponentEventTests: XCTestCase {
     func test_postalCode_withInvalidValue_shouldSendValidationErrorEvent() throws {
         let analyticsProviderMock = AnalyticsProviderMock()
         var config = CardConfiguration()
-        config.billingAddress.mode = .postalCode
+        config.billingAddressMode = .postalCode()
         let sut = makeSUT(with: config, analyticsProviderMock: analyticsProviderMock)
 
         let postalCodeItemView: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(
