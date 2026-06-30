@@ -38,16 +38,16 @@ public enum BillingAddressMode {
     /// Displays an address lookup interface that allows the shopper to search for their address.
     ///
     /// - Parameters:
+    ///   - hideForCardBrands: Card brands for which the address lookup should be hidden
+    ///     when detected via BIN lookup.
     ///   - onAddressLookup: Called when the shopper enters a search term. Returns matching addresses.
     ///   - onAddressSelected: Called when the shopper selects an address from the search results.
     ///     Use this to fetch the complete address details if the initial result was partial.
     ///     If not provided, the selected address is used as-is.
-    ///   - hideForCardBrands: Card brands for which the address lookup should be hidden
-    ///     when detected via BIN lookup.
     case lookup(
+        hideForCardBrands: Set<CardBrand> = [],
         onAddressLookup: (String) async -> [AddressLookupResult],
-        onAddressSelected: ((AddressLookupResult) async throws -> PostalAddress)? = nil,
-        hideForCardBrands: Set<CardBrand> = []
+        onAddressSelected: ((AddressLookupResult) async throws -> PostalAddress)? = nil
     )
 }
 
@@ -75,7 +75,7 @@ extension BillingAddressMode {
             return hideForCardBrands
         case let .full(_, hideForCardBrands):
             return hideForCardBrands
-        case let .lookup(_, _, hideForCardBrands):
+        case let .lookup(hideForCardBrands, _, _):
             return hideForCardBrands
         }
     }

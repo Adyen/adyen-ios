@@ -71,7 +71,7 @@ extension CardViewController {
         
         internal lazy var billingAddressPickerItem: FormAddressPickerItem? = {
             switch addressMode {
-            case let .lookup(onLookup, onAddressSelected, _):
+            case let .lookup(_, onLookup, onAddressSelected):
                 let provider = AsyncAddressLookupProvider(
                     onLookup: onLookup,
                     onAddressSelected: onAddressSelected
