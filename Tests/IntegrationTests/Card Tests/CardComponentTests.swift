@@ -289,7 +289,7 @@ class CardComponentTests: XCTestCase {
         let expectedBorderColor = dynamicColor(light: .systemGreen, dark: .systemBlue)
 
         var configuration = CardConfiguration()
-        configuration.billingAddressMode = .lookup(onAddressLookup: { _ in [] }, onAddressSelected: nil, hideForCardBrands: [])
+        configuration.billingAddressMode = .lookup(hideForCardBrands: [], onAddressLookup: { _ in [] }, onAddressSelected: nil)
         configuration.theme = CheckoutTheme(
             colors: CheckoutColors(
                 containerOutline: expectedBorderColor
@@ -426,13 +426,13 @@ class CardComponentTests: XCTestCase {
         var configuration = CardConfiguration()
         configuration.showCardholderName = true
         configuration.billingAddressMode = .lookup(
+            hideForCardBrands: [],
             onAddressLookup: { searchTerm in
                 XCTFail("Lookup handler should not be called")
                 return []
 
             },
-            onAddressSelected: nil,
-            hideForCardBrands: []
+            onAddressSelected: nil
         )
 
         configuration.shopperInformation = shopperInformation
@@ -1577,11 +1577,11 @@ class CardComponentTests: XCTestCase {
         var configuration = CardConfiguration()
         configuration.showCardholderName = true
         configuration.billingAddressMode = .lookup(
+            hideForCardBrands: [],
             onAddressLookup: { searchTerm in
                 [.init(identifier: searchTerm, postalAddress: .init(city: searchTerm))]
             },
-            onAddressSelected: nil,
-            hideForCardBrands: []
+            onAddressSelected: nil
         )
 
         configuration.shopperInformation = shopperInformation

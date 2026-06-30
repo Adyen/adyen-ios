@@ -338,7 +338,7 @@ struct CardComponentBillingAddressModeTests {
     @Test
     func lookup_hideForMatchingCard_hidesLookup_submitsNilBillingAddress() async throws {
         let proxy = makeSUT(
-            billingAddressMode: .lookup(onAddressLookup: Self.anyOnAddressLookup, hideForCardBrands: [CardBrand.visa]),
+            billingAddressMode: .lookup(hideForCardBrands: [CardBrand.visa], onAddressLookup: Self.anyOnAddressLookup),
             detectedBrand: CardBrand.visa
         )
 
@@ -358,11 +358,11 @@ struct CardComponentBillingAddressModeTests {
 
         let proxy = makeSUT(
             billingAddressMode: .lookup(
+                hideForCardBrands: [CardBrand.jcb],
                 onAddressLookup: { _ in
                     [AddressLookupResult(identifier: "ny", postalAddress: expectedAddress)]
                 },
-                onAddressSelected: { $0.postalAddress },
-                hideForCardBrands: [CardBrand.jcb]
+                onAddressSelected: { $0.postalAddress }
             ),
             detectedBrand: CardBrand.visa
         )
@@ -383,11 +383,11 @@ struct CardComponentBillingAddressModeTests {
 
         let proxy = makeSUT(
             billingAddressMode: .lookup(
+                hideForCardBrands: [],
                 onAddressLookup: { _ in
                     [AddressLookupResult(identifier: "ny", postalAddress: expectedAddress)]
                 },
-                onAddressSelected: { $0.postalAddress },
-                hideForCardBrands: []
+                onAddressSelected: { $0.postalAddress }
             ),
             detectedBrand: detectedBrand
         )
@@ -409,11 +409,11 @@ struct CardComponentBillingAddressModeTests {
 
         let proxy = makeSUT(
             billingAddressMode: .lookup(
+                hideForCardBrands: Self.anyHideForCardBrands,
                 onAddressLookup: { searchTerm in
                     receivedSearchTerms.append(searchTerm)
                     return []
-                },
-                hideForCardBrands: Self.anyHideForCardBrands
+                }
             )
         )
 
@@ -432,11 +432,11 @@ struct CardComponentBillingAddressModeTests {
 
         let proxy = makeSUT(
             billingAddressMode: .lookup(
+                hideForCardBrands: Self.anyHideForCardBrands,
                 onAddressLookup: { _ in
                     [AddressLookupResult(identifier: "ny", postalAddress: expectedAddress)]
                 },
-                onAddressSelected: { $0.postalAddress },
-                hideForCardBrands: Self.anyHideForCardBrands
+                onAddressSelected: { $0.postalAddress }
             )
         )
 
@@ -460,11 +460,11 @@ struct CardComponentBillingAddressModeTests {
 
         let proxy = makeSUT(
             billingAddressMode: .lookup(
+                hideForCardBrands: Self.anyHideForCardBrands,
                 onAddressLookup: { _ in
                     [AddressLookupResult(identifier: "ny", postalAddress: expectedAddress)]
                 },
-                onAddressSelected: { $0.postalAddress },
-                hideForCardBrands: Self.anyHideForCardBrands
+                onAddressSelected: { $0.postalAddress }
             )
         )
 
@@ -487,13 +487,13 @@ struct CardComponentBillingAddressModeTests {
 
         let proxy = makeSUT(
             billingAddressMode: .lookup(
+                hideForCardBrands: Self.anyHideForCardBrands,
                 onAddressLookup: { _ in
                     [AddressLookupResult(identifier: "ny-123", postalAddress: partialAddress)]
                 },
                 onAddressSelected: { _ in
                     completeAddress
-                },
-                hideForCardBrands: Self.anyHideForCardBrands
+                }
             )
         )
 
@@ -508,7 +508,7 @@ struct CardComponentBillingAddressModeTests {
     @Test
     func lookup_analytics_reportsModeAsLookup() throws {
         let configData = try analyticsConfigData(
-            for: .lookup(onAddressLookup: Self.anyOnAddressLookup, hideForCardBrands: Self.anyHideForCardBrands)
+            for: .lookup(hideForCardBrands: Self.anyHideForCardBrands, onAddressLookup: Self.anyOnAddressLookup)
         )
 
         #expect(configData["billingAddressMode"] == "lookup")
@@ -519,7 +519,7 @@ struct CardComponentBillingAddressModeTests {
     @Test
     func lookup_analytics_withHideForCardBrands_reportsBrands() throws {
         let configData = try analyticsConfigData(
-            for: .lookup(onAddressLookup: Self.anyOnAddressLookup, hideForCardBrands: [.jcb])
+            for: .lookup(hideForCardBrands: [.jcb], onAddressLookup: Self.anyOnAddressLookup)
         )
 
         #expect(configData["billingAddressMode"] == "lookup")
@@ -531,7 +531,7 @@ struct CardComponentBillingAddressModeTests {
         let prefilledAddress = PostalAddressMocks.newYorkPostalAddress
 
         let proxy = makeSUT(
-            billingAddressMode: .lookup(onAddressLookup: Self.anyOnAddressLookup, hideForCardBrands: []),
+            billingAddressMode: .lookup(hideForCardBrands: [], onAddressLookup: Self.anyOnAddressLookup),
             shopperInformation: PrefilledShopperInformation(billingAddress: prefilledAddress)
         )
 
