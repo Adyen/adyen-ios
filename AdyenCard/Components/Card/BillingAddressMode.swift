@@ -50,37 +50,3 @@ public enum BillingAddressMode {
         onAddressSelected: ((AddressLookupResult) async throws -> PostalAddress)? = nil
     )
 }
-
-extension BillingAddressMode {
-    
-    internal var supportedCountryCodes: [String]? {
-        switch self {
-        case let .full(supportedCountryCodes, _):
-            return supportedCountryCodes.isEmpty ? nil : supportedCountryCodes
-        case .none, .postalCode, .lookup:
-            return nil
-        }
-    }
-
-    internal func supports(countryCode: String) -> Bool {
-        guard let supportedCountryCodes else { return true } // nil == all countries supported
-        return supportedCountryCodes.contains(countryCode)
-    }
-    
-    internal var hideForCardBrands: Set<CardBrand> {
-        switch self {
-        case .none:
-            return []
-        case let .postalCode(hideForCardBrands):
-            return hideForCardBrands
-        case let .full(_, hideForCardBrands):
-            return hideForCardBrands
-        case let .lookup(hideForCardBrands, _, _):
-            return hideForCardBrands
-        }
-    }
-    
-    internal func shouldHide(for cardBrands: [CardBrand]) -> Bool {
-        !hideForCardBrands.isDisjoint(with: cardBrands)
-    }
-}
