@@ -35,64 +35,34 @@ internal struct BillingAddressModeSettingsView: View {
             }
 
             if addressSettings.mode != .none {
-                Section(footer: Text("When a detected card brand matches, the billing address form is hidden.")) {
-                    DisclosureGroup(isExpanded: $isHideForCardBrandsExpanded) {
-                        ForEach(Self.commonBrands, id: \.rawValue) { brand in
-                            Button {
-                                addressSettings.toggleBrand(brand.rawValue)
-                            } label: {
-                                HStack {
-                                    Text(brand.name)
-                                        .foregroundColor(.primary)
-                                    Spacer()
-                                    if addressSettings.hideForCardBrands.contains(brand.rawValue) {
-                                        Image(systemName: "checkmark")
-                                            .foregroundColor(.accentColor)
-                                    }
-                                }
-                            }
-                        }
-                    } label: {
-                        selectionLabel(title: "Hide For Card Brands", subtitle: selectedBrandsSummary)
-                    }
-                }
+                SelectableDisclosureSection(
+                    title: "Hide For Card Brands",
+                    footer: "When a detected card brand matches, the billing address form is hidden.",
+                    items: Self.commonBrands,
+                    id: \.rawValue,
+                    summary: selectedBrandsSummary,
+                    isExpanded: $isHideForCardBrandsExpanded,
+                    rowTitle: { $0.name },
+                    isSelected: { addressSettings.hideForCardBrands.contains($0.rawValue) },
+                    onToggle: { addressSettings.toggleBrand($0.rawValue) }
+                )
             }
 
             if addressSettings.mode == .full {
-                Section(footer: Text("Restricts the country picker to selected countries. When none are selected, all countries are available.")) {
-                    DisclosureGroup(isExpanded: $isSupportedCountryCodesExpanded) {
-                        ForEach(Self.commonCountryCodes, id: \.self) { code in
-                            Button {
-                                addressSettings.toggleCountryCode(code)
-                            } label: {
-                                HStack {
-                                    Text("\(code) \u{2014} \(Self.countryName(for: code))")
-                                        .foregroundColor(.primary)
-                                    Spacer()
-                                    if addressSettings.supportedCountryCodes.contains(code) {
-                                        Image(systemName: "checkmark")
-                                            .foregroundColor(.accentColor)
-                                    }
-                                }
-                            }
-                        }
-                    } label: {
-                        selectionLabel(title: "Supported Country Codes", subtitle: selectedCountryCodesSummary)
-                    }
-                }
+                SelectableDisclosureSection(
+                    title: "Supported Country Codes",
+                    footer: "Restricts the country picker to selected countries. When none are selected, all countries are available.",
+                    items: Self.commonCountryCodes,
+                    id: \.self,
+                    summary: selectedCountryCodesSummary,
+                    isExpanded: $isSupportedCountryCodesExpanded,
+                    rowTitle: { "\($0) \u{2014} \(Self.countryName(for: $0))" },
+                    isSelected: { addressSettings.supportedCountryCodes.contains($0) },
+                    onToggle: { addressSettings.toggleCountryCode($0) }
+                )
             }
         }
         .navigationTitle("Billing Address")
-    }
-
-    private func selectionLabel(title: String, subtitle: String) -> some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(title)
-                .foregroundColor(.primary)
-            Text(subtitle.isEmpty ? "None selected" : subtitle)
-                .font(.footnote)
-                .foregroundColor(.secondary)
-        }
     }
 
     private var selectedBrandsSummary: String {
