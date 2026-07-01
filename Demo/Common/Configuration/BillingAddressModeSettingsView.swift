@@ -56,7 +56,7 @@ internal struct BillingAddressModeSettingsView: View {
                     id: \.self,
                     summary: selectedCountryCodesSummary,
                     isExpanded: $isSupportedCountryCodesExpanded,
-                    rowTitle: { "\($0) \u{2014} \(Self.countryName(for: $0))" },
+                    rowTitle: { String(localized: "\($0) \u{2014} \(Self.countryName(for: $0))") },
                     isSelected: { addressSettings.supportedCountryCodes.contains($0) },
                     onToggle: { addressSettings.toggleCountryCode($0) }
                 )

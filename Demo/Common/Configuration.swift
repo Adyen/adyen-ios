@@ -335,12 +335,8 @@ internal struct DemoAppSettings: Codable {
 
 private extension DemoAppSettings {
     
-    private var billingAddressBrands: Set<CardBrand> {
-        Set(cardSettings.addressSettings.hideForCardBrands.map { CardBrand(rawValue: $0) })
-    }
-
     private func billingAddressMode(from addressSettings: AddressSettings) -> BillingAddressMode {
-        let brands = billingAddressBrands
+        let brands = Set(addressSettings.hideForCardBrands.map { CardBrand(rawValue: $0) })
         switch addressSettings.mode {
         case .lookup:
             let provider = DemoAddressLookupProvider()

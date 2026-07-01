@@ -20,12 +20,12 @@ internal struct BillingAddressSummary: View {
                     .foregroundColor(.primary)
             }
             if addressSettings.mode != .none, !addressSettings.hideForCardBrands.isEmpty {
-                Text("Hide for brands: \(hiddenBrandsSummary)")
+                Text("Hide: \(hiddenBrandsSummary)")
                     .font(.footnote)
                     .foregroundColor(.secondary)
             }
             if addressSettings.mode == .full, !addressSettings.supportedCountryCodes.isEmpty {
-                Text("Supported countries: \(supportedCountryCodesSummary)")
+                Text("Countries: \(supportedCountryCodesSummary)")
                     .font(.footnote)
                     .foregroundColor(.secondary)
             }
