@@ -83,9 +83,6 @@
     "Configuration" : {
 
     },
-    "Countries: %@" : {
-
-    },
     "Default" : {
 
     },
@@ -98,10 +95,10 @@
     "Force Card RedirectAction" : {
 
     },
-    "Hide For Card Brands" : {
+    "Hide for brands: %@" : {
 
     },
-    "Hide: %@" : {
+    "Hide For Card Brands" : {
 
     },
     "Holder Name" : {
@@ -159,6 +156,9 @@
 
     },
     "Stored Payment Method Removal" : {
+
+    },
+    "Supported countries: %@" : {
 
     },
     "Supported Country Codes" : {
