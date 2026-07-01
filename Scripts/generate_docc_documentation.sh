@@ -51,22 +51,16 @@ rsync -r AdyenWeChatPay "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
 rsync -r AdyenSwiftUI "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
 rsync -r AdyenCashAppPay "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
 rsync -r AdyenTwint "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
+rsync -r AdyenUI "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
+rsync -r AdyenCheckout "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME"
 
 # Copy the Adyen.docc folder to the temp package source folder
 cp -a "$FRAMEWORK_NAME.docc" "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/$FRAMEWORK_NAME.docc"
 
-# Rename AdyenActions/Utilities/BundleSPMExtension.swift to AdyenActions/Utilities/ActionsBundleSPMExtension.swift
-mv "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/AdyenActions/Utilities/BundleSPMExtension.swift" \
-"$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/AdyenActions/Utilities/ActionsBundleSPMExtension.swift"
-
-# Rename Adyen/Utilities/BundleSPMExtension.swift to Adyen/Utilities/CoreBundleSPMExtension.swift
-mv "$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/Adyen/Utilities/BundleSPMExtension.swift" \
-"$TEMP_PROJECT_PATH/Sources/$FRAMEWORK_NAME/Adyen/Utilities/CoreBundleSPMExtension.swift"
-
 # Go back to Temp project root (which is where the Package.swift will be written)
 cd "$TEMP_PROJECT_PATH"
 
-echo "// swift-tools-version: 5.8
+echo "// swift-tools-version: 5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -130,10 +124,12 @@ let package = Package(
                 \"AdyenWeChatPay/Info.plist\",
                 \"AdyenCashAppPay/AdyenCashAppPay.docc\",
                 \"AdyenCard/Info.plist\",
-                \"AdyenCard/Utilities/Non SPM Bundle Extension\",
-                \"AdyenActions/Utilities/Non SPM Bundle Extension\",
-                \"Adyen/Utilities/Non SPM Bundle Extension\",
-                \"AdyenTwint/AdyenTwint.docc\"
+                \"AdyenTwint/AdyenTwint.docc\",
+                \"AdyenUI/Info.plist\",
+                \"AdyenUI/AdyenUI.docc\",
+                \"AdyenCheckout/Info.plist\",
+                \"AdyenCheckout/AdyenCheckout.docc\",
+                \"AdyenCheckout/AdyenCheckout.h\"
             ]
         ),
     ]
