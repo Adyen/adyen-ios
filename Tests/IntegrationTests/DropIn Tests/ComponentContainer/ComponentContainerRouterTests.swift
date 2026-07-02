@@ -59,7 +59,7 @@ struct ComponentContainerRouterTests {
 
         // Then
         let wrapper = try #require(
-            viewControllerSpy.presentedViewControllerCaptured as? ActionWrapperViewController
+            viewControllerSpy.presentedViewControllerCaptured as? ActionNavigationController
         )
 
         let injectedCallback = try #require(wrapper.onCancel)

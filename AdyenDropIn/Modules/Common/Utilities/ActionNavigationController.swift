@@ -7,7 +7,7 @@
 import UIKit
 
 /// A modal wrapper for action view controllers, adds a navigation bar with cancel button and handles dismissal.
-internal class ActionWrapperViewController: UINavigationController {
+internal class ActionNavigationController: UINavigationController {
 
     // MARK: - Properties
 
