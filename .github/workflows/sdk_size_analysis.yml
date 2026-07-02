@@ -17,7 +17,7 @@ jobs:
   sdk-size-analysis:
     runs-on: macos-15-xlarge
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 2  # Ensures the base ref is available
