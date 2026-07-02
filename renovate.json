@@ -7,7 +7,6 @@
     "chore"
   ],
   "baseBranchPatterns": [
-    "$default",
     "develop"
   ]
 }
