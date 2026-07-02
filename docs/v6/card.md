@@ -35,7 +35,6 @@ let configuration = try CheckoutConfiguration(
         .showSecurityCodeForStoredCard(true)
         .supportedCardBrands([.visa, .masterCard])
         .billingAddressMode(.full)
-        .billingAddressCountryCodes(["US", "CA"])
         .onBinChange { bin in
             print(bin)
         }
@@ -58,7 +57,6 @@ let configuration = try CheckoutConfiguration(
 | `supportedCardBrands(_:)` | Override the card brands exposed by the payment method response. |
 | `installmentConfiguration(_:)` | Configure installments. |
 | `billingAddressMode(_:)` | Control billing address collection. |
-| `billingAddressCountryCodes(_:)` | Restrict the list of countries for billing address collection. |
 | `shopperInformation(_:)` | Prefill shopper details. |
 | `onBinChange(_:)` | Receive BIN updates while the shopper types. |
 | `onBinLookup(_:)` | Receive detected card brands from card number input. |
