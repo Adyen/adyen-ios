@@ -26,7 +26,7 @@ jobs:
       destination_iPad: "name=iPad (10th generation),OS=18.6"
       project: "Adyen.xcodeproj"
       params: "-derivedDataPath ./DerivedData -skipPackagePluginValidation"
-    runs-on: macos-15-xlarge
+    runs-on: macos-26-xlarge
 
     steps:
     - uses: actions/checkout@v6

@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   distribute:
-    runs-on: macos-15-xlarge
+    runs-on: macos-26-xlarge
 
     steps:
       - name: 🪾 Checkout selected branch
