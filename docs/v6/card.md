@@ -35,7 +35,6 @@ let configuration = try CheckoutConfiguration(
         .showSecurityCodeForStoredCard(true)
         .supportedCardBrands([.visa, .masterCard])
         .billingAddressMode(.full)
-        .billingAddressCountryCodes(["US", "CA"])
         .onBinChange { bin in
             print(bin)
         }
