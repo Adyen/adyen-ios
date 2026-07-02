@@ -414,7 +414,7 @@ class DropInTests: XCTestCase {
 //        topVC.tableView(topVC.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
 //
 //        wait(for: .seconds(1))
-//        let newtopVC = try XCTUnwrap(sut.viewController.findChild(of: ADYViewController.self))
+//        let newtopVC = try XCTUnwrap(sut.viewController.findChild(of: ActionViewController.self))
 //        XCTAssertEqual(newtopVC.title, "Apple Pay")
 //    }
 //
