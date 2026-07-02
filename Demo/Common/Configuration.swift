@@ -330,9 +330,9 @@ private extension DemoAppSettings {
                 }
             )
         case .full:
-            return .full
+            return .full()
         case .postalCode:
-            return .postalCode
+            return .postalCode()
         case .none:
             return .none
         }
