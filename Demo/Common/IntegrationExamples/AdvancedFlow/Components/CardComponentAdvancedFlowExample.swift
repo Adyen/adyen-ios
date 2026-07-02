@@ -61,13 +61,6 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             )
         ) {
             ConfigurationConstants.current.cardConfiguration
-                .billingAddressMode(
-                    .lookup(
-                        onAddressLookup: { searchTerm in
-                            await MapkitAddressLookupProvider().searchAsync(searchTerm)
-                        }
-                    )
-                )
                 .onBinChange { bin in
                     print("Here is the bin \(bin)")
                 }
