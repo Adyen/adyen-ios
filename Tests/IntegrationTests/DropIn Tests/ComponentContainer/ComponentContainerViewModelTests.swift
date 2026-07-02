@@ -100,15 +100,7 @@ struct ComponentContainerViewModelTests {
         // Given
         let (sut, _, _, _, routerMock) = makeSUT()
 
-        let contextMock = AdyenContext(
-            apiContext: Dummy.apiContext,
-            amount: .init(value: 100, currencyCode: "EUR"),
-            publicKey: Dummy.publicKey,
-            analyticsProvider: AnalyticsProviderMock()
-        )
-        let redirectComponent = RedirectComponent(context: contextMock)
-        let viewControllerMock = UIViewController()
-        let actionComponentMock = viewControllerMock
+        let actionComponentMock = UIViewController()
 
         // When
         sut.present(actionViewController: actionComponentMock)
@@ -122,15 +114,7 @@ struct ComponentContainerViewModelTests {
         // Given
         let (sut, _, paymentComponentMock, _, routerMock) = makeSUT()
 
-        let contextMock = AdyenContext(
-            apiContext: Dummy.apiContext,
-            amount: .init(value: 100, currencyCode: "EUR"),
-            publicKey: Dummy.publicKey,
-            analyticsProvider: AnalyticsProviderMock()
-        )
-        let redirectComponent = RedirectComponent(context: contextMock)
-        let viewControllerMock = UIViewController()
-        let actionComponentMock = viewControllerMock
+        let actionComponentMock = UIViewController()
 
         routerMock.presentActionComponentOnCancelClosure = { (_: UIViewController, onCancel: (() -> Void)?) in
             // Then
