@@ -81,7 +81,7 @@ package final class DocumentComponent: ActionComponent, ShareableComponent {
         )
         let view = DocumentActionView(viewModel: viewModel, style: configuration.style)
         view.delegate = self
-        let viewController = ADYViewController(view: view)
+        let viewController = ActionViewController(view: view)
         
         setUpPresenterViewController(parentViewController: viewController)
 
