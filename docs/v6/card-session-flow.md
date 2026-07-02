@@ -53,7 +53,7 @@ let component = try checkout.createPaymentComponent(for: .scheme)
 
 ## Session-controlled card settings
 
-When you use `/sessions`, some card settings are controlled by `SessionResponse.configuration` instead of component-level `CardConfiguration` builders:
+When you use `/sessions`, some card settings are controlled by the `/sessions` response instead of component-level `CardConfiguration` builders:
 
 - `showStorePaymentMethod(_:)` follows `enableStoreDetails`.
 - `installmentConfiguration(_:)` follows `installmentOptions`. `showInstallmentAmount` is also read from the session response.

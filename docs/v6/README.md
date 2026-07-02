@@ -84,7 +84,7 @@ let checkout = try await Checkout.setup(
 let component = try checkout.createPaymentComponent(for: .scheme)
 ```
 
-In session flow, the effective `amount` comes from the `/sessions` response. A client-side `amount` on `CheckoutConfiguration` is ignored and only used as a fallback when the session has no amount. `showStorePaymentMethod(_:)` and `installmentConfiguration(_:)` are likewise controlled by `SessionResponse.configuration` through `enableStoreDetails`, `installmentOptions`, and `showInstallmentAmount`. Configure these values in your `/sessions` request and do not rely on component-level values to override them.
+In session flow, the effective `amount` comes from the `/sessions` response. A client-side `amount` on `CheckoutConfiguration` is ignored and only used as a fallback when the session has no amount. `showStorePaymentMethod(_:)` and `installmentConfiguration(_:)` are likewise controlled by the `/sessions` response through `enableStoreDetails`, `installmentOptions`, and `showInstallmentAmount`. Configure these values in your `/sessions` request and do not rely on component-level values to override them.
 
 `SessionCheckout` can:
 
