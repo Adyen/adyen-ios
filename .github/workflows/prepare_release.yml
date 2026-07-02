@@ -85,7 +85,7 @@ jobs:
         number: ${{ steps.create_pr.outputs.pull-request-number }}
 
     - name: Auto approve release PR
-      uses: hmarr/auto-approve-action@v3
+      uses: hmarr/auto-approve-action@v4.0.0
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
