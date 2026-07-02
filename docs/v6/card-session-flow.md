@@ -51,6 +51,15 @@ let checkout = try await Checkout.setup(
 let component = try checkout.createPaymentComponent(for: .scheme)
 ```
 
+## Session-controlled card settings
+
+When you use `/sessions`, some card settings are controlled by `SessionResponse.configuration` instead of component-level `CardConfiguration` builders:
+
+- `showStorePaymentMethod(_:)` follows `enableStoreDetails`.
+- `installmentConfiguration(_:)` follows `installmentOptions`. `showInstallmentAmount` is also read from the session response.
+
+Configure these values in your `/sessions` request and do not rely on component-level values to override them.
+
 Optionally apply `.theme(...)` and `.localizationProvider(...)` on `CheckoutConfiguration` before calling `Checkout.setup(...)`. See [theme.md](theme.md) and [README.md](README.md#localization).
 
 ## Complete working example

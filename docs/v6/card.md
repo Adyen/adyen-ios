@@ -63,6 +63,8 @@ let configuration = try CheckoutConfiguration(
 | `onBinChange(_:)` | Receive BIN updates while the shopper types. |
 | `onBinLookup(_:)` | Receive detected card brands from card number input. |
 
+When you use [session flow](card-session-flow.md), `showStorePaymentMethod(_:)` and `installmentConfiguration(_:)` are controlled by the `/sessions` response. Their effective values come from `enableStoreDetails`, `installmentOptions`, and `showInstallmentAmount`.
+
 ## 3D Secure configuration
 
 3DS2-specific settings are configured with `AuthenticationConfiguration`, not `CardConfiguration`.
