@@ -11,7 +11,7 @@ import Adyen
 #endif
 import Foundation
 
-internal final class BACSViewModel {
+package final class BACSViewModel {
 
     // MARK: - Properties
 
@@ -39,7 +39,7 @@ internal final class BACSViewModel {
 
     // MARK: - Initializers
 
-    internal init(
+    package init(
         paymentMethod: BACSDirectDebitPaymentMethod,
         amount: Amount?,
         configuration: BACSDirectDebitComponent.Configuration,
@@ -57,17 +57,17 @@ internal final class BACSViewModel {
 
     // MARK: - Internal
 
-    internal func viewDidLoad() {
+    package func viewDidLoad() {
         tracker.sendInitialAnalytics()
         tracker.sendDidLoadEvent()
         items = createItems()
     }
 
-    internal func stopLoading() {
+    package func stopLoading() {
         submitButtonItem?.showsActivityIndicator = false
     }
 
-    internal func performSubmit() {
+    package func performSubmit() {
         startLoading()
         shouldShowValidation = true
 

@@ -22,10 +22,7 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
 
     // MARK: - PresentableComponent
 
-    package lazy var viewController: UIViewController = {
-        let bacsViewController = createViewController()
-        return SecuredViewController(child: bacsViewController, style: configuration.style)
-    }()
+    package let viewController: UIViewController
 
     /// The object that acts as the delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
@@ -44,66 +41,40 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
     // MARK: - PaymentComponent
 
     package func performSubmit() {
-        bacsViewModel?.performSubmit()
+        bacsViewModel.performSubmit()
     }
 
     // MARK: - Properties
 
     internal let bacsPaymentMethod: BACSDirectDebitPaymentMethod
 
-    internal private(set) var bacsViewModel: BACSViewModel?
+    internal let bacsViewModel: BACSViewModel
 
     // MARK: - Initializers
 
     /// Creates and returns a BACS Direct Debit component.
+    ///
+    /// - Note: Prefer creating instances via ``BACSDirectDebitFactory`` instead of calling
+    /// this initializer directly, as it is responsible for assembling the view model and
+    /// view controller dependencies.
     /// - Parameters:
     ///   - paymentMethod: The BACS Direct Debit payment method.
     ///   - context: The context object for this component.
     ///   - configuration: Configuration for the component.
+    ///   - viewModel: The view model backing the component's form.
+    ///   - viewController: The view controller presented by the component.
     package init(
         paymentMethod: BACSDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: Configuration,
+        viewModel: BACSViewModel,
+        viewController: UIViewController
     ) {
         self.bacsPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
-    }
-
-    // MARK: - Private
-
-    private func createViewController() -> UIViewController {
-        let tracker = BACSDirectDebitComponentTracker(
-            paymentMethod: bacsPaymentMethod,
-            context: context,
-            isDropIn: _isDropIn
-        )
-        let itemsFactory = BACSItemsFactory(
-            styleProvider: configuration.style,
-            localizationParameters: configuration.localizationParameters,
-            scope: String(describing: self)
-        )
-
-        let viewModel = BACSViewModel(
-            paymentMethod: bacsPaymentMethod,
-            amount: context.amount,
-            configuration: configuration,
-            tracker: tracker,
-            itemsFactory: itemsFactory,
-            onSubmit: { [weak self] details in
-                let data = PaymentComponentData(
-                    paymentMethodDetails: details,
-                    order: self?.order
-                )
-                self?.submit(data: data)
-            }
-        )
         self.bacsViewModel = viewModel
-
-        return BACSViewController(
-            title: paymentMethod.name,
-            viewModel: viewModel
-        )
+        self.viewController = viewController
     }
 }
 
@@ -114,6 +85,6 @@ extension BACSDirectDebitComponent: LoadingComponent {
 
     /// Stops any processing animation that the component is running.
     package func stopLoading() {
-        bacsViewModel?.stopLoading()
+        bacsViewModel.stopLoading()
     }
 }

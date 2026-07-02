@@ -7,12 +7,12 @@
 import Adyen
 import Foundation
 
-internal protocol BACSDirectDebitComponentTrackerProtocol: AnyObject {
+package protocol BACSDirectDebitComponentTrackerProtocol: AnyObject {
     func sendInitialAnalytics()
     func sendDidLoadEvent()
 }
 
-internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerProtocol {
+package class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerProtocol {
 
     // MARK: - Properties
 
@@ -22,7 +22,7 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
 
     // MARK: - Initializers
 
-    internal init(
+    package init(
         paymentMethod: BACSDirectDebitPaymentMethod,
         context: AdyenContext,
         isDropIn: Bool
@@ -34,7 +34,7 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
 
     // MARK: - BACSDirectDebitComponentTrackerProtocol
 
-    internal func sendInitialAnalytics() {
+    package func sendInitialAnalytics() {
         // initial call is not needed again if inside dropIn
         guard !isDropIn else { return }
         let flavor: AnalyticsFlavor = .components(type: paymentMethod.type)
@@ -46,7 +46,7 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
         )
     }
     
-    internal func sendDidLoadEvent() {
+    package func sendDidLoadEvent() {
         let infoEvent = AnalyticsEventInfo(component: paymentMethod.type.rawValue, type: .rendered)
         context.analyticsProvider?.add(info: infoEvent)
     }

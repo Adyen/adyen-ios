@@ -376,8 +376,8 @@ private extension ComponentManager {
             style: configuration.style.formComponent,
             localizationParameters: configuration.localizationParameters
         )
-        return BACSDirectDebitComponent(
-            paymentMethod: paymentMethod,
+        return BACSDirectDebitFactory().create(
+            with: paymentMethod,
             context: context,
             configuration: bacsConfiguration
         )

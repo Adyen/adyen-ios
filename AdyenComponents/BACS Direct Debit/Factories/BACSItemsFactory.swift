@@ -13,7 +13,7 @@ import Adyen
 #endif
 import Foundation
 
-internal protocol BACSItemsFactoryProtocol {
+package protocol BACSItemsFactoryProtocol {
     func createHolderNameItem() -> FormTextInputItem
     func createBankAccountNumberItem() -> FormTextInputItem
     func createSortCodeItem() -> FormTextInputItem
