@@ -84,6 +84,8 @@ let checkout = try await Checkout.setup(
 let component = try checkout.createPaymentComponent(for: .scheme)
 ```
 
+In session flow, the effective `amount` comes from the `/sessions` response. A client-side `amount` on `CheckoutConfiguration` does not override it. For card-specific session-controlled settings such as `showStorePaymentMethod(_:)`, `installmentConfiguration(_:)`, and `showInstallmentAmount`, see [card-session-flow.md](card-session-flow.md).
+
 `SessionCheckout` can:
 
 - create an individual payment component with `createPaymentComponent(for:)`
