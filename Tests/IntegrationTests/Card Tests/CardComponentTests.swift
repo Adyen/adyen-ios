@@ -771,54 +771,6 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(securityCodeItemView.textField.isFirstResponder)
     }
 
-    // TODO: Robert: Duplicate — covered by `postalCode_submitWithoutPostalCode_showsValidationError_thenSucceedsAfterFilling` in CardComponentBillingAddressModeTests; remove in next iteration.
-    func test_postalCodeField_withPostalCodeMode_shouldBeVisibleAndValidate() throws {
-        // Given
-        var configuration = CardConfiguration()
-        configuration.billingAddressMode = .postalCode(hideForCardBrands: [])
-
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: configuration,
-            binProvider: BinInfoProviderMock()
-        )
-        setupRootViewController(sut.viewController)
-
-        let delegate = PaymentComponentDelegateMock()
-        sut.delegate = delegate
-
-        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.onDidFail = { error, component in XCTFail("should not fail") }
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-            XCTAssertTrue(data.paymentMethod is CardDetails)
-
-            XCTAssertNil(data.billingAddress?.apartment)
-            XCTAssertNil(data.billingAddress?.houseNumberOrName)
-            XCTAssertNil(data.billingAddress?.street)
-            XCTAssertNil(data.billingAddress?.stateOrProvince)
-            XCTAssertNil(data.billingAddress?.city)
-            XCTAssertNil(data.billingAddress?.country)
-            XCTAssertEqual(data.billingAddress?.postalCode, "12345")
-
-            sut.stopLoading()
-            delegateExpectation.fulfill()
-        }
-        
-        self.fillCard(on: sut.viewController.view, with: Dummy.visaCard)
-
-        let postalCodeItemView: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(sut.viewController.view.findView(with: "AdyenCard.CardComponent.postalCodeItem"))
-        XCTAssertEqual(postalCodeItemView.titleLabel.text, "Postal code")
-        XCTAssertFalse(postalCodeItemView.isShowingValidationError)
-        
-        self.populate(textItemView: postalCodeItemView, with: "12345")
-
-        self.tapSubmitButton(on: sut.viewController.view)
-
-        waitForExpectations(timeout: 10)
-    }
-
     func test_KCPFields_whenKoreanCard_shouldShowTaxAndPasswordFields() throws {
         // Given
         var configuration = CardConfiguration()
