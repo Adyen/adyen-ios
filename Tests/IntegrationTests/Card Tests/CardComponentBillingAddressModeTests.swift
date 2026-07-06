@@ -530,8 +530,14 @@ struct CardComponentBillingAddressModeTests {
     func lookup_withPrefilledBillingAddress_prefillsAndSubmitsAddress() async throws {
         let prefilledAddress = PostalAddressMocks.newYorkPostalAddress
 
+        final class LookupInvocationTracker: @unchecked Sendable { var wasCalled = false }
+        let lookupTracker = LookupInvocationTracker()
+
         let proxy = makeSUT(
-            billingAddressMode: .lookup(hideForCardBrands: [], onAddressLookup: Self.anyOnAddressLookup),
+            billingAddressMode: .lookup(hideForCardBrands: [], onAddressLookup: { _ in
+                lookupTracker.wasCalled = true
+                return []
+            }),
             shopperInformation: PrefilledShopperInformation(billingAddress: prefilledAddress)
         )
 
@@ -542,6 +548,9 @@ struct CardComponentBillingAddressModeTests {
         // No manual lookup/selection — the prefilled value should be submitted as-is.
         let submittedData = try await proxy.submit()
         #expect(submittedData.billingAddress == prefilledAddress)
+
+        // Prefilling must not trigger the lookup handler.
+        #expect(lookupTracker.wasCalled == false, "Lookup handler should not be called for a prefilled address")
     }
 
     // MARK: - Helpers

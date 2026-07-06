@@ -419,50 +419,6 @@ class CardComponentTests: XCTestCase {
         wait(for: [expectationBin, expectationCardBrand], timeout: 10)
     }
     
-    // TODO: Robert: Duplicate — covered by `lookup_withPrefilledBillingAddress_prefillsAndSubmitsAddress` in CardComponentBillingAddressModeTests; remove in next iteration.
-    func test_billingAddress_withPrefillData_shouldShowPrefilledAddress() throws {
-        
-        // Given
-        var configuration = CardConfiguration()
-        configuration.showCardholderName = true
-        configuration.billingAddressMode = .lookup(
-            hideForCardBrands: [],
-            onAddressLookup: { searchTerm in
-                XCTFail("Lookup handler should not be called")
-                return []
-
-            },
-            onAddressSelected: nil
-        )
-
-        configuration.shopperInformation = shopperInformation
-
-        let component = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: configuration
-        )
-
-        // When
-        
-        setupRootViewController(component.viewController)
-
-        // Then
-        let view: UIView = component.cardViewController.view
-
-        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
-        let expectedBillingAddress = try XCTUnwrap(shopperInformation.billingAddress)
-        let billingAddress = billingAddressView.item.value
-        XCTAssertEqual(expectedBillingAddress, billingAddress)
-        
-        billingAddressView.item.selectionHandler()
-        
-        try waitForViewController(
-            ofType: AddressLookupViewController.self,
-            toBecomeChildOf: UIViewController.topPresenter()
-        )
-    }
-
     func test_securityCodeFormatter_whenCardBrandChanges_shouldUpdateMaxLength() throws {
         
         let sut = CardComponent(
