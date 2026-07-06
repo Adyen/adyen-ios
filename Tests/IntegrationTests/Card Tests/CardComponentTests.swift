@@ -1479,48 +1479,32 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(cardViewController.items.storeDetailsItem.value)
     }
     
-    // TODO: Robert: Billing-address prefill covered by `lookup_withPrefilledBillingAddress_prefillsAndSubmitsAddress` in CardComponentBillingAddressModeTests (this also asserts holderName/SSN prefill); trim/remove in next iteration.
-    func test_prefilling_withBillingAddressInLookupMode_shouldPrefillItems() throws {
+    func test_prefilling_withShopperInformation_shouldPrefillCardholderNameAndSocialSecurityNumber() throws {
         // Given
         var configuration = CardConfiguration()
         configuration.showCardholderName = true
-        configuration.billingAddressMode = .lookup(
-            hideForCardBrands: [],
-            onAddressLookup: { searchTerm in
-                [.init(identifier: searchTerm, postalAddress: .init(city: searchTerm))]
-            },
-            onAddressSelected: nil
-        )
-
+        configuration.billingAddressMode = .postalCode(hideForCardBrands: [])
         configuration.shopperInformation = shopperInformation
 
-        let component = CardComponent(
+        let sut = CardComponent(
             paymentMethod: method,
             context: context,
             configuration: configuration
         )
 
         // When
-        
-        setupRootViewController(component.cardViewController)
+        setupRootViewController(sut.cardViewController)
 
         // Then
-        let view: UIView = component.cardViewController.view
+        let view: UIView = sut.cardViewController.view
 
         let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
         let expectedHoldername = try XCTUnwrap(shopperInformation.card?.holderName)
-        let holdername = holdernameView.item.value
-        XCTAssertEqual(expectedHoldername, holdername)
+        XCTAssertEqual(expectedHoldername, holdernameView.item.value)
 
         let socialSecurityNumberView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.socialSecurityNumber))
         let expectedSocialSecurityNumber = try XCTUnwrap(shopperInformation.socialSecurityNumber)
-        let socialSecurityNumber = socialSecurityNumberView.item.value
-        XCTAssertEqual(expectedSocialSecurityNumber, socialSecurityNumber)
-
-        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
-        let expectedBillingAddress = try XCTUnwrap(shopperInformation.billingAddress)
-        let billingAddress = billingAddressView.item.value
-        XCTAssertEqual(expectedBillingAddress, billingAddress)
+        XCTAssertEqual(expectedSocialSecurityNumber, socialSecurityNumberView.item.value)
     }
 
     // TODO: Robert: Billing-address prefill covered by `full_withPrefilledBillingAddress_prefillsAndSubmitsAddress` in CardComponentBillingAddressModeTests (this also asserts holderName/SSN prefill); trim/remove in next iteration.
