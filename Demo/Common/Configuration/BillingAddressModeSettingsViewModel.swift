@@ -8,22 +8,12 @@ import Adyen
 import AdyenCard
 import SwiftUI
 
-/// Drives ``BillingAddressModeSettingsView`` by exposing the selectable forms and the
-/// configuration (card brands, country codes) that applies to the current selection.
-///
-/// It wraps a `Binding<BillingAddressSetting>` so selections and toggles are written straight back
-/// to the source of truth.
 internal struct BillingAddressModeSettingsViewModel {
 
     @Binding private var billingAddress: BillingAddressSetting
 
     internal init(billingAddress: Binding<BillingAddressSetting>) {
         self._billingAddress = billingAddress
-    }
-
-    private var formData: AddressFormViewData {
-        get { AddressFormViewData(billingAddress) }
-        nonmutating set { billingAddress = newValue.setting }
     }
 
     // MARK: - Mode selection
@@ -34,18 +24,31 @@ internal struct BillingAddressModeSettingsViewModel {
         setting.displayName
     }
 
+    /// Whether `setting` is the currently selected form, disregarding its configuration.
     internal func isSelected(_ setting: BillingAddressSetting) -> Bool {
-        formData.isSameForm(as: setting)
+        switch (billingAddress, setting) {
+        case (.none, .none),
+             (.postalCode, .postalCode),
+             (.full, .full),
+             (.lookup, .lookup),
+             (.lookupMapKit, .lookupMapKit):
+            return true
+        default:
+            return false
+        }
     }
 
     internal func select(_ setting: BillingAddressSetting) {
-        formData.select(setting)
+        billingAddress = setting
     }
 
     // MARK: - Hide for card brands
 
     internal var showsCardBrandHiding: Bool {
-        formData.supportsCardBrandHiding
+        switch billingAddress {
+        case .postalCode, .full, .lookup, .lookupMapKit: return true
+        case .none: return false
+        }
     }
 
     internal let commonBrands: [CardBrand] = [
@@ -54,24 +57,37 @@ internal struct BillingAddressModeSettingsViewModel {
     ]
 
     internal var selectedBrandsSummary: String {
-        formData.hideForCardBrands
+        hideForCardBrands
             .map { CardBrand(rawValue: $0).name }
             .sorted()
             .joined(separator: ", ")
     }
 
     internal func isBrandSelected(_ brand: CardBrand) -> Bool {
-        formData.hideForCardBrands.contains(brand.rawValue)
+        hideForCardBrands.contains(brand.rawValue)
     }
 
     internal func toggleBrand(_ brand: CardBrand) {
-        formData.toggleBrand(brand.rawValue)
+        var brands = hideForCardBrands
+        let rawValue = brand.rawValue
+        if brands.contains(rawValue) {
+            brands.remove(rawValue)
+        } else {
+            brands.insert(rawValue)
+        }
+        billingAddress = billingAddress.withConfiguration(
+            hideForCardBrands: brands,
+            supportedCountryCodes: supportedCountryCodes
+        )
     }
 
     // MARK: - Supported country codes
 
     internal var showsSupportedCountryCodes: Bool {
-        formData.supportsCountryCodeSelection
+        switch billingAddress {
+        case .full: return true
+        case .none, .postalCode, .lookup, .lookupMapKit: return false
+        }
     }
 
     internal let commonCountryCodes: [String] = [
@@ -80,20 +96,64 @@ internal struct BillingAddressModeSettingsViewModel {
     ]
 
     internal var selectedCountryCodesSummary: String {
-        formData.supportedCountryCodes
+        supportedCountryCodes
             .sorted()
             .joined(separator: ", ")
     }
 
     internal func isCountryCodeSelected(_ code: String) -> Bool {
-        formData.supportedCountryCodes.contains(code)
+        supportedCountryCodes.contains(code)
     }
 
     internal func toggleCountryCode(_ code: String) {
-        formData.toggleCountryCode(code)
+        var countryCodes = supportedCountryCodes
+        if let index = countryCodes.firstIndex(of: code) {
+            countryCodes.remove(at: index)
+        } else {
+            countryCodes.append(code)
+        }
+        billingAddress = billingAddress.withConfiguration(
+            hideForCardBrands: hideForCardBrands,
+            supportedCountryCodes: countryCodes
+        )
     }
 
     internal func countryName(for code: String) -> String {
         Locale.current.localizedString(forRegionCode: code) ?? code
+    }
+
+    // MARK: - Current configuration
+
+    private var hideForCardBrands: Set<String> {
+        switch billingAddress {
+        case .none:
+            return []
+        case let .postalCode(brands),
+             let .lookup(brands),
+             let .lookupMapKit(brands):
+            return brands
+        case let .full(_, brands):
+            return brands
+        }
+    }
+
+    private var supportedCountryCodes: [String] {
+        guard case let .full(countryCodes, _) = billingAddress else { return [] }
+        return countryCodes
+    }
+}
+
+private extension BillingAddressSetting {
+
+    /// Returns this form populated with the given configuration, ignoring values that do not
+    /// apply to the case (e.g. country codes on anything other than `.full`).
+    func withConfiguration(hideForCardBrands: Set<String>, supportedCountryCodes: [String]) -> BillingAddressSetting {
+        switch self {
+        case .none: return .none
+        case .postalCode: return .postalCode(hideForCardBrands: hideForCardBrands)
+        case .full: return .full(supportedCountryCodes: supportedCountryCodes, hideForCardBrands: hideForCardBrands)
+        case .lookup: return .lookup(hideForCardBrands: hideForCardBrands)
+        case .lookupMapKit: return .lookupMapKit(hideForCardBrands: hideForCardBrands)
+        }
     }
 }

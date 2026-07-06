@@ -113,8 +113,7 @@ internal struct CardSettings: Codable {
 
 /// The demo app's billing address configuration, selected in the card settings.
 ///
-/// It mirrors the SDK's `BillingAddressMode` (see ``billingAddressMode``) but is a demo-owned
-/// type that is `Codable` for persistence and carries the raw configuration values entered in the UI.
+/// It mirrors the SDK's `BillingAddressMode`
 internal enum BillingAddressSetting: Codable, Hashable, CaseIterable {
     case none
     case postalCode(hideForCardBrands: Set<String> = [])

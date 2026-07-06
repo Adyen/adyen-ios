@@ -7,10 +7,6 @@
 import Adyen
 import AdyenCard
 
-/// Derives the display strings shown by ``BillingAddressSummary`` from a ``BillingAddressSetting``.
-///
-/// Each summary is optional: a `nil` value means the corresponding field is not applicable to the
-/// selected form (or has no configuration) and should not be shown.
 internal struct BillingAddressSummaryViewModel {
 
     private let billingAddress: BillingAddressSetting
@@ -19,17 +15,12 @@ internal struct BillingAddressSummaryViewModel {
         self.billingAddress = billingAddress
     }
 
-    private var formData: AddressFormViewData {
-        AddressFormViewData(billingAddress)
-    }
-
     internal var displayName: String {
         billingAddress.displayName
     }
 
     internal var hiddenBrandsSummary: String? {
-        let brands = formData.hideForCardBrands
-        guard !brands.isEmpty else { return nil }
+        guard let brands = hideForCardBrands, !brands.isEmpty else { return nil }
         return brands
             .map { CardBrand(rawValue: $0).name }
             .sorted()
@@ -37,10 +28,27 @@ internal struct BillingAddressSummaryViewModel {
     }
 
     internal var supportedCountryCodesSummary: String? {
-        let countryCodes = formData.supportedCountryCodes
-        guard !countryCodes.isEmpty else { return nil }
+        guard let countryCodes = supportedCountryCodes, !countryCodes.isEmpty else { return nil }
         return countryCodes
             .sorted()
             .joined(separator: ", ")
+    }
+
+    private var hideForCardBrands: Set<String>? {
+        switch billingAddress {
+        case .none:
+            return nil
+        case let .postalCode(brands),
+             let .lookup(brands),
+             let .lookupMapKit(brands):
+            return brands
+        case let .full(_, brands):
+            return brands
+        }
+    }
+
+    private var supportedCountryCodes: [String]? {
+        guard case let .full(countryCodes, _) = billingAddress else { return nil }
+        return countryCodes
     }
 }
