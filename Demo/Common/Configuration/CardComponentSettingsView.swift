@@ -45,9 +45,9 @@ internal struct CardSettingsView: View {
             }
             Section(header: Text("Input Modes")) {
                 NavigationLink {
-                    BillingAddressModeSettingsView(addressSettings: $viewModel.addressSettings)
+                    BillingAddressModeSettingsView(billingAddress: $viewModel.billingAddress)
                 } label: {
-                    BillingAddressSummary(addressSettings: viewModel.addressSettings)
+                    BillingAddressSummary(billingAddress: viewModel.billingAddress)
                 }
                 Picker("Social Security Number Mode", selection: $viewModel.socialSecurityNumberVisibility) {
                     ForEach(CardConfiguration.FieldVisibility.allCases, id: \.self) {
@@ -65,19 +65,6 @@ internal struct CardSettingsView: View {
                     Text("Security Code")
                 }
             }
-        }
-    }
-}
-
-extension AddressSettings.AddressFormType {
-
-    internal var displayName: String {
-        switch self {
-        case .full: return "Full"
-        case .lookup: return "Lookup (Dummy Data)"
-        case .lookupMapKit: return "Lookup (MapKit)"
-        case .postalCode: return "Postal code"
-        case .none: return "None"
         }
     }
 }

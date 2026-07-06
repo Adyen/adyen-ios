@@ -17,7 +17,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var showStorePaymentMethod = true
     @Published internal var showSecurityCodeForStoredCard = true
     @Published internal var showSecurityCode = true
-    @Published internal var addressSettings = AddressSettings()
+    @Published internal var billingAddress: BillingAddressSetting = .none
     @Published internal var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility = .auto
     @Published internal var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility = .auto
     @Published internal var allowDisablingStoredPaymentMethods: Bool = false
@@ -59,7 +59,7 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.showStorePaymentMethod = configuration.cardSettings.showStorePaymentMethod
         self.showSecurityCodeForStoredCard = configuration.cardSettings.showSecurityCodeForStoredCard
         self.showSecurityCode = configuration.cardSettings.showSecurityCode
-        self.addressSettings = configuration.cardSettings.addressSettings
+        self.billingAddress = configuration.cardSettings.billingAddress
         self.socialSecurityNumberVisibility = configuration.cardSettings.socialSecurityNumberVisibility
         self.koreanAuthenticationVisibility = configuration.cardSettings.koreanAuthenticationVisibility
         self.allowDisablingStoredPaymentMethods = configuration.dropInSettings.allowDisablingStoredPaymentMethods
@@ -96,7 +96,7 @@ internal final class ConfigurationViewModel: ObservableObject {
                 showStorePaymentMethod: showStorePaymentMethod,
                 showSecurityCodeForStoredCard: showSecurityCodeForStoredCard,
                 showSecurityCode: showSecurityCode,
-                addressSettings: addressSettings,
+                billingAddress: billingAddress,
                 socialSecurityNumberVisibility: socialSecurityNumberVisibility,
                 koreanAuthenticationVisibility: koreanAuthenticationVisibility,
                 enableInstallments: installmentsEnabled,

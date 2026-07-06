@@ -104,42 +104,77 @@ internal struct CardSettings: Codable {
     internal var showStorePaymentMethod = true
     internal var showSecurityCodeForStoredCard = true
     internal var showSecurityCode = true
-    internal var addressSettings = AddressSettings()
+    internal var billingAddress: BillingAddressSetting = .none
     internal var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility = .auto
     internal var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility = .auto
     internal var enableInstallments = false
     internal var showsInstallmentAmount = false
 }
 
-internal struct AddressSettings: Codable {
-    internal var mode: AddressFormType = .none
-    internal var hideForCardBrands: Set<String> = []
-    internal var supportedCountryCodes: [String] = []
+/// The demo app's billing address configuration, selected in the card settings.
+///
+/// It mirrors the SDK's `BillingAddressMode` (see ``billingAddressMode``) but is a demo-owned
+/// type that is `Codable` for persistence and carries the raw configuration values entered in the UI.
+internal enum BillingAddressSetting: Codable, Hashable, CaseIterable {
+    case none
+    case postalCode(hideForCardBrands: Set<String> = [])
+    case full(supportedCountryCodes: [String] = [], hideForCardBrands: Set<String> = [])
+    case lookup(hideForCardBrands: Set<String> = [])
+    case lookupMapKit(hideForCardBrands: Set<String> = [])
 
-    internal enum AddressFormType: String, Codable, CaseIterable {
-        case lookup
-        case lookupMapKit
-        case full
-        case postalCode
-        case none
+    /// One representative per case with empty configuration, used to populate selection UI.
+    internal static var allCases: [BillingAddressSetting] {
+        [.none, .postalCode(), .full(), .lookup(), .lookupMapKit()]
+    }
+
+    internal var displayName: String {
+        switch self {
+        case .full: return "Full"
+        case .lookup: return "Lookup (Dummy Data)"
+        case .lookupMapKit: return "Lookup (MapKit)"
+        case .postalCode: return "Postal code"
+        case .none: return "None"
+        }
     }
 }
 
-extension AddressSettings {
+extension BillingAddressSetting {
 
-    internal mutating func toggleBrand(_ rawValue: String) {
-        if hideForCardBrands.contains(rawValue) {
-            hideForCardBrands.remove(rawValue)
-        } else {
-            hideForCardBrands.insert(rawValue)
+    /// The `BillingAddressMode` to apply to a `CardConfiguration`.
+    internal var billingAddressMode: BillingAddressMode {
+        func cardBrands(_ rawValues: Set<String>) -> Set<CardBrand> {
+            Set(rawValues.map { CardBrand(rawValue: $0) })
         }
-    }
 
-    internal mutating func toggleCountryCode(_ code: String) {
-        if let index = supportedCountryCodes.firstIndex(of: code) {
-            supportedCountryCodes.remove(at: index)
-        } else {
-            supportedCountryCodes.append(code)
+        switch self {
+        case .none:
+            return .none
+        case let .postalCode(hideForCardBrands):
+            return .postalCode(hideForCardBrands: cardBrands(hideForCardBrands))
+        case let .full(supportedCountryCodes, hideForCardBrands):
+            return .full(
+                supportedCountryCodes: supportedCountryCodes,
+                hideForCardBrands: cardBrands(hideForCardBrands)
+            )
+        case let .lookup(hideForCardBrands):
+            let provider = DemoAddressLookupProvider()
+            return .lookup(
+                hideForCardBrands: cardBrands(hideForCardBrands),
+                onAddressLookup: { searchTerm in
+                    await provider.searchAsync(searchTerm)
+                },
+                onAddressSelected: { selected in
+                    try await provider.completeAsync(selected)
+                }
+            )
+        case let .lookupMapKit(hideForCardBrands):
+            let provider = MapkitAddressLookupProvider()
+            return .lookup(
+                hideForCardBrands: cardBrands(hideForCardBrands),
+                onAddressLookup: { searchTerm in
+                    await provider.searchAsync(searchTerm)
+                }
+            )
         }
     }
 }
@@ -228,7 +263,7 @@ internal struct DemoAppSettings: Codable {
         showStorePaymentMethod: true,
         showSecurityCodeForStoredCard: true,
         showSecurityCode: true,
-        addressSettings: AddressSettings(),
+        billingAddress: .none,
         socialSecurityNumberVisibility: .auto,
         koreanAuthenticationVisibility: .auto,
         enableInstallments: false,
@@ -285,7 +320,7 @@ internal struct DemoAppSettings: Codable {
             .socialSecurityNumberVisibility(cardSettings.socialSecurityNumberVisibility)
             .showSecurityCodeForStoredCard(cardSettings.showSecurityCodeForStoredCard)
             .installmentConfiguration(installmentConfiguration)
-            .billingAddressMode(billingAddressMode(from: cardSettings.addressSettings))
+            .billingAddressMode(cardSettings.billingAddress.billingAddressMode)
     }
 
     internal var cardDropInConfiguration: DropInComponent.Card {
@@ -331,43 +366,6 @@ internal struct DemoAppSettings: Codable {
         )
     }
 
-}
-
-private extension DemoAppSettings {
-    
-    private func billingAddressMode(from addressSettings: AddressSettings) -> BillingAddressMode {
-        let brands = Set(addressSettings.hideForCardBrands.map { CardBrand(rawValue: $0) })
-        switch addressSettings.mode {
-        case .lookup:
-            let provider = DemoAddressLookupProvider()
-            return .lookup(
-                hideForCardBrands: brands,
-                onAddressLookup: { searchTerm in
-                    await provider.searchAsync(searchTerm)
-                },
-                onAddressSelected: { selected in
-                    try await provider.completeAsync(selected)
-                }
-            )
-        case .lookupMapKit:
-            let provider = MapkitAddressLookupProvider()
-            return .lookup(
-                hideForCardBrands: brands,
-                onAddressLookup: { searchTerm in
-                    await provider.searchAsync(searchTerm)
-                }
-            )
-        case .full:
-            return .full(
-                supportedCountryCodes: addressSettings.supportedCountryCodes,
-                hideForCardBrands: brands
-            )
-        case .postalCode:
-            return .postalCode(hideForCardBrands: brands)
-        case .none:
-            return .none
-        }
-    }
 }
 
 internal extension PKPaymentRequest {

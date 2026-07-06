@@ -9,23 +9,27 @@ import AdyenCard
 import SwiftUI
 
 internal struct BillingAddressModeSettingsView: View {
-    @Binding internal var addressSettings: AddressSettings
+    @Binding internal var billingAddress: BillingAddressSetting
 
     @State private var isHideForCardBrandsExpanded = false
     @State private var isSupportedCountryCodesExpanded = false
 
+    private var viewModel: BillingAddressModeSettingsViewModel {
+        BillingAddressModeSettingsViewModel(billingAddress: $billingAddress)
+    }
+
     internal var body: some View {
         List {
             Section(header: Text("Mode")) {
-                ForEach(AddressSettings.AddressFormType.allCases, id: \.self) { mode in
+                ForEach(viewModel.settings, id: \.self) { setting in
                     Button {
-                        addressSettings.mode = mode
+                        viewModel.select(setting)
                     } label: {
                         HStack {
-                            Text(mode.displayName)
+                            Text(viewModel.displayName(for: setting))
                                 .foregroundColor(.primary)
                             Spacer()
-                            if addressSettings.mode == mode {
+                            if viewModel.isSelected(setting) {
                                 Image(systemName: "checkmark")
                                     .foregroundColor(.accentColor)
                             }
@@ -34,62 +38,35 @@ internal struct BillingAddressModeSettingsView: View {
                 }
             }
 
-            if addressSettings.mode != .none {
+            if viewModel.showsCardBrandHiding {
                 SelectableDisclosureSection(
                     title: "Hide For Card Brands",
                     footer: "When a detected card brand matches, the billing address form is hidden.",
-                    items: Self.commonBrands,
+                    items: viewModel.commonBrands,
                     id: \.rawValue,
-                    summary: selectedBrandsSummary,
+                    summary: viewModel.selectedBrandsSummary,
                     isExpanded: $isHideForCardBrandsExpanded,
                     rowTitle: { $0.name },
-                    isSelected: { addressSettings.hideForCardBrands.contains($0.rawValue) },
-                    onToggle: { addressSettings.toggleBrand($0.rawValue) }
+                    isSelected: { viewModel.isBrandSelected($0) },
+                    onToggle: { viewModel.toggleBrand($0) }
                 )
             }
 
-            if addressSettings.mode == .full {
+            if viewModel.showsSupportedCountryCodes {
                 SelectableDisclosureSection(
                     title: "Supported Country Codes",
                     footer: "Restricts the country picker to selected countries. When none are selected, all countries are available.",
-                    items: Self.commonCountryCodes,
+                    items: viewModel.commonCountryCodes,
                     id: \.self,
-                    summary: selectedCountryCodesSummary,
+                    summary: viewModel.selectedCountryCodesSummary,
                     isExpanded: $isSupportedCountryCodesExpanded,
-                    rowTitle: { String(localized: "\($0) \u{2014} \(Self.countryName(for: $0))") },
-                    isSelected: { addressSettings.supportedCountryCodes.contains($0) },
-                    onToggle: { addressSettings.toggleCountryCode($0) }
+                    rowTitle: { String(localized: "\($0) - \(viewModel.countryName(for: $0))") },
+                    isSelected: { viewModel.isCountryCodeSelected($0) },
+                    onToggle: { viewModel.toggleCountryCode($0) }
                 )
             }
         }
         .navigationTitle("Billing Address")
-    }
-
-    private var selectedBrandsSummary: String {
-        addressSettings.hideForCardBrands
-            .map { CardBrand(rawValue: $0).name }
-            .sorted()
-            .joined(separator: ", ")
-    }
-
-    private var selectedCountryCodesSummary: String {
-        addressSettings.supportedCountryCodes
-            .sorted()
-            .joined(separator: ", ")
-    }
-
-    private static let commonBrands: [CardBrand] = [
-        .visa, .masterCard, .americanExpress, .maestro,
-        .bcmc, .discover, .jcb, .diners
-    ]
-
-    private static let commonCountryCodes: [String] = [
-        "US", "GB", "NL", "DE", "FR", "BE", "ES", "IT",
-        "CA", "AU", "BR", "JP", "CN", "IN", "SG"
-    ]
-
-    private static func countryName(for code: String) -> String {
-        Locale.current.localizedString(forRegionCode: code) ?? code
     }
 }
 
@@ -98,15 +75,14 @@ internal struct BillingAddressModeSettingsView: View {
 }
 
 private struct BillingAddressModeSettingsPreviewContainer: View {
-    @State private var addressSettings = AddressSettings(
-        mode: .full,
-        hideForCardBrands: [CardBrand.visa.rawValue, CardBrand.masterCard.rawValue],
-        supportedCountryCodes: ["US", "NL", "GB"]
+    @State private var billingAddress: BillingAddressSetting = .full(
+        supportedCountryCodes: ["US", "NL", "GB"],
+        hideForCardBrands: [CardBrand.visa.rawValue, CardBrand.masterCard.rawValue]
     )
 
     var body: some View {
         NavigationView {
-            BillingAddressModeSettingsView(addressSettings: $addressSettings)
+            BillingAddressModeSettingsView(billingAddress: $billingAddress)
         }
     }
 }
