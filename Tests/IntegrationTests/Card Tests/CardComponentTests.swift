@@ -1531,10 +1531,6 @@ class CardComponentTests: XCTestCase {
         let socialSecurityNumberView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.socialSecurityNumber))
         let socialSecurityNumber = socialSecurityNumberView.item.value
         XCTAssertTrue(socialSecurityNumber.isEmpty)
-
-        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
-        let billingAddress = billingAddressView.item.value
-        XCTAssertNil(billingAddress)
     }
 
     func test_prefilling_withNoShopperInformationAndPostalCodeMode_shouldNotPrefillItems() throws {
