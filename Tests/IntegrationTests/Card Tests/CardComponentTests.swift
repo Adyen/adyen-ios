@@ -1506,7 +1506,7 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(expectedSocialSecurityNumber, socialSecurityNumberView.item.value)
     }
 
-    func test_prefilling_withNoShopperInformationAndFullAddressMode_shouldNotPrefillItems() throws {
+    func test_prefilling_withNoShopperInformation_shouldNotPrefillCardholderNameOrSocialSecurityNumber() throws {
         // Given
         var configuration = CardConfiguration()
         configuration.showCardholderName = true
