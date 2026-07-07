@@ -215,6 +215,9 @@ struct CardComponentBillingAddressModeTests {
         proxy.fillCardDetails()
         await proxy.expectBillingAddressPickerVisible(true)
 
+        // Opening the address form for editing shows the prefilled address.
+        try await proxy.expectAddressFormPrefilled(with: prefilledAddress)
+
         // No manual address entry — the prefilled value should be submitted as-is.
         let submittedData = try await proxy.submit()
         #expect(submittedData.billingAddress == prefilledAddress)
@@ -711,6 +714,14 @@ private struct CardComponentProxy {
         if let selectedCountry {
             #expect(addressFormVC.addressItem.countryPickerItem.value?.identifier == selectedCountry)
         }
+        addressFormVC.dismissAddressLookup()
+        await waitForDismissal()
+    }
+
+    /// Opens the billing address form and asserts it is prefilled with the expected address, then dismisses it.
+    func expectAddressFormPrefilled(with expectedAddress: PostalAddress) async throws {
+        let addressFormVC = try await openBillingAddressForm()
+        #expect(addressFormVC.addressItem.value == expectedAddress)
         addressFormVC.dismissAddressLookup()
         await waitForDismissal()
     }

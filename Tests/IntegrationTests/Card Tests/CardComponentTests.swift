@@ -1569,42 +1569,6 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(postalCode.isEmpty)
     }
 
-    // TODO: Robert: Covered by `full_withPrefilledBillingAddress_prefillsAndSubmitsAddress` + `full_supportedCountryCodes_filtersCountryList` in CardComponentBillingAddressModeTests; remove in next iteration.
-    func test_billingAddress_withSupportedCountriesAndMatchingPrefill_shouldUsePrefillData() throws {
-        var configuration = CardConfiguration()
-        configuration.billingAddressMode = .full(supportedCountryCodes: ["US", "JP"], hideForCardBrands: [])
-        configuration.shopperInformation = shopperInformation
-
-        let component = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: configuration
-        )
-        
-        setupRootViewController(component.viewController)
-        
-        // Then
-        let view: UIView = component.cardViewController.view
-        
-        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
-        let expectedBillingAddress = try XCTUnwrap(shopperInformation.billingAddress)
-        let billingAddress = billingAddressView.item.value
-        XCTAssertEqual(expectedBillingAddress, billingAddress)
-        
-        billingAddressView.item.selectionHandler()
-        
-        let presentedViewController = try waitForViewController(
-            ofType: UINavigationController.self,
-            toBecomeChildOf: UIViewController.topPresenter()
-        )
-        
-        XCTAssertTrue(presentedViewController.viewControllers.first is AddressInputFormViewController)
-        
-        let inputForm = try XCTUnwrap(presentedViewController.viewControllers.first as? AddressInputFormViewController)
-        XCTAssertEqual(inputForm.addressItem.configuration.supportedCountryCodes, ["US", "JP"])
-        XCTAssertEqual(inputForm.addressItem.value, expectedBillingAddress)
-    }
-    
     func test_billingAddress_withSupportedCountriesAndNonMatchingPrefill_shouldUseFirstSupportedCountry() throws {
         var configuration = CardConfiguration()
         configuration.billingAddressMode = .full(supportedCountryCodes: ["UK"], hideForCardBrands: [])
