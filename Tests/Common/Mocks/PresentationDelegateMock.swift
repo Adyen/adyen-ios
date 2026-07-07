@@ -24,15 +24,15 @@ final class PresentationDelegateMock: NavigationDelegate {
         presentComponentCallsCount > 0
     }
 
-    var presentComponentReceivedComponent: PresentableComponent?
-    var doPresent: ((_ component: PresentableComponent) throws -> Void)?
+    var presentComponentReceivedViewController: UIViewController?
+    var doPresent: ((_ viewController: UIViewController) throws -> Void)?
 
-    func present(component: PresentableComponent) {
+    func present(viewController: UIViewController) {
         presentComponentCallsCount += 1
-        presentComponentReceivedComponent = component
+        presentComponentReceivedViewController = viewController
         
         do {
-            try doPresent?(component)
+            try doPresent?(viewController)
         } catch {
             XCTFail(error.localizedDescription)
         }

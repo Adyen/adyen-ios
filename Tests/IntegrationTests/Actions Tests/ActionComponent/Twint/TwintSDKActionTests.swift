@@ -53,8 +53,8 @@ import XCTest
             )
 
             let presentationDelegateMock = PresentationDelegateMock()
-            presentationDelegateMock.doPresent = { component in
-                let alertController = try XCTUnwrap(component.viewController as? UIAlertController)
+            presentationDelegateMock.doPresent = { viewController in
+                let alertController = try XCTUnwrap(viewController as? UIAlertController)
                 XCTAssertEqual(alertController.message, expectedAlertMessage)
                 noAppFoundAlertExpectation.fulfill()
             }
@@ -171,8 +171,8 @@ import XCTest
             )
 
             let presentationDelegateMock = PresentationDelegateMock()
-            presentationDelegateMock.doPresent = { component in
-                let alertController = try XCTUnwrap(component.viewController as? UIAlertController)
+            presentationDelegateMock.doPresent = { viewController in
+                let alertController = try XCTUnwrap(viewController as? UIAlertController)
                 XCTAssertTrue(alertController === expectedAppPicker)
                 pickerExpectation.fulfill()
             }
@@ -246,8 +246,8 @@ import XCTest
             let analyticsProviderMock = AnalyticsProviderMock()
             let presentationDelegate = PresentationDelegateMock()
             
-            presentationDelegate.doPresent = { component in
-                let alertController = try XCTUnwrap(component.viewController as? UIAlertController)
+            presentationDelegate.doPresent = { viewController in
+                let alertController = try XCTUnwrap(viewController as? UIAlertController)
                 XCTAssertEqual(alertController.message, expectedAlertMessage)
                 let errorEvent = analyticsProviderMock.errors[0]
                 XCTAssertEqual(errorEvent.component, "paymentMethodType")
@@ -373,8 +373,8 @@ import XCTest
             )
 
             let presentationDelegateMock = PresentationDelegateMock()
-            presentationDelegateMock.doPresent = { component in
-                let alertController = try XCTUnwrap(component.viewController as? UIAlertController)
+            presentationDelegateMock.doPresent = { viewController in
+                let alertController = try XCTUnwrap(viewController as? UIAlertController)
                 XCTAssertTrue(alertController === expectedAppPicker)
                 pickerExpectation.fulfill()
             }
