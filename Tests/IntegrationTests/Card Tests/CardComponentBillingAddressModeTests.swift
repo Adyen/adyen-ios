@@ -164,6 +164,31 @@ struct CardComponentBillingAddressModeTests {
     }
 
     @Test
+    func full_countryWithoutStateProvince_submitsAddressWithoutStateOrProvince() async throws {
+        // GB addresses have no state/province, so the submitted address must not include one.
+        let gbAddress = PostalAddress(
+            city: "London",
+            country: "GB",
+            houseNumberOrName: "12",
+            postalCode: "123",
+            street: "Test Street"
+        )
+
+        let proxy = makeSUT(
+            billingAddressMode: .full(supportedCountryCodes: ["GB"], hideForCardBrands: []),
+            shopperInformation: PrefilledShopperInformation(billingAddress: gbAddress)
+        )
+
+        await proxy.load()
+        proxy.fillCardDetails()
+        await proxy.expectBillingAddressPickerVisible(true)
+
+        let submittedData = try await proxy.submit()
+        #expect(submittedData.billingAddress == gbAddress)
+        #expect(submittedData.billingAddress?.stateOrProvince == nil)
+    }
+
+    @Test
     func full_submitWithoutAddress_showsValidationError_thenSucceedsAfterFilling() async throws {
         let expectedAddress = PostalAddressMocks.newYorkPostalAddress
 
