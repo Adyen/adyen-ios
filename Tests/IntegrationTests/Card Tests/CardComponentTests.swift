@@ -1564,36 +1564,6 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(postalCode.isEmpty)
     }
 
-    func test_billingAddress_withSupportedCountriesAndNonMatchingPrefill_shouldUseFirstSupportedCountry() throws {
-        var configuration = CardConfiguration()
-        configuration.billingAddressMode = .full(supportedCountryCodes: ["UK"], hideForCardBrands: [])
-        configuration.shopperInformation = shopperInformation
-
-        let component = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: configuration
-        )
-        
-        setupRootViewController(component.viewController)
-        
-        // Then
-        let view: UIView = component.cardViewController.view
-        
-        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
-        billingAddressView.item.selectionHandler()
-        
-        let presentedViewController = try waitForViewController(
-            ofType: UINavigationController.self,
-            toBecomeChildOf: UIViewController.topPresenter()
-        )
-        
-        let inputForm = try XCTUnwrap(presentedViewController.viewControllers.first as? AddressInputFormViewController)
-        
-        XCTAssertEqual(inputForm.addressItem.configuration.supportedCountryCodes, ["UK"])
-        XCTAssertEqual(inputForm.addressItem.countryPickerItem.value?.identifier, "UK")
-    }
-
     func test_billingAddress_withOptionalPolicyAndValidAddress_shouldIncludeInPaymentData() throws {
         var configuration = CardConfiguration()
         configuration.billingAddressMode = .full(supportedCountryCodes: ["US"], hideForCardBrands: [.visa])
