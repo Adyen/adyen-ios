@@ -189,6 +189,33 @@ struct CardComponentBillingAddressModeTests {
     }
 
     @Test
+    func full_withApartmentValue_includesApartmentInSubmittedAddress() async throws {
+        // An entered apartment must be preserved in the submitted billing address.
+        let addressWithApartment = PostalAddress(
+            city: "New York",
+            country: "US",
+            houseNumberOrName: "14",
+            postalCode: "10019",
+            stateOrProvince: "NY",
+            street: "8th Ave",
+            apartment: "3B"
+        )
+
+        let proxy = makeSUT(
+            billingAddressMode: .full(supportedCountryCodes: ["US"], hideForCardBrands: []),
+            shopperInformation: PrefilledShopperInformation(billingAddress: addressWithApartment)
+        )
+
+        await proxy.load()
+        proxy.fillCardDetails()
+        await proxy.expectBillingAddressPickerVisible(true)
+
+        let submittedData = try await proxy.submit()
+        #expect(submittedData.billingAddress == addressWithApartment)
+        #expect(submittedData.billingAddress?.apartment == "3B")
+    }
+
+    @Test
     func full_submitWithoutAddress_showsValidationError_thenSucceedsAfterFilling() async throws {
         let expectedAddress = PostalAddressMocks.newYorkPostalAddress
 
