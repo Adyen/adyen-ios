@@ -1564,6 +1564,9 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(postalCode.isEmpty)
     }
 
+    // Coverage: the "valid prefilled address is included in payment data" behavior is covered by
+    // `full_withPrefilledBillingAddress_prefillsAndSubmitsAddress`, and the hidden-brand scenario by
+    // `full_withPrefilledBillingAddress_andHiddenBrand_hidesAndSubmitsNil` in CardComponentBillingAddressModeTests.
     func test_billingAddress_withOptionalPolicyAndValidAddress_shouldIncludeInPaymentData() throws {
         var configuration = CardConfiguration()
         configuration.billingAddressMode = .full(supportedCountryCodes: ["US"], hideForCardBrands: [.visa])
