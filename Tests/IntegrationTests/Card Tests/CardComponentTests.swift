@@ -1564,61 +1564,6 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(postalCode.isEmpty)
     }
 
-    // Coverage: the "valid prefilled address is included in payment data" behavior is covered by
-    // `full_withPrefilledBillingAddress_prefillsAndSubmitsAddress`, and the hidden-brand scenario by
-    // `full_withPrefilledBillingAddress_andHiddenBrand_hidesAndSubmitsNil` in CardComponentBillingAddressModeTests.
-    func test_billingAddress_withOptionalPolicyAndValidAddress_shouldIncludeInPaymentData() throws {
-        var configuration = CardConfiguration()
-        configuration.billingAddressMode = .full(supportedCountryCodes: ["US"], hideForCardBrands: [.visa])
-        configuration.shopperInformation = shopperInformation
-
-        let cardBrandProviderMock = BinInfoProviderMock()
-        cardBrandProviderMock.onFetch = {
-            $0(BinLookupResponse(
-                brands: [DetectedCardBrand(brand: .visa)],
-                issuingCountryCode: "US"
-            ))
-        }
-        
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: configuration,
-            binProvider: cardBrandProviderMock
-        )
-        
-        let delegate = PaymentComponentDelegateMock()
-        sut.delegate = delegate
-        
-        setupRootViewController(sut.viewController)
-        
-        let view: UIView = sut.cardViewController.view
-        
-        let securityCodeField: FormCardSecurityCodeItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.securityCode))
-        let expiryDateField: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.expiryDate))
-        let numberField: FormCardNumberItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.cardNumber))
-        
-        populate(textItemView: securityCodeField, with: "737")
-        populate(textItemView: numberField, with: "4111 1120 1426 7661")
-        populate(textItemView: expiryDateField, with: "12/30")
-        
-        let delegateExpectation = expectation(description: "PaymentComponentDelegate must be called when submit button is clicked.")
-        delegate.onDidFail = { error, component in XCTFail("should not fail") }
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
-            XCTAssertTrue(data.paymentMethod is CardDetails)
-
-            XCTAssertEqual(data.billingAddress, self.shopperInformation.billingAddress)
-
-            sut.stopLoading()
-            delegateExpectation.fulfill()
-        }
-        
-        tapSubmitButton(on: sut.viewController.view)
-
-        waitForExpectations(timeout: 10, handler: nil)
-    }
-    
     func test_postalCode_withOptionalPolicyAndValidValue_shouldIncludeInPaymentData() throws {
 
         var configuration = CardConfiguration()
