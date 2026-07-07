@@ -133,7 +133,7 @@ struct CardComponentBillingAddressModeTests {
 
         await proxy.load()
         proxy.fillCardDetails()
-        try await proxy.expectAddressFormCountryPicker(containsExactly: ["US", "NL"])
+        try await proxy.expectAddressFormCountryPicker(containsExactly: ["US", "NL"], selectedCountry: "US")
     }
 
     @Test
@@ -145,6 +145,22 @@ struct CardComponentBillingAddressModeTests {
         await proxy.load()
         proxy.fillCardDetails()
         try await proxy.expectAddressFormCountryPicker(containsAtLeast: ["US", "NL", "GB"])
+    }
+
+    @Test
+    func full_supportedCountryCodes_withNonMatchingPrefill_selectsFirstSupportedCountry() async throws {
+        // The prefilled billing address country (US) is not in the supported list,
+        // so the country picker should fall back to the first supported country.
+        let nonMatchingPrefill = PostalAddressMocks.newYorkPostalAddress
+
+        let proxy = makeSUT(
+            billingAddressMode: .full(supportedCountryCodes: ["UK"], hideForCardBrands: []),
+            shopperInformation: PrefilledShopperInformation(billingAddress: nonMatchingPrefill)
+        )
+
+        await proxy.load()
+        proxy.fillCardDetails()
+        try await proxy.expectAddressFormCountryPicker(containsExactly: ["UK"], selectedCountry: "UK")
     }
 
     @Test

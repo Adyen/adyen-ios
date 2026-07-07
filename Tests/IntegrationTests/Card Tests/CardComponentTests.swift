@@ -1507,43 +1507,6 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(expectedSocialSecurityNumber, socialSecurityNumberView.item.value)
     }
 
-    // TODO: Robert: Billing-address prefill covered by `postalCode_withPrefilledBillingAddress_prefillsAndSubmitsPostalCode` in CardComponentBillingAddressModeTests (this also asserts holderName/SSN prefill); trim/remove in next iteration.
-    func test_prefilling_withBillingAddressInPostalCodeMode_shouldPrefillItems() throws {
-        // Given
-
-        var configuration = CardConfiguration()
-        configuration.showCardholderName = true
-        configuration.billingAddressMode = .postalCode(hideForCardBrands: [])
-        configuration.shopperInformation = shopperInformation
-
-        let prefilledSut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: configuration
-        )
-
-        // When
-        setupRootViewController(prefilledSut.cardViewController)
-
-        // Then
-        let view: UIView = prefilledSut.cardViewController.view
-
-        let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
-        let expectedHoldername = try XCTUnwrap(shopperInformation.card?.holderName)
-        let holdername = holdernameView.item.value
-        XCTAssertEqual(expectedHoldername, holdername)
-
-        let socialSecurityNumberView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.socialSecurityNumber))
-        let expectedSocialSecurityNumber = try XCTUnwrap(shopperInformation.socialSecurityNumber)
-        let socialSecurityNumber = socialSecurityNumberView.item.value
-        XCTAssertEqual(expectedSocialSecurityNumber, socialSecurityNumber)
-
-        let postalCodeView: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.zipCode))
-        let expectedPostalCode = try XCTUnwrap(shopperInformation.billingAddress?.postalCode)
-        let postalCode = postalCodeView.item.value
-        XCTAssertEqual(expectedPostalCode, postalCode)
-    }
-
     func test_prefilling_withNoShopperInformationAndFullAddressMode_shouldNotPrefillItems() throws {
         // Given
         var configuration = CardConfiguration()
@@ -1606,38 +1569,6 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(postalCode.isEmpty)
     }
 
-    // TODO: Robert: Duplicate — covered by `full_supportedCountryCodes_filtersCountryList` in CardComponentBillingAddressModeTests; remove in next iteration.
-    func test_billingAddress_withSupportedCountries_shouldFilterCountryList() throws {
-        var configuration = CardConfiguration()
-        configuration.billingAddressMode = .full(supportedCountryCodes: ["UK"], hideForCardBrands: [])
-
-        let component = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: configuration
-        )
-        
-        setupRootViewController(component.viewController)
-        
-        // Then
-        let view: UIView = component.cardViewController.view
-        
-        let billingAddressView: FormAddressPickerItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.billingAddress))
-        
-        billingAddressView.item.selectionHandler()
-        
-        let presentedViewController = try waitForViewController(
-            ofType: UINavigationController.self,
-            toBecomeChildOf: UIViewController.topPresenter()
-        )
-        
-        XCTAssertTrue(presentedViewController.viewControllers.first is AddressInputFormViewController)
-        
-        let inputForm = try XCTUnwrap(presentedViewController.viewControllers.first as? AddressInputFormViewController)
-        XCTAssertEqual(inputForm.addressItem.configuration.supportedCountryCodes, ["UK"])
-        XCTAssertEqual(inputForm.addressItem.countryPickerItem.value?.identifier, "UK")
-    }
-    
     // TODO: Robert: Covered by `full_withPrefilledBillingAddress_prefillsAndSubmitsAddress` + `full_supportedCountryCodes_filtersCountryList` in CardComponentBillingAddressModeTests; remove in next iteration.
     func test_billingAddress_withSupportedCountriesAndMatchingPrefill_shouldUsePrefillData() throws {
         var configuration = CardConfiguration()
