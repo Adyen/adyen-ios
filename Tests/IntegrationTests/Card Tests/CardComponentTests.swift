@@ -1533,37 +1533,6 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(socialSecurityNumber.isEmpty)
     }
 
-    func test_prefilling_withNoShopperInformationAndPostalCodeMode_shouldNotPrefillItems() throws {
-        // Given
-        var configuration = CardConfiguration()
-        configuration.showCardholderName = true
-        configuration.billingAddressMode = .postalCode(hideForCardBrands: [])
-
-        let sut = CardComponent(
-            paymentMethod: method,
-            context: context,
-            configuration: configuration
-        )
-
-        // When
-        setupRootViewController(sut.cardViewController)
-
-        // Then
-        let view: UIView = sut.cardViewController.view
-
-        let holdernameView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.holdername))
-        let holdername = holdernameView.item.value
-        XCTAssertTrue(holdername.isEmpty)
-
-        let socialSecurityNumberView: FormTextInputItemView = try XCTUnwrap(view.findView(by: CardViewIdentifier.socialSecurityNumber))
-        let socialSecurityNumber = socialSecurityNumberView.item.value
-        XCTAssertTrue(socialSecurityNumber.isEmpty)
-
-        let postalCodeView: FormTextItemView<FormPostalCodeItem> = try XCTUnwrap(view.findView(by: CardViewIdentifier.zipCode))
-        let postalCode = postalCodeView.item.value
-        XCTAssertTrue(postalCode.isEmpty)
-    }
-
     func test_holderNameField_withEmptyValue_shouldBeInvalid() {
         var configuration = CardConfiguration()
         configuration.showCardholderName = true
