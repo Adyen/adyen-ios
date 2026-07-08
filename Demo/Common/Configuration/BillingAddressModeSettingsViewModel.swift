@@ -39,6 +39,7 @@ internal struct BillingAddressModeSettingsViewModel {
     }
 
     internal func select(_ setting: BillingAddressModeDemoSetting) {
+        guard !isSelected(setting) else { return }
         billingAddress = setting
     }
 

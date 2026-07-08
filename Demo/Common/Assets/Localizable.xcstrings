@@ -58,7 +58,7 @@
     "Apple Pay" : {
 
     },
-    "Billing Address mode" : {
+    "Billing Address" : {
 
     },
     "Card Component" : {
@@ -82,6 +82,9 @@
     "Force Card RedirectAction" : {
 
     },
+    "Hide for brands: %@" : {
+
+    },
     "Holder Name" : {
 
     },
@@ -98,6 +101,9 @@
 
     },
     "Korean Authentication Mode" : {
+
+    },
+    "Mode" : {
 
     },
     "onBeforeSubmit" : {
@@ -131,6 +137,9 @@
 
     },
     "Stored Payment Method Removal" : {
+
+    },
+    "Supported countries: %@" : {
 
     },
     "Theme" : {
