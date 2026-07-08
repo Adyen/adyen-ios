@@ -32,8 +32,8 @@ class QRCodeActionComponentUITests: XCTestCase {
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
 
-        presentationDelegate.doPresent = { component in
-            let qrCodeViewController = try XCTUnwrap(component.viewController as? QRCodeViewController)
+        presentationDelegate.doPresent = { viewController in
+            let qrCodeViewController = try XCTUnwrap(viewController as? QRCodeViewController)
 
             self.setupRootViewController(qrCodeViewController)
             self.wait(for: qrCodeViewController)
@@ -58,8 +58,8 @@ class QRCodeActionComponentUITests: XCTestCase {
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
 
-        presentationDelegate.doPresent = { component in
-            let qrCodeViewController = try XCTUnwrap(component.viewController as? QRCodeViewController)
+        presentationDelegate.doPresent = { viewController in
+            let qrCodeViewController = try XCTUnwrap(viewController as? QRCodeViewController)
 
             self.setupRootViewController(qrCodeViewController)
             self.wait(for: qrCodeViewController)
@@ -84,8 +84,8 @@ class QRCodeActionComponentUITests: XCTestCase {
         let presentationDelegate = PresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
 
-        presentationDelegate.doPresent = { component in
-            let qrCodeViewController = try XCTUnwrap(component.viewController as? QRCodeViewController)
+        presentationDelegate.doPresent = { viewController in
+            let qrCodeViewController = try XCTUnwrap(viewController as? QRCodeViewController)
 
             self.setupRootViewController(qrCodeViewController)
             self.wait(for: qrCodeViewController)

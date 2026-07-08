@@ -117,11 +117,7 @@ extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
         confirmationViewPresented = true
         let confirmationView = assembleConfirmationView(with: data)
 
-        let wrappedComponent = PresentableComponentWrapper(
-            component: self,
-            viewController: confirmationView
-        )
-        presentationDelegate?.present(component: wrappedComponent)
+        presentationDelegate?.present(viewController: confirmationView)
     }
 
     internal func confirmPayment(with data: BACSDirectDebitData) {

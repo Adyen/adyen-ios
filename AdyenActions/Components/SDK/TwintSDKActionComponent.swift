@@ -165,11 +165,7 @@ import Foundation
         }
 
         private func present(_ viewController: UIViewController, presentationDelegate: PresentationDelegate) {
-            let presentableComponent = PresentableComponentWrapper(
-                component: self,
-                viewController: viewController
-            )
-            presentationDelegate.present(component: presentableComponent)
+            presentationDelegate.present(viewController: viewController)
         }
 
         private func handleShowError(_ errorMessage: String, componentName: String) {
