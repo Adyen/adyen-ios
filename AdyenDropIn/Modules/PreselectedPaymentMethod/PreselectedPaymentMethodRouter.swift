@@ -18,7 +18,7 @@ internal protocol PreselectedPaymentMethodRouterListener: AnyObject {
 internal protocol PreselectedPaymentMethodRouting: AnyObject {
     func presentPaymentMethodList()
     func present(component: PaymentComponent)
-    func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?)
+    func present(actionViewController: UIViewController, onCancel: (() -> Void)?)
     func dismiss(completion: (() -> Void)?)
 }
 
@@ -83,11 +83,11 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     }
 
     internal func present(
-        actionComponent: any PresentableComponent,
+        actionViewController: UIViewController,
         onCancel: (() -> Void)?
     ) {
         let actionViewController = ActionPresentationHelper.viewController(
-            for: actionComponent,
+            for: actionViewController,
             onCancel: onCancel
         )
         rootViewController.present(actionViewController, animated: true)
