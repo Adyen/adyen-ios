@@ -1,6 +1,6 @@
 #  Migration Notes
 
-## 6.0.0-alpha01
+## 6.0.0-alpha.1
 
 See also:
 
