@@ -109,11 +109,12 @@ internal final class AwaitView: UIView {
     
     private func configureConstraints() {
         let constraints = [
-            contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            contentStackView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
             contentStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
             contentStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
             contentStackView.topAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.topAnchor, constant: 16),
-            contentStackView.bottomAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor, constant: -16)
+            contentStackView.bottomAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            messageLabel.widthAnchor.constraint(equalTo: contentStackView.widthAnchor)
         ]
         
         NSLayoutConstraint.activate(constraints)
