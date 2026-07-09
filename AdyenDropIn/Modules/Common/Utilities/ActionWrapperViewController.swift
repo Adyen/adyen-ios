@@ -4,7 +4,6 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
 import UIKit
 
 /// A modal wrapper for action view controllers, adds a navigation bar with cancel button and handles dismissal.
@@ -17,14 +16,13 @@ internal class ActionWrapperViewController: UINavigationController {
     // MARK: - Initializers
 
     internal init(
-        actionComponent: any PresentableComponent,
+        actionViewController: UIViewController,
         onCancel: (() -> Void)? = nil
     ) {
-        let actionComponentViewController = actionComponent.viewController
-        super.init(rootViewController: actionComponentViewController)
+        super.init(rootViewController: actionViewController)
         self.onCancel = onCancel
 
-        actionComponentViewController.navigationItem.leftBarButtonItem = UIBarButtonItem(
+        actionViewController.navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .cancel,
             target: self,
             action: #selector(didTapCancel)

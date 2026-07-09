@@ -153,8 +153,9 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     }
 
     private func viewController(for component: CheckoutPaymentComponent) -> UIViewController {
-        let navigation = UINavigationController(rootViewController: component.viewController!)
-        component.viewController?.navigationItem.leftBarButtonItem = .init(
+        guard let viewController = component.viewController else { fatalError("Cannot find component's view controller") }
+        let navigation = UINavigationController(rootViewController: viewController)
+        viewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
             target: self,
             action: #selector(cancelPressed)
@@ -171,7 +172,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
 extension BLIKComponentAdvancedFlowExample: PresentationDelegate {
 
-    internal func present(component: any PresentableComponent) {
-        presenter?.present(viewController: component.viewController, completion: nil)
+    internal func present(viewController: UIViewController) {
+        presenter?.present(viewController: viewController, completion: nil)
     }
 }

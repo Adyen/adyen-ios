@@ -8,6 +8,7 @@ import Adyen
 import AdyenCheckout
 import AdyenComponents
 import Foundation
+import UIKit
 
 @MainActor
 internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
@@ -104,8 +105,8 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
 }
 
 extension InstantPaymentComponentExample: PresentationDelegate {
-
-    func present(component: any PresentableComponent) {
-        presenter?.present(viewController: component.viewController, completion: nil)
+    internal func present(viewController: UIViewController) {
+        presenter?.hideLoadingIndicator()
+        presenter?.present(viewController: viewController, completion: nil)
     }
 }
