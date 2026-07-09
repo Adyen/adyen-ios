@@ -167,12 +167,6 @@ struct ComponentContainerRouterTests {
     }
 
     private func makeActionComponent() async -> UIViewController {
-        let context = AdyenContext(
-            apiContext: Dummy.apiContext,
-            amount: .init(value: 100, currencyCode: "EUR"),
-            publicKey: Dummy.publicKey,
-            analyticsProvider: AnalyticsProviderMock()
-        )
-        return UIViewController()
+        UIViewController()
     }
 }
