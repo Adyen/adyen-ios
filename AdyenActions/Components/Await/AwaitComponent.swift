@@ -118,8 +118,7 @@ package final class AwaitComponent: ActionComponent, Cancellable {
         let viewController = AwaitViewController(viewModel: viewModel, style: configuration.style)
 
         if let presentationDelegate {
-            let presentableComponent = PresentableComponentWrapper(component: self, viewController: viewController)
-            presentationDelegate.present(component: presentableComponent)
+            presentationDelegate.present(viewController: viewController)
         } else {
             let message = "PresentationDelegate is nil. Provide a presentation delegate to AwaitComponent."
             AdyenAssertion.assertionFailure(message: message)

@@ -111,7 +111,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     private var applePayComponent: PaymentComponent?
-    private var initiablePaymentComponent: PaymentComponent?
 
     internal func cancel() {
         router?.dismiss(completion: nil)
@@ -134,6 +133,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         router?.present(viewController: applePayViewController)
     }
 
+    private var initiablePaymentComponent: PaymentComponent?
     internal func select(paymentMethod: PaymentMethod) {
         guard let component = componentManager.buildComponent(for: paymentMethod) else { return }
 
@@ -141,8 +141,8 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         case .regular, .stored:
             router?.present(component: component)
         case let .initiable(initiablePaymentComponent):
-            state = .loading
             self.initiablePaymentComponent = initiablePaymentComponent
+            state = .loading
             initiablePaymentComponent.delegate = self
             initiablePaymentComponent.performSubmit()
         }
@@ -218,8 +218,8 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
 
 extension PaymentMethodListViewModel: ActionPresenter {
 
-    internal func present(actionComponent: any PresentableComponent) {
-        router?.present(actionComponent: actionComponent) { [weak self] in
+    internal func present(actionViewController: UIViewController) {
+        router?.present(actionViewController: actionViewController) { [weak self] in
             self?.state = .idle
         }
     }
