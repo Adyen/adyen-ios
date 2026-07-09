@@ -27,6 +27,11 @@ jobs:
       run: echo "MARKETING_VERSION=$(agvtool what-marketing-version -terse1)" >> $GITHUB_OUTPUT
       id: get-current-marketing-version
 
+    - name: Generate Docs
+      run: Scripts/generate_docc_documentation.sh
+      env:
+        LATEST_VERSION: ${{ steps.get-current-marketing-version.outputs.MARKETING_VERSION }}
+
     - name: Deploy to current version 🚀
       uses: peaceiris/actions-gh-pages@v4
       with:

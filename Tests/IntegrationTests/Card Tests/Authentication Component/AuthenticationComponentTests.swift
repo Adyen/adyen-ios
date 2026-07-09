@@ -527,8 +527,8 @@ class AuthenticationComponentTests: XCTestCase {
         
             // Check if the UI is displayed & simulate the tap of the first button which is approve.
             let presentationExpectation = expectation(description: "Approval view controller should be shown.")
-            presentationDelegateMock.doPresent = { component in
-                let approvalViewController = component.viewController as? DAApprovalViewController
+            presentationDelegateMock.doPresent = { viewController in
+                let approvalViewController = viewController as? DAApprovalViewController
                 XCTAssertNotNil(approvalViewController)
                 self.verifyApprovalView(viewController: approvalViewController)
                 approvalViewController?.firstButtonTapped()
@@ -648,13 +648,13 @@ class AuthenticationComponentTests: XCTestCase {
             // Check if the UI is displayed & simulate the tap of the first button which is approve.
             let approvalPresentationExpectation = expectation(description: "Approval view controller should be shown.")
             let approvalErrorPresentationExpectation = expectation(description: "Error on Approval view should be shown.")
-            presentationDelegateMock.doPresent = { component in
-                if let approvalViewController = component.viewController as? DAApprovalViewController {
+            presentationDelegateMock.doPresent = { viewController in
+                if let approvalViewController = viewController as? DAApprovalViewController {
                     XCTAssertNotNil(approvalViewController)
                     self.verifyApprovalView(viewController: approvalViewController)
                     approvalPresentationExpectation.fulfill()
                     approvalViewController.firstButtonTapped()
-                } else if let errorViewController = component.viewController as? DAErrorViewController {
+                } else if let errorViewController = viewController as? DAErrorViewController {
                     rootViewController.present(errorViewController, animated: false)
                     XCTAssertNotNil(errorViewController)
                     self.verifyApprovalErrorView(controller: errorViewController)
@@ -776,8 +776,8 @@ class AuthenticationComponentTests: XCTestCase {
         
             // Verify if the UI is displayed & simulate the tap of the first button which is approve.
             let presentationExpectation = expectation(description: "Approval view controller should be shown.")
-            presentationDelegateMock.doPresent = { component in
-                let registrationViewController = component.viewController as? DARegistrationViewController
+            presentationDelegateMock.doPresent = { viewController in
+                let registrationViewController = viewController as? DARegistrationViewController
                 self.verifyRegistrationView(viewController: registrationViewController)
                 XCTAssertNotNil(registrationViewController)
                 registrationViewController?.firstButtonTapped()
@@ -883,13 +883,13 @@ class AuthenticationComponentTests: XCTestCase {
             let registrationViewExpectation = expectation(description: "Registration view controller should be shown.")
             let registrationErrorViewExpectation = expectation(description: "Registration error view controller should be shown.")
 
-            presentationDelegateMock.doPresent = { component in
-                if let registrationViewController = component.viewController as? DARegistrationViewController {
+            presentationDelegateMock.doPresent = { viewController in
+                if let registrationViewController = viewController as? DARegistrationViewController {
                     self.verifyRegistrationView(viewController: registrationViewController)
                     XCTAssertNotNil(registrationViewController)
                     registrationViewExpectation.fulfill()
                     registrationViewController.firstButtonTapped()
-                } else if let errorViewController = component.viewController as? DAErrorViewController {
+                } else if let errorViewController = viewController as? DAErrorViewController {
                     XCTAssertNotNil(errorViewController)
                     self.verifyRegistrationErrorView(controller: errorViewController)
                     registrationErrorViewExpectation.fulfill()
