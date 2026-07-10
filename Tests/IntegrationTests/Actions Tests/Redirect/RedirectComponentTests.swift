@@ -251,7 +251,7 @@ class RedirectComponentTests: XCTestCase {
         let action = try RedirectAction(url: XCTUnwrap(URL(string: "https://www.adyen.com")), paymentData: "test_data")
 
         let presentExpectation = expectation(description: "Expect in app browser to be presented")
-        presentationDelegate.doPresent = { component in
+        presentationDelegate.doPresent = { viewController in
             presentExpectation.fulfill()
         }
 
