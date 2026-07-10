@@ -68,12 +68,22 @@ jobs:
         
     - name: Download and install simulator runtime
       if: matrix.needs_custom_sim == true
-      run: |
-        echo "Downloading iOS ${{ matrix.version }} runtime via xcodebuild..."
-        sudo xcodebuild -downloadPlatform iOS -buildVersion ${{ matrix.version }}
+      uses: nick-fields/retry@v3
+      with:
+        timeout_minutes: 10
+        max_attempts: 3
+        retry_wait_seconds: 30
+        command: |
+          echo "Downloading iOS ${{ matrix.version }} runtime via xcodebuild..."
+          # Wake CoreSimulatorService first; otherwise -downloadPlatform
+          # intermittently fails with "Unable to connect to simulator" (exit 70)
+          # see - https://github.com/actions/runner-images/issues/13459
+          sudo xcrun simctl list > /dev/null
+          sudo xcodebuild -downloadPlatform iOS -buildVersion ${{ matrix.version }}
 
-        # Verify simulator is available
-        xcrun simctl list runtimes
+          # Verify the runtime actually installed, else fail so retry kicks in
+          xcrun simctl list runtimes
+          xcrun simctl list runtimes | grep -q "iOS ${{ matrix.version }}"
 
     - name: Create simulator ${{ matrix.version }}
       run: |
