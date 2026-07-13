@@ -120,6 +120,15 @@ internal final class VoucherActionExample: InitialDataAdvancedFlowProtocol {
 extension VoucherActionExample: PresentationDelegate {
 
     func present(viewController: UIViewController) {
-        presenter?.present(viewController: viewController, completion: nil)
+        // Wrap in a navigation controller with a cancel button so the action can be dismissed
+        // when testing it in isolation (the standalone Checkout flow adds no navigation chrome).
+        let navigationController = UINavigationController(rootViewController: viewController)
+        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            systemItem: .cancel,
+            primaryAction: UIAction { [weak self] _ in
+                self?.presenter?.dismiss(completion: nil)
+            }
+        )
+        presenter?.present(viewController: navigationController, completion: nil)
     }
 }
