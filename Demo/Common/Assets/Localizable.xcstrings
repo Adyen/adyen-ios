@@ -61,7 +61,7 @@
     "Apple Pay" : {
 
     },
-    "Billing Address mode" : {
+    "Billing Address" : {
 
     },
     "Boleto voucher (VoucherView)" : {
@@ -88,6 +88,9 @@
     "Force Card RedirectAction" : {
 
     },
+    "Hide for brands: %@" : {
+
+    },
     "Holder Name" : {
 
     },
@@ -104,6 +107,9 @@
 
     },
     "Korean Authentication Mode" : {
+
+    },
+    "Mode" : {
 
     },
     "onBeforeSubmit" : {
@@ -137,6 +143,9 @@
 
     },
     "Stored Payment Method Removal" : {
+
+    },
+    "Supported countries: %@" : {
 
     },
     "Theme" : {

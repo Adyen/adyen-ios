@@ -101,7 +101,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                     self.updateLatestApplePayAmount(using: items)
                     return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: items)
                 }
-                .onPaymentMethodChange { paymentMethod, summaryItems in
+                .onSelectPaymentMethod { paymentMethod, summaryItems in
                     // Example: Add a processing fee based on card type
                     let cardType = paymentMethod.displayName ?? "Card"
                     let items = self.updatedSummaryItems(
