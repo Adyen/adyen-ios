@@ -122,7 +122,14 @@ internal final class ComponentsViewController: UIViewController {
                     selectionHandler: presentInstantPaymentComponent
                 )
             ],
-            [ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)]
+            [ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)],
+            [
+                ComponentsItem(
+                    title: "Actions",
+                    subtitle: "Test action UIs directly, e.g. Voucher",
+                    selectionHandler: presentActions
+                )
+            ]
         ]
         
         addConfigurationButton()
@@ -194,6 +201,15 @@ internal final class ComponentsViewController: UIViewController {
     
     internal func presentDummyActionComponent() {
         start(dummyActionExample)
+    }
+
+    // MARK: - Actions
+
+    internal func presentActions() {
+        let viewModel = ActionsViewModel(presenter: self)
+        let actionsViewController = UIHostingController(rootView: ActionsView(viewModel: viewModel))
+        actionsViewController.title = "Actions"
+        navigationController?.pushViewController(actionsViewController, animated: true)
     }
 }
 
