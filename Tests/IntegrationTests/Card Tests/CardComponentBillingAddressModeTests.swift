@@ -133,7 +133,7 @@ struct CardComponentBillingAddressModeTests {
 
         await proxy.load()
         proxy.fillCardDetails()
-        try await proxy.expectAddressFormCountryPicker(containsExactly: ["US", "NL"])
+        try await proxy.expectAddressFormCountryPicker(containsExactly: ["US", "NL"], selectedCountry: "US")
     }
 
     @Test
@@ -145,6 +145,74 @@ struct CardComponentBillingAddressModeTests {
         await proxy.load()
         proxy.fillCardDetails()
         try await proxy.expectAddressFormCountryPicker(containsAtLeast: ["US", "NL", "GB"])
+    }
+
+    @Test
+    func full_supportedCountryCodes_withNonMatchingPrefill_selectsFirstSupportedCountry() async throws {
+        // The prefilled billing address country (US) is not in the supported list,
+        // so the country picker should fall back to the first supported country.
+        let nonMatchingPrefill = PostalAddressMocks.newYorkPostalAddress
+
+        let proxy = makeSUT(
+            billingAddressMode: .full(supportedCountryCodes: ["UK"], hideForCardBrands: []),
+            shopperInformation: PrefilledShopperInformation(billingAddress: nonMatchingPrefill)
+        )
+
+        await proxy.load()
+        proxy.fillCardDetails()
+        try await proxy.expectAddressFormCountryPicker(containsExactly: ["UK"], selectedCountry: "UK")
+    }
+
+    @Test
+    func full_countryWithoutStateProvince_submitsAddressWithoutStateOrProvince() async throws {
+        // GB addresses have no state/province, so the submitted address must not include one.
+        let gbAddress = PostalAddress(
+            city: "London",
+            country: "GB",
+            houseNumberOrName: "12",
+            postalCode: "123",
+            street: "Test Street"
+        )
+
+        let proxy = makeSUT(
+            billingAddressMode: .full(supportedCountryCodes: ["GB"], hideForCardBrands: []),
+            shopperInformation: PrefilledShopperInformation(billingAddress: gbAddress)
+        )
+
+        await proxy.load()
+        proxy.fillCardDetails()
+        await proxy.expectBillingAddressPickerVisible(true)
+
+        let submittedData = try await proxy.submit()
+        #expect(submittedData.billingAddress == gbAddress)
+        #expect(submittedData.billingAddress?.stateOrProvince == nil)
+    }
+
+    @Test
+    func full_withApartmentValue_includesApartmentInSubmittedAddress() async throws {
+        // An entered apartment must be preserved in the submitted billing address.
+        let addressWithApartment = PostalAddress(
+            city: "New York",
+            country: "US",
+            houseNumberOrName: "14",
+            postalCode: "10019",
+            stateOrProvince: "NY",
+            street: "8th Ave",
+            apartment: "3B"
+        )
+
+        let proxy = makeSUT(
+            billingAddressMode: .full(supportedCountryCodes: ["US"], hideForCardBrands: []),
+            shopperInformation: PrefilledShopperInformation(billingAddress: addressWithApartment)
+        )
+
+        await proxy.load()
+        proxy.fillCardDetails()
+        await proxy.expectBillingAddressPickerVisible(true)
+
+        let submittedData = try await proxy.submit()
+        #expect(submittedData.billingAddress == addressWithApartment)
+        #expect(submittedData.billingAddress?.apartment == "3B")
     }
 
     @Test
@@ -198,6 +266,9 @@ struct CardComponentBillingAddressModeTests {
         await proxy.load()
         proxy.fillCardDetails()
         await proxy.expectBillingAddressPickerVisible(true)
+
+        // Opening the address form for editing shows the prefilled address.
+        try await proxy.expectAddressFormPrefilled(with: prefilledAddress)
 
         // No manual address entry — the prefilled value should be submitted as-is.
         let submittedData = try await proxy.submit()
@@ -531,7 +602,11 @@ struct CardComponentBillingAddressModeTests {
         let prefilledAddress = PostalAddressMocks.newYorkPostalAddress
 
         let proxy = makeSUT(
-            billingAddressMode: .lookup(hideForCardBrands: [], onAddressLookup: Self.anyOnAddressLookup),
+            billingAddressMode: .lookup(hideForCardBrands: [], onAddressLookup: { _ in
+                // Prefilling must not trigger the lookup handler.
+                Issue.record("Lookup handler should not be called for a prefilled address")
+                return []
+            }),
             shopperInformation: PrefilledShopperInformation(billingAddress: prefilledAddress)
         )
 
@@ -686,6 +761,14 @@ private struct CardComponentProxy {
         if let selectedCountry {
             #expect(addressFormVC.addressItem.countryPickerItem.value?.identifier == selectedCountry)
         }
+        addressFormVC.dismissAddressLookup()
+        await waitForDismissal()
+    }
+
+    /// Opens the billing address form and asserts it is prefilled with the expected address, then dismisses it.
+    func expectAddressFormPrefilled(with expectedAddress: PostalAddress) async throws {
+        let addressFormVC = try await openBillingAddressForm()
+        #expect(addressFormVC.addressItem.value == expectedAddress)
         addressFormVC.dismissAddressLookup()
         await waitForDismissal()
     }
