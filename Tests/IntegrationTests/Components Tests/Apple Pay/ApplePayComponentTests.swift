@@ -323,7 +323,7 @@ class ApplePayComponentTest: XCTestCase {
         var configuration = try ApplePayConfiguration(
             paymentRequest: Dummy.createTestApplePayPaymentRequest()
         )
-        configuration.onPaymentMethodChange = { paymentMethod, _ in
+        configuration.onSelectPaymentMethod = { paymentMethod, _ in
             receivedPaymentMethod = paymentMethod
             return PKPaymentRequestPaymentMethodUpdate(paymentSummaryItems: [
                 PKPaymentSummaryItem(label: "New Item 1", amount: 1111),
