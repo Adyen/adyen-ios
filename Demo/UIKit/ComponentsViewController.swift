@@ -85,8 +85,8 @@ internal final class ComponentsViewController: UIViewController {
         return blikAdvanced
     }
     
-    private var dummyActionExample: DummyActionComponentExample {
-        let dummyAction = DummyActionComponentExample()
+    private var dummyActionExample: ActionComponentExample {
+        let dummyAction = ActionComponentExample(actionString: DummyAction.qrCode)
         dummyAction.presenter = self
         return dummyAction
     }

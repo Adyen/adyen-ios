@@ -19,7 +19,7 @@ internal final class ActionsViewModel: ObservableObject {
     }
 
     internal func presentVoucher() {
-        let example = VoucherActionExample()
+        let example = ActionComponentExample(actionString: DummyAction.voucher)
         example.presenter = presenter
         currentExample = example
         example.start()
