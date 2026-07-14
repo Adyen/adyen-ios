@@ -19,7 +19,15 @@ internal final class ActionsViewModel: ObservableObject {
     }
 
     internal func presentVoucher() {
-        let example = ActionComponentExample(actionString: DummyAction.voucher)
+        present(actionString: DummyAction.voucher)
+    }
+
+    internal func presentQRCode() {
+        present(actionString: DummyAction.qrCode)
+    }
+
+    private func present(actionString: String) {
+        let example = ActionComponentExample(actionString: actionString)
         example.presenter = presenter
         currentExample = example
         example.start()
@@ -27,7 +35,7 @@ internal final class ActionsViewModel: ObservableObject {
 }
 
 /// A lightweight list of standalone action examples, used to quickly test action UIs
-/// (e.g. `VoucherView`) without completing a full payment flow.
+/// (e.g. `VoucherView`, `QRCodeView`) without completing a full payment flow.
 internal struct ActionsView: View {
 
     @ObservedObject internal var viewModel: ActionsViewModel
@@ -35,18 +43,31 @@ internal struct ActionsView: View {
     internal var body: some View {
         List {
             Section {
-                Button(action: viewModel.presentVoucher) {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text("Voucher")
-                            .font(.headline)
-                            .foregroundColor(.primary)
-                        Text("Boleto voucher (VoucherView)")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                }
+                actionRow(
+                    title: "Voucher",
+                    subtitle: "Boleto voucher (VoucherView)",
+                    action: viewModel.presentVoucher
+                )
+                actionRow(
+                    title: "QR Code",
+                    subtitle: "Pix QR code (QRCodeView)",
+                    action: viewModel.presentQRCode
+                )
             }
         }
         .navigationTitle("Actions")
+    }
+
+    private func actionRow(title: String, subtitle: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                Text(subtitle)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+        }
     }
 }
