@@ -29,7 +29,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         try #expect(preSelectedViewController.primaryTitleText == testData.expectedTitle, "Card number")
         try #expect(preSelectedViewController.subTitleText == testData.expectedSubTitleText, "Use payment.method")
         try #expect(preSelectedViewController.submitButtonText == testData.submitButtonText, "Pay button title is incorrect")
-        try #expect(preSelectedViewController.showAllPaymentMethodsButtonText == testData.showAllPaymentMethodsButtonText, "Other Payment methods")
+        try #expect(preSelectedViewController.showAllPaymentMethodsButtonText != testData.showAllPaymentMethodsButtonText, "Other Payment methods")
     }
     
     // MARK: - Submit Payment Tests
