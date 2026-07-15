@@ -41,6 +41,9 @@ TempProject/
 .vscode
 .tmp
 
+# Generated documentation (deployed via CI to gh-pages, not committed)
+docs/
+
 # Configuration files with secrets
 Secrets.*.xcconfig
 

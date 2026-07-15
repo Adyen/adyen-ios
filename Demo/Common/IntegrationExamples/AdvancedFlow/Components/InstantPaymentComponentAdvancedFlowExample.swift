@@ -9,6 +9,7 @@ import AdyenActions
 import AdyenCheckout
 import AdyenComponents
 import Foundation
+import UIKit
 
 @MainActor
 internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlowProtocol {
@@ -142,8 +143,7 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
 }
 
 extension InstantPaymentComponentAdvancedFlow: PresentationDelegate {
-
-    func present(component: any PresentableComponent) {
-        presenter?.present(viewController: component.viewController, completion: nil)
+    internal func present(viewController: UIViewController) {
+        presenter?.present(viewController: viewController, completion: nil)
     }
 }

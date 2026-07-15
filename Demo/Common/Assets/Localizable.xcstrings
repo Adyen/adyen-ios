@@ -10,6 +10,9 @@
     "(Requires API version 70 or higher)" : {
 
     },
+    "Actions" : {
+
+    },
     "adyen.card.stored.title" : {
       "extractionState" : "manual"
     },
@@ -58,7 +61,10 @@
     "Apple Pay" : {
 
     },
-    "Billing Address mode" : {
+    "Billing Address" : {
+
+    },
+    "Boleto voucher (VoucherView)" : {
 
     },
     "Card Component" : {
@@ -82,6 +88,9 @@
     "Force Card RedirectAction" : {
 
     },
+    "Hide for brands: %@" : {
+
+    },
     "Holder Name" : {
 
     },
@@ -98,6 +107,9 @@
 
     },
     "Korean Authentication Mode" : {
+
+    },
+    "Mode" : {
 
     },
     "onBeforeSubmit" : {
@@ -133,6 +145,9 @@
     "Stored Payment Method Removal" : {
 
     },
+    "Supported countries: %@" : {
+
+    },
     "Theme" : {
 
     },
@@ -140,6 +155,9 @@
 
     },
     "Visibility" : {
+
+    },
+    "Voucher" : {
 
     },
     "When false, simulates a shipping error returned from the didAuthorize delegate method." : {

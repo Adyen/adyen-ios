@@ -17,7 +17,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var showStorePaymentMethod = true
     @Published internal var showSecurityCodeForStoredCard = true
     @Published internal var showSecurityCode = true
-    @Published internal var addressMode: CardSettings.AddressFormType = .none
+    @Published internal var billingAddress: BillingAddressModeDemoSetting = .none
     @Published internal var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility = .auto
     @Published internal var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility = .auto
     @Published internal var allowDisablingStoredPaymentMethods: Bool = false
@@ -34,6 +34,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var analyticsIsEnabled: Bool = true
     @Published internal var installmentsEnabled: Bool = false
     @Published internal var showInstallmentAmount: Bool = false
+
     @Published internal var selectedTheme: ExampleAppTheme = .defaultTheme
 
     private let onDone: (DemoAppSettings) -> Void
@@ -58,7 +59,7 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.showStorePaymentMethod = configuration.cardSettings.showStorePaymentMethod
         self.showSecurityCodeForStoredCard = configuration.cardSettings.showSecurityCodeForStoredCard
         self.showSecurityCode = configuration.cardSettings.showSecurityCode
-        self.addressMode = configuration.cardSettings.addressMode
+        self.billingAddress = configuration.cardSettings.billingAddress
         self.socialSecurityNumberVisibility = configuration.cardSettings.socialSecurityNumberVisibility
         self.koreanAuthenticationVisibility = configuration.cardSettings.koreanAuthenticationVisibility
         self.allowDisablingStoredPaymentMethods = configuration.dropInSettings.allowDisablingStoredPaymentMethods
@@ -72,6 +73,7 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.analyticsIsEnabled = configuration.analyticsSettings.isEnabled
         self.installmentsEnabled = configuration.cardSettings.enableInstallments
         self.showInstallmentAmount = configuration.cardSettings.showsInstallmentAmount
+
         self.selectedTheme = configuration.themeSettings.theme
     }
     
@@ -94,7 +96,7 @@ internal final class ConfigurationViewModel: ObservableObject {
                 showStorePaymentMethod: showStorePaymentMethod,
                 showSecurityCodeForStoredCard: showSecurityCodeForStoredCard,
                 showSecurityCode: showSecurityCode,
-                addressMode: addressMode,
+                billingAddress: billingAddress,
                 socialSecurityNumberVisibility: socialSecurityNumberVisibility,
                 koreanAuthenticationVisibility: koreanAuthenticationVisibility,
                 enableInstallments: installmentsEnabled,

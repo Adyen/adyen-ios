@@ -111,17 +111,12 @@ package final class VoucherComponent: AnyVoucherActionHandler, ShareableComponen
         let view = VoucherView(model: viewModel(with: action))
         view.delegate = self
         self.view = view
-        let viewController = ADYViewController(view: view)
+        let viewController = ActionViewController(view: view)
         
         setUpPresenterViewController(parentViewController: viewController)
 
         if let presentationDelegate {
-            let presentableComponent = PresentableComponentWrapper(
-                component: self,
-                viewController: viewController,
-                navBarType: navBarType()
-            )
-            presentationDelegate.present(component: presentableComponent)
+            presentationDelegate.present(viewController: viewController)
         } else {
             AdyenAssertion.assertionFailure(
                 message: "PresentationDelegate is nil. Provide a presentation delegate to VoucherComponent."
@@ -131,29 +126,6 @@ package final class VoucherComponent: AnyVoucherActionHandler, ShareableComponen
     
     internal let presenterViewController = UIViewController()
         
-    private func navBarType() -> NavigationBarType {
-        let model = ActionNavigationBar.Model(
-            leadingButtonTitle: Bundle.Adyen.localizedEditCopy,
-            trailingButtonTitle: Bundle.Adyen.localizedDoneCopy
-        )
-        let style = ActionNavigationBar.Style(
-            leadingButton: configuration.style.editButton,
-            trailingButton: configuration.style.doneButton,
-            backgroundColor: configuration.style.backgroundColor
-        )
-        
-        let navBar = ActionNavigationBar(model: model, style: style)
-        
-        navBar.leadingButtonHandler = {
-            navBar.onCancelHandler?()
-        }
-        
-        navBar.trailingButtonHandler = { [weak self] in
-            self.map { $0.delegate?.didComplete(from: $0) }
-        }
-        return .custom(navBar)
-    }
-    
     private func viewModel(with action: VoucherAction) -> VoucherView.Model {
         let anyAction = action.anyAction
         let viewStyle = VoucherView.Model.Style(
