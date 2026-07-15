@@ -100,6 +100,7 @@ jobs:
         DEST: "platform=iOS Simulator,OS=${{ matrix.version }},name=${{ matrix.displayname }}"
       run: |
         echo "Destination: $DEST"
+        set +e
         xcodebuild build test \
           -project "Adyen.xcodeproj" \
           -scheme "IntegrationUIKitTests" \
@@ -108,6 +109,16 @@ jobs:
           -test-iterations 3 \
           -retry-tests-on-failure \
           -test-repetition-relaunch-enabled YES \
-          SWIFT_VERSION=5
+          SWIFT_VERSION=5 2>&1 | tee compatibility-xcodebuild.log | xcpretty --utf --color
+        status=${PIPESTATUS[0]}
+        exit "$status"
+
+    - name: Upload raw compatibility test log
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v7
+      with:
+        name: compatibility-xcodebuild-${{ matrix.displayname }}-ios-${{ matrix.version }}
+        path: compatibility-xcodebuild.log
+        if-no-files-found: error
 
 
