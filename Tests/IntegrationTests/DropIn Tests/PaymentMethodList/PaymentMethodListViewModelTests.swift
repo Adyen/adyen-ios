@@ -242,7 +242,7 @@ struct PaymentMethodListViewModelTests {
         let actionComponentMock = makeActionComponentMock()
 
         // When
-        sut.present(actionComponent: actionComponentMock)
+        sut.present(actionViewController: actionComponentMock)
 
         // Then
         #expect(routerMock.presentActionComponentOnCancelCallsCount == 1)
@@ -263,7 +263,7 @@ struct PaymentMethodListViewModelTests {
         }
 
         // When
-        sut.present(actionComponent: actionComponentMock)
+        sut.present(actionViewController: actionComponentMock)
         capturedOnCancel?()
 
         // Then
@@ -376,13 +376,8 @@ struct PaymentMethodListViewModelTests {
         )
     }
 
-    private func makeActionComponentMock() -> PresentableComponent {
-        let redirectComponent = RedirectComponent(context: contextMock)
-        let viewControllerMock = UIViewController()
-        return PresentableComponentWrapper(
-            component: redirectComponent,
-            viewController: viewControllerMock
-        )
+    private func makeActionComponentMock() -> UIViewController {
+        UIViewController()
     }
 
     private let contextMock = AdyenContext(

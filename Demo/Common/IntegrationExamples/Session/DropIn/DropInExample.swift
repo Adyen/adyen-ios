@@ -136,7 +136,7 @@ internal final class DropInExample: InitialDataFlowProtocol {
 // TODO: Migrate to Checkout API — SessionDelegate has been removed in v6.
 
 extension DropInExample: PresentationDelegate {
-    internal func present(component: PresentableComponent) {
+    internal func present(viewController: UIViewController) {
         // The implementation of this delegate method is not needed when using Session as the session handles the presentation
     }
 }

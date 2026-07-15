@@ -6,6 +6,9 @@
 
 @_spi(AdyenInternal) import Adyen
 import Foundation
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// A component that handles Await action's.
 @MainActor
@@ -115,11 +118,11 @@ package final class AwaitComponent: ActionComponent, Cancellable {
             with: action.paymentMethodType,
             localizationParameters: configuration.localizationParameters
         )
-        let viewController = AwaitViewController(viewModel: viewModel, style: configuration.style)
+        let awaitView = AwaitView(viewModel: viewModel, style: configuration.style)
+        let viewController = ActionViewController(view: awaitView)
 
         if let presentationDelegate {
-            let presentableComponent = PresentableComponentWrapper(component: self, viewController: viewController)
-            presentationDelegate.present(component: presentableComponent)
+            presentationDelegate.present(viewController: viewController)
         } else {
             let message = "PresentationDelegate is nil. Provide a presentation delegate to AwaitComponent."
             AdyenAssertion.assertionFailure(message: message)

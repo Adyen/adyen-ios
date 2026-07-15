@@ -24,7 +24,7 @@ class EContextStoresVoucherViewControllerProviderTests: XCTestCase {
 
         let sut = viewProvider.provideView(with: action, logo: nil)
 
-        let viewController = ADYViewController(view: sut)
+        let viewController = ActionViewController(view: sut)
         viewController.loadViewIfNeeded()
 
         let textLabel: UILabel! = sut.findView(by: "adyen.voucher.textLabel")

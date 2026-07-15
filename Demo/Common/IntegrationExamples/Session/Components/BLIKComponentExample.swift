@@ -119,7 +119,7 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
 
 extension BLIKComponentExample: PresentationDelegate {
     
-    func present(component: any PresentableComponent) {
-        presenter?.present(viewController: component.viewController, completion: nil)
+    func present(viewController: UIViewController) {
+        presenter?.present(viewController: viewController, completion: nil)
     }
 }

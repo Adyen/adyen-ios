@@ -36,10 +36,7 @@ class VoucherComponentTests: XCTestCase {
         let action = try AdyenCoder.decode(dokuIndomaretAction) as VoucherAction
 
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
-        presentationDelegate.doPresent = { [self] component in
-            let component = component as! PresentableComponentWrapper
-            XCTAssert(component.component === sut)
-            
+        presentationDelegate.doPresent = { [self] viewController in
             let view = sut.view
             
             XCTAssertNotNil(view)
@@ -58,10 +55,7 @@ class VoucherComponentTests: XCTestCase {
         let action = try AdyenCoder.decode(econtextATMAction) as VoucherAction
         
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
-        presentationDelegate.doPresent = { [self] component in
-            let component = component as! PresentableComponentWrapper
-            XCTAssert(component.component === sut)
-            
+        presentationDelegate.doPresent = { [self] viewController in
             let view = sut.view
             
             XCTAssertNotNil(view)
@@ -80,10 +74,7 @@ class VoucherComponentTests: XCTestCase {
         let action = try AdyenCoder.decode(boletoAction) as VoucherAction
         
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
-        presentationDelegate.doPresent = { [self] component in
-            let component = component as! PresentableComponentWrapper
-            XCTAssert(component.component === sut)
-            
+        presentationDelegate.doPresent = { [self] viewController in
             let view = sut.view
             
             XCTAssertNotNil(view)
@@ -102,11 +93,8 @@ class VoucherComponentTests: XCTestCase {
         let action = try AdyenCoder.decode(oxxoAction) as VoucherAction
         
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
-        presentationDelegate.doPresent = { [self] component in
-            let component = component as! PresentableComponentWrapper
-            XCTAssert(component.component === sut)
-            
-            self.setupRootViewController(component.viewController)
+        presentationDelegate.doPresent = { [self] viewController in
+            self.setupRootViewController(viewController)
             
             let view = sut.view
             
@@ -114,7 +102,7 @@ class VoucherComponentTests: XCTestCase {
             
             checkViewModel(view!.model, forAction: action)
             
-            let optionsButton: UIButton! = component.viewController.view.findView(with: "AdyenActions.VoucherComponent.voucherView.secondaryButton")
+            let optionsButton: UIButton! = viewController.view.findView(with: "AdyenActions.VoucherComponent.voucherView.secondaryButton")
             XCTAssertNotNil(optionsButton)
             XCTAssertEqual(optionsButton.titleLabel?.text, "More options")
             
@@ -146,11 +134,8 @@ class VoucherComponentTests: XCTestCase {
         let action = try AdyenCoder.decode(multibancoVoucher) as VoucherAction
         
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
-        presentationDelegate.doPresent = { [self] component in
-            let component = component as! PresentableComponentWrapper
-            XCTAssert(component.component === sut)
-            
-            self.setupRootViewController(component.viewController)
+        presentationDelegate.doPresent = { [self] viewController in
+            self.setupRootViewController(viewController)
             
             let view = sut.view
             
@@ -158,7 +143,7 @@ class VoucherComponentTests: XCTestCase {
             
             checkViewModel(view!.model, forAction: action)
             
-            let optionsButton: UIButton! = component.viewController.view.findView(with: "AdyenActions.VoucherComponent.voucherView.secondaryButton")
+            let optionsButton: UIButton! = viewController.view.findView(with: "AdyenActions.VoucherComponent.voucherView.secondaryButton")
             XCTAssertNotNil(optionsButton)
             XCTAssertEqual(optionsButton.titleLabel?.text, "More options")
             
@@ -187,10 +172,7 @@ class VoucherComponentTests: XCTestCase {
         let action = try AdyenCoder.decode(econtextStoresAction) as VoucherAction
         
         let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
-        presentationDelegate.doPresent = { [self] component in
-            let component = component as! PresentableComponentWrapper
-            XCTAssert(component.component === sut)
-            
+        presentationDelegate.doPresent = { [self] viewController in
             let view = sut.view
             
             XCTAssertNotNil(view)

@@ -274,13 +274,12 @@ private extension CardComponent {
 
         if
             let preferredCountry = configuration.shopperInformation?.billingAddress?.country,
-            let supportedCountryCodes = configuration.billingAddress.countryCodes,
-            supportedCountryCodes.isEmpty || supportedCountryCodes.contains(preferredCountry) {
+            configuration.billingAddressMode.supports(countryCode: preferredCountry) {
             return preferredCountry
         }
 
         return
-            configuration.billingAddress.countryCodes?.first ??
+            configuration.billingAddressMode.supportedCountryCodes?.first ??
             Locale.current.regionCode ??
             CardComponent.Constant.defaultCountryCode
     }
@@ -298,7 +297,7 @@ private extension CardConfiguration {
         .init(
             for: .billing,
             localizationParameters: localizationParameters,
-            supportedCountryCodes: billingAddress.countryCodes,
+            supportedCountryCodes: billingAddressMode.supportedCountryCodes,
             initialCountry: initialCountry,
             prefillAddress: prefillAddress,
             lookupProvider: lookupProvider,
@@ -318,7 +317,7 @@ private extension CardConfiguration {
             localizationParameters: localizationParameters,
             initialCountry: initialCountry,
             prefillAddress: prefillAddress,
-            supportedCountryCodes: billingAddress.countryCodes,
+            supportedCountryCodes: billingAddressMode.supportedCountryCodes,
             addressViewModelBuilder: DefaultAddressViewModelBuilder(),
             handleShowSearch: nil,
             completionHandler: completionHandler
@@ -339,5 +338,39 @@ extension CardComponent {
         )
 
         context.analyticsProvider?.add(log: logEvent)
+    }
+}
+
+extension BillingAddressMode {
+
+    internal var supportedCountryCodes: [String]? {
+        switch self {
+        case let .full(supportedCountryCodes, _):
+            return supportedCountryCodes.isEmpty ? nil : supportedCountryCodes
+        case .none, .postalCode, .lookup:
+            return nil
+        }
+    }
+
+    internal func supports(countryCode: String) -> Bool {
+        guard let supportedCountryCodes else { return true } // nil == all countries supported
+        return supportedCountryCodes.contains(countryCode)
+    }
+
+    internal var hideForCardBrands: Set<CardBrand> {
+        switch self {
+        case .none:
+            return []
+        case let .postalCode(hideForCardBrands):
+            return hideForCardBrands
+        case let .full(_, hideForCardBrands):
+            return hideForCardBrands
+        case let .lookup(hideForCardBrands, _, _):
+            return hideForCardBrands
+        }
+    }
+
+    internal func shouldHide(for cardBrands: [CardBrand]) -> Bool {
+        !hideForCardBrands.isDisjoint(with: cardBrands)
     }
 }

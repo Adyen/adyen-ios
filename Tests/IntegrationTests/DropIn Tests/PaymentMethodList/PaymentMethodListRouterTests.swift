@@ -86,7 +86,7 @@ struct PaymentMethodListRouterTests {
         let actionComponent = makeActionComponent()
 
         // When
-        sut.present(actionComponent: actionComponent, onCancel: nil)
+        sut.present(actionViewController: actionComponent, onCancel: nil)
 
         // Then - rootViewController is the navigationController, so it receives the present call
         #expect(navigationControllerSpy.presentCallsCount == 1)
@@ -207,16 +207,8 @@ struct PaymentMethodListRouterTests {
         )
     }
 
-    private func makeActionComponent() -> PresentableComponent {
-        let context = AdyenContext(
-            apiContext: Dummy.apiContext,
-            amount: .init(value: 100, currencyCode: "EUR"),
-            publicKey: Dummy.publicKey,
-            analyticsProvider: AnalyticsProviderMock()
-        )
-        let redirect = RedirectComponent(context: context)
-        let viewController = UIViewController()
-        return PresentableComponentWrapper(component: redirect, viewController: viewController)
+    private func makeActionComponent() -> UIViewController {
+        UIViewController()
     }
 
     private func makeStoredPaymentComponentMock() -> StoredComponentMock {

@@ -1,366 +1,261 @@
 # API Reference
 
-The Adyen DropIn/Components SDK API Reference.
+The Adyen Checkout SDK API Reference.
 
-## Adyen Session
+## Checkout
 
-- ``Session``
-- ``SessionDelegate``
+The entry points for integrating the SDK.
 
-## Drop In Component
+- ``Checkout``
+- ``BaseCheckout``
+- ``PaymentCheckout``
+- ``SessionCheckout``
+- ``AdvancedCheckout``
+- ``ActionOnlyCheckout``
+- ``CheckoutPaymentComponent``
 
-- ``DropInComponent``
-- ``DropInComponentDelegate``
-- ``PaymentMethodListConfiguration``
-- ``StoredPaymentMethodsDelegate``
+## Configuration
 
-## Styling
+- ``CheckoutConfiguration``
+- ``CheckoutConfigurationBuilder``
+- ``APIContext``
+- ``AnalyticsConfiguration``
+- ``CardConfiguration``
+- ``ApplePayConfiguration``
+- ``AuthenticationConfiguration``
+- ``InstallmentConfiguration``
+- ``InstallmentOptions``
+- ``Installments``
+- ``BillingAddressMode``
 
-- ``TextStyle``
-- ``ButtonStyle``
-- ``ImageStyle``
-- ``CornerRounding``
-- ``ToolbarMode``
-- ``FormComponentStyle``
-- ``FormTextItemStyle``
-- ``FormToggleItemStyle``
-- ``FormButtonItemStyle``
-- ``ListComponentStyle``
-- ``ListSectionHeaderStyle``
-- ``ListSectionFooterStyle``
-- ``ListItemStyle``
-- ``ActionComponentStyle``
-- ``AwaitComponentStyle``
-- ``RedirectComponentStyle``
-- ``VoucherComponentStyle``
-- ``QRCodeComponentStyle``
-- ``DocumentComponentStyle``
-- ``NavigationStyle``
-- ``CancelButtonStyle``
-- ``ProgressViewStyle``
-- ``ApplePayStyle``
+## Checkout Results and Callbacks
+
+- ``CheckoutResultCode``
+- ``CheckoutError``
+- ``AdvancedCheckoutResult``
+- ``SessionCheckoutResult``
+- ``SessionResponse``
+- ``BeforeSubmitData``
+- ``BeforeSubmitResult``
+- ``BeforeSubmitHandler``
+- ``SubmitResult``
+- ``SubmitHandler``
+- ``AdditionalDetailsResult``
+- ``AdditionalDetailsHandler``
+- ``DelegatedAuthenticationData``
 
 ## Payment Methods
-``PaymentMethods``
 
-### Basic Payment Methods
+- ``PaymentMethods``
+
+### Abstract payment methods
 
 - ``PaymentMethod``
 - ``StoredPaymentMethod``
+- ``AnyCardPaymentMethod``
+- ``PartialPaymentMethod``
 - ``IssuerListPaymentMethod``
 - ``AwaitPaymentMethod``
 - ``VoucherPaymentMethod``
 - ``QRCodePaymentMethod``
 - ``DocumentPaymentMethod``
+- ``InstantPaymentMethod``
+
+### Card payment methods
+
+- ``CardPaymentMethod``
+- ``BCMCPaymentMethod``
+- ``StoredCardPaymentMethod``
+- ``StoredBCMCPaymentMethod``
+
+### Other payment methods
+
+- ``ACHDirectDebitPaymentMethod``
+- ``AffirmPaymentMethod``
+- ``ApplePayPaymentMethod``
+- ``AtomePaymentMethod``
+- ``BACSDirectDebitPaymentMethod``
+- ``BLIKPaymentMethod``
+- ``BoletoPaymentMethod``
+- ``CashAppPayPaymentMethod``
+- ``DokuPaymentMethod``
+- ``DokuWalletPaymentMethod``
+- ``EContextPaymentMethod``
+- ``GiftCardPaymentMethod``
+- ``MBWayPaymentMethod``
+- ``MealVoucherPaymentMethod``
+- ``OnlineBankingPaymentMethod``
+- ``PayByBankUSPaymentMethod``
+- ``PayToPaymentMethod``
+- ``QiwiWalletPaymentMethod``
+- ``SEPADirectDebitPaymentMethod``
+- ``SevenElevenPaymentMethod``
+- ``TwintPaymentMethod``
+- ``UPIPaymentMethod``
+- ``WeChatPayPaymentMethod``
+- ``AlfamartPaymentMethod``
+- ``IndomaretPaymentMethod``
 
 ### Stored payment methods
 
 - ``StoredPayPalPaymentMethod``
-- ``StoredCardPaymentMethod``
-- ``StoredBCMCPaymentMethod``
-- ``StoredBLIKPaymentMethod``
 - ``StoredACHDirectDebitPaymentMethod``
+- ``StoredBLIKPaymentMethod``
 - ``StoredCashAppPayPaymentMethod``
 - ``StoredTwintPaymentMethod``
+- ``StoredInstantPaymentMethod``
+- ``StoredPayByBankUSPaymentMethod``
+- ``StoredPayToPaymentMethod``
+
+## Payment Method Details
+
+- ``CardDetails``
+- ``KCPDetails``
+- ``ACHDirectDebitDetails``
+- ``AffirmDetails``
+- ``ApplePayDetails``
+- ``AtomeDetails``
+- ``BACSDirectDebitDetails``
+- ``BasicPersonalInfoFormDetails``
+- ``BLIKDetails``
+- ``BoletoDetails``
+- ``CashAppPayDetails``
+- ``DokuDetails``
+- ``DotpayDetails``
+- ``EPSDetails``
+- ``EntercashDetails``
+- ``GiftCardDetails``
+- ``InstantPaymentDetails``
+- ``IssuerListDetails``
+- ``MBWayDetails``
+- ``MealVoucherDetails``
+- ``MOLPayDetails``
+- ``OnlineBankingDetails``
+- ``OnlineBankingPolandDetails``
+- ``OpenBankingDetails``
+- ``PayToDetails``
+- ``QiwiWalletDetails``
+- ``SEPADirectDebitDetails``
+- ``StoredPaymentDetails``
+- ``TwintDetails``
+- ``UPIComponentDetails``
 
 ## Actions
 
 - ``Action``
 - ``RedirectAction``
-- ``ThreeDS2Action``
 - ``AwaitAction``
-- ``GenericVoucherAction``
-- ``VoucherAction``
-- ``DokuVoucherAction``
-- ``MultibancoVoucherAction``
-- ``BoletoVoucherAction``
-- ``EContextATMVoucherAction``
-- ``EContextStoresVoucherAction``
-- ``OXXOVoucherAction``
+- ``RedirectableAwaitAction``
 - ``QRCodeAction``
 - ``SDKAction``
-- ``WeChatPaySDKAction``
 - ``DocumentAction``
-- ``AppleWalletError``
 - ``TwintSDKAction``
-
-### Action-handling components
-
-- ``CheckoutActionComponent``
-- ``VoucherComponent``
-- ``QRCodeActionComponent``
-- ``AwaitComponent``
+- ``TwintSDKData``
+- ``WeChatPaySDKAction``
+- ``WeChatPaySDKData``
 - ``AwaitActionDetails``
-- ``RedirectComponent``
 - ``RedirectDetails``
-- ``WeChatPaySDKActionComponent``
-- ``DocumentComponent``
-- ``TwintSDKActionComponent``
 
-## Card Component
+### Voucher actions
 
-- ``AnyCardPaymentMethod``
-- ``CardPaymentMethod``
-- ``BCMCPaymentMethod``
-- ``StoredCardPaymentMethod``
-- ``StoredBCMCPaymentMethod``
-- ``CardComponent``
-- ``BCMCComponent``
-- ``CardDetails``
-- ``KCPDetails``
-- ``CardFundingSource``
-- ``CardType``
-- ``CardBrand``
-- ``CardExpiryDateFormatter``
-- ``CardExpiryDateValidator``
-- ``CardSecurityCodeFormatter``
-- ``CardSecurityCodeValidator``
-- ``CardNumberFormatter``
-- ``CardNumberValidator``
-- ``CardComponentDelegate``
-- ``StoredCardConfiguration``
-- ``InstallmentConfiguration``
-- ``InstallmentOptions``
-- ``Installments``
+- ``AnyVoucherAction``
+- ``VoucherAction``
+- ``GenericVoucherAction``
+- ``BoletoVoucherAction``
+- ``DokuVoucherAction``
+- ``MultibancoVoucherAction``
+- ``OXXOVoucherAction``
+- ``EContextATMVoucherAction``
+- ``EContextStoresVoucherAction``
 
-## 3D Secure 2
+### 3D Secure 2
 
-- ``ThreeDS2Component``
 - ``ThreeDS2Action``
 - ``ThreeDS2FingerprintAction``
 - ``ThreeDS2ChallengeAction``
 
-## Components
+## Card Utilities
 
-### Apple Pay Component
-
-- ``ApplePayPaymentMethod``
-- ``ApplePayComponent``
-- ``ApplePayDetails``
-
-### Gift Card Component
-
-- ``GiftCardComponent``
-- ``GiftCardDetails``
-- ``GiftCardPaymentMethod``
-- ``PartialPaymentMethodDetails``
-- ``MealVoucherDetails``
-- ``MealVoucherPaymentMethod``
-
-### SEPA Direct Debit Component
-
-- ``SEPADirectDebitPaymentMethod``
-- ``SEPADirectDebitComponent``
-- ``SEPADirectDebitDetails``
-- ``IBANFormatter``
-- ``IBANValidator``
-
-### BACS Direct Debit Component
-
-- ``BACSDirectDebitPaymentMethod``
-- ``BACSDirectDebitComponent``
-- ``BACSDirectDebitDetails``
-
-### ACH Direct Debit Component
-
-- ``ACHDirectDebitPaymentMethod``
-- ``ACHDirectDebitComponent``
-- ``ACHDirectDebitDetails``
-
-### Qiwi Wallet Component
-
-- ``QiwiWalletPaymentMethod``
-- ``QiwiWalletComponent``
-- ``QiwiWalletDetails``
-
-### Affirm Component
-
-- ``AffirmPaymentMethod``
-- ``AffirmComponent``
-- ``AffirmDetails``
-
-### BLIK Component
-
-- ``BLIKPaymentMethod``
-- ``StoredBLIKPaymentMethod``
-- ``BLIKComponent``
-- ``BLIKDetails``
-          
-### Boleto Component
-
-- ``BoletoComponent``
-- ``BoletoPaymentMethod``
-- ``BoletoDetails``
-    
-### MBWay Component
-
-- ``MBWayPaymentMethod``
-- ``MBWayComponent``
-- ``MBWayDetails``
-
-### Cash App Pay Component
-
-- ``CashAppPayPaymentMethod``
-- ``CashAppPayComponent``
-- ``CashAppPayDetails``
-
-### Twint Component
-
-- ``TwintPaymentMethod``
-- ``TwintComponent``
-- ``TwintDetails``
-- ``TwintSDKData``
-    
-### WeChat Pay
-  
-- ``WeChatPaySDKData``
-- ``WeChatPayPaymentMethod``
-- ``WeChatPaySDKActionComponent``
-- ``WeChatPaySDKAction``
-    
-### Issuer List Component
-
-- ``IssuerListComponent``
-- ``OnlineBankingPolandComponent``
-- ``MOLPayComponent``
-- ``DotpayComponent``
-- ``EPSComponent``
-- ``EntercashComponent``
-- ``OpenBankingComponent``
-- ``EntercashDetails``
-- ``OpenBankingDetails``
-- ``EPSDetails``
-- ``DotpayDetails``
-- ``MOLPayDetails``
-- ``OnlineBankingPolandDetails``
-- ``IssuerListDetails``
-
-    
-### Instant Payment Component
-
-- ``InstantPaymentMethod``
-- ``InstantComponents``
-- ``MultibancoPaymentMethod``
-- ``MultibancoComponent``
-- ``OXXOPaymentMethod``
-- ``OXXOComponent``
-    
-### EContext Component
-
-- ``EContextPaymentMethod``
-- ``EContextATMComponent``
-- ``EContextOnlineComponent``
-- ``EContextStoreComponent``
-- ``EContextATMVoucherAction``
-- ``EContextStoresVoucherAction``
-- ``SevenElevenPaymentMethod``
-- ``SevenElevenComponent``
-
-### Doku Component
-
-- ``VoucherPaymentMethod``
-- ``DokuPaymentMethod``
-- ``DokuComponent``
-- ``DokuDetails``
-
-### Online Banking Component
-
-- ``OnlineBankingPaymentMethod``
-- ``OnlineBankingComponent``
-- ``OnlineBankingDetails``
-
-### Atome Component
-
-- ``AtomePaymentMethod``
-- ``AtomeComponent``
-- ``AtomeDetails``
-
-### Online Banking Slovakia Component
-
-- ``OnlineBankingPaymentMethod``
-- ``OnlineBankingComponent``
-- ``OnlineBankingDetails``
-
-### Online Banking Czech Republic Component
-
-- ``OnlineBankingPaymentMethod``
-- ``OnlineBankingComponent``
-- ``OnlineBankingDetails``
-
-### UPI Component
-
-- ``UPIPaymentMethod``
-- ``UPIComponent``
-- ``UPIComponentDetails``
-
-### PayTo Component
-
-- ``PayToPaymentMethod``
-- ``PayToComponent``
-- ``PayToDetails``
-    
-## Public Protocols
-
-- ``Component``
-- ``ComponentError``
-- ``PaymentComponent``
-- ``PresentableComponent``
-- ``ActionComponent``
-- ``FinalizableComponent``
-- ``PaymentAwareComponent``
-- ``PartialPaymentError``
-- ``Details``
-- ``AdditionalDetails``
-- ``PaymentMethodDetails``
-- ``AnyVoucherAction``
-
-### Public delegates
-
-- ``ActionComponentDelegate``
-- ``PaymentComponentDelegate``
-- ``PresentationDelegate``
-- ``PartialPaymentDelegate``
-- ``StoredPaymentMethodsDelegate``
-    
-## Models
-
-- ``AdyenContext``
-- ``APIContext``
-- ``Payment``
-- ``Amount``
-- ``Balance``
-- ``ShopperName``
-- ``PostalAddress``
-- ``ShopperInteraction``
-- ``DisplayInformation``
+- ``CardBrand``
 - ``CardFundingSource``
-- ``BrowserInfo``
-- ``ShopperInformation``
-- ``PrefilledShopperInformation``
-- ``AnalyticsConfiguration``
-- ``PartialPaymentOrder``
-- ``PaymentComponentData``
-- ``ActionComponentData``
-    
+- ``CardExpiryDateFormatter``
+- ``CardExpiryDateValidator``
+- ``CardNumberFormatter``
+- ``CardNumberValidator``
+- ``CardSecurityCodeFormatter``
+- ``CardSecurityCodeValidator``
+- ``BinLookupData``
+- ``BinLookupBrand``
+- ``threeDS2SdkVersion``
+
 ## Encryption
 
 - ``CardEncryptor``
 - ``BankDetailsEncryptor``
 - ``Card``
 - ``EncryptedCard``
-- ``EncryptionError``
-    
+
+## Theming and UI
+
+- ``CheckoutTheme``
+- ``CheckoutColors``
+- ``CheckoutConfigurable``
+- ``AdyenFonts``
+- ``FontSize``
+- ``ViewStyle``
+- ``TintableStyle``
+- ``ContainerView``
+- ``RedirectComponentStyle``
+
+## Public Protocols
+
+- ``Component``
+- ``PresentableComponent``
+- ``FinalizableComponent``
+- ``Details``
+- ``AdditionalDetails``
+- ``PaymentMethodDetails``
+- ``PartialPaymentMethodDetails``
+- ``OpaqueEncodable``
+- ``AdyenContextAware``
+- ``PresentationDelegate``
+
+## Models
+
+- ``AdyenContext``
+- ``Amount``
+- ``Environment``
+- ``PartialPayment``
+- ``PartialPaymentOrder``
+- ``PaymentComponentData``
+- ``ActionComponentData``
+- ``PostalAddress``
+- ``AddressLookupResult``
+- ``ShopperName``
+- ``ShopperInteraction``
+- ``PrefilledShopperInformation``
+- ``BrowserInfo``
+- ``Issuer``
+- ``PhoneNumber``
+- ``PhoneExtension``
+- ``PaymentMethodType``
+- ``AnyEncodable``
+
 ## Utilities
 
 - ``AdyenLogging``
-- ``Formatter``
-- ``Sanitizer``
-- ``BrazilSocialSecurityNumberFormatter``
-- ``threeDS2SdkVersion``
-- ``Validator``
-- ``DateValidator``
-- ``LengthValidator``
 - ``LogoURLProvider``
-- ``Localizable``
-- ``LocalizationParameters``
+- ``AmountFormatter``
+- ``NumericFormatter``
+- ``BrazilSocialSecurityNumberFormatter``
+- ``IBANFormatter``
+- ``Validator``
+- ``LengthValidator``
+- ``NumericStringValidator``
+- ``AdyenObservable``
+- ``adyenSdkVersion``
 
+## Localization
+
+- ``CheckoutLocalizationProvider``
+- ``CheckoutLocalizationKey``

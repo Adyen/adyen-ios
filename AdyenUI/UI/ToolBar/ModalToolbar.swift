@@ -4,10 +4,9 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import protocol Adyen.AnyNavigationBar
 import UIKit
 
-package class ModalToolbar: UIView, AnyNavigationBar {
+package class ModalToolbar: UIView {
     private let style: NavigationStyle
     package var onCancelHandler: (() -> Void)?
     private let title: String?

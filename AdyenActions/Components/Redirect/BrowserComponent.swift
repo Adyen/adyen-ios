@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-@_spi(AdyenInternal) import Adyen
+import Adyen
 import SafariServices
 import UIKit
 
@@ -16,7 +16,7 @@ internal protocol BrowserComponentDelegate: AnyObject {
 
 /// A component that opens a URL in web browsed and presents it.
 @MainActor
-internal final class BrowserComponent: NSObject, PresentableComponent {
+internal final class BrowserComponent: NSObject {
 
     /// :nodoc
     internal let context: AdyenContext

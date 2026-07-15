@@ -18,7 +18,7 @@ internal protocol ComponentContainerRouterListener: AnyObject {
 @MainActor
 internal protocol ComponentContainerRouting: AnyObject {
     func present(paymentComponent: PresentableComponent)
-    func present(actionComponent: PresentableComponent, onCancel: (() -> Void)?)
+    func present(actionViewController: UIViewController, onCancel: (() -> Void)?)
     func dismiss(completion: (() -> Void)?)
 }
 
@@ -54,9 +54,9 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouting {
         rootViewController.navigationController?.pushViewController(componentViewController, animated: true)
     }
 
-    internal func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?) {
+    internal func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
         let actionViewController = ActionPresentationHelper.viewController(
-            for: actionComponent,
+            for: actionViewController,
             onCancel: onCancel
         )
         rootViewController.present(actionViewController, animated: true)

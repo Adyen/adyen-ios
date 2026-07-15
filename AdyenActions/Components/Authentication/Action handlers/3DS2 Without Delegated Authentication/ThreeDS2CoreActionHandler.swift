@@ -11,6 +11,7 @@ import Adyen
     import AdyenUI
 #endif
 import Foundation
+import UIKit
 
 internal protocol AnyThreeDS2CoreActionHandler: Component {
     var threeDSRequestorAppURL: URL? { get set }
@@ -304,8 +305,8 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
 }
 
 extension ThreeDS2CoreActionHandler: PresentationDelegate {
-    func present(component: any PresentableComponent) {
+    func present(viewController: UIViewController) {
         AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
-        presentationDelegate?.present(component: component)
+        presentationDelegate?.present(viewController: viewController)
     }
 }

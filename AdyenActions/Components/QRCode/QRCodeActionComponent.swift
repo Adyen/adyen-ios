@@ -132,13 +132,7 @@ package final class QRCodeActionComponent: ActionComponent, Cancellable, Shareab
     }
     
     private func present(_ viewController: UIViewController, presentationDelegate: PresentationDelegate) {
-        let pollingComponentToolBar = CancellingToolBar(title: viewController.title, style: NavigationStyle())
-        let presentableComponent = PresentableComponentWrapper(
-            component: self,
-            viewController: viewController,
-            navBarType: .custom(pollingComponentToolBar)
-        )
-        presentationDelegate.present(component: presentableComponent)
+        presentationDelegate.present(viewController: viewController)
     }
     
     internal func timeoutDuration(for action: QRCodeAction) -> TimeInterval {

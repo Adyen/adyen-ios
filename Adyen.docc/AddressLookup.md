@@ -1,31 +1,9 @@
 #  Address Lookup
 
-Address Lookup allows using your own or a 3rd party service (e.g. Google Maps, MapKit, ...) to lookup an address based on a search term.
+> Note: This guide is being updated for v6.
 
-You can use Address Lookup by specifying the ``BillingAddressConfiguration/mode``
+Address Lookup allows using your own or a 3rd party service (e.g. Google Maps, MapKit, ...) to look up an address based on a search term.
 
-### Card Component
-```swift
-let cardConfiguration = CardComponent.Configuration()
-// Setting the billing address mode to lookup by providing 
-// your own lookup provider conforming to "AddressLookupProvider"
-cardConfiguration.billingAddress.mode = .lookup(MyAddressLookupProvider())
+The v6 Address Lookup integration is being migrated to the new ``Checkout`` API. Up-to-date integration steps and code samples will be published here once the migration is complete.
 
-let cardComponent = CardComponent(paymentMethod: paymentMethod,
-                                  context: context,
-                                  configuration: cardConfiguration)
-```
-
-### Drop-In
-```swift
-let dropInConfiguration = DropInComponent.Configuration()
-// Setting the billing address mode to lookup by providing 
-// your own lookup provider conforming to "AddressLookupProvider"
-dropInConfiguration.card.billingAddress.mode = .lookup(MyAddressLookupProvider())
-
-let dropInComponent = DropInComponent(paymentMethods: paymentMethods,
-                                      context: context,
-                                      configuration: dropInConfiguration)
-```
-
-For example implementations of the ``AddressLookupProvider`` check the ``DemoAddressLookupProvider`` or ``MapkitAddressLookupProvider``
+See <doc:API-Reference> for the available public types in the meantime.

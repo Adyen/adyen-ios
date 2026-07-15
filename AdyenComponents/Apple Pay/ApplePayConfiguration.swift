@@ -54,7 +54,7 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
         ) async -> PKPaymentRequestCouponCodeUpdate
     )?
 
-    internal var onPaymentMethodChange: (
+    internal var onSelectPaymentMethod: (
         @MainActor (
             PKPaymentMethod,
             [PKPaymentSummaryItem]
@@ -215,20 +215,20 @@ extension ApplePayConfiguration {
     /// Sets the handler called when the shopper selects a payment method.
     ///
     /// Return an updated `PKPaymentRequestPaymentMethodUpdate` with revised summary items.
-    /// - Parameter onPaymentMethodChange: The closure to call when the payment method changes.
+    /// - Parameter onSelectPaymentMethod: The closure to call when the payment method changes.
     ///   - Parameters:
     ///     - paymentMethod: The selected `PKPaymentMethod` containing the payment card details.
     ///     - summaryItems: The current array of `PKPaymentSummaryItem` objects representing line items and total.
     ///   - Returns: A `PKPaymentRequestPaymentMethodUpdate` with updated summary items reflecting any changes based on the payment method.
     /// - Returns: A modified copy of the configuration.
-    public func onPaymentMethodChange(
-        _ onPaymentMethodChange: @escaping @MainActor (
+    public func onSelectPaymentMethod(
+        _ onSelectPaymentMethod: @escaping @MainActor (
             PKPaymentMethod,
             [PKPaymentSummaryItem]
         ) async -> PKPaymentRequestPaymentMethodUpdate
     ) -> Self {
         var copy = self
-        copy.onPaymentMethodChange = onPaymentMethodChange
+        copy.onSelectPaymentMethod = onSelectPaymentMethod
         return copy
     }
     

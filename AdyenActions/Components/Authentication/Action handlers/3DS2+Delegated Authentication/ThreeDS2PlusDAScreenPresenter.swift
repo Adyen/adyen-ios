@@ -72,12 +72,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
             completion: handler,
             troubleshootingHandler: troubleshootingHandler
         )
-        let presentableComponent = PresentableComponentWrapper(
-            component: component,
-            viewController: errorController,
-            navBarType: .custom(EmptyNavigationBar())
-        )
-        presentationDelegate?.present(component: presentableComponent)
+        presentationDelegate?.present(viewController: errorController)
     }
     
     internal func showRegistrationError(
@@ -90,12 +85,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
             completion: handler,
             troubleshootingHandler: nil
         )
-        let presentableComponent = PresentableComponentWrapper(
-            component: component,
-            viewController: errorController,
-            navBarType: .custom(EmptyNavigationBar())
-        )
-        presentationDelegate?.present(component: presentableComponent)
+        presentationDelegate?.present(viewController: errorController)
     }
     
     internal func showDeletionConfirmation(component: Component, handler: @escaping VoidHandler) {
@@ -105,12 +95,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
             completion: handler,
             troubleshootingHandler: nil
         )
-        let presentableComponent = PresentableComponentWrapper(
-            component: component,
-            viewController: errorController,
-            navBarType: .custom(EmptyNavigationBar())
-        )
-        presentationDelegate?.present(component: presentableComponent)
+        presentationDelegate?.present(viewController: errorController)
     }
 
     internal func showRegistrationScreen(
@@ -133,14 +118,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                 fallbackHandler()
             }
         )
-        
-        let presentableComponent = PresentableComponentWrapper(
-            component: component,
-            viewController: registrationViewController,
-            navBarType: .custom(EmptyNavigationBar())
-        )
-
-        presentationDelegate?.present(component: presentableComponent)
+        presentationDelegate?.present(viewController: registrationViewController)
     }
     
     // swiftlint:disable function_parameter_count
@@ -170,13 +148,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                 removeCredentialsHandler()
             }
         )
-        
-        let presentableComponent = PresentableComponentWrapper(
-            component: component,
-            viewController: approvalViewController,
-            navBarType: .custom(EmptyNavigationBar())
-        )
-        presentationDelegate?.present(component: presentableComponent)
+        presentationDelegate?.present(viewController: approvalViewController)
     }
     
     private var biometricName: String {
@@ -193,8 +165,4 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
             return localizedString(.threeds2DABiometrics, localizedParameters)
         }
     }
-}
-
-internal class EmptyNavigationBar: UIView, AnyNavigationBar {
-    internal var onCancelHandler: VoidHandler?
 }

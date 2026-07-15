@@ -5,11 +5,12 @@
 //
 
 import Foundation
+import UIKit
 
 /// Delegates `ViewController`'s presentation.
 @MainActor
 public protocol PresentationDelegate: AnyObject {
     
-    /// Asks the delegate to present a `PresentableComponent` as the `delegate` sees fit.
-    func present(component: PresentableComponent)
+    /// Asks the delegate to present a `UIViewController` as the `delegate` sees fit.
+    func present(viewController: UIViewController)
 }

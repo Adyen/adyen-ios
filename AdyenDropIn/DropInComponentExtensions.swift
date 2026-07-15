@@ -24,8 +24,8 @@ extension DropInComponent: NavigationDelegate {
     }
 
     @_spi(AdyenInternal)
-    public func present(component: PresentableComponent) {
-        viewController.present(component.viewController, animated: true)
+    public func present(viewController: UIViewController) {
+        self.viewController.present(viewController, animated: true)
     }
 
 }

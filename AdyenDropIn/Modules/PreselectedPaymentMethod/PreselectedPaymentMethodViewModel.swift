@@ -203,8 +203,8 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
 
 extension PreselectedPaymentMethodViewModel: ActionPresenter {
 
-    internal func present(actionComponent: any PresentableComponent) {
-        router?.present(actionComponent: actionComponent) { [weak self] in
+    internal func present(actionViewController: UIViewController) {
+        router?.present(actionViewController: actionViewController) { [weak self] in
             self?.stopLoading()
         }
     }

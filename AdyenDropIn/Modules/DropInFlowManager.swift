@@ -9,11 +9,12 @@ import Adyen
     import AdyenActions
 #endif
 import Foundation
+import UIKit
 
 // sourcery:AutoMockable
 @MainActor
 internal protocol ActionPresenter: AnyObject {
-    func present(actionComponent: PresentableComponent)
+    func present(actionViewController: UIViewController)
     func didCancel(actionComponent: ActionComponent)
 }
 
@@ -134,7 +135,7 @@ extension DropInFlowManager: ActionComponentDelegate {
 
 extension DropInFlowManager: PresentationDelegate {
 
-    internal func present(component: any PresentableComponent) {
-        actionPresenter?.present(actionComponent: component)
+    internal func present(viewController: UIViewController) {
+        actionPresenter?.present(actionViewController: viewController)
     }
 }

@@ -31,15 +31,15 @@ class ActionPresenterMock: ActionPresenter {
         presentActionComponentCallsCount > 0
     }
 
-    var presentActionComponentReceivedActionComponent: PresentableComponent?
-    var presentActionComponentReceivedInvocations: [PresentableComponent] = []
-    var presentActionComponentClosure: ((PresentableComponent) -> Void)?
+    var presentActionViewControllerReceivedActionViewController: UIViewController?
+    var presentActionViewControllerReceivedInvocations: [UIViewController] = []
+    var presentActionViewControllerClosure: ((UIViewController) -> Void)?
 
-    func present(actionComponent: PresentableComponent) {
+    func present(actionViewController: UIViewController) {
         presentActionComponentCallsCount += 1
-        presentActionComponentReceivedActionComponent = actionComponent
-        presentActionComponentReceivedInvocations.append(actionComponent)
-        presentActionComponentClosure?(actionComponent)
+        presentActionViewControllerReceivedActionViewController = actionViewController
+        presentActionViewControllerReceivedInvocations.append(actionViewController)
+        presentActionViewControllerClosure?(actionViewController)
     }
 
     // MARK: - didCancel
@@ -196,11 +196,11 @@ class ComponentContainerRoutingMock: ComponentContainerRouting {
         presentActionComponentOnCancelCallsCount > 0
     }
 
-    var presentActionComponentOnCancelClosure: ((PresentableComponent, (() -> Void)?) -> Void)?
+    var presentActionComponentOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
 
-    func present(actionComponent: PresentableComponent, onCancel: (() -> Void)?) {
+    func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
         presentActionComponentOnCancelCallsCount += 1
-        presentActionComponentOnCancelClosure?(actionComponent, onCancel)
+        presentActionComponentOnCancelClosure?(actionViewController, onCancel)
     }
 
     // MARK: - dismiss
@@ -410,11 +410,11 @@ class PaymentMethodListRoutingMock: PaymentMethodListRouting {
         presentActionComponentOnCancelCallsCount > 0
     }
 
-    var presentActionComponentOnCancelClosure: ((any PresentableComponent, (() -> Void)?) -> Void)?
+    var presentActionComponentOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
 
-    func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?) {
+    func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
         presentActionComponentOnCancelCallsCount += 1
-        presentActionComponentOnCancelClosure?(actionComponent, onCancel)
+        presentActionComponentOnCancelClosure?(actionViewController, onCancel)
     }
 
     // MARK: - dismiss
@@ -577,11 +577,11 @@ class PreselectedPaymentMethodRoutingMock: PreselectedPaymentMethodRouting {
         presentActionComponentOnCancelCallsCount > 0
     }
 
-    var presentActionComponentOnCancelClosure: ((any PresentableComponent, (() -> Void)?) -> Void)?
+    var presentActionComponentOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
 
-    func present(actionComponent: any PresentableComponent, onCancel: (() -> Void)?) {
+    func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
         presentActionComponentOnCancelCallsCount += 1
-        presentActionComponentOnCancelClosure?(actionComponent, onCancel)
+        presentActionComponentOnCancelClosure?(actionViewController, onCancel)
     }
 
     // MARK: - dismiss

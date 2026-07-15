@@ -122,13 +122,14 @@ class CheckoutActionComponentTests: XCTestCase {
         let action = Action.await(AwaitAction(paymentData: "SOME_DATA", paymentMethodType: .blik))
         sut.handle(action)
         
-        let waitExpectation = expectation(description: "Expect AwaitViewController to be presented")
+        let waitExpectation = expectation(description: "Expect ActionViewController to be presented")
         
-        try waitUntilTopPresenter(isOfType: AdyenActions.AwaitViewController.self)
+        let awaitViewController = try waitUntilTopPresenter(isOfType: ActionViewController.self)
+        XCTAssertNotNil(awaitViewController.view as? AwaitView)
 
         (sut.presentationDelegate as! UIViewController).dismiss(animated: true) {
             let topPresentedViewController = try? UIViewController.topPresenter()
-            XCTAssertNil(topPresentedViewController as? AdyenActions.AwaitViewController)
+            XCTAssertNil(topPresentedViewController?.view as? AwaitView)
 
             waitExpectation.fulfill()
         }
@@ -161,13 +162,14 @@ class CheckoutActionComponentTests: XCTestCase {
         
         sut.handle(action)
         
-        let waitExpectation = expectation(description: "Expect AwaitViewController to be presented")
+        let waitExpectation = expectation(description: "Expect ActionViewController to be presented")
         
-        try waitUntilTopPresenter(isOfType: AdyenActions.AwaitViewController.self)
+        let awaitViewController = try waitUntilTopPresenter(isOfType: ActionViewController.self)
+        XCTAssertNotNil(awaitViewController.view as? AwaitView)
 
         try XCTUnwrap(sut.presentationDelegate as? UIViewController).dismiss(animated: true) {
             let topPresentedViewController = try? UIViewController.topPresenter()
-            XCTAssertNil(topPresentedViewController as? AdyenActions.AwaitViewController)
+            XCTAssertNil(topPresentedViewController?.view as? AwaitView)
 
             waitExpectation.fulfill()
         }
@@ -207,8 +209,8 @@ class CheckoutActionComponentTests: XCTestCase {
         let action = try JSONDecoder().decode(VoucherAction.self, from: XCTUnwrap(voucherAction.data(using: .utf8)))
         sut.handle(Action.voucher(action))
         
-        let waitExpectation = expectation(description: "Expect VoucherViewController to be presented")
-        let voucherViewController = try waitUntilTopPresenter(isOfType: ADYViewController.self)
+        let waitExpectation = expectation(description: "Expect Voucher action to be presented")
+        let voucherViewController = try waitUntilTopPresenter(isOfType: ActionViewController.self)
         XCTAssertNotNil(voucherViewController.view as? VoucherView)
         
         let presentationDelegate = try XCTUnwrap(sut.presentationDelegate as? UIViewController)
@@ -239,7 +241,7 @@ class CheckoutActionComponentTests: XCTestCase {
         let action = try JSONDecoder().decode(DocumentAction.self, from: XCTUnwrap(documentAction.data(using: .utf8)))
         sut.handle(Action.document(action))
         
-        let documentViewController = try waitUntilTopPresenter(isOfType: ADYViewController.self)
+        let documentViewController = try waitUntilTopPresenter(isOfType: ActionViewController.self)
         XCTAssertNotNil(documentViewController.view as? DocumentActionView)
     }
     

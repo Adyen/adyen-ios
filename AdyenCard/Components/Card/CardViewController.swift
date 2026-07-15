@@ -27,6 +27,7 @@ internal class CardViewController: FormViewController {
     private let supportedCardBrands: [CardBrand]
     private let formStyle: FormComponentStyle
     private var issuingCountryCode: String?
+    private var billingAddressSectionItem: FormItem?
     private let amount: Amount?
     private let initialCountryCode: String
     private let scope: String
@@ -69,7 +70,7 @@ internal class CardViewController: FormViewController {
             localizationParameters: localizationParameters,
             addressViewModelBuilder: DefaultAddressViewModelBuilder(),
             presenter: self,
-            addressMode: configuration.billingAddress.mode,
+            addressMode: configuration.billingAddressMode,
             scanCardHandler: scanCardHandler
         )
     }()
@@ -168,10 +169,11 @@ internal class CardViewController: FormViewController {
         let address: PostalAddress
         let requiredFields: Set<AddressField>
         
-        switch configuration.billingAddress.mode {
+        switch configuration.billingAddressMode {
         case .lookup, .full:
             guard
                 let billingAddressItem = items.billingAddressPickerItem,
+                billingAddressItem.isVisible,
                 let lookupBillingAddress = billingAddressItem.value
             else { return nil }
             
@@ -179,6 +181,7 @@ internal class CardViewController: FormViewController {
             requiredFields = billingAddressItem.addressViewModel.requiredFields
             
         case .postalCode:
+            guard items.postalCodeItem.isVisible else { return nil }
             address = PostalAddress(postalCode: items.postalCodeItem.value)
             requiredFields = [.postalCode]
             
@@ -241,7 +244,7 @@ internal class CardViewController: FormViewController {
         issuingCountryCode = binInfo.issuingCountryCode
         items.numberContainerItem.update(brands: brands)
         
-        updateBillingAddressOptionalStatus(brands: brands)
+        updateAddressItemVisibility(basedOn: brands)
     }
 
     internal func handleSelection(_ selectedBrand: DetectedCardBrand) {
@@ -265,17 +268,17 @@ internal class CardViewController: FormViewController {
 
 extension CardViewController {
     
-    private func updateBillingAddressOptionalStatus(brands: [DetectedCardBrand]) {
-        let isOptional = configuration.billingAddress.isOptional(for: brands.map(\.brand))
-        switch configuration.billingAddress.mode {
+    private func updateAddressItemVisibility(basedOn brands: [DetectedCardBrand]) {
+        let shouldHide = configuration.billingAddressMode.shouldHide(for: brands.map(\.brand))
+        switch configuration.billingAddressMode {
         case .lookup, .full:
-            items.billingAddressPickerItem?.updateOptionalStatus(isOptional: isOptional)
+            items.billingAddressPickerItem?.isVisible = !shouldHide
+            billingAddressSectionItem?.isVisible = !shouldHide
         case .postalCode:
-            items.postalCodeItem.updateOptionalStatus(isOptional: isOptional)
+            items.postalCodeItem.isVisible = !shouldHide
         case .none:
             break
         }
-        
     }
     
     /// Observe the brand changes to update all other fields.
@@ -353,6 +356,7 @@ extension CardViewController {
         }
         
         if let billingAddressItem {
+            billingAddressSectionItem = billingAddressItem
             append(billingAddressItem)
         }
         
@@ -365,7 +369,7 @@ extension CardViewController {
     
     private var billingAddressItem: FormItem? {
         
-        switch configuration.billingAddress.mode {
+        switch configuration.billingAddressMode {
         case .lookup, .full:
             guard let pickerItem = items.billingAddressPickerItem else { return nil }
             return pickerItem.withSectionHeader(

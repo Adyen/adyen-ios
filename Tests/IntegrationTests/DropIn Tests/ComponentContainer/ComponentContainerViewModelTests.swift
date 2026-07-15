@@ -100,18 +100,10 @@ struct ComponentContainerViewModelTests {
         // Given
         let (sut, _, _, _, routerMock) = makeSUT()
 
-        let contextMock = AdyenContext(
-            apiContext: Dummy.apiContext,
-            amount: .init(value: 100, currencyCode: "EUR"),
-            publicKey: Dummy.publicKey,
-            analyticsProvider: AnalyticsProviderMock()
-        )
-        let redirectComponent = RedirectComponent(context: contextMock)
-        let viewControllerMock = UIViewController()
-        let actionComponentMock = PresentableComponentWrapper(component: redirectComponent, viewController: viewControllerMock)
+        let actionComponentMock = UIViewController()
 
         // When
-        sut.present(actionComponent: actionComponentMock)
+        sut.present(actionViewController: actionComponentMock)
 
         // Then
         #expect(routerMock.presentActionComponentOnCancelCallsCount == 1)
@@ -122,24 +114,16 @@ struct ComponentContainerViewModelTests {
         // Given
         let (sut, _, paymentComponentMock, _, routerMock) = makeSUT()
 
-        let contextMock = AdyenContext(
-            apiContext: Dummy.apiContext,
-            amount: .init(value: 100, currencyCode: "EUR"),
-            publicKey: Dummy.publicKey,
-            analyticsProvider: AnalyticsProviderMock()
-        )
-        let redirectComponent = RedirectComponent(context: contextMock)
-        let viewControllerMock = UIViewController()
-        let actionComponentMock = PresentableComponentWrapper(component: redirectComponent, viewController: viewControllerMock)
+        let actionComponentMock = UIViewController()
 
-        routerMock.presentActionComponentOnCancelClosure = { (_: PresentableComponent, onCancel: (() -> Void)?) in
+        routerMock.presentActionComponentOnCancelClosure = { (_: UIViewController, onCancel: (() -> Void)?) in
             // Then
             onCancel?()
             #expect(paymentComponentMock.stopLoadingCallsCount == 1)
         }
 
         // When
-        sut.present(actionComponent: actionComponentMock)
+        sut.present(actionViewController: actionComponentMock)
     }
 
     @Test
@@ -174,13 +158,13 @@ struct ComponentContainerViewModelTests {
         }
 
         var presentActionComponentOnCancelCallsCount = 0
-        var presentActionComponentOnCancelReceivedArguments: (actionComponent: PresentableComponent, onCancel: (() -> Void)?)?
-        var presentActionComponentOnCancelClosure: ((PresentableComponent, (() -> Void)?) -> Void)?
+        var presentActionComponentOnCancelReceivedArguments: (actionViewController: UIViewController, onCancel: (() -> Void)?)?
+        var presentActionComponentOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
 
-        func present(actionComponent: PresentableComponent, onCancel: (() -> Void)?) {
+        func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
             presentActionComponentOnCancelCallsCount += 1
-            presentActionComponentOnCancelReceivedArguments = (actionComponent, onCancel)
-            presentActionComponentOnCancelClosure?(actionComponent, onCancel)
+            presentActionComponentOnCancelReceivedArguments = (actionViewController, onCancel)
+            presentActionComponentOnCancelClosure?(actionViewController, onCancel)
         }
 
         var dismissCompletionCallsCount = 0

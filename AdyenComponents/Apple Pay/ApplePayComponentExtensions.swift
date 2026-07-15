@@ -150,11 +150,11 @@ extension ApplePayComponent {
     }
 
     private func handleSelectPaymentMethod(_ paymentMethod: PKPaymentMethod) async -> PKPaymentRequestPaymentMethodUpdate {
-        guard let onPaymentMethodChange = configuration.onPaymentMethodChange else {
+        guard let onSelectPaymentMethod = configuration.onSelectPaymentMethod else {
             return PKPaymentRequestPaymentMethodUpdate(paymentSummaryItems: paymentRequest.paymentSummaryItems)
         }
 
-        let result = await onPaymentMethodChange(paymentMethod, paymentRequest.paymentSummaryItems)
+        let result = await onSelectPaymentMethod(paymentMethod, paymentRequest.paymentSummaryItems)
         result.paymentSummaryItems = validSummaryItems(from: result)
         return result
     }
