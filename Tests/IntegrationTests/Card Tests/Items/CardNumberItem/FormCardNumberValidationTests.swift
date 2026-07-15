@@ -31,9 +31,9 @@ class FormCardNumberValidationTests: XCTestCase {
     /// AND NO validation error should be shown (brand detection is NOT a validation trigger)
     func testUC5_BrandDetection_NoErrorShown() {
         // Given
-        let item = FormCardNumberItem(cardTypeLogos: [
-            .init(url: Self.testURL, type: .visa),
-            .init(url: Self.testURL, type: .masterCard)
+        let item = FormCardNumberItem(cardBrandLogos: [
+            .init(url: Self.testURL, brand: .visa),
+            .init(url: Self.testURL, brand: .masterCard)
         ])
         let sut = FormCardNumberItemView(item: item)
 
@@ -64,9 +64,9 @@ class FormCardNumberValidationTests: XCTestCase {
     func testUC5_BrandDetection_PlaceholderDisappears() {
         // Given
         let containerItem = FormCardNumberContainerItem(
-            cardTypeLogos: [
-                .init(url: Self.testURL, type: .visa),
-                .init(url: Self.testURL, type: .masterCard)
+            cardBrandLogos: [
+                .init(url: Self.testURL, brand: .visa),
+                .init(url: Self.testURL, brand: .masterCard)
             ],
             showSupportedCardBrandLogos: true,
             style: FormTextItemStyle(),
@@ -81,7 +81,7 @@ class FormCardNumberValidationTests: XCTestCase {
         )
 
         // When - brand is detected (simulating typing "4")
-        containerItem.update(brands: [DetectedCardBrand(type: .visa)])
+        containerItem.update(brands: [DetectedCardBrand(brand: .visa)])
 
         // Then - logos should be hidden (brand is known, placeholder not needed)
         XCTAssertTrue(
@@ -105,9 +105,9 @@ class FormCardNumberValidationTests: XCTestCase {
     func testUC6_ErrorHidesBrandLogos() {
         // Given
         let containerItem = FormCardNumberContainerItem(
-            cardTypeLogos: [
-                .init(url: Self.testURL, type: .visa),
-                .init(url: Self.testURL, type: .masterCard)
+            cardBrandLogos: [
+                .init(url: Self.testURL, brand: .visa),
+                .init(url: Self.testURL, brand: .masterCard)
             ],
             showSupportedCardBrandLogos: true,
             style: FormTextItemStyle(),
@@ -145,9 +145,9 @@ class FormCardNumberValidationTests: XCTestCase {
     func testUC7_ReenteringFieldRestoresLogos() {
         // Given - set up error state first
         let containerItem = FormCardNumberContainerItem(
-            cardTypeLogos: [
-                .init(url: Self.testURL, type: .visa),
-                .init(url: Self.testURL, type: .masterCard)
+            cardBrandLogos: [
+                .init(url: Self.testURL, brand: .visa),
+                .init(url: Self.testURL, brand: .masterCard)
             ],
             showSupportedCardBrandLogos: true,
             style: FormTextItemStyle(),
@@ -185,9 +185,9 @@ class FormCardNumberValidationTests: XCTestCase {
     /// AND the valid checkmark accessory should appear
     func testUC8_ValidInputHidesLogos() {
         // Given
-        let item = FormCardNumberItem(cardTypeLogos: [
-            .init(url: Self.testURL, type: .visa),
-            .init(url: Self.testURL, type: .masterCard)
+        let item = FormCardNumberItem(cardBrandLogos: [
+            .init(url: Self.testURL, brand: .visa),
+            .init(url: Self.testURL, brand: .masterCard)
         ])
         item.validator = CardNumberValidator(
             isLuhnCheckEnabled: true, isEnteredBrandSupported: true
@@ -225,9 +225,9 @@ class FormCardNumberValidationTests: XCTestCase {
     /// THEN NO validation should occur AND NO error should appear
     func testUC9_PartialInputWhileTyping_NoValidation() {
         // Given
-        let item = FormCardNumberItem(cardTypeLogos: [
-            .init(url: Self.testURL, type: .visa),
-            .init(url: Self.testURL, type: .masterCard)
+        let item = FormCardNumberItem(cardBrandLogos: [
+            .init(url: Self.testURL, brand: .visa),
+            .init(url: Self.testURL, brand: .masterCard)
         ])
         let sut = FormCardNumberItemView(item: item)
 
@@ -262,8 +262,8 @@ class FormCardNumberValidationTests: XCTestCase {
     /// Note: This is a behavior documentation test - actual animation timing is hard to test
     func testUC13_FooterTransitionAnimation_ErrorAppears() {
         // Given
-        let item = FormCardNumberItem(cardTypeLogos: [
-            .init(url: Self.testURL, type: .visa)
+        let item = FormCardNumberItem(cardBrandLogos: [
+            .init(url: Self.testURL, brand: .visa)
         ])
         let sut = FormCardNumberItemView(item: item)
 
@@ -286,9 +286,9 @@ class FormCardNumberValidationTests: XCTestCase {
     func testContainerCoordinatesBrandLogosVisibility() {
         // Given
         let containerItem = FormCardNumberContainerItem(
-            cardTypeLogos: [
-                .init(url: Self.testURL, type: .visa),
-                .init(url: Self.testURL, type: .masterCard)
+            cardBrandLogos: [
+                .init(url: Self.testURL, brand: .visa),
+                .init(url: Self.testURL, brand: .masterCard)
             ],
             showSupportedCardBrandLogos: true,
             style: FormTextItemStyle(),
@@ -303,7 +303,7 @@ class FormCardNumberValidationTests: XCTestCase {
         )
 
         // When brands are detected (valid brand)
-        containerItem.update(brands: [DetectedCardBrand(type: .visa)])
+        containerItem.update(brands: [DetectedCardBrand(brand: .visa)])
 
         // Then logos should be hidden (brand detected)
         XCTAssertTrue(

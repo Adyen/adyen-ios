@@ -45,7 +45,7 @@ package class CardComponent: PaymentComponent,
     }
 
     /// The supported card types.
-    package let supportedCardTypes: [CardType]
+    package let supportedCardBrands: [CardBrand]
 
     /// Card component configuration.
     package internal(set) var configuration: CardConfiguration
@@ -131,7 +131,7 @@ package class CardComponent: PaymentComponent,
         self.configuration = configuration
         self.binInfoProvider = binProvider
 
-        self.supportedCardTypes = configuration.supportedCardBrands ?? paymentMethod.brands
+        self.supportedCardBrands = configuration.supportedCardBrands ?? paymentMethod.brands
     }
 
     // MARK: - Presentable Component Protocol
@@ -196,7 +196,7 @@ package class CardComponent: PaymentComponent,
             formStyle: configuration.style,
             amount: context.amount,
             logoProvider: LogoURLProvider(environment: context.apiContext.environment),
-            supportedCardTypes: supportedCardTypes,
+            supportedCardBrands: supportedCardBrands,
             initialCountryCode: initialCountryCode,
             scope: String(describing: self),
             localizationParameters: resolvedLocalizationParameters,
@@ -218,7 +218,6 @@ package class CardComponent: PaymentComponent,
     }()
 
     private let panThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
-    private let binThrottler = Throttler(minimumDelay: CardComponent.Constant.secondsThrottlingDelay)
 
     private func sendInfoEvent(with data: CardViewController.InfoEventData) {
         var infoEvent = AnalyticsEventInfo(
@@ -226,11 +225,11 @@ package class CardComponent: PaymentComponent,
             type: data.type
         )
         infoEvent.target = data.target
-        infoEvent.brand = data.brands?.first?.type.rawValue
+        infoEvent.brand = data.brands?.first?.brand.rawValue
 
         // Send configData only when co-badged cards are displayed
         if data.type == .displayed, infoEvent.target == .dualBrandButton {
-            infoEvent.configData = CoBadgedCardAnalyticsConfiguration(dualBrands: data.brands?.map(\.type.rawValue).joined(separator: ","))
+            infoEvent.configData = CoBadgedCardAnalyticsConfiguration(dualBrands: data.brands?.map(\.brand.rawValue).joined(separator: ","))
         }
         if let errorCode = data.error?.analyticsErrorCode {
             infoEvent.validationErrorCode = String(errorCode)
@@ -253,19 +252,16 @@ extension CardComponent: CardViewControllerDelegate {
     }
 
     internal func didChange(bin: String) {
-        binThrottler.throttle { [weak self] in
-            guard let self else { return }
-            self.configuration.onBinChange?(bin)
-        }
+        configuration.onBinChange?(bin)
     }
 
     private func updateBrand(with pan: String) {
-        binInfoProvider.provide(for: pan, supportedTypes: supportedCardTypes) { [weak self] binInfo in
+        binInfoProvider.provide(for: pan, supportedTypes: supportedCardBrands) { [weak self] binInfo in
             guard let self else { return }
             self.cardViewController.update(binInfo: binInfo)
             guard !binInfo.isCreatedLocally else { return }
             let brands = (binInfo.brands ?? []).map {
-                BinLookupBrand(brand: $0.type.rawValue, supported: $0.isSupported, paymentMethodVariant: $0.paymentMethodVariant)
+                BinLookupBrand(brand: $0.brand.rawValue, supported: $0.isSupported, paymentMethodVariant: $0.paymentMethodVariant)
             }
             self.configuration.onBinLookup?(BinLookupData(issuingCountryCode: binInfo.issuingCountryCode, brands: brands))
         }
@@ -278,13 +274,12 @@ private extension CardComponent {
 
         if
             let preferredCountry = configuration.shopperInformation?.billingAddress?.country,
-            let supportedCountryCodes = configuration.billingAddress.countryCodes,
-            supportedCountryCodes.isEmpty || supportedCountryCodes.contains(preferredCountry) {
+            configuration.billingAddressMode.supports(countryCode: preferredCountry) {
             return preferredCountry
         }
 
         return
-            configuration.billingAddress.countryCodes?.first ??
+            configuration.billingAddressMode.supportedCountryCodes?.first ??
             Locale.current.regionCode ??
             CardComponent.Constant.defaultCountryCode
     }
@@ -302,7 +297,7 @@ private extension CardConfiguration {
         .init(
             for: .billing,
             localizationParameters: localizationParameters,
-            supportedCountryCodes: billingAddress.countryCodes,
+            supportedCountryCodes: billingAddressMode.supportedCountryCodes,
             initialCountry: initialCountry,
             prefillAddress: prefillAddress,
             lookupProvider: lookupProvider,
@@ -322,7 +317,7 @@ private extension CardConfiguration {
             localizationParameters: localizationParameters,
             initialCountry: initialCountry,
             prefillAddress: prefillAddress,
-            supportedCountryCodes: billingAddress.countryCodes,
+            supportedCountryCodes: billingAddressMode.supportedCountryCodes,
             addressViewModelBuilder: DefaultAddressViewModelBuilder(),
             handleShowSearch: nil,
             completionHandler: completionHandler
@@ -343,5 +338,39 @@ extension CardComponent {
         )
 
         context.analyticsProvider?.add(log: logEvent)
+    }
+}
+
+extension BillingAddressMode {
+
+    internal var supportedCountryCodes: [String]? {
+        switch self {
+        case let .full(supportedCountryCodes, _):
+            return supportedCountryCodes.isEmpty ? nil : supportedCountryCodes
+        case .none, .postalCode, .lookup:
+            return nil
+        }
+    }
+
+    internal func supports(countryCode: String) -> Bool {
+        guard let supportedCountryCodes else { return true } // nil == all countries supported
+        return supportedCountryCodes.contains(countryCode)
+    }
+
+    internal var hideForCardBrands: Set<CardBrand> {
+        switch self {
+        case .none:
+            return []
+        case let .postalCode(hideForCardBrands):
+            return hideForCardBrands
+        case let .full(_, hideForCardBrands):
+            return hideForCardBrands
+        case let .lookup(hideForCardBrands, _, _):
+            return hideForCardBrands
+        }
+    }
+
+    internal func shouldHide(for cardBrands: [CardBrand]) -> Bool {
+        !hideForCardBrands.isDisjoint(with: cardBrands)
     }
 }

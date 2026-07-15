@@ -24,14 +24,15 @@ internal class CardViewController: FormViewController {
     
     private let configuration: CardConfiguration
     private let shopperInformation: PrefilledShopperInformation?
-    private let supportedCardTypes: [CardType]
+    private let supportedCardBrands: [CardBrand]
     private let formStyle: FormComponentStyle
     private var issuingCountryCode: String?
+    private var billingAddressSectionItem: FormItem?
     private let amount: Amount?
     private let initialCountryCode: String
     private let scope: String
-    private let cardLogos: [FormCardLogosItem.CardTypeLogo]
-    private let allowedCoBadgedCardTypes: [CardType] = [.carteBancaire, .bcmc, .dankort]
+    private let cardLogos: [FormCardLogosItem.CardBrandLogo]
+    private let allowedCoBadgedCardBrands: [CardBrand] = [.carteBancaire, .bcmc, .dankort]
     private let cardScannerAnalyticsHandler: CardScannerAnalyticsHandler
     private lazy var cardScannerController: CardScannerControlling = {
         var controller: CardScannerControlling = CardScannerController(presenter: self, analyticsHandler: cardScannerAnalyticsHandler)
@@ -69,7 +70,7 @@ internal class CardViewController: FormViewController {
             localizationParameters: localizationParameters,
             addressViewModelBuilder: DefaultAddressViewModelBuilder(),
             presenter: self,
-            addressMode: configuration.billingAddress.mode,
+            addressMode: configuration.billingAddressMode,
             scanCardHandler: scanCardHandler
         )
     }()
@@ -83,7 +84,7 @@ internal class CardViewController: FormViewController {
     ///   - formStyle: The style of form view controller.
     ///   - amount: The payment amount.
     ///   - logoProvider: The provider for logo image URLs.
-    ///   - supportedCardTypes: The list of supported cards.
+    ///   - supportedCardBrands: The list of supported cards.
     ///   - initialCountryCode: The initially used country code for the billing address
     ///   - scope: The view's scope.
     ///   - localizationParameters: Localization parameters.
@@ -94,7 +95,7 @@ internal class CardViewController: FormViewController {
         formStyle: FormComponentStyle,
         amount: Amount?,
         logoProvider: LogoURLProvider,
-        supportedCardTypes: [CardType],
+        supportedCardBrands: [CardBrand],
         initialCountryCode: String,
         scope: String,
         localizationParameters: LocalizationParameters?,
@@ -103,15 +104,15 @@ internal class CardViewController: FormViewController {
     ) {
         self.configuration = configuration
         self.shopperInformation = shopperInformation
-        self.supportedCardTypes = supportedCardTypes
+        self.supportedCardBrands = supportedCardBrands
         self.formStyle = formStyle
         self.scope = scope
         self.initialCountryCode = initialCountryCode
         self.amount = amount
         self.cardScannerAnalyticsHandler = cardScannerAnalyticsHandler
 
-        self.cardLogos = supportedCardTypes.map {
-            .init(url: logoProvider.logoURL(withName: $0.rawValue), type: $0)
+        self.cardLogos = supportedCardBrands.map {
+            .init(url: logoProvider.logoURL(withName: $0.rawValue), brand: $0)
         }
 
         super.init(
@@ -157,7 +158,7 @@ internal class CardViewController: FormViewController {
     }
     
     internal var selectedBrand: String? {
-        items.numberContainerItem.numberItem.currentBrand?.type.rawValue
+        items.numberContainerItem.numberItem.currentBrand?.brand.rawValue
     }
     
     internal var cardBIN: String {
@@ -168,10 +169,11 @@ internal class CardViewController: FormViewController {
         let address: PostalAddress
         let requiredFields: Set<AddressField>
         
-        switch configuration.billingAddress.mode {
+        switch configuration.billingAddressMode {
         case .lookup, .full:
             guard
                 let billingAddressItem = items.billingAddressPickerItem,
+                billingAddressItem.isVisible,
                 let lookupBillingAddress = billingAddressItem.value
             else { return nil }
             
@@ -179,6 +181,7 @@ internal class CardViewController: FormViewController {
             requiredFields = billingAddressItem.addressViewModel.requiredFields
             
         case .postalCode:
+            guard items.postalCodeItem.isVisible else { return nil }
             address = PostalAddress(postalCode: items.postalCodeItem.value)
             requiredFields = [.postalCode]
             
@@ -241,7 +244,7 @@ internal class CardViewController: FormViewController {
         issuingCountryCode = binInfo.issuingCountryCode
         items.numberContainerItem.update(brands: brands)
         
-        updateBillingAddressOptionalStatus(brands: brands)
+        updateAddressItemVisibility(basedOn: brands)
     }
 
     internal func handleSelection(_ selectedBrand: DetectedCardBrand) {
@@ -253,7 +256,7 @@ internal class CardViewController: FormViewController {
 
     internal func showCoBadgedCardsUI(for brands: [DetectedCardBrand]) {
         let coBadgedBrands = brands.filter { brand in
-            allowedCoBadgedCardTypes.contains(brand.type)
+            allowedCoBadgedCardBrands.contains(brand.brand)
         }
         if !coBadgedBrands.isEmpty { // Check if there are any co-badged brands
             items.coBadgedCardItem.updateItems(brands, cardLogos: cardLogos)
@@ -265,17 +268,17 @@ internal class CardViewController: FormViewController {
 
 extension CardViewController {
     
-    private func updateBillingAddressOptionalStatus(brands: [DetectedCardBrand]) {
-        let isOptional = configuration.billingAddress.isOptional(for: brands.map(\.type))
-        switch configuration.billingAddress.mode {
+    private func updateAddressItemVisibility(basedOn brands: [DetectedCardBrand]) {
+        let shouldHide = configuration.billingAddressMode.shouldHide(for: brands.map(\.brand))
+        switch configuration.billingAddressMode {
         case .lookup, .full:
-            items.billingAddressPickerItem?.updateOptionalStatus(isOptional: isOptional)
+            items.billingAddressPickerItem?.isVisible = !shouldHide
+            billingAddressSectionItem?.isVisible = !shouldHide
         case .postalCode:
-            items.postalCodeItem.updateOptionalStatus(isOptional: isOptional)
+            items.postalCodeItem.isVisible = !shouldHide
         case .none:
             break
         }
-        
     }
     
     /// Observe the brand changes to update all other fields.
@@ -314,7 +317,7 @@ extension CardViewController {
         items.additionalAuthPasswordItem.isHidden.wrappedValue = kcpItemsHidden
         items.additionalAuthCodeItem.isHidden.wrappedValue = kcpItemsHidden
         items.socialSecurityNumberItem.isHidden.wrappedValue = shouldHideSocialSecurityItem(with: brand)
-        items.installmentsItem?.update(cardType: brand?.type)
+        items.installmentsItem?.update(cardBrand: brand?.brand)
     }
     
     // MARK: Private methods
@@ -353,6 +356,7 @@ extension CardViewController {
         }
         
         if let billingAddressItem {
+            billingAddressSectionItem = billingAddressItem
             append(billingAddressItem)
         }
         
@@ -365,7 +369,7 @@ extension CardViewController {
     
     private var billingAddressItem: FormItem? {
         
-        switch configuration.billingAddress.mode {
+        switch configuration.billingAddressMode {
         case .lookup, .full:
             guard let pickerItem = items.billingAddressPickerItem else { return nil }
             return pickerItem.withSectionHeader(
@@ -401,7 +405,7 @@ extension CardViewController {
     }
     
     private func didChange(pan: String) {
-        items.securityCodeItem.selectedCard = supportedCardTypes.adyen.type(forCardNumber: pan)
+        items.securityCodeItem.selectedCard = supportedCardBrands.adyen.type(forCardNumber: pan)
         cardDelegate?.didChange(pan: pan)
     }
     

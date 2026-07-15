@@ -212,7 +212,7 @@ class StoredCardComponentTests: XCTestCase {
     // MARK: - Helpers
 
     private func makeSUT(
-        brand: CardType = .visa,
+        brand: CardBrand = .visa,
         publicKey: String = Dummy.publicKey,
         analyticsProvider: AnyAnalyticsProvider? = nil
     ) -> StoredCardComponent {

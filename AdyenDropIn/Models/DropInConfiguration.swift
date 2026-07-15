@@ -174,7 +174,7 @@ package extension DropInComponent {
         /// The list of supported card brands.  Defaults to nil.
         /// By default list of supported brands is extracted from component's `AnyCardPaymentMethod`.
         /// Use this property to enforce a custom collection of card brands.
-        package var supportedCardBrands: [CardType]?
+        package var supportedCardBrands: [CardBrand]?
 
         /// Installments options to present to the user.
         package var installmentConfiguration: InstallmentConfiguration?
@@ -202,7 +202,7 @@ package extension DropInComponent {
             koreanAuthenticationVisibility: CardConfiguration.FieldVisibility = .auto,
             socialSecurityNumberVisibility: CardConfiguration.FieldVisibility = .auto,
             showSecurityCodeForStoredCard: Bool = true,
-            supportedCardBrands: [CardType]? = nil,
+            supportedCardBrands: [CardBrand]? = nil,
             installmentConfiguration: InstallmentConfiguration? = nil
         ) {
             self.showCardholderName = showCardholderName

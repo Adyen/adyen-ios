@@ -49,17 +49,16 @@ public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInfo
     /// Indicates whether to show the security code field for stored cards. Defaults to true.
     internal var showSecurityCodeForStoredCard: Bool
 
-    // TODO: Rename CardType to CardBrand once the internal CardBrand struct conflict is resolved.
     /// The list of supported card brands.  Defaults to nil.
     /// By default list of supported brands is extracted from component's `AnyCardPaymentMethod`.
     /// Use this property to enforce a custom collection of card brands.
-    internal var supportedCardBrands: [CardType]?
+    internal var supportedCardBrands: [CardBrand]?
 
     /// Installments options to present to the user.
     internal var installmentConfiguration: InstallmentConfiguration?
     
     /// Billing address fields configurations.
-    internal var billingAddress: BillingAddressConfiguration
+    internal var billingAddressMode: BillingAddressMode
     
     /// The type used for the bin lookup
     internal var binLookupType: BinLookupRequestType
@@ -81,7 +80,7 @@ public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInfo
         self.theme = .init()
         self.style = FormComponentStyle()
         self.showSecurityCodeForStoredCard = true
-        self.billingAddress = .init()
+        self.billingAddressMode = .none
         self.showsSubmitButton = true
         self.showCardholderName = false
         self.showSecurityCode = true
@@ -170,7 +169,7 @@ extension CardConfiguration {
     /// Use this to enforce a custom collection of card brands.
     /// - Parameter supportedCardBrands: The list of supported card brands, or `nil` to use the default.
     /// - Returns: A modified copy of the configuration.
-    public func supportedCardBrands(_ supportedCardBrands: [CardType]?) -> Self {
+    public func supportedCardBrands(_ supportedCardBrands: [CardBrand]?) -> Self {
         var copy = self
         copy.supportedCardBrands = supportedCardBrands
         return copy
@@ -190,28 +189,9 @@ extension CardConfiguration {
     /// - Returns: A modified copy of the configuration.
     public func billingAddressMode(_ mode: BillingAddressMode) -> Self {
         var copy = self
-        copy.billingAddress.mode = mode
+        copy.billingAddressMode = mode
         return copy
     }
-    
-    /// Sets the supported country codes for billing address.
-    /// - Parameter countryCodes: List of ISO country codes supported for the billing address.
-    /// - Returns: A modified copy of the configuration.
-    public func billingAddressCountryCodes(_ countryCodes: [String]) -> Self {
-        var copy = self
-        copy.billingAddress.countryCodes = countryCodes
-        return copy
-    }
-    
-    // TODO: find out if this field is needed. doesn't seem used
-//    /// Sets the requirement policy for billing address.
-//    /// - Parameter policy: The requirement policy (required, optional, or optional for specific card types).
-//    /// - Returns: A modified copy of the configuration.
-//    public func billingAddressRequirementPolicy(_ policy: BillingAddressConfiguration.RequirementPolicy) -> Self {
-//        var copy = self
-//        copy.billingAddress.requirementPolicy = policy
-//        return copy
-//    }
     
     /// Sets the handler to be called when the BIN value changes.
     /// The BIN is the first 6-8 digits of the card number.
@@ -253,17 +233,13 @@ package protocol AnyCardComponentConfiguration {
     /// In `auto` mode the field will appear based on card bin lookup.
     var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility { get }
 
-    // Billing address fields configurations
-//    var billingAddress: BillingAddressConfiguration { get }
-
     /// Indicates whether to show the security code field for stored cards. Defaults to true.
     var showSecurityCodeForStoredCard: Bool { get }
 
-    // TODO: Rename CardType to CardBrand once the internal CardBrand struct conflict is resolved.
     /// The list of supported card brands.  Defaults to nil.
     /// By default list of supported brands is extracted from component's `AnyCardPaymentMethod`.
     /// Use this property to enforce a custom collection of card brands.
-    var supportedCardBrands: [CardType]? { get }
+    var supportedCardBrands: [CardBrand]? { get }
 
     /// Installments options to present to the user.
     var installmentConfiguration: InstallmentConfiguration? { get }

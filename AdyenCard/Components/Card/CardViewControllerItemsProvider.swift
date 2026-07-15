@@ -28,7 +28,7 @@ extension CardViewController {
         private var localizationParameters: LocalizationParameters?
         private let configuration: CardConfiguration
         private let shopperInformation: PrefilledShopperInformation?
-        private let cardLogos: [FormCardLogosItem.CardTypeLogo]
+        private let cardLogos: [FormCardLogosItem.CardBrandLogo]
         private let scope: String
         private let initialCountry: String
         private let addressViewModelBuilder: AddressViewModelBuilder
@@ -45,7 +45,7 @@ extension CardViewController {
             amount: Amount?,
             configuration: CardConfiguration,
             shopperInformation: PrefilledShopperInformation?,
-            cardLogos: [FormCardLogosItem.CardTypeLogo],
+            cardLogos: [FormCardLogosItem.CardBrandLogo],
             scope: String,
             initialCountryCode: String,
             localizationParameters: LocalizationParameters?,
@@ -71,7 +71,7 @@ extension CardViewController {
         
         internal lazy var billingAddressPickerItem: FormAddressPickerItem? = {
             switch addressMode {
-            case let .lookup(onLookup, onAddressSelected):
+            case let .lookup(_, onLookup, onAddressSelected):
                 let provider = AsyncAddressLookupProvider(
                     onLookup: onLookup,
                     onAddressSelected: onAddressSelected
@@ -91,7 +91,7 @@ extension CardViewController {
             return FormAddressPickerItem(
                 for: .billing,
                 initialCountry: initialCountry,
-                supportedCountryCodes: configuration.billingAddress.countryCodes,
+                supportedCountryCodes: addressMode.supportedCountryCodes,
                 prefillAddress: prefillAddress,
                 theme: theme,
                 style: formStyle,
@@ -114,7 +114,7 @@ extension CardViewController {
 
         internal lazy var numberContainerItem: FormCardNumberContainerItem = {
             let item = FormCardNumberContainerItem(
-                cardTypeLogos: cardLogos,
+                cardBrandLogos: cardLogos,
                 showSupportedCardBrandLogos: configuration.showSupportedCardBrandLogos,
                 style: formStyle.textField,
                 localizationParameters: localizationParameters,
