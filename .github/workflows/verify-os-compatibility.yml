@@ -105,6 +105,9 @@ jobs:
           -scheme "IntegrationUIKitTests" \
           -destination "$DEST" \
           -skipPackagePluginValidation \
+          -test-iterations 3 \
+          -retry-tests-on-failure \
+          -test-repetition-relaunch-enabled YES \
           SWIFT_VERSION=5
 
 
