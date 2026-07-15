@@ -19,15 +19,15 @@ internal final class ActionsViewModel: ObservableObject {
     }
 
     internal func presentVoucher() {
-        present(actionString: DummyAction.voucher)
+        present(actionJSON: DummyAction.voucher)
     }
 
     internal func presentQRCode() {
-        present(actionString: DummyAction.qrCode)
+        present(actionJSON: DummyAction.qrCode)
     }
 
-    private func present(actionString: String) {
-        let example = ActionComponentExample(actionString: actionString)
+    private func present(actionJSON: String) {
+        let example = ActionComponentExample(actionJSON: actionJSON)
         example.presenter = presenter
         currentExample = example
         example.start()

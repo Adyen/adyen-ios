@@ -24,10 +24,10 @@ internal final class ActionComponentExample: InitialDataAdvancedFlowProtocol {
     /// comes from demo app protocol, unused on new structure
     internal var context: AdyenContext?
 
-    private let actionString: String
+    private let actionJSON: String
 
-    internal init(actionString: String) {
-        self.actionString = actionString
+    internal init(actionJSON: String) {
+        self.actionJSON = actionJSON
     }
 
     internal func start() {
@@ -36,7 +36,7 @@ internal final class ActionComponentExample: InitialDataAdvancedFlowProtocol {
         Task { @MainActor in
             do {
                 let checkout = try await createCheckout()
-                let actionData = actionString.data(using: .utf8)
+                let actionData = actionJSON.data(using: .utf8)
                 let action = try JSONDecoder().decode(Action.self, from: actionData!)
 
                 hideLoading()
