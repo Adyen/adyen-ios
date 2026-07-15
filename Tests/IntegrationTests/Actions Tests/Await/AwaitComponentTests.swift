@@ -105,14 +105,12 @@ class AwaitComponentTests: XCTestCase {
 
         let presentationDelegate = PresentationDelegateMock()
         let waitExpectation = expectation(description: "Wait for the presentationDelegate to be called.")
-        presentationDelegate.doPresent = { [weak self] viewController in
-            guard let self else { return }
-            
-            XCTAssertNotNil(viewController as? AwaitViewController)
-            let viewController = viewController as! AwaitViewController
+        presentationDelegate.doPresent = { viewController in
+            XCTAssertNotNil(viewController as? ActionViewController)
+            let viewController = viewController as! ActionViewController
             viewController.loadViewIfNeeded()
 
-            let view = viewController.awaitView
+            let view = viewController.view as! AwaitView
 
             XCTAssertEqual(view.messageLabel.textColor, UIColor.red)
             XCTAssertEqual(view.messageLabel.textAlignment, .center)

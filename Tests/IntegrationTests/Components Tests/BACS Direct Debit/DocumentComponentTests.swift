@@ -31,8 +31,8 @@ class DocumentComponentTests: XCTestCase {
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "test_table")
         
         presentationDelegate.doPresent = { viewController in
-            XCTAssertNotNil(viewController as? ADYViewController)
-            let viewController = viewController as! ADYViewController
+            XCTAssertNotNil(viewController as? ActionViewController)
+            let viewController = viewController as! ActionViewController
             
             viewController.loadViewIfNeeded()
 

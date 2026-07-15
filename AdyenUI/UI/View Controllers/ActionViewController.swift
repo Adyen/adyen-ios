@@ -7,18 +7,18 @@
 import Adyen
 import UIKit
 
-/// `ADYViewController` serves as a height-aware `UIViewController`
-package final class ADYViewController: UIViewController {
+/// `ActionViewController` serves as a height-aware `UIViewController`
+package final class ActionViewController: UIViewController {
 
     private let contentView: UIView
     
-    /// Initializes the `ADYViewController` instance with given view and an optional title
+    /// Initializes the `ActionViewController` instance with given view and an optional title
     /// - Parameters:
     ///   - view: The instance of UIView to be displayed
-    ///   - title: The title of the `ADYViewController`
+    ///   - title: The title of the `ActionViewController`
     package init(view: UIView, title: String? = nil) {
         self.contentView = view
-        super.init(nibName: nil, bundle: Bundle(for: ADYViewController.self))
+        super.init(nibName: nil, bundle: Bundle(for: ActionViewController.self))
         self.title = title
     }
     

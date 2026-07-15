@@ -24,7 +24,7 @@ internal enum ActionPresentationHelper {
             return viewController
         }
 
-        return ActionWrapperViewController(
+        return ActionNavigationController(
             actionViewController: actionViewController,
             onCancel: onCancel
         )

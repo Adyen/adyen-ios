@@ -6,6 +6,9 @@
 
 @_spi(AdyenInternal) import Adyen
 import Foundation
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// A component that handles Await action's.
 @MainActor
@@ -115,7 +118,8 @@ package final class AwaitComponent: ActionComponent, Cancellable {
             with: action.paymentMethodType,
             localizationParameters: configuration.localizationParameters
         )
-        let viewController = AwaitViewController(viewModel: viewModel, style: configuration.style)
+        let awaitView = AwaitView(viewModel: viewModel, style: configuration.style)
+        let viewController = ActionViewController(view: awaitView)
 
         if let presentationDelegate {
             presentationDelegate.present(viewController: viewController)
