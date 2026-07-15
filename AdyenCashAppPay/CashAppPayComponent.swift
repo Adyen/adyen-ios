@@ -43,6 +43,7 @@ package final class CashAppPayComponent: PaymentComponent,
     }
 
     /// The delegate of the component.
+    // TODO(COSDK-1313): Apply session configuration during factory assembly after Cash App Pay adopts PaymentComponentFactory.
     package weak var delegate: PaymentComponentDelegate? {
         didSet {
             if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,

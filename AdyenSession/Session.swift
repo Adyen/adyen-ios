@@ -278,3 +278,13 @@ extension Session: StorePaymentMethodFieldAware {
         state.responseConfiguration.enableStoreDetails
     }
 }
+
+extension Session {
+
+    package var componentConfiguration: SessionComponentConfiguration {
+        .init(
+            installmentConfiguration: state.responseConfiguration.installmentOptions,
+            showStorePaymentMethod: state.responseConfiguration.enableStoreDetails
+        )
+    }
+}

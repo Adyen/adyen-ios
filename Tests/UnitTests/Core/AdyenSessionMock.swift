@@ -11,6 +11,12 @@ public final class AdyenSessionMock: SessionProtocol {
     public var state: Session.State
     public var presentationDelegate: PresentationDelegate?
     public var showRemovePaymentMethodButton = false
+    public var componentConfiguration: SessionComponentConfiguration {
+        .init(
+            installmentConfiguration: state.responseConfiguration.installmentOptions,
+            showStorePaymentMethod: state.responseConfiguration.enableStoreDetails
+        )
+    }
 
     var didSubmitCalled = false
     var didProvideCalled = false
