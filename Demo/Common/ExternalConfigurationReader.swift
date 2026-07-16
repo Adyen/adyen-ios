@@ -6,17 +6,8 @@
 
 import Foundation
 
-/// Reads external SDK configuration from a Base64-encoded JSON string passed via launch arguments
-/// (`-config <base64>`) and merges it into `DemoAppSettings` so the existing
-/// `ConfigurationConstants.current` picks up the values.
-///
-/// The JSON schema uses unified keys aligned with the native SDKs (e.g. `showCardholderName`).
-/// All fields are optional — omitted fields preserve the existing value.
 internal enum ExternalConfigurationReader {
 
-    /// Reads and decodes the external configuration from launch arguments, if present.
-    /// - Returns: The decoded `ExternalConfiguration`, or `nil` if no `-config` argument was passed
-    ///   or the payload could not be decoded.
     static func readFromLaunchArguments() -> ExternalConfiguration? {
         read(from: ProcessInfo.processInfo.arguments)
     }
@@ -36,7 +27,6 @@ internal enum ExternalConfigurationReader {
     }
 }
 
-/// Parsed external configuration. All properties are optional so partial configs are supported.
 internal struct ExternalConfiguration: Decodable {
     internal let card: ExternalCardConfiguration?
 
@@ -51,8 +41,6 @@ internal struct ExternalCardConfiguration: Decodable {
 
 internal extension DemoAppSettings {
 
-    /// Returns a new `DemoAppSettings` with the external configuration applied.
-    /// Only non-nil values from `external` override the existing values.
     func applying(_ external: ExternalConfiguration) -> DemoAppSettings {
         var cardSettings = cardSettings
         if let showCardholderName = external.card?.showCardholderName {
