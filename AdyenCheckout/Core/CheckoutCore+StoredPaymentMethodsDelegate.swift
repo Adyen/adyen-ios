@@ -14,10 +14,6 @@ import UIKit
 
 extension CheckoutCore: SessionStoredPaymentMethodsDelegate {
 
-    package var isSession: Bool {
-        session != nil
-    }
-
     package var showRemovePaymentMethodButton: Bool {
         session?.showRemovePaymentMethodButton ?? false
     }

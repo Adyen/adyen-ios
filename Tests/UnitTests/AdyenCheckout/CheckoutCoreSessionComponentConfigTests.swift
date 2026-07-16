@@ -30,18 +30,6 @@ final class CheckoutCoreSessionComponentConfigTests: XCTestCase {
         )
     }
 
-    // MARK: - isSession
-
-    func test_isSession_withSession_isTrue() {
-        let sut = makeSessionCheckoutCore()
-        XCTAssertTrue(sut.isSession)
-    }
-
-    func test_isSession_withoutSession_isFalse() {
-        let sut = makeAdvancedCheckoutCore()
-        XCTAssertFalse(sut.isSession)
-    }
-
     // MARK: - Card component configuration
 
     func test_cardComponent_sessionFlow_installmentConfiguration_appliedFromSession() throws {

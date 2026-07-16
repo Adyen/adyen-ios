@@ -81,22 +81,6 @@ public final class AdyenSessionMock: SessionProtocol {
     
 }
 
-extension AdyenSessionMock: InstallmentConfigurationAware {
-    public nonisolated var isSession: Bool {
-        true
-    }
-
-    public var installmentConfiguration: InstallmentConfiguration? {
-        state.responseConfiguration.installmentOptions
-    }
-}
-
-extension AdyenSessionMock: StorePaymentMethodFieldAware {
-    public var showStorePaymentMethodField: Bool? {
-        state.responseConfiguration.enableStoreDetails
-    }
-}
-
 private enum AdyenSessionMockError: Error {
     case missingResult
 }

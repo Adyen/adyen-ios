@@ -256,28 +256,7 @@ extension Session {
     }
 }
 
-// MARK: - Component Configuration Awareness
-
-extension Session: AdyenSessionAware {
-    
-    package nonisolated var isSession: Bool {
-        true
-    }
-}
-
-extension Session: InstallmentConfigurationAware {
-    
-    package var installmentConfiguration: InstallmentConfiguration? {
-        state.responseConfiguration.installmentOptions
-    }
-}
-
-extension Session: StorePaymentMethodFieldAware {
-    
-    package var showStorePaymentMethodField: Bool? {
-        state.responseConfiguration.enableStoreDetails
-    }
-}
+// MARK: - Component Configuration
 
 extension Session {
 

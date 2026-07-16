@@ -28,13 +28,6 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     //  var style: FormComponentStyle { get }
 
     var theme: CheckoutTheme { get set }
-
-    mutating func apply(sessionConfiguration: SessionComponentConfiguration)
-}
-
-package extension CheckoutComponentConfiguration {
-
-    mutating func apply(sessionConfiguration: SessionComponentConfiguration) {}
 }
 
 package extension CheckoutConfigurable {
