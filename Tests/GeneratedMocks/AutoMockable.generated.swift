@@ -26,9 +26,9 @@ class ActionPresenterMock: ActionPresenter {
 
     // MARK: - present
 
-    var presentActionComponentCallsCount = 0
-    var presentActionComponentCalled: Bool {
-        presentActionComponentCallsCount > 0
+    var presentActionViewControllerCallsCount = 0
+    var presentActionViewControllerCalled: Bool {
+        presentActionViewControllerCallsCount > 0
     }
 
     var presentActionViewControllerReceivedActionViewController: UIViewController?
@@ -36,7 +36,7 @@ class ActionPresenterMock: ActionPresenter {
     var presentActionViewControllerClosure: ((UIViewController) -> Void)?
 
     func present(actionViewController: UIViewController) {
-        presentActionComponentCallsCount += 1
+        presentActionViewControllerCallsCount += 1
         presentActionViewControllerReceivedActionViewController = actionViewController
         presentActionViewControllerReceivedInvocations.append(actionViewController)
         presentActionViewControllerClosure?(actionViewController)
@@ -191,16 +191,16 @@ class ComponentContainerRoutingMock: ComponentContainerRouting {
 
     // MARK: - present
 
-    var presentActionComponentOnCancelCallsCount = 0
-    var presentActionComponentOnCancelCalled: Bool {
-        presentActionComponentOnCancelCallsCount > 0
+    var presentActionViewControllerOnCancelCallsCount = 0
+    var presentActionViewControllerOnCancelCalled: Bool {
+        presentActionViewControllerOnCancelCallsCount > 0
     }
 
-    var presentActionComponentOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
+    var presentActionViewControllerOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
 
     func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
-        presentActionComponentOnCancelCallsCount += 1
-        presentActionComponentOnCancelClosure?(actionViewController, onCancel)
+        presentActionViewControllerOnCancelCallsCount += 1
+        presentActionViewControllerOnCancelClosure?(actionViewController, onCancel)
     }
 
     // MARK: - dismiss
@@ -405,16 +405,16 @@ class PaymentMethodListRoutingMock: PaymentMethodListRouting {
 
     // MARK: - present
 
-    var presentActionComponentOnCancelCallsCount = 0
-    var presentActionComponentOnCancelCalled: Bool {
-        presentActionComponentOnCancelCallsCount > 0
+    var presentActionViewControllerOnCancelCallsCount = 0
+    var presentActionViewControllerOnCancelCalled: Bool {
+        presentActionViewControllerOnCancelCallsCount > 0
     }
 
-    var presentActionComponentOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
+    var presentActionViewControllerOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
 
     func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
-        presentActionComponentOnCancelCallsCount += 1
-        presentActionComponentOnCancelClosure?(actionViewController, onCancel)
+        presentActionViewControllerOnCancelCallsCount += 1
+        presentActionViewControllerOnCancelClosure?(actionViewController, onCancel)
     }
 
     // MARK: - dismiss
@@ -572,16 +572,16 @@ class PreselectedPaymentMethodRoutingMock: PreselectedPaymentMethodRouting {
 
     // MARK: - present
 
-    var presentActionComponentOnCancelCallsCount = 0
-    var presentActionComponentOnCancelCalled: Bool {
-        presentActionComponentOnCancelCallsCount > 0
+    var presentActionViewControllerOnCancelCallsCount = 0
+    var presentActionViewControllerOnCancelCalled: Bool {
+        presentActionViewControllerOnCancelCallsCount > 0
     }
 
-    var presentActionComponentOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
+    var presentActionViewControllerOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
 
     func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
-        presentActionComponentOnCancelCallsCount += 1
-        presentActionComponentOnCancelClosure?(actionViewController, onCancel)
+        presentActionViewControllerOnCancelCallsCount += 1
+        presentActionViewControllerOnCancelClosure?(actionViewController, onCancel)
     }
 
     // MARK: - dismiss
