@@ -111,7 +111,7 @@ package final class VoucherComponent: AnyVoucherActionHandler, ShareableComponen
         let view = VoucherView(model: viewModel(with: action))
         view.delegate = self
         self.view = view
-        let viewController = ADYViewController(view: view)
+        let viewController = ActionViewController(view: view)
         
         setUpPresenterViewController(parentViewController: viewController)
 

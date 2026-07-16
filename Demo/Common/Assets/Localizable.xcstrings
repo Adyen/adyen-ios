@@ -10,6 +10,9 @@
     "(Requires API version 70 or higher)" : {
 
     },
+    "Actions" : {
+
+    },
     "adyen.card.stored.title" : {
       "extractionState" : "manual"
     },

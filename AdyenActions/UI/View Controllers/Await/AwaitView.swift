@@ -32,6 +32,7 @@ internal final class AwaitView: UIView {
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "messageLabel")
+        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
@@ -64,8 +65,19 @@ internal final class AwaitView: UIView {
         label.text = viewModel.spinnerTitle
         label.numberOfLines = 1
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "spinnerTitleLabel")
+        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
+    }()
+    
+    private lazy var contentStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [icon, messageLabel, spinnerView])
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        stackView.spacing = 16
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return stackView
     }()
     
     /// The view model.
@@ -85,9 +97,7 @@ internal final class AwaitView: UIView {
         self.viewModel = viewModel
         self.style = style
         super.init(frame: .zero)
-        addSubview(icon)
-        addSubview(messageLabel)
-        addSubview(spinnerView)
+        addSubview(contentStackView)
         configureConstraints()
         backgroundColor = style.backgroundColor
     }
@@ -99,16 +109,12 @@ internal final class AwaitView: UIView {
     
     private func configureConstraints() {
         let constraints = [
-            icon.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            icon.centerXAnchor.constraint(equalTo: centerXAnchor),
-            
-            messageLabel.topAnchor.constraint(equalTo: icon.bottomAnchor, constant: 25),
-            messageLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            messageLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            
-            spinnerView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 16),
-            spinnerView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            spinnerView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -32)
+            contentStackView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
+            contentStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            contentStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            contentStackView.topAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.topAnchor, constant: 16),
+            contentStackView.bottomAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            messageLabel.widthAnchor.constraint(equalTo: contentStackView.widthAnchor)
         ]
         
         NSLayoutConstraint.activate(constraints)

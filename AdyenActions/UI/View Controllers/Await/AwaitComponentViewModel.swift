@@ -8,7 +8,7 @@ import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import Foundation
 
-/// Describes the `AwaitViewController` UI elements.
+/// Describes the `AwaitView` UI elements.
 internal struct AwaitComponentViewModel {
     
     /// The await icon name.
