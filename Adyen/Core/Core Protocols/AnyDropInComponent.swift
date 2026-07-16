@@ -5,13 +5,16 @@
 //
 
 import Foundation
+import UIKit
 
 /// Any DropIn Component.
-package protocol AnyDropInComponent: PresentableComponent {
-    
+package protocol AnyDropInComponent: Component {
+
+    var viewController: UIViewController { get }
+
     /// The delegate of the DropIn component.
     var delegate: DropInComponentDelegate? { get set }
-    
+
     /// Reloads the DropIn with a partial payment order and a new `PaymentMethods` object.
     ///
     /// - Parameter order: The partial payment order.

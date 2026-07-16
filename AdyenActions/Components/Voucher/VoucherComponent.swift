@@ -24,7 +24,7 @@ package final class VoucherComponent: AnyVoucherActionHandler, ShareableComponen
     /// The context object for this component.
     package let context: AdyenContext
 
-    /// Delegates `PresentableComponent`'s presentation.
+    /// Delegates view controller presentation.
     package weak var presentationDelegate: PresentationDelegate?
 
     package weak var delegate: ActionComponentDelegate?
