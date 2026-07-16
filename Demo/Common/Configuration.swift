@@ -249,14 +249,12 @@ internal struct DemoAppSettings: Codable {
     internal static let defaultThemeSettings = ThemeSettings()
     
     fileprivate static func loadConfiguration() -> DemoAppSettings {
-        var config = UserDefaults.standard.data(forKey: defaultsKey)
+        let persistedConfiguration = UserDefaults.standard.data(forKey: defaultsKey)
             .flatMap { try? JSONDecoder().decode(DemoAppSettings.self, from: $0) }
-            ?? defaultConfiguration
 
         // Apply external configuration from launch arguments (passed by e2e tests via Base64-encoded JSON)
-        if let external = ExternalConfigurationReader.readFromLaunchArguments() {
-            config = config.applying(external)
-        }
+        let externalConfiguration = ExternalConfigurationReader.readFromLaunchArguments()
+        var config = resolveConfiguration(persisted: persistedConfiguration, external: externalConfiguration)
 
         switch CommandLine.arguments.first {
         case "SG":
@@ -266,6 +264,13 @@ internal struct DemoAppSettings: Codable {
             return config
         }
         return config
+    }
+
+    internal static func resolveConfiguration(
+        persisted: DemoAppSettings?,
+        external: ExternalConfiguration?
+    ) -> DemoAppSettings {
+        external.map { defaultConfiguration.applying($0) } ?? persisted ?? defaultConfiguration
     }
     
     fileprivate static func saveConfiguration(_ configuration: DemoAppSettings) {

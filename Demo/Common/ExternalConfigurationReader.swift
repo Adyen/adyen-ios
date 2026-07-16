@@ -18,7 +18,10 @@ internal enum ExternalConfigurationReader {
     /// - Returns: The decoded `ExternalConfiguration`, or `nil` if no `-config` argument was passed
     ///   or the payload could not be decoded.
     static func readFromLaunchArguments() -> ExternalConfiguration? {
-        let arguments = ProcessInfo.processInfo.arguments
+        read(from: ProcessInfo.processInfo.arguments)
+    }
+
+    static func read(from arguments: [String]) -> ExternalConfiguration? {
         guard let configIndex = arguments.firstIndex(of: "-config"),
               configIndex + 1 < arguments.count else {
             return nil
