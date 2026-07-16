@@ -9,8 +9,23 @@ import XCTest
 
 final class DemoConfigurationTests: XCTestCase {
 
+    private var defaultConfiguration: DemoAppSettings {
+        DemoAppSettings(
+            countryCode: "NL",
+            value: 17408,
+            currencyCode: "EUR",
+            merchantAccount: "merchantAccount",
+            cardSettings: DemoAppSettings.defaultCardSettings,
+            dropInSettings: DemoAppSettings.defaultDropInSettings,
+            threeDSConfigurationSettings: DemoAppSettings.threeDSConfigurationSettings,
+            applePaySettings: ApplePaySettings(merchantIdentifier: "demo"),
+            analyticsSettings: DemoAppSettings.defaultAnalyticsSettings,
+            themeSettings: DemoAppSettings.defaultThemeSettings
+        )
+    }
+
     func test_configuration_withExternalConfiguration_shouldApplyItToDefaults() {
-        var persistedCardSettings = DemoAppSettings.defaultCardSettings
+        var persistedCardSettings = defaultConfiguration.cardSettings
         persistedCardSettings.enableInstallments = true
         let persistedConfiguration = DemoAppSettings(
             countryCode: "US",
@@ -18,11 +33,11 @@ final class DemoConfigurationTests: XCTestCase {
             currencyCode: "USD",
             merchantAccount: "persistedMerchant",
             cardSettings: persistedCardSettings,
-            dropInSettings: DemoAppSettings.defaultDropInSettings,
-            threeDSConfigurationSettings: DemoAppSettings.threeDSConfigurationSettings,
-            applePaySettings: DemoAppSettings.defaultApplePaySettings,
-            analyticsSettings: DemoAppSettings.defaultAnalyticsSettings,
-            themeSettings: DemoAppSettings.defaultThemeSettings
+            dropInSettings: defaultConfiguration.dropInSettings,
+            threeDSConfigurationSettings: defaultConfiguration.threeDSConfigurationSettings,
+            applePaySettings: defaultConfiguration.applePaySettings,
+            analyticsSettings: defaultConfiguration.analyticsSettings,
+            themeSettings: defaultConfiguration.themeSettings
         )
         let externalConfiguration = ExternalConfiguration(
             card: ExternalCardConfiguration(showCardholderName: true)
@@ -30,14 +45,15 @@ final class DemoConfigurationTests: XCTestCase {
 
         let configuration = DemoAppSettings.resolveConfiguration(
             persisted: persistedConfiguration,
-            external: externalConfiguration
+            external: externalConfiguration,
+            default: defaultConfiguration
         )
 
         XCTAssertTrue(configuration.cardSettings.showCardholderName)
         XCTAssertFalse(configuration.cardSettings.enableInstallments)
-        XCTAssertEqual(configuration.countryCode, DemoAppSettings.defaultConfiguration.countryCode)
-        XCTAssertEqual(configuration.currencyCode, DemoAppSettings.defaultConfiguration.currencyCode)
-        XCTAssertEqual(configuration.value, DemoAppSettings.defaultConfiguration.value)
+        XCTAssertEqual(configuration.countryCode, defaultConfiguration.countryCode)
+        XCTAssertEqual(configuration.currencyCode, defaultConfiguration.currencyCode)
+        XCTAssertEqual(configuration.value, defaultConfiguration.value)
     }
 
     func test_externalConfigurationReader_withValidPayload_shouldDecodeCardholderName() {
@@ -71,13 +87,14 @@ final class DemoConfigurationTests: XCTestCase {
     }
 
     func test_configuration_withoutExternalConfiguration_shouldUsePersistedConfiguration() {
-        var persistedConfiguration = DemoAppSettings.defaultConfiguration
+        var persistedConfiguration = defaultConfiguration
         persistedConfiguration.countryCode = "US"
         persistedConfiguration.currencyCode = "USD"
 
         let configuration = DemoAppSettings.resolveConfiguration(
             persisted: persistedConfiguration,
-            external: nil
+            external: nil,
+            default: defaultConfiguration
         )
 
         XCTAssertEqual(configuration.countryCode, persistedConfiguration.countryCode)

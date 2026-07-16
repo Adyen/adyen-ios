@@ -268,9 +268,13 @@ internal struct DemoAppSettings: Codable {
 
     internal static func resolveConfiguration(
         persisted: DemoAppSettings?,
-        external: ExternalConfiguration?
+        external: ExternalConfiguration?,
+        default defaultConfiguration: DemoAppSettings = DemoAppSettings.defaultConfiguration
     ) -> DemoAppSettings {
-        external.map { defaultConfiguration.applying($0) } ?? persisted ?? defaultConfiguration
+        if CommandLine.arguments.contains("-config") {
+            return external.map { defaultConfiguration.applying($0) } ?? defaultConfiguration
+        }
+        return external.map { defaultConfiguration.applying($0) } ?? persisted ?? defaultConfiguration
     }
     
     fileprivate static func saveConfiguration(_ configuration: DemoAppSettings) {

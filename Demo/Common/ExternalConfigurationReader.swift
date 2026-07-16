@@ -20,10 +20,16 @@ internal enum ExternalConfigurationReader {
 
         let base64 = arguments[configIndex + 1]
         guard let data = Data(base64Encoded: base64, options: .ignoreUnknownCharacters) else {
+            print("Error: Failed to parse base64 configuration string.")
             return nil
         }
 
-        return try? JSONDecoder().decode(ExternalConfiguration.self, from: data)
+        do {
+            return try JSONDecoder().decode(ExternalConfiguration.self, from: data)
+        } catch {
+            print("Error: Failed to decode ExternalConfiguration: \(error)")
+            return nil
+        }
     }
 }
 
