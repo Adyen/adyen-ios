@@ -224,6 +224,7 @@ package extension DropInComponent {
                 .socialSecurityNumberVisibility(socialSecurityNumberVisibility)
                 .showSecurityCodeForStoredCard(showSecurityCodeForStoredCard)
                 .installmentConfiguration(installmentConfiguration)
+                .supportedCardBrands(supportedCardBrands)
         }
         
     }
