@@ -228,7 +228,7 @@ extension BoletoComponent {
         }
         
         override package func createPaymentDetails() -> PaymentMethodDetails {
-            onCreatePaymentDetails() ?? InstantPaymentDetails(type: paymentMethod.type)
+            onCreatePaymentDetails() ?? GenericPaymentDetails(type: paymentMethod.type)
         }
     }
 }

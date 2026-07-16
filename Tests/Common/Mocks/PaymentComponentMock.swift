@@ -43,7 +43,7 @@ class PaymentComponentMock: PaymentComponent {
             if let storedPaymentMethod = paymentMethod as? StoredPaymentMethod {
                 details = StoredPaymentDetails(paymentMethod: storedPaymentMethod)
             } else {
-                details = InstantPaymentDetails(type: paymentMethod.type)
+                details = GenericPaymentDetails(type: paymentMethod.type)
             }
             let data = PaymentComponentData(paymentMethodDetails: details, order: nil)
             delegate?.didSubmit(data, from: self)

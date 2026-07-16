@@ -303,8 +303,8 @@ class PaymentComponentSubjectTests: XCTestCase {
         // Given
         analyticsProviderMock.checkoutAttemptId = "test-checkout-attempt-id"
 
-        let instantPaymentMethod = InstantPaymentMethod(type: .other("test"), name: "Test")
-        let instantPaymentDetails = InstantPaymentDetails(type: .other("test"))
+        let instantPaymentMethod = GenericPaymentMethod(type: .other("test"), name: "Test")
+        let instantPaymentDetails = GenericPaymentDetails(type: .other("test"))
         let paymentData = PaymentComponentData(paymentMethodDetails: instantPaymentDetails, order: nil)
 
         let genericComponent = GenericPaymentComponent(

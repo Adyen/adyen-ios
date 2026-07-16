@@ -127,7 +127,7 @@ class PaymentMethodTests: XCTestCase {
         
         XCTAssertTrue(paymentMethods.stored[2] is StoredPayPalPaymentMethod)
         XCTAssertEqual((paymentMethods.stored[2] as? StoredPayPalPaymentMethod)?.displayInformation(using: expectedLocalizationParameters).subtitle, "example@shopper.com")
-        XCTAssertTrue(paymentMethods.stored[3] is StoredInstantPaymentMethod)
+        XCTAssertTrue(paymentMethods.stored[3] is StoredGenericPaymentMethod)
         XCTAssertTrue(paymentMethods.stored[4] is StoredBCMCPaymentMethod)
         
         XCTAssertTrue(paymentMethods.stored[5] is StoredCardPaymentMethod)
@@ -181,7 +181,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertTrue(paymentMethods.regular[2] is SEPADirectDebitPaymentMethod)
         
         // Unknown redirect
-        XCTAssertTrue(paymentMethods.regular[3] is InstantPaymentMethod)
+        XCTAssertTrue(paymentMethods.regular[3] is GenericPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[3].type.rawValue, "unknown")
         XCTAssertEqual(paymentMethods.regular[3].name, "Redirect Payment Method")
         
@@ -196,17 +196,17 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethods.regular[5].name, "Apple Pay")
         
         // PayPal
-        XCTAssertTrue(paymentMethods.regular[6] is InstantPaymentMethod)
+        XCTAssertTrue(paymentMethods.regular[6] is GenericPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[6].type.rawValue, "paypal")
         XCTAssertEqual(paymentMethods.regular[6].name, "PayPal")
         
         // GiroPay
-        XCTAssertTrue(paymentMethods.regular[7] is InstantPaymentMethod)
+        XCTAssertTrue(paymentMethods.regular[7] is GenericPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[7].type.rawValue, "giropay")
         XCTAssertEqual(paymentMethods.regular[7].name, "GiroPay")
 
         // GiroPay with non optional details
-        XCTAssertTrue(paymentMethods.regular[8] is InstantPaymentMethod)
+        XCTAssertTrue(paymentMethods.regular[8] is GenericPaymentMethod)
         XCTAssertEqual(paymentMethods.regular[8].type.rawValue, "giropay")
         XCTAssertEqual(paymentMethods.regular[8].name, "GiroPay with non optional details")
         
@@ -321,7 +321,7 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(cashAppPay.clientId, "testClient")
         XCTAssertEqual(cashAppPay.scopeId, "testScope")
         
-        let iDealPaymentMethod = try XCTUnwrap(paymentMethods.regular[34] as? InstantPaymentMethod)
+        let iDealPaymentMethod = try XCTUnwrap(paymentMethods.regular[34] as? GenericPaymentMethod)
         XCTAssertEqual(iDealPaymentMethod.type, .ideal)
         XCTAssertEqual(iDealPaymentMethod.name, "iDeal")
 
@@ -329,11 +329,11 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(payToPaymentMethod.type.rawValue, "payto")
         XCTAssertEqual(payToPaymentMethod.name, "payto")
 
-        let irisPaymentMethod = try XCTUnwrap(paymentMethods.regular[36] as? InstantPaymentMethod)
+        let irisPaymentMethod = try XCTUnwrap(paymentMethods.regular[36] as? GenericPaymentMethod)
         XCTAssertEqual(irisPaymentMethod.type.rawValue, "iris")
         XCTAssertEqual(irisPaymentMethod.name, "IRIS")
 
-        let bizumPaymentMethod = try XCTUnwrap(paymentMethods.regular[37] as? InstantPaymentMethod)
+        let bizumPaymentMethod = try XCTUnwrap(paymentMethods.regular[37] as? GenericPaymentMethod)
         XCTAssertEqual(bizumPaymentMethod.type.rawValue, "bizum")
         XCTAssertEqual(bizumPaymentMethod.name, "Bizum")
     }
@@ -391,7 +391,7 @@ class PaymentMethodTests: XCTestCase {
                 supportedShopperInteractions: [.shopperPresent],
                 emailAddress: "email"
             ) ==
-                InstantPaymentMethod(type: .payPal, name: "payPal")
+                GenericPaymentMethod(type: .payPal, name: "payPal")
         )
         XCTAssertTrue(
             StoredPayPalPaymentMethod(
@@ -640,7 +640,7 @@ class PaymentMethodTests: XCTestCase {
     // MARK: - GiroPay
     
     func test_decodingGiropayPaymentMethod() throws {
-        let paymentMethod = try AdyenCoder.decode(giroPayDictionaryWithOptionalDetails) as InstantPaymentMethod
+        let paymentMethod = try AdyenCoder.decode(giroPayDictionaryWithOptionalDetails) as GenericPaymentMethod
         XCTAssertEqual(paymentMethod.type.rawValue, "giropay")
         XCTAssertEqual(paymentMethod.name, "GiroPay")
         testCoding(paymentMethod)
@@ -900,7 +900,7 @@ class PaymentMethodTests: XCTestCase {
             "paymentMethods": [payByBankInstant]
         ]) as PaymentMethods
         
-        let paymentMethod = try XCTUnwrap(paymentMethods.regular.first as? InstantPaymentMethod)
+        let paymentMethod = try XCTUnwrap(paymentMethods.regular.first as? GenericPaymentMethod)
         XCTAssertEqual(paymentMethod.type, .payByBank)
         XCTAssertEqual(paymentMethod.name, "Pay by Bank")
     }
