@@ -64,9 +64,6 @@
     "Billing Address" : {
 
     },
-    "Boleto voucher (VoucherView)" : {
-
-    },
     "Card Component" : {
 
     },
@@ -155,9 +152,6 @@
 
     },
     "Visibility" : {
-
-    },
-    "Voucher" : {
 
     },
     "When false, simulates a shipping error returned from the didAuthorize delegate method." : {

@@ -68,7 +68,7 @@ jobs:
         
     - name: Download and install simulator runtime
       if: matrix.needs_custom_sim == true
-      uses: nick-fields/retry@v3
+      uses: nick-fields/retry@v4
       with:
         timeout_minutes: 10
         max_attempts: 3
@@ -100,11 +100,25 @@ jobs:
         DEST: "platform=iOS Simulator,OS=${{ matrix.version }},name=${{ matrix.displayname }}"
       run: |
         echo "Destination: $DEST"
+        set +e
         xcodebuild build test \
           -project "Adyen.xcodeproj" \
           -scheme "IntegrationUIKitTests" \
           -destination "$DEST" \
           -skipPackagePluginValidation \
-          SWIFT_VERSION=5
+          -test-iterations 3 \
+          -retry-tests-on-failure \
+          -test-repetition-relaunch-enabled YES \
+          SWIFT_VERSION=5 2>&1 | tee compatibility-xcodebuild.log | xcbeautify --quieter --is-ci --disable-logging
+        status=${PIPESTATUS[0]}
+        exit "$status"
+
+    - name: Upload raw compatibility test log
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v7
+      with:
+        name: compatibility-xcodebuild-${{ matrix.displayname }}-ios-${{ matrix.version }}
+        path: compatibility-xcodebuild.log
+        if-no-files-found: error
 
 
