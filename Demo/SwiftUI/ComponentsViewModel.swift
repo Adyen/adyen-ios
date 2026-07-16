@@ -47,16 +47,16 @@ internal final class ComponentsViewModel: ObservableObject, Identifiable {
         return cardComponentExample
     }
     
-    private var instantPaymentComponentExample: GenericPaymentComponentExample {
-        let instantPaymentComponentExample = GenericPaymentComponentExample()
-        instantPaymentComponentExample.presenter = self
-        return instantPaymentComponentExample
+    private var genericPaymentComponentExample: GenericPaymentComponentExample {
+        let genericPaymentComponentExample = GenericPaymentComponentExample()
+        genericPaymentComponentExample.presenter = self
+        return genericPaymentComponentExample
     }
     
-    private var instantPaymentComponentAdvancedFlow: GenericPaymentComponentAdvancedFlow {
-        let instantPaymentComponentExample = GenericPaymentComponentAdvancedFlow()
-        instantPaymentComponentExample.presenter = self
-        return instantPaymentComponentExample
+    private var genericPaymentComponentAdvancedFlow: GenericPaymentComponentAdvancedFlow {
+        let genericPaymentComponentExample = GenericPaymentComponentAdvancedFlow()
+        genericPaymentComponentExample.presenter = self
+        return genericPaymentComponentExample
     }
 
     @Published internal var viewControllerToPresent: UIViewController?
@@ -107,9 +107,9 @@ internal final class ComponentsViewModel: ObservableObject, Identifiable {
     
     internal func presentGenericPaymentComponent() {
         if isUsingSession {
-            start(instantPaymentComponentExample)
+            start(genericPaymentComponentExample)
         } else {
-            start(instantPaymentComponentAdvancedFlow)
+            start(genericPaymentComponentAdvancedFlow)
         }
     }
 
