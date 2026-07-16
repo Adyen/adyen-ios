@@ -44,9 +44,9 @@ internal enum CheckoutComponentBuilder {
                     paymentMethod: achPaymentMethod,
                     configuration: configuration,
                     context: context,
-                    sessionConfigurationOverride: { configuration in
-                        guard let sessionConfiguration else { return configuration }
-                        return configuration.showStorePaymentMethodField(
+                    sessionConfigurationOverride: { componentConfiguration in
+                        guard let sessionConfiguration else { return componentConfiguration }
+                        return componentConfiguration.showStorePaymentMethodField(
                             sessionConfiguration.showStorePaymentMethod
                         )
                     }
@@ -68,9 +68,9 @@ internal enum CheckoutComponentBuilder {
                     paymentMethod: cardPaymentMethod,
                     configuration: configuration,
                     context: context,
-                    sessionConfigurationOverride: { configuration in
-                        guard let sessionConfiguration else { return configuration }
-                        return configuration
+                    sessionConfigurationOverride: { componentConfiguration in
+                        guard let sessionConfiguration else { return componentConfiguration }
+                        return componentConfiguration
                             .installmentConfiguration(sessionConfiguration.installmentConfiguration)
                             .showStorePaymentMethod(sessionConfiguration.showStorePaymentMethod)
                     }
