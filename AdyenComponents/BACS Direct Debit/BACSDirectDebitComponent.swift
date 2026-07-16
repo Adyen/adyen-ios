@@ -5,7 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PresentableComponent
 
 #if canImport(AdyenUI)
     import AdyenUI
@@ -20,12 +19,12 @@ internal protocol BACSDirectDebitRouterProtocol: AnyObject {
 
 /// A component that provides a form for BACS Direct Debit payments.
 @MainActor
-package final class BACSDirectDebitComponent: PaymentComponent, PresentableComponent {
+package final class BACSDirectDebitComponent: PresentablePaymentComponent {
 
     /// Configuration for BACS Direct Debit Component.
     package typealias Configuration = BasicComponentConfiguration
 
-    // MARK: - PresentableComponent
+    // MARK: - PresentablePaymentComponent
 
     package let viewController: UIViewController
 

@@ -362,7 +362,7 @@ struct PaymentMethodListViewModelTests {
         return methods
     }
 
-    private func makePaymentComponentMock() -> PresentableComponentMock {
+    private func makePaymentComponentMock() -> PresentablePaymentComponentMock {
         let cardPaymentMethodMock = CardPaymentMethodMock(
             type: .scheme,
             name: "Card",
@@ -370,7 +370,7 @@ struct PaymentMethodListViewModelTests {
         )
         let viewControllerMock = UIViewController()
 
-        return PresentableComponentMock(
+        return PresentablePaymentComponentMock(
             paymentMethod: cardPaymentMethodMock,
             viewController: viewControllerMock
         )

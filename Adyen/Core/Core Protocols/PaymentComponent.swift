@@ -15,10 +15,10 @@ package protocol PaymentMethodAware {
 }
 
 /// A component that handles stored payment methods.
-package protocol StoredPaymentComponent: PaymentComponent, PresentableComponent {}
+package protocol StoredPaymentComponent: PresentablePaymentComponent {}
 
 package enum PaymentComponentType {
-    case regular(PaymentComponent & PresentableComponent)
+    case regular(PresentablePaymentComponent)
     case stored(StoredPaymentComponent)
     case initiable(PaymentComponent)
 }
@@ -37,7 +37,7 @@ package protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentM
     func performSubmit()
 }
 
-package extension PaymentComponent where Self: PresentableComponent {
+package extension PresentablePaymentComponent {
 
     var type: PaymentComponentType {
         .regular(self)

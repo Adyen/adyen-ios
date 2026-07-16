@@ -21,7 +21,7 @@ public final class CheckoutPaymentComponent {
     
     /// The view controller of the component.
     public var viewController: UIViewController? {
-        guard let presentableComponent = paymentComponent as? PresentableComponent else {
+        guard let presentableComponent = paymentComponent as? PresentablePaymentComponent else {
             return nil
         }
         return presentableComponent.viewController
