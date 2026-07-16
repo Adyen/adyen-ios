@@ -381,7 +381,7 @@ extension GiftCardComponent {
             remainingAmount: remainingAmount
         )
         
-        let component = InstantPaymentComponent(
+        let component = GenericPaymentComponent(
             paymentMethod: paymentMethod,
             context: context,
             paymentData: paymentData

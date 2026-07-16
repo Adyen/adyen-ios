@@ -49,14 +49,14 @@ internal final class ComponentsViewController: UIViewController {
         return issuerListComponent
     }
     
-    private var instantPaymentComponentExample: InstantPaymentComponentExample {
-        let instantPaymentComponentExample = InstantPaymentComponentExample()
+    private var instantPaymentComponentExample: GenericPaymentComponentExample {
+        let instantPaymentComponentExample = GenericPaymentComponentExample()
         instantPaymentComponentExample.presenter = self
         return instantPaymentComponentExample
     }
     
-    private var instantPaymentComponentAdvancedFlow: InstantPaymentComponentAdvancedFlow {
-        let instantPaymentComponentExample = InstantPaymentComponentAdvancedFlow()
+    private var instantPaymentComponentAdvancedFlow: GenericPaymentComponentAdvancedFlow {
+        let instantPaymentComponentExample = GenericPaymentComponentAdvancedFlow()
         instantPaymentComponentExample.presenter = self
         return instantPaymentComponentExample
     }
@@ -108,7 +108,7 @@ internal final class ComponentsViewController: UIViewController {
                 ComponentsItem(
                     title: "Instant/Redirect Payment",
                     subtitle: "e.g. iDEAL, PayPal, Alipay, ...",
-                    selectionHandler: presentInstantPaymentComponent
+                    selectionHandler: presentGenericPaymentComponent
                 )
             ],
             [ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)],
@@ -164,7 +164,7 @@ internal final class ComponentsViewController: UIViewController {
         }
     }
     
-    internal func presentInstantPaymentComponent() {
+    internal func presentGenericPaymentComponent() {
         if componentsView.isUsingSession {
             start(instantPaymentComponentExample)
         } else {

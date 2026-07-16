@@ -307,7 +307,7 @@ class PaymentComponentSubjectTests: XCTestCase {
         let instantPaymentDetails = InstantPaymentDetails(type: .other("test"))
         let paymentData = PaymentComponentData(paymentMethodDetails: instantPaymentDetails, order: nil)
 
-        let instantComponent = InstantPaymentComponent(
+        let instantComponent = GenericPaymentComponent(
             paymentMethod: instantPaymentMethod,
             context: context,
             paymentData: paymentData
@@ -331,7 +331,7 @@ class PaymentComponentSubjectTests: XCTestCase {
                 jsonString.contains(
                     "\"paymentMethodBehavior\":\"genericComponent\""
                 ),
-                "InstantPaymentComponent should use genericComponent behavior"
+                "GenericPaymentComponent should use genericComponent behavior"
             )
             didSubmitExpectation.fulfill()
         }

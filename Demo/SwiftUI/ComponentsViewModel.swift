@@ -47,14 +47,14 @@ internal final class ComponentsViewModel: ObservableObject, Identifiable {
         return cardComponentExample
     }
     
-    private var instantPaymentComponentExample: InstantPaymentComponentExample {
-        let instantPaymentComponentExample = InstantPaymentComponentExample()
+    private var instantPaymentComponentExample: GenericPaymentComponentExample {
+        let instantPaymentComponentExample = GenericPaymentComponentExample()
         instantPaymentComponentExample.presenter = self
         return instantPaymentComponentExample
     }
     
-    private var instantPaymentComponentAdvancedFlow: InstantPaymentComponentAdvancedFlow {
-        let instantPaymentComponentExample = InstantPaymentComponentAdvancedFlow()
+    private var instantPaymentComponentAdvancedFlow: GenericPaymentComponentAdvancedFlow {
+        let instantPaymentComponentExample = GenericPaymentComponentAdvancedFlow()
         instantPaymentComponentExample.presenter = self
         return instantPaymentComponentExample
     }
@@ -105,7 +105,7 @@ internal final class ComponentsViewModel: ObservableObject, Identifiable {
         }
     }
     
-    internal func presentInstantPaymentComponent() {
+    internal func presentGenericPaymentComponent() {
         if isUsingSession {
             start(instantPaymentComponentExample)
         } else {
@@ -126,7 +126,7 @@ internal final class ComponentsViewModel: ObservableObject, Identifiable {
                 ComponentsItem(
                     title: "Instant/Redirect Payment",
                     subtitle: "e.g. iDEAL, PayPal, Alipay, ...",
-                    selectionHandler: presentInstantPaymentComponent
+                    selectionHandler: presentGenericPaymentComponent
                 )
             ]
         ]

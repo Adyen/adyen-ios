@@ -82,7 +82,7 @@ package extension PaymentComponent {
     }
 }
 
-package extension InstantPaymentComponent {
+package extension GenericPaymentComponent {
 
     var paymentMethodBehavior: SDKData.PaymentMethodBehavior {
         .genericComponent
