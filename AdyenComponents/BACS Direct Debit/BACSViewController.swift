@@ -45,7 +45,10 @@ internal final class BACSViewController: FormViewController {
     // MARK: - Private
 
     private func bindValidation() {
-        viewModel.$shouldShowValidation.sink { [weak self] shouldShowValidation in
+        viewModel.$state.sink { [weak self] state in
+            switch state {
+
+            }
             if shouldShowValidation { self?.showValidation() }
         }.store(in: &cancellables)
     }

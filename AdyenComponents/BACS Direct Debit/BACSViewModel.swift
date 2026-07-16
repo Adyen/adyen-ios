@@ -11,6 +11,7 @@ import Adyen
 #endif
 import Foundation
 
+
 package final class BACSViewModel {
 
     // MARK: - Properties
@@ -24,8 +25,14 @@ package final class BACSViewModel {
 
     // MARK: - State
 
-    internal private(set) var items: [any FormItem] = []
-    @Published internal private(set) var shouldShowValidation = false
+    enum State {
+        case idle
+        case loaded(_ items: [any FormItem])
+        case validation
+        case loading
+    }
+//    internal private(set) var items: [any FormItem] = []
+    @Published internal private(set) var state: State = .idle
 
     // MARK: - Items
 
@@ -60,7 +67,8 @@ package final class BACSViewModel {
     package func viewDidLoad() {
         tracker.sendInitialAnalytics()
         tracker.sendDidLoadEvent()
-        items = createItems()
+        let items = createItems()
+        state = .loaded(items)
     }
 
     package func stopLoading() {
@@ -69,7 +77,7 @@ package final class BACSViewModel {
 
     package func performSubmit() {
         startLoading()
-        shouldShowValidation = true
+        state = .validation
 
         guard let details = makeDetails() else {
             stopLoading()
@@ -80,6 +88,17 @@ package final class BACSViewModel {
     }
 
     // MARK: - Private
+
+    private func validation() -> Bool {
+        guard case let .loaded(items) = state else {
+            return true
+        }
+
+        return items
+            .lazy
+            .compactMap { $0 as? ValidatableFormItem }
+            .allSatisfy { $0.isValid() }
+    }
 
     private func startLoading() {
         submitButtonItem?.showsActivityIndicator = true
