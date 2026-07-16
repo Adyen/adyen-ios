@@ -647,7 +647,7 @@ let payto = [
     "type": "payto"
 ]
 
-let payByBankInstant: [String: Any] = [
+let payByBankGeneric: [String: Any] = [
     "name": "Pay by Bank",
     "type": "paybybank"
 ]

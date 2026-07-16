@@ -95,7 +95,7 @@ Located in [`Common/IntegrationExamples/Session/Components/`](Common/Integration
 
 - **[`CardComponentExample.swift`](Common/IntegrationExamples/Session/Components/CardComponentExample.swift)** – Card payments
 - **[`ApplePayComponentExample.swift`](Common/IntegrationExamples/Session/Components/ApplePayComponentExample.swift)** – Apple Pay integration
-- **[`GenericPaymentComponentExample.swift`](Common/IntegrationExamples/Session/Components/GenericPaymentComponentExample.swift)** – Instant payment methods
+- **[`GenericPaymentComponentExample.swift`](Common/IntegrationExamples/Session/Components/GenericPaymentComponentExample.swift)** – Generic payment methods
 - **[`IssuerListComponentExample.swift`](Common/IntegrationExamples/Session/Components/IssuerListComponentExample.swift)** – Issuer list payments
 
 ---

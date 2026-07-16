@@ -32,12 +32,12 @@ internal final class GenericPaymentComponentExample: InitialDataFlowProtocol {
         Task {
             do {
                 let sessionResponse = try await requestSessionInitialInfo()
-                let component = try await instantPaymentComponent(from: sessionResponse)
+                let component = try await genericPaymentComponent(from: sessionResponse)
                 self.adyenComponent = component
                 hideLoading()
 
                 guard !component.requiresUserInteraction else {
-                    // Instant payment methods don't require user interaction
+                    // Generic payment methods don't require user interaction
                     // For payment methods that require UI, see the card component example
                     return
                 }
@@ -49,7 +49,7 @@ internal final class GenericPaymentComponentExample: InitialDataFlowProtocol {
         }
     }
 
-    private func instantPaymentComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
+    private func genericPaymentComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
             amount: ConfigurationConstants.current.amount,
@@ -58,7 +58,7 @@ internal final class GenericPaymentComponentExample: InitialDataFlowProtocol {
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
             )
         ) {
-            // No component-specific configuration needed for instant payments
+            // No component-specific configuration needed for generic payments
         }
 
         let checkout = try await Checkout.setup(

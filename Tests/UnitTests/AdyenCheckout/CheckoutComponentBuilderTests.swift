@@ -320,7 +320,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
 
     // MARK: - Generic Payment Component Tests
 
-    func test_build_withInstantPaymentMethod_returnsGenericPaymentComponent() throws {
+    func test_build_withGenericPaymentMethod_returnsGenericPaymentComponent() throws {
         // Given
         let dict: [String: Any] = [
             "type": "ideal",

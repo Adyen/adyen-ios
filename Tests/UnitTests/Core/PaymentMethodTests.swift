@@ -85,7 +85,7 @@ class PaymentMethodTests: XCTestCase {
                 payto,
                 irisDictionary,
                 bizum,
-                payByBankInstant,
+                payByBankGeneric,
                 payByBankIssuerList
             ]
         ]
@@ -894,10 +894,10 @@ class PaymentMethodTests: XCTestCase {
     
     // MARK: - Pay by Bank
     
-    func test_decodingPayByBankPaymentMethod_withoutIssuers_decodesAsInstant() throws {
+    func test_decodingPayByBankPaymentMethod_withoutIssuers_decodesAsGeneric() throws {
         // Germany variant - no issuer selection
         let paymentMethods = try AdyenCoder.decode([
-            "paymentMethods": [payByBankInstant]
+            "paymentMethods": [payByBankGeneric]
         ]) as PaymentMethods
         
         let paymentMethod = try XCTUnwrap(paymentMethods.regular.first as? GenericPaymentMethod)
