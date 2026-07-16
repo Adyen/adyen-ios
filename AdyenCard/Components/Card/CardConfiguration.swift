@@ -99,11 +99,6 @@ public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInfo
 // MARK: - Public modifiers
 
 extension CardConfiguration {
-    
-    package mutating func apply(sessionConfiguration: SessionComponentConfiguration) {
-        installmentConfiguration = sessionConfiguration.installmentConfiguration
-        showStorePaymentMethod = sessionConfiguration.showStorePaymentMethod
-    }
 
     /// Sets the shopper's information to be prefilled.
     /// - Parameter shopperInformation: The shopper's information to be prefilled.

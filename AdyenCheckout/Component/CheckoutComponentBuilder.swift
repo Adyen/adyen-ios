@@ -36,7 +36,6 @@ internal enum CheckoutComponentBuilder {
                     using: BLIKComponentFactory(),
                     paymentMethod: blikPaymentMethod,
                     configuration: configuration,
-                    sessionConfiguration: sessionConfiguration,
                     context: context
                 )
             case let achPaymentMethod as ACHDirectDebitPaymentMethod:
@@ -44,15 +43,19 @@ internal enum CheckoutComponentBuilder {
                     using: ACHDirectDebitComponentFactory(),
                     paymentMethod: achPaymentMethod,
                     configuration: configuration,
-                    sessionConfiguration: sessionConfiguration,
-                    context: context
+                    context: context,
+                    sessionConfigurationOverride: { configuration in
+                        guard let sessionConfiguration else { return configuration }
+                        return configuration.showStorePaymentMethodField(
+                            sessionConfiguration.showStorePaymentMethod
+                        )
+                    }
                 )
             case let applePayPaymentMethod as ApplePayPaymentMethod:
                 return try createComponent(
                     using: ApplePayComponentFactory(),
                     paymentMethod: applePayPaymentMethod,
                     configuration: configuration,
-                    sessionConfiguration: sessionConfiguration,
                     context: context
                 )
         #endif
@@ -64,8 +67,13 @@ internal enum CheckoutComponentBuilder {
                     using: CardComponentFactory(),
                     paymentMethod: cardPaymentMethod,
                     configuration: configuration,
-                    sessionConfiguration: sessionConfiguration,
-                    context: context
+                    context: context,
+                    sessionConfigurationOverride: { configuration in
+                        guard let sessionConfiguration else { return configuration }
+                        return configuration
+                            .installmentConfiguration(sessionConfiguration.installmentConfiguration)
+                            .showStorePaymentMethod(sessionConfiguration.showStorePaymentMethod)
+                    }
                 )
                 // TODO: add other card methods like stored or write a generic one.
             
@@ -126,8 +134,8 @@ internal enum CheckoutComponentBuilder {
         using factory: Factory,
         paymentMethod: Factory.Method,
         configuration: CheckoutConfiguration,
-        sessionConfiguration: SessionComponentConfiguration?,
-        context: AdyenContext
+        context: AdyenContext,
+        sessionConfigurationOverride: ((Factory.Configuration) -> Factory.Configuration)? = nil
     ) throws -> PaymentComponent where Factory.Configuration: CheckoutComponentConfiguration {
 
         var componentConfiguration = try configuration.configuration(
@@ -141,8 +149,8 @@ internal enum CheckoutComponentBuilder {
             mergingExistingParameters: componentConfiguration.localizationParameters
         )
 
-        if let sessionConfiguration {
-            componentConfiguration.apply(sessionConfiguration: sessionConfiguration)
+        if let sessionConfigurationOverride {
+            componentConfiguration = sessionConfigurationOverride(componentConfiguration)
         }
 
         return try factory.create(
@@ -158,7 +166,7 @@ internal enum CheckoutComponentBuilder {
         configuration: CheckoutConfiguration,
         context: AdyenContext
     ) -> PaymentComponent {
-        var component = StoredCardComponent(
+        let component = StoredCardComponent(
             storedCardPaymentMethod: storedPaymentMethod,
             context: context,
             theme: configuration.theme
@@ -174,7 +182,7 @@ internal enum CheckoutComponentBuilder {
         configuration: CheckoutConfiguration,
         context: AdyenContext
     ) -> PaymentComponent {
-        var component = StoredPaymentMethodComponent(
+        let component = StoredPaymentMethodComponent(
             paymentMethod: storedPaymentMethod,
             context: context
         )

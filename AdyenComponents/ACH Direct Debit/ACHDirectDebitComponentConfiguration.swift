@@ -50,10 +50,6 @@ package struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfi
 
 extension ACHDirectDebitComponentConfiguration {
 
-    package mutating func apply(sessionConfiguration: SessionComponentConfiguration) {
-        showStorePaymentMethodField = sessionConfiguration.showStorePaymentMethod
-    }
-
     /// Sets the shopper's information to be prefilled.
     /// - Parameter shopperInformation: The shopper's information to prefill.
     /// - Returns: A modified configuration with the updated shopper information.
