@@ -95,7 +95,7 @@ Located in [`Common/IntegrationExamples/Session/Components/`](Common/Integration
 
 - **[`CardComponentExample.swift`](Common/IntegrationExamples/Session/Components/CardComponentExample.swift)** – Card payments
 - **[`ApplePayComponentExample.swift`](Common/IntegrationExamples/Session/Components/ApplePayComponentExample.swift)** – Apple Pay integration
-- **[`InstantPaymentComponentExample.swift`](Common/IntegrationExamples/Session/Components/InstantPaymentComponentExample.swift)** – Instant payment methods
+- **[`GenericPaymentComponentExample.swift`](Common/IntegrationExamples/Session/Components/GenericPaymentComponentExample.swift)** – Instant payment methods
 - **[`IssuerListComponentExample.swift`](Common/IntegrationExamples/Session/Components/IssuerListComponentExample.swift)** – Issuer list payments
 
 ---
@@ -116,7 +116,7 @@ Located in [`Common/IntegrationExamples/AdvancedFlow/Components/`](Common/Integr
 
 - **[`CardComponentAdvancedFlowExample.swift`](Common/IntegrationExamples/AdvancedFlow/Components/CardComponentAdvancedFlowExample.swift)**
 - **[`ApplePayComponentAdvancedFlowExample.swift`](Common/IntegrationExamples/AdvancedFlow/Components/ApplePayComponentAdvancedFlowExample.swift)**
-- **[`InstantPaymentComponentAdvancedFlowExample.swift`](Common/IntegrationExamples/AdvancedFlow/Components/InstantPaymentComponentAdvancedFlowExample.swift)**
+- **[`GenericPaymentComponentAdvancedFlowExample.swift`](Common/IntegrationExamples/AdvancedFlow/Components/GenericPaymentComponentAdvancedFlowExample.swift)**
 - **[`IssuerListComponentAdvancedFlowExample.swift`](Common/IntegrationExamples/AdvancedFlow/Components/IssuerListComponentAdvancedFlowExample.swift)**
 
 ---

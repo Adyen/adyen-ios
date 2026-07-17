@@ -5,7 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PresentableComponent
 
 #if canImport(AdyenUI)
     import AdyenUI
@@ -15,7 +14,7 @@ import UIKit
 
 /// A component that handles a Pay by Bank US payment.
 @MainActor
-package final class PayByBankUSComponent: PaymentComponent, PresentableComponent {
+package final class PayByBankUSComponent: PresentablePaymentComponent {
 
     /// The context object for this component.
     package let context: AdyenContext

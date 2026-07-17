@@ -21,7 +21,7 @@ package final class DocumentComponent: ActionComponent, ShareableComponent {
 
     package weak var delegate: ActionComponentDelegate?
 
-    /// Delegates `PresentableComponent`'s presentation.
+    /// Delegates view controller presentation.
     package weak var presentationDelegate: PresentationDelegate?
 
     /// The document component configurations.

@@ -51,7 +51,7 @@ class PaymentComponentMock: PaymentComponent {
     }
 }
 
-class PresentableComponentMock: PaymentComponentMock, PresentableComponent, LoadingComponent {
+class PresentablePaymentComponentMock: PaymentComponentMock, PresentablePaymentComponent, LoadingComponent {
 
     // MARK: - Properties
 
@@ -86,7 +86,7 @@ class PresentableComponentMock: PaymentComponentMock, PresentableComponent, Load
     }
 }
 
-class StoredComponentMock: PaymentComponentMock, StoredPaymentComponent, PresentableComponent {
+class StoredComponentMock: PaymentComponentMock, StoredPaymentComponent {
 
     var viewController: UIViewController
     var order: PartialPaymentOrder?

@@ -67,7 +67,7 @@ internal enum CheckoutComponentBuilder {
             
         #endif
         case let instantPaymentMethod as InstantPaymentMethod:
-            return InstantPaymentComponent(
+            return GenericPaymentComponent(
                 paymentMethod: instantPaymentMethod,
                 context: context,
                 order: nil

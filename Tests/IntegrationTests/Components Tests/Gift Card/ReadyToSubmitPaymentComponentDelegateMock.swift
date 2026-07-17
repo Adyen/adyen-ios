@@ -8,9 +8,9 @@
 import Foundation
 
 final class ReadyToSubmitPaymentComponentDelegateMock: ReadyToSubmitPaymentComponentDelegate {
-    var onShowConfirmation: ((InstantPaymentComponent, PartialPaymentOrder?) -> Void)?
+    var onShowConfirmation: ((GenericPaymentComponent, PartialPaymentOrder?) -> Void)?
 
-    func showConfirmation(for component: InstantPaymentComponent, with order: PartialPaymentOrder?) {
+    func showConfirmation(for component: GenericPaymentComponent, with order: PartialPaymentOrder?) {
         onShowConfirmation?(component, order)
     }
 }

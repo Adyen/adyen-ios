@@ -12,7 +12,7 @@ internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvanced
 
     // MARK: - Properties
 
-    internal var issuerListComponent: PresentableComponent?
+    internal var issuerListComponent: PresentablePaymentComponent?
 
     internal weak var presenter: PresenterExampleProtocol?
     
@@ -167,7 +167,6 @@ extension IssuerListComponentAdvancedFlowExample: ActionComponentDelegate {
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
         let request = PaymentDetailsRequest(
             details: data.details,
             paymentData: data.paymentData,

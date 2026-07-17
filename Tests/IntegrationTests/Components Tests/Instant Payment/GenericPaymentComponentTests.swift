@@ -9,11 +9,11 @@
 import XCTest
 
 @MainActor
-class InstantPaymentComponentTests: XCTestCase {
+class GenericPaymentComponentTests: XCTestCase {
 
     private var paymentMethod: GiftCardPaymentMethod!
     private var delegate: PaymentComponentDelegateMock!
-    private var sut: InstantPaymentComponent!
+    private var sut: GenericPaymentComponent!
     private var context: AdyenContext!
 
     override func setUp() {
@@ -26,7 +26,7 @@ class InstantPaymentComponentTests: XCTestCase {
 
         delegate = PaymentComponentDelegateMock()
         paymentMethod = GiftCardPaymentMethod(type: .giftcard, name: "name", brand: "brand")
-        sut = InstantPaymentComponent(
+        sut = GenericPaymentComponent(
             paymentMethod: paymentMethod,
             context: context,
             paymentData: paymentComponentData

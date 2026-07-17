@@ -5,17 +5,18 @@
 //
 
 import Adyen
+import AdyenActions
 import AdyenCheckout
 import AdyenComponents
 import Foundation
 import UIKit
 
 @MainActor
-internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
+internal final class GenericPaymentComponentAdvancedFlow: InitialDataAdvancedFlowProtocol {
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var checkout: SessionCheckout?
+    private var checkout: AdvancedCheckout?
     private var adyenComponent: CheckoutPaymentComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
@@ -31,8 +32,8 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
 
         Task {
             do {
-                let sessionResponse = try await requestSessionInitialInfo()
-                let component = try await instantPaymentComponent(from: sessionResponse)
+                let paymentMethods = try await requestPaymentMethods(order: nil)
+                let component = try await instantPaymentComponent(from: paymentMethods)
                 self.adyenComponent = component
                 hideLoading()
 
@@ -49,7 +50,7 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
         }
     }
 
-    private func instantPaymentComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
+    private func instantPaymentComponent(from paymentMethods: PaymentMethods) async throws -> CheckoutPaymentComponent {
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
             amount: ConfigurationConstants.current.amount,
@@ -62,10 +63,18 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
         }
 
         let checkout = try await Checkout.setup(
-            with: sessionResponse,
+            with: paymentMethods,
             configuration: configuration,
             presentationDelegate: self
         )
+        .onSubmit { [weak self] data in
+            guard let self else { return .completion(resultCode: "Error") }
+            return await self.callPayments(with: data)
+        }
+        .onAdditionalDetails { [weak self] data in
+            guard let self else { return .completion(resultCode: "Error") }
+            return await self.callDetails(with: data)
+        }
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
                 result.resultCode.isSuccess,
@@ -81,6 +90,35 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
         return try checkout.createPaymentComponent(for: PaymentMethodType.ideal)
     }
 
+    // MARK: - Backend calls
+
+    private func callPayments(with data: PaymentComponentData) async -> SubmitResult {
+        do {
+            let request = PaymentsRequest(data: data)
+            let response = try await asyncApiClient.performAsync(request)
+            if let action = response.action {
+                return .action(action)
+            }
+            return .completion(resultCode: response.resultCode.rawValue)
+        } catch {
+            return .completion(resultCode: "Error")
+        }
+    }
+
+    private func callDetails(with data: ActionComponentData) async -> AdditionalDetailsResult {
+        do {
+            let request = PaymentDetailsRequest(
+                details: data.details,
+                paymentData: data.paymentData,
+                merchantAccount: ConfigurationConstants.current.merchantAccount
+            )
+            let response = try await asyncApiClient.performAsync(request)
+            return .completion(resultCode: response.resultCode.rawValue)
+        } catch {
+            return .completion(resultCode: "Error")
+        }
+    }
+
     // MARK: - Private
 
     private func startLoading() {
@@ -94,7 +132,7 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
     private func hideLoading() {
         presenter?.hideLoadingIndicator()
     }
-
+    
     private func dismissAndShowAlert(_ success: Bool, _ message: String) {
         presenter?.dismiss {
             // Payment is processed. Add your code here.
@@ -104,9 +142,8 @@ internal final class InstantPaymentComponentExample: InitialDataFlowProtocol {
     }
 }
 
-extension InstantPaymentComponentExample: PresentationDelegate {
+extension GenericPaymentComponentAdvancedFlow: PresentationDelegate {
     internal func present(viewController: UIViewController) {
-        presenter?.hideLoadingIndicator()
         presenter?.present(viewController: viewController, completion: nil)
     }
 }

@@ -48,7 +48,7 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
         submit(data: data)
     }
 
-    // MARK: - PresentableComponent
+    // MARK: - PresentablePaymentComponent
 
     package lazy var viewController: UIViewController = {
         sendInitialAnalytics()
