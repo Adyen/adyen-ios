@@ -594,7 +594,7 @@ var sut: YourComponentFactory!
 
 ## References
 
-- **ACH Configuration:** `AdyenComponents/ACH Direct Debit/ACHDirectDebitComponentConfiguration.swift`
+- **ACH Configuration:** `AdyenComponents/ACH Direct Debit/ACHDirectDebitConfiguration.swift`
 - **ACH Component:** `AdyenComponents/ACH Direct Debit/ACHDirectDebitComponent.swift`
 
 - **BLIK Factory:** `AdyenComponents/BLIK/BLIKComponentFactory.swift`
