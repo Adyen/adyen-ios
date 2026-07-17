@@ -161,11 +161,7 @@ package final class DropInComponent: NSObject,
 
     /// Convenience accessor to the session if it's the delegate for removing stored payment methods
     internal var sessionAsStoredPaymentMethodsDelegate: SessionStoredPaymentMethodsDelegate? {
-        if let storedPaymentRemovable = storedPaymentMethodsDelegate as? SessionStoredPaymentMethodsDelegate,
-           storedPaymentRemovable.isSession {
-            return storedPaymentRemovable
-        }
-        return nil
+        storedPaymentMethodsDelegate as? SessionStoredPaymentMethodsDelegate
     }
 
     /// Reloads the DropIn with a partial payment order and a new `PaymentMethods` object.
@@ -309,26 +305,6 @@ private extension Bundle {
             object(forInfoDictionaryKey: "CFBundleName") as? String ?? ""
     }
 
-}
-
-extension DropInComponent: AdyenSessionAware {
-    package var isSession: Bool {
-        delegate is AdyenSessionAware
-    }
-}
-
-extension DropInComponent: StorePaymentMethodFieldAware {
-
-    package var showStorePaymentMethodField: Bool? {
-        (delegate as? StorePaymentMethodFieldAware)?.showStorePaymentMethodField
-    }
-}
-
-extension DropInComponent: InstallmentConfigurationAware {
-
-    package var installmentConfiguration: InstallmentConfiguration? {
-        (delegate as? InstallmentConfigurationAware)?.installmentConfiguration
-    }
 }
 
 // ============= PAYMENT METHOD LIST ===============

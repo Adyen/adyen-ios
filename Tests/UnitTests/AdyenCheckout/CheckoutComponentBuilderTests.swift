@@ -297,6 +297,33 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertTrue(provider.recordedCalls.contains { $0.key == CheckoutLocalizationKey.cardNumber })
     }
 
+    func test_build_withSessionConfiguration_appliesSessionOverridesToCardComponent() throws {
+        let paymentMethod = try XCTUnwrap(createCardPaymentMethod())
+        let merchantInstallments = InstallmentConfiguration(
+            defaultOptions: InstallmentOptions(maxInstallmentMonth: 3, includesRevolving: false)
+        )
+        let sessionInstallments = InstallmentConfiguration(
+            defaultOptions: InstallmentOptions(maxInstallmentMonth: 6, includesRevolving: true)
+        )
+        checkoutConfiguration.configurations[.payment(.scheme)] = CardConfiguration()
+            .installmentConfiguration(merchantInstallments)
+            .showStorePaymentMethod(true)
+
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            sessionConfiguration: .init(
+                installmentConfiguration: sessionInstallments,
+                showStorePaymentMethod: false
+            ),
+            context: context
+        )
+
+        let cardComponent = try XCTUnwrap(component as? CardComponent)
+        XCTAssertEqual(cardComponent.configuration.installmentConfiguration, sessionInstallments)
+        XCTAssertFalse(cardComponent.configuration.showStorePaymentMethod)
+    }
+
     // MARK: - ACH Direct Debit Component Tests
 
     func test_build_withACHPaymentMethod_returnsACHComponent() throws {
@@ -316,6 +343,25 @@ final class CheckoutComponentBuilderTests: XCTestCase {
 
         let achComponent = component as? ACHDirectDebitComponent
         XCTAssertNotNil(achComponent, "Component should be ACHDirectDebitComponent")
+    }
+
+    func test_build_withSessionConfiguration_appliesSessionOverrideToACHComponent() throws {
+        let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
+        checkoutConfiguration.configurations[.payment(.achDirectDebit)] = ACHDirectDebitComponentConfiguration()
+            .showStorePaymentMethodField(true)
+
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            sessionConfiguration: .init(
+                installmentConfiguration: nil,
+                showStorePaymentMethod: false
+            ),
+            context: context
+        )
+
+        let achComponent = try XCTUnwrap(component as? ACHDirectDebitComponent)
+        XCTAssertFalse(achComponent.configuration.showStorePaymentMethodField)
     }
 
     // MARK: - Instant Payment Component Tests
