@@ -223,7 +223,7 @@ class ComponentManagerTests: XCTestCase {
             let twintComponent = paymentComponent as? TwintComponent
             XCTAssertNotNil(twintComponent)
         #else
-            let twintComponent = paymentComponent as? InstantPaymentComponent
+            let twintComponent = paymentComponent as? GenericPaymentComponent
             XCTAssertNil(twintComponent)
         #endif
     }

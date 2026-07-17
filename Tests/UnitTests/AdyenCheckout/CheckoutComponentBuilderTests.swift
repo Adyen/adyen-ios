@@ -320,7 +320,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
 
     // MARK: - Instant Payment Component Tests
 
-    func test_build_withInstantPaymentMethod_returnsInstantPaymentComponent() throws {
+    func test_build_withInstantPaymentMethod_returnsGenericPaymentComponent() throws {
         // Given
         let dict: [String: Any] = [
             "type": "ideal",
@@ -337,7 +337,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
 
         // Then
         XCTAssertEqual(component.paymentMethod.type, .ideal)
-        XCTAssertTrue(component is InstantPaymentComponent, "Component should be InstantPaymentComponent")
+        XCTAssertTrue(component is GenericPaymentComponent, "Component should be GenericPaymentComponent")
     }
 
     // MARK: - Theme Propagation Tests

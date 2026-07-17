@@ -307,12 +307,12 @@ class PaymentComponentSubjectTests: XCTestCase {
         let instantPaymentDetails = InstantPaymentDetails(type: .other("test"))
         let paymentData = PaymentComponentData(paymentMethodDetails: instantPaymentDetails, order: nil)
 
-        let instantComponent = InstantPaymentComponent(
+        let genericComponent = GenericPaymentComponent(
             paymentMethod: instantPaymentMethod,
             context: context,
             paymentData: paymentData
         )
-        instantComponent.delegate = paymentComponentDelegate
+        genericComponent.delegate = paymentComponentDelegate
 
         let didSubmitExpectation = expectation(description: "didSubmit should get called")
 
@@ -331,12 +331,12 @@ class PaymentComponentSubjectTests: XCTestCase {
                 jsonString.contains(
                     "\"paymentMethodBehavior\":\"genericComponent\""
                 ),
-                "InstantPaymentComponent should use genericComponent behavior"
+                "GenericPaymentComponent should use genericComponent behavior"
             )
             didSubmitExpectation.fulfill()
         }
 
-        instantComponent.performSubmit()
+        genericComponent.performSubmit()
 
         wait(for: [didSubmitExpectation], timeout: 3)
     }
