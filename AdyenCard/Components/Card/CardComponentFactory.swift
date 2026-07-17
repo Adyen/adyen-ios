@@ -17,9 +17,13 @@ package struct CardComponentFactory<CardMethod: AnyCardPaymentMethod>: PaymentCo
     package typealias Method = CardMethod
     package typealias Configuration = CardConfiguration
     package typealias Component = CardComponent
-    
-    package init() {}
-    
+
+    private let sessionConfiguration: SessionComponentConfiguration?
+
+    package init(sessionConfiguration: SessionComponentConfiguration? = nil) {
+        self.sessionConfiguration = sessionConfiguration
+    }
+
     /// Creates a card payment component.
     ///
     /// - Parameters:
@@ -32,7 +36,16 @@ package struct CardComponentFactory<CardMethod: AnyCardPaymentMethod>: PaymentCo
         context: AdyenContext,
         configuration: CardConfiguration
     ) -> CardComponent {
-        CardComponent(
+
+        var configuration = configuration
+
+        if let sessionConfiguration {
+            configuration = configuration
+                .showStorePaymentMethod(sessionConfiguration.showStorePaymentMethod)
+                .installmentConfiguration(sessionConfiguration.installmentConfiguration)
+        }
+
+        return CardComponent(
             paymentMethod: paymentMethod,
             context: context,
             configuration: configuration

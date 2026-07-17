@@ -90,6 +90,40 @@ final class ACHDirectDebitComponentFactoryTests: XCTestCase {
         )
     }
 
+    func test_create_withSessionConfiguration_overridesStorePaymentMethodVisibility() throws {
+        let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
+        let configuration = ACHDirectDebitComponentConfiguration()
+            .showStorePaymentMethodField(true)
+        sut = ACHDirectDebitComponentFactory(
+            sessionConfiguration: .init(
+                installmentConfiguration: nil,
+                showStorePaymentMethod: false
+            )
+        )
+
+        let component = sut.create(
+            with: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        XCTAssertFalse(component.configuration.showStorePaymentMethodField)
+    }
+
+    func test_create_withoutSessionConfiguration_preservesStorePaymentMethodVisibility() throws {
+        let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
+        let configuration = ACHDirectDebitComponentConfiguration()
+            .showStorePaymentMethodField(false)
+
+        let component = sut.create(
+            with: paymentMethod,
+            context: context,
+            configuration: configuration
+        )
+
+        XCTAssertFalse(component.configuration.showStorePaymentMethodField)
+    }
+
     func test_create_preservesPaymentMethodReference() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
