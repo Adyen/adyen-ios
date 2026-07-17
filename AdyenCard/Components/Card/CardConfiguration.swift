@@ -99,7 +99,7 @@ public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInfo
 // MARK: - Public modifiers
 
 extension CardConfiguration {
-    
+
     /// Sets the shopper's information to be prefilled.
     /// - Parameter shopperInformation: The shopper's information to be prefilled.
     /// - Returns: A modified copy of the configuration.

@@ -22,9 +22,7 @@ final class StoredPaymentMethodDelegateMock: StoredPaymentMethodsDelegate {
 final class SessionStoredPaymentMethodDelegateMock: SessionStoredPaymentMethodsDelegate {
     
     var showRemovePaymentMethodButton: Bool = true
-    
-    var isSession: Bool = true
-    
+
     var onDisableCallCount = 0
     var onDisable: ((_ paymentMethod: StoredPaymentMethod, _ dropIn: AnyDropInComponent) -> Bool)?
     

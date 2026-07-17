@@ -42,16 +42,10 @@ package final class CashAppPayComponent: PresentablePaymentComponent,
     }
 
     /// The delegate of the component.
-    package weak var delegate: PaymentComponentDelegate? {
-        didSet {
-            if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
-               storePaymentMethodAware.isSession {
-                configuration.showsStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
-            }
-        }
-    }
+    package weak var delegate: PaymentComponentDelegate?
 
     /// Component's configuration
+    // TODO(COSDK-1313): Apply session configuration during CashAppPayComponentFactory assembly.
     package var configuration: CashAppPayConfiguration
 
     package lazy var viewController: UIViewController = SecuredViewController(
