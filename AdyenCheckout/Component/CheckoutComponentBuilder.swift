@@ -40,16 +40,10 @@ internal enum CheckoutComponentBuilder {
                 )
             case let achPaymentMethod as ACHDirectDebitPaymentMethod:
                 return try createComponent(
-                    using: ACHDirectDebitComponentFactory(),
+                    using: ACHDirectDebitComponentFactory(sessionConfiguration: sessionConfiguration),
                     paymentMethod: achPaymentMethod,
                     configuration: configuration,
-                    context: context,
-                    sessionConfigurationOverride: { componentConfiguration in
-                        guard let sessionConfiguration else { return componentConfiguration }
-                        return componentConfiguration.showStorePaymentMethodField(
-                            sessionConfiguration.showStorePaymentMethod
-                        )
-                    }
+                    context: context
                 )
             case let applePayPaymentMethod as ApplePayPaymentMethod:
                 return try createComponent(
@@ -64,16 +58,10 @@ internal enum CheckoutComponentBuilder {
         #if canImport(AdyenCard)
             case let cardPaymentMethod as CardPaymentMethod:
                 return try createComponent(
-                    using: CardComponentFactory(),
+                    using: CardComponentFactory(sessionConfiguration: sessionConfiguration),
                     paymentMethod: cardPaymentMethod,
                     configuration: configuration,
-                    context: context,
-                    sessionConfigurationOverride: { componentConfiguration in
-                        guard let sessionConfiguration else { return componentConfiguration }
-                        return componentConfiguration
-                            .installmentConfiguration(sessionConfiguration.installmentConfiguration)
-                            .showStorePaymentMethod(sessionConfiguration.showStorePaymentMethod)
-                    }
+                    context: context
                 )
                 // TODO: add other card methods like stored or write a generic one.
             
@@ -134,8 +122,7 @@ internal enum CheckoutComponentBuilder {
         using factory: Factory,
         paymentMethod: Factory.Method,
         configuration: CheckoutConfiguration,
-        context: AdyenContext,
-        sessionConfigurationOverride: ((Factory.Configuration) -> Factory.Configuration)? = nil
+        context: AdyenContext
     ) throws -> PaymentComponent where Factory.Configuration: CheckoutComponentConfiguration {
 
         var componentConfiguration = try configuration.configuration(
@@ -148,10 +135,6 @@ internal enum CheckoutComponentBuilder {
         componentConfiguration.localizationParameters = configuration.resolvedCheckoutLocalizationParameters(
             mergingExistingParameters: componentConfiguration.localizationParameters
         )
-
-        if let sessionConfigurationOverride {
-            componentConfiguration = sessionConfigurationOverride(componentConfiguration)
-        }
 
         return try factory.create(
             with: paymentMethod,
