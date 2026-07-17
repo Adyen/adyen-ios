@@ -27,34 +27,8 @@ public final class CheckoutPaymentComponent {
         return presentableComponent.viewController
     }
     
-    package init(
-        paymentMethod: PaymentMethod,
-        configuration: CheckoutConfiguration,
-        context: AdyenContext,
-        delegate: PaymentComponentDelegate?
-    ) throws {
-        // TODO: Add new v6 style here
-        self.paymentComponent = try CheckoutComponentBuilder.build(
-            for: paymentMethod,
-            configuration: configuration,
-            context: context
-        )
-        self.paymentComponent.delegate = delegate
-    }
-
-    package init(
-        storedPaymentMethod: StoredPaymentMethod,
-        configuration: CheckoutConfiguration,
-        context: AdyenContext,
-        delegate: PaymentComponentDelegate?
-    ) {
-        // TODO: Add new v6 style here
-        self.paymentComponent = CheckoutComponentBuilder.build(
-            for: storedPaymentMethod,
-            configuration: configuration,
-            context: context
-        )
-        self.paymentComponent.delegate = delegate
+    package init(paymentComponent: PaymentComponent) {
+        self.paymentComponent = paymentComponent
     }
 
     /// Indicates whether the payment component requires user interaction before submitting.
