@@ -16,6 +16,8 @@ package protocol SessionProtocol: AnyObject {
     
     var showRemovePaymentMethodButton: Bool { get }
     
+    var componentConfiguration: SessionComponentConfiguration { get }
+
     func performSubmit(_ data: PaymentComponentData) async throws -> SubmitResult
     
     func performAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult

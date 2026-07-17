@@ -49,6 +49,7 @@ package struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfi
 }
 
 extension ACHDirectDebitComponentConfiguration {
+
     /// Sets the shopper's information to be prefilled.
     /// - Parameter shopperInformation: The shopper's information to prefill.
     /// - Returns: A modified configuration with the updated shopper information.

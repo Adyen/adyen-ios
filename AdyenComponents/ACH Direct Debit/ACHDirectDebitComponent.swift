@@ -38,14 +38,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         achDirectDebitPaymentMethod
     }
 
-    package weak var delegate: PaymentComponentDelegate? {
-        didSet {
-            if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
-               storePaymentMethodAware.isSession {
-                configuration.showStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
-            }
-        }
-    }
+    package weak var delegate: PaymentComponentDelegate?
     
     /// Component configuration
     package var configuration: ACHDirectDebitComponentConfiguration
