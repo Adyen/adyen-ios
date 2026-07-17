@@ -14,8 +14,7 @@ import UIKit
 
 /// A component that provides a form for Online Banking payment.
 @MainActor
-package final class OnlineBankingComponent: PaymentComponent,
-    PresentableComponent,
+package final class OnlineBankingComponent: PresentablePaymentComponent,
     LoadingComponent {
 
     private enum ViewIdentifier {

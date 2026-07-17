@@ -17,7 +17,7 @@ internal protocol ComponentContainerRouterListener: AnyObject {
 // sourcery:AutoMockable
 @MainActor
 internal protocol ComponentContainerRouting: AnyObject {
-    func present(paymentComponent: PresentableComponent)
+    func present(paymentComponent: PresentablePaymentComponent)
     func present(actionViewController: UIViewController, onCancel: (() -> Void)?)
     func dismiss(completion: (() -> Void)?)
 }
@@ -49,7 +49,7 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouting {
 
     // MARK: - ComponentContainerRouting
     
-    internal func present(paymentComponent: any PresentableComponent) {
+    internal func present(paymentComponent: any PresentablePaymentComponent) {
         let componentViewController = paymentComponent.viewController
         rootViewController.navigationController?.pushViewController(componentViewController, animated: true)
     }

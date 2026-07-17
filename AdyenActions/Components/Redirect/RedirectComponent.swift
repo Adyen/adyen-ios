@@ -55,7 +55,7 @@ package final class RedirectComponent: ActionComponent {
 
     package weak var delegate: ActionComponentDelegate?
 
-    /// Delegates `PresentableComponent`'s presentation.
+    /// Delegates view controller presentation.
     package weak var presentationDelegate: PresentationDelegate?
 
     internal var appLauncher: AnyAppLauncher = AppLauncher()

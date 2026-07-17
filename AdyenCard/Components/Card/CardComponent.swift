@@ -5,7 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PresentableComponent
 import AdyenNetworking
 #if canImport(AdyenUI)
     import AdyenUI
@@ -21,8 +20,7 @@ import UIKit
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
 @MainActor
-package class CardComponent: PaymentComponent,
-    PresentableComponent,
+package class CardComponent: PresentablePaymentComponent,
     LoadingComponent {
 
     internal enum Constant {

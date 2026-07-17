@@ -5,7 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PresentableComponent
 
 #if canImport(AdyenComponents)
     import AdyenComponents
@@ -252,7 +251,7 @@ package final class DropInComponent: NSObject,
 //        }
 //    }()
 
-    private func didSelectCancelButton(isRoot: Bool, component: PresentableComponent) {
+    private func didSelectCancelButton(isRoot: Bool, component: PresentablePaymentComponent) {
         guard !paymentInProgress || component is Cancellable else { return }
 
         userDidCancel(component)

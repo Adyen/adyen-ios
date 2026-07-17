@@ -5,7 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PresentableComponent
 
 #if canImport(AdyenUI)
     import AdyenUI
@@ -15,7 +14,7 @@ import UIKit
 
 /// A component that provides PayTo flows for PayTo component.
 @MainActor
-package final class PayToComponent: PaymentComponent, PresentableComponent, AdyenObserver, LoadingComponent {
+package final class PayToComponent: PresentablePaymentComponent, AdyenObserver, LoadingComponent {
 
     /// Configuration for PayTo Component.
     package typealias Configuration = BasicComponentConfiguration

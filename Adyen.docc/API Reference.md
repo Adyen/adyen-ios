@@ -210,7 +210,6 @@ The entry points for integrating the SDK.
 ## Public Protocols
 
 - ``Component``
-- ``PresentableComponent``
 - ``FinalizableComponent``
 - ``Details``
 - ``AdditionalDetails``
