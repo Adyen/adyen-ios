@@ -41,9 +41,9 @@ class ACHDirectDebitComponentTests: XCTestCase {
     func testLocalizationWithCustomTableName() {
         let method = ACHDirectDebitPaymentMethod(type: .achDirectDebit, name: "test_name")
 
-        let config = ACHDirectDebitConfiguration()
-            .localizationParameters(LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
+        var config = ACHDirectDebitConfiguration()
             .billingAddressCountryCodes(["US", "UK"])
+        config.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let sut = ACHDirectDebitComponent(
             paymentMethod: method,
             context: context,

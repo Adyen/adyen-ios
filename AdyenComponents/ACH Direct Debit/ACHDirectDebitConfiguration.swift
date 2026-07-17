@@ -13,7 +13,7 @@ import UIKit
 #endif
 
 /// Configuration for ACH Direct Debit.
-package struct ACHDirectDebitConfiguration: AnyPersonalInformationConfiguration, CheckoutComponentConfiguration {
+public struct ACHDirectDebitConfiguration: AnyPersonalInformationConfiguration, CheckoutComponentConfiguration {
 
     package let componentType: CheckoutComponentType = .payment(.achDirectDebit)
 
@@ -36,7 +36,7 @@ package struct ACHDirectDebitConfiguration: AnyPersonalInformationConfiguration,
     package var billingAddressCountryCodes: [String]
 
     /// Initializes the configuration for ACH Direct Debit.
-    package init() {
+    public init() {
         self.style = FormComponentStyle()
         self.showsSubmitButton = true
         self.shopperInformation = nil
@@ -53,25 +53,16 @@ extension ACHDirectDebitConfiguration {
     /// Sets the shopper's information to be prefilled.
     /// - Parameter shopperInformation: The shopper's information to prefill.
     /// - Returns: A modified configuration with the updated shopper information.
-    package func shopperInformation(_ shopperInformation: PrefilledShopperInformation?) -> Self {
+    public func shopperInformation(_ shopperInformation: PrefilledShopperInformation?) -> Self {
         var config = self
         config.shopperInformation = shopperInformation
-        return config
-    }
-
-    /// Sets the localization parameters.
-    /// - Parameter localizationParameters: The localization parameters to use.
-    /// - Returns: A modified configuration with the updated localization parameters.
-    package func localizationParameters(_ localizationParameters: LocalizationParameters?) -> Self {
-        var config = self
-        config.localizationParameters = localizationParameters
         return config
     }
 
     /// Sets whether the field for storing the payment method should be displayed in the form.
     /// - Parameter showStorePaymentMethod: Boolean value indicating if the store payment method toggle should be shown.
     /// - Returns: A modified configuration with the updated setting.
-    package func showStorePaymentMethod(_ showStorePaymentMethod: Bool) -> Self {
+    public func showStorePaymentMethod(_ showStorePaymentMethod: Bool) -> Self {
         var config = self
         config.showStorePaymentMethod = showStorePaymentMethod
         return config
@@ -80,7 +71,7 @@ extension ACHDirectDebitConfiguration {
     /// Sets whether the billing address should be displayed.
     /// - Parameter showBillingAddress: A Boolean value indicating whether to show the billing address.
     /// - Returns: A modified configuration with the updated setting.
-    package func showBillingAddress(_ showBillingAddress: Bool) -> Self {
+    public func showBillingAddress(_ showBillingAddress: Bool) -> Self {
         var config = self
         config.showBillingAddress = showBillingAddress
         return config
@@ -89,7 +80,7 @@ extension ACHDirectDebitConfiguration {
     /// Sets the list of ISO country codes supported for the billing address.
     /// - Parameter billingAddressCountryCodes: An array of ISO country codes.
     /// - Returns: A modified configuration with the updated country codes.
-    package func billingAddressCountryCodes(_ billingAddressCountryCodes: [String]) -> Self {
+    public func billingAddressCountryCodes(_ billingAddressCountryCodes: [String]) -> Self {
         var config = self
         config.billingAddressCountryCodes = billingAddressCountryCodes
         return config
