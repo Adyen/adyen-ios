@@ -24,6 +24,10 @@ final class DemoConfigurationTests: XCTestCase {
         )
     }
 
+    private func base64Encode(_ configuration: ExternalConfiguration) -> String {
+        try! JSONEncoder().encode(configuration).base64EncodedString()
+    }
+
     func test_configuration_withExternalConfiguration_shouldApplyItToDefaults() {
         var persistedCardSettings = defaultConfiguration.cardSettings
         persistedCardSettings.enableInstallments = true
@@ -57,21 +61,22 @@ final class DemoConfigurationTests: XCTestCase {
     }
 
     func test_externalConfigurationReader_withValidPayload_shouldDecodeCardholderName() {
-        let payload = #"{"CARD_CONFIGURATION":{"showCardholderName":true}}"#
-        let encodedPayload = Data(payload.utf8).base64EncodedString()
+        let configuration = ExternalConfiguration(
+            card: ExternalCardConfiguration(showCardholderName: true)
+        )
+        let encodedPayload = base64Encode(configuration)
 
-        let configuration = ExternalConfigurationReader.read(from: ["DemoApp", "-config", encodedPayload])
+        let result = ExternalConfigurationReader.read(from: ["DemoApp", "-config", encodedPayload])
 
-        XCTAssertEqual(configuration?.card?.showCardholderName, true)
+        XCTAssertEqual(result?.card?.showCardholderName, true)
     }
 
-    func test_externalConfigurationReader_withPartialPayload_shouldPreserveNilOptional() {
-        let payload = #"{"CARD_CONFIGURATION":{}}"#
-        let encodedPayload = Data(payload.utf8).base64EncodedString()
+    func test_externalConfigurationReader_withEmptyCardConfiguration_shouldPreserveNilOptional() {
+        let encodedPayload = base64Encode(ExternalConfiguration(card: ExternalCardConfiguration()))
 
-        let configuration = ExternalConfigurationReader.read(from: ["DemoApp", "-config", encodedPayload])
+        let result = ExternalConfigurationReader.read(from: ["DemoApp", "-config", encodedPayload])
 
-        XCTAssertNil(configuration?.card?.showCardholderName)
+        XCTAssertNil(result?.card?.showCardholderName)
     }
 
     func test_externalConfigurationReader_withoutConfigArgument_shouldReturnNil() {
@@ -100,6 +105,14 @@ final class DemoConfigurationTests: XCTestCase {
         XCTAssertEqual(configuration.countryCode, persistedConfiguration.countryCode)
         XCTAssertEqual(configuration.currencyCode, persistedConfiguration.currencyCode)
         XCTAssertEqual(configuration.value, persistedConfiguration.value)
+    }
+
+    func test_externalConfigurationReader_withMalformedJSON_shouldReturnNil() {
+        let encodedPayload = Data("this is not valid json".utf8).base64EncodedString()
+
+        let result = ExternalConfigurationReader.read(from: ["DemoApp", "-config", encodedPayload])
+
+        XCTAssertNil(result)
     }
 
     func test_externalConfigurationReader_withInvalidBase64_shouldReturnNil() {

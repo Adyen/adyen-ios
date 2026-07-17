@@ -33,16 +33,24 @@ internal enum ExternalConfigurationReader {
     }
 }
 
-internal struct ExternalConfiguration: Decodable {
+internal struct ExternalConfiguration: Codable {
     internal let card: ExternalCardConfiguration?
+
+    internal init(card: ExternalCardConfiguration? = nil) {
+        self.card = card
+    }
 
     private enum CodingKeys: String, CodingKey {
         case card = "CARD_CONFIGURATION"
     }
 }
 
-internal struct ExternalCardConfiguration: Decodable {
+internal struct ExternalCardConfiguration: Codable {
     internal let showCardholderName: Bool?
+
+    internal init(showCardholderName: Bool? = nil) {
+        self.showCardholderName = showCardholderName
+    }
 }
 
 internal extension DemoAppSettings {
