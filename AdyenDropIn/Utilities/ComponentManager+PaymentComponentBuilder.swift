@@ -386,10 +386,10 @@ private extension ComponentManager {
     }
 
     func createACHDirectDebitComponent(_ paymentMethod: ACHDirectDebitPaymentMethod) -> ACHDirectDebitComponent {
-        var config = ACHDirectDebitComponentConfiguration()
+        var config = ACHDirectDebitConfiguration()
         config.shopperInformation = configuration.shopperInformation
         config.localizationParameters = configuration.localizationParameters
-        config.showStorePaymentMethodField = configuration.ach.showsStorePaymentMethodField
+        config.showStorePaymentMethod = configuration.ach.showsStorePaymentMethodField
         config.showBillingAddress = configuration.ach.showsBillingAddress
         config.billingAddressCountryCodes = configuration.ach.billingAddressCountryCodes
         return ACHDirectDebitComponent(

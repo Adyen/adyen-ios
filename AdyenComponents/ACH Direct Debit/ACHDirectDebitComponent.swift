@@ -41,7 +41,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     package weak var delegate: PaymentComponentDelegate?
     
     /// Component configuration
-    package var configuration: ACHDirectDebitComponentConfiguration
+    package var configuration: ACHDirectDebitConfiguration
 
     package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
@@ -64,7 +64,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     package init(
         paymentMethod: ACHDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: ACHDirectDebitComponentConfiguration = .init()
+        configuration: ACHDirectDebitConfiguration = .init()
     ) {
         self.configuration = configuration
         self.achDirectDebitPaymentMethod = paymentMethod
@@ -119,7 +119,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     }
     
     private var storePayment: Bool? {
-        configuration.showStorePaymentMethodField ? storeDetailsItem.value : nil
+        configuration.showStorePaymentMethod ? storeDetailsItem.value : nil
     }
     
     // MARK: - Form Items
@@ -280,7 +280,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
                 subtitle: nil // TODO: Add subtitle localization key
             ))
         }
-        if configuration.showStorePaymentMethodField {
+        if configuration.showStorePaymentMethod {
             formViewController.append(storeDetailsItem)
         }
         

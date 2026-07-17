@@ -347,8 +347,8 @@ final class CheckoutComponentBuilderTests: XCTestCase {
 
     func test_build_withSessionConfiguration_appliesSessionOverrideToACHComponent() throws {
         let paymentMethod = try XCTUnwrap(createACHPaymentMethod())
-        checkoutConfiguration.configurations[.payment(.achDirectDebit)] = ACHDirectDebitComponentConfiguration()
-            .showStorePaymentMethodField(true)
+        checkoutConfiguration.configurations[.payment(.achDirectDebit)] = ACHDirectDebitConfiguration()
+            .showStorePaymentMethod(true)
 
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
@@ -361,7 +361,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         )
 
         let achComponent = try XCTUnwrap(component as? ACHDirectDebitComponent)
-        XCTAssertFalse(achComponent.configuration.showStorePaymentMethodField)
+        XCTAssertFalse(achComponent.configuration.showStorePaymentMethod)
     }
 
     // MARK: - Instant Payment Component Tests

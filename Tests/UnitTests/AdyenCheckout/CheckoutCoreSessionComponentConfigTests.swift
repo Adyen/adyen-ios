@@ -97,18 +97,18 @@ final class CheckoutCoreSessionComponentConfigTests: XCTestCase {
         let component = try sut.createPaymentComponent(for: .achDirectDebit)
         let achComponent = try XCTUnwrap(component.paymentComponent as? ACHDirectDebitComponent)
 
-        XCTAssertFalse(achComponent.configuration.showStorePaymentMethodField)
+        XCTAssertFalse(achComponent.configuration.showStorePaymentMethod)
     }
 
     func test_achComponent_advancedFlow_showStorePaymentMethod_notClobbered() throws {
-        configuration.configurations[.payment(.achDirectDebit)] = ACHDirectDebitComponentConfiguration()
-            .showStorePaymentMethodField(false)
+        configuration.configurations[.payment(.achDirectDebit)] = ACHDirectDebitConfiguration()
+            .showStorePaymentMethod(false)
         let sut = makeAdvancedCheckoutCore()
 
         let component = try sut.createPaymentComponent(for: .achDirectDebit)
         let achComponent = try XCTUnwrap(component.paymentComponent as? ACHDirectDebitComponent)
 
-        XCTAssertFalse(achComponent.configuration.showStorePaymentMethodField)
+        XCTAssertFalse(achComponent.configuration.showStorePaymentMethod)
     }
 
     // MARK: - Helpers

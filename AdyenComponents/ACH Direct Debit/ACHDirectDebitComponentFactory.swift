@@ -12,7 +12,7 @@ import Adyen
 /// provided ACH payment method and component configuration.
 @MainActor
 package struct ACHDirectDebitComponentFactory: PaymentComponentFactory {
-    package typealias Configuration = ACHDirectDebitComponentConfiguration
+    package typealias Configuration = ACHDirectDebitConfiguration
     package typealias Method = ACHDirectDebitPaymentMethod
     package typealias Component = ACHDirectDebitComponent
 
@@ -32,13 +32,13 @@ package struct ACHDirectDebitComponentFactory: PaymentComponentFactory {
     package func create(
         with paymentMethod: ACHDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: ACHDirectDebitComponentConfiguration
+        configuration: ACHDirectDebitConfiguration
     ) -> ACHDirectDebitComponent {
 
         var configuration = configuration
 
         if let sessionConfiguration {
-            configuration = configuration.showStorePaymentMethodField(sessionConfiguration.showStorePaymentMethod)
+            configuration = configuration.showStorePaymentMethod(sessionConfiguration.showStorePaymentMethod)
         }
 
         return ACHDirectDebitComponent(
@@ -48,7 +48,7 @@ package struct ACHDirectDebitComponentFactory: PaymentComponentFactory {
         )
     }
 
-    package func defaultConfiguration() -> ACHDirectDebitComponentConfiguration {
-        ACHDirectDebitComponentConfiguration()
+    package func defaultConfiguration() -> ACHDirectDebitConfiguration {
+        ACHDirectDebitConfiguration()
     }
 }

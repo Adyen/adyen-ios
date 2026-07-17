@@ -12,8 +12,8 @@ import UIKit
     import AdyenUI
 #endif
 
-/// Configuration for ACH Direct Debit Component.
-package struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfiguration, CheckoutComponentConfiguration {
+/// Configuration for ACH Direct Debit.
+package struct ACHDirectDebitConfiguration: AnyPersonalInformationConfiguration, CheckoutComponentConfiguration {
 
     package let componentType: CheckoutComponentType = .payment(.achDirectDebit)
 
@@ -29,26 +29,26 @@ package struct ACHDirectDebitComponentConfiguration: AnyPersonalInformationConfi
 
     package var localizationProvider: (any CheckoutLocalizationProvider)?
 
-    package var showStorePaymentMethodField: Bool
+    package var showStorePaymentMethod: Bool
 
     package var showBillingAddress: Bool
 
     package var billingAddressCountryCodes: [String]
 
-    /// Initializes the configuration for ACH Direct Debit Component.
+    /// Initializes the configuration for ACH Direct Debit.
     package init() {
         self.style = FormComponentStyle()
         self.showsSubmitButton = true
         self.shopperInformation = nil
         self.localizationParameters = nil
-        self.showStorePaymentMethodField = true
+        self.showStorePaymentMethod = true
         self.showBillingAddress = true
         self.billingAddressCountryCodes = ["US", "PR"]
         self.theme = .init()
     }
 }
 
-extension ACHDirectDebitComponentConfiguration {
+extension ACHDirectDebitConfiguration {
 
     /// Sets the shopper's information to be prefilled.
     /// - Parameter shopperInformation: The shopper's information to prefill.
@@ -68,12 +68,12 @@ extension ACHDirectDebitComponentConfiguration {
         return config
     }
 
-    /// Sets whether the field for storing the payment method should be displayed.
-    /// - Parameter showStorePaymentMethodField: A Boolean value indicating whether to show the store payment method field.
+    /// Sets whether the field for storing the payment method should be displayed in the form.
+    /// - Parameter showStorePaymentMethod: Boolean value indicating if the store payment method toggle should be shown.
     /// - Returns: A modified configuration with the updated setting.
-    package func showStorePaymentMethodField(_ showStorePaymentMethodField: Bool) -> Self {
+    package func showStorePaymentMethod(_ showStorePaymentMethod: Bool) -> Self {
         var config = self
-        config.showStorePaymentMethodField = showStorePaymentMethodField
+        config.showStorePaymentMethod = showStorePaymentMethod
         return config
     }
 
