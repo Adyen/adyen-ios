@@ -184,7 +184,7 @@ jobs:
           echo
           cat review.md
           echo
-          echo "<details><summary>Run provenance</summary>"
+          echo "<details><summary>Run details</summary>"
           echo
           echo "- Meta: $(git -C meta rev-parse HEAD)"
           echo "- Android: $(git -C android rev-parse HEAD)"
