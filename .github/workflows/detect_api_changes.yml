@@ -127,7 +127,7 @@ jobs:
       with:
         repository: Adyen/adyen-checkout-sdk-meta
         ref: api-alignment-automation-poc
-        token: ${{ secrets.AUTOMATION_BOT_TOKEN }}
+        token: ${{ secrets.API_ALIGNMENT_META_REPO_TOKEN }}
         path: meta
         persist-credentials: false
         sparse-checkout: |
