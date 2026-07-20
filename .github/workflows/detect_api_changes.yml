@@ -155,6 +155,7 @@ jobs:
           --ios-diff input/api_comparison.md \
           --android-repo android \
           --meta-repo meta \
+          --meta-branch api-alignment-automation-poc \
           --output alignment-prompt.md
 
     - name: Run Gemini API alignment review
@@ -180,8 +181,6 @@ jobs:
       run: |
         {
           echo "## Cross-platform Card API alignment"
-          echo
-          echo "> Advisory POC. This report identifies high-confidence public API-shape transitions; it does not certify complete alignment."
           echo
           cat review.md
           echo
