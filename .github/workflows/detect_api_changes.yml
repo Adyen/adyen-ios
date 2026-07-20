@@ -23,6 +23,7 @@ permissions:
 jobs:
 
   build:
+    name: iOS public API diff
     runs-on: macos-26
     outputs:
       card_api_changed: ${{ steps.card_api.outputs.changed }}
