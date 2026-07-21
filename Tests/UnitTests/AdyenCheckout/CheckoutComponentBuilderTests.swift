@@ -364,15 +364,15 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertFalse(achComponent.configuration.showStorePaymentMethod)
     }
 
-    // MARK: - Instant Payment Component Tests
+    // MARK: - Generic Payment Component Tests
 
-    func test_build_withInstantPaymentMethod_returnsGenericPaymentComponent() throws {
+    func test_build_withGenericPaymentMethod_returnsGenericPaymentComponent() throws {
         // Given
         let dict: [String: Any] = [
             "type": "ideal",
             "name": "iDEAL"
         ]
-        let paymentMethod = try XCTUnwrap(try? AdyenCoder.decode(dict) as InstantPaymentMethod)
+        let paymentMethod = try XCTUnwrap(try? AdyenCoder.decode(dict) as GenericPaymentMethod)
 
         // When
         let component = try CheckoutComponentBuilder.build(

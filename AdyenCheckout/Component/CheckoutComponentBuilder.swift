@@ -66,9 +66,9 @@ internal enum CheckoutComponentBuilder {
                 // TODO: add other card methods like stored or write a generic one.
             
         #endif
-        case let instantPaymentMethod as InstantPaymentMethod:
+        case let genericPaymentMethod as GenericPaymentMethod:
             return GenericPaymentComponent(
-                paymentMethod: instantPaymentMethod,
+                paymentMethod: genericPaymentMethod,
                 context: context,
                 order: nil
             )

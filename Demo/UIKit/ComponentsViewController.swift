@@ -106,7 +106,7 @@ internal final class ComponentsViewController: UIViewController {
                     selectionHandler: presentIssuerListComponent
                 ),
                 ComponentsItem(
-                    title: "Instant/Redirect Payment",
+                    title: "Generic/Redirect Payment",
                     subtitle: "e.g. iDEAL, PayPal, Alipay, ...",
                     selectionHandler: presentGenericPaymentComponent
                 )

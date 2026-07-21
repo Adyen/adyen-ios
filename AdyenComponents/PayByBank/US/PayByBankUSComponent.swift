@@ -24,7 +24,7 @@ package final class PayByBankUSComponent: PresentablePaymentComponent {
 
     /// The ready to submit payment data.
     package var paymentData: PaymentComponentData {
-        let details = InstantPaymentDetails(type: paymentMethod.type)
+        let details = GenericPaymentDetails(type: paymentMethod.type)
 
         return PaymentComponentData(
             paymentMethodDetails: details,
