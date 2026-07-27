@@ -5,7 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PresentableComponent
 
 #if canImport(AdyenUI)
     import AdyenUI
@@ -17,7 +16,7 @@ import UIKit
 /// A generic component for "issuer-based" payment methods, such as MOLPay.
 /// This component will provide a list in which the user can select their issuer.
 @MainActor
-package final class IssuerListComponent: PaymentComponent, PresentableComponent, LoadingComponent {
+package final class IssuerListComponent: PresentablePaymentComponent, LoadingComponent {
 
     private enum Constants {
         static let searchDelay: TimeInterval = 1

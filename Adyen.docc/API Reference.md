@@ -59,7 +59,7 @@ The entry points for integrating the SDK.
 - ``VoucherPaymentMethod``
 - ``QRCodePaymentMethod``
 - ``DocumentPaymentMethod``
-- ``InstantPaymentMethod``
+- ``GenericPaymentMethod``
 
 ### Card payment methods
 
@@ -103,7 +103,7 @@ The entry points for integrating the SDK.
 - ``StoredBLIKPaymentMethod``
 - ``StoredCashAppPayPaymentMethod``
 - ``StoredTwintPaymentMethod``
-- ``StoredInstantPaymentMethod``
+- ``StoredGenericPaymentMethod``
 - ``StoredPayByBankUSPaymentMethod``
 - ``StoredPayToPaymentMethod``
 
@@ -125,7 +125,7 @@ The entry points for integrating the SDK.
 - ``EPSDetails``
 - ``EntercashDetails``
 - ``GiftCardDetails``
-- ``InstantPaymentDetails``
+- ``GenericPaymentDetails``
 - ``IssuerListDetails``
 - ``MBWayDetails``
 - ``MealVoucherDetails``
@@ -210,7 +210,6 @@ The entry points for integrating the SDK.
 ## Public Protocols
 
 - ``Component``
-- ``PresentableComponent``
 - ``FinalizableComponent``
 - ``Details``
 - ``AdditionalDetails``

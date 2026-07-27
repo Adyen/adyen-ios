@@ -48,7 +48,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
     private let localizedParameters: LocalizationParameters?
     private let context: AdyenContext
     
-    /// Delegates `PresentableComponent`'s presentation.
+    /// Delegates view controller presentation.
     internal weak var presentationDelegate: PresentationDelegate?
     
     internal init(

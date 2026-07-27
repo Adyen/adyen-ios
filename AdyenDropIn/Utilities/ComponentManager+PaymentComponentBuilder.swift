@@ -112,7 +112,7 @@ extension ComponentManager: PaymentComponentBuilder {
     internal func build(paymentMethod: WeChatPayPaymentMethod) -> PaymentComponent? {
         guard let classObject = loadTheConcreteWeChatPaySDKActionComponentClass() else { return nil }
         guard classObject.isDeviceSupported() else { return nil }
-        return InstantPaymentComponent(
+        return GenericPaymentComponent(
             paymentMethod: paymentMethod,
             context: context,
             order: order
@@ -197,7 +197,7 @@ extension ComponentManager: PaymentComponentBuilder {
     }
 
     internal func build(paymentMethod: PaymentMethod) -> PaymentComponent? {
-        InstantPaymentComponent(
+        GenericPaymentComponent(
             paymentMethod: paymentMethod,
             context: context,
             order: order
@@ -386,10 +386,10 @@ private extension ComponentManager {
     }
 
     func createACHDirectDebitComponent(_ paymentMethod: ACHDirectDebitPaymentMethod) -> ACHDirectDebitComponent {
-        var config = ACHDirectDebitComponentConfiguration()
+        var config = ACHDirectDebitConfiguration()
         config.shopperInformation = configuration.shopperInformation
         config.localizationParameters = configuration.localizationParameters
-        config.showStorePaymentMethodField = configuration.ach.showsStorePaymentMethodField
+        config.showStorePaymentMethod = configuration.ach.showsStorePaymentMethodField
         config.showBillingAddress = configuration.ach.showsBillingAddress
         config.billingAddressCountryCodes = configuration.ach.billingAddressCountryCodes
         return ACHDirectDebitComponent(

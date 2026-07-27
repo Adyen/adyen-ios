@@ -118,7 +118,7 @@ struct PreselectedPaymentMethodIntegrationTests {
 
     // MARK: - Setup of the system under test
 
-    /// A setup with the payment method router mocked to test actions made by the user for a paymentComponent that is PresentableComponent
+    /// A setup with the payment method router mocked to test actions made by the user for a paymentComponent that is PresentablePaymentComponent
     private func makeSUT(
         mockedRouter: PreselectedPaymentMethodRoutingMock? = nil,
         component: PaymentComponent

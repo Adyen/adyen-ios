@@ -8,7 +8,7 @@ import Foundation
 
 /// A component that handles payment methods that don't need any payment detail to be filled.
 @MainActor
-package final class InstantPaymentComponent: PaymentComponent {
+package final class GenericPaymentComponent: PaymentComponent {
 
     /// The context object for this component.
     package let context: AdyenContext
@@ -22,7 +22,7 @@ package final class InstantPaymentComponent: PaymentComponent {
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
 
-    /// Initializes a new instance of `InstantPaymentComponent`.
+    /// Initializes a new instance of `GenericPaymentComponent`.
     ///
     /// - Parameters:
     ///   - paymentMethod: The payment method.
@@ -38,7 +38,7 @@ package final class InstantPaymentComponent: PaymentComponent {
         self.context = context
     }
 
-    /// Initializes a new instance of `InstantPaymentComponent`.
+    /// Initializes a new instance of `GenericPaymentComponent`.
     ///
     /// - Parameters:
     ///   - paymentMethod: The payment method.
@@ -52,7 +52,7 @@ package final class InstantPaymentComponent: PaymentComponent {
         self.paymentMethod = paymentMethod
         self.context = context
 
-        let details = InstantPaymentDetails(type: paymentMethod.type)
+        let details = GenericPaymentDetails(type: paymentMethod.type)
         self.paymentData = PaymentComponentData(
             paymentMethodDetails: details,
             order: order
@@ -66,7 +66,7 @@ package final class InstantPaymentComponent: PaymentComponent {
 }
 
 /// Describes a payment details that contains nothing but the payment method type name.
-public struct InstantPaymentDetails: PaymentMethodDetails {
+public struct GenericPaymentDetails: PaymentMethodDetails {
     
     @_spi(AdyenInternal)
     public var checkoutAttemptId: String?

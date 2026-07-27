@@ -49,16 +49,16 @@ internal final class ComponentsViewController: UIViewController {
         return issuerListComponent
     }
     
-    private var instantPaymentComponentExample: InstantPaymentComponentExample {
-        let instantPaymentComponentExample = InstantPaymentComponentExample()
-        instantPaymentComponentExample.presenter = self
-        return instantPaymentComponentExample
+    private var genericPaymentComponentExample: GenericPaymentComponentExample {
+        let genericPaymentComponentExample = GenericPaymentComponentExample()
+        genericPaymentComponentExample.presenter = self
+        return genericPaymentComponentExample
     }
     
-    private var instantPaymentComponentAdvancedFlow: InstantPaymentComponentAdvancedFlow {
-        let instantPaymentComponentExample = InstantPaymentComponentAdvancedFlow()
-        instantPaymentComponentExample.presenter = self
-        return instantPaymentComponentExample
+    private var genericPaymentComponentAdvancedFlow: GenericPaymentComponentAdvancedFlow {
+        let genericPaymentComponentExample = GenericPaymentComponentAdvancedFlow()
+        genericPaymentComponentExample.presenter = self
+        return genericPaymentComponentExample
     }
 
     private var applePayComponentAdvancedFlowExample: ApplePayComponentAdvancedFlowExample {
@@ -106,9 +106,9 @@ internal final class ComponentsViewController: UIViewController {
                     selectionHandler: presentIssuerListComponent
                 ),
                 ComponentsItem(
-                    title: "Instant/Redirect Payment",
+                    title: "Generic/Redirect Payment",
                     subtitle: "e.g. iDEAL, PayPal, Alipay, ...",
-                    selectionHandler: presentInstantPaymentComponent
+                    selectionHandler: presentGenericPaymentComponent
                 )
             ],
             [ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)],
@@ -164,11 +164,11 @@ internal final class ComponentsViewController: UIViewController {
         }
     }
     
-    internal func presentInstantPaymentComponent() {
+    internal func presentGenericPaymentComponent() {
         if componentsView.isUsingSession {
-            start(instantPaymentComponentExample)
+            start(genericPaymentComponentExample)
         } else {
-            start(instantPaymentComponentAdvancedFlow)
+            start(genericPaymentComponentAdvancedFlow)
         }
     }
 

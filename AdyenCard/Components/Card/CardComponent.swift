@@ -5,7 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PresentableComponent
 import AdyenNetworking
 #if canImport(AdyenUI)
     import AdyenUI
@@ -21,8 +20,7 @@ import UIKit
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
 @MainActor
-package class CardComponent: PaymentComponent,
-    PresentableComponent,
+package class CardComponent: PresentablePaymentComponent,
     LoadingComponent {
 
     internal enum Constant {
@@ -63,16 +61,6 @@ package class CardComponent: PaymentComponent,
     package weak var delegate: PaymentComponentDelegate? {
         didSet {
             storedCardComponent?.delegate = delegate
-            // override installment config if using session (when session is set as delegate)
-            if let installmentAware = delegate as? InstallmentConfigurationAware,
-               installmentAware.isSession {
-                configuration.installmentConfiguration = installmentAware.installmentConfiguration
-            }
-
-            if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
-               storePaymentMethodAware.isSession {
-                configuration.showStorePaymentMethod = storePaymentMethodAware.showStorePaymentMethodField ?? false
-            }
         }
     }
 

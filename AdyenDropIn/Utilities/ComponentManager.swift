@@ -121,11 +121,11 @@ internal final class ComponentManager: ComponentManaging {
         paymentMethods.paid.compactMap(buildComponent(for:))
     }()
     
-    internal var singleRegularComponent: (PaymentComponent & PresentableComponent)? {
+    internal var singleRegularComponent: PresentablePaymentComponent? {
         guard storedComponents.isEmpty,
               paidComponents.isEmpty,
               regularComponents.count == 1,
-              let component = regularComponents.first as? (PaymentComponent & PresentableComponent)
+              let component = regularComponents.first as? PresentablePaymentComponent
         else { return nil }
         
         return component

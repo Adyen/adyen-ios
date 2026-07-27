@@ -245,7 +245,7 @@ struct PaymentMethodListViewModelTests {
         sut.present(actionViewController: actionComponentMock)
 
         // Then
-        #expect(routerMock.presentActionComponentOnCancelCallsCount == 1)
+        #expect(routerMock.presentActionViewControllerOnCancelCallsCount == 1)
     }
 
     @Test
@@ -258,7 +258,7 @@ struct PaymentMethodListViewModelTests {
 
         // Capture the onCancel callback when present is called
         var capturedOnCancel: (() -> Void)?
-        routerMock.presentActionComponentOnCancelClosure = { _, onCancel in
+        routerMock.presentActionViewControllerOnCancelClosure = { _, onCancel in
             capturedOnCancel = onCancel
         }
 
@@ -362,7 +362,7 @@ struct PaymentMethodListViewModelTests {
         return methods
     }
 
-    private func makePaymentComponentMock() -> PresentableComponentMock {
+    private func makePaymentComponentMock() -> PresentablePaymentComponentMock {
         let cardPaymentMethodMock = CardPaymentMethodMock(
             type: .scheme,
             name: "Card",
@@ -370,7 +370,7 @@ struct PaymentMethodListViewModelTests {
         )
         let viewControllerMock = UIViewController()
 
-        return PresentableComponentMock(
+        return PresentablePaymentComponentMock(
             paymentMethod: cardPaymentMethodMock,
             viewController: viewControllerMock
         )

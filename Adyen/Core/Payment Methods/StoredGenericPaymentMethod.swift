@@ -7,7 +7,7 @@
 import Foundation
 
 /// A stored payment method that does not require any handling and could be submitted directly.
-public struct StoredInstantPaymentMethod: StoredPaymentMethod {
+public struct StoredGenericPaymentMethod: StoredPaymentMethod {
 
     public let type: PaymentMethodType
 
@@ -30,7 +30,7 @@ public struct StoredInstantPaymentMethod: StoredPaymentMethod {
 
 // MARK: - PaymentComponentBuildable
 
-extension StoredInstantPaymentMethod: PaymentComponentBuildable {
+extension StoredGenericPaymentMethod: PaymentComponentBuildable {
     package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }
