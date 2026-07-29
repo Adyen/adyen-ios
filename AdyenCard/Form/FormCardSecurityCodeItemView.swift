@@ -75,6 +75,26 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         super.textFieldDidEndEditing(text)
         cardHintView.isHighlighted = false
     }
+    
+    override internal func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        guard !string.isEmpty else { return true }
+        
+        let currentText = textField.text ?? ""
+        guard let textRange = Range(range, in: currentText) else { return true }
+        
+        let updatedText = currentText.replacingCharacters(in: textRange, with: string)
+        let digitCount = updatedText.filter(\.isNumber).count
+        
+        return digitCount <= expectedLength
+    }
+    
+    private var expectedLength: Int {
+        item.selectedCard == CardBrand.americanExpress ? 4 : 3
+    }
 }
 
 extension FormCardSecurityCodeItemView {

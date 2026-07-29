@@ -27,11 +27,19 @@ class CardSecurityCodeFormatterTests: XCTestCase {
     }
     
     func testSanitizing() {
-        let formatter = CardSecurityCodeFormatter()
+        let observer = AdyenObservable<CardBrand?>(.masterCard)
+        let formatter = CardSecurityCodeFormatter(publisher: observer)
         
         XCTAssertEqual(formatter.sanitizedValue(for: "1"), "1")
         XCTAssertEqual(formatter.sanitizedValue(for: "1a2b"), "12")
         XCTAssertEqual(formatter.sanitizedValue(for: "12--"), "12")
-        XCTAssertEqual(formatter.sanitizedValue(for: "123456"), "123456")
+        XCTAssertEqual(formatter.sanitizedValue(for: "123456"), "123")
+        XCTAssertEqual(formatter.sanitizedValue(for: "12a3b456"), "123")
+        
+        observer.wrappedValue = nil
+        XCTAssertEqual(formatter.sanitizedValue(for: "123456"), "123")
+        
+        observer.wrappedValue = .americanExpress
+        XCTAssertEqual(formatter.sanitizedValue(for: "123456"), "1234")
     }
 }

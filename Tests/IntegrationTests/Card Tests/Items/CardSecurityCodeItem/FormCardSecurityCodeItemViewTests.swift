@@ -65,4 +65,81 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         XCTAssertEqual(expectedFormattedCVV, item.formattedValue)
         XCTAssertEqual(expectedFormattedCVV, sut.textField.text)
     }
+
+    func testShouldChangeCharactersGivenNonAmexAndInputExceedsThreeDigitsShouldReject() {
+        // Given
+        sut.textField.text = "123"
+
+        // When
+        let shouldChange = sut.textField(
+            sut.textField,
+            shouldChangeCharactersIn: NSRange(location: 3, length: 0),
+            replacementString: "4"
+        )
+
+        // Then
+        XCTAssertFalse(shouldChange)
+    }
+
+    func testShouldChangeCharactersGivenNonAmexAndInputWithinThreeDigitsShouldAllow() {
+        // Given
+        sut.textField.text = "12"
+
+        // When
+        let shouldChange = sut.textField(
+            sut.textField,
+            shouldChangeCharactersIn: NSRange(location: 2, length: 0),
+            replacementString: "3"
+        )
+
+        // Then
+        XCTAssertTrue(shouldChange)
+    }
+
+    func testShouldChangeCharactersGivenAmexAndInputWithinFourDigitsShouldAllow() {
+        // Given
+        item.selectedCard = .americanExpress
+        sut.textField.text = "123"
+
+        // When
+        let shouldChange = sut.textField(
+            sut.textField,
+            shouldChangeCharactersIn: NSRange(location: 3, length: 0),
+            replacementString: "4"
+        )
+
+        // Then
+        XCTAssertTrue(shouldChange)
+    }
+
+    func testShouldChangeCharactersGivenAmexAndInputExceedsFourDigitsShouldReject() {
+        // Given
+        item.selectedCard = .americanExpress
+        sut.textField.text = "1234"
+
+        // When
+        let shouldChange = sut.textField(
+            sut.textField,
+            shouldChangeCharactersIn: NSRange(location: 4, length: 0),
+            replacementString: "5"
+        )
+
+        // Then
+        XCTAssertFalse(shouldChange)
+    }
+
+    func testShouldChangeCharactersGivenDeletionShouldAlwaysAllow() {
+        // Given
+        sut.textField.text = "123"
+
+        // When
+        let shouldChange = sut.textField(
+            sut.textField,
+            shouldChangeCharactersIn: NSRange(location: 2, length: 1),
+            replacementString: ""
+        )
+
+        // Then
+        XCTAssertTrue(shouldChange)
+    }
 }
