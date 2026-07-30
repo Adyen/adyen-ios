@@ -52,7 +52,7 @@ package final class GenericPaymentComponent: PaymentComponent {
         self.paymentMethod = paymentMethod
         self.context = context
 
-        let details = InstantPaymentDetails(type: paymentMethod.type)
+        let details = GenericPaymentDetails(type: paymentMethod.type)
         self.paymentData = PaymentComponentData(
             paymentMethodDetails: details,
             order: order
@@ -66,7 +66,7 @@ package final class GenericPaymentComponent: PaymentComponent {
 }
 
 /// Describes a payment details that contains nothing but the payment method type name.
-public struct InstantPaymentDetails: PaymentMethodDetails {
+public struct GenericPaymentDetails: PaymentMethodDetails {
     
     @_spi(AdyenInternal)
     public var checkoutAttemptId: String?

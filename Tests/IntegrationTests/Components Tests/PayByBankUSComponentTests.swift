@@ -27,7 +27,7 @@ class PayByBankUSComponentTests: XCTestCase {
         let delegate = PaymentComponentDelegateMock()
         delegate.onDidSubmit = { data, component in
             XCTAssertTrue(component === sut)
-            let details = data.paymentMethod as! InstantPaymentDetails
+            let details = data.paymentMethod as! GenericPaymentDetails
             XCTAssertEqual(details.type, .payByBankAISDD)
             delegateExpectation.fulfill()
         }

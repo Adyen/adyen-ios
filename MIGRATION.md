@@ -10,6 +10,16 @@ See also:
 
 ### Core objects
 
+#### Generic payment models
+
+The following public models have been renamed:
+
+| Before | After |
+|---|---|
+| `InstantPaymentMethod` | `GenericPaymentMethod` |
+| `StoredInstantPaymentMethod` | `StoredGenericPaymentMethod` |
+| `InstantPaymentDetails` | `GenericPaymentDetails` |
+
 #### Sessions flow
 
 ##### Before (v5)
