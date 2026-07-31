@@ -82,6 +82,8 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         replacementString string: String
     ) -> Bool {
         guard !string.isEmpty else { return true }
+
+        guard string.count == 1 else { return true }
         
         let currentText = textField.text ?? ""
         guard let textRange = Range(range, in: currentText) else { return true }
