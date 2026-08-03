@@ -22,6 +22,15 @@ class CardSecurityCodeValidatorTests: XCTestCase {
         XCTAssertTrue(validator.isValid("1234"))
     }
     
+    func testDefaultLengthGivenNilBrandShouldExpectThreeDigits() {
+        let observer = AdyenObservable<CardBrand?>(nil)
+        let validator = CardSecurityCodeValidator(publisher: observer)
+
+        XCTAssertFalse(validator.isValid("12"))
+        XCTAssertTrue(validator.isValid("123"))
+        XCTAssertFalse(validator.isValid("1234"))
+    }
+
     func testInvalidSecurityCodes() {
         let validator = CardSecurityCodeValidator()
         
