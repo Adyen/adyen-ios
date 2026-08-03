@@ -12,6 +12,35 @@ EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions-Firebase.plist"
 EXPORT_CONFIGURATION="Firebase"
 PLIST_BUDDY=/usr/libexec/PlistBuddy
 
+# Secrets written to disk further down, wiped by the cleanup below.
+AUTH_KEY_PATH=""
+FIREBASE_JSON_PATH=""
+
+# Set on the last line; anything earlier means the script was cut short.
+SCRIPT_SUCCEEDED=false
+
+# Single EXIT handler: a second `trap ... EXIT` would silently replace this one.
+# The status has to be re-raised explicitly, and a premature exit forced to non-zero: with an EXIT
+# trap installed, bash reports 0 for `${VAR:?}` and `set -u` aborts, which would turn a missing
+# secret into a green build.
+cleanup() {
+  local exit_status=$?
+  if [[ -f "$INFO_PLIST_BACKUP_PATH" ]]; then
+    mv -f "$INFO_PLIST_BACKUP_PATH" "$INFO_PLIST_PATH"
+  fi
+  if [[ -n "$AUTH_KEY_PATH" ]]; then
+    rm -f "$AUTH_KEY_PATH"
+  fi
+  if [[ -n "$FIREBASE_JSON_PATH" ]]; then
+    rm -f "$FIREBASE_JSON_PATH"
+  fi
+  if [[ "$SCRIPT_SUCCEEDED" != true ]] && [[ "$exit_status" -eq 0 ]]; then
+    exit_status=1
+  fi
+  exit "$exit_status"
+}
+trap cleanup EXIT
+
 # ---- Version ----
 # Firebase App Distribution labels every release with the CFBundleShortVersionString (CFBundleVersion)
 # baked into the uploaded IPA, so both have to be set before archiving.
@@ -56,10 +85,9 @@ echo "📦 Using Firebase export options: $EXPORT_OPTIONS_PLIST"
 echo "ℹ️ Firebase env vars validated."
 
 # ---- Apply the version name ----
-# Restored on exit so a local run doesn't leave the working tree dirty.
+# The backup is restored by cleanup() so a local run doesn't leave the working tree dirty.
 echo "🏷️ Setting version name to $BUILD_VERSION_NAME..."
 cp "$INFO_PLIST_PATH" "$INFO_PLIST_BACKUP_PATH"
-trap 'mv -f "$INFO_PLIST_BACKUP_PATH" "$INFO_PLIST_PATH"' EXIT
 "$PLIST_BUDDY" -c "Set :CFBundleShortVersionString $BUILD_VERSION_NAME" "$INFO_PLIST_PATH"
 
 # ---- Apply the build number override ----
@@ -133,7 +161,7 @@ xcodebuild archive \
 # ---- Export IPA with signing ----
 AUTH_KEY_PATH="$RUNNER_TEMP/auth_key.p8"
 echo -n "$XCODE_AUTHENTICATION_KEY_BASE64" | base64 --decode > "$AUTH_KEY_PATH"
-chmod 600 "$AUTH_KEY_PATH"  # restrict permissions
+chmod 600 "$AUTH_KEY_PATH"  # redirection uses the umask, so restrict explicitly. Removed by cleanup()
 
 echo "📤 Exporting .ipa with manual signing..."
 xcodebuild -exportArchive \
@@ -149,10 +177,12 @@ xcodebuild -exportArchive \
 # ---- Distribution ----
 echo "🔥 Uploading to Firebase App Distribution..."
 
-# Write service account JSON to temp file
+# Write service account JSON to temp file.
+# mktemp creates it 0600 regardless of umask, so no chmod is needed here — unlike AUTH_KEY_PATH above,
+# which shell redirection creates using the umask. Removed by cleanup().
 FIREBASE_JSON_PATH="$(mktemp)"
 echo "$FIREBASE_SERVICE_ACCOUNT_JSON" > "$FIREBASE_JSON_PATH"
-export GOOGLE_APPLICATION_CREDENTIALS=$FIREBASE_JSON_PATH
+export GOOGLE_APPLICATION_CREDENTIALS="$FIREBASE_JSON_PATH"
 
 # Upload
 firebase appdistribution:distribute "$IPA_PATH" \
@@ -161,3 +191,5 @@ firebase appdistribution:distribute "$IPA_PATH" \
   --release-notes "Release: ${FIREBASE_RELEASE_NAME}, Version: ${RESOLVED_VERSION_NAME} (${BUILD_NUMBER:-project default}), Branch: ${GITHUB_REF_NAME:-manual}, Build: ${GITHUB_SHA:-manual}"
 
 echo "✅ Firebase upload complete! Release name: $FIREBASE_RELEASE_NAME"
+
+SCRIPT_SUCCEEDED=true
