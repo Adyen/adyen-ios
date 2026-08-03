@@ -12,16 +12,18 @@ EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions-Firebase.plist"
 EXPORT_CONFIGURATION="Firebase"
 PLIST_BUDDY=/usr/libexec/PlistBuddy
 
-# ---- Optional version overrides ----
+# ---- Version ----
 # Firebase App Distribution labels every release with the CFBundleShortVersionString (CFBundleVersion)
 # baked into the uploaded IPA, so both have to be set before archiving.
-# When either is empty the value committed in the project is used instead.
-BUILD_VERSION_NAME="${BUILD_VERSION_NAME:-}"
+# BUILD_VERSION_NAME is required; an empty BUILD_NUMBER keeps the one committed in the project.
 BUILD_NUMBER="${BUILD_NUMBER:-}"
 
 echo "📦 Using Firebase export options: $EXPORT_OPTIONS_PLIST"
 
 # ---- Required environment variables ----
+# Version
+: "${BUILD_VERSION_NAME:?Environment variable BUILD_VERSION_NAME not set}"
+
 # Apple credentials
 : "${APPLE_ID_USERNAME:?Environment variable APPLE_ID_USERNAME not set}"
 : "${APPLE_APP_SPECIFIC_PASSWORD:?Environment variable APPLE_APP_SPECIFIC_PASSWORD not set}"
@@ -53,14 +55,12 @@ echo "📦 Using Firebase export options: $EXPORT_OPTIONS_PLIST"
 
 echo "ℹ️ Firebase env vars validated."
 
-# ---- Apply the version name override ----
+# ---- Apply the version name ----
 # Restored on exit so a local run doesn't leave the working tree dirty.
-if [[ -n "$BUILD_VERSION_NAME" ]]; then
-  echo "🏷️ Setting version name to $BUILD_VERSION_NAME..."
-  cp "$INFO_PLIST_PATH" "$INFO_PLIST_BACKUP_PATH"
-  trap 'mv -f "$INFO_PLIST_BACKUP_PATH" "$INFO_PLIST_PATH"' EXIT
-  "$PLIST_BUDDY" -c "Set :CFBundleShortVersionString $BUILD_VERSION_NAME" "$INFO_PLIST_PATH"
-fi
+echo "🏷️ Setting version name to $BUILD_VERSION_NAME..."
+cp "$INFO_PLIST_PATH" "$INFO_PLIST_BACKUP_PATH"
+trap 'mv -f "$INFO_PLIST_BACKUP_PATH" "$INFO_PLIST_PATH"' EXIT
+"$PLIST_BUDDY" -c "Set :CFBundleShortVersionString $BUILD_VERSION_NAME" "$INFO_PLIST_PATH"
 
 # ---- Apply the build number override ----
 # CFBundleVersion already resolves to $(CURRENT_PROJECT_VERSION), so an archive setting is enough.

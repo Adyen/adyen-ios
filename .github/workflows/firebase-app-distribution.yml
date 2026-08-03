@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       build_version_name:
-        description: 'Version name shown in Firebase App Distribution (e.g. 6.0.0-beta.1). Defaults to the version in Demo/UIKit/Info.plist'
-        required: false
+        description: 'Version name shown in Firebase App Distribution (e.g. 6.0.0-beta.1)'
+        required: true
         type: string
       build_number:
         description: 'Build number shown in Firebase App Distribution. Defaults to the build number in the project'
