@@ -104,25 +104,26 @@ echo "🔖 Distributing $RESOLVED_VERSION_NAME (${BUILD_NUMBER:-project default}
 # ---- Install certificates & provisioning profiles ----
 echo "🛡️ Installing certificates and provisioning profile..."
 
-CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
-DEV_CERTIFICATE_PATH=$RUNNER_TEMP/dev_certificate.p12
-PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
-KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+CERTIFICATE_PATH="$RUNNER_TEMP/build_certificate.p12"
+DEV_CERTIFICATE_PATH="$RUNNER_TEMP/dev_certificate.p12"
+PP_PATH="$RUNNER_TEMP/build_pp.mobileprovision"
+KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
+PROFILES_PATH="$HOME/Library/MobileDevice/Provisioning Profiles"
 
-echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
-echo -n "$DEVELOPMENT_CERTIFICATE_BASE64" | base64 --decode -o $DEV_CERTIFICATE_PATH
-echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
+echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o "$CERTIFICATE_PATH"
+echo -n "$DEVELOPMENT_CERTIFICATE_BASE64" | base64 --decode -o "$DEV_CERTIFICATE_PATH"
+echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o "$PP_PATH"
 
-security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
-security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
-security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
 
-security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-security import $DEV_CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-security list-keychain -d user -s $KEYCHAIN_PATH
+security import "$CERTIFICATE_PATH" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+security import "$DEV_CERTIFICATE_PATH" -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+security list-keychain -d user -s "$KEYCHAIN_PATH"
 
-mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+mkdir -p "$PROFILES_PATH"
+cp "$PP_PATH" "$PROFILES_PATH"
 
 echo "✅ Certificates and provisioning profile installed."
 
