@@ -3,10 +3,6 @@ name: 📱🔥 Firebase Distribution
 on:
   workflow_dispatch:
     inputs:
-      branch:
-        description: 'Branch to build and distribute. Defaults to the branch this workflow runs on'
-        required: false
-        type: string
       build_version_name:
         description: 'Version name shown in Firebase App Distribution (e.g. 6.0.0-beta.1). Defaults to the version in Demo/UIKit/Info.plist'
         required: false
@@ -28,10 +24,8 @@ jobs:
     runs-on: macos-26-xlarge
 
     steps:
-      - name: 🪾 Checkout selected branch
+      - name: 🪾 Checkout
         uses: actions/checkout@v7
-        with:
-          ref: ${{ inputs.branch }}
 
       - uses: actions/setup-node@v7
         with:
@@ -43,10 +37,9 @@ jobs:
       - name: 📝 Create Firebase release name
         id: firebase_release_name
         env:
-          INPUT_BRANCH: ${{ inputs.branch }}
           BUILD_VERSION_NAME: ${{ inputs.build_version_name }}
         run: |
-          BRANCH_NAME="${INPUT_BRANCH:-${GITHUB_REF#refs/heads/}}"
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
           SHORT_SHA=$(git rev-parse --short HEAD)
           FIREBASE_RELEASE_NAME="firebase-${BUILD_VERSION_NAME:-$BRANCH_NAME}-${SHORT_SHA}"
           echo "FIREBASE_RELEASE_NAME=$FIREBASE_RELEASE_NAME" >> $GITHUB_ENV
