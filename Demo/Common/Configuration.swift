@@ -249,9 +249,13 @@ internal struct DemoAppSettings: Codable {
     internal static let defaultThemeSettings = ThemeSettings()
     
     fileprivate static func loadConfiguration() -> DemoAppSettings {
-        var config = UserDefaults.standard.data(forKey: defaultsKey)
+        let persistedConfiguration = UserDefaults.standard.data(forKey: defaultsKey)
             .flatMap { try? JSONDecoder().decode(DemoAppSettings.self, from: $0) }
-            ?? defaultConfiguration
+
+        // Apply external configuration from launch arguments (passed by e2e tests via Base64-encoded JSON)
+        let externalConfiguration = ExternalConfigurationReader.readFromLaunchArguments()
+        var config = resolveConfiguration(persisted: persistedConfiguration, external: externalConfiguration)
+
         switch CommandLine.arguments.first {
         case "SG":
             config.countryCode = "SG"
@@ -261,8 +265,21 @@ internal struct DemoAppSettings: Codable {
         }
         return config
     }
+
+    internal static func resolveConfiguration(
+        persisted: DemoAppSettings?,
+        external: ExternalConfiguration?,
+        default defaultConfiguration: DemoAppSettings = DemoAppSettings.defaultConfiguration
+    ) -> DemoAppSettings {
+        if CommandLine.arguments.contains("-config") {
+            return external.map { defaultConfiguration.applying($0) } ?? defaultConfiguration
+        }
+        return external.map { defaultConfiguration.applying($0) } ?? persisted ?? defaultConfiguration
+    }
     
     fileprivate static func saveConfiguration(_ configuration: DemoAppSettings) {
+        // Skip saving when launched with external config (e2e tests) to prevent test pollution
+        guard !CommandLine.arguments.contains("-config") else { return }
         if let configurationData = try? JSONEncoder().encode(configuration) {
             UserDefaults.standard.setValue(configurationData, forKey: defaultsKey)
         }
