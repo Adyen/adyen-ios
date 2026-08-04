@@ -25,16 +25,29 @@ You can integrate with Adyen iOS in two ways:
 * [iOS Drop-in](https://docs.adyen.com/online-payments/build-your-integration/?platform=iOS&integration=Drop-in): an all-in-one solution, the quickest way to accept payments on your iOS app.
 * [iOS Components](https://docs.adyen.com/online-payments/build-your-integration/?platform=iOS&integration=Components): one Component per payment method and combine with your own payments flow.
 
+> **Note:** This is the `develop` branch, where **v6** is under active development. v6 is currently in alpha and its public API can still change. For the latest stable release, see the [`v5` branch][branch.v5].
 
 ## SDK lifecycle
 
-| Major version | State       | Deprecated    | End-of-life   |
-|---------------|-------------|---------------|---------------|
-| 5.x.x         | Active      | ---           | ---           |
-| 4.x.x         | Inactive    | December 2026     | December 2027     |
-| 3.x.x         | End-of-life | November 2021 | November 2022 |
+| Major version | State                  | Deprecated    | End-of-life   |
+|---------------|------------------------|---------------|---------------|
+| 6.x.x         | Alpha (in development) | ---           | ---           |
+| 5.x.x         | Active                 | ---           | ---           |
+| 4.x.x         | Inactive               | December 2026 | December 2027 |
+| 3.x.x         | End-of-life            | November 2021 | November 2022 |
 
 More information about our versioning and the Drop-in/Components lifecycle can be found [here](https://docs.adyen.com/online-payments/upgrade-your-integration/).
+
+## v6 alpha documentation
+
+The v6 API documented in this branch is currently alpha. These guides describe the current public v6 API.
+
+* [v6 foundations][docs.github.v6.readme]
+* [v6 card component overview][docs.github.v6.card]
+* [v6 card component: session flow][docs.github.v6.cardSession]
+* [v6 card component: advanced flow][docs.github.v6.cardAdvanced]
+* [v6 checkout theme][docs.github.v6.theme]
+* [v5 to v6 migration notes][docs.github.v6.migration]
 
 ## Installation
 
@@ -399,3 +412,11 @@ This repository is open source and available under the MIT license. For more inf
 [reference.localization]:  https://adyen.github.io/adyen-ios/6.0.0-alpha.1/documentation/adyen/localization
 
 [apiExplorer.sessions]: https://docs.adyen.com/api-explorer/#/CheckoutService/latest/post/sessions
+
+[branch.v5]: https://github.com/Adyen/adyen-ios/tree/v5
+[docs.github.v6.readme]: guides/v6/README.md
+[docs.github.v6.card]: guides/v6/card.md
+[docs.github.v6.cardSession]: guides/v6/card-session-flow.md
+[docs.github.v6.cardAdvanced]: guides/v6/card-advanced-flow.md
+[docs.github.v6.theme]: guides/v6/theme.md
+[docs.github.v6.migration]: MIGRATION.md
