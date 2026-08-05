@@ -243,4 +243,23 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         XCTAssertEqual(item.formattedValue, "1234")
         XCTAssertTrue(item.isValid())
     }
+
+    func testPlaceholderGivenNonAmexShouldShowThreeDigitPlaceholder() {
+        assert(for: .masterCard, showsDigits: 3)
+    }
+
+    func testPlaceholderGivenAmexShouldShowFourDigitPlaceholder() {
+        assert(for: .americanExpress, showsDigits: 4)
+    }
+
+    private func assert(
+        for brand: CardBrand,
+        showsDigits digits: Int,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) {
+        let expectedPlaceholder = localizedString(.cardCvcItemPlaceholderDigits, item.localizationParameters, String(digits))
+        item.selectedCard = brand
+        XCTAssertEqual(item.placeholder, expectedPlaceholder, file: file, line: line)
+    }
 }
