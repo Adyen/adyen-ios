@@ -182,6 +182,6 @@ The project uses GitHub Actions for CI with the following key workflows:
 ## Resources
 
 - [Public Documentation](https://docs.adyen.com/online-payments/build-your-integration/?platform=iOS)
-- [API Reference](https://adyen.github.io/adyen-ios/5.20.0/documentation/adyen/)
+- [API Reference](https://adyen.github.io/adyen-ios/6.0.0-alpha.1/documentation/adyen/)
 - [Contributing Guidelines](CONTRIBUTING.md)
 - [Migration Guide](MIGRATION.md)
