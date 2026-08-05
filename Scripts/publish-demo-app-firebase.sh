@@ -47,6 +47,10 @@ trap cleanup EXIT
 # BUILD_VERSION_NAME is required; an empty BUILD_NUMBER keeps the one committed in the project.
 BUILD_NUMBER="${BUILD_NUMBER:-}"
 
+# Optional free-text note shown above the build metadata in Firebase. Defaulted here because `set -u`
+# would otherwise abort when the caller omits it.
+RELEASE_NOTES="${RELEASE_NOTES:-}"
+
 echo "📦 Using Firebase export options: $EXPORT_OPTIONS_PLIST"
 
 # ---- Required environment variables ----
@@ -185,11 +189,16 @@ FIREBASE_JSON_PATH="$(mktemp)"
 echo "$FIREBASE_SERVICE_ACCOUNT_JSON" > "$FIREBASE_JSON_PATH"
 export GOOGLE_APPLICATION_CREDENTIALS="$FIREBASE_JSON_PATH"
 
+# A caller-provided note is used verbatim, with no build metadata appended: recurring builds such as
+# the nightly have to report byte-identical release notes on every run. Without one, fall back to the
+# metadata so ad-hoc builds stay traceable back to a commit.
+FIREBASE_RELEASE_NOTES="${RELEASE_NOTES:-Release: ${FIREBASE_RELEASE_NAME}, Version: ${RESOLVED_VERSION_NAME} (${BUILD_NUMBER:-project default}), Branch: ${GITHUB_REF_NAME:-manual}, Build: ${GITHUB_SHA:-manual}}"
+
 # Upload
 firebase appdistribution:distribute "$IPA_PATH" \
   --app "$FIREBASE_APP_ID" \
   --groups "ios-checkout-team" \
-  --release-notes "Release: ${FIREBASE_RELEASE_NAME}, Version: ${RESOLVED_VERSION_NAME} (${BUILD_NUMBER:-project default}), Branch: ${GITHUB_REF_NAME:-manual}, Build: ${GITHUB_SHA:-manual}"
+  --release-notes "$FIREBASE_RELEASE_NOTES"
 
 echo "✅ Firebase upload complete! Release name: $FIREBASE_RELEASE_NAME"
 
