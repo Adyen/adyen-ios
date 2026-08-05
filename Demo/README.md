@@ -1,8 +1,10 @@
 # Demo
 
-Sample project to try out iOS Drop-in and Components integrations.
+Sample project to try out iOS Components integrations.
 
 ![DropIn preview](Screenshots/dropin-ios.jpg)
+
+> **Note:** The Drop-in examples in this project are **not** a supported v6 integration path. Drop-in is not part of the public v6 API yet, and these samples build only because the demo targets have `package` access to the SDK. Use the Components examples as the reference for a v6 integration.
 
 ---
 
@@ -83,7 +85,7 @@ The [`Common/`](Common/) folder contains all basic code necessary to handle UI, 
 
 #### Session Flow
 
-##### Drop-in
+##### Drop-in (not a supported v6 path)
 
 [`Common/IntegrationExamples/Session/DropIn/DropInExample.swift`](Common/IntegrationExamples/Session/DropIn/DropInExample.swift)
 
@@ -102,7 +104,7 @@ Located in [`Common/IntegrationExamples/Session/Components/`](Common/Integration
 
 #### Advanced Flow
 
-##### Drop-in (with partial payments support)
+##### Drop-in (with partial payments support, not a supported v6 path)
 
 [`Common/IntegrationExamples/AdvancedFlow/DropIn/DropInAdvancedFlowExample.swift`](Common/IntegrationExamples/AdvancedFlow/DropIn/DropInAdvancedFlowExample.swift)
 
