@@ -2,7 +2,7 @@ name: 📱🔥 Firebase Distribution
 
 on:
   workflow_dispatch:
-    inputs:
+    inputs: &inputs # Anchored so the workflow_call trigger below reuses the same definitions
       build_version_name:
         description: 'Version name shown in Firebase App Distribution (e.g. 6.0.0-beta.1)'
         required: true
@@ -15,20 +15,8 @@ on:
         description: 'Release notes shown in Firebase App Distribution. Defaults to the branch name and build metadata'
         required: false
         type: string
-  workflow_call: # Inputs have to be repeated: GitHub does not share them between triggers
-    inputs:
-      build_version_name:
-        description: 'Version name shown in Firebase App Distribution (e.g. 6.0.0-beta.1)'
-        required: true
-        type: string
-      build_number:
-        description: 'Build number shown in Firebase App Distribution. Defaults to the build number in the project'
-        required: false
-        type: string
-      release_notes:
-        description: 'Release notes shown in Firebase App Distribution. Defaults to the branch name and build metadata'
-        required: false
-        type: string
+  workflow_call:
+    inputs: *inputs
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
