@@ -189,12 +189,13 @@ FIREBASE_JSON_PATH="$(mktemp)"
 echo "$FIREBASE_SERVICE_ACCOUNT_JSON" > "$FIREBASE_JSON_PATH"
 export GOOGLE_APPLICATION_CREDENTIALS="$FIREBASE_JSON_PATH"
 
-# The build metadata is always appended so a release stays traceable even with a custom note.
-BUILD_METADATA="Release: ${FIREBASE_RELEASE_NAME}, Version: ${RESOLVED_VERSION_NAME} (${BUILD_NUMBER:-project default}), Branch: ${GITHUB_REF_NAME:-manual}, Build: ${GITHUB_SHA:-manual}"
+# A caller-provided note is used verbatim, with no build metadata appended: recurring builds such as
+# the nightly have to report byte-identical release notes on every run. Without one, fall back to the
+# metadata so ad-hoc builds stay traceable back to a commit.
 if [[ -n "$RELEASE_NOTES" ]]; then
-  FIREBASE_RELEASE_NOTES="${RELEASE_NOTES}"$'\n'"${BUILD_METADATA}"
+  FIREBASE_RELEASE_NOTES="$RELEASE_NOTES"
 else
-  FIREBASE_RELEASE_NOTES="$BUILD_METADATA"
+  FIREBASE_RELEASE_NOTES="Release: ${FIREBASE_RELEASE_NAME}, Version: ${RESOLVED_VERSION_NAME} (${BUILD_NUMBER:-project default}), Branch: ${GITHUB_REF_NAME:-manual}, Build: ${GITHUB_SHA:-manual}"
 fi
 
 # Upload

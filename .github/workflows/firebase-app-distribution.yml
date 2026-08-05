@@ -12,7 +12,7 @@ on:
         required: false
         type: string
       release_notes:
-        description: 'Text prepended to the Firebase release notes. Defaults to the branch name. The build metadata is always appended'
+        description: 'Release notes shown in Firebase App Distribution. Defaults to the branch name and build metadata'
         required: false
         type: string
   workflow_call: # Inputs have to be repeated: GitHub does not share them between triggers
@@ -26,7 +26,7 @@ on:
         required: false
         type: string
       release_notes:
-        description: 'Text prepended to the Firebase release notes. Defaults to the branch name. The build metadata is always appended'
+        description: 'Release notes shown in Firebase App Distribution. Defaults to the branch name and build metadata'
         required: false
         type: string
 
@@ -85,9 +85,7 @@ jobs:
           FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           FIREBASE_RELEASE_NAME: ${{ env.FIREBASE_RELEASE_NAME }}
-          # Defaulted here rather than on the inputs themselves: workflow_dispatch input defaults
-          # cannot contain expressions, so this is the only place both triggers behave the same.
-          RELEASE_NOTES: ${{ inputs.release_notes || format('Build from the {0} branch', github.ref_name) }}
+          RELEASE_NOTES: ${{ inputs.release_notes }}
 
           # App configuration
           MERCHANT_CLIENT_KEY: ${{ secrets.DEMO_APP_TEST_ENV_CLIENT_KEY }}
