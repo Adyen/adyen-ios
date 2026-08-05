@@ -76,16 +76,14 @@ public struct LocalizationKey {
     public static let cardCvcItemInvalid = LocalizationKey(key: "adyen.card.cvcItem.invalid")
     /// Security code
     public static let cardCvcItemTitle = LocalizationKey(key: "adyen.card.cvcItem.title")
+    /// 123
+    public static let cardCvcItemPlaceholder = LocalizationKey(key: "adyen.card.cvcItem.placeholder")
     /// Enter security code
     public static let cardSecurityCodeTitle = LocalizationKey(key: "adyen.card.securityCode.title")
     /// Enter the security code for %@
     public static let cardSecurityCodeDescription = LocalizationKey(key: "adyen.card.securityCode.description")
-    /// 123
-    public static let cardCvcItemPlaceholder = LocalizationKey(key: "adyen.card.cvcItem.placeholder")
-    // TODO: Delete cardStoredTitle - no longer used after StoredCardAlertManager removal for v6
     /// Verify your card
     public static let cardStoredTitle = LocalizationKey(key: "adyen.card.stored.title")
-    // TODO: Delete cardStoredMessage - no longer used after StoredCardAlertManager removal for v6
     /// Please enter the CVC code for %@
     public static let cardStoredMessage = LocalizationKey(key: "adyen.card.stored.message")
     /// Expires %@
@@ -566,6 +564,24 @@ public struct LocalizationKey {
     public static let preselectedPaymentMethodSubtitle = LocalizationKey(key: "adyen.preselectedPaymentMethod.subtitle")
     /// Other payment options
     public static let preselectedPaymentMethodOtherOptions = LocalizationKey(key: "adyen.preselectedPaymentMethod.otherOptions")
+    /// Manage
+    public static let storedPaymentMethodManagementTitle = LocalizationKey(key: "adyen.storedPaymentMethodManagement.title")
+    /// Remove your favorite and saved payment methods
+    public static let storedPaymentMethodManagementDescription = LocalizationKey(key: "adyen.storedPaymentMethodManagement.description")
+    /// Cards
+    public static let storedPaymentMethodManagementCardsTitle = LocalizationKey(key: "adyen.storedPaymentMethodManagement.cardsTitle")
+    /// Other
+    public static let storedPaymentMethodManagementOtherTitle = LocalizationKey(key: "adyen.storedPaymentMethodManagement.otherTitle")
+    /// Expired
+    public static let storedPaymentMethodManagementExpired = LocalizationKey(key: "adyen.storedPaymentMethodManagement.expired")
+    /// Remove %@
+    public static let storedPaymentMethodManagementRemoveConfirmationAction = LocalizationKey(key: "adyen.storedPaymentMethodManagement.removeConfirmationAction")
+    /// Nothing here!
+    public static let storedPaymentMethodManagementEmptyTitle = LocalizationKey(key: "adyen.storedPaymentMethodManagement.emptyTitle")
+    /// You have no saved payment methods.
+    public static let storedPaymentMethodManagementEmptyMessage = LocalizationKey(key: "adyen.storedPaymentMethodManagement.emptyMessage")
+    /// Payment options
+    public static let storedPaymentMethodManagementPaymentOptions = LocalizationKey(key: "adyen.storedPaymentMethodManagement.paymentOptions")
     
     internal let key: String
     
