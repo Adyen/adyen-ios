@@ -83,7 +83,11 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
     ) -> Bool {
         guard !string.isEmpty else { return true }
 
-        guard string.count == 1 else { return true }
+        // Multi-character replacements (e.g. paste) are allowed through here and truncated
+        // to the expected length by the formatter; a single typed keystroke is rejected
+        // once it would exceed the max length.
+        let isSingleCharacterReplacement = string.count == 1
+        guard isSingleCharacterReplacement else { return true }
         
         let currentText = textField.text ?? ""
         guard let textRange = Range(range, in: currentText) else { return true }
