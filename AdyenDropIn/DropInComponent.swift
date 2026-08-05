@@ -51,7 +51,8 @@ package final class DropInComponent: NSObject,
             context: context,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
-            partialPaymentDelegate: partialPaymentDelegate
+            partialPaymentDelegate: partialPaymentDelegate,
+            storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability
         )
         return dropInAssembler.resolveDropInRouter()
     }()
@@ -59,6 +60,10 @@ package final class DropInComponent: NSObject,
     private lazy var componentManager: ComponentManager = {
         createComponentManager(order: nil)
     }()
+
+    private lazy var storedPaymentMethodManagementResolver = StoredPaymentMethodManagementResolver(
+        dropInComponent: self
+    )
 
     internal var configuration: Configuration
 
@@ -126,13 +131,10 @@ package final class DropInComponent: NSObject,
     package weak var partialPaymentDelegate: PartialPaymentDelegate?
 
     /// The stored payment methods delegate.
-    package weak var storedPaymentMethodsDelegate: StoredPaymentMethodsDelegate? {
-        didSet {
-            guard let sessionAsStoredPaymentMethodsDelegate else { return }
+    package weak var storedPaymentMethodsDelegate: StoredPaymentMethodsDelegate?
 
-            let showRemoveStoredPaymentButton = sessionAsStoredPaymentMethodsDelegate.showRemovePaymentMethodButton
-            configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = showRemoveStoredPaymentButton
-        }
+    internal var storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability? {
+        storedPaymentMethodManagementResolver.capability
     }
 
     // MARK: - Presentable Component Protocol
@@ -156,11 +158,6 @@ package final class DropInComponent: NSObject,
 
     internal func reloadComponentManager() {
         componentManager = createComponentManager(order: componentManager.order)
-    }
-
-    /// Convenience accessor to the session if it's the delegate for removing stored payment methods
-    internal var sessionAsStoredPaymentMethodsDelegate: SessionStoredPaymentMethodsDelegate? {
-        storedPaymentMethodsDelegate as? SessionStoredPaymentMethodsDelegate
     }
 
     /// Reloads the DropIn with a partial payment order and a new `PaymentMethods` object.

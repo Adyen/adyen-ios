@@ -28,6 +28,17 @@ struct StoredPaymentMethodManagementResolverTests {
     }
 
     @Test
+    func managementCapability_whenResolverIsAvailable_shouldBeExposedByDropInComponent() {
+        // Given
+        let dropInComponent = dropInComponent(allowsDisablingStoredPaymentMethods: true)
+        let delegate = StoredPaymentMethodsDelegateMock(completionResults: [true])
+        dropInComponent.storedPaymentMethodsDelegate = delegate
+
+        // Then
+        #expect(dropInComponent.storedPaymentMethodManagementCapability != nil)
+    }
+
+    @Test
     func capability_whenAdvancedManagementIsEnabled_shouldPassStoredPaymentMethod() async throws {
         // Given
         let paymentMethod = try storedPaymentMethod()
