@@ -192,11 +192,7 @@ export GOOGLE_APPLICATION_CREDENTIALS="$FIREBASE_JSON_PATH"
 # A caller-provided note is used verbatim, with no build metadata appended: recurring builds such as
 # the nightly have to report byte-identical release notes on every run. Without one, fall back to the
 # metadata so ad-hoc builds stay traceable back to a commit.
-if [[ -n "$RELEASE_NOTES" ]]; then
-  FIREBASE_RELEASE_NOTES="$RELEASE_NOTES"
-else
-  FIREBASE_RELEASE_NOTES="Release: ${FIREBASE_RELEASE_NAME}, Version: ${RESOLVED_VERSION_NAME} (${BUILD_NUMBER:-project default}), Branch: ${GITHUB_REF_NAME:-manual}, Build: ${GITHUB_SHA:-manual}"
-fi
+FIREBASE_RELEASE_NOTES="${RELEASE_NOTES:-Release: ${FIREBASE_RELEASE_NAME}, Version: ${RESOLVED_VERSION_NAME} (${BUILD_NUMBER:-project default}), Branch: ${GITHUB_REF_NAME:-manual}, Build: ${GITHUB_SHA:-manual}}"
 
 # Upload
 firebase appdistribution:distribute "$IPA_PATH" \
