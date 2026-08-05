@@ -11,6 +11,24 @@ on:
         description: 'Build number shown in Firebase App Distribution. Defaults to the build number in the project'
         required: false
         type: string
+      release_notes:
+        description: 'Text prepended to the Firebase release notes. The build metadata is always appended'
+        required: false
+        type: string
+  workflow_call: # Inputs have to be repeated: GitHub does not share them between triggers
+    inputs:
+      build_version_name:
+        description: 'Version name shown in Firebase App Distribution (e.g. 6.0.0-beta.1)'
+        required: true
+        type: string
+      build_number:
+        description: 'Build number shown in Firebase App Distribution. Defaults to the build number in the project'
+        required: false
+        type: string
+      release_notes:
+        description: 'Text prepended to the Firebase release notes. The build metadata is always appended'
+        required: false
+        type: string
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -67,6 +85,7 @@ jobs:
           FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           FIREBASE_RELEASE_NAME: ${{ env.FIREBASE_RELEASE_NAME }}
+          RELEASE_NOTES: ${{ inputs.release_notes }}
 
           # App configuration
           MERCHANT_CLIENT_KEY: ${{ secrets.DEMO_APP_TEST_ENV_CLIENT_KEY }}
