@@ -8,6 +8,15 @@ import Adyen
 
 package typealias StoredPaymentMethodRemovalHandler = @MainActor @Sendable (StoredPaymentMethod) async throws -> Void
 
+package struct StoredPaymentMethodManagementCapability {
+
+    package let remove: StoredPaymentMethodRemovalHandler
+
+    package init(remove: @escaping StoredPaymentMethodRemovalHandler) {
+        self.remove = remove
+    }
+}
+
 package enum StoredPaymentMethodRemovalError: Error, Equatable {
     case unavailable
     case unsuccessful
