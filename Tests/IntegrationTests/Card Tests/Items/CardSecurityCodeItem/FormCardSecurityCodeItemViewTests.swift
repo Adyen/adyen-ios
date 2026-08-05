@@ -35,7 +35,7 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testTextFieldSanitizationGivenNonAllowedCharactersShouldSanitizeAndFormatInput() {
+    func test_textFieldSanitization_givenNonAllowedCharacters_shouldSanitizeAndFormatInput() {
         // Given
         let expectedCVV = "458"
         let expectedFormattedCVV = formatter.formattedValue(for: expectedCVV)
@@ -51,7 +51,7 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         XCTAssertEqual(sut.textField.allowsEditingActions, false)
     }
 
-    func testTextFieldSanitizationGivenCorrectSecurityCodeShouldSanitizeAndFormatInput() {
+    func test_textFieldSanitization_givenCorrectSecurityCode_shouldSanitizeAndFormatInput() {
         // Given
         let expectedCVV = "917"
         let expectedFormattedCVV = formatter.formattedValue(for: expectedCVV)
@@ -64,5 +64,183 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         XCTAssertEqual(expectedCVV, item.value)
         XCTAssertEqual(expectedFormattedCVV, item.formattedValue)
         XCTAssertEqual(expectedFormattedCVV, sut.textField.text)
+    }
+
+    func test_shouldChangeCharacters_givenNonAmexAndInputExceedsThreeDigits_shouldReject() {
+        // Given
+        sut.textField.text = "123"
+
+        // When
+        let shouldChange = sut.textField(
+            sut.textField,
+            shouldChangeCharactersIn: NSRange(location: 3, length: 0),
+            replacementString: "4"
+        )
+
+        // Then
+        XCTAssertFalse(shouldChange)
+    }
+
+    func test_shouldChangeCharacters_givenNonAmexAndInputWithinThreeDigits_shouldAllow() {
+        // Given
+        sut.textField.text = "12"
+
+        // When
+        let shouldChange = sut.textField(
+            sut.textField,
+            shouldChangeCharactersIn: NSRange(location: 2, length: 0),
+            replacementString: "3"
+        )
+
+        // Then
+        XCTAssertTrue(shouldChange)
+    }
+
+    func test_shouldChangeCharacters_givenAmexAndInputWithinFourDigits_shouldAllow() {
+        // Given
+        item.selectedCard = .americanExpress
+        sut.textField.text = "123"
+
+        // When
+        let shouldChange = sut.textField(
+            sut.textField,
+            shouldChangeCharactersIn: NSRange(location: 3, length: 0),
+            replacementString: "4"
+        )
+
+        // Then
+        XCTAssertTrue(shouldChange)
+    }
+
+    func test_shouldChangeCharacters_givenAmexAndInputExceedsFourDigits_shouldReject() {
+        // Given
+        item.selectedCard = .americanExpress
+        sut.textField.text = "1234"
+
+        // When
+        let shouldChange = sut.textField(
+            sut.textField,
+            shouldChangeCharactersIn: NSRange(location: 4, length: 0),
+            replacementString: "5"
+        )
+
+        // Then
+        XCTAssertFalse(shouldChange)
+    }
+
+    func test_shouldChangeCharacters_givenDeletion_shouldAlwaysAllow() {
+        // Given
+        sut.textField.text = "123"
+
+        // When
+        let shouldChange = sut.textField(
+            sut.textField,
+            shouldChangeCharactersIn: NSRange(location: 2, length: 1),
+            replacementString: ""
+        )
+
+        // Then
+        XCTAssertTrue(shouldChange)
+    }
+
+    func test_pasting_givenNonAmexAndMoreThanMaxDigits_shouldAllowAndTruncateValue() {
+        // When
+        let shouldChange = sut.textField(
+            sut.textField,
+            shouldChangeCharactersIn: NSRange(location: 0, length: 0),
+            replacementString: "1234"
+        )
+        sut.textField.text = "1234"
+        sut.textField.sendActions(for: .editingChanged)
+
+        // Then
+        XCTAssertTrue(shouldChange)
+        XCTAssertEqual(item.value, "123")
+        XCTAssertTrue(item.isValid())
+    }
+
+    func test_pasting_givenNonAmexAndValidLength_shouldAllowAndSetValue() {
+        // When
+        let shouldChange = sut.textField(
+            sut.textField,
+            shouldChangeCharactersIn: NSRange(location: 0, length: 0),
+            replacementString: "123"
+        )
+        sut.textField.text = "123"
+        sut.textField.sendActions(for: .editingChanged)
+
+        // Then
+        XCTAssertTrue(shouldChange)
+        XCTAssertEqual(item.value, "123")
+        XCTAssertTrue(item.isValid())
+    }
+
+    func test_pasting_givenAmexAndValidLength_shouldAllowAndSetValue() {
+        // Given
+        item.formatter = CardSecurityCodeFormatter(publisher: item.$selectedCard)
+        item.validator = CardSecurityCodeValidator(publisher: item.$selectedCard)
+        item.selectedCard = .americanExpress
+
+        // When
+        let shouldChange = sut.textField(
+            sut.textField,
+            shouldChangeCharactersIn: NSRange(location: 0, length: 0),
+            replacementString: "1234"
+        )
+        sut.textField.text = "1234"
+        sut.textField.sendActions(for: .editingChanged)
+
+        // Then
+        XCTAssertTrue(shouldChange)
+        XCTAssertEqual(item.value, "1234")
+        XCTAssertTrue(item.isValid())
+    }
+
+    func test_pasting_givenAmexAndMoreThanMaxDigits_shouldAllowAndTruncateValue() {
+        // Given
+        item.formatter = CardSecurityCodeFormatter(publisher: item.$selectedCard)
+        item.validator = CardSecurityCodeValidator(publisher: item.$selectedCard)
+        item.selectedCard = .americanExpress
+
+        // When
+        let shouldChange = sut.textField(
+            sut.textField,
+            shouldChangeCharactersIn: NSRange(location: 0, length: 0),
+            replacementString: "12345"
+        )
+        sut.textField.text = "12345"
+        sut.textField.sendActions(for: .editingChanged)
+
+        // Then
+        XCTAssertTrue(shouldChange)
+        XCTAssertEqual(item.value, "1234")
+        XCTAssertTrue(item.isValid())
+    }
+
+    func test_entering_givenNonAmexAndMoreThanThreeDigits_shouldCapValueAndValidate() {
+        // When
+        sut.textField.text = "1234"
+        sut.textField.sendActions(for: .editingChanged)
+
+        // Then
+        XCTAssertEqual(item.value, "123")
+        XCTAssertEqual(item.formattedValue, "123")
+        XCTAssertTrue(item.isValid())
+    }
+
+    func test_entering_givenAmexAndMoreThanFourDigits_shouldCapValueAndValidate() {
+        // Given
+        item.formatter = CardSecurityCodeFormatter(publisher: item.$selectedCard)
+        item.validator = CardSecurityCodeValidator(publisher: item.$selectedCard)
+        item.selectedCard = .americanExpress
+
+        // When
+        sut.textField.text = "12345"
+        sut.textField.sendActions(for: .editingChanged)
+
+        // Then
+        XCTAssertEqual(item.value, "1234")
+        XCTAssertEqual(item.formattedValue, "1234")
+        XCTAssertTrue(item.isValid())
     }
 }
