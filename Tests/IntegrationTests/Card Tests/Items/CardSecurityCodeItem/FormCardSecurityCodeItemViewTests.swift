@@ -244,11 +244,11 @@ class FormCardSecurityCodeItemViewTests: XCTestCase {
         XCTAssertTrue(item.isValid())
     }
 
-    func testPlaceholderGivenNonAmexShouldShowThreeDigitPlaceholder() {
+    func test_placeholder_givenNonAmex_shouldShowThreeDigits() {
         assert(for: .masterCard, showsDigits: 3)
     }
 
-    func testPlaceholderGivenAmexShouldShowFourDigitPlaceholder() {
+    func test_placeholder_givenAmex_shouldShowFourDigits() {
         assert(for: .americanExpress, showsDigits: 4)
     }
 

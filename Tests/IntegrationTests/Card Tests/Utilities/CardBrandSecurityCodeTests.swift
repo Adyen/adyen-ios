@@ -10,23 +10,23 @@ import XCTest
 
 class CardBrandSecurityCodeTests: XCTestCase {
 
-    func testExpectedSecurityCodeLengthGivenAmexShouldReturnFour() {
+    func test_expectedSecurityCodeLength_givenAmex_shouldReturnFour() {
         assert(brand: .americanExpress, expectedLength: 4)
     }
 
-    func testExpectedSecurityCodeLengthGivenNonAmexShouldReturnThree() {
+    func test_expectedSecurityCodeLength_givenNonAmex_shouldReturnThree() {
         assert(brand: .masterCard, expectedLength: 3)
     }
 
-    func testExpectedSecurityCodeLengthGivenNilShouldReturnThree() {
+    func test_expectedSecurityCodeLength_givenNil_shouldReturnThree() {
         assert(brand: nil, expectedLength: 3)
     }
 
-    func testExpectedSecurityCodeLengthOnConcreteBrandGivenAmexShouldReturnFour() {
+    func test_expectedSecurityCodeLength_givenConcreteAmexBrand_shouldReturnFour() {
         assert(concreteBrand: .americanExpress, expectedLength: 4)
     }
 
-    func testExpectedSecurityCodeLengthOnConcreteBrandGivenNonAmexShouldReturnThree() {
+    func test_expectedSecurityCodeLength_givenConcreteNonAmexBrand_shouldReturnThree() {
         assert(concreteBrand: .masterCard, expectedLength: 3)
     }
 
