@@ -95,10 +95,11 @@ The `AdyenSwiftUI` module needs to be explicitly added to use the SwiftUI specif
 
 You can install all modules or add individual modules, depending on your needs and integration type.
 The `Adyen/WeChatPay` module needs to be explicitly added to support WeChat Pay.
+The `Adyen/AdyenTwint` module needs to be explicitly added to support Twint native flow.
 The `Adyen/SwiftUI` module needs to be explicitly added to use the SwiftUI specific helpers.
 
 ```
-pod 'Adyen'               // Add the Checkout subspec, the v6 entry point, with all modules except WeChat Pay and SwiftUI.
+pod 'Adyen'               // Add the Checkout subspec, the v6 entry point, with the card, components, actions, encryption and session modules.
 // Add individual modules
 pod 'Adyen/Card'          // Card components.
 pod 'Adyen/Session'       // Handler for the simplified checkout flow.
@@ -108,10 +109,11 @@ pod 'Adyen/Actions'       // Action Components.
 pod 'Adyen/CardScanner'   // Card scanning support.
 pod 'Adyen/WeChatPay'     // WeChat Pay Component.
 pod 'Adyen/CashAppPay'    // Cash App Pay Component.
+pod 'Adyen/AdyenTwint'    // Twint Component.
 pod 'Adyen/SwiftUI'       // SwiftUI apps specific module.
 ```
 
-:warning: _`Adyen/AdyenWeChatPay` and `AdyenWeChatPayInternal` modules doesn't support any simulators and can only be tested on a real device._
+:warning: _`Adyen/WeChatPay` and `AdyenWeChatPayInternal` modules doesn't support any simulators and can only be tested on a real device._
 
 ## Getting started
 
