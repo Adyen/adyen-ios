@@ -6,10 +6,17 @@
 
 import Adyen
 
+extension CardBrand {
+    /// Expected security code (CVC/CVV) length: 4 for Amex, 3 for any other brand.
+    internal var expectedSecurityCodeLength: Int {
+        self == .americanExpress ? Constants.amexLength : Constants.generalLength
+    }
+}
+
 extension CardBrand? {
     /// Expected security code (CVC/CVV) length: 4 for Amex, 3 for any other or undetected brand.
     internal var expectedSecurityCodeLength: Int {
-        self == .americanExpress ? Constants.amexLength : Constants.generalLength
+        self?.expectedSecurityCodeLength ?? Constants.generalLength
     }
 }
 

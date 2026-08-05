@@ -22,6 +22,14 @@ class CardBrandSecurityCodeTests: XCTestCase {
         assert(brand: nil, expectedLength: 3)
     }
 
+    func testExpectedSecurityCodeLengthOnConcreteBrandGivenAmexShouldReturnFour() {
+        assert(concreteBrand: .americanExpress, expectedLength: 4)
+    }
+
+    func testExpectedSecurityCodeLengthOnConcreteBrandGivenNonAmexShouldReturnThree() {
+        assert(concreteBrand: .masterCard, expectedLength: 3)
+    }
+
     private func assert(
         brand: CardBrand?,
         expectedLength: Int,
@@ -29,5 +37,14 @@ class CardBrandSecurityCodeTests: XCTestCase {
         line: UInt = #line
     ) {
         XCTAssertEqual(brand.expectedSecurityCodeLength, expectedLength, file: file, line: line)
+    }
+
+    private func assert(
+        concreteBrand: CardBrand,
+        expectedLength: Int,
+        file: StaticString = #file,
+        line: UInt = #line
+    ) {
+        XCTAssertEqual(concreteBrand.expectedSecurityCodeLength, expectedLength, file: file, line: line)
     }
 }
