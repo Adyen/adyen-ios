@@ -1,4 +1,4 @@
-name: v6_firebase_nightly
+name: 🌙🔥 Nightly Firebase
 
 on:
   # 22:00 UTC Sun-Thu is 00:00 Amsterdam Mon-Fri during CEST (UTC+2). Midnight local falls on the
@@ -23,7 +23,7 @@ jobs:
     # build to Firebase App Distribution.
     uses: ./.github/workflows/firebase-app-distribution.yml
     with:
-      build_version_name: 6.0.0-nightly
+      build_version_name: nightly
       build_number: '1'
-      release_notes: Latest development state of v6
+      release_notes: Latest SDK build
     secrets: inherit
