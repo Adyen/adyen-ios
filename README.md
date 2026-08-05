@@ -27,7 +27,7 @@
 
 Adyen iOS provides you with the building blocks to create a checkout experience for your shoppers, allowing them to pay using the payment method of their choice.
 
-The v6 alpha integrates with [iOS Components](https://docs.adyen.com/online-payments/build-your-integration/?platform=iOS&integration=Components): one Component per payment method, combined with your own payments flow. [iOS Drop-in](https://docs.adyen.com/online-payments/build-your-integration/?platform=iOS&integration=Drop-in), the all-in-one solution, is not available in the v6 alpha yet.
+The v6 alpha integrates with Components: one Component per payment method, combined with your own payments flow. Drop-in, the all-in-one solution, is not available in the v6 alpha yet.
 
 ## SDK lifecycle
 
