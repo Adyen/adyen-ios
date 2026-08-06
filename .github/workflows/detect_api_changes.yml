@@ -3,6 +3,8 @@ name: 👀 Detect public API changes
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  merge_group:
+    types: [checks_requested]
   workflow_dispatch:
     inputs:
       new:
@@ -23,6 +25,9 @@ permissions:
 jobs:
 
   build:
+    # This job diffs the pull request head against its base and reports back on the pull request,
+    # neither of which exists in the merge queue. Skipping reports success to the required check.
+    if: github.event_name != 'merge_group'
     runs-on: macos-26
 
     steps:

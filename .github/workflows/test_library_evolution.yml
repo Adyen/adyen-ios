@@ -3,7 +3,10 @@ name: 📚 Library Evolution Compatibility
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    
+
+  merge_group:
+    types: [checks_requested]
+
   push:
     branches:
       - develop
