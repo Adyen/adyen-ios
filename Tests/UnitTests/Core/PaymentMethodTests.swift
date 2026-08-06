@@ -548,12 +548,11 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func expectedStoredCardPaymentMethodDisplayInfo(method: StoredCardPaymentMethod, localizationParameters: LocalizationParameters?) -> DisplayInformation {
-        let expireDate = method.expiryMonth + "/" + method.expiryYear.suffix(2)
-        let accessibilityLabel = "\(method.brand.name), Last 4 digits: \(method.lastFour.map { String($0) }.joined(separator: ", ")), \(localizedString(.cardStoredExpires, localizationParameters, expireDate))"
-        
+        let accessibilityLabel = "\(method.name), Last 4 digits: \(method.lastFour.map { String($0) }.joined(separator: ", "))"
+
         return DisplayInformation(
             title: String.Adyen.securedString + method.lastFour,
-            subtitle: localizedString(.cardStoredExpires, localizationParameters, expireDate),
+            subtitle: method.name,
             logoName: method.brand.rawValue,
             accessibilityLabel: accessibilityLabel
         )
@@ -736,12 +735,11 @@ class PaymentMethodTests: XCTestCase {
         method: StoredBCMCPaymentMethod,
         localizationParameters: LocalizationParameters?
     ) -> DisplayInformation {
-        let expireDate = method.expiryMonth + "/" + method.expiryYear.suffix(2)
-        let accessibilityLabel = "BCMC, Last 4 digits: \(method.lastFour.map { String($0) }.joined(separator: ", ")), \(localizedString(.cardStoredExpires, localizationParameters, expireDate))"
-        
+        let accessibilityLabel = "\(method.name), Last 4 digits: \(method.lastFour.map { String($0) }.joined(separator: ", "))"
+
         return DisplayInformation(
             title: String.Adyen.securedString + method.lastFour,
-            subtitle: localizedString(.cardStoredExpires, localizationParameters, expireDate),
+            subtitle: method.name,
             logoName: method.brand,
             accessibilityLabel: accessibilityLabel
         )
@@ -919,6 +917,48 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.issuers[0].name, "Tink Demo Bank")
     }
     
+    // MARK: - Stored Payment Method Presentation
+
+    func test_storedPaymentMethodDisplayInformation_matchesSharedPresentation() throws {
+        let cashAppPay = try AdyenCoder.decode([
+            "type": "cashapp",
+            "id": "cash-app-id",
+            "name": "Cash App Pay",
+            "cashtag": "$shopper",
+            "supportedShopperInteractions": ["Ecommerce"]
+        ]) as StoredCashAppPayPaymentMethod
+        let payByBank = try AdyenCoder.decode([
+            "type": "paybybank",
+            "id": "pay-by-bank-id",
+            "name": "Pay by Bank US",
+            "label": "Primary checking",
+            "supportedShopperInteractions": ["Ecommerce"]
+        ]) as StoredPayByBankUSPaymentMethod
+        let payByBankWithoutLabel = try AdyenCoder.decode([
+            "type": "paybybank",
+            "id": "pay-by-bank-no-label-id",
+            "name": "Pay by Bank US",
+            "supportedShopperInteractions": ["Ecommerce"]
+        ]) as StoredPayByBankUSPaymentMethod
+        let payTo = try AdyenCoder.decode(storedPayToDictionary) as StoredPayToPaymentMethod
+        let ach = try AdyenCoder.decode(storedACHDictionary) as StoredACHDirectDebitPaymentMethod
+        let payPal = try AdyenCoder.decode(storedPayPalDictionary) as StoredPayPalPaymentMethod
+        let generic = try AdyenCoder.decode([
+            "type": "custom",
+            "id": "generic-id",
+            "name": "Generic payment method",
+            "supportedShopperInteractions": ["Ecommerce"]
+        ]) as StoredGenericPaymentMethod
+
+        assertDisplayInformation(cashAppPay, title: "$shopper", subtitle: "Cash App Pay", logoName: "cashapp")
+        assertDisplayInformation(payByBank, title: "Primary checking", subtitle: "Pay by Bank US", logoName: "paybybank")
+        assertDisplayInformation(payByBankWithoutLabel, title: "", subtitle: "Pay by Bank US", logoName: "paybybank")
+        assertDisplayInformation(payTo, title: "•••••••2311", subtitle: "payto", logoName: "payto")
+        assertDisplayInformation(ach, title: String.Adyen.securedString + "6789", subtitle: "ACH Direct Debit", logoName: "ach")
+        assertDisplayInformation(payPal, title: "PayPal", subtitle: nil, logoName: "paypal")
+        assertDisplayInformation(generic, title: "Generic payment method", subtitle: nil, logoName: "custom")
+    }
+
     // MARK: - Accessibility
     
     func test_paymentMethodTypeName() {
@@ -937,6 +977,20 @@ class PaymentMethodTests: XCTestCase {
 
 private extension PaymentMethodTests {
     
+    func assertDisplayInformation(
+        _ paymentMethod: any StoredPaymentMethod,
+        title: String,
+        subtitle: String?,
+        logoName: String,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        let displayInformation = paymentMethod.displayInformation(using: nil)
+        XCTAssertEqual(displayInformation.title, title, file: file, line: line)
+        XCTAssertEqual(displayInformation.subtitle, subtitle, file: file, line: line)
+        XCTAssertEqual(displayInformation.logoName, logoName, file: file, line: line)
+    }
+
     func testCoding<T: PaymentMethod>(_ paymentMethod: T) {
         do {
             let encoded: Data = try AdyenCoder.encode(paymentMethod)

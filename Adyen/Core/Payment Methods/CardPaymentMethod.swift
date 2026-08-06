@@ -64,19 +64,15 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
     public var fundingSource: CardFundingSource?
 
     package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        let expireDate = expiryMonth + "/" + String(expiryYear.suffix(2))
-        let localizedExpiryDate = localizedString(.cardStoredExpires, parameters, expireDate)
-        
         let lastFourSeparated = lastFour.map { String($0) }.joined(separator: ", ")
         let accessibilityLabel = [
-            brand.name,
-            "\(localizedString(.accessibilityLastFourDigits, parameters)): \(lastFourSeparated)",
-            localizedExpiryDate
+            name,
+            "\(localizedString(.accessibilityLastFourDigits, parameters)): \(lastFourSeparated)"
         ].joined(separator: ", ")
-        
+
         return DisplayInformation(
             title: String.Adyen.securedString + lastFour,
-            subtitle: localizedExpiryDate,
+            subtitle: name,
             logoName: brand.rawValue,
             accessibilityLabel: accessibilityLabel
         )

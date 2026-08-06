@@ -233,6 +233,27 @@ struct PaymentMethodListViewModelTests {
         }
     }
 
+    @Test
+    func didLoad_shouldUseSharedStoredPaymentMethodPresentation() {
+        // Given
+        let (sut, _, _) = makeSUT()
+
+        // When
+        sut.didLoad()
+
+        // Then
+        #expect(sut.state.isLoaded)
+        guard case let .loaded(sections) = sut.state else { return }
+        let items = sections.flatMap(\.items)
+        let card = items.first { $0.title == String.Adyen.securedString + "1111" }
+        let ach = items.first { $0.title == String.Adyen.securedString + "6789" }
+        let bancontact = items.first { $0.title == String.Adyen.securedString + "4449" }
+
+        #expect(card?.subtitle == "VISA")
+        #expect(ach?.subtitle == "ACH Direct Debit")
+        #expect(bancontact?.subtitle == "Maestro")
+    }
+
     // MARK: - ActionPresenter Tests
 
     @Test
