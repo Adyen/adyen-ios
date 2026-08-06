@@ -25,9 +25,10 @@ permissions:
 jobs:
 
   build:
-    # This job diffs the pull request head against its base and reports back on the pull request,
-    # neither of which exists in the merge queue. Skipping reports success to the required check.
-    if: github.event_name != 'merge_group'
+    # This job needs two versions to diff: either a pull request and its base, or the inputs of a
+    # manual run. The merge queue provides neither, so it skips and reports success to the required
+    # check. Listed as an allowlist so any trigger added later has to opt in deliberately.
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
     runs-on: macos-26
 
     steps:
