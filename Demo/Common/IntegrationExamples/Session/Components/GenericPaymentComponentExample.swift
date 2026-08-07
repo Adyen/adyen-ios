@@ -1,46 +1,55 @@
 //
-// Copyright (c) 2026 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Adyen
-import AdyenActions
 import AdyenCheckout
+import AdyenComponents
+import Foundation
+import UIKit
 
-internal final class DummyActionComponentExample: InitialDataAdvancedFlowProtocol {
-    
+@MainActor
+internal final class GenericPaymentComponentExample: InitialDataFlowProtocol {
+
     internal weak var presenter: PresenterExampleProtocol?
-    
-    private var checkout: ActionOnlyCheckout?
-    
+
+    private var checkout: SessionCheckout?
+    private var adyenComponent: CheckoutPaymentComponent?
+
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
+
     /// comes from demo app protocol, unused on new structure
     internal var context: AdyenContext?
 
     internal init() {}
-    
+
     internal func start() {
         startLoading()
-        
-        Task { @MainActor in
+
+        Task {
             do {
-                let checkout = try await createCheckout()
-                let actionData = actionString.data(using: .utf8)
-                let action = try JSONDecoder().decode(Action.self, from: actionData!)
-                
+                let sessionResponse = try await requestSessionInitialInfo()
+                let component = try await genericPaymentComponent(from: sessionResponse)
+                self.adyenComponent = component
                 hideLoading()
-                self.checkout = checkout
-                checkout.handle(action: action)
+
+                guard !component.requiresUserInteraction else {
+                    // Generic payment methods don't require user interaction
+                    // For payment methods that require UI, see the card component example
+                    return
+                }
+                component.submit()
             } catch {
                 hideLoading()
                 handleError(error)
             }
         }
     }
-    
-    private func createCheckout() async throws -> ActionOnlyCheckout {
+
+    private func genericPaymentComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
             amount: ConfigurationConstants.current.amount,
@@ -48,49 +57,44 @@ internal final class DummyActionComponentExample: InitialDataAdvancedFlowProtoco
             analyticsConfiguration: .init(
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
             )
-        ) {}
-        
-        return try await Checkout.setup(
+        ) {
+            // No component-specific configuration needed for generic payments
+        }
+
+        let checkout = try await Checkout.setup(
+            with: sessionResponse,
             configuration: configuration,
             presentationDelegate: self
         )
-        .onAdditionalDetails { [weak self] data in
-            guard let self else { return .completion(resultCode: "Error") }
-            return await self.callDetails(with: data)
+        .onComplete { [weak self] result in
+            self?.dismissAndShowAlert(
+                result.resultCode.isSuccess,
+                result.resultCode.rawValue
+            )
         }
         .onFailure { [weak self] error in
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
+
+        self.checkout = checkout
+
+        return try checkout.createPaymentComponent(for: PaymentMethodType.ideal)
     }
 
-    private func callDetails(with data: ActionComponentData) async -> AdditionalDetailsResult {
-        do {
-            let request = PaymentDetailsRequest(
-                details: data.details,
-                paymentData: data.paymentData,
-                merchantAccount: ConfigurationConstants.current.merchantAccount
-            )
-            let response = try await asyncApiClient.performAsync(request)
-            return .completion(resultCode: response.resultCode.rawValue)
-        } catch {
-            return .completion(resultCode: "Error")
-        }
-    }
-    
+    // MARK: - Private
+
     private func startLoading() {
         presenter?.showLoadingIndicator()
     }
-    
-    @MainActor
+
     private func handleError(_ error: Error) {
         presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
     }
 
-    @MainActor
     private func hideLoading() {
         presenter?.hideLoadingIndicator()
     }
-    
+
     private func dismissAndShowAlert(_ success: Bool, _ message: String) {
         presenter?.dismiss {
             // Payment is processed. Add your code here.
@@ -98,20 +102,11 @@ internal final class DummyActionComponentExample: InitialDataAdvancedFlowProtoco
             self.presenter?.presentAlert(withTitle: title, message: message)
         }
     }
-    
-    private let actionString = """
-          {
-            "paymentMethodType" : "pix",
-            "paymentData" : "paymentData",
-            "qrCodeData" : "TestQRCodeEMVToken",
-            "type" : "qrCode"
-          }
-    """
 }
 
-extension DummyActionComponentExample: PresentationDelegate {
-    
-    func present(viewController: UIViewController) {
+extension GenericPaymentComponentExample: PresentationDelegate {
+    internal func present(viewController: UIViewController) {
+        presenter?.hideLoadingIndicator()
         presenter?.present(viewController: viewController, completion: nil)
     }
 }

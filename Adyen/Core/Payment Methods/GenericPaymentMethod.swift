@@ -7,7 +7,7 @@
 import Foundation
 
 /// A payment method that does not require any handling and could be submitted directly.
-public struct InstantPaymentMethod: PaymentMethod {
+public struct GenericPaymentMethod: PaymentMethod {
 
     public let type: PaymentMethodType
 
@@ -21,7 +21,7 @@ public struct InstantPaymentMethod: PaymentMethod {
 
 // MARK: - PaymentComponentBuildable
 
-extension InstantPaymentMethod: PaymentComponentBuildable {
+extension GenericPaymentMethod: PaymentComponentBuildable {
     package func buildComponent(using builder: any PaymentComponentBuilder) -> PaymentComponent? {
         builder.build(paymentMethod: self)
     }

@@ -22,6 +22,7 @@ internal enum CheckoutComponentBuilder {
     internal static func build(
         for paymentMethod: PaymentMethod,
         configuration: CheckoutConfiguration,
+        sessionConfiguration: SessionComponentConfiguration? = nil,
         context: AdyenContext
     ) throws -> PaymentComponent {
         
@@ -39,7 +40,7 @@ internal enum CheckoutComponentBuilder {
                 )
             case let achPaymentMethod as ACHDirectDebitPaymentMethod:
                 return try createComponent(
-                    using: ACHDirectDebitComponentFactory(),
+                    using: ACHDirectDebitComponentFactory(sessionConfiguration: sessionConfiguration),
                     paymentMethod: achPaymentMethod,
                     configuration: configuration,
                     context: context
@@ -57,7 +58,7 @@ internal enum CheckoutComponentBuilder {
         #if canImport(AdyenCard)
             case let cardPaymentMethod as CardPaymentMethod:
                 return try createComponent(
-                    using: CardComponentFactory(),
+                    using: CardComponentFactory(sessionConfiguration: sessionConfiguration),
                     paymentMethod: cardPaymentMethod,
                     configuration: configuration,
                     context: context
@@ -65,9 +66,9 @@ internal enum CheckoutComponentBuilder {
                 // TODO: add other card methods like stored or write a generic one.
             
         #endif
-        case let instantPaymentMethod as InstantPaymentMethod:
-            return InstantPaymentComponent(
-                paymentMethod: instantPaymentMethod,
+        case let genericPaymentMethod as GenericPaymentMethod:
+            return GenericPaymentComponent(
+                paymentMethod: genericPaymentMethod,
                 context: context,
                 order: nil
             )
@@ -148,7 +149,7 @@ internal enum CheckoutComponentBuilder {
         configuration: CheckoutConfiguration,
         context: AdyenContext
     ) -> PaymentComponent {
-        var component = StoredCardComponent(
+        let component = StoredCardComponent(
             storedCardPaymentMethod: storedPaymentMethod,
             context: context,
             theme: configuration.theme
@@ -164,7 +165,7 @@ internal enum CheckoutComponentBuilder {
         configuration: CheckoutConfiguration,
         context: AdyenContext
     ) -> PaymentComponent {
-        var component = StoredPaymentMethodComponent(
+        let component = StoredPaymentMethodComponent(
             paymentMethod: storedPaymentMethod,
             context: context
         )

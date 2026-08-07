@@ -1,23 +1,17 @@
 //
-// Copyright (c) 2024 Adyen N.V.
+// Copyright (c) 2026 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
 import Foundation
 
-/// Describes the interface to display a field to store the payment method.
-@MainActor
-package protocol StorePaymentMethodFieldAware: AdyenSessionAware {
-    var showStorePaymentMethodField: Bool? { get }
-}
-
 /// Describes whether it is possible to allow for session to remove stored payment methods.
 @MainActor
-package protocol SessionStoredPaymentMethodsDelegate: AdyenSessionAware, StoredPaymentMethodsDelegate {
+package protocol SessionStoredPaymentMethodsDelegate: StoredPaymentMethodsDelegate {
     
     var showRemovePaymentMethodButton: Bool { get }
-    
+
     /// Invoked when shopper wants to delete a stored payment method from the drop-in.
     ///
     /// - Parameters:

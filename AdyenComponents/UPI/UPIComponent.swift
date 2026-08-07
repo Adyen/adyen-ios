@@ -14,8 +14,7 @@ import UIKit
 
 /// A component that provides a upi flows for UPI component.
 @MainActor
-package final class UPIComponent: PaymentComponent,
-    PresentableComponent,
+package final class UPIComponent: PresentablePaymentComponent,
     LoadingComponent {
     
     /// The flow types for UPI component.

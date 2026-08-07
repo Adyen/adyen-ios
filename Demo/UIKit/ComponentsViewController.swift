@@ -49,16 +49,16 @@ internal final class ComponentsViewController: UIViewController {
         return issuerListComponent
     }
     
-    private var instantPaymentComponentExample: InstantPaymentComponentExample {
-        let instantPaymentComponentExample = InstantPaymentComponentExample()
-        instantPaymentComponentExample.presenter = self
-        return instantPaymentComponentExample
+    private var genericPaymentComponentExample: GenericPaymentComponentExample {
+        let genericPaymentComponentExample = GenericPaymentComponentExample()
+        genericPaymentComponentExample.presenter = self
+        return genericPaymentComponentExample
     }
     
-    private var instantPaymentComponentAdvancedFlow: InstantPaymentComponentAdvancedFlow {
-        let instantPaymentComponentExample = InstantPaymentComponentAdvancedFlow()
-        instantPaymentComponentExample.presenter = self
-        return instantPaymentComponentExample
+    private var genericPaymentComponentAdvancedFlow: GenericPaymentComponentAdvancedFlow {
+        let genericPaymentComponentExample = GenericPaymentComponentAdvancedFlow()
+        genericPaymentComponentExample.presenter = self
+        return genericPaymentComponentExample
     }
 
     private var applePayComponentAdvancedFlowExample: ApplePayComponentAdvancedFlowExample {
@@ -85,12 +85,6 @@ internal final class ComponentsViewController: UIViewController {
         return blikAdvanced
     }
     
-    private var dummyActionExample: DummyActionComponentExample {
-        let dummyAction = DummyActionComponentExample()
-        dummyAction.presenter = self
-        return dummyAction
-    }
-
     // MARK: - View
     
     override internal func loadView() {
@@ -107,19 +101,14 @@ internal final class ComponentsViewController: UIViewController {
                 ComponentsItem(title: "Card", selectionHandler: presentCardComponent),
                 ComponentsItem(title: "BLIK Component", selectionHandler: presentBlikComponent),
                 ComponentsItem(
-                    title: "Dummy Action (Advanced Only)",
-                    subtitle: "Standalone action handling via a dummy action response.",
-                    selectionHandler: presentDummyActionComponent
-                ),
-                ComponentsItem(
                     title: "Issuer List",
                     subtitle: "e.g. Open Banking, ...",
                     selectionHandler: presentIssuerListComponent
                 ),
                 ComponentsItem(
-                    title: "Instant/Redirect Payment",
+                    title: "Generic/Redirect Payment",
                     subtitle: "e.g. iDEAL, PayPal, Alipay, ...",
-                    selectionHandler: presentInstantPaymentComponent
+                    selectionHandler: presentGenericPaymentComponent
                 )
             ],
             [ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)],
@@ -175,11 +164,11 @@ internal final class ComponentsViewController: UIViewController {
         }
     }
     
-    internal func presentInstantPaymentComponent() {
+    internal func presentGenericPaymentComponent() {
         if componentsView.isUsingSession {
-            start(instantPaymentComponentExample)
+            start(genericPaymentComponentExample)
         } else {
-            start(instantPaymentComponentAdvancedFlow)
+            start(genericPaymentComponentAdvancedFlow)
         }
     }
 
@@ -199,10 +188,6 @@ internal final class ComponentsViewController: UIViewController {
         }
     }
     
-    internal func presentDummyActionComponent() {
-        start(dummyActionExample)
-    }
-
     // MARK: - Actions
 
     internal func presentActions() {

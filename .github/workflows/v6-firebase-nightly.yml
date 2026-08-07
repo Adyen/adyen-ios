@@ -1,0 +1,29 @@
+name: 🌙🔥 Nightly Firebase
+
+on:
+  # 22:00 UTC Sun-Thu is 00:00 Amsterdam Mon-Fri during CEST (UTC+2). Midnight local falls on the
+  # previous UTC day, which is why the day-of-week range is shifted back by one.
+  # GitHub cron is UTC only, so this drifts to 01:00 Amsterdam once CET (UTC+1) starts.
+  # The offset minute avoids the top of the hour, when scheduled runs are most likely to be delayed.
+  schedule:
+    - cron: '7 22 * * 0-4'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false # A nightly is not worth cancelling halfway through an archive
+
+permissions:
+  contents: read
+
+jobs:
+  distribute:
+    name: 📱🔥 Nightly Firebase Distribution
+    # The version name and build number are intentionally fixed so every nightly reports the same
+    # build to Firebase App Distribution.
+    uses: ./.github/workflows/firebase-app-distribution.yml
+    with:
+      build_version_name: nightly
+      build_number: '1'
+      release_notes: Latest SDK build
+    secrets: inherit

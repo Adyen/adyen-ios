@@ -11,6 +11,12 @@ public final class AdyenSessionMock: SessionProtocol {
     public var state: Session.State
     public var presentationDelegate: PresentationDelegate?
     public var showRemovePaymentMethodButton = false
+    public var componentConfiguration: SessionComponentConfiguration {
+        .init(
+            installmentConfiguration: state.responseConfiguration.installmentOptions,
+            showStorePaymentMethod: state.responseConfiguration.enableStoreDetails
+        )
+    }
 
     var didSubmitCalled = false
     var didProvideCalled = false
@@ -73,22 +79,6 @@ public final class AdyenSessionMock: SessionProtocol {
         disableStoredPaymentMethodCalled = true
     }
     
-}
-
-extension AdyenSessionMock: InstallmentConfigurationAware {
-    public nonisolated var isSession: Bool {
-        true
-    }
-
-    public var installmentConfiguration: InstallmentConfiguration? {
-        state.responseConfiguration.installmentOptions
-    }
-}
-
-extension AdyenSessionMock: StorePaymentMethodFieldAware {
-    public var showStorePaymentMethodField: Bool? {
-        state.responseConfiguration.enableStoreDetails
-    }
 }
 
 private enum AdyenSessionMockError: Error {

@@ -94,7 +94,7 @@ internal enum AnyPaymentMethodDecoder {
         .payTo: PayToPaymentMethodDecoder()
     ]
     
-    private static var defaultDecoder: PaymentMethodDecoder = InstantPaymentMethodDecoder()
+    private static var defaultDecoder: PaymentMethodDecoder = GenericPaymentMethodDecoder()
     
     internal static func decode(from decoder: Decoder) -> AnyPaymentMethod {
         do {
@@ -118,7 +118,7 @@ internal enum AnyPaymentMethodDecoder {
 
     internal static func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod {
         let paymentDecoder = decoders[paymentMethod.type] ?? defaultDecoder
-        return paymentDecoder.anyPaymentMethod(from: paymentMethod) ?? .instant(paymentMethod)
+        return paymentDecoder.anyPaymentMethod(from: paymentMethod) ?? .generic(paymentMethod)
     }
 }
 
@@ -232,7 +232,7 @@ private struct PayPalPaymentMethodDecoder: PaymentMethodDecoder {
         if isStored {
             return try .storedPayPal(StoredPayPalPaymentMethod(from: decoder))
         } else {
-            return try .instant(InstantPaymentMethod(from: decoder))
+            return try .generic(GenericPaymentMethod(from: decoder))
         }
     }
 
@@ -240,28 +240,28 @@ private struct PayPalPaymentMethodDecoder: PaymentMethodDecoder {
         if let method = paymentMethod as? StoredPayPalPaymentMethod {
             return .storedPayPal(method)
         }
-        if let method = paymentMethod as? InstantPaymentMethod {
-            return .instant(method)
+        if let method = paymentMethod as? GenericPaymentMethod {
+            return .generic(method)
         }
         return nil
     }
 }
 
-private struct InstantPaymentMethodDecoder: PaymentMethodDecoder {
+private struct GenericPaymentMethodDecoder: PaymentMethodDecoder {
     func decode(from decoder: Decoder, isStored: Bool) throws -> AnyPaymentMethod {
         if isStored {
-            return try .storedInstant(StoredInstantPaymentMethod(from: decoder))
+            return try .storedGeneric(StoredGenericPaymentMethod(from: decoder))
         } else {
-            return try .instant(InstantPaymentMethod(from: decoder))
+            return try .generic(GenericPaymentMethod(from: decoder))
         }
     }
 
     func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
-        if let method = paymentMethod as? StoredInstantPaymentMethod {
-            return .storedInstant(method)
+        if let method = paymentMethod as? StoredGenericPaymentMethod {
+            return .storedGeneric(method)
         }
-        if let method = paymentMethod as? InstantPaymentMethod {
-            return .instant(method)
+        if let method = paymentMethod as? GenericPaymentMethod {
+            return .generic(method)
         }
         return nil
     }
@@ -336,14 +336,14 @@ private struct PayByBankPaymentMethodDecoder: PaymentMethodDecoder {
             return try IssuerListPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
         }
 
-        return try InstantPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
+        return try GenericPaymentMethodDecoder().decode(from: decoder, isStored: isStored)
     }
 
     func anyPaymentMethod(from paymentMethod: any PaymentMethod) -> AnyPaymentMethod? {
         if let method = paymentMethod as? IssuerListPaymentMethod {
             return .issuerList(method)
         } else {
-            return InstantPaymentMethodDecoder().anyPaymentMethod(from: paymentMethod)
+            return GenericPaymentMethodDecoder().anyPaymentMethod(from: paymentMethod)
         }
     }
 }
@@ -525,7 +525,7 @@ private struct TwintPaymentMethodDecoder: PaymentMethodDecoder {
                 return try .twint(TwintPaymentMethod(from: decoder))
             }
         #else
-            return AnyPaymentMethod(InstantPaymentMethod(type: .twint, name: "Twint"))
+            return AnyPaymentMethod(GenericPaymentMethod(type: .twint, name: "Twint"))
         #endif
     }
 

@@ -32,7 +32,7 @@ class QRCodeActionComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
     
-    lazy var method = InstantPaymentMethod(type: .other("pix"), name: "pix")
+    lazy var method = GenericPaymentMethod(type: .other("pix"), name: "pix")
     let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
     let componentData = ActionComponentData(details: AwaitActionDetails(payload: "DummyPayload"), paymentData: "DummyData")
     
@@ -254,7 +254,7 @@ class QRCodeActionComponentTests: XCTestCase {
     }
     
     func testQRCodeViewModelCopyCodeActionButtonType() {
-        lazy var method = InstantPaymentMethod(type: .other("pix"), name: "pix")
+        lazy var method = GenericPaymentMethod(type: .other("pix"), name: "pix")
         let action = QRCodeAction(paymentMethodType: .pix, qrCodeData: "DummyData", paymentData: "DummyData")
         
         let sut = QRCodeActionComponent(context: context)

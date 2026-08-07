@@ -12,7 +12,7 @@ import Foundation
 import UIKit
 
 @MainActor
-internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlowProtocol {
+internal final class GenericPaymentComponentAdvancedFlow: InitialDataAdvancedFlowProtocol {
 
     internal weak var presenter: PresenterExampleProtocol?
 
@@ -33,12 +33,12 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
         Task {
             do {
                 let paymentMethods = try await requestPaymentMethods(order: nil)
-                let component = try await instantPaymentComponent(from: paymentMethods)
+                let component = try await genericPaymentComponent(from: paymentMethods)
                 self.adyenComponent = component
                 hideLoading()
 
                 guard !component.requiresUserInteraction else {
-                    // Instant payment methods don't require user interaction
+                    // Generic payment methods don't require user interaction
                     // For payment methods that require UI, see the card component example
                     return
                 }
@@ -50,7 +50,7 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
         }
     }
 
-    private func instantPaymentComponent(from paymentMethods: PaymentMethods) async throws -> CheckoutPaymentComponent {
+    private func genericPaymentComponent(from paymentMethods: PaymentMethods) async throws -> CheckoutPaymentComponent {
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
             amount: ConfigurationConstants.current.amount,
@@ -59,7 +59,7 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
             )
         ) {
-            // No component-specific configuration needed for instant payments
+            // No component-specific configuration needed for generic payments
         }
 
         let checkout = try await Checkout.setup(
@@ -142,7 +142,7 @@ internal final class InstantPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
     }
 }
 
-extension InstantPaymentComponentAdvancedFlow: PresentationDelegate {
+extension GenericPaymentComponentAdvancedFlow: PresentationDelegate {
     internal func present(viewController: UIViewController) {
         presenter?.present(viewController: viewController, completion: nil)
     }

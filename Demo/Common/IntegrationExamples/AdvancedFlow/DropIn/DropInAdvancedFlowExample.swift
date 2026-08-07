@@ -171,7 +171,6 @@ extension DropInAdvancedFlowExample: DropInComponentDelegate {
     }
 
     func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
-        (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
         let request = PaymentDetailsRequest(
             details: data.details,
             paymentData: data.paymentData,
@@ -191,7 +190,7 @@ extension DropInAdvancedFlowExample: DropInComponentDelegate {
     }
 
     internal func didCancel(component: PaymentComponent, from dropInComponent: AnyDropInComponent) {
-        // Handle the event when the user closes a PresentableComponent.
+        // Handle the event when the user closes a PresentablePaymentComponent.
         print("User did close: \(component.paymentMethod.name)")
     }
 

@@ -6,12 +6,6 @@
 
 import Foundation
 
-/// Describes the interface to have an installments configuration.
-@MainActor
-package protocol InstallmentConfigurationAware: AdyenSessionAware {
-    var installmentConfiguration: InstallmentConfiguration? { get }
-}
-
 /// Details to configure Installment Options.
 /// These always include regular monthly installments,
 /// but in some countries `revolving` option may be added.

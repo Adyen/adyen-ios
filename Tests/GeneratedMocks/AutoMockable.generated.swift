@@ -26,9 +26,9 @@ class ActionPresenterMock: ActionPresenter {
 
     // MARK: - present
 
-    var presentActionComponentCallsCount = 0
-    var presentActionComponentCalled: Bool {
-        presentActionComponentCallsCount > 0
+    var presentActionViewControllerCallsCount = 0
+    var presentActionViewControllerCalled: Bool {
+        presentActionViewControllerCallsCount > 0
     }
 
     var presentActionViewControllerReceivedActionViewController: UIViewController?
@@ -36,7 +36,7 @@ class ActionPresenterMock: ActionPresenter {
     var presentActionViewControllerClosure: ((UIViewController) -> Void)?
 
     func present(actionViewController: UIViewController) {
-        presentActionComponentCallsCount += 1
+        presentActionViewControllerCallsCount += 1
         presentActionViewControllerReceivedActionViewController = actionViewController
         presentActionViewControllerReceivedInvocations.append(actionViewController)
         presentActionViewControllerClosure?(actionViewController)
@@ -133,12 +133,12 @@ class ComponentContainerAssemblerProtocolMock: ComponentContainerAssemblerProtoc
         resolveComponentContainerRouterForListenerCallsCount > 0
     }
 
-    var resolveComponentContainerRouterForListenerReceivedArguments: (component: PresentableComponent, listener: ComponentContainerRouterListener)?
-    var resolveComponentContainerRouterForListenerReceivedInvocations: [(component: PresentableComponent, listener: ComponentContainerRouterListener)] = []
+    var resolveComponentContainerRouterForListenerReceivedArguments: (component: PresentablePaymentComponent, listener: ComponentContainerRouterListener)?
+    var resolveComponentContainerRouterForListenerReceivedInvocations: [(component: PresentablePaymentComponent, listener: ComponentContainerRouterListener)] = []
     var resolveComponentContainerRouterForListenerReturnValue: Router!
-    var resolveComponentContainerRouterForListenerClosure: ((PresentableComponent, ComponentContainerRouterListener) -> Router)?
+    var resolveComponentContainerRouterForListenerClosure: ((PresentablePaymentComponent, ComponentContainerRouterListener) -> Router)?
 
-    func resolveComponentContainerRouter(for component: PresentableComponent, listener: ComponentContainerRouterListener) -> Router {
+    func resolveComponentContainerRouter(for component: PresentablePaymentComponent, listener: ComponentContainerRouterListener) -> Router {
         resolveComponentContainerRouterForListenerCallsCount += 1
         resolveComponentContainerRouterForListenerReceivedArguments = (component: component, listener: listener)
         resolveComponentContainerRouterForListenerReceivedInvocations.append((component: component, listener: listener))
@@ -178,11 +178,11 @@ class ComponentContainerRoutingMock: ComponentContainerRouting {
         presentPaymentComponentCallsCount > 0
     }
 
-    var presentPaymentComponentReceivedPaymentComponent: PresentableComponent?
-    var presentPaymentComponentReceivedInvocations: [PresentableComponent] = []
-    var presentPaymentComponentClosure: ((PresentableComponent) -> Void)?
+    var presentPaymentComponentReceivedPaymentComponent: PresentablePaymentComponent?
+    var presentPaymentComponentReceivedInvocations: [PresentablePaymentComponent] = []
+    var presentPaymentComponentClosure: ((PresentablePaymentComponent) -> Void)?
 
-    func present(paymentComponent: PresentableComponent) {
+    func present(paymentComponent: PresentablePaymentComponent) {
         presentPaymentComponentCallsCount += 1
         presentPaymentComponentReceivedPaymentComponent = paymentComponent
         presentPaymentComponentReceivedInvocations.append(paymentComponent)
@@ -191,16 +191,16 @@ class ComponentContainerRoutingMock: ComponentContainerRouting {
 
     // MARK: - present
 
-    var presentActionComponentOnCancelCallsCount = 0
-    var presentActionComponentOnCancelCalled: Bool {
-        presentActionComponentOnCancelCallsCount > 0
+    var presentActionViewControllerOnCancelCallsCount = 0
+    var presentActionViewControllerOnCancelCalled: Bool {
+        presentActionViewControllerOnCancelCallsCount > 0
     }
 
-    var presentActionComponentOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
+    var presentActionViewControllerOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
 
     func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
-        presentActionComponentOnCancelCallsCount += 1
-        presentActionComponentOnCancelClosure?(actionViewController, onCancel)
+        presentActionViewControllerOnCancelCallsCount += 1
+        presentActionViewControllerOnCancelClosure?(actionViewController, onCancel)
     }
 
     // MARK: - dismiss
@@ -405,16 +405,16 @@ class PaymentMethodListRoutingMock: PaymentMethodListRouting {
 
     // MARK: - present
 
-    var presentActionComponentOnCancelCallsCount = 0
-    var presentActionComponentOnCancelCalled: Bool {
-        presentActionComponentOnCancelCallsCount > 0
+    var presentActionViewControllerOnCancelCallsCount = 0
+    var presentActionViewControllerOnCancelCalled: Bool {
+        presentActionViewControllerOnCancelCallsCount > 0
     }
 
-    var presentActionComponentOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
+    var presentActionViewControllerOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
 
     func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
-        presentActionComponentOnCancelCallsCount += 1
-        presentActionComponentOnCancelClosure?(actionViewController, onCancel)
+        presentActionViewControllerOnCancelCallsCount += 1
+        presentActionViewControllerOnCancelClosure?(actionViewController, onCancel)
     }
 
     // MARK: - dismiss
@@ -572,16 +572,16 @@ class PreselectedPaymentMethodRoutingMock: PreselectedPaymentMethodRouting {
 
     // MARK: - present
 
-    var presentActionComponentOnCancelCallsCount = 0
-    var presentActionComponentOnCancelCalled: Bool {
-        presentActionComponentOnCancelCallsCount > 0
+    var presentActionViewControllerOnCancelCallsCount = 0
+    var presentActionViewControllerOnCancelCalled: Bool {
+        presentActionViewControllerOnCancelCallsCount > 0
     }
 
-    var presentActionComponentOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
+    var presentActionViewControllerOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
 
     func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
-        presentActionComponentOnCancelCallsCount += 1
-        presentActionComponentOnCancelClosure?(actionViewController, onCancel)
+        presentActionViewControllerOnCancelCallsCount += 1
+        presentActionViewControllerOnCancelClosure?(actionViewController, onCancel)
     }
 
     // MARK: - dismiss

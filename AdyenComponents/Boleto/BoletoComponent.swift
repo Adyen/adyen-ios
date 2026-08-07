@@ -15,9 +15,8 @@ import UIKit
 
 /// A component that provides a form for Boleto payment.
 @MainActor
-package final class BoletoComponent: PaymentComponent,
+package final class BoletoComponent: PresentablePaymentComponent,
     LoadingComponent,
-    PresentableComponent,
     AdyenObserver {
 
     /// The context object for this component.
@@ -228,7 +227,7 @@ extension BoletoComponent {
         }
         
         override package func createPaymentDetails() -> PaymentMethodDetails {
-            onCreatePaymentDetails() ?? InstantPaymentDetails(type: paymentMethod.type)
+            onCreatePaymentDetails() ?? GenericPaymentDetails(type: paymentMethod.type)
         }
     }
 }

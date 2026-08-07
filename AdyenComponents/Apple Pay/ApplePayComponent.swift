@@ -5,13 +5,12 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PresentableComponent
 import Foundation
 import PassKit
 
 /// A component that handles Apple Pay payments.
 @MainActor
-package class ApplePayComponent: NSObject, PresentableComponent, PaymentComponent, FinalizableComponent {
+package class ApplePayComponent: NSObject, PresentablePaymentComponent, FinalizableComponent {
 
     /// The Apple Pay payment request. Kept on the configuration; exposed here as a
     /// convenience that returns the same `PKPaymentRequest` reference.

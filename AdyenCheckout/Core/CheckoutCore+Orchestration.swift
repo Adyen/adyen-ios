@@ -79,7 +79,6 @@ internal extension CheckoutCore {
         _ data: ActionComponentData,
         from component: any ActionComponent
     ) {
-        (component as? any PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
         let paymentComponent = pendingPaymentComponent
         additionalDetailsTask?.cancel()
 

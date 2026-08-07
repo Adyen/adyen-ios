@@ -7,13 +7,13 @@
 import Adyen
 
 /// A payment method for OXXO.
-package typealias OXXOPaymentMethod = InstantPaymentMethod
+package typealias OXXOPaymentMethod = GenericPaymentMethod
 
 /// A component for handling OXXO payment.
-package typealias OXXOComponent = InstantPaymentComponent
+package typealias OXXOComponent = GenericPaymentComponent
 
 /// A  payment method for Multibanco.
-package typealias MultibancoPaymentMethod = InstantPaymentMethod
+package typealias MultibancoPaymentMethod = GenericPaymentMethod
 
 /// A component for handling Multibanco payment.
-package typealias MultibancoComponent = InstantPaymentComponent
+package typealias MultibancoComponent = GenericPaymentComponent

@@ -163,8 +163,8 @@ Pass a `PresentationDelegate` if you want checkout to present action components 
 
 ```swift
 extension CheckoutViewController: PresentationDelegate {
-    func present(component: PresentableComponent) {
-        present(component.viewController, animated: true)
+    func present(viewController: UIViewController) {
+        present(viewController, animated: true)
     }
 }
 ```

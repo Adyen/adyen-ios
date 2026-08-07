@@ -15,7 +15,7 @@ import UIKit
 
 /// A component that provides a form for BLIK payments.
 @MainActor
-package final class BLIKComponent: PaymentComponent, PresentableComponent, LoadingComponent {
+package final class BLIKComponent: PresentablePaymentComponent, LoadingComponent {
 
     /// The context object for this component.
     package let context: AdyenContext

@@ -101,15 +101,20 @@ package final class CheckoutCore: CheckoutCoreProtocol {
 
     package func createPaymentComponent(for type: PaymentMethodType) throws -> CheckoutPaymentComponent {
         guard let paymentMethod = paymentMethods?.paymentMethod(ofType: type) else {
-            throw CheckoutError(code: .paymentMethodFailure, message: "Payment method \(type.rawValue) is not available in the current payment methods.")
+            throw CheckoutError(
+                code: .paymentMethodFailure,
+                message: "Payment method \(type.rawValue) is not available in the current payment methods."
+            )
         }
 
-        return try CheckoutPaymentComponent(
-            paymentMethod: paymentMethod,
+        let paymentComponent = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
             configuration: configuration,
-            context: adyenContext,
-            delegate: self
+            sessionConfiguration: session?.componentConfiguration,
+            context: adyenContext
         )
+        paymentComponent.delegate = self
+        return CheckoutPaymentComponent(paymentComponent: paymentComponent)
     }
 
     package func createPaymentComponent(for identifier: String) throws -> CheckoutPaymentComponent {
@@ -117,12 +122,13 @@ package final class CheckoutCore: CheckoutCoreProtocol {
             throw CheckoutError(code: .paymentMethodFailure, message: "No stored payment method found for identifier \(identifier).")
         }
 
-        return CheckoutPaymentComponent(
-            storedPaymentMethod: storedPaymentMethod,
+        let paymentComponent = CheckoutComponentBuilder.build(
+            for: storedPaymentMethod,
             configuration: configuration,
-            context: adyenContext,
-            delegate: self
+            context: adyenContext
         )
+        paymentComponent.delegate = self
+        return CheckoutPaymentComponent(paymentComponent: paymentComponent)
     }
 
     package func createDropIn() -> DropInComponent? {

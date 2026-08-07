@@ -12,7 +12,7 @@ import UIKit
 @MainActor
 internal protocol ComponentContainerAssemblerProtocol {
     func resolveComponentContainerRouter(
-        for component: PresentableComponent,
+        for component: PresentablePaymentComponent,
         listener: ComponentContainerRouterListener
     ) -> Router
 }
@@ -41,7 +41,7 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
     // MARK: - ComponentContainerAssemblerProtocol
 
     internal func resolveComponentContainerRouter(
-        for component: PresentableComponent,
+        for component: PresentablePaymentComponent,
         listener: ComponentContainerRouterListener
     ) -> Router {
         let viewModel = ComponentContainerViewModel(

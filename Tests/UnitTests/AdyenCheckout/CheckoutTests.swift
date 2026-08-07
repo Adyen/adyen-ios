@@ -329,7 +329,7 @@ final class CheckoutTests: XCTestCase {
         callbackStore.onFailure = { _ in
             onFailureExpectation.fulfill()
         }
-        let component = PresentableComponentMock(paymentMethod: blik, viewController: UIViewController())
+        let component = PresentablePaymentComponentMock(paymentMethod: blik, viewController: UIViewController())
         let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
         
         sut.didSubmit(paymentData, from: component)

@@ -7,7 +7,7 @@
 import Foundation
 
 internal enum AnyPaymentMethod: Codable {
-    case storedInstant(StoredInstantPaymentMethod)
+    case storedGeneric(StoredGenericPaymentMethod)
     case storedCard(StoredCardPaymentMethod)
     case storedPayPal(StoredPayPalPaymentMethod)
     case storedBCMC(StoredBCMCPaymentMethod)
@@ -18,7 +18,7 @@ internal enum AnyPaymentMethod: Codable {
     case storedTwint(StoredTwintPaymentMethod)
     case storedPayTo(StoredPayToPaymentMethod)
 
-    case instant(PaymentMethod)
+    case generic(PaymentMethod)
     case card(AnyCardPaymentMethod)
     case issuerList(IssuerListPaymentMethod)
     case sepaDirectDebit(SEPADirectDebitPaymentMethod)
@@ -56,8 +56,8 @@ internal enum AnyPaymentMethod: Codable {
         case let .storedCard(paymentMethod): return paymentMethod
         case let .storedPayPal(paymentMethod): return paymentMethod
         case let .storedBCMC(paymentMethod): return paymentMethod
-        case let .instant(paymentMethod): return paymentMethod
-        case let .storedInstant(paymentMethod): return paymentMethod
+        case let .generic(paymentMethod): return paymentMethod
+        case let .storedGeneric(paymentMethod): return paymentMethod
         case let .storedAchDirectDebit(paymentMethod): return paymentMethod
         case let .storedCashAppPay(paymentMethod): return paymentMethod
         case let .storedTwint(paymentMethod): return paymentMethod

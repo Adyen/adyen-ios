@@ -62,6 +62,9 @@ jobs:
           -testPlan "${testPlan}" \
           -enableCodeCoverage YES \
           -resultBundlePath "${resultPath}" \
+          -test-iterations 3 \
+          -retry-tests-on-failure \
+          -test-repetition-relaunch-enabled YES \
           ${params} \
           -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
@@ -79,6 +82,9 @@ jobs:
           -testPlan "${testPlan}" \
           -enableCodeCoverage YES \
           -resultBundlePath "${resultPath}" \
+          -test-iterations 3 \
+          -retry-tests-on-failure \
+          -test-repetition-relaunch-enabled YES \
           ${params} \
           -destination "${{env.destination}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:
@@ -96,6 +102,9 @@ jobs:
           -testPlan "${testPlan}" \
           -enableCodeCoverage YES \
           -resultBundlePath "${resultPath}" \
+          -test-iterations 3 \
+          -retry-tests-on-failure \
+          -test-repetition-relaunch-enabled YES \
           ${params} \
           -destination "${{env.destination_iPad}}" | xcpretty --utf --color && exit ${PIPESTATUS[0]}
       env:

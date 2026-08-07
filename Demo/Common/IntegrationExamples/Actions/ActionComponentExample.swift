@@ -8,11 +8,12 @@ import Adyen
 import AdyenActions
 import AdyenCheckout
 
-/// Standalone example that presents a Boleto `VoucherView` without going through a full payment flow.
+/// Standalone example that presents an action's UI without going through a full payment flow.
 ///
-/// It decodes a hardcoded voucher `Action` and hands it to an `ActionOnlyCheckout`, which internally
-/// routes it to the `VoucherComponent`. This is useful for quickly iterating on the voucher UI.
-internal final class VoucherActionExample: InitialDataAdvancedFlowProtocol {
+/// It decodes a provided action JSON string and hands it to an `ActionOnlyCheckout`, which internally
+/// routes it to the matching component (e.g. `VoucherComponent`, `QRCodeComponent`). This is useful for
+/// quickly iterating on action UIs. The dummy action to present is provided by the caller.
+internal final class ActionComponentExample: InitialDataAdvancedFlowProtocol {
 
     internal weak var presenter: PresenterExampleProtocol?
 
@@ -23,7 +24,11 @@ internal final class VoucherActionExample: InitialDataAdvancedFlowProtocol {
     /// comes from demo app protocol, unused on new structure
     internal var context: AdyenContext?
 
-    internal init() {}
+    private let actionJSON: String
+
+    internal init(actionJSON: String) {
+        self.actionJSON = actionJSON
+    }
 
     internal func start() {
         startLoading()
@@ -31,7 +36,7 @@ internal final class VoucherActionExample: InitialDataAdvancedFlowProtocol {
         Task { @MainActor in
             do {
                 let checkout = try await createCheckout()
-                let actionData = actionString.data(using: .utf8)
+                let actionData = actionJSON.data(using: .utf8)
                 let action = try JSONDecoder().decode(Action.self, from: actionData!)
 
                 hideLoading()
@@ -101,23 +106,9 @@ internal final class VoucherActionExample: InitialDataAdvancedFlowProtocol {
             self.presenter?.presentAlert(withTitle: title, message: message)
         }
     }
-
-    private let actionString = """
-          {
-            "type" : "voucher",
-            "paymentMethodType" : "boletobancario_santander",
-            "totalAmount" : {
-              "currency" : "BRL",
-              "value" : 1
-            },
-            "reference" : "1234.5678.9012.3456.7890",
-            "expiresAt" : "2027-12-31T23:59:59",
-            "downloadUrl" : "https://adyen.com"
-          }
-    """
 }
 
-extension VoucherActionExample: PresentationDelegate {
+extension ActionComponentExample: PresentationDelegate {
 
     func present(viewController: UIViewController) {
         // Wrap in a navigation controller with a cancel button so the action can be dismissed
