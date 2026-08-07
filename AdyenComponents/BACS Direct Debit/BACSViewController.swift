@@ -38,18 +38,23 @@ internal final class BACSViewController: FormViewController {
     override internal func viewDidLoad() {
         super.viewDidLoad()
         viewModel.viewDidLoad()
-        bindValidation()
         viewModel.items.forEach { append($0) }
+        bindState()
     }
 
     // MARK: - Private
 
-    private func bindValidation() {
+    private func bindState() {
         viewModel.$state.sink { [weak self] state in
             switch state {
-
+            case .idle, .loaded:
+                self?.viewModel.submitButtonItem?.showsActivityIndicator = false
+            case .submitting:
+                self?.viewModel.submitButtonItem?.showsActivityIndicator = true
+                if self?.validate() == false {
+                    self?.viewModel.stopLoading()
+                }
             }
-            if shouldShowValidation { self?.showValidation() }
         }.store(in: &cancellables)
     }
 }

@@ -11,7 +11,6 @@ import Adyen
 #endif
 import Foundation
 
-
 package final class BACSViewModel {
 
     // MARK: - Properties
@@ -25,14 +24,17 @@ package final class BACSViewModel {
 
     // MARK: - State
 
-    enum State {
+    internal enum State {
         case idle
-        case loaded(_ items: [any FormItem])
-        case validation
-        case loading
+        case loaded
+        case submitting
     }
-//    internal private(set) var items: [any FormItem] = []
+
     @Published internal private(set) var state: State = .idle
+
+    /// The items currently displayed on the form. Populated once in `createItems()` and
+    /// is the single source of truth for both the view controller and the validity checks below.
+    internal private(set) var items: [any FormItem] = []
 
     // MARK: - Items
 
@@ -67,19 +69,18 @@ package final class BACSViewModel {
     package func viewDidLoad() {
         tracker.sendInitialAnalytics()
         tracker.sendDidLoadEvent()
-        let items = createItems()
-        state = .loaded(items)
+        items = createItems()
+        state = .loaded
     }
 
     package func stopLoading() {
-        submitButtonItem?.showsActivityIndicator = false
+        state = .loaded
     }
 
     package func performSubmit() {
-        startLoading()
-        state = .validation
+        state = .submitting
 
-        guard let details = makeDetails() else {
+        guard isValid(), let details = makeDetails() else {
             stopLoading()
             return
         }
@@ -89,19 +90,11 @@ package final class BACSViewModel {
 
     // MARK: - Private
 
-    private func validation() -> Bool {
-        guard case let .loaded(items) = state else {
-            return true
-        }
-
-        return items
+    private func isValid() -> Bool {
+        items
             .lazy
             .compactMap { $0 as? ValidatableFormItem }
             .allSatisfy { $0.isValid() }
-    }
-
-    private func startLoading() {
-        submitButtonItem?.showsActivityIndicator = true
     }
 
     private func createItems() -> [any FormItem] {
