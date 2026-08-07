@@ -11,16 +11,16 @@ extension CardBrand {
     internal var expectedSecurityCodeLength: Int {
         self == .americanExpress ? Constants.amexLength : Constants.generalLength
     }
+
+    fileprivate enum Constants {
+        static let amexLength = 4
+        static let generalLength = 3
+    }
 }
 
 extension CardBrand? {
     /// Expected security code (CVC/CVV) length: 4 for Amex, 3 for any other or undetected brand.
     internal var expectedSecurityCodeLength: Int {
-        self?.expectedSecurityCodeLength ?? Constants.generalLength
+        self?.expectedSecurityCodeLength ?? CardBrand.Constants.generalLength
     }
-}
-
-private enum Constants {
-    static let amexLength = 4
-    static let generalLength = 3
 }
