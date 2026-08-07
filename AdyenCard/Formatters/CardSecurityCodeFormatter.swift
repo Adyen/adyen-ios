@@ -15,19 +15,19 @@ public final class CardSecurityCodeFormatter: NumericFormatter {
         cardType.expectedSecurityCodeLength
     }
     
-    /// Initializes a new instance of CardSecurityCodeFormatter.
+    /// Initiate new instance of CardSecurityCodeFormatter
     override public init() {
         super.init()
     }
     
-    /// Initializes a new instance of CardSecurityCodeFormatter.
+    /// Initiate new instance of CardSecurityCodeFormatter
     /// - Parameter publisher: observer of a card type.
     public init(publisher: AdyenObservable<CardType?>) {
         super.init()
         bind(publisher, to: self, at: \.cardType)
     }
     
-    /// Initializes a new instance of CardSecurityCodeFormatter with a fixed ``CardType``.
+    /// Initiate new instance of CardSecurityCodeFormatter with a fixed ``CardType``
     /// - Parameter cardType: The card type to format the security code for
     public init(cardType: CardType) {
         super.init()
