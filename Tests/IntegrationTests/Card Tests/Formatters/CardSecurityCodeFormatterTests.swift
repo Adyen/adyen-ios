@@ -10,7 +10,7 @@ import XCTest
 
 class CardSecurityCodeFormatterTests: XCTestCase {
     
-    func testFormatting() {
+    func test_formattedValue_givenInputExceedingExpectedLength_shouldTruncate() {
         let observer = AdyenObservable<CardBrand?>(.masterCard)
         let formatter = CardSecurityCodeFormatter(publisher: observer)
         XCTAssertEqual(formatter.formattedValue(for: "1"), "1")
@@ -26,7 +26,7 @@ class CardSecurityCodeFormatterTests: XCTestCase {
         XCTAssertEqual(formatter.formattedValue(for: "12345"), "1234")
     }
     
-    func testSanitizing() {
+    func test_sanitizedValue_givenNonDigitsAndExcessLength_shouldStripAndTruncate() {
         let observer = AdyenObservable<CardBrand?>(.masterCard)
         let formatter = CardSecurityCodeFormatter(publisher: observer)
         
