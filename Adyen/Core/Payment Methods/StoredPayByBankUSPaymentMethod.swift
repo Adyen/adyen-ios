@@ -20,7 +20,18 @@ public struct StoredPayByBankUSPaymentMethod: StoredPaymentMethod, PaymentMethod
     public let supportedShopperInteractions: [ShopperInteraction]
     
     package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: label ?? "", subtitle: name, logoName: type.rawValue)
+        let title: String
+        let subtitle: String?
+
+        if let label {
+            title = label
+            subtitle = name
+        } else {
+            title = name
+            subtitle = nil
+        }
+
+        return DisplayInformation(title: title, subtitle: subtitle, logoName: type.rawValue)
     }
 
     // MARK: - Decoding
