@@ -136,8 +136,8 @@ final class StoredPaymentMethodManagementPresentationMapperTests: XCTestCase {
 
         XCTAssertEqual(itemsByIdentifier[payByBank.identifier]?.title, "Primary checking")
         XCTAssertEqual(itemsByIdentifier[payByBank.identifier]?.subtitle, "Pay by Bank US")
-        XCTAssertEqual(itemsByIdentifier[payByBankWithoutLabel.identifier]?.title, "")
-        XCTAssertEqual(itemsByIdentifier[payByBankWithoutLabel.identifier]?.subtitle, "Pay by Bank US")
+        XCTAssertEqual(itemsByIdentifier[payByBankWithoutLabel.identifier]?.title, "Pay by Bank US")
+        XCTAssertNil(itemsByIdentifier[payByBankWithoutLabel.identifier]?.subtitle)
 
         XCTAssertEqual(itemsByIdentifier[payTo.identifier]?.title, "•••••••2311")
         XCTAssertEqual(itemsByIdentifier[payTo.identifier]?.subtitle, "payto")
@@ -147,7 +147,7 @@ final class StoredPaymentMethodManagementPresentationMapperTests: XCTestCase {
         XCTAssertEqual(itemsByIdentifier[ach.identifier]?.subtitle, "ACH Direct Debit")
 
         XCTAssertEqual(itemsByIdentifier[payPal.identifier]?.title, "PayPal")
-        XCTAssertNil(itemsByIdentifier[payPal.identifier]?.subtitle)
+        XCTAssertEqual(itemsByIdentifier[payPal.identifier]?.subtitle, "shopper@example.com")
         XCTAssertEqual(itemsByIdentifier[generic.identifier]?.title, "Generic payment method")
         XCTAssertNil(itemsByIdentifier[generic.identifier]?.subtitle)
         for paymentMethod in paymentMethods {
