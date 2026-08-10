@@ -117,7 +117,5 @@ private struct StoredPaymentMethodManagementRow: View {
             .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.remove(item.paymentMethod.identifier))
         }
         .padding(.vertical, 4)
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel(item.accessibilityLabel ?? item.title)
     }
 }
