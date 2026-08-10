@@ -18,7 +18,7 @@ public struct StoredPayPalPaymentMethod: StoredPaymentMethod, PaymentMethodDispl
     public let supportedShopperInteractions: [ShopperInteraction]
 
     package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        DisplayInformation(title: name, subtitle: nil, logoName: type.rawValue)
+        DisplayInformation(title: name, subtitle: emailAddress, logoName: type.rawValue)
     }
     
     /// The email address of the PayPal account.

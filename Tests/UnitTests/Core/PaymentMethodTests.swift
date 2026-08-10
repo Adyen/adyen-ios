@@ -952,10 +952,10 @@ class PaymentMethodTests: XCTestCase {
 
         assertDisplayInformation(cashAppPay, title: "$shopper", subtitle: "Cash App Pay", logoName: "cashapp")
         assertDisplayInformation(payByBank, title: "Primary checking", subtitle: "Pay by Bank US", logoName: "paybybank")
-        assertDisplayInformation(payByBankWithoutLabel, title: "", subtitle: "Pay by Bank US", logoName: "paybybank")
+        assertDisplayInformation(payByBankWithoutLabel, title: "Pay by Bank US", subtitle: nil, logoName: "paybybank")
         assertDisplayInformation(payTo, title: "•••••••2311", subtitle: "payto", logoName: "payto")
         assertDisplayInformation(ach, title: String.Adyen.securedString + "6789", subtitle: "ACH Direct Debit", logoName: "ach")
-        assertDisplayInformation(payPal, title: "PayPal", subtitle: nil, logoName: "paypal")
+        assertDisplayInformation(payPal, title: "PayPal", subtitle: "example@shopper.com", logoName: "paypal")
         assertDisplayInformation(generic, title: "Generic payment method", subtitle: nil, logoName: "custom")
     }
 
