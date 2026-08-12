@@ -118,6 +118,21 @@ class FormTextItemViewTests: XCTestCase {
         XCTAssertEqual(sut.separatorView.backgroundColor?.toHexString(), item.style.separatorColor?.toHexString())
         XCTAssertEqual(sut.titleLabel.textColor.toHexString(), item.style.title.color.toHexString())
     }
+
+    func testDefaultInactiveColorsAreAccessibleInLightAndDarkMode() {
+        let style = FormTextItemStyle()
+        guard let separatorColor = style.separatorColor else {
+            return XCTFail("Expected a default separator color.")
+        }
+
+        let lightTraits = UITraitCollection(userInterfaceStyle: .light)
+        let darkTraits = UITraitCollection(userInterfaceStyle: .dark)
+
+        for color in [style.title.color, separatorColor] {
+            XCTAssertEqual(color.resolvedColor(with: lightTraits).toHexString(), "#757575")
+            XCTAssertEqual(color.resolvedColor(with: darkTraits).toHexString(), "#8e8e93")
+        }
+    }
     
     func testValidationStatusIsInvalidWhenValueIsInvalid() {
         let validationExpectation = XCTestExpectation(description: "Expect validator.isValid() to be called.")
