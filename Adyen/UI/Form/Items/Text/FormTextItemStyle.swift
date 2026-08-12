@@ -13,7 +13,7 @@ public struct FormTextItemStyle: FormValueItemStyle {
     /// The title style.
     public var title = TextStyle(
         font: .preferredFont(forTextStyle: .footnote),
-        color: UIColor.Adyen.componentSecondaryLabel,
+        color: UIColor.Adyen.formTextItemInactive,
         textAlignment: .natural
     )
     
@@ -50,7 +50,7 @@ public struct FormTextItemStyle: FormValueItemStyle {
     
     /// The color for separator element.
     /// If value is nil, the default color would be used.
-    public var separatorColor: UIColor? = UIColor.Adyen.componentSeparator
+    public var separatorColor: UIColor? = UIColor.Adyen.formTextItemInactive
     
     /// Initializes the form text item style.
     ///
