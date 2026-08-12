@@ -79,6 +79,18 @@ extension UIColor {
             }
         }
 
+        public static var formTextItemInactive: UIColor {
+            if #available(iOS 13.0, *) {
+                return UIColor { traits in
+                    traits.userInterfaceStyle == .dark
+                        ? color(hex: 0x8E8E93)
+                        : color(hex: 0x757575)
+                }
+            } else {
+                return color(hex: 0x757575)
+            }
+        }
+
         public static var componentLoadingMessageColor: UIColor {
             UIColor(
                 named: "awaitLoadingMessageColor",
