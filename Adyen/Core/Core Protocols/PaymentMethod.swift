@@ -37,6 +37,7 @@ package extension PaymentMethod {
     /// Returns the display information for this payment method.
     /// If the payment method conforms to `PaymentMethodDisplayOverridable`, its custom implementation is used.
     /// Otherwise, returns the default display information based on name and type.
+    /// Stored cards can provide a localized expired subtitle through their custom implementation.
     func displayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         if let displayable = self as? PaymentMethodDisplayOverridable {
             return displayable.overriddenDisplayInformation(using: parameters)
