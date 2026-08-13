@@ -29,6 +29,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     private let dropInFlowManager: DropInFlowManaging
     private let theme: CheckoutTheme
     private let partialPaymentDelegate: PartialPaymentDelegate?
+    private let storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
 
     // MARK: - Initializers
 
@@ -40,7 +41,8 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging,
         theme: CheckoutTheme,
-        partialPaymentDelegate: PartialPaymentDelegate?
+        partialPaymentDelegate: PartialPaymentDelegate?,
+        storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
     ) {
         self.componentContainerAssembler = componentContainerAssembler
         self.componentManager = componentManager
@@ -50,6 +52,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         self.dropInFlowManager = dropInFlowManager
         self.theme = theme
         self.partialPaymentDelegate = partialPaymentDelegate
+        self.storedPaymentMethodManagementCapability = storedPaymentMethodManagementCapability
     }
 
     // MARK: - PaymentMethodListAssemblerProtocol

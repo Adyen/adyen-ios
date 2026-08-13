@@ -24,6 +24,7 @@ internal struct DropInAssembler {
     private let componentManager: ComponentManager
     private let dropInFlowManager: DropInFlowManaging
     private let partialPaymentDelegate: PartialPaymentDelegate?
+    private let storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
 
     // MARK: - Initializers
 
@@ -33,7 +34,8 @@ internal struct DropInAssembler {
         context: AdyenContext,
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging,
-        partialPaymentDelegate: PartialPaymentDelegate?
+        partialPaymentDelegate: PartialPaymentDelegate?,
+        storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
     ) {
         self.title = title
         self.paymentMethods = paymentMethods
@@ -41,6 +43,7 @@ internal struct DropInAssembler {
         self.configuration = configuration
         self.partialPaymentDelegate = partialPaymentDelegate
         self.dropInFlowManager = dropInFlowManager
+        self.storedPaymentMethodManagementCapability = storedPaymentMethodManagementCapability
         self.componentManager = ComponentManager(
             paymentMethods: paymentMethods,
             context: context,
@@ -107,7 +110,8 @@ internal struct DropInAssembler {
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
             theme: resolveCheckoutTheme(),
-            partialPaymentDelegate: partialPaymentDelegate
+            partialPaymentDelegate: partialPaymentDelegate,
+            storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability
         )
     }
     

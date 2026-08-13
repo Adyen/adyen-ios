@@ -1,8 +1,23 @@
 name: 📱🔥 Firebase Distribution
 
 on:
-  workflow_dispatch: {}
-        
+  workflow_dispatch:
+    inputs: &inputs # Anchored so the workflow_call trigger below reuses the same definitions
+      build_version_name:
+        description: 'Version name shown in Firebase App Distribution (e.g. 6.0.0-beta.1)'
+        required: true
+        type: string
+      build_number:
+        description: 'Build number shown in Firebase App Distribution. Defaults to the build number in the project'
+        required: false
+        type: string
+      release_notes:
+        description: 'Release notes shown in Firebase App Distribution. Defaults to the branch name and build metadata'
+        required: false
+        type: string
+  workflow_call:
+    inputs: *inputs
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -15,10 +30,8 @@ jobs:
     runs-on: macos-26-xlarge
 
     steps:
-      - name: 🪾 Checkout selected branch
+      - name: 🪾 Checkout
         uses: actions/checkout@v7
-        with:
-          ref: ${{ github.event.inputs.branch }}
 
       - uses: actions/setup-node@v7
         with:
@@ -29,10 +42,12 @@ jobs:
 
       - name: 📝 Create Firebase release name
         id: firebase_release_name
+        env:
+          BUILD_VERSION_NAME: ${{ inputs.build_version_name }}
         run: |
           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
           SHORT_SHA=$(git rev-parse --short HEAD)
-          FIREBASE_RELEASE_NAME="firebase-${BRANCH_NAME}-${SHORT_SHA}"
+          FIREBASE_RELEASE_NAME="firebase-${BUILD_VERSION_NAME:-$BRANCH_NAME}-${SHORT_SHA}"
           echo "FIREBASE_RELEASE_NAME=$FIREBASE_RELEASE_NAME" >> $GITHUB_ENV
           echo "Release name set to $FIREBASE_RELEASE_NAME"
 
@@ -58,6 +73,7 @@ jobs:
           FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           FIREBASE_RELEASE_NAME: ${{ env.FIREBASE_RELEASE_NAME }}
+          RELEASE_NOTES: ${{ inputs.release_notes }}
 
           # App configuration
           MERCHANT_CLIENT_KEY: ${{ secrets.DEMO_APP_TEST_ENV_CLIENT_KEY }}
@@ -66,6 +82,10 @@ jobs:
           ADYEN_SERVER_API_KEY: ${{ secrets.DEMO_SERVER_TEST_ENV_API_KEY }}
           APPLE_TEAM_IDENTIFIER: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
           ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
+
+          # Version overrides (optional)
+          BUILD_VERSION_NAME: ${{ inputs.build_version_name }}
+          BUILD_NUMBER: ${{ inputs.build_number }}
         run: |
-          chmod +x ./Scripts/publish-demo-app.sh
-          ./Scripts/publish-demo-app.sh "firebase"
+          chmod +x ./Scripts/publish-demo-app-firebase.sh
+          ./Scripts/publish-demo-app-firebase.sh
