@@ -174,12 +174,6 @@ extension CardConfiguration {
         copy.supportedCardBrands = supportedCardBrands
         return copy
     }
-
-    public func showCardholderNameField(_ showCardholderNameField: Bool) -> Self {
-        var copy = self
-        copy.showCardholderName = showCardholderNameField
-        return copy
-    }
     
     /// Sets the installment configuration.
     /// - Parameter installmentConfiguration: The installment options to present to the user, or `nil` for no installments.
