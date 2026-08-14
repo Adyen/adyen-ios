@@ -25,11 +25,14 @@ permissions:
 jobs:
 
   build:
+    name: iOS public API diff
     # This job needs two versions to diff: either a pull request and its base, or the inputs of a
     # manual run. The merge queue provides neither, so it skips and reports success to the required
     # check. Listed as an allowlist so any trigger added later has to opt in deliberately.
     if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
     runs-on: macos-26
+    outputs:
+      card_api_changed: ${{ steps.card_api.outputs.changed }}
 
     steps:
     - name: Select latest Xcode
@@ -72,3 +75,139 @@ jobs:
         platform: "iOS"
         new: ${{ env.NEW_VERSION }}
         old: ${{ env.OLD_VERSION }}
+
+    - name: Detect Card API changes
+      id: card_api
+      run: |
+        if grep -q '^## `AdyenCard`$' api_comparison.md; then
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "changed=false" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Upload public API diff
+      uses: actions/upload-artifact@v4
+      with:
+        name: ios-public-api-diff
+        path: api_comparison.md
+        if-no-files-found: error
+        retention-days: 7
+
+  remove-api-alignment-comment:
+    needs: build
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      needs.build.outputs.card_api_changed != 'true'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Remove stale API alignment comment
+      uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b
+      with:
+        comment-tag: api_alignment
+        mode: delete
+
+  review-card-api-alignment:
+    needs: build
+    if: >-
+      needs.build.outputs.card_api_changed == 'true' &&
+      (github.event_name == 'workflow_dispatch' ||
+      github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+    - name: Download public API diff
+      uses: actions/download-artifact@v4
+      with:
+        name: ios-public-api-diff
+        path: input
+
+    - name: Identify automation token owner
+      env:
+        GH_TOKEN: ${{ secrets.AUTOMATION_BOT_TOKEN }}
+      run: echo "AUTOMATION_BOT_TOKEN authenticates as $(gh api user --jq .login)"
+
+    - name: Checkout meta API-alignment context
+      uses: actions/checkout@v7
+      with:
+        repository: Adyen/adyen-checkout-sdk-meta
+        ref: api-alignment-automation-poc
+        token: ${{ secrets.API_ALIGNMENT_META_REPO_TOKEN }}
+        path: meta
+        persist-credentials: false
+        sparse-checkout: |
+          alignment
+          adr
+          scripts/api-alignment
+        sparse-checkout-cone-mode: false
+
+    - name: Checkout Android Card API
+      uses: actions/checkout@v7
+      with:
+        repository: Adyen/adyen-android
+        ref: main
+        path: android
+        persist-credentials: false
+        sparse-checkout: |
+          card/api/card.api
+          bcmc/api/bcmc.api
+          giftcard/api/giftcard.api
+        sparse-checkout-cone-mode: false
+
+    - name: Assemble API alignment prompt
+      run: |
+        bash meta/scripts/api-alignment/build-prompt.sh \
+          --ios-diff input/api_comparison.md \
+          --android-repo android \
+          --meta-repo meta \
+          --meta-branch api-alignment-automation-poc \
+          --output alignment-prompt.md
+
+    - name: Run Gemini API alignment review
+      env:
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        GEMINI_MODEL: gemini-3.1-pro-preview
+      run: |
+        test -n "$GEMINI_API_KEY" || { echo "GEMINI_API_KEY is not configured" >&2; exit 1; }
+        jq -n --rawfile prompt alignment-prompt.md '{contents: [{parts: [{text: $prompt}]}]}' > request.json
+        curl --fail-with-body --silent --show-error --retry 2 --retry-all-errors --connect-timeout 20 --max-time 240 \
+          -H "Content-Type: application/json" \
+          -H "x-goog-api-key: $GEMINI_API_KEY" \
+          --data-binary @request.json \
+          "https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent" > response.json
+        jq -r '[.candidates[0].content.parts[]?.text] | join("\n")' response.json > review.md
+        test -s review.md
+        test "$(wc -c < review.md)" -le 30000
+
+    - name: Prepare advisory comment
+      env:
+        IOS_BASE: ${{ github.event.pull_request.base.sha || github.event.inputs.old }}
+        IOS_HEAD: ${{ github.event.pull_request.head.sha || github.event.inputs.new }}
+      run: |
+        {
+          echo "## Cross-platform Card API alignment"
+          echo
+          cat review.md
+          echo
+          echo "<details><summary>Run details</summary>"
+          echo
+          echo "- Meta: $(git -C meta rev-parse HEAD)"
+          echo "- Android: $(git -C android rev-parse HEAD)"
+          echo "- iOS base: $IOS_BASE"
+          echo "- iOS head: $IOS_HEAD"
+          echo "- Model: gemini-3.1-pro-preview"
+          echo "</details>"
+        } > api_alignment.md
+
+    - name: Update API alignment comment
+      if: github.event_name == 'pull_request'
+      uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b
+      with:
+        file-path: api_alignment.md
+        comment-tag: api_alignment
+        mode: recreate
+
+    - name: Write workflow summary
+      run: cat api_alignment.md >> "$GITHUB_STEP_SUMMARY"
