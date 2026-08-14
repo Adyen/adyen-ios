@@ -28,6 +28,7 @@ internal class CardViewController: FormViewController {
     private let formStyle: FormComponentStyle
     private var issuingCountryCode: String?
     private var billingAddressSectionItem: FormItem?
+    private var installmentsSectionItem: FormItem?
     private let amount: Amount?
     private let initialCountryCode: String
     private let scope: String
@@ -347,7 +348,9 @@ extension CardViewController {
         }
         
         if let installmentsItem {
+            installmentsSectionItem = installmentsItem
             append(installmentsItem)
+            bindInstallmentsSectionVisibility()
         }
         
         if configuration.showStorePaymentMethod {
@@ -367,10 +370,22 @@ extension CardViewController {
         }
     }
     
+    /// Keeps the installments section (header + field) visibility in sync with the
+    /// installments item, which toggles its own `isHidden` from `update(cardBrand:)`.
+    private func bindInstallmentsSectionVisibility() {
+        guard let installmentsFormItem = items.installmentsItem else { return }
+        installmentsSectionItem?.isVisible = !installmentsFormItem.isHidden.wrappedValue
+        observe(installmentsFormItem.isHidden) { [weak self] isHidden in
+            self?.installmentsSectionItem?.isVisible = !isHidden
+        }
+    }
+    
     private var installmentsItem: FormItem? {
         guard let installmentsItem = items.installmentsItem else { return nil }
         // TODO: Localize the "Payment plan" section header once the string is finalized.
-        return installmentsItem.withSectionHeader(title: localizedString(LocalizationKey(key: "Payment plan"), configuration.localizationParameters))
+        return installmentsItem.withSectionHeader(title: localizedString(
+            LocalizationKey(key: "Payment plan"), localizationParameters
+        ))
     }
     
     private var billingAddressItem: FormItem? {
