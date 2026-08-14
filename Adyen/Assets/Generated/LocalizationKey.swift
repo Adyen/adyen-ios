@@ -566,6 +566,8 @@ public struct LocalizationKey {
     public static let preselectedPaymentMethodSubtitle = LocalizationKey(key: "adyen.preselectedPaymentMethod.subtitle")
     /// Other payment options
     public static let preselectedPaymentMethodOtherOptions = LocalizationKey(key: "adyen.preselectedPaymentMethod.otherOptions")
+    /// Expired
+    public static let storedPaymentMethodExpired = LocalizationKey(key: "adyen.storedPaymentMethod.expired")
     
     internal let key: String
     

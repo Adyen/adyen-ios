@@ -22,7 +22,7 @@ public struct StoredPayByBankUSPaymentMethod: StoredPaymentMethod, PaymentMethod
     package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         let title: String
         let subtitle: String?
-        
+
         if let label {
             title = label
             subtitle = name
@@ -30,7 +30,7 @@ public struct StoredPayByBankUSPaymentMethod: StoredPaymentMethod, PaymentMethod
             title = name
             subtitle = nil
         }
-        
+
         return DisplayInformation(title: title, subtitle: subtitle, logoName: type.rawValue)
     }
 

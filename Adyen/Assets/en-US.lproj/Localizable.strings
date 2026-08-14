@@ -276,3 +276,4 @@
 "adyen.card.scanner.camera.access.denied.alert.settingsButton.title" = "Open Settings";
 "adyen.preselectedPaymentMethod.subtitle" = "Use %@";
 "adyen.preselectedPaymentMethod.otherOptions" = "Other payment options";
+"adyen.storedPaymentMethod.expired" = "Expired";
