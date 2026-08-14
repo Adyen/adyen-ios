@@ -35,7 +35,7 @@ internal struct StoredPaymentMethodManagementView: View {
             titleVisibility: .hidden,
             presenting: viewModel.itemPendingRemoval
         ) { item in
-            Button(viewModel.removalActionTitle(for: item), role: .destructive) {
+            Button(item.removalActionTitle, role: .destructive) {
                 Task {
                     await viewModel.confirmRemoval(of: item)
                 }

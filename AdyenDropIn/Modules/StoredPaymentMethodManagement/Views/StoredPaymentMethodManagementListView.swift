@@ -93,20 +93,24 @@ private struct StoredPaymentMethodManagementRow: View {
 
     var body: some View {
         HStack(spacing: Constants.itemSpacing) {
-            StoredPaymentMethodManagementLogoView(url: item.logoURL)
-                .frame(width: Constants.logoSize, height: Constants.logoSize)
+            HStack(spacing: Constants.itemSpacing) {
+                StoredPaymentMethodManagementLogoView(url: item.logoURL)
+                    .frame(width: Constants.logoSize, height: Constants.logoSize)
 
-            VStack(alignment: .leading, spacing: 2) {
-                Text(item.title)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(Color(uiColor: theme.colors.text))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(item.title)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(Color(uiColor: theme.colors.text))
 
-                if let subtitle = item.subtitle {
-                    Text(subtitle)
-                        .font(.caption)
-                        .foregroundStyle(Color(uiColor: theme.colors.textSecondary))
+                    if let subtitle = item.subtitle {
+                        Text(subtitle)
+                            .font(.caption)
+                            .foregroundStyle(Color(uiColor: theme.colors.textSecondary))
+                    }
                 }
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(item.accessibilityLabel ?? [item.title, item.subtitle].compactMap { $0 }.joined(separator: ", "))
 
             Spacer(minLength: 0)
 
@@ -115,6 +119,7 @@ private struct StoredPaymentMethodManagementRow: View {
             }
             .font(.caption.weight(.semibold))
             .foregroundStyle(Color(uiColor: theme.colors.destructive))
+            .accessibilityLabel(item.removalActionTitle)
             .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.remove(item.paymentMethod.identifier))
         }
         .padding(.vertical, Constants.verticalPadding)
