@@ -17,29 +17,35 @@ permissions:
   contents: read
 
 jobs:
-  # The release notes are resolved here rather than inline in the distribute job, since a reusable
-  # workflow call cannot run its own steps.
+  # The version name and the release notes are resolved here rather than at each point of use. The
+  # distribution and the cleanup at the end both depend on the version name, and a nightly release
+  # that no longer matches would silently stop being cleaned up.
   nightly_config:
     name: Resolve nightly configuration
     runs-on: ubuntu-latest
     permissions:
       contents: read
     outputs:
+      version_name: ${{ steps.resolve.outputs.version_name }}
       release_notes: ${{ steps.resolve.outputs.release_notes }}
 
     steps:
       - name: Resolve nightly configuration
         id: resolve
-        run: echo "release_notes=Latest SDK build - (${GITHUB_SHA::7})" >> "$GITHUB_OUTPUT"
+        run: |
+          {
+            echo "version_name=nightly"
+            echo "release_notes=Latest SDK build - (${GITHUB_SHA::7})"
+          } >> "$GITHUB_OUTPUT"
 
   distribute:
     name: 📱🔥 Nightly Firebase Distribution
     needs: nightly_config
-    # The version name and build number are intentionally fixed so every nightly reports the same
-    # build to Firebase App Distribution.
+    # The build number is intentionally fixed so every nightly reports the same build to Firebase
+    # App Distribution.
     uses: ./.github/workflows/firebase-app-distribution.yml
     with:
-      build_version_name: nightly
+      build_version_name: ${{ needs.nightly_config.outputs.version_name }}
       build_number: '1'
       release_notes: ${{ needs.nightly_config.outputs.release_notes }}
     secrets: inherit
@@ -50,7 +56,7 @@ jobs:
   # release untouched.
   remove_superseded_releases:
     name: 🧹 Remove superseded releases
-    needs: distribute
+    needs: [nightly_config, distribute]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -70,7 +76,7 @@ jobs:
         env:
           ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
           APP_ID: ${{ secrets.FIREBASE_APP_ID }}
-          VERSION_NAME: nightly
+          VERSION_NAME: ${{ needs.nightly_config.outputs.version_name }}
         run: |
           # The project number is the second segment of the app id.
           project_number=$(echo "$APP_ID" | cut -d: -f2)
