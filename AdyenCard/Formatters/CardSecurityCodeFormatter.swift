@@ -36,7 +36,11 @@ public final class CardSecurityCodeFormatter: NumericFormatter {
     }
     
     override public func formattedValue(for value: String) -> String {
-        let value = super.formattedValue(for: value)
+        sanitizedValue(for: value)
+    }
+    
+    override public func sanitizedValue(for value: String) -> String {
+        let value = super.sanitizedValue(for: value)
         
         if value.count > expectedLength {
             return String(value.prefix(expectedLength))
