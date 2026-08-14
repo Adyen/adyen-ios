@@ -47,6 +47,21 @@ internal struct StoredPaymentMethodManagementListView: View {
     }
 }
 
+private struct StoredPaymentMethodManagementLogoView: View {
+
+    let url: URL
+
+    internal var body: some View {
+        AsyncImage(url: url) { image in
+            image
+                .resizable()
+                .scaledToFit()
+        } placeholder: {
+            Color.clear
+        }
+    }
+}
+
 private struct StoredPaymentMethodManagementSectionView: View {
 
     private enum Constants {
