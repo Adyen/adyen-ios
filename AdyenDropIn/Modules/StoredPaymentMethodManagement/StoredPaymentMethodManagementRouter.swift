@@ -29,7 +29,7 @@ internal final class StoredPaymentMethodManagementRouter: Router, StoredPaymentM
     internal let rootViewController: UIViewController
     private weak var listener: StoredPaymentMethodManagementListener?
     internal let childRouter: Router? = nil
-    private var hasReportedDismissal = false
+    private var isDismissHandled = false
 
     // MARK: - Initializers
 
@@ -54,11 +54,11 @@ internal final class StoredPaymentMethodManagementRouter: Router, StoredPaymentM
     // MARK: - Lifecycle
 
     internal func didDismissFromNavigation() {
-        guard !hasReportedDismissal else {
+        guard !isDismissHandled else {
             return
         }
 
-        hasReportedDismissal = true
+        isDismissHandled = true
         listener?.didDismissStoredPaymentMethodManagement()
     }
 }

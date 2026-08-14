@@ -21,6 +21,7 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
 
     @Published internal private(set) var sections: [StoredPaymentMethodManagementSection]
     @Published internal private(set) var itemPendingRemoval: StoredPaymentMethodManagementItem?
+    @Published internal private(set) var removalError: StoredPaymentMethodRemovalError?
 
     internal var isEmpty: Bool {
         sections.isEmpty
@@ -52,6 +53,18 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
 
     internal var removeButtonTitle: String {
         localizedString(.removeButton, localizationParameters)
+    }
+
+    internal var removalErrorTitle: String {
+        localizedString(.errorTitle, localizationParameters)
+    }
+
+    internal var removalErrorMessage: String {
+        localizedString(.storedPaymentMethodManagementRemovalErrorMessage, localizationParameters)
+    }
+
+    internal var dismissTitle: String {
+        localizedString(.dismissButton, localizationParameters)
     }
 
     // MARK: - Initializers
@@ -87,6 +100,10 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
         itemPendingRemoval = nil
     }
 
+    internal func dismissRemovalError() {
+        removalError = nil
+    }
+
     internal func removalActionTitle(for item: StoredPaymentMethodManagementItem) -> String {
         mapper.removalActionTitle(for: item.paymentMethod)
     }
@@ -95,6 +112,8 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
         do {
             try await capability.remove(item.paymentMethod)
         } catch {
+            itemPendingRemoval = nil
+            removalError = .unsuccessful
             return
         }
 

@@ -285,4 +285,5 @@
 "adyen.storedPaymentMethodManagement.emptyTitle" = "Nothing here!";
 "adyen.storedPaymentMethodManagement.emptyMessage" = "You have no saved payment methods.";
 "adyen.storedPaymentMethodManagement.paymentOptions" = "Payment options";
+"adyen.storedPaymentMethodManagement.removalErrorMessage" = "Error removing payment method. Try again later.";
 "adyen.storedPaymentMethod.expired" = "Expired";
