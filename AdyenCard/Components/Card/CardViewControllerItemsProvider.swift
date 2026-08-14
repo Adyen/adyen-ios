@@ -256,6 +256,7 @@ extension CardViewController {
                 installmentConfiguration: installmentsConfiguration,
                 style: formStyle.textField,
                 amount: amount,
+                presenter: presenter,
                 localizationParameters: localizationParameters
             )
             installmentsItem.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "installmentsItem")
