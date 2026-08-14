@@ -249,9 +249,9 @@ struct PaymentMethodListViewModelTests {
         let ach = items.first { $0.title == String.Adyen.securedString + "6789" }
         let bancontact = items.first { $0.title == String.Adyen.securedString + "4449" }
 
-        #expect(card?.subtitle == "VISA")
+        #expect(card?.subtitle == "Expired")
         #expect(ach?.subtitle == "ACH Direct Debit")
-        #expect(bancontact?.subtitle == "Maestro")
+        #expect(bancontact?.subtitle == "Expired")
     }
 
     // MARK: - ActionPresenter Tests

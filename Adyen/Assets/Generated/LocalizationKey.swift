@@ -76,14 +76,16 @@ public struct LocalizationKey {
     public static let cardCvcItemInvalid = LocalizationKey(key: "adyen.card.cvcItem.invalid")
     /// Security code
     public static let cardCvcItemTitle = LocalizationKey(key: "adyen.card.cvcItem.title")
-    /// 123
-    public static let cardCvcItemPlaceholder = LocalizationKey(key: "adyen.card.cvcItem.placeholder")
     /// Enter security code
     public static let cardSecurityCodeTitle = LocalizationKey(key: "adyen.card.securityCode.title")
     /// Enter the security code for %@
     public static let cardSecurityCodeDescription = LocalizationKey(key: "adyen.card.securityCode.description")
+    /// 123
+    public static let cardCvcItemPlaceholder = LocalizationKey(key: "adyen.card.cvcItem.placeholder")
+    // TODO: Delete cardStoredTitle - no longer used after StoredCardAlertManager removal for v6
     /// Verify your card
     public static let cardStoredTitle = LocalizationKey(key: "adyen.card.stored.title")
+    // TODO: Delete cardStoredMessage - no longer used after StoredCardAlertManager removal for v6
     /// Please enter the CVC code for %@
     public static let cardStoredMessage = LocalizationKey(key: "adyen.card.stored.message")
     /// Expires %@
@@ -582,6 +584,8 @@ public struct LocalizationKey {
     public static let storedPaymentMethodManagementEmptyMessage = LocalizationKey(key: "adyen.storedPaymentMethodManagement.emptyMessage")
     /// Payment options
     public static let storedPaymentMethodManagementPaymentOptions = LocalizationKey(key: "adyen.storedPaymentMethodManagement.paymentOptions")
+    /// Expired
+    public static let storedPaymentMethodExpired = LocalizationKey(key: "adyen.storedPaymentMethod.expired")
     
     internal let key: String
     
