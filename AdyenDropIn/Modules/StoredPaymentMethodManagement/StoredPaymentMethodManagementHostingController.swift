@@ -22,8 +22,9 @@ internal final class StoredPaymentMethodManagementHostingController: UIHostingCo
         super.init(rootView: StoredPaymentMethodManagementView(viewModel: viewModel, theme: theme))
     }
 
+    @available(*, unavailable)
     @objc internal dynamic required init?(coder aDecoder: NSCoder) {
-        nil
+        fatalError("init(coder:) has not been implemented")
     }
 
     override internal func viewDidLoad() {
@@ -37,7 +38,7 @@ internal final class StoredPaymentMethodManagementHostingController: UIHostingCo
     override internal func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        if isMovingFromParent {
+        if isMovingFromParent || isBeingDismissed || navigationController?.isBeingDismissed == true {
             onDismissFromNavigation?()
         }
     }

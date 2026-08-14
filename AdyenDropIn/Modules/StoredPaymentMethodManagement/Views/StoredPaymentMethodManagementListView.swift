@@ -83,6 +83,7 @@ private struct StoredPaymentMethodManagementRow: View {
     private enum Constants {
         static let itemSpacing: CGFloat = 12
         static let logoSize: CGFloat = 24
+        static let verticalPadding: CGFloat = 4
     }
 
     let item: StoredPaymentMethodManagementItem
@@ -116,6 +117,6 @@ private struct StoredPaymentMethodManagementRow: View {
             .foregroundStyle(Color(uiColor: theme.colors.destructive))
             .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.remove(item.paymentMethod.identifier))
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, Constants.verticalPadding)
     }
 }

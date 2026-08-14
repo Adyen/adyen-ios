@@ -45,6 +45,16 @@ internal struct StoredPaymentMethodManagementView: View {
                 viewModel.dismissRemovalConfirmation()
             }
         }
+        .alert(
+            viewModel.removalErrorTitle,
+            isPresented: isRemovalErrorPresented
+        ) {
+            Button(viewModel.dismissTitle) {
+                viewModel.dismissRemovalError()
+            }
+        } message: {
+            Text(viewModel.removalErrorMessage)
+        }
         .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.screen)
     }
 
@@ -54,6 +64,17 @@ internal struct StoredPaymentMethodManagementView: View {
             set: { isPresented in
                 if !isPresented {
                     viewModel.dismissRemovalConfirmation()
+                }
+            }
+        )
+    }
+
+    private var isRemovalErrorPresented: Binding<Bool> {
+        Binding(
+            get: { viewModel.removalError != nil },
+            set: { isPresented in
+                if !isPresented {
+                    viewModel.dismissRemovalError()
                 }
             }
         )

@@ -15,7 +15,6 @@ internal struct StoredPaymentMethodManagementEmptyState: View {
     private enum Constants {
         static let horizontalPadding: CGFloat = 16
         static let verticalSpacing: CGFloat = 16
-        static let buttonCornerRadius: CGFloat = 6
     }
 
     @ObservedObject private var viewModel: StoredPaymentMethodManagementViewModel
@@ -52,7 +51,7 @@ internal struct StoredPaymentMethodManagementEmptyState: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 12)
             .background(Color(uiColor: theme.colors.primary))
-            .clipShape(RoundedRectangle(cornerRadius: Constants.buttonCornerRadius))
+            .clipShape(RoundedRectangle(cornerRadius: theme.attributes.cornerRadius))
             .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.paymentOptions)
         }
         .padding(Constants.horizontalPadding)
