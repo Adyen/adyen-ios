@@ -9,26 +9,25 @@ import Foundation
 
 /// Formats a card's security code (CVC/CVV).
 public final class CardSecurityCodeFormatter: NumericFormatter {
-    
-    /// Indicate is validating CVV belong to a Amex card
+
     private var cardType: CardType?
     private var expectedLength: Int {
-        cardType == CardType.americanExpress ? 4 : 3
+        cardType.expectedSecurityCodeLength
     }
     
-    /// Initiate new instance of CardSecurityCodeValidator
+    /// Initiate new instance of CardSecurityCodeFormatter
     override public init() {
         super.init()
     }
     
-    /// Initiate new instance of CardSecurityCodeValidator
+    /// Initiate new instance of CardSecurityCodeFormatter
     /// - Parameter publisher: observer of a card type.
     public init(publisher: AdyenObservable<CardType?>) {
         super.init()
         bind(publisher, to: self, at: \.cardType)
     }
     
-    /// Initiate new instance of CardSecurityCodeValidator with a fixed ``CardType``
+    /// Initiate new instance of CardSecurityCodeFormatter with a fixed ``CardType``
     /// - Parameter cardType: The card type to format the security code for
     public init(cardType: CardType) {
         super.init()

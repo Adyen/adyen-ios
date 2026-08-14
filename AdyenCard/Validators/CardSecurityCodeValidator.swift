@@ -36,7 +36,7 @@ public final class CardSecurityCodeValidator: NumericStringValidator, AdyenObser
     }
     
     private func updateExpectedLength(from cardType: CardType?) {
-        let length = cardType == .americanExpress ? 4 : 3
+        let length = cardType.expectedSecurityCodeLength
         maximumLength = length
         minimumLength = length
     }

@@ -16,7 +16,7 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
         textField.allowsEditingActions = false
         
         observe(item.$selectedCard) { [weak self] cardsType in
-            let number = cardsType == CardType.americanExpress ? "4" : "3"
+            let number = String(cardsType.expectedSecurityCodeLength)
             let localizedPlaceholder = localizedString(.cardCvcItemPlaceholderDigits, item.localizationParameters, number)
 
             if let textField = self?.textField {
@@ -90,7 +90,7 @@ internal final class FormCardSecurityCodeItemView: FormTextItemView<FormCardSecu
     }
     
     private var expectedLength: Int {
-        item.selectedCard == CardType.americanExpress ? 4 : 3
+        item.selectedCard.expectedSecurityCodeLength
     }
 }
 
