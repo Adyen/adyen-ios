@@ -158,17 +158,22 @@ final class StoredPaymentMethodManagementPresentationMapperTests: XCTestCase {
         }
     }
 
-    func test_removalActionTitle_usesOriginalPaymentMethodMetadata() throws {
-        let mapper = makeMapper()
+    func test_sections_mapRemovalActionTitlesUsingOriginalPaymentMethodMetadata() throws {
         let card = try decode(storedCreditCardDictionary, as: StoredCardPaymentMethod.self)
         let bcmc = try decode(storedBcmcDictionary, as: StoredBCMCPaymentMethod.self)
         let ach = try decode(storedACHDictionary, as: StoredACHDirectDebitPaymentMethod.self)
         let payPal = try decode(storedPayPalDictionary, as: StoredPayPalPaymentMethod.self)
+        let items = makeSections(from: [card, bcmc, ach, payPal]).flatMap(\.items)
 
-        XCTAssertEqual(mapper.removalActionTitle(for: card), "Remove VISA \(String.Adyen.securedString)1111")
-        XCTAssertEqual(mapper.removalActionTitle(for: bcmc), "Remove Maestro \(String.Adyen.securedString)4449")
-        XCTAssertEqual(mapper.removalActionTitle(for: ach), "Remove ACH Direct Debit \(String.Adyen.securedString)6789")
-        XCTAssertEqual(mapper.removalActionTitle(for: payPal), "Remove PayPal")
+        XCTAssertEqual(
+            items.map(\.removalActionTitle),
+            [
+                "Remove VISA \(String.Adyen.securedString)1111",
+                "Remove Maestro \(String.Adyen.securedString)4449",
+                "Remove ACH Direct Debit \(String.Adyen.securedString)6789",
+                "Remove PayPal"
+            ]
+        )
     }
 
     private func assertItemCopiesDisplayInformation(

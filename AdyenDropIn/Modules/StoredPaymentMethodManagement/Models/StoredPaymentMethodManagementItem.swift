@@ -14,4 +14,5 @@ internal struct StoredPaymentMethodManagementItem {
     internal let subtitle: String?
     internal let logoURL: URL
     internal let accessibilityLabel: String?
+    internal let removalActionTitle: String
 }

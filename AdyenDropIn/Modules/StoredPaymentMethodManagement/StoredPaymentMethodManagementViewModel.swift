@@ -104,10 +104,6 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
         removalError = nil
     }
 
-    internal func removalActionTitle(for item: StoredPaymentMethodManagementItem) -> String {
-        mapper.removalActionTitle(for: item.paymentMethod)
-    }
-
     internal func confirmRemoval(of item: StoredPaymentMethodManagementItem) async {
         do {
             try await capability.remove(item.paymentMethod)

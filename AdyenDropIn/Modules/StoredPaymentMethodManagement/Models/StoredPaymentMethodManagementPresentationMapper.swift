@@ -30,7 +30,7 @@ internal struct StoredPaymentMethodManagementPresentationMapper {
         ].compactMap { $0 }
     }
 
-    internal func removalActionTitle(for paymentMethod: any StoredPaymentMethod) -> String {
+    private func removalActionTitle(for paymentMethod: any StoredPaymentMethod) -> String {
         localizedString(
             .storedPaymentMethodManagementRemoveConfirmationAction,
             localizationParameters,
@@ -46,7 +46,8 @@ internal struct StoredPaymentMethodManagementPresentationMapper {
             title: displayInformation.title,
             subtitle: displayInformation.subtitle,
             logoURL: logoURLProvider.logoURL(withName: displayInformation.logoName),
-            accessibilityLabel: displayInformation.accessibilityLabel
+            accessibilityLabel: displayInformation.accessibilityLabel,
+            removalActionTitle: removalActionTitle(for: paymentMethod)
         )
     }
 
