@@ -81,7 +81,8 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
             style: style
         )
         isHidden.wrappedValue = true
-        title = localizedString(.cardInstallmentsNumberOfInstallments, localizationParameters)
+        // TODO: Localize the "Installments" title once the string is finalized.
+        title = localizedString(LocalizationKey(key: "Installments"), localizationParameters)
         updatePickerContent()
     }
 
