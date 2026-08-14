@@ -17,15 +17,31 @@ permissions:
   contents: read
 
 jobs:
+  # The release notes are resolved here rather than inline in the distribute job, since a reusable
+  # workflow call cannot run its own steps.
+  nightly_config:
+    name: Resolve nightly configuration
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      release_notes: ${{ steps.resolve.outputs.release_notes }}
+
+    steps:
+      - name: Resolve nightly configuration
+        id: resolve
+        run: echo "release_notes=Latest SDK build - (${GITHUB_SHA::7})" >> "$GITHUB_OUTPUT"
+
   distribute:
     name: 📱🔥 Nightly Firebase Distribution
+    needs: nightly_config
     # The version name and build number are intentionally fixed so every nightly reports the same
     # build to Firebase App Distribution.
     uses: ./.github/workflows/firebase-app-distribution.yml
     with:
       build_version_name: nightly
       build_number: '1'
-      release_notes: Latest SDK build
+      release_notes: ${{ needs.nightly_config.outputs.release_notes }}
     secrets: inherit
 
   # Only a single nightly release should be available to testers at a time. App Distribution always
