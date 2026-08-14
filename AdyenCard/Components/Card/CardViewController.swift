@@ -346,7 +346,7 @@ extension CardViewController {
             append(items.socialSecurityNumberItem)
         }
         
-        if let installmentsItem = items.installmentsItem {
+        if let installmentsItem {
             append(installmentsItem)
         }
         
@@ -365,6 +365,12 @@ extension CardViewController {
             append(items.button)
             append(FormSpacerItem(numberOfSpaces: 2))
         }
+    }
+    
+    private var installmentsItem: FormItem? {
+        guard let installmentsItem = items.installmentsItem else { return nil }
+        // TODO: Localize the "Payment plan" section header once the string is finalized.
+        return installmentsItem.withSectionHeader(title: localizedString(LocalizationKey(key: "Payment plan"), configuration.localizationParameters))
     }
     
     private var billingAddressItem: FormItem? {
