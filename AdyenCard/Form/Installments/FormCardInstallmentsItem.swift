@@ -95,6 +95,7 @@ internal final class FormCardInstallmentsItem: BaseFormPickerItem<InstallmentEle
         // if there is no installment for the current card type then clear picker
         guard !additionalPickerElements.isEmpty else {
             selectableValues = [oneTimePaymentElement.pickerElement]
+            isHidden.wrappedValue = true
             return
         }
         isHidden.wrappedValue = false
