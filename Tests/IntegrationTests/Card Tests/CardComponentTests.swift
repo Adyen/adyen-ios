@@ -1211,7 +1211,7 @@ class CardComponentTests: XCTestCase {
         // nil card type means no options since there is no default option
         sut.cardViewController.items.installmentsItem?.update(cardBrand: nil)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 1)
-        XCTAssertFalse(try XCTUnwrap(sut.cardViewController.items.installmentsItem?.isHidden.wrappedValue))
+        XCTAssertTrue(try XCTUnwrap(sut.cardViewController.items.installmentsItem?.isHidden.wrappedValue))
         XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
     }
     
@@ -1266,7 +1266,7 @@ class CardComponentTests: XCTestCase {
         // nil card type means no options since there is no default option
         sut.cardViewController.items.installmentsItem?.update(cardBrand: nil)
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.selectableValues.count, 1)
-        XCTAssertFalse(try XCTUnwrap(sut.cardViewController.items.installmentsItem?.isHidden.wrappedValue))
+        XCTAssertTrue(try XCTUnwrap(sut.cardViewController.items.installmentsItem?.isHidden.wrappedValue))
         XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
     }
     
