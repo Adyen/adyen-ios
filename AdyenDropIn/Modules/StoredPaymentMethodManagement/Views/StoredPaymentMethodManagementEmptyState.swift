@@ -14,7 +14,11 @@ internal struct StoredPaymentMethodManagementEmptyState: View {
 
     private enum Constants {
         static let horizontalPadding: CGFloat = 16
-        static let verticalSpacing: CGFloat = 16
+        static let headerBottomSpacing: CGFloat = 24
+        static let contentHeight: CGFloat = 496
+        static let contentBottomSpacing: CGFloat = 48
+        static let messageSpacing: CGFloat = 4
+        static let buttonHeight: CGFloat = 52
     }
 
     @ObservedObject private var viewModel: StoredPaymentMethodManagementViewModel
@@ -26,34 +30,37 @@ internal struct StoredPaymentMethodManagementEmptyState: View {
     }
 
     internal var body: some View {
-        VStack(spacing: Constants.verticalSpacing) {
-            Spacer()
+        VStack(spacing: 0) {
+            StoredPaymentMethodManagementHeader(
+                title: viewModel.title,
+                description: viewModel.description,
+                theme: theme
+            )
+            .padding(.bottom, Constants.headerBottomSpacing)
 
-            VStack(spacing: 4) {
+            VStack(spacing: Constants.messageSpacing) {
                 Text(viewModel.emptyTitle)
-                    .font(.headline)
-                    .foregroundStyle(Color(uiColor: theme.colors.text))
+                    .font(Font(theme.elements.labels.bodyEmphasized.font))
+                    .foregroundStyle(Color(uiColor: theme.elements.labels.bodyEmphasized.color))
 
                 Text(viewModel.emptyMessage)
-                    .font(.subheadline)
-                    .foregroundStyle(Color(uiColor: theme.colors.textSecondary))
+                    .font(Font(theme.elements.labels.body.font))
+                    .foregroundStyle(Color(uiColor: theme.elements.labels.body.color))
                     .multilineTextAlignment(.center)
             }
-            .padding(.horizontal, Constants.horizontalPadding)
-
-            Spacer()
-
-            Button(viewModel.paymentOptionsTitle) {
-                viewModel.didRequestPaymentOptions()
-            }
-            .font(.body.weight(.semibold))
-            .foregroundStyle(Color(uiColor: theme.colors.textOnPrimary))
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 12)
-            .background(Color(uiColor: theme.colors.primary))
-            .clipShape(RoundedRectangle(cornerRadius: theme.attributes.cornerRadius))
-            .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.paymentOptions)
+            .frame(height: Constants.contentHeight)
+            .padding(.bottom, Constants.contentBottomSpacing)
+
+            Button(viewModel.paymentOptionsTitle, action: viewModel.didRequestPaymentOptions)
+                .font(Font(theme.elements.labels.bodyEmphasized.font))
+                .foregroundStyle(Color(uiColor: theme.colors.textOnPrimary))
+                .frame(maxWidth: .infinity, minHeight: Constants.buttonHeight)
+                .background(Color(uiColor: theme.colors.primary))
+                .clipShape(RoundedRectangle(cornerRadius: theme.attributes.cornerRadius))
+                .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.paymentOptions)
         }
-        .padding(Constants.horizontalPadding)
+        .padding(.horizontal, Constants.horizontalPadding)
+        .padding(.vertical, Constants.horizontalPadding)
     }
 }

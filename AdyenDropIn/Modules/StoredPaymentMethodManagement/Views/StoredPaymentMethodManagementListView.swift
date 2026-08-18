@@ -29,15 +29,11 @@ internal struct StoredPaymentMethodManagementListView: View {
     internal var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: Constants.verticalSpacing) {
-                VStack(alignment: .leading, spacing: Constants.pageHeaderSpacing) {
-                    Text(viewModel.title)
-                        .font(Font(theme.elements.labels.title.font))
-                        .foregroundStyle(Color(uiColor: theme.elements.labels.title.color))
-
-                    Text(viewModel.description)
-                        .font(Font(theme.elements.labels.body.font))
-                        .foregroundStyle(Color(uiColor: theme.elements.labels.body.color))
-                }
+                StoredPaymentMethodManagementHeader(
+                    title: viewModel.title,
+                    description: viewModel.description,
+                    theme: theme
+                )
 
                 ForEach(viewModel.sections, id: \.kind) { section in
                     StoredPaymentMethodManagementSectionView(
@@ -50,6 +46,29 @@ internal struct StoredPaymentMethodManagementListView: View {
                 }
             }
             .padding(Constants.horizontalPadding)
+        }
+    }
+}
+
+internal struct StoredPaymentMethodManagementHeader: View {
+
+    private enum Constants {
+        static let spacing: CGFloat = 8
+    }
+
+    internal let title: String
+    internal let description: String
+    internal let theme: CheckoutTheme
+
+    internal var body: some View {
+        VStack(alignment: .leading, spacing: Constants.spacing) {
+            Text(title)
+                .font(Font(theme.elements.labels.title.font))
+                .foregroundStyle(Color(uiColor: theme.elements.labels.title.color))
+
+            Text(description)
+                .font(Font(theme.elements.labels.body.font))
+                .foregroundStyle(Color(uiColor: theme.elements.labels.body.color))
         }
     }
 }
