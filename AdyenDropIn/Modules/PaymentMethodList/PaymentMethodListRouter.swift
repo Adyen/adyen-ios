@@ -20,6 +20,7 @@ internal protocol PaymentMethodListRouting: AnyObject {
     func present(component: PaymentComponent)
     func present(viewController: UIViewController)
     func present(actionViewController: UIViewController, onCancel: (() -> Void)?)
+    func presentStoredPaymentMethodManagement()
     func dismiss(completion: (() -> Void)?)
 }
 

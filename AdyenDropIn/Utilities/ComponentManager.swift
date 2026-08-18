@@ -149,6 +149,7 @@ internal final class ComponentManager: ComponentManaging {
         )
 
         return PaymentMethodsSection(
+            kind: .paid,
             header: ListSectionHeader(
                 title: localizedString(.paymentMethodsPaidMethods, localizationParameters),
                 style: listStyle.sectionHeader
@@ -165,6 +166,7 @@ internal final class ComponentManager: ComponentManaging {
             .filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
 
         return PaymentMethodsSection(
+            kind: .stored,
             header: ListSectionHeader(
                 title: localizedString(.paymentMethodsStoredMethods, localizationParameters),
                 editingStyle: allowDeleting ? .delete : .none,
@@ -185,6 +187,7 @@ internal final class ComponentManager: ComponentManaging {
             : nil
 
         return PaymentMethodsSection(
+            kind: .regular,
             header: header,
             paymentMethods: paymentMethods.regular
         )

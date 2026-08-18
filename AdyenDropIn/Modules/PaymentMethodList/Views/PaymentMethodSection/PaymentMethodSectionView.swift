@@ -29,10 +29,34 @@ internal final class PaymentMethodSectionView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.apply(section.theme.elements.labels.subheadlineEmphasized)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.adjustsFontForContentSizeCategory = true
+        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         label.accessibilityTraits = .header
         return label
     }()
-    
+
+    private lazy var trailingHeaderButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = section.theme.elements.labels.subheadline.font
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.setTitleColor(section.theme.elements.labels.subheadline.color, for: .normal)
+        button.setContentHuggingPriority(.required, for: .horizontal)
+        button.setContentCompressionResistancePriority(.required, for: .horizontal)
+        button.addTarget(self, action: #selector(didTapTrailingHeaderButton), for: .touchUpInside)
+        return button
+    }()
+
+    private lazy var headerStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [headerLabel, trailingHeaderButton])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        return stackView
+    }()
+
     private lazy var itemsContainerView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -65,9 +89,9 @@ internal final class PaymentMethodSectionView: UIView {
         accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "sectionView")
         addSubview(containerStackView)
         
-        containerStackView.addArrangedSubview(headerLabel)
+        containerStackView.addArrangedSubview(headerStackView)
         containerStackView.addArrangedSubview(itemsContainerView)
-        containerStackView.setCustomSpacing(Layout.headerLabelBottomMargin, after: headerLabel)
+        containerStackView.setCustomSpacing(Layout.headerLabelBottomMargin, after: headerStackView)
 
         NSLayoutConstraint.activate([
             containerStackView.topAnchor.constraint(equalTo: topAnchor),
@@ -86,23 +110,33 @@ internal final class PaymentMethodSectionView: UIView {
         }
 
         isHidden = false
-
-        if let headerTitle = section.headerTitle {
-            configureHeader(with: headerTitle)
-            headerLabel.isHidden = false
-        } else {
-            headerLabel.isHidden = true
-        }
-
+        configureHeaderLabel(with: section.headerTitle)
+        configureTrailingHeaderButton(with: section.headerTrailingButton)
+        headerStackView.isHidden = headerLabel.isHidden && trailingHeaderButton.isHidden
         populateSection(with: section.items)
     }
 
-    private func configureHeader(with title: String) {
-        headerLabel.text = title.localizedCapitalized
+    private func configureHeaderLabel(with title: String?) {
+        headerLabel.isHidden = title == nil
+        headerLabel.text = title?.localizedCapitalized
         headerLabel.accessibilityLabel = title
-        headerLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: title)
+        headerLabel.accessibilityIdentifier = title.map {
+            ViewIdentifierBuilder.build(scopeInstance: self, postfix: $0)
+        }
     }
-    
+
+    private func configureTrailingHeaderButton(with configuration: PaymentMethodSection.HeaderTrailingButton?) {
+        trailingHeaderButton.isHidden = configuration == nil
+        trailingHeaderButton.setTitle(configuration?.title, for: .normal)
+        trailingHeaderButton.accessibilityIdentifier = configuration.map { _ in
+            ViewIdentifierBuilder.build(scopeInstance: self, postfix: "headerTrailingButton")
+        }
+    }
+
+    @objc private func didTapTrailingHeaderButton() {
+        section.headerTrailingButton?.handler()
+    }
+
     private func clearItems() {
         itemsContainerView.arrangedSubviews.forEach { view in
             itemsContainerView.removeArrangedSubview(view)

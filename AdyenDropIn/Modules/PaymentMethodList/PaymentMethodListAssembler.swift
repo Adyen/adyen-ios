@@ -68,6 +68,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
             logoURLProvider: logoURLProvider,
+            supportsStoredPaymentMethodManagement: storedPaymentMethodManagementCapability != nil,
             theme: theme
         )
         let view = PaymentMethodListViewController(viewModel: viewModel)
