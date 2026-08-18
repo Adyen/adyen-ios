@@ -20,19 +20,12 @@ internal final class StoredPaymentMethodManagementHostingController: UIHostingCo
     internal init(viewModel: StoredPaymentMethodManagementViewModel, theme: CheckoutTheme) {
         self.viewModel = viewModel
         super.init(rootView: StoredPaymentMethodManagementView(viewModel: viewModel, theme: theme))
+        navigationItem.largeTitleDisplayMode = .never
     }
 
     @available(*, unavailable)
     internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    override internal func viewDidLoad() {
-        super.viewDidLoad()
-
-        navigationItem.title = viewModel.title
-        navigationItem.largeTitleDisplayMode = .always
-        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     override internal func viewDidDisappear(_ animated: Bool) {

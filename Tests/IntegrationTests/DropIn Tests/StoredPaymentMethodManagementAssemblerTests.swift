@@ -35,7 +35,7 @@ struct StoredPaymentMethodManagementAssemblerTests {
     }
 
     @Test
-    func resolveRouter_configuresLargeNavigationTitle() throws {
+    func resolveRouter_usesStandardNavigationBar() throws {
         let listener = StoredPaymentMethodManagementListenerMock()
         let router = try #require(
             StoredPaymentMethodManagementAssembler(
@@ -49,13 +49,9 @@ struct StoredPaymentMethodManagementAssemblerTests {
             ) as? StoredPaymentMethodManagementRouter
         )
         let hostingController = try #require(router.rootViewController as? StoredPaymentMethodManagementHostingController)
-        let navigationController = UINavigationController(rootViewController: hostingController)
 
-        hostingController.loadViewIfNeeded()
-
-        #expect(hostingController.navigationItem.title == hostingController.viewModel.title)
-        #expect(hostingController.navigationItem.largeTitleDisplayMode == .always)
-        #expect(navigationController.navigationBar.prefersLargeTitles)
+        #expect(hostingController.navigationItem.title == nil)
+        #expect(hostingController.navigationItem.largeTitleDisplayMode == .never)
     }
 
     @Test

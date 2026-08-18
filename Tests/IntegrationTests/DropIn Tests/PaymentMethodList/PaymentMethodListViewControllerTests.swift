@@ -271,7 +271,8 @@ struct PaymentMethodListViewControllerTests {
         let trailingHeaderButton: UIButton? = sut.view.findView(by: "headerTrailingButton")
         #expect(trailingHeaderButton?.isHidden == false)
         #expect(trailingHeaderButton?.currentTitle == "Manage")
-        #expect(trailingHeaderButton?.titleLabel?.font == CheckoutTheme.default.elements.labels.subheadline.font)
+        #expect(trailingHeaderButton?.titleLabel?.font == CheckoutTheme.default.elements.labels.body.font)
+        #expect(trailingHeaderButton?.titleColor(for: .normal) == CheckoutTheme.default.colors.highlight)
 
         trailingHeaderButton?.sendActions(for: .touchUpInside)
         #expect(headerTrailingButtonCallsCount == 1)

@@ -28,6 +28,7 @@ struct PaymentMethodListRouterTests {
 
         let receivedViewController = navigationController.viewControllers.first
         #expect(expectedViewController == receivedViewController)
+        #expect(!navigationController.navigationBar.prefersLargeTitles)
     }
 
     // MARK: - Dismiss Tests

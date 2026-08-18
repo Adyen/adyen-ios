@@ -15,6 +15,7 @@ internal struct StoredPaymentMethodManagementListView: View {
     private enum Constants {
         static let horizontalPadding: CGFloat = 16
         static let verticalSpacing: CGFloat = 16
+        static let pageHeaderSpacing: CGFloat = 8
     }
 
     @ObservedObject private var viewModel: StoredPaymentMethodManagementViewModel
@@ -28,9 +29,15 @@ internal struct StoredPaymentMethodManagementListView: View {
     internal var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: Constants.verticalSpacing) {
-                Text(viewModel.description)
-                    .font(.subheadline)
-                    .foregroundStyle(Color(uiColor: theme.colors.textSecondary))
+                VStack(alignment: .leading, spacing: Constants.pageHeaderSpacing) {
+                    Text(viewModel.title)
+                        .font(Font(theme.elements.labels.title.font))
+                        .foregroundStyle(Color(uiColor: theme.elements.labels.title.color))
+
+                    Text(viewModel.description)
+                        .font(Font(theme.elements.labels.body.font))
+                        .foregroundStyle(Color(uiColor: theme.elements.labels.body.color))
+                }
 
                 ForEach(viewModel.sections, id: \.kind) { section in
                     StoredPaymentMethodManagementSectionView(
@@ -65,7 +72,9 @@ private struct StoredPaymentMethodManagementLogoView: View {
 private struct StoredPaymentMethodManagementSectionView: View {
 
     private enum Constants {
-        static let itemSpacing: CGFloat = 8
+        static let headerSpacing: CGFloat = 8
+        static let itemSpacing: CGFloat = 12
+        static let headerVerticalPadding: CGFloat = 8
     }
 
     let title: String
@@ -75,18 +84,21 @@ private struct StoredPaymentMethodManagementSectionView: View {
     let onRemove: (StoredPaymentMethodManagementItem) -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Constants.itemSpacing) {
+        VStack(alignment: .leading, spacing: Constants.headerSpacing) {
             Text(title)
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(Color(uiColor: theme.colors.textSecondary))
+                .font(Font(theme.elements.labels.subheadlineEmphasized.font))
+                .foregroundStyle(Color(uiColor: theme.elements.labels.subheadlineEmphasized.color))
+                .padding(.vertical, Constants.headerVerticalPadding)
 
-            ForEach(section.items, id: \.paymentMethod.identifier) { item in
-                StoredPaymentMethodManagementRow(
-                    item: item,
-                    removeButtonTitle: removeButtonTitle,
-                    theme: theme,
-                    onRemove: onRemove
-                )
+            VStack(spacing: Constants.itemSpacing) {
+                ForEach(section.items, id: \.paymentMethod.identifier) { item in
+                    StoredPaymentMethodManagementRow(
+                        item: item,
+                        removeButtonTitle: removeButtonTitle,
+                        theme: theme,
+                        onRemove: onRemove
+                    )
+                }
             }
         }
         .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.section(section.kind))
@@ -96,9 +108,10 @@ private struct StoredPaymentMethodManagementSectionView: View {
 private struct StoredPaymentMethodManagementRow: View {
 
     private enum Constants {
-        static let itemSpacing: CGFloat = 12
-        static let logoSize: CGFloat = 24
-        static let verticalPadding: CGFloat = 4
+        static let itemSpacing: CGFloat = 16
+        static let logoWidth: CGFloat = 40
+        static let logoHeight: CGFloat = 26
+        static let verticalPadding: CGFloat = 12
     }
 
     let item: StoredPaymentMethodManagementItem
@@ -110,16 +123,16 @@ private struct StoredPaymentMethodManagementRow: View {
         HStack(spacing: Constants.itemSpacing) {
             HStack(spacing: Constants.itemSpacing) {
                 StoredPaymentMethodManagementLogoView(url: item.logoURL)
-                    .frame(width: Constants.logoSize, height: Constants.logoSize)
+                    .frame(width: Constants.logoWidth, height: Constants.logoHeight)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(item.title)
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(Color(uiColor: theme.colors.text))
+                        .font(Font(theme.elements.labels.bodyEmphasized.font))
+                        .foregroundStyle(Color(uiColor: theme.elements.labels.bodyEmphasized.color))
 
                     if let subtitle = item.subtitle {
                         Text(subtitle)
-                            .font(.caption)
+                            .font(Font(theme.elements.labels.subheadline.font))
                             .foregroundStyle(Color(uiColor: theme.colors.textSecondary))
                     }
                 }
@@ -132,7 +145,7 @@ private struct StoredPaymentMethodManagementRow: View {
             Button(removeButtonTitle) {
                 onRemove(item)
             }
-            .font(.caption.weight(.semibold))
+            .font(Font(theme.elements.labels.subheadline.font))
             .foregroundStyle(Color(uiColor: theme.colors.destructive))
             .accessibilityLabel(item.removalActionTitle)
             .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.remove(item.paymentMethod.identifier))

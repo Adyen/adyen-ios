@@ -40,9 +40,9 @@ internal final class PaymentMethodSectionView: UIView {
     private lazy var trailingHeaderButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.titleLabel?.font = section.theme.elements.labels.subheadline.font
+        button.titleLabel?.font = section.theme.elements.labels.body.font
         button.titleLabel?.adjustsFontForContentSizeCategory = true
-        button.setTitleColor(section.theme.elements.labels.subheadline.color, for: .normal)
+        button.setTitleColor(section.theme.colors.highlight, for: .normal)
         button.setContentHuggingPriority(.required, for: .horizontal)
         button.setContentCompressionResistancePriority(.required, for: .horizontal)
         button.addTarget(self, action: #selector(didTapTrailingHeaderButton), for: .touchUpInside)
