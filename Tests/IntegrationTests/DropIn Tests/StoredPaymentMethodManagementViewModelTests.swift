@@ -58,9 +58,26 @@ struct StoredPaymentMethodManagementViewModelTests {
         #expect(sut.sections.first?.items.count == 1)
         #expect(sut.itemPendingRemoval == nil)
         #expect(sut.removalError == .unsuccessful)
+    }
 
-        sut.dismissRemovalError()
+    @Test
+    func confirmRemoval_afterFailureThenSuccess_clearsError() async throws {
+        var removalAttemptCount = 0
+        let sut = makeSUT(
+            capability: StoredPaymentMethodManagementCapability { _ in
+                removalAttemptCount += 1
 
+                if removalAttemptCount == 1 {
+                    throw StoredPaymentMethodRemovalError.unsuccessful
+                }
+            }
+        )
+        let item = try #require(sut.sections.first?.items.first)
+
+        await sut.confirmRemoval(of: item)
+        #expect(sut.removalError == .unsuccessful)
+
+        await sut.confirmRemoval(of: item)
         #expect(sut.removalError == nil)
     }
 

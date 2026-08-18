@@ -55,16 +55,8 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
         localizedString(.removeButton, localizationParameters)
     }
 
-    internal var removalErrorTitle: String {
-        localizedString(.errorTitle, localizationParameters)
-    }
-
     internal var removalErrorMessage: String {
         localizedString(.storedPaymentMethodManagementRemovalErrorMessage, localizationParameters)
-    }
-
-    internal var dismissTitle: String {
-        localizedString(.dismissButton, localizationParameters)
     }
 
     // MARK: - Initializers
@@ -105,10 +97,6 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
         itemPendingRemoval = nil
     }
 
-    internal func dismissRemovalError() {
-        removalError = nil
-    }
-
     internal func confirmRemoval(of item: StoredPaymentMethodManagementItem) async {
         do {
             try await capability.remove(item.paymentMethod)
@@ -120,6 +108,7 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
 
         remove(item)
         itemPendingRemoval = nil
+        removalError = nil
         router?.didRemove(paymentMethod: item.paymentMethod)
     }
 

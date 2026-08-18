@@ -16,6 +16,7 @@ internal struct StoredPaymentMethodManagementListView: View {
         static let horizontalPadding: CGFloat = 16
         static let verticalSpacing: CGFloat = 16
         static let pageHeaderSpacing: CGFloat = 8
+        static let errorAnimationDuration = 0.2
     }
 
     @ObservedObject private var viewModel: StoredPaymentMethodManagementViewModel
@@ -35,6 +36,13 @@ internal struct StoredPaymentMethodManagementListView: View {
                     theme: theme
                 )
 
+                if viewModel.removalError != nil {
+                    Text(viewModel.removalErrorMessage)
+                        .font(Font(theme.elements.labels.body.font))
+                        .foregroundStyle(Color(uiColor: theme.colors.destructive))
+                        .transition(.opacity.combined(with: .move(edge: .top)))
+                }
+
                 ForEach(viewModel.sections, id: \.kind) { section in
                     StoredPaymentMethodManagementSectionView(
                         title: viewModel.sectionTitle(for: section),
@@ -46,6 +54,10 @@ internal struct StoredPaymentMethodManagementListView: View {
                 }
             }
             .padding(Constants.horizontalPadding)
+            .animation(
+                .easeInOut(duration: Constants.errorAnimationDuration),
+                value: viewModel.removalError != nil
+            )
         }
     }
 }
