@@ -71,10 +71,21 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
             theme: theme
         )
         let view = PaymentMethodListViewController(viewModel: viewModel)
+        let storedPaymentMethodManagementAssembler = StoredPaymentMethodManagementAssembler(
+            localizationParameters: localizationParameters,
+            logoURLProvider: logoURLProvider,
+            theme: theme
+        )
         let router = PaymentMethodListRouter(
             viewController: view,
             listener: delegate,
-            componentContainerAssembler: componentContainerAssembler
+            componentContainerAssembler: componentContainerAssembler,
+            storedPaymentMethodManagementAssembler: storedPaymentMethodManagementAssembler,
+            storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability,
+            storedPaymentMethodsProvider: { componentManager.paymentMethods.stored },
+            onStoredPaymentMethodRemoved: { paymentMethod in
+                viewModel.remove(storedPaymentMethod: paymentMethod)
+            }
         )
         viewModel.router = router
         return router

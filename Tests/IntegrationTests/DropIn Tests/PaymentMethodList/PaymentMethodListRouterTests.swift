@@ -92,6 +92,150 @@ struct PaymentMethodListRouterTests {
         #expect(navigationControllerSpy.presentCallsCount == 1)
     }
 
+    // MARK: - StoredPaymentMethodManagement Tests
+
+    @Test
+    func presentStoredPaymentMethodManagement_shouldPushAndRetainManagementRouter() {
+        // Given
+        let viewControllerSpy = ViewControllerSpy()
+        let navigationControllerSpy = NavigationControllerSpy()
+        viewControllerSpy.setNavigationController(navigationControllerSpy)
+        let managementRouter = RouterMock()
+        let managementAssembler = StoredPaymentMethodManagementAssemblerSpy(router: managementRouter)
+        let sut = PaymentMethodListRouter(
+            viewController: viewControllerSpy,
+            navigationController: navigationControllerSpy,
+            listener: nil,
+            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
+            storedPaymentMethodManagementAssembler: managementAssembler,
+            storedPaymentMethodManagementCapability: .init(remove: { _ in }),
+            storedPaymentMethodsProvider: { [] },
+            onStoredPaymentMethodRemoved: { _ in }
+        )
+
+        // When
+        sut.presentStoredPaymentMethodManagement()
+
+        // Then
+        #expect(managementAssembler.resolveCallsCount == 1)
+        #expect(sut.childRouter === managementRouter)
+        #expect(navigationControllerSpy.pushViewControllerCallsCount == 1)
+        #expect(navigationControllerSpy.capturedPushedViewController === managementRouter.rootViewController)
+    }
+
+    @Test
+    func presentStoredPaymentMethodManagement_withoutCapability_shouldNotRoute() {
+        // Given
+        let viewControllerSpy = ViewControllerSpy()
+        let navigationControllerSpy = NavigationControllerSpy()
+        viewControllerSpy.setNavigationController(navigationControllerSpy)
+        let managementAssembler = StoredPaymentMethodManagementAssemblerSpy(router: RouterMock())
+        let sut = PaymentMethodListRouter(
+            viewController: viewControllerSpy,
+            navigationController: navigationControllerSpy,
+            listener: nil,
+            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
+            storedPaymentMethodManagementAssembler: managementAssembler,
+            storedPaymentMethodManagementCapability: nil,
+            storedPaymentMethodsProvider: { [] },
+            onStoredPaymentMethodRemoved: { _ in }
+        )
+
+        // When
+        sut.presentStoredPaymentMethodManagement()
+
+        // Then
+        #expect(managementAssembler.resolveCallsCount == 0)
+        #expect(navigationControllerSpy.pushViewControllerCallsCount == 0)
+        #expect(sut.childRouter == nil)
+    }
+
+    @Test
+    func didRemoveStoredPaymentMethod_shouldForwardToParentList() {
+        // Given
+        let viewControllerSpy = ViewControllerSpy()
+        let navigationControllerSpy = NavigationControllerSpy()
+        viewControllerSpy.setNavigationController(navigationControllerSpy)
+        var removedIdentifier: String?
+        let sut = PaymentMethodListRouter(
+            viewController: viewControllerSpy,
+            navigationController: navigationControllerSpy,
+            listener: nil,
+            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
+            storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerSpy(router: RouterMock()),
+            storedPaymentMethodManagementCapability: .init(remove: { _ in }),
+            storedPaymentMethodsProvider: { [] },
+            onStoredPaymentMethodRemoved: { removedIdentifier = $0.identifier }
+        )
+        let paymentMethod = StoredPaymentMethodMock(
+            identifier: "stored-payment-method-id",
+            supportedShopperInteractions: [.shopperPresent],
+            type: .scheme,
+            name: "Stored Card"
+        )
+
+        // When
+        sut.didRemoveStoredPaymentMethod(paymentMethod)
+
+        // Then
+        #expect(removedIdentifier == paymentMethod.identifier)
+    }
+
+    @Test
+    func didRequestPaymentOptions_shouldPopAndReleaseChildRouter() throws {
+        // Given
+        let viewControllerSpy = ViewControllerSpy()
+        let navigationControllerSpy = NavigationControllerSpy()
+        viewControllerSpy.setNavigationController(navigationControllerSpy)
+        let managementRouter = RouterMock()
+        let sut = PaymentMethodListRouter(
+            viewController: viewControllerSpy,
+            navigationController: navigationControllerSpy,
+            listener: nil,
+            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
+            storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerSpy(router: managementRouter),
+            storedPaymentMethodManagementCapability: .init(remove: { _ in }),
+            storedPaymentMethodsProvider: { [] },
+            onStoredPaymentMethodRemoved: { _ in }
+        )
+        sut.presentStoredPaymentMethodManagement()
+        try #require(sut.childRouter != nil)
+
+        // When
+        sut.didRequestPaymentOptions()
+
+        // Then
+        #expect(navigationControllerSpy.popViewControllerCallsCount == 1)
+        #expect(sut.childRouter == nil)
+    }
+
+    @Test
+    func didDismissStoredPaymentMethodManagement_shouldReleaseChildRouter() throws {
+        // Given
+        let viewControllerSpy = ViewControllerSpy()
+        let navigationControllerSpy = NavigationControllerSpy()
+        viewControllerSpy.setNavigationController(navigationControllerSpy)
+        let managementRouter = RouterMock()
+        let sut = PaymentMethodListRouter(
+            viewController: viewControllerSpy,
+            navigationController: navigationControllerSpy,
+            listener: nil,
+            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
+            storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerSpy(router: managementRouter),
+            storedPaymentMethodManagementCapability: .init(remove: { _ in }),
+            storedPaymentMethodsProvider: { [] },
+            onStoredPaymentMethodRemoved: { _ in }
+        )
+        sut.presentStoredPaymentMethodManagement()
+        try #require(sut.childRouter != nil)
+
+        // When
+        sut.didDismissStoredPaymentMethodManagement()
+
+        // Then
+        #expect(sut.childRouter == nil)
+    }
+
     // MARK: - ComponentContainerRouterListener Tests
 
     @Test
@@ -187,12 +331,17 @@ struct PaymentMethodListRouterTests {
         let componentContainerRouterMock = RouterMock()
         let componentContainerAssemblerMock = ComponentContainerAssemblerProtocolMock()
         componentContainerAssemblerMock.resolveComponentContainerRouterForListenerReturnValue = componentContainerRouterMock
+        let storedPaymentMethodManagementAssembler = StoredPaymentMethodManagementAssemblerSpy(router: RouterMock())
 
         let sut = PaymentMethodListRouter(
             viewController: viewControllerSpy,
             navigationController: navigationControllerSpy,
             listener: listenerMock,
-            componentContainerAssembler: componentContainerAssemblerMock
+            componentContainerAssembler: componentContainerAssemblerMock,
+            storedPaymentMethodManagementAssembler: storedPaymentMethodManagementAssembler,
+            storedPaymentMethodManagementCapability: .init(remove: { _ in }),
+            storedPaymentMethodsProvider: { [] },
+            onStoredPaymentMethodRemoved: { _ in }
         )
 
         return (sut, viewControllerSpy, navigationControllerSpy, listenerMock, componentContainerAssemblerMock)
@@ -223,5 +372,25 @@ struct PaymentMethodListRouterTests {
     private func makeInitiablePaymentComponentMock() -> PaymentComponentMock {
         let paymentMethodMock = PaymentMethodMock(type: .applePay, name: "Apple Pay")
         return PaymentComponentMock(paymentMethod: paymentMethodMock)
+    }
+}
+
+@MainActor
+private final class StoredPaymentMethodManagementAssemblerSpy: StoredPaymentMethodManagementAssemblerProtocol {
+
+    private let router: Router
+    private(set) var resolveCallsCount = 0
+
+    init(router: Router) {
+        self.router = router
+    }
+
+    func resolveStoredPaymentMethodManagementRouter(
+        paymentMethods: [any StoredPaymentMethod],
+        capability: StoredPaymentMethodManagementCapability,
+        listener: StoredPaymentMethodManagementListener
+    ) -> Router {
+        resolveCallsCount += 1
+        return router
     }
 }

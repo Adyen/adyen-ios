@@ -32,6 +32,10 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     private weak var listener: PaymentMethodListRouterListener?
     private let navigationController: UINavigationController
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
+    private let storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol
+    private let storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
+    private let storedPaymentMethodsProvider: () -> [any StoredPaymentMethod]
+    private let onStoredPaymentMethodRemoved: (any StoredPaymentMethod) -> Void
     internal private(set) var childRouter: Router?
     
     // MARK: - Initializers
@@ -40,12 +44,20 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         viewController: UIViewController,
         navigationController: UINavigationController = UINavigationController(),
         listener: PaymentMethodListRouterListener?,
-        componentContainerAssembler: ComponentContainerAssemblerProtocol
+        componentContainerAssembler: ComponentContainerAssemblerProtocol,
+        storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol,
+        storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?,
+        storedPaymentMethodsProvider: @escaping () -> [any StoredPaymentMethod],
+        onStoredPaymentMethodRemoved: @escaping (any StoredPaymentMethod) -> Void
     ) {
         self.viewController = viewController
         self.navigationController = navigationController
         self.listener = listener
         self.componentContainerAssembler = componentContainerAssembler
+        self.storedPaymentMethodManagementAssembler = storedPaymentMethodManagementAssembler
+        self.storedPaymentMethodManagementCapability = storedPaymentMethodManagementCapability
+        self.storedPaymentMethodsProvider = storedPaymentMethodsProvider
+        self.onStoredPaymentMethodRemoved = onStoredPaymentMethodRemoved
     }
     
     // MARK: - Router
@@ -86,6 +98,23 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
             onCancel: onCancel
         )
         rootViewController.present(actionViewController, animated: true)
+    }
+
+    // MARK: - Internal
+
+    internal func presentStoredPaymentMethodManagement() {
+        guard let storedPaymentMethodManagementCapability else {
+            return
+        }
+
+        let storedPaymentMethodManagementRouter = storedPaymentMethodManagementAssembler
+            .resolveStoredPaymentMethodManagementRouter(
+                paymentMethods: storedPaymentMethodsProvider(),
+                capability: storedPaymentMethodManagementCapability,
+                listener: self
+            )
+        childRouter = storedPaymentMethodManagementRouter
+        navigationController.pushViewController(storedPaymentMethodManagementRouter.rootViewController, animated: true)
     }
 
     // MARK: - Private
@@ -139,5 +168,23 @@ extension PaymentMethodListRouter: ComponentContainerRouterListener {
     internal func didDismissComponentContainer(completion: (() -> Void)?) {
         childRouter = nil
         completion?()
+    }
+}
+
+// MARK: - StoredPaymentMethodManagementListener
+
+extension PaymentMethodListRouter: StoredPaymentMethodManagementListener {
+
+    internal func didRemoveStoredPaymentMethod(_ paymentMethod: any StoredPaymentMethod) {
+        onStoredPaymentMethodRemoved(paymentMethod)
+    }
+
+    internal func didRequestPaymentOptions() {
+        navigationController.popViewController(animated: true)
+        childRouter = nil
+    }
+
+    internal func didDismissStoredPaymentMethodManagement() {
+        childRouter = nil
     }
 }
