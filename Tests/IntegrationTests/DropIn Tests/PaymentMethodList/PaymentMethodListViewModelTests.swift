@@ -254,6 +254,45 @@ struct PaymentMethodListViewModelTests {
         #expect(bancontact?.subtitle == "Expired")
     }
 
+    @Test
+    func remove_givenRemainingStoredMethods_shouldRefreshListAndRetainFavorites() throws {
+        // Given
+        let (sut, _, _) = makeSUT()
+        let paymentMethod = try #require(sut.paymentMethodSections.flatMap(\.paymentMethods).first as? any StoredPaymentMethod)
+        let favoritesTitle = localizedString(.paymentMethodsStoredMethods, LocalizationParameters())
+
+        // When
+        sut.remove(storedPaymentMethod: paymentMethod)
+
+        // Then
+        #expect(sut.paymentMethodSections.flatMap(\.paymentMethods).contains(where: { ($0 as? any StoredPaymentMethod)?.identifier == paymentMethod.identifier }) == false)
+        guard case let .loaded(sections) = sut.state else {
+            Issue.record("Expected the refreshed list state")
+            return
+        }
+        #expect(sections.contains { $0.headerTitle == favoritesTitle })
+    }
+
+    @Test
+    func remove_givenFinalStoredMethod_shouldRemoveFavoritesFromList() throws {
+        // Given
+        let finalStoredPaymentMethod = try #require(paymentMethods.stored.first)
+        let (sut, _, _) = makeSUT(storedPaymentMethods: [finalStoredPaymentMethod])
+        let paymentMethod = finalStoredPaymentMethod
+        let favoritesTitle = localizedString(.paymentMethodsStoredMethods, LocalizationParameters())
+
+        // When
+        sut.remove(storedPaymentMethod: paymentMethod)
+
+        // Then
+        #expect(sut.paymentMethodSections.contains { $0.header?.title == favoritesTitle } == false)
+        guard case let .loaded(sections) = sut.state else {
+            Issue.record("Expected the refreshed list state")
+            return
+        }
+        #expect(sections.contains { $0.headerTitle == favoritesTitle } == false)
+    }
+
     // MARK: - ActionPresenter Tests
 
     @Test
@@ -308,6 +347,7 @@ struct PaymentMethodListViewModelTests {
 
     private func makeSUT(
         includeApplePay: Bool = true,
+        storedPaymentMethods: [any StoredPaymentMethod]? = nil,
         amount: Amount? = .init(value: 100, currencyCode: "EUR")
     ) -> (
         sut: PaymentMethodListViewModel,
@@ -321,7 +361,10 @@ struct PaymentMethodListViewModelTests {
             analyticsProvider: AnalyticsProviderMock()
         )
 
-        let methods = includeApplePay ? paymentMethods : paymentMethodsWithoutApplePay
+        var methods = includeApplePay ? paymentMethods : paymentMethodsWithoutApplePay
+        if let storedPaymentMethods {
+            methods.stored = storedPaymentMethods
+        }
         let componentManagerMock = ComponentManager(
             paymentMethods: methods,
             context: context,

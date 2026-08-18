@@ -25,6 +25,7 @@ import Foundation
 internal protocol ComponentManaging {
     var sections: [PaymentMethodsSection] { get }
     func buildComponent(for paymentMethod: PaymentMethod) -> PaymentComponent?
+    func removeStoredPaymentMethod(withIdentifier identifier: String)
 }
 
 // TODO: - The ComponentManager should use the factories that Eren introduced in components.
@@ -33,7 +34,7 @@ internal final class ComponentManager: ComponentManaging {
 
     // MARK: - Properties
 
-    internal let paymentMethods: PaymentMethods
+    internal private(set) var paymentMethods: PaymentMethods
     internal let configuration: DropInComponent.Configuration
     internal let context: AdyenContext
     internal let order: PartialPaymentOrder?
@@ -74,9 +75,13 @@ internal final class ComponentManager: ComponentManaging {
     
     // MARK: - ComponentManaging
     
-    internal lazy var sections: [PaymentMethodsSection] = {
+    internal var sections: [PaymentMethodsSection] {
         [paidSection, storedSection, regularSection].filter { !$0.paymentMethods.isEmpty }
-    }()
+    }
+
+    internal func removeStoredPaymentMethod(withIdentifier identifier: String) {
+        paymentMethods.stored.removeAll { $0.identifier == identifier }
+    }
 
     internal func buildComponent(for paymentMethod: PaymentMethod) -> PaymentComponent? {
         guard isAllowed(paymentMethod) else {
@@ -152,7 +157,7 @@ internal final class ComponentManager: ComponentManaging {
         )
     }()
 
-    private lazy var storedSection: PaymentMethodsSection = {
+    private var storedSection: PaymentMethodsSection {
         let allowDeleting = configuration.paymentMethodsList.allowDisablingStoredPaymentMethods
             && supportsEditingStoredPaymentMethods
 
@@ -167,9 +172,9 @@ internal final class ComponentManager: ComponentManaging {
             ),
             paymentMethods: storedPaymentMethods
         )
-    }()
+    }
 
-    private lazy var regularSection: PaymentMethodsSection = {
+    private var regularSection: PaymentMethodsSection {
         let needsHeader = !paidSection.paymentMethods.isEmpty || !storedSection.paymentMethods.isEmpty
 
         let header: ListSectionHeader? = needsHeader
@@ -183,7 +188,7 @@ internal final class ComponentManager: ComponentManaging {
             header: header,
             paymentMethods: paymentMethods.regular
         )
-    }()
+    }
 }
 
 // MARK: - Private

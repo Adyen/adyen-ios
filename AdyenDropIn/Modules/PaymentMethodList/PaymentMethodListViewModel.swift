@@ -60,7 +60,9 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         $state
     }
 
-    internal let paymentMethodSections: [PaymentMethodsSection]
+    internal var paymentMethodSections: [PaymentMethodsSection] {
+        componentManager.sections
+    }
 
     // MARK: - Initializers
 
@@ -76,7 +78,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         self.context = context
         self.localizationParameters = localizationParameters
         self.componentManager = componentManager
-        self.paymentMethodSections = componentManager.sections
         self.dropInFlowManager = dropInFlowManager
         self.logoURLProvider = logoURLProvider
         self.theme = theme
@@ -148,8 +149,9 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         }
     }
 
-    private func delete(paymentMethod: PaymentMethod, completion: @escaping Adyen.Completion<Bool>) {
-        // TODO: - Logic to delete stored payment method
+    internal func remove(storedPaymentMethod: any StoredPaymentMethod) {
+        componentManager.removeStoredPaymentMethod(withIdentifier: storedPaymentMethod.identifier)
+        state = .loaded(sections: getSections())
     }
 
     private func getSections() -> [PaymentMethodSection] {
