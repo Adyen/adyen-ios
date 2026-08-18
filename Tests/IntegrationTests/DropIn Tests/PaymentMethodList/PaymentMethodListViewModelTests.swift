@@ -250,8 +250,11 @@ struct PaymentMethodListViewModelTests {
         let bancontact = items.first { $0.title == String.Adyen.securedString + "4449" }
 
         #expect(card?.subtitle == "Expired")
+        #expect(card?.subtitleStatus == .warning)
         #expect(ach?.subtitle == "ACH Direct Debit")
+        #expect(ach?.subtitleStatus == .normal)
         #expect(bancontact?.subtitle == "Expired")
+        #expect(bancontact?.subtitleStatus == .warning)
     }
 
     @Test

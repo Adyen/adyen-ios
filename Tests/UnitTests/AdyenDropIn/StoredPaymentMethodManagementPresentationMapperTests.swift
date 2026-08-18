@@ -130,6 +130,7 @@ final class StoredPaymentMethodManagementPresentationMapperTests: XCTestCase {
         let securedCardLastFour = String.Adyen.securedString + "1111"
         XCTAssertEqual(itemsByIdentifier[card.identifier]?.title, securedCardLastFour)
         XCTAssertEqual(itemsByIdentifier[card.identifier]?.subtitle, "Expired")
+        XCTAssertEqual(itemsByIdentifier[card.identifier]?.subtitleStatus, .warning)
 
         XCTAssertEqual(itemsByIdentifier[cashAppPay.identifier]?.title, "$shopper")
         XCTAssertEqual(itemsByIdentifier[cashAppPay.identifier]?.subtitle, "Cash App Pay")
@@ -185,6 +186,7 @@ final class StoredPaymentMethodManagementPresentationMapperTests: XCTestCase {
         let displayInformation = paymentMethod.displayInformation(using: nil)
         XCTAssertEqual(item.title, displayInformation.title, file: file, line: line)
         XCTAssertEqual(item.subtitle, displayInformation.subtitle, file: file, line: line)
+        XCTAssertEqual(item.subtitleStatus, displayInformation.subtitleStatus, file: file, line: line)
         XCTAssertEqual(item.accessibilityLabel, displayInformation.accessibilityLabel, file: file, line: line)
     }
 

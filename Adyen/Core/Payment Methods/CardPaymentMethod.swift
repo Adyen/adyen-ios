@@ -71,7 +71,7 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
         let accessibilityLabel = [
             name,
             "\(localizedString(.accessibilityLastFourDigits, parameters)): \(lastFourSeparated)",
-            description.isExpired ? description.subtitle : nil
+            description.subtitleStatus == .warning ? description.subtitle : nil
         ]
         .compactMap { $0 }
         .joined(separator: ", ")
@@ -79,6 +79,7 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
         return DisplayInformation(
             title: String.Adyen.securedString + lastFour,
             subtitle: description.subtitle,
+            subtitleStatus: description.subtitleStatus,
             logoName: brand.rawValue,
             accessibilityLabel: accessibilityLabel
         )
@@ -122,7 +123,7 @@ package struct StoredCardDescriptionProvider {
 
     package struct Description {
         package let subtitle: String
-        package let isExpired: Bool
+        package let subtitleStatus: DisplayInformation.SubtitleStatus
     }
 
     private let currentDate: Date
@@ -138,22 +139,20 @@ package struct StoredCardDescriptionProvider {
         using parameters: LocalizationParameters?
     ) -> Description {
         guard isExpired(card) else {
-            return Description(subtitle: card.name, isExpired: false)
+            return Description(subtitle: card.name, subtitleStatus: .normal)
         }
 
         return Description(
             subtitle: localizedString(.storedPaymentMethodExpired, parameters),
-            isExpired: true
+            subtitleStatus: .warning
         )
     }
 
     private func isExpired(_ card: StoredCardPaymentMethod) -> Bool {
         guard
-            let expiryMonth = Int(card.expiryMonth),
-            (1...12).contains(expiryMonth),
-            let expiryYear = Int(card.expiryYear),
+            let expiryDateComponents = expiryDateComponents(for: card),
             let expiryMonthStart = calendar.date(
-                from: DateComponents(year: expiryYear, month: expiryMonth)
+                from: expiryDateComponents
             ),
             let expiryThreshold = calendar.date(byAdding: .month, value: 1, to: expiryMonthStart)
         else {
@@ -161,6 +160,34 @@ package struct StoredCardDescriptionProvider {
         }
 
         return currentDate >= expiryThreshold
+    }
+
+    private func expiryDateComponents(for card: StoredCardPaymentMethod) -> DateComponents? {
+        guard
+            card.expiryMonth.count == 2,
+            let expiryMonth = Int(card.expiryMonth),
+            (1...12).contains(expiryMonth),
+            let expiryYear = normalizedExpiryYear(from: card.expiryYear)
+        else {
+            return nil
+        }
+
+        return DateComponents(year: expiryYear, month: expiryMonth)
+    }
+
+    private func normalizedExpiryYear(from expiryYear: String) -> Int? {
+        guard let year = Int(expiryYear) else {
+            return nil
+        }
+
+        switch expiryYear.count {
+        case 2:
+            return 2000 + year
+        case 4:
+            return year
+        default:
+            return nil
+        }
     }
 }
 

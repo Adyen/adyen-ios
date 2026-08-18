@@ -133,7 +133,7 @@ private struct StoredPaymentMethodManagementRow: View {
                     if let subtitle = item.subtitle {
                         Text(subtitle)
                             .font(Font(theme.elements.labels.subheadline.font))
-                            .foregroundStyle(Color(uiColor: theme.colors.textSecondary))
+                            .foregroundStyle(Color(uiColor: subtitleColor))
                     }
                 }
             }
@@ -151,5 +151,9 @@ private struct StoredPaymentMethodManagementRow: View {
             .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.remove(item.paymentMethod.identifier))
         }
         .padding(.vertical, Constants.verticalPadding)
+    }
+
+    private var subtitleColor: UIColor {
+        item.subtitleStatus == .warning ? theme.colors.warning : theme.colors.textSecondary
     }
 }

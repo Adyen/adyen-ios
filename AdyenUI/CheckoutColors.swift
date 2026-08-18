@@ -12,6 +12,7 @@ internal enum DefaultColorsLight {
     internal static let backgroundQuaternary = UIColor.color(hex: 0x525252)
     internal static let backgroundDisabled = UIColor.color(hex: 0xEEEFF1)
     internal static let critical = UIColor.color(hex: 0xE22D2D)
+    internal static let warning = UIColor.color(hex: 0xAB6600)
     internal static let success = UIColor.color(hex: 0x07893C)
     internal static let highlight = UIColor.color(hex: 0x0070F5)
     internal static let labelPrimary = UIColor.color(hex: 0x00112C)
@@ -27,6 +28,7 @@ internal enum DefaultColorsDark {
     internal static let backgroundQuaternary = UIColor.color(hex: 0xC0C5CA)
     internal static let backgroundDisabled = UIColor.color(hex: 0xEEEFF1)
     internal static let critical = UIColor.color(hex: 0xF99C9C)
+    internal static let warning = UIColor.color(hex: 0xFF9E11)
     internal static let success = UIColor.color(hex: 0x41CD7A)
     internal static let highlight = UIColor.color(hex: 0x7DB9FF)
     internal static let labelPrimary = UIColor.color(hex: 0xFFFFFF)
@@ -53,6 +55,7 @@ public struct CheckoutColors: Equatable {
     public var textSecondary: UIColor
 
     package var success: UIColor
+    package var warning: UIColor
     package var supportShadow: UIColor
 
     // MARK: - Initializers
@@ -90,6 +93,10 @@ public struct CheckoutColors: Equatable {
 
         self.success = UIColor { traitCollection in
             traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.success : DefaultColorsLight.success
+        }
+
+        self.warning = UIColor { traitCollection in
+            traitCollection.userInterfaceStyle == .dark ? DefaultColorsDark.warning : DefaultColorsLight.warning
         }
 
         self.textOnDestructive = UIColor { traitCollection in
@@ -152,6 +159,7 @@ public struct CheckoutColors: Equatable {
         self.text = text ?? defaultScheme.text
         self.textSecondary = textSecondary ?? defaultScheme.textSecondary
         self.success = defaultScheme.success
+        self.warning = defaultScheme.warning
         self.supportShadow = defaultScheme.supportShadow
     }
 }

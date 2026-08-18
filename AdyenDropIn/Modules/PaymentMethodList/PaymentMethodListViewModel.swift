@@ -200,6 +200,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         return PaymentMethodItem(
             title: displayInformation.title,
             subtitle: displayInformation.subtitle,
+            subtitleStatus: displayInformation.subtitleStatus,
             iconURL: imageURL,
             trailingInfo: displayInformation.trailingInfo,
             logoURLProvider: logoURLProvider,

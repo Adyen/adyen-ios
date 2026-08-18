@@ -574,6 +574,7 @@ class PaymentMethodTests: XCTestCase {
 
         XCTAssertEqual(displayInformation.title, String.Adyen.securedString + "1111")
         XCTAssertEqual(displayInformation.subtitle, "Expired")
+        XCTAssertEqual(displayInformation.subtitleStatus, .warning)
         XCTAssertEqual(displayInformation.accessibilityLabel, "VISA, Last 4 digits: 1, 1, 1, 1, Expired")
     }
 
@@ -588,7 +589,67 @@ class PaymentMethodTests: XCTestCase {
         let displayInformation = paymentMethod.displayInformation(using: nil)
 
         XCTAssertEqual(displayInformation.subtitle, "VISA")
+        XCTAssertEqual(displayInformation.subtitleStatus, .normal)
         XCTAssertEqual(displayInformation.accessibilityLabel, "VISA, Last 4 digits: 1, 1, 1, 1")
+    }
+
+    func test_storedCardDisplayInformation_twoDigitExpiryYear_keepsCurrentExpiryMonthValid() throws {
+        let calendar = Calendar(identifier: .gregorian)
+        let displayInformation = try displayInformation(
+            expiryMonth: "03",
+            expiryYear: "30",
+            currentDate: date(year: 2030, month: 3, day: 31, calendar: calendar),
+            calendar: calendar
+        )
+
+        XCTAssertEqual(displayInformation.subtitle, "VISA")
+    }
+
+    func test_storedCardDisplayInformation_twoDigitExpiryYear_showsExpiredStartingTheFollowingMonth() throws {
+        let calendar = Calendar(identifier: .gregorian)
+        let displayInformation = try displayInformation(
+            expiryMonth: "03",
+            expiryYear: "30",
+            currentDate: date(year: 2030, month: 4, day: 1, calendar: calendar),
+            calendar: calendar
+        )
+
+        XCTAssertEqual(displayInformation.subtitle, "Expired")
+    }
+
+    func test_storedCardDisplayInformation_twoDigitExpiryYear_keepsFutureCardValid() throws {
+        let calendar = Calendar(identifier: .gregorian)
+        let displayInformation = try displayInformation(
+            expiryMonth: "12",
+            expiryYear: "34",
+            currentDate: date(year: 2030, month: 4, day: 1, calendar: calendar),
+            calendar: calendar
+        )
+
+        XCTAssertEqual(displayInformation.subtitle, "VISA")
+    }
+
+    func test_storedCardDisplayInformation_invalidExpiryValues_doNotMarkCardExpired() throws {
+        let calendar = Calendar(identifier: .gregorian)
+        let currentDate = try date(year: 2030, month: 4, day: 1, calendar: calendar)
+
+        for (expiryMonth, expiryYear) in [
+            ("3", "30"),
+            ("00", "30"),
+            ("13", "30"),
+            ("03", "3"),
+            ("03", "300"),
+            ("03", "XX")
+        ] {
+            let displayInformation = try displayInformation(
+                expiryMonth: expiryMonth,
+                expiryYear: expiryYear,
+                currentDate: currentDate,
+                calendar: calendar
+            )
+
+            XCTAssertEqual(displayInformation.subtitle, "VISA", "Expected \(expiryMonth)/\(expiryYear) to be treated as invalid")
+        }
     }
 
     func test_storedBCMCDisplayInformation_showsExpiredStartingTheFollowingMonth() throws {
@@ -1025,6 +1086,23 @@ class PaymentMethodTests: XCTestCase {
 }
 
 private extension PaymentMethodTests {
+
+    func displayInformation(
+        expiryMonth: String,
+        expiryYear: String,
+        currentDate: Date,
+        calendar: Calendar
+    ) throws -> DisplayInformation {
+        var dictionary = storedCreditCardDictionary
+        dictionary["expiryMonth"] = expiryMonth
+        dictionary["expiryYear"] = expiryYear
+        var paymentMethod = try AdyenCoder.decode(dictionary) as StoredCardPaymentMethod
+        paymentMethod.descriptionProvider = StoredCardDescriptionProvider(
+            currentDate: currentDate,
+            calendar: calendar
+        )
+        return paymentMethod.displayInformation(using: nil)
+    }
 
     func descriptionProvider(year: Int, month: Int) throws -> StoredCardDescriptionProvider {
         let calendar = Calendar(identifier: .gregorian)
