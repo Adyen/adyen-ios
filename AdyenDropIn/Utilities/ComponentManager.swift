@@ -40,9 +40,7 @@ internal final class ComponentManager: ComponentManaging {
     internal let order: PartialPaymentOrder?
     internal let partialPaymentEnabled: Bool
     internal weak var presentationDelegate: PresentationDelegate?
-    
-    private let supportsEditingStoredPaymentMethods: Bool
-    
+
     private var localizationParameters: LocalizationParameters? {
         configuration.localizationParameters
     }
@@ -59,7 +57,6 @@ internal final class ComponentManager: ComponentManaging {
         configuration: DropInComponent.Configuration,
         partialPaymentEnabled: Bool = true,
         order: PartialPaymentOrder?,
-        supportsEditingStoredPaymentMethods: Bool = false,
         presentationDelegate: PresentationDelegate?
     ) {
         self.paymentMethods = paymentMethods
@@ -67,7 +64,6 @@ internal final class ComponentManager: ComponentManaging {
         self.configuration = configuration
         self.partialPaymentEnabled = partialPaymentEnabled
         self.order = order
-        self.supportsEditingStoredPaymentMethods = supportsEditingStoredPaymentMethods
         self.presentationDelegate = presentationDelegate
 
         updateContextAmountIfNeeded()
@@ -159,9 +155,6 @@ internal final class ComponentManager: ComponentManaging {
     }()
 
     private var storedSection: PaymentMethodsSection {
-        let allowDeleting = configuration.paymentMethodsList.allowDisablingStoredPaymentMethods
-            && supportsEditingStoredPaymentMethods
-
         let storedPaymentMethods = paymentMethods.stored
             .filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
 
@@ -169,7 +162,6 @@ internal final class ComponentManager: ComponentManaging {
             kind: .stored,
             header: ListSectionHeader(
                 title: localizedString(.paymentMethodsStoredMethods, localizationParameters),
-                editingStyle: allowDeleting ? .delete : .none,
                 style: listStyle.sectionHeader
             ),
             paymentMethods: storedPaymentMethods
