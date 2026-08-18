@@ -37,7 +37,7 @@ internal struct StoredPaymentMethodManagementListView: View {
 
                 ForEach(viewModel.sections, id: \.kind) { section in
                     StoredPaymentMethodManagementSectionView(
-                        title: viewModel.sectionTitle(for: section.kind),
+                        title: viewModel.sectionTitle(for: section),
                         section: section,
                         removeButtonTitle: viewModel.removeButtonTitle,
                         theme: theme,
@@ -96,7 +96,7 @@ private struct StoredPaymentMethodManagementSectionView: View {
         static let headerVerticalPadding: CGFloat = 8
     }
 
-    let title: String
+    let title: String?
     let section: StoredPaymentMethodManagementSection
     let removeButtonTitle: String
     let theme: CheckoutTheme
@@ -104,10 +104,12 @@ private struct StoredPaymentMethodManagementSectionView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Constants.headerSpacing) {
-            Text(title)
-                .font(Font(theme.elements.labels.subheadlineEmphasized.font))
-                .foregroundStyle(Color(uiColor: theme.elements.labels.subheadlineEmphasized.color))
-                .padding(.vertical, Constants.headerVerticalPadding)
+            if let title {
+                Text(title)
+                    .font(Font(theme.elements.labels.subheadlineEmphasized.font))
+                    .foregroundStyle(Color(uiColor: theme.elements.labels.subheadlineEmphasized.color))
+                    .padding(.vertical, Constants.headerVerticalPadding)
+            }
 
             VStack(spacing: Constants.itemSpacing) {
                 ForEach(section.items, id: \.paymentMethod.identifier) { item in

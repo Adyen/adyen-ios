@@ -75,6 +75,15 @@ struct StoredPaymentMethodManagementViewModelTests {
         #expect(router.paymentOptionsRequestCount == 1)
     }
 
+    @Test
+    func sectionTitle_whenOtherIsTheOnlySection_returnsNil() throws {
+        let sut = makeSUT()
+        let section = try #require(sut.sections.first)
+
+        #expect(section.kind == .other)
+        #expect(sut.sectionTitle(for: section) == nil)
+    }
+
     private func makeSUT(
         capability: StoredPaymentMethodManagementCapability = StoredPaymentMethodManagementCapability { _ in }
     ) -> StoredPaymentMethodManagementViewModel {

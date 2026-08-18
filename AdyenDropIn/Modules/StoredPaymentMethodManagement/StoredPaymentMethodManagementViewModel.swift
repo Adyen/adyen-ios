@@ -83,8 +83,13 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
 
     // MARK: - Internal
 
-    internal func sectionTitle(for kind: StoredPaymentMethodManagementSection.Kind) -> String {
-        switch kind {
+    internal func sectionTitle(for section: StoredPaymentMethodManagementSection) -> String? {
+        // no title for the other section if there is no stored cards
+        if section.kind == .other, !sections.contains(where: { $0.kind == .cards }) {
+            return nil
+        }
+
+        return switch section.kind {
         case .cards:
             localizedString(.storedPaymentMethodManagementCardsTitle, localizationParameters)
         case .other:
