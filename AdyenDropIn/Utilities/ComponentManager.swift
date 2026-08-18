@@ -75,8 +75,15 @@ internal final class ComponentManager: ComponentManaging {
         [paidSection, storedSection, regularSection].filter { !$0.paymentMethods.isEmpty }
     }
 
+    internal var visibleStoredPaymentMethods: [any StoredPaymentMethod] {
+        storedComponents.compactMap { $0.paymentMethod as? any StoredPaymentMethod }
+    }
+
     internal func removeStoredPaymentMethod(withIdentifier identifier: String) {
         paymentMethods.stored.removeAll { $0.identifier == identifier }
+        storedComponents.removeAll {
+            ($0.paymentMethod as? any StoredPaymentMethod)?.identifier == identifier
+        }
     }
 
     internal func buildComponent(for paymentMethod: PaymentMethod) -> PaymentComponent? {
@@ -109,8 +116,7 @@ internal final class ComponentManager: ComponentManaging {
     // MARK: - Computed Components
 
     internal lazy var storedComponents: [PaymentComponent] = {
-        paymentMethods.stored
-            .filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
+        storedPaymentMethodCandidates
             .compactMap(buildComponent(for:))
     }()
 
@@ -155,16 +161,13 @@ internal final class ComponentManager: ComponentManaging {
     }()
 
     private var storedSection: PaymentMethodsSection {
-        let storedPaymentMethods = paymentMethods.stored
-            .filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
-
-        return PaymentMethodsSection(
+        PaymentMethodsSection(
             kind: .stored,
             header: ListSectionHeader(
                 title: localizedString(.paymentMethodsStoredMethods, localizationParameters),
                 style: listStyle.sectionHeader
             ),
-            paymentMethods: storedPaymentMethods
+            paymentMethods: visibleStoredPaymentMethods
         )
     }
 
@@ -189,6 +192,11 @@ internal final class ComponentManager: ComponentManaging {
 // MARK: - Private
 
 private extension ComponentManager {
+
+    var storedPaymentMethodCandidates: [any StoredPaymentMethod] {
+        paymentMethods.stored
+            .filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
+    }
     
     func updateContextAmountIfNeeded() {
         guard let remainingAmount = order?.remainingAmount else { return }

@@ -83,7 +83,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
             componentContainerAssembler: componentContainerAssembler,
             storedPaymentMethodManagementAssembler: storedPaymentMethodManagementAssembler,
             storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability,
-            storedPaymentMethodsProvider: { componentManager.paymentMethods.stored },
+            storedPaymentMethodsProvider: { componentManager.visibleStoredPaymentMethods },
             onStoredPaymentMethodRemoved: { paymentMethod in
                 viewModel.remove(storedPaymentMethod: paymentMethod)
             }
