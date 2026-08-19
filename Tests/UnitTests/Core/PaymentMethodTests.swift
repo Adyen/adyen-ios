@@ -119,6 +119,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Test StoredCardPaymentMethod localization
         var storedCardPaymentMethod = try XCTUnwrap(paymentMethods.stored[1] as? StoredCardPaymentMethod)
+        storedCardPaymentMethod.descriptionProvider = try descriptionProvider(year: 2018, month: 8)
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         XCTAssertEqual(
             storedCardPaymentMethod.displayInformation(using: expectedLocalizationParameters),
@@ -144,6 +145,7 @@ class PaymentMethodTests: XCTestCase {
         
         // Test StoredBCMCPaymentMethod localization
         var storedBCMCPaymentMethod = try XCTUnwrap(paymentMethods.stored[4] as? StoredBCMCPaymentMethod)
+        storedBCMCPaymentMethod.descriptionProvider = try descriptionProvider(year: 2020, month: 10)
         XCTAssertEqual(
             storedBCMCPaymentMethod.displayInformation(using: nil),
             expectedBancontactCardDisplayInfo(method: storedBCMCPaymentMethod, localizationParameters: nil)
@@ -514,7 +516,8 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func test_decodingStoredCreditCardPaymentMethod() throws {
-        let paymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
+        var paymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
+        paymentMethod.descriptionProvider = try descriptionProvider(year: 2018, month: 8)
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         XCTAssertEqual(paymentMethod.type.rawValue, "scheme")
         XCTAssertEqual(paymentMethod.name, "VISA")
@@ -531,7 +534,8 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func test_decodingStoredDebitCardPaymentMethod() throws {
-        let paymentMethod = try AdyenCoder.decode(storedDebitCardDictionary) as StoredCardPaymentMethod
+        var paymentMethod = try AdyenCoder.decode(storedDebitCardDictionary) as StoredCardPaymentMethod
+        paymentMethod.descriptionProvider = try descriptionProvider(year: 2018, month: 8)
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         XCTAssertEqual(paymentMethod.type.rawValue, "scheme")
         XCTAssertEqual(paymentMethod.name, "VISA")
@@ -548,17 +552,60 @@ class PaymentMethodTests: XCTestCase {
     }
     
     func expectedStoredCardPaymentMethodDisplayInfo(method: StoredCardPaymentMethod, localizationParameters: LocalizationParameters?) -> DisplayInformation {
-        let expireDate = method.expiryMonth + "/" + method.expiryYear.suffix(2)
-        let accessibilityLabel = "\(method.brand.name), Last 4 digits: \(method.lastFour.map { String($0) }.joined(separator: ", ")), \(localizedString(.cardStoredExpires, localizationParameters, expireDate))"
-        
+        let accessibilityLabel = "\(method.name), Last 4 digits: \(method.lastFour.map { String($0) }.joined(separator: ", "))"
+
         return DisplayInformation(
             title: String.Adyen.securedString + method.lastFour,
-            subtitle: localizedString(.cardStoredExpires, localizationParameters, expireDate),
+            subtitle: method.name,
             logoName: method.brand.rawValue,
             accessibilityLabel: accessibilityLabel
         )
     }
     
+    func test_storedCardDisplayInformation_showsExpiredStartingTheFollowingMonth() throws {
+        var paymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
+        let calendar = Calendar(identifier: .gregorian)
+        paymentMethod.descriptionProvider = try StoredCardDescriptionProvider(
+            currentDate: date(year: 2018, month: 9, day: 1, calendar: calendar),
+            calendar: calendar
+        )
+
+        let displayInformation = paymentMethod.displayInformation(using: nil)
+
+        XCTAssertEqual(displayInformation.title, String.Adyen.securedString + "1111")
+        XCTAssertEqual(displayInformation.subtitle, "Expired")
+        XCTAssertEqual(displayInformation.accessibilityLabel, "VISA, Last 4 digits: 1, 1, 1, 1, Expired")
+    }
+
+    func test_storedCardDisplayInformation_keepsExpiryMonthValid() throws {
+        var paymentMethod = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
+        let calendar = Calendar(identifier: .gregorian)
+        paymentMethod.descriptionProvider = try StoredCardDescriptionProvider(
+            currentDate: date(year: 2018, month: 8, day: 31, calendar: calendar),
+            calendar: calendar
+        )
+
+        let displayInformation = paymentMethod.displayInformation(using: nil)
+
+        XCTAssertEqual(displayInformation.subtitle, "VISA")
+        XCTAssertEqual(displayInformation.accessibilityLabel, "VISA, Last 4 digits: 1, 1, 1, 1")
+    }
+
+    func test_storedBCMCDisplayInformation_showsExpiredStartingTheFollowingMonth() throws {
+        var paymentMethod = try AdyenCoder.decode(storedBcmcDictionary) as StoredBCMCPaymentMethod
+        let calendar = Calendar(identifier: .gregorian)
+        paymentMethod.descriptionProvider = try StoredCardDescriptionProvider(
+            currentDate: date(year: 2020, month: 11, day: 1, calendar: calendar),
+            calendar: calendar
+        )
+
+        let displayInformation = paymentMethod.displayInformation(using: nil)
+
+        XCTAssertEqual(displayInformation.title, String.Adyen.securedString + "4449")
+        XCTAssertEqual(displayInformation.subtitle, "Expired")
+        XCTAssertEqual(displayInformation.accessibilityLabel, "Maestro, Last 4 digits: 4, 4, 4, 9, Expired")
+    }
+
     // MARK: - Issuer List
     
     func test_decodingIssuerListPaymentMethod() throws {
@@ -694,7 +741,8 @@ class PaymentMethodTests: XCTestCase {
     // MARK: - Stored Bancontact
     
     func test_decodingStoredBancontactPaymentMethod() throws {
-        let paymentMethod = try AdyenCoder.decode(storedBcmcDictionary) as StoredBCMCPaymentMethod
+        var paymentMethod = try AdyenCoder.decode(storedBcmcDictionary) as StoredBCMCPaymentMethod
+        paymentMethod.descriptionProvider = try descriptionProvider(year: 2020, month: 10)
         let expectedLocalizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         XCTAssertEqual(paymentMethod.type.rawValue, "bcmc")
         XCTAssertEqual(paymentMethod.brand, "bcmc")
@@ -736,12 +784,11 @@ class PaymentMethodTests: XCTestCase {
         method: StoredBCMCPaymentMethod,
         localizationParameters: LocalizationParameters?
     ) -> DisplayInformation {
-        let expireDate = method.expiryMonth + "/" + method.expiryYear.suffix(2)
-        let accessibilityLabel = "BCMC, Last 4 digits: \(method.lastFour.map { String($0) }.joined(separator: ", ")), \(localizedString(.cardStoredExpires, localizationParameters, expireDate))"
-        
+        let accessibilityLabel = "\(method.name), Last 4 digits: \(method.lastFour.map { String($0) }.joined(separator: ", "))"
+
         return DisplayInformation(
             title: String.Adyen.securedString + method.lastFour,
-            subtitle: localizedString(.cardStoredExpires, localizationParameters, expireDate),
+            subtitle: method.name,
             logoName: method.brand,
             accessibilityLabel: accessibilityLabel
         )
@@ -919,6 +966,48 @@ class PaymentMethodTests: XCTestCase {
         XCTAssertEqual(paymentMethod.issuers[0].name, "Tink Demo Bank")
     }
     
+    // MARK: - Stored Payment Method Presentation
+
+    func test_storedPaymentMethodDisplayInformation_matchesSharedPresentation() throws {
+        let cashAppPay = try AdyenCoder.decode([
+            "type": "cashapp",
+            "id": "cash-app-id",
+            "name": "Cash App Pay",
+            "cashtag": "$shopper",
+            "supportedShopperInteractions": ["Ecommerce"]
+        ]) as StoredCashAppPayPaymentMethod
+        let payByBank = try AdyenCoder.decode([
+            "type": "paybybank",
+            "id": "pay-by-bank-id",
+            "name": "Pay by Bank US",
+            "label": "Primary checking",
+            "supportedShopperInteractions": ["Ecommerce"]
+        ]) as StoredPayByBankUSPaymentMethod
+        let payByBankWithoutLabel = try AdyenCoder.decode([
+            "type": "paybybank",
+            "id": "pay-by-bank-no-label-id",
+            "name": "Pay by Bank US",
+            "supportedShopperInteractions": ["Ecommerce"]
+        ]) as StoredPayByBankUSPaymentMethod
+        let payTo = try AdyenCoder.decode(storedPayToDictionary) as StoredPayToPaymentMethod
+        let ach = try AdyenCoder.decode(storedACHDictionary) as StoredACHDirectDebitPaymentMethod
+        let payPal = try AdyenCoder.decode(storedPayPalDictionary) as StoredPayPalPaymentMethod
+        let generic = try AdyenCoder.decode([
+            "type": "custom",
+            "id": "generic-id",
+            "name": "Generic payment method",
+            "supportedShopperInteractions": ["Ecommerce"]
+        ]) as StoredGenericPaymentMethod
+
+        assertDisplayInformation(cashAppPay, title: "$shopper", subtitle: "Cash App Pay", logoName: "cashapp")
+        assertDisplayInformation(payByBank, title: "Primary checking", subtitle: "Pay by Bank US", logoName: "paybybank")
+        assertDisplayInformation(payByBankWithoutLabel, title: "Pay by Bank US", subtitle: nil, logoName: "paybybank")
+        assertDisplayInformation(payTo, title: "•••••••2311", subtitle: "payto", logoName: "payto")
+        assertDisplayInformation(ach, title: String.Adyen.securedString + "6789", subtitle: "ACH Direct Debit", logoName: "ach")
+        assertDisplayInformation(payPal, title: "PayPal", subtitle: "example@shopper.com", logoName: "paypal")
+        assertDisplayInformation(generic, title: "Generic payment method", subtitle: nil, logoName: "custom")
+    }
+
     // MARK: - Accessibility
     
     func test_paymentMethodTypeName() {
@@ -936,7 +1025,33 @@ class PaymentMethodTests: XCTestCase {
 }
 
 private extension PaymentMethodTests {
+
+    func descriptionProvider(year: Int, month: Int) throws -> StoredCardDescriptionProvider {
+        let calendar = Calendar(identifier: .gregorian)
+        return try StoredCardDescriptionProvider(
+            currentDate: date(year: year, month: month, day: 1, calendar: calendar),
+            calendar: calendar
+        )
+    }
+
+    func date(year: Int, month: Int, day: Int, calendar: Calendar) throws -> Date {
+        try XCTUnwrap(calendar.date(from: DateComponents(year: year, month: month, day: day)))
+    }
     
+    func assertDisplayInformation(
+        _ paymentMethod: any StoredPaymentMethod,
+        title: String,
+        subtitle: String?,
+        logoName: String,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        let displayInformation = paymentMethod.displayInformation(using: nil)
+        XCTAssertEqual(displayInformation.title, title, file: file, line: line)
+        XCTAssertEqual(displayInformation.subtitle, subtitle, file: file, line: line)
+        XCTAssertEqual(displayInformation.logoName, logoName, file: file, line: line)
+    }
+
     func testCoding<T: PaymentMethod>(_ paymentMethod: T) {
         do {
             let encoded: Data = try AdyenCoder.encode(paymentMethod)
