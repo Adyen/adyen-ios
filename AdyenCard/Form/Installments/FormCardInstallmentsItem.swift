@@ -23,6 +23,7 @@ internal final class FormCardInstallmentsItem: FormPickerItem<InstallmentElement
     /// Current card type for which to determine the installments.
     internal private(set) var cardBrand: CardBrand? {
         didSet {
+            guard cardBrand != oldValue else { return }
             updatePickerContent()
         }
     }
@@ -75,7 +76,6 @@ internal final class FormCardInstallmentsItem: FormPickerItem<InstallmentElement
         let oneTimePaymentElement = InstallmentElement(kind: .plan(.oneTime), localizationParameters: localizationParameters)
         // TODO: Localize "Installments" and "Pay the full amount today".
         // TODO: Footer subtitle is static; make it reflect the selected installment type.
-        // Give InstallmentElement a per-type subtitle and set `placeholder = value?.subtitle` in updateFormattedValue().
         super.init(
             preselectedValue: oneTimePaymentElement,
             selectableValues: [oneTimePaymentElement],

@@ -1301,6 +1301,34 @@ class CardComponentTests: XCTestCase {
         XCTAssertNil(sut.cardViewController.installments)
     }
 
+    func test_installmentsField_whenSameCardBrandReassigned_shouldKeepSelection() throws {
+        let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
+            .visa: InstallmentOptions(maxInstallmentMonth: 8, includesRevolving: true)
+        ]
+        var configuration = CardConfiguration()
+        configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions)
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration,
+            binProvider: BinInfoProviderMock()
+        )
+        setupRootViewController(sut.viewController)
+
+        let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
+
+        installmentsItem.update(cardBrand: .visa)
+        installmentsItem.value = installmentsItem.selectableValues[2]
+        XCTAssertEqual(installmentsItem.formattedValue, "2 months")
+        XCTAssertNotNil(sut.cardViewController.installments)
+
+        // Re-assigning the same brand (e.g. repeated BIN lookups) must not discard the selection
+        installmentsItem.update(cardBrand: .visa)
+        XCTAssertEqual(installmentsItem.formattedValue, "2 months")
+        XCTAssertEqual(installmentsItem.selectableValues.count, 9)
+        XCTAssertNotNil(sut.cardViewController.installments)
+    }
+
     func test_supportedCardLogos_whenFieldActiveOrInactive_shouldUpdateVisibility() throws {
 
         let sut = CardComponent(
