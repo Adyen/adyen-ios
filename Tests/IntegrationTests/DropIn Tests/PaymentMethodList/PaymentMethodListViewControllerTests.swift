@@ -251,57 +251,12 @@ struct PaymentMethodListViewControllerTests {
 
     @Test
     func stateLoaded_givenSectionHeaderTrailingButton_shouldRenderTappableButton() async {
-        // Given
-        let (sut, viewModelMock) = makeSUT()
-        sut.loadViewIfNeeded()
-
-        var headerTrailingButtonCallsCount = 0
-        let section = PaymentMethodSection(
-            headerTitle: "Favorites",
-            headerTrailingButton: .init(title: "Manage") { headerTrailingButtonCallsCount += 1 },
-            items: [makePaymentMethodItem()],
-            theme: .init()
-        )
-
-        // When
-        viewModelMock.setState(.loaded(sections: [section]))
-        await Task.yield()
-
-        // Then
-        let trailingHeaderButton: UIButton? = sut.view.findView(by: "headerTrailingButton")
-        #expect(trailingHeaderButton?.isHidden == false)
-        #expect(trailingHeaderButton?.currentTitle == "Manage")
-        #expect(trailingHeaderButton?.titleLabel?.font == CheckoutTheme.default.elements.labels.body.font)
-        #expect(trailingHeaderButton?.titleColor(for: .normal) == CheckoutTheme.default.colors.highlight)
-
-        trailingHeaderButton?.sendActions(for: .touchUpInside)
-        #expect(headerTrailingButtonCallsCount == 1)
+        await assertSectionHeaderTrailingButtonIsRendered(headerTitle: "Favorites")
     }
 
     @Test
     func stateLoaded_givenSectionHeaderTrailingButtonWithoutTitle_shouldRenderTappableButton() async {
-        // Given
-        let (sut, viewModelMock) = makeSUT()
-        sut.loadViewIfNeeded()
-
-        var headerTrailingButtonCallsCount = 0
-        let section = PaymentMethodSection(
-            headerTrailingButton: .init(title: "Manage") { headerTrailingButtonCallsCount += 1 },
-            items: [makePaymentMethodItem()],
-            theme: .init()
-        )
-
-        // When
-        viewModelMock.setState(.loaded(sections: [section]))
-        await Task.yield()
-
-        // Then
-        let trailingHeaderButton: UIButton? = sut.view.findView(by: "headerTrailingButton")
-        #expect(trailingHeaderButton?.isHidden == false)
-        #expect(trailingHeaderButton?.currentTitle == "Manage")
-
-        trailingHeaderButton?.sendActions(for: .touchUpInside)
-        #expect(headerTrailingButtonCallsCount == 1)
+        await assertSectionHeaderTrailingButtonIsRendered(headerTitle: nil)
     }
 
     @Test
@@ -351,6 +306,31 @@ struct PaymentMethodListViewControllerTests {
     }
 
     // MARK: - Helper
+
+    private func assertSectionHeaderTrailingButtonIsRendered(headerTitle: String?) async {
+        let (sut, viewModelMock) = makeSUT()
+        sut.loadViewIfNeeded()
+
+        var headerTrailingButtonCallsCount = 0
+        let section = PaymentMethodSection(
+            headerTitle: headerTitle,
+            headerTrailingButton: .init(title: "Manage") { headerTrailingButtonCallsCount += 1 },
+            items: [makePaymentMethodItem()],
+            theme: .init()
+        )
+
+        viewModelMock.setState(.loaded(sections: [section]))
+        await Task.yield()
+
+        let trailingHeaderButton: UIButton? = sut.view.findView(by: "headerTrailingButton")
+        #expect(trailingHeaderButton?.isHidden == false)
+        #expect(trailingHeaderButton?.currentTitle == "Manage")
+        #expect(trailingHeaderButton?.titleLabel?.font == CheckoutTheme.default.elements.labels.body.font)
+        #expect(trailingHeaderButton?.titleColor(for: .normal) == CheckoutTheme.default.colors.highlight)
+
+        trailingHeaderButton?.sendActions(for: .touchUpInside)
+        #expect(headerTrailingButtonCallsCount == 1)
+    }
 
     private func makePaymentMethodItem(title: String = "Card") -> PaymentMethodItem {
         PaymentMethodItem(

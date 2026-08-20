@@ -331,10 +331,7 @@ struct PaymentMethodListViewModelTests {
     @Test
     func didLoad_givenNoStoredPaymentMethods_shouldNotExposeManageButton() throws {
         // Given
-        let (sut, _, _) = makeSUT(
-            storedPaymentMethods: [],
-            supportsStoredPaymentMethodManagement: true
-        )
+        let (sut, _, _) = makeSUT(storedPaymentMethods: [], supportsStoredPaymentMethodManagement: true)
 
         // When
         sut.didLoad()

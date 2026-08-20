@@ -18,7 +18,8 @@ struct PaymentMethodListRouterTests {
     @Test("This test makes sure the component's view controller is the start of the navigation flow.")
     func rootViewController_shouldHave_componentViewController_asFirstView() throws {
         // Given
-        let (sut, expectedViewController, _, _, _) = makeSUT()
+        let expectedViewController = ViewControllerSpy()
+        let sut = makeSUT(viewController: expectedViewController)
 
         // When
         let rootViewController = sut.rootViewController
@@ -36,7 +37,8 @@ struct PaymentMethodListRouterTests {
     @Test
     func dismiss_shouldCall_listener_didDismissPaymentMethodList() {
         // Given
-        let (sut, _, _, listenerMock, _) = makeSUT()
+        let listenerMock = PaymentMethodListRouterListenerMock()
+        let sut = makeSUT(listener: listenerMock)
 
         // When
         sut.dismiss(completion: nil)
@@ -48,7 +50,7 @@ struct PaymentMethodListRouterTests {
     @Test
     func dismiss_shouldDeallocate_childRouter() throws {
         // Given
-        let (sut, _, _, _, _) = makeSUT()
+        let sut = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
         sut.present(component: paymentComponentMock)
         try #require(sut.childRouter != nil)
@@ -63,12 +65,17 @@ struct PaymentMethodListRouterTests {
     // MARK: - Present Component Tests
 
     @Test
-    func presentComponent_should_pushComponentContainerViewController() throws {
+    func presentComponent_should_pushComponentContainerViewController() {
         // Given
-        let (sut, _, navigationControllerSpy, _, componentContainerAssemblerMock) = makeSUT()
+        let navigationControllerSpy = NavigationControllerSpy()
+        let componentContainerRouter = RouterMock()
+        let componentContainerAssemblerMock = makeComponentContainerAssembler(router: componentContainerRouter)
+        let sut = makeSUT(
+            navigationController: navigationControllerSpy,
+            componentContainerAssembler: componentContainerAssemblerMock
+        )
         let paymentComponent = makePaymentComponentMock()
-        let componentContainerRouter = componentContainerAssemblerMock.resolveComponentContainerRouterForListenerReturnValue
-        let expectedComponentContainerViewController = try #require(componentContainerRouter?.rootViewController)
+        let expectedComponentContainerViewController = componentContainerRouter.rootViewController
 
         // When
         sut.present(component: paymentComponent)
@@ -83,7 +90,8 @@ struct PaymentMethodListRouterTests {
     @Test
     func presentActionComponent() {
         // Given
-        let (sut, _, navigationControllerSpy, _, _) = makeSUT()
+        let navigationControllerSpy = NavigationControllerSpy()
+        let sut = makeSUT(navigationController: navigationControllerSpy)
         let actionComponent = makeActionComponent()
 
         // When
@@ -98,20 +106,12 @@ struct PaymentMethodListRouterTests {
     @Test
     func presentStoredPaymentMethodManagement_shouldPushAndRetainManagementRouter() {
         // Given
-        let viewControllerSpy = ViewControllerSpy()
-        let navigationControllerSpy = NavigationControllerSpy()
-        viewControllerSpy.setNavigationController(navigationControllerSpy)
         let managementRouter = RouterMock()
         let managementAssembler = StoredPaymentMethodManagementAssemblerSpy(router: managementRouter)
-        let sut = PaymentMethodListRouter(
-            viewController: viewControllerSpy,
+        let navigationControllerSpy = NavigationControllerSpy()
+        let sut = makeSUT(
             navigationController: navigationControllerSpy,
-            listener: nil,
-            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
-            storedPaymentMethodManagementAssembler: managementAssembler,
-            storedPaymentMethodManagementCapability: .init(remove: { _ in }),
-            storedPaymentMethodsProvider: { [] },
-            onStoredPaymentMethodRemoved: { _ in }
+            storedPaymentMethodManagementAssembler: managementAssembler
         )
 
         // When
@@ -127,19 +127,12 @@ struct PaymentMethodListRouterTests {
     @Test
     func presentStoredPaymentMethodManagement_withoutCapability_shouldNotRoute() {
         // Given
-        let viewControllerSpy = ViewControllerSpy()
-        let navigationControllerSpy = NavigationControllerSpy()
-        viewControllerSpy.setNavigationController(navigationControllerSpy)
         let managementAssembler = StoredPaymentMethodManagementAssemblerSpy(router: RouterMock())
-        let sut = PaymentMethodListRouter(
-            viewController: viewControllerSpy,
+        let navigationControllerSpy = NavigationControllerSpy()
+        let sut = makeSUT(
             navigationController: navigationControllerSpy,
-            listener: nil,
-            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
             storedPaymentMethodManagementAssembler: managementAssembler,
-            storedPaymentMethodManagementCapability: nil,
-            storedPaymentMethodsProvider: { [] },
-            onStoredPaymentMethodRemoved: { _ in }
+            supportsStoredPaymentMethodManagement: false
         )
 
         // When
@@ -154,18 +147,8 @@ struct PaymentMethodListRouterTests {
     @Test
     func didRemoveStoredPaymentMethod_shouldForwardToParentList() {
         // Given
-        let viewControllerSpy = ViewControllerSpy()
-        let navigationControllerSpy = NavigationControllerSpy()
-        viewControllerSpy.setNavigationController(navigationControllerSpy)
         var removedIdentifier: String?
-        let sut = PaymentMethodListRouter(
-            viewController: viewControllerSpy,
-            navigationController: navigationControllerSpy,
-            listener: nil,
-            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
-            storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerSpy(router: RouterMock()),
-            storedPaymentMethodManagementCapability: .init(remove: { _ in }),
-            storedPaymentMethodsProvider: { [] },
+        let sut = makeSUT(
             onStoredPaymentMethodRemoved: { removedIdentifier = $0.identifier }
         )
         let paymentMethod = StoredPaymentMethodMock(
@@ -185,19 +168,12 @@ struct PaymentMethodListRouterTests {
     @Test
     func didRequestPaymentOptions_shouldPopAndReleaseChildRouter() throws {
         // Given
-        let viewControllerSpy = ViewControllerSpy()
-        let navigationControllerSpy = NavigationControllerSpy()
-        viewControllerSpy.setNavigationController(navigationControllerSpy)
         let managementRouter = RouterMock()
-        let sut = PaymentMethodListRouter(
-            viewController: viewControllerSpy,
+        let managementAssembler = StoredPaymentMethodManagementAssemblerSpy(router: managementRouter)
+        let navigationControllerSpy = NavigationControllerSpy()
+        let sut = makeSUT(
             navigationController: navigationControllerSpy,
-            listener: nil,
-            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
-            storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerSpy(router: managementRouter),
-            storedPaymentMethodManagementCapability: .init(remove: { _ in }),
-            storedPaymentMethodsProvider: { [] },
-            onStoredPaymentMethodRemoved: { _ in }
+            storedPaymentMethodManagementAssembler: managementAssembler
         )
         sut.presentStoredPaymentMethodManagement()
         try #require(sut.childRouter != nil)
@@ -213,19 +189,9 @@ struct PaymentMethodListRouterTests {
     @Test
     func didDismissStoredPaymentMethodManagement_shouldReleaseChildRouter() throws {
         // Given
-        let viewControllerSpy = ViewControllerSpy()
-        let navigationControllerSpy = NavigationControllerSpy()
-        viewControllerSpy.setNavigationController(navigationControllerSpy)
-        let managementRouter = RouterMock()
-        let sut = PaymentMethodListRouter(
-            viewController: viewControllerSpy,
-            navigationController: navigationControllerSpy,
-            listener: nil,
-            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
-            storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerSpy(router: managementRouter),
-            storedPaymentMethodManagementCapability: .init(remove: { _ in }),
-            storedPaymentMethodsProvider: { [] },
-            onStoredPaymentMethodRemoved: { _ in }
+        let managementAssembler = StoredPaymentMethodManagementAssemblerSpy(router: RouterMock())
+        let sut = makeSUT(
+            storedPaymentMethodManagementAssembler: managementAssembler
         )
         sut.presentStoredPaymentMethodManagement()
         try #require(sut.childRouter != nil)
@@ -242,7 +208,7 @@ struct PaymentMethodListRouterTests {
     @Test
     func didDismissComponentContainer_should_deallocatedChildRouter() throws {
         // Given
-        let (sut, _, _, _, _) = makeSUT()
+        let sut = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
         sut.present(component: paymentComponentMock)
         try #require(sut.childRouter != nil)
@@ -257,7 +223,7 @@ struct PaymentMethodListRouterTests {
     @Test
     func didDismissComponentContainer_shouldCallCompletion() {
         // Given
-        let (sut, _, _, _, _) = makeSUT()
+        let sut = makeSUT()
         var completionCalled = false
 
         // When
@@ -272,9 +238,14 @@ struct PaymentMethodListRouterTests {
     @Test
     func presentComponent_givenStoredComponent_shouldPresentComponentContainerModally() {
         // Given
-        let (sut, _, navigationControllerSpy, _, componentContainerAssemblerMock) = makeSUT()
+        let navigationControllerSpy = NavigationControllerSpy()
+        let componentContainerRouter = RouterMock()
+        let componentContainerAssemblerMock = makeComponentContainerAssembler(router: componentContainerRouter)
+        let sut = makeSUT(
+            navigationController: navigationControllerSpy,
+            componentContainerAssembler: componentContainerAssemblerMock
+        )
         let storedPaymentComponent = makeStoredPaymentComponentMock()
-        let componentContainerRouter = componentContainerAssemblerMock.resolveComponentContainerRouterForListenerReturnValue
 
         // When
         sut.present(component: storedPaymentComponent)
@@ -288,7 +259,12 @@ struct PaymentMethodListRouterTests {
     @Test
     func presentComponent_givenInitiableComponent_shouldNotPresentAnything() {
         // Given
-        let (sut, _, navigationControllerSpy, _, componentContainerAssemblerMock) = makeSUT()
+        let navigationControllerSpy = NavigationControllerSpy()
+        let componentContainerAssemblerMock = makeComponentContainerAssembler()
+        let sut = makeSUT(
+            navigationController: navigationControllerSpy,
+            componentContainerAssembler: componentContainerAssemblerMock
+        )
         let initiablePaymentComponent = makeInitiablePaymentComponentMock()
 
         // When
@@ -304,7 +280,8 @@ struct PaymentMethodListRouterTests {
     @Test
     func presentViewController_shouldPresentModally() {
         // Given
-        let (sut, _, navigationControllerSpy, _, _) = makeSUT()
+        let navigationControllerSpy = NavigationControllerSpy()
+        let sut = makeSUT(navigationController: navigationControllerSpy)
         let viewControllerToPresent = UIViewController()
 
         // When
@@ -317,35 +294,41 @@ struct PaymentMethodListRouterTests {
 
     // MARK: - Helpers
 
-    private func makeSUT() -> (
-        sut: PaymentMethodListRouter,
-        viewControllerSpy: ViewControllerSpy,
-        navigationControllerSpy: NavigationControllerSpy,
-        listenerMock: PaymentMethodListRouterListenerMock,
-        componentContainerAssemblerMock: ComponentContainerAssemblerProtocolMock
-    ) {
-        let viewControllerSpy = ViewControllerSpy()
-        let navigationControllerSpy = NavigationControllerSpy()
-        viewControllerSpy.setNavigationController(navigationControllerSpy)
-        let listenerMock = PaymentMethodListRouterListenerMock()
+    private func makeSUT(
+        viewController: ViewControllerSpy = ViewControllerSpy(),
+        navigationController: NavigationControllerSpy = NavigationControllerSpy(),
+        listener: PaymentMethodListRouterListenerMock? = nil,
+        componentContainerAssembler: ComponentContainerAssemblerProtocolMock? = nil,
+        storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol? = nil,
+        supportsStoredPaymentMethodManagement: Bool = true,
+        onStoredPaymentMethodRemoved: @escaping (any StoredPaymentMethod) -> Void = { _ in }
+    ) -> PaymentMethodListRouter {
+        viewController.setNavigationController(navigationController)
+        let componentContainerAssembler = componentContainerAssembler ?? makeComponentContainerAssembler()
+        let storedPaymentMethodManagementAssembler = storedPaymentMethodManagementAssembler
+            ?? StoredPaymentMethodManagementAssemblerSpy(router: RouterMock())
+        let storedPaymentMethodManagementCapability = supportsStoredPaymentMethodManagement
+            ? StoredPaymentMethodManagementCapability(remove: { _ in })
+            : nil
 
-        let componentContainerRouterMock = RouterMock()
-        let componentContainerAssemblerMock = ComponentContainerAssemblerProtocolMock()
-        componentContainerAssemblerMock.resolveComponentContainerRouterForListenerReturnValue = componentContainerRouterMock
-        let storedPaymentMethodManagementAssembler = StoredPaymentMethodManagementAssemblerSpy(router: RouterMock())
-
-        let sut = PaymentMethodListRouter(
-            viewController: viewControllerSpy,
-            navigationController: navigationControllerSpy,
-            listener: listenerMock,
-            componentContainerAssembler: componentContainerAssemblerMock,
+        return PaymentMethodListRouter(
+            viewController: viewController,
+            navigationController: navigationController,
+            listener: listener,
+            componentContainerAssembler: componentContainerAssembler,
             storedPaymentMethodManagementAssembler: storedPaymentMethodManagementAssembler,
-            storedPaymentMethodManagementCapability: .init(remove: { _ in }),
+            storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability,
             storedPaymentMethodsProvider: { [] },
-            onStoredPaymentMethodRemoved: { _ in }
+            onStoredPaymentMethodRemoved: onStoredPaymentMethodRemoved
         )
+    }
 
-        return (sut, viewControllerSpy, navigationControllerSpy, listenerMock, componentContainerAssemblerMock)
+    private func makeComponentContainerAssembler(
+        router: RouterMock? = nil
+    ) -> ComponentContainerAssemblerProtocolMock {
+        let assembler = ComponentContainerAssemblerProtocolMock()
+        assembler.resolveComponentContainerRouterForListenerReturnValue = router ?? RouterMock()
+        return assembler
     }
 
     private func makePaymentComponentMock() -> PresentablePaymentComponentMock {
