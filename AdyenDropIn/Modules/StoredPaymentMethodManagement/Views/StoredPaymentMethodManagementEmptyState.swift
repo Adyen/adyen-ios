@@ -13,10 +13,7 @@ import SwiftUI
 internal struct StoredPaymentMethodManagementEmptyState: View {
 
     private enum Constants {
-        static let horizontalPadding: CGFloat = 16
-        static let headerBottomSpacing: CGFloat = 24
-        static let contentHeight: CGFloat = 496
-        static let contentBottomSpacing: CGFloat = 48
+        static let topPadding: CGFloat = 24
         static let messageSpacing: CGFloat = 4
         static let buttonHeight: CGFloat = 52
     }
@@ -31,13 +28,8 @@ internal struct StoredPaymentMethodManagementEmptyState: View {
 
     internal var body: some View {
         VStack(spacing: 0) {
-            StoredPaymentMethodManagementHeader(
-                title: viewModel.title,
-                description: viewModel.description,
-                theme: theme
-            )
-            .padding(.bottom, Constants.headerBottomSpacing)
-
+            Spacer()
+            
             VStack(spacing: Constants.messageSpacing) {
                 Text(viewModel.emptyTitle)
                     .font(Font(theme.elements.labels.bodyEmphasized.font))
@@ -48,9 +40,8 @@ internal struct StoredPaymentMethodManagementEmptyState: View {
                     .foregroundStyle(Color(uiColor: theme.elements.labels.body.color))
                     .multilineTextAlignment(.center)
             }
-            .frame(maxWidth: .infinity)
-            .frame(height: Constants.contentHeight)
-            .padding(.bottom, Constants.contentBottomSpacing)
+            
+            Spacer()
 
             Button(viewModel.paymentOptionsTitle, action: viewModel.didRequestPaymentOptions)
                 .font(Font(theme.elements.labels.bodyEmphasized.font))
@@ -60,7 +51,6 @@ internal struct StoredPaymentMethodManagementEmptyState: View {
                 .clipShape(RoundedRectangle(cornerRadius: theme.attributes.cornerRadius))
                 .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.paymentOptions)
         }
-        .padding(.horizontal, Constants.horizontalPadding)
-        .padding(.vertical, Constants.horizontalPadding)
+        .padding(.top, Constants.topPadding)
     }
 }

@@ -13,6 +13,7 @@ import SwiftUI
 internal struct StoredPaymentMethodManagementView: View {
     
     private enum Constants {
+        static let contentPadding: CGFloat = 16
         static let removalConfirmationHeight: CGFloat = 164
     }
 
@@ -27,9 +28,11 @@ internal struct StoredPaymentMethodManagementView: View {
     internal var body: some View {
         Group {
             if viewModel.isEmpty {
-                StoredPaymentMethodManagementEmptyState(viewModel: viewModel, theme: theme)
+                content
             } else {
-                StoredPaymentMethodManagementListView(viewModel: viewModel, theme: theme)
+                ScrollView {
+                    content
+                }
             }
         }
         .background(Color(uiColor: theme.colors.background))
@@ -44,6 +47,25 @@ internal struct StoredPaymentMethodManagementView: View {
             }
         }
         .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.screen)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    }
+
+    private var content: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HeaderView(
+                title: viewModel.title,
+                description: viewModel.description,
+                theme: theme
+            )
+
+            if viewModel.isEmpty {
+                StoredPaymentMethodManagementEmptyState(viewModel: viewModel, theme: theme)
+            } else {
+                StoredPaymentMethodManagementListView(viewModel: viewModel, theme: theme)
+            }
+        }
+        .padding(Constants.contentPadding)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
     }
 
     private func removalConfirmationView(
@@ -78,6 +100,29 @@ internal struct StoredPaymentMethodManagementView: View {
 }
 
 private extension StoredPaymentMethodManagementView {
+
+    private struct HeaderView: View {
+
+        private enum Constants {
+            static let spacing: CGFloat = 8
+        }
+
+        let title: String
+        let description: String
+        let theme: CheckoutTheme
+
+        var body: some View {
+            VStack(alignment: .leading, spacing: Constants.spacing) {
+                Text(title)
+                    .font(Font(theme.elements.labels.title.font))
+                    .foregroundStyle(Color(uiColor: theme.elements.labels.title.color))
+
+                Text(description)
+                    .font(Font(theme.elements.labels.body.font))
+                    .foregroundStyle(Color(uiColor: theme.elements.labels.body.color))
+            }
+        }
+    }
     
     private struct RemovalConfirmationView: View {
         

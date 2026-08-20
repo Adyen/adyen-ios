@@ -13,9 +13,8 @@ import SwiftUI
 internal struct StoredPaymentMethodManagementListView: View {
 
     private enum Constants {
-        static let horizontalPadding: CGFloat = 16
+        static let topPadding: CGFloat = 16
         static let verticalSpacing: CGFloat = 16
-        static let pageHeaderSpacing: CGFloat = 8
         static let errorAnimationDuration = 0.2
     }
 
@@ -28,60 +27,29 @@ internal struct StoredPaymentMethodManagementListView: View {
     }
 
     internal var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: Constants.verticalSpacing) {
-                StoredPaymentMethodManagementHeader(
-                    title: viewModel.title,
-                    description: viewModel.description,
-                    theme: theme
-                )
-
-                if viewModel.removalError != nil {
-                    Text(viewModel.removalErrorMessage)
-                        .font(Font(theme.elements.labels.body.font))
-                        .foregroundStyle(Color(uiColor: theme.colors.destructive))
-                        .transition(.opacity.combined(with: .move(edge: .top)))
-                }
-
-                ForEach(viewModel.sections, id: \.kind) { section in
-                    StoredPaymentMethodManagementSectionView(
-                        title: viewModel.sectionTitle(for: section),
-                        section: section,
-                        removeButtonTitle: viewModel.removeButtonTitle,
-                        theme: theme,
-                        onRemove: viewModel.requestRemoval
-                    )
-                }
+        VStack(alignment: .leading, spacing: Constants.verticalSpacing) {
+            if viewModel.removalError != nil {
+                Text(viewModel.removalErrorMessage)
+                    .font(Font(theme.elements.labels.body.font))
+                    .foregroundStyle(Color(uiColor: theme.colors.destructive))
+                    .transition(.opacity.combined(with: .move(edge: .top)))
             }
-            .padding(Constants.horizontalPadding)
-            .animation(
-                .easeInOut(duration: Constants.errorAnimationDuration),
-                value: viewModel.removalError != nil
-            )
+
+            ForEach(viewModel.sections, id: \.kind) { section in
+                StoredPaymentMethodManagementSectionView(
+                    title: viewModel.sectionTitle(for: section),
+                    section: section,
+                    removeButtonTitle: viewModel.removeButtonTitle,
+                    theme: theme,
+                    onRemove: viewModel.requestRemoval
+                )
+            }
         }
-    }
-}
-
-internal struct StoredPaymentMethodManagementHeader: View {
-
-    private enum Constants {
-        static let spacing: CGFloat = 8
-    }
-
-    internal let title: String
-    internal let description: String
-    internal let theme: CheckoutTheme
-
-    internal var body: some View {
-        VStack(alignment: .leading, spacing: Constants.spacing) {
-            Text(title)
-                .font(Font(theme.elements.labels.title.font))
-                .foregroundStyle(Color(uiColor: theme.elements.labels.title.color))
-
-            Text(description)
-                .font(Font(theme.elements.labels.body.font))
-                .foregroundStyle(Color(uiColor: theme.elements.labels.body.color))
-        }
+        .padding(.top, Constants.topPadding)
+        .animation(
+            .easeInOut(duration: Constants.errorAnimationDuration),
+            value: viewModel.removalError != nil
+        )
     }
 }
 
