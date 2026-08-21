@@ -1130,6 +1130,57 @@ class CardComponentTests: XCTestCase {
         XCTAssertNotNil(sut.cardViewController.installments)
     }
     
+    func test_installmentsSection_whenBrandOptionsChange_shouldToggleEntireSectionVisibility() throws {
+        // Given a configuration where one brand has installment options and another brand has none.
+        let cardBasedInstallmentOptions: [CardBrand: InstallmentOptions] = [
+            .visa: InstallmentOptions(monthValues: [2, 3], includesRevolving: false)
+        ]
+        var configuration = CardConfiguration()
+        configuration.installmentConfiguration = InstallmentConfiguration(cardBasedOptions: cardBasedInstallmentOptions)
+
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: configuration
+        )
+        setupRootViewController(sut.viewController)
+
+        let installmentItemView: BaseFormPickerItemView<InstallmentElement> = try XCTUnwrap(
+            sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
+        )
+        let sectionView = try XCTUnwrap(enclosingSectionHeaderView(of: installmentItemView))
+
+        // When the selected brand has installment options, the section renders with its header.
+        sut.cardViewController.items.installmentsItem?.update(cardBrand: .visa)
+        wait(until: { sectionView.isHidden == false }, timeout: 5)
+        XCTAssertFalse(try XCTUnwrap(sut.cardViewController.items.installmentsItem?.isHidden.wrappedValue))
+        XCTAssertTrue(containsLabel(withText: "Payment plan", in: sectionView))
+
+        // When switching to a brand without options, the entire section (header + field) hides.
+        sut.cardViewController.items.installmentsItem?.update(cardBrand: .masterCard)
+        wait(until: { sectionView.isHidden == true }, timeout: 5)
+        XCTAssertTrue(try XCTUnwrap(sut.cardViewController.items.installmentsItem?.isHidden.wrappedValue))
+
+        // When switching back to a brand with options, the section becomes visible again.
+        sut.cardViewController.items.installmentsItem?.update(cardBrand: .visa)
+        wait(until: { sectionView.isHidden == false }, timeout: 5)
+        XCTAssertFalse(try XCTUnwrap(sut.cardViewController.items.installmentsItem?.isHidden.wrappedValue))
+    }
+
+    private func enclosingSectionHeaderView(of view: UIView) -> FormSectionHeaderItemView? {
+        var current: UIView? = view.superview
+        while let candidate = current {
+            if let sectionView = candidate as? FormSectionHeaderItemView { return sectionView }
+            current = candidate.superview
+        }
+        return nil
+    }
+
+    private func containsLabel(withText text: String, in view: UIView) -> Bool {
+        if let label = view as? UILabel, label.text == text { return true }
+        return view.subviews.contains { containsLabel(withText: text, in: $0) }
+    }
+
     func test_installmentsField_withDefaultOptions_shouldShowDefaultOptions() throws {
         let defaultInstallmentOptions = InstallmentOptions(monthValues: [3, 6, 9, 12], includesRevolving: false)
         var configuration = CardConfiguration()
