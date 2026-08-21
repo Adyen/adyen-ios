@@ -37,7 +37,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         }
     }
     
-    func testSetup() throws {
+    func test_picker_whenOptionSelected_shouldInvokeSelectionHandlerWithSelectedOption() throws {
         
         let option: FormPickerElement = .init(identifier: "Identifier", title: "Title", subtitle: "Subtitle")
         
@@ -69,7 +69,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         wait(for: [expectation], timeout: 10)
     }
     
-    func testSearchSuccess() throws {
+    func test_search_withMatchingTerm_shouldReturnMatchingResults() throws {
         
         // Given
         
@@ -107,7 +107,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         }
     }
     
-    func testSearchNoResults() throws {
+    func test_search_withNonMatchingTerm_shouldShowEmptyState() throws {
         
         // Given
         
@@ -142,5 +142,87 @@ class FormPickerSearchViewControllerTests: XCTestCase {
             
             XCTAssertEqual(searchViewController.viewModel.interfaceState.emptyStateSearchTerm, $0)
         }
+    }
+
+    func test_pickerHeader_whenSubtitleProvided_shouldRenderTitleAndSubtitle() throws {
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(header: .init(title: "Installments", subtitle: "Split the total cost into monthly payments."))
+        )
+
+        let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
+        XCTAssertEqual(headerView.titleLabel.text, "Installments")
+        XCTAssertEqual(headerView.subtitleLabel.text, "Split the total cost into monthly payments.")
+        XCTAssertFalse(headerView.subtitleLabel.isHidden)
+        XCTAssertTrue(headerView.isDescendant(of: searchViewController.view))
+        // Title lives in the header, so it is not duplicated in the navigation bar.
+        XCTAssertNil(searchViewController.title)
+    }
+
+    func test_pickerHeader_whenHeaderAbsent_shouldUseNavigationTitle() throws {
+        let searchViewController = try makeSearchViewController(title: "Country/Region")
+
+        XCTAssertNil(searchViewController.headerView)
+        XCTAssertEqual(searchViewController.title, "Country/Region")
+    }
+
+    func test_pickerHeader_whenSubtitleEmpty_shouldHideSubtitleLabel() throws {
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(header: .init(title: "Installments", subtitle: ""))
+        )
+
+        let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
+        XCTAssertEqual(headerView.titleLabel.text, "Installments")
+        XCTAssertTrue(headerView.subtitleLabel.isHidden)
+    }
+
+    func test_pickerHeader_shouldApplySecondaryColorToSubtitle() throws {
+        let secondaryColor: UIColor = .purple
+
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(header: .init(title: "Installments", subtitle: "Split the total cost into monthly payments.")),
+            theme: CheckoutTheme(colors: CheckoutColors(textSecondary: secondaryColor))
+        )
+
+        let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
+        XCTAssertEqual(headerView.subtitleLabel.textColor, secondaryColor)
+    }
+
+    func test_pickerHeader_whenSubtitleNil_shouldHideSubtitleLabel() throws {
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(header: .init(title: "Installments"))
+        )
+
+        let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
+        XCTAssertEqual(headerView.titleLabel.text, "Installments")
+        XCTAssertNil(headerView.subtitleLabel.text)
+        XCTAssertTrue(headerView.subtitleLabel.isHidden)
+    }
+
+    // MARK: - Helpers
+
+    private func makeSearchViewController(
+        title: String? = nil,
+        configuration: FormPickerConfiguration = .init(),
+        theme: CheckoutTheme = .default,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) throws -> SearchViewController {
+        let option = FormPickerElement(identifier: "Identifier", title: "Title", subtitle: "Subtitle")
+
+        let pickerSearchViewController = FormPickerSearchViewController(
+            title: title,
+            configuration: configuration,
+            theme: theme,
+            options: [option]
+        ) { _ in }
+
+        // Allow setup in viewDidLoad
+        setupRootViewController(pickerSearchViewController)
+
+        return try XCTUnwrap(
+            pickerSearchViewController.viewControllers.first as? SearchViewController,
+            file: file,
+            line: line
+        )
     }
 }
