@@ -1145,10 +1145,9 @@ class CardComponentTests: XCTestCase {
         )
         setupRootViewController(sut.viewController)
 
-        let installmentItemView: BaseFormPickerItemView<InstallmentElement> = try XCTUnwrap(
-            sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
+        let sectionView = try XCTUnwrap(
+            sectionHeaderView(containing: "Payment plan", in: sut.cardViewController.view)
         )
-        let sectionView = try XCTUnwrap(enclosingSectionHeaderView(of: installmentItemView))
 
         // When the selected brand has installment options, the section renders with its header.
         sut.cardViewController.items.installmentsItem?.update(cardBrand: .visa)
@@ -1167,11 +1166,12 @@ class CardComponentTests: XCTestCase {
         XCTAssertFalse(try XCTUnwrap(sut.cardViewController.items.installmentsItem?.isHidden.wrappedValue))
     }
 
-    private func enclosingSectionHeaderView(of view: UIView) -> FormSectionHeaderItemView? {
-        var current: UIView? = view.superview
-        while let candidate = current {
-            if let sectionView = candidate as? FormSectionHeaderItemView { return sectionView }
-            current = candidate.superview
+    private func sectionHeaderView(containing text: String, in view: UIView) -> FormSectionHeaderItemView? {
+        if let sectionView = view as? FormSectionHeaderItemView, containsLabel(withText: text, in: sectionView) {
+            return sectionView
+        }
+        for subview in view.subviews {
+            if let found = sectionHeaderView(containing: text, in: subview) { return found }
         }
         return nil
     }
