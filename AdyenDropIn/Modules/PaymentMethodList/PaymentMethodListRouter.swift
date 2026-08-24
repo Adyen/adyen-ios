@@ -104,6 +104,10 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     // MARK: - Internal
 
     internal func presentStoredPaymentMethodManagement() {
+        guard childRouter == nil else {
+            return
+        }
+
         guard let storedPaymentMethodManagementCapability else {
             return
         }

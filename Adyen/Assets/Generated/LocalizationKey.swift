@@ -574,8 +574,6 @@ public struct LocalizationKey {
     public static let storedPaymentMethodManagementCardsTitle = LocalizationKey(key: "adyen.storedPaymentMethodManagement.cardsTitle")
     /// Other
     public static let storedPaymentMethodManagementOtherTitle = LocalizationKey(key: "adyen.storedPaymentMethodManagement.otherTitle")
-    /// Expired
-    public static let storedPaymentMethodManagementExpired = LocalizationKey(key: "adyen.storedPaymentMethodManagement.expired")
     /// Remove %@
     public static let storedPaymentMethodManagementRemoveConfirmationAction = LocalizationKey(key: "adyen.storedPaymentMethodManagement.removeConfirmationAction")
     /// Nothing here!

@@ -280,7 +280,6 @@
 "adyen.storedPaymentMethodManagement.description" = "Remove your saved payment methods";
 "adyen.storedPaymentMethodManagement.cardsTitle" = "Cards";
 "adyen.storedPaymentMethodManagement.otherTitle" = "Other";
-"adyen.storedPaymentMethodManagement.expired" = "Expired";
 "adyen.storedPaymentMethodManagement.removeConfirmationAction" = "Remove %@";
 "adyen.storedPaymentMethodManagement.emptyTitle" = "Nothing here!";
 "adyen.storedPaymentMethodManagement.emptyMessage" = "You have no saved payment methods.";

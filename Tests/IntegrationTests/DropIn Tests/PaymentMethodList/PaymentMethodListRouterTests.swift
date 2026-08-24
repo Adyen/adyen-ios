@@ -125,6 +125,27 @@ struct PaymentMethodListRouterTests {
     }
 
     @Test
+    func presentStoredPaymentMethodManagement_whenAlreadyPresented_shouldNotPushAgain() {
+        // Given
+        let managementRouter = RouterMock()
+        let managementAssembler = StoredPaymentMethodManagementAssemblerSpy(router: managementRouter)
+        let navigationControllerSpy = NavigationControllerSpy()
+        let sut = makeSUT(
+            navigationController: navigationControllerSpy,
+            storedPaymentMethodManagementAssembler: managementAssembler
+        )
+        sut.presentStoredPaymentMethodManagement()
+
+        // When
+        sut.presentStoredPaymentMethodManagement()
+
+        // Then
+        #expect(managementAssembler.resolveCallsCount == 1)
+        #expect(navigationControllerSpy.pushViewControllerCallsCount == 1)
+        #expect(sut.childRouter === managementRouter)
+    }
+
+    @Test
     func presentStoredPaymentMethodManagement_withoutCapability_shouldNotRoute() {
         // Given
         let managementAssembler = StoredPaymentMethodManagementAssemblerSpy(router: RouterMock())
