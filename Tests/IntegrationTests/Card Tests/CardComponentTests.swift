@@ -1145,15 +1145,17 @@ class CardComponentTests: XCTestCase {
         )
         setupRootViewController(sut.viewController)
 
+        // TODO: Replace LocalizationKey(key: "Payment plan") with a proper generated localization key once the section header is localized.
+        let headerTitle = localizedString(LocalizationKey(key: "Payment plan"), sut.configuration.localizationParameters)
         let sectionView = try XCTUnwrap(
-            sectionHeaderView(containing: "Payment plan", in: sut.cardViewController.view)
+            sectionHeaderView(containing: headerTitle, in: sut.cardViewController.view)
         )
 
         // When the selected brand has installment options, the section renders with its header.
         sut.cardViewController.items.installmentsItem?.update(cardBrand: .visa)
         wait(until: { sectionView.isHidden == false }, timeout: 5)
         XCTAssertFalse(try XCTUnwrap(sut.cardViewController.items.installmentsItem?.isHidden.wrappedValue))
-        XCTAssertTrue(containsLabel(withText: "Payment plan", in: sectionView))
+        XCTAssertTrue(containsLabel(withText: headerTitle, in: sectionView))
 
         // When switching to a brand without options, the entire section (header + field) hides.
         sut.cardViewController.items.installmentsItem?.update(cardBrand: .masterCard)
