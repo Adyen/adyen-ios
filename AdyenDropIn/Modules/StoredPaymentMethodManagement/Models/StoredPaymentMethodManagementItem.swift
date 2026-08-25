@@ -7,7 +7,11 @@
 import Adyen
 import Foundation
 
-internal struct StoredPaymentMethodManagementItem {
+internal struct StoredPaymentMethodManagementItem: Identifiable {
+
+    internal var id: String {
+        paymentMethod.identifier
+    }
 
     internal let paymentMethod: any StoredPaymentMethod
     internal let title: String

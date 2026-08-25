@@ -26,28 +26,44 @@ internal struct StoredPaymentMethodManagementView: View {
     }
 
     internal var body: some View {
-        Group {
-            if viewModel.isEmpty {
-                content
-            } else {
-                ScrollView {
+        ZStack {
+            Group {
+                if viewModel.isEmpty {
                     content
+                } else {
+                    ScrollView {
+                        content
+                    }
                 }
+            }
+            .disabled(viewModel.isRemoving)
+
+            if viewModel.isRemoving {
+                removalProgressView
             }
         }
         .background(Color(uiColor: theme.colors.background))
-        .sheet(isPresented: isRemovalConfirmationPresented) {
-            if let item = viewModel.itemPendingRemoval {
-                if #available(iOS 16.4, *) {
-                    removalConfirmationView(for: item)
-                        .presentationBackground(.black.opacity(0.1))
-                } else {
-                    removalConfirmationView(for: item)
-                }
+        .sheet(item: removalConfirmationItem) { item in
+            if #available(iOS 16.4, *) {
+                removalConfirmationView(for: item)
+                    .presentationBackground(.black.opacity(0.1))
+            } else {
+                removalConfirmationView(for: item)
             }
         }
         .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.screen)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    }
+
+    private var removalProgressView: some View {
+        ZStack {
+            Color(uiColor: theme.colors.background)
+                .opacity(0.8)
+                .ignoresSafeArea()
+
+            ProgressView()
+                .tint(Color(uiColor: theme.colors.highlight))
+        }
     }
 
     private var content: some View {
@@ -77,7 +93,7 @@ internal struct StoredPaymentMethodManagementView: View {
             theme: theme,
             onRemove: {
                 Task {
-                    await viewModel.confirmRemoval(of: item)
+                    await viewModel.confirmRemoval()
                 }
             },
             onCancel: viewModel.dismissRemovalConfirmation
@@ -86,11 +102,11 @@ internal struct StoredPaymentMethodManagementView: View {
         .presentationDragIndicator(.hidden)
     }
 
-    private var isRemovalConfirmationPresented: Binding<Bool> {
+    private var removalConfirmationItem: Binding<StoredPaymentMethodManagementItem?> {
         Binding(
-            get: { viewModel.itemPendingRemoval != nil },
-            set: { isPresented in
-                if !isPresented {
+            get: { viewModel.itemToRemove },
+            set: { item in
+                if item == nil {
                     viewModel.dismissRemovalConfirmation()
                 }
             }

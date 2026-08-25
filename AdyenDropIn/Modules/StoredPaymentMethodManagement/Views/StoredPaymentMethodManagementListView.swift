@@ -15,7 +15,7 @@ internal struct StoredPaymentMethodManagementListView: View {
     private enum Constants {
         static let topPadding: CGFloat = 16
         static let verticalSpacing: CGFloat = 16
-        static let errorAnimationDuration = 0.2
+        static let animationDuration = 0.2
     }
 
     @ObservedObject private var viewModel: StoredPaymentMethodManagementViewModel
@@ -47,9 +47,19 @@ internal struct StoredPaymentMethodManagementListView: View {
         }
         .padding(.top, Constants.topPadding)
         .animation(
-            .easeInOut(duration: Constants.errorAnimationDuration),
+            .easeInOut(duration: Constants.animationDuration),
             value: viewModel.removalError != nil
         )
+        .animation(
+            .easeInOut(duration: Constants.animationDuration),
+            value: paymentMethodIdentifiers
+        )
+    }
+
+    private var paymentMethodIdentifiers: [String] {
+        viewModel.sections.flatMap { section in
+            section.items.map(\.paymentMethod.identifier)
+        }
     }
 }
 
