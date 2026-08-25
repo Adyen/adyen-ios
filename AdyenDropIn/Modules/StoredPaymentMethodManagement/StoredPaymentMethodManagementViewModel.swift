@@ -13,12 +13,9 @@ import Foundation
 internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
 
     private enum RemovalFlow {
-        case idle(error: StoredPaymentMethodRemovalError?)
-        case confirming(
-            item: StoredPaymentMethodManagementItem,
-            error: StoredPaymentMethodRemovalError?
-        )
-        case removing(item: StoredPaymentMethodManagementItem)
+        case idle
+        case confirming(StoredPaymentMethodManagementItem)
+        case removing(StoredPaymentMethodManagementItem)
     }
 
     // MARK: - Properties
@@ -29,23 +26,15 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
     internal weak var router: StoredPaymentMethodManagementRouting?
 
     @Published internal private(set) var sections: [StoredPaymentMethodManagementSection]
-    @Published private var removalFlow: RemovalFlow = .idle(error: nil)
+    @Published internal private(set) var removalError: StoredPaymentMethodRemovalError?
+    @Published private var removalFlow: RemovalFlow = .idle
 
     internal var itemToRemove: StoredPaymentMethodManagementItem? {
-        guard case let .confirming(item, _) = removalFlow else {
+        guard case let .confirming(item) = removalFlow else {
             return nil
         }
 
         return item
-    }
-
-    internal var removalError: StoredPaymentMethodRemovalError? {
-        switch removalFlow {
-        case let .idle(error), let .confirming(_, error):
-            error
-        case .removing:
-            nil
-        }
     }
 
     internal var isRemoving: Bool {
@@ -123,37 +112,39 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
     }
 
     internal func requestRemoval(of item: StoredPaymentMethodManagementItem) {
-        guard case let .idle(error) = removalFlow else {
+        guard case .idle = removalFlow else {
             return
         }
 
-        removalFlow = .confirming(item: item, error: error)
+        removalFlow = .confirming(item)
     }
 
     internal func dismissRemovalConfirmation() {
-        guard case let .confirming(_, error) = removalFlow else {
+        guard case .confirming = removalFlow else {
             return
         }
 
-        removalFlow = .idle(error: error)
+        removalFlow = .idle
     }
 
     internal func confirmRemoval() async {
-        guard case let .confirming(item, _) = removalFlow else {
+        guard case let .confirming(item) = removalFlow else {
             return
         }
 
-        removalFlow = .removing(item: item)
+        removalFlow = .removing(item)
+        removalError = nil
 
         do {
             try await capability.remove(item.paymentMethod)
         } catch {
-            removalFlow = .idle(error: .unsuccessful)
+            removalFlow = .idle
+            removalError = .unsuccessful
             return
         }
 
         remove(item)
-        removalFlow = .idle(error: nil)
+        removalFlow = .idle
         router?.didRemove(paymentMethod: item.paymentMethod)
     }
 
