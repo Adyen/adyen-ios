@@ -25,6 +25,7 @@ import Foundation
 internal protocol ComponentManaging {
     var sections: [PaymentMethodsSection] { get }
     func buildComponent(for paymentMethod: PaymentMethod) -> PaymentComponent?
+    func removeStoredPaymentMethod(withIdentifier identifier: String)
 }
 
 // TODO: - The ComponentManager should use the factories that Eren introduced in components.
@@ -33,15 +34,13 @@ internal final class ComponentManager: ComponentManaging {
 
     // MARK: - Properties
 
-    internal let paymentMethods: PaymentMethods
+    internal private(set) var paymentMethods: PaymentMethods
     internal let configuration: DropInComponent.Configuration
     internal let context: AdyenContext
     internal let order: PartialPaymentOrder?
     internal let partialPaymentEnabled: Bool
     internal weak var presentationDelegate: PresentationDelegate?
-    
-    private let supportsEditingStoredPaymentMethods: Bool
-    
+
     private var localizationParameters: LocalizationParameters? {
         configuration.localizationParameters
     }
@@ -58,7 +57,6 @@ internal final class ComponentManager: ComponentManaging {
         configuration: DropInComponent.Configuration,
         partialPaymentEnabled: Bool = true,
         order: PartialPaymentOrder?,
-        supportsEditingStoredPaymentMethods: Bool = false,
         presentationDelegate: PresentationDelegate?
     ) {
         self.paymentMethods = paymentMethods
@@ -66,7 +64,6 @@ internal final class ComponentManager: ComponentManaging {
         self.configuration = configuration
         self.partialPaymentEnabled = partialPaymentEnabled
         self.order = order
-        self.supportsEditingStoredPaymentMethods = supportsEditingStoredPaymentMethods
         self.presentationDelegate = presentationDelegate
 
         updateContextAmountIfNeeded()
@@ -74,9 +71,20 @@ internal final class ComponentManager: ComponentManaging {
     
     // MARK: - ComponentManaging
     
-    internal lazy var sections: [PaymentMethodsSection] = {
+    internal var sections: [PaymentMethodsSection] {
         [paidSection, storedSection, regularSection].filter { !$0.paymentMethods.isEmpty }
-    }()
+    }
+
+    internal var visibleStoredPaymentMethods: [any StoredPaymentMethod] {
+        storedComponents.compactMap { $0.paymentMethod as? any StoredPaymentMethod }
+    }
+
+    internal func removeStoredPaymentMethod(withIdentifier identifier: String) {
+        paymentMethods.stored.removeAll { $0.identifier == identifier }
+        storedComponents.removeAll {
+            ($0.paymentMethod as? any StoredPaymentMethod)?.identifier == identifier
+        }
+    }
 
     internal func buildComponent(for paymentMethod: PaymentMethod) -> PaymentComponent? {
         guard isAllowed(paymentMethod) else {
@@ -108,8 +116,7 @@ internal final class ComponentManager: ComponentManaging {
     // MARK: - Computed Components
 
     internal lazy var storedComponents: [PaymentComponent] = {
-        paymentMethods.stored
-            .filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
+        storedPaymentMethodCandidates
             .compactMap(buildComponent(for:))
     }()
 
@@ -144,6 +151,7 @@ internal final class ComponentManager: ComponentManaging {
         )
 
         return PaymentMethodsSection(
+            kind: .paid,
             header: ListSectionHeader(
                 title: localizedString(.paymentMethodsPaidMethods, localizationParameters),
                 style: listStyle.sectionHeader
@@ -152,24 +160,18 @@ internal final class ComponentManager: ComponentManaging {
         )
     }()
 
-    private lazy var storedSection: PaymentMethodsSection = {
-        let allowDeleting = configuration.paymentMethodsList.allowDisablingStoredPaymentMethods
-            && supportsEditingStoredPaymentMethods
-
-        let storedPaymentMethods = paymentMethods.stored
-            .filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
-
-        return PaymentMethodsSection(
+    private var storedSection: PaymentMethodsSection {
+        PaymentMethodsSection(
+            kind: .stored,
             header: ListSectionHeader(
                 title: localizedString(.paymentMethodsStoredMethods, localizationParameters),
-                editingStyle: allowDeleting ? .delete : .none,
                 style: listStyle.sectionHeader
             ),
-            paymentMethods: storedPaymentMethods
+            paymentMethods: visibleStoredPaymentMethods
         )
-    }()
+    }
 
-    private lazy var regularSection: PaymentMethodsSection = {
+    private var regularSection: PaymentMethodsSection {
         let needsHeader = !paidSection.paymentMethods.isEmpty || !storedSection.paymentMethods.isEmpty
 
         let header: ListSectionHeader? = needsHeader
@@ -180,15 +182,21 @@ internal final class ComponentManager: ComponentManaging {
             : nil
 
         return PaymentMethodsSection(
+            kind: .regular,
             header: header,
             paymentMethods: paymentMethods.regular
         )
-    }()
+    }
 }
 
 // MARK: - Private
 
 private extension ComponentManager {
+
+    var storedPaymentMethodCandidates: [any StoredPaymentMethod] {
+        paymentMethods.stored
+            .filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
+    }
     
     func updateContextAmountIfNeeded() {
         guard let remainingAmount = order?.remainingAmount else { return }

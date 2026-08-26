@@ -53,6 +53,13 @@ final class NavigationControllerSpy: UINavigationController {
         pushAnimated = animated
     }
 
+    var popViewControllerCallsCount = 0
+
+    override func popViewController(animated: Bool) -> UIViewController? {
+        popViewControllerCallsCount += 1
+        return nil
+    }
+
     var presentCallsCount = 0
     var capturedPresentedViewController: UIViewController?
     var presentAnimated: Bool?

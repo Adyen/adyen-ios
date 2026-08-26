@@ -53,6 +53,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     internal weak var router: PaymentMethodListRouting?
     private let dropInFlowManager: DropInFlowManaging
     private let logoURLProvider: LogoURLProvider
+    private let supportsStoredPaymentMethodManagement: Bool
     internal let theme: CheckoutTheme
 
     @Published internal private(set) var state: PaymentMethodListState = .idle
@@ -60,7 +61,9 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         $state
     }
 
-    internal let paymentMethodSections: [PaymentMethodsSection]
+    internal var paymentMethodSections: [PaymentMethodsSection] {
+        componentManager.sections
+    }
 
     // MARK: - Initializers
 
@@ -71,14 +74,15 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         configuration: DropInComponent.Configuration,
         dropInFlowManager: DropInFlowManaging,
         logoURLProvider: LogoURLProvider,
+        supportsStoredPaymentMethodManagement: Bool,
         theme: CheckoutTheme
     ) {
         self.context = context
         self.localizationParameters = localizationParameters
         self.componentManager = componentManager
-        self.paymentMethodSections = componentManager.sections
         self.dropInFlowManager = dropInFlowManager
         self.logoURLProvider = logoURLProvider
+        self.supportsStoredPaymentMethodManagement = supportsStoredPaymentMethodManagement
         self.theme = theme
     }
 
@@ -148,8 +152,9 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         }
     }
 
-    private func delete(paymentMethod: PaymentMethod, completion: @escaping Adyen.Completion<Bool>) {
-        // TODO: - Logic to delete stored payment method
+    internal func remove(storedPaymentMethod: any StoredPaymentMethod) {
+        componentManager.removeStoredPaymentMethod(withIdentifier: storedPaymentMethod.identifier)
+        state = .loaded(sections: getSections())
     }
 
     private func getSections() -> [PaymentMethodSection] {
@@ -157,11 +162,34 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             let items = section.paymentMethods.filter {
                 !Constants.instantPaymentMethods.contains($0.type)
             }.map(paymentMethodItem(from:))
+
             return PaymentMethodSection(
                 headerTitle: section.header?.title,
+                headerTrailingButton: manageButton(for: section, items: items),
                 items: items,
                 theme: theme
             )
+        }
+    }
+
+    private func manageButton(
+        for section: PaymentMethodsSection,
+        items: [PaymentMethodItem]
+    ) -> PaymentMethodSection.HeaderTrailingButton? {
+        switch section.kind {
+        case .stored:
+            guard supportsStoredPaymentMethodManagement, !items.isEmpty else {
+                return nil
+            }
+
+            return .init(
+                title: localizedString(.storedPaymentMethodManagementTitle, localizationParameters),
+                handler: { [weak self] in
+                    self?.router?.presentStoredPaymentMethodManagement()
+                }
+            )
+        case .paid, .regular:
+            return nil
         }
     }
 
@@ -172,6 +200,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         return PaymentMethodItem(
             title: displayInformation.title,
             subtitle: displayInformation.subtitle,
+            subtitleStatus: displayInformation.subtitleStatus,
             iconURL: imageURL,
             trailingInfo: displayInformation.trailingInfo,
             logoURLProvider: logoURLProvider,

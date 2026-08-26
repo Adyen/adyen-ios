@@ -18,6 +18,7 @@ internal struct PaymentMethodItem: Identifiable {
     internal let id = UUID()
     internal let title: String
     internal let subtitle: String?
+    internal let subtitleStatus: DisplayInformation.SubtitleStatus
     internal let iconURL: URL?
     private let trailingInfo: DisplayInformation.TrailingInfoType?
     private let logoURLProvider: LogoURLProvider
@@ -30,6 +31,7 @@ internal struct PaymentMethodItem: Identifiable {
     internal init(
         title: String,
         subtitle: String? = nil,
+        subtitleStatus: DisplayInformation.SubtitleStatus = .normal,
         iconURL: URL? = nil,
         trailingInfo: DisplayInformation.TrailingInfoType? = nil,
         logoURLProvider: LogoURLProvider,
@@ -39,6 +41,7 @@ internal struct PaymentMethodItem: Identifiable {
     ) {
         self.title = title
         self.subtitle = subtitle
+        self.subtitleStatus = subtitleStatus
         self.iconURL = iconURL
         self.trailingInfo = trailingInfo
         self.logoURLProvider = logoURLProvider
@@ -59,5 +62,9 @@ internal struct PaymentMethodItem: Identifiable {
 
         let logoUrls = names.map { logoURLProvider.logoURL(withName: $0) }
         return TrailingInfoData(logoUrls: logoUrls)
+    }
+
+    internal var subtitleColor: UIColor {
+        subtitleStatus == .warning ? theme.colors.warning : theme.colors.textSecondary
     }
 }

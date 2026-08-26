@@ -568,14 +568,12 @@ public struct LocalizationKey {
     public static let preselectedPaymentMethodOtherOptions = LocalizationKey(key: "adyen.preselectedPaymentMethod.otherOptions")
     /// Manage
     public static let storedPaymentMethodManagementTitle = LocalizationKey(key: "adyen.storedPaymentMethodManagement.title")
-    /// Remove your favorite and saved payment methods
+    /// Remove your saved payment methods
     public static let storedPaymentMethodManagementDescription = LocalizationKey(key: "adyen.storedPaymentMethodManagement.description")
     /// Cards
     public static let storedPaymentMethodManagementCardsTitle = LocalizationKey(key: "adyen.storedPaymentMethodManagement.cardsTitle")
     /// Other
     public static let storedPaymentMethodManagementOtherTitle = LocalizationKey(key: "adyen.storedPaymentMethodManagement.otherTitle")
-    /// Expired
-    public static let storedPaymentMethodManagementExpired = LocalizationKey(key: "adyen.storedPaymentMethodManagement.expired")
     /// Remove %@
     public static let storedPaymentMethodManagementRemoveConfirmationAction = LocalizationKey(key: "adyen.storedPaymentMethodManagement.removeConfirmationAction")
     /// Nothing here!
@@ -584,7 +582,7 @@ public struct LocalizationKey {
     public static let storedPaymentMethodManagementEmptyMessage = LocalizationKey(key: "adyen.storedPaymentMethodManagement.emptyMessage")
     /// Payment options
     public static let storedPaymentMethodManagementPaymentOptions = LocalizationKey(key: "adyen.storedPaymentMethodManagement.paymentOptions")
-    /// Error removing payment method. Try again later.
+    /// We were unable to remove your payment method, try again later.
     public static let storedPaymentMethodManagementRemovalErrorMessage = LocalizationKey(key: "adyen.storedPaymentMethodManagement.removalErrorMessage")
     /// Expired
     public static let storedPaymentMethodExpired = LocalizationKey(key: "adyen.storedPaymentMethod.expired")

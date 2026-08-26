@@ -417,6 +417,20 @@ class PaymentMethodListRoutingMock: PaymentMethodListRouting {
         presentActionViewControllerOnCancelClosure?(actionViewController, onCancel)
     }
 
+    // MARK: - presentStoredPaymentMethodManagement
+
+    var presentStoredPaymentMethodManagementCallsCount = 0
+    var presentStoredPaymentMethodManagementCalled: Bool {
+        presentStoredPaymentMethodManagementCallsCount > 0
+    }
+
+    var presentStoredPaymentMethodManagementClosure: (() -> Void)?
+
+    func presentStoredPaymentMethodManagement() {
+        presentStoredPaymentMethodManagementCallsCount += 1
+        presentStoredPaymentMethodManagementClosure?()
+    }
+
     // MARK: - dismiss
 
     var dismissCompletionCallsCount = 0

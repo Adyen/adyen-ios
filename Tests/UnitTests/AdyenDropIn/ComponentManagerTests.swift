@@ -117,6 +117,40 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.regularComponents.filter { $0 is FinalizableComponent }.count, 0)
     }
 
+    func testVisibleStoredPaymentMethods_excludesMethodsUnsupportedInThePaymentList() throws {
+        var paymentMethodsDictionary = dictionary
+        var storedPaymentMethods = try XCTUnwrap(paymentMethodsDictionary["storedPaymentMethods"] as? [[String: Any]])
+        var unsupportedPaymentMethod = storedCreditCardDictionary
+        unsupportedPaymentMethod["id"] = "unsupported-stored-payment-method"
+        unsupportedPaymentMethod["supportedShopperInteractions"] = ["ContAuth"]
+        storedPaymentMethods.append(unsupportedPaymentMethod)
+        paymentMethodsDictionary["storedPaymentMethods"] = storedPaymentMethods
+        let paymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
+
+        XCTAssertFalse(
+            sut.visibleStoredPaymentMethods.contains { $0.identifier == "unsupported-stored-payment-method" }
+        )
+        XCTAssertEqual(
+            sut.visibleStoredPaymentMethods.map(\.identifier),
+            sut.storedComponents.compactMap {
+                ($0.paymentMethod as? any StoredPaymentMethod)?.identifier
+            }
+        )
+        let storedSection = try XCTUnwrap(sut.sections.first { $0.kind == .stored })
+        XCTAssertFalse(
+            storedSection.paymentMethods.contains {
+                ($0 as? any StoredPaymentMethod)?.identifier == "unsupported-stored-payment-method"
+            }
+        )
+    }
+
     func testApplePayPaymentMethod() throws {
         configuration.applePay = try .init(paymentRequest: Dummy.createTestApplePayPaymentRequest())
         let sut = ComponentManager(
