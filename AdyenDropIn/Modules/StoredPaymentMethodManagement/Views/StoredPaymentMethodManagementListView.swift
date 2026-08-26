@@ -37,6 +37,7 @@ internal struct StoredPaymentMethodManagementListView: View {
                 SectionView(
                     title: viewModel.sectionTitle(for: section),
                     section: section,
+                    removingItemIdentifiers: viewModel.removingItemIdentifiers,
                     removeButtonTitle: viewModel.removeButtonTitle,
                     theme: theme,
                     onRemove: viewModel.requestRemoval
@@ -105,6 +106,41 @@ private extension StoredPaymentMethodManagementListView {
         }
     }
 
+    struct CircularProgressView: View {
+
+        private enum Constants {
+            static let size: CGFloat = 24
+            static let lineWidth: CGFloat = 2.5
+            static let arcLength = 0.25
+            static let rotationDuration = 1.0
+        }
+
+        let theme: CheckoutTheme
+        @State private var isRotating = false
+
+        var body: some View {
+            ZStack {
+                Circle()
+                    .stroke(Color(uiColor: theme.colors.textOnDisabled).opacity(0.15), lineWidth: Constants.lineWidth)
+
+                Circle()
+                    .trim(from: 0, to: Constants.arcLength)
+                    .stroke(
+                        Color(uiColor: theme.colors.text),
+                        style: StrokeStyle(lineWidth: Constants.lineWidth, lineCap: .round)
+                    )
+                    .rotationEffect(.degrees(isRotating ? 360 : 0))
+            }
+            .frame(width: Constants.size, height: Constants.size)
+            .accessibilityHidden(true)
+            .onAppear {
+                withAnimation(.linear(duration: Constants.rotationDuration).repeatForever(autoreverses: false)) {
+                    isRotating = true
+                }
+            }
+        }
+    }
+
     struct SectionView: View {
 
         private enum Constants {
@@ -115,6 +151,7 @@ private extension StoredPaymentMethodManagementListView {
 
         let title: String?
         let section: StoredPaymentMethodManagementSection
+        let removingItemIdentifiers: Set<String>
         let removeButtonTitle: String
         let theme: CheckoutTheme
         let onRemove: (StoredPaymentMethodManagementItem) -> Void
@@ -132,6 +169,7 @@ private extension StoredPaymentMethodManagementListView {
                     ForEach(section.items, id: \.paymentMethod.identifier) { item in
                         RowView(
                             item: item,
+                            isRemoving: removingItemIdentifiers.contains(item.paymentMethod.identifier),
                             removeButtonTitle: removeButtonTitle,
                             theme: theme,
                             onRemove: onRemove
@@ -153,6 +191,7 @@ private extension StoredPaymentMethodManagementListView {
         }
 
         let item: StoredPaymentMethodManagementItem
+        let isRemoving: Bool
         let removeButtonTitle: String
         let theme: CheckoutTheme
         let onRemove: (StoredPaymentMethodManagementItem) -> Void
@@ -160,8 +199,14 @@ private extension StoredPaymentMethodManagementListView {
         var body: some View {
             HStack(spacing: Constants.itemSpacing) {
                 HStack(spacing: Constants.itemSpacing) {
-                    LogoView(url: item.logoURL)
-                        .frame(width: Constants.logoWidth, height: Constants.logoHeight)
+                    Group {
+                        if isRemoving {
+                            CircularProgressView(theme: theme)
+                        } else {
+                            LogoView(url: item.logoURL)
+                        }
+                    }
+                    .frame(width: Constants.logoWidth, height: Constants.logoHeight)
 
                     VStack(alignment: .leading, spacing: 2) {
                         Text(item.title)
@@ -184,7 +229,8 @@ private extension StoredPaymentMethodManagementListView {
                     onRemove(item)
                 }
                 .font(Font(theme.elements.labels.subheadline.font))
-                .foregroundStyle(Color(uiColor: theme.colors.destructive))
+                .foregroundStyle(Color(uiColor: isRemoving ? theme.colors.textOnDisabled : theme.colors.destructive))
+                .disabled(isRemoving)
                 .accessibilityLabel(item.removalActionTitle)
                 .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.remove(item.paymentMethod.identifier))
             }

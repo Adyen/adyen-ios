@@ -30,9 +30,9 @@ struct StoredPaymentMethodManagementViewModelTests {
         weak var weakSUT: StoredPaymentMethodManagementViewModel?
         let router = StoredPaymentMethodManagementRoutingMock()
         let sut = makeSUT(
-            capability: StoredPaymentMethodManagementCapability { _ in
+            capability: StoredPaymentMethodManagementCapability { paymentMethod in
                 removalCallsCount += 1
-                observedRemovingState = weakSUT?.isRemoving == true
+                observedRemovingState = weakSUT?.removingItemIdentifiers.contains(paymentMethod.identifier) == true
                 await weakSUT?.confirmRemoval()
             }
         )
@@ -47,7 +47,56 @@ struct StoredPaymentMethodManagementViewModelTests {
         #expect(observedRemovingState)
         #expect(sut.sections.isEmpty)
         #expect(sut.itemToRemove == nil)
+        #expect(!sut.isRemoving)
         #expect(router.removedPaymentMethods.last?.identifier == item.paymentMethod.identifier)
+    }
+
+    @Test
+    func confirmRemoval_whileAnotherRemovalIsInProgress_tracksBothItems() async throws {
+        var removalContinuations = [String: CheckedContinuation<Void, any Error>]()
+        let firstPaymentMethod = storedPaymentMethod(identifier: "first-stored-payment-method-id")
+        let secondPaymentMethod = storedPaymentMethod(identifier: "second-stored-payment-method-id")
+        let sut = makeSUT(
+            paymentMethods: [firstPaymentMethod, secondPaymentMethod],
+            capability: StoredPaymentMethodManagementCapability { paymentMethod in
+                try await withCheckedThrowingContinuation { continuation in
+                    removalContinuations[paymentMethod.identifier] = continuation
+                }
+            }
+        )
+        let items = sut.sections.flatMap(\.items)
+        let firstItem = try #require(items.first { $0.paymentMethod.identifier == firstPaymentMethod.identifier })
+        let secondItem = try #require(items.first { $0.paymentMethod.identifier == secondPaymentMethod.identifier })
+
+        sut.requestRemoval(of: firstItem)
+        let firstRemoval = Task { await sut.confirmRemoval() }
+        await Task.yield()
+
+        #expect(sut.removingItemIdentifiers == [firstPaymentMethod.identifier])
+        sut.requestRemoval(of: firstItem)
+        #expect(sut.itemToRemove == nil)
+
+        sut.requestRemoval(of: secondItem)
+        let secondRemoval = Task { await sut.confirmRemoval() }
+        await Task.yield()
+
+        #expect(sut.removingItemIdentifiers == [firstPaymentMethod.identifier, secondPaymentMethod.identifier])
+
+        let pendingFirstRemoval = removalContinuations.removeValue(forKey: firstPaymentMethod.identifier)
+        let firstContinuation = try #require(pendingFirstRemoval)
+        firstContinuation.resume()
+        await firstRemoval.value
+
+        #expect(!sut.isRemoving(firstItem))
+        #expect(sut.isRemoving(secondItem))
+
+        let pendingSecondRemoval = removalContinuations.removeValue(forKey: secondPaymentMethod.identifier)
+        let secondContinuation = try #require(pendingSecondRemoval)
+        secondContinuation.resume()
+        await secondRemoval.value
+
+        #expect(sut.sections.isEmpty)
+        #expect(!sut.isRemoving)
     }
 
     @Test
@@ -64,6 +113,7 @@ struct StoredPaymentMethodManagementViewModelTests {
 
         #expect(sut.sections.first?.items.count == 1)
         #expect(sut.itemToRemove == nil)
+        #expect(!sut.isRemoving)
         #expect(sut.removalError == .unsuccessful)
     }
 
@@ -118,24 +168,28 @@ struct StoredPaymentMethodManagementViewModelTests {
     }
 
     private func makeSUT(
+        paymentMethods: [StoredPaymentMethodMock]? = nil,
         capability: StoredPaymentMethodManagementCapability = StoredPaymentMethodManagementCapability { _ in }
     ) -> StoredPaymentMethodManagementViewModel {
         let mapper = StoredPaymentMethodManagementPresentationMapper(
             localizationParameters: nil,
             logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment)
         )
-        let paymentMethod = StoredPaymentMethodMock(
-            identifier: "stored-payment-method-id",
-            supportedShopperInteractions: [.shopperPresent],
-            type: .scheme,
-            name: "Visa"
-        )
 
         return StoredPaymentMethodManagementViewModel(
-            paymentMethods: [paymentMethod],
+            paymentMethods: paymentMethods ?? [storedPaymentMethod()],
             capability: capability,
             mapper: mapper,
             localizationParameters: nil
+        )
+    }
+
+    private func storedPaymentMethod(identifier: String = "stored-payment-method-id") -> StoredPaymentMethodMock {
+        StoredPaymentMethodMock(
+            identifier: identifier,
+            supportedShopperInteractions: [.shopperPresent],
+            type: .scheme,
+            name: "Visa"
         )
     }
 }

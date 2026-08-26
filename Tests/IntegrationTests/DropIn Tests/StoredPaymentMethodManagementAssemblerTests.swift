@@ -75,6 +75,46 @@ struct StoredPaymentMethodManagementAssemblerTests {
         #expect(hostingController.viewModel.router === router)
     }
 
+    @Test
+    func resolveRouter_disablesNavigationWhileRemovalIsInProgress() async throws {
+        var removalContinuation: CheckedContinuation<Void, Never>?
+        let paymentMethod = storedPaymentMethod()
+        let listener = StoredPaymentMethodManagementListenerMock()
+        let router = try #require(
+            StoredPaymentMethodManagementAssembler(
+                localizationParameters: nil,
+                logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
+                theme: .default
+            ).resolveStoredPaymentMethodManagementRouter(
+                paymentMethods: [paymentMethod],
+                capability: StoredPaymentMethodManagementCapability { _ in
+                    await withCheckedContinuation { continuation in
+                        removalContinuation = continuation
+                    }
+                },
+                listener: listener
+            ) as? StoredPaymentMethodManagementRouter
+        )
+        let hostingController = try #require(router.rootViewController as? StoredPaymentMethodManagementHostingController)
+        let navigationController = UINavigationController(rootViewController: UIViewController())
+        navigationController.pushViewController(hostingController, animated: false)
+        let item = try #require(hostingController.viewModel.sections.first?.items.first)
+
+        hostingController.viewModel.requestRemoval(of: item)
+        let removal = Task { await hostingController.viewModel.confirmRemoval() }
+        await Task.yield()
+
+        #expect(!navigationController.navigationBar.isUserInteractionEnabled)
+        #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == false)
+
+        let continuation = try #require(removalContinuation)
+        continuation.resume()
+        await removal.value
+
+        #expect(navigationController.navigationBar.isUserInteractionEnabled)
+        #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == true)
+    }
+
     private func storedPaymentMethod() -> StoredPaymentMethodMock {
         StoredPaymentMethodMock(
             identifier: "stored-payment-method-id",
