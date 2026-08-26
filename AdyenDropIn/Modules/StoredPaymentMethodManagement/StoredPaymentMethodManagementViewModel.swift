@@ -12,6 +12,12 @@ import Foundation
 @MainActor
 internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
 
+    private enum RemovalFlow {
+        case idle
+        case confirming(StoredPaymentMethodManagementItem)
+        case removing(StoredPaymentMethodManagementItem)
+    }
+
     // MARK: - Properties
 
     private let capability: StoredPaymentMethodManagementCapability
@@ -20,8 +26,24 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
     internal weak var router: StoredPaymentMethodManagementRouting?
 
     @Published internal private(set) var sections: [StoredPaymentMethodManagementSection]
-    @Published internal private(set) var itemPendingRemoval: StoredPaymentMethodManagementItem?
     @Published internal private(set) var removalError: StoredPaymentMethodRemovalError?
+    @Published private var removalFlow: RemovalFlow = .idle
+
+    internal var itemToRemove: StoredPaymentMethodManagementItem? {
+        guard case let .confirming(item) = removalFlow else {
+            return nil
+        }
+
+        return item
+    }
+
+    internal var isRemoving: Bool {
+        if case .removing = removalFlow {
+            return true
+        }
+
+        return false
+    }
 
     internal var isEmpty: Bool {
         sections.isEmpty
@@ -55,16 +77,8 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
         localizedString(.removeButton, localizationParameters)
     }
 
-    internal var removalErrorTitle: String {
-        localizedString(.errorTitle, localizationParameters)
-    }
-
     internal var removalErrorMessage: String {
         localizedString(.storedPaymentMethodManagementRemovalErrorMessage, localizationParameters)
-    }
-
-    internal var dismissTitle: String {
-        localizedString(.dismissButton, localizationParameters)
     }
 
     // MARK: - Initializers
@@ -83,8 +97,13 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
 
     // MARK: - Internal
 
-    internal func sectionTitle(for kind: StoredPaymentMethodManagementSection.Kind) -> String {
-        switch kind {
+    internal func sectionTitle(for section: StoredPaymentMethodManagementSection) -> String? {
+        // no title for the other section if there is no stored cards
+        if section.kind == .other, !sections.contains(where: { $0.kind == .cards }) {
+            return nil
+        }
+
+        return switch section.kind {
         case .cards:
             localizedString(.storedPaymentMethodManagementCardsTitle, localizationParameters)
         case .other:
@@ -93,28 +112,39 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
     }
 
     internal func requestRemoval(of item: StoredPaymentMethodManagementItem) {
-        itemPendingRemoval = item
+        guard case .idle = removalFlow else {
+            return
+        }
+
+        removalFlow = .confirming(item)
     }
 
     internal func dismissRemovalConfirmation() {
-        itemPendingRemoval = nil
+        guard case .confirming = removalFlow else {
+            return
+        }
+
+        removalFlow = .idle
     }
 
-    internal func dismissRemovalError() {
+    internal func confirmRemoval() async {
+        guard case let .confirming(item) = removalFlow else {
+            return
+        }
+
+        removalFlow = .removing(item)
         removalError = nil
-    }
 
-    internal func confirmRemoval(of item: StoredPaymentMethodManagementItem) async {
         do {
             try await capability.remove(item.paymentMethod)
         } catch {
-            itemPendingRemoval = nil
+            removalFlow = .idle
             removalError = .unsuccessful
             return
         }
 
         remove(item)
-        itemPendingRemoval = nil
+        removalFlow = .idle
         router?.didRemove(paymentMethod: item.paymentMethod)
     }
 

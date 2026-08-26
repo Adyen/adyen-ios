@@ -44,6 +44,21 @@ struct PaymentMethodItemTests {
 
         // Then
         #expect(sut.subtitle == expectedSubtitle)
+        #expect(sut.subtitleStatus == .normal)
+    }
+
+    @Test
+    func init_withWarningSubtitle_shouldUseWarningColor() {
+        let logoURLProvider = LogoURLProvider(environment: Dummy.apiContext.environment)
+        let sut = PaymentMethodItem(
+            title: "Card",
+            subtitle: "Expired",
+            subtitleStatus: .warning,
+            logoURLProvider: logoURLProvider,
+            theme: .init()
+        )
+
+        #expect(sut.subtitleColor == sut.theme.colors.warning)
     }
 
     @Test

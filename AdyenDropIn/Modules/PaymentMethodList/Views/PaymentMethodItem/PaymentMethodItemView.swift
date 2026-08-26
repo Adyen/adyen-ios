@@ -177,7 +177,7 @@ internal final class PaymentMethodItemView: UIView {
 
         // Subtitle Label
         subtitleLabel.apply(item.theme.elements.labels.subheadline)
-        subtitleLabel.textColor = item.theme.colors.textSecondary
+        subtitleLabel.textColor = item.subtitleColor
 
         // Chevron ImageView
         chevronImageView.tintColor = item.theme.colors.textSecondary
