@@ -292,21 +292,29 @@ extension DropInAdvancedFlowExample: PartialPaymentDelegate {
 
 }
 
+var flag = false
+
 extension DropInAdvancedFlowExample: StoredPaymentMethodsDelegate {
     internal func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping (Bool) -> Void) {
-        let request = DisableStoredPaymentMethodRequest(
-            storedPaymentId: storedPaymentMethod.identifier,
-            merchantAccount: ConfigurationConstants.merchantAccount,
-            shopperReference: ConfigurationConstants.shopperReference
-        )
         
-        apiClient.perform(request) { result in
-            switch result {
-            case .success:
-                completion(true)
-            case .failure:
-                completion(false)
-            }
+        flag.toggle()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            completion(flag)
         }
+        
+//        let request = DisableStoredPaymentMethodRequest(
+//            storedPaymentId: storedPaymentMethod.identifier,
+//            merchantAccount: ConfigurationConstants.merchantAccount,
+//            shopperReference: ConfigurationConstants.shopperReference
+//        )
+//
+//        apiClient.perform(request) { result in
+//            switch result {
+//            case .success:
+//                completion(true)
+//            case .failure:
+//                completion(false)
+//            }
+//        }
     }
 }
