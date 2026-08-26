@@ -304,7 +304,7 @@ extension DropInAdvancedFlowExample: StoredPaymentMethodsDelegate {
             switch result {
             case .success:
                 completion(true)
-            case let .failure:
+            case .failure:
                 completion(false)
             }
         }
