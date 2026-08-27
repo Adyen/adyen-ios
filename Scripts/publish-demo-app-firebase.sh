@@ -197,7 +197,7 @@ FIREBASE_RELEASE_NOTES="${RELEASE_NOTES:-Release: ${FIREBASE_RELEASE_NAME}, Vers
 # Upload
 firebase appdistribution:distribute "$IPA_PATH" \
   --app "$FIREBASE_APP_ID" \
-  --groups "ios-checkout-team" \
+  --groups "internal" \
   --release-notes "$FIREBASE_RELEASE_NOTES"
 
 echo "✅ Firebase upload complete! Release name: $FIREBASE_RELEASE_NAME"
