@@ -6,33 +6,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BUILD_PATH="$SCRIPT_DIR/../Build-Temp"
 ARCHIVE_PATH="$BUILD_PATH/AdyenUIHost.xcarchive"
 IPA_PATH="$BUILD_PATH/AdyenUIHost.ipa"
-
-# Input arguments
-DISTRIBUTION_TYPE="${1:-testflight}"  # testflight (default) or firebase
-
-# Validate input
-if [[ -z "$DISTRIBUTION_TYPE" ]]; then
-  echo "❌ Usage: $0 [distribution_type]"
-  exit 1
-fi
-
-if [[ "$DISTRIBUTION_TYPE" != "testflight" && "$DISTRIBUTION_TYPE" != "firebase" ]]; then
-  echo "❌ distribution_type must be 'testflight' or 'firebase'"
-  exit 1
-fi
-
-# ---- Determine export options ----
-if [[ "$DISTRIBUTION_TYPE" == "testflight" ]]; then
-  echo "📦 Using TestFlight export options"
-  EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions.plist"
-  EXPORT_CONFIGURATION="Release"
-else
-  echo "📦 Using Firebase export options"
-  EXPORT_CONFIGURATION="Firebase"
-  EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions-Firebase.plist"
-fi
-
-echo "📋 Using export options: $EXPORT_OPTIONS_PLIST"
+EXPORT_OPTIONS_PLIST="$SCRIPT_DIR/exportOptions.plist"
+EXPORT_CONFIGURATION="Release"
 
 # ---- Required environment variables ----
 # Apple credentials
@@ -58,14 +33,6 @@ echo "📋 Using export options: $EXPORT_OPTIONS_PLIST"
 : "${ADYEN_SERVER_API_KEY:?Environment variable ADYEN_SERVER_API_KEY not set}"
 : "${APPLE_TEAM_IDENTIFIER:?Environment variable APPLE_TEAM_IDENTIFIER not set}"
 : "${ENVIRONMENT:?Environment variable ENVIRONMENT not set}"
-
-# Firebase only (if distributing to Firebase)
-if [[ "$DISTRIBUTION_TYPE" == "firebase" ]]; then
-  : "${FIREBASE_SERVICE_ACCOUNT_JSON:?Environment variable FIREBASE_SERVICE_ACCOUNT_JSON not set}"
-  : "${FIREBASE_APP_ID:?Environment variable FIREBASE_APP_ID not set}"
-  : "${FIREBASE_RELEASE_NAME:?Environment variable FIREBASE_RELEASE_NAME not set}"
-  echo "ℹ️ Firebase distribution selected — Firebase env vars validated."
-fi
 
 # ---- Install certificates & provisioning profiles ----
 echo "🛡️ Installing certificates and provisioning profile..."
@@ -139,29 +106,12 @@ xcodebuild -exportArchive \
   -authenticationKeyPath "$AUTH_KEY_PATH" \
   -skipPackagePluginValidation
 
-# ---- Distribution ----
-if [[ "$DISTRIBUTION_TYPE" == "testflight" ]]; then
-  echo "☁️ Uploading to App Store Connect (TestFlight)..."
-  xcrun altool --upload-app \
-    -f "$IPA_PATH" \
-    -u "$APPLE_ID_USERNAME" \
-    -p "$APPLE_APP_SPECIFIC_PASSWORD" \
-    --type ios
-  echo "✅ TestFlight upload complete!"
+# ---- Upload to App Store Connect (TestFlight) ----
+echo "☁️ Uploading to App Store Connect (TestFlight)..."
+xcrun altool --upload-app \
+  -f "$IPA_PATH" \
+  -u "$APPLE_ID_USERNAME" \
+  -p "$APPLE_APP_SPECIFIC_PASSWORD" \
+  --type ios
 
-elif [[ "$DISTRIBUTION_TYPE" == "firebase" ]]; then
-  echo "🔥 Uploading to Firebase App Distribution..."
-
-  # Write service account JSON to temp file
-  FIREBASE_JSON_PATH="$(mktemp)"
-  echo "$FIREBASE_SERVICE_ACCOUNT_JSON" > "$FIREBASE_JSON_PATH"
-  export GOOGLE_APPLICATION_CREDENTIALS=$FIREBASE_JSON_PATH
-
-  # Upload
-  firebase appdistribution:distribute "$IPA_PATH" \
-    --app "$FIREBASE_APP_ID" \
-    --groups "ios-checkout-team" \
-    --release-notes "Branch: ${GITHUB_REF_NAME:-manual}, Build: ${GITHUB_SHA:-manual}"
-
-  echo "✅ Firebase upload complete! Release name: $FIREBASE_RELEASE_NAME"
-fi
+echo "✅ TestFlight upload complete!"
