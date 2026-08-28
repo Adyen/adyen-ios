@@ -48,7 +48,7 @@ internal final class StoredPaymentMethodManagementHostingController: UIHostingCo
 
     private func observeRemovalState() {
         // disable navigation if there is a removal operation
-        viewModel.$removingItemIdentifiers
+        viewModel.$identifiersBeingRemoved
             .map(\.isEmpty)
             .removeDuplicates()
             .sink { [weak self] isEmpty in

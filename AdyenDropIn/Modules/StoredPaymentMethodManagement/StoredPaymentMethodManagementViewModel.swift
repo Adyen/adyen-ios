@@ -14,6 +14,8 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
 
     // MARK: - Properties
 
+    internal typealias StoredPaymentMethodId = String
+
     private let capability: StoredPaymentMethodManagementCapability
     private let mapper: StoredPaymentMethodManagementPresentationMapper
     private let localizationParameters: LocalizationParameters?
@@ -22,10 +24,10 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
     @Published internal private(set) var sections: [StoredPaymentMethodManagementSection]
     @Published internal private(set) var removalError: StoredPaymentMethodRemovalError?
     @Published internal private(set) var itemToRemove: StoredPaymentMethodManagementItem?
-    @Published internal private(set) var removingItemIdentifiers = Set<String>()
+    @Published internal private(set) var identifiersBeingRemoved = Set<StoredPaymentMethodId>()
 
     internal var isRemoving: Bool {
-        !removingItemIdentifiers.isEmpty
+        !identifiersBeingRemoved.isEmpty
     }
 
     internal var isEmpty: Bool {
@@ -95,7 +97,7 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
     }
 
     internal func isRemoving(_ item: StoredPaymentMethodManagementItem) -> Bool {
-        removingItemIdentifiers.contains(item.paymentMethod.identifier)
+        identifiersBeingRemoved.contains(item.paymentMethod.identifier)
     }
 
     internal func requestRemoval(of item: StoredPaymentMethodManagementItem) {
@@ -118,12 +120,12 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
         itemToRemove = nil
 
         let identifier = item.paymentMethod.identifier
-        guard removingItemIdentifiers.insert(identifier).inserted else {
+        guard identifiersBeingRemoved.insert(identifier).inserted else {
             return
         }
 
         removalError = nil
-        defer { removingItemIdentifiers.remove(identifier) }
+        defer { identifiersBeingRemoved.remove(identifier) }
 
         do {
             try await capability.remove(item.paymentMethod)

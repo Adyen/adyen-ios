@@ -32,7 +32,7 @@ struct StoredPaymentMethodManagementViewModelTests {
         let sut = makeSUT(
             capability: StoredPaymentMethodManagementCapability { paymentMethod in
                 removalCallsCount += 1
-                observedRemovingState = weakSUT?.removingItemIdentifiers.contains(paymentMethod.identifier) == true
+                observedRemovingState = weakSUT?.identifiersBeingRemoved.contains(paymentMethod.identifier) == true
                 await weakSUT?.confirmRemoval()
             }
         )
@@ -72,7 +72,7 @@ struct StoredPaymentMethodManagementViewModelTests {
         let firstRemoval = Task { await sut.confirmRemoval() }
         await Task.yield()
 
-        #expect(sut.removingItemIdentifiers == [firstPaymentMethod.identifier])
+        #expect(sut.identifiersBeingRemoved == [firstPaymentMethod.identifier])
         sut.requestRemoval(of: firstItem)
         #expect(sut.itemToRemove == nil)
 
@@ -80,7 +80,7 @@ struct StoredPaymentMethodManagementViewModelTests {
         let secondRemoval = Task { await sut.confirmRemoval() }
         await Task.yield()
 
-        #expect(sut.removingItemIdentifiers == [firstPaymentMethod.identifier, secondPaymentMethod.identifier])
+        #expect(sut.identifiersBeingRemoved == [firstPaymentMethod.identifier, secondPaymentMethod.identifier])
 
         let pendingFirstRemoval = removalContinuations.removeValue(forKey: firstPaymentMethod.identifier)
         let firstContinuation = try #require(pendingFirstRemoval)

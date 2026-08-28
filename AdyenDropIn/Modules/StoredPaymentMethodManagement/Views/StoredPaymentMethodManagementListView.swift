@@ -37,7 +37,7 @@ internal struct StoredPaymentMethodManagementListView: View {
                 SectionView(
                     title: viewModel.sectionTitle(for: section),
                     section: section,
-                    removingItemIdentifiers: viewModel.removingItemIdentifiers,
+                    identifiersBeingRemoved: viewModel.identifiersBeingRemoved,
                     removeButtonTitle: viewModel.removeButtonTitle,
                     theme: theme,
                     onRemove: viewModel.requestRemoval
@@ -151,7 +151,7 @@ private extension StoredPaymentMethodManagementListView {
 
         let title: String?
         let section: StoredPaymentMethodManagementSection
-        let removingItemIdentifiers: Set<String>
+        let identifiersBeingRemoved: Set<String>
         let removeButtonTitle: String
         let theme: CheckoutTheme
         let onRemove: (StoredPaymentMethodManagementItem) -> Void
@@ -169,7 +169,7 @@ private extension StoredPaymentMethodManagementListView {
                     ForEach(section.items, id: \.paymentMethod.identifier) { item in
                         RowView(
                             item: item,
-                            isRemoving: removingItemIdentifiers.contains(item.paymentMethod.identifier),
+                            isRemoving: identifiersBeingRemoved.contains(item.paymentMethod.identifier),
                             removeButtonTitle: removeButtonTitle,
                             theme: theme,
                             onRemove: onRemove
