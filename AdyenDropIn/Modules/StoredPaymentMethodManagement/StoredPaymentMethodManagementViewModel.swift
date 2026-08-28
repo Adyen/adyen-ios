@@ -14,18 +14,14 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
 
     internal typealias StoredPaymentMethodId = String
 
-    private struct RemovalState {
+    fileprivate struct State {
         var itemPendingConfirmation: StoredPaymentMethodManagementItem?
-        var identifiersBeingRemoved = Set<StoredPaymentMethodId>()
-        var removalError: StoredPaymentMethodRemovalError?
+        private var removalStatesByIdentifier = [StoredPaymentMethodId: ItemRemovalState]()
+    }
 
-        var isRemoving: Bool {
-            !identifiersBeingRemoved.isEmpty
-        }
-
-        func isRemoving(_ item: StoredPaymentMethodManagementItem) -> Bool {
-            identifiersBeingRemoved.contains(item.paymentMethod.identifier)
-        }
+    fileprivate enum ItemRemovalState {
+        case removing
+        case failed
     }
 
     private enum RemovalAction {
@@ -44,26 +40,26 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
     internal weak var router: StoredPaymentMethodManagementRouting?
 
     @Published internal private(set) var sections: [StoredPaymentMethodManagementSection]
-    @Published private var removalState = RemovalState()
+    @Published private var state = State()
 
     internal var itemPendingConfirmation: StoredPaymentMethodManagementItem? {
-        removalState.itemPendingConfirmation
+        state.itemPendingConfirmation
     }
 
     internal var identifiersBeingRemoved: Set<StoredPaymentMethodId> {
-        removalState.identifiersBeingRemoved
+        state.identifiersBeingRemoved
     }
 
     internal var removalError: StoredPaymentMethodRemovalError? {
-        removalState.removalError
+        state.removalError
     }
 
     internal var isRemoving: Bool {
-        removalState.isRemoving
+        state.isRemoving
     }
 
     internal var isRemovingPublisher: AnyPublisher<Bool, Never> {
-        $removalState
+        $state
             .map(\.isRemoving)
             .removeDuplicates()
             .eraseToAnyPublisher()
@@ -136,7 +132,7 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
     }
 
     internal func isRemoving(_ item: StoredPaymentMethodManagementItem) -> Bool {
-        removalState.isRemoving(item)
+        state.isRemoving(item)
     }
 
     internal func onRemoveButtonTap(_ item: StoredPaymentMethodManagementItem) {
@@ -176,29 +172,28 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
     // MARK: - Private
 
     private static func reduce(
-        state: RemovalState,
+        state: State,
         action: RemovalAction
-    ) -> RemovalState? {
+    ) -> State? {
         var state = state
 
         switch action {
         case let .removeButtonTapped(item):
-            let identifier = item.paymentMethod.identifier
             guard state.itemPendingConfirmation == nil,
-                  !state.identifiersBeingRemoved.contains(identifier) else {
+                  !state.isRemoving(item) else {
                 return nil
             }
 
             state.itemPendingConfirmation = item
-            state.removalError = nil
+            state.clearRemovalState(for: item)
         case let .removeConfirmButtonTapped(item):
-            let identifier = item.paymentMethod.identifier
-            guard state.itemPendingConfirmation?.paymentMethod.identifier == identifier,
-                  state.identifiersBeingRemoved.insert(identifier).inserted else {
+            guard state.isPendingConfirmation(for: item),
+                  state.isIdle(item) else {
                 return nil
             }
 
             state.itemPendingConfirmation = nil
+            state.setRemovalState(.removing, for: item)
         case .removeCancelButtonTapped:
             guard state.itemPendingConfirmation != nil else {
                 return nil
@@ -206,15 +201,17 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
 
             state.itemPendingConfirmation = nil
         case let .removalSucceeded(identifier):
-            guard state.identifiersBeingRemoved.remove(identifier) != nil else {
-                return nil
-            }
-        case let .removalFailed(identifier):
-            guard state.identifiersBeingRemoved.remove(identifier) != nil else {
+            guard state.isRemoving(identifier) else {
                 return nil
             }
 
-            state.removalError = .unsuccessful
+            state.clearRemovalState(for: identifier)
+        case let .removalFailed(identifier):
+            guard state.isRemoving(identifier) else {
+                return nil
+            }
+
+            state.setRemovalState(.failed, for: identifier)
         }
 
         return state
@@ -222,11 +219,16 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
 
     @discardableResult
     private func send(_ action: RemovalAction) -> Bool {
-        guard let state = Self.reduce(state: removalState, action: action) else {
+        guard let newState = Self.reduce(state: state, action: action) else {
             return false
         }
 
-        removalState = state
+        guard newState.isValid else {
+            assertionFailure("Reducer produced an invalid removal state")
+            return false
+        }
+
+        state = newState
         return true
     }
 
@@ -240,5 +242,92 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
 
             return StoredPaymentMethodManagementSection(kind: section.kind, items: remainingItems)
         }
+    }
+}
+
+private extension StoredPaymentMethodManagementViewModel.State {
+
+    typealias StoredPaymentMethodId = StoredPaymentMethodManagementViewModel.StoredPaymentMethodId
+    typealias ItemRemovalState = StoredPaymentMethodManagementViewModel.ItemRemovalState
+
+    var identifiersBeingRemoved: Set<StoredPaymentMethodId> {
+        Set(removalStatesByIdentifier.compactMap { identifier, removalState in
+            removalState.isRemoving ? identifier : nil
+        })
+    }
+
+    var removalError: StoredPaymentMethodRemovalError? {
+        removalStatesByIdentifier.values.contains(where: \.isFailed) ? .unsuccessful : nil
+    }
+
+    var isRemoving: Bool {
+        removalStatesByIdentifier.values.contains(where: \.isRemoving)
+    }
+
+    var isValid: Bool {
+        guard let itemPendingConfirmation else {
+            return true
+        }
+
+        return isIdle(itemPendingConfirmation)
+    }
+
+    func removalState(for identifier: StoredPaymentMethodId) -> ItemRemovalState? {
+        removalStatesByIdentifier[identifier]
+    }
+
+    func removalState(for item: StoredPaymentMethodManagementItem) -> ItemRemovalState? {
+        removalState(for: item.paymentMethod.identifier)
+    }
+
+    func isIdle(_ item: StoredPaymentMethodManagementItem) -> Bool {
+        removalState(for: item) == nil
+    }
+
+    func isRemoving(_ identifier: StoredPaymentMethodId) -> Bool {
+        removalState(for: identifier)?.isRemoving == true
+    }
+
+    func isRemoving(_ item: StoredPaymentMethodManagementItem) -> Bool {
+        isRemoving(item.paymentMethod.identifier)
+    }
+
+    func isPendingConfirmation(for item: StoredPaymentMethodManagementItem) -> Bool {
+        itemPendingConfirmation?.paymentMethod.identifier == item.paymentMethod.identifier
+    }
+
+    mutating func setRemovalState(_ removalState: ItemRemovalState, for identifier: StoredPaymentMethodId) {
+        removalStatesByIdentifier[identifier] = removalState
+    }
+
+    mutating func setRemovalState(_ removalState: ItemRemovalState, for item: StoredPaymentMethodManagementItem) {
+        setRemovalState(removalState, for: item.paymentMethod.identifier)
+    }
+
+    mutating func clearRemovalState(for identifier: StoredPaymentMethodId) {
+        removalStatesByIdentifier[identifier] = nil
+    }
+
+    mutating func clearRemovalState(for item: StoredPaymentMethodManagementItem) {
+        clearRemovalState(for: item.paymentMethod.identifier)
+    }
+}
+
+private extension StoredPaymentMethodManagementViewModel.ItemRemovalState {
+
+    var isRemoving: Bool {
+        if case .removing = self {
+            return true
+        }
+
+        return false
+    }
+
+    var isFailed: Bool {
+        if case .failed = self {
+            return true
+        }
+
+        return false
     }
 }

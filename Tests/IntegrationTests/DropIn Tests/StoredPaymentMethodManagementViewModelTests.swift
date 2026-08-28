@@ -131,6 +131,38 @@ struct StoredPaymentMethodManagementViewModelTests {
     }
 
     @Test
+    func removeButtonTap_afterMultipleFailures_clearsOnlySelectedItemError() async throws {
+        let firstPaymentMethod = storedPaymentMethod(identifier: "first-stored-payment-method-id")
+        let secondPaymentMethod = storedPaymentMethod(identifier: "second-stored-payment-method-id")
+        let sut = makeSUT(
+            paymentMethods: [firstPaymentMethod, secondPaymentMethod],
+            capability: StoredPaymentMethodManagementCapability { _ in
+                throw StoredPaymentMethodRemovalError.unsuccessful
+            }
+        )
+        let items = sut.sections.flatMap(\.items)
+        let firstItem = try #require(items.first { $0.paymentMethod.identifier == firstPaymentMethod.identifier })
+        let secondItem = try #require(items.first { $0.paymentMethod.identifier == secondPaymentMethod.identifier })
+
+        sut.onRemoveButtonTap(firstItem)
+        await sut.onRemoveConfirmButtonTap(firstItem)
+        sut.onRemoveButtonTap(secondItem)
+        #expect(sut.removalError == .unsuccessful)
+        await sut.onRemoveConfirmButtonTap(secondItem)
+        #expect(!sut.isRemoving(firstItem))
+        #expect(!sut.isRemoving(secondItem))
+        #expect(sut.identifiersBeingRemoved.isEmpty)
+        #expect(sut.sections.flatMap(\.items).count == 2)
+
+        sut.onRemoveButtonTap(firstItem)
+        #expect(sut.removalError == .unsuccessful)
+        sut.onRemoveCancelButtonTap()
+
+        sut.onRemoveButtonTap(secondItem)
+        #expect(sut.removalError == nil)
+    }
+
+    @Test
     func removeConfirmButtonTap_whenCapabilityThrows_preservesItemAndError() async throws {
         let sut = makeSUT(
             capability: StoredPaymentMethodManagementCapability { _ in
