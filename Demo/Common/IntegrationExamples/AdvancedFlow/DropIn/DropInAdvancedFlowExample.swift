@@ -299,18 +299,14 @@ extension DropInAdvancedFlowExample: StoredPaymentMethodsDelegate {
             merchantAccount: ConfigurationConstants.merchantAccount,
             shopperReference: ConfigurationConstants.shopperReference
         )
-        apiClient.perform(request) { [weak self] result in
-            self?.handleDisableResult(result, completion: completion)
-        }
-    }
-
-    private func handleDisableResult(_ result: Result<DisableStoredPaymentMethodRequest.ResponseType, Error>, completion: (Bool) -> Void) {
-        switch result {
-        case let .failure(error):
-            self.presenter?.presentAlert(with: error, retryHandler: nil)
-            completion(false)
-        case .success:
-            completion(true)
+        
+        apiClient.perform(request) { result in
+            switch result {
+            case .success:
+                completion(true)
+            case .failure:
+                completion(false)
+            }
         }
     }
 }
