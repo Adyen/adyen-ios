@@ -136,7 +136,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
         if let headerView {
             // Keep the header at its content height so the results list, not the header, absorbs extra vertical space.
             let headerHeightHug = headerView.heightAnchor.constraint(equalToConstant: 0)
-            headerHeightHug.priority = .defaultHigh
+            headerHeightHug.priority = .defaultLow
             NSLayoutConstraint.activate([
                 headerView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
                 headerView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),

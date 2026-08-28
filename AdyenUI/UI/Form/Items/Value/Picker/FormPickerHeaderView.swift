@@ -54,7 +54,11 @@ internal final class FormPickerHeaderView: UIView {
 
     // MARK: - Initializers
 
-    internal init(header: FormPickerConfiguration.Header, theme: CheckoutTheme) {
+    internal init?(header: FormPickerConfiguration.Header, theme: CheckoutTheme) {
+        guard !header.title.isEmpty || header.subtitle?.isEmpty == false else {
+            return nil
+        }
+
         self.header = header
         self.theme = theme
         super.init(frame: .zero)

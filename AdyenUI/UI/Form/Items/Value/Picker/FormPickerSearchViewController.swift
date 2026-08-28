@@ -51,7 +51,9 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
             handler(results)
         }
         
-        let headerView = configuration.header.map { FormPickerHeaderView(header: $0, theme: theme) }
+        let headerView = configuration.header.flatMap {
+            FormPickerHeaderView(header: $0, theme: theme)
+        }
 
         let searchViewController = SearchViewController(
             viewModel: viewModel,
