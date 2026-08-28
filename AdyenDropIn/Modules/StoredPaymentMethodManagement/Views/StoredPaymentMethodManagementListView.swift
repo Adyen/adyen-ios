@@ -112,7 +112,7 @@ private extension StoredPaymentMethodManagementListView {
             static let size: CGFloat = 24
             static let lineWidth: CGFloat = 2.5
             static let arcLength = 0.25
-            static let rotationDuration = 1.0
+            static let rotationDuration = 0.8
         }
 
         let theme: CheckoutTheme
