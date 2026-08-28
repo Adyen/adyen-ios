@@ -15,10 +15,23 @@ import UIKit
 // swiftlint:disable:next type_name
 internal final class StoredPaymentMethodManagementHostingController: UIHostingController<StoredPaymentMethodManagementView> {
 
+    private struct NavigationState {
+        let isUserInteractionEnabled: Bool
+        let tintColor: UIColor?
+        let isInteractivePopGestureEnabled: Bool
+
+        func apply(to navigationController: UINavigationController) {
+            navigationController.navigationBar.isUserInteractionEnabled = isUserInteractionEnabled
+            navigationController.navigationBar.tintColor = tintColor
+            navigationController.interactivePopGestureRecognizer?.isEnabled = isInteractivePopGestureEnabled
+        }
+    }
+
     internal let viewModel: StoredPaymentMethodManagementViewModel
     internal var onDismissFromNavigation: (() -> Void)?
     private let theme: CheckoutTheme
     private var cancellables = Set<AnyCancellable>()
+    private var originalNavigationState: NavigationState?
 
     internal init(viewModel: StoredPaymentMethodManagementViewModel, theme: CheckoutTheme) {
         self.viewModel = viewModel
@@ -35,7 +48,22 @@ internal final class StoredPaymentMethodManagementHostingController: UIHostingCo
 
     override internal func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        updateNavigation(isEnabled: !viewModel.isRemoving)
+
+        guard let navigationController else {
+            return
+        }
+
+        originalNavigationState = NavigationState(
+            isUserInteractionEnabled: navigationController.navigationBar.isUserInteractionEnabled,
+            tintColor: navigationController.navigationBar.tintColor,
+            isInteractivePopGestureEnabled: navigationController.interactivePopGestureRecognizer?.isEnabled ?? false
+        )
+        setNavigationLock(active: viewModel.isRemoving)
+    }
+
+    override internal func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        setNavigationLock(active: false)
     }
 
     override internal func viewDidDisappear(_ animated: Bool) {
@@ -47,19 +75,26 @@ internal final class StoredPaymentMethodManagementHostingController: UIHostingCo
     }
 
     private func observeRemovalState() {
-        // disable navigation if there is a removal operation
         viewModel.$identifiersBeingRemoved
-            .map(\.isEmpty)
+            .map { !$0.isEmpty }
             .removeDuplicates()
-            .sink { [weak self] isEmpty in
-                self?.updateNavigation(isEnabled: isEmpty)
+            .sink { [weak self] isActive in
+                self?.setNavigationLock(active: isActive)
             }
             .store(in: &cancellables)
     }
 
-    private func updateNavigation(isEnabled: Bool) {
-        navigationController?.navigationBar.isUserInteractionEnabled = isEnabled
-        navigationController?.navigationBar.tintColor = isEnabled ? theme.colors.highlight : theme.colors.textOnDisabled
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
+    private func setNavigationLock(active isActive: Bool) {
+        guard let navigationController, let originalNavigationState else {
+            return
+        }
+
+        if isActive {
+            navigationController.navigationBar.isUserInteractionEnabled = false
+            navigationController.navigationBar.tintColor = theme.colors.textOnDisabled
+            navigationController.interactivePopGestureRecognizer?.isEnabled = false
+        } else {
+            originalNavigationState.apply(to: navigationController)
+        }
     }
 }

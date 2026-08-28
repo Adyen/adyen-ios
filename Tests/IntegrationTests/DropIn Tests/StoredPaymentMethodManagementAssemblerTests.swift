@@ -76,7 +76,7 @@ struct StoredPaymentMethodManagementAssemblerTests {
     }
 
     @Test
-    func resolveRouter_disablesNavigationWhileRemovalIsInProgress() async throws {
+    func resolveRouter_disablesNavigationWhileRemovalIsInProgressAndRestoresOriginalState() async throws {
         var removalContinuation: CheckedContinuation<Void, Never>?
         let paymentMethod = storedPaymentMethod()
         let listener = StoredPaymentMethodManagementListenerMock()
@@ -98,6 +98,11 @@ struct StoredPaymentMethodManagementAssemblerTests {
         let hostingController = try #require(router.rootViewController as? StoredPaymentMethodManagementHostingController)
         let navigationController = UINavigationController(rootViewController: UIViewController())
         navigationController.pushViewController(hostingController, animated: false)
+        let originalTintColor = UIColor.systemPurple
+        navigationController.navigationBar.isUserInteractionEnabled = true
+        navigationController.navigationBar.tintColor = originalTintColor
+        navigationController.interactivePopGestureRecognizer?.isEnabled = true
+        hostingController.viewWillAppear(false)
         let item = try #require(hostingController.viewModel.sections.first?.items.first)
 
         hostingController.viewModel.requestRemoval(of: item)
@@ -105,13 +110,24 @@ struct StoredPaymentMethodManagementAssemblerTests {
         await Task.yield()
 
         #expect(!navigationController.navigationBar.isUserInteractionEnabled)
+        #expect(navigationController.navigationBar.tintColor != originalTintColor)
         #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == false)
+
+        hostingController.viewWillDisappear(false)
+
+        #expect(navigationController.navigationBar.isUserInteractionEnabled)
+        #expect(navigationController.navigationBar.tintColor == originalTintColor)
+        #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == true)
+
+        hostingController.viewWillAppear(false)
+        #expect(!navigationController.navigationBar.isUserInteractionEnabled)
 
         let continuation = try #require(removalContinuation)
         continuation.resume()
         await removal.value
 
         #expect(navigationController.navigationBar.isUserInteractionEnabled)
+        #expect(navigationController.navigationBar.tintColor == originalTintColor)
         #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == true)
     }
 
