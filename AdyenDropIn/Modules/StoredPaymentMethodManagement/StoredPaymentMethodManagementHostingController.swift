@@ -75,11 +75,9 @@ internal final class StoredPaymentMethodManagementHostingController: UIHostingCo
     }
 
     private func observeRemovalState() {
-        viewModel.$identifiersBeingRemoved
-            .map { !$0.isEmpty }
-            .removeDuplicates()
-            .sink { [weak self] isActive in
-                self?.setNavigationLock(active: isActive)
+        viewModel.isRemovingPublisher
+            .sink { [weak self] isRemoving in
+                self?.setNavigationLock(active: isRemoving)
             }
             .store(in: &cancellables)
     }

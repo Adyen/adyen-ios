@@ -105,8 +105,8 @@ struct StoredPaymentMethodManagementAssemblerTests {
         hostingController.viewWillAppear(false)
         let item = try #require(hostingController.viewModel.sections.first?.items.first)
 
-        hostingController.viewModel.requestRemoval(of: item)
-        let removal = Task { await hostingController.viewModel.confirmRemoval() }
+        hostingController.viewModel.onRemoveButtonTap(item)
+        let removal = Task { await hostingController.viewModel.onRemoveConfirmButtonTap(item) }
         await Task.yield()
 
         #expect(!navigationController.navigationBar.isUserInteractionEnabled)

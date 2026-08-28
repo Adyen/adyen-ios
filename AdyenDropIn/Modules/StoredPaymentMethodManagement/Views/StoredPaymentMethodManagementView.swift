@@ -75,10 +75,10 @@ internal struct StoredPaymentMethodManagementView: View {
             theme: theme,
             onRemove: {
                 Task {
-                    await viewModel.confirmRemoval()
+                    await viewModel.onRemoveConfirmButtonTap(item)
                 }
             },
-            onCancel: viewModel.dismissRemovalConfirmation
+            onCancel: viewModel.onRemoveCancelButtonTap
         )
         .presentationDetents([.height(Constants.removalConfirmationHeight)])
         .presentationDragIndicator(.hidden)
@@ -86,10 +86,10 @@ internal struct StoredPaymentMethodManagementView: View {
 
     private var removalConfirmationItem: Binding<StoredPaymentMethodManagementItem?> {
         Binding(
-            get: { viewModel.itemToRemove },
+            get: { viewModel.itemPendingConfirmation },
             set: { item in
                 if item == nil {
-                    viewModel.dismissRemovalConfirmation()
+                    viewModel.onRemoveCancelButtonTap()
                 }
             }
         )

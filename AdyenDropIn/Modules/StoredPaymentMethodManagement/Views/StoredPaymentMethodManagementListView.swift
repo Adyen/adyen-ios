@@ -40,7 +40,7 @@ internal struct StoredPaymentMethodManagementListView: View {
                     identifiersBeingRemoved: viewModel.identifiersBeingRemoved,
                     removeButtonTitle: viewModel.removeButtonTitle,
                     theme: theme,
-                    onRemove: viewModel.requestRemoval
+                    onRemove: viewModel.onRemoveButtonTap
                 )
             }
         }

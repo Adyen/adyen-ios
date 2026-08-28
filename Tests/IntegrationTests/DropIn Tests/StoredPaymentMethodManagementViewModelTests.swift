@@ -12,19 +12,19 @@ import Testing
 struct StoredPaymentMethodManagementViewModelTests {
 
     @Test
-    func requestAndDismissRemoval_updatesItemPendingRemoval() throws {
+    func removeAndCancelButtonTaps_updateItemPendingConfirmation() throws {
         let sut = makeSUT()
         let item = try #require(sut.sections.first?.items.first)
 
-        sut.requestRemoval(of: item)
-        #expect(sut.itemToRemove?.paymentMethod.identifier == item.paymentMethod.identifier)
+        sut.onRemoveButtonTap(item)
+        #expect(sut.itemPendingConfirmation?.paymentMethod.identifier == item.paymentMethod.identifier)
 
-        sut.dismissRemovalConfirmation()
-        #expect(sut.itemToRemove == nil)
+        sut.onRemoveCancelButtonTap()
+        #expect(sut.itemPendingConfirmation == nil)
     }
 
     @Test
-    func confirmRemoval_afterSuccess_removesItemAndNotifiesRouter() async throws {
+    func removeConfirmButtonTap_afterSuccess_removesItemAndNotifiesRouter() async throws {
         var removalCallsCount = 0
         var observedRemovingState = false
         weak var weakSUT: StoredPaymentMethodManagementViewModel?
@@ -33,29 +33,61 @@ struct StoredPaymentMethodManagementViewModelTests {
             capability: StoredPaymentMethodManagementCapability { paymentMethod in
                 removalCallsCount += 1
                 observedRemovingState = weakSUT?.identifiersBeingRemoved.contains(paymentMethod.identifier) == true
-                await weakSUT?.confirmRemoval()
             }
         )
         weakSUT = sut
         sut.router = router
         let item = try #require(sut.sections.first?.items.first)
-        sut.requestRemoval(of: item)
+        sut.onRemoveButtonTap(item)
 
-        await sut.confirmRemoval()
+        await sut.onRemoveConfirmButtonTap(item)
 
         #expect(removalCallsCount == 1)
         #expect(observedRemovingState)
         #expect(sut.sections.isEmpty)
-        #expect(sut.itemToRemove == nil)
+        #expect(sut.itemPendingConfirmation == nil)
         #expect(!sut.isRemoving)
         #expect(router.removedPaymentMethods.last?.identifier == item.paymentMethod.identifier)
     }
 
     @Test
-    func confirmRemoval_whileAnotherRemovalIsInProgress_tracksBothItems() async throws {
+    func removeActions_whileSameItemIsRemoving_startOneRemoval() async throws {
+        var removalContinuation: CheckedContinuation<Void, Never>?
+        var removalCallsCount = 0
+        let sut = makeSUT(
+            capability: StoredPaymentMethodManagementCapability { _ in
+                removalCallsCount += 1
+                await withCheckedContinuation { continuation in
+                    removalContinuation = continuation
+                }
+            }
+        )
+        let item = try #require(sut.sections.first?.items.first)
+        sut.onRemoveButtonTap(item)
+        let removal = Task { await sut.onRemoveConfirmButtonTap(item) }
+        await Task.yield()
+
+        sut.onRemoveButtonTap(item)
+        await sut.onRemoveConfirmButtonTap(item)
+
+        #expect(removalCallsCount == 1)
+        #expect(sut.itemPendingConfirmation == nil)
+        #expect(sut.isRemoving(item))
+
+        let continuation = try #require(removalContinuation)
+        continuation.resume()
+        await removal.value
+
+        #expect(sut.sections.isEmpty)
+        #expect(!sut.isRemoving)
+    }
+
+    @Test
+    func concurrentRemovals_whenFirstFailsAndSecondSucceeds_trackItemsAndPreserveError() async throws {
         var removalContinuations = [String: CheckedContinuation<Void, any Error>]()
         let firstPaymentMethod = storedPaymentMethod(identifier: "first-stored-payment-method-id")
         let secondPaymentMethod = storedPaymentMethod(identifier: "second-stored-payment-method-id")
+        let router = StoredPaymentMethodManagementRoutingMock()
         let sut = makeSUT(
             paymentMethods: [firstPaymentMethod, secondPaymentMethod],
             capability: StoredPaymentMethodManagementCapability { paymentMethod in
@@ -64,87 +96,95 @@ struct StoredPaymentMethodManagementViewModelTests {
                 }
             }
         )
+        sut.router = router
         let items = sut.sections.flatMap(\.items)
         let firstItem = try #require(items.first { $0.paymentMethod.identifier == firstPaymentMethod.identifier })
         let secondItem = try #require(items.first { $0.paymentMethod.identifier == secondPaymentMethod.identifier })
 
-        sut.requestRemoval(of: firstItem)
-        let firstRemoval = Task { await sut.confirmRemoval() }
+        sut.onRemoveButtonTap(firstItem)
+        let firstRemoval = Task { await sut.onRemoveConfirmButtonTap(firstItem) }
         await Task.yield()
-
-        #expect(sut.identifiersBeingRemoved == [firstPaymentMethod.identifier])
-        sut.requestRemoval(of: firstItem)
-        #expect(sut.itemToRemove == nil)
-
-        sut.requestRemoval(of: secondItem)
-        let secondRemoval = Task { await sut.confirmRemoval() }
+        sut.onRemoveButtonTap(secondItem)
+        let secondRemoval = Task { await sut.onRemoveConfirmButtonTap(secondItem) }
         await Task.yield()
 
         #expect(sut.identifiersBeingRemoved == [firstPaymentMethod.identifier, secondPaymentMethod.identifier])
 
         let pendingFirstRemoval = removalContinuations.removeValue(forKey: firstPaymentMethod.identifier)
         let firstContinuation = try #require(pendingFirstRemoval)
-        firstContinuation.resume()
+        firstContinuation.resume(throwing: StoredPaymentMethodRemovalError.unsuccessful)
         await firstRemoval.value
 
         #expect(!sut.isRemoving(firstItem))
         #expect(sut.isRemoving(secondItem))
+        #expect(sut.removalError == .unsuccessful)
 
         let pendingSecondRemoval = removalContinuations.removeValue(forKey: secondPaymentMethod.identifier)
         let secondContinuation = try #require(pendingSecondRemoval)
         secondContinuation.resume()
         await secondRemoval.value
 
-        #expect(sut.sections.isEmpty)
         #expect(!sut.isRemoving)
+        #expect(sut.removalError == .unsuccessful)
+        #expect(sut.sections.flatMap(\.items).map(\.paymentMethod.identifier) == [firstPaymentMethod.identifier])
+        #expect(router.removedPaymentMethods.map(\.identifier) == [secondPaymentMethod.identifier])
     }
 
     @Test
-    func confirmRemoval_whenCapabilityThrows_preservesItemAndShowsError() async throws {
+    func removeConfirmButtonTap_whenCapabilityThrows_preservesItemAndError() async throws {
+        let sut = makeSUT(
+            capability: StoredPaymentMethodManagementCapability { _ in
+                throw StoredPaymentMethodRemovalError.unavailable
+            }
+        )
+        let item = try #require(sut.sections.first?.items.first)
+        sut.onRemoveButtonTap(item)
+
+        await sut.onRemoveConfirmButtonTap(item)
+
+        #expect(sut.sections.first?.items.count == 1)
+        #expect(sut.itemPendingConfirmation == nil)
+        #expect(!sut.isRemoving)
+        #expect(sut.removalError == .unsuccessful)
+
+        sut.onRemoveCancelButtonTap()
+        #expect(sut.removalError == .unsuccessful)
+    }
+
+    @Test
+    func removeAndCancelButtonTaps_afterFailure_clearError() async throws {
         let sut = makeSUT(
             capability: StoredPaymentMethodManagementCapability { _ in
                 throw StoredPaymentMethodRemovalError.unsuccessful
             }
         )
         let item = try #require(sut.sections.first?.items.first)
-        sut.requestRemoval(of: item)
-
-        await sut.confirmRemoval()
-
-        #expect(sut.sections.first?.items.count == 1)
-        #expect(sut.itemToRemove == nil)
-        #expect(!sut.isRemoving)
+        sut.onRemoveButtonTap(item)
+        await sut.onRemoveConfirmButtonTap(item)
         #expect(sut.removalError == .unsuccessful)
+
+        sut.onRemoveButtonTap(item)
+        #expect(sut.removalError == nil)
+
+        sut.onRemoveCancelButtonTap()
+        #expect(sut.removalError == nil)
     }
 
     @Test
-    func confirmRemoval_afterFailureThenSuccess_clearsErrorWhenRetryStarts() async throws {
-        var removalAttemptCount = 0
-        var observedRetryError: StoredPaymentMethodRemovalError?
-        weak var weakSUT: StoredPaymentMethodManagementViewModel?
+    func removeConfirmButtonTap_fromIdle_doesNotCallCapability() async throws {
+        var removalCallsCount = 0
         let sut = makeSUT(
             capability: StoredPaymentMethodManagementCapability { _ in
-                removalAttemptCount += 1
-
-                if removalAttemptCount == 1 {
-                    throw StoredPaymentMethodRemovalError.unsuccessful
-                }
-
-                observedRetryError = weakSUT?.removalError
+                removalCallsCount += 1
             }
         )
-        weakSUT = sut
         let item = try #require(sut.sections.first?.items.first)
-        sut.requestRemoval(of: item)
-        await sut.confirmRemoval()
-        #expect(sut.removalError == .unsuccessful)
 
-        sut.requestRemoval(of: item)
-        #expect(sut.removalError == .unsuccessful)
-        await sut.confirmRemoval()
+        await sut.onRemoveConfirmButtonTap(item)
 
-        #expect(observedRetryError == nil)
-        #expect(sut.removalError == nil)
+        #expect(removalCallsCount == 0)
+        #expect(sut.itemPendingConfirmation == nil)
+        #expect(!sut.isRemoving)
     }
 
     @Test
