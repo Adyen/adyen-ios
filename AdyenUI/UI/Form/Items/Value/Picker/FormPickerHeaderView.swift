@@ -8,9 +8,6 @@ import Adyen
 import UIKit
 
 /// A header shown at the top of a picker search screen, displaying a title and an optional subtitle.
-///
-/// Mirrors the title/subtitle styling of the payment method list header
-/// (`title` uses `labels.title`, `subtitle` uses `labels.body` + `colors.textSecondary`).
 internal final class FormPickerHeaderView: UIView {
 
     private enum Layout {
