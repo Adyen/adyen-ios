@@ -121,14 +121,23 @@ struct StoredPaymentMethodManagementAssemblerTests {
 
         hostingController.viewWillAppear(false)
         #expect(!navigationController.navigationBar.isUserInteractionEnabled)
+        #expect(navigationController.navigationBar.tintColor != originalTintColor)
+        #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == false)
+
+        hostingController.viewWillDisappear(false)
+
+        navigationController.navigationBar.isUserInteractionEnabled = false
+        navigationController.navigationBar.tintColor = .systemOrange
+        navigationController.interactivePopGestureRecognizer?.isEnabled = false
 
         let continuation = try #require(removalContinuation)
         continuation.resume()
         await removal.value
 
-        #expect(navigationController.navigationBar.isUserInteractionEnabled)
-        #expect(navigationController.navigationBar.tintColor == originalTintColor)
-        #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == true)
+        #expect(!navigationController.navigationBar.isUserInteractionEnabled)
+        #expect(navigationController.navigationBar.tintColor == .systemOrange)
+        #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == false)
+
     }
 
     private func storedPaymentMethod() -> StoredPaymentMethodMock {

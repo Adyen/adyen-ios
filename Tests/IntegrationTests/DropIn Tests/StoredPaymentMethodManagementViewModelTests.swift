@@ -131,7 +131,7 @@ struct StoredPaymentMethodManagementViewModelTests {
     }
 
     @Test
-    func removeButtonTap_afterMultipleFailures_clearsOnlySelectedItemError() async throws {
+    func openingAndCancellingConfirmation_preserveError() async throws {
         let firstPaymentMethod = storedPaymentMethod(identifier: "first-stored-payment-method-id")
         let secondPaymentMethod = storedPaymentMethod(identifier: "second-stored-payment-method-id")
         let sut = makeSUT(
@@ -157,9 +157,7 @@ struct StoredPaymentMethodManagementViewModelTests {
         sut.onRemoveButtonTap(firstItem)
         #expect(sut.removalError == .unsuccessful)
         sut.onRemoveCancelButtonTap()
-
-        sut.onRemoveButtonTap(secondItem)
-        #expect(sut.removalError == nil)
+        #expect(sut.removalError == .unsuccessful)
     }
 
     @Test
@@ -184,10 +182,19 @@ struct StoredPaymentMethodManagementViewModelTests {
     }
 
     @Test
-    func removeAndCancelButtonTaps_afterFailure_clearError() async throws {
+    func retryingRemoval_clearsError() async throws {
+        var removalCallsCount = 0
+        var retryContinuation: CheckedContinuation<Void, Never>?
         let sut = makeSUT(
             capability: StoredPaymentMethodManagementCapability { _ in
-                throw StoredPaymentMethodRemovalError.unsuccessful
+                removalCallsCount += 1
+                if removalCallsCount == 1 {
+                    throw StoredPaymentMethodRemovalError.unsuccessful
+                }
+
+                await withCheckedContinuation { continuation in
+                    retryContinuation = continuation
+                }
             }
         )
         let item = try #require(sut.sections.first?.items.first)
@@ -196,10 +203,15 @@ struct StoredPaymentMethodManagementViewModelTests {
         #expect(sut.removalError == .unsuccessful)
 
         sut.onRemoveButtonTap(item)
-        #expect(sut.removalError == nil)
+        let retry = Task { await sut.onRemoveConfirmButtonTap(item) }
+        await Task.yield()
 
-        sut.onRemoveCancelButtonTap()
         #expect(sut.removalError == nil)
+        #expect(sut.isRemoving(item))
+        let continuation = try #require(retryContinuation)
+        continuation.resume()
+
+        await retry.value
     }
 
     @Test

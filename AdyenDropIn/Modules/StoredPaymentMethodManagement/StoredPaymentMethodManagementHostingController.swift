@@ -53,17 +53,20 @@ internal final class StoredPaymentMethodManagementHostingController: UIHostingCo
             return
         }
 
-        originalNavigationState = NavigationState(
-            isUserInteractionEnabled: navigationController.navigationBar.isUserInteractionEnabled,
-            tintColor: navigationController.navigationBar.tintColor,
-            isInteractivePopGestureEnabled: navigationController.interactivePopGestureRecognizer?.isEnabled ?? false
-        )
+        if originalNavigationState == nil {
+            originalNavigationState = NavigationState(
+                isUserInteractionEnabled: navigationController.navigationBar.isUserInteractionEnabled,
+                tintColor: navigationController.navigationBar.tintColor,
+                isInteractivePopGestureEnabled: navigationController.interactivePopGestureRecognizer?.isEnabled ?? false
+            )
+        }
         setNavigationLock(active: viewModel.isRemoving)
     }
 
     override internal func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         setNavigationLock(active: false)
+        originalNavigationState = nil
     }
 
     override internal func viewDidDisappear(_ animated: Bool) {
