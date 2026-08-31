@@ -91,7 +91,7 @@ let configuration = try CheckoutConfiguration(
 If your checkout flow returns stored payment methods, first select a stored card explicitly:
 
 ```swift
-guard let storedCard = checkout.paymentMethods?.stored
+guard let storedCard = checkout.storedPaymentMethods
     .compactMap({ $0 as? StoredCardPaymentMethod })
     .first else { return }
 

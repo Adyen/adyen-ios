@@ -15,8 +15,13 @@ import Foundation
 public class PaymentCheckout: BaseCheckout {
 
     /// The payment methods available for this checkout flow.
-    public var paymentMethods: PaymentMethods? {
-        core.paymentMethods
+    public var paymentMethods: [PaymentMethod] {
+        core.paymentMethods?.regular ?? []
+    }
+
+    /// The stored payment methods available for this checkout flow.
+    public var storedPaymentMethods: [StoredPaymentMethod] {
+        core.paymentMethods?.stored ?? []
     }
 
     /// Creates a payment component for the specified payment method type.

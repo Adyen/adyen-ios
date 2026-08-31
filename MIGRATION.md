@@ -123,6 +123,17 @@ let checkout = try await Checkout.setup(
 
 `callPayments(with:)` should return `SubmitResult`, and `callDetails(with:)` should return `AdditionalDetailsResult`.
 
+#### Available payment methods
+
+`SessionCheckout` and `AdvancedCheckout` expose non-optional regular and stored payment-method arrays:
+
+```swift
+let paymentMethods = checkout.paymentMethods
+let storedPaymentMethods = checkout.storedPaymentMethods
+```
+
+These replace the interim `checkout.paymentMethods?.regular` and `checkout.paymentMethods?.stored` access paths. Missing payment-method data is represented by an empty array.
+
 #### Summary
 
 - `Checkout.setup(...)` replaces `AdyenSession.initialize(...)` for the new public v6 flows.
