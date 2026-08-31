@@ -13,11 +13,11 @@ extension FormCardNumberItemView {
         static let imageName = "camera.fill"
     }
 
-    internal func makeCardScanAccessoryView(title: String, _ selector: Selector) -> UIView {
-        let accessoryView = UIInputView(frame: .zero, inputViewStyle: .keyboard)
+    internal func makeCardScanAccessoryView(title: String, backgroundColor: UIColor, _ selector: Selector) -> UIView {
+        let accessoryView = UIView(frame: .zero)
         accessoryView.translatesAutoresizingMaskIntoConstraints = false
         accessoryView.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        accessoryView.backgroundColor = UIColor.Adyen.componentBackground
+        accessoryView.backgroundColor = backgroundColor
 
         let scanButton = UIButton(type: .system)
         scanButton.translatesAutoresizingMaskIntoConstraints = false

@@ -233,7 +233,7 @@ class FormCardNumberItemViewTests: XCTestCase {
         _ = setup
     }
 
-    func test_makeCardScanAccessoryView_shouldReturnAccessoryViewWithScanButton() throws {
+    func test_makeCardScanAccessoryView_shouldReturnAccessoryViewWithScanButton() {
 
         // Given
         let panLength = 5
@@ -246,11 +246,14 @@ class FormCardNumberItemViewTests: XCTestCase {
         let sut = setupSut(validator: cardNumberValidator)
 
         // When
-        let cardScanAccessoryView = sut.makeCardScanAccessoryView(title: "Scan card", #selector(sut.scanButtonMockTapped))
+        let cardScanAccessoryView = sut.makeCardScanAccessoryView(
+            title: "Scan card",
+            backgroundColor: .white,
+            #selector(sut.scanButtonMockTapped)
+        )
 
         // Then
-        let inputView = try XCTUnwrap(cardScanAccessoryView as? UIInputView)
-        let scanButton = inputView.subviews.last as? UIButton
+        let scanButton = cardScanAccessoryView.subviews.last as? UIButton
         XCTAssertNotNil(scanButton, "The FormCardNumberItemView should contain a card scan button")
         
         XCTAssertFalse(scanButtonTapped)
