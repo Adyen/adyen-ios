@@ -17,6 +17,7 @@ extension FormCardNumberItemView {
         let accessoryView = UIInputView(frame: .zero, inputViewStyle: .keyboard)
         accessoryView.translatesAutoresizingMaskIntoConstraints = false
         accessoryView.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        accessoryView.backgroundColor = UIColor.Adyen.componentBackground
 
         let scanButton = UIButton(type: .system)
         scanButton.translatesAutoresizingMaskIntoConstraints = false
