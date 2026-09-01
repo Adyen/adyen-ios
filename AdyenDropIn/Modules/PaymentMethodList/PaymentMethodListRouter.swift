@@ -91,13 +91,15 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     }
 
     internal func present(storedPaymentComponent component: PaymentComponent) {
+        guard childRouter == nil else { return }
+
         let storedPaymentComponentRouter = storedPaymentComponentAssembler.resolveStoredPaymentComponentRouter(
             delegate: self,
             component: component,
             title: component.paymentMethod.name
         )
         childRouter = storedPaymentComponentRouter
-        rootViewController.present(storedPaymentComponentRouter.rootViewController, animated: true)
+        navigationController.pushViewController(storedPaymentComponentRouter.rootViewController, animated: true)
     }
 
     internal func present(viewController: UIViewController) {

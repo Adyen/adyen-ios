@@ -84,9 +84,15 @@ internal class StoredPaymentComponentRouter: Router, StoredPaymentComponentRouti
     }
 
     internal func dismiss(completion: (() -> Void)?) {
-        rootViewController.dismiss(animated: true) { [weak self] in
-            self?.childRouter = nil
-            self?.listener?.didDismissStoredPaymentComponent(completion: completion)
+        if rootViewController.presentingViewController != nil {
+            rootViewController.dismiss(animated: true) { [weak self] in
+                self?.childRouter = nil
+                self?.listener?.didDismissStoredPaymentComponent(completion: completion)
+            }
+        } else {
+            rootViewController.navigationController?.popViewController(animated: true)
+            childRouter = nil
+            listener?.didDismissStoredPaymentComponent(completion: completion)
         }
     }
 }
