@@ -51,6 +51,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     internal let localizationParameters: LocalizationParameters
     internal let componentManager: ComponentManaging
     internal weak var router: PaymentMethodListRouting?
+    private let configuration: DropInComponent.Configuration
     private let dropInFlowManager: DropInFlowManaging
     private let logoURLProvider: LogoURLProvider
     private let supportsStoredPaymentMethodManagement: Bool
@@ -80,6 +81,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         self.context = context
         self.localizationParameters = localizationParameters
         self.componentManager = componentManager
+        self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
         self.logoURLProvider = logoURLProvider
         self.supportsStoredPaymentMethodManagement = supportsStoredPaymentMethodManagement
@@ -140,6 +142,12 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     private var initiablePaymentComponent: PaymentComponent?
     internal func select(paymentMethod: PaymentMethod) {
         guard let component = componentManager.buildComponent(for: paymentMethod) else { return }
+
+        if paymentMethod is StoredCardPaymentMethod,
+           configuration.card.showSecurityCodeForStoredCard {
+            router?.present(component: component)
+            return
+        }
 
         if paymentMethod is any StoredPaymentMethod {
             router?.present(storedPaymentComponent: component)

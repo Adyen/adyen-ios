@@ -215,7 +215,7 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
-    func selectPaymentMethod_givenStoredComponent_shouldCallPresentStoredPaymentComponent() throws {
+    func selectPaymentMethod_givenStoredCardWithCVCRequired_shouldPresentComponentDirectly() throws {
         // Given
         let (sut, _, routerMock) = makeSUT()
         sut.didLoad()
@@ -225,7 +225,25 @@ struct PaymentMethodListViewModelTests {
         sut.select(paymentMethod: paymentMethod)
 
         // Then
+        #expect(routerMock.presentComponentCallsCount == 1)
+        #expect(routerMock.presentStoredPaymentComponentComponentCallsCount == 0)
+    }
+
+    @Test
+    func selectPaymentMethod_givenStoredCardWithoutCVC_shouldCallPresentStoredPaymentComponent() throws {
+        // Given
+        let configuration = DropInComponent.Configuration()
+        configuration.card.showSecurityCodeForStoredCard = false
+        let (sut, _, routerMock) = makeSUT(configuration: configuration)
+        sut.didLoad()
+        let paymentMethod = try #require(sut.paymentMethodSections.flatMap(\.paymentMethods).first { $0.type == .scheme })
+
+        // When
+        sut.select(paymentMethod: paymentMethod)
+
+        // Then
         #expect(routerMock.presentStoredPaymentComponentComponentCallsCount == 1)
+        #expect(routerMock.presentComponentCallsCount == 0)
     }
 
     // MARK: - GetSections Tests
@@ -444,6 +462,7 @@ struct PaymentMethodListViewModelTests {
         includeApplePay: Bool = true,
         storedPaymentMethods: [any StoredPaymentMethod]? = nil,
         supportsStoredPaymentMethodManagement: Bool = false,
+        configuration: DropInComponent.Configuration = .init(),
         amount: Amount? = .init(value: 100, currencyCode: "EUR")
     ) -> (
         sut: PaymentMethodListViewModel,
@@ -464,7 +483,7 @@ struct PaymentMethodListViewModelTests {
         let componentManagerMock = ComponentManager(
             paymentMethods: methods,
             context: context,
-            configuration: .init(),
+            configuration: configuration,
             order: nil,
             presentationDelegate: nil
         )
@@ -475,7 +494,7 @@ struct PaymentMethodListViewModelTests {
             context: context,
             localizationParameters: LocalizationParameters(),
             componentManager: componentManagerMock,
-            configuration: DropInComponent.Configuration(),
+            configuration: configuration,
             dropInFlowManager: dropInFlowManagerMock,
             logoURLProvider: logoURLProvider,
             supportsStoredPaymentMethodManagement: supportsStoredPaymentMethodManagement,
