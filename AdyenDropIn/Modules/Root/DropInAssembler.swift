@@ -100,9 +100,19 @@ internal struct DropInAssembler {
         )
     }
 
+    private var storedPaymentComponentAssembler: StoredPaymentComponentAssemblerProtocol {
+        StoredPaymentComponentAssembler(
+            configuration: configuration,
+            dropInFlowManager: dropInFlowManager,
+            componentContainerAssembler: componentContainerAssembler,
+            analyticsProvider: context.analyticsProvider
+        )
+    }
+
     private var paymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         PaymentMethodListAssembler(
             componentContainerAssembler: componentContainerAssembler,
+            storedPaymentComponentAssembler: storedPaymentComponentAssembler,
             componentManager: componentManager,
             context: context,
             localizationParameters: resolveLocalizationProvider(),

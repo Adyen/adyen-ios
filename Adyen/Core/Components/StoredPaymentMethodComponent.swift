@@ -5,12 +5,10 @@
 //
 
 import Foundation
-import UIKit
 
-// TODO: Fix Stored PM UI
 ///  A component that handle stored payment methods.
 @MainActor
-package final class StoredPaymentMethodComponent: StoredPaymentComponent, Localizable {
+package final class StoredPaymentMethodComponent: PaymentComponent, Localizable {
 
     package var localizationParameters: LocalizationParameters?
 
@@ -36,7 +34,7 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
         self.storedPaymentMethod = paymentMethod
         self.context = context
     }
-    
+
     private let storedPaymentMethod: StoredPaymentMethod
 
     package func performSubmit() {
@@ -47,68 +45,24 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
         )
         submit(data: data)
     }
-
-    // MARK: - PresentablePaymentComponent
-
-    package lazy var viewController: UIViewController = {
-        sendInitialAnalytics()
-        sendDidLoadEvent()
-        
-        // TODO: Fix
-
-        let displayInformation = storedPaymentMethod.displayInformation(using: localizationParameters)
-        let alertController = UIAlertController(
-            title: localizedString(
-                .dropInStoredTitle,
-                localizationParameters,
-                storedPaymentMethod.name
-            ),
-            message: displayInformation.title,
-            preferredStyle: .alert
-        )
-
-        let cancelAction = UIAlertAction(title: localizedString(.cancelButton, localizationParameters), style: .cancel) { [weak self] _ in
-            guard let self else { return }
-            self.delegate?.didFail(with: ComponentError.cancelled, from: self)
-        }
-        alertController.addAction(cancelAction)
-
-        let submitActionTitle = localizedSubmitButtonTitle(
-            with: context.amount,
-            style: .immediate,
-            localizationParameters
-        )
-        let submitAction = UIAlertAction(title: submitActionTitle, style: .default) { [weak self] _ in
-            guard let self else { return }
-            let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
-            self.submit(data: PaymentComponentData(
-                paymentMethodDetails: details,
-                order: self.order
-            ))
-        }
-        alertController.addAction(submitAction)
-        
-        return alertController
-    }()
-    
 }
 
 extension StoredPaymentMethodComponent: TrackableComponent {}
 
 /// Store payment method details.
 public struct StoredPaymentDetails: PaymentMethodDetails {
-    
+
     @_spi(AdyenInternal)
     public var checkoutAttemptId: String?
-    
+
     /// An encoded string containing important SDK-specific data.
     /// It is recommended to pass this field to your server to ensure maximum performance and reliability.
     public var sdkData: String?
-    
+
     internal let type: PaymentMethodType
-    
+
     internal let storedPaymentMethodIdentifier: String
-    
+
     /// Initializes a new instance of `StoredPaymentDetails`
     ///
     /// - Parameter paymentMethod: The payment method.
@@ -116,11 +70,11 @@ public struct StoredPaymentDetails: PaymentMethodDetails {
         self.type = paymentMethod.type
         self.storedPaymentMethodIdentifier = paymentMethod.identifier
     }
-    
+
     private enum CodingKeys: String, CodingKey {
         case type
         case storedPaymentMethodIdentifier = "storedPaymentMethodId"
         case sdkData
     }
-    
+
 }

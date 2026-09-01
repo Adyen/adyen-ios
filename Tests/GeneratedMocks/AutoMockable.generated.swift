@@ -387,6 +387,24 @@ class PaymentMethodListRoutingMock: PaymentMethodListRouting {
 
     // MARK: - present
 
+    var presentStoredPaymentComponentComponentCallsCount = 0
+    var presentStoredPaymentComponentComponentCalled: Bool {
+        presentStoredPaymentComponentComponentCallsCount > 0
+    }
+
+    var presentStoredPaymentComponentComponentReceivedComponent: PaymentComponent?
+    var presentStoredPaymentComponentComponentReceivedInvocations: [PaymentComponent] = []
+    var presentStoredPaymentComponentComponentClosure: ((PaymentComponent) -> Void)?
+
+    func present(storedPaymentComponent component: PaymentComponent) {
+        presentStoredPaymentComponentComponentCallsCount += 1
+        presentStoredPaymentComponentComponentReceivedComponent = component
+        presentStoredPaymentComponentComponentReceivedInvocations.append(component)
+        presentStoredPaymentComponentComponentClosure?(component)
+    }
+
+    // MARK: - present
+
     var presentViewControllerCallsCount = 0
     var presentViewControllerCalled: Bool {
         presentViewControllerCallsCount > 0

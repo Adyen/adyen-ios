@@ -205,13 +205,27 @@ struct PaymentMethodListViewModelTests {
         // Given
         let (sut, _, routerMock) = makeSUT()
         sut.didLoad()
-        let paymentMethod = try #require(sut.paymentMethodSections.flatMap(\.paymentMethods).first { $0.type == .scheme })
+        let paymentMethod = try #require(sut.paymentMethodSections.flatMap(\.paymentMethods).first { $0.type == .scheme && !($0 is any StoredPaymentMethod) })
 
         // When
         sut.select(paymentMethod: paymentMethod)
 
         // Then
         #expect(routerMock.presentComponentCallsCount == 1)
+    }
+
+    @Test
+    func selectPaymentMethod_givenStoredComponent_shouldCallPresentStoredPaymentComponent() throws {
+        // Given
+        let (sut, _, routerMock) = makeSUT()
+        sut.didLoad()
+        let paymentMethod = try #require(sut.paymentMethodSections.flatMap(\.paymentMethods).first { $0.type == .scheme })
+
+        // When
+        sut.select(paymentMethod: paymentMethod)
+
+        // Then
+        #expect(routerMock.presentStoredPaymentComponentComponentCallsCount == 1)
     }
 
     // MARK: - GetSections Tests

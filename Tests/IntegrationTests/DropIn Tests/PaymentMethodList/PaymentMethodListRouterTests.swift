@@ -320,12 +320,15 @@ struct PaymentMethodListRouterTests {
         navigationController: NavigationControllerSpy = NavigationControllerSpy(),
         listener: PaymentMethodListRouterListenerMock? = nil,
         componentContainerAssembler: ComponentContainerAssemblerProtocolMock? = nil,
+        storedPaymentComponentAssembler: StoredPaymentComponentAssemblerProtocol? = nil,
         storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol? = nil,
         supportsStoredPaymentMethodManagement: Bool = true,
         onStoredPaymentMethodRemoved: @escaping (any StoredPaymentMethod) -> Void = { _ in }
     ) -> PaymentMethodListRouter {
         viewController.setNavigationController(navigationController)
         let componentContainerAssembler = componentContainerAssembler ?? makeComponentContainerAssembler()
+        let storedPaymentComponentAssembler = storedPaymentComponentAssembler
+            ?? StoredPaymentComponentAssemblerSpy(router: RouterMock())
         let storedPaymentMethodManagementAssembler = storedPaymentMethodManagementAssembler
             ?? StoredPaymentMethodManagementAssemblerSpy(router: RouterMock())
         let storedPaymentMethodManagementCapability = supportsStoredPaymentMethodManagement
@@ -337,6 +340,7 @@ struct PaymentMethodListRouterTests {
             navigationController: navigationController,
             listener: listener,
             componentContainerAssembler: componentContainerAssembler,
+            storedPaymentComponentAssembler: storedPaymentComponentAssembler,
             storedPaymentMethodManagementAssembler: storedPaymentMethodManagementAssembler,
             storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability,
             storedPaymentMethodsProvider: { [] },
@@ -377,6 +381,28 @@ struct PaymentMethodListRouterTests {
     private func makeInitiablePaymentComponentMock() -> PaymentComponentMock {
         let paymentMethodMock = PaymentMethodMock(type: .applePay, name: "Apple Pay")
         return PaymentComponentMock(paymentMethod: paymentMethodMock)
+    }
+}
+
+@MainActor
+private final class StoredPaymentComponentAssemblerSpy: StoredPaymentComponentAssemblerProtocol {
+
+    private let router: Router
+    private(set) var resolveCallsCount = 0
+    var resolveReceivedComponent: PaymentComponent?
+
+    init(router: Router) {
+        self.router = router
+    }
+
+    func resolveStoredPaymentComponentRouter(
+        delegate: StoredPaymentComponentRouterListener?,
+        component: PaymentComponent,
+        title: String
+    ) -> Router {
+        resolveCallsCount += 1
+        resolveReceivedComponent = component
+        return router
     }
 }
 

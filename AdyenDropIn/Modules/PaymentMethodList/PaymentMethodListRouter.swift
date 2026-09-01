@@ -18,6 +18,7 @@ internal protocol PaymentMethodListRouterListener: AnyObject {
 @MainActor
 internal protocol PaymentMethodListRouting: AnyObject {
     func present(component: PaymentComponent)
+    func present(storedPaymentComponent component: PaymentComponent)
     func present(viewController: UIViewController)
     func present(actionViewController: UIViewController, onCancel: (() -> Void)?)
     func presentStoredPaymentMethodManagement()
@@ -33,6 +34,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     private weak var listener: PaymentMethodListRouterListener?
     private let navigationController: UINavigationController
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
+    private let storedPaymentComponentAssembler: StoredPaymentComponentAssemblerProtocol
     private let storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol
     private let storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
     private let storedPaymentMethodsProvider: () -> [any StoredPaymentMethod]
@@ -46,6 +48,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         navigationController: UINavigationController = UINavigationController(),
         listener: PaymentMethodListRouterListener?,
         componentContainerAssembler: ComponentContainerAssemblerProtocol,
+        storedPaymentComponentAssembler: StoredPaymentComponentAssemblerProtocol,
         storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol,
         storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?,
         storedPaymentMethodsProvider: @escaping () -> [any StoredPaymentMethod],
@@ -55,6 +58,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         self.navigationController = navigationController
         self.listener = listener
         self.componentContainerAssembler = componentContainerAssembler
+        self.storedPaymentComponentAssembler = storedPaymentComponentAssembler
         self.storedPaymentMethodManagementAssembler = storedPaymentMethodManagementAssembler
         self.storedPaymentMethodManagementCapability = storedPaymentMethodManagementCapability
         self.storedPaymentMethodsProvider = storedPaymentMethodsProvider
@@ -84,6 +88,16 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         case .initiable:
             break
         }
+    }
+
+    internal func present(storedPaymentComponent component: PaymentComponent) {
+        let storedPaymentComponentRouter = storedPaymentComponentAssembler.resolveStoredPaymentComponentRouter(
+            delegate: self,
+            component: component,
+            title: component.paymentMethod.name
+        )
+        childRouter = storedPaymentComponentRouter
+        rootViewController.present(storedPaymentComponentRouter.rootViewController, animated: true)
     }
 
     internal func present(viewController: UIViewController) {
@@ -171,6 +185,16 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
 extension PaymentMethodListRouter: ComponentContainerRouterListener {
     
     internal func didDismissComponentContainer(completion: (() -> Void)?) {
+        childRouter = nil
+        completion?()
+    }
+}
+
+// MARK: - StoredPaymentComponentRouterListener
+
+extension PaymentMethodListRouter: StoredPaymentComponentRouterListener {
+
+    internal func didDismissStoredPaymentComponent(completion: (() -> Void)?) {
         childRouter = nil
         completion?()
     }

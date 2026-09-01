@@ -25,8 +25,20 @@ import Foundation
 extension ComponentManager: PaymentComponentBuilder {
 
     internal func build(paymentMethod: StoredCardPaymentMethod) -> PaymentComponent? {
-        let cardComponent = createCardComponent(with: paymentMethod)
-        return cardComponent.storedCardComponent
+        StoredCardComponentFactory().create(
+            storedCardPaymentMethod: paymentMethod,
+            context: context,
+            configuration: cardConfiguration,
+            localizationParameters: configuration.localizationParameters
+        )
+    }
+
+    private var cardConfiguration: CardConfiguration {
+        var cardConfiguration = configuration.card.cardConfiguration
+        cardConfiguration.style = configuration.style.formComponent
+        cardConfiguration.localizationParameters = configuration.localizationParameters
+        cardConfiguration.shopperInformation = configuration.shopperInformation
+        return cardConfiguration
     }
 
     internal func build(paymentMethod: StoredPaymentMethod) -> PaymentComponent? {

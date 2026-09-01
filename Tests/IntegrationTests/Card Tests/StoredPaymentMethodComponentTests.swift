@@ -6,205 +6,90 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenCard
-@testable import AdyenDropIn
-@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
-// TODO: FIX Stored PM Tests after UI changes
-// class StoredPaymentMethodComponentTests: XCTestCase {
-//
-//    private var context = Dummy.context
-//
-//    private let method = StoredPaymentMethodMock(
-//        identifier: "id",
-//        supportedShopperInteractions: [.shopperPresent],
-//        type: .other("type"),
-//        name: "name"
-//    )
-//
-//    func testLocalizationWithCustomTableName() throws {
-//        let localizationParams = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-//        let sut = StoredPaymentMethodComponent(
-//            paymentMethod: method,
-//            context: context
-//            // configuration: .init(localizationParameters: localizationParams)
-//        )
-//
-//        let viewController = sut.viewController as? UIAlertController
-//        XCTAssertNotNil(viewController)
-//        XCTAssertEqual(viewController?.actions.count, 2)
-//        XCTAssertEqual(viewController?.actions.first?.title, localizedString(.cancelButton, localizationParams))
-//        XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, localizationParams))
-//    }
-//
-//    func testLocalizationWithZeroPayment() throws {
-//        let payment = Payment(amount: Amount(value: 0, currencyCode: "EUR"), countryCode: "DE")
-//        let context = Dummy.context(with: payment)
-//
-//        let sut = StoredPaymentMethodComponent(
-//            paymentMethod: method,
-//            context: context
-//            // configuration: .init()
-//        )
-//
-//        let viewController = sut.viewController as? UIAlertController
-//        XCTAssertNotNil(viewController)
-//        XCTAssertEqual(viewController?.actions.count, 2)
-//        XCTAssertEqual(viewController?.actions.first?.title, localizedString(.cancelButton, nil))
-//        XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: payment.amount, style: .immediate, nil))
-//
-//        XCTAssertEqual(viewController?.actions.last?.title, "Confirm preauthorization")
-//    }
-//
-//    func testLocalizationWithCustomKeySeparator() throws {
-//        let localizationParams = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-//        let sut = StoredPaymentMethodComponent(
-//            paymentMethod: method,
-//            context: context
-//            //  configuration: .init(localizationParameters: localizationParams)
-//        )
-//
-//        let viewController = sut.viewController as? UIAlertController
-//        XCTAssertNotNil(viewController)
-//        XCTAssertEqual(viewController?.actions.count, 2)
-//        XCTAssertEqual(viewController?.actions.first?.title, localizedString(.cancelButton, localizationParams))
-//        XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, localizationParams))
-//    }
-//
-//    func testUI() throws {
-//        let sut = StoredPaymentMethodComponent(
-//            paymentMethod: method,
-//            context: context
-//            // configuration: .init()
-//        )
-//
-//        let delegate = PaymentComponentDelegateMock()
-//
-//        let delegateExpectation = expectation(description: "expect delegate to be called.")
-//        delegate.onDidSubmit = { data, component in
-//            XCTAssertTrue(component === sut)
-//            XCTAssertNotNil(data.paymentMethod as? StoredPaymentDetails)
-//
-//            let details = data.paymentMethod as! StoredPaymentDetails
-//            XCTAssertEqual(details.type.rawValue, "type")
-//            XCTAssertEqual(details.storedPaymentMethodIdentifier, "id")
-//
-//            delegateExpectation.fulfill()
-//        }
-//        delegate.onDidFail = { _, _ in
-//            XCTFail("delegate.didFail() should never be called.")
-//        }
-//        sut.delegate = delegate
-//
-//        presentOnRoot(sut.viewController)
-//
-//        let uiExpectation = expectation(description: "Dummy Expectation")
-//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-//            let alertController = sut.viewController as! UIAlertController
-//
-//            XCTAssertTrue(alertController.actions.contains { $0.title == localizedString(.cancelButton, nil) })
-//            XCTAssertTrue(alertController.actions.contains { $0.title == localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, nil) })
-//
-//            let payAction = alertController.actions.first { $0.title == localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, nil) }!
-//
-//            payAction.tap()
-//
-//            uiExpectation.fulfill()
-//        }
-//        waitForExpectations(timeout: 10, handler: nil)
-//    }
-//
-//    func testStoredACHComponent() {
-//        let paymentMethod = StoredACHDirectDebitPaymentMethod(
-//            type: .achDirectDebit,
-//            name: "ACH",
-//            identifier: "ach",
-//            supportedShopperInteractions: [.shopperPresent],
-//            bankAccountNumber: "5678865"
-//        )
-//        let sut = StoredPaymentMethodComponent(paymentMethod: paymentMethod, context: context)
-//
-//        let viewController = sut.viewController as? UIAlertController
-//        XCTAssertNotNil(viewController)
-//        XCTAssertEqual(viewController?.actions.count, 2)
-//        XCTAssertEqual(viewController?.actions.first?.title, localizedString(.cancelButton, nil))
-//        XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, nil))
-//        XCTAssertEqual(viewController?.message, paymentMethod.overriddenDisplayInformation(using: nil).title)
-//    }
-//
-//    func testStoredCashAppPay() {
-//        let paymentMethod = StoredCashAppPayPaymentMethod(
-//            type: .cashAppPay,
-//            name: "Cash App Pay",
-//            cashtag: "$cashtag_token",
-//            identifier: "cashapp",
-//            supportedShopperInteractions: [.shopperPresent]
-//        )
-//        let sut = StoredPaymentMethodComponent(paymentMethod: paymentMethod, context: context)
-//
-//        let viewController = sut.viewController as? UIAlertController
-//        XCTAssertNotNil(viewController)
-//        XCTAssertEqual(viewController?.actions.count, 2)
-//        XCTAssertEqual(viewController?.actions.first?.title, localizedString(.cancelButton, nil))
-//        XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, nil))
-//        XCTAssertEqual(viewController?.message, paymentMethod.cashtag)
-//        XCTAssertEqual(viewController?.title, localizedString(.dropInStoredTitle, nil, paymentMethod.name))
-//    }
-//
-//    func testStoredTwintComponent() throws {
-//        // Given
-//        let paymentMethod = StoredTwintPaymentMethod(
-//            type: .twint,
-//            name: "Twint",
-//            identifier: "twint",
-//            supportedShopperInteractions: [.shopperPresent]
-//        )
-//        let sut = StoredPaymentMethodComponent(paymentMethod: paymentMethod, context: context)
-//
-//        // When
-//        let viewController = sut.viewController as? UIAlertController
-//        XCTAssertNotNil(viewController)
-//        XCTAssertEqual(viewController?.actions.count, 2)
-//        XCTAssertEqual(viewController?.actions.first?.title, localizedString(.cancelButton, nil))
-//        XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, nil))
-//        XCTAssertEqual(viewController?.message, paymentMethod.overriddenDisplayInformation(using: nil).title)
-//        XCTAssertEqual(viewController?.title, localizedString(.dropInStoredTitle, nil, paymentMethod.name))
-//    }
-//
-//    func test_storedPaymentComponent_matches_payTo() throws {
-//        // Given
-//        let paymentMethod = StoredPayToPaymentMethod(
-//            type: .payTo,
-//            name: "PayTo Account",
-//            identifier: "twint",
-//            label: "***123",
-//            supportedShopperInteractions: [.shopperPresent]
-//        )
-//        let sut = StoredPaymentMethodComponent(paymentMethod: paymentMethod, context: context)
-//
-//        let viewController = sut.viewController as? UIAlertController
-//        XCTAssertNotNil(viewController)
-//        XCTAssertEqual(viewController?.actions.count, 2)
-//        XCTAssertEqual(viewController?.actions.first?.title, localizedString(.cancelButton, nil))
-//        XCTAssertEqual(viewController?.actions.last?.title, localizedSubmitButtonTitle(with: Dummy.payment.amount, style: .immediate, nil))
-//        XCTAssertEqual(viewController?.message, paymentMethod.overriddenDisplayInformation(using: nil).title)
-//        XCTAssertEqual(viewController?.title, localizedString(.dropInStoredTitle, nil, paymentMethod.name))
-//    }
-//
-//    func testViewDidLoadShouldSendInitialEvent() throws {
-//        // Given
-//        let analyticsProviderMock = AnalyticsProviderMock()
-//        let context = Dummy.context(with: analyticsProviderMock)
-//
-//        let sut = StoredPaymentMethodComponent(
-//            paymentMethod: method,
-//            context: context
-//        )
-//
-//        // When
-//        sut.viewController.viewDidLoad()
-//
-//        // Then
-//        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
-//    }
-// }
+@MainActor
+final class StoredPaymentMethodComponentTests: XCTestCase {
+
+    private var context = Dummy.context
+
+    private let method = StoredPaymentMethodMock(
+        identifier: "id",
+        supportedShopperInteractions: [.shopperPresent],
+        type: .other("type"),
+        name: "name"
+    )
+
+    // MARK: - Direct submit tests
+
+    func testPerformSubmit_shouldSubmitStoredPaymentDetails() {
+        let sut = StoredPaymentMethodComponent(
+            paymentMethod: method,
+            context: context
+        )
+        let delegate = PaymentComponentDelegateMock()
+        let expectation = expectation(description: "delegate.didSubmit should be called")
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            XCTAssertNotNil(data.paymentMethod as? StoredPaymentDetails)
+            guard let details = data.paymentMethod as? StoredPaymentDetails else {
+                XCTFail("Expected StoredPaymentDetails")
+                return
+            }
+            XCTAssertEqual(details.type.rawValue, "type")
+            XCTAssertEqual(details.storedPaymentMethodIdentifier, "id")
+            expectation.fulfill()
+        }
+        sut.delegate = delegate
+
+        sut.performSubmit()
+
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    func testPerformSubmit_givenDelegateDidFailWithCancellation_shouldForwardError() {
+        let sut = StoredPaymentMethodComponent(
+            paymentMethod: method,
+            context: context
+        )
+        let delegate = PaymentComponentDelegateMock()
+        let expectation = expectation(description: "delegate.didFail should be called")
+        delegate.onDidFail = { error, component in
+            XCTAssertTrue(component === sut)
+            XCTAssertTrue(error is ComponentError)
+            if case ComponentError.cancelled = error {
+                // expected
+            } else {
+                XCTFail("Expected cancelled error")
+            }
+            expectation.fulfill()
+        }
+        sut.delegate = delegate
+
+        sut.delegate?.didFail(with: ComponentError.cancelled, from: sut)
+
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    // MARK: - Presentability tests
+
+    func testComponent_shouldNotBePresentable() {
+        let sut = StoredPaymentMethodComponent(
+            paymentMethod: method,
+            context: context
+        )
+        XCTAssertFalse(sut is PresentablePaymentComponent)
+    }
+
+    func testComponentType_shouldBeInitiable() {
+        let sut = StoredPaymentMethodComponent(
+            paymentMethod: method,
+            context: context
+        )
+        if case .initiable = sut.type {
+            // expected
+        } else {
+            XCTFail("Expected initiable component type, got \(sut.type)")
+        }
+    }
+}

@@ -149,14 +149,18 @@ internal enum CheckoutComponentBuilder {
         configuration: CheckoutConfiguration,
         context: AdyenContext
     ) -> PaymentComponent {
-        let component = StoredCardComponent(
+        var cardConfiguration = (try? configuration.configuration(
+            for: storedPaymentMethod,
+            defaultValue: CardConfiguration()
+        )) ?? CardConfiguration()
+        cardConfiguration.theme = configuration.theme
+
+        return StoredCardComponentFactory().create(
             storedCardPaymentMethod: storedPaymentMethod,
             context: context,
-            theme: configuration.theme
+            configuration: cardConfiguration,
+            localizationParameters: configuration.resolvedCheckoutLocalizationParameters()
         )
-        component.localizationParameters = configuration.resolvedCheckoutLocalizationParameters()
-
-        return component
     }
 
     @MainActor

@@ -312,6 +312,41 @@ class ComponentManagerTests: XCTestCase {
         XCTAssertNotNil(paymentComponent as? StoredPaymentMethodComponent)
     }
 
+    func testStoredCardPaymentMethod_withDefaultConfiguration_createsStoredCardComponent() {
+        // Given
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
+
+        // When
+        let paymentComponent = sut.storedComponents.first { $0.paymentMethod.type.rawValue == "scheme" }
+
+        // Then
+        XCTAssertNotNil(paymentComponent as? StoredCardComponent)
+    }
+
+    func testStoredCardPaymentMethod_withCVCDisabled_createsStoredPaymentMethodComponent() {
+        // Given
+        configuration.card.showSecurityCodeForStoredCard = false
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
+
+        // When
+        let paymentComponent = sut.storedComponents.first { $0.paymentMethod.type.rawValue == "scheme" }
+
+        // Then
+        XCTAssertNotNil(paymentComponent as? StoredPaymentMethodComponent)
+    }
+
     func testLocalizationWithCustomTableName() {
         configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 

@@ -507,17 +507,6 @@ class CardComponentTests: XCTestCase {
 //        wait(until: securityCodeItemView, at: \.cardHintView.tintColor, is: .systemYellow)
 //    }
 
-    func test_storedCard_createsStoredCardInputViewController() {
-        let sut = CardComponent(
-            paymentMethod: storedMethod,
-            context: context
-        )
-
-        XCTAssertNotNil(sut.storedCardComponent)
-        XCTAssertNotNil(sut.storedCardComponent as? StoredCardComponent)
-        XCTAssertTrue(sut.storedCardComponent?.viewController is StoredCardInputViewController)
-    }
-
     // TODO: FIX ME
 //    func testStoredCardPaymentLocalizationWithNoCVV() throws {
 //        var configuration = CardComponentConfiguration()

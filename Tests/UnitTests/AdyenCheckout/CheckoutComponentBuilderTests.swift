@@ -501,6 +501,25 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertEqual(component.paymentMethod.type, .scheme)
         XCTAssertTrue(component is StoredCardComponent, "Component should be StoredCardComponent")
     }
+
+    func test_build_withStoredCardPaymentMethod_givenSecurityCodeDisabled_returnsStoredPaymentMethodComponent() throws {
+        // Given
+        let storedPaymentMethod = try XCTUnwrap(createStoredCardPaymentMethod())
+        let cardConfiguration = CardConfiguration().showSecurityCodeForStoredCard(false)
+        checkoutConfiguration = makeCheckoutConfiguration(
+            configurations: [.payment(.scheme): cardConfiguration]
+        )
+
+        // When
+        let component = CheckoutComponentBuilder.build(
+            for: storedPaymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+
+        // Then
+        XCTAssertTrue(component is StoredPaymentMethodComponent, "Component should be StoredPaymentMethodComponent")
+    }
     
     func test_build_withStoredCardPaymentMethod_passesCorrectContext() throws {
         // Given
