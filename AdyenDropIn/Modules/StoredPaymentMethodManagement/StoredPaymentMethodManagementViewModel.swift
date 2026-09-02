@@ -128,7 +128,7 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
             return
         }
 
-        sendAnalyticsEvent(type: .remove)
+        sendAnalyticsEvent(type: .clicked, target: .storedPaymentRemoveButton)
         itemToRemove = nil
 
         let identifier = item.paymentMethod.identifier
@@ -156,8 +156,12 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
 
     // MARK: - Private
 
-    private func sendAnalyticsEvent(type: AnalyticsEventInfo.InfoType) {
-        let event = AnalyticsEventInfo(component: Constants.analyticsComponentIdentifier, type: type)
+    private func sendAnalyticsEvent(type: AnalyticsEventInfo.InfoType, target: AnalyticsEventTarget? = nil) {
+        var event = AnalyticsEventInfo(
+            component: Constants.analyticsComponentIdentifier,
+            type: type
+        )
+        event.target = target
         analyticsProvider?.add(info: event)
     }
 

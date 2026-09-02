@@ -147,9 +147,7 @@ private extension StoredPaymentMethodManagementView {
                         .frame(maxWidth: .infinity, minHeight: Constants.buttonHeight)
                         .background(Color(uiColor: theme.colors.destructive))
                         .clipShape(RoundedRectangle(cornerRadius: Constants.buttonCornerRadius))
-                        .contentShape(Rectangle())
                 }
-                .buttonStyle(.plain)
                 .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.confirmRemoval)
 
                 Button(action: onCancel) {
@@ -159,9 +157,7 @@ private extension StoredPaymentMethodManagementView {
                         .frame(maxWidth: .infinity, minHeight: Constants.buttonHeight)
                         .background(Color(uiColor: theme.colors.background))
                         .clipShape(RoundedRectangle(cornerRadius: Constants.buttonCornerRadius))
-                        .contentShape(Rectangle())
                 }
-                .buttonStyle(.plain)
                 .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.cancelRemoval)
             }
             .padding(.horizontal, Constants.horizontalPadding)

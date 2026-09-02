@@ -40,7 +40,7 @@ package struct AnalyticsEventInfo: AnalyticsEvent {
         case rendered = "Rendered"
         case input = "Input"
         case displayed = "Displayed"
-        case remove = "Remove"
+        case clicked = "Clicked"
     }
     
     public init(component: String, type: InfoType) {

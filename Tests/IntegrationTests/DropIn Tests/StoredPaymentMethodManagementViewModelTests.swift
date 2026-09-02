@@ -22,10 +22,11 @@ struct StoredPaymentMethodManagementViewModelTests {
         #expect(analyticsProvider.infos.count == 1)
         #expect(event.component == "storedPaymentMethodManagement")
         #expect(event.type == .rendered)
+        #expect(event.target == nil)
     }
 
     @Test
-    func requestAndDismissRemoval_shouldUpdatePendingItemWithoutSendingRemoveEvent() throws {
+    func requestAndDismissRemoval_shouldUpdatePendingItem_withoutSendingClickEvent() throws {
         let analyticsProvider = AnalyticsProviderMock()
         let sut = makeSUT(analyticsProvider: analyticsProvider)
         let item = try #require(sut.sections.first?.items.first)
@@ -39,18 +40,19 @@ struct StoredPaymentMethodManagementViewModelTests {
     }
 
     @Test
-    func confirmRemoval_afterSuccess_shouldRemoveItemNotifyRouterAndSendRemoveEvent() async throws {
+    func confirmRemoval_afterSuccess_shouldRemoveItem_notifyRouter_andSendClickEvent() async throws {
         let analyticsProvider = AnalyticsProviderMock()
         var removalCallsCount = 0
         var observedRemovingState = false
-        var observedRemoveEvent = false
+        var observedClickEvent = false
         weak var weakSUT: StoredPaymentMethodManagementViewModel?
         let router = StoredPaymentMethodManagementRoutingMock()
         let sut = makeSUT(
             capability: StoredPaymentMethodManagementCapability { paymentMethod in
                 removalCallsCount += 1
                 observedRemovingState = weakSUT?.identifiersBeingRemoved.contains(paymentMethod.identifier) == true
-                observedRemoveEvent = analyticsProvider.infos.last?.type == .remove
+                let event = analyticsProvider.infos.last
+                observedClickEvent = event?.type == .clicked && event?.target == .storedPaymentRemoveButton
                 await weakSUT?.confirmRemoval()
             },
             analyticsProvider: analyticsProvider
@@ -64,7 +66,7 @@ struct StoredPaymentMethodManagementViewModelTests {
 
         #expect(removalCallsCount == 1)
         #expect(observedRemovingState)
-        #expect(observedRemoveEvent)
+        #expect(observedClickEvent)
         #expect(sut.sections.isEmpty)
         #expect(sut.itemToRemove == nil)
         #expect(!sut.isRemoving)
@@ -72,7 +74,8 @@ struct StoredPaymentMethodManagementViewModelTests {
         let event = try #require(analyticsProvider.infos.first)
         #expect(analyticsProvider.infos.count == 1)
         #expect(event.component == "storedPaymentMethodManagement")
-        #expect(event.type == .remove)
+        #expect(event.type == .clicked)
+        #expect(event.target == .storedPaymentRemoveButton)
     }
 
     @Test
@@ -124,7 +127,7 @@ struct StoredPaymentMethodManagementViewModelTests {
     }
 
     @Test
-    func confirmRemoval_whenCapabilityThrows_shouldPreserveItemShowErrorAndSendRemoveEvent() async throws {
+    func confirmRemoval_whenCapabilityThrows_shouldPreserveItem_showError_andSendClickEvent() async throws {
         let analyticsProvider = AnalyticsProviderMock()
         let sut = makeSUT(
             capability: StoredPaymentMethodManagementCapability { _ in
@@ -144,7 +147,8 @@ struct StoredPaymentMethodManagementViewModelTests {
         let event = try #require(analyticsProvider.infos.first)
         #expect(analyticsProvider.infos.count == 1)
         #expect(event.component == "storedPaymentMethodManagement")
-        #expect(event.type == .remove)
+        #expect(event.type == .clicked)
+        #expect(event.target == .storedPaymentRemoveButton)
     }
 
     @Test

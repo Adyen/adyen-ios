@@ -39,6 +39,7 @@ package enum AnalyticsEventTarget: String, Encodable {
     case addressPostalCode = "postal_code"
     case issuerList = "list"
     case listSearch = "list_search"
+    case storedPaymentRemoveButton = "stored_payment_method_remove_button"
 }
 
 /// A configuration object that defines the behavior for the analytics.
