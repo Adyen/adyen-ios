@@ -140,21 +140,29 @@ private extension StoredPaymentMethodManagementView {
 
         var body: some View {
             VStack(spacing: Constants.buttonSpacing) {
-                Button(removalActionTitle, action: onRemove)
-                    .font(Font(theme.elements.labels.bodyEmphasized.font))
-                    .foregroundStyle(Color(uiColor: theme.colors.textOnDestructive))
-                    .frame(maxWidth: .infinity, minHeight: Constants.buttonHeight)
-                    .background(Color(uiColor: theme.colors.destructive))
-                    .clipShape(RoundedRectangle(cornerRadius: Constants.buttonCornerRadius))
-                    .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.confirmRemoval)
-                
-                Button(cancelTitle, action: onCancel)
-                    .font(Font(theme.elements.labels.bodyEmphasized.font))
-                    .foregroundStyle(Color(uiColor: theme.colors.highlight))
-                    .frame(maxWidth: .infinity, minHeight: Constants.buttonHeight)
-                    .background(Color(uiColor: theme.colors.background))
-                    .clipShape(RoundedRectangle(cornerRadius: Constants.buttonCornerRadius))
-                    .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.cancelRemoval)
+                Button(action: onRemove) {
+                    Text(removalActionTitle)
+                        .font(Font(theme.elements.labels.bodyEmphasized.font))
+                        .foregroundStyle(Color(uiColor: theme.colors.textOnDestructive))
+                        .frame(maxWidth: .infinity, minHeight: Constants.buttonHeight)
+                        .background(Color(uiColor: theme.colors.destructive))
+                        .clipShape(RoundedRectangle(cornerRadius: Constants.buttonCornerRadius))
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.confirmRemoval)
+
+                Button(action: onCancel) {
+                    Text(cancelTitle)
+                        .font(Font(theme.elements.labels.bodyEmphasized.font))
+                        .foregroundStyle(Color(uiColor: theme.colors.highlight))
+                        .frame(maxWidth: .infinity, minHeight: Constants.buttonHeight)
+                        .background(Color(uiColor: theme.colors.background))
+                        .clipShape(RoundedRectangle(cornerRadius: Constants.buttonCornerRadius))
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.cancelRemoval)
             }
             .padding(.horizontal, Constants.horizontalPadding)
             .padding(.vertical, Constants.verticalPadding)
