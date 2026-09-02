@@ -12,8 +12,22 @@ import Testing
 struct StoredPaymentMethodManagementViewModelTests {
 
     @Test
-    func requestAndDismissRemoval_updatesItemPendingRemoval() throws {
-        let sut = makeSUT()
+    func sendRenderEvent_shouldSendManagementRenderedEvent() throws {
+        let analyticsProvider = AnalyticsProviderMock()
+        let sut = makeSUT(analyticsProvider: analyticsProvider)
+
+        sut.sendRenderEvent()
+
+        let event = try #require(analyticsProvider.infos.first)
+        #expect(analyticsProvider.infos.count == 1)
+        #expect(event.component == "storedPaymentMethodManagement")
+        #expect(event.type == .rendered)
+    }
+
+    @Test
+    func requestAndDismissRemoval_shouldUpdatePendingItemWithoutSendingRemoveEvent() throws {
+        let analyticsProvider = AnalyticsProviderMock()
+        let sut = makeSUT(analyticsProvider: analyticsProvider)
         let item = try #require(sut.sections.first?.items.first)
 
         sut.requestRemoval(of: item)
@@ -21,20 +35,25 @@ struct StoredPaymentMethodManagementViewModelTests {
 
         sut.dismissRemovalConfirmation()
         #expect(sut.itemToRemove == nil)
+        #expect(analyticsProvider.infos.isEmpty)
     }
 
     @Test
-    func confirmRemoval_afterSuccess_removesItemAndNotifiesRouter() async throws {
+    func confirmRemoval_afterSuccess_shouldRemoveItemNotifyRouterAndSendRemoveEvent() async throws {
+        let analyticsProvider = AnalyticsProviderMock()
         var removalCallsCount = 0
         var observedRemovingState = false
+        var observedRemoveEvent = false
         weak var weakSUT: StoredPaymentMethodManagementViewModel?
         let router = StoredPaymentMethodManagementRoutingMock()
         let sut = makeSUT(
             capability: StoredPaymentMethodManagementCapability { paymentMethod in
                 removalCallsCount += 1
                 observedRemovingState = weakSUT?.identifiersBeingRemoved.contains(paymentMethod.identifier) == true
+                observedRemoveEvent = analyticsProvider.infos.last?.type == .remove
                 await weakSUT?.confirmRemoval()
-            }
+            },
+            analyticsProvider: analyticsProvider
         )
         weakSUT = sut
         sut.router = router
@@ -45,14 +64,19 @@ struct StoredPaymentMethodManagementViewModelTests {
 
         #expect(removalCallsCount == 1)
         #expect(observedRemovingState)
+        #expect(observedRemoveEvent)
         #expect(sut.sections.isEmpty)
         #expect(sut.itemToRemove == nil)
         #expect(!sut.isRemoving)
         #expect(router.removedPaymentMethods.last?.identifier == item.paymentMethod.identifier)
+        let event = try #require(analyticsProvider.infos.first)
+        #expect(analyticsProvider.infos.count == 1)
+        #expect(event.component == "storedPaymentMethodManagement")
+        #expect(event.type == .remove)
     }
 
     @Test
-    func confirmRemoval_whileAnotherRemovalIsInProgress_tracksBothItems() async throws {
+    func confirmRemoval_whileAnotherRemovalIsInProgress_shouldTrackBothItems() async throws {
         var removalContinuations = [String: CheckedContinuation<Void, any Error>]()
         let firstPaymentMethod = storedPaymentMethod(identifier: "first-stored-payment-method-id")
         let secondPaymentMethod = storedPaymentMethod(identifier: "second-stored-payment-method-id")
@@ -100,11 +124,13 @@ struct StoredPaymentMethodManagementViewModelTests {
     }
 
     @Test
-    func confirmRemoval_whenCapabilityThrows_preservesItemAndShowsError() async throws {
+    func confirmRemoval_whenCapabilityThrows_shouldPreserveItemShowErrorAndSendRemoveEvent() async throws {
+        let analyticsProvider = AnalyticsProviderMock()
         let sut = makeSUT(
             capability: StoredPaymentMethodManagementCapability { _ in
                 throw StoredPaymentMethodRemovalError.unsuccessful
-            }
+            },
+            analyticsProvider: analyticsProvider
         )
         let item = try #require(sut.sections.first?.items.first)
         sut.requestRemoval(of: item)
@@ -115,10 +141,14 @@ struct StoredPaymentMethodManagementViewModelTests {
         #expect(sut.itemToRemove == nil)
         #expect(!sut.isRemoving)
         #expect(sut.removalError == .unsuccessful)
+        let event = try #require(analyticsProvider.infos.first)
+        #expect(analyticsProvider.infos.count == 1)
+        #expect(event.component == "storedPaymentMethodManagement")
+        #expect(event.type == .remove)
     }
 
     @Test
-    func confirmRemoval_afterFailureThenSuccess_clearsErrorWhenRetryStarts() async throws {
+    func confirmRemoval_afterFailureThenSuccess_shouldClearErrorWhenRetryStarts() async throws {
         var removalAttemptCount = 0
         var observedRetryError: StoredPaymentMethodRemovalError?
         weak var weakSUT: StoredPaymentMethodManagementViewModel?
@@ -148,7 +178,7 @@ struct StoredPaymentMethodManagementViewModelTests {
     }
 
     @Test
-    func didRequestPaymentOptions_forwardsRequestToRouter() {
+    func didRequestPaymentOptions_shouldForwardRequestToRouter() {
         let router = StoredPaymentMethodManagementRoutingMock()
         let sut = makeSUT()
         sut.router = router
@@ -159,7 +189,7 @@ struct StoredPaymentMethodManagementViewModelTests {
     }
 
     @Test
-    func sectionTitle_whenOtherIsTheOnlySection_returnsNil() throws {
+    func sectionTitle_whenOtherIsTheOnlySection_shouldReturnNil() throws {
         let sut = makeSUT()
         let section = try #require(sut.sections.first)
 
@@ -169,7 +199,8 @@ struct StoredPaymentMethodManagementViewModelTests {
 
     private func makeSUT(
         paymentMethods: [StoredPaymentMethodMock]? = nil,
-        capability: StoredPaymentMethodManagementCapability = StoredPaymentMethodManagementCapability { _ in }
+        capability: StoredPaymentMethodManagementCapability = StoredPaymentMethodManagementCapability { _ in },
+        analyticsProvider: AnyAnalyticsProvider? = nil
     ) -> StoredPaymentMethodManagementViewModel {
         let mapper = StoredPaymentMethodManagementPresentationMapper(
             localizationParameters: nil,
@@ -180,7 +211,8 @@ struct StoredPaymentMethodManagementViewModelTests {
             paymentMethods: paymentMethods ?? [storedPaymentMethod()],
             capability: capability,
             mapper: mapper,
-            localizationParameters: nil
+            localizationParameters: nil,
+            analyticsProvider: analyticsProvider
         )
     }
 

@@ -46,6 +46,11 @@ internal final class StoredPaymentMethodManagementHostingController: UIHostingCo
         fatalError("init(coder:) has not been implemented")
     }
 
+    override internal func viewDidLoad() {
+        super.viewDidLoad()
+        viewModel.sendRenderEvent()
+    }
+
     override internal func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
