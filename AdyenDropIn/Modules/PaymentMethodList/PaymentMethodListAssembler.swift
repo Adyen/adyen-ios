@@ -75,7 +75,8 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         let storedPaymentMethodManagementAssembler = StoredPaymentMethodManagementAssembler(
             localizationParameters: localizationParameters,
             logoURLProvider: logoURLProvider,
-            theme: theme
+            theme: theme,
+            analyticsProvider: context.analyticsProvider
         )
         let router = PaymentMethodListRouter(
             viewController: view,

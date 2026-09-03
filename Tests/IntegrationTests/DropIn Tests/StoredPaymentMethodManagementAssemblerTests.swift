@@ -19,7 +19,8 @@ struct StoredPaymentMethodManagementAssemblerTests {
             StoredPaymentMethodManagementAssembler(
                 localizationParameters: nil,
                 logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
-                theme: .default
+                theme: .default,
+                analyticsProvider: nil
             ).resolveStoredPaymentMethodManagementRouter(
                 paymentMethods: [storedPaymentMethod()],
                 capability: StoredPaymentMethodManagementCapability { _ in },
@@ -41,7 +42,8 @@ struct StoredPaymentMethodManagementAssemblerTests {
             StoredPaymentMethodManagementAssembler(
                 localizationParameters: nil,
                 logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
-                theme: .default
+                theme: .default,
+                analyticsProvider: nil
             ).resolveStoredPaymentMethodManagementRouter(
                 paymentMethods: [storedPaymentMethod()],
                 capability: StoredPaymentMethodManagementCapability { _ in },
@@ -60,7 +62,8 @@ struct StoredPaymentMethodManagementAssemblerTests {
         let sut = StoredPaymentMethodManagementAssembler(
             localizationParameters: nil,
             logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
-            theme: .default
+            theme: .default,
+            analyticsProvider: nil
         )
 
         let router = try #require(
@@ -76,6 +79,32 @@ struct StoredPaymentMethodManagementAssemblerTests {
     }
 
     @Test
+    func resolveRouter_whenHostingViewLoads_sendsManagementRenderedEvent() throws {
+        let analyticsProvider = AnalyticsProviderMock()
+        let listener = StoredPaymentMethodManagementListenerMock()
+        let router = try #require(
+            StoredPaymentMethodManagementAssembler(
+                localizationParameters: nil,
+                logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
+                theme: .default,
+                analyticsProvider: analyticsProvider
+            ).resolveStoredPaymentMethodManagementRouter(
+                paymentMethods: [storedPaymentMethod()],
+                capability: StoredPaymentMethodManagementCapability { _ in },
+                listener: listener
+            ) as? StoredPaymentMethodManagementRouter
+        )
+        let hostingController = try #require(router.rootViewController as? StoredPaymentMethodManagementHostingController)
+
+        hostingController.loadViewIfNeeded()
+
+        let event = try #require(analyticsProvider.infos.first)
+        #expect(analyticsProvider.infos.count == 1)
+        #expect(event.component == "storedPaymentMethodManagement")
+        #expect(event.type == .rendered)
+    }
+
+    @Test
     func resolveRouter_disablesNavigationWhileRemovalIsInProgressAndRestoresOriginalState() async throws {
         var removalContinuation: CheckedContinuation<Void, Never>?
         let paymentMethod = storedPaymentMethod()
@@ -84,7 +113,8 @@ struct StoredPaymentMethodManagementAssemblerTests {
             StoredPaymentMethodManagementAssembler(
                 localizationParameters: nil,
                 logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
-                theme: .default
+                theme: .default,
+                analyticsProvider: nil
             ).resolveStoredPaymentMethodManagementRouter(
                 paymentMethods: [paymentMethod],
                 capability: StoredPaymentMethodManagementCapability { _ in

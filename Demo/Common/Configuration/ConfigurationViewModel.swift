@@ -20,7 +20,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var billingAddress: BillingAddressModeDemoSetting = .none
     @Published internal var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility = .auto
     @Published internal var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility = .auto
-    @Published internal var allowDisablingStoredPaymentMethods: Bool = false
+    @Published internal var allowDisablingStoredPaymentMethods: Bool = true
     @Published internal var allowsSkippingPaymentList: Bool = false
     @Published internal var allowPreselectedPaymentView: Bool = true
     
