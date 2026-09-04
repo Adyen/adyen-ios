@@ -55,19 +55,19 @@ package final class CheckoutCore: CheckoutCoreProtocol {
             mergingExistingParameters: authenticationConfiguration.localizationParameters
         )
 
-        let actionConfig = CheckoutActionComponent.Configuration(
+        let actionConfiguration = CheckoutActionComponent.Configuration(
             localizationParameters: configuration.resolvedCheckoutLocalizationParameters(),
             authentication: authenticationConfiguration,
             twint: configuration.configuration(for: .twint)
         )
 
-        let handler = CheckoutActionComponent(
+        let actionHandlingComponent = CheckoutActionComponent(
             context: adyenContext,
-            configuration: actionConfig
+            configuration: actionConfiguration
         )
-        handler.delegate = self
-        handler.presentationDelegate = presentationDelegate
-        return handler
+        actionHandlingComponent.delegate = self
+        actionHandlingComponent.presentationDelegate = presentationDelegate
+        return actionHandlingComponent
     }()
 
     internal var submitTask: Task<Void, Never>?

@@ -20,7 +20,7 @@ internal struct DropInAssembler {
     private let title: String
     private let paymentMethods: PaymentMethods
     private let context: AdyenContext
-    private let configuration: DropInComponent.Configuration
+    private let configuration: DropInConfiguration
     private let componentManager: ComponentManager
     private let dropInFlowManager: DropInFlowManaging
     private let partialPaymentDelegate: PartialPaymentDelegate?
@@ -32,7 +32,7 @@ internal struct DropInAssembler {
         title: String,
         paymentMethods: PaymentMethods,
         context: AdyenContext,
-        configuration: DropInComponent.Configuration,
+        configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
         partialPaymentDelegate: PartialPaymentDelegate?,
         storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
@@ -80,13 +80,8 @@ internal struct DropInAssembler {
         APIClient(apiContext: context.apiContext)
     }
 
-    // TODO: - This should be replaced by the future LocalizationProvider
-    private func resolveLocalizationProvider() -> LocalizationParameters {
-        LocalizationParameters()
-    }
-
-    private func resolveCheckoutTheme() -> CheckoutTheme {
-        CheckoutTheme.default
+    private func resolveLocalizationParameters() -> LocalizationParameters {
+        configuration.resolvedLocalizationParameters ?? LocalizationParameters()
     }
 
     private var preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
@@ -105,10 +100,10 @@ internal struct DropInAssembler {
             componentContainerAssembler: componentContainerAssembler,
             componentManager: componentManager,
             context: context,
-            localizationParameters: resolveLocalizationProvider(),
+            localizationParameters: resolveLocalizationParameters(),
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
-            theme: resolveCheckoutTheme(),
+            theme: configuration.theme,
             partialPaymentDelegate: partialPaymentDelegate,
             storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability
         )

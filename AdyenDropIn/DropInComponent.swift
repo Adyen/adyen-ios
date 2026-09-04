@@ -40,7 +40,7 @@ package final class DropInComponent: NSObject,
             dropInComponent: self,
             dropInComponentDelegate: delegate,
             context: context,
-            configuration: configuration
+            actionComponentConfiguration: actionComponentConfiguration
         )
     }()
 
@@ -65,7 +65,9 @@ package final class DropInComponent: NSObject,
         dropInComponent: self
     )
 
-    internal var configuration: Configuration
+    internal var configuration: DropInConfiguration
+
+    private let actionComponentConfiguration: CheckoutActionComponent.Configuration
 
     internal var paymentInProgress: Bool = false
 
@@ -85,17 +87,20 @@ package final class DropInComponent: NSObject,
     /// - Parameters:
     ///   - paymentMethods: The payment methods to display.
     ///   - context: The context object for this component.
-    ///   - configuration: The payment method specific configuration.
+    ///   - configuration: Drop-in behavior and checkout-wide presentation configuration.
+    ///   - actionComponentConfiguration: The resolved configuration for action handling.
     ///   - title: Name of the application. To be displayed on a first payment page.
     ///            If no external value provided, the Main Bundle's name would be used.
     package init(
         paymentMethods: PaymentMethods,
         context: AdyenContext,
-        configuration: Configuration = .init(),
+        configuration: DropInConfiguration = .init(),
+        actionComponentConfiguration: CheckoutActionComponent.Configuration = .init(),
         title: String? = nil
     ) {
         self.title = title ?? Bundle.main.displayName
         self.configuration = configuration
+        self.actionComponentConfiguration = actionComponentConfiguration
         self.context = context
         self.paymentMethods = paymentMethods
 
@@ -109,7 +114,7 @@ package final class DropInComponent: NSObject,
     //    internal init(
     //        paymentMethods: PaymentMethods,
     //        context: AdyenContext,
-    //        configuration: Configuration = .init(),
+    //        configuration: DropInConfiguration = .init(),
     //        title: String? = nil,
     //        apiClient: APIClientProtocol
     //    ) {
