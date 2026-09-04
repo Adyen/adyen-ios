@@ -71,7 +71,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         context: AdyenContext,
         localizationParameters: LocalizationParameters,
         componentManager: ComponentManaging,
-        configuration: DropInComponent.Configuration,
+        configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
         logoURLProvider: LogoURLProvider,
         supportsStoredPaymentMethodManagement: Bool,

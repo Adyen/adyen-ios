@@ -8,6 +8,32 @@ See also:
 - [guides/v6/card.md](guides/v6/card.md)
 - [guides/v6/theme.md](guides/v6/theme.md)
 
+### Drop-in configuration
+
+Drop-in-specific behavior is configured through `DropInConfiguration` in the `CheckoutConfiguration` DSL. Component configuration,
+localization, and styling remain checkout-wide or component-specific:
+
+```swift
+let configuration = try CheckoutConfiguration(
+    environment: .test,
+    amount: amount,
+    clientKey: clientKey
+) {
+    DropInConfiguration()
+        .hideStoredPaymentMethods(false)
+        .startWithLastStoredPaymentMethod(true)
+        .allowRemovingStoredPaymentMethods(false)
+
+    CardConfiguration()
+}
+```
+
+`hideStoredPaymentMethods` affects only the payment method list. It remains independent from
+`startWithLastStoredPaymentMethod`, so Drop-in can start with a stored method while hiding the stored section from the list.
+
+Drop-in now always skips the payment method list when exactly one presentable regular payment method is available. The former
+`allowsSkippingPaymentList` merchant setting has been removed, and its previous default of `false` no longer applies.
+
 ### Core objects
 
 #### Generic payment models

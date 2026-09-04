@@ -209,37 +209,7 @@ class DropInTests: XCTestCase {
 //        XCTAssertEqual(configDataDict.keys.count, 2)
 //    }
 //
-//    func testOpenDropInAsList() throws {
-//        let config = DropInComponent.Configuration()
 //
-//        let paymentMethods = try! JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethods.data(using: .utf8)!)
-//        let sut = DropInComponent(
-//            paymentMethods: paymentMethods,
-//            context: Dummy.context,
-//            configuration: config
-//        )
-//
-//        presentOnRoot(sut.viewController)
-//
-//        let topVC = try XCTUnwrap(sut.viewController.findChild(of: ListViewController.self))
-//        XCTAssertEqual(topVC.sections.count, 1)
-//        XCTAssertEqual(topVC.sections[0].items.count, 2)
-//    }
-//
-//    func testOpenDropInAsOneClickPayment() throws {
-//        let config = DropInComponent.Configuration()
-//
-//        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
-//        let sut = DropInComponent(
-//            paymentMethods: paymentMethods,
-//            context: Dummy.context,
-//            configuration: config
-//        )
-//
-//        presentOnRoot(sut.viewController)
-//
-//        XCTAssertNil(sut.viewController.findChild(of: ListViewController.self))
-//    }
 //
 //    func testDeletingStoredPaymentSuccessWithSession() throws {
 //        let config = DropInComponent.Configuration()
@@ -382,20 +352,6 @@ class DropInTests: XCTestCase {
 //        waitForExpectations(timeout: 2)
 //    }
 //
-//    func testOpenDropInWithNoOneClickPayment() throws {
-//        let config = DropInComponent.Configuration(allowPreselectedPaymentView: false)
-//
-//        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsOneClick.data(using: .utf8)!)
-//        let sut = DropInComponent(
-//            paymentMethods: paymentMethods,
-//            context: Dummy.context,
-//            configuration: config
-//        )
-//
-//        presentOnRoot(sut.viewController)
-//
-//        XCTAssertNotNil(sut.viewController.findChild(of: ListViewController.self))
-//    }
 //
 //    func testOpenApplePay() throws {
 //        let config = DropInComponent.Configuration()
@@ -450,40 +406,7 @@ class DropInTests: XCTestCase {
 //        XCTAssertTrue(topVC.sections[0].footer!.title.contains("Select payment method for the remaining"))
 //    }
 //
-//    func testSinglePaymentMethodSkippingPaymentList() throws {
-//        let config = DropInComponent.Configuration(allowsSkippingPaymentList: true)
 //
-//        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleNonInstant.data(using: .utf8)!)
-//        let sut = DropInComponent(
-//            paymentMethods: paymentMethods,
-//            context: Dummy.context,
-//            configuration: config
-//        )
-//
-//        presentOnRoot(sut.viewController)
-//
-//        // presented screen is SEPA (payment list is skipped)
-//        let topVC = try XCTUnwrap(sut.viewController.findChild(of: SecuredViewController<FormViewController>.self))
-//        XCTAssertEqual(topVC.title, "SEPA Direct Debit")
-//    }
-//
-//    func testSinglePaymentMethodNotSkippingPaymentList() throws {
-//        let config = DropInComponent.Configuration(allowsSkippingPaymentList: true)
-//
-//        let paymentMethods = try JSONDecoder().decode(PaymentMethods.self, from: DropInTests.paymentMethodsWithSingleInstant.data(using: .utf8)!)
-//        let sut = DropInComponent(
-//            paymentMethods: paymentMethods,
-//            context: Dummy.context,
-//            configuration: config
-//        )
-//
-//        presentOnRoot(sut.viewController)
-//
-//        // presented screen should be payment list with 1 instant payment element
-//        let topVC = try XCTUnwrap(sut.viewController.findChild(of: ListViewController.self))
-//        XCTAssertEqual(topVC.sections.count, 1)
-//        XCTAssertEqual(topVC.sections[0].items.count, 1)
-//    }
 //
 //    func testFinaliseIfNeededEmptyList() throws {
 //        let config = DropInComponent.Configuration()

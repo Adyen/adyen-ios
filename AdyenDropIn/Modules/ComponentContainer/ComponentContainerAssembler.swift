@@ -22,14 +22,14 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
 
     // MARK: - Properties
 
-    private let configuration: DropInComponent.Configuration
+    private let configuration: DropInConfiguration
     private let dropInFlowManager: DropInFlowManaging
     private let partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
 
     internal init(
-        configuration: DropInComponent.Configuration,
+        configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {

@@ -13,8 +13,8 @@ internal struct DropInAnalyticsConfiguration: AnalyticsStringDictionaryConvertib
     
     private let openFirstStoredPaymentMethod: Bool
     
-    internal init(configuration: DropInComponent.Configuration) {
+    internal init(configuration: DropInConfiguration) {
         self.skipPaymentMethodList = configuration.allowsSkippingPaymentList
-        self.openFirstStoredPaymentMethod = configuration.allowPreselectedPaymentView
+        self.openFirstStoredPaymentMethod = configuration.startWithLastStoredPaymentMethod
     }
 }

@@ -28,6 +28,7 @@ Pod::Spec.new do |s|
     plugin.dependency 'Adyen/Card'
     plugin.dependency 'Adyen/Encryption'
     plugin.dependency 'Adyen/Components'
+    plugin.dependency 'Adyen/CoreUI'
   end
 
   s.subspec 'Checkout' do |plugin|

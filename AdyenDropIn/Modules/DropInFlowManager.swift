@@ -39,7 +39,7 @@ internal class DropInFlowManager: DropInFlowManaging {
     private weak var dropInComponent: DropInComponent?
     private weak var dropInComponentDelegate: DropInComponentDelegate?
     private let context: AdyenContext
-    private let configuration: DropInComponent.Configuration
+    private let actionComponentConfiguration: CheckoutActionComponent.Configuration
     private weak var actionPresenter: ActionPresenter?
 
     // MARK: - Initializers
@@ -48,24 +48,23 @@ internal class DropInFlowManager: DropInFlowManaging {
         dropInComponent: DropInComponent,
         dropInComponentDelegate: DropInComponentDelegate?,
         context: AdyenContext,
-        configuration: DropInComponent.Configuration
+        actionComponentConfiguration: CheckoutActionComponent.Configuration
     ) {
         self.dropInComponent = dropInComponent
         self.dropInComponentDelegate = dropInComponentDelegate
         self.context = context
-        self.configuration = configuration
+        self.actionComponentConfiguration = actionComponentConfiguration
     }
 
     // MARK: - Private
 
     private lazy var actionComponent: CheckoutActionComponent = {
-        let actionComponent = CheckoutActionComponent(context: context)
+        let actionComponent = CheckoutActionComponent(
+            context: context,
+            configuration: actionComponentConfiguration
+        )
         actionComponent.delegate = self
         actionComponent.presentationDelegate = self
-        actionComponent.configuration.style = configuration.style.actionComponent
-        actionComponent.configuration.localizationParameters = configuration.localizationParameters
-        actionComponent.configuration.authentication = configuration.actionComponent.authentication
-        actionComponent.configuration.twint = configuration.actionComponent.twint
         return actionComponent
     }()
 

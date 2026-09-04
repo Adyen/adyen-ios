@@ -202,7 +202,7 @@ struct ComponentContainerViewModelTests {
 
         let sut = ComponentContainerViewModel(
             component: paymentComponentMock,
-            configuration: DropInComponent.Configuration(),
+            configuration: DropInConfiguration(),
             dropInFlowManager: dropInFlowManagerMock,
             partialPaymentDelegate: nil
         )
