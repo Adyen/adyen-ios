@@ -20,9 +20,9 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var billingAddress: BillingAddressModeDemoSetting = .none
     @Published internal var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility = .auto
     @Published internal var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility = .auto
-    @Published internal var allowDisablingStoredPaymentMethods: Bool = true
-    @Published internal var allowsSkippingPaymentList: Bool = false
-    @Published internal var allowPreselectedPaymentView: Bool = true
+    @Published internal var allowRemovingStoredPaymentMethods: Bool = true
+    @Published internal var hideStoredPaymentMethods: Bool = false
+    @Published internal var startWithLastStoredPaymentMethod: Bool = true
     
     /// Controls the setting to configure the option to force redirect action to authenticate using a Card instead of native.
     @Published internal var allowForceCardRedirectAction: Bool = false
@@ -62,9 +62,9 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.billingAddress = configuration.cardSettings.billingAddress
         self.socialSecurityNumberVisibility = configuration.cardSettings.socialSecurityNumberVisibility
         self.koreanAuthenticationVisibility = configuration.cardSettings.koreanAuthenticationVisibility
-        self.allowDisablingStoredPaymentMethods = configuration.dropInSettings.allowDisablingStoredPaymentMethods
-        self.allowsSkippingPaymentList = configuration.dropInSettings.allowsSkippingPaymentList
-        self.allowPreselectedPaymentView = configuration.dropInSettings.allowPreselectedPaymentView
+        self.allowRemovingStoredPaymentMethods = configuration.dropInSettings.allowRemovingStoredPaymentMethods
+        self.hideStoredPaymentMethods = configuration.dropInSettings.hideStoredPaymentMethods
+        self.startWithLastStoredPaymentMethod = configuration.dropInSettings.startWithLastStoredPaymentMethod
         self.allowForceCardRedirectAction = configuration.threeDSConfigurationSettings.allowForceCardRedirectAction
         self.applePayMerchantIdentifier = configuration.applePaySettings.merchantIdentifier
         self.allowOnboarding = configuration.applePaySettings.allowOnboarding
@@ -103,9 +103,9 @@ internal final class ConfigurationViewModel: ObservableObject {
                 showsInstallmentAmount: showInstallmentAmount
             ),
             dropInSettings: DropInSettings(
-                allowDisablingStoredPaymentMethods: allowDisablingStoredPaymentMethods,
-                allowsSkippingPaymentList: allowsSkippingPaymentList,
-                allowPreselectedPaymentView: allowPreselectedPaymentView
+                allowRemovingStoredPaymentMethods: allowRemovingStoredPaymentMethods,
+                hideStoredPaymentMethods: hideStoredPaymentMethods,
+                startWithLastStoredPaymentMethod: startWithLastStoredPaymentMethod
             ),
             threeDSConfigurationSettings: ThreeDSConfigurationSettings(
                 allowForceCardRedirectAction: allowForceCardRedirectAction

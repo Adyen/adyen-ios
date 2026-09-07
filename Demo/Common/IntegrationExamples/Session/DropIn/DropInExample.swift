@@ -98,6 +98,7 @@ internal final class DropInExample: InitialDataFlowProtocol {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
+            actionComponentConfiguration: ConfigurationConstants.current.dropInActionComponentConfiguration,
             title: ConfigurationConstants.appName
         )
         
@@ -108,13 +109,8 @@ internal final class DropInExample: InitialDataFlowProtocol {
 
     }
     
-    private func dropInConfiguration(from paymentMethods: PaymentMethods) -> DropInComponent.Configuration {
-        let configuration = ConfigurationConstants.current.dropInConfiguration
-
-        configuration.applePay = try? ConfigurationConstants.current.applePayConfiguration(using: .demo)
-        configuration.actionComponent.authentication.delegatedAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
-        configuration.card = ConfigurationConstants.current.cardDropInConfiguration
-        return configuration
+    private func dropInConfiguration(from _: PaymentMethods) -> DropInConfiguration {
+        ConfigurationConstants.current.dropInConfiguration
     }
 
     // MARK: - Alert handling

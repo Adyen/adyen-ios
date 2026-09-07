@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenDropIn)
+    import AdyenDropIn
+#endif
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
@@ -37,7 +40,9 @@ public struct CheckoutConfiguration {
     
     // TODO: how we store configurations may change
     package var configurations: [CheckoutComponentType: CheckoutComponentConfiguration]
-    
+
+    package var dropInConfiguration: DropInConfiguration
+
     package var localizationProvider: (any CheckoutLocalizationProvider)?
     package var theme: CheckoutTheme
 
@@ -70,10 +75,13 @@ public struct CheckoutConfiguration {
         @CheckoutConfigurationBuilder content: () throws -> CheckoutConfigurable
     ) throws {
         let apiContext = try APIContext(environment: environment, clientKey: clientKey)
-        if let amount { try Self.validateAmount(amount) }
+        if let amount {
+            try Self.validateAmount(amount)
+        }
         let analyticsApiContext = Self.createAnalyticsAPIContext(apiContext: apiContext)
 
         var configDictionary: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
+        var dropInConfiguration = DropInConfiguration()
         let configurations: CheckoutConfigurable
         do {
             configurations = try content()
@@ -85,6 +93,8 @@ public struct CheckoutConfiguration {
         for configuration in configArray {
             if let configuration = configuration as? CheckoutComponentConfiguration {
                 configDictionary[configuration.componentType] = configuration
+            } else if let configuration = configuration as? DropInConfiguration {
+                dropInConfiguration = configuration
             }
         }
 
@@ -93,7 +103,8 @@ public struct CheckoutConfiguration {
             amount: amount,
             analyticsApiContext: analyticsApiContext,
             analyticsConfiguration: analyticsConfiguration,
-            configurations: configDictionary
+            configurations: configDictionary,
+            dropInConfiguration: dropInConfiguration
         )
     }
     
@@ -103,6 +114,7 @@ public struct CheckoutConfiguration {
         analyticsApiContext: APIContext?,
         analyticsConfiguration: AnalyticsConfiguration,
         configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:],
+        dropInConfiguration: DropInConfiguration = .init(),
         localizationProvider: (any CheckoutLocalizationProvider)? = nil,
         theme: CheckoutTheme = .default
     ) {
@@ -111,6 +123,7 @@ public struct CheckoutConfiguration {
         self.amount = amount
         self.apiContext = apiContext
         self.configurations = configurations
+        self.dropInConfiguration = dropInConfiguration
         self.localizationProvider = localizationProvider
         self.theme = theme
     }

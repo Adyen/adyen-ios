@@ -25,7 +25,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     private let componentManager: ComponentManager
     private let context: AdyenContext
     private let localizationParameters: LocalizationParameters
-    private let configuration: DropInComponent.Configuration
+    private let configuration: DropInConfiguration
     private let dropInFlowManager: DropInFlowManaging
     private let theme: CheckoutTheme
     private let partialPaymentDelegate: PartialPaymentDelegate?
@@ -38,7 +38,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         componentManager: ComponentManager,
         context: AdyenContext,
         localizationParameters: LocalizationParameters,
-        configuration: DropInComponent.Configuration,
+        configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
         theme: CheckoutTheme,
         partialPaymentDelegate: PartialPaymentDelegate?,

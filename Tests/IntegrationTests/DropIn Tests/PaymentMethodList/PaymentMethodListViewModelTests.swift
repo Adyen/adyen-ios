@@ -329,6 +329,25 @@ struct PaymentMethodListViewModelTests {
     }
 
     @Test
+    func didLoad_givenHiddenStoredPaymentMethods_shouldNotExposeFavoritesOrManageButton() throws {
+        // Given
+        let configuration = DropInConfiguration().hideStoredPaymentMethods(true)
+        let (sut, _, _) = makeSUT(
+            supportsStoredPaymentMethodManagement: true,
+            configuration: configuration
+        )
+        let favoritesTitle = localizedString(.paymentMethodsStoredMethods, LocalizationParameters())
+
+        // When
+        sut.didLoad()
+
+        // Then
+        let sections = try #require(sut.state.loadedSections)
+        #expect(sections.contains { $0.headerTitle == favoritesTitle } == false)
+        #expect(sections.contains { $0.headerTrailingButton != nil } == false)
+    }
+
+    @Test
     func didLoad_givenNoStoredPaymentMethods_shouldNotExposeManageButton() throws {
         // Given
         let (sut, _, _) = makeSUT(storedPaymentMethods: [], supportsStoredPaymentMethodManagement: true)
@@ -430,7 +449,8 @@ struct PaymentMethodListViewModelTests {
         includeApplePay: Bool = true,
         storedPaymentMethods: [any StoredPaymentMethod]? = nil,
         supportsStoredPaymentMethodManagement: Bool = false,
-        amount: Amount? = .init(value: 100, currencyCode: "EUR")
+        amount: Amount? = .init(value: 100, currencyCode: "EUR"),
+        configuration: DropInConfiguration = .init()
     ) -> (
         sut: PaymentMethodListViewModel,
         dropInFlowManagerMock: DropInFlowManagingMock,
@@ -450,7 +470,7 @@ struct PaymentMethodListViewModelTests {
         let componentManagerMock = ComponentManager(
             paymentMethods: methods,
             context: context,
-            configuration: .init(),
+            configuration: configuration,
             order: nil,
             presentationDelegate: nil
         )
@@ -461,7 +481,7 @@ struct PaymentMethodListViewModelTests {
             context: context,
             localizationParameters: LocalizationParameters(),
             componentManager: componentManagerMock,
-            configuration: DropInComponent.Configuration(),
+            configuration: configuration,
             dropInFlowManager: dropInFlowManagerMock,
             logoURLProvider: logoURLProvider,
             supportsStoredPaymentMethodManagement: supportsStoredPaymentMethodManagement,

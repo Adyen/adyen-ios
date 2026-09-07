@@ -35,18 +35,18 @@ internal final class ComponentManager: ComponentManaging {
     // MARK: - Properties
 
     internal private(set) var paymentMethods: PaymentMethods
-    internal let configuration: DropInComponent.Configuration
+    internal let configuration: DropInConfiguration
     internal let context: AdyenContext
     internal let order: PartialPaymentOrder?
     internal let partialPaymentEnabled: Bool
     internal weak var presentationDelegate: PresentationDelegate?
 
     private var localizationParameters: LocalizationParameters? {
-        configuration.localizationParameters
+        configuration.resolvedLocalizationParameters
     }
     
     private var listStyle: ListComponentStyle {
-        configuration.style.listComponent
+        ListComponentStyle()
     }
 
     // MARK: - Initializer
@@ -54,7 +54,7 @@ internal final class ComponentManager: ComponentManaging {
     internal init(
         paymentMethods: PaymentMethods,
         context: AdyenContext,
-        configuration: DropInComponent.Configuration,
+        configuration: DropInConfiguration,
         partialPaymentEnabled: Bool = true,
         order: PartialPaymentOrder?,
         presentationDelegate: PresentationDelegate?
@@ -161,7 +161,11 @@ internal final class ComponentManager: ComponentManaging {
     }()
 
     private var storedSection: PaymentMethodsSection {
-        PaymentMethodsSection(
+        guard !configuration.hideStoredPaymentMethods else {
+            return PaymentMethodsSection(kind: .stored, header: nil, paymentMethods: [])
+        }
+
+        return PaymentMethodsSection(
             kind: .stored,
             header: ListSectionHeader(
                 title: localizedString(.paymentMethodsStoredMethods, localizationParameters),

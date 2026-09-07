@@ -213,38 +213,6 @@ extension CardConfiguration {
     }
 }
 
-/// Describes any configuration for the card component.
-package protocol AnyCardComponentConfiguration {
-    
-    /// Indicates if the field for entering the cardholder name should be displayed in the form. Defaults to false.
-    var showCardholderName: Bool { get }
-
-    /// Indicates if the field for storing the card payment method should be displayed in the form. Defaults to true.
-    var showStorePaymentMethod: Bool { get }
-
-    /// Indicates whether to show the security code field at all. Defaults to true.
-    var showSecurityCode: Bool { get }
-
-    /// Indicates whether to show the security fields for South Korea issued cards. Defaults to `auto`.
-    /// In AUTO mode the field will appear only for card issued in "KR" (South Korea).
-    var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility { get }
-
-    /// Indicates the visibility mode for the social security number field (CPF/CNPJ) for Brazilian cards. Defaults to `auto`.
-    /// In `auto` mode the field will appear based on card bin lookup.
-    var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility { get }
-
-    /// Indicates whether to show the security code field for stored cards. Defaults to true.
-    var showSecurityCodeForStoredCard: Bool { get }
-
-    /// The list of supported card brands.  Defaults to nil.
-    /// By default list of supported brands is extracted from component's `AnyCardPaymentMethod`.
-    /// Use this property to enforce a custom collection of card brands.
-    var supportedCardBrands: [CardBrand]? { get }
-
-    /// Installments options to present to the user.
-    var installmentConfiguration: InstallmentConfiguration? { get }
-}
-
 extension CardConfiguration {
 
     /// The mode of input field on Component UI

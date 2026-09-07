@@ -8,40 +8,23 @@ To customize strings, see: <doc:Localization>.
 
 ## Styling
 
-For example, to change the section header titles and form field titles in the Drop-in to red, and turn the submit button's background to black with white foreground:
+Drop-in and Components use the checkout-wide ``CheckoutTheme`` configured on ``CheckoutConfiguration``.
 
-@TabNavigator {
-    @Tab(Drop-in) { 
-        ```swift
-        var style = DropInComponent.Style()
-        style.listComponent.sectionHeader.title.color = .red
-        style.formComponent.textField.title.color = .red
-        style.formComponent.mainButtonItem.button.backgroundColor = .black
-        style.formComponent.mainButtonItem.button.title.color = .white
+```swift
+let theme = CheckoutTheme(
+    colors: CheckoutColors(primary: .systemRed)
+)
 
-        let configuration = DropInComponent.Configuration(style: style)
-        let component = DropInComponent(paymentMethods: paymentMethods,
-                                        context: context,
-                                        configuration: configuration)
-        ```
-    }
-    
-    @Tab(Components) { 
-        ```swift
-        var style = FormComponentStyle()
-        style.backgroundColor = .black
-        style.header.title.color = .white
-        style.textField.title.color = .white
-        style.textField.text.color = .white
-        style.switch.title.color = .white
-
-        let config = CardComponent.Configuration(style: style)
-        let component = CardComponent(paymentMethod: paymentMethod,
-                                      context: context,
-                                      configuration: config)
-        ```
-    }
+let configuration = try CheckoutConfiguration(
+    environment: .test,
+    amount: amount,
+    clientKey: clientKey
+) {
+    DropInConfiguration()
+    CardConfiguration()
 }
+.theme(theme)
+```
 
 ## Custom Payment Method Display Information
 

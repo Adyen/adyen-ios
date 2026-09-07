@@ -27,7 +27,7 @@ internal class DropInViewModel: DropInViewModelProtocol {
     private let apiClient: AsyncAPIClientProtocol
     private let paymentMethods: PaymentMethods
     private let context: AdyenContext
-    private let configuration: DropInComponent.Configuration
+    private let configuration: DropInConfiguration
 
     // MARK: - Initializers
 
@@ -37,7 +37,7 @@ internal class DropInViewModel: DropInViewModelProtocol {
         apiClient: AsyncAPIClientProtocol,
         paymentMethods: PaymentMethods,
         context: AdyenContext,
-        configuration: DropInComponent.Configuration
+        configuration: DropInConfiguration
     ) {
         self.title = title
         self.componentManager = componentManager
@@ -50,7 +50,8 @@ internal class DropInViewModel: DropInViewModelProtocol {
     // MARK: - DropInRootViewModelProtocol
 
     internal var root: DropInRoot {
-        if configuration.allowPreselectedPaymentView, let storedPaymentMethod = componentManager.storedComponents.first {
+        if configuration.startWithLastStoredPaymentMethod,
+           let storedPaymentMethod = componentManager.storedComponents.first {
             return .preselected(storedPaymentMethod)
         } else if configuration.allowsSkippingPaymentList, let paymentComponent = componentManager.singleRegularComponent {
             return .component(paymentComponent)

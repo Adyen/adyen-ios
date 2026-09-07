@@ -30,9 +30,6 @@
     "Allow OnBoarding" : {
 
     },
-    "Allow Preselected PaymentView" : {
-
-    },
     "Analytics" : {
 
     },
@@ -88,6 +85,9 @@
     "Hide for brands: %@" : {
 
     },
+    "Hide Stored Payment Methods" : {
+
+    },
     "Holder Name" : {
 
     },
@@ -127,10 +127,10 @@
     "Set to country currency" : {
 
     },
-    "Skip Payment List" : {
+    "Social Security Number Mode" : {
 
     },
-    "Social Security Number Mode" : {
+    "Start With Last Stored Payment Method" : {
 
     },
     "Store Payment Method Toggle" : {
