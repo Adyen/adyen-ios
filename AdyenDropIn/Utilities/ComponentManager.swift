@@ -103,12 +103,19 @@ internal final class ComponentManager: ComponentManaging {
             return nil
         }
 
-        let component: PaymentComponent? = if let paymentComponentBuilder {
-            try? paymentComponentBuilder(paymentMethod)
+        let component: PaymentComponent?
+        if let paymentComponentBuilder {
+            do {
+                component = try paymentComponentBuilder(paymentMethod)
+            } catch {
+                // TODO: Store these errors if we need to track them.
+                adyenPrint("Failed to build component for \(paymentMethod.type.rawValue):", error)
+                component = nil
+            }
         } else if let buildable = paymentMethod as? any PaymentComponentBuildable {
-            buildable.buildComponent(using: self)
+            component = buildable.buildComponent(using: self)
         } else {
-            build(paymentMethod: paymentMethod)
+            component = build(paymentMethod: paymentMethod)
         }
         guard var paymentComponent = component else { return nil }
         // TODO: Preserve the order assignment until partial payments have a dedicated design.
