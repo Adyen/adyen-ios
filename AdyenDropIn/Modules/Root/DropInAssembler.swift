@@ -35,7 +35,8 @@ internal struct DropInAssembler {
         configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
         partialPaymentDelegate: PartialPaymentDelegate?,
-        storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
+        storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?,
+        paymentComponentBuilder: DropInPaymentComponentBuilder?
     ) {
         self.title = title
         self.paymentMethods = paymentMethods
@@ -50,7 +51,8 @@ internal struct DropInAssembler {
             configuration: configuration,
             partialPaymentEnabled: false, // TODO: - Set partial payment flow
             order: nil,
-            presentationDelegate: nil
+            presentationDelegate: nil,
+            paymentComponentBuilder: paymentComponentBuilder
         )
     }
 

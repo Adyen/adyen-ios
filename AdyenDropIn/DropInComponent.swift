@@ -52,7 +52,8 @@ package final class DropInComponent: NSObject,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
             partialPaymentDelegate: partialPaymentDelegate,
-            storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability
+            storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability,
+            paymentComponentBuilder: paymentComponentBuilder
         )
         return dropInAssembler.resolveDropInRouter()
     }()
@@ -68,6 +69,7 @@ package final class DropInComponent: NSObject,
     internal var configuration: DropInConfiguration
 
     private let actionComponentConfiguration: CheckoutActionComponent.Configuration
+    private let paymentComponentBuilder: DropInPaymentComponentBuilder?
 
     internal var paymentInProgress: Bool = false
 
@@ -89,6 +91,7 @@ package final class DropInComponent: NSObject,
     ///   - context: The context object for this component.
     ///   - configuration: Drop-in behavior and checkout-wide presentation configuration.
     ///   - actionComponentConfiguration: The resolved configuration for action handling.
+    ///   - paymentComponentBuilder: The payment component builder to handle component creation.
     ///   - title: Name of the application. To be displayed on a first payment page.
     ///            If no external value provided, the Main Bundle's name would be used.
     package init(
@@ -96,11 +99,13 @@ package final class DropInComponent: NSObject,
         context: AdyenContext,
         configuration: DropInConfiguration = .init(),
         actionComponentConfiguration: CheckoutActionComponent.Configuration = .init(),
+        paymentComponentBuilder: DropInPaymentComponentBuilder? = nil,
         title: String? = nil
     ) {
         self.title = title ?? Bundle.main.displayName
         self.configuration = configuration
         self.actionComponentConfiguration = actionComponentConfiguration
+        self.paymentComponentBuilder = paymentComponentBuilder
         self.context = context
         self.paymentMethods = paymentMethods
 
@@ -211,7 +216,8 @@ package final class DropInComponent: NSObject,
             configuration: configuration,
             partialPaymentEnabled: partialPaymentDelegate != nil,
             order: order,
-            presentationDelegate: self
+            presentationDelegate: self,
+            paymentComponentBuilder: paymentComponentBuilder
         )
     }
 
