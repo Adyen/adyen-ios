@@ -484,6 +484,38 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertEqual(blikComponent.configuration.localizationParameters, localizationParameters)
     }
 
+    // MARK: - Runtime Dispatch Tests
+
+    func test_buildForAnyPaymentMethod_withRegularMethod_shouldUseRegularBuilder() throws {
+        // Given
+        let paymentMethod: any PaymentMethod = try XCTUnwrap(createCardPaymentMethod())
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            forAnyPaymentMethod: paymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+
+        // Then
+        XCTAssertTrue(component is CardComponent)
+    }
+
+    func test_buildForAnyPaymentMethod_withStoredMethod_shouldUseStoredBuilder() throws {
+        // Given
+        let paymentMethod: any PaymentMethod = try XCTUnwrap(createStoredCardPaymentMethod())
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            forAnyPaymentMethod: paymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+
+        // Then
+        XCTAssertTrue(component is StoredCardComponent)
+    }
+
     // MARK: - Stored Payment Method Tests
     
     func test_build_withStoredCardPaymentMethod_returnsStoredCardComponent() throws {

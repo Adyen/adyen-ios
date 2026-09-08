@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenCard
+@testable import AdyenCheckout
 @testable import AdyenComponents
 @testable import AdyenDropIn
 #if canImport(AdyenTwint)
@@ -250,6 +251,134 @@ class ComponentManagerTests: XCTestCase {
 
         // Then
         XCTAssertNotNil(paymentComponent as? StoredPaymentMethodComponent)
+    }
+
+    func test_buildComponent_withInjectedBuilder_shouldInvokeBuilder() throws {
+        // Given
+        let paymentMethod = try XCTUnwrap(paymentMethods.regular.first)
+        var receivedPaymentMethod: (any PaymentMethod)?
+        let sut = ComponentManager(
+            paymentMethods: PaymentMethods(regular: [], stored: []),
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate,
+            paymentComponentBuilder: { paymentMethod in
+                receivedPaymentMethod = paymentMethod
+                return GenericPaymentComponent(
+                    paymentMethod: paymentMethod,
+                    context: self.context,
+                    order: nil
+                )
+            }
+        )
+
+        // When
+        let component = sut.buildComponent(for: paymentMethod)
+
+        // Then
+        XCTAssertNotNil(component)
+        XCTAssertEqual(receivedPaymentMethod?.type, paymentMethod.type)
+    }
+
+    func test_buildComponent_whenInjectedBuilderThrowsCheckoutError_shouldReturnNil() throws {
+        // Given
+        let paymentMethod = try XCTUnwrap(paymentMethods.regular.first)
+        let sut: ComponentManaging = ComponentManager(
+            paymentMethods: PaymentMethods(regular: [], stored: []),
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate,
+            paymentComponentBuilder: { _ in
+                throw CheckoutError(
+                    code: .paymentMethodFailure,
+                    message: "Expected test error"
+                )
+            }
+        )
+
+        // When
+        let component = sut.buildComponent(for: paymentMethod)
+
+        // Then
+        XCTAssertNil(component)
+    }
+
+    func test_buildComponent_withCheckoutBuilder_shouldMatchLegacyComponentTypes() throws {
+        // Given
+        let checkoutConfiguration = CheckoutConfiguration(
+            apiContext: Dummy.apiContext,
+            amount: Dummy.amount,
+            analyticsApiContext: nil,
+            analyticsConfiguration: .init()
+        )
+        let legacyManager = ComponentManager(
+            paymentMethods: PaymentMethods(regular: [], stored: []),
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
+        let injectedManager = ComponentManager(
+            paymentMethods: PaymentMethods(regular: [], stored: []),
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate,
+            paymentComponentBuilder: { paymentMethod in
+                try CheckoutComponentBuilder.build(
+                    forAnyPaymentMethod: paymentMethod,
+                    configuration: checkoutConfiguration,
+                    context: self.context
+                )
+            }
+        )
+        let regularMethods: [any PaymentMethod] = try [
+            XCTUnwrap(paymentMethods.regular.first { $0 is CardPaymentMethod }),
+            XCTUnwrap(paymentMethods.regular.first { $0 is ACHDirectDebitPaymentMethod }),
+            XCTUnwrap(paymentMethods.regular.first { $0 is BLIKPaymentMethod }),
+            XCTUnwrap(paymentMethods.regular.first { $0 is GenericPaymentMethod })
+        ]
+        let storedMethods: [any PaymentMethod] = try [
+            XCTUnwrap(paymentMethods.stored.first { $0 is StoredCardPaymentMethod }),
+            XCTUnwrap(paymentMethods.stored.first { $0 is StoredPayPalPaymentMethod })
+        ]
+
+        // When / Then
+        for paymentMethod in regularMethods + storedMethods {
+            let legacyComponent = try XCTUnwrap(legacyManager.buildComponent(for: paymentMethod))
+            let injectedComponent = try XCTUnwrap(injectedManager.buildComponent(for: paymentMethod))
+            XCTAssertTrue(
+                type(of: legacyComponent) == type(of: injectedComponent),
+                "Expected matching component types for \(paymentMethod.type.rawValue)"
+            )
+        }
+    }
+
+    func test_sections_withoutInjectedBuilder_shouldPreserveMethodSetAndOrdering() throws {
+        // Given
+        let sut = ComponentManager(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: configuration,
+            order: nil,
+            presentationDelegate: presentationDelegate
+        )
+
+        // When
+        let storedSection = try XCTUnwrap(sut.sections.first { $0.kind == .stored })
+        let regularSection = try XCTUnwrap(sut.sections.first { $0.kind == .regular })
+
+        // Then
+        XCTAssertEqual(
+            storedSection.paymentMethods.map(\.name),
+            sut.visibleStoredPaymentMethods.map(\.name)
+        )
+        XCTAssertEqual(
+            regularSection.paymentMethods.map(\.name),
+            paymentMethods.regular.map(\.name)
+        )
     }
 
     func testOrderInjection() {

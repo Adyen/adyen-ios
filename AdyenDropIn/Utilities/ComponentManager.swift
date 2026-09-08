@@ -21,6 +21,9 @@ import Adyen
 #endif
 import Foundation
 
+package typealias DropInPaymentComponentBuilder =
+    @MainActor (_ paymentMethod: PaymentMethod) throws -> PaymentComponent
+
 @MainActor
 internal protocol ComponentManaging {
     var sections: [PaymentMethodsSection] { get }
@@ -28,7 +31,7 @@ internal protocol ComponentManaging {
     func removeStoredPaymentMethod(withIdentifier identifier: String)
 }
 
-// TODO: - The ComponentManager should use the factories that Eren introduced in components.
+// TODO: Remove the legacy construction path when the injected builder becomes required in next PR.
 @MainActor
 internal final class ComponentManager: ComponentManaging {
 
@@ -40,6 +43,8 @@ internal final class ComponentManager: ComponentManaging {
     internal let order: PartialPaymentOrder?
     internal let partialPaymentEnabled: Bool
     internal weak var presentationDelegate: PresentationDelegate?
+
+    private let paymentComponentBuilder: DropInPaymentComponentBuilder?
 
     private var localizationParameters: LocalizationParameters? {
         configuration.resolvedLocalizationParameters
@@ -57,7 +62,8 @@ internal final class ComponentManager: ComponentManaging {
         configuration: DropInConfiguration,
         partialPaymentEnabled: Bool = true,
         order: PartialPaymentOrder?,
-        presentationDelegate: PresentationDelegate?
+        presentationDelegate: PresentationDelegate?,
+        paymentComponentBuilder: DropInPaymentComponentBuilder? = nil
     ) {
         self.paymentMethods = paymentMethods
         self.context = context
@@ -65,6 +71,7 @@ internal final class ComponentManager: ComponentManaging {
         self.partialPaymentEnabled = partialPaymentEnabled
         self.order = order
         self.presentationDelegate = presentationDelegate
+        self.paymentComponentBuilder = paymentComponentBuilder
 
         updateContextAmountIfNeeded()
     }
@@ -96,16 +103,25 @@ internal final class ComponentManager: ComponentManaging {
             return nil
         }
 
-        let component: PaymentComponent? = {
-            if let buildable = paymentMethod as? any PaymentComponentBuildable {
-                buildable.buildComponent(using: self)
-            } else {
-                build(paymentMethod: paymentMethod)
+        let component: PaymentComponent?
+        if let paymentComponentBuilder {
+            do {
+                component = try paymentComponentBuilder(paymentMethod)
+            } catch {
+                // TODO: Store these errors if we need to track them.
+                adyenPrint("Failed to build component for \(paymentMethod.type.rawValue):", error)
+                component = nil
             }
-        }()
+        } else if let buildable = paymentMethod as? any PaymentComponentBuildable {
+            component = buildable.buildComponent(using: self)
+        } else {
+            component = build(paymentMethod: paymentMethod)
+        }
         guard var paymentComponent = component else { return nil }
+        // TODO: Preserve the order assignment until partial payments have a dedicated design.
         paymentComponent.order = order
 
+        // TODO: To be removed with the same updates on the builder next PR
         if var localizableComponent = paymentComponent as? Localizable {
             localizableComponent.localizationParameters = localizationParameters
         }
