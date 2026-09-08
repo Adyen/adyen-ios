@@ -107,7 +107,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     }
 
     internal var submitButtonTitle: String {
-        localizedSubmitButtonTitle(
+        SubmitButtonTitlePolicy.title(
             with: component.context.amount,
             style: .immediate,
             localizationParameters

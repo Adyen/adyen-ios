@@ -265,7 +265,7 @@ extension CardViewController {
         internal lazy var button: FormButtonItem = {
             let item = FormButtonItem(style: formStyle.mainButtonItem)
             item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "payButtonItem")
-            item.title = localizedSubmitButtonTitle(
+            item.title = SubmitButtonTitlePolicy.title(
                 with: amount,
                 style: .immediate,
                 localizationParameters

@@ -123,7 +123,7 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     }
 
     internal var submitButtonTitle: String {
-        localizedSubmitButtonTitle(
+        SubmitButtonTitlePolicy.title(
             with: amount,
             style: .immediate,
             localizationParameters

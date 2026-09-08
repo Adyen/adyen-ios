@@ -73,7 +73,7 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
         }
         alertController.addAction(cancelAction)
 
-        let submitActionTitle = localizedSubmitButtonTitle(
+        let submitActionTitle = SubmitButtonTitlePolicy.title(
             with: context.amount,
             style: .immediate,
             localizationParameters

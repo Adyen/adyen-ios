@@ -37,7 +37,7 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(sut.codeItem.placeholder, localizedString(.blikPlaceholder, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.codeItem.validationFailureMessage, localizedString(.blikInvalid, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: amount, style: .immediate, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.button.title, SubmitButtonTitlePolicy.title(with: amount, style: .immediate, sut.configuration.localizationParameters))
     }
 
     func testLocalizationWithZeroPayment() {
@@ -51,7 +51,7 @@ class BLIKComponentTests: XCTestCase {
         XCTAssertEqual(sut.codeItem.placeholder, localizedString(.blikPlaceholder, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.codeItem.validationFailureMessage, localizedString(.blikInvalid, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, localizedSubmitButtonTitle(with: zeroAmount, style: .immediate, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.button.title, SubmitButtonTitlePolicy.title(with: zeroAmount, style: .immediate, sut.configuration.localizationParameters))
     }
 
     func testLocalizationWithCustomKeySeparator() throws {

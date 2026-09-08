@@ -136,7 +136,7 @@ package final class SEPADirectDebitComponent: PresentablePaymentComponent, Loadi
     internal lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
-        item.title = localizedSubmitButtonTitle(
+        item.title = SubmitButtonTitlePolicy.title(
             with: context.amount,
             style: .immediate,
             configuration.localizationParameters
