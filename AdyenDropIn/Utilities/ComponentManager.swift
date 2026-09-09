@@ -73,45 +73,47 @@ internal final class ComponentManager: ComponentManaging {
     }
 
     internal var visibleStoredPaymentMethods: [any StoredPaymentMethod] {
-        storedComponents.compactMap { $0.paymentMethod as? any StoredPaymentMethod }
+        supportedStoredPaymentMethods
     }
 
     internal func removeStoredPaymentMethod(withIdentifier identifier: String) {
         paymentMethods.stored.removeAll { $0.identifier == identifier }
-        storedComponents.removeAll {
-            ($0.paymentMethod as? any StoredPaymentMethod)?.identifier == identifier
-        }
+        supportedStoredPaymentMethods.removeAll { $0.identifier == identifier }
     }
 
     internal func update(paymentMethods: PaymentMethods) {
         self.paymentMethods = paymentMethods
-        storedComponents = buildComponents(for: storedPaymentMethodCandidates)
-        regularComponents = buildComponents(for: paymentMethods.regular)
-        paidComponents = buildComponents(for: paymentMethods.paid)
+        supportedStoredPaymentMethods = storedPaymentMethodCandidates.filter { canBuildComponent(for: $0) }
+        supportedRegularPaymentMethods = paymentMethods.regular.filter { canBuildComponent(for: $0) }
+        supportedPaidPaymentMethods = paymentMethods.paid.filter { canBuildComponent(for: $0) }
     }
 
     internal func buildComponent(for paymentMethod: PaymentMethod) -> PaymentComponent? {
-        cachedComponents.first {
-            isSamePaymentMethod($0.paymentMethod, as: paymentMethod)
-        }
+        guard containsSupportedPaymentMethod(paymentMethod) else { return nil }
+
+        return assembleComponent(for: paymentMethod)
     }
 
-    // MARK: - Computed Components
+    // MARK: - Supported Payment Methods
 
-    internal lazy var storedComponents = buildComponents(for: storedPaymentMethodCandidates)
+    internal lazy var supportedStoredPaymentMethods = storedPaymentMethodCandidates.filter { canBuildComponent(for: $0) }
 
-    internal lazy var regularComponents = buildComponents(for: paymentMethods.regular)
+    internal lazy var supportedRegularPaymentMethods = paymentMethods.regular.filter { canBuildComponent(for: $0) }
 
-    internal lazy var paidComponents = buildComponents(for: paymentMethods.paid)
+    internal lazy var supportedPaidPaymentMethods = paymentMethods.paid.filter { canBuildComponent(for: $0) }
+
+    internal var firstStoredComponent: PaymentComponent? {
+        supportedStoredPaymentMethods.first.flatMap(buildComponent(for:))
+    }
 
     internal var singleRegularComponent: PresentablePaymentComponent? {
-        guard storedComponents.isEmpty,
-              paidComponents.isEmpty,
-              regularComponents.count == 1,
-              let component = regularComponents.first as? PresentablePaymentComponent
+        guard supportedStoredPaymentMethods.isEmpty,
+              supportedPaidPaymentMethods.isEmpty,
+              supportedRegularPaymentMethods.count == 1,
+              let paymentMethod = supportedRegularPaymentMethods.first
         else { return nil }
 
-        return component
+        return buildComponent(for: paymentMethod) as? PresentablePaymentComponent
     }
 
     // MARK: - Private
@@ -123,7 +125,7 @@ internal final class ComponentManager: ComponentManaging {
                 title: localizedString(.paymentMethodsPaidMethods, localizationParameters),
                 style: listStyle.sectionHeader
             ),
-            paymentMethods: paidComponents.map(\.paymentMethod)
+            paymentMethods: supportedPaidPaymentMethods
         )
     }
 
@@ -155,7 +157,7 @@ internal final class ComponentManager: ComponentManaging {
         return PaymentMethodsSection(
             kind: .regular,
             header: header,
-            paymentMethods: regularComponents.map(\.paymentMethod)
+            paymentMethods: supportedRegularPaymentMethods
         )
     }
 }
@@ -169,12 +171,19 @@ private extension ComponentManager {
             .filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
     }
 
-    var cachedComponents: [PaymentComponent] {
-        paidComponents + storedComponents + regularComponents
+    // TODO: To be improved with payment method availability feature.
+    func canBuildComponent(for paymentMethod: PaymentMethod) -> Bool {
+        assembleComponent(for: paymentMethod) != nil
     }
 
-    func buildComponents(for paymentMethods: [PaymentMethod]) -> [PaymentComponent] {
-        paymentMethods.compactMap(assembleComponent)
+    func containsSupportedPaymentMethod(_ paymentMethod: PaymentMethod) -> Bool {
+        if let storedPaymentMethod = paymentMethod as? any StoredPaymentMethod {
+            return supportedStoredPaymentMethods.contains { $0 == storedPaymentMethod }
+        }
+
+        return (supportedPaidPaymentMethods + supportedRegularPaymentMethods).contains {
+            $0 == paymentMethod
+        }
     }
 
     func assembleComponent(for paymentMethod: PaymentMethod) -> PaymentComponent? {
@@ -197,15 +206,6 @@ private extension ComponentManager {
             adyenPrint("Failed to build component for \(paymentMethod.type.rawValue):", error)
             return nil
         }
-    }
-
-    func isSamePaymentMethod(_ lhs: PaymentMethod, as rhs: PaymentMethod) -> Bool {
-        if let lhs = lhs as? any StoredPaymentMethod,
-           let rhs = rhs as? any StoredPaymentMethod {
-            return lhs == rhs
-        }
-
-        return lhs == rhs
     }
 
     func updateContextAmountIfNeeded() {

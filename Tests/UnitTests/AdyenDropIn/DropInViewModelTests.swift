@@ -67,7 +67,7 @@ final class DropInViewModelTests: XCTestCase {
                     configuration: configuration
                 )
 
-                XCTAssertEqual(componentManager.storedComponents.count, 1)
+                XCTAssertEqual(componentManager.supportedStoredPaymentMethods.count, 1)
                 XCTAssertEqual(
                     componentManager.sections.contains { $0.kind == .stored },
                     !hideStoredPaymentMethods

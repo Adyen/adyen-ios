@@ -217,7 +217,7 @@ package final class DropInComponent: NSObject,
     // TODO: Make sure Analytic events are preserved
 //    internal lazy var rootViewController: UIViewController = {
 //        if configuration.allowPreselectedPaymentView,
-//           let preselectedComponent = componentManager.storedComponents.first {
+//           let preselectedComponent = componentManager.firstStoredComponent {
 //            let view = resolvePreselectedPaymentMethodView(for: preselectedComponent, onCancel: nil)
 //            self.preselectedPaymentMethodView = view
 //            return view

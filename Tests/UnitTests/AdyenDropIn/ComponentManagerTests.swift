@@ -32,7 +32,7 @@ final class ComponentManagerTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func test_components_withCheckoutBuilder_includeSupportedRegularAndStoredMethods() throws {
+    func test_supportedMethods_withCheckoutBuilder_includeSupportedRegularAndStoredMethods() throws {
         let methods = try supportedPaymentMethods()
         let sut = try makeSUT(
             paymentMethods: methods,
@@ -40,32 +40,32 @@ final class ComponentManagerTests: XCTestCase {
         )
 
         XCTAssertEqual(
-            sut.regularComponents.map(\.paymentMethod.type),
+            sut.supportedRegularPaymentMethods.map(\.type),
             methods.regular.map(\.type)
         )
         XCTAssertEqual(
-            sut.storedComponents.compactMap { ($0.paymentMethod as? any StoredPaymentMethod)?.identifier },
+            sut.supportedStoredPaymentMethods.map(\.identifier),
             methods.stored.map(\.identifier)
         )
     }
 
-    func test_components_withCheckoutBuilder_omitUnsupportedRegularMethods() throws {
+    func test_supportedMethods_withCheckoutBuilder_omitUnsupportedRegularMethods() throws {
         let unsupportedMethod = try AdyenCoder.decode(issuerListDictionary) as IssuerListPaymentMethod
         let card = try AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
         let methods = PaymentMethods(regular: [unsupportedMethod, card], stored: [])
         let sut = try makeSUT(paymentMethods: methods, paymentComponentBuilder: checkoutBuilder())
 
-        XCTAssertEqual(sut.regularComponents.map(\.paymentMethod.type), [.scheme])
+        XCTAssertEqual(sut.supportedRegularPaymentMethods.map(\.type), [.scheme])
         XCTAssertEqual(sut.sections.flatMap(\.paymentMethods).map(\.type), [.scheme])
     }
 
-    func test_components_withCheckoutBuilder_missingApplePayConfigurationOmitsOnlyApplePay() throws {
+    func test_supportedMethods_withCheckoutBuilder_missingApplePayConfigurationOmitsOnlyApplePay() throws {
         let applePay = try AdyenCoder.decode(applePayDictionary) as ApplePayPaymentMethod
         let card = try AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
         let methods = PaymentMethods(regular: [applePay, card], stored: [])
         let sut = try makeSUT(paymentMethods: methods, paymentComponentBuilder: checkoutBuilder())
 
-        XCTAssertEqual(sut.regularComponents.map(\.paymentMethod.type), [.scheme])
+        XCTAssertEqual(sut.supportedRegularPaymentMethods.map(\.type), [.scheme])
     }
 
     func test_visibleStoredPaymentMethods_excludesMethodsUnsupportedInThePaymentList() throws {
@@ -79,7 +79,7 @@ final class ComponentManagerTests: XCTestCase {
         let sut = makeSUT(paymentMethods: methods, paymentComponentBuilder: genericBuilder)
 
         XCTAssertEqual(sut.visibleStoredPaymentMethods.map(\.identifier), [methods.stored[0].identifier])
-        XCTAssertEqual(sut.storedComponents.count, 1)
+        XCTAssertEqual(sut.supportedStoredPaymentMethods.count, 1)
         XCTAssertEqual(sut.sections.first?.paymentMethods.count, 1)
     }
 
@@ -106,21 +106,21 @@ final class ComponentManagerTests: XCTestCase {
         XCTAssertNil(sut.sections[0].header)
     }
 
-    func test_buildComponent_forDisplayedMethod_reusesCachedComponent() throws {
+    func test_buildComponent_forDisplayedMethod_createsFreshComponent() throws {
         let card = try AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
         let sut = makeSUT(
             paymentMethods: PaymentMethods(regular: [card], stored: []),
             paymentComponentBuilder: genericBuilder
         )
-        let cached = try XCTUnwrap(sut.regularComponents.first)
         let displayed = try XCTUnwrap(sut.sections.first?.paymentMethods.first)
 
         let selected = try XCTUnwrap(sut.buildComponent(for: displayed))
+        let reopened = try XCTUnwrap(sut.buildComponent(for: displayed))
 
-        XCTAssertTrue(cached === selected)
+        XCTAssertFalse(selected === reopened)
     }
 
-    func test_buildComponent_forStoredMethod_matchesCachedComponentByIdentifier() throws {
+    func test_buildComponent_forStoredMethod_createsFreshComponentWithMatchingIdentifier() throws {
         var firstDictionary = storedCreditCardDictionary
         firstDictionary["id"] = "first"
         var secondDictionary = storedCreditCardDictionary
@@ -132,11 +132,13 @@ final class ComponentManagerTests: XCTestCase {
         let sut = makeSUT(paymentMethods: methods, paymentComponentBuilder: genericBuilder)
 
         let selected = try XCTUnwrap(sut.buildComponent(for: methods.stored[1]))
+        let reopened = try XCTUnwrap(sut.buildComponent(for: methods.stored[1]))
 
-        XCTAssertTrue(selected === sut.storedComponents[1])
+        XCTAssertFalse(selected === reopened)
+        XCTAssertEqual((selected.paymentMethod as? any StoredPaymentMethod)?.identifier, "second")
     }
 
-    func test_updatePaymentMethods_rebuildsCachesAndSections() throws {
+    func test_updatePaymentMethods_recomputesSupportedMethodsAndSections() throws {
         let card = try AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
         let blik = try AdyenCoder.decode(blik) as BLIKPaymentMethod
         var buildCount = 0
@@ -147,18 +149,17 @@ final class ComponentManagerTests: XCTestCase {
                 return self.genericComponent(for: paymentMethod)
             }
         )
-        let original = try XCTUnwrap(sut.regularComponents.first)
+        _ = sut.supportedRegularPaymentMethods
 
         sut.update(paymentMethods: PaymentMethods(regular: [blik], stored: []))
 
         XCTAssertEqual(buildCount, 2)
-        XCTAssertEqual(sut.regularComponents.map(\.paymentMethod.type), [.blik])
+        XCTAssertEqual(sut.supportedRegularPaymentMethods.map(\.type), [.blik])
         XCTAssertEqual(sut.sections.flatMap(\.paymentMethods).map(\.type), [.blik])
         XCTAssertNil(sut.buildComponent(for: card))
-        XCTAssertFalse(original === sut.regularComponents[0])
     }
 
-    func test_removeStoredPaymentMethod_updatesCacheAndSection() throws {
+    func test_removeStoredPaymentMethod_updatesSupportedMethodsAndSection() throws {
         var firstDictionary = storedCreditCardDictionary
         firstDictionary["id"] = "first"
         var secondDictionary = storedCreditCardDictionary
@@ -190,7 +191,8 @@ final class ComponentManagerTests: XCTestCase {
             paymentComponentBuilder: genericBuilder
         )
 
-        XCTAssertEqual(sut.regularComponents.first?.order, order)
+        _ = sut.supportedRegularPaymentMethods
+        XCTAssertEqual(sut.buildComponent(for: card)?.order, order)
     }
 
     func test_voucherAndQRCodeMethods_withoutPhotoLibraryAccessAreOmitted() throws {
@@ -205,7 +207,7 @@ final class ComponentManagerTests: XCTestCase {
         )
         sut.hasPhotoLibraryUsageDescription = false
 
-        XCTAssertTrue(sut.regularComponents.isEmpty)
+        XCTAssertTrue(sut.supportedRegularPaymentMethods.isEmpty)
         XCTAssertTrue(sut.sections.isEmpty)
         XCTAssertEqual(assertionCount, 2)
     }
@@ -233,9 +235,10 @@ final class ComponentManagerTests: XCTestCase {
             }
         )
 
-        let component = try XCTUnwrap(sut.regularComponents.first as? CardComponent)
+        _ = sut.supportedRegularPaymentMethods
+        let component = try XCTUnwrap(sut.buildComponent(for: card) as? CardComponent)
 
-        XCTAssertEqual(buildCount, 1)
+        XCTAssertEqual(buildCount, 2)
         XCTAssertTrue(component.configuration.localizationParameters?.provider as AnyObject === checkoutProvider)
         XCTAssertEqual(component.configuration.theme.colors.primary, .yellow)
     }
