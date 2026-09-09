@@ -178,6 +178,36 @@ struct PaymentMethodListViewModelTests {
         #expect(sut.subtitle.isEmpty == false, "Subtitle should not be empty")
     }
 
+    @Test
+    func subtitle_givenZeroAmount_shouldReturnSaveDetailsLocalizedString() {
+        // Given
+        let (sut, _, _) = makeSUT(amount: .init(value: 0, currencyCode: "EUR"))
+
+        // Then
+        let expected = localizedString(.dropInPaymentMethodListDescriptionSaveDetails, LocalizationParameters())
+        #expect(sut.subtitle == expected)
+    }
+
+    @Test
+    func subtitle_givenNonZeroAmount_shouldReturnCompletePaymentLocalizedString() {
+        // Given
+        let (sut, _, _) = makeSUT(amount: .init(value: 100, currencyCode: "EUR"))
+
+        // Then
+        let expected = localizedString(.dropInPaymentMethodListDescriptionCompletePayment, LocalizationParameters())
+        #expect(sut.subtitle == expected)
+    }
+
+    @Test
+    func subtitle_givenNilAmount_shouldReturnCompletePaymentLocalizedString() {
+        // Given
+        let (sut, _, _) = makeSUT(amount: nil)
+
+        // Then
+        let expected = localizedString(.dropInPaymentMethodListDescriptionCompletePayment, LocalizationParameters())
+        #expect(sut.subtitle == expected)
+    }
+
     // MARK: - ApplePayButtonState Tests
 
     @Test

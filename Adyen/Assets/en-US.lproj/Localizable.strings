@@ -45,6 +45,8 @@
 "adyen.creditCard.dualBrand.description" = "Select the card brand you prefer to pay with. This is optional.";
 "adyen.dropIn.stored.title" = "Confirm %@ payment";
 "adyen.dropIn.preselected.openAll.title" = "Change Payment Method";
+"adyen.dropIn.paymentMethodList.description.completePayment" = "Select your preferred payment option and complete the payment";
+"adyen.dropIn.paymentMethodList.description.saveDetails" = "Select your preferred payment option and save your details for future transactions";
 "adyen.continueTo" = "Continue to %@";
 "adyen.continueTitle" = "Continue";
 "adyen.phoneNumber.title" = "Telephone number";

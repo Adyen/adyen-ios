@@ -97,8 +97,10 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     internal var subtitle: String {
-        // TODO: - Add localization key for this string
-        "Select your preferred payment option to complete the payment"
+        if let amount = context.amount, amount.value == 0 {
+            return localizedString(.dropInPaymentMethodListDescriptionSaveDetails, localizationParameters)
+        }
+        return localizedString(.dropInPaymentMethodListDescriptionCompletePayment, localizationParameters)
     }
 
     internal var applePayButtonState: PaymentMethodListHeaderViewModel.ApplePayButtonState {
