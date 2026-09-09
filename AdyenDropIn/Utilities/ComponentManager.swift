@@ -180,10 +180,9 @@ private extension ComponentManager {
         if let storedPaymentMethod = paymentMethod as? any StoredPaymentMethod {
             return supportedStoredPaymentMethods.contains { $0 == storedPaymentMethod }
         }
-
-        return (supportedPaidPaymentMethods + supportedRegularPaymentMethods).contains {
-            $0 == paymentMethod
-        }
+        
+        return supportedRegularPaymentMethods.contains { $0 == paymentMethod }
+            || supportedPaidPaymentMethods.contains { $0 == paymentMethod }
     }
 
     func assembleComponent(for paymentMethod: PaymentMethod) -> PaymentComponent? {
