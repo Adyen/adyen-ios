@@ -12,6 +12,8 @@ public struct LocalizationKey {
     public static let submitButton = LocalizationKey(key: "adyen.submitButton")
     /// Pay %@
     public static let submitButtonFormatted = LocalizationKey(key: "adyen.submitButton.formatted")
+    /// Save details
+    public static let submitButtonSaveDetails = LocalizationKey(key: "adyen.submitButton.saveDetails")
     /// Cancel
     public static let cancelButton = LocalizationKey(key: "adyen.cancelButton")
     /// OK

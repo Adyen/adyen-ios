@@ -30,7 +30,7 @@ internal protocol PaymentMethodListViewModelProtocol {
     func cancel()
     func didLoad()
 
-    var formattedAmount: String { get }
+    var headerTitle: String { get }
     var subtitle: String { get }
     var applePayButtonState: PaymentMethodListHeaderViewModel.ApplePayButtonState { get }
 }
@@ -92,8 +92,15 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         localizedString(.paymentMethodsTitle, localizationParameters)
     }
 
-    internal var formattedAmount: String {
-        context.amount?.formatted ?? ""
+    internal var headerTitle: String {
+        guard let amount = context.amount else {
+            // TODO: Robert: Amount is nil, this should not happen in sessions flow. But can happen in non sessions flow if the amount is not supplied.
+            return "Payment options"
+        }
+        if amount.value == 0 {
+            return localizedString(.submitButtonSaveDetails, localizationParameters)
+        }
+        return amount.formatted
     }
 
     internal var subtitle: String {

@@ -150,21 +150,31 @@ struct PaymentMethodListViewModelTests {
     // MARK: - FormattedAmount Tests
 
     @Test
-    func formattedAmount_shouldReturnFormattedContextAmount() {
+    func headerTitle_shouldReturnFormattedContextAmount() {
         // Given
         let (sut, _, _) = makeSUT()
 
         // Then
-        #expect(sut.formattedAmount.isEmpty == false)
+        #expect(sut.headerTitle.isEmpty == false)
     }
 
     @Test
-    func formattedAmount_givenNilAmount_shouldReturnEmptyString() {
+    func headerTitle_givenNilAmount_shouldReturnPaymentOptions() {
         // Given
         let (sut, _, _) = makeSUT(amount: nil)
 
         // Then
-        #expect(sut.formattedAmount == "")
+        #expect(sut.headerTitle == "Payment options")
+    }
+
+    @Test
+    func headerTitle_givenZeroAmount_shouldReturnSaveDetailsLocalizedString() {
+        // Given
+        let (sut, _, _) = makeSUT(amount: .init(value: 0, currencyCode: "EUR"))
+
+        // Then
+        let expected = localizedString(.submitButtonSaveDetails, LocalizationParameters())
+        #expect(sut.headerTitle == expected)
     }
 
     // MARK: - Subtitle Tests

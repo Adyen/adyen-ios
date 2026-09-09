@@ -38,7 +38,7 @@ internal class PaymentMethodListViewController: UIViewController {
     
     private lazy var headerView: PaymentMethodListHeaderView = {
         let headerViewModel = PaymentMethodListHeaderViewModel(
-            amount: viewModel.formattedAmount,
+            title: viewModel.headerTitle,
             subtitle: viewModel.subtitle,
             applePayButtonState: viewModel.applePayButtonState,
             theme: viewModel.theme

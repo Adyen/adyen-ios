@@ -1,5 +1,6 @@
 "adyen.submitButton" = "Pay";
 "adyen.submitButton.formatted" = "Pay %@";
+"adyen.submitButton.saveDetails" = "Save details";
 "adyen.cancelButton" = "Cancel";
 "adyen.dismissButton" = "OK";
 "adyen.removeButton" = "Remove";

@@ -21,7 +21,7 @@ internal final class PaymentMethodListHeaderView: UIView {
     
     private lazy var amountLabel: UILabel = {
         let label = UILabel()
-        label.text = viewModel.amount
+        label.text = viewModel.title
         label.numberOfLines = 1
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
