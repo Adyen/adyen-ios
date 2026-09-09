@@ -309,7 +309,6 @@ class ComponentManagerTests: XCTestCase {
         // Given
         let checkoutConfiguration = CheckoutConfiguration(
             apiContext: Dummy.apiContext,
-            amount: Dummy.amount,
             analyticsApiContext: nil,
             analyticsConfiguration: .init()
         )

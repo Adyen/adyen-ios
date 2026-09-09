@@ -49,7 +49,6 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     private func applePayComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
-            amount: ConfigurationConstants.current.amount,
             clientKey: ConfigurationConstants.clientKey,
             analyticsConfiguration: .init(
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
