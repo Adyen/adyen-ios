@@ -16,7 +16,7 @@ import Adyen
 #endif
 import Foundation
 
-internal enum CheckoutComponentBuilder {
+package enum CheckoutComponentBuilder {
     
     @MainActor
     internal static func build(
@@ -109,7 +109,7 @@ internal enum CheckoutComponentBuilder {
 
     /// Builds a component for a type-erased regular or stored payment method.
     @MainActor
-    internal static func build(
+    package static func build(
         forAnyPaymentMethod paymentMethod: PaymentMethod,
         configuration: CheckoutConfiguration,
         sessionConfiguration: SessionComponentConfiguration? = nil,

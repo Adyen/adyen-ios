@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenDropIn
+import UIKit
 import XCTest
 
 @MainActor
@@ -99,7 +100,12 @@ final class DropInViewModelTests: XCTestCase {
             context: Dummy.context,
             configuration: configuration,
             order: nil,
-            presentationDelegate: nil
+            paymentComponentBuilder: { paymentMethod in
+                PresentablePaymentComponentMock(
+                    paymentMethod: paymentMethod,
+                    viewController: UIViewController()
+                )
+            }
         )
         let sut = DropInViewModel(
             title: "Drop-in",

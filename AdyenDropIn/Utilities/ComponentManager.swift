@@ -6,12 +6,6 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
-#if canImport(AdyenCard)
-    import AdyenCard
-#endif
-#if canImport(AdyenComponents)
-    import AdyenComponents
-#endif
 #if canImport(AdyenActions)
     import AdyenActions
 #endif
@@ -31,7 +25,6 @@ internal protocol ComponentManaging {
     func removeStoredPaymentMethod(withIdentifier identifier: String)
 }
 
-// TODO: Remove the legacy construction path when the injected builder becomes required in next PR.
 @MainActor
 internal final class ComponentManager: ComponentManaging {
 
@@ -41,43 +34,40 @@ internal final class ComponentManager: ComponentManaging {
     internal let configuration: DropInConfiguration
     internal let context: AdyenContext
     internal let order: PartialPaymentOrder?
-    internal let partialPaymentEnabled: Bool
-    internal weak var presentationDelegate: PresentationDelegate?
-
-    private let paymentComponentBuilder: DropInPaymentComponentBuilder?
+    internal var hasPhotoLibraryUsageDescription = Bundle.main.object(
+        forInfoDictionaryKey: "NSPhotoLibraryAddUsageDescription"
+    ) != nil
+    
+    private let paymentComponentBuilder: DropInPaymentComponentBuilder
 
     private var localizationParameters: LocalizationParameters? {
         configuration.resolvedLocalizationParameters
     }
-    
+
     private var listStyle: ListComponentStyle {
         ListComponentStyle()
     }
 
     // MARK: - Initializer
-    
+
     internal init(
         paymentMethods: PaymentMethods,
         context: AdyenContext,
         configuration: DropInConfiguration,
-        partialPaymentEnabled: Bool = true,
         order: PartialPaymentOrder?,
-        presentationDelegate: PresentationDelegate?,
-        paymentComponentBuilder: DropInPaymentComponentBuilder? = nil
+        paymentComponentBuilder: @escaping DropInPaymentComponentBuilder
     ) {
         self.paymentMethods = paymentMethods
         self.context = context
         self.configuration = configuration
-        self.partialPaymentEnabled = partialPaymentEnabled
         self.order = order
-        self.presentationDelegate = presentationDelegate
         self.paymentComponentBuilder = paymentComponentBuilder
 
         updateContextAmountIfNeeded()
     }
-    
+
     // MARK: - ComponentManaging
-    
+
     internal var sections: [PaymentMethodsSection] {
         [paidSection, storedSection, regularSection].filter { !$0.paymentMethods.isEmpty }
     }
@@ -93,88 +83,49 @@ internal final class ComponentManager: ComponentManaging {
         }
     }
 
-    internal func buildComponent(for paymentMethod: PaymentMethod) -> PaymentComponent? {
-        guard isAllowed(paymentMethod) else {
-            AdyenAssertion.assertionFailure(message: """
-            For voucher payment methods like \(paymentMethod.name) it is required to add a suitable \
-            text for the key NSPhotoLibraryAddUsageDescription in the Application Info.plist, to enable \
-            the shopper to save the voucher to their photo library.
-            """)
-            return nil
-        }
-
-        let component: PaymentComponent?
-        if let paymentComponentBuilder {
-            do {
-                component = try paymentComponentBuilder(paymentMethod)
-            } catch {
-                // TODO: Store these errors if we need to track them.
-                adyenPrint("Failed to build component for \(paymentMethod.type.rawValue):", error)
-                component = nil
-            }
-        } else if let buildable = paymentMethod as? any PaymentComponentBuildable {
-            component = buildable.buildComponent(using: self)
-        } else {
-            component = build(paymentMethod: paymentMethod)
-        }
-        guard var paymentComponent = component else { return nil }
-        // TODO: Preserve the order assignment until partial payments have a dedicated design.
-        paymentComponent.order = order
-
-        // TODO: To be removed with the same updates on the builder next PR
-        if var localizableComponent = paymentComponent as? Localizable {
-            localizableComponent.localizationParameters = localizationParameters
-        }
-
-        return paymentComponent
+    internal func update(paymentMethods: PaymentMethods) {
+        self.paymentMethods = paymentMethods
+        storedComponents = buildComponents(for: storedPaymentMethodCandidates)
+        regularComponents = buildComponents(for: paymentMethods.regular)
+        paidComponents = buildComponents(for: paymentMethods.paid)
     }
-    
+
+    internal func buildComponent(for paymentMethod: PaymentMethod) -> PaymentComponent? {
+        cachedComponents.first {
+            isSamePaymentMethod($0.paymentMethod, as: paymentMethod)
+        }
+    }
+
     // MARK: - Computed Components
 
-    internal lazy var storedComponents: [PaymentComponent] = {
-        storedPaymentMethodCandidates
-            .compactMap(buildComponent(for:))
-    }()
+    internal lazy var storedComponents = buildComponents(for: storedPaymentMethodCandidates)
 
-    internal lazy var regularComponents: [PaymentComponent] = {
-        paymentMethods.regular.compactMap(buildComponent(for:))
-    }()
+    internal lazy var regularComponents = buildComponents(for: paymentMethods.regular)
 
-    internal lazy var paidComponents: [PaymentComponent] = {
-        paymentMethods.paid.compactMap(buildComponent(for:))
-    }()
-    
+    internal lazy var paidComponents = buildComponents(for: paymentMethods.paid)
+
     internal var singleRegularComponent: PresentablePaymentComponent? {
         guard storedComponents.isEmpty,
               paidComponents.isEmpty,
               regularComponents.count == 1,
               let component = regularComponents.first as? PresentablePaymentComponent
         else { return nil }
-        
+
         return component
     }
 
     // MARK: - Private
 
-    private lazy var paidSection: PaymentMethodsSection = {
-        let amountString = order?.remainingAmount.map(\.formatted)
-            ?? localizedString(.amount, localizationParameters).lowercased()
-
-        let footerTitle = localizedString(
-            .partialPaymentPayRemainingAmount,
-            localizationParameters,
-            amountString
-        )
-
-        return PaymentMethodsSection(
+    private var paidSection: PaymentMethodsSection {
+        PaymentMethodsSection(
             kind: .paid,
             header: ListSectionHeader(
                 title: localizedString(.paymentMethodsPaidMethods, localizationParameters),
                 style: listStyle.sectionHeader
             ),
-            paymentMethods: paymentMethods.paid
+            paymentMethods: paidComponents.map(\.paymentMethod)
         )
-    }()
+    }
 
     private var storedSection: PaymentMethodsSection {
         guard !configuration.hideStoredPaymentMethods else {
@@ -204,7 +155,7 @@ internal final class ComponentManager: ComponentManaging {
         return PaymentMethodsSection(
             kind: .regular,
             header: header,
-            paymentMethods: paymentMethods.regular
+            paymentMethods: regularComponents.map(\.paymentMethod)
         )
     }
 }
@@ -217,19 +168,58 @@ private extension ComponentManager {
         paymentMethods.stored
             .filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
     }
-    
+
+    var cachedComponents: [PaymentComponent] {
+        paidComponents + storedComponents + regularComponents
+    }
+
+    func buildComponents(for paymentMethods: [PaymentMethod]) -> [PaymentComponent] {
+        paymentMethods.compactMap(assembleComponent)
+    }
+
+    func assembleComponent(for paymentMethod: PaymentMethod) -> PaymentComponent? {
+        guard isAllowed(paymentMethod) else {
+            AdyenAssertion.assertionFailure(message: """
+            For voucher payment methods like \(paymentMethod.name) it is required to add a suitable \
+            text for the key NSPhotoLibraryAddUsageDescription in the Application Info.plist, to enable \
+            the shopper to save the voucher to their photo library.
+            """)
+            return nil
+        }
+
+        do {
+            var component = try paymentComponentBuilder(paymentMethod)
+            // TODO: Preserve the order assignment until partial payments have a dedicated design.
+            component.order = order
+            return component
+        } catch {
+            // TODO: Store these errors if we need to track them.
+            adyenPrint("Failed to build component for \(paymentMethod.type.rawValue):", error)
+            return nil
+        }
+    }
+
+    func isSamePaymentMethod(_ lhs: PaymentMethod, as rhs: PaymentMethod) -> Bool {
+        if let lhs = lhs as? any StoredPaymentMethod,
+           let rhs = rhs as? any StoredPaymentMethod {
+            return lhs == rhs
+        }
+
+        return lhs == rhs
+    }
+
     func updateContextAmountIfNeeded() {
         guard let remainingAmount = order?.remainingAmount else { return }
         context.amount = remainingAmount
     }
-    
+
     // MARK: - Payment Method Validation
-    
+
     func isAllowed(_ paymentMethod: PaymentMethod) -> Bool {
         let requiresPhotoLibrary = isVoucherPaymentMethod(paymentMethod) || isQRCodePaymentMethod(paymentMethod)
         guard requiresPhotoLibrary else { return true }
-        
-        return Bundle.main.object(forInfoDictionaryKey: "NSPhotoLibraryAddUsageDescription") != nil
+
+        return hasPhotoLibraryUsageDescription
     }
 
     func isQRCodePaymentMethod(_ paymentMethod: PaymentMethod) -> Bool {
