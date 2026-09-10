@@ -33,6 +33,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     private weak var listener: PaymentMethodListRouterListener?
     private let navigationController: UINavigationController
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
+    private let genericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol
     private let storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol
     private let storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
     private let storedPaymentMethodsProvider: () -> [any StoredPaymentMethod]
@@ -46,6 +47,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         navigationController: UINavigationController = UINavigationController(),
         listener: PaymentMethodListRouterListener?,
         componentContainerAssembler: ComponentContainerAssemblerProtocol,
+        genericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol,
         storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol,
         storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?,
         storedPaymentMethodsProvider: @escaping () -> [any StoredPaymentMethod],
@@ -55,6 +57,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         self.navigationController = navigationController
         self.listener = listener
         self.componentContainerAssembler = componentContainerAssembler
+        self.genericPaymentMethodAssembler = genericPaymentMethodAssembler
         self.storedPaymentMethodManagementAssembler = storedPaymentMethodManagementAssembler
         self.storedPaymentMethodManagementCapability = storedPaymentMethodManagementCapability
         self.storedPaymentMethodsProvider = storedPaymentMethodsProvider
@@ -81,8 +84,8 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
             pushComponentContainer(with: regularComponent)
         case let .stored(storedComponent):
             presentComponentContainer(with: storedComponent)
-        case .initiable:
-            break
+        case .generic:
+            pushGenericPaymentMethod(with: component)
         }
     }
 
@@ -140,6 +143,13 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         rootViewController.present(modalNavigationController, animated: true)
     }
 
+    private func pushGenericPaymentMethod(
+        with component: PaymentComponent
+    ) {
+        let genericPaymentMethodViewController = genericPaymentMethodViewController(for: component)
+        navigationController.pushViewController(genericPaymentMethodViewController, animated: true)
+    }
+
     private func setupCloseButton(controller: UIViewController) {
         let closeButton = UIBarButtonItem(
             barButtonSystemItem: .close,
@@ -163,6 +173,14 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         )
         childRouter = componentContainerRouter
         return componentContainerRouter.rootViewController
+    }
+
+    private func genericPaymentMethodViewController(
+        for component: PaymentComponent
+    ) -> UIViewController {
+        let genericPaymentMethodRouter = genericPaymentMethodAssembler.resolveGenericPaymentMethodRouter(for: component)
+        childRouter = genericPaymentMethodRouter
+        return genericPaymentMethodRouter.rootViewController
     }
 }
 

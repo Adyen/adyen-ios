@@ -10,7 +10,7 @@ import SwiftUI
 @MainActor
 internal protocol GenericPaymentMethodAssemblerProtocol {
     func resolveGenericPaymentMethodRouter(
-        paymentComponent: PaymentComponent
+        for component: PaymentComponent
     ) -> Router
 }
 
@@ -21,13 +21,19 @@ internal struct GenericPaymentMethodAssembler: GenericPaymentMethodAssemblerProt
 
     private let dropInFlowManager: DropInFlowManaging
 
+    // MARK: - Initializers
+
+    internal init(dropInFlowManager: DropInFlowManaging) {
+        self.dropInFlowManager = dropInFlowManager
+    }
+
     // MARK: - GenericPaymentMethodAssemblerProtocol
 
     internal func resolveGenericPaymentMethodRouter(
-        paymentComponent: PaymentComponent
+        for component: PaymentComponent
     ) -> Router {
         let viewModel = GenericPaymentMethodViewModel(
-            paymentComponent: paymentComponent,
+            component: component,
             dropInFlowManager: dropInFlowManager
         )
         let genericPaymentMethodView = GenericPaymentMethodView(viewModel: viewModel)

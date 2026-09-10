@@ -144,11 +144,12 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         switch component.type {
         case .regular, .stored:
             router?.present(component: component)
-        case let .initiable(initiablePaymentComponent):
-            self.initiablePaymentComponent = initiablePaymentComponent
+        case let .generic(genericPaymentComopnent):
+            router?.present(component: genericPaymentComopnent)
+//            self.initiablePaymentComponent = genericPaymentComopnent
             state = .loading
-            initiablePaymentComponent.delegate = self
-            initiablePaymentComponent.performSubmit()
+//            genericPaymentComopnent.delegate = self
+//            genericPaymentComopnent.performSubmit()
         }
     }
 

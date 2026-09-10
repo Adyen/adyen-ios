@@ -6,9 +6,7 @@
 
 import Foundation
 
-internal protocol GenericPaymentMethodRouting: AnyObject {
-
-}
+internal protocol GenericPaymentMethodRouting: AnyObject {}
 
 internal class GenericPaymentMethodRouter: Router, GenericPaymentMethodRouting {
 
@@ -19,7 +17,7 @@ internal class GenericPaymentMethodRouter: Router, GenericPaymentMethodRouting {
 
     // MARK: - Initializers
 
-    init(
+    internal init(
         viewController: UIViewController,
         childRouter: Router? = nil
     ) {

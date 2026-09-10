@@ -4,8 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Foundation
 import Adyen
+import Foundation
 
 internal class GenericPaymentMethodViewModel: ObservableObject {
 
@@ -16,7 +16,7 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
 
     // MARK: - Properties
 
-    private let paymentComponent: PaymentComponent
+    private let component: PaymentComponent
     private let dropInFlowManager: DropInFlowManaging
     internal weak var router: GenericPaymentMethodRouting?
 
@@ -25,15 +25,15 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
     // MARK: - Initializers
 
     internal init(
-        paymentComponent: PaymentComponent,
+        component: PaymentComponent,
         dropInFlowManager: DropInFlowManaging
     ) {
-        self.paymentComponent = paymentComponent
+        self.component = component
         self.dropInFlowManager = dropInFlowManager
     }
 
     internal var paymentMethodName: String {
-        paymentComponent.paymentMethod.name
+        component.paymentMethod.name
     }
 
 }

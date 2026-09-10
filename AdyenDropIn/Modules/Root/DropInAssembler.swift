@@ -100,6 +100,7 @@ internal struct DropInAssembler {
     private var paymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         PaymentMethodListAssembler(
             componentContainerAssembler: componentContainerAssembler,
+            genericPaymentMethodAssembler: genericPaymentMethodAssembler,
             componentManager: componentManager,
             context: context,
             localizationParameters: resolveLocalizationParameters(),
@@ -117,5 +118,9 @@ internal struct DropInAssembler {
             dropInFlowManager: dropInFlowManager,
             partialPaymentDelegate: partialPaymentDelegate
         )
+    }
+
+    private var genericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol {
+        GenericPaymentMethodAssembler(dropInFlowManager: dropInFlowManager)
     }
 }
