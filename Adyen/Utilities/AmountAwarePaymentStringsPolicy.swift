@@ -42,4 +42,31 @@ package enum AmountAwarePaymentStringsPolicy {
             return localizedString(.confirmPreauthorization, localizationParameters)
         }
     }
+
+    package static func paymentMethodListHeaderTitle(
+        with amount: Amount?,
+        localizationParameters: LocalizationParameters?
+    ) -> String {
+        guard var amount else {
+            return "Payment options"
+        }
+
+        if amount.value == 0 {
+            return localizedString(.submitButtonSaveDetails, localizationParameters)
+        }
+
+        amount.localeIdentifier = amount.localeIdentifier ?? localizationParameters?.locale
+        return amount.formatted
+    }
+
+    package static func paymentMethodListSubtitle(
+        with amount: Amount?,
+        localizationParameters: LocalizationParameters?
+    ) -> String {
+        if let amount, amount.value == 0 {
+            return localizedString(.dropInPaymentMethodListDescriptionSaveDetails, localizationParameters)
+        }
+
+        return localizedString(.dropInPaymentMethodListDescriptionCompletePayment, localizationParameters)
+    }
 }

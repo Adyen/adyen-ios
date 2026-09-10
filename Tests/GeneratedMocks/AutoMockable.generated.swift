@@ -62,24 +62,20 @@ class ActionPresenterMock: ActionPresenter {
 
 }
 
-public class AnyEventAnalyticsProviderMock: AnyEventAnalyticsProvider {
-
-    public init() {}
-
-    public var checkoutAttemptId: String?
+package class AnyEventAnalyticsProviderMock: AnyEventAnalyticsProvider {
 
     // MARK: - add
 
-    public var addInfoCallsCount = 0
-    public var addInfoCalled: Bool {
+    package var addInfoCallsCount = 0
+    package var addInfoCalled: Bool {
         addInfoCallsCount > 0
     }
 
-    public var addInfoReceivedInfo: AnalyticsEventInfo?
-    public var addInfoReceivedInvocations: [AnalyticsEventInfo] = []
-    public var addInfoClosure: ((AnalyticsEventInfo) -> Void)?
+    package var addInfoReceivedInfo: AnalyticsEventInfo?
+    package var addInfoReceivedInvocations: [AnalyticsEventInfo] = []
+    package var addInfoClosure: ((AnalyticsEventInfo) -> Void)?
 
-    public func add(info: AnalyticsEventInfo) {
+    package func add(info: AnalyticsEventInfo) {
         addInfoCallsCount += 1
         addInfoReceivedInfo = info
         addInfoReceivedInvocations.append(info)
@@ -88,16 +84,16 @@ public class AnyEventAnalyticsProviderMock: AnyEventAnalyticsProvider {
 
     // MARK: - add
 
-    public var addLogCallsCount = 0
-    public var addLogCalled: Bool {
+    package var addLogCallsCount = 0
+    package var addLogCalled: Bool {
         addLogCallsCount > 0
     }
 
-    public var addLogReceivedLog: AnalyticsEventLog?
-    public var addLogReceivedInvocations: [AnalyticsEventLog] = []
-    public var addLogClosure: ((AnalyticsEventLog) -> Void)?
+    package var addLogReceivedLog: AnalyticsEventLog?
+    package var addLogReceivedInvocations: [AnalyticsEventLog] = []
+    package var addLogClosure: ((AnalyticsEventLog) -> Void)?
 
-    public func add(log: AnalyticsEventLog) {
+    package func add(log: AnalyticsEventLog) {
         addLogCallsCount += 1
         addLogReceivedLog = log
         addLogReceivedInvocations.append(log)
@@ -106,16 +102,16 @@ public class AnyEventAnalyticsProviderMock: AnyEventAnalyticsProvider {
 
     // MARK: - add
 
-    public var addErrorCallsCount = 0
-    public var addErrorCalled: Bool {
+    package var addErrorCallsCount = 0
+    package var addErrorCalled: Bool {
         addErrorCallsCount > 0
     }
 
-    public var addErrorReceivedError: AnalyticsEventError?
-    public var addErrorReceivedInvocations: [AnalyticsEventError] = []
-    public var addErrorClosure: ((AnalyticsEventError) -> Void)?
+    package var addErrorReceivedError: AnalyticsEventError?
+    package var addErrorReceivedInvocations: [AnalyticsEventError] = []
+    package var addErrorClosure: ((AnalyticsEventError) -> Void)?
 
-    public func add(error: AnalyticsEventError) {
+    package func add(error: AnalyticsEventError) {
         addErrorCallsCount += 1
         addErrorReceivedError = error
         addErrorReceivedInvocations.append(error)
@@ -474,12 +470,12 @@ class PaymentMethodListViewModelProtocolMock: PaymentMethodListViewModelProtocol
     }
 
     var underlyingTheme: CheckoutTheme!
-    var formattedAmount: String {
-        get { underlyingFormattedAmount }
-        set(value) { underlyingFormattedAmount = value }
+    var headerTitle: String {
+        get { underlyingHeaderTitle }
+        set(value) { underlyingHeaderTitle = value }
     }
 
-    var underlyingFormattedAmount: String!
+    var underlyingHeaderTitle: String!
     var subtitle: String {
         get { underlyingSubtitle }
         set(value) { underlyingSubtitle = value }

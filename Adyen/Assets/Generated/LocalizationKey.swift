@@ -12,6 +12,8 @@ public struct LocalizationKey {
     public static let submitButton = LocalizationKey(key: "adyen.submitButton")
     /// Pay %@
     public static let submitButtonFormatted = LocalizationKey(key: "adyen.submitButton.formatted")
+    /// Save details
+    public static let submitButtonSaveDetails = LocalizationKey(key: "adyen.submitButton.saveDetails")
     /// Cancel
     public static let cancelButton = LocalizationKey(key: "adyen.cancelButton")
     /// OK
@@ -76,16 +78,14 @@ public struct LocalizationKey {
     public static let cardCvcItemInvalid = LocalizationKey(key: "adyen.card.cvcItem.invalid")
     /// Security code
     public static let cardCvcItemTitle = LocalizationKey(key: "adyen.card.cvcItem.title")
+    /// 123
+    public static let cardCvcItemPlaceholder = LocalizationKey(key: "adyen.card.cvcItem.placeholder")
     /// Enter security code
     public static let cardSecurityCodeTitle = LocalizationKey(key: "adyen.card.securityCode.title")
     /// Enter the security code for %@
     public static let cardSecurityCodeDescription = LocalizationKey(key: "adyen.card.securityCode.description")
-    /// 123
-    public static let cardCvcItemPlaceholder = LocalizationKey(key: "adyen.card.cvcItem.placeholder")
-    // TODO: Delete cardStoredTitle - no longer used after StoredCardAlertManager removal for v6
     /// Verify your card
     public static let cardStoredTitle = LocalizationKey(key: "adyen.card.stored.title")
-    // TODO: Delete cardStoredMessage - no longer used after StoredCardAlertManager removal for v6
     /// Please enter the CVC code for %@
     public static let cardStoredMessage = LocalizationKey(key: "adyen.card.stored.message")
     /// Expires %@
@@ -104,6 +104,10 @@ public struct LocalizationKey {
     public static let dropInStoredTitle = LocalizationKey(key: "adyen.dropIn.stored.title")
     /// Change Payment Method
     public static let dropInPreselectedOpenAllTitle = LocalizationKey(key: "adyen.dropIn.preselected.openAll.title")
+    /// Select your preferred payment option and complete the payment
+    public static let dropInPaymentMethodListDescriptionCompletePayment = LocalizationKey(key: "adyen.dropIn.paymentMethodList.description.completePayment")
+    /// Select your preferred payment option and save your details for future transactions
+    public static let dropInPaymentMethodListDescriptionSaveDetails = LocalizationKey(key: "adyen.dropIn.paymentMethodList.description.saveDetails")
     /// Continue to %@
     public static let continueTo = LocalizationKey(key: "adyen.continueTo")
     /// Continue

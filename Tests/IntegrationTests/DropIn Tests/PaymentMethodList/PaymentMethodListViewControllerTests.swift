@@ -365,7 +365,7 @@ private class TestablePaymentMethodListViewModel: PaymentMethodListViewModelProt
     let title: String
     let paymentMethodSections: [PaymentMethodsSection] = []
     let theme: CheckoutTheme = .init()
-    let formattedAmount: String = "€1.00"
+    let headerTitle: String = "€1.00"
     let subtitle: String = "Select your preferred payment option"
     let applePayButtonState: PaymentMethodListHeaderViewModel.ApplePayButtonState = .hidden
 
