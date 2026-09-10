@@ -65,6 +65,7 @@ package final class DropInComponent: NSObject,
     internal var configuration: DropInConfiguration
 
     private let actionComponentConfiguration: CheckoutActionComponent.Configuration
+    private let checkoutStoredMethodCapability: StoredPaymentMethodManagementCapability?
     private let paymentComponentBuilder: DropInPaymentComponentBuilder
 
     internal var paymentInProgress: Bool = false
@@ -87,6 +88,7 @@ package final class DropInComponent: NSObject,
     ///   - context: The context object for this component.
     ///   - configuration: Drop-in behavior and checkout-wide presentation configuration.
     ///   - actionComponentConfiguration: The resolved configuration for action handling.
+    ///   - storedPaymentMethodManagementCapability: Checkout-provided stored payment method management behavior.
     ///   - paymentComponentBuilder: The payment component builder to handle component creation.
     ///   - title: Name of the application. To be displayed on a first payment page.
     ///            If no external value provided, the Main Bundle's name would be used.
@@ -95,12 +97,14 @@ package final class DropInComponent: NSObject,
         context: AdyenContext,
         configuration: DropInConfiguration = .init(),
         actionComponentConfiguration: CheckoutActionComponent.Configuration = .init(),
+        storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability? = nil,
         paymentComponentBuilder: @escaping DropInPaymentComponentBuilder,
         title: String? = nil
     ) {
         self.title = title ?? Bundle.main.displayName
         self.configuration = configuration
         self.actionComponentConfiguration = actionComponentConfiguration
+        self.checkoutStoredMethodCapability = storedPaymentMethodManagementCapability
         self.paymentComponentBuilder = paymentComponentBuilder
         self.context = context
         self.paymentMethods = paymentMethods
@@ -139,8 +143,9 @@ package final class DropInComponent: NSObject,
     /// The stored payment methods delegate.
     package weak var storedPaymentMethodsDelegate: StoredPaymentMethodsDelegate?
 
+    // TODO: bridge between new and legacy until all changes are implemented.
     internal var storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability? {
-        storedPaymentMethodManagementResolver.capability
+        checkoutStoredMethodCapability ?? storedPaymentMethodManagementResolver.capability
     }
 
     // MARK: - Presentable Component Protocol

@@ -46,7 +46,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
     package let resultCallbacks: any CheckoutResultCallbackStore
     package let callbackHandler: any CheckoutCallbackHandling
 
-    internal lazy var actionHandlingComponent: ActionHandlingComponent = {
+    internal lazy var actionComponentConfiguration: CheckoutActionComponent.Configuration = {
         var authenticationConfiguration: AuthenticationConfiguration = configuration.configuration(
             for: .threeDS2,
             defaultValue: AuthenticationConfiguration(theme: configuration.theme)
@@ -55,15 +55,17 @@ package final class CheckoutCore: CheckoutCoreProtocol {
             mergingExistingParameters: authenticationConfiguration.localizationParameters
         )
 
-        let actionConfiguration = CheckoutActionComponent.Configuration(
+        return CheckoutActionComponent.Configuration(
             localizationParameters: configuration.resolvedCheckoutLocalizationParameters(),
             authentication: authenticationConfiguration,
             twint: configuration.configuration(for: .twint)
         )
+    }()
 
+    internal lazy var actionHandlingComponent: ActionHandlingComponent = {
         let actionHandlingComponent = CheckoutActionComponent(
             context: adyenContext,
-            configuration: actionConfiguration
+            configuration: actionComponentConfiguration
         )
         actionHandlingComponent.delegate = self
         actionHandlingComponent.presentationDelegate = presentationDelegate
@@ -132,11 +134,49 @@ package final class CheckoutCore: CheckoutCoreProtocol {
     }
 
     package func createDropIn() -> DropInComponent? {
-        // TODO: dropin creation discussion with new changes
-        nil
+        guard let paymentMethods else { return nil }
+
+        var dropInConfiguration = configuration.dropInConfiguration
+        dropInConfiguration.theme = configuration.theme
+        dropInConfiguration.localizationProvider = configuration.localizationProvider
+
+        let checkoutConfiguration = configuration
+        let sessionConfiguration = session?.componentConfiguration
+        let context = adyenContext
+        let dropInComponent = DropInComponent(
+            paymentMethods: paymentMethods,
+            context: context,
+            configuration: dropInConfiguration,
+            actionComponentConfiguration: actionComponentConfiguration,
+            storedPaymentMethodManagementCapability: sessionManagementCapability,
+            paymentComponentBuilder: { paymentMethod in
+                try CheckoutComponentBuilder.build(
+                    forAnyPaymentMethod: paymentMethod,
+                    configuration: checkoutConfiguration,
+                    sessionConfiguration: sessionConfiguration,
+                    context: context
+                )
+            }
+        )
+        dropInComponent.delegate = self
+        return dropInComponent
     }
 
     package func handle(action: Action) {
         actionHandlingComponent.handle(action)
+    }
+}
+
+private extension CheckoutCore {
+
+    var sessionManagementCapability: StoredPaymentMethodManagementCapability? {
+        guard let session, session.showRemovePaymentMethodButton else { return nil }
+
+        return StoredPaymentMethodManagementCapability { [weak session] storedPaymentMethod in
+            guard let session else {
+                throw StoredPaymentMethodRemovalError.unavailable
+            }
+            try await session.disable(storedPaymentMethod: storedPaymentMethod)
+        }
     }
 }
