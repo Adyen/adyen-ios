@@ -224,6 +224,52 @@ struct AmountAwarePaymentStringsPolicyTests {
         #expect(title == scenario.expectedTitle)
     }
 
+    // MARK: - Payment method list strings
+
+    @Test
+    func paymentMethodListStrings_withNilAmount_then_showsPaymentOptionsAndCompletePaymentDescription() {
+        // Given
+        let sut = makeSUT()
+
+        // When
+        let headerTitle = sut.paymentMethodListHeaderTitle(with: nil, localizationParameters: nil)
+        let subtitle = sut.paymentMethodListSubtitle(with: nil, localizationParameters: nil)
+
+        // Then
+        #expect(headerTitle == "Payment options")
+        #expect(subtitle == "Select your preferred payment option and complete the payment")
+    }
+
+    @Test
+    func paymentMethodListStrings_withZeroAmount_then_showsSaveDetails() {
+        // Given
+        let sut = makeSUT()
+        let amount = Amount(value: 0, currencyCode: "EUR", localeIdentifier: nil)
+
+        // When
+        let headerTitle = sut.paymentMethodListHeaderTitle(with: amount, localizationParameters: nil)
+        let subtitle = sut.paymentMethodListSubtitle(with: amount, localizationParameters: nil)
+
+        // Then
+        #expect(headerTitle == "Save details")
+        #expect(subtitle == "Select your preferred payment option and save your details for future transactions")
+    }
+
+    @Test
+    func paymentMethodListStrings_withPositiveAmount_then_showsFormattedAmountAndCompletePaymentDescription() {
+        // Given
+        let sut = makeSUT()
+        let amount = Amount(value: 1000, currencyCode: "EUR", localeIdentifier: "en_US")
+
+        // When
+        let headerTitle = sut.paymentMethodListHeaderTitle(with: amount, localizationParameters: nil)
+        let subtitle = sut.paymentMethodListSubtitle(with: amount, localizationParameters: nil)
+
+        // Then
+        #expect(headerTitle == "€10.00")
+        #expect(subtitle == "Select your preferred payment option and complete the payment")
+    }
+
     private func makeSUT() -> AmountAwarePaymentStringsPolicy.Type {
         AmountAwarePaymentStringsPolicy.self
     }

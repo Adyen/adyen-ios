@@ -93,21 +93,17 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     internal var headerTitle: String {
-        guard let amount = context.amount else {
-            // TODO: Robert: Amount is nil, this should not happen in sessions flow. But can happen in non sessions flow if the amount is not supplied.
-            return "Payment options"
-        }
-        if amount.value == 0 {
-            return localizedString(.submitButtonSaveDetails, localizationParameters)
-        }
-        return amount.formatted
+        AmountAwarePaymentStringsPolicy.paymentMethodListHeaderTitle(
+            with: context.amount,
+            localizationParameters: localizationParameters
+        )
     }
 
     internal var subtitle: String {
-        if let amount = context.amount, amount.value == 0 {
-            return localizedString(.dropInPaymentMethodListDescriptionSaveDetails, localizationParameters)
-        }
-        return localizedString(.dropInPaymentMethodListDescriptionCompletePayment, localizationParameters)
+        AmountAwarePaymentStringsPolicy.paymentMethodListSubtitle(
+            with: context.amount,
+            localizationParameters: localizationParameters
+        )
     }
 
     internal var applePayButtonState: PaymentMethodListHeaderViewModel.ApplePayButtonState {
