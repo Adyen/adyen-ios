@@ -93,7 +93,7 @@ class CardComponentTests: XCTestCase {
 
         XCTAssertEqual(items.storeDetailsItem.title, localizedString(.cardStoreDetailsButton, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(items.button.title, SubmitButtonTitlePolicy.title(with: context.amount, style: .immediate, sut.configuration.localizationParameters))
+        XCTAssertEqual(items.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: context.amount, style: .immediate, localizationParameters: sut.configuration.localizationParameters))
     }
 
     func test_formItems_withCustomKeySeparator_shouldUseLocalizedStrings() {
@@ -122,7 +122,7 @@ class CardComponentTests: XCTestCase {
 
         XCTAssertEqual(items.storeDetailsItem.title, localizedString(LocalizationKey(key: "adyen_card_storeDetailsButton"), sut.configuration.localizationParameters))
 
-        XCTAssertEqual(items.button.title, SubmitButtonTitlePolicy.title(with: context.amount, style: .immediate, sut.configuration.localizationParameters))
+        XCTAssertEqual(items.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: context.amount, style: .immediate, localizationParameters: sut.configuration.localizationParameters))
     }
 
     func test_cardComponent_withLegacyLocalizationParameters_shouldRenderLocalizedTitles() {

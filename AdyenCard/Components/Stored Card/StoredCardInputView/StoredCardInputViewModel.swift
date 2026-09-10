@@ -123,10 +123,10 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     }
 
     internal var submitButtonTitle: String {
-        SubmitButtonTitlePolicy.title(
+        AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: amount,
             style: .immediate,
-            localizationParameters
+            localizationParameters: localizationParameters
         )
     }
 
