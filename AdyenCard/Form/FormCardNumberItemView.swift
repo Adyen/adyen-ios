@@ -87,10 +87,7 @@ internal final class FormCardNumberItemView: FormTextItemView<FormCardNumberItem
         }
         item.isActive = true
 
-        // The input accessory view is hosted in the system's keyboard window, which doesn't reliably
-        // resolve dynamic colors (e.g. `.systemBackground`) against the presenting view's trait collection.
-        // Re-resolving here, while `self` is mounted in the real window, keeps it consistent with the form.
-        textField.inputAccessoryView?.backgroundColor = theme.colors.background.resolvedColor(with: traitCollection)
+        updateCardScanAccessoryViewBackgroundColor(theme.colors.background.resolvedColor(with: traitCollection))
     }
     
     override internal func textFieldDidEndEditing(_ text: UITextField) {
