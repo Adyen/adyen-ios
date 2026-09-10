@@ -23,17 +23,20 @@ internal struct GenericPaymentMethodAssembler: GenericPaymentMethodAssemblerProt
     private let dropInFlowManager: DropInFlowManaging
     private let logoURLProvider: LogoURLProvider
     private let theme: CheckoutTheme
+    private let localizationParameters: LocalizationParameters
 
     // MARK: - Initializers
 
     internal init(
         dropInFlowManager: DropInFlowManaging,
         logoURLProvider: LogoURLProvider,
-        theme: CheckoutTheme
+        theme: CheckoutTheme,
+        localizationParameters: LocalizationParameters
     ) {
         self.dropInFlowManager = dropInFlowManager
         self.logoURLProvider = logoURLProvider
         self.theme = theme
+        self.localizationParameters = localizationParameters
     }
 
     // MARK: - GenericPaymentMethodAssemblerProtocol
@@ -44,7 +47,8 @@ internal struct GenericPaymentMethodAssembler: GenericPaymentMethodAssemblerProt
         let viewModel = GenericPaymentMethodViewModel(
             component: component,
             dropInFlowManager: dropInFlowManager,
-            logoUrlProvider: logoURLProvider
+            logoUrlProvider: logoURLProvider,
+            localizationParameters: localizationParameters
         )
         let genericPaymentMethodView = GenericPaymentMethodView(viewModel: viewModel, theme: theme)
         let genericPaymentMethodViewController = UIHostingController(rootView: genericPaymentMethodView)

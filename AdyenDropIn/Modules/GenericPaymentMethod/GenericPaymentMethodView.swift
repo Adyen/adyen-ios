@@ -16,7 +16,6 @@ internal struct GenericPaymentMethodView: View {
 
         static let progressViewSpacing: CGFloat = 16
         static let progressViewBottomPadding: CGFloat = 64
-
     }
 
     // MARK: - Properties
@@ -45,15 +44,18 @@ internal struct GenericPaymentMethodView: View {
         }
         .padding()
         .background(Color(uiColor: theme.colors.background))
+        .task {
+            viewModel.startPayment()
+        }
     }
 
     // MARK: - Private
 
     private var descriptionView: some View {
         VStack(spacing: Constants.descriptionViewSpacing) {
-            Text("\(viewModel.paymentMethodName)")
+            Text("\(viewModel.title)")
                 .font(Font(theme.elements.labels.title.font))
-            Text("You will be guided to the next step of the process.")
+            Text(viewModel.description)
                 .font(Font(theme.elements.labels.body.font))
         }
         .foregroundStyle(Color(uiColor: theme.colors.text))
@@ -64,45 +66,10 @@ internal struct GenericPaymentMethodView: View {
 
     private var progressView: some View {
         VStack(spacing: Constants.progressViewSpacing) {
-            CircularProgressView(theme: theme)
-            Text("Processing...")
+            CircularProgressView(theme: theme, size: 48, lineWidth: 4)
+            Text(viewModel.progressTitle)
                 .font(Font(theme.elements.labels.body.font))
                 .foregroundStyle(Color(uiColor: theme.colors.textSecondary))
-        }
-    }
-
-    internal struct CircularProgressView: View {
-
-        private enum Constants {
-            static let size: CGFloat = 48
-            static let lineWidth: CGFloat = 4
-            static let arcLength = 0.25
-            static let rotationDuration = 0.8
-        }
-
-        internal let theme: CheckoutTheme
-        @State private var isRotating = false
-
-        internal var body: some View {
-            ZStack {
-                Circle()
-                    .stroke(Color(uiColor: theme.colors.textOnDisabled).opacity(0.15), lineWidth: Constants.lineWidth)
-
-                Circle()
-                    .trim(from: 0, to: Constants.arcLength)
-                    .stroke(
-                        Color(uiColor: theme.colors.text),
-                        style: StrokeStyle(lineWidth: Constants.lineWidth, lineCap: .round)
-                    )
-                    .rotationEffect(.degrees(isRotating ? 360 : 0))
-            }
-            .frame(width: Constants.size, height: Constants.size)
-            .accessibilityHidden(true)
-            .onAppear {
-                withAnimation(.linear(duration: Constants.rotationDuration).repeatForever(autoreverses: false)) {
-                    isRotating = true
-                }
-            }
         }
     }
 }

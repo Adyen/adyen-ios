@@ -21,6 +21,7 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
     private let component: PaymentComponent
     private let dropInFlowManager: DropInFlowManaging
     private let logoUrlProvider: LogoURLProvider
+    private let localizationParameters: LocalizationParameters
     internal weak var router: GenericPaymentMethodRouting?
 
     @Published internal var state: State = .idle
@@ -30,22 +31,31 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
     internal init(
         component: PaymentComponent,
         dropInFlowManager: DropInFlowManaging,
-        logoUrlProvider: LogoURLProvider
+        logoUrlProvider: LogoURLProvider,
+        localizationParameters: LocalizationParameters
     ) {
         self.component = component
         self.dropInFlowManager = dropInFlowManager
         self.logoUrlProvider = logoUrlProvider
+        self.localizationParameters = localizationParameters
 
         self.component.delegate = self
     }
 
-    internal var paymentMethodName: String {
+    // MARK: - Localization
+
+    internal var title: String {
         component.paymentMethod.name
     }
 
-    internal var paymentMethodLogoURL: URL {
-        let logoName = component.paymentMethod.type.rawValue
-        return logoUrlProvider.logoURL(withName: logoName)
+    internal var description: String {
+        // TODO: - Create localition key in Translation source file
+        "You will be guided to the next step of the process."
+    }
+
+    internal var progressTitle: String {
+        // TODO: - Create localition key in Translation source file
+        "Processing..."
     }
 
     // MARK: - Public
@@ -53,6 +63,12 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
     internal func startPayment() {
         component.performSubmit()
     }
+
+    internal var paymentMethodLogoURL: URL {
+        let logoName = component.paymentMethod.type.rawValue
+        return logoUrlProvider.logoURL(withName: logoName)
+    }
+
 }
 
 // MARK: - PaymentComponentDelegate

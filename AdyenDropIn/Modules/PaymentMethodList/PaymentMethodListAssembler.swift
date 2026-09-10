@@ -106,7 +106,8 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         GenericPaymentMethodAssembler(
             dropInFlowManager: dropInFlowManager,
             logoURLProvider: logoURLProvider,
-            theme: theme
+            theme: theme,
+            localizationParameters: localizationParameters
         )
     }
 }

@@ -106,41 +106,6 @@ private extension StoredPaymentMethodManagementListView {
         }
     }
 
-    struct CircularProgressView: View {
-
-        private enum Constants {
-            static let size: CGFloat = 24
-            static let lineWidth: CGFloat = 2.5
-            static let arcLength = 0.25
-            static let rotationDuration = 0.8
-        }
-
-        let theme: CheckoutTheme
-        @State private var isRotating = false
-
-        var body: some View {
-            ZStack {
-                Circle()
-                    .stroke(Color(uiColor: theme.colors.textOnDisabled).opacity(0.15), lineWidth: Constants.lineWidth)
-
-                Circle()
-                    .trim(from: 0, to: Constants.arcLength)
-                    .stroke(
-                        Color(uiColor: theme.colors.text),
-                        style: StrokeStyle(lineWidth: Constants.lineWidth, lineCap: .round)
-                    )
-                    .rotationEffect(.degrees(isRotating ? 360 : 0))
-            }
-            .frame(width: Constants.size, height: Constants.size)
-            .accessibilityHidden(true)
-            .onAppear {
-                withAnimation(.linear(duration: Constants.rotationDuration).repeatForever(autoreverses: false)) {
-                    isRotating = true
-                }
-            }
-        }
-    }
-
     struct SectionView: View {
 
         private enum Constants {
@@ -201,7 +166,7 @@ private extension StoredPaymentMethodManagementListView {
                 HStack(spacing: Constants.itemSpacing) {
                     Group {
                         if isRemoving {
-                            CircularProgressView(theme: theme)
+                            CircularProgressView(theme: theme, size: 24, lineWidth: 2.5)
                         } else {
                             LogoView(url: item.logoURL)
                         }
