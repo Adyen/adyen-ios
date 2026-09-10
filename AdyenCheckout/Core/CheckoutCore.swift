@@ -136,27 +136,24 @@ package final class CheckoutCore: CheckoutCoreProtocol {
     package func createDropIn() -> DropInComponent? {
         guard let paymentMethods else { return nil }
 
-        var dropInConfiguration = configuration.dropInConfiguration
-        dropInConfiguration.theme = configuration.theme
-        dropInConfiguration.localizationProvider = configuration.localizationProvider
-
         let checkoutConfiguration = configuration
         let sessionConfiguration = session?.componentConfiguration
         let context = adyenContext
-        let dropInComponent = DropInComponent(
+        let paymentComponentBuilder: DropInPaymentComponentBuilder = { paymentMethod in
+            try CheckoutComponentBuilder.build(
+                forAnyPaymentMethod: paymentMethod,
+                configuration: checkoutConfiguration,
+                sessionConfiguration: sessionConfiguration,
+                context: context
+            )
+        }
+        let dropInComponent = CheckoutComponentBuilder.buildDropIn(
             paymentMethods: paymentMethods,
+            configuration: checkoutConfiguration,
             context: context,
-            configuration: dropInConfiguration,
             actionComponentConfiguration: actionComponentConfiguration,
-            storedMethodManagementSource: .checkout(sessionManagementCapability),
-            paymentComponentBuilder: { paymentMethod in
-                try CheckoutComponentBuilder.build(
-                    forAnyPaymentMethod: paymentMethod,
-                    configuration: checkoutConfiguration,
-                    sessionConfiguration: sessionConfiguration,
-                    context: context
-                )
-            }
+            managementCapability: sessionManagementCapability,
+            paymentComponentBuilder: paymentComponentBuilder
         )
         dropInComponent.delegate = self
         return dropInComponent
