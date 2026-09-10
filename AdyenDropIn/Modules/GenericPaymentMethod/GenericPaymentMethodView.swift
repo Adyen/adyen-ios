@@ -35,6 +35,7 @@ internal struct GenericPaymentMethodView: View {
         .padding()
         .background(Color(uiColor: theme.colors.background))
         .disabled(viewModel.state == .loading)
+        .accessibilityIdentifier(GenericPaymentMethodAccessibilityIdentifier.screen)
         .task {
             viewModel.startPayment()
         }
@@ -48,14 +49,17 @@ internal struct GenericPaymentMethodView: View {
             theme: theme,
             size: Constants.logoSize
         )
+        .accessibilityIdentifier(GenericPaymentMethodAccessibilityIdentifier.logo)
     }
 
     private var descriptionView: some View {
         VStack(spacing: Constants.descriptionViewSpacing) {
             Text("\(viewModel.title)")
                 .font(Font(theme.elements.labels.title.font))
+                .accessibilityIdentifier(GenericPaymentMethodAccessibilityIdentifier.title)
             Text(viewModel.description)
                 .font(Font(theme.elements.labels.body.font))
+                .accessibilityIdentifier(GenericPaymentMethodAccessibilityIdentifier.description)
         }
         .foregroundStyle(Color(uiColor: theme.colors.text))
         .multilineTextAlignment(.center)
@@ -69,6 +73,16 @@ internal struct GenericPaymentMethodView: View {
             Text(viewModel.progressTitle)
                 .font(Font(theme.elements.labels.body.font))
                 .foregroundStyle(Color(uiColor: theme.colors.textSecondary))
+                .accessibilityIdentifier(GenericPaymentMethodAccessibilityIdentifier.progressTitle)
         }
     }
+}
+
+// swiftlint:disable:next type_name
+internal enum GenericPaymentMethodAccessibilityIdentifier {
+    internal static let screen = "genericPaymentMethod.screen"
+    internal static let logo = "genericPaymentMethod.logo"
+    internal static let title = "genericPaymentMethod.title"
+    internal static let description = "genericPaymentMethod.description"
+    internal static let progressTitle = "genericPaymentMethod.progressTitle"
 }
