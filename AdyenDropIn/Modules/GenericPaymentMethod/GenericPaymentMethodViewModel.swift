@@ -50,11 +50,13 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
 
     internal var description: String {
         // TODO: - Create localition key in Translation source file
+        // Key: checkout.dropin.generic.payment.method.description
         "You will be guided to the next step of the process."
     }
 
     internal var progressTitle: String {
         // TODO: - Create localition key in Translation source file
+        // Key: checkout.dropin.generic.payment.method.progress.title
         "Processing..."
     }
 
