@@ -7,7 +7,7 @@
 @testable import Adyen
 import Testing
 
-struct SubmitButtonTitlePolicyTests {
+struct AmountAwarePaymentStringsPolicyTests {
 
     // MARK: - Missing amount
 
@@ -17,7 +17,7 @@ struct SubmitButtonTitlePolicyTests {
         let sut = makeSUT()
 
         // When
-        let title = sut.title(with: nil, style: .immediate, nil)
+        let title = sut.payButtonTitle(with: nil, style: .immediate, nil)
 
         // Then
         #expect(title == "Pay")
@@ -30,7 +30,7 @@ struct SubmitButtonTitlePolicyTests {
         let localizationParameters = LocalizationParameters(enforcedLocale: "is-IS")
 
         // When
-        let title = sut.title(with: nil, style: .immediate, localizationParameters)
+        let title = sut.payButtonTitle(with: nil, style: .immediate, localizationParameters)
 
         // Then
         #expect(title == "Greiða")
@@ -45,7 +45,7 @@ struct SubmitButtonTitlePolicyTests {
         let amount = Amount(value: 1000, currencyCode: "EUR", localeIdentifier: "en_US")
 
         // When
-        let title = sut.title(with: amount, style: .immediate, nil)
+        let title = sut.payButtonTitle(with: amount, style: .immediate, nil)
 
         // Then
         #expect(title == "Pay €10.00")
@@ -59,7 +59,7 @@ struct SubmitButtonTitlePolicyTests {
         let localizationParameters = LocalizationParameters(enforcedLocale: "fr-FR")
 
         // When
-        let title = sut.title(with: amount, style: .immediate, localizationParameters)
+        let title = sut.payButtonTitle(with: amount, style: .immediate, localizationParameters)
 
         // Then
         #expect(title == "Payer 10,00 €")
@@ -73,7 +73,7 @@ struct SubmitButtonTitlePolicyTests {
         let localizationParameters = LocalizationParameters(enforcedLocale: "fr-FR")
 
         // When
-        let title = sut.title(with: amount, style: .immediate, localizationParameters)
+        let title = sut.payButtonTitle(with: amount, style: .immediate, localizationParameters)
 
         // Then
         #expect(title == "Payer €10.00")
@@ -91,7 +91,7 @@ struct SubmitButtonTitlePolicyTests {
         let amount = Amount(value: 0, currencyCode: "EUR")
 
         // When
-        let title = sut.title(with: amount, style: style, nil)
+        let title = sut.payButtonTitle(with: amount, style: style, nil)
 
         // Then
         #expect(title == expectedTitle)
@@ -105,7 +105,7 @@ struct SubmitButtonTitlePolicyTests {
         let localizationParameters = LocalizationParameters(enforcedLocale: "is-IS")
 
         // When
-        let title = sut.title(with: amount, style: .immediate, localizationParameters)
+        let title = sut.payButtonTitle(with: amount, style: .immediate, localizationParameters)
 
         // Then
         #expect(title == "Staðfesta greiðsluheimild")
@@ -119,7 +119,7 @@ struct SubmitButtonTitlePolicyTests {
         let localizationParameters = LocalizationParameters(enforcedLocale: "is-IS")
 
         // When
-        let title = sut.title(
+        let title = sut.payButtonTitle(
             with: amount,
             style: .needsRedirectToThirdParty("PayPal"),
             localizationParameters
@@ -129,7 +129,7 @@ struct SubmitButtonTitlePolicyTests {
         #expect(title == "Heimila greiðslu með PayPal")
     }
 
-    private func makeSUT() -> SubmitButtonTitlePolicy.Type {
-        SubmitButtonTitlePolicy.self
+    private func makeSUT() -> AmountAwarePaymentStringsPolicy.Type {
+        AmountAwarePaymentStringsPolicy.self
     }
 }

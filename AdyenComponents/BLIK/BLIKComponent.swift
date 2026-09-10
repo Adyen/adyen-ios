@@ -109,7 +109,7 @@ package final class BLIKComponent: PresentablePaymentComponent, LoadingComponent
         let buttonStylePrimary = configuration.theme.elements.buttons.primary
         let item = FormButtonItem(buttonStyle: buttonStylePrimary)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
-        item.title = SubmitButtonTitlePolicy.title(
+        item.title = AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: context.amount,
             style: .immediate,
             configuration.localizationParameters

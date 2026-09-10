@@ -242,7 +242,7 @@ package final class ACHDirectDebitComponent: PresentablePaymentComponent,
             scopeInstance: self,
             postfix: ViewIdentifier.payButtonItem
         )
-        item.title = SubmitButtonTitlePolicy.title(
+        item.title = AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: context.amount,
             style: .immediate,
             configuration.localizationParameters
