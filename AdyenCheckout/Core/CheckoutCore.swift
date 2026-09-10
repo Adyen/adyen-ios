@@ -148,7 +148,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
             context: context,
             configuration: dropInConfiguration,
             actionComponentConfiguration: actionComponentConfiguration,
-            storedPaymentMethodManagementCapability: sessionManagementCapability,
+            storedMethodManagementSource: .checkout(sessionManagementCapability),
             paymentComponentBuilder: { paymentMethod in
                 try CheckoutComponentBuilder.build(
                     forAnyPaymentMethod: paymentMethod,

@@ -79,6 +79,7 @@ final class CheckoutCoreDropInTests: XCTestCase {
         let sut = makeAdvancedCheckoutCore(paymentMethods: paymentMethods)
 
         let dropIn = try XCTUnwrap(sut.createDropIn())
+        dropIn.storedPaymentMethodsDelegate = sut
 
         XCTAssertNil(dropIn.storedPaymentMethodManagementCapability)
     }
