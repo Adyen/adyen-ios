@@ -6,7 +6,9 @@
 
 import Foundation
 
-internal protocol GenericPaymentMethodRouting: AnyObject {}
+internal protocol GenericPaymentMethodRouting: AnyObject {
+    func present(actionViewController: UIViewController)
+}
 
 internal class GenericPaymentMethodRouter: Router, GenericPaymentMethodRouting {
 
@@ -26,4 +28,8 @@ internal class GenericPaymentMethodRouter: Router, GenericPaymentMethodRouting {
     }
 
     // MARK: - GenericPaymentMethodRouting
+
+    internal func present(actionViewController: UIViewController) {
+        rootViewController.navigationController?.presentViewController(actionViewController, animated: true)
+    }
 }

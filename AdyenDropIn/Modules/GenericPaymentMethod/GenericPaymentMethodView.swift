@@ -6,19 +6,26 @@
 
 import SwiftUI
 
-struct GenericPaymentMethodView: View {
+internal struct GenericPaymentMethodView: View {
 
     // MARK: - Properties
 
-    @ObservedObject var viewModel: GenericPaymentMethodViewModel
+    @ObservedObject internal var viewModel: GenericPaymentMethodViewModel
 
     // MARK: - Body
-    var body: some View {
+
+    internal var body: some View {
         VStack {
+            AsyncImage(url: <#T##URL?#>)
             Text("Logo")
             Text("\(viewModel.paymentMethodName)")
             Text("Description")
             Text("Loading")
+
+            ProgressView()
+                .task {
+                    viewModel.startPayment()
+                }
         }
     }
 }

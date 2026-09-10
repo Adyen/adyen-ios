@@ -7,6 +7,7 @@
 import Adyen
 import Foundation
 
+@MainActor
 internal class GenericPaymentMethodViewModel: ObservableObject {
 
     internal enum State {
@@ -20,7 +21,7 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
     private let dropInFlowManager: DropInFlowManaging
     internal weak var router: GenericPaymentMethodRouting?
 
-    @Published var state: State = .idle
+    @Published internal var state: State = .idle
 
     // MARK: - Initializers
 
@@ -30,10 +31,53 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
     ) {
         self.component = component
         self.dropInFlowManager = dropInFlowManager
+
+        self.component.delegate = self
     }
 
     internal var paymentMethodName: String {
         component.paymentMethod.name
     }
 
+    // MARK: - Public
+
+    internal func startPayment() {
+        component.performSubmit()
+    }
+}
+
+// MARK: - PaymentComponentDelegate
+
+extension GenericPaymentMethodViewModel: PaymentComponentDelegate {
+
+    internal func didSubmit(
+        _ data: PaymentComponentData,
+        from component: any PaymentComponent
+    ) {
+        dropInFlowManager.submit(data, from: component, actionPresenter: self)
+    }
+
+    internal func didFail(
+        with error: any Error,
+        from component: any PaymentComponent
+    ) {
+        defer {
+            state = .idle
+        }
+
+        dropInFlowManager.fail(with: error, from: component)
+    }
+}
+
+// MARK: - ActionPresenter
+
+extension GenericPaymentMethodViewModel: ActionPresenter {
+
+    internal func present(actionViewController: UIViewController) {
+        router?.present(actionViewController: actionViewController)
+    }
+
+    internal func didCancel(actionComponent: any ActionComponent) {
+        state = .idle
+    }
 }
