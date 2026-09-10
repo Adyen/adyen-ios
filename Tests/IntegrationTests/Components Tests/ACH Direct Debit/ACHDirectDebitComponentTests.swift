@@ -69,7 +69,7 @@ class ACHDirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.payButton.title, AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: sut.context.amount,
             style: .immediate,
-            sut.configuration.localizationParameters
+            localizationParameters: sut.configuration.localizationParameters
         ))
     }
     

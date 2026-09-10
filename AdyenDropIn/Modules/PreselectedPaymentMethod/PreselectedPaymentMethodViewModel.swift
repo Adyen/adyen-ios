@@ -110,7 +110,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
         AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: component.context.amount,
             style: .immediate,
-            localizationParameters
+            localizationParameters: localizationParameters
         )
     }
 

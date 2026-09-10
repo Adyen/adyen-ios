@@ -268,7 +268,7 @@ extension CardViewController {
             item.title = AmountAwarePaymentStringsPolicy.payButtonTitle(
                 with: amount,
                 style: .immediate,
-                localizationParameters
+                localizationParameters: localizationParameters
             )
             return item
         }()

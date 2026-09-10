@@ -17,14 +17,14 @@ package enum AmountAwarePaymentStringsPolicy {
     package static func payButtonTitle(
         with amount: Amount?,
         style: PaymentStyle,
-        _ localizationParameters: LocalizationParameters?
+        localizationParameters: LocalizationParameters?
     ) -> String {
         guard var amount else {
             return localizedString(.submitButton, localizationParameters)
         }
 
         if amount.value == 0 {
-            return zeroPaymentButtonTitle(style: style, localizationParameters)
+            return zeroPaymentButtonTitle(style: style, localizationParameters: localizationParameters)
         }
 
         amount.localeIdentifier = amount.localeIdentifier ?? localizationParameters?.locale
@@ -33,7 +33,7 @@ package enum AmountAwarePaymentStringsPolicy {
 
     private static func zeroPaymentButtonTitle(
         style: PaymentStyle,
-        _ localizationParameters: LocalizationParameters?
+        localizationParameters: LocalizationParameters?
     ) -> String {
         switch style {
         case let .needsRedirectToThirdParty(name):

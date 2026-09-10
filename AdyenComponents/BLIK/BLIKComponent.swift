@@ -112,7 +112,7 @@ package final class BLIKComponent: PresentablePaymentComponent, LoadingComponent
         item.title = AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: context.amount,
             style: .immediate,
-            configuration.localizationParameters
+            localizationParameters: configuration.localizationParameters
         )
         item.buttonSelectionHandler = { [weak self] in
             self?.performSubmit()
