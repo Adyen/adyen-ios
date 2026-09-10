@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenUI
 import SwiftUI
 
 internal struct GenericPaymentMethodView: View {
@@ -11,12 +12,13 @@ internal struct GenericPaymentMethodView: View {
     // MARK: - Properties
 
     @ObservedObject internal var viewModel: GenericPaymentMethodViewModel
+    internal let theme: CheckoutTheme
 
     // MARK: - Body
 
     internal var body: some View {
         VStack {
-            AsyncImage(url: <#T##URL?#>)
+            AsyncImage(url: viewModel.paymentMethodLogoURL)
             Text("Logo")
             Text("\(viewModel.paymentMethodName)")
             Text("Description")

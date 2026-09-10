@@ -4,6 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import AdyenUI
 import Foundation
 import SwiftUI
 
@@ -20,11 +21,19 @@ internal struct GenericPaymentMethodAssembler: GenericPaymentMethodAssemblerProt
     // MARK: - Properties
 
     private let dropInFlowManager: DropInFlowManaging
+    private let logoURLProvider: LogoURLProvider
+    private let theme: CheckoutTheme
 
     // MARK: - Initializers
 
-    internal init(dropInFlowManager: DropInFlowManaging) {
+    internal init(
+        dropInFlowManager: DropInFlowManaging,
+        logoURLProvider: LogoURLProvider,
+        theme: CheckoutTheme
+    ) {
         self.dropInFlowManager = dropInFlowManager
+        self.logoURLProvider = logoURLProvider
+        self.theme = theme
     }
 
     // MARK: - GenericPaymentMethodAssemblerProtocol
@@ -34,9 +43,10 @@ internal struct GenericPaymentMethodAssembler: GenericPaymentMethodAssemblerProt
     ) -> Router {
         let viewModel = GenericPaymentMethodViewModel(
             component: component,
-            dropInFlowManager: dropInFlowManager
+            dropInFlowManager: dropInFlowManager,
+            logoUrlProvider: logoURLProvider
         )
-        let genericPaymentMethodView = GenericPaymentMethodView(viewModel: viewModel)
+        let genericPaymentMethodView = GenericPaymentMethodView(viewModel: viewModel, theme: theme)
         let genericPaymentMethodViewController = UIHostingController(rootView: genericPaymentMethodView)
 
         let router = GenericPaymentMethodRouter(viewController: genericPaymentMethodViewController)

@@ -86,6 +86,10 @@ internal struct DropInAssembler {
         configuration.resolvedLocalizationParameters ?? LocalizationParameters()
     }
 
+    private func resolveLogoURLProvider() -> LogoURLProvider {
+        LogoURLProvider(environment: context.apiContext.environment)
+    }
+
     private var preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
         PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssembler,
@@ -100,13 +104,13 @@ internal struct DropInAssembler {
     private var paymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         PaymentMethodListAssembler(
             componentContainerAssembler: componentContainerAssembler,
-            genericPaymentMethodAssembler: genericPaymentMethodAssembler,
             componentManager: componentManager,
             context: context,
             localizationParameters: resolveLocalizationParameters(),
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
             theme: configuration.theme,
+            logoURLProvider: resolveLogoURLProvider(),
             partialPaymentDelegate: partialPaymentDelegate,
             storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability
         )
@@ -118,9 +122,5 @@ internal struct DropInAssembler {
             dropInFlowManager: dropInFlowManager,
             partialPaymentDelegate: partialPaymentDelegate
         )
-    }
-
-    private var genericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol {
-        GenericPaymentMethodAssembler(dropInFlowManager: dropInFlowManager)
     }
 }

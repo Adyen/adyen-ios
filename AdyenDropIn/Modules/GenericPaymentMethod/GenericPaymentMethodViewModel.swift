@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import AdyenUI
 import Foundation
 
 @MainActor
@@ -19,6 +20,7 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
 
     private let component: PaymentComponent
     private let dropInFlowManager: DropInFlowManaging
+    private let logoUrlProvider: LogoURLProvider
     internal weak var router: GenericPaymentMethodRouting?
 
     @Published internal var state: State = .idle
@@ -27,16 +29,23 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
 
     internal init(
         component: PaymentComponent,
-        dropInFlowManager: DropInFlowManaging
+        dropInFlowManager: DropInFlowManaging,
+        logoUrlProvider: LogoURLProvider
     ) {
         self.component = component
         self.dropInFlowManager = dropInFlowManager
+        self.logoUrlProvider = logoUrlProvider
 
         self.component.delegate = self
     }
 
     internal var paymentMethodName: String {
         component.paymentMethod.name
+    }
+
+    internal var paymentMethodLogoURL: URL {
+        let logoName = component.paymentMethod.type.rawValue
+        return logoUrlProvider.logoURL(withName: logoName)
     }
 
     // MARK: - Public
