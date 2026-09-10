@@ -53,7 +53,6 @@ internal final class GenericPaymentComponentAdvancedFlow: InitialDataAdvancedFlo
     private func genericPaymentComponent(from paymentMethods: PaymentMethods) async throws -> CheckoutPaymentComponent {
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
-            amount: ConfigurationConstants.current.amount,
             clientKey: ConfigurationConstants.clientKey,
             analyticsConfiguration: .init(
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled

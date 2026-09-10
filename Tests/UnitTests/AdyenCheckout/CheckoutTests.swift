@@ -40,7 +40,6 @@ final class CheckoutTests: XCTestCase {
         mockProvider = CheckoutProviderMock()
         configuration = CheckoutConfiguration(
             apiContext: Dummy.apiContext,
-            amount: Dummy.amount,
             analyticsApiContext: nil,
             analyticsConfiguration: .init()
         )
