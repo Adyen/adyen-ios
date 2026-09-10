@@ -8,6 +8,7 @@ import Foundation
 
 internal protocol GenericPaymentMethodRouting: AnyObject {
     func present(actionViewController: UIViewController)
+    func dismiss()
 }
 
 internal class GenericPaymentMethodRouter: Router, GenericPaymentMethodRouting {
@@ -31,5 +32,9 @@ internal class GenericPaymentMethodRouter: Router, GenericPaymentMethodRouting {
 
     internal func present(actionViewController: UIViewController) {
         rootViewController.navigationController?.presentViewController(actionViewController, animated: true)
+    }
+
+    internal func dismiss() {
+        rootViewController.navigationController?.popViewController(animated: true)
     }
 }

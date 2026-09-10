@@ -32,10 +32,21 @@ internal struct GenericPaymentMethodView: View {
             progressView
                 .padding(.top, Constants.progressViewBottomPadding)
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    viewModel.dismiss()
+                } label: {
+                    Image(systemName: "chevron.backward")
+                }
+                .disabled(viewModel.state == .loading)
+            }
+        }
         .padding()
         .background(Color(uiColor: theme.colors.background))
         .disabled(viewModel.state == .loading)
         .accessibilityIdentifier(GenericPaymentMethodAccessibilityIdentifier.screen)
+        .navigationBarBackButtonHidden(true)
         .task {
             viewModel.startPayment()
         }

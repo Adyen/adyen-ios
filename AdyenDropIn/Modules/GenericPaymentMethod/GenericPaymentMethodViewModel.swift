@@ -62,16 +62,19 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
 
     // MARK: - Public
 
-    internal func startPayment() {
-        state = .loading
-        component.performSubmit()
-    }
-
     internal var paymentMethodLogoURL: URL {
         let logoName = component.paymentMethod.type.rawValue
         return logoUrlProvider.logoURL(withName: logoName)
     }
 
+    internal func startPayment() {
+        state = .loading
+        component.performSubmit()
+    }
+
+    internal func dismiss() {
+        router?.dismiss()
+    }
 }
 
 // MARK: - PaymentComponentDelegate
