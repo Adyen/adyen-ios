@@ -12,28 +12,28 @@ package enum PaymentStyle {
     case immediate
 }
 
-package enum SubmitButtonTitlePolicy {
+package enum AmountAwarePaymentStringsPolicy {
 
-    package static func title(
+    package static func payButtonTitle(
         with amount: Amount?,
         style: PaymentStyle,
-        _ localizationParameters: LocalizationParameters?
+        localizationParameters: LocalizationParameters?
     ) -> String {
         guard var amount else {
             return localizedString(.submitButton, localizationParameters)
         }
 
         if amount.value == 0 {
-            return zeroPaymentTitle(style: style, localizationParameters)
+            return zeroPaymentButtonTitle(style: style, localizationParameters: localizationParameters)
         }
 
         amount.localeIdentifier = amount.localeIdentifier ?? localizationParameters?.locale
         return localizedString(.submitButtonFormatted, localizationParameters, amount.formatted)
     }
 
-    private static func zeroPaymentTitle(
+    private static func zeroPaymentButtonTitle(
         style: PaymentStyle,
-        _ localizationParameters: LocalizationParameters?
+        localizationParameters: LocalizationParameters?
     ) -> String {
         switch style {
         case let .needsRedirectToThirdParty(name):

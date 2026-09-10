@@ -107,10 +107,10 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     }
 
     internal var submitButtonTitle: String {
-        SubmitButtonTitlePolicy.title(
+        AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: component.context.amount,
             style: .immediate,
-            localizationParameters
+            localizationParameters: localizationParameters
         )
     }
 
