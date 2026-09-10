@@ -27,29 +27,34 @@ internal struct GenericPaymentMethodView: View {
 
     internal var body: some View {
         VStack {
-            AsyncImage(url: viewModel.paymentMethodLogoURL) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-                    .clipShape(RoundedRectangle(cornerRadius: theme.attributes.cornerRadius))
-            } placeholder: {
-                ProgressView()
-            }
-            .frame(width: Constants.logoFrame.width, height: Constants.logoFrame.height)
-
+            logoView
             descriptionView
-
             progressView
                 .padding(.top, Constants.progressViewBottomPadding)
         }
         .padding()
         .background(Color(uiColor: theme.colors.background))
+        .disabled(viewModel.state == .loading)
         .task {
             viewModel.startPayment()
         }
     }
 
     // MARK: - Private
+
+    private var logoView: some View {
+        AsyncImage(url: viewModel.paymentMethodLogoURL) { image in
+            image
+                .resizable()
+                .scaledToFill()
+                .clipShape(RoundedRectangle(cornerRadius: theme.attributes.cornerRadius))
+        } placeholder: {
+            ProgressView()
+                .foregroundStyle(Color(uiColor: theme.colors.textSecondary))
+        }
+        .frame(width: Constants.logoFrame.width, height: Constants.logoFrame.height)
+
+    }
 
     private var descriptionView: some View {
         VStack(spacing: Constants.descriptionViewSpacing) {

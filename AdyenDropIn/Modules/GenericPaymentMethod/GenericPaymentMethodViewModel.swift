@@ -61,6 +61,7 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
     // MARK: - Public
 
     internal func startPayment() {
+        state = .loading
         component.performSubmit()
     }
 
