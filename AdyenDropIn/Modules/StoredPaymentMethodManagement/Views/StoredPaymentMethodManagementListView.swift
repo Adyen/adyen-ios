@@ -150,8 +150,7 @@ private extension StoredPaymentMethodManagementListView {
 
         private enum Constants {
             static let itemSpacing: CGFloat = 16
-            static let logoWidth: CGFloat = 40
-            static let logoHeight: CGFloat = 26
+            static let logoSize: CGSize = .init(width: 40, height: 26)
             static let verticalPadding: CGFloat = 12
         }
 
@@ -168,10 +167,10 @@ private extension StoredPaymentMethodManagementListView {
                         if isRemoving {
                             CircularProgressView(theme: theme, size: 24, lineWidth: 2.5)
                         } else {
-                            LogoView(url: item.logoURL)
+                            PaymentLogoView(url: item.logoURL, theme: theme, size: Constants.logoSize)
                         }
                     }
-                    .frame(width: Constants.logoWidth, height: Constants.logoHeight)
+                    .frame(width: Constants.logoSize.width, height: Constants.logoSize.height)
 
                     VStack(alignment: .leading, spacing: 2) {
                         Text(item.title)

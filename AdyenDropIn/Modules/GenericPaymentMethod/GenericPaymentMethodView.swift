@@ -10,7 +10,7 @@ import SwiftUI
 internal struct GenericPaymentMethodView: View {
 
     private enum Constants {
-        static let logoFrame = CGSize(width: 80, height: 52)
+        static let logoSize = CGSize(width: 80, height: 52)
         static let descriptionViewSpacing: CGFloat = 16
         static let descriptionViewTopPadding: CGFloat = 32
 
@@ -43,17 +43,11 @@ internal struct GenericPaymentMethodView: View {
     // MARK: - Private
 
     private var logoView: some View {
-        AsyncImage(url: viewModel.paymentMethodLogoURL) { image in
-            image
-                .resizable()
-                .scaledToFill()
-                .clipShape(RoundedRectangle(cornerRadius: theme.attributes.cornerRadius))
-        } placeholder: {
-            ProgressView()
-                .foregroundStyle(Color(uiColor: theme.colors.textSecondary))
-        }
-        .frame(width: Constants.logoFrame.width, height: Constants.logoFrame.height)
-
+        PaymentLogoView(
+            url: viewModel.paymentMethodLogoURL,
+            theme: theme,
+            size: Constants.logoSize
+        )
     }
 
     private var descriptionView: some View {
