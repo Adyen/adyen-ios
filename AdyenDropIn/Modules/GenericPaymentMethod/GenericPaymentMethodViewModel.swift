@@ -4,7 +4,7 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
+@_spi(AdyenInternal) import Adyen
 import AdyenUI
 import Foundation
 
@@ -49,15 +49,11 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
     }
 
     internal var description: String {
-        // TODO: - Create localition key in Translation source file
-        // Key: checkout.dropin.generic.payment.method.description
-        "You will be guided to the next step of the process."
+        localizedString(.checkoutDropinGenericPaymentMethodDescription, localizationParameters)
     }
 
     internal var progressTitle: String {
-        // TODO: - Create localition key in Translation source file
-        // Key: checkout.dropin.generic.payment.method.progress.title
-        "Processing..."
+        localizedString(.checkoutDropinGenericPaymentMethodProgressTitle, localizationParameters)
     }
 
     // MARK: - Public
