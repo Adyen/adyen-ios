@@ -5,7 +5,9 @@
 //
 
 import Adyen
-import AdyenDropIn
+#if canImport(AdyenDropIn)
+    import AdyenDropIn
+#endif
 
 extension CheckoutCore {
 
