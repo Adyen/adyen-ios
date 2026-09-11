@@ -192,48 +192,6 @@ internal func resolvedLocalizedStringIfAvailable(_ localizedString: String?, for
     return localizedString
 }
 
-package enum PaymentStyle {
-    case needsRedirectToThirdParty(String)
-
-    case immediate
-}
-
-/// Builds the localized submit button title using the same fallback chain as `localizedString(_:_:_:)`.
-///
-/// - Parameter amount: The amount to include in the submit button title.
-/// - Parameter paymentMethodName: The payment method name.
-/// - Parameter parameters: The localization parameters.
-package func localizedSubmitButtonTitle(
-    with amount: Amount?,
-    style: PaymentStyle,
-    _ parameters: LocalizationParameters?
-) -> String {
-    guard let amount else {
-        return localizedString(.submitButton, parameters)
-    }
-
-    if amount.value == 0 {
-        return localizedZeroPaymentAuthorisationButtonTitle(style: style, parameters)
-    }
-
-    var tempAmount = amount
-    tempAmount.localeIdentifier = amount.localeIdentifier ?? parameters?.locale
-    return localizedString(.submitButtonFormatted, parameters, tempAmount.formatted)
-}
-
-/// Handles the zero-amount submit button variants while keeping the same localization fallback chain.
-private func localizedZeroPaymentAuthorisationButtonTitle(
-    style: PaymentStyle,
-    _ parameters: LocalizationParameters?
-) -> String {
-    switch style {
-    case let .needsRedirectToThirdParty(name):
-        return localizedString(.preauthorizeWith, parameters, name)
-    case .immediate:
-        return localizedString(.confirmPreauthorization, parameters)
-    }
-}
-
 extension [LocalizationInput] {
 
     /// Appends the key variants we currently support for a single bundle candidate.

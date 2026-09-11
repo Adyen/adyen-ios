@@ -130,14 +130,6 @@ class LocalizationTests: XCTestCase {
         XCTAssertEqual(localizedString(.submitButton, parameters), "Pay")
     }
 
-    // MARK: - Button title
-
-    func testLocalizationWitZeroPayment() {
-        XCTAssertEqual(localizedSubmitButtonTitle(with: Amount(value: 0, currencyCode: "EUR"), style: .needsRedirectToThirdParty("test_name"), nil), "Preauthorize with test_name")
-
-        XCTAssertEqual(localizedSubmitButtonTitle(with: Amount(value: 0, currencyCode: "EUR"), style: .immediate, nil), "Confirm preauthorization")
-    }
-    
     // MARK: - Custom Recognized TableName
     
     /// Default Separator
