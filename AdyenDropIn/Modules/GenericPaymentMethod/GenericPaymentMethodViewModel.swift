@@ -64,6 +64,7 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
     }
 
     internal func startPayment() {
+        guard state != .loading else { return }
         state = .loading
         component.performSubmit()
     }
