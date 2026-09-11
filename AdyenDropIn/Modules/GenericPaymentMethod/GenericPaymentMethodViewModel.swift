@@ -105,7 +105,9 @@ extension GenericPaymentMethodViewModel: PaymentComponentDelegate {
 extension GenericPaymentMethodViewModel: ActionPresenter {
 
     internal func present(actionViewController: UIViewController) {
-        router?.present(actionViewController: actionViewController)
+        router?.present(actionViewController: actionViewController) { [weak self] in
+            self?.state = .idle
+        }
     }
 
     internal func didCancel(actionComponent: any ActionComponent) {

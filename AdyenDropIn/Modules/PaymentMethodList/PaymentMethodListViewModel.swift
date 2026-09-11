@@ -138,13 +138,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
 
     internal func select(paymentMethod: PaymentMethod) {
         guard let component = componentManager.buildComponent(for: paymentMethod) else { return }
-
-        switch component.type {
-        case .regular, .stored:
-            router?.present(component: component)
-        case let .generic(genericPaymentComopnent):
-            router?.present(component: genericPaymentComopnent)
-        }
+        router?.present(component: component)
     }
 
     internal func remove(storedPaymentMethod: any StoredPaymentMethod) {

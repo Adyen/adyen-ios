@@ -18,6 +18,10 @@ internal struct GenericPaymentMethodView: View {
         static let progressViewBottomPadding: CGFloat = 64
     }
 
+    private enum Images {
+        static let backwardChevron = "chevron.backward"
+    }
+
     // MARK: - Properties
 
     @ObservedObject internal var viewModel: GenericPaymentMethodViewModel
@@ -37,7 +41,7 @@ internal struct GenericPaymentMethodView: View {
                 Button {
                     viewModel.dismiss()
                 } label: {
-                    Image(systemName: "chevron.backward")
+                    Image(systemName: Images.backwardChevron)
                 }
                 .disabled(viewModel.state == .loading)
             }

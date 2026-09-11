@@ -12,7 +12,7 @@ internal protocol GenericPaymentMethodRouterListener: AnyObject {
 }
 
 internal protocol GenericPaymentMethodRouting: AnyObject {
-    func present(actionViewController: UIViewController)
+    func present(actionViewController: UIViewController, onCancel: (() -> Void)?)
     func dismiss()
 }
 
@@ -36,8 +36,15 @@ internal class GenericPaymentMethodRouter: Router, GenericPaymentMethodRouting {
 
     // MARK: - GenericPaymentMethodRouting
 
-    internal func present(actionViewController: UIViewController) {
-        rootViewController.navigationController?.presentViewController(actionViewController, animated: true)
+    internal func present(
+        actionViewController: UIViewController,
+        onCancel: (() -> Void)?
+    ) {
+        let actionViewController = ActionPresentationHelper.viewController(
+            for: actionViewController,
+            onCancel: onCancel
+        )
+        rootViewController.present(actionViewController, animated: true)
     }
 
     internal func dismiss() {
