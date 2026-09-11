@@ -23,9 +23,9 @@ internal struct PaymentLogoView: View {
             image
                 .resizable()
                 .scaledToFit()
-                .clipShape(RoundedRectangle(cornerRadius: theme.attributes.cornerRadius))
+                .clipShape(RoundedRectangle(cornerRadius: AdyenUIConstants.imageCornerRadius))
         } placeholder: {
-            RoundedRectangle(cornerRadius: theme.attributes.cornerRadius)
+            RoundedRectangle(cornerRadius: AdyenUIConstants.imageCornerRadius)
                 .fill(Color(uiColor: theme.colors.disabled))
         }
         .frame(width: size.width, height: size.height)

@@ -91,21 +91,6 @@ private extension StoredPaymentMethodManagementListView {
         }
     }
 
-    struct LogoView: View {
-
-        let url: URL
-
-        var body: some View {
-            AsyncImage(url: url) { image in
-                image
-                    .resizable()
-                    .scaledToFit()
-            } placeholder: {
-                Color.clear
-            }
-        }
-    }
-
     struct SectionView: View {
 
         private enum Constants {
