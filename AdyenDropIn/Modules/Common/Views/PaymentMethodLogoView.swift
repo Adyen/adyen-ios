@@ -25,8 +25,8 @@ internal struct PaymentLogoView: View {
                 .scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: theme.attributes.cornerRadius))
         } placeholder: {
-            ProgressView()
-                .foregroundStyle(Color(uiColor: theme.colors.textSecondary))
+            RoundedRectangle(cornerRadius: theme.attributes.cornerRadius)
+                .fill(Color(uiColor: theme.colors.disabled))
         }
         .frame(width: size.width, height: size.height)
     }
