@@ -24,6 +24,9 @@ package class SearchViewController: UIViewController, AdyenObserver {
 
     internal let viewModel: ViewModel
     internal let emptyView: SearchResultsEmptyView
+
+    /// Optional view shown above the search bar (e.g. a title/description header).
+    internal let headerView: UIView?
     
     /// Delegate to handle different viewController events.
     package weak var delegate: ViewControllerDelegate?
@@ -37,10 +40,12 @@ package class SearchViewController: UIViewController, AdyenObserver {
     ///   - emptyView: The view (conforming to ``SearchResultsEmptyView``) to show when the search results are empty.
     package init(
         viewModel: ViewModel,
-        emptyView: SearchResultsEmptyView
+        emptyView: SearchResultsEmptyView,
+        headerView: UIView? = nil
     ) {
         self.emptyView = emptyView
         self.viewModel = viewModel
+        self.headerView = headerView
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -87,6 +92,11 @@ package class SearchViewController: UIViewController, AdyenObserver {
         searchBar.setContentCompressionResistancePriority(.required, for: .vertical)
         searchBar.setContentHuggingPriority(.required, for: .vertical)
         view.addSubview(searchBar)
+
+        if let headerView {
+            headerView.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(headerView)
+        }
         
         setupConstraints()
         
@@ -120,11 +130,30 @@ package class SearchViewController: UIViewController, AdyenObserver {
     }
     
     private func setupConstraints() {
+
+        let searchBarTopAnchor: NSLayoutYAxisAnchor
+        let searchBarTopSpacing: CGFloat
+        if let headerView {
+            // Keep the header at its content height so the results list, not the header, absorbs extra vertical space.
+            let headerHeightHug = headerView.heightAnchor.constraint(equalToConstant: 0)
+            headerHeightHug.priority = .defaultLow
+            NSLayoutConstraint.activate([
+                headerView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
+                headerView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+                headerView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+                headerHeightHug
+            ])
+            searchBarTopAnchor = headerView.bottomAnchor
+            searchBarTopSpacing = 8
+        } else {
+            searchBarTopAnchor = view.layoutMarginsGuide.topAnchor
+            searchBarTopSpacing = 0
+        }
         
         NSLayoutConstraint.activate([
             searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
-            searchBar.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 0),
+            searchBar.topAnchor.constraint(equalTo: searchBarTopAnchor, constant: searchBarTopSpacing),
             
             resultsListViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             resultsListViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),

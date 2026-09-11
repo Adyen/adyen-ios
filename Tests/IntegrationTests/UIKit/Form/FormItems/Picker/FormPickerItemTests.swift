@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @_spi(AdyenInternal) @testable import AdyenUI
+import UIKit
 import XCTest
 
 class FormPickerItemTests: XCTestCase {
@@ -108,5 +109,95 @@ class FormPickerItemTests: XCTestCase {
         wait(for: [updateFormattedValueException], timeout: 10)
         
         AdyenAssertion.listener = nil
+    }
+
+    func test_pickerItem_whenConfigurationOmitted_shouldDefaultToNoHeader() {
+        let formPickerItem = FormPickerItem<FormPickerElement>(
+            preselectedValue: nil,
+            selectableValues: [],
+            title: "",
+            placeholder: "",
+            style: .init(),
+            presenter: nil
+        )
+
+        XCTAssertNil(formPickerItem.configuration.header)
+    }
+
+    func test_pickerItem_whenConfigurationHasHeader_shouldPresentPickerWithHeader() throws {
+        let secondaryColor: UIColor = .purple
+        let theme = CheckoutTheme(colors: CheckoutColors(textSecondary: secondaryColor))
+        let presentationExpectation = expectation(description: "presenter.presentViewController was called")
+
+        var presentedViewController: UIViewController?
+        let presenter = PresenterMock(
+            present: { viewController, _ in
+                presentedViewController = viewController
+                presentationExpectation.fulfill()
+            },
+            dismiss: { _ in }
+        )
+
+        let formPickerItem = FormPickerItem<FormPickerElement>(
+            preselectedValue: nil,
+            selectableValues: [.init(identifier: "Identifier", title: "Title", subtitle: "Subtitle")],
+            title: "Installments",
+            placeholder: "",
+            style: .init(),
+            presenter: presenter,
+            configuration: .init(header: .init(title: "Installments", subtitle: "Split the total cost into monthly payments."))
+        )
+
+        // FormPickerItemView installs the selection handler that presents the picker.
+        _ = FormPickerItemView(item: formPickerItem, theme: theme)
+
+        formPickerItem.selectionHandler()
+
+        wait(for: [presentationExpectation], timeout: 10)
+
+        let pickerViewController = try XCTUnwrap(presentedViewController as? FormPickerSearchViewController<FormPickerElement>)
+        setupRootViewController(pickerViewController)
+
+        let searchViewController = try XCTUnwrap(pickerViewController.viewControllers.first as? SearchViewController)
+        let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
+        XCTAssertEqual(headerView.titleLabel.text, "Installments")
+        XCTAssertEqual(headerView.subtitleLabel.text, "Split the total cost into monthly payments.")
+        XCTAssertEqual(headerView.subtitleLabel.textColor, secondaryColor)
+        XCTAssertNil(searchViewController.title)
+    }
+
+    func test_pickerItem_whenConfigurationOmitted_shouldPresentPickerWithoutHeader() throws {
+        let presentationExpectation = expectation(description: "presenter.presentViewController was called")
+
+        var presentedViewController: UIViewController?
+        let presenter = PresenterMock(
+            present: { viewController, _ in
+                presentedViewController = viewController
+                presentationExpectation.fulfill()
+            },
+            dismiss: { _ in }
+        )
+
+        let formPickerItem = FormPickerItem<FormPickerElement>(
+            preselectedValue: nil,
+            selectableValues: [.init(identifier: "Identifier", title: "Title", subtitle: "Subtitle")],
+            title: "Country/Region",
+            placeholder: "",
+            style: .init(),
+            presenter: presenter
+        )
+
+        _ = FormPickerItemView(item: formPickerItem, theme: .default)
+
+        formPickerItem.selectionHandler()
+
+        wait(for: [presentationExpectation], timeout: 10)
+
+        let pickerViewController = try XCTUnwrap(presentedViewController as? FormPickerSearchViewController<FormPickerElement>)
+        setupRootViewController(pickerViewController)
+
+        let searchViewController = try XCTUnwrap(pickerViewController.viewControllers.first as? SearchViewController)
+        XCTAssertNil(searchViewController.headerView)
+        XCTAssertEqual(searchViewController.title, "Country/Region")
     }
 }
