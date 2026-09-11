@@ -46,6 +46,7 @@ internal struct GenericPaymentMethodView: View {
                 .disabled(viewModel.state == .loading)
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
         .background(Color(uiColor: theme.colors.background))
         .disabled(viewModel.state == .loading)
