@@ -5,11 +5,9 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
-@testable import AdyenActions
 @testable import AdyenCard
 @testable import AdyenCheckout
 @testable import AdyenComponents
-@testable import AdyenDropIn
 @_spi(AdyenInternal) @testable import AdyenUI
 import PassKit
 import XCTest
@@ -32,34 +30,6 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         super.tearDown()
     }
     
-    // MARK: - Drop-in Tests
-
-    func test_buildDropIn_shouldResolveCheckoutPresentationConfiguration() {
-        let provider = CheckoutLocalizationProviderMock(result: nil)
-        let theme = CheckoutTheme(colors: CheckoutColors(primary: .yellow))
-        checkoutConfiguration = checkoutConfiguration
-            .localizationProvider(provider)
-            .theme(theme)
-        checkoutConfiguration.dropInConfiguration = DropInConfiguration()
-            .hideStoredPaymentMethods(true)
-
-        let dropIn = CheckoutComponentBuilder.buildDropIn(
-            paymentMethods: PaymentMethods(regular: [], stored: []),
-            configuration: checkoutConfiguration,
-            context: context,
-            actionComponentConfiguration: .init(),
-            managementCapability: nil,
-            paymentComponentBuilder: { _ in
-                throw CheckoutError(code: .paymentMethodFailure, message: "Not used by this test.")
-            }
-        )
-
-        XCTAssertTrue(dropIn.configuration.hideStoredPaymentMethods)
-        XCTAssertEqual(dropIn.configuration.theme.colors.primary, .yellow)
-        XCTAssertTrue(dropIn.configuration.localizationProvider as AnyObject === provider)
-        XCTAssertNil(checkoutConfiguration.dropInConfiguration.localizationProvider)
-    }
-
     // MARK: - BLIK Component Tests
     
     func testBuild_WithBLIKPaymentMethod_ReturnsBLIKComponent() throws {

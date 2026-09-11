@@ -5,12 +5,6 @@
 //
 
 import Adyen
-#if canImport(AdyenActions)
-    import AdyenActions
-#endif
-#if canImport(AdyenDropIn)
-    import AdyenDropIn
-#endif
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
@@ -24,30 +18,6 @@ import Foundation
 
 package enum CheckoutComponentBuilder {
     
-    @MainActor
-    // swiftlint:disable:next function_parameter_count
-    package static func buildDropIn(
-        paymentMethods: PaymentMethods,
-        configuration: CheckoutConfiguration,
-        context: AdyenContext,
-        actionComponentConfiguration: CheckoutActionComponent.Configuration,
-        managementCapability: StoredPaymentMethodManagementCapability?,
-        paymentComponentBuilder: @escaping DropInPaymentComponentBuilder
-    ) -> DropInComponent {
-        var dropInConfiguration = configuration.dropInConfiguration
-        dropInConfiguration.theme = configuration.theme
-        dropInConfiguration.localizationProvider = configuration.localizationProvider
-
-        return DropInComponent(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: dropInConfiguration,
-            actionComponentConfiguration: actionComponentConfiguration,
-            storedMethodManagementSource: .checkout(managementCapability),
-            paymentComponentBuilder: paymentComponentBuilder
-        )
-    }
-
     @MainActor
     internal static func build(
         for paymentMethod: PaymentMethod,
