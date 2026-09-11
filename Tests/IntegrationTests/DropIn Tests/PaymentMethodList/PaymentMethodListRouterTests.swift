@@ -278,24 +278,28 @@ struct PaymentMethodListRouterTests {
     }
 
     @Test
-    func presentComponent_givenInitiableComponent_shouldNotPresentAnything() {
+    func presentComponent_givenGenericComponent_shouldPushGenericPaymentMethod() {
         // Given
         let navigationControllerSpy = NavigationControllerSpy()
+        let genericPaymentMethodRouter = RouterMock()
+        let genericPaymentMethodAssemblerSpy = GenericPaymentMethodAssemblerSpy(router: genericPaymentMethodRouter)
         let componentContainerAssemblerMock = makeComponentContainerAssembler()
         let sut = makeSUT(
             navigationController: navigationControllerSpy,
-            componentContainerAssembler: componentContainerAssemblerMock
+            componentContainerAssembler: componentContainerAssemblerMock,
+            genericPaymentMethodAssembler: genericPaymentMethodAssemblerSpy
         )
-        let initiablePaymentComponent = makeInitiablePaymentComponentMock()
+        let genericPaymentComponent = makeGenericPaymentComponentMock()
 
         // When
-        sut.present(component: initiablePaymentComponent)
+        sut.present(component: genericPaymentComponent)
 
-        // Then - initiable components are not presented by the router
-        #expect(navigationControllerSpy.pushViewControllerCallsCount == 0)
-        #expect(navigationControllerSpy.presentCallsCount == 0)
+        // Then - generic components are pushed via the generic payment method flow
+        #expect(genericPaymentMethodAssemblerSpy.resolveCallsCount == 1)
+        #expect(navigationControllerSpy.pushViewControllerCallsCount == 1)
+        #expect(navigationControllerSpy.capturedPushedViewController === genericPaymentMethodRouter.rootViewController)
         #expect(componentContainerAssemblerMock.resolveComponentContainerRouterForListenerCallsCount == 0)
-        #expect(sut.childRouter == nil)
+        #expect(sut.childRouter === genericPaymentMethodRouter)
     }
 
     @Test
@@ -320,12 +324,15 @@ struct PaymentMethodListRouterTests {
         navigationController: NavigationControllerSpy = NavigationControllerSpy(),
         listener: PaymentMethodListRouterListenerMock? = nil,
         componentContainerAssembler: ComponentContainerAssemblerProtocolMock? = nil,
+        genericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol? = nil,
         storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol? = nil,
         supportsStoredPaymentMethodManagement: Bool = true,
         onStoredPaymentMethodRemoved: @escaping (any StoredPaymentMethod) -> Void = { _ in }
     ) -> PaymentMethodListRouter {
         viewController.setNavigationController(navigationController)
         let componentContainerAssembler = componentContainerAssembler ?? makeComponentContainerAssembler()
+        let genericPaymentMethodAssembler = genericPaymentMethodAssembler
+            ?? GenericPaymentMethodAssemblerSpy(router: RouterMock())
         let storedPaymentMethodManagementAssembler = storedPaymentMethodManagementAssembler
             ?? StoredPaymentMethodManagementAssemblerSpy(router: RouterMock())
         let storedPaymentMethodManagementCapability = supportsStoredPaymentMethodManagement
@@ -337,6 +344,7 @@ struct PaymentMethodListRouterTests {
             navigationController: navigationController,
             listener: listener,
             componentContainerAssembler: componentContainerAssembler,
+            genericPaymentMethodAssembler: genericPaymentMethodAssembler,
             storedPaymentMethodManagementAssembler: storedPaymentMethodManagementAssembler,
             storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability,
             storedPaymentMethodsProvider: { [] },
@@ -374,7 +382,7 @@ struct PaymentMethodListRouterTests {
         )
     }
 
-    private func makeInitiablePaymentComponentMock() -> PaymentComponentMock {
+    private func makeGenericPaymentComponentMock() -> PaymentComponentMock {
         let paymentMethodMock = PaymentMethodMock(type: .applePay, name: "Apple Pay")
         return PaymentComponentMock(paymentMethod: paymentMethodMock)
     }
@@ -394,6 +402,25 @@ private final class StoredPaymentMethodManagementAssemblerSpy: StoredPaymentMeth
         paymentMethods: [any StoredPaymentMethod],
         capability: StoredPaymentMethodManagementCapability,
         listener: StoredPaymentMethodManagementListener
+    ) -> Router {
+        resolveCallsCount += 1
+        return router
+    }
+}
+
+@MainActor
+private final class GenericPaymentMethodAssemblerSpy: GenericPaymentMethodAssemblerProtocol {
+
+    private let router: Router
+    private(set) var resolveCallsCount = 0
+
+    init(router: Router) {
+        self.router = router
+    }
+
+    func resolveGenericPaymentMethodRouter(
+        for component: PaymentComponent,
+        listener: GenericPaymentMethodRouterListener
     ) -> Router {
         resolveCallsCount += 1
         return router
