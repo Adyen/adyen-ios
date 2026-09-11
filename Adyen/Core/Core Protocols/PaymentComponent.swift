@@ -20,7 +20,7 @@ package protocol StoredPaymentComponent: PresentablePaymentComponent {}
 package enum PaymentComponentType {
     case regular(PresentablePaymentComponent)
     case stored(StoredPaymentComponent)
-    case initiable(PaymentComponent)
+    case generic(PaymentComponent)
 }
 
 /// A component that handles the initial phase of getting payment details to initiate a payment.
@@ -54,7 +54,7 @@ package extension StoredPaymentComponent {
 package extension PaymentComponent {
 
     var type: PaymentComponentType {
-        .initiable(self)
+        .generic(self)
     }
 }
 

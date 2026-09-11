@@ -91,56 +91,6 @@ private extension StoredPaymentMethodManagementListView {
         }
     }
 
-    struct LogoView: View {
-
-        let url: URL
-
-        var body: some View {
-            AsyncImage(url: url) { image in
-                image
-                    .resizable()
-                    .scaledToFit()
-            } placeholder: {
-                Color.clear
-            }
-        }
-    }
-
-    struct CircularProgressView: View {
-
-        private enum Constants {
-            static let size: CGFloat = 24
-            static let lineWidth: CGFloat = 2.5
-            static let arcLength = 0.25
-            static let rotationDuration = 0.8
-        }
-
-        let theme: CheckoutTheme
-        @State private var isRotating = false
-
-        var body: some View {
-            ZStack {
-                Circle()
-                    .stroke(Color(uiColor: theme.colors.textOnDisabled).opacity(0.15), lineWidth: Constants.lineWidth)
-
-                Circle()
-                    .trim(from: 0, to: Constants.arcLength)
-                    .stroke(
-                        Color(uiColor: theme.colors.text),
-                        style: StrokeStyle(lineWidth: Constants.lineWidth, lineCap: .round)
-                    )
-                    .rotationEffect(.degrees(isRotating ? 360 : 0))
-            }
-            .frame(width: Constants.size, height: Constants.size)
-            .accessibilityHidden(true)
-            .onAppear {
-                withAnimation(.linear(duration: Constants.rotationDuration).repeatForever(autoreverses: false)) {
-                    isRotating = true
-                }
-            }
-        }
-    }
-
     struct SectionView: View {
 
         private enum Constants {
@@ -185,8 +135,7 @@ private extension StoredPaymentMethodManagementListView {
 
         private enum Constants {
             static let itemSpacing: CGFloat = 16
-            static let logoWidth: CGFloat = 40
-            static let logoHeight: CGFloat = 26
+            static let logoSize: CGSize = .init(width: 40, height: 26)
             static let verticalPadding: CGFloat = 12
         }
 
@@ -201,12 +150,12 @@ private extension StoredPaymentMethodManagementListView {
                 HStack(spacing: Constants.itemSpacing) {
                     Group {
                         if isRemoving {
-                            CircularProgressView(theme: theme)
+                            CircularProgressView(theme: theme, size: 24, lineWidth: 2.5)
                         } else {
-                            LogoView(url: item.logoURL)
+                            PaymentLogoView(url: item.logoURL, theme: theme, size: Constants.logoSize)
                         }
                     }
-                    .frame(width: Constants.logoWidth, height: Constants.logoHeight)
+                    .frame(width: Constants.logoSize.width, height: Constants.logoSize.height)
 
                     VStack(alignment: .leading, spacing: 2) {
                         Text(item.title)

@@ -15,7 +15,7 @@ class PaymentComponentMock: PaymentComponent {
     var delegate: PaymentComponentDelegate?
 
     var type: PaymentComponentType {
-        .initiable(self)
+        .generic(self)
     }
 
     init(paymentMethod: PaymentMethod) {

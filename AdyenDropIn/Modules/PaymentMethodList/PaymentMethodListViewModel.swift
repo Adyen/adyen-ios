@@ -15,7 +15,6 @@ import UIKit
 
 internal enum PaymentMethodListState {
     case idle
-    case loading
     case loaded(sections: [PaymentMethodSection])
 }
 
@@ -137,19 +136,9 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         router?.present(viewController: applePayViewController)
     }
 
-    private var initiablePaymentComponent: PaymentComponent?
     internal func select(paymentMethod: PaymentMethod) {
         guard let component = componentManager.buildComponent(for: paymentMethod) else { return }
-
-        switch component.type {
-        case .regular, .stored:
-            router?.present(component: component)
-        case let .initiable(initiablePaymentComponent):
-            self.initiablePaymentComponent = initiablePaymentComponent
-            state = .loading
-            initiablePaymentComponent.delegate = self
-            initiablePaymentComponent.performSubmit()
-        }
+        router?.present(component: component)
     }
 
     internal func remove(storedPaymentMethod: any StoredPaymentMethod) {
@@ -222,7 +211,6 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        initiablePaymentComponent = nil
         dropInFlowManager.submit(data, from: component, actionPresenter: self)
     }
 
@@ -232,7 +220,6 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
     ) {
         defer {
             state = .idle
-            initiablePaymentComponent = nil
         }
 
         if case ComponentError.cancelled = error {
