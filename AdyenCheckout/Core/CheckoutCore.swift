@@ -46,7 +46,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
     package let resultCallbacks: any CheckoutResultCallbackStore
     package let callbackHandler: any CheckoutCallbackHandling
 
-    internal lazy var actionHandlingComponent: ActionHandlingComponent = {
+    internal lazy var actionComponentConfiguration: CheckoutActionComponent.Configuration = {
         var authenticationConfiguration: AuthenticationConfiguration = configuration.configuration(
             for: .threeDS2,
             defaultValue: AuthenticationConfiguration(theme: configuration.theme)
@@ -55,15 +55,17 @@ package final class CheckoutCore: CheckoutCoreProtocol {
             mergingExistingParameters: authenticationConfiguration.localizationParameters
         )
 
-        let actionConfiguration = CheckoutActionComponent.Configuration(
+        return CheckoutActionComponent.Configuration(
             localizationParameters: configuration.resolvedCheckoutLocalizationParameters(),
             authentication: authenticationConfiguration,
             twint: configuration.configuration(for: .twint)
         )
+    }()
 
+    internal lazy var actionHandlingComponent: ActionHandlingComponent = {
         let actionHandlingComponent = CheckoutActionComponent(
             context: adyenContext,
-            configuration: actionConfiguration
+            configuration: actionComponentConfiguration
         )
         actionHandlingComponent.delegate = self
         actionHandlingComponent.presentationDelegate = presentationDelegate
@@ -129,11 +131,6 @@ package final class CheckoutCore: CheckoutCoreProtocol {
         )
         paymentComponent.delegate = self
         return CheckoutPaymentComponent(paymentComponent: paymentComponent)
-    }
-
-    package func createDropIn() -> DropInComponent? {
-        // TODO: dropin creation discussion with new changes
-        nil
     }
 
     package func handle(action: Action) {
