@@ -5,6 +5,7 @@
 //
 
 import AdyenActions
+import AdyenCheckout
 import AdyenComponents
 import AdyenDropIn
 
@@ -52,33 +53,53 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
     // MARK: - Presentation
 
     private func presentComponent(with paymentMethods: PaymentMethods) {
-        let dropIn = dropInComponent(from: paymentMethods)
-        presenter?.present(viewController: dropIn.viewController, completion: nil)
-        dropInComponent = dropIn
+        do {
+            let dropIn = try dropInComponent(from: paymentMethods)
+            presenter?.present(viewController: dropIn.viewController, completion: nil)
+            dropInComponent = dropIn
+        } catch {
+            presenter?.presentAlert(with: error, retryHandler: nil)
+        }
     }
 
-    private func dropInComponent(from paymentMethods: PaymentMethods) -> DropInComponent {
-        let configuration = dropInConfiguration(from: paymentMethods)
+    private func dropInComponent(from paymentMethods: PaymentMethods) throws -> DropInComponent {
         guard let context else {
             fatalError("AdyenContext not initialized")
         }
+
+        let configuration = try CheckoutConfiguration(
+            environment: ConfigurationConstants.componentsEnvironment,
+            amount: ConfigurationConstants.current.amount,
+            clientKey: ConfigurationConstants.clientKey,
+            analyticsConfiguration: ConfigurationConstants.current.analyticsConfiguration
+        ) {
+            ConfigurationConstants.current.cardConfiguration
+            try ConfigurationConstants.current.applePayConfiguration(using: .demo)
+            ConfigurationConstants.current.dropInConfiguration
+        }
+        .theme(ConfigurationConstants.current.themeSettings.theme.theme)
+
+        // TODO: intermediate dropin creation for demo app, to be replaced next
         let component = DropInComponent(
             paymentMethods: paymentMethods,
             context: context,
-            configuration: configuration,
+            configuration: configuration.dropInConfiguration,
             actionComponentConfiguration: ConfigurationConstants.current.dropInActionComponentConfiguration,
+            paymentComponentBuilder: { paymentMethod in
+                try CheckoutComponentBuilder.build(
+                    forAnyPaymentMethod: paymentMethod,
+                    configuration: configuration,
+                    context: context
+                )
+            },
             title: ConfigurationConstants.appName
         )
-        
+
         component.delegate = self
         component.partialPaymentDelegate = self
         component.storedPaymentMethodsDelegate = self
 
         return component
-    }
-
-    private func dropInConfiguration(from _: PaymentMethods) -> DropInConfiguration {
-        ConfigurationConstants.current.dropInConfiguration
     }
 
     // MARK: - Payment response handling
