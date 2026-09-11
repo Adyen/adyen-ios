@@ -11,7 +11,8 @@ import SwiftUI
 @MainActor
 internal protocol GenericPaymentMethodAssemblerProtocol {
     func resolveGenericPaymentMethodRouter(
-        for component: PaymentComponent
+        for component: PaymentComponent,
+        listener: GenericPaymentMethodRouterListener
     ) -> Router
 }
 
@@ -42,7 +43,8 @@ internal struct GenericPaymentMethodAssembler: GenericPaymentMethodAssemblerProt
     // MARK: - GenericPaymentMethodAssemblerProtocol
 
     internal func resolveGenericPaymentMethodRouter(
-        for component: PaymentComponent
+        for component: PaymentComponent,
+        listener: GenericPaymentMethodRouterListener
     ) -> Router {
         let viewModel = GenericPaymentMethodViewModel(
             component: component,
@@ -53,7 +55,10 @@ internal struct GenericPaymentMethodAssembler: GenericPaymentMethodAssemblerProt
         let genericPaymentMethodView = GenericPaymentMethodView(viewModel: viewModel, theme: theme)
         let genericPaymentMethodViewController = UIHostingController(rootView: genericPaymentMethodView)
 
-        let router = GenericPaymentMethodRouter(viewController: genericPaymentMethodViewController)
+        let router = GenericPaymentMethodRouter(
+            viewController: genericPaymentMethodViewController,
+            listener: listener
+        )
         viewModel.router = router
         return router
     }

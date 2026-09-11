@@ -178,7 +178,10 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     private func genericPaymentMethodViewController(
         for component: PaymentComponent
     ) -> UIViewController {
-        let genericPaymentMethodRouter = genericPaymentMethodAssembler.resolveGenericPaymentMethodRouter(for: component)
+        let genericPaymentMethodRouter = genericPaymentMethodAssembler.resolveGenericPaymentMethodRouter(
+            for: component,
+            listener: self
+        )
         childRouter = genericPaymentMethodRouter
         return genericPaymentMethodRouter.rootViewController
     }
@@ -191,6 +194,15 @@ extension PaymentMethodListRouter: ComponentContainerRouterListener {
     internal func didDismissComponentContainer(completion: (() -> Void)?) {
         childRouter = nil
         completion?()
+    }
+}
+
+// MARK: - GenericPaymentMethodRouterListener
+
+extension PaymentMethodListRouter: GenericPaymentMethodRouterListener {
+
+    internal func didDismissGenericPaymentMethod() {
+        childRouter = nil
     }
 }
 

@@ -6,6 +6,11 @@
 
 import Foundation
 
+@MainActor
+internal protocol GenericPaymentMethodRouterListener: AnyObject {
+    func didDismissGenericPaymentMethod()
+}
+
 internal protocol GenericPaymentMethodRouting: AnyObject {
     func present(actionViewController: UIViewController)
     func dismiss()
@@ -16,16 +21,17 @@ internal class GenericPaymentMethodRouter: Router, GenericPaymentMethodRouting {
     // MARK: - Properties
 
     internal let rootViewController: UIViewController
+    private weak var listener: GenericPaymentMethodRouterListener?
     internal private(set) var childRouter: Router?
 
     // MARK: - Initializers
 
     internal init(
         viewController: UIViewController,
-        childRouter: Router? = nil
+        listener: GenericPaymentMethodRouterListener
     ) {
         self.rootViewController = viewController
-        self.childRouter = childRouter
+        self.listener = listener
     }
 
     // MARK: - GenericPaymentMethodRouting
@@ -36,5 +42,6 @@ internal class GenericPaymentMethodRouter: Router, GenericPaymentMethodRouting {
 
     internal func dismiss() {
         rootViewController.navigationController?.popViewController(animated: true)
+        listener?.didDismissGenericPaymentMethod()
     }
 }
