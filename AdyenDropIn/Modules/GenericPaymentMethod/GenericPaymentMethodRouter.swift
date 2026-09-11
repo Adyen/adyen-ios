@@ -6,11 +6,13 @@
 
 import Foundation
 
+// sourcery:AutoMockable
 @MainActor
 internal protocol GenericPaymentMethodRouterListener: AnyObject {
     func didDismissGenericPaymentMethod()
 }
 
+// sourcery:AutoMockable
 internal protocol GenericPaymentMethodRouting: AnyObject {
     func present(actionViewController: UIViewController, onCancel: (() -> Void)?)
     func dismiss()

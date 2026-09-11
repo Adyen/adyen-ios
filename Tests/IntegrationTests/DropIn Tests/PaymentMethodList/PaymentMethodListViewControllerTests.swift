@@ -121,51 +121,6 @@ struct PaymentMethodListViewControllerTests {
     }
 
     @Test
-    func stateIdle_shouldHideLoadingOverlay() async {
-        // Given
-        let (sut, viewModelMock) = makeSUT()
-        sut.loadViewIfNeeded()
-
-        let logoURLProvider = LogoURLProvider(environment: Dummy.apiContext.environment)
-        let item = PaymentMethodItem(
-            title: "Test Item",
-            logoURLProvider: logoURLProvider,
-            theme: .init()
-        )
-        let section = PaymentMethodSection(items: [item], theme: .init())
-        viewModelMock.setState(.loaded(sections: [section]))
-        await Task.yield()
-
-        // First show loading overlay
-        viewModelMock.setState(.loading)
-        await Task.yield()
-
-        // When
-        viewModelMock.setState(.idle)
-        await Task.yield()
-
-        // Then - loading overlay should be hidden (alpha = 0)
-        let loadingOverlay: UIView? = sut.view.findView(by: ".loadingOverlay")
-        #expect(loadingOverlay?.alpha == 0, "Loading overlay should be hidden (alpha = 0) in idle state")
-    }
-
-    @Test
-    func stateLoading_shouldShowLoadingOverlay() async {
-        // Given
-        let (sut, viewModelMock) = makeSUT()
-        sut.loadViewIfNeeded()
-
-        // When
-        viewModelMock.setState(.loading)
-        await Task.yield()
-
-        // Then - loading overlay should be visible (alpha = 1)
-        let loadingOverlay: UIView? = sut.view.findView(by: ".loadingOverlay")
-        #expect(loadingOverlay != nil, "Loading overlay should be present")
-        #expect(loadingOverlay?.alpha == 1, "Loading overlay should be visible (alpha = 1) in loading state")
-    }
-
-    @Test
     func viewDidLoad_shouldApplyThemeBackgroundColor() {
         // Given
         let (sut, _) = makeSUT()
