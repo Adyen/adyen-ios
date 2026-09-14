@@ -9,12 +9,6 @@ import Testing
 
 struct AmountAwarePaymentStringsPolicyTests {
 
-    /// Every `PaymentStyle` case. Used to prove behaviour across the full enum.
-    private static let allPaymentStyles: [PaymentStyle] = [
-        .immediate,
-        .needsRedirectToThirdParty("PayPal")
-    ]
-
     // MARK: - Supported locales
 
     /// The pay button title with an amount for every localization bundle shipped with the SDK.
@@ -64,7 +58,7 @@ struct AmountAwarePaymentStringsPolicyTests {
         let localizationParameters = LocalizationParameters(enforcedLocale: localeIdentifier)
 
         // When
-        let title = sut.payButtonTitle(with: amount, style: .immediate, localizationParameters: localizationParameters)
+        let title = sut.payButtonTitle(with: amount, localizationParameters: localizationParameters)
 
         // Then
         #expect(title == expectedTitle)
@@ -118,23 +112,23 @@ struct AmountAwarePaymentStringsPolicyTests {
         let bundle = LocalizationParameters(enforcedLocale: "en-US")
 
         // When
-        let title = sut.payButtonTitle(with: amount, style: .immediate, localizationParameters: bundle)
+        let title = sut.payButtonTitle(with: amount, localizationParameters: bundle)
 
         // Then
         #expect(title == expectedTitle)
     }
 
-    // MARK: - Missing amount (payment style must be ignored)
+    // MARK: - Missing amount
 
-    @Test(arguments: allPaymentStyles)
-    func nilAmount_forAnyStyle_when_resolvingTitle_then_returnsDefaultSubmitTitle(style: PaymentStyle) {
+    @Test
+    func nilAmount_when_resolvingTitle_then_returnsDefaultSubmitTitle() {
         // Given
         let sut = makeSUT()
 
         // When
-        let title = sut.payButtonTitle(with: nil, style: style, localizationParameters: nil)
+        let title = sut.payButtonTitle(with: nil, localizationParameters: nil)
 
-        // Then - the style is irrelevant when there is no amount
+        // Then
         #expect(title == "Pay")
     }
 
@@ -168,57 +162,31 @@ struct AmountAwarePaymentStringsPolicyTests {
         let localizationParameters = scenario.bundleLocale.map { LocalizationParameters(enforcedLocale: $0) }
 
         // When
-        let title = sut.payButtonTitle(with: amount, style: .immediate, localizationParameters: localizationParameters)
+        let title = sut.payButtonTitle(with: amount, localizationParameters: localizationParameters)
 
         // Then
         #expect(title == scenario.expectedTitle)
     }
 
-    @Test(arguments: allPaymentStyles)
-    func nonZeroAmount_forAnyStyle_when_resolvingTitle_then_returnsFormattedSubmitTitle(style: PaymentStyle) {
-        // Given
-        let sut = makeSUT()
-        let amount = Amount(value: 1000, currencyCode: "EUR", localeIdentifier: "en_US")
+    // MARK: - Zero amount
 
-        // When
-        let title = sut.payButtonTitle(with: amount, style: style, localizationParameters: nil)
-
-        // Then - the style is irrelevant for a positive amount
-        #expect(title == "Pay €10.00")
-    }
-
-    // MARK: - Zero amount (payment style selects the preauthorization copy)
-
-    /// One zero-amount case. For a zero amount the amount value is never rendered; instead the
-    /// `PaymentStyle` and the bundle locale select the preauthorization copy. `amountLocaleIdentifier`
-    /// exists only to prove the amount's own locale never leaks into that copy.
     struct ZeroAmountScenario {
-        let style: PaymentStyle
-        let amountLocaleIdentifier: String?
         let bundleLocale: String?
         let expectedTitle: String
     }
 
     @Test(arguments: [
-        // Default locale, immediate confirmation.
-        ZeroAmountScenario(style: .immediate, amountLocaleIdentifier: nil, bundleLocale: nil, expectedTitle: "Confirm preauthorization"),
-        // Default locale, redirect to a third party interpolates the provider name.
-        ZeroAmountScenario(style: .needsRedirectToThirdParty("test_name"), amountLocaleIdentifier: nil, bundleLocale: nil, expectedTitle: "Preauthorize with test_name"),
-        // Enforced locale, immediate confirmation is localized.
-        ZeroAmountScenario(style: .immediate, amountLocaleIdentifier: nil, bundleLocale: "is-IS", expectedTitle: "Staðfesta greiðsluheimild"),
-        // Enforced locale, redirect title is localized and interpolates the provider name.
-        ZeroAmountScenario(style: .needsRedirectToThirdParty("Klarna"), amountLocaleIdentifier: nil, bundleLocale: "is-IS", expectedTitle: "Heimila greiðslu með Klarna"),
-        // The amount's own locale must not leak into the zero-amount (preauthorization) title.
-        ZeroAmountScenario(style: .immediate, amountLocaleIdentifier: "fr-FR", bundleLocale: nil, expectedTitle: "Confirm preauthorization")
+        ZeroAmountScenario(bundleLocale: nil, expectedTitle: "Save details"),
+        ZeroAmountScenario(bundleLocale: "is-IS", expectedTitle: "Save details")
     ])
-    func zeroAmount_forScenario_when_resolvingTitle_then_returnsPreauthorizationTitle(_ scenario: ZeroAmountScenario) {
+    func zeroAmount_forScenario_when_resolvingTitle_then_returnsSaveDetails(_ scenario: ZeroAmountScenario) {
         // Given
         let sut = makeSUT()
-        let amount = Amount(value: 0, currencyCode: "EUR", localeIdentifier: scenario.amountLocaleIdentifier)
+        let amount = Amount(value: 0, currencyCode: "EUR")
         let localizationParameters = scenario.bundleLocale.map { LocalizationParameters(enforcedLocale: $0) }
 
         // When
-        let title = sut.payButtonTitle(with: amount, style: scenario.style, localizationParameters: localizationParameters)
+        let title = sut.payButtonTitle(with: amount, localizationParameters: localizationParameters)
 
         // Then
         #expect(title == scenario.expectedTitle)

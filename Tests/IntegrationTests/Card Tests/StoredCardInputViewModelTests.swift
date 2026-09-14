@@ -86,7 +86,7 @@ struct StoredCardInputViewModelTests {
         let amount = Amount(value: 0, currencyCode: "USD")
         let expectedTitle = "Enter security code"
         let expectedSubTitle = "Enter the security code for VISA \(String.Adyen.securedString)4556"
-        let expectedButtonTitle = "Confirm preauthorization"
+        let expectedButtonTitle = "Save details"
         let sut = makeSUT(name: "VISA", lastFour: "4556", amount: amount)
 
         // Then
