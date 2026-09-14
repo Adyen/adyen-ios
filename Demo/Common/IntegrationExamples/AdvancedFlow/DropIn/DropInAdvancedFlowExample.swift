@@ -69,7 +69,6 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
 
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
-            amount: ConfigurationConstants.current.amount,
             clientKey: ConfigurationConstants.clientKey,
             analyticsConfiguration: ConfigurationConstants.current.analyticsConfiguration
         ) {
