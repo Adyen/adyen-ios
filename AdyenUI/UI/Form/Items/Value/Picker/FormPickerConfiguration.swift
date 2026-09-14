@@ -12,8 +12,15 @@ package struct FormPickerConfiguration {
     /// Header shown at the top of the picker screen. `nil` → no header.
     package let header: Header?
 
-    package init(header: Header? = nil) {
+    /// Whether the picker shows its search bar.
+    package let isSearchEnabled: Bool
+
+    package init(
+        header: Header? = nil,
+        isSearchEnabled: Bool = true
+    ) {
         self.header = header
+        self.isSearchEnabled = isSearchEnabled
     }
 }
 

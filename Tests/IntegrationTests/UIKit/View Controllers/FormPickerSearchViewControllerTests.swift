@@ -45,6 +45,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         
         let pickerSearchViewController = FormPickerSearchViewController(
             title: nil,
+            configuration: .init(isSearchEnabled: false),
             options: [option]
         ) { element in
             XCTAssertEqual(element.identifier, option.identifier)
@@ -144,6 +145,25 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         }
     }
 
+    func test_searchBar_whenConfigurationOmitted_shouldShowAndFocus() throws {
+        let searchViewController = try makeSearchViewController()
+
+        assertSearchBarIsShownAndFocused(in: searchViewController)
+    }
+
+    func test_picker_whenSearchDisabledAndHeaderAbsent_shouldShowResultsWithoutSearchBar() throws {
+        let title = "Installments"
+        let searchViewController = try makeSearchViewController(
+            title: title,
+            configuration: .init(isSearchEnabled: false)
+        )
+
+        XCTAssertFalse(searchViewController.searchBar.isDescendant(of: searchViewController.view))
+        XCTAssertFalse(searchViewController.searchBar.isFirstResponder)
+        XCTAssertEqual(searchViewController.title, title)
+        XCTAssertEqual(searchViewController.resultsListViewController.sections.first?.items.count, 1)
+    }
+
     func test_pickerHeader_whenSubtitleProvided_shouldRenderTitleAndSubtitle() throws {
         let searchViewController = try makeSearchViewController(
             configuration: .init(header: .init(title: "Installments", subtitle: "Split the total cost into monthly payments."))
@@ -224,6 +244,25 @@ class FormPickerSearchViewControllerTests: XCTestCase {
     }
 
     // MARK: - Helpers
+
+    private func assertSearchBarIsShownAndFocused(
+        in searchViewController: SearchViewController,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        XCTAssertTrue(
+            searchViewController.searchBar.isDescendant(of: searchViewController.view),
+            file: file,
+            line: line
+        )
+
+        wait(
+            until: { searchViewController.searchBar.isFirstResponder },
+            timeout: 1,
+            file: file,
+            line: line
+        )
+    }
 
     private func makeSearchViewController(
         title: String? = nil,

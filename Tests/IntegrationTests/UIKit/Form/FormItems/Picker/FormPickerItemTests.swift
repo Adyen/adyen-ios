@@ -58,7 +58,7 @@ class FormPickerItemTests: XCTestCase {
 //        wait(for: [dismissViewControllerExpectation], timeout: 10)
 //    }
     
-    func testAssertions() {
+    func test_abstractMethods_whenNotOverridden_shouldTriggerAssertions() {
         
         let formPickerItem = FormPickerItem<FormPickerElement>(
             preselectedValue: nil,
@@ -124,7 +124,7 @@ class FormPickerItemTests: XCTestCase {
         XCTAssertNil(formPickerItem.configuration.header)
     }
 
-    func test_pickerItem_whenConfigurationHasHeader_shouldPresentPickerWithHeader() throws {
+    func test_pickerItem_whenHeaderConfiguredAndSearchDisabled_shouldPresentPickerWithHeaderAndNoSearchBar() throws {
         let secondaryColor: UIColor = .purple
         let theme = CheckoutTheme(colors: CheckoutColors(textSecondary: secondaryColor))
         let presentationExpectation = expectation(description: "presenter.presentViewController was called")
@@ -145,7 +145,10 @@ class FormPickerItemTests: XCTestCase {
             placeholder: "",
             style: .init(),
             presenter: presenter,
-            configuration: .init(header: .init(title: "Installments", subtitle: "Split the total cost into monthly payments."))
+            configuration: .init(
+                header: .init(title: "Installments", subtitle: "Split the total cost into monthly payments."),
+                isSearchEnabled: false
+            )
         )
 
         // FormPickerItemView installs the selection handler that presents the picker.
@@ -164,6 +167,7 @@ class FormPickerItemTests: XCTestCase {
         XCTAssertEqual(headerView.subtitleLabel.text, "Split the total cost into monthly payments.")
         XCTAssertEqual(headerView.subtitleLabel.textColor, secondaryColor)
         XCTAssertNil(searchViewController.title)
+        XCTAssertFalse(searchViewController.searchBar.isDescendant(of: searchViewController.view))
     }
 
     func test_pickerItem_whenConfigurationOmitted_shouldPresentPickerWithoutHeader() throws {
@@ -199,5 +203,6 @@ class FormPickerItemTests: XCTestCase {
         let searchViewController = try XCTUnwrap(pickerViewController.viewControllers.first as? SearchViewController)
         XCTAssertNil(searchViewController.headerView)
         XCTAssertEqual(searchViewController.title, "Country/Region")
+        XCTAssertTrue(searchViewController.searchBar.isDescendant(of: searchViewController.view))
     }
 }
