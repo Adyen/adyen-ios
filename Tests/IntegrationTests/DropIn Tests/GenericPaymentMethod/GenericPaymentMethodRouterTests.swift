@@ -50,6 +50,7 @@ struct GenericPaymentMethodRouterTests {
         sut.dismiss()
 
         // Then
+        #expect(navigationController.viewControllers.count == 1)
         #expect(listener.didDismissGenericPaymentMethodCallsCount == 1)
     }
 

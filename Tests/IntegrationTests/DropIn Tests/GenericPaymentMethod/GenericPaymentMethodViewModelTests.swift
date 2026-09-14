@@ -78,6 +78,10 @@ struct GenericPaymentMethodViewModelTests {
 
         // Then
         #expect(dropInFlowManagerMock.submitFromActionPresenterCallsCount == 1)
+        let receivedPaymentMethod = dropInFlowManagerMock.submitFromActionPresenterReceivedArguments?.data.paymentMethod as? GenericPaymentDetails
+        #expect(receivedPaymentMethod?.type == paymentComponentMock.paymentMethod.type)
+        #expect(dropInFlowManagerMock.submitFromActionPresenterReceivedArguments?.component === paymentComponentMock)
+        #expect(dropInFlowManagerMock.submitFromActionPresenterReceivedArguments?.actionPresenter === sut)
     }
 
     @Test
@@ -89,10 +93,12 @@ struct GenericPaymentMethodViewModelTests {
         #expect(sut.state == .loading)
 
         // When
-        sut.didFail(with: ErrorMock(errorDescription: "Payment component's error"), from: paymentComponentMock)
+        let error = ErrorMock(errorDescription: "Payment component's error")
+        sut.didFail(with: error, from: paymentComponentMock)
 
         // Then
         #expect(dropInFlowManagerMock.failWithFromCallsCount == 1)
+        #expect(dropInFlowManagerMock.failWithFromReceivedArguments?.component === paymentComponentMock)
         #expect(sut.state == .idle)
     }
 
@@ -101,12 +107,17 @@ struct GenericPaymentMethodViewModelTests {
         // Given
         let (sut, _, _, routerMock) = makeSUT()
         let actionViewController = UIViewController()
+        var capturedViewController: UIViewController?
+        routerMock.presentActionViewControllerOnCancelClosure = { viewController, _ in
+            capturedViewController = viewController
+        }
 
         // When
         sut.present(actionViewController: actionViewController)
 
         // Then
         #expect(routerMock.presentActionViewControllerOnCancelCallsCount == 1)
+        #expect(capturedViewController === actionViewController)
     }
 
     @Test
