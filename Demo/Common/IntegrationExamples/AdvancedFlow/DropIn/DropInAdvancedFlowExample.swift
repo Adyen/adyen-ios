@@ -34,7 +34,9 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
     internal func start() {
         startLoading()
 
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
+            
             do {
                 let paymentMethods = try await requestPaymentMethods(order: nil)
                 let dropIn = try await dropInComponent(from: paymentMethods)

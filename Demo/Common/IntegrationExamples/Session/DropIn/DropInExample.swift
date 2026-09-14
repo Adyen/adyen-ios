@@ -31,7 +31,9 @@ internal final class DropInExample: InitialDataFlowProtocol {
     internal func start() {
         startLoading()
 
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
+            
             do {
                 let sessionResponse = try await requestSessionInitialInfo()
                 let dropIn = try await self.dropInComponent(from: sessionResponse)
