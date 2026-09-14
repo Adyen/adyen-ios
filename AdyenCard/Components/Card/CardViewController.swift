@@ -211,7 +211,15 @@ internal class CardViewController: FormViewController {
     }
     
     internal var storePayment: Bool? {
-        amount?.value == 0 ? true : (configuration.showStorePaymentMethod ? items.storeDetailsItem.value : nil)
+        if amount?.value == 0 {
+            return true
+        }
+
+        guard configuration.showStorePaymentMethod else {
+            return nil
+        }
+
+        return configuration.showStorePaymentMethod
     }
 
     internal var installments: Installments? {
