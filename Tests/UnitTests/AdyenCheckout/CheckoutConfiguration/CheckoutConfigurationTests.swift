@@ -8,6 +8,7 @@
 @testable import AdyenActions
 @testable import AdyenCheckout
 @testable import AdyenComponents
+@testable import AdyenDropIn
 @testable import AdyenUI
 import XCTest
 
@@ -124,6 +125,58 @@ final class CheckoutConfigurationTests: XCTestCase {
         }
 
         XCTAssertTrue(storedProvider === provider)
+    }
+
+    // MARK: - Drop-in Configuration Tests
+
+    func test_init_withDropInConfiguration_shouldExtractItFromDSL() throws {
+        let sut = try CheckoutConfiguration(
+            environment: .test,
+            amount: Dummy.amount,
+            clientKey: Dummy.apiContext.clientKey
+        ) {
+            DropInConfiguration()
+                .hideStoredPaymentMethods(true)
+                .startWithLastStoredPaymentMethod(false)
+                .allowRemovingStoredPaymentMethods(true)
+        }
+
+        XCTAssertTrue(sut.dropInConfiguration.hideStoredPaymentMethods)
+        XCTAssertFalse(sut.dropInConfiguration.startWithLastStoredPaymentMethod)
+        XCTAssertTrue(sut.dropInConfiguration.allowRemovingStoredPaymentMethods)
+    }
+
+    func test_init_withMultipleDropInConfigurations_shouldUseLastValue() throws {
+        let sut = try CheckoutConfiguration(
+            environment: .test,
+            amount: Dummy.amount,
+            clientKey: Dummy.apiContext.clientKey
+        ) {
+            DropInConfiguration()
+                .hideStoredPaymentMethods(true)
+                .startWithLastStoredPaymentMethod(false)
+            DropInConfiguration()
+                .allowRemovingStoredPaymentMethods(true)
+        }
+
+        XCTAssertFalse(sut.dropInConfiguration.hideStoredPaymentMethods)
+        XCTAssertTrue(sut.dropInConfiguration.startWithLastStoredPaymentMethod)
+        XCTAssertTrue(sut.dropInConfiguration.allowRemovingStoredPaymentMethods)
+    }
+
+    func test_init_withDropInAndComponentConfigurations_shouldStoreEachSeparately() throws {
+        let sut = try CheckoutConfiguration(
+            environment: .test,
+            amount: Dummy.amount,
+            clientKey: Dummy.apiContext.clientKey
+        ) {
+            DropInConfiguration().hideStoredPaymentMethods(true)
+            BLIKComponentConfiguration()
+        }
+
+        XCTAssertTrue(sut.dropInConfiguration.hideStoredPaymentMethods)
+        XCTAssertEqual(sut.configurations.count, 1)
+        XCTAssertNotNil(sut.configurations[.payment(.blik)] as? BLIKComponentConfiguration)
     }
 
     // MARK: - Legacy componentConfiguration Tests

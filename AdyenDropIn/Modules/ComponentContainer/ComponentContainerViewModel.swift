@@ -22,7 +22,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     internal weak var router: ComponentContainerRouting?
     private let component: PresentablePaymentComponent
-    private let configuration: DropInComponent.Configuration
+    private let configuration: DropInConfiguration
     private var dropInFlowManager: DropInFlowManaging
     private weak var partialPaymentDelegate: PartialPaymentDelegate?
 
@@ -30,7 +30,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     internal init(
         component: PresentablePaymentComponent,
-        configuration: DropInComponent.Configuration,
+        configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {

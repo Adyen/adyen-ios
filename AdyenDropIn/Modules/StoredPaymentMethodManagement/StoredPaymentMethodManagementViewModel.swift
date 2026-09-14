@@ -12,6 +12,10 @@ import Foundation
 @MainActor
 internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
 
+    private enum Constants {
+        static let analyticsComponentIdentifier = "storedPaymentMethodManagement"
+    }
+
     // MARK: - Properties
 
     internal typealias StoredPaymentMethodId = String
@@ -19,6 +23,7 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
     private let capability: StoredPaymentMethodManagementCapability
     private let mapper: StoredPaymentMethodManagementPresentationMapper
     private let localizationParameters: LocalizationParameters?
+    private let analyticsProvider: AnyAnalyticsProvider?
     internal weak var router: StoredPaymentMethodManagementRouting?
 
     @Published internal private(set) var sections: [StoredPaymentMethodManagementSection]
@@ -72,15 +77,21 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
         paymentMethods: [any StoredPaymentMethod],
         capability: StoredPaymentMethodManagementCapability,
         mapper: StoredPaymentMethodManagementPresentationMapper,
-        localizationParameters: LocalizationParameters?
+        localizationParameters: LocalizationParameters?,
+        analyticsProvider: AnyAnalyticsProvider?
     ) {
         self.capability = capability
         self.mapper = mapper
         self.localizationParameters = localizationParameters
+        self.analyticsProvider = analyticsProvider
         self.sections = mapper.sections(from: paymentMethods)
     }
 
     // MARK: - Internal
+
+    internal func sendRenderEvent() {
+        sendAnalyticsEvent(type: .rendered)
+    }
 
     internal func sectionTitle(for section: StoredPaymentMethodManagementSection) -> String? {
         // no title for the other section if there is no stored cards
@@ -117,6 +128,7 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
             return
         }
 
+        sendAnalyticsEvent(type: .clicked, target: .storedPaymentRemoveButton)
         itemToRemove = nil
 
         let identifier = item.paymentMethod.identifier
@@ -143,6 +155,15 @@ internal final class StoredPaymentMethodManagementViewModel: ObservableObject {
     }
 
     // MARK: - Private
+
+    private func sendAnalyticsEvent(type: AnalyticsEventInfo.InfoType, target: AnalyticsEventTarget? = nil) {
+        var event = AnalyticsEventInfo(
+            component: Constants.analyticsComponentIdentifier,
+            type: type
+        )
+        event.target = target
+        analyticsProvider?.add(info: event)
+    }
 
     private func remove(_ item: StoredPaymentMethodManagementItem) {
         sections = sections.compactMap { section in

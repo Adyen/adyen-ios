@@ -177,13 +177,16 @@ struct StoredPaymentMethodManagementResolverTests {
     }
 
     private func dropInComponent(allowsDisablingStoredPaymentMethods: Bool) -> DropInComponent {
-        let configuration = DropInComponent.Configuration()
-        configuration.paymentMethodsList.allowDisablingStoredPaymentMethods = allowsDisablingStoredPaymentMethods
+        let dropInConfiguration = DropInConfiguration()
+            .allowRemovingStoredPaymentMethods(allowsDisablingStoredPaymentMethods)
 
         return DropInComponent(
             paymentMethods: PaymentMethods(regular: [], stored: []),
             context: Dummy.context,
-            configuration: configuration
+            configuration: dropInConfiguration,
+            paymentComponentBuilder: { _ in
+                fatalError("The component builder is not used by these tests.")
+            }
         )
     }
 

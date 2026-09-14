@@ -32,7 +32,7 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
 
 package extension CheckoutConfigurable {
 
-    // TODO: add descriptions
+    // TODO: remove this, components don't support setting this individually
     // having this function here instead of re writing it for all configurations
     // prevents duplication, but the returned value will be seen as CheckoutConfigurable
     // after calling this function, as opposed to actual type
