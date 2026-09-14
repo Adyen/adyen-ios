@@ -50,19 +50,18 @@ package final class DropInComponent: NSObject,
         )
     }()
 
-    internal private(set) lazy var router: DropInRouting = {
-        let dropInAssembler = DropInAssembler(
-            title: title,
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            dropInFlowManager: dropInFlowManager,
-            partialPaymentDelegate: partialPaymentDelegate,
-            storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability,
-            paymentComponentBuilder: paymentComponentBuilder
-        )
-        return dropInAssembler.resolveDropInRouter()
-    }()
+    private lazy var dropInAssembler = DropInAssembler(
+        title: title,
+        paymentMethods: paymentMethods,
+        context: context,
+        configuration: configuration,
+        dropInFlowManager: dropInFlowManager,
+        partialPaymentDelegate: partialPaymentDelegate,
+        storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability,
+        paymentComponentBuilder: paymentComponentBuilder
+    )
+
+    internal private(set) lazy var router = dropInAssembler.resolveDropInRouter()
 
     private lazy var storedPaymentMethodManagementResolver = StoredPaymentMethodManagementResolver(
         dropInComponent: self
@@ -159,6 +158,10 @@ package final class DropInComponent: NSObject,
     }
 
     // MARK: - Presentable Component Protocol
+
+    package var hasSupportedPaymentMethods: Bool {
+        dropInAssembler.hasSupportedPaymentMethods
+    }
 
     package private(set) lazy var viewController: UIViewController = {
         router.rootViewController

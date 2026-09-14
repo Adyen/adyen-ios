@@ -25,6 +25,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
+    private let showsAllPaymentMethodsButton: Bool
     private let configuration: DropInConfiguration
     private let dropInFlowManager: DropInFlowManaging
     private let partialPaymentDelegate: PartialPaymentDelegate?
@@ -35,6 +36,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     internal init(
         paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
         componentContainerAssembler: ComponentContainerAssemblerProtocol,
+        showsAllPaymentMethodsButton: Bool,
         configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
         partialPaymentDelegate: PartialPaymentDelegate?,
@@ -42,6 +44,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     ) {
         self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
+        self.showsAllPaymentMethodsButton = showsAllPaymentMethodsButton
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
         self.partialPaymentDelegate = partialPaymentDelegate
@@ -60,6 +63,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
             component: component,
             theme: configuration.theme,
             localizationParameters: configuration.resolvedLocalizationParameters,
+            showsAllPaymentMethodsButton: showsAllPaymentMethodsButton,
             analyticsProvider: analyticsProvider,
             dropInAnalyticsConfiguration: DropInAnalyticsConfiguration(configuration: configuration),
             dropInFlowManager: dropInFlowManager
