@@ -99,10 +99,9 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
     }
     
     private func viewController(for component: CheckoutPaymentComponent) -> UIViewController {
-        guard let viewController = component.viewController else { fatalError("Cannot find component's view controller") }
-        
-        let navigation = UINavigationController(rootViewController: viewController)
-        viewController.navigationItem.leftBarButtonItem = .init(
+        let componentViewController = component.viewController
+        let navigation = UINavigationController(rootViewController: componentViewController)
+        componentViewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
             target: self,
             action: #selector(cancelPressed)
