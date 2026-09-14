@@ -219,7 +219,7 @@ internal class CardViewController: FormViewController {
             return nil
         }
 
-        return configuration.showStorePaymentMethod
+        return items.storeDetailsItem.value
     }
 
     internal var installments: Installments? {
