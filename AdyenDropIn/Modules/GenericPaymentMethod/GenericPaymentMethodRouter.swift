@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 @MainActor
 internal protocol GenericPaymentMethodRouterListener: AnyObject {
