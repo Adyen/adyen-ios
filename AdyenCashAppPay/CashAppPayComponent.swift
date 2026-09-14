@@ -48,6 +48,10 @@ package final class CashAppPayComponent: PaymentComponent,
     // TODO(COSDK-1313): Apply session configuration during CashAppPayComponentFactory assembly.
     package var configuration: CashAppPayConfiguration
 
+    package var type: PaymentComponentType {
+        .regular(self)
+    }
+
     package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
         style: configuration.style

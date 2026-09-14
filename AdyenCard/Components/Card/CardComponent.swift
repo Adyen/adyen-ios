@@ -71,6 +71,10 @@ package class CardComponent: PaymentComponent,
         }
     }
 
+    package var type: PaymentComponentType {
+        .regular(self)
+    }
+
     /// Determines whether the storedCardComponent is active
     private var isStoredCardComponentActive: Bool {
         storedCardComponent != nil

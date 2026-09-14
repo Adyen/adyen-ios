@@ -27,6 +27,10 @@ package final class BoletoComponent: PaymentComponent,
     package var paymentMethod: PaymentMethod {
         boletoPaymentMethod
     }
+
+    package var type: PaymentComponentType {
+        .regular(self)
+    }
     
     /// The Component's configuration.
     package var configuration: Configuration

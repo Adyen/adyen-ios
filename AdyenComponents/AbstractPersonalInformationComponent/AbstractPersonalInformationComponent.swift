@@ -34,6 +34,10 @@ package class AbstractPersonalInformationComponent: PaymentComponent {
         style: configuration.style
     )
 
+    package var type: PaymentComponentType {
+        .regular(self)
+    }
+
     package var configuration: Configuration
 
     private let fields: [PersonalInformation]

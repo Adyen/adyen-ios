@@ -30,6 +30,10 @@ package final class BLIKComponent: PaymentComponent, LoadingComponent {
         child: formViewController,
         theme: configuration.theme
     )
+
+    package var type: PaymentComponentType {
+        .regular(self)
+    }
     
     /// Component's configuration
     package var configuration: BLIKComponentConfiguration

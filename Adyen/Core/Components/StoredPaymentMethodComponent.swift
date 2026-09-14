@@ -22,6 +22,10 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
         storedPaymentMethod
     }
 
+    package var type: PaymentComponentType {
+        .stored(self)
+    }
+
     package weak var delegate: PaymentComponentDelegate?
 
     /// Initializes new instance of `StoredPaymentMethodComponent`.

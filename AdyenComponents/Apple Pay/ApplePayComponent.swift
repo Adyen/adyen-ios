@@ -44,6 +44,10 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
 
+    package var type: PaymentComponentType {
+        .regular(self)
+    }
+
     /// Initializes the component.
     ///
     /// After the shopper authorizes payment, the component suspends the Apple Pay sheet

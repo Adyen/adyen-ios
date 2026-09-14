@@ -12,7 +12,7 @@ package final class GenericPaymentComponent: PaymentComponent {
 
     // TODO: - Replace with actual generic view controller
     package var viewController: UIViewController {
-        return UIViewController()
+        UIViewController()
     }
 
     /// The context object for this component.
@@ -23,6 +23,10 @@ package final class GenericPaymentComponent: PaymentComponent {
 
     /// The payment method.
     package let paymentMethod: PaymentMethod
+
+    package var type: PaymentComponentType {
+        .generic(self)
+    }
 
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?

@@ -69,6 +69,10 @@ package final class UPIComponent: PaymentComponent,
         style: configuration.style
     )
     
+    package var type: PaymentComponentType {
+        .regular(self)
+    }
+    
     /// Component's configuration
     package var configuration: Configuration
 

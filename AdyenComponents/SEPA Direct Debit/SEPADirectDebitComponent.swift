@@ -34,6 +34,10 @@ package final class SEPADirectDebitComponent: PaymentComponent, LoadingComponent
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
     
+    package var type: PaymentComponentType {
+        .regular(self)
+    }
+    
     /// Initializes the SEPA Direct Debit component.
     ///
     /// - Parameter paymentMethod: The SEPA Direct Debit payment method.

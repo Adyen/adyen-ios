@@ -45,6 +45,10 @@ package final class OnlineBankingComponent: PaymentComponent,
         style: configuration.style
     )
 
+    package var type: PaymentComponentType {
+        .regular(self)
+    }
+
     /// Component's configuration
     package var configuration: Configuration
 

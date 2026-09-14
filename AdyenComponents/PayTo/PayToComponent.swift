@@ -33,6 +33,10 @@ package final class PayToComponent: PaymentComponent, AdyenObserver, LoadingComp
         payToPaymentMethod
     }
 
+    package var type: PaymentComponentType {
+        .regular(self)
+    }
+
     private let payToPaymentMethod: PayToPaymentMethod
 
     internal lazy var itemsProvider: PayToItemsProviding = {
