@@ -34,9 +34,7 @@ package class AbstractPersonalInformationComponent: PaymentComponent {
         style: configuration.style
     )
 
-    package var type: PaymentComponentType {
-        .regular
-    }
+    package let type: PaymentComponentType = .regular
 
     package var configuration: Configuration
 

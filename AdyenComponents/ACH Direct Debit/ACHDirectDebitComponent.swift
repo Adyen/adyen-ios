@@ -42,9 +42,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     /// Component configuration
     package var configuration: ACHDirectDebitConfiguration
 
-    package var type: PaymentComponentType {
-        .regular
-    }
+    package let type: PaymentComponentType = .regular
 
     package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,

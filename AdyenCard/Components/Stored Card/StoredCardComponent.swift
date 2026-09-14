@@ -26,9 +26,7 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
     package weak var delegate: PaymentComponentDelegate?
     package var localizationParameters: LocalizationParameters?
 
-    package var type: PaymentComponentType {
-        .stored
-    }
+    package let type: PaymentComponentType = .stored
 
     private let storedCardPaymentMethod: StoredCardPaymentMethod
     private let theme: CheckoutTheme

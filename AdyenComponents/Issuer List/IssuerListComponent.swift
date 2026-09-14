@@ -33,9 +33,7 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
     
-    package var type: PaymentComponentType {
-        .regular
-    }
+    package let type: PaymentComponentType = .regular
     
     /// Component's configuration.
     package var configuration: Configuration

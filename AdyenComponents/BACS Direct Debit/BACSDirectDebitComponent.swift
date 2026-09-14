@@ -31,9 +31,7 @@ package final class BACSDirectDebitComponent: PaymentComponent {
     /// The object that acts as the delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
 
-    package var type: PaymentComponentType {
-        .regular
-    }
+    package let type: PaymentComponentType = .regular
 
     /// The BACS Direct Debit payment method.
     package var paymentMethod: PaymentMethod {

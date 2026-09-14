@@ -24,9 +24,7 @@ package final class GenericPaymentComponent: PaymentComponent {
     /// The payment method.
     package let paymentMethod: PaymentMethod
 
-    package var type: PaymentComponentType {
-        .generic
-    }
+    package let type: PaymentComponentType = .generic
 
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?

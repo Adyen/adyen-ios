@@ -22,9 +22,7 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
         storedPaymentMethod
     }
 
-    package var type: PaymentComponentType {
-        .stored
-    }
+    package let type: PaymentComponentType = .stored
 
     package weak var delegate: PaymentComponentDelegate?
 

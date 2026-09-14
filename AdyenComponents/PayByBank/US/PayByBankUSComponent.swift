@@ -42,9 +42,7 @@ package final class PayByBankUSComponent: PaymentComponent {
         confirmationViewController
     }
 
-    package var type: PaymentComponentType {
-        .regular
-    }
+    package let type: PaymentComponentType = .regular
     
     private lazy var confirmationViewController: ConfirmationViewController = {
 

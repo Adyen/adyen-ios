@@ -31,9 +31,7 @@ package final class BLIKComponent: PaymentComponent, LoadingComponent {
         theme: configuration.theme
     )
 
-    package var type: PaymentComponentType {
-        .regular
-    }
+    package let type: PaymentComponentType = .regular
     
     /// Component's configuration
     package var configuration: BLIKComponentConfiguration

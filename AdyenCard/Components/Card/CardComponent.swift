@@ -71,9 +71,7 @@ package class CardComponent: PaymentComponent,
         }
     }
 
-    package var type: PaymentComponentType {
-        .regular
-    }
+    package let type: PaymentComponentType = .regular
 
     /// Determines whether the storedCardComponent is active
     private var isStoredCardComponentActive: Bool {
@@ -139,7 +137,9 @@ package class CardComponent: PaymentComponent,
         // since storedCardComponent is instantiated through this class
         // cardViewController should not be accessed when it's the storedCardComponent
         // we should separate stored card component logic into its own
-        if isStoredCardComponentActive { return }
+        if isStoredCardComponentActive {
+            return
+        }
 
         cardViewController.stopLoading()
     }

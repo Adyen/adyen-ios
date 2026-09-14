@@ -28,9 +28,7 @@ package final class BoletoComponent: PaymentComponent,
         boletoPaymentMethod
     }
 
-    package var type: PaymentComponentType {
-        .regular
-    }
+    package let type: PaymentComponentType = .regular
     
     /// The Component's configuration.
     package var configuration: Configuration

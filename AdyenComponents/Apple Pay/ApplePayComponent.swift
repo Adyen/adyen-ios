@@ -44,9 +44,7 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
 
-    package var type: PaymentComponentType {
-        .regular
-    }
+    package let type: PaymentComponentType = .regular
 
     /// Initializes the component.
     ///

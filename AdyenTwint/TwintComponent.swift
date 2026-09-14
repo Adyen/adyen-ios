@@ -19,9 +19,7 @@ package final class TwintComponent: PaymentComponent {
         UIViewController()
     }
 
-    package var type: PaymentComponentType {
-        .regular
-    }
+    package let type: PaymentComponentType = .regular
     
     /// Configuration for Twint Component.
     package typealias Configuration = BasicComponentConfiguration

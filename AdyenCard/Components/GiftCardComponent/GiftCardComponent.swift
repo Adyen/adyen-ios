@@ -54,9 +54,7 @@ package final class GiftCardComponent: PaymentComponent,
     /// A boolean value that determines whether the payment button is displayed. Defaults to `true`.
     internal let showsSubmitButton: Bool
 
-    package var type: PaymentComponentType {
-        .regular
-    }
+    package let type: PaymentComponentType = .regular
 
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?

@@ -15,9 +15,7 @@ class PaymentComponentSubject: PaymentComponent {
     var context: AdyenContext
     var delegate: PaymentComponentDelegate?
     var paymentMethodBehavior: SDKData.PaymentMethodBehavior = .nativeComponent
-    var type: PaymentComponentType {
-        .regular
-    }
+    let type: PaymentComponentType = .regular
 
     var order: PartialPaymentOrder?
     var paymentMethod: PaymentMethod
