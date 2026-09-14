@@ -81,10 +81,3 @@ package extension PaymentComponent {
         .nativeComponent
     }
 }
-
-package extension GenericPaymentComponent {
-
-    var paymentMethodBehavior: SDKData.PaymentMethodBehavior {
-        .genericComponent
-    }
-}

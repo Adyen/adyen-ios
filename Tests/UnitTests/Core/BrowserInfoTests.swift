@@ -5,6 +5,7 @@
 //
 
 @testable import Adyen
+@testable import AdyenComponents
 import Testing
 
 struct BrowserInfoTests {

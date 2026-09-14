@@ -1,19 +1,32 @@
 //
-// Copyright (c) 2019 Adyen N.V.
+// Copyright (c) 2026 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import Foundation
+import UIKit
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// A component that handles payment methods that don't need any payment detail to be filled.
 @MainActor
 package final class GenericPaymentComponent: PaymentComponent {
 
-    // TODO: - Replace with actual generic view controller
-    package var viewController: UIViewController {
-        UIViewController()
-    }
+    package lazy var viewController: UIViewController = {
+        let paymentButtonViewController = PaymentButtonViewController(
+            amount: context.amount,
+            localizationParameters: localizationParameters,
+            theme: theme
+        )
+        paymentButtonViewController.title = paymentMethod.displayInformation(using: localizationParameters).title
+        paymentButtonViewController.onSubmit = { [weak self] in
+            self?.performSubmit()
+        }
+        return paymentButtonViewController
+    }()
 
     /// The context object for this component.
     package let context: AdyenContext
@@ -26,8 +39,16 @@ package final class GenericPaymentComponent: PaymentComponent {
 
     package let type: PaymentComponentType = .generic
 
+    package let paymentMethodBehavior: SDKData.PaymentMethodBehavior = .genericComponent
+
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
+
+    /// The UI theme used to style the payment button.
+    package let theme: CheckoutTheme
+
+    /// The localization parameters.
+    package let localizationParameters: LocalizationParameters?
 
     /// Initializes a new instance of `GenericPaymentComponent`.
     ///
@@ -35,14 +56,20 @@ package final class GenericPaymentComponent: PaymentComponent {
     ///   - paymentMethod: The payment method.
     ///   - paymentData: The ready to submit payment data.
     ///   - context: The context object for this component.
+    ///   - theme: The UI theme used to style the payment button.
+    ///   - localizationParameters: The localization parameters.
     package init(
         paymentMethod: PaymentMethod,
         context: AdyenContext,
-        paymentData: PaymentComponentData
+        paymentData: PaymentComponentData,
+        theme: CheckoutTheme = .default,
+        localizationParameters: LocalizationParameters? = nil
     ) {
         self.paymentMethod = paymentMethod
         self.paymentData = paymentData
         self.context = context
+        self.theme = theme
+        self.localizationParameters = localizationParameters
     }
 
     /// Initializes a new instance of `GenericPaymentComponent`.
@@ -51,13 +78,19 @@ package final class GenericPaymentComponent: PaymentComponent {
     ///   - paymentMethod: The payment method.
     ///   - context: The context object for this component.
     ///   - order: The partial order for this payment.
+    ///   - theme: The UI theme used to style the payment button.
+    ///   - localizationParameters: The localization parameters.
     package init(
         paymentMethod: PaymentMethod,
         context: AdyenContext,
-        order: PartialPaymentOrder?
+        order: PartialPaymentOrder?,
+        theme: CheckoutTheme = .default,
+        localizationParameters: LocalizationParameters? = nil
     ) {
         self.paymentMethod = paymentMethod
         self.context = context
+        self.theme = theme
+        self.localizationParameters = localizationParameters
 
         let details = GenericPaymentDetails(type: paymentMethod.type)
         self.paymentData = PaymentComponentData(

@@ -110,7 +110,7 @@ extension ComponentContainerViewModel: ActionPresenter {
 extension ComponentContainerViewModel: ReadyToSubmitPaymentComponentDelegate {
 
     internal func showConfirmation(
-        for component: GenericPaymentComponent,
+        for component: PaymentComponent,
         with order: PartialPaymentOrder?
     ) {
         // TODO: - Handle gift card balance confirmation
