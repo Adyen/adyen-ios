@@ -46,6 +46,10 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         var delegate: PaymentComponentDelegate?
         let paymentMethod: PaymentMethod
 
+        var type: PaymentComponentType {
+            .regular(self)
+        }
+
         /// PaymentComponent requirement
         var viewController: UIViewController {
             UIViewController()

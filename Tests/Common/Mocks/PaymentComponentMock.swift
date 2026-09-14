@@ -14,6 +14,8 @@ class PaymentComponentMock: PaymentComponent {
 
     var delegate: PaymentComponentDelegate?
 
+    var viewController: UIViewController = .init()
+
     var type: PaymentComponentType {
         .generic(self)
     }
@@ -51,11 +53,9 @@ class PaymentComponentMock: PaymentComponent {
     }
 }
 
-class PaymentComponentMock: PaymentComponentMock, PaymentComponent, LoadingComponent {
+class PresentablePaymentComponentMock: PaymentComponentMock, LoadingComponent {
 
     // MARK: - Properties
-
-    var viewController: UIViewController
 
     override var type: PaymentComponentType {
         .regular(self)
@@ -67,8 +67,8 @@ class PaymentComponentMock: PaymentComponentMock, PaymentComponent, LoadingCompo
         paymentMethod: PaymentMethod,
         viewController: UIViewController
     ) {
-        self.viewController = viewController
         super.init(paymentMethod: paymentMethod)
+        self.viewController = viewController
     }
 
     // MARK: - stopLoading
@@ -88,7 +88,6 @@ class PaymentComponentMock: PaymentComponentMock, PaymentComponent, LoadingCompo
 
 class StoredComponentMock: PaymentComponentMock, StoredPaymentComponent {
 
-    var viewController: UIViewController
     var order: PartialPaymentOrder?
 
     override var type: PaymentComponentType {
@@ -99,7 +98,7 @@ class StoredComponentMock: PaymentComponentMock, StoredPaymentComponent {
         paymentMethod: PaymentMethod,
         viewController: UIViewController
     ) {
-        self.viewController = viewController
         super.init(paymentMethod: paymentMethod)
+        self.viewController = viewController
     }
 }

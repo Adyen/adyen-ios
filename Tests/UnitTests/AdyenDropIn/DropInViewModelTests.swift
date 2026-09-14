@@ -101,7 +101,7 @@ final class DropInViewModelTests: XCTestCase {
             configuration: configuration,
             order: nil,
             paymentComponentBuilder: { paymentMethod in
-                PaymentComponentMock(
+                PresentablePaymentComponentMock(
                     paymentMethod: paymentMethod,
                     viewController: UIViewController()
                 )

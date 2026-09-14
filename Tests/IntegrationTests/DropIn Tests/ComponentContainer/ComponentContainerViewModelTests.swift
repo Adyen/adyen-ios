@@ -182,7 +182,7 @@ struct ComponentContainerViewModelTests {
     private func makeSUT() -> (
         sut: ComponentContainerViewModel,
         paymentMethodMock: CardPaymentMethodMock,
-        paymentComponentMock: PaymentComponentMock,
+        paymentComponentMock: PresentablePaymentComponentMock,
         dropInFlowManagerMock: DropInFlowManagingMock,
         routerMock: ComponentContainerRoutingMock
     ) {
@@ -193,7 +193,7 @@ struct ComponentContainerViewModelTests {
         )
         let viewControllerMock = UIViewController()
 
-        let paymentComponentMock = PaymentComponentMock(
+        let paymentComponentMock = PresentablePaymentComponentMock(
             paymentMethod: cardPaymentMethodMock,
             viewController: viewControllerMock
         )

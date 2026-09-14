@@ -352,10 +352,10 @@ struct PaymentMethodListRouterTests {
         return assembler
     }
 
-    private func makePaymentComponentMock() -> PaymentComponentMock {
+    private func makePaymentComponentMock() -> PresentablePaymentComponentMock {
         let paymentMethodMock = PaymentMethodMock(type: .card, name: "Visa")
         let viewControllerMock = UIViewController()
-        return PaymentComponentMock(
+        return PresentablePaymentComponentMock(
             paymentMethod: paymentMethodMock,
             viewController: viewControllerMock
         )
