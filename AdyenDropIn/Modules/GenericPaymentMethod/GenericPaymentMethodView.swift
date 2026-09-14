@@ -18,6 +18,8 @@ internal struct GenericPaymentMethodView: View {
 
         static let progressViewSpacing: CGFloat = 16
         static let progressViewBottomPadding: CGFloat = 64
+        static let progressViewSize: CGFloat = 48
+        static let progressViewWidth: CGFloat = 4
     }
 
     private enum Images {
@@ -87,7 +89,11 @@ internal struct GenericPaymentMethodView: View {
 
     private var progressView: some View {
         VStack(spacing: Constants.progressViewSpacing) {
-            CircularProgressView(theme: theme, size: 48, lineWidth: 4)
+            CircularProgressView(
+                theme: theme,
+                size: Constants.progressViewSize,
+                lineWidth: Constants.progressViewWidth
+            )
             Text(viewModel.progressTitle)
                 .font(Font(theme.elements.labels.body.font))
                 .foregroundStyle(Color(uiColor: theme.colors.textSecondary))
