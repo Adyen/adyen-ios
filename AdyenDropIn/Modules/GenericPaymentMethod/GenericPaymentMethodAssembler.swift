@@ -4,10 +4,12 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import AdyenUI
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
+import Adyen
 import Foundation
 import SwiftUI
-import Adyen
 
 // sourcery:AutoMockable
 @MainActor
