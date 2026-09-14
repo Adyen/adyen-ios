@@ -65,6 +65,6 @@ internal struct PaymentMethodItem: Identifiable {
     }
 
     internal var subtitleColor: UIColor {
-        subtitleStatus == .warning ? theme.colors.warning : theme.colors.textSecondary
+        subtitleStatus == .warning ? theme.colors.destructive : theme.colors.textSecondary
     }
 }

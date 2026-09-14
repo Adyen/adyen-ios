@@ -568,7 +568,7 @@ public struct LocalizationKey {
     public static let preselectedPaymentMethodOtherOptions = LocalizationKey(key: "adyen.preselectedPaymentMethod.otherOptions")
     /// Manage
     public static let storedPaymentMethodManagementTitle = LocalizationKey(key: "adyen.storedPaymentMethodManagement.title")
-    /// Remove your saved payment methods
+    /// Manage your favorite payment methods
     public static let storedPaymentMethodManagementDescription = LocalizationKey(key: "adyen.storedPaymentMethodManagement.description")
     /// Cards
     public static let storedPaymentMethodManagementCardsTitle = LocalizationKey(key: "adyen.storedPaymentMethodManagement.cardsTitle")

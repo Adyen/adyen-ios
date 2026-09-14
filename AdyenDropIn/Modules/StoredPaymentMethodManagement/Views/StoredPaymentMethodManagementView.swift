@@ -26,20 +26,13 @@ internal struct StoredPaymentMethodManagementView: View {
     }
 
     internal var body: some View {
-        ZStack {
-            Group {
-                if viewModel.isEmpty {
+        Group {
+            if viewModel.isEmpty {
+                content
+            } else {
+                ScrollView {
                     content
-                } else {
-                    ScrollView {
-                        content
-                    }
                 }
-            }
-            .disabled(viewModel.isRemoving)
-
-            if viewModel.isRemoving {
-                removalProgressView
             }
         }
         .background(Color(uiColor: theme.colors.background))
@@ -53,17 +46,6 @@ internal struct StoredPaymentMethodManagementView: View {
         }
         .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.screen)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-    }
-
-    private var removalProgressView: some View {
-        ZStack {
-            Color(uiColor: theme.colors.background)
-                .opacity(0.8)
-                .ignoresSafeArea()
-
-            ProgressView()
-                .tint(Color(uiColor: theme.colors.highlight))
-        }
     }
 
     private var content: some View {

@@ -277,7 +277,7 @@
 "adyen.preselectedPaymentMethod.subtitle" = "Use %@";
 "adyen.preselectedPaymentMethod.otherOptions" = "Other payment options";
 "adyen.storedPaymentMethodManagement.title" = "Manage";
-"adyen.storedPaymentMethodManagement.description" = "Remove your saved payment methods";
+"adyen.storedPaymentMethodManagement.description" = "Manage your favorite payment methods";
 "adyen.storedPaymentMethodManagement.cardsTitle" = "Cards";
 "adyen.storedPaymentMethodManagement.otherTitle" = "Other";
 "adyen.storedPaymentMethodManagement.removeConfirmationAction" = "Remove %@";
