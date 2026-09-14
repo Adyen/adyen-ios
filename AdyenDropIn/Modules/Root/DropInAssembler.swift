@@ -54,6 +54,10 @@ internal struct DropInAssembler {
         )
     }
 
+    internal var hasSupportedPaymentMethods: Bool {
+        componentManager.hasSupportedPaymentMethods
+    }
+
     internal func resolveDropInRouter() -> DropInRouting {
         let apiClient = resolveAPIClient()
 
@@ -92,6 +96,7 @@ internal struct DropInAssembler {
         PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler,
+            showsAllPaymentMethodsButton: !componentManager.sections.isEmpty,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
             partialPaymentDelegate: partialPaymentDelegate,

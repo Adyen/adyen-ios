@@ -137,6 +137,8 @@ private extension StoredPaymentMethodManagementListView {
             static let itemSpacing: CGFloat = 16
             static let logoSize: CGSize = .init(width: 40, height: 26)
             static let verticalPadding: CGFloat = 12
+            static let progressViewSize: CGFloat = 24
+            static let progressViewWidth: CGFloat = 2.5
         }
 
         let item: StoredPaymentMethodManagementItem
@@ -150,7 +152,11 @@ private extension StoredPaymentMethodManagementListView {
                 HStack(spacing: Constants.itemSpacing) {
                     Group {
                         if isRemoving {
-                            CircularProgressView(theme: theme, size: 24, lineWidth: 2.5)
+                            CircularProgressView(
+                                theme: theme,
+                                size: Constants.progressViewSize,
+                                lineWidth: Constants.progressViewWidth
+                            )
                         } else {
                             PaymentLogoView(url: item.logoURL, theme: theme, size: Constants.logoSize)
                         }
