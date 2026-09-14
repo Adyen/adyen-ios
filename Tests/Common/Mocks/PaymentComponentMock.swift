@@ -17,7 +17,7 @@ class PaymentComponentMock: PaymentComponent {
     var viewController: UIViewController = .init()
 
     var type: PaymentComponentType {
-        .generic(self)
+        .generic
     }
 
     init(paymentMethod: PaymentMethod) {
@@ -58,7 +58,7 @@ class PresentablePaymentComponentMock: PaymentComponentMock, LoadingComponent {
     // MARK: - Properties
 
     override var type: PaymentComponentType {
-        .regular(self)
+        .regular
     }
 
     // MARK: - Initializers
@@ -91,7 +91,7 @@ class StoredComponentMock: PaymentComponentMock, StoredPaymentComponent {
     var order: PartialPaymentOrder?
 
     override var type: PaymentComponentType {
-        .stored(self)
+        .stored
     }
 
     init(

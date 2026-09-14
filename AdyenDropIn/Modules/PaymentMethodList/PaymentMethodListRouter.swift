@@ -77,10 +77,10 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
 
     internal func present(component: PaymentComponent) {
         switch component.type {
-        case let .regular(regularComponent):
-            pushComponentContainer(with: regularComponent)
-        case let .stored(storedComponent):
-            presentComponentContainer(with: storedComponent)
+        case .regular:
+            pushComponentContainer(with: component)
+        case .stored:
+            presentComponentContainer(with: component)
         case .generic:
             break
         }

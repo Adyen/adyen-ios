@@ -16,7 +16,7 @@ class PaymentComponentSubject: PaymentComponent {
     var delegate: PaymentComponentDelegate?
     var paymentMethodBehavior: SDKData.PaymentMethodBehavior = .nativeComponent
     var type: PaymentComponentType {
-        .regular(self)
+        .regular
     }
 
     var order: PartialPaymentOrder?

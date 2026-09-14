@@ -23,7 +23,7 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
     }
 
     package var type: PaymentComponentType {
-        .stored(self)
+        .stored
     }
 
     package weak var delegate: PaymentComponentDelegate?

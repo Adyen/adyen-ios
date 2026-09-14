@@ -47,7 +47,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         let paymentMethod: PaymentMethod
 
         var type: PaymentComponentType {
-            .regular(self)
+            .regular
         }
 
         /// PaymentComponent requirement

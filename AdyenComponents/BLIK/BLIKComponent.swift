@@ -32,7 +32,7 @@ package final class BLIKComponent: PaymentComponent, LoadingComponent {
     )
 
     package var type: PaymentComponentType {
-        .regular(self)
+        .regular
     }
     
     /// Component's configuration

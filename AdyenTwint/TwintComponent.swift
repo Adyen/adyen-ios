@@ -20,7 +20,7 @@ package final class TwintComponent: PaymentComponent {
     }
 
     package var type: PaymentComponentType {
-        .regular(self)
+        .regular
     }
     
     /// Configuration for Twint Component.

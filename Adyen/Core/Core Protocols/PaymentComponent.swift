@@ -18,9 +18,9 @@ package protocol PaymentMethodAware {
 package protocol StoredPaymentComponent: PaymentComponent {}
 
 package enum PaymentComponentType {
-    case regular(PaymentComponent)
-    case stored(StoredPaymentComponent)
-    case generic(PaymentComponent)
+    case regular
+    case stored
+    case generic
 }
 
 /// A component that handles the initial phase of getting payment details to initiate a payment.

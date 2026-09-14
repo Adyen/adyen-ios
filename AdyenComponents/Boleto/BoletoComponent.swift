@@ -29,7 +29,7 @@ package final class BoletoComponent: PaymentComponent,
     }
 
     package var type: PaymentComponentType {
-        .regular(self)
+        .regular
     }
     
     /// The Component's configuration.

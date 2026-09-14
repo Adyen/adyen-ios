@@ -72,7 +72,7 @@ package class CardComponent: PaymentComponent,
     }
 
     package var type: PaymentComponentType {
-        .regular(self)
+        .regular
     }
 
     /// Determines whether the storedCardComponent is active

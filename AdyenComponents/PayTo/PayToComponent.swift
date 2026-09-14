@@ -34,7 +34,7 @@ package final class PayToComponent: PaymentComponent, AdyenObserver, LoadingComp
     }
 
     package var type: PaymentComponentType {
-        .regular(self)
+        .regular
     }
 
     private let payToPaymentMethod: PayToPaymentMethod

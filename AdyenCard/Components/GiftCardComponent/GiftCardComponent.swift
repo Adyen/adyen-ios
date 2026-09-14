@@ -55,7 +55,7 @@ package final class GiftCardComponent: PaymentComponent,
     internal let showsSubmitButton: Bool
 
     package var type: PaymentComponentType {
-        .regular(self)
+        .regular
     }
 
     /// The delegate of the component.

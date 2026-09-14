@@ -73,10 +73,8 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         component: PaymentComponent
     ) {
         switch component.type {
-        case let .regular(regularComponent):
-            presentModalComponent(regularComponent)
-        case let .stored(storedComponent):
-            presentModalComponent(storedComponent)
+        case .regular, .stored:
+            presentModalComponent(component)
         case .generic:
             break
         }

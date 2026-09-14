@@ -32,7 +32,7 @@ package final class BACSDirectDebitComponent: PaymentComponent {
     package weak var delegate: PaymentComponentDelegate?
 
     package var type: PaymentComponentType {
-        .regular(self)
+        .regular
     }
 
     /// The BACS Direct Debit payment method.

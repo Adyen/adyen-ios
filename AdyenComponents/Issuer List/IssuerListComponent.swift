@@ -34,7 +34,7 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
     package weak var delegate: PaymentComponentDelegate?
     
     package var type: PaymentComponentType {
-        .regular(self)
+        .regular
     }
     
     /// Component's configuration.

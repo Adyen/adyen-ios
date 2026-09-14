@@ -70,7 +70,7 @@ package final class UPIComponent: PaymentComponent,
     )
     
     package var type: PaymentComponentType {
-        .regular(self)
+        .regular
     }
     
     /// Component's configuration

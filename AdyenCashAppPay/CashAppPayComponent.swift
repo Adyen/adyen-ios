@@ -49,7 +49,7 @@ package final class CashAppPayComponent: PaymentComponent,
     package var configuration: CashAppPayConfiguration
 
     package var type: PaymentComponentType {
-        .regular(self)
+        .regular
     }
 
     package lazy var viewController: UIViewController = SecuredViewController(

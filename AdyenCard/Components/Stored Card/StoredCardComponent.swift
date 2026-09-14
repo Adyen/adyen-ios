@@ -27,7 +27,7 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
     package var localizationParameters: LocalizationParameters?
 
     package var type: PaymentComponentType {
-        .stored(self)
+        .stored
     }
 
     private let storedCardPaymentMethod: StoredCardPaymentMethod
