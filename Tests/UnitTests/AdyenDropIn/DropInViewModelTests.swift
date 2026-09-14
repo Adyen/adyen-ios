@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenDropIn
+import UIKit
 import XCTest
 
 @MainActor
@@ -66,7 +67,7 @@ final class DropInViewModelTests: XCTestCase {
                     configuration: configuration
                 )
 
-                XCTAssertEqual(componentManager.storedComponents.count, 1)
+                XCTAssertEqual(componentManager.supportedStoredPaymentMethods.count, 1)
                 XCTAssertEqual(
                     componentManager.sections.contains { $0.kind == .stored },
                     !hideStoredPaymentMethods
@@ -99,7 +100,12 @@ final class DropInViewModelTests: XCTestCase {
             context: Dummy.context,
             configuration: configuration,
             order: nil,
-            presentationDelegate: nil
+            paymentComponentBuilder: { paymentMethod in
+                PresentablePaymentComponentMock(
+                    paymentMethod: paymentMethod,
+                    viewController: UIViewController()
+                )
+            }
         )
         let sut = DropInViewModel(
             title: "Drop-in",
