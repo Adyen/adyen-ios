@@ -46,11 +46,13 @@ package final class PaymentButtonViewController: FormViewController {
     /// Shows the loading indicator on the payment button and disables interaction.
     package func startLoading() {
         payButtonItem.showsActivityIndicator = true
+        view.isUserInteractionEnabled = false
     }
 
-    /// Hides the loading indicator on the payment button.
+    /// Hides the loading indicator on the payment button and restores interaction.
     package func stopLoading() {
         payButtonItem.showsActivityIndicator = false
+        view.isUserInteractionEnabled = true
     }
 
     private lazy var payButtonItem: FormButtonItem = {

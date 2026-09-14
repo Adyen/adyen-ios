@@ -12,9 +12,11 @@ import TwintSDK
 
 /// A component that handles a Twint payment.
 @MainActor
-package final class TwintComponent: PaymentComponent {
+package final class TwintComponent: PaymentComponent, LoadingComponent {
 
-    package lazy var viewController: UIViewController = {
+    package lazy var viewController: UIViewController = paymentButtonViewController
+
+    private lazy var paymentButtonViewController: PaymentButtonViewController = {
         let paymentButtonViewController = PaymentButtonViewController(
             amount: context.amount,
             localizationParameters: configuration.localizationParameters,
@@ -77,7 +79,12 @@ package final class TwintComponent: PaymentComponent {
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
     package func performSubmit() {
+        paymentButtonViewController.startLoading()
         submit(data: paymentData)
+    }
+
+    package func stopLoading() {
+        paymentButtonViewController.stopLoading()
     }
 }
 

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2026 Adyen N.V.
+// Copyright (c) 2019 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -13,9 +13,11 @@ import UIKit
 
 /// A component that handles payment methods that don't need any payment detail to be filled.
 @MainActor
-package final class GenericPaymentComponent: PaymentComponent {
+package final class GenericPaymentComponent: PaymentComponent, LoadingComponent {
 
-    package lazy var viewController: UIViewController = {
+    package lazy var viewController: UIViewController = paymentButtonViewController
+
+    private lazy var paymentButtonViewController: PaymentButtonViewController = {
         let paymentButtonViewController = PaymentButtonViewController(
             amount: context.amount,
             localizationParameters: localizationParameters,
@@ -101,7 +103,12 @@ package final class GenericPaymentComponent: PaymentComponent {
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
     package func performSubmit() {
+        paymentButtonViewController.startLoading()
         submit(data: paymentData)
+    }
+
+    package func stopLoading() {
+        paymentButtonViewController.stopLoading()
     }
 }
 
