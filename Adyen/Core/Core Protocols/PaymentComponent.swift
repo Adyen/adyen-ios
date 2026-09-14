@@ -39,20 +39,6 @@ package protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentM
     func performSubmit()
 }
 
-package extension PaymentComponent {
-
-    var type: PaymentComponentType {
-        .regular(self)
-    }
-}
-
-package extension StoredPaymentComponent {
-
-    var type: PaymentComponentType {
-        .stored(self)
-    }
-}
-
 extension PaymentComponent {
     
     /// Submits payment data to the payment delegate.
