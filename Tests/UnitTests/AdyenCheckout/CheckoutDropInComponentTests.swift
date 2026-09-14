@@ -99,10 +99,11 @@ final class CheckoutDropInComponentTests: XCTestCase {
 
         let dropIn = try checkout.createDropIn()
         let navigationController = try XCTUnwrap(dropIn.viewController as? UINavigationController)
-        navigationController.topViewController?.loadViewIfNeeded()
-        let otherPaymentMethodsButton: FormButton? = navigationController.view.findView(by: "secondaryButton")
+        let viewController = try XCTUnwrap(navigationController.topViewController)
+        viewController.loadViewIfNeeded()
+        let otherPaymentMethodsButton: FormButton? = viewController.view.findView(by: "secondaryButton")
 
-        XCTAssertEqual(otherPaymentMethodsButton?.isHidden, true)
+        XCTAssertTrue(try XCTUnwrap(otherPaymentMethodsButton).isHidden)
     }
 
     func test_createDropIn_shouldApplyCheckoutThemeToPresentedList() throws {
