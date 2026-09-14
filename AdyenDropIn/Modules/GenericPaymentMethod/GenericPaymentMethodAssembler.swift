@@ -7,6 +7,7 @@
 import AdyenUI
 import Foundation
 import SwiftUI
+import Adyen
 
 // sourcery:AutoMockable
 @MainActor

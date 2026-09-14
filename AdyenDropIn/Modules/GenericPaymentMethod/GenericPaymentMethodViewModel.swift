@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) import Adyen
 import AdyenUI
 import Foundation
+import UIKit
 
 @MainActor
 internal class GenericPaymentMethodViewModel: ObservableObject {
