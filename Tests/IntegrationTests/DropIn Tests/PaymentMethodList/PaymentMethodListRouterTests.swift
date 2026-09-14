@@ -278,7 +278,7 @@ struct PaymentMethodListRouterTests {
     }
 
     @Test
-    func presentComponent_givenInitiableComponent_shouldNotPresentAnything() {
+    func presentComponent_givenGenericComponent_shouldNotPresentAnything() {
         // Given
         let navigationControllerSpy = NavigationControllerSpy()
         let componentContainerAssemblerMock = makeComponentContainerAssembler()
@@ -286,10 +286,10 @@ struct PaymentMethodListRouterTests {
             navigationController: navigationControllerSpy,
             componentContainerAssembler: componentContainerAssemblerMock
         )
-        let initiablePaymentComponent = makeInitiablePaymentComponentMock()
+        let genericPaymentComponent = makegenericPaymentComponentMock()
 
         // When
-        sut.present(component: initiablePaymentComponent)
+        sut.present(component: genericPaymentComponent)
 
         // Then - initiable components are not presented by the router
         #expect(navigationControllerSpy.pushViewControllerCallsCount == 0)
@@ -374,7 +374,7 @@ struct PaymentMethodListRouterTests {
         )
     }
 
-    private func makeInitiablePaymentComponentMock() -> PaymentComponentMock {
+    private func makegenericPaymentComponentMock() -> PaymentComponentMock {
         let paymentMethodMock = PaymentMethodMock(type: .applePay, name: "Apple Pay")
         return PaymentComponentMock(paymentMethod: paymentMethodMock)
     }

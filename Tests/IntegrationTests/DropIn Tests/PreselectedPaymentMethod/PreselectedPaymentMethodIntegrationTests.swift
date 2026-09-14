@@ -34,8 +34,8 @@ struct PreselectedPaymentMethodIntegrationTests {
     
     // MARK: - Submit Payment Tests
     
-    @Test("PaymentComponent that is initiable - submit payment triggers submit action")
-    func initiableComponent_submitPayment_triggersSubmit() throws {
+    @Test("PaymentComponent that is generic - submit payment triggers submit action")
+    func genericComponent_submitPayment_triggersSubmit() throws {
         // Given - use an initiable component that triggers submit directly
         let dropInFlowManager = DropInFlowManagingMock()
         let preSelectedViewController = makeSUT(

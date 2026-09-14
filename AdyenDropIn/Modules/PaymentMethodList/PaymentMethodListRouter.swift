@@ -81,7 +81,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
             pushComponentContainer(with: regularComponent)
         case let .stored(storedComponent):
             presentComponentContainer(with: storedComponent)
-        case .initiable:
+        case .generic:
             break
         }
     }

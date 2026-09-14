@@ -137,18 +137,18 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         router?.present(viewController: applePayViewController)
     }
 
-    private var initiablePaymentComponent: PaymentComponent?
+    private var genericPaymentComponent: PaymentComponent?
     internal func select(paymentMethod: PaymentMethod) {
         guard let component = componentManager.buildComponent(for: paymentMethod) else { return }
 
         switch component.type {
         case .regular, .stored:
             router?.present(component: component)
-        case let .initiable(initiablePaymentComponent):
-            self.initiablePaymentComponent = initiablePaymentComponent
+        case let .generic(genericPaymentComponent):
+            self.genericPaymentComponent = genericPaymentComponent
             state = .loading
-            initiablePaymentComponent.delegate = self
-            initiablePaymentComponent.performSubmit()
+            genericPaymentComponent.delegate = self
+            genericPaymentComponent.performSubmit()
         }
     }
 
@@ -222,7 +222,7 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        initiablePaymentComponent = nil
+        genericPaymentComponent = nil
         dropInFlowManager.submit(data, from: component, actionPresenter: self)
     }
 
@@ -232,7 +232,7 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
     ) {
         defer {
             state = .idle
-            initiablePaymentComponent = nil
+            genericPaymentComponent = nil
         }
 
         if case ComponentError.cancelled = error {
