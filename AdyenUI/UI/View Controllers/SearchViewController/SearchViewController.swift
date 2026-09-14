@@ -19,6 +19,11 @@ package protocol SearchResultsEmptyView: UIView {
 /// A view controller that shows search results in a ``ListViewController``
 package class SearchViewController: UIViewController, AdyenObserver {
 
+    private enum Layout {
+        static let searchBarHorizontalInset: CGFloat = 8
+        static let headerBottomSpacing: CGFloat = 8
+    }
+
     internal lazy var keyboardObserver = KeyboardObserver()
     private var emptyViewBottomConstraint: NSLayoutConstraint?
 
@@ -144,33 +149,33 @@ package class SearchViewController: UIViewController, AdyenObserver {
                 headerHeightHug
             ])
             searchBarTopAnchor = headerView.bottomAnchor
-            searchBarTopSpacing = 8
+            searchBarTopSpacing = Layout.headerBottomSpacing
         } else {
             searchBarTopAnchor = view.layoutMarginsGuide.topAnchor
             searchBarTopSpacing = 0
         }
         
         NSLayoutConstraint.activate([
-            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Layout.searchBarHorizontalInset),
+            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Layout.searchBarHorizontalInset),
             searchBar.topAnchor.constraint(equalTo: searchBarTopAnchor, constant: searchBarTopSpacing),
             
-            resultsListViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            resultsListViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            resultsListViewController.view.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
-            resultsListViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+            resultsListViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            resultsListViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            resultsListViewController.view.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            resultsListViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            emptyView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 0),
-            emptyView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 0),
-            emptyView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
+            emptyView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            emptyView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            emptyView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
             
-            loadingView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 0),
-            loadingView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 0),
-            loadingView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 0),
-            loadingView.bottomAnchor.constraint(equalTo: emptyView.bottomAnchor, constant: 0)
+            loadingView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            loadingView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            loadingView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            loadingView.bottomAnchor.constraint(equalTo: emptyView.bottomAnchor)
         ])
         
-        emptyViewBottomConstraint = emptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        emptyViewBottomConstraint = emptyView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         emptyViewBottomConstraint?.isActive = true
     }
     
