@@ -20,11 +20,8 @@ public final class CheckoutPaymentComponent {
     internal let paymentComponent: PaymentComponent
     
     /// The view controller of the component.
-    public var viewController: UIViewController? {
-        guard let presentableComponent = paymentComponent as? PaymentComponent else {
-            return nil
-        }
-        return presentableComponent.viewController
+    public var viewController: UIViewController {
+        paymentComponent.viewController
     }
     
     package init(paymentComponent: PaymentComponent) {
@@ -46,7 +43,12 @@ public final class CheckoutPaymentComponent {
     /// }
     /// ```
     public var requiresUserInteraction: Bool {
-        viewController != nil
+        switch paymentComponent.type {
+        case .regular, .stored:
+            return true
+        case .generic:
+            return false
+        }
     }
 
     /// Submits the payment request to initiate the payment process.
