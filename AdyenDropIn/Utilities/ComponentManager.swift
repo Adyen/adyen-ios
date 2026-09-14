@@ -68,6 +68,14 @@ internal final class ComponentManager: ComponentManaging {
 
     // MARK: - ComponentManaging
 
+    internal var hasSupportedPaymentMethods: Bool {
+        let hasPaymentMethods = !sections.isEmpty
+        let hasStoredPaymentMethods = configuration.startWithLastStoredPaymentMethod
+            && !supportedStoredPaymentMethods.isEmpty
+        
+        return hasPaymentMethods || hasStoredPaymentMethods
+    }
+
     internal var sections: [PaymentMethodsSection] {
         [paidSection, storedSection, regularSection].filter { !$0.paymentMethods.isEmpty }
     }
