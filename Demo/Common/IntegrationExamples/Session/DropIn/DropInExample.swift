@@ -7,6 +7,7 @@
 import Adyen
 import AdyenActions
 import AdyenCard
+import AdyenCheckout
 import AdyenComponents
 import AdyenDropIn
 import AdyenNetworking
@@ -82,35 +83,52 @@ internal final class DropInExample: InitialDataFlowProtocol {
     // MARK: - Presentation
     
     private func presentComponent(with session: Session) {
-        let dropIn = dropInComponent(from: session)
-        presenter?.present(viewController: dropIn.viewController, completion: nil)
-        dropInComponent = dropIn
+        do {
+            let dropIn = try dropInComponent(from: session)
+            presenter?.present(viewController: dropIn.viewController, completion: nil)
+            dropInComponent = dropIn
+        } catch {
+            presentAlert(with: error)
+        }
     }
 
-    private func dropInComponent(from session: Session) -> DropInComponent {
+    private func dropInComponent(from session: Session) throws -> DropInComponent {
         guard let context else {
             fatalError("AdyenContext is not initialized")
         }
 
-        let paymentMethods = session.state.paymentMethods
-        let configuration = dropInConfiguration(from: paymentMethods)
+        let configuration = try CheckoutConfiguration(
+            environment: ConfigurationConstants.componentsEnvironment,
+            amount: ConfigurationConstants.current.amount,
+            clientKey: ConfigurationConstants.clientKey,
+            analyticsConfiguration: ConfigurationConstants.current.analyticsConfiguration
+        ) {
+            ConfigurationConstants.current.cardConfiguration
+            try ConfigurationConstants.current.applePayConfiguration(using: .demo)
+            ConfigurationConstants.current.dropInConfiguration
+        }
+        .theme(ConfigurationConstants.current.themeSettings.theme.theme)
+
+        // TODO: intermediate dropin creation for demo app, to be replaced next
         return DropInComponent(
-            paymentMethods: paymentMethods,
+            paymentMethods: session.state.paymentMethods,
             context: context,
-            configuration: configuration,
+            configuration: configuration.dropInConfiguration,
             actionComponentConfiguration: ConfigurationConstants.current.dropInActionComponentConfiguration,
+            paymentComponentBuilder: { paymentMethod in
+                try CheckoutComponentBuilder.build(
+                    forAnyPaymentMethod: paymentMethod,
+                    configuration: configuration,
+                    context: context
+                )
+            },
             title: ConfigurationConstants.appName
         )
-        
+
         // TODO: Migrate to Checkout — Session no longer conforms to delegate protocols in v6.
         // component.delegate = session
         // component.storedPaymentMethodsDelegate = session
         // component.partialPaymentDelegate = session
-
-    }
-    
-    private func dropInConfiguration(from _: PaymentMethods) -> DropInConfiguration {
-        ConfigurationConstants.current.dropInConfiguration
     }
 
     // MARK: - Alert handling
