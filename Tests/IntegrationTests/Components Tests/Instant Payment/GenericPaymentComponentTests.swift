@@ -59,6 +59,25 @@ class GenericPaymentComponentTests: XCTestCase {
         waitForExpectations(timeout: 2, handler: nil)
     }
 
+    func testViewControllerHasCorrectTitle() {
+        XCTAssertEqual(sut.viewController.title, paymentMethod.displayInformation(using: nil).title)
+    }
+
+    func testTappingPayButtonShouldCallPaymentComponentDelegateDidSubmit() {
+        sut.viewController.loadViewIfNeeded()
+
+        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called.")
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === self.sut)
+            didSubmitExpectation.fulfill()
+        }
+
+        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(by: "payButtonItem.button")
+        payButtonItemViewButton?.sendActions(for: .touchUpInside)
+
+        wait(for: [didSubmitExpectation], timeout: 10)
+    }
+
     // MARK: - Private
 
     private var paymentComponentData: PaymentComponentData {
