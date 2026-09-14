@@ -324,7 +324,7 @@ struct PreselectedPaymentMethodIntegrationTests {
             switch self {
             case .visa, .bcmc, .initiableBCMC: "Pay €1.00"
             case .visaWithoutAmount: "Pay"
-            case .visaWithZeroAmount: "Confirm preauthorization"
+            case .visaWithZeroAmount: "Save details"
             }
         }
 

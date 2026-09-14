@@ -267,7 +267,6 @@ extension CardViewController {
             item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "payButtonItem")
             item.title = AmountAwarePaymentStringsPolicy.payButtonTitle(
                 with: amount,
-                style: .immediate,
                 localizationParameters: localizationParameters
             )
             return item

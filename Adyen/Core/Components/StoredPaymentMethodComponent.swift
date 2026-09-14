@@ -75,7 +75,6 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
 
         let submitActionTitle = AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: context.amount,
-            style: .immediate,
             localizationParameters: localizationParameters
         )
         let submitAction = UIAlertAction(title: submitActionTitle, style: .default) { [weak self] _ in
