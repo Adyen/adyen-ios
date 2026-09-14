@@ -21,7 +21,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     // MARK: - Properties
 
     internal weak var router: ComponentContainerRouting?
-    private let component: PresentablePaymentComponent
+    private let component: PaymentComponent
     private let configuration: DropInConfiguration
     private var dropInFlowManager: DropInFlowManaging
     private weak var partialPaymentDelegate: PartialPaymentDelegate?
@@ -29,7 +29,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     // MARK: - Initializers
 
     internal init(
-        component: PresentablePaymentComponent,
+        component: PaymentComponent,
         configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
         partialPaymentDelegate: PartialPaymentDelegate?

@@ -51,7 +51,7 @@ class PaymentComponentMock: PaymentComponent {
     }
 }
 
-class PresentablePaymentComponentMock: PaymentComponentMock, PresentablePaymentComponent, LoadingComponent {
+class PaymentComponentMock: PaymentComponentMock, PaymentComponent, LoadingComponent {
 
     // MARK: - Properties
 

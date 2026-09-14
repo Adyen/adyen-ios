@@ -133,12 +133,12 @@ class ComponentContainerAssemblerProtocolMock: ComponentContainerAssemblerProtoc
         resolveComponentContainerRouterForListenerCallsCount > 0
     }
 
-    var resolveComponentContainerRouterForListenerReceivedArguments: (component: PresentablePaymentComponent, listener: ComponentContainerRouterListener)?
-    var resolveComponentContainerRouterForListenerReceivedInvocations: [(component: PresentablePaymentComponent, listener: ComponentContainerRouterListener)] = []
+    var resolveComponentContainerRouterForListenerReceivedArguments: (component: PaymentComponent, listener: ComponentContainerRouterListener)?
+    var resolveComponentContainerRouterForListenerReceivedInvocations: [(component: PaymentComponent, listener: ComponentContainerRouterListener)] = []
     var resolveComponentContainerRouterForListenerReturnValue: Router!
-    var resolveComponentContainerRouterForListenerClosure: ((PresentablePaymentComponent, ComponentContainerRouterListener) -> Router)?
+    var resolveComponentContainerRouterForListenerClosure: ((PaymentComponent, ComponentContainerRouterListener) -> Router)?
 
-    func resolveComponentContainerRouter(for component: PresentablePaymentComponent, listener: ComponentContainerRouterListener) -> Router {
+    func resolveComponentContainerRouter(for component: PaymentComponent, listener: ComponentContainerRouterListener) -> Router {
         resolveComponentContainerRouterForListenerCallsCount += 1
         resolveComponentContainerRouterForListenerReceivedArguments = (component: component, listener: listener)
         resolveComponentContainerRouterForListenerReceivedInvocations.append((component: component, listener: listener))
@@ -178,11 +178,11 @@ class ComponentContainerRoutingMock: ComponentContainerRouting {
         presentPaymentComponentCallsCount > 0
     }
 
-    var presentPaymentComponentReceivedPaymentComponent: PresentablePaymentComponent?
-    var presentPaymentComponentReceivedInvocations: [PresentablePaymentComponent] = []
-    var presentPaymentComponentClosure: ((PresentablePaymentComponent) -> Void)?
+    var presentPaymentComponentReceivedPaymentComponent: PaymentComponent?
+    var presentPaymentComponentReceivedInvocations: [PaymentComponent] = []
+    var presentPaymentComponentClosure: ((PaymentComponent) -> Void)?
 
-    func present(paymentComponent: PresentablePaymentComponent) {
+    func present(paymentComponent: PaymentComponent) {
         presentPaymentComponentCallsCount += 1
         presentPaymentComponentReceivedPaymentComponent = paymentComponent
         presentPaymentComponentReceivedInvocations.append(paymentComponent)

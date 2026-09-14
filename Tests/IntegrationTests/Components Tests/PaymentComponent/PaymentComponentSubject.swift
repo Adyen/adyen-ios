@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class PaymentComponentSubject: PresentablePaymentComponent {
+class PaymentComponentSubject: PaymentComponent {
 
     // MARK: - Properties
 
@@ -18,7 +18,7 @@ class PaymentComponentSubject: PresentablePaymentComponent {
     var order: PartialPaymentOrder?
     var paymentMethod: PaymentMethod
 
-    /// PresentablePaymentComponent requirement
+    /// PaymentComponent requirement
     var viewController: UIViewController {
         UIViewController()
     }

@@ -17,7 +17,7 @@ import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.
 @MainActor
-package final class ACHDirectDebitComponent: PresentablePaymentComponent,
+package final class ACHDirectDebitComponent: PaymentComponent,
     LoadingComponent {
     
     private enum ViewIdentifier {

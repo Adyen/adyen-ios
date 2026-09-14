@@ -10,6 +10,11 @@ import Foundation
 @MainActor
 package final class GenericPaymentComponent: PaymentComponent {
 
+    // TODO: - Replace with actual generic view controller
+    package var viewController: UIViewController {
+        return UIViewController()
+    }
+
     /// The context object for this component.
     package let context: AdyenContext
 

@@ -20,7 +20,7 @@ import UIKit
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
 @MainActor
-package class CardComponent: PresentablePaymentComponent,
+package class CardComponent: PaymentComponent,
     LoadingComponent {
 
     internal enum Constant {

@@ -133,7 +133,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         self.applePayComponent = componentManager.buildComponent(for: applePayPaymentMethod)
         applePayComponent?.delegate = self
 
-        guard let applePayViewController = (applePayComponent as? PresentablePaymentComponent)?.viewController else { return }
+        guard let applePayViewController = (applePayComponent as? PaymentComponent)?.viewController else { return }
         router?.present(viewController: applePayViewController)
     }
 

@@ -206,7 +206,7 @@ extension DropInAdvancedFlowExample: DropInComponentDelegate {
     }
 
     internal func didCancel(component: PaymentComponent, from dropInComponent: AnyDropInComponent) {
-        // Handle the event when the user closes a PresentablePaymentComponent.
+        // Handle the event when the user closes a PaymentComponent.
         print("User did close: \(component.paymentMethod.name)")
     }
 

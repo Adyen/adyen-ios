@@ -17,7 +17,7 @@ import UIKit
 
 /// A component that provides a form for gift card payments.
 @MainActor
-package final class GiftCardComponent: PresentablePaymentComponent,
+package final class GiftCardComponent: PaymentComponent,
     Localizable,
     LoadingComponent,
     AdyenObserver {

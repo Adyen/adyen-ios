@@ -16,7 +16,7 @@ import UIKit
 
 /// A component that handles a Cash App Pay payment.
 @MainActor
-package final class CashAppPayComponent: PresentablePaymentComponent,
+package final class CashAppPayComponent: PaymentComponent,
     LoadingComponent {
 
     /// The notification to post when returning back to your application from Cash App.

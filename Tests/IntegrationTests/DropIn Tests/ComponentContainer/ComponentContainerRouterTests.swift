@@ -152,7 +152,7 @@ struct ComponentContainerRouterTests {
         return (sut, viewControllerSpy, listenerMock)
     }
 
-    private func makePaymentComponent() async -> PresentablePaymentComponentMock {
+    private func makePaymentComponent() async -> PaymentComponentMock {
         let viewController = UIViewController()
         let cardPaymentMethodMock = CardPaymentMethodMock(
             type: .scheme,
@@ -160,7 +160,7 @@ struct ComponentContainerRouterTests {
             brands: [.visa, .masterCard]
         )
 
-        return PresentablePaymentComponentMock(
+        return PaymentComponentMock(
             paymentMethod: cardPaymentMethodMock,
             viewController: viewController
         )

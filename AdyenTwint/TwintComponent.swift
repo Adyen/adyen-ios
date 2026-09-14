@@ -14,6 +14,11 @@ import TwintSDK
 @MainActor
 package final class TwintComponent: PaymentComponent {
 
+    // TODO: - Replace with actual generic view controller
+    package var viewController: UIViewController {
+        UIViewController()
+    }
+    
     /// Configuration for Twint Component.
     package typealias Configuration = BasicComponentConfiguration
 

@@ -19,12 +19,12 @@ internal protocol BACSDirectDebitRouterProtocol: AnyObject {
 
 /// A component that provides a form for BACS Direct Debit payments.
 @MainActor
-package final class BACSDirectDebitComponent: PresentablePaymentComponent {
+package final class BACSDirectDebitComponent: PaymentComponent {
 
     /// Configuration for BACS Direct Debit Component.
     package typealias Configuration = BasicComponentConfiguration
 
-    // MARK: - PresentablePaymentComponent
+    // MARK: - PaymentComponent
 
     package let viewController: UIViewController
 

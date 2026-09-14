@@ -150,9 +150,9 @@ struct ComponentContainerViewModelTests {
 
     private class ComponentContainerRoutingMock: ComponentContainerRouting {
         var presentPaymentComponentCallsCount = 0
-        var presentPaymentComponentReceivedPaymentComponent: PresentablePaymentComponent?
+        var presentPaymentComponentReceivedPaymentComponent: PaymentComponent?
 
-        func present(paymentComponent: PresentablePaymentComponent) {
+        func present(paymentComponent: PaymentComponent) {
             presentPaymentComponentCallsCount += 1
             presentPaymentComponentReceivedPaymentComponent = paymentComponent
         }
@@ -182,7 +182,7 @@ struct ComponentContainerViewModelTests {
     private func makeSUT() -> (
         sut: ComponentContainerViewModel,
         paymentMethodMock: CardPaymentMethodMock,
-        paymentComponentMock: PresentablePaymentComponentMock,
+        paymentComponentMock: PaymentComponentMock,
         dropInFlowManagerMock: DropInFlowManagingMock,
         routerMock: ComponentContainerRoutingMock
     ) {
@@ -193,7 +193,7 @@ struct ComponentContainerViewModelTests {
         )
         let viewControllerMock = UIViewController()
 
-        let paymentComponentMock = PresentablePaymentComponentMock(
+        let paymentComponentMock = PaymentComponentMock(
             paymentMethod: cardPaymentMethodMock,
             viewController: viewControllerMock
         )

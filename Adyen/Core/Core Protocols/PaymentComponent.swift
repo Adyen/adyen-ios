@@ -15,10 +15,10 @@ package protocol PaymentMethodAware {
 }
 
 /// A component that handles stored payment methods.
-package protocol StoredPaymentComponent: PresentablePaymentComponent {}
+package protocol StoredPaymentComponent: PaymentComponent {}
 
 package enum PaymentComponentType {
-    case regular(PresentablePaymentComponent)
+    case regular(PaymentComponent)
     case stored(StoredPaymentComponent)
     case generic(PaymentComponent)
 }
@@ -34,10 +34,12 @@ package protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentM
 
     var paymentMethodBehavior: SDKData.PaymentMethodBehavior { get }
 
+    var viewController: UIViewController { get }
+
     func performSubmit()
 }
 
-package extension PresentablePaymentComponent {
+package extension PaymentComponent {
 
     var type: PaymentComponentType {
         .regular(self)
@@ -48,13 +50,6 @@ package extension StoredPaymentComponent {
 
     var type: PaymentComponentType {
         .stored(self)
-    }
-}
-
-package extension PaymentComponent {
-
-    var type: PaymentComponentType {
-        .generic(self)
     }
 }
 

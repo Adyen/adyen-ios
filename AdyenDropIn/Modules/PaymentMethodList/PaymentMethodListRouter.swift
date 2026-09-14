@@ -125,14 +125,14 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     // MARK: - Private
 
     private func pushComponentContainer(
-        with component: PresentablePaymentComponent
+        with component: PaymentComponent
     ) {
         let componentContainerViewController = componentContainerViewController(for: component)
         navigationController.pushViewController(componentContainerViewController, animated: true)
     }
     
     private func presentComponentContainer(
-        with component: PresentablePaymentComponent
+        with component: PaymentComponent
     ) {
         let componentContainerViewController = componentContainerViewController(for: component)
         setupCloseButton(controller: componentContainerViewController)
@@ -155,7 +155,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     }
 
     private func componentContainerViewController(
-        for component: PresentablePaymentComponent
+        for component: PaymentComponent
     ) -> UIViewController {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: component,
