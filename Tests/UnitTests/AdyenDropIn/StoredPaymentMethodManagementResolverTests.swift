@@ -183,7 +183,10 @@ struct StoredPaymentMethodManagementResolverTests {
         return DropInComponent(
             paymentMethods: PaymentMethods(regular: [], stored: []),
             context: Dummy.context,
-            configuration: dropInConfiguration
+            configuration: dropInConfiguration,
+            paymentComponentBuilder: { _ in
+                fatalError("The component builder is not used by these tests.")
+            }
         )
     }
 

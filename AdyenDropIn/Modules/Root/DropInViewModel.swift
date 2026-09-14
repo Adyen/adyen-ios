@@ -51,7 +51,7 @@ internal class DropInViewModel: DropInViewModelProtocol {
 
     internal var root: DropInRoot {
         if configuration.startWithLastStoredPaymentMethod,
-           let storedPaymentMethod = componentManager.storedComponents.first {
+           let storedPaymentMethod = componentManager.firstStoredComponent {
             return .preselected(storedPaymentMethod)
         } else if configuration.allowsSkippingPaymentList, let paymentComponent = componentManager.singleRegularComponent {
             return .component(paymentComponent)

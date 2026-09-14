@@ -21,6 +21,12 @@ import AdyenNetworking
 #endif
 import UIKit
 
+// TODO: Remove this transition source with the legacy stored-payment-method delegates in PR 6.
+package enum StoredMethodManagementSource {
+    case legacy
+    case checkout(StoredPaymentMethodManagementCapability?)
+}
+
 /**
  A component that handles the entire flow of payment selection and payment details entry.
 
@@ -58,10 +64,6 @@ package final class DropInComponent: NSObject,
         return dropInAssembler.resolveDropInRouter()
     }()
 
-    private lazy var componentManager: ComponentManager = {
-        createComponentManager(order: nil)
-    }()
-
     private lazy var storedPaymentMethodManagementResolver = StoredPaymentMethodManagementResolver(
         dropInComponent: self
     )
@@ -69,7 +71,8 @@ package final class DropInComponent: NSObject,
     internal var configuration: DropInConfiguration
 
     private let actionComponentConfiguration: CheckoutActionComponent.Configuration
-    private let paymentComponentBuilder: DropInPaymentComponentBuilder?
+    private let storedMethodManagementSource: StoredMethodManagementSource
+    private let paymentComponentBuilder: DropInPaymentComponentBuilder
 
     internal var paymentInProgress: Bool = false
 
@@ -91,6 +94,7 @@ package final class DropInComponent: NSObject,
     ///   - context: The context object for this component.
     ///   - configuration: Drop-in behavior and checkout-wide presentation configuration.
     ///   - actionComponentConfiguration: The resolved configuration for action handling.
+    ///   - storedMethodManagementSource: The temporary source of stored payment method management behavior.
     ///   - paymentComponentBuilder: The payment component builder to handle component creation.
     ///   - title: Name of the application. To be displayed on a first payment page.
     ///            If no external value provided, the Main Bundle's name would be used.
@@ -99,12 +103,14 @@ package final class DropInComponent: NSObject,
         context: AdyenContext,
         configuration: DropInConfiguration = .init(),
         actionComponentConfiguration: CheckoutActionComponent.Configuration = .init(),
-        paymentComponentBuilder: DropInPaymentComponentBuilder? = nil,
+        storedMethodManagementSource: StoredMethodManagementSource = .legacy,
+        paymentComponentBuilder: @escaping DropInPaymentComponentBuilder,
         title: String? = nil
     ) {
         self.title = title ?? Bundle.main.displayName
         self.configuration = configuration
         self.actionComponentConfiguration = actionComponentConfiguration
+        self.storedMethodManagementSource = storedMethodManagementSource
         self.paymentComponentBuilder = paymentComponentBuilder
         self.context = context
         self.paymentMethods = paymentMethods
@@ -144,7 +150,12 @@ package final class DropInComponent: NSObject,
     package weak var storedPaymentMethodsDelegate: StoredPaymentMethodsDelegate?
 
     internal var storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability? {
-        storedPaymentMethodManagementResolver.capability
+        switch storedMethodManagementSource {
+        case .legacy:
+            return storedPaymentMethodManagementResolver.capability
+        case let .checkout(capability):
+            return capability
+        }
     }
 
     // MARK: - Presentable Component Protocol
@@ -165,10 +176,6 @@ package final class DropInComponent: NSObject,
     // MARK: - Handling Partial Payments
 
     private var apiClient: AsyncAPIClientProtocol
-
-    internal func reloadComponentManager() {
-        componentManager = createComponentManager(order: componentManager.order)
-    }
 
     /// Reloads the DropIn with a partial payment order and a new `PaymentMethods` object.
     ///
@@ -199,7 +206,7 @@ package final class DropInComponent: NSObject,
             return
         }
         paymentMethods.paid = response.paymentMethods ?? []
-        componentManager = createComponentManager(order: order)
+        // TODO: Partial payments need a dedicated design for updating the assembler-owned ComponentManager.
         paymentInProgress = false
 //        displayPaymentMethodsList(onCancel: { [weak self] in
 //            guard let self else { return }
@@ -208,18 +215,6 @@ package final class DropInComponent: NSObject,
     }
 
     // MARK: - Private
-
-    private func createComponentManager(order: PartialPaymentOrder?) -> ComponentManager {
-        ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            partialPaymentEnabled: partialPaymentDelegate != nil,
-            order: order,
-            presentationDelegate: self,
-            paymentComponentBuilder: paymentComponentBuilder
-        )
-    }
 
 //    internal lazy var navigationController = DropInNavigationController(
 //        rootViewController: rootViewController,
@@ -237,7 +232,7 @@ package final class DropInComponent: NSObject,
     // TODO: Make sure Analytic events are preserved
 //    internal lazy var rootViewController: UIViewController = {
 //        if configuration.allowPreselectedPaymentView,
-//           let preselectedComponent = componentManager.storedComponents.first {
+//           let preselectedComponent = componentManager.firstStoredComponent {
 //            let view = resolvePreselectedPaymentMethodView(for: preselectedComponent, onCancel: nil)
 //            self.preselectedPaymentMethodView = view
 //            return view
