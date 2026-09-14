@@ -48,7 +48,7 @@ package enum AmountAwarePaymentStringsPolicy {
         localizationParameters: LocalizationParameters?
     ) -> String {
         guard var amount else {
-            return "Payment options"
+            return localizedString(.storedPaymentMethodManagementPaymentOptions, localizationParameters)
         }
 
         if amount.value == 0 {
