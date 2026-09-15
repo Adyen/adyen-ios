@@ -34,16 +34,18 @@ final class CheckoutCoreDropInTests: XCTestCase {
         ]) as PaymentMethods
     }
 
-    func test_createDropIn_withoutPaymentMethods_shouldReturnNil() {
+    func test_createDropIn_withoutPaymentMethods_shouldThrowPaymentMethodFailure() {
         let sut = makeAdvancedCheckoutCore(paymentMethods: nil)
 
-        XCTAssertNil(sut.createDropIn())
+        XCTAssertThrowsError(try sut.createDropIn()) { error in
+            XCTAssertEqual((error as? CheckoutError)?.code, .paymentMethodFailure)
+        }
     }
 
     func test_createDropIn_withAdvancedCheckout_shouldAssembleDropInAndSetDelegate() throws {
         let sut = makeAdvancedCheckoutCore(paymentMethods: paymentMethods)
 
-        let dropIn = try XCTUnwrap(sut.createDropIn())
+        let dropIn = try sut.createDropIn().dropInComponent
 
         XCTAssertTrue(dropIn.delegate === sut)
         XCTAssertNil(dropIn.storedPaymentMethodManagementCapability)
@@ -53,7 +55,7 @@ final class CheckoutCoreDropInTests: XCTestCase {
     func test_createDropIn_withSessionCheckout_shouldAssembleDropInViewController() throws {
         let sut = makeSessionCheckoutCore(session: makeSessionMock())
 
-        let dropIn = try XCTUnwrap(sut.createDropIn())
+        let dropIn = try sut.createDropIn().dropInComponent
 
         XCTAssertTrue(dropIn.delegate === sut)
         XCTAssertTrue(dropIn.viewController is UINavigationController)
@@ -67,7 +69,7 @@ final class CheckoutCoreDropInTests: XCTestCase {
             .theme(theme)
         let sut = makeAdvancedCheckoutCore(paymentMethods: paymentMethods)
 
-        let dropIn = try XCTUnwrap(sut.createDropIn())
+        let dropIn = try sut.createDropIn().dropInComponent
 
         XCTAssertEqual(dropIn.configuration.theme.colors.primary, .yellow)
         XCTAssertTrue(dropIn.configuration.localizationProvider as AnyObject === provider)
@@ -78,7 +80,7 @@ final class CheckoutCoreDropInTests: XCTestCase {
             .allowRemovingStoredPaymentMethods(true)
         let sut = makeAdvancedCheckoutCore(paymentMethods: paymentMethods)
 
-        let dropIn = try XCTUnwrap(sut.createDropIn())
+        let dropIn = try sut.createDropIn().dropInComponent
         dropIn.storedPaymentMethodsDelegate = sut
 
         XCTAssertNil(dropIn.storedPaymentMethodManagementCapability)
@@ -89,7 +91,7 @@ final class CheckoutCoreDropInTests: XCTestCase {
         session.showRemovePaymentMethodButton = false
         let sut = makeSessionCheckoutCore(session: session)
 
-        let dropIn = try XCTUnwrap(sut.createDropIn())
+        let dropIn = try sut.createDropIn().dropInComponent
 
         XCTAssertNil(dropIn.storedPaymentMethodManagementCapability)
     }
@@ -99,7 +101,7 @@ final class CheckoutCoreDropInTests: XCTestCase {
         session.showRemovePaymentMethodButton = true
         let sut = makeSessionCheckoutCore(session: session)
 
-        let dropIn = try XCTUnwrap(sut.createDropIn())
+        let dropIn = try sut.createDropIn().dropInComponent
 
         XCTAssertNotNil(dropIn.storedPaymentMethodManagementCapability)
     }
@@ -108,7 +110,7 @@ final class CheckoutCoreDropInTests: XCTestCase {
         let session = makeSessionMock()
         session.showRemovePaymentMethodButton = true
         let sut = makeSessionCheckoutCore(session: session)
-        let dropIn = try XCTUnwrap(sut.createDropIn())
+        let dropIn = try sut.createDropIn().dropInComponent
         let capability = try XCTUnwrap(dropIn.storedPaymentMethodManagementCapability)
         let storedPaymentMethod = try XCTUnwrap(paymentMethods.stored.first)
 
