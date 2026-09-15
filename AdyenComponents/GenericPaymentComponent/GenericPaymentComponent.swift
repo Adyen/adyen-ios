@@ -17,19 +17,6 @@ package final class GenericPaymentComponent: PaymentComponent, LoadingComponent 
 
     package lazy var viewController: UIViewController = paymentButtonViewController
 
-    private lazy var paymentButtonViewController: PaymentButtonViewController = {
-        let paymentButtonViewController = PaymentButtonViewController(
-            amount: context.amount,
-            localizationParameters: localizationParameters,
-            theme: theme
-        )
-        paymentButtonViewController.title = paymentMethod.displayInformation(using: localizationParameters).title
-        paymentButtonViewController.onSubmit = { [weak self] in
-            self?.performSubmit()
-        }
-        return paymentButtonViewController
-    }()
-
     /// The context object for this component.
     package let context: AdyenContext
 
@@ -110,6 +97,21 @@ package final class GenericPaymentComponent: PaymentComponent, LoadingComponent 
     package func stopLoading() {
         paymentButtonViewController.stopLoading()
     }
+
+    // MARK: - Private
+
+    private lazy var paymentButtonViewController: PaymentButtonViewController = {
+        let paymentButtonViewController = PaymentButtonViewController(
+            amount: context.amount,
+            localizationParameters: localizationParameters,
+            theme: theme
+        )
+        paymentButtonViewController.title = paymentMethod.displayInformation(using: localizationParameters).title
+        paymentButtonViewController.onSubmit = { [weak self] in
+            self?.performSubmit()
+        }
+        return paymentButtonViewController
+    }()
 }
 
 /// Describes a payment details that contains nothing but the payment method type name.

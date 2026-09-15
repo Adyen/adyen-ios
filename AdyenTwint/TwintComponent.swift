@@ -16,19 +16,6 @@ package final class TwintComponent: PaymentComponent, LoadingComponent {
 
     package lazy var viewController: UIViewController = paymentButtonViewController
 
-    private lazy var paymentButtonViewController: PaymentButtonViewController = {
-        let paymentButtonViewController = PaymentButtonViewController(
-            amount: context.amount,
-            localizationParameters: configuration.localizationParameters,
-            theme: configuration.theme
-        )
-        paymentButtonViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
-        paymentButtonViewController.onSubmit = { [weak self] in
-            self?.performSubmit()
-        }
-        return paymentButtonViewController
-    }()
-
     package let type: PaymentComponentType = .regular
     
     /// Configuration for Twint Component.
@@ -86,6 +73,22 @@ package final class TwintComponent: PaymentComponent, LoadingComponent {
     package func stopLoading() {
         paymentButtonViewController.stopLoading()
     }
+
+    // MARK: - Private
+
+    private lazy var paymentButtonViewController: PaymentButtonViewController = {
+        let paymentButtonViewController = PaymentButtonViewController(
+            amount: context.amount,
+            localizationParameters: configuration.localizationParameters,
+            theme: configuration.theme
+        )
+        paymentButtonViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
+        paymentButtonViewController.onSubmit = { [weak self] in
+            self?.performSubmit()
+        }
+        return paymentButtonViewController
+    }()
+
 }
 
 extension TwintComponent: TrackableComponent {}
