@@ -11,6 +11,9 @@ package final class PaymentButtonViewController: FormViewController {
 
     private let amount: Amount?
 
+    /// A Boolean value that determines whether the payment button is displayed. Defaults to `true`.
+    private let showsSubmitButton: Bool
+
     /// Called when the payment button is tapped.
     package var onSubmit: (() -> Void)?
 
@@ -20,12 +23,16 @@ package final class PaymentButtonViewController: FormViewController {
     ///   - amount: The amount to display on the payment button.
     ///   - localizationParameters: The localization parameters.
     ///   - theme: The checkout theme to apply.
+    ///   - showsSubmitButton: Boolean value that determines whether the payment button is displayed.
+    ///   Defaults to `true`.
     package init(
         amount: Amount?,
         localizationParameters: LocalizationParameters? = nil,
-        theme: CheckoutTheme = .init()
+        theme: CheckoutTheme = .init(),
+        showsSubmitButton: Bool = true
     ) {
         self.amount = amount
+        self.showsSubmitButton = showsSubmitButton
         super.init(
             scrollEnabled: false,
             localizationParameters: localizationParameters,
@@ -40,7 +47,9 @@ package final class PaymentButtonViewController: FormViewController {
 
     override package func viewDidLoad() {
         super.viewDidLoad()
-        append(payButtonItem)
+        if showsSubmitButton {
+            append(payButtonItem)
+        }
     }
 
     /// Shows the loading indicator on the payment button and disables interaction.

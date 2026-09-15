@@ -15,12 +15,7 @@ import UIKit
 @MainActor
 package final class GenericPaymentComponent: PaymentComponent, LoadingComponent {
 
-    package lazy var viewController: UIViewController = {
-        guard configuration.showsSubmitButton else {
-            return UIViewController()
-        }
-        return paymentButtonViewController
-    }()
+    package lazy var viewController: UIViewController = paymentButtonViewController
 
     /// The context object for this component.
     package let context: AdyenContext
@@ -100,7 +95,8 @@ package final class GenericPaymentComponent: PaymentComponent, LoadingComponent 
         let paymentButtonViewController = PaymentButtonViewController(
             amount: context.amount,
             localizationParameters: configuration.localizationParameters,
-            theme: configuration.theme
+            theme: configuration.theme,
+            showsSubmitButton: configuration.showsSubmitButton
         )
         paymentButtonViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         paymentButtonViewController.onSubmit = { [weak self] in
