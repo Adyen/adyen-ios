@@ -320,6 +320,83 @@ class DropInFlowManagingMock: DropInFlowManaging {
 
 }
 
+class GenericPaymentMethodAssemblerProtocolMock: GenericPaymentMethodAssemblerProtocol {
+
+    // MARK: - resolveGenericPaymentMethodRouter
+
+    var resolveGenericPaymentMethodRouterForListenerCallsCount = 0
+    var resolveGenericPaymentMethodRouterForListenerCalled: Bool {
+        resolveGenericPaymentMethodRouterForListenerCallsCount > 0
+    }
+
+    var resolveGenericPaymentMethodRouterForListenerReceivedArguments: (component: PaymentComponent, listener: GenericPaymentMethodRouterListener)?
+    var resolveGenericPaymentMethodRouterForListenerReceivedInvocations: [(component: PaymentComponent, listener: GenericPaymentMethodRouterListener)] = []
+    var resolveGenericPaymentMethodRouterForListenerReturnValue: Router!
+    var resolveGenericPaymentMethodRouterForListenerClosure: ((PaymentComponent, GenericPaymentMethodRouterListener) -> Router)?
+
+    func resolveGenericPaymentMethodRouter(for component: PaymentComponent, listener: GenericPaymentMethodRouterListener) -> Router {
+        resolveGenericPaymentMethodRouterForListenerCallsCount += 1
+        resolveGenericPaymentMethodRouterForListenerReceivedArguments = (component: component, listener: listener)
+        resolveGenericPaymentMethodRouterForListenerReceivedInvocations.append((component: component, listener: listener))
+        if let resolveGenericPaymentMethodRouterForListenerClosure {
+            return resolveGenericPaymentMethodRouterForListenerClosure(component, listener)
+        } else {
+            return resolveGenericPaymentMethodRouterForListenerReturnValue
+        }
+    }
+
+}
+
+class GenericPaymentMethodRouterListenerMock: GenericPaymentMethodRouterListener {
+
+    // MARK: - didDismissGenericPaymentMethod
+
+    var didDismissGenericPaymentMethodCallsCount = 0
+    var didDismissGenericPaymentMethodCalled: Bool {
+        didDismissGenericPaymentMethodCallsCount > 0
+    }
+
+    var didDismissGenericPaymentMethodClosure: (() -> Void)?
+
+    func didDismissGenericPaymentMethod() {
+        didDismissGenericPaymentMethodCallsCount += 1
+        didDismissGenericPaymentMethodClosure?()
+    }
+
+}
+
+class GenericPaymentMethodRoutingMock: GenericPaymentMethodRouting {
+
+    // MARK: - present
+
+    var presentActionViewControllerOnCancelCallsCount = 0
+    var presentActionViewControllerOnCancelCalled: Bool {
+        presentActionViewControllerOnCancelCallsCount > 0
+    }
+
+    var presentActionViewControllerOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
+
+    func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
+        presentActionViewControllerOnCancelCallsCount += 1
+        presentActionViewControllerOnCancelClosure?(actionViewController, onCancel)
+    }
+
+    // MARK: - dismiss
+
+    var dismissCallsCount = 0
+    var dismissCalled: Bool {
+        dismissCallsCount > 0
+    }
+
+    var dismissClosure: (() -> Void)?
+
+    func dismiss() {
+        dismissCallsCount += 1
+        dismissClosure?()
+    }
+
+}
+
 class PaymentMethodListAssemblerProtocolMock: PaymentMethodListAssemblerProtocol {
 
     // MARK: - resolvePaymentMethodListRouter

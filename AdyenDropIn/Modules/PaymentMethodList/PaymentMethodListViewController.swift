@@ -56,30 +56,6 @@ internal class PaymentMethodListViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-
-    // TODO: -
-    // - Temporary loading view until the actual loading screen is developed.
-    // - This overlay should be removed.
-    private lazy var loadingOverlayView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = theme.colors.background.withAlphaComponent(0.6)
-        view.alpha = 0
-        view.isUserInteractionEnabled = true
-        view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "loadingOverlay")
-        
-        let activityIndicator = UIActivityIndicatorView(style: .medium)
-        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-        activityIndicator.startAnimating()
-        view.addSubview(activityIndicator)
-        
-        NSLayoutConstraint.activate([
-            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
-        
-        return view
-    }()
     
     // MARK: - Properties
 
@@ -114,7 +90,6 @@ internal class PaymentMethodListViewController: UIViewController {
         setupScrollView()
         setupHeaderView()
         setupPaymentMethodSectionsStackView()
-        setupLoadingOverlay()
         applyTheme()
         observeState()
     }
@@ -179,9 +154,7 @@ internal class PaymentMethodListViewController: UIViewController {
                 case let .loaded(sections):
                     self?.reload(with: sections)
                 case .idle:
-                    self?.hideLoadingOverlay()
-                case .loading:
-                    self?.showLoadingOverlay()
+                    break
                 }
             }.store(in: &cancellables)
     }
@@ -204,31 +177,6 @@ internal class PaymentMethodListViewController: UIViewController {
         sections.forEach { section in
             let sectionView = PaymentMethodSectionView(section: section)
             paymentMethodSectionsStackView.addArrangedSubview(sectionView)
-        }
-    }
-    
-    // MARK: - Loading Overlay
-    
-    private func setupLoadingOverlay() {
-        view.addSubview(loadingOverlayView)
-        
-        NSLayoutConstraint.activate([
-            loadingOverlayView.topAnchor.constraint(equalTo: view.topAnchor),
-            loadingOverlayView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            loadingOverlayView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            loadingOverlayView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-    }
-    
-    private func showLoadingOverlay() {
-        UIView.animate(withDuration: 0.2) {
-            self.loadingOverlayView.alpha = 1
-        }
-    }
-    
-    private func hideLoadingOverlay() {
-        UIView.animate(withDuration: 0.2) {
-            self.loadingOverlayView.alpha = 0
         }
     }
 }

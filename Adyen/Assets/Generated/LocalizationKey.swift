@@ -586,6 +586,10 @@ public struct LocalizationKey {
     public static let storedPaymentMethodManagementRemovalErrorMessage = LocalizationKey(key: "adyen.storedPaymentMethodManagement.removalErrorMessage")
     /// Expired
     public static let storedPaymentMethodExpired = LocalizationKey(key: "adyen.storedPaymentMethod.expired")
+    /// You will be guided to the next step of the process.
+    public static let checkoutDropinGenericPaymentMethodDescription = LocalizationKey(key: "adyen.checkout.dropin.generic.payment.method.description")
+    /// Processing...
+    public static let checkoutDropinGenericPaymentMethodProgressTitle = LocalizationKey(key: "adyen.checkout.dropin.generic.payment.method.progress.title")
     
     internal let key: String
     
