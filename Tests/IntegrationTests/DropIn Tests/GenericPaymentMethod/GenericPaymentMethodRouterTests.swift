@@ -40,9 +40,9 @@ struct GenericPaymentMethodRouterTests {
     @Test
     func dismiss_shouldPopViewControllerAndNotifyListener() {
         // Given
-        let viewController = UIViewController()
-        let navigationController = UINavigationController(rootViewController: UIViewController())
-        navigationController.pushViewController(viewController, animated: false)
+        let viewController = ViewControllerSpy()
+        let navigationControllerSpy = NavigationControllerSpy()
+        viewController.setNavigationController(navigationControllerSpy)
         let listener = GenericPaymentMethodRouterListenerMock()
         let sut = makeSUT(viewController: viewController, listener: listener)
 
@@ -50,7 +50,7 @@ struct GenericPaymentMethodRouterTests {
         sut.dismiss()
 
         // Then
-        #expect(navigationController.viewControllers.count == 1)
+        #expect(navigationControllerSpy.popViewControllerCallsCount == 1)
         #expect(listener.didDismissGenericPaymentMethodCallsCount == 1)
     }
 
@@ -62,6 +62,15 @@ struct GenericPaymentMethodRouterTests {
         override func present(_ viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)? = nil) {
             presentedViewControllerCaptured = viewControllerToPresent
             completion?()
+        }
+
+        private var _navigationController: NavigationControllerSpy?
+        override var navigationController: UINavigationController? {
+            _navigationController
+        }
+
+        func setNavigationController(_ navigationController: NavigationControllerSpy) {
+            _navigationController = navigationController
         }
     }
 
