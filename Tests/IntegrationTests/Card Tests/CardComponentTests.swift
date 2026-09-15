@@ -634,6 +634,58 @@ class CardComponentTests: XCTestCase {
         wait(until: cardLogoView, at: \.secondaryLogoView.isHidden, is: true)
     }
 
+    func test_zeroAmount_whenConsentFieldIsConfiguredToShow_thenHidesFieldAndStoresPaymentMethod() throws {
+        // Zero-amount tokenization overrides a configuration that normally asks for consent.
+        try assertCardSubmission(
+            amount: Amount(value: 0, currencyCode: "EUR"),
+            showsStorePaymentMethod: true,
+            expectsConsentField: false,
+            expectedStorePaymentMethod: true
+        )
+    }
+
+    func test_zeroAmount_whenConsentFieldIsConfiguredToHide_thenKeepsFieldHiddenAndStoresPaymentMethod() throws {
+        // Zero-amount tokenization stores credentials even when merchant hides the consent field.
+        try assertCardSubmission(
+            amount: Amount(value: 0, currencyCode: "EUR"),
+            showsStorePaymentMethod: false,
+            expectsConsentField: false,
+            expectedStorePaymentMethod: true
+        )
+    }
+
+    func test_positiveAmount_whenConsentFieldIsVisibleAndNotSelected_thenSubmitsStorePaymentMethodFalse() throws {
+        // Positive payments preserve shopper choice when consent is requested.
+        try assertCardSubmission(
+            amount: Amount(value: 1000, currencyCode: "EUR"),
+            showsStorePaymentMethod: true,
+            expectsConsentField: true,
+            shopperSelectsStorePaymentMethod: false,
+            expectedStorePaymentMethod: false
+        )
+    }
+
+    func test_positiveAmount_whenConsentFieldIsVisibleAndSelected_thenSubmitsStorePaymentMethodTrue() throws {
+        // Positive payments store credentials when shopper selects the consent field.
+        try assertCardSubmission(
+            amount: Amount(value: 1000, currencyCode: "EUR"),
+            showsStorePaymentMethod: true,
+            expectsConsentField: true,
+            shopperSelectsStorePaymentMethod: true,
+            expectedStorePaymentMethod: true
+        )
+    }
+
+    func test_positiveAmount_whenConsentFieldIsConfiguredToHide_thenSubmitsNoStorePaymentMethodValue() throws {
+        // Hidden consent configuration omits storage choice for positive payments.
+        try assertCardSubmission(
+            amount: Amount(value: 1000, currencyCode: "EUR"),
+            showsStorePaymentMethod: false,
+            expectsConsentField: false,
+            expectedStorePaymentMethod: nil
+        )
+    }
+
     func test_submit_withValidData_shouldCallDelegateWithPaymentData() throws {
         // Given
         var configuration = CardConfiguration()
@@ -1677,10 +1729,47 @@ extension UIView {
 
 extension CardComponentTests {
 
-    private func makeSUT(configuration: CardConfiguration) -> CardComponent {
+    private func assertCardSubmission(
+        amount: Amount,
+        showsStorePaymentMethod: Bool,
+        expectsConsentField: Bool,
+        shopperSelectsStorePaymentMethod: Bool = false,
+        expectedStorePaymentMethod: Bool?,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) throws {
+        let configuration = CardConfiguration().showStorePaymentMethod(showsStorePaymentMethod)
+        let sut = makeSUT(configuration: configuration, amount: amount)
+        let delegate = PaymentComponentDelegateMock()
+        let submission = expectation(description: "Card submits store-payment-method choice")
+        sut.delegate = delegate
+        setupRootViewController(sut.viewController)
+
+        delegate.onDidSubmit = { data, _ in
+            XCTAssertEqual(data.storePaymentMethod, expectedStorePaymentMethod, file: file, line: line)
+            submission.fulfill()
+        }
+
+        let view = try XCTUnwrap(sut.viewController.view, file: file, line: line)
+        let consentField: FormToggleItemView? = view.findView(with: "AdyenCard.CardComponent.storeDetailsItem")
+        XCTAssertEqual(consentField != nil, expectsConsentField, file: file, line: line)
+        if shopperSelectsStorePaymentMethod {
+            consentField?.accessibilityActivate()
+        }
+
+        fillCard(on: view, with: Dummy.visaCard)
+        tapSubmitButton(on: view)
+
+        waitForExpectations(timeout: 10)
+    }
+
+    private func makeSUT(
+        configuration: CardConfiguration,
+        amount: Amount? = nil
+    ) -> CardComponent {
         CardComponent(
             paymentMethod: method,
-            context: Dummy.context(with: nil),
+            context: Dummy.context(with: amount),
             configuration: configuration,
             binProvider: BinInfoProviderMock()
         )

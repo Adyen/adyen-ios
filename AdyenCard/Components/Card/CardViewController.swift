@@ -34,6 +34,7 @@ internal class CardViewController: FormViewController {
     private let cardLogos: [FormCardLogosItem.CardBrandLogo]
     private let allowedCoBadgedCardBrands: [CardBrand] = [.carteBancaire, .bcmc, .dankort]
     private let cardScannerAnalyticsHandler: CardScannerAnalyticsHandler
+
     private lazy var cardScannerController: CardScannerControlling = {
         var controller: CardScannerControlling = CardScannerController(presenter: self, analyticsHandler: cardScannerAnalyticsHandler)
         controller.title = localizedString(.cardScanYourCardButton, localizationParameters)
@@ -210,9 +211,17 @@ internal class CardViewController: FormViewController {
     }
     
     internal var storePayment: Bool? {
-        configuration.showStorePaymentMethod ? items.storeDetailsItem.value : nil
+        if amount?.value == 0 {
+            return true
+        }
+
+        guard configuration.showStorePaymentMethod else {
+            return nil
+        }
+
+        return items.storeDetailsItem.value
     }
-    
+
     internal var installments: Installments? {
         guard let installmentsItem = items.installmentsItem,
               !installmentsItem.isHidden.wrappedValue else { return nil }
@@ -350,7 +359,7 @@ extension CardViewController {
             append(installmentsItem)
         }
         
-        if configuration.showStorePaymentMethod {
+        if configuration.showStorePaymentMethod, amount?.value != 0 {
             append(items.storeDetailsItem)
             append(FormSpacerItem())
         }
