@@ -28,6 +28,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     private let configuration: DropInConfiguration
     private let dropInFlowManager: DropInFlowManaging
     private let theme: CheckoutTheme
+    private let logoURLProvider: LogoURLProvider
     private let partialPaymentDelegate: PartialPaymentDelegate?
     private let storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
 
@@ -41,6 +42,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
         theme: CheckoutTheme,
+        logoURLProvider: LogoURLProvider,
         partialPaymentDelegate: PartialPaymentDelegate?,
         storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
     ) {
@@ -51,6 +53,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
         self.theme = theme
+        self.logoURLProvider = logoURLProvider
         self.partialPaymentDelegate = partialPaymentDelegate
         self.storedPaymentMethodManagementCapability = storedPaymentMethodManagementCapability
     }
@@ -60,7 +63,6 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     internal func resolvePaymentMethodListRouter(
         delegate: PaymentMethodListRouterListener?
     ) -> Router {
-        let logoURLProvider = LogoURLProvider(environment: context.apiContext.environment)
         let viewModel = PaymentMethodListViewModel(
             context: context,
             localizationParameters: localizationParameters,
@@ -72,17 +74,13 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
             theme: theme
         )
         let view = PaymentMethodListViewController(viewModel: viewModel)
-        let storedPaymentMethodManagementAssembler = StoredPaymentMethodManagementAssembler(
-            localizationParameters: localizationParameters,
-            logoURLProvider: logoURLProvider,
-            theme: theme,
-            analyticsProvider: context.analyticsProvider
-        )
+
         let router = PaymentMethodListRouter(
             viewController: view,
             listener: delegate,
             componentContainerAssembler: componentContainerAssembler,
-            storedPaymentMethodManagementAssembler: storedPaymentMethodManagementAssembler,
+            genericPaymentMethodAssembler: resolveGenericPaymentMethodAssembler(),
+            storedPaymentMethodManagementAssembler: resolveStoredPaymentMethodManagementAssembler(),
             storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability,
             storedPaymentMethodsProvider: { componentManager.visibleStoredPaymentMethods },
             onStoredPaymentMethodRemoved: { paymentMethod in
@@ -91,5 +89,25 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         )
         viewModel.router = router
         return router
+    }
+
+    // MARK: - Private
+
+    private func resolveStoredPaymentMethodManagementAssembler() -> StoredPaymentMethodManagementAssemblerProtocol {
+        StoredPaymentMethodManagementAssembler(
+            localizationParameters: localizationParameters,
+            logoURLProvider: logoURLProvider,
+            theme: theme,
+            analyticsProvider: context.analyticsProvider
+        )
+    }
+
+    private func resolveGenericPaymentMethodAssembler() -> GenericPaymentMethodAssemblerProtocol {
+        GenericPaymentMethodAssembler(
+            dropInFlowManager: dropInFlowManager,
+            logoURLProvider: logoURLProvider,
+            theme: theme,
+            localizationParameters: localizationParameters
+        )
     }
 }
