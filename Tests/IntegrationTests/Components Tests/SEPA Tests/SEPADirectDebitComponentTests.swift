@@ -51,7 +51,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.ibanItem.title, localizedString(.sepaIbanItemTitle, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.ibanItem.validationFailureMessage, localizedString(.sepaIbanItemInvalid, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: Dummy.amount, style: .immediate, localizationParameters: sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: Dummy.amount, localizationParameters: sut.configuration.localizationParameters))
     }
 
     func testLocalizationWithZeroPayment() {
@@ -66,9 +66,9 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.ibanItem.title, localizedString(.sepaIbanItemTitle, sut.configuration.localizationParameters))
         XCTAssertEqual(sut.ibanItem.validationFailureMessage, localizedString(.sepaIbanItemInvalid, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: zeroAmount, style: .immediate, localizationParameters: sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: zeroAmount, localizationParameters: sut.configuration.localizationParameters))
 
-        XCTAssertEqual(sut.button.title, localizedString(.confirmPreauthorization, sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.button.title, localizedString(.submitButtonSaveDetails, sut.configuration.localizationParameters))
     }
     
     func testLocalizationWithCustomKeySeparator() {
@@ -83,7 +83,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
         XCTAssertEqual(sut.ibanItem.title, localizedString(LocalizationKey(key: "adyen_sepa_ibanItem_title"), sut.configuration.localizationParameters))
         XCTAssertEqual(sut.ibanItem.validationFailureMessage, localizedString(LocalizationKey(key: "adyen_sepa_ibanItem_invalid"), sut.configuration.localizationParameters))
         
-        XCTAssertEqual(sut.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: Dummy.amount, style: .immediate, localizationParameters: sut.configuration.localizationParameters))
+        XCTAssertEqual(sut.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: Dummy.amount, localizationParameters: sut.configuration.localizationParameters))
     }
     
     func testUIConfiguration() throws {

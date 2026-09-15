@@ -93,7 +93,7 @@ class CardComponentTests: XCTestCase {
 
         XCTAssertEqual(items.storeDetailsItem.title, localizedString(.cardStoreDetailsButton, sut.configuration.localizationParameters))
 
-        XCTAssertEqual(items.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: context.amount, style: .immediate, localizationParameters: sut.configuration.localizationParameters))
+        XCTAssertEqual(items.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: context.amount, localizationParameters: sut.configuration.localizationParameters))
     }
 
     func test_formItems_withCustomKeySeparator_shouldUseLocalizedStrings() {
@@ -122,7 +122,7 @@ class CardComponentTests: XCTestCase {
 
         XCTAssertEqual(items.storeDetailsItem.title, localizedString(LocalizationKey(key: "adyen_card_storeDetailsButton"), sut.configuration.localizationParameters))
 
-        XCTAssertEqual(items.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: context.amount, style: .immediate, localizationParameters: sut.configuration.localizationParameters))
+        XCTAssertEqual(items.button.title, AmountAwarePaymentStringsPolicy.payButtonTitle(with: context.amount, localizationParameters: sut.configuration.localizationParameters))
     }
 
     func test_cardComponent_withLegacyLocalizationParameters_shouldRenderLocalizedTitles() {
@@ -632,6 +632,15 @@ class CardComponentTests: XCTestCase {
         wait(until: cardNumberItem, at: \.cardBrandLogos.count, is: 3)
         wait(until: cardLogoView, at: \.primaryLogoView.isHidden, is: false)
         wait(until: cardLogoView, at: \.secondaryLogoView.isHidden, is: true)
+    }
+
+    func test_zeroAmount_whenRenderingPayButton_thenShowsSaveDetails() {
+        let sut = makeSUT(
+            configuration: CardConfiguration(),
+            amount: Amount(value: 0, currencyCode: "EUR")
+        )
+
+        XCTAssertEqual(sut.cardViewController.items.button.title, "Save details")
     }
 
     func test_zeroAmount_whenConsentFieldIsConfiguredToShow_thenHidesFieldAndStoresPaymentMethod() throws {
