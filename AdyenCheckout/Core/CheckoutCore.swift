@@ -31,7 +31,7 @@ package protocol CheckoutCoreProtocol: AnyObject {
 
     func createPaymentComponent(for identifier: String) throws -> CheckoutPaymentComponent
 
-    func createDropIn() -> DropInComponent?
+    func createDropIn() throws -> CheckoutDropInComponent
 }
 
 @MainActor

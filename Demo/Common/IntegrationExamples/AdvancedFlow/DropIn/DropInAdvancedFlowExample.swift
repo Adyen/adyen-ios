@@ -4,164 +4,141 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
 import AdyenActions
 import AdyenCheckout
-import AdyenComponents
-import AdyenDropIn
+import UIKit
 
+@MainActor
 internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol {
 
     internal weak var presenter: PresenterExampleProtocol?
 
-    private var dropInComponent: DropInComponent?
+    private var checkout: AdvancedCheckout?
+    private var dropInComponent: CheckoutDropInComponent?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
+    private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
 
-    /// comes from demo app protocol, unused on new structure
+    /// Comes from the demo app protocol and is unused by Checkout.
     internal var context: AdyenContext?
+
+    internal var selectedTheme: ExampleAppTheme {
+        ConfigurationConstants.current.themeSettings.theme
+    }
 
     // MARK: - Initializers
 
     internal init() {}
 
     internal func start() {
-        presenter?.showLoadingIndicator()
-        Task {
+        startLoading()
+
+        Task { [weak self] in
+            guard let self else { return }
+            
             do {
-                try await initializeExampleAppAdyenContext()
-                requestPaymentMethods(order: nil) { [weak self] result in
-                    guard let self else { return }
-
-                    self.presenter?.hideLoadingIndicator()
-
-                    switch result {
-                    case let .success(paymentMethods):
-                        self.presentComponent(with: paymentMethods)
-
-                    case let .failure(error):
-                        self.presenter?.presentAlert(with: error, retryHandler: nil)
-                    }
-                }
-
+                let paymentMethods = try await requestPaymentMethods(order: nil)
+                let dropIn = try await dropInComponent(from: paymentMethods)
+                self.dropInComponent = dropIn
+                hideLoading()
+                present(component: dropIn)
             } catch {
-                self.presenter?.hideLoadingIndicator()
-                self.presenter?.presentAlert(with: error, retryHandler: nil)
+                hideLoading()
+                handleError(error)
             }
         }
     }
 
     // MARK: - Presentation
 
-    private func presentComponent(with paymentMethods: PaymentMethods) {
-        do {
-            let dropIn = try dropInComponent(from: paymentMethods)
-            presenter?.present(viewController: dropIn.viewController, completion: nil)
-            dropInComponent = dropIn
-        } catch {
-            presenter?.presentAlert(with: error, retryHandler: nil)
-        }
-    }
-
-    private func dropInComponent(from paymentMethods: PaymentMethods) throws -> DropInComponent {
-        guard let context else {
-            fatalError("AdyenContext not initialized")
-        }
-
+    private func dropInComponent(from paymentMethods: PaymentMethods) async throws -> CheckoutDropInComponent {
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
             clientKey: ConfigurationConstants.clientKey,
-            analyticsConfiguration: ConfigurationConstants.current.analyticsConfiguration
+            analyticsConfiguration: .init(
+                isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
+            )
         ) {
             ConfigurationConstants.current.cardConfiguration
             try ConfigurationConstants.current.applePayConfiguration(using: .demo)
             ConfigurationConstants.current.dropInConfiguration
+            AuthenticationConfiguration()
+                .requestorAppURL(ConfigurationConstants.returnUrl)
         }
-        .theme(ConfigurationConstants.current.themeSettings.theme.theme)
+        .theme(selectedTheme.theme)
 
-        // TODO: intermediate dropin creation for demo app, to be replaced next
-        let component = DropInComponent(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration.dropInConfiguration,
-            actionComponentConfiguration: ConfigurationConstants.current.dropInActionComponentConfiguration,
-            paymentComponentBuilder: { paymentMethod in
-                try CheckoutComponentBuilder.build(
-                    forAnyPaymentMethod: paymentMethod,
-                    configuration: configuration,
-                    context: context
-                )
-            },
-            title: ConfigurationConstants.appName
+        let checkout = try await Checkout.setup(
+            with: paymentMethods,
+            configuration: configuration,
+            presentationDelegate: self
         )
+        .onSubmit { [weak self] data in
+            guard let self else { return .completion(resultCode: "Error") }
+            return await self.callPayments(with: data)
+        }
+        .onAdditionalDetails { [weak self] data in
+            guard let self else { return .completion(resultCode: "Error") }
+            return await self.callDetails(with: data)
+        }
+        .onComplete { [weak self] result in
+            self?.dismissAndShowAlert(
+                result.resultCode.isSuccess,
+                result.resultCode.rawValue
+            )
+        }
+        .onFailure { [weak self] error in
+            self?.dismissAndShowAlert(false, error.localizedDescription)
+        }
 
-        component.delegate = self
-        component.partialPaymentDelegate = self
-        component.storedPaymentMethodsDelegate = self
-
-        return component
+        self.checkout = checkout
+        return try checkout.createDropIn()
     }
 
     // MARK: - Payment response handling
 
-    private func paymentResponseHandler(result: Result<PaymentsResponse, Error>) {
-        switch result {
-        case let .success(response):
-            if let action = response.action {
-                dropInComponent?.handle(action)
-            } else if let order = response.order,
-                      let remainingAmount = order.remainingAmount,
-                      remainingAmount.value > 0 {
-                handle(order, newAmount: remainingAmount)
-            } else {
-                finish(with: response)
-            }
-        case let .failure(error):
-            finish(with: error)
-        }
-    }
-
-    // MARK: - Payment response handling
-
-    private func handle(_ order: PartialPaymentOrder, newAmount: Amount) {
-        requestPaymentMethods(order: order, amount: newAmount) { [weak self] response in
-            switch response {
-            case let .success(paymentMethods):
-                self?.handle(order, paymentMethods)
-            case let .failure(error):
-                self?.presenter?.presentAlert(with: error, retryHandler: {
-                    self?.handle(order, newAmount: newAmount)
-                })
-            }
-        }
-    }
-
-    private func handle(_ order: PartialPaymentOrder, _ paymentMethods: PaymentMethods) {
+    private func callPayments(with data: PaymentComponentData) async -> SubmitResult {
         do {
-            try dropInComponent?.reload(with: order, paymentMethods)
+            let response = try await asyncApiClient.performAsync(PaymentsRequest(data: data))
+            if let action = response.action {
+                return .action(action)
+            }
+            return .completion(resultCode: response.resultCode.rawValue)
         } catch {
-            finish(with: error)
+            return .completion(resultCode: "Error")
         }
     }
 
-    private func finish(with result: PaymentsResponse) {
-        let success = result.isAccepted
-        let message = "\(result.resultCode.rawValue) \(result.amount?.formatted ?? "")"
-        finalize(success, message)
-    }
-
-    private func finish(with error: Error) {
-        if (error as? ComponentError) == .cancelled {
-            presenter?.dismiss(completion: nil)
-        } else {
-            finalize(false, error.localizedDescription)
+    private func callDetails(with data: ActionComponentData) async -> AdditionalDetailsResult {
+        do {
+            let request = PaymentDetailsRequest(
+                details: data.details,
+                paymentData: data.paymentData,
+                merchantAccount: ConfigurationConstants.current.merchantAccount
+            )
+            let response = try await asyncApiClient.performAsync(request)
+            return .completion(resultCode: response.resultCode.rawValue)
+        } catch {
+            return .completion(resultCode: "Error")
         }
     }
 
-    private func finalize(_ success: Bool, _ message: String) {
-        dropInComponent?.finalizeIfNeeded(with: success) { [weak self] in
-            guard let self else { return }
-            self.dismissAndShowAlert(success, message)
-        }
+    // MARK: - Private
+
+    private func startLoading() {
+        presenter?.showLoadingIndicator()
+    }
+
+    private func handleError(_ error: Error) {
+        presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
+    }
+
+    private func hideLoading() {
+        presenter?.hideLoadingIndicator()
+    }
+
+    private func present(component: CheckoutDropInComponent) {
+        presenter?.present(viewController: component.viewController, completion: nil)
     }
 
     private func dismissAndShowAlert(_ success: Bool, _ message: String) {
@@ -172,157 +149,9 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
     }
 }
 
-extension DropInAdvancedFlowExample: DropInComponentDelegate {
+extension DropInAdvancedFlowExample: PresentationDelegate {
 
-    func didSubmit(_ data: PaymentComponentData, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
-        let request = PaymentsRequest(data: data)
-        apiClient.perform(request) { [weak self] result in
-            self?.paymentResponseHandler(result: result)
-        }
-    }
-
-    func didFail(with error: Error, from component: PaymentComponent, in dropInComponent: AnyDropInComponent) {
-        finish(with: error)
-    }
-
-    func didProvide(_ data: ActionComponentData, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
-        let request = PaymentDetailsRequest(
-            details: data.details,
-            paymentData: data.paymentData,
-            merchantAccount: ConfigurationConstants.current.merchantAccount
-        )
-        apiClient.perform(request) { [weak self] result in
-            self?.paymentResponseHandler(result: result)
-        }
-    }
-
-    func didComplete(from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
-        finish(with: .received)
-    }
-
-    func didFail(with error: Error, from component: ActionComponent, in dropInComponent: AnyDropInComponent) {
-        finish(with: error)
-    }
-
-    internal func didCancel(component: PaymentComponent, from dropInComponent: AnyDropInComponent) {
-        // Handle the event when the user closes a PresentablePaymentComponent.
-        print("User did close: \(component.paymentMethod.name)")
-    }
-
-    internal func didFail(with error: Error, from dropInComponent: AnyDropInComponent) {
-        finish(with: error)
-    }
-
-}
-
-extension DropInAdvancedFlowExample: PartialPaymentDelegate {
-
-    internal enum GiftCardError: Error, LocalizedError {
-        case noBalance
-
-        internal var errorDescription: String? {
-            switch self {
-            case .noBalance:
-                return "No Balance"
-            }
-        }
-    }
-
-    internal func checkBalance(
-        with data: PaymentComponentData,
-        component: Component,
-        completion: @escaping (Result<Balance, Error>) -> Void
-    ) {
-        let request = BalanceCheckRequest(data: data, amount: ConfigurationConstants.current.amount)
-        apiClient.perform(request) { [weak self] result in
-            self?.handle(result: result, completion: completion)
-        }
-    }
-
-    private func handle(
-        result: Result<BalanceCheckResponse, Error>,
-        completion: @escaping (Result<Balance, Error>) -> Void
-    ) {
-        switch result {
-        case let .success(response):
-            handle(response: response, completion: completion)
-        case let .failure(error):
-            completion(.failure(error))
-        }
-    }
-
-    private func handle(response: BalanceCheckResponse, completion: @escaping (Result<Balance, Error>) -> Void) {
-        guard let availableAmount = response.balance else {
-            completion(.failure(GiftCardError.noBalance))
-            return
-        }
-        let balance = Balance(availableAmount: availableAmount, transactionLimit: response.transactionLimit)
-        completion(.success(balance))
-    }
-
-    internal func requestOrder(
-        for component: Component,
-        completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void
-    ) {
-        let request = CreateOrderRequest(
-            amount: ConfigurationConstants.current.amount,
-            reference: UUID().uuidString
-        )
-        apiClient.perform(request) { [weak self] result in
-            self?.handle(result: result, completion: completion)
-        }
-    }
-
-    private func handle(
-        result: Result<CreateOrderResponse, Error>,
-        completion: @escaping (Result<PartialPaymentOrder, Error>) -> Void
-    ) {
-        switch result {
-        case let .success(response):
-            completion(.success(response.order))
-        case let .failure(error):
-            completion(.failure(error))
-        }
-    }
-
-    internal func cancelOrder(_ order: PartialPaymentOrder, component: Component) {
-        let request = CancelOrderRequest(order: order)
-        apiClient.perform(request) { [weak self] result in
-            self?.handle(result: result)
-        }
-    }
-
-    private func handle(result: Result<CancelOrderResponse, Error>) {
-        switch result {
-        case let .success(response):
-            if response.resultCode == .received {
-                presenter?.presentAlert(withTitle: "Order Cancelled", message: nil)
-            } else {
-                presenter?.presentAlert(withTitle: "Something went wrong, order is not canceled but will expire.", message: nil)
-            }
-        case let .failure(error):
-            finish(with: error)
-        }
-    }
-
-}
-
-extension DropInAdvancedFlowExample: StoredPaymentMethodsDelegate {
-    internal func disable(storedPaymentMethod: StoredPaymentMethod, completion: @escaping (Bool) -> Void) {
-        
-        let request = DisableStoredPaymentMethodRequest(
-            storedPaymentId: storedPaymentMethod.identifier,
-            merchantAccount: ConfigurationConstants.merchantAccount,
-            shopperReference: ConfigurationConstants.shopperReference
-        )
-
-        apiClient.perform(request) { result in
-            switch result {
-            case .success:
-                completion(true)
-            case .failure:
-                completion(false)
-            }
-        }
+    internal func present(viewController: UIViewController) {
+        presenter?.present(viewController: viewController, completion: nil)
     }
 }
