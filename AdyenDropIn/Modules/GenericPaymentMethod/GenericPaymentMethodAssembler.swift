@@ -11,6 +11,7 @@ import Adyen
 import Foundation
 import SwiftUI
 
+// sourcery:AutoMockable
 @MainActor
 internal protocol GenericPaymentMethodAssemblerProtocol {
     func resolveGenericPaymentMethodRouter(
