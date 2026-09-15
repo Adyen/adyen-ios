@@ -6,6 +6,7 @@
 
 @testable import Adyen
 @testable import AdyenActions
+@testable import AdyenComponents
 @testable import AdyenDropIn
 import Testing
 import UIKit
