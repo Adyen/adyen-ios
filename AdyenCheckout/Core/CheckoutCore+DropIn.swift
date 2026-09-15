@@ -11,8 +11,10 @@ import Adyen
 
 extension CheckoutCore {
 
-    package func createDropIn() -> DropInComponent? {
-        guard let paymentMethods else { return nil }
+    package func createDropIn() throws -> CheckoutDropInComponent {
+        guard let paymentMethods else {
+            throw CheckoutError(code: .paymentMethodFailure, message: "No payment methods are available for Drop-in.")
+        }
 
         let checkoutConfiguration = configuration
         let sessionConfiguration = session?.componentConfiguration
@@ -34,7 +36,10 @@ extension CheckoutCore {
             paymentComponentBuilder: paymentComponentBuilder
         )
         dropInComponent.delegate = self
-        return dropInComponent
+        guard dropInComponent.hasSupportedPaymentMethods else {
+            throw CheckoutError(code: .paymentMethodFailure, message: "No supported payment methods are available for Drop-in.")
+        }
+        return CheckoutDropInComponent(dropInComponent: dropInComponent)
     }
 }
 
