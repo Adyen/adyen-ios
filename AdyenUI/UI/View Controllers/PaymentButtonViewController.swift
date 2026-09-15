@@ -58,10 +58,10 @@ package final class PaymentButtonViewController: FormViewController {
     private lazy var payButtonItem: FormButtonItem = {
         let item = FormButtonItem()
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
-        item.title = localizedSubmitButtonTitle(
+        item.title = AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: amount,
             style: .immediate,
-            localizationParameters
+            localizationParameters: localizationParameters
         )
         item.buttonSelectionHandler = { [weak self] in
             self?.onSubmit?()

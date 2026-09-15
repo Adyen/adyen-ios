@@ -286,3 +286,5 @@
 "adyen.storedPaymentMethodManagement.paymentOptions" = "Payment options";
 "adyen.storedPaymentMethodManagement.removalErrorMessage" = "We were unable to remove your payment method, try again later.";
 "adyen.storedPaymentMethod.expired" = "Expired";
+"adyen.checkout.dropin.generic.payment.method.description" = "You will be guided to the next step of the process.";
+"adyen.checkout.dropin.generic.payment.method.progress.title" = "Processing...";
