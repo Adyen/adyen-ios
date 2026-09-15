@@ -739,6 +739,30 @@ final class CheckoutTests: XCTestCase {
         XCTAssertFalse(onFailureCalled)
     }
 
+    // MARK: - session completion callback
+
+    func test_didComplete_withCancelledResultCodeAndNoPriorSessionCall_shouldCallOnCompleteWithEmptySessionResult() async throws {
+        // A shopper backing out before any `/payments` or `/payments/details` call ever
+        // completed leaves `session.state.sessionResult` at its initial `nil` value. That is
+        // an expected case for `.cancelled` (and `.error`) and must still notify `onComplete`.
+        let callbackStore = SessionCheckoutCallbackStore()
+        let onCompleteExpectation = expectation(description: "onComplete called")
+        let blik = try XCTUnwrap(paymentMethods.paymentMethod(ofType: BLIKPaymentMethod.self))
+        let session = makeSessionMock()
+        session.state.resultCode = .cancelled
+        callbackStore.onComplete = { result in
+            XCTAssertEqual(result.resultCode, .cancelled)
+            XCTAssertEqual(result.sessionId, "test_session_id")
+            XCTAssertEqual(result.sessionResult, "")
+            onCompleteExpectation.fulfill()
+        }
+        let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
+        sut.pendingPaymentComponent = PaymentComponentMock(paymentMethod: blik)
+
+        sut.didComplete(from: ActionComponentMock())
+        await fulfillment(of: [onCompleteExpectation], timeout: 1)
+    }
+
     // MARK: - handleReturn
 
     func test_handleReturn_withRegisteredHandler_returnsTrue() throws {
