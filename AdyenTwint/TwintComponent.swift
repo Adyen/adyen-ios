@@ -18,6 +18,9 @@ package final class TwintComponent: PaymentComponent, LoadingComponent {
 
     package let type: PaymentComponentType = .regular
 
+    /// Configuration for Twint Component.
+    package typealias Configuration = BasicComponentConfiguration
+
     /// The context object for this component.
     package let context: AdyenContext
 
@@ -39,7 +42,7 @@ package final class TwintComponent: PaymentComponent, LoadingComponent {
     }
 
     /// Component's configuration
-    package var configuration: TwintComponentConfiguration
+    package var configuration: Configuration
 
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
@@ -54,7 +57,7 @@ package final class TwintComponent: PaymentComponent, LoadingComponent {
     package init(
         paymentMethod: TwintPaymentMethod,
         context: AdyenContext,
-        configuration: TwintComponentConfiguration = .init()
+        configuration: Configuration = .init()
     ) {
         self.paymentMethod = paymentMethod
         self.context = context

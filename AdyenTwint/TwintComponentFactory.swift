@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// Factory for creating Twint payment components.
 ///
@@ -12,7 +15,7 @@ import Adyen
 /// provided Twint payment method and component configuration.
 @MainActor
 package struct TwintComponentFactory: PaymentComponentFactory {
-    package typealias Configuration = TwintComponentConfiguration
+    package typealias Configuration = BasicComponentConfiguration
     package typealias Method = TwintPaymentMethod
     package typealias Component = TwintComponent
 
@@ -28,7 +31,7 @@ package struct TwintComponentFactory: PaymentComponentFactory {
     package func create(
         with paymentMethod: TwintPaymentMethod,
         context: AdyenContext,
-        configuration: TwintComponentConfiguration
+        configuration: BasicComponentConfiguration
     ) -> TwintComponent {
         TwintComponent(
             paymentMethod: paymentMethod,
@@ -37,7 +40,7 @@ package struct TwintComponentFactory: PaymentComponentFactory {
         )
     }
 
-    package func defaultConfiguration() -> TwintComponentConfiguration {
-        TwintComponentConfiguration()
+    package func defaultConfiguration() -> BasicComponentConfiguration {
+        BasicComponentConfiguration()
     }
 }

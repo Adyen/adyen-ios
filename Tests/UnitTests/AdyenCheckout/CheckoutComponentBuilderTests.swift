@@ -463,7 +463,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
     func test_build_withTwintAndCustomConfiguration_appliesConfiguration() throws {
         // Given
         let paymentMethod = createTwintPaymentMethod()
-        var twintConfig = TwintComponentConfiguration()
+        var twintConfig = BasicComponentConfiguration()
         twintConfig.showsSubmitButton = false
 
         checkoutConfiguration = makeCheckoutConfiguration(

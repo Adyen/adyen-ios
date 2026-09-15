@@ -34,7 +34,6 @@ final class TwintComponentFactoryTests: XCTestCase {
         let configuration = factory.defaultConfiguration()
 
         // Then
-        XCTAssertEqual(configuration.componentType, .payment(.twint))
         XCTAssertTrue(configuration.showsSubmitButton)
     }
 
@@ -56,7 +55,7 @@ final class TwintComponentFactoryTests: XCTestCase {
     func testCreate_WithValidPaymentMethod_ReturnsComponent() {
         // Given
         let paymentMethod = createTwintPaymentMethod()
-        let configuration = TwintComponentConfiguration()
+        let configuration = BasicComponentConfiguration()
 
         // When
         let component = factory.create(
@@ -73,7 +72,7 @@ final class TwintComponentFactoryTests: XCTestCase {
     func testCreate_WithCustomConfiguration_UsesProvidedConfiguration() {
         // Given
         let paymentMethod = createTwintPaymentMethod()
-        var configuration = TwintComponentConfiguration()
+        var configuration = BasicComponentConfiguration()
         configuration.showsSubmitButton = false
 
         // When
@@ -90,7 +89,7 @@ final class TwintComponentFactoryTests: XCTestCase {
     func testCreate_PreservesPaymentMethodReference() {
         // Given
         let paymentMethod = createTwintPaymentMethod()
-        let configuration = TwintComponentConfiguration()
+        let configuration = BasicComponentConfiguration()
 
         // When
         let component = factory.create(
