@@ -42,6 +42,8 @@ internal class CheckoutProvider: CheckoutProviding {
             adyenContext: adyenContext,
             apiClient: apiClient
         )
+        // Amount is now received from the Session.setup() response. 
+        adyenContext.amount = session.state.amount
 
         return await CheckoutCore(
             configuration: configuration,
@@ -149,7 +151,7 @@ internal class CheckoutProvider: CheckoutProviding {
 
             return try await AdyenContext(
                 apiContext: configuration.apiContext,
-                amount: configuration.amount,
+                amount: nil,
                 publicKey: publicKey,
                 checkoutAttemptId: checkoutAttemptId,
                 analyticsAPIContext: configuration.analyticsApiContext,
