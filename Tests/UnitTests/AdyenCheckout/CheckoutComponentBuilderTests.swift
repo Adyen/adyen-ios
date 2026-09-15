@@ -411,6 +411,36 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertTrue(component is GenericPaymentComponent, "Component should be GenericPaymentComponent")
     }
 
+    func test_build_withGenericPaymentMethodAndCustomConfiguration_appliesConfiguration() throws {
+        // Given
+        let dict: [String: Any] = [
+            "type": "ideal",
+            "name": "iDEAL"
+        ]
+        let paymentMethod = try XCTUnwrap(try? AdyenCoder.decode(dict) as GenericPaymentMethod)
+        var genericConfig = GenericPaymentComponentConfiguration()
+        genericConfig.showsSubmitButton = false
+
+        checkoutConfiguration = makeCheckoutConfiguration(
+            configurations: [.payment(.ideal): genericConfig]
+        )
+        checkoutConfiguration.showsSubmitButton = false // Global setting, since it takes precedence over the per-component value
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+
+        // Then
+        guard let genericComponent = component as? GenericPaymentComponent else {
+            XCTFail("Component should be GenericPaymentComponent")
+            return
+        }
+        XCTAssertFalse(genericComponent.configuration.showsSubmitButton)
+    }
+
     // MARK: - Theme Propagation Tests
 
     func test_build_withCustomTheme_propagatesThemeToACHComponent() throws {
@@ -462,6 +492,37 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         }
         XCTAssertEqual(
             blikComponent.configuration.theme.colors.primary,
+            UIColor.yellow,
+            "Theme should be propagated from CheckoutConfiguration to component"
+        )
+    }
+
+    func test_build_withCustomTheme_propagatesThemeToGenericPaymentComponent() throws {
+        // Given
+        let dict: [String: Any] = [
+            "type": "ideal",
+            "name": "iDEAL"
+        ]
+        let paymentMethod = try XCTUnwrap(try? AdyenCoder.decode(dict) as GenericPaymentMethod)
+        let customTheme = CheckoutTheme(colors: CheckoutColors(primary: .yellow))
+
+        checkoutConfiguration = makeCheckoutConfiguration()
+        checkoutConfiguration.theme = customTheme
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+
+        // Then
+        guard let genericComponent = component as? GenericPaymentComponent else {
+            XCTFail("Component should be GenericPaymentComponent")
+            return
+        }
+        XCTAssertEqual(
+            genericComponent.configuration.theme.colors.primary,
             UIColor.yellow,
             "Theme should be propagated from CheckoutConfiguration to component"
         )

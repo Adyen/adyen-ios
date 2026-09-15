@@ -15,7 +15,12 @@ import UIKit
 @MainActor
 package final class GenericPaymentComponent: PaymentComponent, LoadingComponent {
 
-    package lazy var viewController: UIViewController = paymentButtonViewController
+    package lazy var viewController: UIViewController = {
+        guard configuration.showsSubmitButton else {
+            return UIViewController()
+        }
+        return paymentButtonViewController
+    }()
 
     /// The context object for this component.
     package let context: AdyenContext
@@ -33,11 +38,8 @@ package final class GenericPaymentComponent: PaymentComponent, LoadingComponent 
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
 
-    /// The UI theme used to style the payment button.
-    package let theme: CheckoutTheme
-
-    /// The localization parameters.
-    package let localizationParameters: LocalizationParameters?
+    /// Component's configuration
+    package var configuration: GenericPaymentComponentConfiguration
 
     /// Initializes a new instance of `GenericPaymentComponent`.
     ///
@@ -45,20 +47,17 @@ package final class GenericPaymentComponent: PaymentComponent, LoadingComponent 
     ///   - paymentMethod: The payment method.
     ///   - paymentData: The ready to submit payment data.
     ///   - context: The context object for this component.
-    ///   - theme: The UI theme used to style the payment button.
-    ///   - localizationParameters: The localization parameters.
+    ///   - configuration: The configuration for the component.
     package init(
         paymentMethod: PaymentMethod,
         context: AdyenContext,
         paymentData: PaymentComponentData,
-        theme: CheckoutTheme = .default,
-        localizationParameters: LocalizationParameters? = nil
+        configuration: GenericPaymentComponentConfiguration = .init()
     ) {
         self.paymentMethod = paymentMethod
         self.paymentData = paymentData
         self.context = context
-        self.theme = theme
-        self.localizationParameters = localizationParameters
+        self.configuration = configuration
     }
 
     /// Initializes a new instance of `GenericPaymentComponent`.
@@ -67,19 +66,16 @@ package final class GenericPaymentComponent: PaymentComponent, LoadingComponent 
     ///   - paymentMethod: The payment method.
     ///   - context: The context object for this component.
     ///   - order: The partial order for this payment.
-    ///   - theme: The UI theme used to style the payment button.
-    ///   - localizationParameters: The localization parameters.
+    ///   - configuration: The configuration for the component.
     package init(
         paymentMethod: PaymentMethod,
         context: AdyenContext,
         order: PartialPaymentOrder?,
-        theme: CheckoutTheme = .default,
-        localizationParameters: LocalizationParameters? = nil
+        configuration: GenericPaymentComponentConfiguration = .init()
     ) {
         self.paymentMethod = paymentMethod
         self.context = context
-        self.theme = theme
-        self.localizationParameters = localizationParameters
+        self.configuration = configuration
 
         let details = GenericPaymentDetails(type: paymentMethod.type)
         self.paymentData = PaymentComponentData(
@@ -103,10 +99,10 @@ package final class GenericPaymentComponent: PaymentComponent, LoadingComponent 
     private lazy var paymentButtonViewController: PaymentButtonViewController = {
         let paymentButtonViewController = PaymentButtonViewController(
             amount: context.amount,
-            localizationParameters: localizationParameters,
-            theme: theme
+            localizationParameters: configuration.localizationParameters,
+            theme: configuration.theme
         )
-        paymentButtonViewController.title = paymentMethod.displayInformation(using: localizationParameters).title
+        paymentButtonViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         paymentButtonViewController.onSubmit = { [weak self] in
             self?.performSubmit()
         }

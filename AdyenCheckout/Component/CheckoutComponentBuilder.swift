@@ -52,6 +52,13 @@ package enum CheckoutComponentBuilder {
                     configuration: configuration,
                     context: context
                 )
+            case let genericPaymentMethod as GenericPaymentMethod:
+                return try createComponent(
+                    using: GenericPaymentComponentFactory(),
+                    paymentMethod: genericPaymentMethod,
+                    configuration: configuration,
+                    context: context
+                )
         #endif
             
         // card module
@@ -66,12 +73,6 @@ package enum CheckoutComponentBuilder {
                 // TODO: add other card methods like stored or write a generic one.
             
         #endif
-        case let genericPaymentMethod as GenericPaymentMethod:
-            return GenericPaymentComponent(
-                paymentMethod: genericPaymentMethod,
-                context: context,
-                order: nil
-            )
         default:
             break
         }
