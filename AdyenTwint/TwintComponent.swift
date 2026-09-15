@@ -17,9 +17,6 @@ package final class TwintComponent: PaymentComponent, LoadingComponent {
     package lazy var viewController: UIViewController = paymentButtonViewController
 
     package let type: PaymentComponentType = .regular
-    
-    /// Configuration for Twint Component.
-    package typealias Configuration = BasicComponentConfiguration
 
     /// The context object for this component.
     package let context: AdyenContext
@@ -42,7 +39,7 @@ package final class TwintComponent: PaymentComponent, LoadingComponent {
     }
 
     /// Component's configuration
-    package var configuration: Configuration
+    package var configuration: TwintComponentConfiguration
 
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
@@ -57,7 +54,7 @@ package final class TwintComponent: PaymentComponent, LoadingComponent {
     package init(
         paymentMethod: TwintPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: TwintComponentConfiguration = .init()
     ) {
         self.paymentMethod = paymentMethod
         self.context = context
