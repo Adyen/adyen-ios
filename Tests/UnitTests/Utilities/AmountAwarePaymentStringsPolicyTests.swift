@@ -171,18 +171,25 @@ struct AmountAwarePaymentStringsPolicyTests {
     // MARK: - Zero amount
 
     struct ZeroAmountScenario {
+        let amountLocaleIdentifier: String?
         let bundleLocale: String?
         let expectedTitle: String
     }
 
     @Test(arguments: [
-        ZeroAmountScenario(bundleLocale: nil, expectedTitle: "Save details"),
-        ZeroAmountScenario(bundleLocale: "is-IS", expectedTitle: "Save details")
+        ZeroAmountScenario(amountLocaleIdentifier: nil, bundleLocale: nil, expectedTitle: "Save details"),
+        // TODO: Robert: I expect the below test to fail once we have localizations in place.
+        ZeroAmountScenario(amountLocaleIdentifier: nil, bundleLocale: "is-IS", expectedTitle: "Save details"),
+        ZeroAmountScenario(amountLocaleIdentifier: "fr-FR", bundleLocale: nil, expectedTitle: "Save details")
     ])
     func zeroAmount_forScenario_when_resolvingTitle_then_returnsSaveDetails(_ scenario: ZeroAmountScenario) {
         // Given
         let sut = makeSUT()
-        let amount = Amount(value: 0, currencyCode: "EUR")
+        let amount = Amount(
+            value: 0,
+            currencyCode: "EUR",
+            localeIdentifier: scenario.amountLocaleIdentifier
+        )
         let localizationParameters = scenario.bundleLocale.map { LocalizationParameters(enforcedLocale: $0) }
 
         // When
