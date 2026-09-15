@@ -25,6 +25,7 @@ internal protocol PreselectedPaymentMethodViewModelProtocol: AnyObject {
     func submitPayment()
 
     var showAllPaymentMethodsButtonTitle: String { get }
+    var showsAllPaymentMethodsButton: Bool { get }
     func showAllPaymentMethods()
     /// Theming
     var theme: CheckoutTheme { get }
@@ -49,6 +50,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     private let component: PaymentComponent
     internal let theme: CheckoutTheme
     private let localizationParameters: LocalizationParameters?
+    internal let showsAllPaymentMethodsButton: Bool
     private let dropInFlowManager: DropInFlowManaging
     internal let analyticsProvider: AnyAnalyticsProvider?
     internal let dropInAnalyticsConfiguration: DropInAnalyticsConfiguration
@@ -67,6 +69,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
         component: PaymentComponent,
         theme: CheckoutTheme,
         localizationParameters: LocalizationParameters?,
+        showsAllPaymentMethodsButton: Bool,
         analyticsProvider: AnyAnalyticsProvider?,
         dropInAnalyticsConfiguration: DropInAnalyticsConfiguration,
         dropInFlowManager: DropInFlowManaging
@@ -77,6 +80,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
         self.dropInAnalyticsConfiguration = dropInAnalyticsConfiguration
         self.theme = theme
         self.localizationParameters = localizationParameters
+        self.showsAllPaymentMethodsButton = showsAllPaymentMethodsButton
     }
 
     // MARK: - PreselectedPaymentMethodViewModelProtocol
@@ -107,10 +111,10 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     }
 
     internal var submitButtonTitle: String {
-        localizedSubmitButtonTitle(
+        AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: component.context.amount,
             style: .immediate,
-            localizationParameters
+            localizationParameters: localizationParameters
         )
     }
 
@@ -153,7 +157,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
         switch component.type {
         case .regular, .stored:
             router?.present(component: component)
-        case let .initiable(initiablePaymentComponent):
+        case let .generic(initiablePaymentComponent):
             startLoading(for: component)
             initiablePaymentComponent.performSubmit()
         }

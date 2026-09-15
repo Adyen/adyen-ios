@@ -54,6 +54,10 @@ internal struct DropInAssembler {
         )
     }
 
+    internal var hasSupportedPaymentMethods: Bool {
+        componentManager.hasSupportedPaymentMethods
+    }
+
     internal func resolveDropInRouter() -> DropInRouting {
         let apiClient = resolveAPIClient()
 
@@ -84,10 +88,15 @@ internal struct DropInAssembler {
         configuration.resolvedLocalizationParameters ?? LocalizationParameters()
     }
 
+    private func resolveLogoURLProvider() -> LogoURLProvider {
+        LogoURLProvider(environment: context.apiContext.environment)
+    }
+
     private var preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
         PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler,
+            showsAllPaymentMethodsButton: !componentManager.sections.isEmpty,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
             partialPaymentDelegate: partialPaymentDelegate,
@@ -104,6 +113,7 @@ internal struct DropInAssembler {
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
             theme: configuration.theme,
+            logoURLProvider: resolveLogoURLProvider(),
             partialPaymentDelegate: partialPaymentDelegate,
             storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability
         )

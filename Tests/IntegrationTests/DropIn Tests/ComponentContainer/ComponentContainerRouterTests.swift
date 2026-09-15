@@ -16,20 +16,20 @@ struct ComponentContainerRouterTests {
     // MARK: - Tests
 
     @Test
-    func presentPaymentComponent_shouldPushViewController() async throws {
+    func presentPaymentComponent_shouldPushViewController() async {
         // Given
         let (sut, viewControllerSpy, _) = await makeSUT()
         let paymentComponent = await makePaymentComponent()
 
-        let navController = UINavigationController(rootViewController: viewControllerSpy)
-        viewControllerSpy.attachNavigationController(navController)
+        let navigationControllerSpy = NavigationControllerSpy()
+        viewControllerSpy.attachNavigationController(navigationControllerSpy)
 
         // When
         sut.present(paymentComponent: paymentComponent)
-        try await Task.sleep(for: .milliseconds(300))
 
         // Then
-        #expect(navController.viewControllers.contains(paymentComponent.viewController))
+        #expect(navigationControllerSpy.pushViewControllerCallsCount == 1)
+        #expect(navigationControllerSpy.capturedPushedViewController === paymentComponent.viewController)
     }
 
     @Test

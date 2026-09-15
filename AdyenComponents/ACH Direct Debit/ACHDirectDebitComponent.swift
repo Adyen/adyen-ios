@@ -242,10 +242,10 @@ package final class ACHDirectDebitComponent: PresentablePaymentComponent,
             scopeInstance: self,
             postfix: ViewIdentifier.payButtonItem
         )
-        item.title = localizedSubmitButtonTitle(
+        item.title = AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: context.amount,
             style: .immediate,
-            configuration.localizationParameters
+            localizationParameters: configuration.localizationParameters
         )
         item.buttonSelectionHandler = { [weak self] in
             self?.performSubmit()
