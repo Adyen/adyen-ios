@@ -33,8 +33,11 @@ package final class GenericPaymentComponent: PaymentComponent, LoadingComponent 
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
 
+    /// Configuration for Generic Payment Component.
+    package typealias Configuration = BasicComponentConfiguration
+
     /// Component's configuration
-    package var configuration: GenericPaymentComponentConfiguration
+    package var configuration: Configuration
 
     /// Initializes a new instance of `GenericPaymentComponent`.
     ///
@@ -47,7 +50,7 @@ package final class GenericPaymentComponent: PaymentComponent, LoadingComponent 
         paymentMethod: PaymentMethod,
         context: AdyenContext,
         paymentData: PaymentComponentData,
-        configuration: GenericPaymentComponentConfiguration = .init()
+        configuration: Configuration = .init()
     ) {
         self.paymentMethod = paymentMethod
         self.paymentData = paymentData
@@ -66,7 +69,7 @@ package final class GenericPaymentComponent: PaymentComponent, LoadingComponent 
         paymentMethod: PaymentMethod,
         context: AdyenContext,
         order: PartialPaymentOrder?,
-        configuration: GenericPaymentComponentConfiguration = .init()
+        configuration: Configuration = .init()
     ) {
         self.paymentMethod = paymentMethod
         self.context = context

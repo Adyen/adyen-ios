@@ -55,7 +55,7 @@ final class GenericPaymentComponentFactoryTests: XCTestCase {
     func testCreate_WithValidPaymentMethod_ReturnsComponent() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createGenericPaymentMethod())
-        let configuration = GenericPaymentComponentConfiguration()
+        let configuration = BasicComponentConfiguration()
 
         // When
         let component = factory.create(
@@ -72,7 +72,7 @@ final class GenericPaymentComponentFactoryTests: XCTestCase {
     func testCreate_WithCustomConfiguration_UsesProvidedConfiguration() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createGenericPaymentMethod())
-        var configuration = GenericPaymentComponentConfiguration()
+        var configuration = BasicComponentConfiguration()
         configuration.showsSubmitButton = false
 
         // When
@@ -89,7 +89,7 @@ final class GenericPaymentComponentFactoryTests: XCTestCase {
     func testCreate_PreservesPaymentMethodReference() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createGenericPaymentMethod())
-        let configuration = GenericPaymentComponentConfiguration()
+        let configuration = BasicComponentConfiguration()
 
         // When
         let component = factory.create(

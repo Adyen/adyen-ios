@@ -419,7 +419,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             "name": "iDEAL"
         ]
         let paymentMethod = try XCTUnwrap(try? AdyenCoder.decode(dict) as GenericPaymentMethod)
-        var genericConfig = GenericPaymentComponentConfiguration()
+        var genericConfig = BasicComponentConfiguration()
         genericConfig.showsSubmitButton = false
 
         checkoutConfiguration = makeCheckoutConfiguration(

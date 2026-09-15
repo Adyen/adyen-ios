@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// Factory for creating Generic payment components.
 ///
@@ -12,7 +15,7 @@ import Adyen
 /// provided generic payment method and component configuration.
 @MainActor
 package struct GenericPaymentComponentFactory: PaymentComponentFactory {
-    package typealias Configuration = GenericPaymentComponentConfiguration
+    package typealias Configuration = BasicComponentConfiguration
     package typealias Method = GenericPaymentMethod
     package typealias Component = GenericPaymentComponent
 
@@ -28,7 +31,7 @@ package struct GenericPaymentComponentFactory: PaymentComponentFactory {
     package func create(
         with paymentMethod: GenericPaymentMethod,
         context: AdyenContext,
-        configuration: GenericPaymentComponentConfiguration
+        configuration: BasicComponentConfiguration
     ) -> GenericPaymentComponent {
         GenericPaymentComponent(
             paymentMethod: paymentMethod,
@@ -38,7 +41,7 @@ package struct GenericPaymentComponentFactory: PaymentComponentFactory {
         )
     }
 
-    package func defaultConfiguration() -> GenericPaymentComponentConfiguration {
-        GenericPaymentComponentConfiguration()
+    package func defaultConfiguration() -> BasicComponentConfiguration {
+        BasicComponentConfiguration()
     }
 }
