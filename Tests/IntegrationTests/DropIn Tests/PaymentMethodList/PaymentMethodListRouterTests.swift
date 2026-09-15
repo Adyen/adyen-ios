@@ -257,7 +257,7 @@ struct PaymentMethodListRouterTests {
     }
 
     @Test
-    func presentComponent_givenStoredComponent_shouldPresentComponentContainerModally() {
+    func presentComponent_givenStoredComponent_shouldPushComponentContainer() {
         // Given
         let navigationControllerSpy = NavigationControllerSpy()
         let componentContainerRouter = RouterMock()
@@ -271,9 +271,9 @@ struct PaymentMethodListRouterTests {
         // When
         sut.present(component: storedPaymentComponent)
 
-        // Then - stored components are presented modally, not pushed
-        #expect(navigationControllerSpy.pushViewControllerCallsCount == 0)
-        #expect(navigationControllerSpy.presentCallsCount == 1)
+        // Then - stored components are pushed, just like regular components
+        #expect(navigationControllerSpy.pushViewControllerCallsCount == 1)
+        #expect(navigationControllerSpy.presentCallsCount == 0)
         #expect(sut.childRouter === componentContainerRouter)
     }
 

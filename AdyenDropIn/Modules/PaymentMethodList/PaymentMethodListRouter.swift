@@ -131,35 +131,12 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         let componentContainerViewController = componentContainerViewController(for: component)
         navigationController.pushViewController(componentContainerViewController, animated: true)
     }
-    
-    private func presentComponentContainer(
-        with component: PaymentComponent
-    ) {
-        let componentContainerViewController = componentContainerViewController(for: component)
-        setupCloseButton(controller: componentContainerViewController)
-        let modalNavigationController = UINavigationController(rootViewController: componentContainerViewController)
-        rootViewController.present(modalNavigationController, animated: true)
-    }
 
     private func pushGenericPaymentMethod(
         with component: PaymentComponent
     ) {
         let genericPaymentMethodViewController = genericPaymentMethodViewController(for: component)
         navigationController.pushViewController(genericPaymentMethodViewController, animated: true)
-    }
-
-    private func setupCloseButton(controller: UIViewController) {
-        let closeButton = UIBarButtonItem(
-            barButtonSystemItem: .close,
-            target: self,
-            action: #selector(closeTappedOnComponentContainerViewController)
-        )
-        controller.navigationItem.leftBarButtonItem = closeButton
-    }
-
-    @objc private func closeTappedOnComponentContainerViewController() {
-        rootViewController.dismiss(animated: true)
-        childRouter = nil
     }
 
     private func componentContainerViewController(
