@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenDropIn
 @testable import AdyenTwint
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 @MainActor
@@ -95,6 +96,28 @@ class TwintComponentTests: XCTestCase {
         payButtonItemViewButton?.sendActions(for: .touchUpInside)
 
         wait(for: [didSubmitExpectation], timeout: 10)
+    }
+
+    func testPerformSubmitStartsLoadingOnPayButton() throws {
+        sut.viewController.loadViewIfNeeded()
+        let payButton: FormButton = try XCTUnwrap(sut.viewController.view.findView(by: "payButtonItem.button"))
+        XCTAssertFalse(payButton.showsActivityIndicator)
+
+        sut.performSubmit()
+
+        XCTAssertTrue(payButton.showsActivityIndicator)
+    }
+
+    func testStopLoadingStopsActivityIndicatorOnPayButton() throws {
+        sut.viewController.loadViewIfNeeded()
+        let payButton: FormButton = try XCTUnwrap(sut.viewController.view.findView(by: "payButtonItem.button"))
+
+        sut.performSubmit()
+        XCTAssertTrue(payButton.showsActivityIndicator)
+
+        sut.stopLoading()
+
+        XCTAssertFalse(payButton.showsActivityIndicator)
     }
 
     // MARK: - Private
