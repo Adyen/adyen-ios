@@ -12,6 +12,8 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
     package convenience init(
         style: Style = .init(),
         title: String?,
+        configuration: FormPickerConfiguration = .init(),
+        theme: CheckoutTheme = .default,
         options: [Option],
         selectionHandler: @escaping (Option) -> Void
     ) {
@@ -19,6 +21,8 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
             localizationParameters: nil,
             style: style,
             title: title,
+            configuration: configuration,
+            theme: theme,
             options: options,
             selectionHandler: selectionHandler
         )
@@ -28,6 +32,8 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
         localizationParameters: LocalizationParameters? = nil,
         style: Style = .init(),
         title: String?,
+        configuration: FormPickerConfiguration = .init(),
+        theme: CheckoutTheme = .default,
         options: [Option],
         selectionHandler: @escaping (Option) -> Void
     ) {
@@ -45,12 +51,20 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
             handler(results)
         }
         
+        let headerView = configuration.header.flatMap {
+            FormPickerHeaderView(header: $0, theme: theme)
+        }
+
         let searchViewController = SearchViewController(
             viewModel: viewModel,
-            emptyView: EmptyView()
+            emptyView: EmptyView(),
+            headerView: headerView
         )
         
-        searchViewController.title = title
+        // When a header is shown the title lives in the header; otherwise fall back to the navigation bar title.
+        if headerView == nil {
+            searchViewController.title = title
+        }
         
         super.init(rootViewController: searchViewController)
         
