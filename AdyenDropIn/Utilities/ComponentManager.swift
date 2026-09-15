@@ -121,7 +121,7 @@ internal final class ComponentManager: ComponentManaging {
               let paymentMethod = supportedRegularPaymentMethods.first
         else { return nil }
 
-        return buildComponent(for: paymentMethod) as? PaymentComponent
+        return buildComponent(for: paymentMethod)
     }
 
     // MARK: - Private
