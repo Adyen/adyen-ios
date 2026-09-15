@@ -123,7 +123,7 @@ open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> 
         self.isOptional = isOptional
     }
     
-    public func resetValue() {
+    open func resetValue() {
         AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
     }
     
@@ -150,11 +150,11 @@ open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> 
         value == nil
     }
     
-    public func updateValidationFailureMessage() {
+    open func updateValidationFailureMessage() {
         AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
     }
     
-    public func updateFormattedValue() {
+    open func updateFormattedValue() {
         AdyenAssertion.assertionFailure(message: "'\(#function)' needs to be implemented on '\(String(describing: Self.self))'")
     }
 }
