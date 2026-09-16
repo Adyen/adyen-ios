@@ -138,12 +138,10 @@ final class CheckoutConfigurationTests: XCTestCase {
             DropInConfiguration()
                 .hideStoredPaymentMethods(true)
                 .startWithLastStoredPaymentMethod(false)
-                .allowRemovingStoredPaymentMethods(true)
         }
 
         XCTAssertTrue(sut.dropInConfiguration.hideStoredPaymentMethods)
         XCTAssertFalse(sut.dropInConfiguration.startWithLastStoredPaymentMethod)
-        XCTAssertTrue(sut.dropInConfiguration.allowRemovingStoredPaymentMethods)
     }
 
     func test_init_withMultipleDropInConfigurations_shouldUseLastValue() throws {
@@ -154,14 +152,13 @@ final class CheckoutConfigurationTests: XCTestCase {
         ) {
             DropInConfiguration()
                 .hideStoredPaymentMethods(true)
-                .startWithLastStoredPaymentMethod(false)
+                .startWithLastStoredPaymentMethod(true)
             DropInConfiguration()
-                .allowRemovingStoredPaymentMethods(true)
+                .startWithLastStoredPaymentMethod(false)
         }
 
         XCTAssertFalse(sut.dropInConfiguration.hideStoredPaymentMethods)
-        XCTAssertTrue(sut.dropInConfiguration.startWithLastStoredPaymentMethod)
-        XCTAssertTrue(sut.dropInConfiguration.allowRemovingStoredPaymentMethods)
+        XCTAssertFalse(sut.dropInConfiguration.startWithLastStoredPaymentMethod)
     }
 
     func test_init_withDropInAndComponentConfigurations_shouldStoreEachSeparately() throws {
