@@ -55,14 +55,11 @@ internal final class ComponentsViewController: UIViewController {
         return genericPaymentComponentExample
     }
 
-    private lazy var genericPaymentComponentWithUIExample: GenericPaymentComponentWithUIExample = {
-        let example = GenericPaymentComponentWithUIExample()
-        example.presenter = self
-        example.onComponentReady = { [weak self] component in
-            self?.updateGenericPaymentWithUIItem(with: component.viewController)
-        }
-        return example
-    }()
+    private var genericPaymentComponentWithUIExample: GenericPaymentComponentWithUIExample {
+        let genericPaymentComponentWithUIExample = GenericPaymentComponentWithUIExample()
+        genericPaymentComponentWithUIExample.presenter = self
+        return genericPaymentComponentWithUIExample
+    }
     
     private var genericPaymentComponentAdvancedFlow: GenericPaymentComponentAdvancedFlow {
         let genericPaymentComponentExample = GenericPaymentComponentAdvancedFlow()
@@ -94,19 +91,6 @@ internal final class ComponentsViewController: UIViewController {
         return blikAdvanced
     }
     
-    private func updateGenericPaymentWithUIItem(with viewController: UIViewController) {
-        var updatedItems = componentsView.items
-        for section in 0..<updatedItems.count {
-            for row in 0..<updatedItems[section].count {
-                if updatedItems[section][row].title == "Generic Payment (default UI)" {
-                    updatedItems[section][row].embeddedViewController = viewController
-                }
-            }
-        }
-        componentsView.items = updatedItems
-        componentsView.reloadData()
-    }
-
     // MARK: - View
     
     override internal func loadView() {
@@ -116,8 +100,6 @@ internal final class ComponentsViewController: UIViewController {
     override internal func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Components"
-        componentsView.container = self
-        
         componentsView.items = [
             [ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)],
             [
@@ -150,8 +132,6 @@ internal final class ComponentsViewController: UIViewController {
         ]
         
         addConfigurationButton()
-        
-        genericPaymentComponentWithUIExample.start()
     }
     
     // MARK: - Private

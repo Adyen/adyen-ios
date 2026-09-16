@@ -5,7 +5,6 @@
 //
 
 import Foundation
-import UIKit
 
 internal struct ComponentsItem: Hashable {
 
@@ -17,7 +16,6 @@ internal struct ComponentsItem: Hashable {
     }
     
     internal let selectionHandler: () -> Void
-    internal var embeddedViewController: UIViewController?
     
     internal init(
         title: String,

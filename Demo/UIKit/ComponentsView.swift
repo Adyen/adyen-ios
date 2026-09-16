@@ -47,11 +47,6 @@ internal final class ComponentsView: UIView {
     // MARK: - Items
     
     internal var items = [[ComponentsItem]]()
-    internal weak var container: UIViewController?
-    
-    internal func reloadData() {
-        tableView.reloadData()
-    }
     
     // MARK: - Loading
     
@@ -134,33 +129,6 @@ internal final class ComponentsView: UIView {
         
         payButton.addTarget(self, action: #selector(onApplePayButtonTap), for: .touchUpInside)
     }
-    
-    private func setUpGenericPaymentWithUICell(_ cell: UITableViewCell, viewController: UIViewController) {
-        guard let embeddedView = viewController.view else { return }
-        
-        let addedAsChild = viewController.parent == nil
-        if addedAsChild {
-            container?.addChild(viewController)
-        }
-        
-        embeddedView.translatesAutoresizingMaskIntoConstraints = false
-        embeddedView.layoutMargins = .zero
-        
-        if embeddedView.superview != cell.contentView {
-            embeddedView.removeFromSuperview()
-            cell.contentView.addSubview(embeddedView)
-            NSLayoutConstraint.activate([
-                embeddedView.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
-                embeddedView.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor),
-                embeddedView.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
-                embeddedView.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor)
-            ])
-        }
-        
-        if addedAsChild {
-            viewController.didMove(toParent: container)
-        }
-    }
 }
 
 extension ComponentsView: UITableViewDataSource {
@@ -182,16 +150,8 @@ extension ComponentsView: UITableViewDataSource {
             return UITableViewCell(style: .subtitle, reuseIdentifier: identifier)
         }()
         
-        for subview in cell.contentView.subviews where subview !== cell.textLabel && subview !== cell.detailTextLabel {
-            subview.removeFromSuperview()
-        }
-        cell.textLabel?.text = nil
-        cell.detailTextLabel?.text = nil
-
         let item = items[indexPath.section][indexPath.row]
-        if let viewController = item.embeddedViewController {
-            setUpGenericPaymentWithUICell(cell, viewController: viewController)
-        } else if item.isApplePay {
+        if item.isApplePay {
             setUpApplePayCell(cell)
         } else {
             cell.textLabel?.font = .preferredFont(forTextStyle: .headline)

@@ -19,8 +19,6 @@ internal final class GenericPaymentComponentWithUIExample: InitialDataFlowProtoc
 
     private var checkout: SessionCheckout?
     private var adyenComponent: CheckoutPaymentComponent?
-    private var isPreparing = false
-    internal var onComponentReady: ((CheckoutPaymentComponent) -> Void)?
 
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
     private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
@@ -31,22 +29,28 @@ internal final class GenericPaymentComponentWithUIExample: InitialDataFlowProtoc
     internal init() {}
 
     internal func start() {
-        guard !isPreparing, adyenComponent == nil else { return }
-        isPreparing = true
-        
+        startLoading()
+
         Task { [weak self] in
             guard let self else { return }
             do {
                 let sessionResponse = try await requestSessionInitialInfo()
                 let component = try await genericPaymentComponent(from: sessionResponse)
                 self.adyenComponent = component
-                self.isPreparing = false
-                self.onComponentReady?(component)
+                self.hideLoading()
+
+                // Always present the component's own view controller (e.g. its pay button),
+                // regardless of whether the payment method requires user interaction.
+                self.present(viewController: component.viewController)
             } catch {
-                self.isPreparing = false
+                self.hideLoading()
                 self.handleError(error)
             }
         }
+    }
+
+    private func testAccess() {
+        _ = BasicComponentConfiguration(showsSubmitButton: true)
     }
 
     private func genericPaymentComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
@@ -82,6 +86,14 @@ internal final class GenericPaymentComponentWithUIExample: InitialDataFlowProtoc
     }
 
     // MARK: - Private
+
+    private func startLoading() {
+        presenter?.showLoadingIndicator()
+    }
+
+    private func hideLoading() {
+        presenter?.hideLoadingIndicator()
+    }
 
     private func handleError(_ error: Error) {
         presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
