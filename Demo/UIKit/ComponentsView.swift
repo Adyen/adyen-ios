@@ -72,7 +72,7 @@ internal final class ComponentsView: UIView {
     
     private lazy var sessionSwitch: UISwitch = {
         let sessionSwitch = UISwitch()
-        sessionSwitch.isOn = false
+        sessionSwitch.isOn = true
         return sessionSwitch
     }()
     
