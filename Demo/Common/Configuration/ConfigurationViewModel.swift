@@ -20,7 +20,7 @@ internal final class ConfigurationViewModel: ObservableObject {
     @Published internal var billingAddress: BillingAddressModeDemoSetting = .none
     @Published internal var socialSecurityNumberVisibility: CardConfiguration.FieldVisibility = .auto
     @Published internal var koreanAuthenticationVisibility: CardConfiguration.FieldVisibility = .auto
-    @Published internal var allowRemovingStoredPaymentMethods: Bool = true
+    @Published internal var showRemovePaymentMethodButton: Bool = true
     @Published internal var hideStoredPaymentMethods: Bool = false
     @Published internal var startWithLastStoredPaymentMethod: Bool = true
     
@@ -62,7 +62,7 @@ internal final class ConfigurationViewModel: ObservableObject {
         self.billingAddress = configuration.cardSettings.billingAddress
         self.socialSecurityNumberVisibility = configuration.cardSettings.socialSecurityNumberVisibility
         self.koreanAuthenticationVisibility = configuration.cardSettings.koreanAuthenticationVisibility
-        self.allowRemovingStoredPaymentMethods = configuration.dropInSettings.allowRemovingStoredPaymentMethods
+        self.showRemovePaymentMethodButton = configuration.dropInSettings.showRemovePaymentMethodButton
         self.hideStoredPaymentMethods = configuration.dropInSettings.hideStoredPaymentMethods
         self.startWithLastStoredPaymentMethod = configuration.dropInSettings.startWithLastStoredPaymentMethod
         self.allowForceCardRedirectAction = configuration.threeDSConfigurationSettings.allowForceCardRedirectAction
@@ -103,7 +103,7 @@ internal final class ConfigurationViewModel: ObservableObject {
                 showsInstallmentAmount: showInstallmentAmount
             ),
             dropInSettings: DropInSettings(
-                allowRemovingStoredPaymentMethods: allowRemovingStoredPaymentMethods,
+                showRemovePaymentMethodButton: showRemovePaymentMethodButton,
                 hideStoredPaymentMethods: hideStoredPaymentMethods,
                 startWithLastStoredPaymentMethod: startWithLastStoredPaymentMethod
             ),

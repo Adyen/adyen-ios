@@ -24,23 +24,11 @@ public struct DropInConfiguration: CheckoutConfigurable {
         return LocalizationParameters().withProvider(localizationProvider)
     }
 
-    package var paymentMethodsList: PaymentMethodListConfiguration {
-        var configuration = PaymentMethodListConfiguration()
-        configuration.allowDisablingStoredPaymentMethods = allowRemovingStoredPaymentMethods
-        return configuration
-    }
-
     /// Whether stored payment methods are hidden from the payment method list.
     package var hideStoredPaymentMethods: Bool = false
 
     /// Whether Drop-in starts with the most recently stored payment method.
     package var startWithLastStoredPaymentMethod: Bool = true
-
-    /// Whether stored payment methods can be removed in the Advanced flow.
-    ///
-    /// The removal option is available only when an Advanced Checkout removal handler is also registered.
-    /// Session Checkout ignores this setting and uses the session response instead.
-    package var allowRemovingStoredPaymentMethods: Bool = false
 
     /// Creates a Drop-in configuration with default behavior.
     public init() {}
@@ -62,19 +50,6 @@ public struct DropInConfiguration: CheckoutConfigurable {
     public func startWithLastStoredPaymentMethod(_ startWithLastStoredPaymentMethod: Bool) -> Self {
         var copy = self
         copy.startWithLastStoredPaymentMethod = startWithLastStoredPaymentMethod
-        return copy
-    }
-
-    // TODO: Advanced flow only, but added for demo app for now.
-    /// Sets whether stored payment methods can be removed in the Advanced flow.
-    ///
-    /// Session Checkout ignores this setting. Enabling it does not expose removal unless an Advanced Checkout
-    /// removal handler is registered before Drop-in is created.
-    /// - Parameter allowRemovingStoredPaymentMethods: Whether to allow stored payment method removal.
-    /// - Returns: A modified copy of the configuration.
-    public func allowRemovingStoredPaymentMethods(_ allowRemovingStoredPaymentMethods: Bool) -> Self {
-        var copy = self
-        copy.allowRemovingStoredPaymentMethods = allowRemovingStoredPaymentMethods
         return copy
     }
 }

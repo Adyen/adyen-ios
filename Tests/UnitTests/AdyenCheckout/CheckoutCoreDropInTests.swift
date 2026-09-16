@@ -75,17 +75,6 @@ final class CheckoutCoreDropInTests: XCTestCase {
         XCTAssertTrue(dropIn.configuration.localizationProvider as AnyObject === provider)
     }
 
-    func test_createDropIn_withAdvancedRemovalEnabled_shouldKeepManagementUnavailable() throws {
-        configuration.dropInConfiguration = DropInConfiguration()
-            .allowRemovingStoredPaymentMethods(true)
-        let sut = makeAdvancedCheckoutCore(paymentMethods: paymentMethods)
-
-        let dropIn = try sut.createDropIn().dropInComponent
-        dropIn.storedPaymentMethodsDelegate = sut
-
-        XCTAssertNil(dropIn.storedPaymentMethodManagementCapability)
-    }
-
     func test_createDropIn_withSessionRemovalDisabled_shouldKeepManagementUnavailable() throws {
         let session = makeSessionMock()
         session.showRemovePaymentMethodButton = false
@@ -118,6 +107,41 @@ final class CheckoutCoreDropInTests: XCTestCase {
 
         XCTAssertTrue(session.disableStoredPaymentMethodCalled)
         XCTAssertEqual(session.disabledStoredPaymentMethod?.identifier, storedPaymentMethod.identifier)
+    }
+
+    func test_sessionManagementCapability_whenSessionFails_shouldPropagateError() async throws {
+        let session = makeSessionMock()
+        session.showRemovePaymentMethodButton = true
+        session.disableStoredPaymentMethodResult = .failure(DropInTestError())
+        let sut = makeSessionCheckoutCore(session: session)
+        let dropIn = try sut.createDropIn().dropInComponent
+        let capability = try XCTUnwrap(dropIn.storedPaymentMethodManagementCapability)
+        let storedPaymentMethod = try XCTUnwrap(paymentMethods.stored.first)
+
+        do {
+            try await capability.remove(storedPaymentMethod)
+            XCTFail("Expected Session removal to fail.")
+        } catch is DropInTestError {
+            XCTAssertTrue(session.disableStoredPaymentMethodCalled)
+        }
+    }
+
+    func test_sessionManagementCapability_whenSessionIsDeallocated_shouldThrowUnavailableError() async throws {
+        var session: AdyenSessionMock? = makeSessionMock()
+        session?.showRemovePaymentMethodButton = true
+        var sut: CheckoutCore? = try makeSessionCheckoutCore(session: XCTUnwrap(session))
+        let dropIn = try XCTUnwrap(sut).createDropIn().dropInComponent
+        let capability = try XCTUnwrap(dropIn.storedPaymentMethodManagementCapability)
+        let storedPaymentMethod = try XCTUnwrap(paymentMethods.stored.first)
+        sut = nil
+        session = nil
+
+        do {
+            try await capability.remove(storedPaymentMethod)
+            XCTFail("Expected Session removal to be unavailable.")
+        } catch let error as StoredPaymentMethodRemovalError {
+            XCTAssertEqual(error, .unavailable)
+        }
     }
 
     func test_dropInSubmit_whenAdvancedHandlerReturnsAction_shouldRouteActionBackToDropIn() async throws {
