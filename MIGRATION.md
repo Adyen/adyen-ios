@@ -16,7 +16,6 @@ localization, and styling remain checkout-wide or component-specific:
 ```swift
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     DropInConfiguration()
@@ -45,7 +44,6 @@ the public Drop-in facade from the resulting flow:
 ```swift
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     DropInConfiguration()
@@ -120,7 +118,6 @@ AdyenSession.initialize(
 ```swift
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     CardConfiguration()
@@ -168,7 +165,6 @@ component.delegate = self
 ```swift
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     CardConfiguration()
