@@ -21,7 +21,6 @@ let configuration = try CheckoutConfiguration(
     DropInConfiguration()
         .hideStoredPaymentMethods(false)
         .startWithLastStoredPaymentMethod(true)
-        .allowRemovingStoredPaymentMethods(false)
 
     CardConfiguration()
 }
@@ -29,6 +28,9 @@ let configuration = try CheckoutConfiguration(
 
 `hideStoredPaymentMethods` affects only the payment method list. It remains independent from
 `startWithLastStoredPaymentMethod`, so Drop-in can start with a stored method while hiding the stored section from the list.
+
+Stored payment method removal is available only through Session Checkout when enabled by the session response. Advanced Checkout
+does not expose stored payment method removal.
 
 Drop-in now always skips the payment method list when exactly one presentable regular payment method is available. The former
 `allowsSkippingPaymentList` merchant setting has been removed, and its previous default of `false` no longer applies.
