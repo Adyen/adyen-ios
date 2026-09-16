@@ -142,15 +142,15 @@ extension ComponentsView: UITableViewDataSource {
     }
     
     internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let item = items[indexPath.section][indexPath.row]
+        let identifier = item.isApplePay ? "ApplePayCell" : "Cell"
         let cell: UITableViewCell = {
-            let identifier = "Cell"
             if let cell = tableView.dequeueReusableCell(withIdentifier: identifier) {
                 return cell
             }
             return UITableViewCell(style: .subtitle, reuseIdentifier: identifier)
         }()
         
-        let item = items[indexPath.section][indexPath.row]
         if item.isApplePay {
             setUpApplePayCell(cell)
         } else {
