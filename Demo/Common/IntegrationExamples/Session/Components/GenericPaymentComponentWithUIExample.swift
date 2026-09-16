@@ -49,10 +49,6 @@ internal final class GenericPaymentComponentWithUIExample: InitialDataFlowProtoc
         }
     }
 
-    private func testAccess() {
-        _ = BasicComponentConfiguration(showsSubmitButton: true)
-    }
-
     private func genericPaymentComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
