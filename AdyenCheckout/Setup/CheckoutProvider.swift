@@ -42,7 +42,6 @@ internal class CheckoutProvider: CheckoutProviding {
             adyenContext: adyenContext,
             apiClient: apiClient
         )
-        // Amount is now received from the Session.setup() response. 
         adyenContext.amount = session.state.amount
 
         return await CheckoutCore(
