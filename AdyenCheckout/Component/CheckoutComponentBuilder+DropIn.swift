@@ -33,7 +33,7 @@ extension CheckoutComponentBuilder {
             context: context,
             configuration: dropInConfiguration,
             actionComponentConfiguration: actionComponentConfiguration,
-            storedMethodManagementSource: .checkout(storedPaymentMethodManagementCapability),
+            storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability,
             paymentComponentBuilder: paymentComponentBuilder
         )
     }

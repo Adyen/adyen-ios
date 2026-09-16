@@ -73,9 +73,6 @@
     "Default" : {
 
     },
-    "Displays a button to remove stored payment methods" : {
-
-    },
     "DropIn" : {
 
     },
@@ -112,6 +109,9 @@
     "onBeforeSubmit" : {
 
     },
+    "Requests the removal button in the Session response" : {
+
+    },
     "Return success from didAuthorize" : {
 
     },
@@ -122,6 +122,9 @@
 
     },
     "Session Callbacks" : {
+
+    },
+    "Session Stored Payment Method Removal" : {
 
     },
     "Set to country currency" : {
@@ -137,9 +140,6 @@
 
     },
     "Stored Card" : {
-
-    },
-    "Stored Payment Method Removal" : {
 
     },
     "Supported countries: %@" : {

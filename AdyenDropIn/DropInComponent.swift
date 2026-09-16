@@ -21,12 +21,6 @@ import AdyenNetworking
 #endif
 import UIKit
 
-// TODO: Remove this transition source with the legacy stored-payment-method delegates in PR 6.
-package enum StoredMethodManagementSource {
-    case legacy
-    case checkout(StoredPaymentMethodManagementCapability?)
-}
-
 /**
  A component that handles the entire flow of payment selection and payment details entry.
 
@@ -63,14 +57,10 @@ package final class DropInComponent: NSObject,
 
     internal private(set) lazy var router = dropInAssembler.resolveDropInRouter()
 
-    private lazy var storedPaymentMethodManagementResolver = StoredPaymentMethodManagementResolver(
-        dropInComponent: self
-    )
-
     internal var configuration: DropInConfiguration
 
     private let actionComponentConfiguration: CheckoutActionComponent.Configuration
-    private let storedMethodManagementSource: StoredMethodManagementSource
+    internal let storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
     private let paymentComponentBuilder: DropInPaymentComponentBuilder
 
     internal var paymentInProgress: Bool = false
@@ -93,7 +83,7 @@ package final class DropInComponent: NSObject,
     ///   - context: The context object for this component.
     ///   - configuration: Drop-in behavior and checkout-wide presentation configuration.
     ///   - actionComponentConfiguration: The resolved configuration for action handling.
-    ///   - storedMethodManagementSource: The temporary source of stored payment method management behavior.
+    ///   - storedPaymentMethodManagementCapability: The optional stored payment method management behavior.
     ///   - paymentComponentBuilder: The payment component builder to handle component creation.
     ///   - title: Name of the application. To be displayed on a first payment page.
     ///            If no external value provided, the Main Bundle's name would be used.
@@ -102,14 +92,14 @@ package final class DropInComponent: NSObject,
         context: AdyenContext,
         configuration: DropInConfiguration = .init(),
         actionComponentConfiguration: CheckoutActionComponent.Configuration = .init(),
-        storedMethodManagementSource: StoredMethodManagementSource = .legacy,
+        storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability? = nil,
         paymentComponentBuilder: @escaping DropInPaymentComponentBuilder,
         title: String? = nil
     ) {
         self.title = title ?? Bundle.main.displayName
         self.configuration = configuration
         self.actionComponentConfiguration = actionComponentConfiguration
-        self.storedMethodManagementSource = storedMethodManagementSource
+        self.storedPaymentMethodManagementCapability = storedPaymentMethodManagementCapability
         self.paymentComponentBuilder = paymentComponentBuilder
         self.context = context
         self.paymentMethods = paymentMethods
@@ -144,18 +134,6 @@ package final class DropInComponent: NSObject,
 
     /// The partial payment flow delegate.
     package weak var partialPaymentDelegate: PartialPaymentDelegate?
-
-    /// The stored payment methods delegate.
-    package weak var storedPaymentMethodsDelegate: StoredPaymentMethodsDelegate?
-
-    internal var storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability? {
-        switch storedMethodManagementSource {
-        case .legacy:
-            return storedPaymentMethodManagementResolver.capability
-        case let .checkout(capability):
-            return capability
-        }
-    }
 
     // MARK: - Presentable Component Protocol
 
@@ -310,37 +288,3 @@ private extension Bundle {
     }
 
 }
-
-// ============= PAYMENT METHOD LIST ===============
-
-//    func didLoad() {
-//        sendInitialAnalytics()
-//        sendDidLoadEvent()
-//    }
-
-//    func delete(
-//        storedPaymentMethod: any StoredPaymentMethod,
-//        completion: @escaping (Bool) -> Void
-//    ) {
-//        let deletionCompletion = { [weak self] (success: Bool) in
-//            defer {
-//                completion(success)
-//            }
-//            guard success else { return }
-//            self?.paymentMethods.stored.removeAll(where: { $0 == storedPaymentMethod })
-//            self?.reloadComponentManager()
-//        }
-//
-//        if let sessionAsStoredPaymentMethodsDelegate {
-//            sessionAsStoredPaymentMethodsDelegate.disable(
-//                storedPaymentMethod: storedPaymentMethod,
-//                dropInComponent: self,
-//                completion: deletionCompletion
-//            )
-//        } else {
-//            storedPaymentMethodsDelegate?.disable(
-//                storedPaymentMethod: storedPaymentMethod,
-//                completion: deletionCompletion
-//            )
-//        }
-//    }
