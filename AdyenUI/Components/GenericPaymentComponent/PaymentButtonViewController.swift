@@ -41,6 +41,7 @@ package final class PaymentButtonViewController: FormViewController {
     override package func viewDidLoad() {
         super.viewDidLoad()
         append(payButtonItem)
+        // TODO: - Implement analytics on this screen
     }
 
     /// Shows the loading indicator on the payment button and disables interaction.

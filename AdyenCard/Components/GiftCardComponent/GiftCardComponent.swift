@@ -10,9 +10,6 @@ import Adyen
     import AdyenUI
     @_spi(AdyenInternal) import class AdyenUI.FormViewController
 #endif
-#if canImport(AdyenComponents)
-    import AdyenComponents
-#endif
 #if canImport(AdyenEncryption)
     import AdyenEncryption
 #endif
