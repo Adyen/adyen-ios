@@ -148,7 +148,11 @@ class FormPickerSearchViewControllerTests: XCTestCase {
     func test_searchBar_whenConfigurationOmitted_shouldShowAndFocus() throws {
         let searchViewController = try makeSearchViewController()
 
-        assertSearchBarIsShownAndFocused(in: searchViewController)
+        XCTAssertTrue(searchViewController.searchBar.isDescendant(of: searchViewController.view))
+        wait(
+            until: { searchViewController.searchBar.isFirstResponder },
+            timeout: 1
+        )
     }
 
     func test_picker_whenSearchDisabledAndHeaderAbsent_shouldShowResultsWithoutSearchBar() throws {
@@ -162,6 +166,27 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         XCTAssertFalse(searchViewController.searchBar.isFirstResponder)
         XCTAssertEqual(searchViewController.title, title)
         XCTAssertEqual(searchViewController.resultsListViewController.sections.first?.items.count, 1)
+    }
+
+    func test_picker_whenSearchDisabledAndOptionsEmpty_shouldShowEmptyStateWithoutSearchBar() throws {
+        let pickerViewController = FormPickerSearchViewController<FormPickerElement>(
+            title: "Installments",
+            configuration: .init(isSearchEnabled: false),
+            options: []
+        ) { _ in
+            XCTFail("Selection handler should not be called")
+        }
+
+        setupRootViewController(pickerViewController)
+
+        let searchViewController = try XCTUnwrap(
+            pickerViewController.viewControllers.first as? SearchViewController
+        )
+
+        XCTAssertFalse(searchViewController.searchBar.isDescendant(of: searchViewController.view))
+        XCTAssertFalse(searchViewController.emptyView.isHidden)
+        XCTAssertEqual(searchViewController.emptyView.searchTerm, "")
+        XCTAssertTrue(searchViewController.resultsListViewController.view.isHidden)
     }
 
     func test_pickerHeader_whenSubtitleProvided_shouldRenderTitleAndSubtitle() throws {
@@ -244,25 +269,6 @@ class FormPickerSearchViewControllerTests: XCTestCase {
     }
 
     // MARK: - Helpers
-
-    private func assertSearchBarIsShownAndFocused(
-        in searchViewController: SearchViewController,
-        file: StaticString = #filePath,
-        line: UInt = #line
-    ) {
-        XCTAssertTrue(
-            searchViewController.searchBar.isDescendant(of: searchViewController.view),
-            file: file,
-            line: line
-        )
-
-        wait(
-            until: { searchViewController.searchBar.isFirstResponder },
-            timeout: 1,
-            file: file,
-            line: line
-        )
-    }
 
     private func makeSearchViewController(
         title: String? = nil,
