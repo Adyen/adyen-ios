@@ -131,12 +131,13 @@ struct PreselectedPaymentMethodIntegrationTests {
         let dropInFlowManagerMock = DropInFlowManagingMock()
         let analyticsProviderMock = AnalyticsProviderMock()
         let routerMock = RouterMock()
-        let configuration: DropInComponent.Configuration = .init()
+        let configuration: DropInConfiguration = .init()
 
         let viewModel = PreselectedPaymentMethodViewModel(
             component: component,
             theme: configuration.theme,
-            localizationParameters: configuration.localizationParameters,
+            localizationParameters: configuration.resolvedLocalizationParameters,
+            showsAllPaymentMethodsButton: true,
             analyticsProvider: analyticsProviderMock,
             dropInAnalyticsConfiguration: DropInAnalyticsConfiguration(configuration: configuration),
             dropInFlowManager: dropInFlowManagerMock
@@ -162,6 +163,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         let assembler = PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssemblerMock,
             componentContainerAssembler: componentContainerAssemblerMock,
+            showsAllPaymentMethodsButton: true,
             configuration: .init(),
             dropInFlowManager: dropInFlowManager,
             partialPaymentDelegate: nil,

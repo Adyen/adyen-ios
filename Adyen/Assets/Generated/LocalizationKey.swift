@@ -568,7 +568,7 @@ public struct LocalizationKey {
     public static let preselectedPaymentMethodOtherOptions = LocalizationKey(key: "adyen.preselectedPaymentMethod.otherOptions")
     /// Manage
     public static let storedPaymentMethodManagementTitle = LocalizationKey(key: "adyen.storedPaymentMethodManagement.title")
-    /// Remove your saved payment methods
+    /// Manage your favorite payment methods
     public static let storedPaymentMethodManagementDescription = LocalizationKey(key: "adyen.storedPaymentMethodManagement.description")
     /// Cards
     public static let storedPaymentMethodManagementCardsTitle = LocalizationKey(key: "adyen.storedPaymentMethodManagement.cardsTitle")
@@ -586,6 +586,10 @@ public struct LocalizationKey {
     public static let storedPaymentMethodManagementRemovalErrorMessage = LocalizationKey(key: "adyen.storedPaymentMethodManagement.removalErrorMessage")
     /// Expired
     public static let storedPaymentMethodExpired = LocalizationKey(key: "adyen.storedPaymentMethod.expired")
+    /// You will be guided to the next step of the process.
+    public static let checkoutDropinGenericPaymentMethodDescription = LocalizationKey(key: "adyen.checkout.dropin.generic.payment.method.description")
+    /// Processing...
+    public static let checkoutDropinGenericPaymentMethodProgressTitle = LocalizationKey(key: "adyen.checkout.dropin.generic.payment.method.progress.title")
     
     internal let key: String
     

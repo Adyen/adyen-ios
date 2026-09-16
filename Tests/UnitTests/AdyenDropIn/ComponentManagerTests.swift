@@ -6,703 +6,313 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenCard
+@testable import AdyenCheckout
 @testable import AdyenComponents
 @testable import AdyenDropIn
-#if canImport(AdyenCashAppPay)
-    @testable import AdyenCashAppPay
-#endif
-
-#if canImport(AdyenTwint)
-    @testable import AdyenTwint
-#endif
-import PassKit
+@_spi(AdyenInternal) @testable import AdyenUI
+import UIKit
 import XCTest
 
 @MainActor
-class ComponentManagerTests: XCTestCase {
+final class ComponentManagerTests: XCTestCase {
 
-    var paymentMethods: PaymentMethods {
-        try! AdyenCoder.decode(dictionary) as PaymentMethods
-    }
-    
-    let dictionary = [
-        "storedPaymentMethods": [
-            storedCreditCardDictionary,
-            storedCreditCardDictionary,
-            storedPayPalDictionary,
-            storedBcmcDictionary,
-            storedACHDictionary,
-            storedTwintDictionary,
-            storedPayToDictionary
-        ],
-        "paymentMethods": [
-            creditCardDictionary,
-            issuerListDictionary,
-            issuerListDictionaryWithoutDetailsObject,
-            sepaDirectDebitDictionary,
-            bcmcCardDictionary,
-            applePayDictionary,
-            giroPayDictionaryWithOptionalDetails,
-            giroPayDictionaryWithNonOptionalDetails,
-            weChatQRDictionary,
-            weChatSDKDictionary,
-            weChatWebDictionary,
-            weChatMiniProgramDictionary,
-            bcmcMobileQR,
-            mbway,
-            blik,
-            qiwiWallet,
-            googlePay,
-            dokuWallet,
-            econtextStores,
-            econtextATM,
-            econtextOnline,
-            oxxo,
-            multibanco,
-            boletoBancario,
-            boletoBancarioSantander,
-            primeiroPayBoleto,
-            boletoBancarioItau,
-            affirm,
-            atome,
-            achDirectDebit,
-            bacsDirectDebit,
-            cashAppPay,
-            giftCard,
-            mealVoucherSodexo,
-            twint,
-            payto
-        ]
-    ]
-    
-    let numberOfExpectedRegularComponents = 28
-    let numberOfExpectedStoredComponent = 7
-
-    var presentationDelegate: PresentationDelegateMock!
-    var context: AdyenContext!
-    var configuration: DropInComponent.Configuration!
+    private var context: AdyenContext!
+    private var configuration: DropInConfiguration!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        presentationDelegate = PresentationDelegateMock()
         context = Dummy.context
-        configuration = DropInComponent.Configuration()
+        configuration = DropInConfiguration()
     }
 
     override func tearDownWithError() throws {
         AdyenAssertion.listener = nil
-        presentationDelegate = nil
         context = nil
         configuration = nil
         try super.tearDownWithError()
     }
 
-    func testClientKeyInjectionAndProtocolConformance() {
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+    func test_supportedMethods_withCheckoutBuilder_includeSupportedRegularAndStoredMethods() throws {
+        let methods = try supportedPaymentMethods()
+        let sut = try makeSUT(
+            paymentMethods: methods,
+            paymentComponentBuilder: checkoutBuilder(includingApplePay: true)
         )
 
-        XCTAssertEqual(sut.storedComponents.count, numberOfExpectedStoredComponent)
-        XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
-
-        XCTAssertEqual(sut.storedComponents.filter { $0.context.apiContext.clientKey == Dummy.apiContext.clientKey }.count, numberOfExpectedStoredComponent)
-        XCTAssertEqual(sut.regularComponents.filter { $0.context.apiContext.clientKey == Dummy.apiContext.clientKey }.count, numberOfExpectedRegularComponents)
-
-        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 22)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentablePaymentComponent }.count, 22)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is FinalizableComponent }.count, 0)
-    }
-
-    func testVisibleStoredPaymentMethods_excludesMethodsUnsupportedInThePaymentList() throws {
-        var paymentMethodsDictionary = dictionary
-        var storedPaymentMethods = try XCTUnwrap(paymentMethodsDictionary["storedPaymentMethods"] as? [[String: Any]])
-        var unsupportedPaymentMethod = storedCreditCardDictionary
-        unsupportedPaymentMethod["id"] = "unsupported-stored-payment-method"
-        unsupportedPaymentMethod["supportedShopperInteractions"] = ["ContAuth"]
-        storedPaymentMethods.append(unsupportedPaymentMethod)
-        paymentMethodsDictionary["storedPaymentMethods"] = storedPaymentMethods
-        let paymentMethods = try AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        XCTAssertFalse(
-            sut.visibleStoredPaymentMethods.contains { $0.identifier == "unsupported-stored-payment-method" }
+        XCTAssertEqual(
+            sut.supportedRegularPaymentMethods.map(\.type),
+            methods.regular.map(\.type)
         )
         XCTAssertEqual(
-            sut.visibleStoredPaymentMethods.map(\.identifier),
-            sut.storedComponents.compactMap {
-                ($0.paymentMethod as? any StoredPaymentMethod)?.identifier
+            sut.supportedStoredPaymentMethods.map(\.identifier),
+            methods.stored.map(\.identifier)
+        )
+    }
+
+    func test_supportedMethods_withCheckoutBuilder_omitUnsupportedRegularMethods() throws {
+        let unsupportedMethod = try AdyenCoder.decode(issuerListDictionary) as IssuerListPaymentMethod
+        let card = try AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
+        let methods = PaymentMethods(regular: [unsupportedMethod, card], stored: [])
+        let sut = try makeSUT(paymentMethods: methods, paymentComponentBuilder: checkoutBuilder())
+
+        XCTAssertEqual(sut.supportedRegularPaymentMethods.map(\.type), [.scheme])
+        XCTAssertEqual(sut.sections.flatMap(\.paymentMethods).map(\.type), [.scheme])
+    }
+
+    func test_supportedMethods_withCheckoutBuilder_missingApplePayConfigurationOmitsOnlyApplePay() throws {
+        let applePay = try AdyenCoder.decode(applePayDictionary) as ApplePayPaymentMethod
+        let card = try AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
+        let methods = PaymentMethods(regular: [applePay, card], stored: [])
+        let sut = try makeSUT(paymentMethods: methods, paymentComponentBuilder: checkoutBuilder())
+
+        XCTAssertEqual(sut.supportedRegularPaymentMethods.map(\.type), [.scheme])
+    }
+
+    func test_visibleStoredPaymentMethods_excludesMethodsUnsupportedInThePaymentList() throws {
+        var unsupportedStoredCard = storedCreditCardDictionary
+        unsupportedStoredCard["id"] = "unsupported-stored-payment-method"
+        unsupportedStoredCard["supportedShopperInteractions"] = ["ContAuth"]
+        let methods = try AdyenCoder.decode([
+            "storedPaymentMethods": [storedCreditCardDictionary, unsupportedStoredCard],
+            "paymentMethods": []
+        ]) as PaymentMethods
+        let sut = makeSUT(paymentMethods: methods, paymentComponentBuilder: genericBuilder)
+
+        XCTAssertEqual(sut.visibleStoredPaymentMethods.map(\.identifier), [methods.stored[0].identifier])
+        XCTAssertEqual(sut.supportedStoredPaymentMethods.count, 1)
+        XCTAssertEqual(sut.sections.first?.paymentMethods.count, 1)
+    }
+
+    func test_sections_areOrderedPaidStoredRegularAndOmitEmptySections() throws {
+        let paid = OrderPaymentMethod(
+            lastFour: "1234",
+            type: .other("paid"),
+            transactionLimit: Amount(value: 100, currencyCode: "EUR"),
+            amount: Amount(value: 100, currencyCode: "EUR")
+        )
+        let stored = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
+        let regular = try AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
+        var methods = PaymentMethods(regular: [regular], stored: [stored])
+        methods.paid = [paid]
+
+        let sut = makeSUT(paymentMethods: methods, paymentComponentBuilder: genericBuilder)
+
+        XCTAssertEqual(sut.sections.map(\.kind), [.paid, .stored, .regular])
+        XCTAssertEqual(sut.sections.flatMap(\.paymentMethods).map(\.name), [paid.name, stored.name, regular.name])
+
+        sut.update(paymentMethods: PaymentMethods(regular: [regular], stored: []))
+
+        XCTAssertEqual(sut.sections.map(\.kind), [.regular])
+        XCTAssertNil(sut.sections[0].header)
+    }
+
+    func test_buildComponent_forDisplayedMethod_createsFreshComponent() throws {
+        let card = try AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
+        let sut = makeSUT(
+            paymentMethods: PaymentMethods(regular: [card], stored: []),
+            paymentComponentBuilder: genericBuilder
+        )
+        let displayed = try XCTUnwrap(sut.sections.first?.paymentMethods.first)
+
+        let selected = try XCTUnwrap(sut.buildComponent(for: displayed))
+        let reopened = try XCTUnwrap(sut.buildComponent(for: displayed))
+
+        XCTAssertFalse(selected === reopened)
+    }
+
+    func test_buildComponent_forStoredMethod_createsFreshComponentWithMatchingIdentifier() throws {
+        var firstDictionary = storedCreditCardDictionary
+        firstDictionary["id"] = "first"
+        var secondDictionary = storedCreditCardDictionary
+        secondDictionary["id"] = "second"
+        let methods = try AdyenCoder.decode([
+            "storedPaymentMethods": [firstDictionary, secondDictionary],
+            "paymentMethods": []
+        ]) as PaymentMethods
+        let sut = makeSUT(paymentMethods: methods, paymentComponentBuilder: genericBuilder)
+
+        let selected = try XCTUnwrap(sut.buildComponent(for: methods.stored[1]))
+        let reopened = try XCTUnwrap(sut.buildComponent(for: methods.stored[1]))
+
+        XCTAssertFalse(selected === reopened)
+        XCTAssertEqual((selected.paymentMethod as? any StoredPaymentMethod)?.identifier, "second")
+    }
+
+    func test_updatePaymentMethods_recomputesSupportedMethodsAndSections() throws {
+        let card = try AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
+        let blik = try AdyenCoder.decode(blik) as BLIKPaymentMethod
+        var buildCount = 0
+        let sut = makeSUT(
+            paymentMethods: PaymentMethods(regular: [card], stored: []),
+            paymentComponentBuilder: { paymentMethod in
+                buildCount += 1
+                return self.genericComponent(for: paymentMethod)
             }
         )
-        let storedSection = try XCTUnwrap(sut.sections.first { $0.kind == .stored })
-        XCTAssertFalse(
-            storedSection.paymentMethods.contains {
-                ($0 as? any StoredPaymentMethod)?.identifier == "unsupported-stored-payment-method"
+        _ = sut.supportedRegularPaymentMethods
+
+        sut.update(paymentMethods: PaymentMethods(regular: [blik], stored: []))
+
+        XCTAssertEqual(buildCount, 2)
+        XCTAssertEqual(sut.supportedRegularPaymentMethods.map(\.type), [.blik])
+        XCTAssertEqual(sut.sections.flatMap(\.paymentMethods).map(\.type), [.blik])
+        XCTAssertNil(sut.buildComponent(for: card))
+    }
+
+    func test_removeStoredPaymentMethod_updatesSupportedMethodsAndSection() throws {
+        var firstDictionary = storedCreditCardDictionary
+        firstDictionary["id"] = "first"
+        var secondDictionary = storedCreditCardDictionary
+        secondDictionary["id"] = "second"
+        let methods = try AdyenCoder.decode([
+            "storedPaymentMethods": [firstDictionary, secondDictionary],
+            "paymentMethods": []
+        ]) as PaymentMethods
+        let sut = makeSUT(paymentMethods: methods, paymentComponentBuilder: genericBuilder)
+
+        sut.removeStoredPaymentMethod(withIdentifier: "first")
+
+        XCTAssertEqual(sut.paymentMethods.stored.map(\.identifier), ["second"])
+        XCTAssertEqual(sut.visibleStoredPaymentMethods.map(\.identifier), ["second"])
+        XCTAssertEqual(
+            sut.sections.first { $0.kind == .stored }?.paymentMethods.compactMap {
+                ($0 as? any StoredPaymentMethod)?.identifier
+            },
+            ["second"]
+        )
+    }
+
+    func test_buildComponent_withOrder_preservesOrderOnSupportedComponent() throws {
+        let order = PartialPaymentOrder(pspReference: "psp-reference", orderData: "order-data")
+        let card = try AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
+        let sut = makeSUT(
+            paymentMethods: PaymentMethods(regular: [card], stored: []),
+            order: order,
+            paymentComponentBuilder: genericBuilder
+        )
+
+        _ = sut.supportedRegularPaymentMethods
+        XCTAssertEqual(sut.buildComponent(for: card)?.order, order)
+    }
+
+    func test_voucherAndQRCodeMethods_withoutPhotoLibraryAccessAreOmitted() throws {
+        let methods = try AdyenCoder.decode([
+            "paymentMethods": [oxxo, ["type": "pix", "name": "PIX"]]
+        ]) as PaymentMethods
+        var assertionCount = 0
+        AdyenAssertion.listener = { _ in assertionCount += 1 }
+        let sut = makeSUT(
+            paymentMethods: methods,
+            paymentComponentBuilder: genericBuilder
+        )
+        sut.hasPhotoLibraryUsageDescription = false
+
+        XCTAssertTrue(sut.supportedRegularPaymentMethods.isEmpty)
+        XCTAssertTrue(sut.sections.isEmpty)
+        XCTAssertEqual(assertionCount, 2)
+    }
+
+    func test_componentConfigurationResolvedByInjectedBuilder_isNotOverwritten() throws {
+        let checkoutProvider = LocalizationProviderMock()
+        let dropInProvider = LocalizationProviderMock()
+        let customTheme = CheckoutTheme(colors: CheckoutColors(primary: .yellow))
+        var checkoutConfiguration = makeCheckoutConfiguration()
+            .localizationProvider(checkoutProvider)
+            .theme(customTheme)
+        checkoutConfiguration.configurations[.payment(.scheme)] = CardConfiguration()
+        configuration.localizationProvider = dropInProvider
+        let card = try AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
+        var buildCount = 0
+        let sut = makeSUT(
+            paymentMethods: PaymentMethods(regular: [card], stored: []),
+            paymentComponentBuilder: { paymentMethod in
+                buildCount += 1
+                return try CheckoutComponentBuilder.build(
+                    forAnyPaymentMethod: paymentMethod,
+                    configuration: checkoutConfiguration,
+                    context: self.context
+                )
             }
         )
+
+        _ = sut.supportedRegularPaymentMethods
+        let component = try XCTUnwrap(sut.buildComponent(for: card) as? CardComponent)
+
+        XCTAssertEqual(buildCount, 2)
+        XCTAssertTrue(component.configuration.localizationParameters?.provider as AnyObject === checkoutProvider)
+        XCTAssertEqual(component.configuration.theme.colors.primary, .yellow)
     }
 
-    func testApplePayPaymentMethod() throws {
-        configuration.applePay = try .init(paymentRequest: Dummy.createTestApplePayPaymentRequest())
-        let sut = ComponentManager(
+    // MARK: - Helpers
+
+    private var genericBuilder: DropInPaymentComponentBuilder {
+        { paymentMethod in self.genericComponent(for: paymentMethod) }
+    }
+
+    private func genericComponent(for paymentMethod: PaymentMethod) -> PaymentComponent {
+        GenericPaymentComponent(paymentMethod: paymentMethod, context: context, order: nil)
+    }
+
+    private func makeSUT(
+        paymentMethods: PaymentMethods,
+        order: PartialPaymentOrder? = nil,
+        paymentComponentBuilder: @escaping DropInPaymentComponentBuilder
+    ) -> ComponentManager {
+        ComponentManager(
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+            order: order,
+            paymentComponentBuilder: paymentComponentBuilder
         )
-
-        XCTAssertEqual(sut.storedComponents.count, numberOfExpectedStoredComponent)
-        XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents + 1)
-
-        XCTAssertEqual(sut.regularComponents.filter { $0 is LoadingComponent }.count, 22)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is PresentablePaymentComponent }.count, 23)
-        XCTAssertEqual(sut.regularComponents.filter { $0 is FinalizableComponent }.count, 1)
     }
 
-    func testCardPaymentMethod() throws {
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
+    private func supportedPaymentMethods() throws -> PaymentMethods {
+        let card = try AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
+        let applePay = try AdyenCoder.decode(applePayDictionary) as ApplePayPaymentMethod
+        let ach = try AdyenCoder.decode(achDirectDebit) as ACHDirectDebitPaymentMethod
+        let blik = try AdyenCoder.decode(blik) as BLIKPaymentMethod
+        let generic = try AdyenCoder.decode(["type": "ideal", "name": "iDEAL"]) as GenericPaymentMethod
+        let storedCard = try AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
+        let storedGeneric = try AdyenCoder.decode(storedPayPalDictionary) as StoredPayPalPaymentMethod
+        return PaymentMethods(
+            regular: [card, applePay, ach, blik, generic],
+            stored: [storedCard, storedGeneric]
         )
-
-        sut.configuration.localizationParameters = LocalizationParameters(tableName: "TestValue", keySeparator: nil)
-
-        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "scheme" } as? CardComponent)
-        XCTAssertEqual(paymentComponent.configuration.localizationParameters?.tableName, "TestValue")
     }
 
-    func testBCMCPaymentMethod() throws {
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-        sut.configuration.localizationParameters = LocalizationParameters(tableName: "TestValue", keySeparator: nil)
-
-        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "bcmc" } as? BCMCComponent)
-
-        XCTAssertEqual(paymentComponent.configuration.localizationParameters?.tableName, "TestValue")
-    }
-
-    func testCashAppShouldFailWithoutConfig() {
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-        
-        let paymentComponent = sut.regularComponents.first { $0.paymentMethod.type.rawValue == "cashapp" }
-
-        XCTAssertNil(paymentComponent)
-    }
-    
-    func testCashAppShouldSucceedWithConfig() throws {
-        guard #available(iOS 26.0, *) else {
-            throw XCTSkip("This test is flaky on iOS 26 beta - so we skip it")
-        }
-
-        configuration.cashAppPay = try .init(redirectURL: XCTUnwrap(URL(string: "test")))
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-        
-        // When
-        let paymentComponent = sut.regularComponents.first { $0.paymentMethod.type.rawValue == "cashapp" }
-
-        // Then
-        let cashAppPayComponent = paymentComponent as? CashAppPayComponent
-        #if canImport(AdyenCashAppPay)
-            XCTAssertNotNil(cashAppPayComponent)
-        #else
-            XCTAssertNil(cashAppPayComponent)
-        #endif
-    }
-
-    func testTwintShouldSucceedWithConfig() {
-        // Given
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        // When
-        let paymentComponent = sut.regularComponents.first { $0.paymentMethod.type.rawValue == "twint" }
-
-        // Then
-        #if canImport(AdyenTwint)
-            let twintComponent = paymentComponent as? TwintComponent
-            XCTAssertNotNil(twintComponent)
-        #else
-            let twintComponent = paymentComponent as? GenericPaymentComponent
-            XCTAssertNil(twintComponent)
-        #endif
-    }
-
-    func testStoredTwintShouldSucceedWithConfig() {
-        // Given
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        // When
-        let paymentComponent = sut.storedComponents.first { $0.paymentMethod.type.rawValue == "twint" }
-
-        // Then
-        let storedTwintComponent = paymentComponent as? StoredPaymentMethodComponent
-        XCTAssertNotNil(storedTwintComponent)
-    }
-    
-    func test_componentManager_contains_payToComponent() {
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        // When
-        let paymentComponent = sut.regularComponents.first { $0.paymentMethod.type.rawValue == "payto" }
-        
-        XCTAssertNotNil(paymentComponent)
-    }
-    
-    func test_componentManager_contains_storedPayToComponent() {
-        // Given
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        // When
-        let paymentComponent = sut.storedComponents.first { $0.paymentMethod.type.rawValue == "payto" }
-
-        // Then
-        XCTAssertNotNil(paymentComponent as? StoredPaymentMethodComponent)
-    }
-
-    func testLocalizationWithCustomTableName() {
-        configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-        
-        XCTAssertEqual(sut.storedComponents.count, numberOfExpectedStoredComponent)
-        XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
-        
-        // TODO: FIX ME
-//        XCTAssertEqual(sut.storedComponents.compactMap { ($0 as? StoredPaymentMethodComponent)?.configuration.localizationParameters }.filter { $0.tableName == "AdyenUIHost" }.count, 5)
-    }
-    
-    func testLocalizationWithCustomKeySeparator() {
-        configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHostCustomSeparator", keySeparator: "_")
-
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-        
-        XCTAssertEqual(sut.storedComponents.count, numberOfExpectedStoredComponent)
-        XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
-        
-        // TODO: FIX ME
-//        XCTAssertEqual(sut.storedComponents.compactMap { ($0 as? StoredPaymentMethodComponent)?.configuration.localizationParameters }.filter { $0.keySeparator == "_" }.count, 5)
-    }
-
-    func testOrderInjection() {
-        let order = PartialPaymentOrder(pspReference: "test pspRef", orderData: "test order data")
-
-        var paymentMethods = paymentMethods
-        paymentMethods.paid = [
-            OrderPaymentMethod(
-                lastFour: "1234",
-                type: .other("type-1"),
-                transactionLimit: Amount(value: 123, currencyCode: "EUR"),
-                amount: Amount(value: 1234, currencyCode: "EUR")
-            ),
-            OrderPaymentMethod(
-                lastFour: "1234",
-                type: .other("type-2"),
-                transactionLimit: Amount(value: 123, currencyCode: "EUR"),
-                amount: Amount(value: 1234, currencyCode: "EUR")
+    private func checkoutBuilder(includingApplePay: Bool = false) throws -> DropInPaymentComponentBuilder {
+        var configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
+        if includingApplePay {
+            configurations[.payment(.applePay)] = try ApplePayConfiguration(
+                paymentRequest: Dummy.createTestApplePayPaymentRequest()
             )
-        ]
-
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: order,
-            presentationDelegate: presentationDelegate
-        )
-
-        // Paid section should contain the paid payment methods
-        let paidSection = sut.sections.first { $0.paymentMethods.contains { $0 is OrderPaymentMethod } }
-        XCTAssertNotNil(paidSection)
-        XCTAssertEqual(paidSection?.paymentMethods.count, 2)
-
-        XCTAssertEqual(sut.storedComponents.count, numberOfExpectedStoredComponent)
-        XCTAssertEqual(sut.regularComponents.count, numberOfExpectedRegularComponents)
-
-        XCTAssertEqual(sut.storedComponents.filter { $0.order == order }.count, numberOfExpectedStoredComponent)
-        XCTAssertEqual(sut.regularComponents.filter { $0.order == order }.count, numberOfExpectedRegularComponents)
+        }
+        let checkoutConfiguration = makeCheckoutConfiguration(configurations: configurations)
+        return { paymentMethod in
+            try CheckoutComponentBuilder.build(
+                forAnyPaymentMethod: paymentMethod,
+                configuration: checkoutConfiguration,
+                context: self.context
+            )
+        }
     }
 
-    func testOrderInjectionOnApplePay() throws {
-        // Given - an order with a remaining amount different from the original context amount
-        // Note: Dummy.createTestApplePayPaymentRequest() uses USD, so we use USD here for consistency
-        let originalAmount = Amount(value: 10000, currencyCode: "USD") // $100.00
-        let remainingAmount = Amount(value: 5000, currencyCode: "USD") // $50.00 (after partial payment)
-        
-        let order = PartialPaymentOrder(
-            pspReference: "test pspRef",
-            orderData: "test order data",
-            remainingAmount: remainingAmount
-        )
-        
-        let contextWithAmount = AdyenContext(
+    private func makeCheckoutConfiguration(
+        configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
+    ) -> CheckoutConfiguration {
+        CheckoutConfiguration(
             apiContext: Dummy.apiContext,
-            amount: originalAmount,
-            publicKey: Dummy.publicKey,
-            analyticsProvider: AnalyticsProviderMock()
-        )
-        
-        configuration.applePay = try .init(paymentRequest: Dummy.createTestApplePayPaymentRequest())
-        
-        // When
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: contextWithAmount,
-            configuration: configuration,
-            order: order,
-            presentationDelegate: presentationDelegate
-        )
-        
-        // Then - Apple Pay component should use the order's remaining amount, not the original amount
-        let applePayComponent = try XCTUnwrap(
-            sut.regularComponents.first { $0.paymentMethod.type == .applePay } as? ApplePayComponent
-        )
-        
-        // Verify via the payment request's last summary item amount (converted from minor units to decimal)
-        let expectedDecimalAmount = AmountFormatter.decimalAmount(
-            remainingAmount.value,
-            currencyCode: remainingAmount.currencyCode,
-            localeIdentifier: remainingAmount.localeIdentifier
-        )
-        let actualAmount = applePayComponent.configuration.paymentRequest.paymentSummaryItems.last?.amount
-        XCTAssertEqual(actualAmount, expectedDecimalAmount, "Apple Pay should use order.remainingAmount for partial payments")
-    }
-
-    func testShopperInformationInjectionShouldSetShopperInformationOnAffirmComponent() throws {
-        // Given
-        configuration.shopperInformation = shopperInformation
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        // When
-        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "affirm" })
-
-        // Then
-        let affirmComponent = try XCTUnwrap(paymentComponent as? AffirmComponent)
-        // TODO: FIX ME
-        // XCTAssertNotNil(affirmComponent.configuration.shopperInformation)
-    }
-
-    func testShopperInformationInjectionShouldSetShopperInformationOnDokuComponent() throws {
-        // Given
-        configuration.shopperInformation = shopperInformation
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        // When
-        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "doku_wallet" })
-
-        // Then
-        let dokuComponent = try XCTUnwrap(paymentComponent as? DokuComponent)
-        // TODO: FIX ME
-        //  XCTAssertNotNil(dokuComponent.configuration.shopperInformation)
-    }
-
-    func testShopperInformationInjectionShouldSetShopperInformationOnMBWayComponent() throws {
-        // Given
-        configuration.shopperInformation = shopperInformation
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        // When
-        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "mbway" })
-
-        // Then
-        let mbwayComponent = try XCTUnwrap(paymentComponent as? MBWayComponent)
-        // TODO: FIX ME
-        // XCTAssertNotNil(mbwayComponent.configuration.shopperInformation)
-    }
-
-    func testShopperInformationInjectionShouldSetShopperInformationOnBasicPersonalInfoFormComponent() throws {
-        // Given
-        configuration.shopperInformation = shopperInformation
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        // When
-        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "econtext_online" })
-
-        // Then
-        let basicPersonalInfoFormComponent = try XCTUnwrap(paymentComponent as? BasicPersonalInfoFormComponent)
-        // TODO: FIX ME
-        // XCTAssertNotNil(basicPersonalInfoFormComponent.configuration.shopperInformation)
-    }
-
-    func testShopperInformationInjectionShouldSetShopperInformationOnBoletoComponent() throws {
-        // Given
-        configuration.shopperInformation = shopperInformation
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        // When
-        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "boletobancario_santander" })
-
-        // Then
-        let boletoComponent = try XCTUnwrap(paymentComponent as? BoletoComponent)
-        XCTAssertNotNil(boletoComponent.configuration.shopperInformation)
-    }
-
-    func testShopperInformationInjectionShouldSetShopperInformationOnCardComponent() throws {
-        // Given
-        configuration.shopperInformation = shopperInformation
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        // When
-        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "scheme" })
-
-        // Then
-        let cardComponent = try XCTUnwrap(paymentComponent as? CardComponent)
-        XCTAssertNotNil(cardComponent.configuration.shopperInformation)
-    }
-    
-    func testShopperInformationInjectionShouldSetShopperInformationOnAtomeComponent() throws {
-        // Given
-
-        configuration.shopperInformation = shopperInformation
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        // Action
-        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type.rawValue == "atome" })
-
-        // Assert
-        let atomeComponent = try XCTUnwrap(paymentComponent as? AtomeComponent)
-        // TODO: FIX ME
-        // XCTAssertNotNil(atomeComponent.configuration.shopperInformation)
-    }
-
-    func testBoletoConfiguration() throws {
-        // Given
-        configuration.boleto.showEmailAddress = false
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        // When
-        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .boletoBancarioSantander })
-
-        // Then
-        let boletoComponent = try XCTUnwrap(paymentComponent as? BoletoComponent)
-        XCTAssertFalse(boletoComponent.configuration.showEmailAddress)
-    }
-    
-    func testGiftCardConfiguration() throws {
-        // Given
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        // When
-        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .giftcard })
-
-        // Then
-        let giftCardComponent = try XCTUnwrap(paymentComponent as? GiftCardComponent)
-        XCTAssertTrue(giftCardComponent.showsSecurityCodeField)
-        XCTAssertEqual(giftCardComponent.localizationParameters, configuration.localizationParameters)
-    }
-    
-    func testGiftCardSecurityCodeHiddenConfiguration() throws {
-        // Given
-        configuration.giftCard.showsSecurityCodeField = false
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        // When
-        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .giftcard })
-
-        // Then
-        let giftCardComponent = try XCTUnwrap(paymentComponent as? GiftCardComponent)
-        XCTAssertFalse(giftCardComponent.showsSecurityCodeField)
-    }
-    
-    func testMealVoucherConfiguration() throws {
-        // Given
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        // When
-        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .mealVoucherSodexo })
-
-        // Then
-        let giftCardComponent = try XCTUnwrap(paymentComponent as? GiftCardComponent)
-        XCTAssertTrue(giftCardComponent.showsSecurityCodeField)
-        XCTAssertEqual(giftCardComponent.localizationParameters, configuration.localizationParameters)
-    }
-    
-    func testMealVoucherSecurityCodeHiddenConfiguration() throws {
-        // Given
-        configuration.giftCard.showsSecurityCodeField = false
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        // When
-        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .mealVoucherSodexo })
-
-        // Then
-        let giftCardComponent = try XCTUnwrap(paymentComponent as? GiftCardComponent)
-        XCTAssertFalse(giftCardComponent.showsSecurityCodeField)
-    }
-    
-    func testACHConfiguration() throws {
-        // Given
-        configuration.ach.showsStorePaymentMethodField = false
-        configuration.ach.showsBillingAddress = false
-        configuration.ach.billingAddressCountryCodes = ["US", "UK"]
-        
-        let sut = ComponentManager(
-            paymentMethods: paymentMethods,
-            context: context,
-            configuration: configuration,
-            order: nil,
-            presentationDelegate: presentationDelegate
-        )
-
-        // When
-        let paymentComponent = try XCTUnwrap(sut.regularComponents.first { $0.paymentMethod.type == .achDirectDebit })
-
-        // Then
-        let achComponent = try XCTUnwrap(paymentComponent as? ACHDirectDebitComponent)
-        XCTAssertFalse(achComponent.configuration.showStorePaymentMethod)
-        XCTAssertFalse(achComponent.configuration.showBillingAddress)
-        XCTAssertEqual(achComponent.configuration.billingAddressCountryCodes, ["US", "UK"])
-    }
-    
-    // MARK: - Private
-
-    private var shopperInformation: PrefilledShopperInformation {
-        let billingAddress = PostalAddressMocks.newYorkPostalAddress
-        let deliveryAddress = PostalAddressMocks.losAngelesPostalAddress
-        return .init(
-            shopperName: ShopperName(firstName: "Katrina", lastName: "Del Mar"),
-            emailAddress: "katrina@mail.com",
-            phoneNumber: .init(value: "1234567890", callingCode: "+1"),
-            billingAddress: billingAddress,
-            deliveryAddress: deliveryAddress,
-            socialSecurityNumber: "78542134370"
+            amount: Dummy.amount,
+            analyticsApiContext: nil,
+            analyticsConfiguration: .init(),
+            configurations: configurations
         )
     }
+}
 
+private final class LocalizationProviderMock: CheckoutLocalizationProvider {
+    func localizedString(_: CheckoutLocalizationKey, locale _: Locale) -> String? {
+        nil
+    }
 }

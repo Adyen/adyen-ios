@@ -90,7 +90,10 @@ final class CheckoutTests: XCTestCase {
             provider: mockProvider
         )
         
-        XCTAssertNotNil(checkout.paymentMethods)
+        XCTAssertEqual(checkout.paymentMethods.map(\.name), paymentMethods.regular.map(\.name))
+        XCTAssertEqual(checkout.storedPaymentMethods.map(\.identifier), paymentMethods.stored.map(\.identifier))
+        XCTAssertEqual(typeIdentifiers(for: checkout.paymentMethods), typeIdentifiers(for: paymentMethods.regular))
+        XCTAssertEqual(typeIdentifiers(for: checkout.storedPaymentMethods), typeIdentifiers(for: paymentMethods.stored))
         XCTAssertNotNil(checkout.session)
         XCTAssertTrue(checkout.session === expectedSession)
         XCTAssertEqual(checkout.session?.state.identifier, "test_session_id")
@@ -130,8 +133,26 @@ final class CheckoutTests: XCTestCase {
         )
 
         XCTAssertNil(checkout.session)
-        XCTAssertNotNil(checkout.paymentMethods)
+        XCTAssertEqual(checkout.paymentMethods.map(\.name), paymentMethods.regular.map(\.name))
+        XCTAssertEqual(checkout.storedPaymentMethods.map(\.identifier), paymentMethods.stored.map(\.identifier))
+        XCTAssertEqual(typeIdentifiers(for: checkout.paymentMethods), typeIdentifiers(for: paymentMethods.regular))
+        XCTAssertEqual(typeIdentifiers(for: checkout.storedPaymentMethods), typeIdentifiers(for: paymentMethods.stored))
         XCTAssertTrue(mockProvider.setupPaymentMethodsCalled)
+    }
+
+    func testSetupWithPaymentMethods_whenCoreHasNoPaymentMethods_returnsEmptyLists() async throws {
+        let expectedCheckout = makeAdvancedCheckoutCore()
+        mockProvider.setupWithPaymentMethodsResult = .success(expectedCheckout)
+
+        let checkout = try await Checkout.setup(
+            with: paymentMethods,
+            configuration: configuration,
+            presentationDelegate: nil,
+            provider: mockProvider
+        )
+
+        XCTAssertTrue(checkout.paymentMethods.isEmpty)
+        XCTAssertTrue(checkout.storedPaymentMethods.isEmpty)
     }
 
     func testSetupWithPaymentMethods_Failure() async {
@@ -746,6 +767,10 @@ final class CheckoutTests: XCTestCase {
 
         // Then
         XCTAssertFalse(result)
+    }
+
+    private func typeIdentifiers(for values: [some Any]) -> [ObjectIdentifier] {
+        values.map { value in ObjectIdentifier(type(of: value)) }
     }
 
     private func makeSessionCheckoutCore(

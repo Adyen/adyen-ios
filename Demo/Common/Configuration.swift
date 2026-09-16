@@ -137,9 +137,9 @@ internal enum BillingAddressModeDemoSetting: Codable, Hashable, CaseIterable {
 }
 
 internal struct DropInSettings: Codable {
-    internal var allowDisablingStoredPaymentMethods: Bool = false
-    internal var allowsSkippingPaymentList: Bool = false
-    internal var allowPreselectedPaymentView: Bool = true
+    internal var allowRemovingStoredPaymentMethods: Bool = false
+    internal var hideStoredPaymentMethods: Bool = false
+    internal var startWithLastStoredPaymentMethod: Bool = true
 }
 
 internal struct ThreeDSConfigurationSettings: Codable {
@@ -228,9 +228,9 @@ internal struct DemoAppSettings: Codable {
     )
 
     internal static let defaultDropInSettings = DropInSettings(
-        allowDisablingStoredPaymentMethods: false,
-        allowsSkippingPaymentList: false,
-        allowPreselectedPaymentView: true
+        allowRemovingStoredPaymentMethods: false,
+        hideStoredPaymentMethods: false,
+        startWithLastStoredPaymentMethod: true
     )
     
     internal static let threeDSConfigurationSettings = ThreeDSConfigurationSettings(
@@ -297,36 +297,24 @@ internal struct DemoAppSettings: Codable {
             .billingAddressMode(cardSettings.billingAddress.billingAddressMode)
     }
 
-    internal var cardDropInConfiguration: DropInComponent.Card {
-        .init(
-            showCardholderName: cardSettings.showCardholderName,
-            showStorePaymentMethod: cardSettings.showStorePaymentMethod,
-            showSecurityCode: cardSettings.showSecurityCode,
-            koreanAuthenticationVisibility: cardSettings.koreanAuthenticationVisibility,
-            socialSecurityNumberVisibility: cardSettings.socialSecurityNumberVisibility,
-            showSecurityCodeForStoredCard: cardSettings.showSecurityCodeForStoredCard,
-            installmentConfiguration: installmentConfiguration
-        )
+    internal var dropInConfiguration: DropInConfiguration {
+        var dropInConfiguration = DropInConfiguration()
+            .hideStoredPaymentMethods(dropInSettings.hideStoredPaymentMethods)
+            .startWithLastStoredPaymentMethod(dropInSettings.startWithLastStoredPaymentMethod)
+            .allowRemovingStoredPaymentMethods(dropInSettings.allowRemovingStoredPaymentMethods)
+        dropInConfiguration.theme = themeSettings.theme.theme
+        return dropInConfiguration
     }
 
-    internal var dropInConfiguration: DropInComponent.Configuration {
-        var style = DropInComponent.Style()
-        style.navigation.tintColor = .red
+    internal var dropInActionComponentConfiguration: CheckoutActionComponent.Configuration {
+        var authenticationConfiguration = AuthenticationConfiguration(theme: themeSettings.theme.theme)
+        authenticationConfiguration.delegatedAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
+        authenticationConfiguration.requestorAppURL = ConfigurationConstants.returnUrl
 
-        let theme = themeSettings.theme.theme
-
-        let dropInConfig = DropInComponent.Configuration(
-            style: style,
-            theme: theme,
-            allowsSkippingPaymentList: dropInSettings.allowsSkippingPaymentList,
-            allowPreselectedPaymentView: dropInSettings.allowPreselectedPaymentView
+        return CheckoutActionComponent.Configuration(
+            authentication: authenticationConfiguration,
+            twint: .init(callbackAppScheme: ConfigurationConstants.returnUrl.scheme!)
         )
-
-        dropInConfig.paymentMethodsList.allowDisablingStoredPaymentMethods = dropInSettings.allowDisablingStoredPaymentMethods
-        dropInConfig.cashAppPay = .init(redirectURL: ConfigurationConstants.returnUrl)
-        dropInConfig.actionComponent.twint = .init(callbackAppScheme: ConfigurationConstants.returnUrl.scheme!)
-
-        return dropInConfig
     }
 
     internal func applePayConfiguration(using request: PKPaymentRequest) throws -> ApplePayConfiguration {

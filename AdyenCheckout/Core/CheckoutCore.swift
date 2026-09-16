@@ -31,7 +31,7 @@ package protocol CheckoutCoreProtocol: AnyObject {
 
     func createPaymentComponent(for identifier: String) throws -> CheckoutPaymentComponent
 
-    func createDropIn() -> DropInComponent?
+    func createDropIn() throws -> CheckoutDropInComponent
 }
 
 @MainActor
@@ -46,7 +46,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
     package let resultCallbacks: any CheckoutResultCallbackStore
     package let callbackHandler: any CheckoutCallbackHandling
 
-    internal lazy var actionHandlingComponent: ActionHandlingComponent = {
+    internal lazy var actionComponentConfiguration: CheckoutActionComponent.Configuration = {
         var authenticationConfiguration: AuthenticationConfiguration = configuration.configuration(
             for: .threeDS2,
             defaultValue: AuthenticationConfiguration(theme: configuration.theme)
@@ -55,19 +55,21 @@ package final class CheckoutCore: CheckoutCoreProtocol {
             mergingExistingParameters: authenticationConfiguration.localizationParameters
         )
 
-        let actionConfig = CheckoutActionComponent.Configuration(
+        return CheckoutActionComponent.Configuration(
             localizationParameters: configuration.resolvedCheckoutLocalizationParameters(),
             authentication: authenticationConfiguration,
             twint: configuration.configuration(for: .twint)
         )
+    }()
 
-        let handler = CheckoutActionComponent(
+    internal lazy var actionHandlingComponent: ActionHandlingComponent = {
+        let actionHandlingComponent = CheckoutActionComponent(
             context: adyenContext,
-            configuration: actionConfig
+            configuration: actionComponentConfiguration
         )
-        handler.delegate = self
-        handler.presentationDelegate = presentationDelegate
-        return handler
+        actionHandlingComponent.delegate = self
+        actionHandlingComponent.presentationDelegate = presentationDelegate
+        return actionHandlingComponent
     }()
 
     internal var submitTask: Task<Void, Never>?
@@ -129,11 +131,6 @@ package final class CheckoutCore: CheckoutCoreProtocol {
         )
         paymentComponent.delegate = self
         return CheckoutPaymentComponent(paymentComponent: paymentComponent)
-    }
-
-    package func createDropIn() -> DropInComponent? {
-        // TODO: dropin creation discussion with new changes
-        nil
     }
 
     package func handle(action: Action) {

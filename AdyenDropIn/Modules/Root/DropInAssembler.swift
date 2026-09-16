@@ -20,7 +20,7 @@ internal struct DropInAssembler {
     private let title: String
     private let paymentMethods: PaymentMethods
     private let context: AdyenContext
-    private let configuration: DropInComponent.Configuration
+    private let configuration: DropInConfiguration
     private let componentManager: ComponentManager
     private let dropInFlowManager: DropInFlowManaging
     private let partialPaymentDelegate: PartialPaymentDelegate?
@@ -32,10 +32,11 @@ internal struct DropInAssembler {
         title: String,
         paymentMethods: PaymentMethods,
         context: AdyenContext,
-        configuration: DropInComponent.Configuration,
+        configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
         partialPaymentDelegate: PartialPaymentDelegate?,
-        storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
+        storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?,
+        paymentComponentBuilder: @escaping DropInPaymentComponentBuilder
     ) {
         self.title = title
         self.paymentMethods = paymentMethods
@@ -48,10 +49,13 @@ internal struct DropInAssembler {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            partialPaymentEnabled: false, // TODO: - Set partial payment flow
             order: nil,
-            presentationDelegate: nil
+            paymentComponentBuilder: paymentComponentBuilder
         )
+    }
+
+    internal var hasSupportedPaymentMethods: Bool {
+        componentManager.hasSupportedPaymentMethods
     }
 
     internal func resolveDropInRouter() -> DropInRouting {
@@ -80,19 +84,19 @@ internal struct DropInAssembler {
         APIClient(apiContext: context.apiContext)
     }
 
-    // TODO: - This should be replaced by the future LocalizationProvider
-    private func resolveLocalizationProvider() -> LocalizationParameters {
-        LocalizationParameters()
+    private func resolveLocalizationParameters() -> LocalizationParameters {
+        configuration.resolvedLocalizationParameters ?? LocalizationParameters()
     }
 
-    private func resolveCheckoutTheme() -> CheckoutTheme {
-        CheckoutTheme.default
+    private func resolveLogoURLProvider() -> LogoURLProvider {
+        LogoURLProvider(environment: context.apiContext.environment)
     }
 
     private var preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
         PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler,
+            showsAllPaymentMethodsButton: !componentManager.sections.isEmpty,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
             partialPaymentDelegate: partialPaymentDelegate,
@@ -105,10 +109,11 @@ internal struct DropInAssembler {
             componentContainerAssembler: componentContainerAssembler,
             componentManager: componentManager,
             context: context,
-            localizationParameters: resolveLocalizationProvider(),
+            localizationParameters: resolveLocalizationParameters(),
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
-            theme: resolveCheckoutTheme(),
+            theme: configuration.theme,
+            logoURLProvider: resolveLogoURLProvider(),
             partialPaymentDelegate: partialPaymentDelegate,
             storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability
         )

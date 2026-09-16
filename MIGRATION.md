@@ -8,6 +8,78 @@ See also:
 - [guides/v6/card.md](guides/v6/card.md)
 - [guides/v6/theme.md](guides/v6/theme.md)
 
+### Drop-in configuration
+
+Drop-in-specific behavior is configured through `DropInConfiguration` in the `CheckoutConfiguration` DSL. Component configuration,
+localization, and styling remain checkout-wide or component-specific:
+
+```swift
+let configuration = try CheckoutConfiguration(
+    environment: .test,
+    amount: amount,
+    clientKey: clientKey
+) {
+    DropInConfiguration()
+        .hideStoredPaymentMethods(false)
+        .startWithLastStoredPaymentMethod(true)
+        .allowRemovingStoredPaymentMethods(false)
+
+    CardConfiguration()
+}
+```
+
+`hideStoredPaymentMethods` affects only the payment method list. It remains independent from
+`startWithLastStoredPaymentMethod`, so Drop-in can start with a stored method while hiding the stored section from the list.
+
+Drop-in now always skips the payment method list when exactly one presentable regular payment method is available. The former
+`allowsSkippingPaymentList` merchant setting has been removed, and its previous default of `false` no longer applies.
+
+### Drop-in creation
+
+In v5, merchants initialized `DropInComponent` directly, supplied component and action configuration through its nested
+configuration types, and implemented Drop-in delegates.
+
+In v6, add `DropInConfiguration` and payment-method configurations to `CheckoutConfiguration`, set up Checkout, and create
+the public Drop-in facade from the resulting flow:
+
+```swift
+let configuration = try CheckoutConfiguration(
+    environment: .test,
+    amount: amount,
+    clientKey: clientKey
+) {
+    DropInConfiguration()
+        .hideStoredPaymentMethods(false)
+        .startWithLastStoredPaymentMethod(true)
+
+    CardConfiguration()
+    AuthenticationConfiguration()
+        .requestorAppURL(URL(string: "https://your-domain.example/adyen")!)
+}
+
+let checkout = try await Checkout.setup(
+    with: sessionResponse,
+    configuration: configuration,
+    presentationDelegate: self
+)
+.onComplete { result in
+    print(result.resultCode)
+}
+.onFailure { error in
+    print(error.localizedDescription)
+}
+
+let dropIn = try checkout.createDropIn()
+present(dropIn.viewController, animated: true)
+```
+
+Retain both the checkout flow and `CheckoutDropInComponent` while Drop-in is active. Each `createDropIn()` call returns a
+fresh component. Creation throws `CheckoutError` with code `.paymentMethodFailure` when no supported payment method can be
+assembled.
+
+`CheckoutDropInComponent` exposes only its `viewController`. The underlying Drop-in implementation and its v5 delegates are
+not part of the v6 public API.
+
 ### Core objects
 
 #### Generic payment models
@@ -122,6 +194,17 @@ let checkout = try await Checkout.setup(
 ```
 
 `callPayments(with:)` should return `SubmitResult`, and `callDetails(with:)` should return `AdditionalDetailsResult`.
+
+#### Available payment methods
+
+`SessionCheckout` and `AdvancedCheckout` expose non-optional regular and stored payment-method arrays:
+
+```swift
+let paymentMethods = checkout.paymentMethods
+let storedPaymentMethods = checkout.storedPaymentMethods
+```
+
+These replace the interim `checkout.paymentMethods?.regular` and `checkout.paymentMethods?.stored` access paths. Missing payment-method data is represented by an empty array.
 
 #### Summary
 

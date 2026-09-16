@@ -48,7 +48,7 @@ struct PaymentMethodItemTests {
     }
 
     @Test
-    func init_withWarningSubtitle_shouldUseWarningColor() {
+    func init_withWarningSubtitle_shouldUseDestructiveColor() {
         let logoURLProvider = LogoURLProvider(environment: Dummy.apiContext.environment)
         let sut = PaymentMethodItem(
             title: "Card",
@@ -58,7 +58,7 @@ struct PaymentMethodItemTests {
             theme: .init()
         )
 
-        #expect(sut.subtitleColor == sut.theme.colors.warning)
+        #expect(sut.subtitleColor == sut.theme.colors.destructive)
     }
 
     @Test

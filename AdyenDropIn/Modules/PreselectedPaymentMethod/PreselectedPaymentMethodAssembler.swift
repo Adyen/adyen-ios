@@ -25,7 +25,8 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
-    private let configuration: DropInComponent.Configuration
+    private let showsAllPaymentMethodsButton: Bool
+    private let configuration: DropInConfiguration
     private let dropInFlowManager: DropInFlowManaging
     private let partialPaymentDelegate: PartialPaymentDelegate?
     private let analyticsProvider: AnyAnalyticsProvider?
@@ -35,13 +36,15 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     internal init(
         paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
         componentContainerAssembler: ComponentContainerAssemblerProtocol,
-        configuration: DropInComponent.Configuration,
+        showsAllPaymentMethodsButton: Bool,
+        configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
         partialPaymentDelegate: PartialPaymentDelegate?,
         analyticsProvider: AnyAnalyticsProvider?
     ) {
         self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
+        self.showsAllPaymentMethodsButton = showsAllPaymentMethodsButton
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
         self.partialPaymentDelegate = partialPaymentDelegate
@@ -59,7 +62,8 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
         let viewModel = PreselectedPaymentMethodViewModel(
             component: component,
             theme: configuration.theme,
-            localizationParameters: configuration.localizationParameters,
+            localizationParameters: configuration.resolvedLocalizationParameters,
+            showsAllPaymentMethodsButton: showsAllPaymentMethodsButton,
             analyticsProvider: analyticsProvider,
             dropInAnalyticsConfiguration: DropInAnalyticsConfiguration(configuration: configuration),
             dropInFlowManager: dropInFlowManager
