@@ -70,7 +70,7 @@ internal struct SessionRequest: APIRequest {
             try container.encode(ConfigurationConstants.recurringProcessingModel, forKey: .recurringProcessingModel)
         }
         
-        if ConfigurationConstants.current.dropInSettings.allowRemovingStoredPaymentMethods {
+        if ConfigurationConstants.current.dropInSettings.showRemovePaymentMethodButton {
             try container.encode(true, forKey: .showRemovePaymentMethodButton)
         }
         

@@ -137,7 +137,7 @@ internal enum BillingAddressModeDemoSetting: Codable, Hashable, CaseIterable {
 }
 
 internal struct DropInSettings: Codable {
-    internal var allowRemovingStoredPaymentMethods: Bool = false
+    internal var showRemovePaymentMethodButton: Bool = false
     internal var hideStoredPaymentMethods: Bool = false
     internal var startWithLastStoredPaymentMethod: Bool = true
 }
@@ -228,7 +228,7 @@ internal struct DemoAppSettings: Codable {
     )
 
     internal static let defaultDropInSettings = DropInSettings(
-        allowRemovingStoredPaymentMethods: false,
+        showRemovePaymentMethodButton: false,
         hideStoredPaymentMethods: false,
         startWithLastStoredPaymentMethod: true
     )
@@ -301,7 +301,6 @@ internal struct DemoAppSettings: Codable {
         var dropInConfiguration = DropInConfiguration()
             .hideStoredPaymentMethods(dropInSettings.hideStoredPaymentMethods)
             .startWithLastStoredPaymentMethod(dropInSettings.startWithLastStoredPaymentMethod)
-            .allowRemovingStoredPaymentMethods(dropInSettings.allowRemovingStoredPaymentMethods)
         dropInConfiguration.theme = themeSettings.theme.theme
         return dropInConfiguration
     }
