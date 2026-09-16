@@ -16,7 +16,6 @@ final class DropInConfigurationTests: XCTestCase {
 
         XCTAssertFalse(sut.hideStoredPaymentMethods)
         XCTAssertTrue(sut.startWithLastStoredPaymentMethod)
-        XCTAssertFalse(sut.allowRemovingStoredPaymentMethods)
     }
 
     func test_fluentMethods_shouldReturnModifiedCopies() {
@@ -25,14 +24,11 @@ final class DropInConfigurationTests: XCTestCase {
         let modified = original
             .hideStoredPaymentMethods(true)
             .startWithLastStoredPaymentMethod(false)
-            .allowRemovingStoredPaymentMethods(true)
 
         XCTAssertFalse(original.hideStoredPaymentMethods)
         XCTAssertTrue(original.startWithLastStoredPaymentMethod)
-        XCTAssertFalse(original.allowRemovingStoredPaymentMethods)
         XCTAssertTrue(modified.hideStoredPaymentMethods)
         XCTAssertFalse(modified.startWithLastStoredPaymentMethod)
-        XCTAssertTrue(modified.allowRemovingStoredPaymentMethods)
     }
 
     func test_init_shouldConformToCheckoutConfigurable() {
@@ -59,14 +55,6 @@ final class DropInConfigurationTests: XCTestCase {
 
         XCTAssertEqual(sut["skipPaymentMethodList"], "true")
         XCTAssertEqual(sut["openFirstStoredPaymentMethod"], "false")
-    }
-
-    func test_configuration_shouldPreserveStoredPaymentMethodRemovalGate() {
-        let enabled = DropInConfiguration().allowRemovingStoredPaymentMethods(true)
-        let disabled = DropInConfiguration().allowRemovingStoredPaymentMethods(false)
-
-        XCTAssertTrue(enabled.paymentMethodsList.allowDisablingStoredPaymentMethods)
-        XCTAssertFalse(disabled.paymentMethodsList.allowDisablingStoredPaymentMethods)
     }
 }
 

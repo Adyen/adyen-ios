@@ -472,7 +472,18 @@ struct PaymentMethodListViewModelTests {
             context: context,
             configuration: configuration,
             order: nil,
-            presentationDelegate: nil
+            paymentComponentBuilder: { paymentMethod in
+                if paymentMethod is any StoredPaymentMethod {
+                    return StoredComponentMock(
+                        paymentMethod: paymentMethod,
+                        viewController: UIViewController()
+                    )
+                }
+                return PresentablePaymentComponentMock(
+                    paymentMethod: paymentMethod,
+                    viewController: UIViewController()
+                )
+            }
         )
         let dropInFlowManagerMock = DropInFlowManagingMock()
         let logoURLProvider = LogoURLProvider(environment: context.apiContext.environment)
@@ -562,7 +573,6 @@ extension PaymentMethodListState: Equatable {
     public static func == (lhs: PaymentMethodListState, rhs: PaymentMethodListState) -> Bool {
         switch (lhs, rhs) {
         case (.idle, .idle): true
-        case (.loading, .loading): true
         case (.loaded, .loaded): true
         default: false
         }

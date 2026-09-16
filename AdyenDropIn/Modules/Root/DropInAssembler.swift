@@ -36,7 +36,7 @@ internal struct DropInAssembler {
         dropInFlowManager: DropInFlowManaging,
         partialPaymentDelegate: PartialPaymentDelegate?,
         storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?,
-        paymentComponentBuilder: DropInPaymentComponentBuilder?
+        paymentComponentBuilder: @escaping DropInPaymentComponentBuilder
     ) {
         self.title = title
         self.paymentMethods = paymentMethods
@@ -49,11 +49,13 @@ internal struct DropInAssembler {
             paymentMethods: paymentMethods,
             context: context,
             configuration: configuration,
-            partialPaymentEnabled: false, // TODO: - Set partial payment flow
             order: nil,
-            presentationDelegate: nil,
             paymentComponentBuilder: paymentComponentBuilder
         )
+    }
+
+    internal var hasSupportedPaymentMethods: Bool {
+        componentManager.hasSupportedPaymentMethods
     }
 
     internal func resolveDropInRouter() -> DropInRouting {
@@ -86,10 +88,15 @@ internal struct DropInAssembler {
         configuration.resolvedLocalizationParameters ?? LocalizationParameters()
     }
 
+    private func resolveLogoURLProvider() -> LogoURLProvider {
+        LogoURLProvider(environment: context.apiContext.environment)
+    }
+
     private var preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol {
         PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler,
+            showsAllPaymentMethodsButton: !componentManager.sections.isEmpty,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
             partialPaymentDelegate: partialPaymentDelegate,
@@ -106,6 +113,7 @@ internal struct DropInAssembler {
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
             theme: configuration.theme,
+            logoURLProvider: resolveLogoURLProvider(),
             partialPaymentDelegate: partialPaymentDelegate,
             storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability
         )
