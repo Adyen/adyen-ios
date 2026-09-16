@@ -573,7 +573,6 @@ extension PaymentMethodListState: Equatable {
     public static func == (lhs: PaymentMethodListState, rhs: PaymentMethodListState) -> Bool {
         switch (lhs, rhs) {
         case (.idle, .idle): true
-        case (.loading, .loading): true
         case (.loaded, .loaded): true
         default: false
         }
