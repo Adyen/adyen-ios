@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Any Object that is aware of a `PaymentMethod`.
 package protocol PaymentMethodAware {
