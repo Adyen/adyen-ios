@@ -5,7 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
-import AdyenComponents
+import AdyenUI
 
 class PaymentComponentMock: PaymentComponent {
 

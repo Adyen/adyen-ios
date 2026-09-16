@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// A payment method for OXXO.
 package typealias OXXOPaymentMethod = GenericPaymentMethod
