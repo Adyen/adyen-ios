@@ -152,7 +152,7 @@ final class CheckoutConfigurationTests: XCTestCase {
         ) {
             DropInConfiguration()
                 .hideStoredPaymentMethods(true)
-                .startWithLastStoredPaymentMethod(false)
+                .startWithLastStoredPaymentMethod(true)
             DropInConfiguration()
                 .startWithLastStoredPaymentMethod(false)
         }
