@@ -144,22 +144,20 @@ import XCTest
             XCTAssertNil(storeDetailsToggleView)
         }
         
-        func testRequiresUserInteractionIsTrueWhenStoreFieldOrSubmitButtonIsShown() throws {
+        func testRequiresUserInteractionIsTrueWhenStoreFieldIsShown() throws {
             let config = try CashAppPayConfiguration(
                 redirectURL: XCTUnwrap(URL(string: "test")),
-                showsStorePaymentMethodField: true,
-                showsSubmitButton: false
+                showsStorePaymentMethodField: true
             )
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
             XCTAssertTrue(sut.requiresUserInteraction)
         }
 
-        func testRequiresUserInteractionIsFalseWhenStoreFieldAndSubmitButtonAreHidden() throws {
+        func testRequiresUserInteractionIsFalseWhenStoreFieldIsHidden() throws {
             let config = try CashAppPayConfiguration(
                 redirectURL: XCTUnwrap(URL(string: "test")),
-                showsStorePaymentMethodField: false,
-                showsSubmitButton: false
+                showsStorePaymentMethodField: false
             )
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
