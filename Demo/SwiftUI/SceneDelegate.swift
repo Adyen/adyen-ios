@@ -7,6 +7,9 @@
 import AdyenActions
 import SwiftUI
 import UIKit
+#if canImport(PayKit)
+    import PayKit
+#endif
 
 internal class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
