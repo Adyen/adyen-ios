@@ -62,9 +62,13 @@ package final class CashAppPayComponent: PaymentComponent,
     private let cashAppPayPaymentMethod: CashAppPayPaymentMethod
 
     private var shouldStorePayment: Bool {
-        // if the toggle is visible, check its value
-        // if it's hidden, check the second flag's value
-        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : configuration.storePaymentMethod
+        // Zero amount always stores the payment method.
+        // Otherwise, use the visible toggle or hidden configuration value.
+        if context.amount?.value == 0 {
+            return true
+        }
+
+        return configuration.showsStorePaymentMethodField ? storeDetailsItem.value : configuration.storePaymentMethod
     }
 
     private lazy var cashAppPay: CashAppPay = {
@@ -107,7 +111,10 @@ package final class CashAppPayComponent: PaymentComponent,
         formViewController.delegate = self
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
     
-        if configuration.showsStorePaymentMethodField {
+        if StorePaymentMethodPolicy.shouldShowConsent(
+            configuredVisible: configuration.showsStorePaymentMethodField,
+            amount: context.amount
+        ) {
             formViewController.append(storeDetailsItem)
         }
     
