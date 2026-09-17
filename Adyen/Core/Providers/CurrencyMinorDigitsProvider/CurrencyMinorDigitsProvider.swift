@@ -12,8 +12,8 @@ package protocol AnyCurrencyMinorDigitsProvider {
     /// Returns the number of minor digits for the given currency code.
     ///
     /// - Parameter currencyCode: The ISO 4217 currency code, e.g. `"EUR"`.
-    /// - Returns: The number of minor digits for the currency. Falls back to ``CurrencyMinorDigitsProvider/defaultMinorDigits``
-    ///   when the currency code is not recognized.
+    /// - Returns: The number of minor digits for the currency. Falls back to the system's ICU currency data,
+    ///   and then to ``CurrencyMinorDigitsProvider/defaultMinorDigits``, when the currency code is not recognized.
     func minorDigits(for currencyCode: String) -> Int
 }
 
@@ -23,12 +23,22 @@ package protocol AnyCurrencyMinorDigitsProvider {
 /// Source: https://docs.adyen.com/development-resources/currency-codes
 package struct CurrencyMinorDigitsProvider: AnyCurrencyMinorDigitsProvider {
 
-    /// The number of minor digits returned when a currency code is not found in the list.
+    /// The number of minor digits returned when a currency code cannot be resolved by ICU either.
     package static let defaultMinorDigits = 2
 
     package init() {}
 
     package func minorDigits(for currencyCode: String) -> Int {
-        Self.minorDigitsByCurrencyCode[currencyCode.uppercased()] ?? Self.defaultMinorDigits
+        let normalizedCurrencyCode = currencyCode.uppercased()
+        return Self.minorDigitsByCurrencyCode[normalizedCurrencyCode] ?? Self.systemMinorDigits(for: normalizedCurrencyCode)
+    }
+
+    /// Falls back to the system's ICU/CLDR currency data for ISO 4217 codes that are valid
+    /// but not on Adyen's official currency list (e.g. `CLF`, `UYW`).
+    private static func systemMinorDigits(for currencyCode: String) -> Int {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencyCode = currencyCode
+        return formatter.maximumFractionDigits
     }
 }

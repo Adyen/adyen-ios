@@ -10,10 +10,6 @@ extension CurrencyMinorDigitsProvider {
 
     /// Currency minor digits according to Adyen.
     /// Source: https://docs.adyen.com/development-resources/currency-codes
-    ///
-    /// A small number of additional ISO 4217 codes that are not on Adyen's official currency
-    /// list are also included below (marked accordingly), since this provider is currency-agnostic
-    /// and may be called with codes outside of Adyen's supported payment currencies.
     internal static let minorDigitsByCurrencyCode: [String: Int] = [
         "AED": 2,
         "ALL": 2,
@@ -27,7 +23,6 @@ extension CurrencyMinorDigitsProvider {
         "BBD": 2,
         "BDT": 2,
         "BHD": 3,
-        "BIF": 0, // Not an Adyen currency. Active national currency (Burundian Franc).
         "BMD": 2,
         "BND": 2,
         "BOB": 2,
@@ -38,7 +33,6 @@ extension CurrencyMinorDigitsProvider {
         "BZD": 2,
         "CAD": 2,
         "CHF": 2,
-        "CLF": 4, // Not an Adyen currency. Chilean Unidad de Fomento (indexed accounting unit).
         "CLP": 2,
         "CNH": 2,
         "CNY": 2,
@@ -141,10 +135,9 @@ extension CurrencyMinorDigitsProvider {
         "UAH": 2,
         "UGX": 0,
         "USD": 2,
-        "UYI": 0, // Not an Adyen currency. Uruguay Peso en Unidades Indexadas (indexed accounting unit).
         "UYU": 2,
-        "UYW": 4, // Not an Adyen currency. Uruguay Unidad Previsional (indexed accounting unit).
         "UZS": 2,
+        "VEF": 2,
         "VND": 0,
         "VUV": 0,
         "WST": 2,
