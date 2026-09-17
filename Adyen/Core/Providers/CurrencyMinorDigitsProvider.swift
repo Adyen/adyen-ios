@@ -36,7 +36,12 @@ public struct CurrencyMinorDigitsProvider: AnyCurrencyMinorDigitsProvider {
 
     /// Currency minor digits according to Adyen.
     /// Source: https://docs.adyen.com/development-resources/currency-codes
+    ///
+    /// A small number of additional ISO 4217 codes that are not on Adyen's official currency
+    /// list are also included below (marked accordingly), since this provider is currency-agnostic
+    /// and may be called with codes outside of Adyen's supported payment currencies.
     internal static let minorDigitsByCurrencyCode: [String: Int] = [
+        "ADP": 0, // Not an Adyen currency. Historical (Andorran Peseta, obsolete since 1999).
         "AED": 2,
         "ALL": 2,
         "AMD": 2,
@@ -49,6 +54,7 @@ public struct CurrencyMinorDigitsProvider: AnyCurrencyMinorDigitsProvider {
         "BBD": 2,
         "BDT": 2,
         "BHD": 3,
+        "BIF": 0, // Not an Adyen currency. Active national currency (Burundian Franc).
         "BMD": 2,
         "BND": 2,
         "BOB": 2,
@@ -56,9 +62,11 @@ public struct CurrencyMinorDigitsProvider: AnyCurrencyMinorDigitsProvider {
         "BSD": 2,
         "BWP": 2,
         "BYN": 2,
+        "BYR": 0, // Not an Adyen currency. Historical (Belarusian Ruble, obsolete since 2016).
         "BZD": 2,
         "CAD": 2,
         "CHF": 2,
+        "CLF": 4, // Not an Adyen currency. Chilean Unidad de Fomento (indexed accounting unit).
         "CLP": 2,
         "CNH": 2,
         "CNY": 2,
@@ -72,6 +80,7 @@ public struct CurrencyMinorDigitsProvider: AnyCurrencyMinorDigitsProvider {
         "DOP": 2,
         "DZD": 2,
         "EGP": 2,
+        "ESP": 0, // Not an Adyen currency. Historical (Spanish Peseta, obsolete since 1999).
         "ETB": 2,
         "EUR": 2,
         "FJD": 2,
@@ -93,6 +102,7 @@ public struct CurrencyMinorDigitsProvider: AnyCurrencyMinorDigitsProvider {
         "INR": 2,
         "IQD": 3,
         "ISK": 2,
+        "ITL": 0, // Not an Adyen currency. Historical (Italian Lira, obsolete since 1999).
         "JMD": 2,
         "JOD": 3,
         "JPY": 0,
@@ -109,6 +119,7 @@ public struct CurrencyMinorDigitsProvider: AnyCurrencyMinorDigitsProvider {
         "LYD": 3,
         "MAD": 2,
         "MDL": 2,
+        "MGF": 0, // Not an Adyen currency. Historical (Malagasy Franc, obsolete since 2005).
         "MKD": 2,
         "MMK": 2,
         "MNT": 2,
@@ -154,6 +165,7 @@ public struct CurrencyMinorDigitsProvider: AnyCurrencyMinorDigitsProvider {
         "THB": 2,
         "TND": 3,
         "TOP": 2,
+        "TRL": 0, // Not an Adyen currency. Historical (Turkish Lira, obsolete since 2005).
         "TRY": 2,
         "TTD": 2,
         "TWD": 2,
@@ -161,7 +173,9 @@ public struct CurrencyMinorDigitsProvider: AnyCurrencyMinorDigitsProvider {
         "UAH": 2,
         "UGX": 0,
         "USD": 2,
+        "UYI": 0, // Not an Adyen currency. Uruguay Peso en Unidades Indexadas (indexed accounting unit).
         "UYU": 2,
+        "UYW": 4, // Not an Adyen currency. Uruguay Unidad Previsional (indexed accounting unit).
         "UZS": 2,
         "VND": 0,
         "VUV": 0,
