@@ -33,6 +33,9 @@ package protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentM
 
     var type: PaymentComponentType { get }
 
+    /// Indicates whether the component requires user interaction before submitting.
+    var requiresUserInteraction: Bool { get }
+
     var paymentMethodBehavior: SDKData.PaymentMethodBehavior { get }
 
     var viewController: UIViewController { get }
