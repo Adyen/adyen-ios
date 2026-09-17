@@ -671,6 +671,7 @@
 		E2B317AC22660FB600C1BB30 /* FormCardNumberItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B317AB22660FB600C1BB30 /* FormCardNumberItemTests.swift */; };
 		E2B3C216233507030067891D /* UIColorHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B3C215233507030067891D /* UIColorHelpers.swift */; };
 		E2C0B55022A6AA0700D3367B /* AmountFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C0B54F22A6AA0600D3367B /* AmountFormatter.swift */; };
+		C6E63776A659E0882F4DEF26 /* CurrencyMinorDigitsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0BEA41EDF410A327A10DC /* CurrencyMinorDigitsProvider.swift */; };
 		E2C0E03D22097917008616F6 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
 		E2C0E04422097917008616F6 /* Adyen.h in Headers */ = {isa = PBXBuildFile; fileRef = E2C0E03622097917008616F6 /* Adyen.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E2C0E063220982AE008616F6 /* AdyenCard.h in Headers */ = {isa = PBXBuildFile; fileRef = E2C0E061220982AE008616F6 /* AdyenCard.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2172,6 +2173,7 @@
 		E2B317AB22660FB600C1BB30 /* FormCardNumberItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCardNumberItemTests.swift; sourceTree = "<group>"; };
 		E2B3C215233507030067891D /* UIColorHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorHelpers.swift; sourceTree = "<group>"; };
 		E2C0B54F22A6AA0600D3367B /* AmountFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmountFormatter.swift; sourceTree = "<group>"; };
+		7AC0BEA41EDF410A327A10DC /* CurrencyMinorDigitsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyMinorDigitsProvider.swift; sourceTree = "<group>"; };
 		E2C0E03322097917008616F6 /* Adyen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Adyen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2C0E03622097917008616F6 /* Adyen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Adyen.h; sourceTree = "<group>"; };
 		E2C0E03722097917008616F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -5179,8 +5181,17 @@
 				E278EB3C22AA5E8700497FD5 /* Payment Methods */,
 				F9639B2724DD69D60073F38A /* APIClient */,
 				E28098B0220DA78B0087928F /* Components */,
+				97A2FF743E979DF708E3367E /* Providers */,
 			);
 			path = Core;
+			sourceTree = "<group>";
+		};
+		97A2FF743E979DF708E3367E /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				7AC0BEA41EDF410A327A10DC /* CurrencyMinorDigitsProvider.swift */,
+			);
+			path = Providers;
 			sourceTree = "<group>";
 		};
 		E9B36CAC2243B2FE00EAA368 /* AdyenDropIn */ = {
@@ -7564,6 +7575,7 @@
 				F9639B2224DC2FF50073F38A /* PresentableComponentWrapper.swift in Sources */,
 				F9838D452631AD3700963483 /* BalanceChecker.swift in Sources */,
 				E2C0B55022A6AA0700D3367B /* AmountFormatter.swift in Sources */,
+				C6E63776A659E0882F4DEF26 /* CurrencyMinorDigitsProvider.swift in Sources */,
 				F9EDB782239149AF00CFB3C9 /* CountryCodeValidator.swift in Sources */,
 				F9D5453F26872CFE00C9DF41 /* UIViewAnimation.swift in Sources */,
 				E9021DAA225789B1009CF7F4 /* Localization.swift in Sources */,
