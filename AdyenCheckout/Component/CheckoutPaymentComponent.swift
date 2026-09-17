@@ -43,12 +43,7 @@ public final class CheckoutPaymentComponent {
     /// }
     /// ```
     public var requiresUserInteraction: Bool {
-        switch paymentComponent.type {
-        case .regular, .stored:
-            return true
-        case .generic:
-            return false
-        }
+        paymentComponent.requiresUserInteraction
     }
 
     /// Submits the payment request to initiate the payment process.
