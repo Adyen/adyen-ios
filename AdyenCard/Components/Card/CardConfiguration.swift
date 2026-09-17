@@ -47,7 +47,7 @@ public struct CardConfiguration: CheckoutComponentConfiguration, AnyPersonalInfo
     internal var socialSecurityNumberVisibility: FieldVisibility
 
     /// Indicates whether to show the security code field for stored cards. Defaults to true.
-    internal var showSecurityCodeForStoredCard: Bool
+    package var showSecurityCodeForStoredCard: Bool
 
     /// The list of supported card brands.  Defaults to nil.
     /// By default list of supported brands is extracted from component's `AnyCardPaymentMethod`.

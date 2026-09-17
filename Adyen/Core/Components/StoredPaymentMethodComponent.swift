@@ -23,7 +23,7 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
     }
 
     package let type: PaymentComponentType = .stored
-    package let requiresUserInteraction: Bool = true
+    package let requiresUserInteraction: Bool = false
 
     package weak var delegate: PaymentComponentDelegate?
 
@@ -41,8 +41,10 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
     }
     
     private let storedPaymentMethod: StoredPaymentMethod
+    private var didSendInitialAnalytics = false
 
     package func performSubmit() {
+        sendInitialAnalyticsIfNeeded()
         let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: details,
@@ -53,47 +55,14 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
 
     // MARK: - PaymentComponent
 
-    package lazy var viewController: UIViewController = {
+    package lazy var viewController = UIViewController()
+
+    private func sendInitialAnalyticsIfNeeded() {
+        guard !didSendInitialAnalytics else { return }
+        didSendInitialAnalytics = true
         sendInitialAnalytics()
-        sendDidLoadEvent()
-        
-        // TODO: Fix
+    }
 
-        let displayInformation = storedPaymentMethod.displayInformation(using: localizationParameters)
-        let alertController = UIAlertController(
-            title: localizedString(
-                .dropInStoredTitle,
-                localizationParameters,
-                storedPaymentMethod.name
-            ),
-            message: displayInformation.title,
-            preferredStyle: .alert
-        )
-
-        let cancelAction = UIAlertAction(title: localizedString(.cancelButton, localizationParameters), style: .cancel) { [weak self] _ in
-            guard let self else { return }
-            self.delegate?.didFail(with: ComponentError.cancelled, from: self)
-        }
-        alertController.addAction(cancelAction)
-
-        let submitActionTitle = AmountAwarePaymentStringsPolicy.payButtonTitle(
-            with: context.amount,
-            style: .immediate,
-            localizationParameters: localizationParameters
-        )
-        let submitAction = UIAlertAction(title: submitActionTitle, style: .default) { [weak self] _ in
-            guard let self else { return }
-            let details = StoredPaymentDetails(paymentMethod: self.storedPaymentMethod)
-            self.submit(data: PaymentComponentData(
-                paymentMethodDetails: details,
-                order: self.order
-            ))
-        }
-        alertController.addAction(submitAction)
-        
-        return alertController
-    }()
-    
 }
 
 extension StoredPaymentMethodComponent: TrackableComponent {}

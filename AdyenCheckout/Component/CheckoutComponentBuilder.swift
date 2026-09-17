@@ -188,6 +188,19 @@ package enum CheckoutComponentBuilder {
         configuration: CheckoutConfiguration,
         context: AdyenContext
     ) -> PaymentComponent {
+        let cardConfiguration: CardConfiguration = (try? configuration.configuration(
+            for: storedPaymentMethod,
+            defaultValue: CardConfiguration()
+        )) ?? CardConfiguration()
+
+        guard cardConfiguration.showSecurityCodeForStoredCard else {
+            return createStoredPaymentMethodComponent(
+                storedPaymentMethod: storedPaymentMethod,
+                configuration: configuration,
+                context: context
+            )
+        }
+
         let component = StoredCardComponent(
             storedCardPaymentMethod: storedPaymentMethod,
             context: context,
