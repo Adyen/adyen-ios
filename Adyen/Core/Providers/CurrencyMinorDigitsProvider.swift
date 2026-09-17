@@ -7,8 +7,7 @@
 import Foundation
 
 /// Provides the number of minor digits (decimal places) for a given ISO 4217 currency code.
-@_spi(AdyenInternal)
-public protocol AnyCurrencyMinorDigitsProvider {
+package protocol AnyCurrencyMinorDigitsProvider {
 
     /// Returns the number of minor digits for the given currency code.
     ///
@@ -22,15 +21,14 @@ public protocol AnyCurrencyMinorDigitsProvider {
 /// based on the list maintained by Adyen.
 ///
 /// Source: https://docs.adyen.com/development-resources/currency-codes
-@_spi(AdyenInternal)
-public struct CurrencyMinorDigitsProvider: AnyCurrencyMinorDigitsProvider {
+package struct CurrencyMinorDigitsProvider: AnyCurrencyMinorDigitsProvider {
 
     /// The number of minor digits returned when a currency code is not found in the list.
-    public static let defaultMinorDigits = 2
+    package static let defaultMinorDigits = 2
 
-    public init() {}
+    package init() {}
 
-    public func minorDigits(for currencyCode: String) -> Int {
+    package func minorDigits(for currencyCode: String) -> Int {
         Self.minorDigitsByCurrencyCode[currencyCode.uppercased()] ?? Self.defaultMinorDigits
     }
 
