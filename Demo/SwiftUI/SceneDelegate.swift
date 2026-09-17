@@ -30,6 +30,10 @@ internal class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.rootViewController = UIHostingController(rootView: contentView)
             self.window = window
             window.makeKeyAndVisible()
+
+            if let url = connectionOptions.urlContexts.first?.url {
+                handle(url)
+            }
         }
     }
 
