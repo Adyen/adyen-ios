@@ -9,17 +9,7 @@ import XCTest
 
 class CurrencyMinorDigitsProviderTests: XCTestCase {
 
-    private var sut: AnyCurrencyMinorDigitsProvider!
-
-    override func setUp() {
-        super.setUp()
-        sut = CurrencyMinorDigitsProvider()
-    }
-
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
+    private let sut: AnyCurrencyMinorDigitsProvider = CurrencyMinorDigitsProvider()
 
     func testTwoDecimalCurrencies() {
         XCTAssertEqual(sut.minorDigits(for: "EUR"), 2)
