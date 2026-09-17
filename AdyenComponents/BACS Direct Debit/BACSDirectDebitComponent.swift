@@ -32,6 +32,7 @@ package final class BACSDirectDebitComponent: PaymentComponent {
     package weak var delegate: PaymentComponentDelegate?
 
     package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
 
     /// The BACS Direct Debit payment method.
     package var paymentMethod: PaymentMethod {

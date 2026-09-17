@@ -17,6 +17,7 @@ package final class TwintComponent: PaymentComponent, LoadingComponent {
     package lazy var viewController: UIViewController = paymentButtonViewController
 
     package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
 
     /// Configuration for Twint Component.
     package typealias Configuration = BasicComponentConfiguration

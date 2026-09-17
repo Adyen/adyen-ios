@@ -45,6 +45,7 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
     package weak var delegate: PaymentComponentDelegate?
 
     package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
 
     /// Initializes the component.
     ///

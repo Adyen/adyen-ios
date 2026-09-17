@@ -29,6 +29,7 @@ package final class BoletoComponent: PaymentComponent,
     }
 
     package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
     
     /// The Component's configuration.
     package var configuration: Configuration

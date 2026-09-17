@@ -35,6 +35,7 @@ package class AbstractPersonalInformationComponent: PaymentComponent {
     )
 
     package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
 
     package var configuration: Configuration
 
