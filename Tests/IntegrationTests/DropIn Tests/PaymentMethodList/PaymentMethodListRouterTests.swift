@@ -257,24 +257,25 @@ struct PaymentMethodListRouterTests {
     }
 
     @Test
-    func presentComponent_givenStoredComponent_shouldPushComponentContainer() {
-        // Given
+    func presentComponent_givenInteractiveStoredComponent_shouldPushAuthenticationWithInput() {
         let navigationControllerSpy = NavigationControllerSpy()
-        let componentContainerRouter = RouterMock()
-        let componentContainerAssemblerMock = makeComponentContainerAssembler(router: componentContainerRouter)
+        let authenticationRouter = RouterMock()
+        let authenticationAssembler = AuthenticationWithInputAssemblerSpy(router: authenticationRouter)
+        let componentContainerAssembler = makeComponentContainerAssembler()
         let sut = makeSUT(
             navigationController: navigationControllerSpy,
-            componentContainerAssembler: componentContainerAssemblerMock
+            componentContainerAssembler: componentContainerAssembler,
+            authenticationWithInputAssembler: authenticationAssembler
         )
         let storedPaymentComponent = makeStoredPaymentComponentMock()
 
-        // When
         sut.present(component: storedPaymentComponent)
 
-        // Then - stored components are pushed, just like regular components
-        #expect(navigationControllerSpy.pushViewControllerCallsCount == 1)
-        #expect(navigationControllerSpy.presentCallsCount == 0)
-        #expect(sut.childRouter === componentContainerRouter)
+        #expect(authenticationAssembler.resolveCallsCount == 1)
+        #expect(authenticationAssembler.receivedPresentationMode == .pushed)
+        #expect(navigationControllerSpy.capturedPushedViewController === authenticationRouter.rootViewController)
+        #expect(componentContainerAssembler.resolveComponentContainerRouterForListenerCallsCount == 0)
+        #expect(sut.childRouter === authenticationRouter)
     }
 
     @Test
@@ -324,6 +325,7 @@ struct PaymentMethodListRouterTests {
         navigationController: NavigationControllerSpy = NavigationControllerSpy(),
         listener: PaymentMethodListRouterListenerMock? = nil,
         componentContainerAssembler: ComponentContainerAssemblerProtocolMock? = nil,
+        authenticationWithInputAssembler: AuthenticationWithInputAssemblerProtocol? = nil,
         genericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol? = nil,
         storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol? = nil,
         supportsStoredPaymentMethodManagement: Bool = true,
@@ -331,6 +333,8 @@ struct PaymentMethodListRouterTests {
     ) -> PaymentMethodListRouter {
         viewController.setNavigationController(navigationController)
         let componentContainerAssembler = componentContainerAssembler ?? makeComponentContainerAssembler()
+        let authenticationWithInputAssembler = authenticationWithInputAssembler
+            ?? AuthenticationWithInputAssemblerSpy(router: RouterMock())
         let genericPaymentMethodAssembler = genericPaymentMethodAssembler
             ?? GenericPaymentMethodAssemblerSpy(router: RouterMock())
         let storedPaymentMethodManagementAssembler = storedPaymentMethodManagementAssembler
@@ -344,6 +348,7 @@ struct PaymentMethodListRouterTests {
             navigationController: navigationController,
             listener: listener,
             componentContainerAssembler: componentContainerAssembler,
+            authenticationWithInputAssembler: authenticationWithInputAssembler,
             genericPaymentMethodAssembler: genericPaymentMethodAssembler,
             storedPaymentMethodManagementAssembler: storedPaymentMethodManagementAssembler,
             storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability,
@@ -423,6 +428,28 @@ private final class GenericPaymentMethodAssemblerSpy: GenericPaymentMethodAssemb
         listener: GenericPaymentMethodRouterListener
     ) -> Router {
         resolveCallsCount += 1
+        return router
+    }
+}
+
+@MainActor
+private final class AuthenticationWithInputAssemblerSpy: AuthenticationWithInputAssemblerProtocol {
+
+    private let router: Router
+    private(set) var resolveCallsCount = 0
+    private(set) var receivedPresentationMode: AuthenticationPresentationMode?
+
+    init(router: Router) {
+        self.router = router
+    }
+
+    func resolveAuthenticationWithInputRouter(
+        for component: PaymentComponent,
+        presentationMode: AuthenticationPresentationMode,
+        listener: AuthenticationWithInputRouterListener
+    ) -> Router {
+        resolveCallsCount += 1
+        receivedPresentationMode = presentationMode
         return router
     }
 }

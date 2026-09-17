@@ -25,6 +25,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
+    private let authenticationWithInputAssembler: AuthenticationWithInputAssemblerProtocol
     private let showsAllPaymentMethodsButton: Bool
     private let configuration: DropInConfiguration
     private let dropInFlowManager: DropInFlowManaging
@@ -36,6 +37,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     internal init(
         paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
         componentContainerAssembler: ComponentContainerAssemblerProtocol,
+        authenticationWithInputAssembler: AuthenticationWithInputAssemblerProtocol,
         showsAllPaymentMethodsButton: Bool,
         configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
@@ -44,6 +46,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     ) {
         self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
+        self.authenticationWithInputAssembler = authenticationWithInputAssembler
         self.showsAllPaymentMethodsButton = showsAllPaymentMethodsButton
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
@@ -74,7 +77,8 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
             viewController: viewController,
             listener: delegate,
             paymentMethodListAssembler: paymentMethodListAssembler,
-            componentContainerAssembler: componentContainerAssembler
+            componentContainerAssembler: componentContainerAssembler,
+            authenticationWithInputAssembler: authenticationWithInputAssembler
         )
         viewModel.router = router
         return router

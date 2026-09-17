@@ -16,6 +16,8 @@ public struct LocalizationKey {
     public static let submitButtonSaveDetails = LocalizationKey(key: "adyen.submitButton.saveDetails")
     /// Cancel
     public static let cancelButton = LocalizationKey(key: "adyen.cancelButton")
+    /// Back
+    public static let backButton = LocalizationKey(key: "adyen.backButton")
     /// OK
     public static let dismissButton = LocalizationKey(key: "adyen.dismissButton")
     /// Remove
@@ -82,6 +84,8 @@ public struct LocalizationKey {
     public static let cardSecurityCodeTitle = LocalizationKey(key: "adyen.card.securityCode.title")
     /// Enter the security code for %@
     public static let cardSecurityCodeDescription = LocalizationKey(key: "adyen.card.securityCode.description")
+    /// Enter the security code for %@ to complete the payment of %@
+    public static let checkoutDropinAuthenticationInputDescription = LocalizationKey(key: "adyen.checkout.dropin.authentication.input.description")
     /// 123
     public static let cardCvcItemPlaceholder = LocalizationKey(key: "adyen.card.cvcItem.placeholder")
     // TODO: Delete cardStoredTitle - no longer used after StoredCardAlertManager removal for v6

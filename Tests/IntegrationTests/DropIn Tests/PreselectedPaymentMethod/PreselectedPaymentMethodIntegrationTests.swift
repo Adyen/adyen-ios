@@ -65,6 +65,29 @@ struct PreselectedPaymentMethodIntegrationTests {
         #expect(mockedRouter.presentPaymentMethodListCallsCount == 0)
     }
 
+    @Test
+    func interactiveStoredComponent_whenPresentedByRouter_thenUsesModalAuthenticationWithInput() throws {
+        let rootViewController = ViewControllerSpy()
+        let authenticationRouter = RouterMock()
+        let authenticationAssembler = AuthenticationWithInputAssemblerSpy(router: authenticationRouter)
+        let sut = PreselectedPaymentMethodRouter(
+            viewController: rootViewController,
+            listener: nil,
+            paymentMethodListAssembler: PaymentMethodListAssemblerProtocolMock(),
+            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
+            authenticationWithInputAssembler: authenticationAssembler
+        )
+
+        sut.present(component: PaymentComponentTestData.visa.paymentComponent)
+
+        #expect(authenticationAssembler.resolveCallsCount == 1)
+        #expect(authenticationAssembler.receivedPresentationMode == .modal)
+        let navigationController = try #require(rootViewController.capturedPresentedViewController as? UINavigationController)
+        #expect(navigationController.viewControllers.first === authenticationRouter.rootViewController)
+        #expect(navigationController.isModalInPresentation)
+        #expect(sut.childRouter === authenticationRouter)
+    }
+
     // MARK: - Show All Payment Methods Tests
 
     @Test("PaymentComponent - show all payment methods presents payment method list")
@@ -163,6 +186,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         let assembler = PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssemblerMock,
             componentContainerAssembler: componentContainerAssemblerMock,
+            authenticationWithInputAssembler: AuthenticationWithInputAssemblerSpy(router: RouterMock()),
             showsAllPaymentMethodsButton: true,
             configuration: .init(),
             dropInFlowManager: dropInFlowManager,
@@ -333,5 +357,27 @@ struct PreselectedPaymentMethodIntegrationTests {
         var showAllPaymentMethodsButtonText: String {
             "Other payment options"
         }
+    }
+}
+
+@MainActor
+private final class AuthenticationWithInputAssemblerSpy: AuthenticationWithInputAssemblerProtocol {
+
+    private let router: Router
+    private(set) var resolveCallsCount = 0
+    private(set) var receivedPresentationMode: AuthenticationPresentationMode?
+
+    init(router: Router) {
+        self.router = router
+    }
+
+    func resolveAuthenticationWithInputRouter(
+        for component: PaymentComponent,
+        presentationMode: AuthenticationPresentationMode,
+        listener: AuthenticationWithInputRouterListener
+    ) -> Router {
+        resolveCallsCount += 1
+        receivedPresentationMode = presentationMode
+        return router
     }
 }
