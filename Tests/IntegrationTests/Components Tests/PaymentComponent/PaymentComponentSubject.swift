@@ -16,6 +16,7 @@ class PaymentComponentSubject: PaymentComponent {
     var delegate: PaymentComponentDelegate?
     var paymentMethodBehavior: SDKData.PaymentMethodBehavior = .nativeComponent
     let type: PaymentComponentType = .regular
+    let requiresUserInteraction: Bool = true
 
     var order: PartialPaymentOrder?
     var paymentMethod: PaymentMethod

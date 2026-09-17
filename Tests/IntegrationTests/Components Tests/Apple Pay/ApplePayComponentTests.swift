@@ -49,6 +49,12 @@ class ApplePayComponentTest: XCTestCase {
         setupRootViewController(emptyVC)
     }
 
+    // MARK: - requiresUserInteraction
+
+    func testRequiresUserInteractionIsTrue() {
+        XCTAssertTrue(sut.requiresUserInteraction)
+    }
+
     // MARK: - Configuration Validation Tests
 
     func testConfiguration_givenEmptyMerchantIdentifier_shouldThrowEmptyMerchantIdentifier() {
@@ -1179,7 +1185,9 @@ private final class PKPaymentMethodMock: PKPaymentMethod {
 extension XCTestCase {
 
     func compareCollections<T: Hashable>(_ lhs: [T], _ rhs: [T]) -> Bool {
-        if lhs.count != rhs.count { return false }
+        if lhs.count != rhs.count {
+            return false
+        }
 
         let lhsSet = Set<T>(lhs)
         let rhsSet = Set<T>(rhs)

@@ -34,6 +34,7 @@ package final class PayToComponent: PaymentComponent, AdyenObserver, LoadingComp
     }
 
     package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
 
     private let payToPaymentMethod: PayToPaymentMethod
 

@@ -12,6 +12,16 @@ import XCTest
 @MainActor
 class StoredCardComponentTests: XCTestCase {
 
+    // MARK: - requiresUserInteraction
+
+    func testRequiresUserInteractionIsTrue() {
+        // Given
+        let sut = makeSUT()
+
+        // Then
+        XCTAssertTrue(sut.requiresUserInteraction)
+    }
+
     // MARK: - UI Display
 
     /// Verifies that the component displays a security code field, cancel button, and pay button.

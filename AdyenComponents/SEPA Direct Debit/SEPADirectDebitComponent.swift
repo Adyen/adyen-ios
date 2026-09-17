@@ -35,6 +35,7 @@ package final class SEPADirectDebitComponent: PaymentComponent, LoadingComponent
     package weak var delegate: PaymentComponentDelegate?
     
     package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
     
     /// Initializes the SEPA Direct Debit component.
     ///

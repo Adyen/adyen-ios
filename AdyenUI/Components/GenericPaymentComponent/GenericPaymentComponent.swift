@@ -24,6 +24,7 @@ package final class GenericPaymentComponent: PaymentComponent, LoadingComponent 
     package let paymentMethod: PaymentMethod
 
     package let type: PaymentComponentType = .generic
+    package let requiresUserInteraction: Bool = false
 
     package let paymentMethodBehavior: SDKData.PaymentMethodBehavior = .genericComponent
 

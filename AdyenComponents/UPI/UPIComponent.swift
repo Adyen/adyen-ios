@@ -70,6 +70,7 @@ package final class UPIComponent: PaymentComponent,
     )
     
     package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
     
     /// Component's configuration
     package var configuration: Configuration

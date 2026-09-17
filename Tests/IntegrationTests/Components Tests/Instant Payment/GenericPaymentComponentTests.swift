@@ -44,6 +44,10 @@ class GenericPaymentComponentTests: XCTestCase {
         try super.tearDownWithError()
     }
 
+    func testRequiresUserInteractionIsFalse() {
+        XCTAssertFalse(sut.requiresUserInteraction)
+    }
+
     func testCustomPaymentData() {
         let delegateExpectation = expectation(description: "expect delegate to be called.")
         delegate.onDidSubmit = { data, component in

@@ -23,6 +23,7 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
     }
 
     package let type: PaymentComponentType = .stored
+    package let requiresUserInteraction: Bool = true
 
     package weak var delegate: PaymentComponentDelegate?
 
