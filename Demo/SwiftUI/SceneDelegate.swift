@@ -61,7 +61,18 @@ internal class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     internal func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         guard let url = URLContexts.first?.url else { return }
-        RedirectComponent.applicationDidOpen(from: url)
+        handle(url)
     }
 
+    private func handle(_ url: URL) {
+        RedirectComponent.applicationDidOpen(from: url)
+
+        #if canImport(PayKit)
+            NotificationCenter.default.post(
+                name: CashAppPay.RedirectNotification,
+                object: nil,
+                userInfo: [UIApplication.LaunchOptionsKey.url: url]
+            )
+        #endif
+    }
 }
