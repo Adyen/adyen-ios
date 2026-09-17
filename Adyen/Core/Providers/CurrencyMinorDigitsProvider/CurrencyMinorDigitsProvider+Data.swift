@@ -15,7 +15,6 @@ extension CurrencyMinorDigitsProvider {
     /// list are also included below (marked accordingly), since this provider is currency-agnostic
     /// and may be called with codes outside of Adyen's supported payment currencies.
     internal static let minorDigitsByCurrencyCode: [String: Int] = [
-        "ADP": 0, // Not an Adyen currency. Historical (Andorran Peseta, obsolete since 1999).
         "AED": 2,
         "ALL": 2,
         "AMD": 2,
@@ -36,7 +35,6 @@ extension CurrencyMinorDigitsProvider {
         "BSD": 2,
         "BWP": 2,
         "BYN": 2,
-        "BYR": 0, // Not an Adyen currency. Historical (Belarusian Ruble, obsolete since 2016).
         "BZD": 2,
         "CAD": 2,
         "CHF": 2,
@@ -54,7 +52,6 @@ extension CurrencyMinorDigitsProvider {
         "DOP": 2,
         "DZD": 2,
         "EGP": 2,
-        "ESP": 0, // Not an Adyen currency. Historical (Spanish Peseta, obsolete since 1999).
         "ETB": 2,
         "EUR": 2,
         "FJD": 2,
@@ -76,7 +73,6 @@ extension CurrencyMinorDigitsProvider {
         "INR": 2,
         "IQD": 3,
         "ISK": 2,
-        "ITL": 0, // Not an Adyen currency. Historical (Italian Lira, obsolete since 1999).
         "JMD": 2,
         "JOD": 3,
         "JPY": 0,
@@ -93,7 +89,6 @@ extension CurrencyMinorDigitsProvider {
         "LYD": 3,
         "MAD": 2,
         "MDL": 2,
-        "MGF": 0, // Not an Adyen currency. Historical (Malagasy Franc, obsolete since 2005).
         "MKD": 2,
         "MMK": 2,
         "MNT": 2,
@@ -139,7 +134,6 @@ extension CurrencyMinorDigitsProvider {
         "THB": 2,
         "TND": 3,
         "TOP": 2,
-        "TRL": 0, // Not an Adyen currency. Historical (Turkish Lira, obsolete since 2005).
         "TRY": 2,
         "TTD": 2,
         "TWD": 2,

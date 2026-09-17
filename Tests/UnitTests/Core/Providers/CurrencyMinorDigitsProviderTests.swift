@@ -52,11 +52,5 @@ class CurrencyMinorDigitsProviderTests: XCTestCase {
         XCTAssertEqual(sut.minorDigits(for: "UYW"), 4) // Uruguay Unidad Previsional
         XCTAssertEqual(sut.minorDigits(for: "UYI"), 0) // Uruguay Peso en Unidades Indexadas
         XCTAssertEqual(sut.minorDigits(for: "BIF"), 0) // Burundian Franc
-        XCTAssertEqual(sut.minorDigits(for: "ADP"), 0) // Andorran Peseta (historical)
-        XCTAssertEqual(sut.minorDigits(for: "BYR"), 0) // Belarusian Ruble (historical)
-        XCTAssertEqual(sut.minorDigits(for: "ESP"), 0) // Spanish Peseta (historical)
-        XCTAssertEqual(sut.minorDigits(for: "ITL"), 0) // Italian Lira (historical)
-        XCTAssertEqual(sut.minorDigits(for: "MGF"), 0) // Malagasy Franc (historical)
-        XCTAssertEqual(sut.minorDigits(for: "TRL"), 0) // Turkish Lira (historical)
     }
 }
