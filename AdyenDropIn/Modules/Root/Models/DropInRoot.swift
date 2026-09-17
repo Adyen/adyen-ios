@@ -9,6 +9,6 @@ import Foundation
 
 internal enum DropInRoot {
     case preselected(_ paymentComponent: PaymentComponent)
-    case component(_ paymentComponent: PresentablePaymentComponent)
+    case component(_ paymentComponent: PaymentComponent)
     case paymentMethodList
 }

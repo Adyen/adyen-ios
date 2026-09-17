@@ -59,7 +59,7 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     }
 
     internal func present(
-        paymentComponent: any PresentablePaymentComponent
+        paymentComponent: any PaymentComponent
     ) {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: paymentComponent,
@@ -73,10 +73,8 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         component: PaymentComponent
     ) {
         switch component.type {
-        case let .regular(regularComponent):
-            presentModalComponent(regularComponent)
-        case let .stored(storedComponent):
-            presentModalComponent(storedComponent)
+        case .regular, .stored:
+            presentModalComponent(component)
         case .generic:
             break
         }
@@ -103,7 +101,7 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     // MARK: - Private
 
     private func presentModalComponent(
-        _ component: PresentablePaymentComponent
+        _ component: PaymentComponent
     ) {
         let componentContainerViewController = componentContainerViewController(for: component)
 
@@ -128,7 +126,7 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     }
 
     private func componentContainerViewController(
-        for component: PresentablePaymentComponent
+        for component: PaymentComponent
     ) -> UIViewController {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: component,

@@ -175,12 +175,8 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     }
 
     private func present(component: CheckoutPaymentComponent) {
-        guard let viewController = component.viewController else {
-            handleError(IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self))
-            return
-        }
         // Apple Pay's PassKit sheet is presented as-is; no navigation wrapper.
-        presenter?.present(viewController: viewController, completion: nil)
+        presenter?.present(viewController: component.viewController, completion: nil)
     }
 
     private func dismissAndShowAlert(_ success: Bool, _ message: String) {

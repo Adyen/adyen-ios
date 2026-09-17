@@ -114,14 +114,14 @@ internal final class ComponentManager: ComponentManaging {
         supportedStoredPaymentMethods.first.flatMap(buildComponent(for:))
     }
 
-    internal var singleRegularComponent: PresentablePaymentComponent? {
+    internal var singleRegularComponent: PaymentComponent? {
         guard supportedStoredPaymentMethods.isEmpty,
               supportedPaidPaymentMethods.isEmpty,
               supportedRegularPaymentMethods.count == 1,
               let paymentMethod = supportedRegularPaymentMethods.first
         else { return nil }
 
-        return buildComponent(for: paymentMethod) as? PresentablePaymentComponent
+        return buildComponent(for: paymentMethod)
     }
 
     // MARK: - Private

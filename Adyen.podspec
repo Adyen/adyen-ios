@@ -69,6 +69,7 @@ Pod::Spec.new do |s|
     plugin.dependency 'Adyen/Core'
     plugin.dependency 'Adyen/Encryption'
     plugin.dependency 'Adyen/CoreUI'
+    plugin.dependency 'Adyen/Components'
     plugin.source_files = 'AdyenCard/**/*.swift'
     plugin.resource_bundles = {
         'AdyenCard' => [

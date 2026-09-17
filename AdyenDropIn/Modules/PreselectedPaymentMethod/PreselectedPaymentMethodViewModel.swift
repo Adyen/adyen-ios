@@ -157,9 +157,9 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
         switch component.type {
         case .regular, .stored:
             router?.present(component: component)
-        case let .generic(initiablePaymentComponent):
+        case .generic:
             startLoading(for: component)
-            initiablePaymentComponent.performSubmit()
+            component.performSubmit()
         }
     }
 

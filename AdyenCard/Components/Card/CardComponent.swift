@@ -20,7 +20,7 @@ import UIKit
  [Implementation guidelines](https://docs.adyen.com/payment-methods/cards/ios-component)
  */
 @MainActor
-package class CardComponent: PresentablePaymentComponent,
+package class CardComponent: PaymentComponent,
     LoadingComponent {
 
     internal enum Constant {
@@ -70,6 +70,8 @@ package class CardComponent: PresentablePaymentComponent,
             storedCardComponent?.order = order
         }
     }
+
+    package let type: PaymentComponentType = .regular
 
     /// Determines whether the storedCardComponent is active
     private var isStoredCardComponentActive: Bool {
@@ -135,7 +137,9 @@ package class CardComponent: PresentablePaymentComponent,
         // since storedCardComponent is instantiated through this class
         // cardViewController should not be accessed when it's the storedCardComponent
         // we should separate stored card component logic into its own
-        if isStoredCardComponentActive { return }
+        if isStoredCardComponentActive {
+            return
+        }
 
         cardViewController.stopLoading()
     }
