@@ -47,6 +47,7 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         let paymentMethod: PaymentMethod
 
         let type: PaymentComponentType = .regular
+        let requiresUserInteraction: Bool = true
 
         /// PaymentComponent requirement
         var viewController: UIViewController {

@@ -21,6 +21,10 @@ class PaymentComponentMock: PaymentComponent {
         .generic
     }
 
+    var requiresUserInteraction: Bool {
+        false
+    }
+
     init(paymentMethod: PaymentMethod) {
         self.paymentMethod = paymentMethod
     }
@@ -62,6 +66,10 @@ class PresentablePaymentComponentMock: PaymentComponentMock, LoadingComponent {
         .regular
     }
 
+    override var requiresUserInteraction: Bool {
+        true
+    }
+
     // MARK: - Initializers
 
     init(
@@ -93,6 +101,10 @@ class StoredComponentMock: PaymentComponentMock, StoredPaymentComponent {
 
     override var type: PaymentComponentType {
         .stored
+    }
+
+    override var requiresUserInteraction: Bool {
+        true
     }
 
     init(
