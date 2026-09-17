@@ -222,3 +222,6 @@ whiteList:
   - xcconfig
   - adhoc
   - unselectable
+  - belarusian
+  - malagasy
+  - turkish
