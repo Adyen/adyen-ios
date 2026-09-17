@@ -35,6 +35,7 @@ class CurrencyMinorDigitsProviderTests: XCTestCase {
     }
 
     func testUnknownCurrencyFallsBackToDefault() {
+        // Not a real ISO 4217 code, so neither Adyen's list nor the system's ICU data can resolve it.
         XCTAssertEqual(sut.minorDigits(for: "XXX"), CurrencyMinorDigitsProvider.defaultMinorDigits)
         XCTAssertEqual(sut.minorDigits(for: ""), CurrencyMinorDigitsProvider.defaultMinorDigits)
     }
@@ -46,8 +47,10 @@ class CurrencyMinorDigitsProviderTests: XCTestCase {
     }
 
     /// Currencies that are not on Adyen's official currency list, but are still valid ISO 4217
-    /// codes that this currency-agnostic provider may be called with.
-    func testNonAdyenCurrencies() {
+    /// codes that this currency-agnostic provider may be called with. These are no longer
+    /// hardcoded in ``CurrencyMinorDigitsProvider/minorDigitsByCurrencyCode`` - instead, they are
+    /// resolved via the system's ICU/CLDR currency data, which already reports the correct values.
+    func testICUFallbackForNonAdyenCurrencies() {
         XCTAssertEqual(sut.minorDigits(for: "CLF"), 4) // Chilean Unidad de Fomento
         XCTAssertEqual(sut.minorDigits(for: "UYW"), 4) // Uruguay Unidad Previsional
         XCTAssertEqual(sut.minorDigits(for: "UYI"), 0) // Uruguay Peso en Unidades Indexadas
