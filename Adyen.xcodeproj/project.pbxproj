@@ -476,6 +476,7 @@
 		B6D8080C2BCD147D00F3F5EB /* ImageLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FC2C922BB198AB007F1316 /* ImageLoaderTests.swift */; };
 		B6D8080D2BCD147D00F3F5EB /* AdyenContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DC5A502A73C52500DBF2D1 /* AdyenContextTests.swift */; };
 		B6D8080E2BCD147D00F3F5EB /* APIContextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF730E92667C3F10091C573 /* APIContextTests.swift */; };
+		511FCE09628396E32422B3DD /* CurrencyMinorDigitsProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD42FF0BB9D504027B6FCBBF /* CurrencyMinorDigitsProviderTests.swift */; };
 		B6D8080F2BCD147D00F3F5EB /* PaymentMethodTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E262128C22A8FE6700F2B133 /* PaymentMethodTests.swift */; };
 		B6D808102BCD147D00F3F5EB /* BackoffSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9639B4624E283060073F38A /* BackoffSchedulerTests.swift */; };
 		B6D808112BCD147D00F3F5EB /* BankDetailsEncryptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A009837E27986B50007E68C4 /* BankDetailsEncryptorTests.swift */; };
@@ -1777,6 +1778,7 @@
 		5AD40F4E263157D50090E01C /* UIButtonHelpersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonHelpersTests.swift; sourceTree = "<group>"; };
 		5AD755DA268E11DA0040B919 /* VoucherComponentExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherComponentExtensions.swift; sourceTree = "<group>"; };
 		5AF730E92667C3F10091C573 /* APIContextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIContextTests.swift; sourceTree = "<group>"; };
+		BD42FF0BB9D504027B6FCBBF /* CurrencyMinorDigitsProviderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyMinorDigitsProviderTests.swift; sourceTree = "<group>"; };
 		5AF8CD4C26691D3A00102339 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		6672D4BB06B39130C12A7714 /* CardTypeSecurityCodeTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CardTypeSecurityCodeTests.swift; sourceTree = "<group>"; };
 		8100F2BC2A4C3407008C09E7 /* FormValidatableItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidatableItemViewTests.swift; sourceTree = "<group>"; };
@@ -5137,6 +5139,7 @@
 				81FC2C922BB198AB007F1316 /* ImageLoaderTests.swift */,
 				81A91AB62BEBEA21001E00C8 /* OpenExternalAppDetectorTests.swift */,
 				B6ABA1C22CA6B058003514E5 /* ListItemTests.swift */,
+				BD42FF0BB9D504027B6FCBBF /* CurrencyMinorDigitsProviderTests.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -7399,6 +7402,7 @@
 				B6D808072BCD147600F3F5EB /* TimeIntervalExtensionsTests.swift in Sources */,
 				B6D808082BCD147600F3F5EB /* URLExtensionsTest.swift in Sources */,
 				B6D8080E2BCD147D00F3F5EB /* APIContextTests.swift in Sources */,
+				511FCE09628396E32422B3DD /* CurrencyMinorDigitsProviderTests.swift in Sources */,
 				B6D808212BCD151F00F3F5EB /* URLProtocolMock.swift in Sources */,
 				B6D8081B2BCD151F00F3F5EB /* StoredPaymentMethodMock.swift in Sources */,
 				B62D48C02BBE8DF5001EF01A /* APIClientMock.swift in Sources */,
