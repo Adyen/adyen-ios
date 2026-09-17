@@ -17,7 +17,6 @@ let theme = CheckoutTheme(
 
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     DropInConfiguration()

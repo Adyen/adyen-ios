@@ -132,7 +132,6 @@ final class CheckoutConfigurationTests: XCTestCase {
     func test_init_withDropInConfiguration_shouldExtractItFromDSL() throws {
         let sut = try CheckoutConfiguration(
             environment: .test,
-            amount: Dummy.amount,
             clientKey: Dummy.apiContext.clientKey
         ) {
             DropInConfiguration()
@@ -147,7 +146,6 @@ final class CheckoutConfigurationTests: XCTestCase {
     func test_init_withMultipleDropInConfigurations_shouldUseLastValue() throws {
         let sut = try CheckoutConfiguration(
             environment: .test,
-            amount: Dummy.amount,
             clientKey: Dummy.apiContext.clientKey
         ) {
             DropInConfiguration()
@@ -164,7 +162,6 @@ final class CheckoutConfigurationTests: XCTestCase {
     func test_init_withDropInAndComponentConfigurations_shouldStoreEachSeparately() throws {
         let sut = try CheckoutConfiguration(
             environment: .test,
-            amount: Dummy.amount,
             clientKey: Dummy.apiContext.clientKey
         ) {
             DropInConfiguration().hideStoredPaymentMethods(true)
@@ -363,7 +360,6 @@ final class CheckoutConfigurationTests: XCTestCase {
     ) -> CheckoutConfiguration {
         CheckoutConfiguration(
             apiContext: Dummy.apiContext,
-            amount: Dummy.amount,
             analyticsApiContext: nil,
             analyticsConfiguration: .init(),
             configurations: configurations

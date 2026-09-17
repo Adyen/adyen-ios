@@ -20,7 +20,6 @@ final class CheckoutComponentBuilderDropInTests: XCTestCase {
         let theme = CheckoutTheme(colors: CheckoutColors(primary: .yellow))
         var checkoutConfiguration = CheckoutConfiguration(
             apiContext: Dummy.apiContext,
-            amount: Dummy.amount,
             analyticsApiContext: nil,
             analyticsConfiguration: .init()
         )

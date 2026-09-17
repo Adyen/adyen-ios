@@ -25,7 +25,6 @@ Register `CardConfiguration` inside `CheckoutConfiguration`:
 ```swift
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     CardConfiguration()
@@ -72,7 +71,6 @@ Use `requestorAppURL(_:)` when you support 3DS2 out-of-band challenges:
 ```swift
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     CardConfiguration()
