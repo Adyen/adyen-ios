@@ -61,8 +61,14 @@ package final class CashAppPayComponent: PaymentComponent,
 
     private let cashAppPayPaymentMethod: CashAppPayPaymentMethod
 
-    private var storePayment: Bool? {
-        configuration.showsStorePaymentMethodField ? storeDetailsItem.value : nil
+    private var shouldStorePayment: Bool {
+        // Zero amount always stores the payment method.
+        // Otherwise, use the visible toggle or hidden configuration value.
+        if context.amount?.value == 0 {
+            return true
+        }
+
+        return configuration.showsStorePaymentMethodField ? storeDetailsItem.value : configuration.storePaymentMethod
     }
 
     private lazy var cashAppPay: CashAppPay = {
@@ -105,7 +111,10 @@ package final class CashAppPayComponent: PaymentComponent,
         formViewController.delegate = self
         formViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
     
-        if configuration.showsStorePaymentMethodField {
+        if StorePaymentMethodPolicy.shouldShowConsent(
+            configuredVisible: configuration.showsStorePaymentMethodField,
+            amount: context.amount
+        ) {
             formViewController.append(storeDetailsItem)
         }
     
@@ -175,7 +184,7 @@ package final class CashAppPayComponent: PaymentComponent,
             actions.append(oneTimeAction)
         }
     
-        if storePayment == true {
+        if shouldStorePayment {
             let onFileAction = PaymentAction.onFilePayment(
                 scopeID: cashAppPayPaymentMethod.scopeId,
                 accountReferenceID: nil
@@ -213,7 +222,7 @@ package final class CashAppPayComponent: PaymentComponent,
             submit(data: PaymentComponentData(
                 paymentMethodDetails: details,
                 order: order,
-                storePaymentMethod: storePayment
+                storePaymentMethod: shouldStorePayment
             ))
         } catch {
             fail(with: error, message: error.localizedDescription)
