@@ -16,7 +16,7 @@ internal struct PaymentMethodListHeaderViewModel {
         case visible(onTap: () -> Void)
     }
 
-    internal let amount: String
+    internal let title: String
     internal let subtitle: String
     internal let applePayButtonState: ApplePayButtonState
     internal let theme: CheckoutTheme

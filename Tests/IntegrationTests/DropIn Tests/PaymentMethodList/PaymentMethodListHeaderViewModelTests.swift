@@ -18,14 +18,14 @@ struct PaymentMethodListHeaderViewModelTests {
 
         // When
         let sut = PaymentMethodListHeaderViewModel(
-            amount: expectedAmount,
+            title: expectedAmount,
             subtitle: "Test",
             applePayButtonState: .hidden,
             theme: .init()
         )
 
         // Then
-        #expect(sut.amount == expectedAmount)
+        #expect(sut.title == expectedAmount)
     }
 
     @Test
@@ -35,7 +35,7 @@ struct PaymentMethodListHeaderViewModelTests {
 
         // When
         let sut = PaymentMethodListHeaderViewModel(
-            amount: "€1.00",
+            title: "€1.00",
             subtitle: expectedSubtitle,
             applePayButtonState: .hidden,
             theme: .init()
@@ -49,7 +49,7 @@ struct PaymentMethodListHeaderViewModelTests {
     func applePayButtonState_givenHidden_shouldBeHidden() {
         // Given
         let sut = PaymentMethodListHeaderViewModel(
-            amount: "€1.00",
+            title: "€1.00",
             subtitle: "Test",
             applePayButtonState: .hidden,
             theme: .init()
@@ -68,7 +68,7 @@ struct PaymentMethodListHeaderViewModelTests {
         // Given
         var tapCount = 0
         let sut = PaymentMethodListHeaderViewModel(
-            amount: "€1.00",
+            title: "€1.00",
             subtitle: "Test",
             applePayButtonState: .visible(onTap: { tapCount += 1 }),
             theme: .init()
