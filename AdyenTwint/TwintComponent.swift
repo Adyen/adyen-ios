@@ -17,7 +17,7 @@ package final class TwintComponent: PaymentComponent, LoadingComponent {
     package lazy var viewController: UIViewController = paymentButtonViewController
 
     package let type: PaymentComponentType = .regular
-    
+
     /// Configuration for Twint Component.
     package typealias Configuration = BasicComponentConfiguration
 
@@ -80,7 +80,8 @@ package final class TwintComponent: PaymentComponent, LoadingComponent {
         let paymentButtonViewController = PaymentButtonViewController(
             amount: context.amount,
             localizationParameters: configuration.localizationParameters,
-            theme: configuration.theme
+            theme: configuration.theme,
+            showsSubmitButton: configuration.showsSubmitButton
         )
         paymentButtonViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
         paymentButtonViewController.onSubmit = { [weak self] in

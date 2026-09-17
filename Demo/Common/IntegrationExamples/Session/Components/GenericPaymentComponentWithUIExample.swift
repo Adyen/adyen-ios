@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2026 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -31,19 +31,20 @@ internal final class GenericPaymentComponentWithUIExample: InitialDataFlowProtoc
     internal func start() {
         startLoading()
 
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
             do {
                 let sessionResponse = try await requestSessionInitialInfo()
                 let component = try await genericPaymentComponent(from: sessionResponse)
                 self.adyenComponent = component
-                hideLoading()
+                self.hideLoading()
 
                 // Always present the component's own view controller (e.g. its pay button),
                 // regardless of whether the payment method requires user interaction.
-                present(viewController: component.viewController)
+                self.present(viewController: component.viewController)
             } catch {
-                hideLoading()
-                handleError(error)
+                self.hideLoading()
+                self.handleError(error)
             }
         }
     }
@@ -85,12 +86,12 @@ internal final class GenericPaymentComponentWithUIExample: InitialDataFlowProtoc
         presenter?.showLoadingIndicator()
     }
 
-    private func handleError(_ error: Error) {
-        presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
-    }
-
     private func hideLoading() {
         presenter?.hideLoadingIndicator()
+    }
+
+    private func handleError(_ error: Error) {
+        presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
     }
 
     private func dismissAndShowAlert(_ success: Bool, _ message: String) {

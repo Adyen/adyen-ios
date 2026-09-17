@@ -100,7 +100,6 @@ internal final class ComponentsViewController: UIViewController {
     override internal func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Components"
-        
         componentsView.items = [
             [ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)],
             [
