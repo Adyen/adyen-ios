@@ -530,6 +530,7 @@
 		B6EE0F442BBEC94F00B9810D /* AnalyticsProviderMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0005B280468E100CE2EEC /* AnalyticsProviderMock.swift */; };
 		B6EE0F452BBECBEF00B9810D /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; platformFilter = ios; };
 		C6E63776A659E0882F4DEF26 /* CurrencyMinorDigitsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AC0BEA41EDF410A327A10DC /* CurrencyMinorDigitsProvider.swift */; };
+		88A0CC858FCB832FD773AC8D /* CurrencyMinorDigitsProvider+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = D389BB99FF540084317D30C7 /* CurrencyMinorDigitsProvider+Data.swift */; };
 		C901BB8B2D9ECB1C00406282 /* CardScannerViewMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C901BB8A2D9ECB1C00406282 /* CardScannerViewMock.swift */; };
 		C901BB8F2D9ED76A00406282 /* AppOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = C901BB8E2D9ED76A00406282 /* AppOpener.swift */; };
 		C901BB912D9ED96D00406282 /* AppOpenerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C901BB902D9ED96D00406282 /* AppOpenerMock.swift */; };
@@ -1779,6 +1780,7 @@
 		5AF8CD4C26691D3A00102339 /* Dummy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dummy.swift; sourceTree = "<group>"; };
 		6672D4BB06B39130C12A7714 /* CardTypeSecurityCodeTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CardTypeSecurityCodeTests.swift; sourceTree = "<group>"; };
 		7AC0BEA41EDF410A327A10DC /* CurrencyMinorDigitsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyMinorDigitsProvider.swift; sourceTree = "<group>"; };
+		D389BB99FF540084317D30C7 /* CurrencyMinorDigitsProvider+Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CurrencyMinorDigitsProvider+Data.swift"; sourceTree = "<group>"; };
 		8100F2BC2A4C3407008C09E7 /* FormValidatableItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormValidatableItemViewTests.swift; sourceTree = "<group>"; };
 		8100F2BF2A4C37E3008C09E7 /* FormSelectableItemViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormSelectableItemViewTests.swift; sourceTree = "<group>"; };
 		8107F4832BB1CE8A007745FC /* String+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+UIImage.swift"; sourceTree = "<group>"; };
@@ -3480,10 +3482,19 @@
 			path = ImageLoader;
 			sourceTree = "<group>";
 		};
-		97A2FF743E979DF708E3367E /* Providers */ = {
+		76CF686F70735D0160DDC952 /* CurrencyMinorDigitsProvider */ = {
 			isa = PBXGroup;
 			children = (
 				7AC0BEA41EDF410A327A10DC /* CurrencyMinorDigitsProvider.swift */,
+				D389BB99FF540084317D30C7 /* CurrencyMinorDigitsProvider+Data.swift */,
+			);
+			path = CurrencyMinorDigitsProvider;
+			sourceTree = "<group>";
+		};
+		97A2FF743E979DF708E3367E /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				76CF686F70735D0160DDC952 /* CurrencyMinorDigitsProvider */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -7585,6 +7596,7 @@
 				F9838D452631AD3700963483 /* BalanceChecker.swift in Sources */,
 				E2C0B55022A6AA0700D3367B /* AmountFormatter.swift in Sources */,
 				C6E63776A659E0882F4DEF26 /* CurrencyMinorDigitsProvider.swift in Sources */,
+				88A0CC858FCB832FD773AC8D /* CurrencyMinorDigitsProvider+Data.swift in Sources */,
 				F9EDB782239149AF00CFB3C9 /* CountryCodeValidator.swift in Sources */,
 				F9D5453F26872CFE00C9DF41 /* UIViewAnimation.swift in Sources */,
 				E9021DAA225789B1009CF7F4 /* Localization.swift in Sources */,
