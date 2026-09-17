@@ -16,7 +16,7 @@ import UIKit
 
 /// A component that handles a Cash App Pay payment.
 @MainActor
-package final class CashAppPayComponent: PresentablePaymentComponent,
+package final class CashAppPayComponent: PaymentComponent,
     LoadingComponent {
 
     /// The notification to post when returning back to your application from Cash App.
@@ -47,6 +47,8 @@ package final class CashAppPayComponent: PresentablePaymentComponent,
     /// Component's configuration
     // TODO(COSDK-1313): Apply session configuration during CashAppPayComponentFactory assembly.
     package var configuration: CashAppPayConfiguration
+
+    package let type: PaymentComponentType = .regular
 
     package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,

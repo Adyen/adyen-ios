@@ -12,7 +12,11 @@ import TwintSDK
 
 /// A component that handles a Twint payment.
 @MainActor
-package final class TwintComponent: PaymentComponent {
+package final class TwintComponent: PaymentComponent, LoadingComponent {
+
+    package lazy var viewController: UIViewController = paymentButtonViewController
+
+    package let type: PaymentComponentType = .regular
 
     /// Configuration for Twint Component.
     package typealias Configuration = BasicComponentConfiguration
@@ -62,8 +66,30 @@ package final class TwintComponent: PaymentComponent {
 
     /// Generate the payment details and invoke PaymentsComponentDelegate method.
     package func performSubmit() {
+        paymentButtonViewController.startLoading()
         submit(data: paymentData)
     }
+
+    package func stopLoading() {
+        paymentButtonViewController.stopLoading()
+    }
+
+    // MARK: - Private
+
+    private lazy var paymentButtonViewController: PaymentButtonViewController = {
+        let paymentButtonViewController = PaymentButtonViewController(
+            amount: context.amount,
+            localizationParameters: configuration.localizationParameters,
+            theme: configuration.theme,
+            showsSubmitButton: configuration.showsSubmitButton
+        )
+        paymentButtonViewController.title = paymentMethod.displayInformation(using: configuration.localizationParameters).title
+        paymentButtonViewController.onSubmit = { [weak self] in
+            self?.performSubmit()
+        }
+        return paymentButtonViewController
+    }()
+
 }
 
 extension TwintComponent: TrackableComponent {}

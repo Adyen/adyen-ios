@@ -8,6 +8,7 @@
 @testable import AdyenCard
 @testable import AdyenCheckout
 @testable import AdyenComponents
+@testable import AdyenTwint
 @_spi(AdyenInternal) @testable import AdyenUI
 import PassKit
 import XCTest
@@ -411,6 +412,80 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertTrue(component is GenericPaymentComponent, "Component should be GenericPaymentComponent")
     }
 
+    func test_build_withGenericPaymentMethodAndCustomConfiguration_appliesConfiguration() throws {
+        // Given
+        let dict: [String: Any] = [
+            "type": "ideal",
+            "name": "iDEAL"
+        ]
+        let paymentMethod = try XCTUnwrap(try? AdyenCoder.decode(dict) as GenericPaymentMethod)
+        var genericConfig = BasicComponentConfiguration()
+        genericConfig.showsSubmitButton = false
+
+        checkoutConfiguration = makeCheckoutConfiguration(
+            configurations: [.payment(.ideal): genericConfig]
+        )
+        checkoutConfiguration.showsSubmitButton = false // Global setting, since it takes precedence over the per-component value
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+
+        // Then
+        guard let genericComponent = component as? GenericPaymentComponent else {
+            XCTFail("Component should be GenericPaymentComponent")
+            return
+        }
+        XCTAssertFalse(genericComponent.configuration.showsSubmitButton)
+    }
+
+    // MARK: - Twint Component Tests
+
+    func test_build_withTwintPaymentMethod_returnsTwintComponent() throws {
+        // Given
+        let paymentMethod = createTwintPaymentMethod()
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+
+        // Then
+        XCTAssertEqual(component.paymentMethod.type, .twint)
+        XCTAssertTrue(component is TwintComponent, "Component should be TwintComponent")
+    }
+
+    func test_build_withTwintAndCustomConfiguration_appliesConfiguration() throws {
+        // Given
+        let paymentMethod = createTwintPaymentMethod()
+        var twintConfig = BasicComponentConfiguration()
+        twintConfig.showsSubmitButton = false
+
+        checkoutConfiguration = makeCheckoutConfiguration(
+            configurations: [.payment(.twint): twintConfig]
+        )
+        checkoutConfiguration.showsSubmitButton = false // Global setting, since it takes precedence over the per-component value
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+
+        // Then
+        guard let twintComponent = component as? TwintComponent else {
+            XCTFail("Component should be TwintComponent")
+            return
+        }
+        XCTAssertFalse(twintComponent.configuration.showsSubmitButton)
+    }
+
     // MARK: - Theme Propagation Tests
 
     func test_build_withCustomTheme_propagatesThemeToACHComponent() throws {
@@ -462,6 +537,64 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         }
         XCTAssertEqual(
             blikComponent.configuration.theme.colors.primary,
+            UIColor.yellow,
+            "Theme should be propagated from CheckoutConfiguration to component"
+        )
+    }
+
+    func test_build_withCustomTheme_propagatesThemeToGenericPaymentComponent() throws {
+        // Given
+        let dict: [String: Any] = [
+            "type": "ideal",
+            "name": "iDEAL"
+        ]
+        let paymentMethod = try XCTUnwrap(try? AdyenCoder.decode(dict) as GenericPaymentMethod)
+        let customTheme = CheckoutTheme(colors: CheckoutColors(primary: .yellow))
+
+        checkoutConfiguration = makeCheckoutConfiguration()
+        checkoutConfiguration.theme = customTheme
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+
+        // Then
+        guard let genericComponent = component as? GenericPaymentComponent else {
+            XCTFail("Component should be GenericPaymentComponent")
+            return
+        }
+        XCTAssertEqual(
+            genericComponent.configuration.theme.colors.primary,
+            UIColor.yellow,
+            "Theme should be propagated from CheckoutConfiguration to component"
+        )
+    }
+
+    func test_build_withCustomTheme_propagatesThemeToTwintComponent() throws {
+        // Given
+        let paymentMethod = createTwintPaymentMethod()
+        let customTheme = CheckoutTheme(colors: CheckoutColors(primary: .yellow))
+
+        checkoutConfiguration = makeCheckoutConfiguration()
+        checkoutConfiguration.theme = customTheme
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+
+        // Then
+        guard let twintComponent = component as? TwintComponent else {
+            XCTFail("Component should be TwintComponent")
+            return
+        }
+        XCTAssertEqual(
+            twintComponent.configuration.theme.colors.primary,
             UIColor.yellow,
             "Theme should be propagated from CheckoutConfiguration to component"
         )
@@ -732,6 +865,10 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             "name": "BLIK"
         ]
         return try? AdyenCoder.decode(dict) as BLIKPaymentMethod
+    }
+
+    private func createTwintPaymentMethod() -> TwintPaymentMethod {
+        TwintPaymentMethod(type: .twint, name: "Twint")
     }
     
     private func createACHPaymentMethod() -> ACHDirectDebitPaymentMethod? {

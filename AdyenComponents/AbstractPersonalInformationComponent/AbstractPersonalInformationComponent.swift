@@ -16,7 +16,7 @@ import UIKit
 /// An abstract class that needs to be subclassed to abstract away any component
 /// who's form consists of a combination of personal information pieces like first name, last name, phone, email, and billing address.
 @MainActor
-package class AbstractPersonalInformationComponent: PresentablePaymentComponent {
+package class AbstractPersonalInformationComponent: PaymentComponent {
 
     package typealias Configuration = PersonalInformationConfiguration
 
@@ -33,6 +33,8 @@ package class AbstractPersonalInformationComponent: PresentablePaymentComponent 
         child: formViewController,
         style: configuration.style
     )
+
+    package let type: PaymentComponentType = .regular
 
     package var configuration: Configuration
 

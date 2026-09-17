@@ -370,6 +370,13 @@
 			remoteGlobalIDString = C9FC2C3C2D50D0B700C9D0F3;
 			remoteInfo = AdyenCardScanner;
 		};
+		C9E345A6305830CB008FEA1E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F9175E54259393E800D653BE;
+			remoteInfo = AdyenComponents;
+		};
 		E2C0E03E22097917008616F6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
@@ -1715,6 +1722,7 @@
 			);
 			dependencies = (
 				00600F2C2E78A1BF00637477 /* PBXTargetDependency */,
+				C9E345A7305830CB008FEA1E /* PBXTargetDependency */,
 				F91761C125A30E1B00D653BE /* PBXTargetDependency */,
 				F92326F525A3672A002C5BC4 /* PBXTargetDependency */,
 			);
@@ -2708,6 +2716,11 @@
 			isa = PBXTargetDependency;
 			target = C9FC2C3C2D50D0B700C9D0F3 /* AdyenCardScanner */;
 			targetProxy = C968448A2D7712DC001DB7F1 /* PBXContainerItemProxy */;
+		};
+		C9E345A7305830CB008FEA1E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F9175E54259393E800D653BE /* AdyenComponents */;
+			targetProxy = C9E345A6305830CB008FEA1E /* PBXContainerItemProxy */;
 		};
 		E2C0E03F22097917008616F6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

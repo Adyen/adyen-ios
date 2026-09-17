@@ -230,7 +230,7 @@ package final class DropInComponent: NSObject,
 //        }
 //    }()
 
-    private func didSelectCancelButton(isRoot: Bool, component: PresentablePaymentComponent) {
+    private func didSelectCancelButton(isRoot: Bool, component: PaymentComponent) {
         guard !paymentInProgress || component is Cancellable else { return }
 
         userDidCancel(component)

@@ -80,10 +80,8 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
 
     internal func present(component: PaymentComponent) {
         switch component.type {
-        case let .regular(regularComponent):
-            pushComponentContainer(with: regularComponent)
-        case let .stored(storedComponent):
-            presentComponentContainer(with: storedComponent)
+        case .regular, .stored:
+            pushComponentContainer(with: component)
         case .generic:
             pushGenericPaymentMethod(with: component)
         }
@@ -128,19 +126,10 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     // MARK: - Private
 
     private func pushComponentContainer(
-        with component: PresentablePaymentComponent
+        with component: PaymentComponent
     ) {
         let componentContainerViewController = componentContainerViewController(for: component)
         navigationController.pushViewController(componentContainerViewController, animated: true)
-    }
-    
-    private func presentComponentContainer(
-        with component: PresentablePaymentComponent
-    ) {
-        let componentContainerViewController = componentContainerViewController(for: component)
-        setupCloseButton(controller: componentContainerViewController)
-        let modalNavigationController = UINavigationController(rootViewController: componentContainerViewController)
-        rootViewController.present(modalNavigationController, animated: true)
     }
 
     private func pushGenericPaymentMethod(
@@ -150,22 +139,8 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         navigationController.pushViewController(genericPaymentMethodViewController, animated: true)
     }
 
-    private func setupCloseButton(controller: UIViewController) {
-        let closeButton = UIBarButtonItem(
-            barButtonSystemItem: .close,
-            target: self,
-            action: #selector(closeTappedOnComponentContainerViewController)
-        )
-        controller.navigationItem.leftBarButtonItem = closeButton
-    }
-
-    @objc private func closeTappedOnComponentContainerViewController() {
-        rootViewController.dismiss(animated: true)
-        childRouter = nil
-    }
-
     private func componentContainerViewController(
-        for component: PresentablePaymentComponent
+        for component: PaymentComponent
     ) -> UIViewController {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: component,

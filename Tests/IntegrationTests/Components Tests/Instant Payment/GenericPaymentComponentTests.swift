@@ -6,6 +6,8 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenCard
+@testable import AdyenComponents
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 @MainActor
@@ -56,6 +58,47 @@ class GenericPaymentComponentTests: XCTestCase {
         sut.performSubmit()
 
         waitForExpectations(timeout: 2, handler: nil)
+    }
+
+    func testViewControllerHasCorrectTitle() {
+        XCTAssertEqual(sut.viewController.title, paymentMethod.displayInformation(using: nil).title)
+    }
+
+    func testTappingPayButtonShouldCallPaymentComponentDelegateDidSubmit() {
+        sut.viewController.loadViewIfNeeded()
+
+        let didSubmitExpectation = expectation(description: "PaymentComponentDelegate must be called.")
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === self.sut)
+            didSubmitExpectation.fulfill()
+        }
+
+        let payButtonItemViewButton: UIControl? = sut.viewController.view.findView(by: "payButtonItem.button")
+        payButtonItemViewButton?.sendActions(for: .touchUpInside)
+
+        wait(for: [didSubmitExpectation], timeout: 10)
+    }
+
+    func testPerformSubmitStartsLoadingOnPayButton() throws {
+        sut.viewController.loadViewIfNeeded()
+        let payButton: FormButton = try XCTUnwrap(sut.viewController.view.findView(by: "payButtonItem.button"))
+        XCTAssertFalse(payButton.showsActivityIndicator)
+
+        sut.performSubmit()
+
+        XCTAssertTrue(payButton.showsActivityIndicator)
+    }
+
+    func testStopLoadingStopsActivityIndicatorOnPayButton() throws {
+        sut.viewController.loadViewIfNeeded()
+        let payButton: FormButton = try XCTUnwrap(sut.viewController.view.findView(by: "payButtonItem.button"))
+
+        sut.performSubmit()
+        XCTAssertTrue(payButton.showsActivityIndicator)
+
+        sut.stopLoading()
+
+        XCTAssertFalse(payButton.showsActivityIndicator)
     }
 
     // MARK: - Private

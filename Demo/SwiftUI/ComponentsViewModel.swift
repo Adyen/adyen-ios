@@ -52,6 +52,12 @@ internal final class ComponentsViewModel: ObservableObject, Identifiable {
         genericPaymentComponentExample.presenter = self
         return genericPaymentComponentExample
     }
+
+    private var genericPaymentComponentWithUIExample: GenericPaymentComponentWithUIExample {
+        let genericPaymentComponentWithUIExample = GenericPaymentComponentWithUIExample()
+        genericPaymentComponentWithUIExample.presenter = self
+        return genericPaymentComponentWithUIExample
+    }
     
     private var genericPaymentComponentAdvancedFlow: GenericPaymentComponentAdvancedFlow {
         let genericPaymentComponentExample = GenericPaymentComponentAdvancedFlow()
@@ -113,6 +119,10 @@ internal final class ComponentsViewModel: ObservableObject, Identifiable {
         }
     }
 
+    internal func presentGenericPaymentComponentWithUI() {
+        start(genericPaymentComponentWithUIExample)
+    }
+
     internal func handleOnAppear() {
         items = [
             [ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)],
@@ -127,6 +137,11 @@ internal final class ComponentsViewModel: ObservableObject, Identifiable {
                     title: "Generic/Redirect Payment",
                     subtitle: "e.g. iDEAL, PayPal, Alipay, ...",
                     selectionHandler: presentGenericPaymentComponent
+                ),
+                ComponentsItem(
+                    title: "Generic Payment (default UI)",
+                    subtitle: "Presents the component's own pay button UI",
+                    selectionHandler: presentGenericPaymentComponentWithUI
                 )
             ]
         ]
