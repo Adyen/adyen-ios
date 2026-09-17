@@ -49,6 +49,7 @@ package final class CashAppPayComponent: PaymentComponent,
     package var configuration: CashAppPayConfiguration
 
     package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
 
     package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,

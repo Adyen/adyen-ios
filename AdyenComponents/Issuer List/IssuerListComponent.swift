@@ -34,6 +34,7 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
     package weak var delegate: PaymentComponentDelegate?
     
     package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
     
     /// Component's configuration.
     package var configuration: Configuration

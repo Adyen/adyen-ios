@@ -55,6 +55,7 @@ package final class GiftCardComponent: PaymentComponent,
     internal let showsSubmitButton: Bool
 
     package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
 
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?

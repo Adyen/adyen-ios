@@ -32,6 +32,7 @@ package final class BLIKComponent: PaymentComponent, LoadingComponent {
     )
 
     package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
     
     /// Component's configuration
     package var configuration: BLIKComponentConfiguration

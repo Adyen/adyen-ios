@@ -72,6 +72,7 @@ package class CardComponent: PaymentComponent,
     }
 
     package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
 
     /// Determines whether the storedCardComponent is active
     private var isStoredCardComponentActive: Bool {

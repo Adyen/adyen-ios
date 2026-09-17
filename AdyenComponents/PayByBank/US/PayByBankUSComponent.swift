@@ -43,6 +43,7 @@ package final class PayByBankUSComponent: PaymentComponent {
     }
 
     package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
     
     private lazy var confirmationViewController: ConfirmationViewController = {
 

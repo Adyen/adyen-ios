@@ -27,6 +27,7 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
     package var localizationParameters: LocalizationParameters?
 
     package let type: PaymentComponentType = .stored
+    package let requiresUserInteraction: Bool = true
 
     private let storedCardPaymentMethod: StoredCardPaymentMethod
     private let theme: CheckoutTheme
