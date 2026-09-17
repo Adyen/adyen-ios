@@ -42,6 +42,7 @@ internal class CheckoutProvider: CheckoutProviding {
             adyenContext: adyenContext,
             apiClient: apiClient
         )
+        adyenContext.amount = session.state.amount
 
         return await CheckoutCore(
             configuration: configuration,
@@ -149,7 +150,7 @@ internal class CheckoutProvider: CheckoutProviding {
 
             return try await AdyenContext(
                 apiContext: configuration.apiContext,
-                amount: configuration.amount,
+                amount: nil,
                 publicKey: publicKey,
                 checkoutAttemptId: checkoutAttemptId,
                 analyticsAPIContext: configuration.analyticsApiContext,

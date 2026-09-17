@@ -24,7 +24,6 @@ final class CheckoutCoreSessionComponentConfigTests: XCTestCase {
         paymentMethods = try! AdyenCoder.decode(paymentMethodsDictionary) as PaymentMethods
         configuration = CheckoutConfiguration(
             apiContext: Dummy.apiContext,
-            amount: Dummy.amount,
             analyticsApiContext: nil,
             analyticsConfiguration: .init()
         )

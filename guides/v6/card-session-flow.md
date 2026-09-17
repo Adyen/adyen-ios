@@ -22,7 +22,6 @@ import AdyenCheckout
 ```swift
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     CardConfiguration()

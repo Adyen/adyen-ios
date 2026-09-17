@@ -947,7 +947,6 @@ final class CheckoutComponentBuilderTests: XCTestCase {
     ) -> CheckoutConfiguration {
         CheckoutConfiguration(
             apiContext: Dummy.apiContext,
-            amount: Dummy.amount,
             analyticsApiContext: nil,
             analyticsConfiguration: .init(),
             configurations: configurations
