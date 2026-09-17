@@ -100,5 +100,12 @@ public final class AmountFormatter {
             return nil
         }
     }
+    
+    private static func minorDigits(
+        for currencyCode: String,
+        provider: AnyCurrencyMinorDigitsProvider = CurrencyMinorDigitsProvider()
+    ) -> Int {
+        provider.minorDigits(for: currencyCode)
+    }
 
 }
