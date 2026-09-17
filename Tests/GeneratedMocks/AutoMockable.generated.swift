@@ -689,24 +689,6 @@ class PreselectedPaymentMethodRoutingMock: PreselectedPaymentMethodRouting {
 
 class StoredCardInputViewModelProtocolMock: StoredCardInputViewModelProtocol {
 
-    var cardImageItem: CardImageItem {
-        get { underlyingCardImageItem }
-        set(value) { underlyingCardImageItem = value }
-    }
-
-    var underlyingCardImageItem: CardImageItem!
-    var titleText: String {
-        get { underlyingTitleText }
-        set(value) { underlyingTitleText = value }
-    }
-
-    var underlyingTitleText: String!
-    var subtitleText: NSAttributedString {
-        get { underlyingSubtitleText }
-        set(value) { underlyingSubtitleText = value }
-    }
-
-    var underlyingSubtitleText: NSAttributedString!
     var securityCodeItem: FormCardSecurityCodeItem {
         get { underlyingSecurityCodeItem }
         set(value) { underlyingSecurityCodeItem = value }

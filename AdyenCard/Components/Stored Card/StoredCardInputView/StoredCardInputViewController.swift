@@ -21,11 +21,8 @@ internal class StoredCardInputViewController: UIViewController {
 
     private enum Constants {
         static let contentPadding: CGFloat = 16
-        static let distanceBetweenImageAndLabels: CGFloat = 12
         static let distanceFromButtonsToLabels: CGFloat = 24
         static let buttonsBottomPadding: CGFloat = 0
-        static let labelsSpacing: CGFloat = 8
-        static let buttonsSpacingWithEachOther: CGFloat = 16
     }
 
     // MARK: - Subviews
@@ -46,47 +43,11 @@ internal class StoredCardInputViewController: UIViewController {
         return stackView
     }()
 
-    private lazy var topContentStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = Constants.distanceBetweenImageAndLabels
-        return stackView
-    }()
-
-    private lazy var cardImageView: CardImageView = {
-        let imageView = CardImageView(item: viewModel.cardImageItem)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardShapedImage")
-        return imageView
-    }()
-
-    private lazy var labelsStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = Constants.labelsSpacing
-        return stackView
-    }()
-
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.apply(theme.elements.labels.title)
-        label.numberOfLines = 0
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
-
-        return label
-    }()
-
-    private lazy var subtitleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "subTitle")
-        return label
+    private lazy var spacerView: UIView = {
+        let view = UIView()
+        view.setContentHuggingPriority(.defaultLow, for: .vertical)
+        view.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        return view
     }()
 
     private lazy var securityCodeItemView: FormCardSecurityCodeItemView = {
@@ -101,7 +62,6 @@ internal class StoredCardInputViewController: UIViewController {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = Constants.buttonsSpacingWithEachOther
         return stackView
     }()
 
@@ -156,21 +116,11 @@ internal class StoredCardInputViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentStackView)
 
-        [
-            titleLabel,
-            subtitleLabel
-        ].forEach(labelsStackView.addArrangedSubview)
-
-        [
-            cardImageView,
-            labelsStackView
-        ].forEach(topContentStackView.addArrangedSubview)
-
         buttonsStackView.addArrangedSubview(primaryButton)
 
         [
-            topContentStackView,
             securityCodeItemView,
+            spacerView,
             buttonsStackView
         ].forEach(contentStackView.addArrangedSubview)
 
@@ -187,24 +137,31 @@ internal class StoredCardInputViewController: UIViewController {
     }
 
     private func configureConstraints() {
-        // TODO: Robert: StoredView: Auto layout Constraints breaks. This needs a separate investigation as this involves the FormCardSecurityCodeItemView
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
-            contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: Constants.contentPadding),
-            contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -Constants.buttonsBottomPadding),
-            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -2 * Constants.contentPadding)
+            contentStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentStackView.leadingAnchor.constraint(
+                equalTo: scrollView.frameLayoutGuide.leadingAnchor,
+                constant: Constants.contentPadding
+            ),
+            contentStackView.trailingAnchor.constraint(
+                equalTo: scrollView.frameLayoutGuide.trailingAnchor,
+                constant: -Constants.contentPadding
+            ),
+            contentStackView.bottomAnchor.constraint(
+                equalTo: scrollView.contentLayoutGuide.bottomAnchor,
+                constant: -Constants.buttonsBottomPadding
+            ),
+            contentStackView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.frameLayoutGuide.heightAnchor)
         ])
 
     }
 
     private func configureContent() {
-        titleLabel.text = viewModel.titleText
-        subtitleLabel.attributedText = viewModel.subtitleText
         primaryButton.title = viewModel.submitButtonTitle
     }
 

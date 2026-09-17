@@ -33,6 +33,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     private weak var listener: PaymentMethodListRouterListener?
     private let navigationController: UINavigationController
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
+    private let authenticationWithInputAssembler: AuthenticationWithInputAssemblerProtocol
     private let genericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol
     private let storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol
     private let storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
@@ -47,6 +48,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         navigationController: UINavigationController = UINavigationController(),
         listener: PaymentMethodListRouterListener?,
         componentContainerAssembler: ComponentContainerAssemblerProtocol,
+        authenticationWithInputAssembler: AuthenticationWithInputAssemblerProtocol,
         genericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol,
         storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol,
         storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?,
@@ -57,6 +59,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         self.navigationController = navigationController
         self.listener = listener
         self.componentContainerAssembler = componentContainerAssembler
+        self.authenticationWithInputAssembler = authenticationWithInputAssembler
         self.genericPaymentMethodAssembler = genericPaymentMethodAssembler
         self.storedPaymentMethodManagementAssembler = storedPaymentMethodManagementAssembler
         self.storedPaymentMethodManagementCapability = storedPaymentMethodManagementCapability
@@ -80,6 +83,8 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
 
     internal func present(component: PaymentComponent) {
         switch component.type {
+        case .stored where component.requiresUserInteraction:
+            pushAuthenticationWithInput(with: component)
         case .regular, .stored:
             pushComponentContainer(with: component)
         case .generic:
@@ -124,6 +129,18 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     }
 
     // MARK: - Private
+
+    private func pushAuthenticationWithInput(
+        with component: PaymentComponent
+    ) {
+        let router = authenticationWithInputAssembler.resolveAuthenticationWithInputRouter(
+            for: component,
+            presentationMode: .pushed,
+            listener: self
+        )
+        childRouter = router
+        navigationController.pushViewController(router.rootViewController, animated: true)
+    }
 
     private func pushComponentContainer(
         with component: PaymentComponent
@@ -195,6 +212,13 @@ extension PaymentMethodListRouter: StoredPaymentMethodManagementListener {
     }
 
     internal func didDismissStoredPaymentMethodManagement() {
+        childRouter = nil
+    }
+}
+
+extension PaymentMethodListRouter: AuthenticationWithInputRouterListener {
+
+    internal func didDismissAuthenticationWithInput() {
         childRouter = nil
     }
 }
