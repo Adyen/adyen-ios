@@ -82,11 +82,8 @@ public final class AmountFormatter {
         return formatter
     }
     
-    private static func minorDigits(
-        for currencyCode: String,
-        provider: AnyCurrencyMinorDigitsProvider = CurrencyMinorDigitsProvider()
-    ) -> Int {
-        provider.minorDigits(for: currencyCode)
+    private static func minorDigits(for currencyCode: String) -> Int {
+        CurrencyMinorDigitsProvider().minorDigits(for: currencyCode)
     }
 
 }
