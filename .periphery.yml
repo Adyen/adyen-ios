@@ -1,7 +1,7 @@
 project: Adyen.xcodeproj
 schemes:
   - AdyenUIHost
-  - AdyenSwiftUIHost
+  - AdyenSwiftUI
 retain_public: true
 index_exclude:
   - Demo/**
