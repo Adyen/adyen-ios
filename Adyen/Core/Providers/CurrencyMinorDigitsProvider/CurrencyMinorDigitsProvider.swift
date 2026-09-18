@@ -13,8 +13,7 @@ public protocol AnyCurrencyMinorDigitsProvider {
     /// Returns the number of minor digits for the given currency code.
     ///
     /// - Parameter currencyCode: The ISO 4217 currency code, e.g. `"EUR"`.
-    /// - Returns: The number of minor digits for the currency. Falls back to the system's ICU currency data,
-    ///   and then to ``CurrencyMinorDigitsProvider/defaultMinorDigits``, when the currency code is not recognized.
+    /// - Returns: The number of minor digits for the currency. Falls back to the system's ICU currency data.
     func minorDigits(for currencyCode: String) -> Int
 }
 
@@ -24,9 +23,6 @@ public protocol AnyCurrencyMinorDigitsProvider {
 /// Source: https://docs.adyen.com/development-resources/currency-codes
 @_spi(AdyenInternal)
 public struct CurrencyMinorDigitsProvider: AnyCurrencyMinorDigitsProvider {
-
-    /// The number of minor digits returned when a currency code cannot be resolved by ICU either.
-    public static let defaultMinorDigits = 2
 
     public init() {}
 

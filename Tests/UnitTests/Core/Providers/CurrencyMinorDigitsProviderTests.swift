@@ -34,12 +34,6 @@ class CurrencyMinorDigitsProviderTests: XCTestCase {
         XCTAssertEqual(sut.minorDigits(for: "jpy"), 0)
     }
 
-    func testUnknownCurrencyFallsBackToDefault() {
-        // Not a real ISO 4217 code, so neither Adyen's list nor the system's ICU data can resolve it.
-        XCTAssertEqual(sut.minorDigits(for: "XXX"), CurrencyMinorDigitsProvider.defaultMinorDigits)
-        XCTAssertEqual(sut.minorDigits(for: ""), CurrencyMinorDigitsProvider.defaultMinorDigits)
-    }
-
     func testAllListedCurrenciesAreCovered() {
         for (currencyCode, expectedDigits) in CurrencyMinorDigitsProvider.minorDigitsByCurrencyCode {
             XCTAssertEqual(sut.minorDigits(for: currencyCode), expectedDigits)
