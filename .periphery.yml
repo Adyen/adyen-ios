@@ -2,19 +2,10 @@ project: Adyen.xcodeproj
 schemes:
   - AdyenUIHost
   - AdyenSwiftUIHost
-targets:
-  - Adyen
-  - AdyenActions
-  - AdyenCard
-  - AdyenCardScanner
-  - AdyenCashAppPay
-  - AdyenCheckout
-  - AdyenComponents
-  - AdyenDelegatedAuthentication
-  - AdyenDropIn
-  - AdyenEncryption
-  - AdyenSession
-  - AdyenSwiftUI
-  - AdyenTwint
-  - AdyenUI
-  - AdyenWeChatPay
+retain_public: true
+index_exclude:
+  - Demo/**
+build_arguments:
+  - -skipPackagePluginValidation
+  - -destination
+  - platform=iOS Simulator,name=iPhone 16
