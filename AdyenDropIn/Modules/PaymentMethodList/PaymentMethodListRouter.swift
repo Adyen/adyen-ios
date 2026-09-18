@@ -138,8 +138,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
             presentationMode: .pushed,
             listener: self
         ) else {
-            // TODO: Robert: COSDK-1357 resolves a prompt for stored components without input too,
-            // after which this fallback only covers stored components Drop-in cannot prompt for.
+            // Stored components Drop-in cannot prompt for keep the generic component presentation.
             return pushComponentContainer(with: component)
         }
         childRouter = router
