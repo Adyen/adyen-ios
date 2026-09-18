@@ -86,6 +86,10 @@ public struct LocalizationKey {
     public static let cardSecurityCodeDescription = LocalizationKey(key: "adyen.card.securityCode.description")
     /// Enter the security code for %@ to complete the payment of %@
     public static let checkoutDropinAuthenticationInputDescription = LocalizationKey(key: "adyen.checkout.dropin.authentication.input.description")
+    /// Use %@ to pay %@
+    public static let checkoutDropinAuthenticationWithoutInputDescription = LocalizationKey(key: "adyen.checkout.dropin.authentication.withoutInput.description")
+    /// Use %@
+    public static let checkoutDropinAuthenticationWithoutInputSubmitButton = LocalizationKey(key: "adyen.checkout.dropin.authentication.withoutInput.submitButton")
     /// 123
     public static let cardCvcItemPlaceholder = LocalizationKey(key: "adyen.card.cvcItem.placeholder")
     // TODO: Delete cardStoredTitle - no longer used after StoredCardAlertManager removal for v6

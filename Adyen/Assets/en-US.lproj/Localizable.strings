@@ -38,6 +38,8 @@
 "adyen.card.securityCode.title" = "Enter security code";
 "adyen.card.securityCode.description" = "Enter the security code for %@";
 "adyen.checkout.dropin.authentication.input.description" = "Enter the security code for %@ to complete the payment of %@";
+"adyen.checkout.dropin.authentication.withoutInput.description" = "Use %@ to pay %@";
+"adyen.checkout.dropin.authentication.withoutInput.submitButton" = "Use %@";
 "adyen.card.stored.title" = "Verify your card";
 "adyen.card.stored.message" = "Please enter the CVC code for %@";
 "adyen.card.stored.expires" = "Expires %@";

@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import Combine
 import Foundation
 import UIKit
 #if canImport(AdyenUI)
@@ -13,6 +14,8 @@ import UIKit
 
 @MainActor
 internal final class StoredPaymentPromptViewModel: ObservableObject {
+
+    @Published internal private(set) var isSubmitting = false
 
     internal let theme: CheckoutTheme
     internal weak var router: StoredPaymentPromptRouting?
@@ -39,12 +42,12 @@ internal final class StoredPaymentPromptViewModel: ObservableObject {
 
     // MARK: - Content
 
-    // TODO: Robert: COSDK-1357 adds the `.confirmation` arm to every `mode` switch below, plus the
-    // confirmation-only members: `submitButtonTitle`, `showsLockIcon`, `isSubmitting` and `submit()`.
     internal var title: String {
         switch mode {
         case .input:
             isStoredCard ? localizedString(.cardCvcItemTitle, localizationParameters) : displayInformation.title
+        case .confirmation:
+            displayInformation.title
         }
     }
 
@@ -52,7 +55,31 @@ internal final class StoredPaymentPromptViewModel: ObservableObject {
         switch mode {
         case .input:
             inputSubtitle
+        case .confirmation:
+            confirmationSubtitle
         }
+    }
+
+    /// The title of the confirmation button Drop-in owns, if any.
+    internal var submitButtonTitle: String? {
+        guard case .confirmation = mode else { return nil }
+        guard isStoredCard else {
+            return localizedString(
+                .checkoutDropinAuthenticationWithoutInputSubmitButton,
+                localizationParameters,
+                component.paymentMethod.name
+            )
+        }
+        return AmountAwarePaymentStringsPolicy.payButtonTitle(
+            with: component.context.amount,
+            style: .immediate,
+            localizationParameters: localizationParameters
+        )
+    }
+
+    /// Cards show a lock next to the confirmation button, other payment methods do not.
+    internal var showsLockIcon: Bool {
+        isStoredCard
     }
 
     internal var backButtonTitle: String {
@@ -68,6 +95,8 @@ internal final class StoredPaymentPromptViewModel: ObservableObject {
         switch mode {
         case let .input(component):
             component.viewController
+        case .confirmation:
+            nil
         }
     }
 
@@ -83,6 +112,13 @@ internal final class StoredPaymentPromptViewModel: ObservableObject {
 
     // MARK: - Actions
 
+    /// Submits the payment on behalf of a component that does not collect input.
+    internal func submit() {
+        guard case let .confirmation(component) = mode, !isSubmitting else { return }
+        isSubmitting = true
+        component.performSubmit()
+    }
+
     internal func cancel() {
         dropInFlowManager.setLoadingPresenter(nil)
         dropInFlowManager.cancel(component: component)
@@ -90,6 +126,7 @@ internal final class StoredPaymentPromptViewModel: ObservableObject {
     }
 
     internal func stopLoading() {
+        isSubmitting = false
         component.stopLoading()
     }
 
@@ -109,6 +146,24 @@ internal final class StoredPaymentPromptViewModel: ObservableObject {
 
     private var positiveAmount: Amount? {
         component.context.amount.flatMap { $0.value > 0 ? $0 : nil }
+    }
+
+    private var confirmationSubtitle: NSAttributedString {
+        guard let amount = positiveAmount else {
+            let text = localizedString(
+                .preselectedPaymentMethodSubtitle,
+                localizationParameters,
+                component.paymentMethod.name
+            )
+            return makeAttributedString(text)
+        }
+        let text = localizedString(
+            .checkoutDropinAuthenticationWithoutInputDescription,
+            localizationParameters,
+            component.paymentMethod.name,
+            amount.formatted
+        )
+        return makeAttributedString(text, emphasizedValues: [amount.formatted])
     }
 
     private var inputSubtitle: NSAttributedString {
@@ -181,6 +236,7 @@ extension StoredPaymentPromptViewModel: PaymentComponentDelegate {
         if case ComponentError.cancelled = error {
             cancel()
         } else {
+            isSubmitting = false
             dropInFlowManager.fail(with: error, from: component)
         }
     }
