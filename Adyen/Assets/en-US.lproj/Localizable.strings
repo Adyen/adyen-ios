@@ -2,6 +2,7 @@
 "adyen.submitButton.formatted" = "Pay %@";
 "adyen.submitButton.saveDetails" = "Save details";
 "adyen.cancelButton" = "Cancel";
+"adyen.backButton" = "Back";
 "adyen.dismissButton" = "OK";
 "adyen.removeButton" = "Remove";
 "adyen.error.title" = "Error";
@@ -36,6 +37,7 @@
 "adyen.card.cvcItem.placeholder" = "123";
 "adyen.card.securityCode.title" = "Enter security code";
 "adyen.card.securityCode.description" = "Enter the security code for %@";
+"adyen.checkout.dropin.authentication.input.description" = "Enter the security code for %@ to complete the payment of %@";
 "adyen.card.stored.title" = "Verify your card";
 "adyen.card.stored.message" = "Please enter the CVC code for %@";
 "adyen.card.stored.expires" = "Expires %@";

@@ -96,6 +96,7 @@ internal struct DropInAssembler {
         PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler,
+            storedPaymentPromptAssembler: storedPaymentPromptAssembler,
             showsAllPaymentMethodsButton: !componentManager.sections.isEmpty,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
@@ -107,6 +108,7 @@ internal struct DropInAssembler {
     private var paymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         PaymentMethodListAssembler(
             componentContainerAssembler: componentContainerAssembler,
+            storedPaymentPromptAssembler: storedPaymentPromptAssembler,
             componentManager: componentManager,
             context: context,
             localizationParameters: resolveLocalizationParameters(),
@@ -119,6 +121,15 @@ internal struct DropInAssembler {
         )
     }
     
+    private var storedPaymentPromptAssembler: StoredPaymentPromptAssemblerProtocol {
+        StoredPaymentPromptAssembler(
+            dropInFlowManager: dropInFlowManager,
+            logoURLProvider: resolveLogoURLProvider(),
+            theme: configuration.theme,
+            localizationParameters: configuration.resolvedLocalizationParameters
+        )
+    }
+
     private var componentContainerAssembler: ComponentContainerAssemblerProtocol {
         ComponentContainerAssembler(
             configuration: configuration,

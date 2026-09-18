@@ -257,6 +257,7 @@ package final class DropInComponent: NSObject,
 
     package func stopLoading() {
         paymentInProgress = false
+        dropInFlowManager.stopLoading()
         // TODO: - Handle loading logic in its own module
 //        (rootViewController as? ComponentLoader)?.stopLoading()
         selectedPaymentComponent?.stopLoading()

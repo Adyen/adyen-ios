@@ -22,6 +22,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     // MARK: - Properties
 
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
+    private let storedPaymentPromptAssembler: StoredPaymentPromptAssemblerProtocol
     private let componentManager: ComponentManager
     private let context: AdyenContext
     private let localizationParameters: LocalizationParameters
@@ -36,6 +37,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
 
     internal init(
         componentContainerAssembler: ComponentContainerAssemblerProtocol,
+        storedPaymentPromptAssembler: StoredPaymentPromptAssemblerProtocol,
         componentManager: ComponentManager,
         context: AdyenContext,
         localizationParameters: LocalizationParameters,
@@ -47,6 +49,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
     ) {
         self.componentContainerAssembler = componentContainerAssembler
+        self.storedPaymentPromptAssembler = storedPaymentPromptAssembler
         self.componentManager = componentManager
         self.context = context
         self.localizationParameters = localizationParameters
@@ -79,6 +82,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
             viewController: view,
             listener: delegate,
             componentContainerAssembler: componentContainerAssembler,
+            storedPaymentPromptAssembler: storedPaymentPromptAssembler,
             genericPaymentMethodAssembler: resolveGenericPaymentMethodAssembler(),
             storedPaymentMethodManagementAssembler: resolveStoredPaymentMethodManagementAssembler(),
             storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability,

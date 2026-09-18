@@ -33,6 +33,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     private weak var listener: PaymentMethodListRouterListener?
     private let navigationController: UINavigationController
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
+    private let storedPaymentPromptAssembler: StoredPaymentPromptAssemblerProtocol
     private let genericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol
     private let storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol
     private let storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
@@ -47,6 +48,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         navigationController: UINavigationController = UINavigationController(),
         listener: PaymentMethodListRouterListener?,
         componentContainerAssembler: ComponentContainerAssemblerProtocol,
+        storedPaymentPromptAssembler: StoredPaymentPromptAssemblerProtocol,
         genericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol,
         storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol,
         storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?,
@@ -57,6 +59,7 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         self.navigationController = navigationController
         self.listener = listener
         self.componentContainerAssembler = componentContainerAssembler
+        self.storedPaymentPromptAssembler = storedPaymentPromptAssembler
         self.genericPaymentMethodAssembler = genericPaymentMethodAssembler
         self.storedPaymentMethodManagementAssembler = storedPaymentMethodManagementAssembler
         self.storedPaymentMethodManagementCapability = storedPaymentMethodManagementCapability
@@ -80,7 +83,9 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
 
     internal func present(component: PaymentComponent) {
         switch component.type {
-        case .regular, .stored:
+        case .stored:
+            pushStoredPaymentPrompt(with: component)
+        case .regular:
             pushComponentContainer(with: component)
         case .generic:
             pushGenericPaymentMethod(with: component)
@@ -124,6 +129,22 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
     }
 
     // MARK: - Private
+
+    private func pushStoredPaymentPrompt(
+        with component: PaymentComponent
+    ) {
+        guard let router = storedPaymentPromptAssembler.resolveStoredPaymentPromptRouter(
+            for: component,
+            presentationMode: .pushed,
+            listener: self
+        ) else {
+            // TODO: Robert: COSDK-1357 resolves a prompt for stored components without input too,
+            // after which this fallback only covers stored components Drop-in cannot prompt for.
+            return pushComponentContainer(with: component)
+        }
+        childRouter = router
+        navigationController.pushViewController(router.rootViewController, animated: true)
+    }
 
     private func pushComponentContainer(
         with component: PaymentComponent
@@ -195,6 +216,13 @@ extension PaymentMethodListRouter: StoredPaymentMethodManagementListener {
     }
 
     internal func didDismissStoredPaymentMethodManagement() {
+        childRouter = nil
+    }
+}
+
+extension PaymentMethodListRouter: StoredPaymentPromptRouterListener {
+
+    internal func didDismissStoredPaymentPrompt() {
         childRouter = nil
     }
 }
