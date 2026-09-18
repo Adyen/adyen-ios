@@ -9,6 +9,16 @@ import UIKit
 
 /// Displays a list item.
 package final class ListItemView: UIView, AnyFormItemView {
+
+    private enum Constants {
+        static let checkmarkIcon = "verification_true"
+    }
+
+    private enum Layout {
+        static let checkmarkSize = CGSize(width: 24, height: 24)
+        static let checkmarkLeadingSpacing: CGFloat = 20
+    }
+
     private let imageLoader: ImageLoading
     private var imageLoadingTask: AdyenCancellable? {
         willSet { imageLoadingTask?.cancel() }
@@ -68,6 +78,8 @@ package final class ListItemView: UIView, AnyFormItemView {
         }
 
         updateTrailingView(for: item)
+        checkmarkImageView.isHidden = item?.isSelected != true
+        updateCheckmarkSpacing()
         
         imageView.isHidden = item?.icon == nil
         updateIcon()
@@ -114,7 +126,18 @@ package final class ListItemView: UIView, AnyFormItemView {
             trailingView.isHidden = true
         }
         
-        contentStackView.addArrangedSubview(trailingView)
+        trailingView.setContentHuggingPriority(.required, for: .horizontal)
+        contentStackView.insertArrangedSubview(trailingView, at: contentStackView.arrangedSubviews.count - 1)
+    }
+
+    private func updateCheckmarkSpacing() {
+        contentStackView.setCustomSpacing(
+            trailingView.isHidden && !checkmarkImageView.isHidden
+                ? Layout.checkmarkLeadingSpacing
+                : AdyenUIConstants.stackViewSpacing,
+            after: titleSubtitleStackView
+        )
+        contentStackView.setCustomSpacing(Layout.checkmarkLeadingSpacing, after: trailingView)
     }
     
     private func updateImageView(style: ListItemStyle) {
@@ -172,6 +195,27 @@ package final class ListItemView: UIView, AnyFormItemView {
         view.isHidden = true
         return view
     }()
+
+    private lazy var checkmarkImageView: UIImageView = {
+        let imageView = UIImageView(
+            image: UIImage(
+                named: Constants.checkmarkIcon,
+                in: Bundle.coreInternalResources,
+                compatibleWith: nil
+            )
+        )
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
+        imageView.isAccessibilityElement = false
+        imageView.isHidden = true
+        imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(
+            scopeInstance: self,
+            postfix: "checkmark"
+        )
+
+        return imageView
+    }()
     
     // MARK: - Text Stack View
     
@@ -186,9 +230,16 @@ package final class ListItemView: UIView, AnyFormItemView {
     }()
     
     private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [imageView, titleSubtitleStackView, trailingView])
+        let stackView = UIStackView(
+            arrangedSubviews: [
+                imageView,
+                titleSubtitleStackView,
+                trailingView,
+                checkmarkImageView
+            ]
+        )
         stackView.setCustomSpacing(16, after: imageView)
-        stackView.spacing = 8
+        stackView.spacing = AdyenUIConstants.stackViewSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.setContentHuggingPriority(.required, for: .vertical)
         stackView.axis = .horizontal
@@ -210,11 +261,14 @@ package final class ListItemView: UIView, AnyFormItemView {
             
             imageView.widthAnchor.constraint(equalToConstant: imageSize.width),
             imageView.heightAnchor.constraint(equalToConstant: imageSize.height),
+
+            checkmarkImageView.widthAnchor.constraint(equalToConstant: Layout.checkmarkSize.width),
+            checkmarkImageView.heightAnchor.constraint(equalToConstant: Layout.checkmarkSize.height),
             
             self.heightAnchor.constraint(greaterThanOrEqualToConstant: 48)
         ]
 
-        trailingView.setContentHuggingPriority(.required, for: .horizontal)
+        checkmarkImageView.setContentHuggingPriority(.required, for: .horizontal)
         imageView.setContentHuggingPriority(.required, for: .horizontal)
         
         NSLayoutConstraint.activate(constraints)
