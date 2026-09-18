@@ -217,7 +217,7 @@ internal class CardViewController: FormViewController {
     internal var installments: Installments? {
         guard let installmentsItem = items.installmentsItem,
               !installmentsItem.isHidden.wrappedValue else { return nil }
-        return installmentsItem.value.element.installmentValue
+        return installmentsItem.value?.installmentValue
     }
     
     internal func stopLoading() {
