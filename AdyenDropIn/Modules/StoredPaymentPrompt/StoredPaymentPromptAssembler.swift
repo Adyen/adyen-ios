@@ -11,16 +11,21 @@ import Adyen
 import SwiftUI
 
 @MainActor
-internal protocol AuthenticationWithInputAssemblerProtocol {
-    func resolveAuthenticationWithInputRouter(
+internal protocol StoredPaymentPromptAssemblerProtocol {
+
+    /// Resolves the router for the prompt that lets the shopper complete a stored payment.
+    ///
+    /// - Returns: The router, or `nil` when the component cannot be completed through a prompt,
+    ///            in which case the parent module decides how to present it.
+    func resolveStoredPaymentPromptRouter(
         for component: PaymentComponent,
-        presentationMode: AuthenticationPresentationMode,
-        listener: AuthenticationWithInputRouterListener
-    ) -> Router
+        presentationMode: StoredPaymentPromptPresentationMode,
+        listener: StoredPaymentPromptRouterListener
+    ) -> Router?
 }
 
 @MainActor
-internal struct AuthenticationWithInputAssembler: AuthenticationWithInputAssemblerProtocol {
+internal struct StoredPaymentPromptAssembler: StoredPaymentPromptAssemblerProtocol {
 
     private let dropInFlowManager: DropInFlowManaging
     private let logoURLProvider: LogoURLProvider
@@ -39,28 +44,34 @@ internal struct AuthenticationWithInputAssembler: AuthenticationWithInputAssembl
         self.localizationParameters = localizationParameters
     }
 
-    internal func resolveAuthenticationWithInputRouter(
+    internal func resolveStoredPaymentPromptRouter(
         for component: PaymentComponent,
-        presentationMode: AuthenticationPresentationMode,
-        listener: AuthenticationWithInputRouterListener
-    ) -> Router {
-        let viewModel = AuthenticationWithInputViewModel(
-            component: component,
+        presentationMode: StoredPaymentPromptPresentationMode,
+        listener: StoredPaymentPromptRouterListener
+    ) -> Router? {
+        guard let mode = resolveMode(for: component) else { return nil }
+
+        let viewModel = StoredPaymentPromptViewModel(
+            mode: mode,
             theme: theme,
             logoURLProvider: logoURLProvider,
             localizationParameters: localizationParameters,
             dropInFlowManager: dropInFlowManager
         )
         let viewController = UIHostingController(
-            rootView: AuthenticationWithInputView(viewModel: viewModel)
+            rootView: StoredPaymentPromptView(viewModel: viewModel)
         )
-        viewController.isModalInPresentation = true
-        let router = AuthenticationWithInputRouter(
+        let router = StoredPaymentPromptRouter(
             viewController: viewController,
             presentationMode: presentationMode,
             listener: listener
         )
         viewModel.router = router
         return router
+    }
+
+    private func resolveMode(for component: PaymentComponent) -> StoredPaymentPromptMode? {
+        guard component.requiresUserInteraction else { return nil }
+        return .securityCode(component)
     }
 }

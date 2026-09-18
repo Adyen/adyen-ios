@@ -9,7 +9,7 @@
 #endif
 import SwiftUI
 
-internal struct AuthenticationHeaderView: View {
+internal struct StoredPaymentPromptHeaderView: View {
 
     internal let logoURL: URL
     internal let title: String

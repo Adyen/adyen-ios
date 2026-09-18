@@ -257,25 +257,46 @@ struct PaymentMethodListRouterTests {
     }
 
     @Test
-    func presentComponent_givenInteractiveStoredComponent_shouldPushAuthenticationWithInput() {
+    func presentComponent_givenInteractiveStoredComponent_shouldPushStoredPaymentPrompt() {
         let navigationControllerSpy = NavigationControllerSpy()
-        let authenticationRouter = RouterMock()
-        let authenticationAssembler = AuthenticationWithInputAssemblerSpy(router: authenticationRouter)
+        let promptRouter = RouterMock()
+        let promptAssembler = StoredPaymentPromptAssemblerSpy(router: promptRouter)
         let componentContainerAssembler = makeComponentContainerAssembler()
         let sut = makeSUT(
             navigationController: navigationControllerSpy,
             componentContainerAssembler: componentContainerAssembler,
-            authenticationWithInputAssembler: authenticationAssembler
+            storedPaymentPromptAssembler: promptAssembler
         )
         let storedPaymentComponent = makeStoredPaymentComponentMock()
 
         sut.present(component: storedPaymentComponent)
 
-        #expect(authenticationAssembler.resolveCallsCount == 1)
-        #expect(authenticationAssembler.receivedPresentationMode == .pushed)
-        #expect(navigationControllerSpy.capturedPushedViewController === authenticationRouter.rootViewController)
+        #expect(promptAssembler.resolveCallsCount == 1)
+        #expect(promptAssembler.receivedPresentationMode == .pushed)
+        #expect(navigationControllerSpy.capturedPushedViewController === promptRouter.rootViewController)
         #expect(componentContainerAssembler.resolveComponentContainerRouterForListenerCallsCount == 0)
-        #expect(sut.childRouter === authenticationRouter)
+        #expect(sut.childRouter === promptRouter)
+    }
+
+    @Test
+    func presentComponent_givenStoredComponentWithoutPrompt_shouldFallBackToComponentContainer() {
+        // Given
+        let navigationControllerSpy = NavigationControllerSpy()
+        let promptAssembler = StoredPaymentPromptAssemblerSpy(router: nil)
+        let componentContainerAssembler = makeComponentContainerAssembler()
+        let sut = makeSUT(
+            navigationController: navigationControllerSpy,
+            componentContainerAssembler: componentContainerAssembler,
+            storedPaymentPromptAssembler: promptAssembler
+        )
+
+        // When
+        sut.present(component: makeStoredPaymentComponentMock())
+
+        // Then
+        #expect(promptAssembler.resolveCallsCount == 1)
+        #expect(componentContainerAssembler.resolveComponentContainerRouterForListenerCallsCount == 1)
+        #expect(navigationControllerSpy.pushViewControllerCallsCount == 1)
     }
 
     @Test
@@ -325,7 +346,7 @@ struct PaymentMethodListRouterTests {
         navigationController: NavigationControllerSpy = NavigationControllerSpy(),
         listener: PaymentMethodListRouterListenerMock? = nil,
         componentContainerAssembler: ComponentContainerAssemblerProtocolMock? = nil,
-        authenticationWithInputAssembler: AuthenticationWithInputAssemblerProtocol? = nil,
+        storedPaymentPromptAssembler: StoredPaymentPromptAssemblerProtocol? = nil,
         genericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol? = nil,
         storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol? = nil,
         supportsStoredPaymentMethodManagement: Bool = true,
@@ -333,8 +354,8 @@ struct PaymentMethodListRouterTests {
     ) -> PaymentMethodListRouter {
         viewController.setNavigationController(navigationController)
         let componentContainerAssembler = componentContainerAssembler ?? makeComponentContainerAssembler()
-        let authenticationWithInputAssembler = authenticationWithInputAssembler
-            ?? AuthenticationWithInputAssemblerSpy(router: RouterMock())
+        let storedPaymentPromptAssembler = storedPaymentPromptAssembler
+            ?? StoredPaymentPromptAssemblerSpy(router: RouterMock())
         let genericPaymentMethodAssembler = genericPaymentMethodAssembler
             ?? GenericPaymentMethodAssemblerSpy(router: RouterMock())
         let storedPaymentMethodManagementAssembler = storedPaymentMethodManagementAssembler
@@ -348,7 +369,7 @@ struct PaymentMethodListRouterTests {
             navigationController: navigationController,
             listener: listener,
             componentContainerAssembler: componentContainerAssembler,
-            authenticationWithInputAssembler: authenticationWithInputAssembler,
+            storedPaymentPromptAssembler: storedPaymentPromptAssembler,
             genericPaymentMethodAssembler: genericPaymentMethodAssembler,
             storedPaymentMethodManagementAssembler: storedPaymentMethodManagementAssembler,
             storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability,
@@ -433,21 +454,21 @@ private final class GenericPaymentMethodAssemblerSpy: GenericPaymentMethodAssemb
 }
 
 @MainActor
-private final class AuthenticationWithInputAssemblerSpy: AuthenticationWithInputAssemblerProtocol {
+private final class StoredPaymentPromptAssemblerSpy: StoredPaymentPromptAssemblerProtocol {
 
-    private let router: Router
+    private let router: Router?
     private(set) var resolveCallsCount = 0
-    private(set) var receivedPresentationMode: AuthenticationPresentationMode?
+    private(set) var receivedPresentationMode: StoredPaymentPromptPresentationMode?
 
-    init(router: Router) {
+    init(router: Router?) {
         self.router = router
     }
 
-    func resolveAuthenticationWithInputRouter(
+    func resolveStoredPaymentPromptRouter(
         for component: PaymentComponent,
-        presentationMode: AuthenticationPresentationMode,
-        listener: AuthenticationWithInputRouterListener
-    ) -> Router {
+        presentationMode: StoredPaymentPromptPresentationMode,
+        listener: StoredPaymentPromptRouterListener
+    ) -> Router? {
         resolveCallsCount += 1
         receivedPresentationMode = presentationMode
         return router

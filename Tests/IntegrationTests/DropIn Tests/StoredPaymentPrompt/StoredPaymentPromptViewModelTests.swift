@@ -11,7 +11,7 @@
 import Testing
 
 @MainActor
-internal struct AuthenticationWithInputViewModelTests {
+internal struct StoredPaymentPromptViewModelTests {
 
     @Test
     internal func storedCardComponent_whenCreated_thenProvidesDropInHeaderAndComponentController() {
@@ -62,9 +62,9 @@ internal struct AuthenticationWithInputViewModelTests {
     }
 
     @Test
-    internal func presentedAction_whenCancelled_thenCancelsComponentAndDismissesAuthentication() {
+    internal func presentedAction_whenCancelled_thenCancelsComponentAndDismissesPrompt() {
         let context = makeSUT()
-        let router = AuthenticationWithInputRoutingSpy()
+        let router = StoredPaymentPromptRoutingSpy()
         context.sut.router = router
 
         context.sut.present(actionViewController: UIViewController())
@@ -81,8 +81,8 @@ internal struct AuthenticationWithInputViewModelTests {
             paymentMethod: PaymentMethodMock(type: .ideal, name: "iDEAL"),
             viewController: componentViewController
         )
-        let sut = AuthenticationWithInputViewModel(
-            component: component,
+        let sut = StoredPaymentPromptViewModel(
+            mode: .securityCode(component),
             theme: .default,
             logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
             localizationParameters: nil,
@@ -101,14 +101,15 @@ internal struct AuthenticationWithInputViewModelTests {
             viewController: UIViewController()
         )
         let flowManager = DropInFlowManagingMock()
-        let sut = AuthenticationWithInputViewModel(
-            component: component,
+        let sut = StoredPaymentPromptViewModel(
+            mode: .securityCode(component),
             theme: .default,
             logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
             localizationParameters: nil,
             dropInFlowManager: flowManager
         )
 
+        sut.didAppear()
         flowManager.setLoadingPresenterReceivedPresenter?.stopLoading()
 
         #expect(flowManager.setLoadingPresenterReceivedPresenter === sut)
@@ -116,7 +117,7 @@ internal struct AuthenticationWithInputViewModelTests {
     }
 
     private struct TestContext {
-        let sut: AuthenticationWithInputViewModel
+        let sut: StoredPaymentPromptViewModel
         let component: StoredCardComponent
         let flowManager: DropInFlowManagingMock
     }
@@ -146,8 +147,8 @@ internal struct AuthenticationWithInputViewModelTests {
             theme: .default
         )
         let flowManager = DropInFlowManagingMock()
-        let sut = AuthenticationWithInputViewModel(
-            component: component,
+        let sut = StoredPaymentPromptViewModel(
+            mode: .securityCode(component),
             theme: .default,
             logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
             localizationParameters: nil,
@@ -158,7 +159,7 @@ internal struct AuthenticationWithInputViewModelTests {
 }
 
 @MainActor
-private final class AuthenticationWithInputRoutingSpy: AuthenticationWithInputRouting {
+private final class StoredPaymentPromptRoutingSpy: StoredPaymentPromptRouting {
 
     private(set) var dismissCallsCount = 0
     private(set) var onCancel: (() -> Void)?

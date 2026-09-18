@@ -10,11 +10,11 @@ import Testing
 import UIKit
 
 @MainActor
-internal struct AuthenticationWithInputRouterTests {
+internal struct StoredPaymentPromptRouterTests {
 
     @Test
-    internal func pushedAuthentication_whenDismissed_thenPopsAndNotifiesListener() {
-        let navigationController = AuthenticationNavigationControllerSpy()
+    internal func pushedPrompt_whenDismissed_thenPopsAndNotifiesListener() {
+        let navigationController = PromptNavigationControllerSpy()
         let (sut, listener) = makeSUT(presentationMode: .pushed, navigationController: navigationController)
 
         sut.dismiss()
@@ -25,8 +25,8 @@ internal struct AuthenticationWithInputRouterTests {
     }
 
     @Test
-    internal func modalAuthentication_whenDismissed_thenDismissesAndNotifiesListener() {
-        let navigationController = AuthenticationNavigationControllerSpy()
+    internal func modalPrompt_whenDismissed_thenDismissesAndNotifiesListener() {
+        let navigationController = PromptNavigationControllerSpy()
         let (sut, listener) = makeSUT(presentationMode: .modal, navigationController: navigationController)
 
         sut.dismiss()
@@ -37,12 +37,12 @@ internal struct AuthenticationWithInputRouterTests {
     }
 
     private func makeSUT(
-        presentationMode: AuthenticationPresentationMode,
-        navigationController: AuthenticationNavigationControllerSpy
-    ) -> (sut: AuthenticationWithInputRouter, listener: ListenerSpy) {
-        let viewController = AuthenticationViewControllerSpy(navigationController: navigationController)
+        presentationMode: StoredPaymentPromptPresentationMode,
+        navigationController: PromptNavigationControllerSpy
+    ) -> (sut: StoredPaymentPromptRouter, listener: ListenerSpy) {
+        let viewController = PromptViewControllerSpy(navigationController: navigationController)
         let listener = ListenerSpy()
-        let sut = AuthenticationWithInputRouter(
+        let sut = StoredPaymentPromptRouter(
             viewController: viewController,
             presentationMode: presentationMode,
             listener: listener
@@ -52,16 +52,16 @@ internal struct AuthenticationWithInputRouterTests {
 }
 
 @MainActor
-private final class ListenerSpy: AuthenticationWithInputRouterListener {
+private final class ListenerSpy: StoredPaymentPromptRouterListener {
     private(set) var dismissCallsCount = 0
 
-    func didDismissAuthenticationWithInput() {
+    func didDismissStoredPaymentPrompt() {
         dismissCallsCount += 1
     }
 }
 
 @MainActor
-private final class AuthenticationViewControllerSpy: UIViewController {
+private final class PromptViewControllerSpy: UIViewController {
     private let navigationControllerSpy: UINavigationController
 
     override var navigationController: UINavigationController? {
@@ -80,7 +80,7 @@ private final class AuthenticationViewControllerSpy: UIViewController {
 }
 
 @MainActor
-private final class AuthenticationNavigationControllerSpy: UINavigationController {
+private final class PromptNavigationControllerSpy: UINavigationController {
     private(set) var popCallsCount = 0
     private(set) var dismissCallsCount = 0
 
