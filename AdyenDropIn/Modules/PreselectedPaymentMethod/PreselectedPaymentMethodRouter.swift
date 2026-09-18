@@ -113,6 +113,8 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
             presentationMode: .modal,
             listener: self
         ) else {
+            // TODO: Robert: COSDK-1357 resolves a prompt for stored components without input too,
+            // after which this fallback only covers stored components Drop-in cannot prompt for.
             return presentModalComponent(component)
         }
         childRouter = router
