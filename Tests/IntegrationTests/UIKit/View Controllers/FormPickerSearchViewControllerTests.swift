@@ -145,6 +145,126 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         }
     }
 
+    func test_picker_whenSelectedOptionProvided_shouldMarkMatchingResultAsSelected() throws {
+        let options = makeOptions()
+        let selectedBackgroundColor: UIColor = .purple
+        let selectedOption = FormPickerElement(
+            identifier: options[1].identifier,
+            title: "Different title"
+        )
+
+        let searchViewController = try makeSearchViewController(
+            theme: CheckoutTheme(
+                colors: CheckoutColors(container: selectedBackgroundColor)
+            ),
+            options: options,
+            selectedOption: selectedOption
+        )
+
+        let results = try XCTUnwrap(searchViewController.viewModel.interfaceState.results)
+        let selectedResults = results.filter(\.isSelected)
+
+        XCTAssertEqual(selectedResults.map(\.identifier), [selectedOption.identifier])
+        XCTAssertEqual(selectedResults.first?.title, options[1].title)
+        XCTAssertEqual(selectedResults.first?.style.backgroundColor, selectedBackgroundColor)
+    }
+
+    func test_picker_whenSelectedOptionProvided_shouldRenderSelectedCellAppearance() throws {
+        let options = makeOptions()
+        let selectedOption = options[1]
+        let selectedBackgroundColor: UIColor = .purple
+        let searchViewController = try makeSearchViewController(
+            theme: CheckoutTheme(
+                colors: CheckoutColors(container: selectedBackgroundColor)
+            ),
+            options: options,
+            selectedOption: selectedOption
+        )
+
+        let resultsListViewController = searchViewController.resultsListViewController
+        wait(until: { resultsListViewController.viewIfLoaded?.window != nil })
+
+        let selectedCell = try XCTUnwrap(
+            resultsListViewController.tableView.visibleCells
+                .compactMap { $0 as? ListCell }
+                .first { $0.item?.identifier == selectedOption.identifier }
+        )
+        let checkmarkImageView: UIImageView = try XCTUnwrap(
+            selectedCell.findView(by: "checkmark")
+        )
+
+        XCTAssertEqual(selectedCell.backgroundColor, selectedBackgroundColor)
+        XCTAssertEqual(selectedCell.layer.cornerRadius, AdyenUIConstants.defaultCornerRadius)
+        XCTAssertFalse(checkmarkImageView.isHidden)
+        XCTAssertTrue(selectedCell.accessibilityTraits.contains(.selected))
+    }
+
+    func test_picker_whenSelectedOptionOmitted_shouldNotMarkAnyResultAsSelected() throws {
+        let searchViewController = try makeSearchViewController(
+            options: makeOptions(),
+            selectedOption: nil
+        )
+
+        let results = try XCTUnwrap(searchViewController.viewModel.interfaceState.results)
+
+        XCTAssertFalse(results.contains(where: \.isSelected))
+    }
+
+    func test_picker_whenSelectedOptionIsNotAvailable_shouldNotMarkAnyResultAsSelected() throws {
+        let searchViewController = try makeSearchViewController(
+            options: makeOptions(),
+            selectedOption: .init(identifier: "missing", title: "Missing")
+        )
+
+        let results = try XCTUnwrap(searchViewController.viewModel.interfaceState.results)
+
+        XCTAssertFalse(results.contains(where: \.isSelected))
+    }
+
+    func test_search_whenSelectedOptionFilteredOutAndRestored_shouldUpdateVisibleSelection() throws {
+        let options = makeOptions()
+        let selectedOption = options[1]
+        let searchViewController = try makeSearchViewController(
+            options: options,
+            selectedOption: selectedOption
+        )
+
+        XCTAssertEqual(
+            searchViewController.viewModel.interfaceState.results?.filter(\.isSelected).map(\.identifier),
+            [selectedOption.identifier]
+        )
+
+        searchViewController.searchBar.delegate?.searchBar?(
+            searchViewController.searchBar,
+            textDidChange: options[0].title
+        )
+
+        XCTAssertFalse(
+            try XCTUnwrap(searchViewController.viewModel.interfaceState.results)
+                .contains(where: \.isSelected)
+        )
+
+        searchViewController.searchBar.delegate?.searchBar?(
+            searchViewController.searchBar,
+            textDidChange: selectedOption.title
+        )
+
+        XCTAssertEqual(
+            searchViewController.viewModel.interfaceState.results?.filter(\.isSelected).map(\.identifier),
+            [selectedOption.identifier]
+        )
+
+        searchViewController.searchBar.delegate?.searchBar?(
+            searchViewController.searchBar,
+            textDidChange: ""
+        )
+
+        XCTAssertEqual(
+            searchViewController.viewModel.interfaceState.results?.filter(\.isSelected).map(\.identifier),
+            [selectedOption.identifier]
+        )
+    }
+
     func test_searchBar_whenConfigurationOmitted_shouldShowAndFocus() throws {
         let searchViewController = try makeSearchViewController()
 
@@ -274,17 +394,25 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         title: String? = nil,
         configuration: FormPickerConfiguration = .init(),
         theme: CheckoutTheme = .default,
+        options: [FormPickerElement] = [
+            .init(
+                identifier: "Identifier",
+                title: "Title",
+                subtitle: "Subtitle"
+            )
+        ],
+        selectedOption: FormPickerElement? = nil,
         file: StaticString = #filePath,
         line: UInt = #line
     ) throws -> SearchViewController {
-        let option = FormPickerElement(identifier: "Identifier", title: "Title", subtitle: "Subtitle")
-
         let pickerSearchViewController = FormPickerSearchViewController(
             title: title,
             configuration: configuration,
             theme: theme,
-            options: [option]
-        ) { _ in }
+            options: options,
+            selectedOption: selectedOption,
+            selectionHandler: { _ in }
+        )
 
         // Allow setup in viewDidLoad
         setupRootViewController(pickerSearchViewController)
@@ -294,5 +422,12 @@ class FormPickerSearchViewControllerTests: XCTestCase {
             file: file,
             line: line
         )
+    }
+
+    private func makeOptions() -> [FormPickerElement] {
+        [
+            .init(identifier: "first", title: "First", subtitle: "First subtitle"),
+            .init(identifier: "second", title: "Second", subtitle: "Second subtitle")
+        ]
     }
 }
