@@ -41,7 +41,8 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
             localizationParameters: localizationParameters,
             style: style,
             searchBarPlaceholder: nil,
-            shouldFocusSearchBarOnAppearance: true
+            shouldShowSearchBar: configuration.isSearchEnabled,
+            shouldFocusSearchBarOnAppearance: configuration.isSearchEnabled
         ) { searchTerm, handler in
             
             let results = options

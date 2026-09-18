@@ -84,7 +84,9 @@ package class SearchViewController: UIViewController, AdyenObserver {
         
         delegate?.viewDidLoad(viewController: self)
         
-        emptyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardTapped)))
+        if viewModel.shouldShowSearchBar {
+            emptyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardTapped)))
+        }
         emptyView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(emptyView)
         
@@ -94,9 +96,11 @@ package class SearchViewController: UIViewController, AdyenObserver {
         resultsListViewController.didMove(toParent: self)
         resultsListViewController.view.translatesAutoresizingMaskIntoConstraints = false
         
-        searchBar.setContentCompressionResistancePriority(.required, for: .vertical)
-        searchBar.setContentHuggingPriority(.required, for: .vertical)
-        view.addSubview(searchBar)
+        if viewModel.shouldShowSearchBar {
+            searchBar.setContentCompressionResistancePriority(.required, for: .vertical)
+            searchBar.setContentHuggingPriority(.required, for: .vertical)
+            view.addSubview(searchBar)
+        }
 
         if let headerView {
             headerView.translatesAutoresizingMaskIntoConstraints = false
@@ -122,7 +126,8 @@ package class SearchViewController: UIViewController, AdyenObserver {
         
         delegate?.viewWillAppear(viewController: self)
         
-        if viewModel.shouldFocusSearchBarOnAppearance {
+        if viewModel.shouldShowSearchBar,
+           viewModel.shouldFocusSearchBarOnAppearance {
             DispatchQueue.main.async { // Fix animation glitch on iOS 17
                 self.searchBar.becomeFirstResponder()
             }
@@ -136,8 +141,8 @@ package class SearchViewController: UIViewController, AdyenObserver {
     
     private func setupConstraints() {
 
-        let searchBarTopAnchor: NSLayoutYAxisAnchor
-        let searchBarTopSpacing: CGFloat
+        let contentTopAnchor: NSLayoutYAxisAnchor
+        let contentTopSpacing: CGFloat
         if let headerView {
             // Keep the header at its content height so the results list, not the header, absorbs extra vertical space.
             let headerHeightHug = headerView.heightAnchor.constraint(equalToConstant: 0)
@@ -148,30 +153,41 @@ package class SearchViewController: UIViewController, AdyenObserver {
                 headerView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
                 headerHeightHug
             ])
-            searchBarTopAnchor = headerView.bottomAnchor
-            searchBarTopSpacing = Layout.headerBottomSpacing
+            contentTopAnchor = headerView.bottomAnchor
+            contentTopSpacing = Layout.headerBottomSpacing
         } else {
-            searchBarTopAnchor = view.layoutMarginsGuide.topAnchor
-            searchBarTopSpacing = 0
+            contentTopAnchor = view.layoutMarginsGuide.topAnchor
+            contentTopSpacing = 0
+        }
+
+        let resultsTopAnchor: NSLayoutYAxisAnchor
+        let resultsTopSpacing: CGFloat
+        if viewModel.shouldShowSearchBar {
+            NSLayoutConstraint.activate([
+                searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Layout.searchBarHorizontalInset),
+                searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Layout.searchBarHorizontalInset),
+                searchBar.topAnchor.constraint(equalTo: contentTopAnchor, constant: contentTopSpacing)
+            ])
+            resultsTopAnchor = searchBar.bottomAnchor
+            resultsTopSpacing = 0
+        } else {
+            resultsTopAnchor = contentTopAnchor
+            resultsTopSpacing = contentTopSpacing
         }
         
         NSLayoutConstraint.activate([
-            searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Layout.searchBarHorizontalInset),
-            searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Layout.searchBarHorizontalInset),
-            searchBar.topAnchor.constraint(equalTo: searchBarTopAnchor, constant: searchBarTopSpacing),
-            
             resultsListViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             resultsListViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            resultsListViewController.view.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            resultsListViewController.view.topAnchor.constraint(equalTo: resultsTopAnchor, constant: resultsTopSpacing),
             resultsListViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
             emptyView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
             emptyView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            emptyView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            emptyView.topAnchor.constraint(equalTo: resultsTopAnchor, constant: resultsTopSpacing),
             
             loadingView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
             loadingView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            loadingView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            loadingView.topAnchor.constraint(equalTo: resultsTopAnchor, constant: resultsTopSpacing),
             loadingView.bottomAnchor.constraint(equalTo: emptyView.bottomAnchor)
         ])
         
