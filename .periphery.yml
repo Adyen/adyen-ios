@@ -1,3 +1,20 @@
 project: Adyen.xcodeproj
 schemes:
+  - AdyenUIHost
+  - AdyenSwiftUIHost
+targets:
+  - Adyen
+  - AdyenActions
+  - AdyenCard
+  - AdyenCardScanner
+  - AdyenCashAppPay
   - AdyenCheckout
+  - AdyenComponents
+  - AdyenDelegatedAuthentication
+  - AdyenDropIn
+  - AdyenEncryption
+  - AdyenSession
+  - AdyenSwiftUI
+  - AdyenTwint
+  - AdyenUI
+  - AdyenWeChatPay
