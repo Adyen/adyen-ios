@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 
 /// Factory for creating the component that handles a stored card payment.
 ///
@@ -38,7 +41,9 @@ package struct StoredCardComponentFactory {
         guard configuration.showSecurityCodeForStoredCard else {
             let component = StoredPaymentMethodComponent(
                 paymentMethod: paymentMethod,
-                context: context
+                context: context,
+                theme: configuration.theme,
+                showsSubmitButton: configuration.showsSubmitButton
             )
             component.localizationParameters = configuration.localizationParameters
             return component

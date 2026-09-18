@@ -230,11 +230,33 @@ internal final class StoredPaymentMethodComponentTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
-    internal func test_directStoredPaymentMethod_whenAccessingViewController_thenDoesNotReturnAlert() {
+    internal func test_directStoredPaymentMethod_whenAccessingViewController_thenReturnsPaymentButton() {
         let sut = makeSUT()
 
-        XCTAssertFalse(sut.viewController is UIAlertController)
+        XCTAssertTrue(sut.viewController is PaymentButtonViewController)
         XCTAssertFalse(sut.requiresUserInteraction)
+    }
+
+    internal func test_directStoredPaymentMethod_whenAccessedTwice_thenReturnsSameViewController() {
+        let sut = makeSUT()
+
+        XCTAssertTrue(sut.viewController === sut.viewController)
+    }
+
+    internal func test_directStoredPaymentMethod_whenSubmittingFromPaymentButton_thenSubmitsStoredDetails() throws {
+        let sut = makeSUT()
+        let delegate = PaymentComponentDelegateMock()
+        let expectation = expectation(description: "Stored payment details submitted")
+        delegate.onDidSubmit = { data, _ in
+            XCTAssertTrue(data.paymentMethod is StoredPaymentDetails)
+            expectation.fulfill()
+        }
+        sut.delegate = delegate
+        let viewController = try XCTUnwrap(sut.viewController as? PaymentButtonViewController)
+
+        viewController.onSubmit?()
+
+        waitForExpectations(timeout: 1)
     }
 
     internal func test_directStoredPaymentMethod_whenSubmittingMultipleTimes_thenSendsInitialAnalyticsOnce() {

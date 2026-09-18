@@ -225,7 +225,9 @@ package enum CheckoutComponentBuilder {
     ) -> PaymentComponent {
         let component = StoredPaymentMethodComponent(
             paymentMethod: storedPaymentMethod,
-            context: context
+            context: context,
+            theme: configuration.theme,
+            showsSubmitButton: configuration.showsSubmitButton
         )
         component.localizationParameters = configuration.resolvedCheckoutLocalizationParameters()
 
