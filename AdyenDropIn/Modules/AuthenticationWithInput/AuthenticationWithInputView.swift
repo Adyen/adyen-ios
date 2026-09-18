@@ -27,14 +27,19 @@ internal struct AuthenticationWithInputView: View {
 
     internal var body: some View {
         VStack(spacing: Constants.contentSpacing) {
-            AuthenticationWithInputHeaderView(
+            AuthenticationHeaderView(
                 logoURL: viewModel.paymentMethodLogoURL,
                 title: viewModel.title,
                 subtitle: viewModel.subtitle,
                 theme: viewModel.theme,
                 logoSize: Constants.logoSize,
                 spacing: Constants.headerSpacing,
-                labelsSpacing: Constants.labelsSpacing
+                labelsSpacing: Constants.labelsSpacing,
+                accessibilityIDs: .init(
+                    logo: AuthenticationInputAccessibilityID.logo,
+                    title: AuthenticationInputAccessibilityID.title,
+                    subtitle: AuthenticationInputAccessibilityID.subtitle
+                )
             )
             .padding(.horizontal, Constants.contentPadding)
 
@@ -51,43 +56,16 @@ internal struct AuthenticationWithInputView: View {
                 Button {
                     viewModel.cancel()
                 } label: {
-                    Label(viewModel.backButtonTitle, systemImage: "chevron.backward")
+                    HStack(spacing: 5) {
+                        Image(systemName: "chevron.backward")
+                        Text(viewModel.backButtonTitle)
+                    }
                 }
             }
         }
         .tint(Color(uiColor: viewModel.theme.colors.highlight))
         .navigationBarBackButtonHidden(true)
         .accessibilityIdentifier(AuthenticationInputAccessibilityID.screen)
-    }
-}
-
-private struct AuthenticationWithInputHeaderView: View {
-
-    let logoURL: URL
-    let title: String
-    let subtitle: NSAttributedString
-    let theme: CheckoutTheme
-    let logoSize: CGSize
-    let spacing: CGFloat
-    let labelsSpacing: CGFloat
-
-    var body: some View {
-        VStack(spacing: spacing) {
-            PaymentLogoView(url: logoURL, theme: theme, size: logoSize)
-                .accessibilityIdentifier(AuthenticationInputAccessibilityID.logo)
-                .accessibilityHidden(true)
-
-            VStack(spacing: labelsSpacing) {
-                Text(title)
-                    .font(Font(theme.elements.labels.title.font))
-                    .accessibilityIdentifier(AuthenticationInputAccessibilityID.title)
-                Text(AttributedString(subtitle))
-                    .accessibilityIdentifier(AuthenticationInputAccessibilityID.subtitle)
-            }
-            .foregroundStyle(Color(uiColor: theme.colors.text))
-            .multilineTextAlignment(.center)
-            .accessibilityElement(children: .contain)
-        }
     }
 }
 
