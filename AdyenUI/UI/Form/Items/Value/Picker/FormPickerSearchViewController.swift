@@ -15,6 +15,7 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
         configuration: FormPickerConfiguration = .init(),
         theme: CheckoutTheme = .default,
         options: [Option],
+        selectedOption: Option? = nil,
         selectionHandler: @escaping (Option) -> Void
     ) {
         self.init(
@@ -24,6 +25,7 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
             configuration: configuration,
             theme: theme,
             options: options,
+            selectedOption: selectedOption,
             selectionHandler: selectionHandler
         )
     }
@@ -35,8 +37,10 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
         configuration: FormPickerConfiguration = .init(),
         theme: CheckoutTheme = .default,
         options: [Option],
+        selectedOption: Option? = nil,
         selectionHandler: @escaping (Option) -> Void
     ) {
+        let selectedOptionIdentifier = selectedOption?.identifier
         let viewModel = SearchViewController.ViewModel(
             localizationParameters: localizationParameters,
             style: style,
@@ -47,7 +51,13 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
             
             let results = options
                 .filter { $0.matches(searchTerm: searchTerm) }
-                .map { $0.toListItem(with: selectionHandler) }
+                .map {
+                    $0.toListItem(
+                        isSelected: $0.identifier == selectedOptionIdentifier,
+                        selectedBackgroundColor: theme.colors.container,
+                        selectionHandler: selectionHandler
+                    )
+                }
             
             handler(results)
         }
@@ -87,21 +97,33 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
     }
 }
 
-// MARK: FormPickerElement Convenience
+// MARK: - FormPickable Convenience
 
 private extension FormPickable {
-    
-    func toListItem(with selectionHandler: @escaping (Self) -> Void) -> ListItem {
-        .init(
+
+    func toListItem(
+        isSelected: Bool,
+        selectedBackgroundColor: UIColor,
+        selectionHandler: @escaping (Self) -> Void
+    ) -> ListItem {
+        var style = ListItemStyle()
+
+        if isSelected {
+            style.backgroundColor = selectedBackgroundColor
+        }
+
+        return ListItem(
             title: title,
             subtitle: subtitle,
             icon: listItemIcon,
             trailingInfo: trailingText.map { .text($0) },
+            style: style,
             identifier: identifier,
+            isSelected: isSelected,
             selectionHandler: { selectionHandler(self) }
         )
     }
-    
+
     func matches(searchTerm: String) -> Bool {
         if searchTerm.isEmpty {
             return true
@@ -116,7 +138,7 @@ private extension FormPickable {
         
         return subtitle?.range(of: searchTerm, options: .caseInsensitive) != nil
     }
-    
+
     private var listItemIcon: ListItem.Icon? {
         guard let icon else { return nil }
         return .init(location: .local(image: icon))
