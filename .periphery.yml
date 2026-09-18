@@ -1,0 +1,11 @@
+project: Adyen.xcodeproj
+schemes:
+  - AdyenUIHost
+  - AdyenSwiftUI
+retain_public: true
+index_exclude:
+  - Demo/**
+build_arguments:
+  - -skipPackagePluginValidation
+  - -destination
+  - platform=iOS Simulator,name=iPhone 16

@@ -1,0 +1,14 @@
+name: Periphery (Dead Code Analysis)
+
+on:
+  pull_request:
+  push:
+    branches: [develop]
+
+jobs:
+  periphery:
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
+    uses: periphery-pro/actions/.github/workflows/scan.yml@v1.0.0.beta.2
