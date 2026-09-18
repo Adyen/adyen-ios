@@ -71,6 +71,8 @@ internal struct StoredPaymentPromptAssembler: StoredPaymentPromptAssemblerProtoc
     }
 
     private func resolveMode(for component: PaymentComponent) -> StoredPaymentPromptMode? {
+        // TODO: Robert: COSDK-1357 resolves `.confirmation` here when the component submits directly,
+        // so a stored component without input no longer falls back to the component container.
         guard component.requiresUserInteraction else { return nil }
         return .input(component)
     }

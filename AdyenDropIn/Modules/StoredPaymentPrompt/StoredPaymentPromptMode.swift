@@ -13,6 +13,9 @@ internal enum StoredPaymentPromptMode {
     /// card, and therefore provides both its own view controller and its own submit button.
     case input(PaymentComponent)
 
+    // TODO: Robert: COSDK-1357 adds `case confirmation(any StoredPaymentComponent)` here, for
+    // components that submit directly and therefore let Drop-in own the confirmation button.
+
     /// The component the prompt was created for.
     internal var component: PaymentComponent {
         switch self {

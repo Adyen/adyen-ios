@@ -61,6 +61,8 @@ internal struct StoredPaymentPromptView: View {
         .onDisappear { viewModel.didDisappear() }
     }
 
+    // TODO: Robert: COSDK-1357 adds the confirmation content here: the primary submit button with
+    // its loading state, shown when the component has no view controller of its own.
     @ViewBuilder
     private var content: some View {
         if let componentViewController = viewModel.componentViewController {

@@ -39,6 +39,8 @@ internal final class StoredPaymentPromptViewModel: ObservableObject {
 
     // MARK: - Content
 
+    // TODO: Robert: COSDK-1357 adds the `.confirmation` arm to every `mode` switch below, plus the
+    // confirmation-only members: `submitButtonTitle`, `showsLockIcon`, `isSubmitting` and `submit()`.
     internal var title: String {
         switch mode {
         case .input:
