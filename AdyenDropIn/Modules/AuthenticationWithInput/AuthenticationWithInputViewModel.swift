@@ -35,6 +35,7 @@ internal final class AuthenticationWithInputViewModel: ObservableObject {
         self.localizationParameters = localizationParameters
         self.dropInFlowManager = dropInFlowManager
         component.delegate = self
+        dropInFlowManager.setLoadingPresenter(self)
     }
 
     internal var title: String {
@@ -85,8 +86,13 @@ internal final class AuthenticationWithInputViewModel: ObservableObject {
     }
 
     internal func cancel() {
+        dropInFlowManager.setLoadingPresenter(nil)
         dropInFlowManager.cancel(component: component)
         router?.dismiss()
+    }
+
+    internal func stopLoading() {
+        component.stopLoading()
     }
 
     private var displayInformation: DisplayInformation {
@@ -117,6 +123,8 @@ internal final class AuthenticationWithInputViewModel: ObservableObject {
         return attributedString
     }
 }
+
+extension AuthenticationWithInputViewModel: LoadControllable {}
 
 extension AuthenticationWithInputViewModel: PaymentComponentDelegate {
 

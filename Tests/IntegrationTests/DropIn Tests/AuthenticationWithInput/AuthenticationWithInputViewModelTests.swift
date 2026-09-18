@@ -94,6 +94,27 @@ internal struct AuthenticationWithInputViewModelTests {
         #expect(sut.componentViewController === componentViewController)
     }
 
+    @Test
+    internal func activeInputComponent_whenParentStopsLoading_thenStopsEmbeddedComponent() {
+        let component = PresentablePaymentComponentMock(
+            paymentMethod: PaymentMethodMock(type: .ideal, name: "iDEAL"),
+            viewController: UIViewController()
+        )
+        let flowManager = DropInFlowManagingMock()
+        let sut = AuthenticationWithInputViewModel(
+            component: component,
+            theme: .default,
+            logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
+            localizationParameters: nil,
+            dropInFlowManager: flowManager
+        )
+
+        flowManager.setLoadingPresenterReceivedPresenter?.stopLoading()
+
+        #expect(flowManager.setLoadingPresenterReceivedPresenter === sut)
+        #expect(component.stopLoadingCallsCount == 1)
+    }
+
     private struct TestContext {
         let sut: AuthenticationWithInputViewModel
         let component: StoredCardComponent

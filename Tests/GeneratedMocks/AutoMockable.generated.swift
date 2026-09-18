@@ -314,6 +314,38 @@ class DropInFlowManagingMock: DropInFlowManaging {
         handleActionClosure?(action)
     }
 
+    // MARK: - setLoadingPresenter
+
+    var setLoadingPresenterCallsCount = 0
+    var setLoadingPresenterCalled: Bool {
+        setLoadingPresenterCallsCount > 0
+    }
+
+    var setLoadingPresenterReceivedPresenter: LoadControllable?
+    var setLoadingPresenterReceivedInvocations: [LoadControllable?] = []
+    var setLoadingPresenterClosure: ((LoadControllable?) -> Void)?
+
+    func setLoadingPresenter(_ presenter: LoadControllable?) {
+        setLoadingPresenterCallsCount += 1
+        setLoadingPresenterReceivedPresenter = presenter
+        setLoadingPresenterReceivedInvocations.append(presenter)
+        setLoadingPresenterClosure?(presenter)
+    }
+
+    // MARK: - stopLoading
+
+    var stopLoadingCallsCount = 0
+    var stopLoadingCalled: Bool {
+        stopLoadingCallsCount > 0
+    }
+
+    var stopLoadingClosure: (() -> Void)?
+
+    func stopLoading() {
+        stopLoadingCallsCount += 1
+        stopLoadingClosure?()
+    }
+
 }
 
 class GenericPaymentMethodAssemblerProtocolMock: GenericPaymentMethodAssemblerProtocol {
