@@ -41,15 +41,15 @@ internal final class StoredPaymentPromptViewModel: ObservableObject {
 
     internal var title: String {
         switch mode {
-        case .securityCode:
+        case .input:
             isStoredCard ? localizedString(.cardCvcItemTitle, localizationParameters) : displayInformation.title
         }
     }
 
     internal var subtitle: NSAttributedString {
         switch mode {
-        case .securityCode:
-            securityCodeSubtitle
+        case .input:
+            inputSubtitle
         }
     }
 
@@ -64,7 +64,7 @@ internal final class StoredPaymentPromptViewModel: ObservableObject {
     /// The controller of the component that owns the input, if any.
     internal var componentViewController: UIViewController? {
         switch mode {
-        case let .securityCode(component):
+        case let .input(component):
             component.viewController
         }
     }
@@ -109,7 +109,7 @@ internal final class StoredPaymentPromptViewModel: ObservableObject {
         component.context.amount.flatMap { $0.value > 0 ? $0 : nil }
     }
 
-    private var securityCodeSubtitle: NSAttributedString {
+    private var inputSubtitle: NSAttributedString {
         guard isStoredCard else {
             let text = localizedString(
                 .preselectedPaymentMethodSubtitle,

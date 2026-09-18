@@ -82,7 +82,7 @@ internal struct StoredPaymentPromptViewModelTests {
             viewController: componentViewController
         )
         let sut = StoredPaymentPromptViewModel(
-            mode: .securityCode(component),
+            mode: .input(component),
             theme: .default,
             logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
             localizationParameters: nil,
@@ -102,7 +102,7 @@ internal struct StoredPaymentPromptViewModelTests {
         )
         let flowManager = DropInFlowManagingMock()
         let sut = StoredPaymentPromptViewModel(
-            mode: .securityCode(component),
+            mode: .input(component),
             theme: .default,
             logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
             localizationParameters: nil,
@@ -148,7 +148,7 @@ internal struct StoredPaymentPromptViewModelTests {
         )
         let flowManager = DropInFlowManagingMock()
         let sut = StoredPaymentPromptViewModel(
-            mode: .securityCode(component),
+            mode: .input(component),
             theme: .default,
             logoURLProvider: LogoURLProvider(environment: Dummy.apiContext.environment),
             localizationParameters: nil,

@@ -9,14 +9,14 @@
 /// The way the shopper completes a payment with a stored payment method.
 internal enum StoredPaymentPromptMode {
 
-    /// The component owns required input, for example the security code of a stored card,
-    /// and therefore provides both its own view controller and its own submit button.
-    case securityCode(PaymentComponent)
+    /// The component requires input from the shopper, for example the security code of a stored
+    /// card, and therefore provides both its own view controller and its own submit button.
+    case input(PaymentComponent)
 
     /// The component the prompt was created for.
     internal var component: PaymentComponent {
         switch self {
-        case let .securityCode(component):
+        case let .input(component):
             component
         }
     }

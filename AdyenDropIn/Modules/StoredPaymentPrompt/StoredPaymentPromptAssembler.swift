@@ -72,6 +72,6 @@ internal struct StoredPaymentPromptAssembler: StoredPaymentPromptAssemblerProtoc
 
     private func resolveMode(for component: PaymentComponent) -> StoredPaymentPromptMode? {
         guard component.requiresUserInteraction else { return nil }
-        return .securityCode(component)
+        return .input(component)
     }
 }
