@@ -12,45 +12,105 @@ import UIKit
 #endif
 
 @MainActor
-internal final class AuthenticationWithInputViewModel: ObservableObject {
+internal final class StoredPaymentPromptViewModel: ObservableObject {
 
     internal let theme: CheckoutTheme
-    internal weak var router: AuthenticationWithInputRouting?
+    internal weak var router: StoredPaymentPromptRouting?
 
-    private let component: PaymentComponent
+    internal let mode: StoredPaymentPromptMode
     private let logoURLProvider: LogoURLProvider
     private let localizationParameters: LocalizationParameters?
     private let dropInFlowManager: DropInFlowManaging
 
     internal init(
-        component: PaymentComponent,
+        mode: StoredPaymentPromptMode,
         theme: CheckoutTheme,
         logoURLProvider: LogoURLProvider,
         localizationParameters: LocalizationParameters?,
         dropInFlowManager: DropInFlowManaging
     ) {
-        self.component = component
+        self.mode = mode
         self.theme = theme
         self.logoURLProvider = logoURLProvider
         self.localizationParameters = localizationParameters
         self.dropInFlowManager = dropInFlowManager
         component.delegate = self
-        dropInFlowManager.setLoadingPresenter(self)
     }
 
+    // MARK: - Content
+
     internal var title: String {
-        guard component.paymentMethod is StoredCardPaymentMethod else {
-            return displayInformation.title
+        switch mode {
+        case .securityCode:
+            isStoredCard ? localizedString(.cardCvcItemTitle, localizationParameters) : displayInformation.title
         }
-        return localizedString(.cardCvcItemTitle, localizationParameters)
+    }
+
+    internal var subtitle: NSAttributedString {
+        switch mode {
+        case .securityCode:
+            securityCodeSubtitle
+        }
     }
 
     internal var backButtonTitle: String {
         localizedString(.backButton, localizationParameters)
     }
 
-    internal var subtitle: NSAttributedString {
-        guard component.paymentMethod is StoredCardPaymentMethod else {
+    internal var paymentMethodLogoURL: URL {
+        logoURLProvider.logoURL(withName: displayInformation.logoName)
+    }
+
+    /// The controller of the component that owns the input, if any.
+    internal var componentViewController: UIViewController? {
+        switch mode {
+        case let .securityCode(component):
+            component.viewController
+        }
+    }
+
+    // MARK: - Lifecycle
+
+    internal func didAppear() {
+        dropInFlowManager.setLoadingPresenter(self)
+    }
+
+    internal func didDisappear() {
+        dropInFlowManager.setLoadingPresenter(nil)
+    }
+
+    // MARK: - Actions
+
+    internal func cancel() {
+        dropInFlowManager.setLoadingPresenter(nil)
+        dropInFlowManager.cancel(component: component)
+        router?.dismiss()
+    }
+
+    internal func stopLoading() {
+        component.stopLoading()
+    }
+
+    // MARK: - Private
+
+    private var component: PaymentComponent {
+        mode.component
+    }
+
+    private var isStoredCard: Bool {
+        component.paymentMethod is StoredCardPaymentMethod
+    }
+
+    private var displayInformation: DisplayInformation {
+        component.paymentMethod.displayInformation(using: localizationParameters)
+    }
+
+    private var positiveAmount: Amount? {
+        component.context.amount.flatMap { $0.value > 0 ? $0 : nil }
+    }
+
+    private var securityCodeSubtitle: NSAttributedString {
+        guard isStoredCard else {
             let text = localizedString(
                 .preselectedPaymentMethodSubtitle,
                 localizationParameters,
@@ -60,7 +120,7 @@ internal final class AuthenticationWithInputViewModel: ObservableObject {
         }
 
         let paymentMethodTitle = "\(component.paymentMethod.name) \(displayInformation.title)"
-        let amount = component.context.amount.flatMap { $0.value > 0 ? $0 : nil }
+        let amount = positiveAmount
         let text = if let amount {
             localizedString(
                 .checkoutDropinAuthenticationInputDescription,
@@ -77,28 +137,10 @@ internal final class AuthenticationWithInputViewModel: ObservableObject {
         )
     }
 
-    internal var paymentMethodLogoURL: URL {
-        logoURLProvider.logoURL(withName: displayInformation.logoName)
-    }
-
-    internal var componentViewController: UIViewController {
-        component.viewController
-    }
-
-    internal func cancel() {
-        dropInFlowManager.setLoadingPresenter(nil)
-        dropInFlowManager.cancel(component: component)
-        router?.dismiss()
-    }
-
-    internal func stopLoading() {
-        component.stopLoading()
-    }
-
-    private var displayInformation: DisplayInformation {
-        component.paymentMethod.displayInformation(using: localizationParameters)
-    }
-
+    /// Builds the subtitle, emphasizing the given values when the translation contains them.
+    ///
+    /// Emphasized values are looked up in the translated text, so a translation that drops or
+    /// rewrites a placeholder simply renders without emphasis instead of failing.
     private func makeAttributedString(
         _ text: String,
         emphasizedValues: [String] = []
@@ -112,6 +154,7 @@ internal final class AuthenticationWithInputViewModel: ObservableObject {
         )
         emphasizedValues.forEach {
             let range = (text as NSString).range(of: $0)
+            guard range.location != NSNotFound else { return }
             attributedString.addAttributes(
                 [
                     .font: theme.elements.labels.bodyEmphasized.font,
@@ -124,9 +167,9 @@ internal final class AuthenticationWithInputViewModel: ObservableObject {
     }
 }
 
-extension AuthenticationWithInputViewModel: LoadControllable {}
+extension StoredPaymentPromptViewModel: LoadControllable {}
 
-extension AuthenticationWithInputViewModel: PaymentComponentDelegate {
+extension StoredPaymentPromptViewModel: PaymentComponentDelegate {
 
     internal func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
         dropInFlowManager.submit(data, from: component, actionPresenter: self)
@@ -141,7 +184,7 @@ extension AuthenticationWithInputViewModel: PaymentComponentDelegate {
     }
 }
 
-extension AuthenticationWithInputViewModel: ActionPresenter {
+extension StoredPaymentPromptViewModel: ActionPresenter {
 
     internal func present(actionViewController: UIViewController) {
         router?.present(actionViewController: actionViewController) { [weak self] in

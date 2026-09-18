@@ -66,26 +66,26 @@ struct PreselectedPaymentMethodIntegrationTests {
     }
 
     @Test
-    func interactiveStoredComponent_whenPresentedByRouter_thenUsesModalAuthenticationWithInput() throws {
+    func interactiveStoredComponent_whenPresentedByRouter_thenUsesModalStoredPaymentPrompt() throws {
         let rootViewController = ViewControllerSpy()
-        let authenticationRouter = RouterMock()
-        let authenticationAssembler = AuthenticationWithInputAssemblerSpy(router: authenticationRouter)
+        let promptRouter = RouterMock()
+        let promptAssembler = StoredPaymentPromptAssemblerSpy(router: promptRouter)
         let sut = PreselectedPaymentMethodRouter(
             viewController: rootViewController,
             listener: nil,
             paymentMethodListAssembler: PaymentMethodListAssemblerProtocolMock(),
             componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
-            authenticationWithInputAssembler: authenticationAssembler
+            storedPaymentPromptAssembler: promptAssembler
         )
 
         sut.present(component: PaymentComponentTestData.visa.paymentComponent)
 
-        #expect(authenticationAssembler.resolveCallsCount == 1)
-        #expect(authenticationAssembler.receivedPresentationMode == .modal)
+        #expect(promptAssembler.resolveCallsCount == 1)
+        #expect(promptAssembler.receivedPresentationMode == .modal)
         let navigationController = try #require(rootViewController.capturedPresentedViewController as? UINavigationController)
-        #expect(navigationController.viewControllers.first === authenticationRouter.rootViewController)
+        #expect(navigationController.viewControllers.first === promptRouter.rootViewController)
         #expect(navigationController.isModalInPresentation)
-        #expect(sut.childRouter === authenticationRouter)
+        #expect(sut.childRouter === promptRouter)
     }
 
     // MARK: - Show All Payment Methods Tests
@@ -186,7 +186,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         let assembler = PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssemblerMock,
             componentContainerAssembler: componentContainerAssemblerMock,
-            authenticationWithInputAssembler: AuthenticationWithInputAssemblerSpy(router: RouterMock()),
+            storedPaymentPromptAssembler: StoredPaymentPromptAssemblerSpy(router: RouterMock()),
             showsAllPaymentMethodsButton: true,
             configuration: .init(),
             dropInFlowManager: dropInFlowManager,
@@ -361,21 +361,21 @@ struct PreselectedPaymentMethodIntegrationTests {
 }
 
 @MainActor
-private final class AuthenticationWithInputAssemblerSpy: AuthenticationWithInputAssemblerProtocol {
+private final class StoredPaymentPromptAssemblerSpy: StoredPaymentPromptAssemblerProtocol {
 
-    private let router: Router
+    private let router: Router?
     private(set) var resolveCallsCount = 0
-    private(set) var receivedPresentationMode: AuthenticationPresentationMode?
+    private(set) var receivedPresentationMode: StoredPaymentPromptPresentationMode?
 
-    init(router: Router) {
+    init(router: Router?) {
         self.router = router
     }
 
-    func resolveAuthenticationWithInputRouter(
+    func resolveStoredPaymentPromptRouter(
         for component: PaymentComponent,
-        presentationMode: AuthenticationPresentationMode,
-        listener: AuthenticationWithInputRouterListener
-    ) -> Router {
+        presentationMode: StoredPaymentPromptPresentationMode,
+        listener: StoredPaymentPromptRouterListener
+    ) -> Router? {
         resolveCallsCount += 1
         receivedPresentationMode = presentationMode
         return router

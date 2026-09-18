@@ -25,7 +25,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
-    private let authenticationWithInputAssembler: AuthenticationWithInputAssemblerProtocol
+    private let storedPaymentPromptAssembler: StoredPaymentPromptAssemblerProtocol
     private let showsAllPaymentMethodsButton: Bool
     private let configuration: DropInConfiguration
     private let dropInFlowManager: DropInFlowManaging
@@ -37,7 +37,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     internal init(
         paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
         componentContainerAssembler: ComponentContainerAssemblerProtocol,
-        authenticationWithInputAssembler: AuthenticationWithInputAssemblerProtocol,
+        storedPaymentPromptAssembler: StoredPaymentPromptAssemblerProtocol,
         showsAllPaymentMethodsButton: Bool,
         configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
@@ -46,7 +46,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     ) {
         self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
-        self.authenticationWithInputAssembler = authenticationWithInputAssembler
+        self.storedPaymentPromptAssembler = storedPaymentPromptAssembler
         self.showsAllPaymentMethodsButton = showsAllPaymentMethodsButton
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
@@ -78,7 +78,7 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
             listener: delegate,
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler,
-            authenticationWithInputAssembler: authenticationWithInputAssembler
+            storedPaymentPromptAssembler: storedPaymentPromptAssembler
         )
         viewModel.router = router
         return router

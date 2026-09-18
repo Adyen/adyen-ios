@@ -6,37 +6,38 @@
 
 import UIKit
 
-internal enum AuthenticationPresentationMode: Equatable {
+/// The way the stored payment prompt is presented by its parent module.
+internal enum StoredPaymentPromptPresentationMode: Equatable {
     case pushed
     case modal
 }
 
 @MainActor
-internal protocol AuthenticationWithInputRouterListener: AnyObject {
-    func didDismissAuthenticationWithInput()
+internal protocol StoredPaymentPromptRouterListener: AnyObject {
+    func didDismissStoredPaymentPrompt()
 }
 
 @MainActor
-internal protocol AuthenticationWithInputRouting: AnyObject {
+internal protocol StoredPaymentPromptRouting: AnyObject {
     func present(actionViewController: UIViewController, onCancel: (() -> Void)?)
     func dismiss()
 }
 
 @MainActor
-internal final class AuthenticationWithInputRouter: Router, AuthenticationWithInputRouting {
+internal final class StoredPaymentPromptRouter: Router, StoredPaymentPromptRouting {
 
     internal let rootViewController: UIViewController
     internal var childRouter: Router? {
         nil
     }
 
-    private weak var listener: AuthenticationWithInputRouterListener?
-    private let presentationMode: AuthenticationPresentationMode
+    private weak var listener: StoredPaymentPromptRouterListener?
+    private let presentationMode: StoredPaymentPromptPresentationMode
 
     internal init(
         viewController: UIViewController,
-        presentationMode: AuthenticationPresentationMode,
-        listener: AuthenticationWithInputRouterListener
+        presentationMode: StoredPaymentPromptPresentationMode,
+        listener: StoredPaymentPromptRouterListener
     ) {
         self.rootViewController = viewController
         self.presentationMode = presentationMode
@@ -61,6 +62,6 @@ internal final class AuthenticationWithInputRouter: Router, AuthenticationWithIn
         case .modal:
             rootViewController.navigationController?.dismiss(animated: true)
         }
-        listener?.didDismissAuthenticationWithInput()
+        listener?.didDismissStoredPaymentPrompt()
     }
 }
