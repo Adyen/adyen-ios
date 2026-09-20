@@ -51,6 +51,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     internal let componentManager: ComponentManaging
     internal weak var router: PaymentMethodListRouting?
     private let dropInFlowManager: DropInFlowManaging
+    private var paymentTask: Task<Void, Never>?
     private let logoURLProvider: LogoURLProvider
     private let supportsStoredPaymentMethodManagement: Bool
     internal let theme: CheckoutTheme
@@ -216,7 +217,11 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        dropInFlowManager.submit(data, from: component, actionPresenter: self)
+        paymentTask?.cancel()
+        paymentTask = Task { [weak self] in
+            guard let action = await self?.dropInFlowManager.submit(data, from: component) else { return }
+            await self?.router?.presentPaymentAction(for: action)
+        }
     }
 
     internal func didFail(
@@ -232,20 +237,5 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         } else {
             dropInFlowManager.fail(with: error, from: component)
         }
-    }
-}
-
-// MARK: - ActionPresenter
-
-extension PaymentMethodListViewModel: ActionPresenter {
-
-    internal func present(actionViewController: UIViewController) {
-        router?.present(actionViewController: actionViewController) { [weak self] in
-            self?.state = .idle
-        }
-    }
-
-    internal func didCancel(actionComponent: any ActionComponent) {
-        state = .idle
     }
 }

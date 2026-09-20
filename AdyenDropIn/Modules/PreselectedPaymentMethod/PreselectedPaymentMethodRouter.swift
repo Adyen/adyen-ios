@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenActions)
+    import AdyenActions
+#endif
 import Foundation
 import UIKit
 
@@ -18,7 +21,7 @@ internal protocol PreselectedPaymentMethodRouterListener: AnyObject {
 internal protocol PreselectedPaymentMethodRouting: AnyObject {
     func presentPaymentMethodList()
     func present(component: PaymentComponent)
-    func present(actionViewController: UIViewController, onCancel: (() -> Void)?)
+    func presentPaymentAction(for action: Action) async
     func dismiss(completion: (() -> Void)?)
 }
 
@@ -34,18 +37,21 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     private weak var listener: PreselectedPaymentMethodRouterListener?
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
-    internal private(set) var childRouter: Router?
+    private let paymentActionAssembler: PaymentActionAssemblerProtocol
+    internal var childRouter: Router?
     
     // MARK: - Initializers
     
     internal init(
         viewController: UIViewController,
         listener: PreselectedPaymentMethodRouterListener?,
+        paymentActionAssembler: PaymentActionAssemblerProtocol,
         paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
         componentContainerAssembler: ComponentContainerAssemblerProtocol
     ) {
         self.rootViewController = viewController
         self.listener = listener
+        self.paymentActionAssembler = paymentActionAssembler
         self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
     }
@@ -80,15 +86,14 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         }
     }
 
-    internal func present(
-        actionViewController: UIViewController,
-        onCancel: (() -> Void)?
-    ) {
-        let actionViewController = ActionPresentationHelper.viewController(
-            for: actionViewController,
-            onCancel: onCancel
-        )
-        rootViewController.present(actionViewController, animated: true)
+    internal func presentPaymentAction(for action: Action) async {
+        guard let paymentActionRouter = await paymentActionAssembler.resolvePaymentActionRouter(
+            for: action,
+            listener: self
+        ) else { return }
+
+        childRouter = paymentActionRouter
+        rootViewController.present(paymentActionRouter.rootViewController, animated: true)
     }
 
     internal func dismiss(completion: (() -> Void)?) {
@@ -146,6 +151,16 @@ extension PreselectedPaymentMethodRouter: PaymentMethodListRouterListener {
             self?.childRouter = nil
             self?.listener?.didDismissPreselectedPaymentMethod(completion: completion)
         }
+    }
+}
+
+// MARK: - PaymentActionRouterListener
+
+extension PreselectedPaymentMethodRouter: PaymentActionRouterListener {
+
+    internal func didDismissPaymentAction(completion: (() -> Void)?) {
+        childRouter = nil
+        completion?()
     }
 }
 

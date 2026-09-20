@@ -52,6 +52,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     private let localizationParameters: LocalizationParameters?
     internal let showsAllPaymentMethodsButton: Bool
     private let dropInFlowManager: DropInFlowManaging
+    private var paymentTask: Task<Void, Never>?
     internal let analyticsProvider: AnyAnalyticsProvider?
     internal let dropInAnalyticsConfiguration: DropInAnalyticsConfiguration
     internal weak var router: PreselectedPaymentMethodRouting?
@@ -136,6 +137,7 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     }
 
     internal func cancel() {
+        paymentTask?.cancel()
         dropInFlowManager.cancel(component: component)
 
         stopLoading()
@@ -182,7 +184,11 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        dropInFlowManager.submit(data, from: component, actionPresenter: self)
+        paymentTask?.cancel()
+        paymentTask = Task { [weak self] in
+            guard let action = await self?.dropInFlowManager.submit(data, from: component) else { return }
+            await self?.router?.presentPaymentAction(for: action)
+        }
     }
     
     internal func didFail(
@@ -200,20 +206,5 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         var infoEvent = AnalyticsEventInfo(component: AnalyticsConstants.dropInComponentIdentifier, type: .rendered)
         infoEvent.configData = dropInAnalyticsConfiguration
         analyticsProvider?.add(info: infoEvent)
-    }
-}
-
-// MARK: - ActionPresenter
-
-extension PreselectedPaymentMethodViewModel: ActionPresenter {
-
-    internal func present(actionViewController: UIViewController) {
-        router?.present(actionViewController: actionViewController) { [weak self] in
-            self?.stopLoading()
-        }
-    }
-
-    internal func didCancel(actionComponent: any ActionComponent) {
-        stopLoading()
     }
 }

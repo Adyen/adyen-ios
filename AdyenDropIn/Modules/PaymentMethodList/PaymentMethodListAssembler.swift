@@ -27,6 +27,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     private let localizationParameters: LocalizationParameters
     private let configuration: DropInConfiguration
     private let dropInFlowManager: DropInFlowManaging
+    private let paymentActionAssembler: PaymentActionAssemblerProtocol
     private let theme: CheckoutTheme
     private let logoURLProvider: LogoURLProvider
     private let partialPaymentDelegate: PartialPaymentDelegate?
@@ -41,6 +42,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         localizationParameters: LocalizationParameters,
         configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
+        paymentActionAssembler: PaymentActionAssemblerProtocol,
         theme: CheckoutTheme,
         logoURLProvider: LogoURLProvider,
         partialPaymentDelegate: PartialPaymentDelegate?,
@@ -52,6 +54,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         self.localizationParameters = localizationParameters
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
+        self.paymentActionAssembler = paymentActionAssembler
         self.theme = theme
         self.logoURLProvider = logoURLProvider
         self.partialPaymentDelegate = partialPaymentDelegate
@@ -78,6 +81,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         let router = PaymentMethodListRouter(
             viewController: view,
             listener: delegate,
+            paymentActionAssembler: paymentActionAssembler,
             componentContainerAssembler: componentContainerAssembler,
             genericPaymentMethodAssembler: resolveGenericPaymentMethodAssembler(),
             storedPaymentMethodManagementAssembler: resolveStoredPaymentMethodManagementAssembler(),
@@ -105,6 +109,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     private func resolveGenericPaymentMethodAssembler() -> GenericPaymentMethodAssemblerProtocol {
         GenericPaymentMethodAssembler(
             dropInFlowManager: dropInFlowManager,
+            paymentActionAssembler: paymentActionAssembler,
             logoURLProvider: logoURLProvider,
             theme: theme,
             localizationParameters: localizationParameters

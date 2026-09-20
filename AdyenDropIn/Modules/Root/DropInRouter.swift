@@ -10,7 +10,7 @@ import Foundation
 import SafariServices
 import UIKit
 
-internal protocol DropInRouting: Router, AnyObject {}
+internal protocol DropInRouting: Router, DropInDismissing, AnyObject {}
 
 @MainActor
 internal class DropInRouter: DropInRouting {
@@ -25,7 +25,7 @@ internal class DropInRouter: DropInRouting {
     private let preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
-    internal private(set) var childRouter: Router?
+    internal var childRouter: Router?
     
     // MARK: - Initializers
     
@@ -65,6 +65,22 @@ internal class DropInRouter: DropInRouting {
             let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter(delegate: self)
             self.childRouter = paymentMethodListRouter
             return paymentMethodListRouter.rootViewController
+        }
+    }
+}
+
+// MARK: - DropInDismissing
+
+extension DropInRouter {
+
+    internal func dismissDropIn(completion: (() -> Void)?) {
+        // Dismissing the root itself only tears down what is presented on top of it,
+        // so the drop in is dismissed by the view controller presenting it.
+        let dismissingViewController = rootViewController.presentingViewController ?? rootViewController
+
+        dismissingViewController.dismiss(animated: true) { [weak self] in
+            self?.childRouter = nil
+            completion?()
         }
     }
 }
