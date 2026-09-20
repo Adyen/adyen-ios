@@ -108,6 +108,7 @@ package final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>,
         .sorted { $0.name < $1.name }
         
         let defaultCountry = countries.first { $0.identifier == initialCountry }
+        let countryTitle = localizedString(.countryFieldTitle, configuration.localizationParameters)
         
         return FormRegionPickerItem(
             preselectedRegion: defaultCountry,
@@ -116,10 +117,14 @@ package final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>,
                 .countryFieldInvalid,
                 configuration.localizationParameters
             ),
-            title: localizedString(.countryFieldTitle, configuration.localizationParameters),
+            title: countryTitle,
             placeholder: localizedString(.countryFieldPlaceholder, configuration.localizationParameters),
             style: style.textField,
             presenter: presenter,
+            localizationParameters: configuration.localizationParameters,
+            configuration: .init(
+                header: .init(title: countryTitle)
+            ),
             identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "country")
         )
     }()

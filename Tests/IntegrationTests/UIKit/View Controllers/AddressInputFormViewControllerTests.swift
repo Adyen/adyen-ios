@@ -310,6 +310,79 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertEqual(firstListItem.title, "Afghanistan")
         XCTAssertEqual(firstListItem.subtitle, "AF")
     }
+
+    func test_countryPicker_whenPresented_shouldShowHeaderSearchAndSelectedCountry() throws {
+        let viewController = AddressInputFormViewController(
+            viewModel: viewModel(initialCountry: "NL")
+        )
+
+        let pickerViewController = try presentCountryPicker(for: viewController)
+        let searchViewController = try searchViewController(from: pickerViewController)
+        let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
+
+        XCTAssertEqual(headerView.titleLabel.text, "Country/Region")
+        XCTAssertNil(searchViewController.title)
+        XCTAssertTrue(searchViewController.searchBar.isDescendant(of: searchViewController.view))
+        XCTAssertEqual(
+            searchViewController.viewModel.interfaceState.results?
+                .filter(\.isSelected)
+                .map(\.identifier),
+            ["NL"]
+        )
+    }
+
+    func test_countryPicker_whenInitialCountryUnsupported_shouldNotSelectResult() throws {
+        let viewController = AddressInputFormViewController(
+            viewModel: viewModel(
+                initialCountry: "ZZ",
+                supportedCountryCodes: ["NL"]
+            )
+        )
+
+        let pickerViewController = try presentCountryPicker(for: viewController)
+        let searchViewController = try searchViewController(from: pickerViewController)
+        let results = try XCTUnwrap(searchViewController.viewModel.interfaceState.results)
+
+        XCTAssertEqual(results.map(\.identifier), ["NL"])
+        XCTAssertFalse(results.contains(where: \.isSelected))
+    }
+
+    func test_countryPicker_whenSingleCountrySupported_shouldShowOnlySelectedCountry() throws {
+        let viewController = AddressInputFormViewController(
+            viewModel: viewModel(
+                initialCountry: "NL",
+                supportedCountryCodes: ["NL"]
+            )
+        )
+
+        let pickerViewController = try presentCountryPicker(for: viewController)
+        let searchViewController = try searchViewController(from: pickerViewController)
+        let results = try XCTUnwrap(searchViewController.viewModel.interfaceState.results)
+
+        XCTAssertEqual(results.map(\.identifier), ["NL"])
+        XCTAssertEqual(results.filter(\.isSelected).map(\.identifier), ["NL"])
+    }
+
+    func test_countryPicker_whenDifferentCountrySelected_shouldUpdateAddressCountry() throws {
+        let viewController = AddressInputFormViewController(
+            viewModel: viewModel(
+                initialCountry: "NL",
+                supportedCountryCodes: ["BR", "NL"]
+            )
+        )
+
+        let pickerViewController = try presentCountryPicker(for: viewController)
+        let searchViewController = try searchViewController(from: pickerViewController)
+        let brazilItem = try XCTUnwrap(
+            searchViewController.viewModel.interfaceState.results?
+                .first { $0.identifier == "BR" }
+        )
+
+        brazilItem.selectionHandler?()
+
+        XCTAssertEqual(viewController.addressItem.countryPickerItem.value?.identifier, "BR")
+        XCTAssertEqual(viewController.addressItem.value.country, "BR")
+    }
 }
 
 private extension AddressInputFormViewControllerTests {
@@ -324,8 +397,18 @@ private extension AddressInputFormViewControllerTests {
         return try waitUntilTopPresenter(isOfType: FormPickerSearchViewController.self)
     }
     
+    func searchViewController(
+        from pickerSearchViewController: FormPickerSearchViewController<FormPickerElement>
+    ) throws -> SearchViewController {
+        let searchViewController = try XCTUnwrap(
+            pickerSearchViewController.viewControllers.first as? SearchViewController
+        )
+        searchViewController.loadViewIfNeeded()
+        return searchViewController
+    }
+
     func firstListItem(from pickerSearchViewController: FormPickerSearchViewController<FormPickerElement>) throws -> ListItem {
-        let searchViewController = try XCTUnwrap(pickerSearchViewController.viewControllers.first as? SearchViewController)
+        let searchViewController = try searchViewController(from: pickerSearchViewController)
         let resultsList = searchViewController.resultsListViewController
         wait { resultsList.viewIfLoaded?.window != nil }
         let firstCell = try XCTUnwrap(resultsList.tableView.visibleCells.first as? ListCell)
@@ -336,6 +419,7 @@ private extension AddressInputFormViewControllerTests {
         initialCountry: String = "NL",
         prefillAddress: PostalAddress? = nil,
         style: FormComponentStyle = .init(),
+        supportedCountryCodes: [String]? = nil,
         searchHandler: AddressInputFormViewController.ShowSearchHandler? = nil
     ) -> AddressInputFormViewController.ViewModel {
         
@@ -345,7 +429,7 @@ private extension AddressInputFormViewControllerTests {
             localizationParameters: nil,
             initialCountry: initialCountry,
             prefillAddress: prefillAddress,
-            supportedCountryCodes: nil,
+            supportedCountryCodes: supportedCountryCodes,
             handleShowSearch: searchHandler,
             completionHandler: { _ in }
         )

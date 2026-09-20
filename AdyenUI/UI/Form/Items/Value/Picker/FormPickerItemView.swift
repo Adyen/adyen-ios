@@ -20,7 +20,8 @@ package class FormPickerItemView<Value: FormPickable>: FormSelectableValueItemVi
                 title: item.title,
                 configuration: item.configuration,
                 theme: theme,
-                options: item.selectableValues
+                options: item.selectableValues,
+                selectedOption: item.value
             ) { [weak topPresenter] selectedItem in
                 item.value = selectedItem
                 topPresenter?.dismissViewController(animated: true)
