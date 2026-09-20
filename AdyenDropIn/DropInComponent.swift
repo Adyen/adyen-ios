@@ -55,7 +55,11 @@ package final class DropInComponent: NSObject,
         paymentComponentBuilder: paymentComponentBuilder
     )
 
-    internal private(set) lazy var router = dropInAssembler.resolveDropInRouter()
+    internal private(set) lazy var router: DropInRouting = {
+        let router = dropInAssembler.resolveDropInRouter()
+        dropInFlowManager.dropInDismisser = router
+        return router
+    }()
 
     internal var configuration: DropInConfiguration
 
@@ -151,7 +155,7 @@ package final class DropInComponent: NSObject,
     ///
     /// - Parameter action: The action to handle.
     package func handle(_ action: Action) {
-        dropInFlowManager.handle(action: action)
+        dropInFlowManager.receive(action: action)
     }
 
     // MARK: - Handling Partial Payments
@@ -257,6 +261,7 @@ package final class DropInComponent: NSObject,
 
     package func stopLoading() {
         paymentInProgress = false
+        dropInFlowManager.finishPendingSubmission()
         // TODO: - Handle loading logic in its own module
 //        (rootViewController as? ComponentLoader)?.stopLoading()
         selectedPaymentComponent?.stopLoading()

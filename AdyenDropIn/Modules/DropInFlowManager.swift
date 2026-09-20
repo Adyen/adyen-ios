@@ -13,22 +13,25 @@ import UIKit
 
 // sourcery:AutoMockable
 @MainActor
-internal protocol ActionPresenter: AnyObject {
-    func present(actionViewController: UIViewController)
-    func didCancel(actionComponent: ActionComponent)
+internal protocol DropInDismissing: AnyObject {
+    func dismissDropIn(completion: (() -> Void)?)
 }
 
 // sourcery:AutoMockable
 @MainActor
-internal protocol DropInFlowManaging {
-    func submit(
-        _ data: PaymentComponentData,
-        from component: PaymentComponent,
-        actionPresenter: ActionPresenter
-    )
+internal protocol DropInFlowManaging: AnyObject {
+    var dropInDismisser: DropInDismissing? { get set }
+    /// Submits the payment and waits for the action returned by the payment session, if any.
+    func submit(_ data: PaymentComponentData, from component: PaymentComponent) async -> Action?
+    /// Delivers the action returned by the payment session to the pending submission.
+    func receive(action: Action)
+    /// Handles the action and waits for the view controller the action needs to present, if any.
+    func handle(action: Action) async -> UIViewController?
     func fail(with error: Error, from component: PaymentComponent)
     func cancel(component: PaymentComponent)
-    func handle(action: Action)
+    /// Resolves a pending submission that will not receive an action anymore.
+    func finishPendingSubmission()
+    func dismissDropIn()
 }
 
 @MainActor
@@ -36,11 +39,13 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     // MARK: - Properties
 
+    internal weak var dropInDismisser: DropInDismissing?
     private weak var dropInComponent: DropInComponent?
     private weak var dropInComponentDelegate: DropInComponentDelegate?
     private let context: AdyenContext
     private let actionComponentConfiguration: CheckoutActionComponent.Configuration
-    private weak var actionPresenter: ActionPresenter?
+    private var submissionContinuation: CheckedContinuation<Action?, Never>?
+    private var actionViewControllerContinuation: CheckedContinuation<UIViewController?, Never>?
 
     // MARK: - Initializers
 
@@ -72,14 +77,39 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     internal func submit(
         _ data: PaymentComponentData,
-        from component: PaymentComponent,
-        actionPresenter: ActionPresenter
-    ) {
-        Task { [weak self] in
-            guard let self, let dropInComponent else { return }
-            self.actionPresenter = actionPresenter
-            let updatedData = await component.prepareSubmitData(from: data)
-            dropInComponentDelegate?.didSubmit(updatedData, from: component, in: dropInComponent)
+        from component: PaymentComponent
+    ) async -> Action? {
+        finishPendingSubmission()
+
+        let updatedData = await component.prepareSubmitData(from: data)
+        guard let dropInComponent else { return nil }
+
+        return await withTaskCancellationHandler {
+            await withCheckedContinuation { continuation in
+                submissionContinuation = continuation
+                dropInComponentDelegate?.didSubmit(updatedData, from: component, in: dropInComponent)
+            }
+        } onCancel: {
+            Task { @MainActor [weak self] in
+                self?.finishPendingSubmission()
+            }
+        }
+    }
+
+    internal func receive(action: Action) {
+        guard submissionContinuation != nil else {
+            return AdyenAssertion.assertionFailure(
+                message: "An action was received while no payment submission was waiting for it."
+            )
+        }
+
+        resumeSubmission(with: action)
+    }
+
+    internal func handle(action: Action) async -> UIViewController? {
+        await withCheckedContinuation { continuation in
+            actionViewControllerContinuation = continuation
+            actionComponent.handle(action)
         }
     }
 
@@ -89,12 +119,32 @@ internal class DropInFlowManager: DropInFlowManaging {
     }
 
     internal func cancel(component: PaymentComponent) {
+        finishPendingSubmission()
+
         guard let dropInComponent else { return }
         dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
     }
 
-    internal func handle(action: Action) {
-        actionComponent.handle(action)
+    internal func finishPendingSubmission() {
+        resumeSubmission(with: nil)
+    }
+
+    internal func dismissDropIn() {
+        dropInDismisser?.dismissDropIn(completion: nil)
+    }
+
+    // MARK: - Private
+
+    private func resumeSubmission(with action: Action?) {
+        guard let submissionContinuation else { return }
+        self.submissionContinuation = nil
+        submissionContinuation.resume(returning: action)
+    }
+
+    private func resumeActionPresentation(with viewController: UIViewController?) {
+        guard let actionViewControllerContinuation else { return }
+        self.actionViewControllerContinuation = nil
+        actionViewControllerContinuation.resume(returning: viewController)
     }
 }
 
@@ -104,29 +154,37 @@ extension DropInFlowManager: ActionComponentDelegate {
 
     internal func didOpenExternalApplication(component: any ActionComponent) {
         component.stopLoading()
+        resumeActionPresentation(with: nil)
 
         guard let dropInComponent else { return }
         dropInComponentDelegate?.didOpenExternalApplication(component: component, in: dropInComponent)
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
+        resumeActionPresentation(with: nil)
+
         guard let dropInComponent else { return }
         dropInComponentDelegate?.didProvide(data, from: component, in: dropInComponent)
     }
 
     internal func didComplete(from component: any ActionComponent) {
+        resumeActionPresentation(with: nil)
+
         guard let dropInComponent else { return }
         dropInComponentDelegate?.didComplete(from: component, in: dropInComponent)
     }
 
     internal func didFail(with error: any Error, from component: any ActionComponent) {
-        guard let dropInComponent else { return }
+        resumeActionPresentation(with: nil)
 
+        // Dismissing an action, for example by closing the web page of a redirect,
+        // dismisses the drop in as there is no way back to the payment details.
         if case ComponentError.cancelled = error {
-            actionPresenter?.didCancel(actionComponent: component)
-        } else {
-            dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
+            return dismissDropIn()
         }
+
+        guard let dropInComponent else { return }
+        dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
     }
 }
 
@@ -135,6 +193,6 @@ extension DropInFlowManager: ActionComponentDelegate {
 extension DropInFlowManager: PresentationDelegate {
 
     internal func present(viewController: UIViewController) {
-        actionPresenter?.present(actionViewController: viewController)
+        resumeActionPresentation(with: viewController)
     }
 }
