@@ -88,17 +88,36 @@ struct PaymentMethodListRouterTests {
     }
 
     @Test
-    func presentActionComponent() {
+    func presentPaymentAction_shouldPresentResolvedRouterModally() async {
         // Given
         let navigationControllerSpy = NavigationControllerSpy()
-        let sut = makeSUT(navigationController: navigationControllerSpy)
-        let actionComponent = makeActionComponent()
+        let paymentActionRouter = RouterMock()
+        let sut = makeSUT(
+            navigationController: navigationControllerSpy,
+            paymentActionAssembler: makePaymentActionAssembler(router: paymentActionRouter)
+        )
 
         // When
-        sut.present(actionViewController: actionComponent, onCancel: nil)
+        await sut.presentPaymentAction(for: makeAction())
 
         // Then - rootViewController is the navigationController, so it receives the present call
         #expect(navigationControllerSpy.presentCallsCount == 1)
+        #expect(navigationControllerSpy.capturedPresentedViewController === paymentActionRouter.rootViewController)
+        #expect(sut.childRouter === paymentActionRouter)
+    }
+
+    @Test
+    func didDismissPaymentAction_shouldReleaseChildRouter() async throws {
+        // Given
+        let sut = makeSUT(paymentActionAssembler: makePaymentActionAssembler(router: RouterMock()))
+        await sut.presentPaymentAction(for: makeAction())
+        try #require(sut.childRouter != nil)
+
+        // When
+        sut.didDismissPaymentAction(completion: nil)
+
+        // Then
+        #expect(sut.childRouter == nil)
     }
 
     // MARK: - StoredPaymentMethodManagement Tests
@@ -323,6 +342,7 @@ struct PaymentMethodListRouterTests {
         viewController: ViewControllerSpy = ViewControllerSpy(),
         navigationController: NavigationControllerSpy = NavigationControllerSpy(),
         listener: PaymentMethodListRouterListenerMock? = nil,
+        paymentActionAssembler: PaymentActionAssemblerProtocolMock? = nil,
         componentContainerAssembler: ComponentContainerAssemblerProtocolMock? = nil,
         genericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol? = nil,
         storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol? = nil,
@@ -343,6 +363,7 @@ struct PaymentMethodListRouterTests {
             viewController: viewController,
             navigationController: navigationController,
             listener: listener,
+            paymentActionAssembler: paymentActionAssembler ?? makePaymentActionAssembler(),
             componentContainerAssembler: componentContainerAssembler,
             genericPaymentMethodAssembler: genericPaymentMethodAssembler,
             storedPaymentMethodManagementAssembler: storedPaymentMethodManagementAssembler,
@@ -369,8 +390,16 @@ struct PaymentMethodListRouterTests {
         )
     }
 
-    private func makeActionComponent() -> UIViewController {
-        UIViewController()
+    private func makePaymentActionAssembler(
+        router: RouterMock? = nil
+    ) -> PaymentActionAssemblerProtocolMock {
+        let assembler = PaymentActionAssemblerProtocolMock()
+        assembler.resolvePaymentActionRouterForListenerReturnValue = router ?? RouterMock()
+        return assembler
+    }
+
+    private func makeAction() -> Action {
+        .redirect(RedirectAction(url: URL(string: "https://adyen.com")!, paymentData: "payment_data"))
     }
 
     private func makeStoredPaymentComponentMock() -> StoredComponentMock {

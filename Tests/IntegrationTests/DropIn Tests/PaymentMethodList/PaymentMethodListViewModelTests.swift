@@ -77,20 +77,24 @@ struct PaymentMethodListViewModelTests {
     // MARK: - PaymentComponentDelegate Tests
 
     @Test
-    func didSubmit_shouldCallDropInFlowManagerSubmit() {
+    func didSubmit_shouldCallDropInFlowManagerSubmit() async {
         // Given
         let (sut, dropInFlowManagerMock, _) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
         let data = makePaymentComponentDataMock()
 
         // When
-        sut.didSubmit(data, from: paymentComponentMock)
+        await confirmation { didSubmit in
+            dropInFlowManagerMock.submitFromClosure = { _, _ in
+                didSubmit()
+                return nil
+            }
+            sut.didSubmit(data, from: paymentComponentMock)
+            await waitUntil { dropInFlowManagerMock.submitFromCalled }
+        }
 
         // Then
-        #expect(dropInFlowManagerMock.submitFromActionPresenterCallsCount == 1)
-
-        let receivedActionPresenter = dropInFlowManagerMock.submitFromActionPresenterReceivedArguments?.actionPresenter
-        #expect(sut === receivedActionPresenter)
+        #expect(dropInFlowManagerMock.submitFromReceivedArguments?.component === paymentComponentMock)
     }
 
     @Test
@@ -433,54 +437,26 @@ struct PaymentMethodListViewModelTests {
         #expect(sections.contains { $0.headerTrailingButton != nil } == false)
     }
 
-    // MARK: - ActionPresenter Tests
+    // MARK: - PaymentAction Tests
 
     @Test
-    func presentActionComponent_shouldCallRouterPresentActionComponent() {
+    func didSubmit_givenAnAction_shouldPresentPaymentAction() async throws {
         // Given
-        let (sut, _, routerMock) = makeSUT()
-        let actionComponentMock = makeActionComponentMock()
+        let (sut, dropInFlowManagerMock, routerMock) = makeSUT()
+        let paymentComponentMock = makePaymentComponentMock()
+        dropInFlowManagerMock.submitFromReturnValue = try .redirect(
+            RedirectAction(url: #require(URL(string: "https://adyen.com")), paymentData: "payment_data")
+        )
 
         // When
-        sut.present(actionViewController: actionComponentMock)
-
-        // Then
-        #expect(routerMock.presentActionViewControllerOnCancelCallsCount == 1)
-    }
-
-    @Test
-    func presentActionComponent_onCancelCallback_shouldTransitionToIdleState() {
-        // Given
-        let (sut, _, routerMock) = makeSUT()
-        let actionComponentMock = makeActionComponentMock()
-        sut.didLoad() // Set state to loaded first
-        #expect(sut.state.isLoaded)
-
-        // Capture the onCancel callback when present is called
-        var capturedOnCancel: (() -> Void)?
-        routerMock.presentActionViewControllerOnCancelClosure = { _, onCancel in
-            capturedOnCancel = onCancel
+        await confirmation { didPresentPaymentAction in
+            routerMock.presentPaymentActionForClosure = { _ in didPresentPaymentAction() }
+            sut.didSubmit(makePaymentComponentDataMock(), from: paymentComponentMock)
+            await waitUntil { routerMock.presentPaymentActionForCallsCount > 0 }
         }
 
-        // When
-        sut.present(actionViewController: actionComponentMock)
-        capturedOnCancel?()
-
         // Then
-        #expect(sut.state == .idle)
-    }
-
-    @Test
-    func didCancelActionComponent_shouldTransitionToIdleState() {
-        // Given
-        let (sut, _, _) = makeSUT()
-        let actionComponentMock = RedirectComponent(context: contextMock)
-
-        // When
-        sut.didCancel(actionComponent: actionComponentMock)
-
-        // Then
-        #expect(sut.state == .idle)
+        #expect(routerMock.presentPaymentActionForCallsCount == 1)
     }
 
     // MARK: - Helpers

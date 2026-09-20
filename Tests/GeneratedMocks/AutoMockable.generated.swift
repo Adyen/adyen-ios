@@ -22,60 +22,24 @@ import Foundation
 @testable import AdyenDropIn
 @testable import AdyenUI
 
-class ActionPresenterMock: ActionPresenter {
+public class AnyEventAnalyticsProviderMock: AnyEventAnalyticsProvider {
 
-    // MARK: - present
+    public init() {}
 
-    var presentActionViewControllerCallsCount = 0
-    var presentActionViewControllerCalled: Bool {
-        presentActionViewControllerCallsCount > 0
-    }
-
-    var presentActionViewControllerReceivedActionViewController: UIViewController?
-    var presentActionViewControllerReceivedInvocations: [UIViewController] = []
-    var presentActionViewControllerClosure: ((UIViewController) -> Void)?
-
-    func present(actionViewController: UIViewController) {
-        presentActionViewControllerCallsCount += 1
-        presentActionViewControllerReceivedActionViewController = actionViewController
-        presentActionViewControllerReceivedInvocations.append(actionViewController)
-        presentActionViewControllerClosure?(actionViewController)
-    }
-
-    // MARK: - didCancel
-
-    var didCancelActionComponentCallsCount = 0
-    var didCancelActionComponentCalled: Bool {
-        didCancelActionComponentCallsCount > 0
-    }
-
-    var didCancelActionComponentReceivedActionComponent: ActionComponent?
-    var didCancelActionComponentReceivedInvocations: [ActionComponent] = []
-    var didCancelActionComponentClosure: ((ActionComponent) -> Void)?
-
-    func didCancel(actionComponent: ActionComponent) {
-        didCancelActionComponentCallsCount += 1
-        didCancelActionComponentReceivedActionComponent = actionComponent
-        didCancelActionComponentReceivedInvocations.append(actionComponent)
-        didCancelActionComponentClosure?(actionComponent)
-    }
-
-}
-
-package class AnyEventAnalyticsProviderMock: AnyEventAnalyticsProvider {
+    public var checkoutAttemptId: String?
 
     // MARK: - add
 
-    package var addInfoCallsCount = 0
-    package var addInfoCalled: Bool {
+    public var addInfoCallsCount = 0
+    public var addInfoCalled: Bool {
         addInfoCallsCount > 0
     }
 
-    package var addInfoReceivedInfo: AnalyticsEventInfo?
-    package var addInfoReceivedInvocations: [AnalyticsEventInfo] = []
-    package var addInfoClosure: ((AnalyticsEventInfo) -> Void)?
+    public var addInfoReceivedInfo: AnalyticsEventInfo?
+    public var addInfoReceivedInvocations: [AnalyticsEventInfo] = []
+    public var addInfoClosure: ((AnalyticsEventInfo) -> Void)?
 
-    package func add(info: AnalyticsEventInfo) {
+    public func add(info: AnalyticsEventInfo) {
         addInfoCallsCount += 1
         addInfoReceivedInfo = info
         addInfoReceivedInvocations.append(info)
@@ -84,16 +48,16 @@ package class AnyEventAnalyticsProviderMock: AnyEventAnalyticsProvider {
 
     // MARK: - add
 
-    package var addLogCallsCount = 0
-    package var addLogCalled: Bool {
+    public var addLogCallsCount = 0
+    public var addLogCalled: Bool {
         addLogCallsCount > 0
     }
 
-    package var addLogReceivedLog: AnalyticsEventLog?
-    package var addLogReceivedInvocations: [AnalyticsEventLog] = []
-    package var addLogClosure: ((AnalyticsEventLog) -> Void)?
+    public var addLogReceivedLog: AnalyticsEventLog?
+    public var addLogReceivedInvocations: [AnalyticsEventLog] = []
+    public var addLogClosure: ((AnalyticsEventLog) -> Void)?
 
-    package func add(log: AnalyticsEventLog) {
+    public func add(log: AnalyticsEventLog) {
         addLogCallsCount += 1
         addLogReceivedLog = log
         addLogReceivedInvocations.append(log)
@@ -102,16 +66,16 @@ package class AnyEventAnalyticsProviderMock: AnyEventAnalyticsProvider {
 
     // MARK: - add
 
-    package var addErrorCallsCount = 0
-    package var addErrorCalled: Bool {
+    public var addErrorCallsCount = 0
+    public var addErrorCalled: Bool {
         addErrorCallsCount > 0
     }
 
-    package var addErrorReceivedError: AnalyticsEventError?
-    package var addErrorReceivedInvocations: [AnalyticsEventError] = []
-    package var addErrorClosure: ((AnalyticsEventError) -> Void)?
+    public var addErrorReceivedError: AnalyticsEventError?
+    public var addErrorReceivedInvocations: [AnalyticsEventError] = []
+    public var addErrorClosure: ((AnalyticsEventError) -> Void)?
 
-    package func add(error: AnalyticsEventError) {
+    public func add(error: AnalyticsEventError) {
         addErrorCallsCount += 1
         addErrorReceivedError = error
         addErrorReceivedInvocations.append(error)
@@ -185,18 +149,22 @@ class ComponentContainerRoutingMock: ComponentContainerRouting {
         presentPaymentComponentClosure?(paymentComponent)
     }
 
-    // MARK: - present
+    // MARK: - presentPaymentAction
 
-    var presentActionViewControllerOnCancelCallsCount = 0
-    var presentActionViewControllerOnCancelCalled: Bool {
-        presentActionViewControllerOnCancelCallsCount > 0
+    var presentPaymentActionForCallsCount = 0
+    var presentPaymentActionForCalled: Bool {
+        presentPaymentActionForCallsCount > 0
     }
 
-    var presentActionViewControllerOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
+    var presentPaymentActionForReceivedAction: Action?
+    var presentPaymentActionForReceivedInvocations: [Action] = []
+    var presentPaymentActionForClosure: ((Action) async -> Void)?
 
-    func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
-        presentActionViewControllerOnCancelCallsCount += 1
-        presentActionViewControllerOnCancelClosure?(actionViewController, onCancel)
+    func presentPaymentAction(for action: Action) async {
+        presentPaymentActionForCallsCount += 1
+        presentPaymentActionForReceivedAction = action
+        presentPaymentActionForReceivedInvocations.append(action)
+        await presentPaymentActionForClosure?(action)
     }
 
     // MARK: - dismiss
@@ -240,24 +208,90 @@ class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtoc
 
 }
 
+class DropInDismissingMock: DropInDismissing {
+
+    // MARK: - dismissDropIn
+
+    var dismissDropInCompletionCallsCount = 0
+    var dismissDropInCompletionCalled: Bool {
+        dismissDropInCompletionCallsCount > 0
+    }
+
+    var dismissDropInCompletionClosure: (((() -> Void)?) -> Void)?
+
+    func dismissDropIn(completion: (() -> Void)?) {
+        dismissDropInCompletionCallsCount += 1
+        dismissDropInCompletionClosure?(completion)
+    }
+
+}
+
 class DropInFlowManagingMock: DropInFlowManaging {
+
+    var dropInDismisser: DropInDismissing?
 
     // MARK: - submit
 
-    var submitFromActionPresenterCallsCount = 0
-    var submitFromActionPresenterCalled: Bool {
-        submitFromActionPresenterCallsCount > 0
+    var submitFromCallsCount = 0
+    var submitFromCalled: Bool {
+        submitFromCallsCount > 0
     }
 
-    var submitFromActionPresenterReceivedArguments: (data: PaymentComponentData, component: PaymentComponent, actionPresenter: ActionPresenter)?
-    var submitFromActionPresenterReceivedInvocations: [(data: PaymentComponentData, component: PaymentComponent, actionPresenter: ActionPresenter)] = []
-    var submitFromActionPresenterClosure: ((PaymentComponentData, PaymentComponent, ActionPresenter) -> Void)?
+    var submitFromReceivedArguments: (data: PaymentComponentData, component: PaymentComponent)?
+    var submitFromReceivedInvocations: [(data: PaymentComponentData, component: PaymentComponent)] = []
+    var submitFromReturnValue: Action?
+    var submitFromClosure: ((PaymentComponentData, PaymentComponent) async -> Action?)?
 
-    func submit(_ data: PaymentComponentData, from component: PaymentComponent, actionPresenter: ActionPresenter) {
-        submitFromActionPresenterCallsCount += 1
-        submitFromActionPresenterReceivedArguments = (data: data, component: component, actionPresenter: actionPresenter)
-        submitFromActionPresenterReceivedInvocations.append((data: data, component: component, actionPresenter: actionPresenter))
-        submitFromActionPresenterClosure?(data, component, actionPresenter)
+    func submit(_ data: PaymentComponentData, from component: PaymentComponent) async -> Action? {
+        submitFromCallsCount += 1
+        submitFromReceivedArguments = (data: data, component: component)
+        submitFromReceivedInvocations.append((data: data, component: component))
+        if let submitFromClosure {
+            return await submitFromClosure(data, component)
+        } else {
+            return submitFromReturnValue
+        }
+    }
+
+    // MARK: - receive
+
+    var receiveActionCallsCount = 0
+    var receiveActionCalled: Bool {
+        receiveActionCallsCount > 0
+    }
+
+    var receiveActionReceivedAction: Action?
+    var receiveActionReceivedInvocations: [Action] = []
+    var receiveActionClosure: ((Action) -> Void)?
+
+    func receive(action: Action) {
+        receiveActionCallsCount += 1
+        receiveActionReceivedAction = action
+        receiveActionReceivedInvocations.append(action)
+        receiveActionClosure?(action)
+    }
+
+    // MARK: - handle
+
+    var handleActionCallsCount = 0
+    var handleActionCalled: Bool {
+        handleActionCallsCount > 0
+    }
+
+    var handleActionReceivedAction: Action?
+    var handleActionReceivedInvocations: [Action] = []
+    var handleActionReturnValue: UIViewController?
+    var handleActionClosure: ((Action) async -> UIViewController?)?
+
+    func handle(action: Action) async -> UIViewController? {
+        handleActionCallsCount += 1
+        handleActionReceivedAction = action
+        handleActionReceivedInvocations.append(action)
+        if let handleActionClosure {
+            return await handleActionClosure(action)
+        } else {
+            return handleActionReturnValue
+        }
     }
 
     // MARK: - fail
@@ -296,22 +330,32 @@ class DropInFlowManagingMock: DropInFlowManaging {
         cancelComponentClosure?(component)
     }
 
-    // MARK: - handle
+    // MARK: - finishPendingSubmission
 
-    var handleActionCallsCount = 0
-    var handleActionCalled: Bool {
-        handleActionCallsCount > 0
+    var finishPendingSubmissionCallsCount = 0
+    var finishPendingSubmissionCalled: Bool {
+        finishPendingSubmissionCallsCount > 0
     }
 
-    var handleActionReceivedAction: Action?
-    var handleActionReceivedInvocations: [Action] = []
-    var handleActionClosure: ((Action) -> Void)?
+    var finishPendingSubmissionClosure: (() -> Void)?
 
-    func handle(action: Action) {
-        handleActionCallsCount += 1
-        handleActionReceivedAction = action
-        handleActionReceivedInvocations.append(action)
-        handleActionClosure?(action)
+    func finishPendingSubmission() {
+        finishPendingSubmissionCallsCount += 1
+        finishPendingSubmissionClosure?()
+    }
+
+    // MARK: - dismissDropIn
+
+    var dismissDropInCallsCount = 0
+    var dismissDropInCalled: Bool {
+        dismissDropInCallsCount > 0
+    }
+
+    var dismissDropInClosure: (() -> Void)?
+
+    func dismissDropIn() {
+        dismissDropInCallsCount += 1
+        dismissDropInClosure?()
     }
 
 }
@@ -363,18 +407,22 @@ class GenericPaymentMethodRouterListenerMock: GenericPaymentMethodRouterListener
 
 class GenericPaymentMethodRoutingMock: GenericPaymentMethodRouting {
 
-    // MARK: - present
+    // MARK: - presentPaymentAction
 
-    var presentActionViewControllerOnCancelCallsCount = 0
-    var presentActionViewControllerOnCancelCalled: Bool {
-        presentActionViewControllerOnCancelCallsCount > 0
+    var presentPaymentActionForCallsCount = 0
+    var presentPaymentActionForCalled: Bool {
+        presentPaymentActionForCallsCount > 0
     }
 
-    var presentActionViewControllerOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
+    var presentPaymentActionForReceivedAction: Action?
+    var presentPaymentActionForReceivedInvocations: [Action] = []
+    var presentPaymentActionForClosure: ((Action) async -> Void)?
 
-    func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
-        presentActionViewControllerOnCancelCallsCount += 1
-        presentActionViewControllerOnCancelClosure?(actionViewController, onCancel)
+    func presentPaymentAction(for action: Action) async {
+        presentPaymentActionForCallsCount += 1
+        presentPaymentActionForReceivedAction = action
+        presentPaymentActionForReceivedInvocations.append(action)
+        await presentPaymentActionForClosure?(action)
     }
 
     // MARK: - dismiss
@@ -389,6 +437,87 @@ class GenericPaymentMethodRoutingMock: GenericPaymentMethodRouting {
     func dismiss() {
         dismissCallsCount += 1
         dismissClosure?()
+    }
+
+}
+
+class PaymentActionAssemblerProtocolMock: PaymentActionAssemblerProtocol {
+
+    // MARK: - resolvePaymentActionRouter
+
+    var resolvePaymentActionRouterForListenerCallsCount = 0
+    var resolvePaymentActionRouterForListenerCalled: Bool {
+        resolvePaymentActionRouterForListenerCallsCount > 0
+    }
+
+    var resolvePaymentActionRouterForListenerReceivedArguments: (action: Action, listener: PaymentActionRouterListener)?
+    var resolvePaymentActionRouterForListenerReceivedInvocations: [(action: Action, listener: PaymentActionRouterListener)] = []
+    var resolvePaymentActionRouterForListenerReturnValue: Router?
+    var resolvePaymentActionRouterForListenerClosure: ((Action, PaymentActionRouterListener) async -> Router?)?
+
+    func resolvePaymentActionRouter(for action: Action, listener: PaymentActionRouterListener) async -> Router? {
+        resolvePaymentActionRouterForListenerCallsCount += 1
+        resolvePaymentActionRouterForListenerReceivedArguments = (action: action, listener: listener)
+        resolvePaymentActionRouterForListenerReceivedInvocations.append((action: action, listener: listener))
+        if let resolvePaymentActionRouterForListenerClosure {
+            return await resolvePaymentActionRouterForListenerClosure(action, listener)
+        } else {
+            return resolvePaymentActionRouterForListenerReturnValue
+        }
+    }
+
+}
+
+class PaymentActionRouterListenerMock: PaymentActionRouterListener {
+
+    // MARK: - didDismissPaymentAction
+
+    var didDismissPaymentActionCompletionCallsCount = 0
+    var didDismissPaymentActionCompletionCalled: Bool {
+        didDismissPaymentActionCompletionCallsCount > 0
+    }
+
+    var didDismissPaymentActionCompletionClosure: (((() -> Void)?) -> Void)?
+
+    func didDismissPaymentAction(completion: (() -> Void)?) {
+        didDismissPaymentActionCompletionCallsCount += 1
+        didDismissPaymentActionCompletionClosure?(completion)
+    }
+
+}
+
+class PaymentActionRoutingMock: PaymentActionRouting {
+
+    // MARK: - dismiss
+
+    var dismissCompletionCallsCount = 0
+    var dismissCompletionCalled: Bool {
+        dismissCompletionCallsCount > 0
+    }
+
+    var dismissCompletionClosure: (((() -> Void)?) -> Void)?
+
+    func dismiss(completion: (() -> Void)?) {
+        dismissCompletionCallsCount += 1
+        dismissCompletionClosure?(completion)
+    }
+
+}
+
+class PaymentActionViewModelProtocolMock: PaymentActionViewModelProtocol {
+
+    // MARK: - cancel
+
+    var cancelCallsCount = 0
+    var cancelCalled: Bool {
+        cancelCallsCount > 0
+    }
+
+    var cancelClosure: (() -> Void)?
+
+    func cancel() {
+        cancelCallsCount += 1
+        cancelClosure?()
     }
 
 }
@@ -476,18 +605,22 @@ class PaymentMethodListRoutingMock: PaymentMethodListRouting {
         presentViewControllerClosure?(viewController)
     }
 
-    // MARK: - present
+    // MARK: - presentPaymentAction
 
-    var presentActionViewControllerOnCancelCallsCount = 0
-    var presentActionViewControllerOnCancelCalled: Bool {
-        presentActionViewControllerOnCancelCallsCount > 0
+    var presentPaymentActionForCallsCount = 0
+    var presentPaymentActionForCalled: Bool {
+        presentPaymentActionForCallsCount > 0
     }
 
-    var presentActionViewControllerOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
+    var presentPaymentActionForReceivedAction: Action?
+    var presentPaymentActionForReceivedInvocations: [Action] = []
+    var presentPaymentActionForClosure: ((Action) async -> Void)?
 
-    func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
-        presentActionViewControllerOnCancelCallsCount += 1
-        presentActionViewControllerOnCancelClosure?(actionViewController, onCancel)
+    func presentPaymentAction(for action: Action) async {
+        presentPaymentActionForCallsCount += 1
+        presentPaymentActionForReceivedAction = action
+        presentPaymentActionForReceivedInvocations.append(action)
+        await presentPaymentActionForClosure?(action)
     }
 
     // MARK: - presentStoredPaymentMethodManagement
@@ -657,18 +790,22 @@ class PreselectedPaymentMethodRoutingMock: PreselectedPaymentMethodRouting {
         presentComponentClosure?(component)
     }
 
-    // MARK: - present
+    // MARK: - presentPaymentAction
 
-    var presentActionViewControllerOnCancelCallsCount = 0
-    var presentActionViewControllerOnCancelCalled: Bool {
-        presentActionViewControllerOnCancelCallsCount > 0
+    var presentPaymentActionForCallsCount = 0
+    var presentPaymentActionForCalled: Bool {
+        presentPaymentActionForCallsCount > 0
     }
 
-    var presentActionViewControllerOnCancelClosure: ((UIViewController, (() -> Void)?) -> Void)?
+    var presentPaymentActionForReceivedAction: Action?
+    var presentPaymentActionForReceivedInvocations: [Action] = []
+    var presentPaymentActionForClosure: ((Action) async -> Void)?
 
-    func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
-        presentActionViewControllerOnCancelCallsCount += 1
-        presentActionViewControllerOnCancelClosure?(actionViewController, onCancel)
+    func presentPaymentAction(for action: Action) async {
+        presentPaymentActionForCallsCount += 1
+        presentPaymentActionForReceivedAction = action
+        presentPaymentActionForReceivedInvocations.append(action)
+        await presentPaymentActionForClosure?(action)
     }
 
     // MARK: - dismiss

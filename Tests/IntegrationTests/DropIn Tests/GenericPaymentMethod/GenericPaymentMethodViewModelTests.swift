@@ -66,7 +66,7 @@ struct GenericPaymentMethodViewModelTests {
     }
 
     @Test
-    func didSubmit_shouldCallDropInFlowManagerSubmit() {
+    func didSubmit_shouldCallDropInFlowManagerSubmit() async {
         // Given
         let (sut, paymentComponentMock, dropInFlowManagerMock, _) = makeSUT()
         let data = PaymentComponentData(
@@ -75,14 +75,19 @@ struct GenericPaymentMethodViewModelTests {
         )
 
         // When
-        sut.didSubmit(data, from: paymentComponentMock)
+        await confirmation { didSubmit in
+            dropInFlowManagerMock.submitFromClosure = { _, _ in
+                didSubmit()
+                return nil
+            }
+            sut.didSubmit(data, from: paymentComponentMock)
+            await waitUntil { dropInFlowManagerMock.submitFromCalled }
+        }
 
         // Then
-        #expect(dropInFlowManagerMock.submitFromActionPresenterCallsCount == 1)
-        let receivedPaymentMethod = dropInFlowManagerMock.submitFromActionPresenterReceivedArguments?.data.paymentMethod as? GenericPaymentDetails
+        let receivedPaymentMethod = dropInFlowManagerMock.submitFromReceivedArguments?.data.paymentMethod as? GenericPaymentDetails
         #expect(receivedPaymentMethod?.type == paymentComponentMock.paymentMethod.type)
-        #expect(dropInFlowManagerMock.submitFromActionPresenterReceivedArguments?.component === paymentComponentMock)
-        #expect(dropInFlowManagerMock.submitFromActionPresenterReceivedArguments?.actionPresenter === sut)
+        #expect(dropInFlowManagerMock.submitFromReceivedArguments?.component === paymentComponentMock)
     }
 
     @Test
@@ -104,62 +109,25 @@ struct GenericPaymentMethodViewModelTests {
     }
 
     @Test
-    func presentActionViewController_shouldCallRouterPresent() {
+    func didSubmit_givenAnAction_shouldPresentPaymentAction() async throws {
         // Given
-        let (sut, _, _, routerMock) = makeSUT()
-        let actionViewController = UIViewController()
-        var capturedViewController: UIViewController?
-        routerMock.presentActionViewControllerOnCancelClosure = { viewController, _ in
-            capturedViewController = viewController
-        }
-
-        // When
-        sut.present(actionViewController: actionViewController)
-
-        // Then
-        #expect(routerMock.presentActionViewControllerOnCancelCallsCount == 1)
-        #expect(capturedViewController === actionViewController)
-    }
-
-    @Test
-    func presentActionViewController_whenCancelled_shouldResetStateToIdle() {
-        // Given
-        let (sut, paymentComponentMock, _, routerMock) = makeSUT()
-        paymentComponentMock.shouldCallDelegateOnSubmit = false
-        sut.startPayment()
-        let actionViewController = UIViewController()
-
-        routerMock.presentActionViewControllerOnCancelClosure = { _, onCancel in
-            onCancel?()
-        }
-
-        // When
-        sut.present(actionViewController: actionViewController)
-
-        // Then
-        #expect(sut.state == .idle)
-    }
-
-    @Test
-    func didCancel_shouldResetStateToIdle() {
-        // Given
-        let (sut, paymentComponentMock, _, _) = makeSUT()
-        paymentComponentMock.shouldCallDelegateOnSubmit = false
-        sut.startPayment()
-
-        let contextMock = AdyenContext(
-            apiContext: Dummy.apiContext,
-            amount: .init(value: 100, currencyCode: "EUR"),
-            publicKey: Dummy.publicKey,
-            analyticsProvider: AnalyticsProviderMock()
+        let (sut, paymentComponentMock, dropInFlowManagerMock, routerMock) = makeSUT()
+        let action = try Action.redirect(RedirectAction(url: #require(URL(string: "https://adyen.com")), paymentData: "payment_data"))
+        dropInFlowManagerMock.submitFromReturnValue = action
+        let data = PaymentComponentData(
+            paymentMethodDetails: GenericPaymentDetails(type: paymentComponentMock.paymentMethod.type),
+            order: nil
         )
-        let redirectComponent = RedirectComponent(context: contextMock)
 
         // When
-        sut.didCancel(actionComponent: redirectComponent)
+        await confirmation { didPresentPaymentAction in
+            routerMock.presentPaymentActionForClosure = { _ in didPresentPaymentAction() }
+            sut.didSubmit(data, from: paymentComponentMock)
+            await waitUntil { routerMock.presentPaymentActionForCallsCount > 0 }
+        }
 
         // Then
-        #expect(sut.state == .idle)
+        #expect(routerMock.presentPaymentActionForCallsCount == 1)
     }
 
     // MARK: - Helpers

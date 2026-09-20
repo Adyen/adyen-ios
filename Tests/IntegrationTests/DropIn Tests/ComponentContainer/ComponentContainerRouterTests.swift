@@ -18,7 +18,7 @@ struct ComponentContainerRouterTests {
     @Test
     func presentPaymentComponent_shouldPushViewController() async {
         // Given
-        let (sut, viewControllerSpy, _) = await makeSUT()
+        let (sut, viewControllerSpy, _, _) = await makeSUT()
         let paymentComponent = await makePaymentComponent()
 
         let navigationControllerSpy = NavigationControllerSpy()
@@ -33,45 +33,39 @@ struct ComponentContainerRouterTests {
     }
 
     @Test
-    func presentActionComponent_shouldPresentModallyViewController() async {
+    func presentPaymentAction_shouldPresentResolvedRouterModally() async {
         // Given
-        let (sut, viewControllerSpy, _) = await makeSUT()
-        let actionComponent = await makeActionComponent()
+        let (sut, viewControllerSpy, _, paymentActionAssemblerMock) = await makeSUT()
+        let paymentActionRouter = RouterMock()
+        paymentActionAssemblerMock.resolvePaymentActionRouterForListenerReturnValue = paymentActionRouter
 
         // When
-        sut.present(actionViewController: actionComponent, onCancel: nil)
+        await sut.presentPaymentAction(for: makeAction())
 
         // Then
-        #expect(viewControllerSpy.presentedViewControllerCaptured != nil)
+        #expect(viewControllerSpy.presentedViewControllerCaptured === paymentActionRouter.rootViewController)
+        #expect(sut.childRouter === paymentActionRouter)
     }
 
     @Test
-    func presentActionComponent_shouldInjectOnCancelCallbackIntoActionWrapper() async throws {
+    func didDismissPaymentAction_shouldReleaseChildRouter() async throws {
         // Given
-        let (sut, viewControllerSpy, _) = await makeSUT()
-        let actionComponent = await makeActionComponent()
-
-        var cancelWasCalled = false
-        let cancelCallback = { cancelWasCalled = true }
+        let (sut, _, _, paymentActionAssemblerMock) = await makeSUT()
+        paymentActionAssemblerMock.resolvePaymentActionRouterForListenerReturnValue = RouterMock()
+        await sut.presentPaymentAction(for: makeAction())
+        try #require(sut.childRouter != nil)
 
         // When
-        sut.present(actionViewController: actionComponent, onCancel: cancelCallback)
+        sut.didDismissPaymentAction(completion: nil)
 
         // Then
-        let wrapper = try #require(
-            viewControllerSpy.presentedViewControllerCaptured as? ActionNavigationController
-        )
-
-        let injectedCallback = try #require(wrapper.onCancel)
-        injectedCallback()
-
-        #expect(cancelWasCalled)
+        #expect(sut.childRouter == nil)
     }
 
     @Test
     func dismiss_shouldCall_listener_didDismissComponentContainer() async {
         // Given
-        let (sut, viewControllerSpy, listenerMock) = await makeSUT()
+        let (sut, viewControllerSpy, listenerMock, _) = await makeSUT()
 
         // When
         sut.dismiss(completion: nil)
@@ -138,18 +132,21 @@ struct ComponentContainerRouterTests {
     private func makeSUT() async -> (
         sut: ComponentContainerRouter,
         viewControllerSpy: ViewControllerSpy,
-        listenerMock: ComponentContainerRouterListenerMock
+        listenerMock: ComponentContainerRouterListenerMock,
+        paymentActionAssemblerMock: PaymentActionAssemblerProtocolMock
     ) {
         let viewModelMock = ComponentContainerViewModelProtocolMock()
 
         let viewControllerSpy = ViewControllerSpy(viewModel: viewModelMock)
         let listenerMock = ComponentContainerRouterListenerMock()
+        let paymentActionAssemblerMock = PaymentActionAssemblerProtocolMock()
         let sut = ComponentContainerRouter(
             viewController: viewControllerSpy,
+            paymentActionAssembler: paymentActionAssemblerMock,
             listener: listenerMock
         )
 
-        return (sut, viewControllerSpy, listenerMock)
+        return (sut, viewControllerSpy, listenerMock, paymentActionAssemblerMock)
     }
 
     private func makePaymentComponent() async -> PresentablePaymentComponentMock {
@@ -166,7 +163,7 @@ struct ComponentContainerRouterTests {
         )
     }
 
-    private func makeActionComponent() async -> UIViewController {
-        UIViewController()
+    private func makeAction() -> Action {
+        .redirect(RedirectAction(url: URL(string: "https://adyen.com")!, paymentData: "payment_data"))
     }
 }

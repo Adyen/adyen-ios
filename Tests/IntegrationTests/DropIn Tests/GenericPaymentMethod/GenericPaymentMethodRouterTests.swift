@@ -4,6 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+@testable import Adyen
+@testable import AdyenActions
 @testable import AdyenDropIn
 import Testing
 import UIKit
@@ -24,17 +26,35 @@ struct GenericPaymentMethodRouterTests {
     }
 
     @Test
-    func present_shouldPresentActionViewControllerModally() {
+    func presentPaymentAction_shouldPresentResolvedRouterModally() async {
         // Given
         let viewControllerSpy = ViewControllerSpy()
-        let sut = makeSUT(viewController: viewControllerSpy)
-        let actionViewController = UIViewController()
+        let paymentActionRouter = RouterMock()
+        let sut = makeSUT(
+            viewController: viewControllerSpy,
+            paymentActionAssembler: makePaymentActionAssembler(router: paymentActionRouter)
+        )
 
         // When
-        sut.present(actionViewController: actionViewController, onCancel: nil)
+        await sut.presentPaymentAction(for: makeAction())
 
         // Then
-        #expect(viewControllerSpy.presentedViewControllerCaptured != nil)
+        #expect(viewControllerSpy.presentedViewControllerCaptured === paymentActionRouter.rootViewController)
+        #expect(sut.childRouter === paymentActionRouter)
+    }
+
+    @Test
+    func didDismissPaymentAction_shouldReleaseChildRouter() async throws {
+        // Given
+        let sut = makeSUT()
+        await sut.presentPaymentAction(for: makeAction())
+        try #require(sut.childRouter != nil)
+
+        // When
+        sut.didDismissPaymentAction(completion: nil)
+
+        // Then
+        #expect(sut.childRouter == nil)
     }
 
     @Test
@@ -78,11 +98,25 @@ struct GenericPaymentMethodRouterTests {
 
     private func makeSUT(
         viewController: UIViewController? = nil,
+        paymentActionAssembler: PaymentActionAssemblerProtocolMock? = nil,
         listener: GenericPaymentMethodRouterListener? = nil
     ) -> GenericPaymentMethodRouter {
         GenericPaymentMethodRouter(
             viewController: viewController ?? UIViewController(),
+            paymentActionAssembler: paymentActionAssembler ?? makePaymentActionAssembler(),
             listener: listener ?? GenericPaymentMethodRouterListenerMock()
         )
+    }
+
+    private func makePaymentActionAssembler(
+        router: RouterMock? = nil
+    ) -> PaymentActionAssemblerProtocolMock {
+        let assembler = PaymentActionAssemblerProtocolMock()
+        assembler.resolvePaymentActionRouterForListenerReturnValue = router ?? RouterMock()
+        return assembler
+    }
+
+    private func makeAction() -> Action {
+        .redirect(RedirectAction(url: URL(string: "https://adyen.com")!, paymentData: "payment_data"))
     }
 }
