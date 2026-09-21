@@ -121,7 +121,11 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     }
     
     private var storePayment: Bool? {
-        configuration.showStorePaymentMethod ? storeDetailsItem.value : nil
+        if context.amount?.value == 0 {
+            return true
+        }
+
+        return configuration.showStorePaymentMethod ? storeDetailsItem.value : nil
     }
     
     // MARK: - Form Items
@@ -282,7 +286,10 @@ package final class ACHDirectDebitComponent: PaymentComponent,
                 subtitle: nil // TODO: Add subtitle localization key
             ))
         }
-        if configuration.showStorePaymentMethod {
+        if StorePaymentMethodPolicy.shouldShowConsent(
+            configuredVisible: configuration.showStorePaymentMethod,
+            amount: context.amount
+        ) {
             formViewController.append(storeDetailsItem)
         }
         
