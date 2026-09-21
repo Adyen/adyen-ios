@@ -58,26 +58,13 @@ package class CardComponent: PaymentComponent,
     }
 
     /// The delegate of the component.
-    package weak var delegate: PaymentComponentDelegate? {
-        didSet {
-            storedCardComponent?.delegate = delegate
-        }
-    }
+    package weak var delegate: PaymentComponentDelegate?
 
     /// The partial payment order if any.
-    package var order: PartialPaymentOrder? {
-        didSet {
-            storedCardComponent?.order = order
-        }
-    }
+    package var order: PartialPaymentOrder?
 
     package let type: PaymentComponentType = .regular
     package let requiresUserInteraction: Bool = true
-
-    /// Determines whether the storedCardComponent is active
-    private var isStoredCardComponentActive: Bool {
-        storedCardComponent != nil
-    }
 
     /// Initializes the card component.
     ///
@@ -128,43 +115,12 @@ package class CardComponent: PaymentComponent,
     // MARK: - Presentable Component Protocol
 
     package var viewController: UIViewController {
-        if let storedCardComponent {
-            return storedCardComponent.viewController
-        }
-        return securedViewController
+        securedViewController
     }
 
     package func stopLoading() {
-        // since storedCardComponent is instantiated through this class
-        // cardViewController should not be accessed when it's the storedCardComponent
-        // we should separate stored card component logic into its own
-        if isStoredCardComponentActive {
-            return
-        }
-
         cardViewController.stopLoading()
     }
-
-    // MARK: - Stored Card
-
-    package lazy var storedCardComponent: StoredPaymentComponent? = {
-        guard let paymentMethod = paymentMethod as? StoredCardPaymentMethod else {
-            return nil
-        }
-        // TODO: FIX StoredCard UI
-        if configuration.showSecurityCodeForStoredCard {
-            let storedComponent = StoredCardComponent(storedCardPaymentMethod: paymentMethod, context: context, theme: configuration.theme)
-            storedComponent.localizationParameters = resolvedLocalizationParameters
-            return storedComponent
-        } else {
-            let storedComponent = StoredPaymentMethodComponent(
-                paymentMethod: paymentMethod,
-                context: context
-            )
-            storedComponent.localizationParameters = resolvedLocalizationParameters
-            return storedComponent
-        }
-    }()
 
     /// Updates the visibility of the store payment method switch.
     ///

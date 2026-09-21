@@ -208,3 +208,80 @@ import XCTest
 //        XCTAssertEqual(analyticsProviderMock.initialEventCallsCount, 1)
 //    }
 // }
+
+@MainActor
+internal final class StoredPaymentMethodComponentTests: XCTestCase {
+
+    internal func test_validStoredPaymentMethod_whenSubmitting_thenProvidesStoredPaymentDetails() {
+        let sut = makeSUT()
+        let delegate = PaymentComponentDelegateMock()
+        let expectation = expectation(description: "Stored payment details submitted")
+        delegate.onDidSubmit = { data, component in
+            XCTAssertTrue(component === sut)
+            let details = try? XCTUnwrap(data.paymentMethod as? StoredPaymentDetails)
+            XCTAssertEqual(details?.type, .other("type"))
+            XCTAssertEqual(details?.storedPaymentMethodIdentifier, "id")
+            expectation.fulfill()
+        }
+        sut.delegate = delegate
+
+        sut.performSubmit()
+
+        waitForExpectations(timeout: 1)
+    }
+
+    internal func test_directStoredPaymentMethod_whenAccessingViewController_thenReturnsPaymentButton() {
+        let sut = makeSUT()
+
+        XCTAssertTrue(sut.viewController is PaymentButtonViewController)
+        XCTAssertFalse(sut.requiresUserInteraction)
+    }
+
+    internal func test_directStoredPaymentMethod_whenAccessedTwice_thenReturnsSameViewController() {
+        let sut = makeSUT()
+
+        XCTAssertTrue(sut.viewController === sut.viewController)
+    }
+
+    internal func test_directStoredPaymentMethod_whenSubmittingFromPaymentButton_thenSubmitsStoredDetails() throws {
+        let sut = makeSUT()
+        let delegate = PaymentComponentDelegateMock()
+        let expectation = expectation(description: "Stored payment details submitted")
+        delegate.onDidSubmit = { data, _ in
+            XCTAssertTrue(data.paymentMethod is StoredPaymentDetails)
+            expectation.fulfill()
+        }
+        sut.delegate = delegate
+        let viewController = try XCTUnwrap(sut.viewController as? PaymentButtonViewController)
+
+        viewController.onSubmit?()
+
+        waitForExpectations(timeout: 1)
+    }
+
+    internal func test_directStoredPaymentMethod_whenSubmittingMultipleTimes_thenSendsInitialAnalyticsOnce() {
+        let analyticsProvider = AnalyticsProviderMock()
+        let context = AdyenContext(
+            apiContext: Dummy.apiContext,
+            amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: analyticsProvider
+        )
+        let sut = makeSUT(context: context)
+
+        sut.performSubmit()
+        sut.performSubmit()
+
+        XCTAssertEqual(analyticsProvider.initialEventCallsCount, 1)
+    }
+
+    private func makeSUT(context: AdyenContext = Dummy.context) -> StoredPaymentMethodComponent {
+        let paymentMethod = StoredPaymentMethodMock(
+            identifier: "id",
+            supportedShopperInteractions: [.shopperPresent],
+            type: .other("type"),
+            name: "name"
+        )
+        return StoredPaymentMethodComponent(paymentMethod: paymentMethod, context: context)
+    }
+}
