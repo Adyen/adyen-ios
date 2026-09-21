@@ -124,7 +124,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
             throw CheckoutError(code: .paymentMethodFailure, message: "No stored payment method found for identifier \(identifier).")
         }
 
-        let paymentComponent = CheckoutComponentBuilder.build(
+        let paymentComponent = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: configuration,
             context: adyenContext

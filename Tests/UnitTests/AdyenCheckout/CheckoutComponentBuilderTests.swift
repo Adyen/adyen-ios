@@ -671,17 +671,17 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         )
 
         // Then
-        XCTAssertTrue(component is StoredCardComponent)
+        XCTAssertTrue(component is StoredCardSecurityCodeComponent)
     }
 
     // MARK: - Stored Payment Method Tests
     
-    func test_build_withStoredCardPaymentMethod_returnsStoredCardComponent() throws {
+    func test_build_withStoredCardPaymentMethod_returnsStoredCardSecurityCodeComponent() throws {
         // Given
         let storedPaymentMethod = try XCTUnwrap(createStoredCardPaymentMethod())
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -689,9 +689,26 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         
         // Then
         XCTAssertEqual(component.paymentMethod.type, .scheme)
-        XCTAssertTrue(component is StoredCardComponent, "Component should be StoredCardComponent")
+        XCTAssertTrue(component is StoredCardSecurityCodeComponent, "Component should be StoredCardSecurityCodeComponent")
     }
     
+    internal func test_build_withStoredCardPaymentMethodAndHiddenSecurityCode_returnsStoredPaymentMethodComponent() throws {
+        let storedPaymentMethod = try XCTUnwrap(createStoredCardPaymentMethod())
+        let cardConfiguration = CardConfiguration().showSecurityCodeForStoredCard(false)
+        checkoutConfiguration = makeCheckoutConfiguration(
+            configurations: [.payment(.scheme): cardConfiguration]
+        )
+
+        let component = try CheckoutComponentBuilder.build(
+            for: storedPaymentMethod,
+            configuration: checkoutConfiguration,
+            context: context
+        )
+
+        XCTAssertTrue(component is StoredPaymentMethodComponent)
+        XCTAssertFalse(component.requiresUserInteraction)
+    }
+
     func test_build_withStoredCardPaymentMethod_passesCorrectContext() throws {
         // Given
         let customAmount = Amount(value: 1000, currencyCode: "EUR")
@@ -705,7 +722,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let storedPaymentMethod = try XCTUnwrap(createStoredCardPaymentMethod())
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
             context: customContext
@@ -723,14 +740,14 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         checkoutConfiguration = makeCheckoutConfiguration().localizationProvider(provider)
 
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
             context: context
         )
 
         // Then
-        let storedCardComponent = try XCTUnwrap(component as? StoredCardComponent)
+        let storedCardComponent = try XCTUnwrap(component as? StoredCardSecurityCodeComponent)
         let localizationParameters = try XCTUnwrap(storedCardComponent.localizationParameters)
         XCTAssertEqual(localizedString(.cardCvcItemTitle, localizationParameters), "Stored security code")
         XCTAssertTrue(provider.recordedCalls.contains { $0.key == .cardSecurityCode })
@@ -741,7 +758,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let storedPaymentMethod = try XCTUnwrap(createStoredPayPalPaymentMethod())
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -759,7 +776,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         checkoutConfiguration = makeCheckoutConfiguration().localizationProvider(provider)
 
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
             context: context
@@ -777,7 +794,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let storedPaymentMethod = try XCTUnwrap(createStoredBCMCPaymentMethod())
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
             context: context

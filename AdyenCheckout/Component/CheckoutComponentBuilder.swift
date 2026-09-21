@@ -101,12 +101,12 @@ package enum CheckoutComponentBuilder {
         for storedPaymentMethod: StoredPaymentMethod,
         configuration: CheckoutConfiguration,
         context: AdyenContext
-    ) -> PaymentComponent {
+    ) throws -> PaymentComponent {
         switch storedPaymentMethod {
 
         #if canImport(AdyenCard)
             case let storedCard as StoredCardPaymentMethod:
-                return createStoredCardComponent(
+                return try createStoredCardComponent(
                     storedPaymentMethod: storedCard,
                     configuration: configuration,
                     context: context
@@ -131,7 +131,7 @@ package enum CheckoutComponentBuilder {
         context: AdyenContext
     ) throws -> PaymentComponent {
         if let storedPaymentMethod = paymentMethod as? any StoredPaymentMethod {
-            return build(
+            return try build(
                 for: storedPaymentMethod,
                 configuration: configuration,
                 context: context
@@ -164,15 +164,10 @@ package enum CheckoutComponentBuilder {
         context: AdyenContext
     ) throws -> PaymentComponent where Factory.Configuration: CheckoutComponentConfiguration {
 
-        var componentConfiguration = try configuration.configuration(
+        let componentConfiguration = try resolveConfiguration(
             for: paymentMethod,
-            defaultValue: factory.defaultConfiguration()
-        )
-
-        componentConfiguration.showsSubmitButton = configuration.showsSubmitButton
-        componentConfiguration.theme = configuration.theme
-        componentConfiguration.localizationParameters = configuration.resolvedCheckoutLocalizationParameters(
-            mergingExistingParameters: componentConfiguration.localizationParameters
+            defaultValue: factory.defaultConfiguration(),
+            configuration: configuration
         )
 
         return try factory.create(
@@ -183,19 +178,45 @@ package enum CheckoutComponentBuilder {
     }
 
     @MainActor
+    private static func resolveConfiguration<Configuration: CheckoutComponentConfiguration>(
+        for paymentMethod: PaymentMethod,
+        defaultValue: @autoclosure () throws -> Configuration,
+        configuration: CheckoutConfiguration
+    ) throws -> Configuration {
+
+        var componentConfiguration = try configuration.configuration(
+            for: paymentMethod,
+            defaultValue: defaultValue()
+        )
+
+        componentConfiguration.showsSubmitButton = configuration.showsSubmitButton
+        componentConfiguration.theme = configuration.theme
+        componentConfiguration.localizationParameters = configuration.resolvedCheckoutLocalizationParameters(
+            mergingExistingParameters: componentConfiguration.localizationParameters
+        )
+
+        return componentConfiguration
+    }
+
+    @MainActor
     private static func createStoredCardComponent(
         storedPaymentMethod: StoredCardPaymentMethod,
         configuration: CheckoutConfiguration,
         context: AdyenContext
-    ) -> PaymentComponent {
-        let component = StoredCardComponent(
-            storedCardPaymentMethod: storedPaymentMethod,
-            context: context,
-            theme: configuration.theme
-        )
-        component.localizationParameters = configuration.resolvedCheckoutLocalizationParameters()
+    ) throws -> PaymentComponent {
+        let factory = StoredCardComponentFactory()
 
-        return component
+        let componentConfiguration = try resolveConfiguration(
+            for: storedPaymentMethod,
+            defaultValue: factory.defaultConfiguration(),
+            configuration: configuration
+        )
+
+        return try factory.create(
+            with: storedPaymentMethod,
+            context: context,
+            configuration: componentConfiguration
+        )
     }
 
     @MainActor
@@ -206,7 +227,9 @@ package enum CheckoutComponentBuilder {
     ) -> PaymentComponent {
         let component = StoredPaymentMethodComponent(
             paymentMethod: storedPaymentMethod,
-            context: context
+            context: context,
+            theme: configuration.theme,
+            showsSubmitButton: configuration.showsSubmitButton
         )
         component.localizationParameters = configuration.resolvedCheckoutLocalizationParameters()
 
