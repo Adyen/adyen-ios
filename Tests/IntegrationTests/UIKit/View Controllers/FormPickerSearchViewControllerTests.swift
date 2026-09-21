@@ -268,6 +268,36 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         XCTAssertTrue(headerView.subtitleLabel.isHidden)
     }
 
+    func test_pickerHeader_whenLaidOut_shouldHugContentHeight() throws {
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(header: .init(title: "Installments"))
+        )
+        let headerView = try XCTUnwrap(
+            searchViewController.headerView as? FormPickerHeaderView
+        )
+
+        searchViewController.view.layoutIfNeeded()
+
+        let compressedSize = headerView.systemLayoutSizeFitting(
+            CGSize(
+                width: headerView.bounds.width,
+                height: UIView.layoutFittingCompressedSize.height
+            ),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+
+        XCTAssertEqual(
+            headerView.bounds.height,
+            compressedSize.height,
+            accuracy: 0.5
+        )
+        XCTAssertGreaterThan(
+            searchViewController.resultsListViewController.view.bounds.height,
+            headerView.bounds.height
+        )
+    }
+
     // MARK: - Helpers
 
     private func makeSearchViewController(

@@ -64,6 +64,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
         let loadingView = UIActivityIndicatorView(style: .whiteLarge)
         loadingView.color = .Adyen.componentLoadingMessageColor
         loadingView.hidesWhenStopped = true
+        loadingView.setContentHuggingPriority(.fittingSizeLevel, for: .vertical)
         loadingView.translatesAutoresizingMaskIntoConstraints = false
         return loadingView
     }()
