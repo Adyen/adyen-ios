@@ -40,13 +40,16 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         var showsSubmitButton: Bool = true
     }
     
-    class MockComponent: PresentablePaymentComponent {
+    class MockComponent: PaymentComponent {
 
         // PaymentComponent requirements
         var delegate: PaymentComponentDelegate?
         let paymentMethod: PaymentMethod
 
-        /// PresentablePaymentComponent requirement
+        let type: PaymentComponentType = .regular
+        let requiresUserInteraction: Bool = true
+
+        /// PaymentComponent requirement
         var viewController: UIViewController {
             UIViewController()
         }

@@ -142,14 +142,18 @@ extension ComponentsView: UITableViewDataSource {
     }
     
     internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let item = items[indexPath.section][indexPath.row]
+        let identifier = item.isApplePay ? "ApplePayCell" : "Cell"
         let cell: UITableViewCell = {
-            let identifier = "Cell"
-            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier) { return cell }
+            if let cell = tableView.dequeueReusableCell(withIdentifier: identifier) {
+                return cell
+            }
             return UITableViewCell(style: .subtitle, reuseIdentifier: identifier)
         }()
         
-        let item = items[indexPath.section][indexPath.row]
-        if item.isApplePay == false {
+        if item.isApplePay {
+            setUpApplePayCell(cell)
+        } else {
             cell.textLabel?.font = .preferredFont(forTextStyle: .headline)
             cell.textLabel?.adjustsFontForContentSizeCategory = true
             cell.textLabel?.text = item.title
@@ -158,8 +162,6 @@ extension ComponentsView: UITableViewDataSource {
             cell.detailTextLabel?.textColor = .secondaryLabel
             cell.detailTextLabel?.adjustsFontForContentSizeCategory = true
             cell.detailTextLabel?.text = item.subtitle
-        } else {
-            setUpApplePayCell(cell)
         }
         
         return cell

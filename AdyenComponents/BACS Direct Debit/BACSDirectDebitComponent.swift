@@ -19,17 +19,20 @@ internal protocol BACSDirectDebitRouterProtocol: AnyObject {
 
 /// A component that provides a form for BACS Direct Debit payments.
 @MainActor
-package final class BACSDirectDebitComponent: PresentablePaymentComponent {
+package final class BACSDirectDebitComponent: PaymentComponent {
 
     /// Configuration for BACS Direct Debit Component.
     package typealias Configuration = BasicComponentConfiguration
 
-    // MARK: - PresentablePaymentComponent
+    // MARK: - PaymentComponent
 
     package let viewController: UIViewController
 
     /// The object that acts as the delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
+
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
 
     /// The BACS Direct Debit payment method.
     package var paymentMethod: PaymentMethod {

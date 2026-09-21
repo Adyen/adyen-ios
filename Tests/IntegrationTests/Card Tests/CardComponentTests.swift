@@ -67,6 +67,18 @@ class CardComponentTests: XCTestCase {
         XCTAssertTrue(cardViewController.requiresKeyboardInput)
     }
 
+    func test_requiresUserInteraction_shouldBeTrue() {
+        // Given
+        let sut = CardComponent(
+            paymentMethod: method,
+            context: context,
+            configuration: CardConfiguration()
+        )
+
+        // Then
+        XCTAssertTrue(sut.requiresUserInteraction)
+    }
+
     func test_formItems_withCustomTableName_shouldUseLocalizedStrings() {
 
         var configuration = CardConfiguration()

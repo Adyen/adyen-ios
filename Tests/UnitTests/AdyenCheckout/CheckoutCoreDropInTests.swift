@@ -24,7 +24,6 @@ final class CheckoutCoreDropInTests: XCTestCase {
         super.setUp()
         configuration = CheckoutConfiguration(
             apiContext: Dummy.apiContext,
-            amount: Dummy.amount,
             analyticsApiContext: nil,
             analyticsConfiguration: .init()
         )

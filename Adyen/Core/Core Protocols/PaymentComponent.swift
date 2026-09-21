@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// Any Object that is aware of a `PaymentMethod`.
 package protocol PaymentMethodAware {
@@ -15,12 +16,12 @@ package protocol PaymentMethodAware {
 }
 
 /// A component that handles stored payment methods.
-package protocol StoredPaymentComponent: PresentablePaymentComponent {}
+package protocol StoredPaymentComponent: PaymentComponent {}
 
 package enum PaymentComponentType {
-    case regular(PresentablePaymentComponent)
-    case stored(StoredPaymentComponent)
-    case generic(PaymentComponent)
+    case regular
+    case stored
+    case generic
 }
 
 /// A component that handles the initial phase of getting payment details to initiate a payment.
@@ -32,30 +33,14 @@ package protocol PaymentComponent: Component, PartialPaymentOrderAware, PaymentM
 
     var type: PaymentComponentType { get }
 
+    /// Indicates whether the component requires user interaction before submitting.
+    var requiresUserInteraction: Bool { get }
+
     var paymentMethodBehavior: SDKData.PaymentMethodBehavior { get }
 
+    var viewController: UIViewController { get }
+
     func performSubmit()
-}
-
-package extension PresentablePaymentComponent {
-
-    var type: PaymentComponentType {
-        .regular(self)
-    }
-}
-
-package extension StoredPaymentComponent {
-
-    var type: PaymentComponentType {
-        .stored(self)
-    }
-}
-
-package extension PaymentComponent {
-
-    var type: PaymentComponentType {
-        .generic(self)
-    }
 }
 
 extension PaymentComponent {

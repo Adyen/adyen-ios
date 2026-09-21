@@ -15,7 +15,7 @@ import UIKit
 
 /// A component that provides a form for SEPA Direct Debit payments.
 @MainActor
-package final class SEPADirectDebitComponent: PresentablePaymentComponent, LoadingComponent {
+package final class SEPADirectDebitComponent: PaymentComponent, LoadingComponent {
 
     /// Configuration for SEPA Direct Debit Component
     package typealias Configuration = BasicComponentConfiguration
@@ -33,6 +33,9 @@ package final class SEPADirectDebitComponent: PresentablePaymentComponent, Loadi
     
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
+    
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
     
     /// Initializes the SEPA Direct Debit component.
     ///

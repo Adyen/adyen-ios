@@ -26,7 +26,6 @@ import Foundation
 /// ```swift
 /// let configuration = try CheckoutConfiguration(
 ///     environment: .test,
-///     amount: Amount(value: 1000, currencyCode: "USD"),
 ///     clientKey: "<client-key>"
 /// ) {
 ///     CardComponentConfiguration()
@@ -46,8 +45,6 @@ public struct CheckoutConfiguration {
     package var localizationProvider: (any CheckoutLocalizationProvider)?
     package var theme: CheckoutTheme
 
-    package let amount: Amount?
-
     package let apiContext: APIContext
 
     package let analyticsApiContext: APIContext?
@@ -57,27 +54,19 @@ public struct CheckoutConfiguration {
     /// Creates a CheckoutConfiguration instance.
     /// - Parameters:
     ///   - environment: The environment to retrieve internal resources from.
-    ///   - amount: Payment amount.
     ///   - clientKey: The client key that corresponds to the web service user you will use for initiating the payment.
     ///   - content: Configuration builder to provide the desired configuration instances.
     ///   See https://docs.adyen.com/user-management/client-side-authentication for more information.
     /// - Throws: `CheckoutError` with one of the following codes if the configuration is invalid:
     ///   - ``CheckoutError/Code/invalidClientKey`` — the client key is malformed.
-    ///   - ``CheckoutError/Code/invalidCurrencyCode`` — the currency code is not ISO 4217.
-    ///   - ``CheckoutError/Code/invalidLocale`` — the locale identifier is not supported.
-    ///   - ``CheckoutError/Code/invalidAmountValue`` — the amount value is negative.
     ///   - ``CheckoutError/Code/invalidConfiguration`` — a component configuration (e.g. Apple Pay) is invalid.
     public init(
         environment: Environment,
-        amount: Amount?,
         clientKey: String,
         analyticsConfiguration: AnalyticsConfiguration = .init(),
         @CheckoutConfigurationBuilder content: () throws -> CheckoutConfigurable
     ) throws {
         let apiContext = try APIContext(environment: environment, clientKey: clientKey)
-        if let amount {
-            try Self.validateAmount(amount)
-        }
         let analyticsApiContext = Self.createAnalyticsAPIContext(apiContext: apiContext)
 
         var configDictionary: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
@@ -100,7 +89,6 @@ public struct CheckoutConfiguration {
 
         self.init(
             apiContext: apiContext,
-            amount: amount,
             analyticsApiContext: analyticsApiContext,
             analyticsConfiguration: analyticsConfiguration,
             configurations: configDictionary,
@@ -110,7 +98,6 @@ public struct CheckoutConfiguration {
     
     internal init(
         apiContext: APIContext,
-        amount: Amount?,
         analyticsApiContext: APIContext?,
         analyticsConfiguration: AnalyticsConfiguration,
         configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:],
@@ -120,7 +107,6 @@ public struct CheckoutConfiguration {
     ) {
         self.analyticsConfiguration = analyticsConfiguration
         self.analyticsApiContext = analyticsApiContext
-        self.amount = amount
         self.apiContext = apiContext
         self.configurations = configurations
         self.dropInConfiguration = dropInConfiguration
@@ -181,20 +167,6 @@ public struct CheckoutConfiguration {
         }
 
         return analyticsApiContext
-    }
-    
-    private static func validateAmount(_ amount: Amount) throws {
-        guard Locale.Currency.isoCurrencies.contains(where: { $0.identifier == amount.currencyCode }) else {
-            throw CheckoutError(code: .invalidCurrencyCode, message: "Invalid currency code")
-        }
-        if let localeIdentifier = amount.localeIdentifier {
-            guard Locale.availableIdentifiers.contains(localeIdentifier) else {
-                throw CheckoutError(code: .invalidLocale, message: "Invalid locale")
-            }
-        }
-        guard amount.value >= 0 else {
-            throw CheckoutError(code: .invalidAmountValue, message: "Invalid amount value")
-        }
     }
 }
 

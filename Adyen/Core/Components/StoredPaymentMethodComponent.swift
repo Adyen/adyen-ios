@@ -22,6 +22,9 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
         storedPaymentMethod
     }
 
+    package let type: PaymentComponentType = .stored
+    package let requiresUserInteraction: Bool = true
+
     package weak var delegate: PaymentComponentDelegate?
 
     /// Initializes new instance of `StoredPaymentMethodComponent`.
@@ -48,7 +51,7 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
         submit(data: data)
     }
 
-    // MARK: - PresentablePaymentComponent
+    // MARK: - PaymentComponent
 
     package lazy var viewController: UIViewController = {
         sendInitialAnalytics()

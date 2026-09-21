@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Adyen N.V.
+// Copyright (c) 2023 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -7,39 +7,49 @@
 import Adyen
 import AdyenCheckout
 import AdyenComponents
+import Foundation
+import UIKit
 
+/// Demonstrates presenting a generic payment component's default UI
+/// instead of submitting it directly, regardless of `requiresUserInteraction`.
 @MainActor
-internal final class BLIKComponentExample: InitialDataFlowProtocol {
-    
+internal final class GenericPaymentComponentWithUIExample: InitialDataFlowProtocol {
+
     internal weak var presenter: PresenterExampleProtocol?
-    
+
     private var checkout: SessionCheckout?
     private var adyenComponent: CheckoutPaymentComponent?
-    
+
     internal lazy var apiClient = ApiClientHelper.generateApiClient()
-    
+    private lazy var asyncApiClient = ApiClientHelper.generateAsyncApiClient()
+
     /// comes from demo app protocol, unused on new structure
     internal var context: AdyenContext?
 
-    func start() {
+    internal init() {}
+
+    internal func start() {
         startLoading()
-        
-        Task {
+
+        Task { [weak self] in
+            guard let self else { return }
             do {
                 let sessionResponse = try await requestSessionInitialInfo()
-                let component = try await self.blikComponent(from: sessionResponse)
+                let component = try await genericPaymentComponent(from: sessionResponse)
                 self.adyenComponent = component
-                hideLoading()
-                present(component: component)
+                self.hideLoading()
+
+                // Always present the component's own view controller (e.g. its pay button),
+                // regardless of whether the payment method requires user interaction.
+                self.present(viewController: component.viewController)
             } catch {
-                hideLoading()
-                handleError(error)
+                self.hideLoading()
+                self.handleError(error)
             }
         }
     }
-    
-    private func blikComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
-        
+
+    private func genericPaymentComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
             clientKey: ConfigurationConstants.clientKey,
@@ -47,9 +57,9 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
             )
         ) {
-            BLIKComponentConfiguration()
+            // No component-specific configuration needed for generic payments
         }
-        
+
         let checkout = try await Checkout.setup(
             with: sessionResponse,
             configuration: configuration,
@@ -64,31 +74,26 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
         .onFailure { [weak self] error in
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
-        
+
         self.checkout = checkout
-        
-        return try checkout.createPaymentComponent(for: .blik)
+
+        return try checkout.createPaymentComponent(for: PaymentMethodType.ideal)
     }
-    
+
+    // MARK: - Private
+
     private func startLoading() {
         presenter?.showLoadingIndicator()
     }
-    
-    @MainActor
-    private func handleError(_ error: Error) {
-        presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
-    }
-    
-    @MainActor
+
     private func hideLoading() {
         presenter?.hideLoadingIndicator()
     }
-    
-    @MainActor
-    private func present(component: CheckoutPaymentComponent) {
-        presenter?.present(viewController: viewController(for: component), completion: nil)
+
+    private func handleError(_ error: Error) {
+        presenter?.presentAlert(withTitle: "Error", message: error.localizedDescription)
     }
-    
+
     private func dismissAndShowAlert(_ success: Bool, _ message: String) {
         presenter?.dismiss {
             // Payment is processed. Add your code here.
@@ -96,28 +101,11 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
             self.presenter?.presentAlert(withTitle: title, message: message)
         }
     }
-    
-    private func viewController(for component: CheckoutPaymentComponent) -> UIViewController {
-        let componentViewController = component.viewController
-        let navigation = UINavigationController(rootViewController: componentViewController)
-        componentViewController.navigationItem.leftBarButtonItem = .init(
-            barButtonSystemItem: .cancel,
-            target: self,
-            action: #selector(cancelPressed)
-        )
-        return navigation
-    }
-    
-    @objc private func cancelPressed() {
-        // TODO: how to do component cancellation
-//        component?.cancelIfNeeded()
-        presenter?.dismiss(completion: nil)
-    }
 }
 
-extension BLIKComponentExample: PresentationDelegate {
-    
-    func present(viewController: UIViewController) {
+extension GenericPaymentComponentWithUIExample: PresentationDelegate {
+    internal func present(viewController: UIViewController) {
+        presenter?.hideLoadingIndicator()
         presenter?.present(viewController: viewController, completion: nil)
     }
 }

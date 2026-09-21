@@ -15,7 +15,7 @@ import UIKit
 
 /// A component that provides a form for BLIK payments.
 @MainActor
-package final class BLIKComponent: PresentablePaymentComponent, LoadingComponent {
+package final class BLIKComponent: PaymentComponent, LoadingComponent {
 
     /// The context object for this component.
     package let context: AdyenContext
@@ -30,6 +30,9 @@ package final class BLIKComponent: PresentablePaymentComponent, LoadingComponent
         child: formViewController,
         theme: configuration.theme
     )
+
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
     
     /// Component's configuration
     package var configuration: BLIKComponentConfiguration

@@ -5,6 +5,7 @@
 //
 
 @_spi(AdyenInternal) import Adyen
+import AdyenUI
 
 class PaymentComponentMock: PaymentComponent {
 
@@ -14,8 +15,14 @@ class PaymentComponentMock: PaymentComponent {
 
     var delegate: PaymentComponentDelegate?
 
+    var viewController: UIViewController = .init()
+
     var type: PaymentComponentType {
-        .generic(self)
+        .generic
+    }
+
+    var requiresUserInteraction: Bool {
+        false
     }
 
     init(paymentMethod: PaymentMethod) {
@@ -51,14 +58,16 @@ class PaymentComponentMock: PaymentComponent {
     }
 }
 
-class PresentablePaymentComponentMock: PaymentComponentMock, PresentablePaymentComponent, LoadingComponent {
+class PresentablePaymentComponentMock: PaymentComponentMock, LoadingComponent {
 
     // MARK: - Properties
 
-    var viewController: UIViewController
-
     override var type: PaymentComponentType {
-        .regular(self)
+        .regular
+    }
+
+    override var requiresUserInteraction: Bool {
+        true
     }
 
     // MARK: - Initializers
@@ -67,8 +76,8 @@ class PresentablePaymentComponentMock: PaymentComponentMock, PresentablePaymentC
         paymentMethod: PaymentMethod,
         viewController: UIViewController
     ) {
-        self.viewController = viewController
         super.init(paymentMethod: paymentMethod)
+        self.viewController = viewController
     }
 
     // MARK: - stopLoading
@@ -88,18 +97,21 @@ class PresentablePaymentComponentMock: PaymentComponentMock, PresentablePaymentC
 
 class StoredComponentMock: PaymentComponentMock, StoredPaymentComponent {
 
-    var viewController: UIViewController
     var order: PartialPaymentOrder?
 
     override var type: PaymentComponentType {
-        .stored(self)
+        .stored
+    }
+
+    override var requiresUserInteraction: Bool {
+        true
     }
 
     init(
         paymentMethod: PaymentMethod,
         viewController: UIViewController
     ) {
-        self.viewController = viewController
         super.init(paymentMethod: paymentMethod)
+        self.viewController = viewController
     }
 }

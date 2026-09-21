@@ -70,9 +70,7 @@
 		A0F749972D958B3000014A05 /* AdyenCheckout.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A0F7498E2D958B3000014A05 /* AdyenCheckout.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A0F749A62D958BFE00014A05 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; platformFilter = ios; };
 		A0F749B32D95946200014A05 /* AdyenDropIn.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9B36CAB2243B2FE00EAA368 /* AdyenDropIn.framework */; };
-		A0F749B42D95946200014A05 /* AdyenDropIn.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E9B36CAB2243B2FE00EAA368 /* AdyenDropIn.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A0F749B82D95946600014A05 /* AdyenSession.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F92980A627CE2B33000CA5CA /* AdyenSession.framework */; };
-		A0F749B92D95946600014A05 /* AdyenSession.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F92980A627CE2B33000CA5CA /* AdyenSession.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B605AC112D8D988D0084D583 /* AdyenCardScanner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9FC2C3D2D50D0B700C9D0F3 /* AdyenCardScanner.framework */; };
 		B605AC122D8D988D0084D583 /* AdyenCardScanner.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C9FC2C3D2D50D0B700C9D0F3 /* AdyenCardScanner.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B6EE0F452BBECBEF00B9810D /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; platformFilter = ios; };
@@ -372,6 +370,13 @@
 			remoteGlobalIDString = C9FC2C3C2D50D0B700C9D0F3;
 			remoteInfo = AdyenCardScanner;
 		};
+		C9E345A6305830CB008FEA1E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F9175E54259393E800D653BE;
+			remoteInfo = AdyenComponents;
+		};
 		E2C0E03E22097917008616F6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
@@ -564,16 +569,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		A0F749B72D95946200014A05 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			dstPath = "";
-			dstSubfolder = Frameworks;
-			files = (
-				A0F749B42D95946200014A05 /* AdyenDropIn.framework in Embed Frameworks */,
-				A0F749B92D95946600014A05 /* AdyenSession.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-		};
 		B605AC102D897F960084D583 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			dstPath = "";
@@ -1575,7 +1570,6 @@
 				A0F7498A2D958B2F00014A05 /* Sources */,
 				A0F7498B2D958B2F00014A05 /* Frameworks */,
 				A0F7498C2D958B2F00014A05 /* Resources */,
-				A0F749B72D95946200014A05 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1728,6 +1722,7 @@
 			);
 			dependencies = (
 				00600F2C2E78A1BF00637477 /* PBXTargetDependency */,
+				C9E345A7305830CB008FEA1E /* PBXTargetDependency */,
 				F91761C125A30E1B00D653BE /* PBXTargetDependency */,
 				F92326F525A3672A002C5BC4 /* PBXTargetDependency */,
 			);
@@ -2721,6 +2716,11 @@
 			isa = PBXTargetDependency;
 			target = C9FC2C3C2D50D0B700C9D0F3 /* AdyenCardScanner */;
 			targetProxy = C968448A2D7712DC001DB7F1 /* PBXContainerItemProxy */;
+		};
+		C9E345A7305830CB008FEA1E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F9175E54259393E800D653BE /* AdyenComponents */;
+			targetProxy = C9E345A6305830CB008FEA1E /* PBXContainerItemProxy */;
 		};
 		E2C0E03F22097917008616F6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

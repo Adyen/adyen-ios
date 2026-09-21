@@ -131,7 +131,8 @@ let package = Package(
             dependencies: [
                 .target(name: "Adyen"),
                 .target(name: "AdyenEncryption"),
-                .target(name: "AdyenUI")
+                .target(name: "AdyenUI"),
+                .target(name: "AdyenComponents")
             ],
             path: "AdyenCard",
             exclude: [
@@ -213,7 +214,8 @@ let package = Package(
                 .target(name: "AdyenSession"),
                 .target(name: "AdyenCard"),
                 .target(name: "AdyenComponents"),
-                .target(name: "AdyenActions")
+                .target(name: "AdyenActions"),
+                .target(name: "AdyenTwint")
             ],
             path: "AdyenCheckout",
             exclude: ["Info.plist"]

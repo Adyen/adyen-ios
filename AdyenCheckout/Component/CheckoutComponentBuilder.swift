@@ -14,6 +14,9 @@ import Adyen
 #if canImport(AdyenCard)
     import AdyenCard
 #endif
+#if canImport(AdyenTwint)
+    import AdyenTwint
+#endif
 import Foundation
 
 package enum CheckoutComponentBuilder {
@@ -52,6 +55,13 @@ package enum CheckoutComponentBuilder {
                     configuration: configuration,
                     context: context
                 )
+            case let genericPaymentMethod as GenericPaymentMethod:
+                return try createComponent(
+                    using: GenericPaymentComponentFactory(),
+                    paymentMethod: genericPaymentMethod,
+                    configuration: configuration,
+                    context: context
+                )
         #endif
             
         // card module
@@ -66,12 +76,17 @@ package enum CheckoutComponentBuilder {
                 // TODO: add other card methods like stored or write a generic one.
             
         #endif
-        case let genericPaymentMethod as GenericPaymentMethod:
-            return GenericPaymentComponent(
-                paymentMethod: genericPaymentMethod,
-                context: context,
-                order: nil
-            )
+            
+        // twint module
+        #if canImport(AdyenTwint)
+            case let twintPaymentMethod as TwintPaymentMethod:
+                return try createComponent(
+                    using: TwintComponentFactory(),
+                    paymentMethod: twintPaymentMethod,
+                    configuration: configuration,
+                    context: context
+                )
+        #endif
         default:
             break
         }

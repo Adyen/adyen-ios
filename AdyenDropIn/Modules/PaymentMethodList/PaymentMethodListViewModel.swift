@@ -29,7 +29,7 @@ internal protocol PaymentMethodListViewModelProtocol {
     func cancel()
     func didLoad()
 
-    var formattedAmount: String { get }
+    var headerTitle: String { get }
     var subtitle: String { get }
     var applePayButtonState: PaymentMethodListHeaderViewModel.ApplePayButtonState { get }
 }
@@ -91,13 +91,18 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         localizedString(.paymentMethodsTitle, localizationParameters)
     }
 
-    internal var formattedAmount: String {
-        context.amount?.formatted ?? ""
+    internal var headerTitle: String {
+        AmountAwarePaymentStringsPolicy.paymentMethodListHeaderTitle(
+            with: context.amount,
+            localizationParameters: localizationParameters
+        )
     }
 
     internal var subtitle: String {
-        // TODO: - Add localization key for this string
-        "Select your preferred payment option to complete the payment"
+        AmountAwarePaymentStringsPolicy.paymentMethodListSubtitle(
+            with: context.amount,
+            localizationParameters: localizationParameters
+        )
     }
 
     internal var applePayButtonState: PaymentMethodListHeaderViewModel.ApplePayButtonState {
@@ -132,7 +137,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         self.applePayComponent = componentManager.buildComponent(for: applePayPaymentMethod)
         applePayComponent?.delegate = self
 
-        guard let applePayViewController = (applePayComponent as? PresentablePaymentComponent)?.viewController else { return }
+        guard let applePayViewController = applePayComponent?.viewController else { return }
         router?.present(viewController: applePayViewController)
     }
 
