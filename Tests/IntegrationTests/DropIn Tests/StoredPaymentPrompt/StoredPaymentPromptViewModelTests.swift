@@ -118,7 +118,7 @@ internal struct StoredPaymentPromptViewModelTests {
 
     private struct TestContext {
         let sut: StoredPaymentPromptViewModel
-        let component: StoredCardComponent
+        let component: StoredCardSecurityCodeComponent
         let flowManager: DropInFlowManagingMock
     }
 
@@ -141,7 +141,7 @@ internal struct StoredPaymentPromptViewModelTests {
             publicKey: Dummy.publicKey,
             analyticsProvider: nil
         )
-        let component = StoredCardComponent(
+        let component = StoredCardSecurityCodeComponent(
             storedCardPaymentMethod: paymentMethod,
             context: componentContext,
             theme: .default
