@@ -42,9 +42,10 @@ package final class ListCell: UITableViewCell {
             itemView.item = item
             itemView.accessibilityIdentifier = item?.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "itemView") }
             backgroundColor = item?.style.backgroundColor
-            contentView.backgroundColor = item?.style.highlightedBackgroundColor == nil
-                ? .clear
-                : item?.style.backgroundColor
+
+            let usesCustomHighlight = item?.style.highlightedBackgroundColor != nil
+            contentView.backgroundColor = usesCustomHighlight ? item?.style.backgroundColor : .clear
+
             resetAccessoryView()
             
             accessibilityLabel = item?.accessibilityLabel

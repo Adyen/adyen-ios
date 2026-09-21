@@ -131,8 +131,10 @@ package final class ListItemView: UIView, AnyFormItemView {
     }
 
     private func updateCheckmarkSpacing() {
+        let checkmarkFollowsTitle = trailingView.isHidden && !checkmarkImageView.isHidden
+
         contentStackView.setCustomSpacing(
-            trailingView.isHidden && !checkmarkImageView.isHidden
+            checkmarkFollowsTitle
                 ? Layout.checkmarkLeadingSpacing
                 : AdyenUIConstants.stackViewSpacing,
             after: titleSubtitleStackView
