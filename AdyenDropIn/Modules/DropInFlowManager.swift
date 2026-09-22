@@ -44,8 +44,10 @@ internal class DropInFlowManager: DropInFlowManaging {
     private weak var dropInComponentDelegate: DropInComponentDelegate?
     private let context: AdyenContext
     private let actionComponentConfiguration: CheckoutActionComponent.Configuration
+
     private var submissionContinuation: CheckedContinuation<Action?, Never>?
     private var actionViewControllerContinuation: CheckedContinuation<UIViewController?, Never>?
+    private var didCancelDropIn = false
 
     // MARK: - Initializers
 
@@ -102,11 +104,9 @@ internal class DropInFlowManager: DropInFlowManaging {
     }
 
     internal func receive(action: Action) {
-        guard submissionContinuation != nil else {
-            return AdyenAssertion.assertionFailure(
-                message: "An action was received while no payment submission was waiting for it."
-            )
-        }
+        // An action can arrive after the submission was resumed,
+        // for example when the drop in was closed while the payment was in flight.
+        guard submissionContinuation != nil else { return }
 
         resumeSubmission(with: action)
     }
@@ -131,6 +131,9 @@ internal class DropInFlowManager: DropInFlowManaging {
     }
 
     internal func cancelDropIn() {
+        guard !didCancelDropIn else { return }
+        didCancelDropIn = true
+
         resumeSubmission(with: nil)
         sendExitEvent()
 
@@ -194,6 +197,7 @@ extension DropInFlowManager: ActionComponentDelegate {
         // Dismissing an action, for example by closing the web page of a redirect,
         // dismisses the drop in as there is no way back to the payment details.
         if case ComponentError.cancelled = error {
+            cancelDropIn()
             return dismissDropIn()
         }
 

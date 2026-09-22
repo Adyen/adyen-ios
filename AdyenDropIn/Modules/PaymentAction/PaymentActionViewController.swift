@@ -44,7 +44,6 @@ internal class PaymentActionViewController: UIViewController {
     // MARK: - Private
 
     private func setupActionView() {
-        actionViewController.willMove(toParent: self)
         addChild(actionViewController)
         view.addSubview(actionViewController.view)
         actionViewController.didMove(toParent: self)

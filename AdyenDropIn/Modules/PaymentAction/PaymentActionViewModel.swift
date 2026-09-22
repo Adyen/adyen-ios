@@ -34,6 +34,7 @@ internal class PaymentActionViewModel: PaymentActionViewModelProtocol {
     /// as there is no way back to the payment details of the selected payment method.
     internal func cancel() {
         router?.dismiss(completion: nil)
+        dropInFlowManager.cancelDropIn()
         dropInFlowManager.dismissDropIn()
     }
 }
