@@ -31,7 +31,7 @@ public final class AmountFormatter {
     ///   - currencyCode: The code of the currency.
     ///   - localeIdentifier: The identifier of the locale. If nil, device's current locale is used.
     public static func minorUnitAmount(from majorUnitAmount: Double, currencyCode: String, localeIdentifier: String? = nil) -> Int {
-        let maximumFractionDigits = defaultFormatter(currencyCode: currencyCode, localeIdentifier: localeIdentifier).maximumFractionDigits
+        let maximumFractionDigits = minorDigits(for: currencyCode)
         
         return Int(majorUnitAmount * pow(Double(10), Double(maximumFractionDigits)))
     }
@@ -43,7 +43,7 @@ public final class AmountFormatter {
     ///   - currencyCode: The code of the currency.
     ///   - localeIdentifier: The identifier of the locale. If nil, device's current locale is used.
     public static func minorUnitAmount(from majorUnitAmount: Decimal, currencyCode: String, localeIdentifier: String? = nil) -> Int {
-        let maximumFractionDigits = defaultFormatter(currencyCode: currencyCode, localeIdentifier: localeIdentifier).maximumFractionDigits
+        let maximumFractionDigits = minorDigits(for: currencyCode)
         
         let roundTowardsZero = NSDecimalNumberHandler(
             roundingMode: majorUnitAmount.isSignMinus ? .up : .down,
@@ -66,7 +66,7 @@ public final class AmountFormatter {
     ///   - currencyCode: The code of the currency.
     ///   - localeIdentifier: The identifier of the locale. If nil, device's current locale is used.
     public static func decimalAmount(_ amount: Int, currencyCode: String, localeIdentifier: String? = nil) -> NSDecimalNumber {
-        let maximumFractionDigits = defaultFormatter(currencyCode: currencyCode, localeIdentifier: localeIdentifier).maximumFractionDigits
+        let maximumFractionDigits = minorDigits(for: currencyCode)
         let decimalMinorAmount = NSDecimalNumber(value: amount)
         return decimalMinorAmount.multiplying(byPowerOf10: Int16(-maximumFractionDigits))
     }
