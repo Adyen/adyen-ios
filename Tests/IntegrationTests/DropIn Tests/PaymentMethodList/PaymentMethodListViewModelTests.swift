@@ -74,6 +74,18 @@ struct PaymentMethodListViewModelTests {
         #expect(routerMock.dismissCompletionCallsCount == 1)
     }
 
+    @Test
+    func cancel_shouldCancelDropIn() {
+        // Given
+        let (sut, dropInFlowManagerMock, _) = makeSUT()
+
+        // When
+        sut.cancel()
+
+        // Then
+        #expect(dropInFlowManagerMock.cancelDropInCallsCount == 1)
+    }
+
     // MARK: - PaymentComponentDelegate Tests
 
     @Test

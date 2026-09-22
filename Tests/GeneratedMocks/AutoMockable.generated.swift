@@ -330,6 +330,20 @@ class DropInFlowManagingMock: DropInFlowManaging {
         cancelComponentClosure?(component)
     }
 
+    // MARK: - cancelDropIn
+
+    var cancelDropInCallsCount = 0
+    var cancelDropInCalled: Bool {
+        cancelDropInCallsCount > 0
+    }
+
+    var cancelDropInClosure: (() -> Void)?
+
+    func cancelDropIn() {
+        cancelDropInCallsCount += 1
+        cancelDropInClosure?()
+    }
+
     // MARK: - finishPendingSubmission
 
     var finishPendingSubmissionCallsCount = 0

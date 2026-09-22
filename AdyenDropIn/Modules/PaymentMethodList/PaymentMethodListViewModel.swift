@@ -122,6 +122,9 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     private var applePayComponent: PaymentComponent?
 
     internal func cancel() {
+        paymentTask?.cancel()
+        dropInFlowManager.cancelDropIn()
+
         router?.dismiss(completion: nil)
     }
 

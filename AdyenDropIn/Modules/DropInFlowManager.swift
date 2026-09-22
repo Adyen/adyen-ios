@@ -29,6 +29,8 @@ internal protocol DropInFlowManaging: AnyObject {
     func handle(action: Action) async -> UIViewController?
     func fail(with error: Error, from component: PaymentComponent)
     func cancel(component: PaymentComponent)
+    /// Notifies the merchant that the user closed the drop in before submitting a payment.
+    func cancelDropIn()
     /// Resolves a pending submission that will not receive an action anymore.
     func finishPendingSubmission()
     func dismissDropIn()
@@ -125,6 +127,14 @@ internal class DropInFlowManager: DropInFlowManaging {
         dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
     }
 
+    internal func cancelDropIn() {
+        finishPendingSubmission()
+        sendExitEvent()
+
+        guard let dropInComponent else { return }
+        dropInComponentDelegate?.didFail(with: ComponentError.cancelled, from: dropInComponent)
+    }
+
     internal func finishPendingSubmission() {
         resumeSubmission(with: nil)
     }
@@ -134,6 +144,11 @@ internal class DropInFlowManager: DropInFlowManaging {
     }
 
     // MARK: - Private
+
+    private func sendExitEvent() {
+        let logEvent = AnalyticsEventLog(component: AnalyticsConstants.dropInComponentIdentifier, type: .closed)
+        context.analyticsProvider?.add(log: logEvent)
+    }
 
     private func resumeSubmission(with action: Action?) {
         guard let submissionContinuation else { return }

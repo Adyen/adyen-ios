@@ -98,9 +98,9 @@ extension DropInRouter: PreselectedPaymentMethodRouterListener {
 
 extension DropInRouter: PaymentMethodListRouterListener {
     
+    /// Dismissing the payment method list dismisses the drop in it is the root of.
     internal func didDismissPaymentMethodList(completion: (() -> Void)?) {
-        childRouter = nil
-        completion?()
+        dismissDropIn(completion: completion)
     }
 }
 
