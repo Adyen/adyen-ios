@@ -30,8 +30,7 @@ import UIKit
 @MainActor
 package final class DropInComponent: NSObject,
     AnyDropInComponent,
-    ActionHandlingComponent,
-    LoadingComponent {
+    ActionHandlingComponent {
 
     // MARK: - Properties
 
@@ -199,72 +198,12 @@ package final class DropInComponent: NSObject,
 //        })
     }
 
-    // MARK: - Private
-
-//    internal lazy var navigationController = DropInNavigationController(
-//        rootViewController: rootViewController,
-//        style: configuration.style.navigation,
-//        cancelHandler: { [weak self] isRoot, component in
-//            self?.didSelectCancelButton(isRoot: isRoot, component: component)
-//        }
-//    )
-
-//    internal lazy var navigationController: UIViewController = {
-//        self.dropInRootRouter.rootViewController
-//    }()
-
-    // ================= ROOT VIEW CONTROLLER ===============
-    // TODO: Make sure Analytic events are preserved
-//    internal lazy var rootViewController: UIViewController = {
-//        if configuration.allowPreselectedPaymentView,
-//           let preselectedComponent = componentManager.firstStoredComponent {
-//            let view = resolvePreselectedPaymentMethodView(for: preselectedComponent, onCancel: nil)
-//            self.preselectedPaymentMethodView = view
-//            return view
-//        } else if configuration.allowsSkippingPaymentList,
-//                  let singleRegularComponent = componentManager.singleRegularComponent {
-//            setNecessaryDelegates(on: singleRegularComponent)
-//            let componentView = resolveComponentView(from: singleRegularComponent)
-//            self.componentView = componentView
-//            return componentView
-//        } else {
-//            let view = resolvePaymentMethodListView(onCancel: nil)
-//            self.paymentMethodListView = view
-//            return view
-//        }
-//    }()
-
-    private func didSelectCancelButton(isRoot: Bool, component: PaymentComponent) {
-        guard !paymentInProgress || component is Cancellable else { return }
-
-        userDidCancel(component)
-
-        if isRoot {
-            sendExitEvent()
-            //            delegate?.didFail(with: ComponentError.cancelled, from: self)
-        }
-    }
-
     internal func userDidCancel(_ component: Component) {
         component.cancel()
-
-        defer {
-            // As `stopLoading` sets the paymentInProgress to false
-            // we make sure to call it at the end of the function
-            stopLoading()
-        }
 
         if let component = (component as? PaymentComponent) ?? selectedPaymentComponent, paymentInProgress {
             delegate?.didCancel(component: component, from: self)
         }
-    }
-
-    package func stopLoading() {
-        paymentInProgress = false
-        dropInFlowManager.finishPendingSubmission()
-        // TODO: - Handle loading logic in its own module
-//        (rootViewController as? ComponentLoader)?.stopLoading()
-        selectedPaymentComponent?.stopLoading()
     }
 
     private func setNecessaryDelegates(on component: PaymentComponent) {
@@ -276,11 +215,6 @@ package final class DropInComponent: NSObject,
 //        (component as? PreApplePayComponent)?.presentationDelegate = self
 
         component._isDropIn = true
-    }
-
-    private func sendExitEvent() {
-        let logEvent = AnalyticsEventLog(component: AnalyticsConstants.dropInComponentIdentifier, type: .closed)
-        context.analyticsProvider?.add(log: logEvent)
     }
 }
 
