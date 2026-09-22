@@ -31,8 +31,6 @@ internal protocol DropInFlowManaging: AnyObject {
     func cancel(component: PaymentComponent)
     /// Notifies the merchant that the user closed the drop in before submitting a payment.
     func cancelDropIn()
-    /// Resolves a pending submission that will not receive an action anymore.
-    func finishPendingSubmission()
     func dismissDropIn()
 }
 
@@ -63,6 +61,11 @@ internal class DropInFlowManager: DropInFlowManaging {
         self.actionComponentConfiguration = actionComponentConfiguration
     }
 
+    deinit {
+        submissionContinuation?.resume(returning: nil)
+        actionViewControllerContinuation?.resume(returning: nil)
+    }
+
     // MARK: - Private
 
     private lazy var actionComponent: CheckoutActionComponent = {
@@ -81,7 +84,7 @@ internal class DropInFlowManager: DropInFlowManaging {
         _ data: PaymentComponentData,
         from component: PaymentComponent
     ) async -> Action? {
-        finishPendingSubmission()
+        resumeSubmission(with: nil)
 
         let updatedData = await component.prepareSubmitData(from: data)
         guard let dropInComponent else { return nil }
@@ -93,7 +96,7 @@ internal class DropInFlowManager: DropInFlowManaging {
             }
         } onCancel: {
             Task { @MainActor [weak self] in
-                self?.finishPendingSubmission()
+                self?.resumeSubmission(with: nil)
             }
         }
     }
@@ -121,22 +124,18 @@ internal class DropInFlowManager: DropInFlowManaging {
     }
 
     internal func cancel(component: PaymentComponent) {
-        finishPendingSubmission()
+        resumeSubmission(with: nil)
 
         guard let dropInComponent else { return }
         dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
     }
 
     internal func cancelDropIn() {
-        finishPendingSubmission()
+        resumeSubmission(with: nil)
         sendExitEvent()
 
         guard let dropInComponent else { return }
         dropInComponentDelegate?.didFail(with: ComponentError.cancelled, from: dropInComponent)
-    }
-
-    internal func finishPendingSubmission() {
-        resumeSubmission(with: nil)
     }
 
     internal func dismissDropIn() {

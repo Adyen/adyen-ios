@@ -344,20 +344,6 @@ class DropInFlowManagingMock: DropInFlowManaging {
         cancelDropInClosure?()
     }
 
-    // MARK: - finishPendingSubmission
-
-    var finishPendingSubmissionCallsCount = 0
-    var finishPendingSubmissionCalled: Bool {
-        finishPendingSubmissionCallsCount > 0
-    }
-
-    var finishPendingSubmissionClosure: (() -> Void)?
-
-    func finishPendingSubmission() {
-        finishPendingSubmissionCallsCount += 1
-        finishPendingSubmissionClosure?()
-    }
-
     // MARK: - dismissDropIn
 
     var dismissDropInCallsCount = 0
