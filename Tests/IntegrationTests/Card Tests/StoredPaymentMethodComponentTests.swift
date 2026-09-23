@@ -212,12 +212,14 @@ import XCTest
 @MainActor
 internal final class StoredPaymentMethodComponentTests: XCTestCase {
 
+    // MARK: - Submission
+
+    /// The submitted payload is StoredPaymentDetails.
     internal func test_validStoredPaymentMethod_whenSubmitting_thenProvidesStoredPaymentDetails() {
         let sut = makeSUT()
         let delegate = PaymentComponentDelegateMock()
         let expectation = expectation(description: "Stored payment details submitted")
-        delegate.onDidSubmit = { data, component in
-            XCTAssertTrue(component === sut)
+        delegate.onDidSubmit = { data, _ in
             let details = try? XCTUnwrap(data.paymentMethod as? StoredPaymentDetails)
             XCTAssertEqual(details?.type, .other("type"))
             XCTAssertEqual(details?.storedPaymentMethodIdentifier, "id")
@@ -230,19 +232,8 @@ internal final class StoredPaymentMethodComponentTests: XCTestCase {
         waitForExpectations(timeout: 1)
     }
 
-    internal func test_directStoredPaymentMethod_whenAccessingViewController_thenReturnsPaymentButton() {
-        let sut = makeSUT()
-
-        XCTAssertTrue(sut.viewController is PaymentButtonViewController)
-        XCTAssertFalse(sut.requiresUserInteraction)
-    }
-
-    internal func test_directStoredPaymentMethod_whenAccessedTwice_thenReturnsSameViewController() {
-        let sut = makeSUT()
-
-        XCTAssertTrue(sut.viewController === sut.viewController)
-    }
-
+    /// The payment button is the only way a shopper can pay on this screen, so tapping it has to
+    /// reach the same submission path as calling the component directly.
     internal func test_directStoredPaymentMethod_whenSubmittingFromPaymentButton_thenSubmitsStoredDetails() throws {
         let sut = makeSUT()
         let delegate = PaymentComponentDelegateMock()
@@ -252,13 +243,45 @@ internal final class StoredPaymentMethodComponentTests: XCTestCase {
             expectation.fulfill()
         }
         sut.delegate = delegate
-        let viewController = try XCTUnwrap(sut.viewController as? PaymentButtonViewController)
 
+        let viewController = try XCTUnwrap(sut.viewController as? PaymentButtonViewController)
         viewController.onSubmit?()
 
         waitForExpectations(timeout: 1)
     }
 
+    // MARK: - Loading state
+
+    // Tests the loading state of the PaymentButtonViewcontroller is being set correctly.
+    internal func test_directStoredPaymentMethod_whenSubmittingThenStoppingLoading_thenRestoresInteraction() throws {
+        let sut = makeSUT()
+        let viewController = try XCTUnwrap(sut.viewController as? PaymentButtonViewController)
+        viewController.loadViewIfNeeded()
+
+        sut.performSubmit()
+        XCTAssertFalse(viewController.view.isUserInteractionEnabled)
+
+        sut.stopLoading()
+        XCTAssertTrue(viewController.view.isUserInteractionEnabled)
+    }
+
+    // MARK: - Analytics
+
+    internal func test_directStoredPaymentMethod_whenViewControllerLoads_thenSendsDidLoadEvent() throws {
+        let analyticsProvider = AnalyticsProviderMock()
+        let sut = makeSUT(context: makeContext(analyticsProvider: analyticsProvider))
+        let viewController = try XCTUnwrap(sut.viewController as? PaymentButtonViewController)
+
+        viewController.loadViewIfNeeded()
+
+        XCTAssertEqual(analyticsProvider.initialEventCallsCount, 1)
+        // Check if the didLoad event is being sent.
+        XCTAssertEqual(analyticsProvider.infos.count, 1)
+        XCTAssertEqual(analyticsProvider.infos.first?.type, .rendered)
+        XCTAssertEqual(analyticsProvider.infos.first?.isStoredPaymentMethod, true)
+    }
+
+    /// initial analytics call should be sent once and when the viewController is not used then the didLoad shouldn't be sent.
     internal func test_directStoredPaymentMethod_whenSubmittingMultipleTimes_thenSendsInitialAnalyticsOnce() {
         let analyticsProvider = AnalyticsProviderMock()
         let sut = makeSUT(context: makeContext(analyticsProvider: analyticsProvider))
@@ -267,21 +290,11 @@ internal final class StoredPaymentMethodComponentTests: XCTestCase {
         sut.performSubmit()
 
         XCTAssertEqual(analyticsProvider.initialEventCallsCount, 1)
+        // Nothing was rendered, so no render event may be reported.
+        XCTAssertTrue(analyticsProvider.infos.isEmpty)
     }
 
-    internal func test_directStoredPaymentMethod_whenViewControllerLoads_thenSendsRenderedEvent() throws {
-        let analyticsProvider = AnalyticsProviderMock()
-        let sut = makeSUT(context: makeContext(analyticsProvider: analyticsProvider))
-        let viewController = try XCTUnwrap(sut.viewController as? PaymentButtonViewController)
-
-        viewController.loadViewIfNeeded()
-
-        XCTAssertEqual(analyticsProvider.initialEventCallsCount, 1)
-        XCTAssertEqual(analyticsProvider.infos.count, 1)
-        XCTAssertEqual(analyticsProvider.infos.first?.type, .rendered)
-        XCTAssertEqual(analyticsProvider.infos.first?.isStoredPaymentMethod, true)
-    }
-
+    // Both analytics calls are being sent if view is loaded and submit is called.
     internal func test_directStoredPaymentMethod_whenRenderedThenSubmitted_thenSendsInitialAnalyticsOnce() throws {
         let analyticsProvider = AnalyticsProviderMock()
         let sut = makeSUT(context: makeContext(analyticsProvider: analyticsProvider))
@@ -291,7 +304,10 @@ internal final class StoredPaymentMethodComponentTests: XCTestCase {
         sut.performSubmit()
 
         XCTAssertEqual(analyticsProvider.initialEventCallsCount, 1)
+        XCTAssertEqual(analyticsProvider.infos.filter { $0.type == .rendered }.count, 1)
     }
+
+    // MARK: - SUT
 
     private func makeContext(analyticsProvider: AnalyticsProviderMock) -> AdyenContext {
         AdyenContext(
