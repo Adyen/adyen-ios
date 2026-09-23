@@ -26,7 +26,6 @@ internal struct GenericPaymentMethodAssembler: GenericPaymentMethodAssemblerProt
     // MARK: - Properties
 
     private let dropInFlowManager: DropInFlowManaging
-    private let paymentActionAssembler: PaymentActionAssemblerProtocol
     private let logoURLProvider: LogoURLProvider
     private let theme: CheckoutTheme
     private let localizationParameters: LocalizationParameters
@@ -35,13 +34,11 @@ internal struct GenericPaymentMethodAssembler: GenericPaymentMethodAssemblerProt
 
     internal init(
         dropInFlowManager: DropInFlowManaging,
-        paymentActionAssembler: PaymentActionAssemblerProtocol,
         logoURLProvider: LogoURLProvider,
         theme: CheckoutTheme,
         localizationParameters: LocalizationParameters
     ) {
         self.dropInFlowManager = dropInFlowManager
-        self.paymentActionAssembler = paymentActionAssembler
         self.logoURLProvider = logoURLProvider
         self.theme = theme
         self.localizationParameters = localizationParameters
@@ -64,7 +61,6 @@ internal struct GenericPaymentMethodAssembler: GenericPaymentMethodAssemblerProt
 
         let router = GenericPaymentMethodRouter(
             viewController: genericPaymentMethodViewController,
-            paymentActionAssembler: paymentActionAssembler,
             listener: listener
         )
         viewModel.router = router

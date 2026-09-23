@@ -39,7 +39,8 @@ package final class DropInComponent: NSObject,
             dropInComponent: self,
             dropInComponentDelegate: delegate,
             context: context,
-            actionComponentConfiguration: actionComponentConfiguration
+            actionComponentConfiguration: actionComponentConfiguration,
+            paymentActionAssembler: PaymentActionAssembler()
         )
     }()
 

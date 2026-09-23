@@ -24,7 +24,6 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
 
     private let configuration: DropInConfiguration
     private let dropInFlowManager: DropInFlowManaging
-    private let paymentActionAssembler: PaymentActionAssemblerProtocol
     private let partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
@@ -32,12 +31,10 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
     internal init(
         configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
-        paymentActionAssembler: PaymentActionAssemblerProtocol,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
-        self.paymentActionAssembler = paymentActionAssembler
         self.partialPaymentDelegate = partialPaymentDelegate
     }
 
@@ -56,7 +53,6 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
         let viewController = ComponentContainerViewController(viewModel: viewModel)
         let router = ComponentContainerRouter(
             viewController: viewController,
-            paymentActionAssembler: paymentActionAssembler,
             listener: listener
         )
         viewModel.router = router

@@ -26,17 +26,14 @@ struct GenericPaymentMethodRouterTests {
     }
 
     @Test
-    func presentPaymentAction_shouldPresentResolvedRouterModally() async {
+    func presentPaymentActionRouter_shouldPresentRouterModally() {
         // Given
         let viewControllerSpy = ViewControllerSpy()
         let paymentActionRouter = RouterMock()
-        let sut = makeSUT(
-            viewController: viewControllerSpy,
-            paymentActionAssembler: makePaymentActionAssembler(router: paymentActionRouter)
-        )
+        let sut = makeSUT(viewController: viewControllerSpy)
 
         // When
-        await sut.presentPaymentAction(for: makeAction())
+        sut.present(paymentActionRouter: paymentActionRouter)
 
         // Then
         #expect(viewControllerSpy.presentedViewControllerCaptured === paymentActionRouter.rootViewController)
@@ -44,10 +41,10 @@ struct GenericPaymentMethodRouterTests {
     }
 
     @Test
-    func didDismissPaymentAction_shouldReleaseChildRouter() async throws {
+    func didDismissPaymentAction_shouldReleaseChildRouter() throws {
         // Given
-        let sut = makeSUT()
-        await sut.presentPaymentAction(for: makeAction())
+        let sut = makeSUT(viewController: ViewControllerSpy())
+        sut.present(paymentActionRouter: RouterMock())
         try #require(sut.childRouter != nil)
 
         // When
@@ -98,25 +95,11 @@ struct GenericPaymentMethodRouterTests {
 
     private func makeSUT(
         viewController: UIViewController? = nil,
-        paymentActionAssembler: PaymentActionAssemblerProtocolMock? = nil,
         listener: GenericPaymentMethodRouterListener? = nil
     ) -> GenericPaymentMethodRouter {
         GenericPaymentMethodRouter(
             viewController: viewController ?? UIViewController(),
-            paymentActionAssembler: paymentActionAssembler ?? makePaymentActionAssembler(),
             listener: listener ?? GenericPaymentMethodRouterListenerMock()
         )
-    }
-
-    private func makePaymentActionAssembler(
-        router: RouterMock? = nil
-    ) -> PaymentActionAssemblerProtocolMock {
-        let assembler = PaymentActionAssemblerProtocolMock()
-        assembler.resolvePaymentActionRouterForListenerReturnValue = router ?? RouterMock()
-        return assembler
-    }
-
-    private func makeAction() -> Action {
-        .redirect(RedirectAction(url: URL(string: "https://adyen.com")!, paymentData: "payment_data"))
     }
 }

@@ -16,33 +16,23 @@ import UIKit
 @MainActor
 internal protocol PaymentActionAssemblerProtocol {
     func resolvePaymentActionRouter(
-        for action: Action,
-        listener: PaymentActionRouterListener
-    ) async -> Router?
+        for actionViewController: UIViewController,
+        listener: PaymentActionRouterListener,
+        onCancel: @escaping () -> Void
+    ) -> Router
 }
 
 @MainActor
 internal struct PaymentActionAssembler: PaymentActionAssemblerProtocol {
 
-    // MARK: - Properties
-
-    private let dropInFlowManager: DropInFlowManaging
-
-    // MARK: - Initializers
-
-    internal init(dropInFlowManager: DropInFlowManaging) {
-        self.dropInFlowManager = dropInFlowManager
-    }
-
     // MARK: - PaymentActionAssemblerProtocol
 
     internal func resolvePaymentActionRouter(
-        for action: Action,
-        listener: PaymentActionRouterListener
-    ) async -> Router? {
-        guard let actionViewController = await dropInFlowManager.handle(action: action) else { return nil }
-
-        let viewModel = PaymentActionViewModel(dropInFlowManager: dropInFlowManager)
+        for actionViewController: UIViewController,
+        listener: PaymentActionRouterListener,
+        onCancel: @escaping () -> Void
+    ) -> Router {
+        let viewModel = PaymentActionViewModel(onCancel: onCancel)
         let router = PaymentActionRouter(
             viewController: rootViewController(for: actionViewController, viewModel: viewModel),
             viewModel: viewModel,

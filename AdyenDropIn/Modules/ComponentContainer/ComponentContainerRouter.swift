@@ -19,19 +19,17 @@ internal protocol ComponentContainerRouterListener: AnyObject {
 
 // sourcery:AutoMockable
 @MainActor
-internal protocol ComponentContainerRouting: AnyObject {
+internal protocol ComponentContainerRouting: PaymentActionPresenting {
     func present(paymentComponent: PaymentComponent)
-    func presentPaymentAction(for action: Action) async
     func dismiss(completion: (() -> Void)?)
 }
 
 @MainActor
-internal class ComponentContainerRouter: Router, ComponentContainerRouting {
+internal class ComponentContainerRouter: ComponentContainerRouting {
 
     // MARK: - Properties
 
     private let viewController: ComponentContainerViewController
-    private let paymentActionAssembler: PaymentActionAssemblerProtocol
     private weak var listener: ComponentContainerRouterListener?
     internal var childRouter: Router?
 
@@ -39,50 +37,28 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouting {
 
     internal init(
         viewController: ComponentContainerViewController,
-        paymentActionAssembler: PaymentActionAssemblerProtocol,
         listener: ComponentContainerRouterListener
     ) {
         self.viewController = viewController
-        self.paymentActionAssembler = paymentActionAssembler
         self.listener = listener
     }
-    
+
     // MARK: - Router
-    
+
     internal var rootViewController: UIViewController {
         viewController
     }
 
     // MARK: - ComponentContainerRouting
-    
+
     internal func present(paymentComponent: any PaymentComponent) {
         let componentViewController = paymentComponent.viewController
         rootViewController.navigationController?.pushViewController(componentViewController, animated: true)
-    }
-
-    internal func presentPaymentAction(for action: Action) async {
-        guard let paymentActionRouter = await paymentActionAssembler.resolvePaymentActionRouter(
-            for: action,
-            listener: self
-        ) else { return }
-
-        childRouter = paymentActionRouter
-        rootViewController.present(paymentActionRouter.rootViewController, animated: true)
     }
 
     internal func dismiss(completion: (() -> Void)?) {
         rootViewController.dismiss(animated: true) { [weak self] in
             self?.listener?.didDismissComponentContainer(completion: completion)
         }
-    }
-}
-
-// MARK: - PaymentActionRouterListener
-
-extension ComponentContainerRouter: PaymentActionRouterListener {
-
-    internal func didDismissPaymentAction(completion: (() -> Void)?) {
-        childRouter = nil
-        completion?()
     }
 }

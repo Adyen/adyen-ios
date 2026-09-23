@@ -52,7 +52,6 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     private let localizationParameters: LocalizationParameters?
     internal let showsAllPaymentMethodsButton: Bool
     private let dropInFlowManager: DropInFlowManaging
-    private var paymentTask: Task<Void, Never>?
     internal let analyticsProvider: AnyAnalyticsProvider?
     internal let dropInAnalyticsConfiguration: DropInAnalyticsConfiguration
     internal weak var router: PreselectedPaymentMethodRouting?
@@ -137,7 +136,6 @@ internal final class PreselectedPaymentMethodViewModel: PreselectedPaymentMethod
     }
 
     internal func cancel() {
-        paymentTask?.cancel()
         dropInFlowManager.cancel(component: component)
 
         stopLoading()
@@ -184,11 +182,8 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        paymentTask?.cancel()
-        paymentTask = Task { [weak self] in
-            guard let action = await self?.dropInFlowManager.submit(data, from: component) else { return }
-            await self?.router?.presentPaymentAction(for: action)
-        }
+        guard let router else { return }
+        dropInFlowManager.submit(data, from: component, presenter: router)
     }
     
     internal func didFail(

@@ -22,7 +22,6 @@ internal class GenericPaymentMethodViewModel: ObservableObject {
     private let dropInFlowManager: DropInFlowManaging
     private let logoUrlProvider: LogoURLProvider
     private let localizationParameters: LocalizationParameters
-    private var paymentTask: Task<Void, Never>?
     internal weak var router: GenericPaymentMethodRouting?
 
     @Published internal var state: State = .idle
@@ -83,11 +82,8 @@ extension GenericPaymentMethodViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        paymentTask?.cancel()
-        paymentTask = Task { [weak self] in
-            guard let action = await self?.dropInFlowManager.submit(data, from: component) else { return }
-            await self?.router?.presentPaymentAction(for: action)
-        }
+        guard let router else { return }
+        dropInFlowManager.submit(data, from: component, presenter: router)
     }
 
     internal func didFail(

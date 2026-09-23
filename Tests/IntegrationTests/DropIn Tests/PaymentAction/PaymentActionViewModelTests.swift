@@ -18,30 +18,30 @@ struct PaymentActionViewModelTests {
     @Test
     func cancel_shouldDismissActionAndCancelDropIn() {
         // Given
-        let (sut, dropInFlowManagerMock, routerMock) = makeSUT()
+        var onCancelCallsCount = 0
+        let (sut, routerMock) = makeSUT { onCancelCallsCount += 1 }
 
         // When
         sut.cancel()
 
         // Then
         #expect(routerMock.dismissCompletionCallsCount == 1)
-        #expect(dropInFlowManagerMock.cancelDropInCallsCount == 1)
-        #expect(dropInFlowManagerMock.dismissDropInCallsCount == 1)
+        #expect(onCancelCallsCount == 1)
     }
 
     // MARK: - Helpers
 
-    private func makeSUT() -> (
+    private func makeSUT(
+        onCancel: @escaping () -> Void = {}
+    ) -> (
         sut: PaymentActionViewModel,
-        dropInFlowManagerMock: DropInFlowManagingMock,
         routerMock: PaymentActionRoutingMock
     ) {
-        let dropInFlowManagerMock = DropInFlowManagingMock()
-        let sut = PaymentActionViewModel(dropInFlowManager: dropInFlowManagerMock)
+        let sut = PaymentActionViewModel(onCancel: onCancel)
 
         let routerMock = PaymentActionRoutingMock()
         sut.router = routerMock
 
-        return (sut, dropInFlowManagerMock, routerMock)
+        return (sut, routerMock)
     }
 }

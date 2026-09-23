@@ -25,7 +25,6 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     private let configuration: DropInConfiguration
     private var dropInFlowManager: DropInFlowManaging
     private weak var partialPaymentDelegate: PartialPaymentDelegate?
-    private var paymentTask: Task<Void, Never>?
 
     // MARK: - Initializers
 
@@ -49,7 +48,6 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     }
 
     internal func cancel() {
-        paymentTask?.cancel()
         dropInFlowManager.cancel(component: component)
         
         stopLoading()
@@ -77,11 +75,8 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        paymentTask?.cancel()
-        paymentTask = Task { [weak self] in
-            guard let action = await self?.dropInFlowManager.submit(data, from: component) else { return }
-            await self?.router?.presentPaymentAction(for: action)
-        }
+        guard let router else { return }
+        dropInFlowManager.submit(data, from: component, presenter: router)
     }
     
     internal func didFail(

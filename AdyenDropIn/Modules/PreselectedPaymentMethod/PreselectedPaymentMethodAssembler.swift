@@ -28,7 +28,6 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
     private let showsAllPaymentMethodsButton: Bool
     private let configuration: DropInConfiguration
     private let dropInFlowManager: DropInFlowManaging
-    private let paymentActionAssembler: PaymentActionAssemblerProtocol
     private let partialPaymentDelegate: PartialPaymentDelegate?
     private let analyticsProvider: AnyAnalyticsProvider?
 
@@ -40,7 +39,6 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
         showsAllPaymentMethodsButton: Bool,
         configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
-        paymentActionAssembler: PaymentActionAssemblerProtocol,
         partialPaymentDelegate: PartialPaymentDelegate?,
         analyticsProvider: AnyAnalyticsProvider?
     ) {
@@ -49,7 +47,6 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
         self.showsAllPaymentMethodsButton = showsAllPaymentMethodsButton
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
-        self.paymentActionAssembler = paymentActionAssembler
         self.partialPaymentDelegate = partialPaymentDelegate
         self.analyticsProvider = analyticsProvider
     }
@@ -76,7 +73,6 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
         let router = PreselectedPaymentMethodRouter(
             viewController: viewController,
             listener: delegate,
-            paymentActionAssembler: paymentActionAssembler,
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler
         )

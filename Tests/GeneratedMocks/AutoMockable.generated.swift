@@ -131,6 +131,14 @@ class ComponentContainerRouterListenerMock: ComponentContainerRouterListener {
 
 class ComponentContainerRoutingMock: ComponentContainerRouting {
 
+    var childRouter: Router?
+    var rootViewController: UIViewController {
+        get { underlyingRootViewController }
+        set(value) { underlyingRootViewController = value }
+    }
+
+    var underlyingRootViewController: UIViewController!
+
     // MARK: - present
 
     var presentPaymentComponentCallsCount = 0
@@ -149,24 +157,6 @@ class ComponentContainerRoutingMock: ComponentContainerRouting {
         presentPaymentComponentClosure?(paymentComponent)
     }
 
-    // MARK: - presentPaymentAction
-
-    var presentPaymentActionForCallsCount = 0
-    var presentPaymentActionForCalled: Bool {
-        presentPaymentActionForCallsCount > 0
-    }
-
-    var presentPaymentActionForReceivedAction: Action?
-    var presentPaymentActionForReceivedInvocations: [Action] = []
-    var presentPaymentActionForClosure: ((Action) async -> Void)?
-
-    func presentPaymentAction(for action: Action) async {
-        presentPaymentActionForCallsCount += 1
-        presentPaymentActionForReceivedAction = action
-        presentPaymentActionForReceivedInvocations.append(action)
-        await presentPaymentActionForClosure?(action)
-    }
-
     // MARK: - dismiss
 
     var dismissCompletionCallsCount = 0
@@ -179,6 +169,24 @@ class ComponentContainerRoutingMock: ComponentContainerRouting {
     func dismiss(completion: (() -> Void)?) {
         dismissCompletionCallsCount += 1
         dismissCompletionClosure?(completion)
+    }
+
+    // MARK: - present
+
+    var presentPaymentActionRouterCallsCount = 0
+    var presentPaymentActionRouterCalled: Bool {
+        presentPaymentActionRouterCallsCount > 0
+    }
+
+    var presentPaymentActionRouterReceivedPaymentActionRouter: Router?
+    var presentPaymentActionRouterReceivedInvocations: [Router] = []
+    var presentPaymentActionRouterClosure: ((Router) -> Void)?
+
+    func present(paymentActionRouter: Router) {
+        presentPaymentActionRouterCallsCount += 1
+        presentPaymentActionRouterReceivedPaymentActionRouter = paymentActionRouter
+        presentPaymentActionRouterReceivedInvocations.append(paymentActionRouter)
+        presentPaymentActionRouterClosure?(paymentActionRouter)
     }
 
 }
@@ -232,25 +240,20 @@ class DropInFlowManagingMock: DropInFlowManaging {
 
     // MARK: - submit
 
-    var submitFromCallsCount = 0
-    var submitFromCalled: Bool {
-        submitFromCallsCount > 0
+    var submitFromPresenterCallsCount = 0
+    var submitFromPresenterCalled: Bool {
+        submitFromPresenterCallsCount > 0
     }
 
-    var submitFromReceivedArguments: (data: PaymentComponentData, component: PaymentComponent)?
-    var submitFromReceivedInvocations: [(data: PaymentComponentData, component: PaymentComponent)] = []
-    var submitFromReturnValue: Action?
-    var submitFromClosure: ((PaymentComponentData, PaymentComponent) async -> Action?)?
+    var submitFromPresenterReceivedArguments: (data: PaymentComponentData, component: PaymentComponent, presenter: PaymentActionPresenting)?
+    var submitFromPresenterReceivedInvocations: [(data: PaymentComponentData, component: PaymentComponent, presenter: PaymentActionPresenting)] = []
+    var submitFromPresenterClosure: ((PaymentComponentData, PaymentComponent, PaymentActionPresenting) -> Void)?
 
-    func submit(_ data: PaymentComponentData, from component: PaymentComponent) async -> Action? {
-        submitFromCallsCount += 1
-        submitFromReceivedArguments = (data: data, component: component)
-        submitFromReceivedInvocations.append((data: data, component: component))
-        if let submitFromClosure {
-            return await submitFromClosure(data, component)
-        } else {
-            return submitFromReturnValue
-        }
+    func submit(_ data: PaymentComponentData, from component: PaymentComponent, presenter: PaymentActionPresenting) {
+        submitFromPresenterCallsCount += 1
+        submitFromPresenterReceivedArguments = (data: data, component: component, presenter: presenter)
+        submitFromPresenterReceivedInvocations.append((data: data, component: component, presenter: presenter))
+        submitFromPresenterClosure?(data, component, presenter)
     }
 
     // MARK: - receive
@@ -269,29 +272,6 @@ class DropInFlowManagingMock: DropInFlowManaging {
         receiveActionReceivedAction = action
         receiveActionReceivedInvocations.append(action)
         receiveActionClosure?(action)
-    }
-
-    // MARK: - handle
-
-    var handleActionCallsCount = 0
-    var handleActionCalled: Bool {
-        handleActionCallsCount > 0
-    }
-
-    var handleActionReceivedAction: Action?
-    var handleActionReceivedInvocations: [Action] = []
-    var handleActionReturnValue: UIViewController?
-    var handleActionClosure: ((Action) async -> UIViewController?)?
-
-    func handle(action: Action) async -> UIViewController? {
-        handleActionCallsCount += 1
-        handleActionReceivedAction = action
-        handleActionReceivedInvocations.append(action)
-        if let handleActionClosure {
-            return await handleActionClosure(action)
-        } else {
-            return handleActionReturnValue
-        }
     }
 
     // MARK: - fail
@@ -407,23 +387,13 @@ class GenericPaymentMethodRouterListenerMock: GenericPaymentMethodRouterListener
 
 class GenericPaymentMethodRoutingMock: GenericPaymentMethodRouting {
 
-    // MARK: - presentPaymentAction
-
-    var presentPaymentActionForCallsCount = 0
-    var presentPaymentActionForCalled: Bool {
-        presentPaymentActionForCallsCount > 0
+    var childRouter: Router?
+    var rootViewController: UIViewController {
+        get { underlyingRootViewController }
+        set(value) { underlyingRootViewController = value }
     }
 
-    var presentPaymentActionForReceivedAction: Action?
-    var presentPaymentActionForReceivedInvocations: [Action] = []
-    var presentPaymentActionForClosure: ((Action) async -> Void)?
-
-    func presentPaymentAction(for action: Action) async {
-        presentPaymentActionForCallsCount += 1
-        presentPaymentActionForReceivedAction = action
-        presentPaymentActionForReceivedInvocations.append(action)
-        await presentPaymentActionForClosure?(action)
-    }
+    var underlyingRootViewController: UIViewController!
 
     // MARK: - dismiss
 
@@ -439,31 +409,93 @@ class GenericPaymentMethodRoutingMock: GenericPaymentMethodRouting {
         dismissClosure?()
     }
 
+    // MARK: - present
+
+    var presentPaymentActionRouterCallsCount = 0
+    var presentPaymentActionRouterCalled: Bool {
+        presentPaymentActionRouterCallsCount > 0
+    }
+
+    var presentPaymentActionRouterReceivedPaymentActionRouter: Router?
+    var presentPaymentActionRouterReceivedInvocations: [Router] = []
+    var presentPaymentActionRouterClosure: ((Router) -> Void)?
+
+    func present(paymentActionRouter: Router) {
+        presentPaymentActionRouterCallsCount += 1
+        presentPaymentActionRouterReceivedPaymentActionRouter = paymentActionRouter
+        presentPaymentActionRouterReceivedInvocations.append(paymentActionRouter)
+        presentPaymentActionRouterClosure?(paymentActionRouter)
+    }
+
 }
 
 class PaymentActionAssemblerProtocolMock: PaymentActionAssemblerProtocol {
 
     // MARK: - resolvePaymentActionRouter
 
-    var resolvePaymentActionRouterForListenerCallsCount = 0
-    var resolvePaymentActionRouterForListenerCalled: Bool {
-        resolvePaymentActionRouterForListenerCallsCount > 0
+    var resolvePaymentActionRouterForListenerOnCancelCallsCount = 0
+    var resolvePaymentActionRouterForListenerOnCancelCalled: Bool {
+        resolvePaymentActionRouterForListenerOnCancelCallsCount > 0
     }
 
-    var resolvePaymentActionRouterForListenerReceivedArguments: (action: Action, listener: PaymentActionRouterListener)?
-    var resolvePaymentActionRouterForListenerReceivedInvocations: [(action: Action, listener: PaymentActionRouterListener)] = []
-    var resolvePaymentActionRouterForListenerReturnValue: Router?
-    var resolvePaymentActionRouterForListenerClosure: ((Action, PaymentActionRouterListener) async -> Router?)?
+    var resolvePaymentActionRouterForListenerOnCancelReceivedArguments: (actionViewController: UIViewController, listener: PaymentActionRouterListener, onCancel: () -> Void)?
+    var resolvePaymentActionRouterForListenerOnCancelReceivedInvocations: [(actionViewController: UIViewController, listener: PaymentActionRouterListener, onCancel: () -> Void)] = []
+    var resolvePaymentActionRouterForListenerOnCancelReturnValue: Router!
+    var resolvePaymentActionRouterForListenerOnCancelClosure: ((UIViewController, PaymentActionRouterListener, @escaping () -> Void) -> Router)?
 
-    func resolvePaymentActionRouter(for action: Action, listener: PaymentActionRouterListener) async -> Router? {
-        resolvePaymentActionRouterForListenerCallsCount += 1
-        resolvePaymentActionRouterForListenerReceivedArguments = (action: action, listener: listener)
-        resolvePaymentActionRouterForListenerReceivedInvocations.append((action: action, listener: listener))
-        if let resolvePaymentActionRouterForListenerClosure {
-            return await resolvePaymentActionRouterForListenerClosure(action, listener)
+    func resolvePaymentActionRouter(for actionViewController: UIViewController, listener: PaymentActionRouterListener, onCancel: @escaping () -> Void) -> Router {
+        resolvePaymentActionRouterForListenerOnCancelCallsCount += 1
+        resolvePaymentActionRouterForListenerOnCancelReceivedArguments = (actionViewController: actionViewController, listener: listener, onCancel: onCancel)
+        resolvePaymentActionRouterForListenerOnCancelReceivedInvocations.append((actionViewController: actionViewController, listener: listener, onCancel: onCancel))
+        if let resolvePaymentActionRouterForListenerOnCancelClosure {
+            return resolvePaymentActionRouterForListenerOnCancelClosure(actionViewController, listener, onCancel)
         } else {
-            return resolvePaymentActionRouterForListenerReturnValue
+            return resolvePaymentActionRouterForListenerOnCancelReturnValue
         }
+    }
+
+}
+
+class PaymentActionPresentingMock: PaymentActionPresenting {
+
+    var childRouter: Router?
+    var rootViewController: UIViewController {
+        get { underlyingRootViewController }
+        set(value) { underlyingRootViewController = value }
+    }
+
+    var underlyingRootViewController: UIViewController!
+
+    // MARK: - present
+
+    var presentPaymentActionRouterCallsCount = 0
+    var presentPaymentActionRouterCalled: Bool {
+        presentPaymentActionRouterCallsCount > 0
+    }
+
+    var presentPaymentActionRouterReceivedPaymentActionRouter: Router?
+    var presentPaymentActionRouterReceivedInvocations: [Router] = []
+    var presentPaymentActionRouterClosure: ((Router) -> Void)?
+
+    func present(paymentActionRouter: Router) {
+        presentPaymentActionRouterCallsCount += 1
+        presentPaymentActionRouterReceivedPaymentActionRouter = paymentActionRouter
+        presentPaymentActionRouterReceivedInvocations.append(paymentActionRouter)
+        presentPaymentActionRouterClosure?(paymentActionRouter)
+    }
+
+    // MARK: - didDismissPaymentAction
+
+    var didDismissPaymentActionCompletionCallsCount = 0
+    var didDismissPaymentActionCompletionCalled: Bool {
+        didDismissPaymentActionCompletionCallsCount > 0
+    }
+
+    var didDismissPaymentActionCompletionClosure: (((() -> Void)?) -> Void)?
+
+    func didDismissPaymentAction(completion: (() -> Void)?) {
+        didDismissPaymentActionCompletionCallsCount += 1
+        didDismissPaymentActionCompletionClosure?(completion)
     }
 
 }
@@ -569,6 +601,14 @@ class PaymentMethodListRouterListenerMock: PaymentMethodListRouterListener {
 
 class PaymentMethodListRoutingMock: PaymentMethodListRouting {
 
+    var childRouter: Router?
+    var rootViewController: UIViewController {
+        get { underlyingRootViewController }
+        set(value) { underlyingRootViewController = value }
+    }
+
+    var underlyingRootViewController: UIViewController!
+
     // MARK: - present
 
     var presentComponentCallsCount = 0
@@ -605,24 +645,6 @@ class PaymentMethodListRoutingMock: PaymentMethodListRouting {
         presentViewControllerClosure?(viewController)
     }
 
-    // MARK: - presentPaymentAction
-
-    var presentPaymentActionForCallsCount = 0
-    var presentPaymentActionForCalled: Bool {
-        presentPaymentActionForCallsCount > 0
-    }
-
-    var presentPaymentActionForReceivedAction: Action?
-    var presentPaymentActionForReceivedInvocations: [Action] = []
-    var presentPaymentActionForClosure: ((Action) async -> Void)?
-
-    func presentPaymentAction(for action: Action) async {
-        presentPaymentActionForCallsCount += 1
-        presentPaymentActionForReceivedAction = action
-        presentPaymentActionForReceivedInvocations.append(action)
-        await presentPaymentActionForClosure?(action)
-    }
-
     // MARK: - presentStoredPaymentMethodManagement
 
     var presentStoredPaymentMethodManagementCallsCount = 0
@@ -649,6 +671,24 @@ class PaymentMethodListRoutingMock: PaymentMethodListRouting {
     func dismiss(completion: (() -> Void)?) {
         dismissCompletionCallsCount += 1
         dismissCompletionClosure?(completion)
+    }
+
+    // MARK: - present
+
+    var presentPaymentActionRouterCallsCount = 0
+    var presentPaymentActionRouterCalled: Bool {
+        presentPaymentActionRouterCallsCount > 0
+    }
+
+    var presentPaymentActionRouterReceivedPaymentActionRouter: Router?
+    var presentPaymentActionRouterReceivedInvocations: [Router] = []
+    var presentPaymentActionRouterClosure: ((Router) -> Void)?
+
+    func present(paymentActionRouter: Router) {
+        presentPaymentActionRouterCallsCount += 1
+        presentPaymentActionRouterReceivedPaymentActionRouter = paymentActionRouter
+        presentPaymentActionRouterReceivedInvocations.append(paymentActionRouter)
+        presentPaymentActionRouterClosure?(paymentActionRouter)
     }
 
 }
@@ -758,6 +798,14 @@ class PreselectedPaymentMethodAssemblerProtocolMock: PreselectedPaymentMethodAss
 
 class PreselectedPaymentMethodRoutingMock: PreselectedPaymentMethodRouting {
 
+    var childRouter: Router?
+    var rootViewController: UIViewController {
+        get { underlyingRootViewController }
+        set(value) { underlyingRootViewController = value }
+    }
+
+    var underlyingRootViewController: UIViewController!
+
     // MARK: - presentPaymentMethodList
 
     var presentPaymentMethodListCallsCount = 0
@@ -790,24 +838,6 @@ class PreselectedPaymentMethodRoutingMock: PreselectedPaymentMethodRouting {
         presentComponentClosure?(component)
     }
 
-    // MARK: - presentPaymentAction
-
-    var presentPaymentActionForCallsCount = 0
-    var presentPaymentActionForCalled: Bool {
-        presentPaymentActionForCallsCount > 0
-    }
-
-    var presentPaymentActionForReceivedAction: Action?
-    var presentPaymentActionForReceivedInvocations: [Action] = []
-    var presentPaymentActionForClosure: ((Action) async -> Void)?
-
-    func presentPaymentAction(for action: Action) async {
-        presentPaymentActionForCallsCount += 1
-        presentPaymentActionForReceivedAction = action
-        presentPaymentActionForReceivedInvocations.append(action)
-        await presentPaymentActionForClosure?(action)
-    }
-
     // MARK: - dismiss
 
     var dismissCompletionCallsCount = 0
@@ -820,6 +850,24 @@ class PreselectedPaymentMethodRoutingMock: PreselectedPaymentMethodRouting {
     func dismiss(completion: (() -> Void)?) {
         dismissCompletionCallsCount += 1
         dismissCompletionClosure?(completion)
+    }
+
+    // MARK: - present
+
+    var presentPaymentActionRouterCallsCount = 0
+    var presentPaymentActionRouterCalled: Bool {
+        presentPaymentActionRouterCallsCount > 0
+    }
+
+    var presentPaymentActionRouterReceivedPaymentActionRouter: Router?
+    var presentPaymentActionRouterReceivedInvocations: [Router] = []
+    var presentPaymentActionRouterClosure: ((Router) -> Void)?
+
+    func present(paymentActionRouter: Router) {
+        presentPaymentActionRouterCallsCount += 1
+        presentPaymentActionRouterReceivedPaymentActionRouter = paymentActionRouter
+        presentPaymentActionRouterReceivedInvocations.append(paymentActionRouter)
+        presentPaymentActionRouterClosure?(paymentActionRouter)
     }
 
 }

@@ -46,10 +46,10 @@ struct PreselectedPaymentMethodIntegrationTests {
         // When - user submits payment
         preSelectedViewController.load()
         try preSelectedViewController.submitPayment()
-        await waitUntil { dropInFlowManager.submitFromCalled }
+        await waitUntil { dropInFlowManager.submitFromPresenterCalled }
 
         // Then - verify dropInFlowManager.submit was called
-        #expect(dropInFlowManager.submitFromCalled)
+        #expect(dropInFlowManager.submitFromPresenterCalled)
     }
 
     @Test("PaymentComponent that is presentable - submit payment triggers presentation")
@@ -167,7 +167,6 @@ struct PreselectedPaymentMethodIntegrationTests {
             showsAllPaymentMethodsButton: true,
             configuration: .init(),
             dropInFlowManager: dropInFlowManager,
-            paymentActionAssembler: PaymentActionAssemblerProtocolMock(),
             partialPaymentDelegate: nil,
             analyticsProvider: AnalyticsProviderMock()
         )

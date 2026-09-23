@@ -66,28 +66,23 @@ struct GenericPaymentMethodViewModelTests {
     }
 
     @Test
-    func didSubmit_shouldCallDropInFlowManagerSubmit() async {
+    func didSubmit_shouldCallDropInFlowManagerSubmitWithTheRouterAsPresenter() {
         // Given
-        let (sut, paymentComponentMock, dropInFlowManagerMock, _) = makeSUT()
+        let (sut, paymentComponentMock, dropInFlowManagerMock, routerMock) = makeSUT()
         let data = PaymentComponentData(
             paymentMethodDetails: GenericPaymentDetails(type: paymentComponentMock.paymentMethod.type),
             order: nil
         )
 
         // When
-        await confirmation { didSubmit in
-            dropInFlowManagerMock.submitFromClosure = { _, _ in
-                didSubmit()
-                return nil
-            }
-            sut.didSubmit(data, from: paymentComponentMock)
-            await waitUntil { dropInFlowManagerMock.submitFromCalled }
-        }
+        sut.didSubmit(data, from: paymentComponentMock)
 
         // Then
-        let receivedPaymentMethod = dropInFlowManagerMock.submitFromReceivedArguments?.data.paymentMethod as? GenericPaymentDetails
-        #expect(receivedPaymentMethod?.type == paymentComponentMock.paymentMethod.type)
-        #expect(dropInFlowManagerMock.submitFromReceivedArguments?.component === paymentComponentMock)
+        #expect(dropInFlowManagerMock.submitFromPresenterCallsCount == 1)
+        let receivedArguments = dropInFlowManagerMock.submitFromPresenterReceivedArguments
+        #expect((receivedArguments?.data.paymentMethod as? GenericPaymentDetails)?.type == paymentComponentMock.paymentMethod.type)
+        #expect(receivedArguments?.component === paymentComponentMock)
+        #expect(receivedArguments?.presenter === routerMock)
     }
 
     @Test
@@ -106,28 +101,6 @@ struct GenericPaymentMethodViewModelTests {
         #expect(dropInFlowManagerMock.failWithFromCallsCount == 1)
         #expect(dropInFlowManagerMock.failWithFromReceivedArguments?.component === paymentComponentMock)
         #expect(sut.state == .idle)
-    }
-
-    @Test
-    func didSubmit_givenAnAction_shouldPresentPaymentAction() async throws {
-        // Given
-        let (sut, paymentComponentMock, dropInFlowManagerMock, routerMock) = makeSUT()
-        let action = try Action.redirect(RedirectAction(url: #require(URL(string: "https://adyen.com")), paymentData: "payment_data"))
-        dropInFlowManagerMock.submitFromReturnValue = action
-        let data = PaymentComponentData(
-            paymentMethodDetails: GenericPaymentDetails(type: paymentComponentMock.paymentMethod.type),
-            order: nil
-        )
-
-        // When
-        await confirmation { didPresentPaymentAction in
-            routerMock.presentPaymentActionForClosure = { _ in didPresentPaymentAction() }
-            sut.didSubmit(data, from: paymentComponentMock)
-            await waitUntil { routerMock.presentPaymentActionForCallsCount > 0 }
-        }
-
-        // Then
-        #expect(routerMock.presentPaymentActionForCallsCount == 1)
     }
 
     // MARK: - Helpers

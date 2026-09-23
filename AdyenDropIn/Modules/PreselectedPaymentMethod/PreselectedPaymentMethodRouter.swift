@@ -18,15 +18,14 @@ internal protocol PreselectedPaymentMethodRouterListener: AnyObject {
 
 // sourcery:AutoMockable
 @MainActor
-internal protocol PreselectedPaymentMethodRouting: AnyObject {
+internal protocol PreselectedPaymentMethodRouting: PaymentActionPresenting {
     func presentPaymentMethodList()
     func present(component: PaymentComponent)
-    func presentPaymentAction(for action: Action) async
     func dismiss(completion: (() -> Void)?)
 }
 
 @MainActor
-internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodRouting {
+internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouting {
     private enum Constants {
         static let chevronBackwardImage = "chevron.backward"
     }
@@ -37,7 +36,6 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     private weak var listener: PreselectedPaymentMethodRouterListener?
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
-    private let paymentActionAssembler: PaymentActionAssemblerProtocol
     internal var childRouter: Router?
     
     // MARK: - Initializers
@@ -45,13 +43,11 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     internal init(
         viewController: UIViewController,
         listener: PreselectedPaymentMethodRouterListener?,
-        paymentActionAssembler: PaymentActionAssemblerProtocol,
         paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
         componentContainerAssembler: ComponentContainerAssemblerProtocol
     ) {
         self.rootViewController = viewController
         self.listener = listener
-        self.paymentActionAssembler = paymentActionAssembler
         self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
     }
@@ -84,16 +80,6 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         case .generic:
             break
         }
-    }
-
-    internal func presentPaymentAction(for action: Action) async {
-        guard let paymentActionRouter = await paymentActionAssembler.resolvePaymentActionRouter(
-            for: action,
-            listener: self
-        ) else { return }
-
-        childRouter = paymentActionRouter
-        rootViewController.present(paymentActionRouter.rootViewController, animated: true)
     }
 
     internal func dismiss(completion: (() -> Void)?) {
@@ -151,16 +137,6 @@ extension PreselectedPaymentMethodRouter: PaymentMethodListRouterListener {
             self?.childRouter = nil
             self?.listener?.didDismissPreselectedPaymentMethod(completion: completion)
         }
-    }
-}
-
-// MARK: - PaymentActionRouterListener
-
-extension PreselectedPaymentMethodRouter: PaymentActionRouterListener {
-
-    internal func didDismissPaymentAction(completion: (() -> Void)?) {
-        childRouter = nil
-        completion?()
     }
 }
 

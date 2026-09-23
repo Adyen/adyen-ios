@@ -20,12 +20,12 @@ internal class PaymentActionViewModel: PaymentActionViewModelProtocol {
     // MARK: - Properties
 
     internal weak var router: PaymentActionRouting?
-    private let dropInFlowManager: DropInFlowManaging
+    private let onCancel: () -> Void
 
     // MARK: - Initializers
 
-    internal init(dropInFlowManager: DropInFlowManaging) {
-        self.dropInFlowManager = dropInFlowManager
+    internal init(onCancel: @escaping () -> Void) {
+        self.onCancel = onCancel
     }
 
     // MARK: - PaymentActionViewModelProtocol
@@ -34,7 +34,6 @@ internal class PaymentActionViewModel: PaymentActionViewModelProtocol {
     /// as there is no way back to the payment details of the selected payment method.
     internal func cancel() {
         router?.dismiss(completion: nil)
-        dropInFlowManager.cancelDropIn()
-        dropInFlowManager.dismissDropIn()
+        onCancel()
     }
 }

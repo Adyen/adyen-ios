@@ -89,24 +89,19 @@ struct PaymentMethodListViewModelTests {
     // MARK: - PaymentComponentDelegate Tests
 
     @Test
-    func didSubmit_shouldCallDropInFlowManagerSubmit() async {
+    func didSubmit_shouldCallDropInFlowManagerSubmitWithTheRouterAsPresenter() {
         // Given
-        let (sut, dropInFlowManagerMock, _) = makeSUT()
+        let (sut, dropInFlowManagerMock, routerMock) = makeSUT()
         let paymentComponentMock = makePaymentComponentMock()
         let data = makePaymentComponentDataMock()
 
         // When
-        await confirmation { didSubmit in
-            dropInFlowManagerMock.submitFromClosure = { _, _ in
-                didSubmit()
-                return nil
-            }
-            sut.didSubmit(data, from: paymentComponentMock)
-            await waitUntil { dropInFlowManagerMock.submitFromCalled }
-        }
+        sut.didSubmit(data, from: paymentComponentMock)
 
         // Then
-        #expect(dropInFlowManagerMock.submitFromReceivedArguments?.component === paymentComponentMock)
+        #expect(dropInFlowManagerMock.submitFromPresenterCallsCount == 1)
+        #expect(dropInFlowManagerMock.submitFromPresenterReceivedArguments?.component === paymentComponentMock)
+        #expect(dropInFlowManagerMock.submitFromPresenterReceivedArguments?.presenter === routerMock)
     }
 
     @Test
@@ -447,28 +442,6 @@ struct PaymentMethodListViewModelTests {
         // Then
         let sections = try #require(sut.state.loadedSections)
         #expect(sections.contains { $0.headerTrailingButton != nil } == false)
-    }
-
-    // MARK: - PaymentAction Tests
-
-    @Test
-    func didSubmit_givenAnAction_shouldPresentPaymentAction() async throws {
-        // Given
-        let (sut, dropInFlowManagerMock, routerMock) = makeSUT()
-        let paymentComponentMock = makePaymentComponentMock()
-        dropInFlowManagerMock.submitFromReturnValue = try .redirect(
-            RedirectAction(url: #require(URL(string: "https://adyen.com")), paymentData: "payment_data")
-        )
-
-        // When
-        await confirmation { didPresentPaymentAction in
-            routerMock.presentPaymentActionForClosure = { _ in didPresentPaymentAction() }
-            sut.didSubmit(makePaymentComponentDataMock(), from: paymentComponentMock)
-            await waitUntil { routerMock.presentPaymentActionForCallsCount > 0 }
-        }
-
-        // Then
-        #expect(routerMock.presentPaymentActionForCallsCount == 1)
     }
 
     // MARK: - Helpers

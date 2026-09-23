@@ -99,7 +99,6 @@ internal struct DropInAssembler {
             showsAllPaymentMethodsButton: !componentManager.sections.isEmpty,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
-            paymentActionAssembler: paymentActionAssembler,
             partialPaymentDelegate: partialPaymentDelegate,
             analyticsProvider: context.analyticsProvider
         )
@@ -113,7 +112,6 @@ internal struct DropInAssembler {
             localizationParameters: resolveLocalizationParameters(),
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
-            paymentActionAssembler: paymentActionAssembler,
             theme: configuration.theme,
             logoURLProvider: resolveLogoURLProvider(),
             partialPaymentDelegate: partialPaymentDelegate,
@@ -121,15 +119,10 @@ internal struct DropInAssembler {
         )
     }
     
-    private var paymentActionAssembler: PaymentActionAssemblerProtocol {
-        PaymentActionAssembler(dropInFlowManager: dropInFlowManager)
-    }
-
     private var componentContainerAssembler: ComponentContainerAssemblerProtocol {
         ComponentContainerAssembler(
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
-            paymentActionAssembler: paymentActionAssembler,
             partialPaymentDelegate: partialPaymentDelegate
         )
     }

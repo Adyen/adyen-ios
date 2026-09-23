@@ -18,7 +18,7 @@ struct ComponentContainerRouterTests {
     @Test
     func presentPaymentComponent_shouldPushViewController() async {
         // Given
-        let (sut, viewControllerSpy, _, _) = await makeSUT()
+        let (sut, viewControllerSpy, _) = await makeSUT()
         let paymentComponent = await makePaymentComponent()
 
         let navigationControllerSpy = NavigationControllerSpy()
@@ -33,14 +33,13 @@ struct ComponentContainerRouterTests {
     }
 
     @Test
-    func presentPaymentAction_shouldPresentResolvedRouterModally() async {
+    func presentPaymentActionRouter_shouldPresentRouterModally() async {
         // Given
-        let (sut, viewControllerSpy, _, paymentActionAssemblerMock) = await makeSUT()
+        let (sut, viewControllerSpy, _) = await makeSUT()
         let paymentActionRouter = RouterMock()
-        paymentActionAssemblerMock.resolvePaymentActionRouterForListenerReturnValue = paymentActionRouter
 
         // When
-        await sut.presentPaymentAction(for: makeAction())
+        sut.present(paymentActionRouter: paymentActionRouter)
 
         // Then
         #expect(viewControllerSpy.presentedViewControllerCaptured === paymentActionRouter.rootViewController)
@@ -50,9 +49,8 @@ struct ComponentContainerRouterTests {
     @Test
     func didDismissPaymentAction_shouldReleaseChildRouter() async throws {
         // Given
-        let (sut, _, _, paymentActionAssemblerMock) = await makeSUT()
-        paymentActionAssemblerMock.resolvePaymentActionRouterForListenerReturnValue = RouterMock()
-        await sut.presentPaymentAction(for: makeAction())
+        let (sut, _, _) = await makeSUT()
+        sut.present(paymentActionRouter: RouterMock())
         try #require(sut.childRouter != nil)
 
         // When
@@ -65,7 +63,7 @@ struct ComponentContainerRouterTests {
     @Test
     func dismiss_shouldCall_listener_didDismissComponentContainer() async {
         // Given
-        let (sut, viewControllerSpy, listenerMock, _) = await makeSUT()
+        let (sut, viewControllerSpy, listenerMock) = await makeSUT()
 
         // When
         sut.dismiss(completion: nil)
@@ -132,21 +130,18 @@ struct ComponentContainerRouterTests {
     private func makeSUT() async -> (
         sut: ComponentContainerRouter,
         viewControllerSpy: ViewControllerSpy,
-        listenerMock: ComponentContainerRouterListenerMock,
-        paymentActionAssemblerMock: PaymentActionAssemblerProtocolMock
+        listenerMock: ComponentContainerRouterListenerMock
     ) {
         let viewModelMock = ComponentContainerViewModelProtocolMock()
 
         let viewControllerSpy = ViewControllerSpy(viewModel: viewModelMock)
         let listenerMock = ComponentContainerRouterListenerMock()
-        let paymentActionAssemblerMock = PaymentActionAssemblerProtocolMock()
         let sut = ComponentContainerRouter(
             viewController: viewControllerSpy,
-            paymentActionAssembler: paymentActionAssemblerMock,
             listener: listenerMock
         )
 
-        return (sut, viewControllerSpy, listenerMock, paymentActionAssemblerMock)
+        return (sut, viewControllerSpy, listenerMock)
     }
 
     private func makePaymentComponent() async -> PresentablePaymentComponentMock {
@@ -161,9 +156,5 @@ struct ComponentContainerRouterTests {
             paymentMethod: cardPaymentMethodMock,
             viewController: viewController
         )
-    }
-
-    private func makeAction() -> Action {
-        .redirect(RedirectAction(url: URL(string: "https://adyen.com")!, paymentData: "payment_data"))
     }
 }

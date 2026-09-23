@@ -19,57 +19,33 @@ internal protocol GenericPaymentMethodRouterListener: AnyObject {
 
 // sourcery:AutoMockable
 @MainActor
-internal protocol GenericPaymentMethodRouting: AnyObject {
-    func presentPaymentAction(for action: Action) async
+internal protocol GenericPaymentMethodRouting: PaymentActionPresenting {
     func dismiss()
 }
 
 @MainActor
-internal class GenericPaymentMethodRouter: Router, GenericPaymentMethodRouting {
+internal class GenericPaymentMethodRouter: GenericPaymentMethodRouting {
 
     // MARK: - Properties
 
     internal let rootViewController: UIViewController
     internal var childRouter: Router?
-    private let paymentActionAssembler: PaymentActionAssemblerProtocol
     private weak var listener: GenericPaymentMethodRouterListener?
 
     // MARK: - Initializers
 
     internal init(
         viewController: UIViewController,
-        paymentActionAssembler: PaymentActionAssemblerProtocol,
         listener: GenericPaymentMethodRouterListener
     ) {
         self.rootViewController = viewController
-        self.paymentActionAssembler = paymentActionAssembler
         self.listener = listener
     }
 
     // MARK: - GenericPaymentMethodRouting
 
-    internal func presentPaymentAction(for action: Action) async {
-        guard let paymentActionRouter = await paymentActionAssembler.resolvePaymentActionRouter(
-            for: action,
-            listener: self
-        ) else { return }
-
-        childRouter = paymentActionRouter
-        rootViewController.present(paymentActionRouter.rootViewController, animated: true)
-    }
-
     internal func dismiss() {
         rootViewController.navigationController?.popViewController(animated: true)
         listener?.didDismissGenericPaymentMethod()
-    }
-}
-
-// MARK: - PaymentActionRouterListener
-
-extension GenericPaymentMethodRouter: PaymentActionRouterListener {
-
-    internal func didDismissPaymentAction(completion: (() -> Void)?) {
-        childRouter = nil
-        completion?()
     }
 }
