@@ -261,18 +261,45 @@ internal final class StoredPaymentMethodComponentTests: XCTestCase {
 
     internal func test_directStoredPaymentMethod_whenSubmittingMultipleTimes_thenSendsInitialAnalyticsOnce() {
         let analyticsProvider = AnalyticsProviderMock()
-        let context = AdyenContext(
-            apiContext: Dummy.apiContext,
-            amount: Dummy.amount,
-            publicKey: Dummy.publicKey,
-            analyticsProvider: analyticsProvider
-        )
-        let sut = makeSUT(context: context)
+        let sut = makeSUT(context: makeContext(analyticsProvider: analyticsProvider))
 
         sut.performSubmit()
         sut.performSubmit()
 
         XCTAssertEqual(analyticsProvider.initialEventCallsCount, 1)
+    }
+
+    internal func test_directStoredPaymentMethod_whenViewControllerLoads_thenSendsRenderedEvent() throws {
+        let analyticsProvider = AnalyticsProviderMock()
+        let sut = makeSUT(context: makeContext(analyticsProvider: analyticsProvider))
+        let viewController = try XCTUnwrap(sut.viewController as? PaymentButtonViewController)
+
+        viewController.loadViewIfNeeded()
+
+        XCTAssertEqual(analyticsProvider.initialEventCallsCount, 1)
+        XCTAssertEqual(analyticsProvider.infos.count, 1)
+        XCTAssertEqual(analyticsProvider.infos.first?.type, .rendered)
+        XCTAssertEqual(analyticsProvider.infos.first?.isStoredPaymentMethod, true)
+    }
+
+    internal func test_directStoredPaymentMethod_whenRenderedThenSubmitted_thenSendsInitialAnalyticsOnce() throws {
+        let analyticsProvider = AnalyticsProviderMock()
+        let sut = makeSUT(context: makeContext(analyticsProvider: analyticsProvider))
+        let viewController = try XCTUnwrap(sut.viewController as? PaymentButtonViewController)
+
+        viewController.loadViewIfNeeded()
+        sut.performSubmit()
+
+        XCTAssertEqual(analyticsProvider.initialEventCallsCount, 1)
+    }
+
+    private func makeContext(analyticsProvider: AnalyticsProviderMock) -> AdyenContext {
+        AdyenContext(
+            apiContext: Dummy.apiContext,
+            amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: analyticsProvider
+        )
     }
 
     private func makeSUT(context: AdyenContext = Dummy.context) -> StoredPaymentMethodComponent {

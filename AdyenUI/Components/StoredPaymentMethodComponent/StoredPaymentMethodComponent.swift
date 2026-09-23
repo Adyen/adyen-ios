@@ -90,6 +90,7 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
         viewController.onSubmit = { [weak self] in
             self?.performSubmit()
         }
+        viewController.delegate = self
         paymentButtonViewController = viewController
         return viewController
     }
@@ -102,3 +103,12 @@ package final class StoredPaymentMethodComponent: StoredPaymentComponent, Locali
 }
 
 extension StoredPaymentMethodComponent: TrackableComponent {}
+
+extension StoredPaymentMethodComponent: ViewControllerDelegate {
+
+    /// Called when the payment button view controller loads, so the component can report that its UI rendered.
+    package func viewDidLoad(viewController: UIViewController) {
+        sendInitialAnalyticsIfNeeded()
+        sendDidLoadEvent()
+    }
+}
