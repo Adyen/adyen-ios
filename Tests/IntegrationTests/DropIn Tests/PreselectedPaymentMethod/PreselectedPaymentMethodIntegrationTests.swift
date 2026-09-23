@@ -172,7 +172,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         )
 
         let router = assembler.resolvePreselectedPaymentMethodRouter(
-            delegate: nil,
+            listener: nil,
             component: component,
             title: "Test Title"
         )

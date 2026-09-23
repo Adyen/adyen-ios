@@ -568,12 +568,12 @@ class PaymentMethodListAssemblerProtocolMock: PaymentMethodListAssemblerProtocol
     var resolvePaymentMethodListRouterDelegateReturnValue: Router!
     var resolvePaymentMethodListRouterDelegateClosure: ((PaymentMethodListRouterListener?) -> Router)?
 
-    func resolvePaymentMethodListRouter(delegate: PaymentMethodListRouterListener?) -> Router {
+    func resolvePaymentMethodListRouter(listener: PaymentMethodListRouterListener?) -> Router {
         resolvePaymentMethodListRouterDelegateCallsCount += 1
-        resolvePaymentMethodListRouterDelegateReceivedDelegate = delegate
-        resolvePaymentMethodListRouterDelegateReceivedInvocations.append(delegate)
+        resolvePaymentMethodListRouterDelegateReceivedDelegate = listener
+        resolvePaymentMethodListRouterDelegateReceivedInvocations.append(listener)
         if let resolvePaymentMethodListRouterDelegateClosure {
-            return resolvePaymentMethodListRouterDelegateClosure(delegate)
+            return resolvePaymentMethodListRouterDelegateClosure(listener)
         } else {
             return resolvePaymentMethodListRouterDelegateReturnValue
         }
@@ -783,12 +783,12 @@ class PreselectedPaymentMethodAssemblerProtocolMock: PreselectedPaymentMethodAss
     var resolvePreselectedPaymentMethodRouterDelegateComponentTitleReturnValue: Router!
     var resolvePreselectedPaymentMethodRouterDelegateComponentTitleClosure: ((PreselectedPaymentMethodRouterListener?, PaymentComponent, String) -> Router)?
 
-    func resolvePreselectedPaymentMethodRouter(delegate: PreselectedPaymentMethodRouterListener?, component: PaymentComponent, title: String) -> Router {
+    func resolvePreselectedPaymentMethodRouter(listener: PreselectedPaymentMethodRouterListener?, component: PaymentComponent, title: String) -> Router {
         resolvePreselectedPaymentMethodRouterDelegateComponentTitleCallsCount += 1
-        resolvePreselectedPaymentMethodRouterDelegateComponentTitleReceivedArguments = (delegate: delegate, component: component, title: title)
-        resolvePreselectedPaymentMethodRouterDelegateComponentTitleReceivedInvocations.append((delegate: delegate, component: component, title: title))
+        resolvePreselectedPaymentMethodRouterDelegateComponentTitleReceivedArguments = (delegate: listener, component: component, title: title)
+        resolvePreselectedPaymentMethodRouterDelegateComponentTitleReceivedInvocations.append((delegate: listener, component: component, title: title))
         if let resolvePreselectedPaymentMethodRouterDelegateComponentTitleClosure {
-            return resolvePreselectedPaymentMethodRouterDelegateComponentTitleClosure(delegate, component, title)
+            return resolvePreselectedPaymentMethodRouterDelegateComponentTitleClosure(listener, component, title)
         } else {
             return resolvePreselectedPaymentMethodRouterDelegateComponentTitleReturnValue
         }

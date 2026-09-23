@@ -18,7 +18,7 @@ internal class DropInRouter: DropInRouting {
     // MARK: - Properties
     
     internal private(set) lazy var rootViewController: UIViewController = {
-        resolveRootView()
+        resolveRootViewController()
     }()
     
     private let viewModel: DropInViewModelProtocol
@@ -42,30 +42,30 @@ internal class DropInRouter: DropInRouting {
     }
 
     // MARK: - Private
-    
-    private func resolveRootView() -> UIViewController {
+
+    private func resolveRootViewController() -> UIViewController {
+        let router: Router
+
         switch viewModel.root {
         case let .preselected(paymentComponent):
-            let preselectedPaymentMethodRouter = preselectedPaymentMethodAssembler.resolvePreselectedPaymentMethodRouter(
-                delegate: self,
+            router = preselectedPaymentMethodAssembler.resolvePreselectedPaymentMethodRouter(
+                listener: self,
                 component: paymentComponent,
                 title: viewModel.title
             )
-            self.childRouter = preselectedPaymentMethodRouter
-            let preselectedPaymentMethodViewController = preselectedPaymentMethodRouter.rootViewController
-            return UINavigationController(rootViewController: preselectedPaymentMethodViewController)
         case let .component(paymentComponent):
-            let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
+            router = componentContainerAssembler.resolveComponentContainerRouter(
                 for: paymentComponent,
                 listener: self
             )
-            self.childRouter = componentContainerRouter
-            return componentContainerRouter.rootViewController
         case .paymentMethodList:
-            let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter(delegate: self)
-            self.childRouter = paymentMethodListRouter
-            return paymentMethodListRouter.rootViewController
+            router = paymentMethodListAssembler.resolvePaymentMethodListRouter(
+                listener: self
+            )
         }
+
+        self.childRouter = router
+        return UINavigationController(rootViewController: router.rootViewController)
     }
 }
 

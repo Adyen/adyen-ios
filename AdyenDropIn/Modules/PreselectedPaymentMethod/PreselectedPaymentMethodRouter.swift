@@ -55,9 +55,10 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouting {
     // MARK: - PreselectedPaymentMethodRouting
 
     internal func presentPaymentMethodList() {
-        let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter(delegate: self)
+        let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter(listener: self)
         self.childRouter = paymentMethodListRouter
-        rootViewController.present(paymentMethodListRouter.rootViewController, animated: true)
+        let navigationController = UINavigationController(rootViewController: paymentMethodListRouter.rootViewController)
+        rootViewController.present(navigationController, animated: true)
     }
 
     internal func present(
