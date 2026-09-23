@@ -125,8 +125,13 @@ class FormPickerItemTests: XCTestCase {
     }
 
     func test_pickerItem_whenHeaderConfiguredAndSearchDisabled_shouldPresentPickerWithHeaderAndNoSearchBar() throws {
-        let secondaryColor: UIColor = .purple
-        let theme = CheckoutTheme(colors: CheckoutColors(textSecondary: secondaryColor))
+        let bodyColor: UIColor = .purple
+        let theme = CheckoutTheme(
+            colors: CheckoutColors(
+                primary: bodyColor,
+                textSecondary: .orange
+            )
+        )
         let presentationExpectation = expectation(description: "presenter.presentViewController was called")
 
         var presentedViewController: UIViewController?
@@ -170,7 +175,7 @@ class FormPickerItemTests: XCTestCase {
         let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
         XCTAssertEqual(headerView.titleLabel.text, "Installments")
         XCTAssertEqual(headerView.subtitleLabel.text, "Split the total cost into monthly payments.")
-        XCTAssertEqual(headerView.subtitleLabel.textColor, secondaryColor)
+        XCTAssertEqual(headerView.subtitleLabel.textColor, bodyColor)
         XCTAssertNil(searchViewController.title)
         XCTAssertFalse(searchViewController.searchBar.isDescendant(of: searchViewController.view))
         XCTAssertEqual(

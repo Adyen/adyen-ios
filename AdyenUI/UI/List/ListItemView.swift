@@ -243,7 +243,6 @@ package final class ListItemView: UIView, AnyFormItemView {
         stackView.setCustomSpacing(16, after: imageView)
         stackView.spacing = AdyenUIConstants.stackViewSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.setContentHuggingPriority(.required, for: .vertical)
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .fill
@@ -255,12 +254,9 @@ package final class ListItemView: UIView, AnyFormItemView {
     private let imageSize = CGSize(width: 40, height: 26)
     
     private func configureConstraints() {
+        contentStackView.adyen.anchor(inside: layoutMarginsGuide)
         
         let constraints = [
-            contentStackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            contentStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            
             imageView.widthAnchor.constraint(equalToConstant: imageSize.width),
             imageView.heightAnchor.constraint(equalToConstant: imageSize.height),
 

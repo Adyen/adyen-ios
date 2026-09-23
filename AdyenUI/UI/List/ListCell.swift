@@ -67,6 +67,17 @@ package final class ListCell: UITableViewCell {
     }
     
     // MARK: - Internal
+
+    package func setContentInsets(_ insets: UIEdgeInsets) {
+        var resolvedInsets = insets
+        if insets == .zero {
+            resolvedInsets.left = contentView.layoutMargins.left
+            resolvedInsets.right = contentView.layoutMargins.right
+        }
+
+        guard itemView.layoutMargins != resolvedInsets else { return }
+        itemView.layoutMargins = resolvedInsets
+    }
     
     /// Indicates if the cell is in an enabled state.
     internal var isEnabled = true {
@@ -133,7 +144,7 @@ package final class ListCell: UITableViewCell {
     }
     
     // MARK: - Item View
-    
+
     private lazy var itemView: ListItemView = {
         let itemView = ListItemView()
         itemView.translatesAutoresizingMaskIntoConstraints = false
@@ -144,15 +155,13 @@ package final class ListCell: UITableViewCell {
     }()
     
     // MARK: - Layout
-    
+
     private func configureConstraints() {
-        let layoutGuide = contentView.layoutMarginsGuide
-        
         let constraints = [
-            itemView.topAnchor.constraint(equalTo: topAnchor),
-            itemView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-            itemView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-            itemView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            itemView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             contentView.heightAnchor
                 .constraint(greaterThanOrEqualToConstant: 48.0)
                 .adyen.with(priority: .defaultHigh)

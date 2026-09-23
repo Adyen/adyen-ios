@@ -7,6 +7,16 @@
 import Adyen
 import UIKit
 
+private enum FormPickerLayout {
+    static let horizontalInset: CGFloat = 16
+    static let listItemContentInsets = UIEdgeInsets(
+        top: 12,
+        left: 14,
+        bottom: 12,
+        right: 14
+    )
+}
+
 package final class FormPickerSearchViewController<Option: FormPickable>: UINavigationController {
     
     package convenience init(
@@ -54,7 +64,7 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
                 .map {
                     $0.toListItem(
                         isSelected: $0.identifier == selectedOptionIdentifier,
-                        selectedBackgroundColor: theme.colors.container,
+                        theme: theme,
                         selectionHandler: selectionHandler
                     )
                 }
@@ -69,8 +79,22 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
         let searchViewController = SearchViewController(
             viewModel: viewModel,
             emptyView: EmptyView(),
-            headerView: headerView
+            headerView: headerView,
+            resultsHorizontalInset: FormPickerLayout.horizontalInset
         )
+
+        let searchTextField = searchViewController.searchBar.searchTextField
+        searchViewController.searchBar.setSearchFieldBackgroundImage(UIImage(), for: .normal)
+        let searchTextFieldStyle = theme.elements.textField
+        searchTextField.applyPickerStyle(searchTextFieldStyle)
+        searchViewController.searchBarEditingStateDidChange = { [weak searchTextField] isEditing in
+            let borderColor = isEditing
+                ? searchTextFieldStyle.borderActiveColor
+                : searchTextFieldStyle.borderColor
+            searchTextField?.adyen.applyLayerBorderColor(borderColor)
+        }
+
+        searchViewController.resultsListViewController.cellContentInsets = FormPickerLayout.listItemContentInsets
         
         // When a header is shown the title lives in the header; otherwise fall back to the navigation bar title.
         if headerView == nil {
@@ -97,19 +121,32 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
     }
 }
 
+private extension UISearchTextField {
+
+    func applyPickerStyle(_ style: AdyenTextFieldStyle) {
+        backgroundColor = style.containerColor
+        clipsToBounds = true
+        layer.borderWidth = style.borderWidth
+        adyen.applyLayerBorderColor(style.borderColor)
+        adyen.round(using: style.cornerRadius)
+    }
+}
+
 // MARK: - FormPickable Convenience
 
 private extension FormPickable {
 
     func toListItem(
         isSelected: Bool,
-        selectedBackgroundColor: UIColor,
+        theme: CheckoutTheme,
         selectionHandler: @escaping (Self) -> Void
     ) -> ListItem {
         var style = ListItemStyle()
+        style.title.font = theme.elements.labels.bodyEmphasized.font
+        style.subtitle.font = theme.elements.labels.subheadline.font
 
         if isSelected {
-            style.backgroundColor = selectedBackgroundColor
+            style.backgroundColor = theme.colors.container
         }
 
         return ListItem(

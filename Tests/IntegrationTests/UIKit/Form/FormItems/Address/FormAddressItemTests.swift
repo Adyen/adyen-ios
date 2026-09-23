@@ -58,6 +58,20 @@ class FormAddressItemTests: XCTestCase {
         formAddressItem.value = .init(country: "US")
         XCTAssertEqual(formAddressItem.countryPickerItem.value?.identifier, "US")
     }
+
+    func test_countryPickerItem_shouldUseSearchSubtitle() {
+        let formAddressItem = FormAddressItem(
+            initialCountry: "NL",
+            configuration: .init(supportedCountryCodes: ["NL", "US"]),
+            presenter: nil,
+            addressViewModelBuilder: DefaultAddressViewModelBuilder()
+        )
+
+        XCTAssertEqual(
+            formAddressItem.countryPickerItem.configuration.header?.subtitle,
+            "Search for a country or region"
+        )
+    }
     
     func testCountryPickerItemUpdateUnsupportedCountry() {
         

@@ -123,7 +123,10 @@ package final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>,
             presenter: presenter,
             localizationParameters: configuration.localizationParameters,
             configuration: .init(
-                header: .init(title: countryTitle)
+                header: .init(
+                    title: countryTitle,
+                    subtitle: "Search for a country or region"
+                ) // TODO: Add subtitle localization key
             ),
             identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "country")
         )
