@@ -18,6 +18,7 @@ extension SearchViewController {
         internal let localizationParameters: LocalizationParameters?
         internal let style: ViewStyle
         internal let searchBarPlaceholder: String
+        internal let shouldShowSearchBar: Bool
         internal let shouldFocusSearchBarOnAppearance: Bool
         
         private let resultProvider: ResultProvider
@@ -52,12 +53,14 @@ extension SearchViewController {
             localizationParameters: LocalizationParameters? = nil,
             style: ViewStyle,
             searchBarPlaceholder: String? = nil,
+            shouldShowSearchBar: Bool = true,
             shouldFocusSearchBarOnAppearance: Bool = false,
             resultProvider: @escaping ResultProvider
         ) {
             self.localizationParameters = localizationParameters
             self.style = style
             self.searchBarPlaceholder = searchBarPlaceholder ?? localizedString(.searchPlaceholder, localizationParameters)
+            self.shouldShowSearchBar = shouldShowSearchBar
             self.shouldFocusSearchBarOnAppearance = shouldFocusSearchBarOnAppearance
             self.resultProvider = resultProvider
         }
