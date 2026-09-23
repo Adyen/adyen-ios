@@ -212,7 +212,7 @@ package enum CheckoutComponentBuilder {
             configuration: configuration
         )
 
-        return try factory.create(
+        return factory.create(
             with: storedPaymentMethod,
             context: context,
             configuration: componentConfiguration
