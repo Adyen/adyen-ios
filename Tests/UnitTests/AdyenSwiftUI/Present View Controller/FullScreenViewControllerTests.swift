@@ -18,7 +18,7 @@ final class FullScreenViewControllerTests: XCTestCase {
         let host = UIHostingController(rootView: view)
         
         let window: UIWindow
-        if #available(iOS 13.0, *), let windowScene = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).first {
+        if #available(iOS 13.0, *), let windowScene = UIApplication.shared.connectedScenes.first(where: { $0 is UIWindowScene }) as? UIWindowScene {
             window = UIWindow(windowScene: windowScene)
         } else {
             window = UIWindow(frame: UIScreen.main.bounds)
