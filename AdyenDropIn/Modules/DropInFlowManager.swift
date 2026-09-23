@@ -22,7 +22,7 @@ internal protocol DropInDismissing: AnyObject {
 internal protocol DropInFlowManaging: AnyObject {
     var dropInDismisser: DropInDismissing? { get set }
     /// Submits the payment, presenting the action returned by the payment session, if any, on the given presenter.
-    func submit(_ data: PaymentComponentData, from component: PaymentComponent, presenter: PaymentActionPresenting)
+    func submit(_ data: PaymentComponentData, from component: PaymentComponent, paymentActionPresenter: PaymentActionPresenting)
     /// Handles the action returned by the payment session for the pending submission.
     func receive(action: Action)
     func fail(with error: Error, from component: PaymentComponent)
@@ -88,11 +88,11 @@ internal class DropInFlowManager: DropInFlowManaging {
     internal func submit(
         _ data: PaymentComponentData,
         from component: PaymentComponent,
-        presenter: PaymentActionPresenting
+        paymentActionPresenter: PaymentActionPresenting
     ) {
         submissionTask?.cancel()
 
-        paymentActionPresenter = presenter
+        self.paymentActionPresenter = paymentActionPresenter
         isAwaitingAction = true
 
         submissionTask = Task { [weak self] in

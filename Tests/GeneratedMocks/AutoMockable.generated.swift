@@ -249,11 +249,11 @@ class DropInFlowManagingMock: DropInFlowManaging {
     var submitFromPresenterReceivedInvocations: [(data: PaymentComponentData, component: PaymentComponent, presenter: PaymentActionPresenting)] = []
     var submitFromPresenterClosure: ((PaymentComponentData, PaymentComponent, PaymentActionPresenting) -> Void)?
 
-    func submit(_ data: PaymentComponentData, from component: PaymentComponent, presenter: PaymentActionPresenting) {
+    func submit(_ data: PaymentComponentData, from component: PaymentComponent, paymentActionPresenter: PaymentActionPresenting) {
         submitFromPresenterCallsCount += 1
-        submitFromPresenterReceivedArguments = (data: data, component: component, presenter: presenter)
-        submitFromPresenterReceivedInvocations.append((data: data, component: component, presenter: presenter))
-        submitFromPresenterClosure?(data, component, presenter)
+        submitFromPresenterReceivedArguments = (data: data, component: component, presenter: paymentActionPresenter)
+        submitFromPresenterReceivedInvocations.append((data: data, component: component, presenter: paymentActionPresenter))
+        submitFromPresenterClosure?(data, component, paymentActionPresenter)
     }
 
     // MARK: - receive
