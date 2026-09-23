@@ -676,6 +676,7 @@
 		E2C0E04422097917008616F6 /* Adyen.h in Headers */ = {isa = PBXBuildFile; fileRef = E2C0E03622097917008616F6 /* Adyen.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E2C0E063220982AE008616F6 /* AdyenCard.h in Headers */ = {isa = PBXBuildFile; fileRef = E2C0E061220982AE008616F6 /* AdyenCard.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E2C0E080220B0399008616F6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C0E07F220B0399008616F6 /* AppDelegate.swift */; };
+		27A110012E78B5A100000002 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A110012E78B5A100000001 /* SceneDelegate.swift */; };
 		E2C0E087220B039B008616F6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E2C0E086220B039B008616F6 /* Assets.xcassets */; };
 		E2C0E096220B04F0008616F6 /* FormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2C0E095220B04F0008616F6 /* FormViewController.swift */; };
 		E2C0E098220B0827008616F6 /* Adyen.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2C0E03322097917008616F6 /* Adyen.framework */; };
@@ -2186,6 +2187,7 @@
 		E2C0E062220982AE008616F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E2C0E07D220B0399008616F6 /* AdyenUIHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AdyenUIHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2C0E07F220B0399008616F6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		27A110012E78B5A100000001 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E2C0E086220B039B008616F6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E2C0E08B220B039B008616F6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E2C0E095220B04F0008616F6 /* FormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormViewController.swift; sourceTree = "<group>"; };
@@ -4537,6 +4539,7 @@
 			isa = PBXGroup;
 			children = (
 				E2C0E07F220B0399008616F6 /* AppDelegate.swift */,
+				27A110012E78B5A100000001 /* SceneDelegate.swift */,
 				E24FECF4226EF9AB00A65122 /* ComponentsViewController.swift */,
 				E24FECF6226EF9D800A65122 /* ComponentsView.swift */,
 				F9CFB05C283541DC002F3B72 /* UIView+Helpers.swift */,
@@ -8110,6 +8113,7 @@
 				B6EE0F392BBE9C4500B9810D /* APIClientHelper.swift in Sources */,
 				F9A53C532549887F009000A7 /* PaymentMethodsRequest.swift in Sources */,
 				E2C0E080220B0399008616F6 /* AppDelegate.swift in Sources */,
+				27A110012E78B5A100000002 /* SceneDelegate.swift in Sources */,
 				00D5B8662A4C63FE003CFCD0 /* CardComponentSettingsView.swift in Sources */,
 				004BA67F29D45A2E00A8C69B /* InitialDataFlowProtocol.swift in Sources */,
 				00C3DB0E2A94B4C8009A90BD /* AnalyticsSettingsView.swift in Sources */,
