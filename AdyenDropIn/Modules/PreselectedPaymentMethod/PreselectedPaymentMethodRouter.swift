@@ -34,6 +34,7 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     private weak var listener: PreselectedPaymentMethodRouterListener?
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
+    private let storedPaymentMethodContentAssembler: StoredPaymentMethodContentAssembling
     internal private(set) var childRouter: Router?
     
     // MARK: - Initializers
@@ -42,12 +43,14 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         viewController: UIViewController,
         listener: PreselectedPaymentMethodRouterListener?,
         paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
-        componentContainerAssembler: ComponentContainerAssemblerProtocol
+        componentContainerAssembler: ComponentContainerAssemblerProtocol,
+        storedPaymentMethodContentAssembler: StoredPaymentMethodContentAssembling
     ) {
         self.rootViewController = viewController
         self.listener = listener
         self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
+        self.storedPaymentMethodContentAssembler = storedPaymentMethodContentAssembler
     }
 
     // MARK: - PreselectedPaymentMethodRouting
@@ -73,7 +76,9 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         component: PaymentComponent
     ) {
         switch component.type {
-        case .regular, .stored:
+        case .stored:
+            presentModalStoredPaymentMethodContent(component)
+        case .regular:
             presentModalComponent(component)
         case .generic:
             break
@@ -99,6 +104,23 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     }
 
     // MARK: - Private
+
+    private func presentModalStoredPaymentMethodContent(
+        _ component: PaymentComponent
+    ) {
+        guard let router = storedPaymentMethodContentAssembler.resolveStoredPaymentMethodContentRouter(
+            for: component,
+            presentationMode: .modal,
+            listener: self
+        ) else {
+            // Stored components Drop-in cannot prompt for keep the generic component presentation.
+            return presentModalComponent(component)
+        }
+        childRouter = router
+        let navigationController = UINavigationController(rootViewController: router.rootViewController)
+        navigationController.isModalInPresentation = true
+        rootViewController.present(navigationController, animated: true)
+    }
 
     private func presentModalComponent(
         _ component: PaymentComponent
@@ -156,5 +178,12 @@ extension PreselectedPaymentMethodRouter: ComponentContainerRouterListener {
     internal func didDismissComponentContainer(completion: (() -> Void)?) {
         childRouter = nil
         completion?()
+    }
+}
+
+extension PreselectedPaymentMethodRouter: StoredPaymentMethodContentRouterListener {
+
+    internal func didDismissStoredPaymentMethodContent() {
+        childRouter = nil
     }
 }

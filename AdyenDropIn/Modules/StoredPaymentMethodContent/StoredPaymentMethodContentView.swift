@@ -49,6 +49,8 @@ internal struct StoredPaymentMethodContentView: View {
         }
         .navigationBarBackButtonHidden(true)
         .accessibilityIdentifier(Self.accessibilityID)
+        .onAppear { viewModel.didAppear() }
+        .onDisappear { viewModel.didDisappear() }
     }
 
     private var backButton: some View {
@@ -179,5 +181,9 @@ private struct ComponentViewControllerView: UIViewControllerRepresentable {
         func cancel(component: PaymentComponent) {}
 
         func handle(action: Action) {}
+
+        func setLoadingPresenter(_ presenter: LoadControllable?) {}
+
+        func stopLoading() {}
     }
 #endif

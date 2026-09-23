@@ -29,6 +29,8 @@ internal protocol DropInFlowManaging {
     func fail(with error: Error, from component: PaymentComponent)
     func cancel(component: PaymentComponent)
     func handle(action: Action)
+    func setLoadingPresenter(_ presenter: LoadControllable?)
+    func stopLoading()
 }
 
 @MainActor
@@ -41,6 +43,7 @@ internal class DropInFlowManager: DropInFlowManaging {
     private let context: AdyenContext
     private let actionComponentConfiguration: CheckoutActionComponent.Configuration
     private weak var actionPresenter: ActionPresenter?
+    private weak var loadingPresenter: LoadControllable?
 
     // MARK: - Initializers
 
@@ -95,6 +98,14 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     internal func handle(action: Action) {
         actionComponent.handle(action)
+    }
+
+    internal func setLoadingPresenter(_ presenter: LoadControllable?) {
+        loadingPresenter = presenter
+    }
+
+    internal func stopLoading() {
+        loadingPresenter?.stopLoading()
     }
 }
 

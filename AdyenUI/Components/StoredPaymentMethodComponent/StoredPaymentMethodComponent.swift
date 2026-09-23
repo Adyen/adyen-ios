@@ -10,8 +10,8 @@ import UIKit
 
 /// A component that handles stored payment methods that need no payment detail to be filled.
 ///
-/// The component submits directly, so it renders nothing but a payment button. Drop-in owns its
-/// own confirmation UI and ignores this view controller.
+/// The component submits directly, so its view controller renders only the payment button.
+/// Drop-in embeds this controller below its stored payment method header.
 @MainActor
 package final class StoredPaymentMethodComponent: StoredPaymentComponent, Localizable, LoadingComponent {
 
