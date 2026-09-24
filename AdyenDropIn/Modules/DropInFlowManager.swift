@@ -17,12 +17,17 @@ internal protocol DropInDismissing: AnyObject {
     func dismissDropIn(completion: (() -> Void)?)
 }
 
+/// The root router of the drop in, on which the flow manager presents actions and which it dismisses.
+// sourcery:AutoMockable
+@MainActor
+internal protocol DropInFlowRouting: PaymentActionPresenting, DropInDismissing {}
+
 // sourcery:AutoMockable
 @MainActor
 internal protocol DropInFlowManaging: AnyObject {
-    var dropInDismisser: DropInDismissing? { get set }
-    /// Submits the payment, presenting the action returned by the payment session, if any, on the given presenter.
-    func submit(_ data: PaymentComponentData, from component: PaymentComponent, paymentActionPresenter: PaymentActionPresenting)
+    var dropInFlowRouter: DropInFlowRouting? { get set }
+    /// Submits the payment, presenting the action returned by the payment session, if any, on the root router.
+    func submit(_ data: PaymentComponentData, from component: PaymentComponent)
     /// Handles the action returned by the payment session for the pending submission.
     func receive(action: Action)
     func fail(with error: Error, from component: PaymentComponent)
@@ -37,15 +42,13 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     // MARK: - Properties
 
-    internal weak var dropInDismisser: DropInDismissing?
+    internal weak var dropInFlowRouter: DropInFlowRouting?
     private weak var dropInComponent: DropInComponent?
     private weak var dropInComponentDelegate: DropInComponentDelegate?
     private let context: AdyenContext
     private let actionComponentConfiguration: CheckoutActionComponent.Configuration
     private let paymentActionAssembler: PaymentActionAssemblerProtocol
 
-    /// The router that submitted the payment, and that the resulting action is presented on.
-    private weak var paymentActionPresenter: PaymentActionPresenting?
     private var submissionTask: Task<Void, Never>?
     /// Whether the payment session is expected to return an action to handle.
     private var isAwaitingAction = false
@@ -87,12 +90,10 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     internal func submit(
         _ data: PaymentComponentData,
-        from component: PaymentComponent,
-        paymentActionPresenter: PaymentActionPresenting
+        from component: PaymentComponent
     ) {
         submissionTask?.cancel()
 
-        self.paymentActionPresenter = paymentActionPresenter
         isAwaitingAction = true
 
         submissionTask = Task { [weak self] in
@@ -135,7 +136,7 @@ internal class DropInFlowManager: DropInFlowManaging {
     }
 
     internal func dismissDropIn() {
-        dropInDismisser?.dismissDropIn(completion: nil)
+        dropInFlowRouter?.dismissDropIn(completion: nil)
     }
 
     // MARK: - Private
@@ -149,7 +150,6 @@ internal class DropInFlowManager: DropInFlowManaging {
         submissionTask?.cancel()
         submissionTask = nil
         isAwaitingAction = false
-        paymentActionPresenter = nil
     }
 
     private func sendExitEvent() {
@@ -205,17 +205,18 @@ extension DropInFlowManager: ActionComponentDelegate {
 extension DropInFlowManager: PresentationDelegate {
 
     internal func present(viewController: UIViewController) {
-        guard let paymentActionPresenter else { return }
+        guard let dropInFlowRouter else { return }
 
+        // The action module dismisses the drop in through its listener,
+        // so only the merchant needs to be notified on cancellation.
         let paymentActionRouter = paymentActionAssembler.resolvePaymentActionRouter(
             for: viewController,
-            listener: paymentActionPresenter,
+            listener: dropInFlowRouter,
             onCancel: { [weak self] in
                 self?.cancelDropIn()
-                self?.dismissDropIn()
             }
         )
 
-        paymentActionPresenter.present(paymentActionRouter: paymentActionRouter)
+        dropInFlowRouter.present(paymentActionRouter: paymentActionRouter)
     }
 }

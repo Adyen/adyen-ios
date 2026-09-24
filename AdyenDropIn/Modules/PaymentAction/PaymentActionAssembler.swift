@@ -54,10 +54,9 @@ internal struct PaymentActionAssembler: PaymentActionAssemblerProtocol {
             return actionViewController
         }
 
-        let paymentActionViewController = PaymentActionViewController(
+        return PaymentActionViewController(
             viewModel: viewModel,
             actionViewController: actionViewController
         )
-        return UINavigationController(rootViewController: paymentActionViewController)
     }
 }

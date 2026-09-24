@@ -19,7 +19,7 @@ internal protocol GenericPaymentMethodRouterListener: AnyObject {
 
 // sourcery:AutoMockable
 @MainActor
-internal protocol GenericPaymentMethodRouting: PaymentActionPresenting {
+internal protocol GenericPaymentMethodRouting: Router {
     func dismiss()
 }
 

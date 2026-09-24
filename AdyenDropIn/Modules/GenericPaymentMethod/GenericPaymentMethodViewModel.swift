@@ -83,7 +83,7 @@ extension GenericPaymentMethodViewModel: PaymentComponentDelegate {
         from component: any PaymentComponent
     ) {
         guard let router else { return }
-        dropInFlowManager.submit(data, from: component, paymentActionPresenter: router)
+        dropInFlowManager.submit(data, from: component)
     }
 
     internal func didFail(

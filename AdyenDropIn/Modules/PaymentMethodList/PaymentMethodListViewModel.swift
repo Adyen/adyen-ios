@@ -121,9 +121,9 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     private var applePayComponent: PaymentComponent?
 
     internal func cancel() {
-        dropInFlowManager.cancelDropIn()
-
         router?.dismiss(completion: nil)
+        dropInFlowManager.cancelDropIn()
+        dropInFlowManager.dismissDropIn()
     }
 
     internal func didLoad() {
@@ -218,8 +218,7 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        guard let router else { return }
-        dropInFlowManager.submit(data, from: component, paymentActionPresenter: router)
+        dropInFlowManager.submit(data, from: component)
     }
 
     internal func didFail(

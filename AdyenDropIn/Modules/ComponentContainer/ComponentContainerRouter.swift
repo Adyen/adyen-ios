@@ -19,7 +19,7 @@ internal protocol ComponentContainerRouterListener: AnyObject {
 
 // sourcery:AutoMockable
 @MainActor
-internal protocol ComponentContainerRouting: PaymentActionPresenting {
+internal protocol ComponentContainerRouting: Router {
     func present(paymentComponent: PaymentComponent)
     func dismiss(completion: (() -> Void)?)
 }

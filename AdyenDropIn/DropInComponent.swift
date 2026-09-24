@@ -57,7 +57,7 @@ package final class DropInComponent: NSObject,
 
     internal private(set) lazy var router: DropInRouting = {
         let router = dropInAssembler.resolveDropInRouter()
-        dropInFlowManager.dropInDismisser = router
+        dropInFlowManager.dropInFlowRouter = router
         return router
     }()
 

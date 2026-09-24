@@ -19,7 +19,7 @@ internal protocol PaymentMethodListRouterListener: AnyObject {
 
 // sourcery:AutoMockable
 @MainActor
-internal protocol PaymentMethodListRouting: PaymentActionPresenting {
+internal protocol PaymentMethodListRouting: Router {
     func present(component: PaymentComponent)
     func present(viewController: UIViewController)
     func presentStoredPaymentMethodManagement()

@@ -18,7 +18,7 @@ internal protocol PreselectedPaymentMethodRouterListener: AnyObject {
 
 // sourcery:AutoMockable
 @MainActor
-internal protocol PreselectedPaymentMethodRouting: PaymentActionPresenting {
+internal protocol PreselectedPaymentMethodRouting: Router {
     func presentPaymentMethodList()
     func present(component: PaymentComponent)
     func dismiss(completion: (() -> Void)?)
@@ -134,10 +134,8 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouting {
 extension PreselectedPaymentMethodRouter: PaymentMethodListRouterListener {
     
     internal func didDismissPaymentMethodList(completion: (() -> Void)?) {
-        rootViewController.presentingViewController?.dismiss(animated: true) { [weak self] in
-            self?.childRouter = nil
-            self?.listener?.didDismissPreselectedPaymentMethod(completion: completion)
-        }
+        childRouter = nil
+        completion?()
     }
 }
 
