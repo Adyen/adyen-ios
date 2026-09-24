@@ -50,4 +50,35 @@ package enum AmountAwarePaymentStringsPolicy {
 
         return localizedString(.dropInPaymentMethodListDescriptionCompletePayment, localizationParameters)
     }
+
+    package static func storedPaymentMethodSubtitle(
+        for paymentMethodName: String,
+        with amount: Amount?,
+        localizationParameters: LocalizationParameters?
+    ) -> String {
+        guard var amount else {
+            return localizedString(
+                .dropInStoredPaymentMethodDescription,
+                localizationParameters,
+                paymentMethodName
+            )
+        }
+
+        if amount.value == 0 {
+            return localizedString(
+                .dropInStoredPaymentMethodDescriptionSaveDetails,
+                localizationParameters,
+                paymentMethodName
+            )
+        }
+
+        amount.localeIdentifier = amount.localeIdentifier ?? localizationParameters?.locale
+        return localizedString(
+            .dropInStoredPaymentMethodDescriptionWithAmount,
+            localizationParameters,
+            paymentMethodName,
+            amount.formatted
+        )
+    }
+
 }
