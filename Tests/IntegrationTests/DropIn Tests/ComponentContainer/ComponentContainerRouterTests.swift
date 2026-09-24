@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenActions
 @testable import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import Testing
 import UIKit
 
@@ -83,6 +84,7 @@ struct ComponentContainerRouterTests {
 
     private class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtocol {
         var componentViewController: UIViewController = .init()
+        var theme: CheckoutTheme = .init()
         var cancelCallsCount = 0
 
         func cancel() {

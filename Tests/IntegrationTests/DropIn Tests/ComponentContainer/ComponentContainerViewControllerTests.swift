@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenActions
 @testable import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import Testing
 import UIKit
 
@@ -69,10 +70,24 @@ struct ComponentContainerViewControllerTests {
         #expect(sut.navigationItem.largeTitleDisplayMode == .always)
     }
 
+    @Test("The injected theme is applied to the container.")
+    func viewDidLoad_shouldApplyTheTheme() async {
+        // Given
+        let theme = CheckoutTheme(colors: CheckoutColors(background: .magenta))
+        let (sut, _, _) = await makeSUT(theme: theme)
+
+        // When
+        sut.loadViewIfNeeded()
+
+        // Then
+        #expect(sut.view.backgroundColor == theme.colors.background)
+    }
+
     // MARK: - Mocks
 
     private class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtocol {
         var componentViewController: UIViewController = .init()
+        var theme: CheckoutTheme = .init()
         var cancelCallsCount = 0
 
         func cancel() {
@@ -82,12 +97,13 @@ struct ComponentContainerViewControllerTests {
 
     // MARK: - Helper
 
-    private func makeSUT() async -> (
+    private func makeSUT(theme: CheckoutTheme = CheckoutTheme()) async -> (
         sut: ComponentContainerViewController,
         viewModelMock: ComponentContainerViewModelProtocolMock,
         componentViewControllerMock: UIViewController
     ) {
         let viewModelMock = ComponentContainerViewModelProtocolMock()
+        viewModelMock.theme = theme
         let componentViewControllerMock = UIViewController()
         componentViewControllerMock.title = "Payment Component"
         viewModelMock.componentViewController = componentViewControllerMock

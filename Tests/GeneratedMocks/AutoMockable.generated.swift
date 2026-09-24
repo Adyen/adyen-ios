@@ -177,6 +177,12 @@ class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtoc
     }
 
     var underlyingComponentViewController: UIViewController!
+    var theme: CheckoutTheme {
+        get { underlyingTheme }
+        set(value) { underlyingTheme = value }
+    }
+
+    var underlyingTheme: CheckoutTheme!
 
     // MARK: - cancel
 
