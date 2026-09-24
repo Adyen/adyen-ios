@@ -34,9 +34,6 @@ internal final class ComponentManager: ComponentManaging {
     internal let configuration: DropInConfiguration
     internal let context: AdyenContext
     internal let order: PartialPaymentOrder?
-    internal var hasPhotoLibraryUsageDescription = Bundle.main.object(
-        forInfoDictionaryKey: "NSPhotoLibraryAddUsageDescription"
-    ) != nil
     
     private let paymentComponentBuilder: DropInPaymentComponentBuilder
 
@@ -194,15 +191,6 @@ private extension ComponentManager {
     }
 
     func assembleComponent(for paymentMethod: PaymentMethod) -> PaymentComponent? {
-        guard isAllowed(paymentMethod) else {
-            AdyenAssertion.assertionFailure(message: """
-            For voucher payment methods like \(paymentMethod.name) it is required to add a suitable \
-            text for the key NSPhotoLibraryAddUsageDescription in the Application Info.plist, to enable \
-            the shopper to save the voucher to their photo library.
-            """)
-            return nil
-        }
-
         do {
             var component = try paymentComponentBuilder(paymentMethod)
             // TODO: Preserve the order assignment until partial payments have a dedicated design.
@@ -218,22 +206,5 @@ private extension ComponentManager {
     func updateContextAmountIfNeeded() {
         guard let remainingAmount = order?.remainingAmount else { return }
         context.amount = remainingAmount
-    }
-
-    // MARK: - Payment Method Validation
-
-    func isAllowed(_ paymentMethod: PaymentMethod) -> Bool {
-        let requiresPhotoLibrary = isVoucherPaymentMethod(paymentMethod) || isQRCodePaymentMethod(paymentMethod)
-        guard requiresPhotoLibrary else { return true }
-
-        return hasPhotoLibraryUsageDescription
-    }
-
-    func isQRCodePaymentMethod(_ paymentMethod: PaymentMethod) -> Bool {
-        QRCodePaymentMethod.allCases.map(\.rawValue).contains(paymentMethod.type.rawValue)
-    }
-
-    func isVoucherPaymentMethod(_ paymentMethod: PaymentMethod) -> Bool {
-        VoucherPaymentMethod.allCases.map(\.rawValue).contains(paymentMethod.type.rawValue)
     }
 }
