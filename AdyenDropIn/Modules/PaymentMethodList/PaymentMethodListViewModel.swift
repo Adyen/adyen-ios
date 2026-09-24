@@ -121,6 +121,9 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     private var applePayComponent: PaymentComponent?
 
     internal func cancel() {
+        dropInFlowManager.cancelDropIn()
+
+        // The dismissal travels up through the router listener, which tears down the drop in.
         router?.dismiss(completion: nil)
     }
 
