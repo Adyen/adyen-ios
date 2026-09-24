@@ -141,7 +141,6 @@ package final class SEPADirectDebitComponent: PaymentComponent, LoadingComponent
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: context.amount,
-            style: .immediate,
             localizationParameters: configuration.localizationParameters
         )
         item.buttonSelectionHandler = { [weak self] in

@@ -71,7 +71,6 @@ package final class PaymentButtonViewController: FormViewController {
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
         item.title = AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: amount,
-            style: .immediate,
             localizationParameters: localizationParameters
         )
         item.buttonSelectionHandler = { [weak self] in

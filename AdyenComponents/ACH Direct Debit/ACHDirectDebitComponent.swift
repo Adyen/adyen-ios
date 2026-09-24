@@ -251,7 +251,6 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         )
         item.title = AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: context.amount,
-            style: .immediate,
             localizationParameters: configuration.localizationParameters
         )
         item.buttonSelectionHandler = { [weak self] in
