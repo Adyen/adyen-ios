@@ -13,7 +13,7 @@ import Foundation
 // sourcery:AutoMockable
 @MainActor
 internal protocol PaymentMethodListAssemblerProtocol {
-    func resolvePaymentMethodListRouter(delegate: PaymentMethodListRouterListener?) -> Router
+    func resolvePaymentMethodListRouter(listener: PaymentMethodListRouterListener?) -> Router
 }
 
 @MainActor
@@ -61,7 +61,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     // MARK: - PaymentMethodListAssemblerProtocol
 
     internal func resolvePaymentMethodListRouter(
-        delegate: PaymentMethodListRouterListener?
+        listener: PaymentMethodListRouterListener?
     ) -> Router {
         let viewModel = PaymentMethodListViewModel(
             context: context,
@@ -77,7 +77,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
 
         let router = PaymentMethodListRouter(
             viewController: view,
-            listener: delegate,
+            listener: listener,
             componentContainerAssembler: componentContainerAssembler,
             genericPaymentMethodAssembler: resolveGenericPaymentMethodAssembler(),
             storedPaymentMethodManagementAssembler: resolveStoredPaymentMethodManagementAssembler(),
