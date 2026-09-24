@@ -8,6 +8,10 @@ import Adyen
 import Foundation
 import UIKit
 
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
+
 /// Hosts an action view controller that does not manage its own navigation.
 internal class PaymentActionViewController: UIViewController {
 
@@ -16,6 +20,10 @@ internal class PaymentActionViewController: UIViewController {
     private let viewModel: PaymentActionViewModelProtocol
     internal let actionViewController: UIViewController
     private var isInteractivePopGestureEnabled: Bool?
+
+    private var theme: CheckoutTheme {
+        viewModel.theme
+    }
 
     // MARK: - Initializers
 
@@ -37,6 +45,7 @@ internal class PaymentActionViewController: UIViewController {
 
     override internal func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
         setupActionView()
         setupNavigationItem()
         navigationController?.presentationController?.delegate = self
@@ -70,6 +79,10 @@ internal class PaymentActionViewController: UIViewController {
 
     // MARK: - Private
 
+    private func setupView() {
+        view.backgroundColor = theme.colors.background
+    }
+
     private func setupActionView() {
         addChild(actionViewController)
         view.addSubview(actionViewController.view)
@@ -84,11 +97,15 @@ internal class PaymentActionViewController: UIViewController {
     private func setupNavigationItem() {
         navigationItem.title = actionViewController.title
         navigationItem.hidesBackButton = true
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
+
+        let doneButton = UIBarButtonItem(
             barButtonSystemItem: .done,
             target: self,
             action: #selector(didTapDone)
         )
+        doneButton.tintColor = theme.colors.primary
+
+        navigationItem.rightBarButtonItem = doneButton
     }
 
     @objc private func didTapDone() {

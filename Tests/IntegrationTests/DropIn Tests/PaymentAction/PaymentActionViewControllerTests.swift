@@ -7,6 +7,7 @@
 @testable import Adyen
 @testable import AdyenActions
 @testable import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import Testing
 import UIKit
 
@@ -60,6 +61,22 @@ struct PaymentActionViewControllerTests {
         #expect(sut.navigationItem.title == actionViewControllerSpy.title)
         let doneButton = try #require(sut.navigationItem.rightBarButtonItem)
         #expect(doneButton.action != nil)
+    }
+
+    @Test("The injected theme is applied to the view and the navigation items.")
+    func viewDidLoad_shouldApplyTheTheme() throws {
+        // Given
+        let theme = CheckoutTheme(colors: CheckoutColors(background: .magenta, primary: .cyan))
+        let (sut, _, _) = makeSUT(theme: theme)
+
+        // When
+        sut.loadViewIfNeeded()
+
+        // Then
+        #expect(sut.view.backgroundColor == theme.colors.background)
+
+        let doneButton = try #require(sut.navigationItem.rightBarButtonItem)
+        #expect(doneButton.tintColor == theme.colors.primary)
     }
 
     @Test
@@ -181,12 +198,13 @@ struct PaymentActionViewControllerTests {
 
     // MARK: - Helpers
 
-    private func makeSUT() -> (
+    private func makeSUT(theme: CheckoutTheme = CheckoutTheme()) -> (
         sut: PaymentActionViewController,
         viewModelMock: PaymentActionViewModelProtocolMock,
         actionViewControllerSpy: ActionViewControllerSpy
     ) {
         let viewModelMock = PaymentActionViewModelProtocolMock()
+        viewModelMock.theme = theme
         let actionViewControllerSpy = ActionViewControllerSpy()
         actionViewControllerSpy.title = "Payment Action"
 

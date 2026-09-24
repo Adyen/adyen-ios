@@ -7,6 +7,7 @@
 @testable import Adyen
 @testable import AdyenActions
 @testable import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import Testing
 import UIKit
 
@@ -43,7 +44,7 @@ struct PaymentActionViewModelTests {
         sut: PaymentActionViewModel,
         routerMock: PaymentActionRoutingMock
     ) {
-        let sut = PaymentActionViewModel(onCancel: onCancel)
+        let sut = PaymentActionViewModel(theme: CheckoutTheme(), onCancel: onCancel)
 
         let routerMock = PaymentActionRoutingMock()
         sut.router = routerMock

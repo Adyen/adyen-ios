@@ -540,6 +540,13 @@ class PaymentActionRoutingMock: PaymentActionRouting {
 
 class PaymentActionViewModelProtocolMock: PaymentActionViewModelProtocol {
 
+    var theme: CheckoutTheme {
+        get { underlyingTheme }
+        set(value) { underlyingTheme = value }
+    }
+
+    var underlyingTheme: CheckoutTheme!
+
     // MARK: - cancel
 
     var cancelCallsCount = 0
