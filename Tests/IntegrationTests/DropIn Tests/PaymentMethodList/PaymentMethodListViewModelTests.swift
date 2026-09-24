@@ -111,10 +111,8 @@ struct PaymentMethodListViewModelTests {
         sut.didSubmit(data, from: paymentComponentMock)
 
         // Then
-        #expect(dropInFlowManagerMock.submitFromActionPresenterCallsCount == 1)
-
-        let receivedActionPresenter = dropInFlowManagerMock.submitFromActionPresenterReceivedArguments?.actionPresenter
-        #expect(sut === receivedActionPresenter)
+        #expect(dropInFlowManagerMock.submitFromCallsCount == 1)
+        #expect(dropInFlowManagerMock.submitFromReceivedArguments?.component === paymentComponentMock)
     }
 
     @Test
@@ -455,56 +453,6 @@ struct PaymentMethodListViewModelTests {
         // Then
         let sections = try #require(sut.state.loadedSections)
         #expect(sections.contains { $0.headerTrailingButton != nil } == false)
-    }
-
-    // MARK: - ActionPresenter Tests
-
-    @Test
-    func presentActionComponent_shouldCallRouterPresentActionComponent() {
-        // Given
-        let (sut, _, routerMock) = makeSUT()
-        let actionComponentMock = makeActionComponentMock()
-
-        // When
-        sut.present(actionViewController: actionComponentMock)
-
-        // Then
-        #expect(routerMock.presentActionViewControllerOnCancelCallsCount == 1)
-    }
-
-    @Test
-    func presentActionComponent_onCancelCallback_shouldTransitionToIdleState() {
-        // Given
-        let (sut, _, routerMock) = makeSUT()
-        let actionComponentMock = makeActionComponentMock()
-        sut.didLoad() // Set state to loaded first
-        #expect(sut.state.isLoaded)
-
-        // Capture the onCancel callback when present is called
-        var capturedOnCancel: (() -> Void)?
-        routerMock.presentActionViewControllerOnCancelClosure = { _, onCancel in
-            capturedOnCancel = onCancel
-        }
-
-        // When
-        sut.present(actionViewController: actionComponentMock)
-        capturedOnCancel?()
-
-        // Then
-        #expect(sut.state == .idle)
-    }
-
-    @Test
-    func didCancelActionComponent_shouldTransitionToIdleState() {
-        // Given
-        let (sut, _, _) = makeSUT()
-        let actionComponentMock = RedirectComponent(context: contextMock)
-
-        // When
-        sut.didCancel(actionComponent: actionComponentMock)
-
-        // Then
-        #expect(sut.state == .idle)
     }
 
     // MARK: - Helpers

@@ -22,7 +22,6 @@ internal protocol PaymentMethodListRouterListener: AnyObject {
 internal protocol PaymentMethodListRouting: Router {
     func present(component: PaymentComponent)
     func present(viewController: UIViewController)
-    func present(actionViewController: UIViewController, onCancel: (() -> Void)?)
     func presentStoredPaymentMethodManagement()
     func dismiss(completion: (() -> Void)?)
 }
@@ -88,17 +87,6 @@ internal class PaymentMethodListRouter: PaymentMethodListRouting {
 
     internal func present(viewController: UIViewController) {
         rootViewController.present(viewController, animated: true)
-    }
-
-    internal func present(
-        actionViewController: UIViewController,
-        onCancel: (() -> Void)?
-    ) {
-        let actionViewController = ActionPresentationHelper.viewController(
-            for: actionViewController,
-            onCancel: onCancel
-        )
-        rootViewController.present(actionViewController, animated: true)
     }
 
     // MARK: - Internal

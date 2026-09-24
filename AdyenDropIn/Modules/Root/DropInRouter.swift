@@ -7,9 +7,10 @@
 import Adyen
 import AdyenNetworking
 import Foundation
+import SafariServices
 import UIKit
 
-internal protocol DropInRouting: Router, DropInDismissing, AnyObject {}
+internal protocol DropInRouting: Router, DropInFlowRouting, AnyObject {}
 
 @MainActor
 internal class DropInRouter: DropInRouting {
@@ -25,6 +26,7 @@ internal class DropInRouter: DropInRouting {
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
     internal var childRouter: Router?
+    private var paymentActionRouter: Router?
     
     // MARK: - Initializers
     
@@ -68,7 +70,7 @@ internal class DropInRouter: DropInRouting {
     }
 }
 
-// MARK: - Drop In Dismissal
+// MARK: - DropInDismissing
 
 extension DropInRouter {
 
@@ -79,8 +81,40 @@ extension DropInRouter {
 
         dismissingViewController.dismiss(animated: true) { [weak self] in
             self?.childRouter = nil
+            self?.paymentActionRouter = nil
             completion?()
         }
+    }
+}
+
+// MARK: - PaymentActionPresenting
+
+extension DropInRouter {
+
+    /// The action is presented on the deepest module of the drop in, and is kept out of `childRouter`
+    /// so that presenting it does not release the module hierarchy below the root.
+    internal func present(paymentActionRouter: Router) {
+        self.paymentActionRouter = paymentActionRouter
+
+        let presenter = latestChildRouter.rootViewController
+
+        AdyenAssertion.assert(
+            message: "The payment action cannot be presented, as its presenter is already presenting.",
+            condition: presenter.presentedViewController != nil
+        )
+
+        let actionViewController = paymentActionRouter.rootViewController
+        if actionViewController is SFSafariViewController {
+            presenter.present(paymentActionRouter.rootViewController, animated: true)
+        } else {
+            presenter.navigationController?.pushViewController(actionViewController, animated: true)
+        }
+    }
+
+    /// Dismissing an action dismisses the drop in it is presented on top of,
+    /// as there is no way back to the payment details of the selected payment method.
+    internal func didDismissPaymentAction(completion: (() -> Void)?) {
+        dismissDropIn(completion: completion)
     }
 }
 
