@@ -1,5 +1,11 @@
 sources:
-  - ../../
+  include:
+    - ../../
+  exclude:
+    # Carthage and SPM integration test scratch directories hold stale copies of
+    # the SDK. Scanning them makes Sourcery generate mocks from the wrong
+    # declarations, for example emitting `public` where the source says `package`.
+    - ../../TempProject
 templates:
   - ./Templates/AutoMockable.stencil
 output: ../../Tests/GeneratedMocks
