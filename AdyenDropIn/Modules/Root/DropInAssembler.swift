@@ -74,7 +74,8 @@ internal struct DropInAssembler {
             viewModel: viewModel,
             preselectedPaymentMethodAssembler: preselectedPaymentMethodAssembler,
             paymentMethodListAssembler: paymentMethodListAssembler,
-            componentContainerAssembler: componentContainerAssembler
+            componentContainerAssembler: componentContainerAssembler,
+            theme: configuration.theme
         )
     }
 
