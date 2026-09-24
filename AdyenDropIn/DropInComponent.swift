@@ -37,7 +37,6 @@ package final class DropInComponent: NSObject,
     internal private(set) lazy var dropInFlowManager: DropInFlowManaging = {
         DropInFlowManager(
             dropInComponent: self,
-            dropInComponentDelegate: delegate,
             context: context,
             actionComponentConfiguration: actionComponentConfiguration
         )
@@ -65,8 +64,6 @@ package final class DropInComponent: NSObject,
     private let actionComponentConfiguration: CheckoutActionComponent.Configuration
     internal let storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
     private let paymentComponentBuilder: DropInPaymentComponentBuilder
-
-    internal var paymentInProgress: Bool = false
 
     internal var selectedPaymentComponent: PaymentComponent?
 
@@ -191,19 +188,10 @@ package final class DropInComponent: NSObject,
         }
         paymentMethods.paid = response.paymentMethods ?? []
         // TODO: Partial payments need a dedicated design for updating the assembler-owned ComponentManager.
-        paymentInProgress = false
 //        displayPaymentMethodsList(onCancel: { [weak self] in
 //            guard let self else { return }
 //            self.partialPaymentDelegate?.cancelOrder(order, component: self)
 //        })
-    }
-
-    internal func userDidCancel(_ component: Component) {
-        component.cancel()
-
-        if let component = (component as? PaymentComponent) ?? selectedPaymentComponent, paymentInProgress {
-            delegate?.didCancel(component: component, from: self)
-        }
     }
 
     private func setNecessaryDelegates(on component: PaymentComponent) {
