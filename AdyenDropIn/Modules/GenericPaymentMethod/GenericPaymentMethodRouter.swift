@@ -4,6 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
+#if canImport(AdyenActions)
+    import AdyenActions
+#endif
 import Foundation
 import UIKit
 
@@ -14,18 +18,20 @@ internal protocol GenericPaymentMethodRouterListener: AnyObject {
 }
 
 // sourcery:AutoMockable
-internal protocol GenericPaymentMethodRouting: AnyObject {
+@MainActor
+internal protocol GenericPaymentMethodRouting: Router {
     func present(actionViewController: UIViewController, onCancel: (() -> Void)?)
     func dismiss()
 }
 
-internal class GenericPaymentMethodRouter: Router, GenericPaymentMethodRouting {
+@MainActor
+internal class GenericPaymentMethodRouter: GenericPaymentMethodRouting {
 
     // MARK: - Properties
 
     internal let rootViewController: UIViewController
+    internal var childRouter: Router?
     private weak var listener: GenericPaymentMethodRouterListener?
-    internal private(set) var childRouter: Router?
 
     // MARK: - Initializers
 
