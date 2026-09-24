@@ -45,6 +45,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         
         let pickerSearchViewController = FormPickerSearchViewController(
             title: nil,
+            configuration: .init(isSearchEnabled: false),
             options: [option]
         ) { element in
             XCTAssertEqual(element.identifier, option.identifier)
@@ -144,6 +145,50 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         }
     }
 
+    func test_searchBar_whenConfigurationOmitted_shouldShowAndFocus() throws {
+        let searchViewController = try makeSearchViewController()
+
+        XCTAssertTrue(searchViewController.searchBar.isDescendant(of: searchViewController.view))
+        wait(
+            until: { searchViewController.searchBar.isFirstResponder },
+            timeout: 1
+        )
+    }
+
+    func test_picker_whenSearchDisabledAndHeaderAbsent_shouldShowResultsWithoutSearchBar() throws {
+        let title = "Installments"
+        let searchViewController = try makeSearchViewController(
+            title: title,
+            configuration: .init(isSearchEnabled: false)
+        )
+
+        XCTAssertFalse(searchViewController.searchBar.isDescendant(of: searchViewController.view))
+        XCTAssertFalse(searchViewController.searchBar.isFirstResponder)
+        XCTAssertEqual(searchViewController.title, title)
+        XCTAssertEqual(searchViewController.resultsListViewController.sections.first?.items.count, 1)
+    }
+
+    func test_picker_whenSearchDisabledAndOptionsEmpty_shouldShowEmptyStateWithoutSearchBar() throws {
+        let pickerViewController = FormPickerSearchViewController<FormPickerElement>(
+            title: "Installments",
+            configuration: .init(isSearchEnabled: false),
+            options: []
+        ) { _ in
+            XCTFail("Selection handler should not be called")
+        }
+
+        setupRootViewController(pickerViewController)
+
+        let searchViewController = try XCTUnwrap(
+            pickerViewController.viewControllers.first as? SearchViewController
+        )
+
+        XCTAssertFalse(searchViewController.searchBar.isDescendant(of: searchViewController.view))
+        XCTAssertFalse(searchViewController.emptyView.isHidden)
+        XCTAssertEqual(searchViewController.emptyView.searchTerm, "")
+        XCTAssertTrue(searchViewController.resultsListViewController.view.isHidden)
+    }
+
     func test_pickerHeader_whenSubtitleProvided_shouldRenderTitleAndSubtitle() throws {
         let searchViewController = try makeSearchViewController(
             configuration: .init(header: .init(title: "Installments", subtitle: "Split the total cost into monthly payments."))
@@ -221,6 +266,36 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         XCTAssertEqual(headerView.titleLabel.text, "Installments")
         XCTAssertNil(headerView.subtitleLabel.text)
         XCTAssertTrue(headerView.subtitleLabel.isHidden)
+    }
+
+    func test_pickerHeader_whenLaidOut_shouldHugContentHeight() throws {
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(header: .init(title: "Installments"))
+        )
+        let headerView = try XCTUnwrap(
+            searchViewController.headerView as? FormPickerHeaderView
+        )
+
+        searchViewController.view.layoutIfNeeded()
+
+        let compressedSize = headerView.systemLayoutSizeFitting(
+            CGSize(
+                width: headerView.bounds.width,
+                height: UIView.layoutFittingCompressedSize.height
+            ),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+
+        XCTAssertEqual(
+            headerView.bounds.height,
+            compressedSize.height,
+            accuracy: 0.5
+        )
+        XCTAssertGreaterThan(
+            searchViewController.resultsListViewController.view.bounds.height,
+            headerView.bounds.height
+        )
     }
 
     // MARK: - Helpers
