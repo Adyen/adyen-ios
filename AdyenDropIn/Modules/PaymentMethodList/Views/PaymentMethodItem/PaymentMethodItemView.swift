@@ -23,6 +23,13 @@ internal final class PaymentMethodItemView: UIView {
         static let chevron = "chevron.forward"
     }
 
+    private enum Highlight {
+        /// A tap is shorter than the time the highlight needs to be noticed,
+        /// so it is held on screen for at least this long.
+        static let minimumVisibleDuration: TimeInterval = 0.2
+        static let fadeOutDuration: TimeInterval = 0.25
+    }
+
     // MARK: - UI Elements
 
     private lazy var iconImageView: UIImageView = {
@@ -105,6 +112,9 @@ internal final class PaymentMethodItemView: UIView {
 
     private var item: PaymentMethodItem
     private let imageLoader: ImageLoader
+
+    /// The moment the highlight became visible, used to keep it on screen long enough to be seen.
+    private var highlightedAt: TimeInterval?
 
     // MARK: - Initializers
 
@@ -219,8 +229,24 @@ internal final class PaymentMethodItemView: UIView {
     }
 
     private func setHighlighted(_ highlighted: Bool) {
-        UIView.animate(withDuration: highlighted ? 0.05 : 0.3) {
-            self.highlightView.alpha = highlighted ? 1 : 0
+        guard !highlighted else {
+            highlightedAt = CACurrentMediaTime()
+            highlightView.layer.removeAllAnimations()
+            highlightView.alpha = 1
+            return
+        }
+
+        // A tap can be shorter than the time the highlight needs to be noticed,
+        // so the remainder of the minimum duration is waited out before fading it back out.
+        let elapsed = highlightedAt.map { CACurrentMediaTime() - $0 } ?? Highlight.minimumVisibleDuration
+        highlightedAt = nil
+
+        UIView.animate(
+            withDuration: Highlight.fadeOutDuration,
+            delay: max(0, Highlight.minimumVisibleDuration - elapsed),
+            options: [.beginFromCurrentState, .allowUserInteraction]
+        ) {
+            self.highlightView.alpha = 0
         }
     }
 }
