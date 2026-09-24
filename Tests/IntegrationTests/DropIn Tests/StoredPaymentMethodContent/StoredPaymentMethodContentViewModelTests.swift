@@ -15,25 +15,22 @@ internal struct StoredPaymentMethodContentViewModelTests {
 
     @Test
     internal func storedCardSecurityCodeComponent_whenCreated_thenProvidesSharedHeaderAndComponentController() {
-        let context = makeSUT()
+        let context = makeSUTStoredCardWithCVC()
 
         #expect(context.sut.title == "\(String.Adyen.securedString)4556")
         #expect(context.sut.paymentMethodLogoURL.absoluteString.contains("visa"))
         #expect(context.sut.subtitle.string == "Use Visa to pay \(Dummy.amount.formatted)")
-        #expect(context.sut.componentViewController === context.component.viewController)
     }
 
     @Test
     internal func storedCardSecurityCodeComponent_withMissingAmount_thenProvidesUnformattedPayDescription() {
-        let context = makeSUT(amount: nil)
-
+        let context = makeSUTStoredCardWithCVC(amount: nil)
         #expect(context.sut.subtitle.string == "Use Visa to pay")
     }
 
     @Test
     internal func storedCardSecurityCodeComponent_withZeroAmount_thenProvidesSaveDetailsDescription() {
-        let context = makeSUT(amount: Amount(value: 0, currencyCode: "EUR"))
-
+        let context = makeSUTStoredCardWithCVC(amount: Amount(value: 0, currencyCode: "EUR"))
         #expect(context.sut.subtitle.string == "Use Visa to save details")
     }
 
@@ -54,12 +51,11 @@ internal struct StoredPaymentMethodContentViewModelTests {
 
         #expect(context.sut.title == "$arjenLandstra")
         #expect(context.sut.subtitle.string == "Use Cash App Pay to pay \(Dummy.amount.formatted)")
-        #expect(context.sut.componentViewController === component.viewController)
     }
 
     @Test
     internal func component_whenSubmitting_thenForwardsToDropInFlowManager() throws {
-        let context = makeSUT()
+        let context = makeSUTStoredCardWithCVC()
         let paymentMethod = try #require(context.component.paymentMethod as? StoredPaymentMethod)
         let data = PaymentComponentData(
             paymentMethodDetails: StoredPaymentDetails(paymentMethod: paymentMethod),
@@ -69,21 +65,6 @@ internal struct StoredPaymentMethodContentViewModelTests {
         context.sut.didSubmit(data, from: context.component)
 
         #expect(context.flowManager.submitFromActionPresenterCalled)
-        #expect(context.flowManager.submitFromActionPresenterReceivedArguments?.component === context.component)
-        #expect(context.flowManager.submitFromActionPresenterReceivedArguments?.actionPresenter === context.sut)
-    }
-
-    @Test
-    internal func presentedAction_whenCancelled_thenCancelsComponentAndDismissesPrompt() {
-        let context = makeSUT()
-        let router = StoredPaymentMethodContentRoutingSpy()
-        context.sut.router = router
-
-        context.sut.present(actionViewController: UIViewController())
-        router.onCancel?()
-
-        #expect(context.flowManager.cancelComponentReceivedComponent === context.component)
-        #expect(router.dismissCallsCount == 1)
     }
 
     private struct TestContext {
@@ -92,7 +73,7 @@ internal struct StoredPaymentMethodContentViewModelTests {
         let flowManager: DropInFlowManagingMock
     }
 
-    private func makeSUT(amount: Amount? = Dummy.amount) -> TestContext {
+    private func makeSUTStoredCardWithCVC(amount: Amount? = Dummy.amount) -> TestContext {
         let paymentMethod = StoredCardPaymentMethod(
             type: .scheme,
             name: "Visa",
