@@ -9,7 +9,7 @@ import UIKit
 
 @MainActor
 internal protocol Router: AnyObject {
-    var childRouter: Router? { get }
+    var childRouter: Router? { get set }
     var rootViewController: UIViewController { get }
 }
 

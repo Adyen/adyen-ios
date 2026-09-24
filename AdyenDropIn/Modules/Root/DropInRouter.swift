@@ -7,10 +7,11 @@
 import Adyen
 import AdyenNetworking
 import Foundation
-import SafariServices
 import UIKit
 
-internal protocol DropInRouting: Router, AnyObject {}
+internal protocol DropInRouting: Router, AnyObject {
+    func dismissDropIn(completion: (() -> Void)?)
+}
 
 @MainActor
 internal class DropInRouter: DropInRouting {
@@ -18,14 +19,14 @@ internal class DropInRouter: DropInRouting {
     // MARK: - Properties
     
     internal private(set) lazy var rootViewController: UIViewController = {
-        resolveRootView()
+        resolveRootViewController()
     }()
     
     private let viewModel: DropInViewModelProtocol
     private let preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
-    internal private(set) var childRouter: Router?
+    internal var childRouter: Router?
     
     // MARK: - Initializers
     
@@ -42,29 +43,45 @@ internal class DropInRouter: DropInRouting {
     }
 
     // MARK: - Private
-    
-    private func resolveRootView() -> UIViewController {
+
+    private func resolveRootViewController() -> UIViewController {
+        let router: Router
+
         switch viewModel.root {
         case let .preselected(paymentComponent):
-            let preselectedPaymentMethodRouter = preselectedPaymentMethodAssembler.resolvePreselectedPaymentMethodRouter(
-                delegate: self,
+            router = preselectedPaymentMethodAssembler.resolvePreselectedPaymentMethodRouter(
+                listener: self,
                 component: paymentComponent,
                 title: viewModel.title
             )
-            self.childRouter = preselectedPaymentMethodRouter
-            let preselectedPaymentMethodViewController = preselectedPaymentMethodRouter.rootViewController
-            return UINavigationController(rootViewController: preselectedPaymentMethodViewController)
         case let .component(paymentComponent):
-            let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
+            router = componentContainerAssembler.resolveComponentContainerRouter(
                 for: paymentComponent,
                 listener: self
             )
-            self.childRouter = componentContainerRouter
-            return componentContainerRouter.rootViewController
         case .paymentMethodList:
-            let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter(delegate: self)
-            self.childRouter = paymentMethodListRouter
-            return paymentMethodListRouter.rootViewController
+            router = paymentMethodListAssembler.resolvePaymentMethodListRouter(
+                listener: self
+            )
+        }
+
+        self.childRouter = router
+        return UINavigationController(rootViewController: router.rootViewController)
+    }
+}
+
+// MARK: - Drop In Dismissal
+
+extension DropInRouter {
+
+    internal func dismissDropIn(completion: (() -> Void)?) {
+        // Dismissing the root itself only tears down what is presented on top of it,
+        // so the drop in is dismissed by the view controller presenting it.
+        let dismissingViewController = rootViewController.presentingViewController ?? rootViewController
+
+        dismissingViewController.dismiss(animated: true) { [weak self] in
+            self?.childRouter = nil
+            completion?()
         }
     }
 }
@@ -82,9 +99,9 @@ extension DropInRouter: PreselectedPaymentMethodRouterListener {
 
 extension DropInRouter: PaymentMethodListRouterListener {
     
+    /// Dismissing the payment method list dismisses the drop in it is the root of.
     internal func didDismissPaymentMethodList(completion: (() -> Void)?) {
-        childRouter = nil
-        completion?()
+        dismissDropIn(completion: completion)
     }
 }
 
