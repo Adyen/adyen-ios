@@ -7,6 +7,9 @@
 import AdyenActions
 import SwiftUI
 import UIKit
+#if canImport(PayKit)
+    import PayKit
+#endif
 
 internal class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -27,6 +30,10 @@ internal class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.rootViewController = UIHostingController(rootView: contentView)
             self.window = window
             window.makeKeyAndVisible()
+
+            if let url = connectionOptions.urlContexts.first?.url {
+                handle(url)
+            }
         }
     }
 
@@ -61,7 +68,19 @@ internal class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     internal func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         guard let url = URLContexts.first?.url else { return }
+        handle(url)
+    }
+
+    private func handle(_ url: URL) {
         RedirectComponent.applicationDidOpen(from: url)
+
+        #if canImport(PayKit)
+            NotificationCenter.default.post(
+                name: CashAppPay.RedirectNotification,
+                object: nil,
+                userInfo: [UIApplication.LaunchOptionsKey.url: url]
+            )
+        #endif
     }
 
 }
