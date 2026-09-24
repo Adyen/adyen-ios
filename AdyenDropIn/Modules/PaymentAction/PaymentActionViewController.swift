@@ -15,6 +15,7 @@ internal class PaymentActionViewController: UIViewController {
 
     private let viewModel: PaymentActionViewModelProtocol
     internal let actionViewController: UIViewController
+    private var isInteractivePopGestureEnabled: Bool?
 
     // MARK: - Initializers
 
@@ -45,7 +46,26 @@ internal class PaymentActionViewController: UIViewController {
     /// payment details of the selected payment method. The only exit is dismissing the drop in.
     override internal func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+
+        guard let popGestureRecognizer = navigationController?.interactivePopGestureRecognizer else {
+            return
+        }
+
+        isInteractivePopGestureEnabled = popGestureRecognizer.isEnabled
+        popGestureRecognizer.isEnabled = false
+    }
+
+    /// The navigation controller is shared with the rest of the drop in,
+    /// so its original state is restored once this view is no longer on screen.
+    override internal func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        guard let isInteractivePopGestureEnabled else {
+            return
+        }
+
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = isInteractivePopGestureEnabled
+        self.isInteractivePopGestureEnabled = nil
     }
 
     // MARK: - Private

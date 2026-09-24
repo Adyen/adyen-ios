@@ -115,6 +115,53 @@ struct PaymentActionViewControllerTests {
         #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == false)
     }
 
+    @Test("The navigation controller is shared, so the pop gesture is restored on disappear.")
+    func viewWillDisappear_shouldRestoreTheEnabledInteractivePopGesture() {
+        // Given
+        let (sut, _, _) = makeSUT()
+        let navigationController = UINavigationController(rootViewController: UIViewController())
+        navigationController.pushViewController(sut, animated: false)
+        navigationController.interactivePopGestureRecognizer?.isEnabled = true
+        sut.viewWillAppear(false)
+
+        // When
+        sut.viewWillDisappear(false)
+
+        // Then
+        #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == true)
+    }
+
+    @Test("A pop gesture that was already disabled stays disabled after the action is gone.")
+    func viewWillDisappear_shouldRestoreTheDisabledInteractivePopGesture() {
+        // Given
+        let (sut, _, _) = makeSUT()
+        let navigationController = UINavigationController(rootViewController: UIViewController())
+        navigationController.pushViewController(sut, animated: false)
+        navigationController.interactivePopGestureRecognizer?.isEnabled = false
+        sut.viewWillAppear(false)
+
+        // When
+        sut.viewWillDisappear(false)
+
+        // Then
+        #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == false)
+    }
+
+    @Test("Disappearing without having appeared leaves the navigation controller untouched.")
+    func viewWillDisappear_shouldNotChangeTheInteractivePopGestureWithoutAppearing() {
+        // Given
+        let (sut, _, _) = makeSUT()
+        let navigationController = UINavigationController(rootViewController: UIViewController())
+        navigationController.pushViewController(sut, animated: false)
+        navigationController.interactivePopGestureRecognizer?.isEnabled = false
+
+        // When
+        sut.viewWillDisappear(false)
+
+        // Then
+        #expect(navigationController.interactivePopGestureRecognizer?.isEnabled == false)
+    }
+
     // MARK: - Spies
 
     private class ActionViewControllerSpy: UIViewController {

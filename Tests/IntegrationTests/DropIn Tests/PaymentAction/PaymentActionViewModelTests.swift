@@ -15,17 +15,23 @@ struct PaymentActionViewModelTests {
 
     // MARK: - Tests
 
-    @Test
+    @Test("The merchant is only informed about the cancellation once the drop in has been dismissed.")
     func cancel_shouldDismissActionAndCancelDropIn() {
         // Given
         var onCancelCallsCount = 0
         let (sut, routerMock) = makeSUT { onCancelCallsCount += 1 }
+
+        var receivedCompletion: (() -> Void)?
+        routerMock.dismissCompletionClosure = { receivedCompletion = $0 }
 
         // When
         sut.cancel()
 
         // Then
         #expect(routerMock.dismissCompletionCallsCount == 1)
+        #expect(onCancelCallsCount == 0)
+
+        receivedCompletion?()
         #expect(onCancelCallsCount == 1)
     }
 
