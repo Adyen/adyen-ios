@@ -12,9 +12,18 @@ import UIKit
 
 internal final class PaymentMethodItemView: UIView {
 
+    /// How far the item content is inset horizontally from the item edges, so that the press
+    /// highlight bleeds around it. Section headers use the same inset to line up with the item titles.
+    internal static let contentHorizontalInset: CGFloat = 6
+
     private enum Layout {
         static let itemHeight: CGFloat = 52.0
-        static let sideMargin: CGFloat = 12.0
+        static let contentMargins = NSDirectionalEdgeInsets(
+            top: 12,
+            leading: PaymentMethodItemView.contentHorizontalInset,
+            bottom: 12,
+            trailing: PaymentMethodItemView.contentHorizontalInset
+        )
         static let iconImageSize: CGSize = .init(width: 40, height: 26)
         static let chevronSize: CGSize = .init(width: 20, height: 14)
     }
@@ -134,24 +143,21 @@ internal final class PaymentMethodItemView: UIView {
     // MARK: - Private
 
     private func setupView() {
+        directionalLayoutMargins = Layout.contentMargins
+
         addSubview(highlightView)
         addSubview(contentStackView)
 
-        NSLayoutConstraint.activate([
-            highlightView.topAnchor.constraint(equalTo: topAnchor),
-            highlightView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            highlightView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            highlightView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        // The highlight spans the whole item, while its content sits inside the margins.
+        highlightView.adyen.anchor(inside: self)
+        contentStackView.adyen.anchor(inside: layoutMarginsGuide)
 
+        NSLayoutConstraint.activate([
             iconImageView.widthAnchor.constraint(equalToConstant: Layout.iconImageSize.width),
             iconImageView.heightAnchor.constraint(equalToConstant: Layout.iconImageSize.height),
 
             chevronImageView.widthAnchor.constraint(equalToConstant: Layout.chevronSize.width),
             chevronImageView.heightAnchor.constraint(equalToConstant: Layout.chevronSize.height),
-            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: Layout.sideMargin),
-            contentStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            contentStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Layout.sideMargin),
 
             heightAnchor.constraint(greaterThanOrEqualToConstant: Layout.itemHeight)
         ])
