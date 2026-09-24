@@ -48,6 +48,9 @@
 "adyen.dropIn.preselected.openAll.title" = "Change Payment Method";
 "adyen.dropIn.paymentMethodList.description.completePayment" = "Select your preferred payment option and complete the payment";
 "adyen.dropIn.paymentMethodList.description.saveDetails" = "Select your preferred payment option and save your details for future transactions";
+"adyen.dropIn.storedPaymentMethod.description" = "Use %@ to pay";
+"adyen.dropIn.storedPaymentMethod.description.withAmount" = "Use %@ to pay %@";
+"adyen.dropIn.storedPaymentMethod.description.saveDetails" = "Use %@ to save details";
 "adyen.continueTo" = "Continue to %@";
 "adyen.continueTitle" = "Continue";
 "adyen.phoneNumber.title" = "Telephone number";
