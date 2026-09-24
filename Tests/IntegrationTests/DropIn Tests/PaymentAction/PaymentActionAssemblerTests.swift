@@ -74,6 +74,9 @@ struct PaymentActionAssemblerTests {
         let listenerMock = PaymentActionRouterListenerMock()
         var onCancelCallsCount = 0
 
+        var receivedCompletion: (() -> Void)?
+        listenerMock.didDismissPaymentActionCompletionClosure = { receivedCompletion = $0 }
+
         let router = sut.resolvePaymentActionRouter(
             for: UIViewController(),
             listener: listenerMock,
@@ -88,7 +91,11 @@ struct PaymentActionAssemblerTests {
         _ = try hostViewController.perform(#require(doneButton.action), with: doneButton)
 
         // Then
+        // The merchant is only informed once the drop in has been dismissed.
         #expect(listenerMock.didDismissPaymentActionCompletionCallsCount == 1)
+        #expect(onCancelCallsCount == 0)
+
+        receivedCompletion?()
         #expect(onCancelCallsCount == 1)
     }
 }
