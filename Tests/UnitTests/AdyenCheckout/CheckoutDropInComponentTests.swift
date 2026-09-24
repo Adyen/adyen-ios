@@ -145,6 +145,19 @@ final class CheckoutDropInComponentTests: XCTestCase {
         XCTAssertTrue(navigationController.presentedViewController is PKPaymentAuthorizationViewController)
     }
 
+    func test_createDropIn_withApplePayWithoutConfiguration_shouldOmitOnlyApplePay() throws {
+        let checkout = makeCheckout(
+            paymentMethods: makePaymentMethods(regular: [applePayDictionary, creditCardDictionary, blik])
+        )
+
+        let dropIn = try checkout.createDropIn()
+        let navigationController = try XCTUnwrap(dropIn.viewController as? UINavigationController)
+        navigationController.topViewController?.loadViewIfNeeded()
+
+        XCTAssertTrue(navigationController.topViewController is PaymentMethodListViewController)
+        XCTAssertNil(navigationController.view.firstSubview(of: PKPaymentButton.self))
+    }
+
     private func assertPaymentMethodFailure(
         when operation: () throws -> CheckoutDropInComponent,
         file: StaticString = #filePath,

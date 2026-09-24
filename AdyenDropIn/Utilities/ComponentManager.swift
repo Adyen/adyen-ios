@@ -15,9 +15,6 @@ import Adyen
 #endif
 import Foundation
 
-package typealias DropInPaymentComponentBuilder =
-    @MainActor (_ paymentMethod: PaymentMethod) throws -> PaymentComponent
-
 @MainActor
 internal protocol ComponentManaging {
     var sections: [PaymentMethodsSection] { get }
@@ -35,7 +32,7 @@ internal final class ComponentManager: ComponentManaging {
     internal let context: AdyenContext
     internal let order: PartialPaymentOrder?
     
-    private let paymentComponentBuilder: DropInPaymentComponentBuilder
+    private let paymentComponentProvider: DropInPaymentComponentProvider
 
     private var localizationParameters: LocalizationParameters? {
         configuration.resolvedLocalizationParameters
@@ -52,13 +49,13 @@ internal final class ComponentManager: ComponentManaging {
         context: AdyenContext,
         configuration: DropInConfiguration,
         order: PartialPaymentOrder?,
-        paymentComponentBuilder: @escaping DropInPaymentComponentBuilder
+        paymentComponentProvider: DropInPaymentComponentProvider
     ) {
         self.paymentMethods = paymentMethods
         self.context = context
         self.configuration = configuration
         self.order = order
-        self.paymentComponentBuilder = paymentComponentBuilder
+        self.paymentComponentProvider = paymentComponentProvider
 
         updateContextAmountIfNeeded()
     }
@@ -88,9 +85,9 @@ internal final class ComponentManager: ComponentManaging {
 
     internal func update(paymentMethods: PaymentMethods) {
         self.paymentMethods = paymentMethods
-        supportedStoredPaymentMethods = storedPaymentMethodCandidates.filter { canBuildComponent(for: $0) }
-        supportedRegularPaymentMethods = paymentMethods.regular.filter { canBuildComponent(for: $0) }
-        supportedPaidPaymentMethods = paymentMethods.paid.filter { canBuildComponent(for: $0) }
+        supportedStoredPaymentMethods = storedPaymentMethodCandidates.filter { isAvailable($0) }
+        supportedRegularPaymentMethods = paymentMethods.regular.filter { isAvailable($0) }
+        supportedPaidPaymentMethods = paymentMethods.paid.filter { isAvailable($0) }
     }
 
     internal func buildComponent(for paymentMethod: PaymentMethod) -> PaymentComponent? {
@@ -101,11 +98,11 @@ internal final class ComponentManager: ComponentManaging {
 
     // MARK: - Supported Payment Methods
 
-    internal lazy var supportedStoredPaymentMethods = storedPaymentMethodCandidates.filter { canBuildComponent(for: $0) }
+    internal lazy var supportedStoredPaymentMethods = storedPaymentMethodCandidates.filter { isAvailable($0) }
 
-    internal lazy var supportedRegularPaymentMethods = paymentMethods.regular.filter { canBuildComponent(for: $0) }
+    internal lazy var supportedRegularPaymentMethods = paymentMethods.regular.filter { isAvailable($0) }
 
-    internal lazy var supportedPaidPaymentMethods = paymentMethods.paid.filter { canBuildComponent(for: $0) }
+    internal lazy var supportedPaidPaymentMethods = paymentMethods.paid.filter { isAvailable($0) }
 
     internal var firstStoredComponent: PaymentComponent? {
         supportedStoredPaymentMethods.first.flatMap(buildComponent(for:))
@@ -176,9 +173,8 @@ private extension ComponentManager {
             .filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
     }
 
-    // TODO: To be improved with payment method availability feature.
-    func canBuildComponent(for paymentMethod: PaymentMethod) -> Bool {
-        assembleComponent(for: paymentMethod) != nil
+    func isAvailable(_ paymentMethod: PaymentMethod) -> Bool {
+        paymentComponentProvider.isAvailable(for: paymentMethod)
     }
 
     func containsSupportedPaymentMethod(_ paymentMethod: PaymentMethod) -> Bool {
@@ -192,7 +188,7 @@ private extension ComponentManager {
 
     func assembleComponent(for paymentMethod: PaymentMethod) -> PaymentComponent? {
         do {
-            var component = try paymentComponentBuilder(paymentMethod)
+            var component = try paymentComponentProvider.buildComponent(for: paymentMethod)
             // TODO: Preserve the order assignment until partial payments have a dedicated design.
             component.order = order
             return component

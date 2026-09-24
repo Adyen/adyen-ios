@@ -22,7 +22,7 @@ extension CheckoutComponentBuilder {
         context: AdyenContext,
         actionComponentConfiguration: CheckoutActionComponent.Configuration,
         storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?,
-        paymentComponentBuilder: @escaping DropInPaymentComponentBuilder
+        paymentComponentProvider: DropInPaymentComponentProvider
     ) -> DropInComponent {
         var dropInConfiguration = configuration.dropInConfiguration
         dropInConfiguration.theme = configuration.theme
@@ -34,7 +34,7 @@ extension CheckoutComponentBuilder {
             configuration: dropInConfiguration,
             actionComponentConfiguration: actionComponentConfiguration,
             storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability,
-            paymentComponentBuilder: paymentComponentBuilder
+            paymentComponentProvider: paymentComponentProvider
         )
     }
 }

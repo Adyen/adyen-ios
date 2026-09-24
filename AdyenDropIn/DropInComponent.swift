@@ -52,7 +52,7 @@ package final class DropInComponent: NSObject,
         dropInFlowManager: dropInFlowManager,
         partialPaymentDelegate: partialPaymentDelegate,
         storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability,
-        paymentComponentBuilder: paymentComponentBuilder
+        paymentComponentProvider: paymentComponentProvider
     )
 
     internal private(set) lazy var router = dropInAssembler.resolveDropInRouter()
@@ -61,7 +61,7 @@ package final class DropInComponent: NSObject,
 
     private let actionComponentConfiguration: CheckoutActionComponent.Configuration
     internal let storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
-    private let paymentComponentBuilder: DropInPaymentComponentBuilder
+    private let paymentComponentProvider: DropInPaymentComponentProvider
 
     internal var paymentInProgress: Bool = false
 
@@ -84,7 +84,7 @@ package final class DropInComponent: NSObject,
     ///   - configuration: Drop-in behavior and checkout-wide presentation configuration.
     ///   - actionComponentConfiguration: The resolved configuration for action handling.
     ///   - storedPaymentMethodManagementCapability: The optional stored payment method management behavior.
-    ///   - paymentComponentBuilder: The payment component builder to handle component creation.
+    ///   - paymentComponentProvider: Decides which payment methods are available and builds their components.
     ///   - title: Name of the application. To be displayed on a first payment page.
     ///            If no external value provided, the Main Bundle's name would be used.
     package init(
@@ -93,14 +93,14 @@ package final class DropInComponent: NSObject,
         configuration: DropInConfiguration = .init(),
         actionComponentConfiguration: CheckoutActionComponent.Configuration = .init(),
         storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability? = nil,
-        paymentComponentBuilder: @escaping DropInPaymentComponentBuilder,
+        paymentComponentProvider: DropInPaymentComponentProvider,
         title: String? = nil
     ) {
         self.title = title ?? Bundle.main.displayName
         self.configuration = configuration
         self.actionComponentConfiguration = actionComponentConfiguration
         self.storedPaymentMethodManagementCapability = storedPaymentMethodManagementCapability
-        self.paymentComponentBuilder = paymentComponentBuilder
+        self.paymentComponentProvider = paymentComponentProvider
         self.context = context
         self.paymentMethods = paymentMethods
 
