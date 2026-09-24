@@ -49,7 +49,6 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     internal weak var dropInFlowRouter: DropInDismissing?
     private weak var dropInComponent: DropInComponent?
-    private weak var dropInComponentDelegate: DropInComponentDelegate?
     private let context: AdyenContext
     private let actionComponentConfiguration: CheckoutActionComponent.Configuration
     private weak var actionPresenter: ActionPresenter?
@@ -59,17 +58,19 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     internal init(
         dropInComponent: DropInComponent,
-        dropInComponentDelegate: DropInComponentDelegate?,
         context: AdyenContext,
         actionComponentConfiguration: CheckoutActionComponent.Configuration
     ) {
         self.dropInComponent = dropInComponent
-        self.dropInComponentDelegate = dropInComponentDelegate
         self.context = context
         self.actionComponentConfiguration = actionComponentConfiguration
     }
 
     // MARK: - Private
+
+    private var dropInComponentDelegate: DropInComponentDelegate? {
+        dropInComponent?.delegate
+    }
 
     private lazy var actionComponent: CheckoutActionComponent = {
         let actionComponent = CheckoutActionComponent(

@@ -20,7 +20,6 @@ import UIKit
 extension DropInComponent: FinalizableComponent {
 
     public func didFinalize(with success: Bool, completion: (() -> Void)?) {
-        stopLoading()
         if let finalizableComponent = selectedPaymentComponent as? FinalizableComponent {
             finalizableComponent.didFinalize(with: success, completion: completion)
         } else {

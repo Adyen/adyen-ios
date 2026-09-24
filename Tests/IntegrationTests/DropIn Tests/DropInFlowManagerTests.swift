@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Adyen N.V.
+// Copyright (c) 2026 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -28,6 +28,21 @@ struct DropInFlowManagerTests {
         // Then
         #expect(environment.dropInComponentDelegate.didFailWithFromInCallsCount == 1)
         #expect(environment.dropInComponentDelegate.didFailWithFromInReceivedArguments?.component === component)
+    }
+
+    @Test("The merchant is looked up on the drop in, so a delegate set after initialisation is notified too.")
+    func fail_withADelegateSetAfterInitialisation_shouldNotifyTheNewDelegate() {
+        // Given
+        let environment = makeSUT()
+        let newDelegate = DropInComponentDelegateMock()
+        environment.dropInComponent.delegate = newDelegate
+
+        // When
+        environment.sut.fail(with: ErrorMock(errorDescription: "Payment component's error"), from: makePaymentComponent())
+
+        // Then
+        #expect(newDelegate.didFailWithFromInCallsCount == 1)
+        #expect(environment.dropInComponentDelegate.didFailWithFromInCallsCount == 0)
     }
 
     // MARK: - Cancellation Tests
@@ -141,10 +156,10 @@ struct DropInFlowManagerTests {
         )
 
         let dropInComponentDelegate = DropInComponentDelegateMock()
+        dropInComponent.delegate = dropInComponentDelegate
 
         let sut = DropInFlowManager(
             dropInComponent: dropInComponent,
-            dropInComponentDelegate: dropInComponentDelegate,
             context: context,
             actionComponentConfiguration: .init()
         )
