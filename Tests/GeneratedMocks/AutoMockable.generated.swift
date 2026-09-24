@@ -248,7 +248,27 @@ class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtoc
 
 }
 
+class DropInDismissingMock: DropInDismissing {
+
+    // MARK: - dismissDropIn
+
+    var dismissDropInCompletionCallsCount = 0
+    var dismissDropInCompletionCalled: Bool {
+        dismissDropInCompletionCallsCount > 0
+    }
+
+    var dismissDropInCompletionClosure: (((() -> Void)?) -> Void)?
+
+    func dismissDropIn(completion: (() -> Void)?) {
+        dismissDropInCompletionCallsCount += 1
+        dismissDropInCompletionClosure?(completion)
+    }
+
+}
+
 class DropInFlowManagingMock: DropInFlowManaging {
+
+    var dropInFlowRouter: DropInDismissing?
 
     // MARK: - submit
 
@@ -320,6 +340,34 @@ class DropInFlowManagingMock: DropInFlowManaging {
         handleActionReceivedAction = action
         handleActionReceivedInvocations.append(action)
         handleActionClosure?(action)
+    }
+
+    // MARK: - cancelDropIn
+
+    var cancelDropInCallsCount = 0
+    var cancelDropInCalled: Bool {
+        cancelDropInCallsCount > 0
+    }
+
+    var cancelDropInClosure: (() -> Void)?
+
+    func cancelDropIn() {
+        cancelDropInCallsCount += 1
+        cancelDropInClosure?()
+    }
+
+    // MARK: - dismissDropIn
+
+    var dismissDropInCallsCount = 0
+    var dismissDropInCalled: Bool {
+        dismissDropInCallsCount > 0
+    }
+
+    var dismissDropInClosure: (() -> Void)?
+
+    func dismissDropIn() {
+        dismissDropInCallsCount += 1
+        dismissDropInClosure?()
     }
 
 }
