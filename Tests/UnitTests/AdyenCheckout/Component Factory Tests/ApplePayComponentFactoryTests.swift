@@ -78,6 +78,49 @@ final class ApplePayComponentFactoryTests: XCTestCase {
         XCTAssertTrue(component.configuration.allowOnboarding)
     }
 
+    // MARK: - Availability Tests
+
+    func test_isAvailable_withOnboardingAllowed_shouldReturnTrue() throws {
+        let paymentMethod = try XCTUnwrap(createApplePayPaymentMethod())
+        let configuration = try ApplePayConfiguration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
+        )
+
+        XCTAssertTrue(factory.isAvailable(for: paymentMethod, configuration: configuration))
+    }
+
+    func test_isAvailable_withNoSupportedNetworksAndOnboardingDisallowed_shouldMatchCreateFailure() throws {
+        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: [])
+        let configuration = try ApplePayConfiguration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
+        )
+        .allowOnboarding(false)
+
+        XCTAssertFalse(factory.isAvailable(for: paymentMethod, configuration: configuration))
+        XCTAssertThrowsError(
+            try factory.create(with: paymentMethod, context: context, configuration: configuration)
+        ) { error in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .userCannotMakePayment)
+        }
+    }
+
+    func test_isAvailable_shouldNotAssignSupportedNetworksToPaymentRequest() throws {
+        let paymentMethod = try XCTUnwrap(createApplePayPaymentMethod())
+        let paymentRequest = Dummy.createTestApplePayPaymentRequest()
+        paymentRequest.supportedNetworks = []
+        let configuration = try ApplePayConfiguration(paymentRequest: paymentRequest)
+
+        XCTAssertTrue(factory.isAvailable(for: paymentMethod, configuration: configuration))
+        XCTAssertTrue(paymentRequest.supportedNetworks.isEmpty)
+
+        let component = try factory.create(with: paymentMethod, context: context, configuration: configuration)
+        XCTAssertEqual(
+            paymentRequest.supportedNetworks,
+            try ApplePayComponent.validatedSupportedNetworks(for: paymentMethod, configuration: configuration)
+        )
+        XCTAssertNotNil(component.paymentAuthorizationViewController)
+    }
+
     // MARK: - Type Conformance Tests
 
     func testFactory_ConformsToPaymentComponentFactory() {

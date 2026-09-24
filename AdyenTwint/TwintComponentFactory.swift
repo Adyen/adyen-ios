@@ -43,4 +43,11 @@ package struct TwintComponentFactory: PaymentComponentFactory {
     package func defaultConfiguration() -> BasicComponentConfiguration {
         BasicComponentConfiguration()
     }
+
+    package func isAvailable(
+        for _: Method,
+        configuration _: Configuration
+    ) -> Bool {
+        true
+    }
 }
