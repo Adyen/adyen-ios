@@ -245,9 +245,6 @@ struct AmountAwarePaymentStringsPolicyTests {
         #expect(subtitle == "Select your preferred payment option and complete the payment")
     }
 
-    /// A missing amount means the amount is simply unknown here, not that nothing is charged,
-    /// so the shopper still gets pay copy -- just without a figure. Mirrors `payButtonTitle`,
-    /// which returns "Pay" for a nil amount and preauthorization copy only for an explicit zero.
     @Test
     func storedPaymentMethodSubtitle_withNilAmount_thenShowsUnformattedPayDescription() {
         let subtitle = makeSUT().storedPaymentMethodSubtitle(
