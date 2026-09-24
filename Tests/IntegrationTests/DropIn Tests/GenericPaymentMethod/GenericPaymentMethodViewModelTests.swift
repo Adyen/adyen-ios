@@ -68,7 +68,7 @@ struct GenericPaymentMethodViewModelTests {
     @Test
     func didSubmit_shouldCallDropInFlowManagerSubmit() {
         // Given
-        let (sut, paymentComponentMock, dropInFlowManagerMock, _) = makeSUT()
+        let (sut, paymentComponentMock, dropInFlowManagerMock, routerMock) = makeSUT()
         let data = PaymentComponentData(
             paymentMethodDetails: GenericPaymentDetails(type: paymentComponentMock.paymentMethod.type),
             order: nil
@@ -78,11 +78,12 @@ struct GenericPaymentMethodViewModelTests {
         sut.didSubmit(data, from: paymentComponentMock)
 
         // Then
-        #expect(dropInFlowManagerMock.submitFromActionPresenterCallsCount == 1)
-        let receivedPaymentMethod = dropInFlowManagerMock.submitFromActionPresenterReceivedArguments?.data.paymentMethod as? GenericPaymentDetails
-        #expect(receivedPaymentMethod?.type == paymentComponentMock.paymentMethod.type)
-        #expect(dropInFlowManagerMock.submitFromActionPresenterReceivedArguments?.component === paymentComponentMock)
-        #expect(dropInFlowManagerMock.submitFromActionPresenterReceivedArguments?.actionPresenter === sut)
+        #expect(dropInFlowManagerMock.submitFromCallsCount == 1)
+        let receivedArguments = dropInFlowManagerMock.submitFromReceivedArguments
+        #expect((receivedArguments?.data.paymentMethod as? GenericPaymentDetails)?.type == paymentComponentMock.paymentMethod.type)
+        #expect(receivedArguments?.component === paymentComponentMock)
+        // The module stays presented while the payment is in flight.
+        #expect(routerMock.dismissCallsCount == 0)
     }
 
     @Test
@@ -100,65 +101,6 @@ struct GenericPaymentMethodViewModelTests {
         // Then
         #expect(dropInFlowManagerMock.failWithFromCallsCount == 1)
         #expect(dropInFlowManagerMock.failWithFromReceivedArguments?.component === paymentComponentMock)
-        #expect(sut.state == .idle)
-    }
-
-    @Test
-    func presentActionViewController_shouldCallRouterPresent() {
-        // Given
-        let (sut, _, _, routerMock) = makeSUT()
-        let actionViewController = UIViewController()
-        var capturedViewController: UIViewController?
-        routerMock.presentActionViewControllerOnCancelClosure = { viewController, _ in
-            capturedViewController = viewController
-        }
-
-        // When
-        sut.present(actionViewController: actionViewController)
-
-        // Then
-        #expect(routerMock.presentActionViewControllerOnCancelCallsCount == 1)
-        #expect(capturedViewController === actionViewController)
-    }
-
-    @Test
-    func presentActionViewController_whenCancelled_shouldResetStateToIdle() {
-        // Given
-        let (sut, paymentComponentMock, _, routerMock) = makeSUT()
-        paymentComponentMock.shouldCallDelegateOnSubmit = false
-        sut.startPayment()
-        let actionViewController = UIViewController()
-
-        routerMock.presentActionViewControllerOnCancelClosure = { _, onCancel in
-            onCancel?()
-        }
-
-        // When
-        sut.present(actionViewController: actionViewController)
-
-        // Then
-        #expect(sut.state == .idle)
-    }
-
-    @Test
-    func didCancel_shouldResetStateToIdle() {
-        // Given
-        let (sut, paymentComponentMock, _, _) = makeSUT()
-        paymentComponentMock.shouldCallDelegateOnSubmit = false
-        sut.startPayment()
-
-        let contextMock = AdyenContext(
-            apiContext: Dummy.apiContext,
-            amount: .init(value: 100, currencyCode: "EUR"),
-            publicKey: Dummy.publicKey,
-            analyticsProvider: AnalyticsProviderMock()
-        )
-        let redirectComponent = RedirectComponent(context: contextMock)
-
-        // When
-        sut.didCancel(actionComponent: redirectComponent)
-
-        // Then
         #expect(sut.state == .idle)
     }
 

@@ -13,30 +13,25 @@ import UIKit
 
 // sourcery:AutoMockable
 @MainActor
-internal protocol ActionPresenter: AnyObject {
-    func present(actionViewController: UIViewController)
-    func didCancel(actionComponent: ActionComponent)
-}
-
-// sourcery:AutoMockable
-@MainActor
 internal protocol DropInDismissing: AnyObject {
     func dismissDropIn(completion: (() -> Void)?)
 }
 
+/// The root router of the drop in, on which the flow manager presents actions and which it dismisses.
+// sourcery:AutoMockable
+@MainActor
+internal protocol DropInFlowRouting: PaymentActionPresenting, DropInDismissing {}
+
 // sourcery:AutoMockable
 @MainActor
 internal protocol DropInFlowManaging: AnyObject {
-    /// The root router of the drop in, which the flow manager dismisses.
-    var dropInFlowRouter: DropInDismissing? { get set }
-    func submit(
-        _ data: PaymentComponentData,
-        from component: PaymentComponent,
-        actionPresenter: ActionPresenter
-    )
+    var dropInFlowRouter: DropInFlowRouting? { get set }
+    /// Submits the payment, presenting the action returned by the payment session, if any, on the root router.
+    func submit(_ data: PaymentComponentData, from component: PaymentComponent)
+    /// Handles the action returned by the payment session for the pending submission.
+    func receive(action: Action)
     func fail(with error: Error, from component: PaymentComponent)
     func cancel(component: PaymentComponent)
-    func handle(action: Action)
     /// Notifies the merchant that the user closed the drop in before submitting a payment.
     func cancelDropIn()
     func dismissDropIn()
@@ -47,11 +42,15 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     // MARK: - Properties
 
-    internal weak var dropInFlowRouter: DropInDismissing?
+    internal weak var dropInFlowRouter: DropInFlowRouting?
     private weak var dropInComponent: DropInComponent?
     private let context: AdyenContext
     private let actionComponentConfiguration: CheckoutActionComponent.Configuration
-    private weak var actionPresenter: ActionPresenter?
+    private let paymentActionAssembler: PaymentActionAssemblerProtocol
+
+    private var submissionTask: Task<Void, Never>?
+    /// Whether the payment session is expected to return an action to handle.
+    private var isAwaitingAction = false
     private var didCancelDropIn = false
 
     // MARK: - Initializers
@@ -59,11 +58,17 @@ internal class DropInFlowManager: DropInFlowManaging {
     internal init(
         dropInComponent: DropInComponent,
         context: AdyenContext,
-        actionComponentConfiguration: CheckoutActionComponent.Configuration
+        actionComponentConfiguration: CheckoutActionComponent.Configuration,
+        paymentActionAssembler: PaymentActionAssemblerProtocol
     ) {
         self.dropInComponent = dropInComponent
         self.context = context
         self.actionComponentConfiguration = actionComponentConfiguration
+        self.paymentActionAssembler = paymentActionAssembler
+    }
+
+    deinit {
+        submissionTask?.cancel()
     }
 
     // MARK: - Private
@@ -86,15 +91,26 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     internal func submit(
         _ data: PaymentComponentData,
-        from component: PaymentComponent,
-        actionPresenter: ActionPresenter
+        from component: PaymentComponent
     ) {
-        Task { [weak self] in
-            guard let self, let dropInComponent else { return }
-            self.actionPresenter = actionPresenter
+        submissionTask?.cancel()
+
+        isAwaitingAction = true
+
+        submissionTask = Task { [weak self] in
             let updatedData = await component.prepareSubmitData(from: data)
-            dropInComponentDelegate?.didSubmit(updatedData, from: component, in: dropInComponent)
+            guard !Task.isCancelled else { return }
+            self?.notifyDidSubmit(updatedData, from: component)
         }
+    }
+
+    internal func receive(action: Action) {
+        // An action can arrive when none is expected,
+        // for example when the drop in was closed while the payment was in flight.
+        guard isAwaitingAction else { return }
+        isAwaitingAction = false
+
+        actionComponent.handle(action)
     }
 
     internal func fail(with error: Error, from component: PaymentComponent) {
@@ -103,18 +119,17 @@ internal class DropInFlowManager: DropInFlowManaging {
     }
 
     internal func cancel(component: PaymentComponent) {
+        endSubmission()
+
         guard let dropInComponent else { return }
         dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
-    }
-
-    internal func handle(action: Action) {
-        actionComponent.handle(action)
     }
 
     internal func cancelDropIn() {
         guard !didCancelDropIn else { return }
         didCancelDropIn = true
 
+        endSubmission()
         sendExitEvent()
 
         guard let dropInComponent else { return }
@@ -126,6 +141,17 @@ internal class DropInFlowManager: DropInFlowManaging {
     }
 
     // MARK: - Private
+
+    private func notifyDidSubmit(_ data: PaymentComponentData, from component: PaymentComponent) {
+        guard let dropInComponent else { return }
+        dropInComponentDelegate?.didSubmit(data, from: component, in: dropInComponent)
+    }
+
+    private func endSubmission() {
+        submissionTask?.cancel()
+        submissionTask = nil
+        isAwaitingAction = false
+    }
 
     private func sendExitEvent() {
         let logEvent = AnalyticsEventLog(component: AnalyticsConstants.dropInComponentIdentifier, type: .closed)
@@ -145,23 +171,33 @@ extension DropInFlowManager: ActionComponentDelegate {
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: any ActionComponent) {
+        // The details are sent to the payment session, which can return a follow up action,
+        // as happens between the fingerprint and the challenge of a 3DS2 authentication.
+        isAwaitingAction = true
+
         guard let dropInComponent else { return }
         dropInComponentDelegate?.didProvide(data, from: component, in: dropInComponent)
     }
 
     internal func didComplete(from component: any ActionComponent) {
+        endSubmission()
+
         guard let dropInComponent else { return }
         dropInComponentDelegate?.didComplete(from: component, in: dropInComponent)
     }
 
     internal func didFail(with error: any Error, from component: any ActionComponent) {
-        guard let dropInComponent else { return }
+        endSubmission()
 
+        // Dismissing an action, for example by closing the web page of a redirect,
+        // dismisses the drop in as there is no way back to the payment details.
         if case ComponentError.cancelled = error {
-            actionPresenter?.didCancel(actionComponent: component)
-        } else {
-            dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
+            cancelDropIn()
+            return dismissDropIn()
         }
+
+        guard let dropInComponent else { return }
+        dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
     }
 }
 
@@ -170,6 +206,18 @@ extension DropInFlowManager: ActionComponentDelegate {
 extension DropInFlowManager: PresentationDelegate {
 
     internal func present(viewController: UIViewController) {
-        actionPresenter?.present(actionViewController: viewController)
+        guard let dropInFlowRouter else { return }
+
+        // The action module dismisses the drop in through its listener,
+        // so only the merchant needs to be notified on cancellation.
+        let paymentActionRouter = paymentActionAssembler.resolvePaymentActionRouter(
+            for: viewController,
+            listener: dropInFlowRouter,
+            onCancel: { [weak self] in
+                self?.cancelDropIn()
+            }
+        )
+
+        dropInFlowRouter.present(paymentActionRouter: paymentActionRouter)
     }
 }

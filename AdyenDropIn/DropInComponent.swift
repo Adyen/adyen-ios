@@ -38,7 +38,8 @@ package final class DropInComponent: NSObject,
         DropInFlowManager(
             dropInComponent: self,
             context: context,
-            actionComponentConfiguration: actionComponentConfiguration
+            actionComponentConfiguration: actionComponentConfiguration,
+            paymentActionAssembler: PaymentActionAssembler()
         )
     }()
 
@@ -151,7 +152,7 @@ package final class DropInComponent: NSObject,
     ///
     /// - Parameter action: The action to handle.
     package func handle(_ action: Action) {
-        dropInFlowManager.handle(action: action)
+        dropInFlowManager.receive(action: action)
     }
 
     // MARK: - Handling Partial Payments

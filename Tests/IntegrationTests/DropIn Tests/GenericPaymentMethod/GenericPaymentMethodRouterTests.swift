@@ -4,6 +4,8 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+@testable import Adyen
+@testable import AdyenActions
 @testable import AdyenDropIn
 import Testing
 import UIKit
@@ -21,20 +23,6 @@ struct GenericPaymentMethodRouterTests {
 
         // Then
         #expect(sut.rootViewController === viewController)
-    }
-
-    @Test
-    func present_shouldPresentActionViewControllerModally() {
-        // Given
-        let viewControllerSpy = ViewControllerSpy()
-        let sut = makeSUT(viewController: viewControllerSpy)
-        let actionViewController = UIViewController()
-
-        // When
-        sut.present(actionViewController: actionViewController, onCancel: nil)
-
-        // Then
-        #expect(viewControllerSpy.presentedViewControllerCaptured != nil)
     }
 
     @Test
@@ -57,13 +45,6 @@ struct GenericPaymentMethodRouterTests {
     // MARK: - Spy
 
     private class ViewControllerSpy: UIViewController {
-        var presentedViewControllerCaptured: UIViewController?
-
-        override func present(_ viewControllerToPresent: UIViewController, animated: Bool, completion: (() -> Void)? = nil) {
-            presentedViewControllerCaptured = viewControllerToPresent
-            completion?()
-        }
-
         private var _navigationController: NavigationControllerSpy?
         override var navigationController: UINavigationController? {
             _navigationController

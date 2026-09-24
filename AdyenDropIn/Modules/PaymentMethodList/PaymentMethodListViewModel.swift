@@ -219,7 +219,7 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        dropInFlowManager.submit(data, from: component, actionPresenter: self)
+        dropInFlowManager.submit(data, from: component)
     }
 
     internal func didFail(
@@ -235,20 +235,5 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         } else {
             dropInFlowManager.fail(with: error, from: component)
         }
-    }
-}
-
-// MARK: - ActionPresenter
-
-extension PaymentMethodListViewModel: ActionPresenter {
-
-    internal func present(actionViewController: UIViewController) {
-        router?.present(actionViewController: actionViewController) { [weak self] in
-            self?.state = .idle
-        }
-    }
-
-    internal func didCancel(actionComponent: any ActionComponent) {
-        state = .idle
     }
 }
