@@ -29,7 +29,7 @@ public final class AmountFormatter {
     /// - Parameters:
     ///   - majorUnitAmount: The amount in major currency units.
     ///   - currencyCode: The code of the currency.
-    ///   - localeIdentifier: The identifier of the locale. If nil, device's current locale is used.
+    ///   - localeIdentifier: Unused. Minor unit digits depend only on the currency code. Kept for API compatibility.
     public static func minorUnitAmount(from majorUnitAmount: Double, currencyCode: String, localeIdentifier: String? = nil) -> Int {
         let maximumFractionDigits = minorDigits(for: currencyCode)
         
@@ -41,7 +41,7 @@ public final class AmountFormatter {
     /// - Parameters:
     ///   - majorUnitAmount: The amount in major currency units.
     ///   - currencyCode: The code of the currency.
-    ///   - localeIdentifier: The identifier of the locale. If nil, device's current locale is used.
+    ///   - localeIdentifier: Unused. Minor unit digits depend only on the currency code. Kept for API compatibility.
     public static func minorUnitAmount(from majorUnitAmount: Decimal, currencyCode: String, localeIdentifier: String? = nil) -> Int {
         let maximumFractionDigits = minorDigits(for: currencyCode)
         
@@ -64,7 +64,7 @@ public final class AmountFormatter {
     /// - Parameters:
     ///   - amount: The amount in minor currency units.
     ///   - currencyCode: The code of the currency.
-    ///   - localeIdentifier: The identifier of the locale. If nil, device's current locale is used.
+    ///   - localeIdentifier: Unused. Minor unit digits depend only on the currency code. Kept for API compatibility.
     public static func decimalAmount(_ amount: Int, currencyCode: String, localeIdentifier: String? = nil) -> NSDecimalNumber {
         let maximumFractionDigits = minorDigits(for: currencyCode)
         let decimalMinorAmount = NSDecimalNumber(value: amount)
