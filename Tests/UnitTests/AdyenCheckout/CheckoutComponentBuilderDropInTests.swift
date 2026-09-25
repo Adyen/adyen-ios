@@ -35,9 +35,12 @@ final class CheckoutComponentBuilderDropInTests: XCTestCase {
             context: Dummy.context,
             actionComponentConfiguration: .init(),
             storedPaymentMethodManagementCapability: nil,
-            paymentComponentBuilder: { _ in
-                throw CheckoutError(code: .paymentMethodFailure, message: "Not used by this test.")
-            }
+            paymentComponentProvider: DropInPaymentComponentProvider(
+                isAvailable: { _ in false },
+                build: { _ in
+                    throw CheckoutError(code: .paymentMethodFailure, message: "Not used by this test.")
+                }
+            )
         )
 
         XCTAssertTrue(dropIn.configuration.hideStoredPaymentMethods)

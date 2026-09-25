@@ -104,6 +104,21 @@ final class ApplePayComponentFactoryTests: XCTestCase {
         }
     }
 
+    func test_isAvailable_withNoSupportedNetworksAndOnboardingAllowed_shouldMatchCreateFailure() throws {
+        let paymentMethod = ApplePayPaymentMethod(type: .applePay, name: "Apple Pay", brands: [])
+        let configuration = try ApplePayConfiguration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
+        )
+        .allowOnboarding(true)
+
+        XCTAssertFalse(factory.isAvailable(for: paymentMethod, configuration: configuration))
+        XCTAssertThrowsError(
+            try factory.create(with: paymentMethod, context: context, configuration: configuration)
+        ) { error in
+            XCTAssertEqual(error as? ApplePayComponent.Error, .userCannotMakePayment)
+        }
+    }
+
     func test_isAvailable_shouldNotAssignSupportedNetworksToPaymentRequest() throws {
         let paymentMethod = try XCTUnwrap(createApplePayPaymentMethod())
         let paymentRequest = Dummy.createTestApplePayPaymentRequest()

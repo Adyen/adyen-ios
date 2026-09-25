@@ -100,12 +100,15 @@ final class DropInViewModelTests: XCTestCase {
             context: Dummy.context,
             configuration: configuration,
             order: nil,
-            paymentComponentBuilder: { paymentMethod in
-                PresentablePaymentComponentMock(
-                    paymentMethod: paymentMethod,
-                    viewController: UIViewController()
-                )
-            }
+            paymentComponentProvider: DropInPaymentComponentProvider(
+                isAvailable: { _ in true },
+                build: { paymentMethod in
+                    PresentablePaymentComponentMock(
+                        paymentMethod: paymentMethod,
+                        viewController: UIViewController()
+                    )
+                }
+            )
         )
         let sut = DropInViewModel(
             title: "Drop-in",
