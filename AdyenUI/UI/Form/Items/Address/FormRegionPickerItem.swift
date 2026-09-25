@@ -19,6 +19,7 @@ package final class FormRegionPickerItem: FormPickerItem<FormPickerElement> {
         style: FormTextItemStyle,
         presenter: ViewControllerPresenter?,
         localizationParameters: LocalizationParameters? = nil,
+        configuration: FormPickerConfiguration = .init(),
         identifier: String? = nil
     ) {
         let preselectedValue = preselectedRegion?.toFormPickerElement()
@@ -32,6 +33,7 @@ package final class FormRegionPickerItem: FormPickerItem<FormPickerElement> {
             style: style,
             presenter: presenter,
             localizationParameters: localizationParameters,
+            configuration: configuration,
             identifier: identifier
         )
         
