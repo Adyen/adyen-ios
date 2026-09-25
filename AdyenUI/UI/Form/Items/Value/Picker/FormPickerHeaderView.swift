@@ -87,6 +87,8 @@ internal final class FormPickerHeaderView: UIView {
     private func applyTheme() {
         titleLabel.apply(theme.elements.labels.title)
 
-        subtitleLabel.apply(theme.elements.labels.body)
+        subtitleLabel.apply(
+            theme.elements.labels.body.color(theme.colors.textSecondary)
+        )
     }
 }

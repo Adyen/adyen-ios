@@ -54,6 +54,7 @@ package final class ListItemView: UIView, AnyFormItemView {
                 updateImageView(style: style)
                 titleLabel.adyen.apply(style.title)
                 subtitleLabel.adyen.apply(style.subtitle)
+                checkmarkImageView.tintColor = style.title.color
                 
                 if let trailingTextLabel = trailingView as? UILabel {
                     trailingTextLabel.adyen.apply(style.trailingText)

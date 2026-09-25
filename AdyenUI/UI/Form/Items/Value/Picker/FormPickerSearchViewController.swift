@@ -143,7 +143,9 @@ private extension FormPickable {
     ) -> ListItem {
         var style = ListItemStyle()
         style.title.font = theme.elements.labels.bodyEmphasized.font
+        style.title.color = theme.colors.primary
         style.subtitle.font = theme.elements.labels.subheadline.font
+        style.subtitle.color = theme.colors.textSecondary
 
         if isSelected {
             style.backgroundColor = theme.colors.container

@@ -154,8 +154,16 @@ class FormPickerSearchViewControllerTests: XCTestCase {
             CheckoutTheme.default.elements.labels.bodyEmphasized.font
         )
         XCTAssertEqual(
+            results.first?.style.title.color,
+            CheckoutTheme.default.colors.primary
+        )
+        XCTAssertEqual(
             results.first?.style.subtitle.font,
             CheckoutTheme.default.elements.labels.subheadline.font
+        )
+        XCTAssertEqual(
+            results.first?.style.subtitle.color,
+            CheckoutTheme.default.colors.textSecondary
         )
     }
 
@@ -512,21 +520,21 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         )
     }
 
-    func test_pickerHeader_shouldApplyBodyColorToSubtitle() throws {
-        let bodyColor: UIColor = .purple
+    func test_pickerHeader_shouldApplySecondaryColorToSubtitle() throws {
+        let secondaryColor: UIColor = .orange
 
         let searchViewController = try makeSearchViewController(
             configuration: .init(header: .init(title: "Installments", subtitle: "Split the total cost into monthly payments.")),
             theme: CheckoutTheme(
                 colors: CheckoutColors(
-                    primary: bodyColor,
-                    textSecondary: .orange
+                    primary: .purple,
+                    textSecondary: secondaryColor
                 )
             )
         )
 
         let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
-        XCTAssertEqual(headerView.subtitleLabel.textColor, bodyColor)
+        XCTAssertEqual(headerView.subtitleLabel.textColor, secondaryColor)
     }
 
     func test_pickerHeader_whenSubtitleNil_shouldHideSubtitleLabel() throws {

@@ -12,9 +12,11 @@ final class ListCellTests: XCTestCase {
 
     func test_cell_whenItemSelected_shouldShowSelectedAppearance() throws {
         let selectedBackgroundColor: UIColor = .purple
+        let checkmarkColor: UIColor = .green
         let cell = makeCell(
             item: makeItem(
                 backgroundColor: selectedBackgroundColor,
+                titleColor: checkmarkColor,
                 isSelected: true
             )
         )
@@ -29,6 +31,7 @@ final class ListCellTests: XCTestCase {
         XCTAssertTrue(cell.clipsToBounds)
         XCTAssertNotNil(checkmarkImageView.image)
         XCTAssertFalse(checkmarkImageView.isHidden)
+        XCTAssertEqual(checkmarkImageView.tintColor, checkmarkColor)
         XCTAssertEqual(checkmarkImageView.bounds.size, CGSize(width: 24, height: 24))
         XCTAssertEqual(checkmarkImageView.frame.minX - titleStackView.frame.maxX, 20, accuracy: 0.1)
         XCTAssertTrue(cell.accessibilityTraits.contains(.button))
@@ -158,6 +161,7 @@ final class ListCellTests: XCTestCase {
 
     private func makeItem(
         backgroundColor: UIColor,
+        titleColor: UIColor? = nil,
         highlightedBackgroundColor: UIColor? = nil,
         isSelected: Bool = false,
         trailingInfo: ListItem.TrailingInfoType? = nil
@@ -165,6 +169,9 @@ final class ListCellTests: XCTestCase {
         var style = ListItemStyle()
         style.backgroundColor = backgroundColor
         style.highlightedBackgroundColor = highlightedBackgroundColor
+        if let titleColor {
+            style.title.color = titleColor
+        }
 
         return ListItem(
             title: "Title",
