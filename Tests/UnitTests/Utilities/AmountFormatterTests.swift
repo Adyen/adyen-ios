@@ -136,19 +136,14 @@ class AmountFormatterTests: XCTestCase {
         
         XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "ISK"), "ISK 1,234.56")
         
-        XCTAssertEqual(AmountFormatter.minorUnitAmount(from: 1234.56, currencyCode: "USD", localeIdentifier: "ko_KR"), 123456)
-        XCTAssertEqual(AmountFormatter.minorUnitAmount(from: 1234.56, currencyCode: "USD", localeIdentifier: "fr_FR"), 123456)
-        
-        XCTAssertEqual(AmountFormatter.minorUnitAmount(from: Decimal(123456), currencyCode: "USD", localeIdentifier: "ko_KR"), 12345600)
-        XCTAssertEqual(AmountFormatter.minorUnitAmount(from: Decimal(123456), currencyCode: "USD", localeIdentifier: "fr_FR"), 12345600)
-        
-        XCTAssertEqual(AmountFormatter.decimalAmount(amount, currencyCode: "CVE", localeIdentifier: "ko_KR"), 123456)
-        XCTAssertEqual(AmountFormatter.decimalAmount(amount, currencyCode: "CVE", localeIdentifier: "fr_FR"), 123456)
+        XCTAssertEqual(AmountFormatter.minorUnitAmount(from: 1234.56, currencyCode: "USD"), 123456)
+        XCTAssertEqual(AmountFormatter.minorUnitAmount(from: Decimal(123456), currencyCode: "USD"), 12345600)
+        XCTAssertEqual(AmountFormatter.decimalAmount(amount, currencyCode: "CVE"), 123456)
 
         XCTAssertEqual(AmountFormatter.formatted(amount: amount, currencyCode: "HUF"), "HUF 1,234.56")
-        XCTAssertEqual(AmountFormatter.minorUnitAmount(from: 1234.56, currencyCode: "HUF", localeIdentifier: "hu_HU"), 123456)
-        XCTAssertEqual(AmountFormatter.minorUnitAmount(from: Decimal(123456), currencyCode: "HUF", localeIdentifier: "hu_HU"), 12345600)
-        XCTAssertEqual(AmountFormatter.decimalAmount(amount, currencyCode: "HUF", localeIdentifier: "hu_HU"), NSDecimalNumber(string: "1234.56"))
+        XCTAssertEqual(AmountFormatter.minorUnitAmount(from: 1234.56, currencyCode: "HUF"), 123456)
+        XCTAssertEqual(AmountFormatter.minorUnitAmount(from: Decimal(123456), currencyCode: "HUF"), 12345600)
+        XCTAssertEqual(AmountFormatter.decimalAmount(amount, currencyCode: "HUF"), NSDecimalNumber(string: "1234.56"))
     }
     
     func testAmountWithDifferentLocales() {
