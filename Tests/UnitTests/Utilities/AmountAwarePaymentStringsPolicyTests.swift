@@ -245,6 +245,39 @@ struct AmountAwarePaymentStringsPolicyTests {
         #expect(subtitle == "Select your preferred payment option and complete the payment")
     }
 
+    @Test
+    func storedPaymentMethodSubtitle_withNilAmount_thenShowsUnformattedPayDescription() {
+        let subtitle = makeSUT().storedPaymentMethodSubtitle(
+            for: "Visa",
+            with: nil,
+            localizationParameters: nil
+        )
+
+        #expect(subtitle == "Use Visa to pay")
+    }
+
+    @Test
+    func storedPaymentMethodSubtitle_withZeroAmount_thenShowsSaveDetails() {
+        let subtitle = makeSUT().storedPaymentMethodSubtitle(
+            for: "Visa",
+            with: Amount(value: 0, currencyCode: "EUR"),
+            localizationParameters: nil
+        )
+
+        #expect(subtitle == "Use Visa to save details")
+    }
+
+    @Test
+    func storedPaymentMethodSubtitle_withPositiveAmount_thenShowsFormattedAmount() {
+        let subtitle = makeSUT().storedPaymentMethodSubtitle(
+            for: "Visa",
+            with: Amount(value: 1000, currencyCode: "EUR", localeIdentifier: "en_US"),
+            localizationParameters: nil
+        )
+
+        #expect(subtitle == "Use Visa to pay €10.00")
+    }
+
     private func makeSUT() -> AmountAwarePaymentStringsPolicy.Type {
         AmountAwarePaymentStringsPolicy.self
     }

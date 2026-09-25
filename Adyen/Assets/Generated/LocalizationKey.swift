@@ -110,6 +110,12 @@ public struct LocalizationKey {
     public static let dropInPaymentMethodListDescriptionCompletePayment = LocalizationKey(key: "adyen.dropIn.paymentMethodList.description.completePayment")
     /// Select your preferred payment option and save your details for future transactions
     public static let dropInPaymentMethodListDescriptionSaveDetails = LocalizationKey(key: "adyen.dropIn.paymentMethodList.description.saveDetails")
+    /// Use %@ to pay
+    public static let dropInStoredPaymentMethodDescription = LocalizationKey(key: "adyen.dropIn.storedPaymentMethod.description")
+    /// Use %@ to pay %@
+    public static let dropInStoredPaymentMethodDescriptionWithAmount = LocalizationKey(key: "adyen.dropIn.storedPaymentMethod.description.withAmount")
+    /// Use %@ to save details
+    public static let dropInStoredPaymentMethodDescriptionSaveDetails = LocalizationKey(key: "adyen.dropIn.storedPaymentMethod.description.saveDetails")
     /// Continue to %@
     public static let continueTo = LocalizationKey(key: "adyen.continueTo")
     /// Continue
