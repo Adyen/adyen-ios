@@ -14,7 +14,7 @@ import UIKit
 
 /// A component that provides a form for stored card payments.
 @MainActor
-package final class StoredCardComponent: StoredPaymentComponent, Localizable {
+package final class StoredCardSecurityCodeComponent: StoredPaymentComponent, Localizable {
 
     // MARK: - Properties
 
@@ -92,4 +92,4 @@ package final class StoredCardComponent: StoredPaymentComponent, Localizable {
     }
 }
 
-extension StoredCardComponent: TrackableComponent {}
+extension StoredCardSecurityCodeComponent: TrackableComponent {}

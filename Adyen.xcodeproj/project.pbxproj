@@ -29,6 +29,8 @@
 		00600F282E73034B00637477 /* AdyenUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 003BDD192E15200A009177E0 /* AdyenUI.framework */; };
 		00600F2D2E78A1C800637477 /* AdyenUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 003BDD192E15200A009177E0 /* AdyenUI.framework */; };
 		00600F362E7D9D8800637477 /* AdyenUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 003BDD192E15200A009177E0 /* AdyenUI.framework */; };
+		215E0502305C2B3D00782DD7 /* AdyenCheckout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0F7498E2D958B3000014A05 /* AdyenCheckout.framework */; };
+		215E0503305C2B3D00782DD7 /* AdyenCheckout.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A0F7498E2D958B3000014A05 /* AdyenCheckout.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		810470772B2720DC0049B522 /* AdyenTwint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */; };
 		810470782B2720DC0049B522 /* AdyenTwint.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		81088A1F2BDBACB7007FCDB9 /* AdyenTwint.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00E5D6512AF4E99B00CDE118 /* AdyenTwint.framework */; };
@@ -187,6 +189,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 003BDD182E15200A009177E0;
 			remoteInfo = AdyenUI;
+		};
+		215E0504305C2B3D00782DD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2C0E02A22097917008616F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A0F7498D2D958B2F00014A05;
+			remoteInfo = AdyenCheckout;
 		};
 		81088A212BDBACB7007FCDB9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -619,6 +628,7 @@
 				F95B6DC72527565E002C9062 /* AdyenCard.framework in Embed Frameworks */,
 				F95B6DC92527565F002C9062 /* AdyenDropIn.framework in Embed Frameworks */,
 				81BDD6D02B21CF100022250E /* Adyen.framework in Embed Frameworks */,
+				215E0503305C2B3D00782DD7 /* AdyenCheckout.framework in Embed Frameworks */,
 				F95899D925FA526A00E4113F /* AdyenSwiftUI.framework in Embed Frameworks */,
 				81A91AC12BEC129D001E00C8 /* TwintSDK.xcframework in Embed Frameworks */,
 				81BDD6DA2B21CF2C0022250E /* AdyenDelegatedAuthentication.framework in Embed Frameworks */,
@@ -1262,6 +1272,7 @@
 				81DC5A552A77ED0400DBF2D1 /* Adyen3DS2 in Frameworks */,
 				81BDD6D92B21CF2C0022250E /* AdyenDelegatedAuthentication.framework in Frameworks */,
 				81BDD6CF2B21CF100022250E /* Adyen.framework in Frameworks */,
+				215E0502305C2B3D00782DD7 /* AdyenCheckout.framework in Frameworks */,
 				F95B6DC82527565F002C9062 /* AdyenDropIn.framework in Frameworks */,
 				F95899D825FA526A00E4113F /* AdyenSwiftUI.framework in Frameworks */,
 				F92980BC27CE409D000CA5CA /* AdyenSession.framework in Frameworks */,
@@ -1956,6 +1967,7 @@
 				81BDD6D22B21CF100022250E /* PBXTargetDependency */,
 				81BDD6D82B21CF250022250E /* PBXTargetDependency */,
 				81BDD6DC2B21CF2C0022250E /* PBXTargetDependency */,
+				215E0505305C2B3D00782DD7 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				217224CC2FC7240B005815D1 /* Common */,
@@ -2585,6 +2597,11 @@
 			isa = PBXTargetDependency;
 			target = 003BDD182E15200A009177E0 /* AdyenUI */;
 			targetProxy = 00600F342E7D9D8200637477 /* PBXContainerItemProxy */;
+		};
+		215E0505305C2B3D00782DD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A0F7498D2D958B2F00014A05 /* AdyenCheckout */;
+			targetProxy = 215E0504305C2B3D00782DD7 /* PBXContainerItemProxy */;
 		};
 		81088A222BDBACB7007FCDB9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

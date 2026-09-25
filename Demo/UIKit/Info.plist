@@ -2,12 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>MERCHANT_CLIENT_KEY</key>
-	<string>$(MERCHANT_CLIENT_KEY)</string>
-	<key>MERCHANT_SERVER_HOST</key>
-	<string>$(MERCHANT_SERVER_HOST)</string>
-	<key>MERCHANT_ACCOUNT</key>
-	<string>$(MERCHANT_ACCOUNT)</string>
 	<key>ADYEN_SERVER_API_KEY</key>
 	<string>$(ADYEN_SERVER_API_KEY)</string>
 	<key>APPLE_PAY_MERCHANT_IDENTIFIER</key>
@@ -143,6 +137,12 @@
 	<string>12.0.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>MERCHANT_ACCOUNT</key>
+	<string>$(MERCHANT_ACCOUNT)</string>
+	<key>MERCHANT_CLIENT_KEY</key>
+	<string>$(MERCHANT_CLIENT_KEY)</string>
+	<key>MERCHANT_SERVER_HOST</key>
+	<string>$(MERCHANT_SERVER_HOST)</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsLocalNetworking</key>
@@ -154,6 +154,23 @@
 	<string>Please authenticate yourself</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Save vouchers to your photos library</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneConfigurationName</key>
+					<string>Default Configuration</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
