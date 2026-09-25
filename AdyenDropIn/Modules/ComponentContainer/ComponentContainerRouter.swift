@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenActions)
+    import AdyenActions
+#endif
 import Foundation
 import UIKit
 
@@ -16,20 +19,20 @@ internal protocol ComponentContainerRouterListener: AnyObject {
 
 // sourcery:AutoMockable
 @MainActor
-internal protocol ComponentContainerRouting: AnyObject {
+internal protocol ComponentContainerRouting: Router {
     func present(paymentComponent: PaymentComponent)
     func present(actionViewController: UIViewController, onCancel: (() -> Void)?)
     func dismiss(completion: (() -> Void)?)
 }
 
 @MainActor
-internal class ComponentContainerRouter: Router, ComponentContainerRouting {
+internal class ComponentContainerRouter: ComponentContainerRouting {
 
     // MARK: - Properties
 
     private let viewController: ComponentContainerViewController
     private weak var listener: ComponentContainerRouterListener?
-    internal private(set) var childRouter: Router?
+    internal var childRouter: Router?
 
     // MARK: - Initializers
 
@@ -40,21 +43,24 @@ internal class ComponentContainerRouter: Router, ComponentContainerRouting {
         self.viewController = viewController
         self.listener = listener
     }
-    
+
     // MARK: - Router
-    
+
     internal var rootViewController: UIViewController {
         viewController
     }
 
     // MARK: - ComponentContainerRouting
-    
+
     internal func present(paymentComponent: any PaymentComponent) {
         let componentViewController = paymentComponent.viewController
         rootViewController.navigationController?.pushViewController(componentViewController, animated: true)
     }
 
-    internal func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
+    internal func present(
+        actionViewController: UIViewController,
+        onCancel: (() -> Void)?
+    ) {
         let actionViewController = ActionPresentationHelper.viewController(
             for: actionViewController,
             onCancel: onCancel

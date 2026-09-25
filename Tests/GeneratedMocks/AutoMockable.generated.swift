@@ -167,6 +167,14 @@ class ComponentContainerRouterListenerMock: ComponentContainerRouterListener {
 
 class ComponentContainerRoutingMock: ComponentContainerRouting {
 
+    var childRouter: Router?
+    var rootViewController: UIViewController {
+        get { underlyingRootViewController }
+        set(value) { underlyingRootViewController = value }
+    }
+
+    var underlyingRootViewController: UIViewController!
+
     // MARK: - present
 
     var presentPaymentComponentCallsCount = 0
@@ -363,6 +371,14 @@ class GenericPaymentMethodRouterListenerMock: GenericPaymentMethodRouterListener
 
 class GenericPaymentMethodRoutingMock: GenericPaymentMethodRouting {
 
+    var childRouter: Router?
+    var rootViewController: UIViewController {
+        get { underlyingRootViewController }
+        set(value) { underlyingRootViewController = value }
+    }
+
+    var underlyingRootViewController: UIViewController!
+
     // MARK: - present
 
     var presentActionViewControllerOnCancelCallsCount = 0
@@ -514,24 +530,24 @@ class PaymentMethodListAssemblerProtocolMock: PaymentMethodListAssemblerProtocol
 
     // MARK: - resolvePaymentMethodListRouter
 
-    var resolvePaymentMethodListRouterDelegateCallsCount = 0
-    var resolvePaymentMethodListRouterDelegateCalled: Bool {
-        resolvePaymentMethodListRouterDelegateCallsCount > 0
+    var resolvePaymentMethodListRouterListenerCallsCount = 0
+    var resolvePaymentMethodListRouterListenerCalled: Bool {
+        resolvePaymentMethodListRouterListenerCallsCount > 0
     }
 
-    var resolvePaymentMethodListRouterDelegateReceivedDelegate: PaymentMethodListRouterListener?
-    var resolvePaymentMethodListRouterDelegateReceivedInvocations: [PaymentMethodListRouterListener?] = []
-    var resolvePaymentMethodListRouterDelegateReturnValue: Router!
-    var resolvePaymentMethodListRouterDelegateClosure: ((PaymentMethodListRouterListener?) -> Router)?
+    var resolvePaymentMethodListRouterListenerReceivedListener: PaymentMethodListRouterListener?
+    var resolvePaymentMethodListRouterListenerReceivedInvocations: [PaymentMethodListRouterListener?] = []
+    var resolvePaymentMethodListRouterListenerReturnValue: Router!
+    var resolvePaymentMethodListRouterListenerClosure: ((PaymentMethodListRouterListener?) -> Router)?
 
-    func resolvePaymentMethodListRouter(delegate: PaymentMethodListRouterListener?) -> Router {
-        resolvePaymentMethodListRouterDelegateCallsCount += 1
-        resolvePaymentMethodListRouterDelegateReceivedDelegate = delegate
-        resolvePaymentMethodListRouterDelegateReceivedInvocations.append(delegate)
-        if let resolvePaymentMethodListRouterDelegateClosure {
-            return resolvePaymentMethodListRouterDelegateClosure(delegate)
+    func resolvePaymentMethodListRouter(listener: PaymentMethodListRouterListener?) -> Router {
+        resolvePaymentMethodListRouterListenerCallsCount += 1
+        resolvePaymentMethodListRouterListenerReceivedListener = listener
+        resolvePaymentMethodListRouterListenerReceivedInvocations.append(listener)
+        if let resolvePaymentMethodListRouterListenerClosure {
+            return resolvePaymentMethodListRouterListenerClosure(listener)
         } else {
-            return resolvePaymentMethodListRouterDelegateReturnValue
+            return resolvePaymentMethodListRouterListenerReturnValue
         }
     }
 
@@ -556,6 +572,14 @@ class PaymentMethodListRouterListenerMock: PaymentMethodListRouterListener {
 }
 
 class PaymentMethodListRoutingMock: PaymentMethodListRouting {
+
+    var childRouter: Router?
+    var rootViewController: UIViewController {
+        get { underlyingRootViewController }
+        set(value) { underlyingRootViewController = value }
+    }
+
+    var underlyingRootViewController: UIViewController!
 
     // MARK: - present
 
@@ -717,30 +741,56 @@ class PreselectedPaymentMethodAssemblerProtocolMock: PreselectedPaymentMethodAss
 
     // MARK: - resolvePreselectedPaymentMethodRouter
 
-    var resolvePreselectedPaymentMethodRouterDelegateComponentTitleCallsCount = 0
-    var resolvePreselectedPaymentMethodRouterDelegateComponentTitleCalled: Bool {
-        resolvePreselectedPaymentMethodRouterDelegateComponentTitleCallsCount > 0
+    var resolvePreselectedPaymentMethodRouterListenerComponentTitleCallsCount = 0
+    var resolvePreselectedPaymentMethodRouterListenerComponentTitleCalled: Bool {
+        resolvePreselectedPaymentMethodRouterListenerComponentTitleCallsCount > 0
     }
 
-    var resolvePreselectedPaymentMethodRouterDelegateComponentTitleReceivedArguments: (delegate: PreselectedPaymentMethodRouterListener?, component: PaymentComponent, title: String)?
-    var resolvePreselectedPaymentMethodRouterDelegateComponentTitleReceivedInvocations: [(delegate: PreselectedPaymentMethodRouterListener?, component: PaymentComponent, title: String)] = []
-    var resolvePreselectedPaymentMethodRouterDelegateComponentTitleReturnValue: Router!
-    var resolvePreselectedPaymentMethodRouterDelegateComponentTitleClosure: ((PreselectedPaymentMethodRouterListener?, PaymentComponent, String) -> Router)?
+    var resolvePreselectedPaymentMethodRouterListenerComponentTitleReceivedArguments: (listener: PreselectedPaymentMethodRouterListener?, component: PaymentComponent, title: String)?
+    var resolvePreselectedPaymentMethodRouterListenerComponentTitleReceivedInvocations: [(listener: PreselectedPaymentMethodRouterListener?, component: PaymentComponent, title: String)] = []
+    var resolvePreselectedPaymentMethodRouterListenerComponentTitleReturnValue: Router!
+    var resolvePreselectedPaymentMethodRouterListenerComponentTitleClosure: ((PreselectedPaymentMethodRouterListener?, PaymentComponent, String) -> Router)?
 
-    func resolvePreselectedPaymentMethodRouter(delegate: PreselectedPaymentMethodRouterListener?, component: PaymentComponent, title: String) -> Router {
-        resolvePreselectedPaymentMethodRouterDelegateComponentTitleCallsCount += 1
-        resolvePreselectedPaymentMethodRouterDelegateComponentTitleReceivedArguments = (delegate: delegate, component: component, title: title)
-        resolvePreselectedPaymentMethodRouterDelegateComponentTitleReceivedInvocations.append((delegate: delegate, component: component, title: title))
-        if let resolvePreselectedPaymentMethodRouterDelegateComponentTitleClosure {
-            return resolvePreselectedPaymentMethodRouterDelegateComponentTitleClosure(delegate, component, title)
+    func resolvePreselectedPaymentMethodRouter(listener: PreselectedPaymentMethodRouterListener?, component: PaymentComponent, title: String) -> Router {
+        resolvePreselectedPaymentMethodRouterListenerComponentTitleCallsCount += 1
+        resolvePreselectedPaymentMethodRouterListenerComponentTitleReceivedArguments = (listener: listener, component: component, title: title)
+        resolvePreselectedPaymentMethodRouterListenerComponentTitleReceivedInvocations.append((listener: listener, component: component, title: title))
+        if let resolvePreselectedPaymentMethodRouterListenerComponentTitleClosure {
+            return resolvePreselectedPaymentMethodRouterListenerComponentTitleClosure(listener, component, title)
         } else {
-            return resolvePreselectedPaymentMethodRouterDelegateComponentTitleReturnValue
+            return resolvePreselectedPaymentMethodRouterListenerComponentTitleReturnValue
         }
     }
 
 }
 
+class PreselectedPaymentMethodRouterListenerMock: PreselectedPaymentMethodRouterListener {
+
+    // MARK: - didDismissPreselectedPaymentMethod
+
+    var didDismissPreselectedPaymentMethodCompletionCallsCount = 0
+    var didDismissPreselectedPaymentMethodCompletionCalled: Bool {
+        didDismissPreselectedPaymentMethodCompletionCallsCount > 0
+    }
+
+    var didDismissPreselectedPaymentMethodCompletionClosure: (((() -> Void)?) -> Void)?
+
+    func didDismissPreselectedPaymentMethod(completion: (() -> Void)?) {
+        didDismissPreselectedPaymentMethodCompletionCallsCount += 1
+        didDismissPreselectedPaymentMethodCompletionClosure?(completion)
+    }
+
+}
+
 class PreselectedPaymentMethodRoutingMock: PreselectedPaymentMethodRouting {
+
+    var childRouter: Router?
+    var rootViewController: UIViewController {
+        get { underlyingRootViewController }
+        set(value) { underlyingRootViewController = value }
+    }
+
+    var underlyingRootViewController: UIViewController!
 
     // MARK: - presentPaymentMethodList
 
