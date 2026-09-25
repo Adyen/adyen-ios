@@ -44,6 +44,8 @@ public struct FormItemViewBuilder {
     @_spi(AdyenInternal)
     public func build(with item: ListItem) -> ListItemView {
         let listView = ListItemView()
+        listView.directionalLayoutMargins.leading = 8
+        listView.directionalLayoutMargins.trailing = 8
         listView.item = item
         return listView
     }
