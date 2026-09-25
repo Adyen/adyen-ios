@@ -42,7 +42,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
 
         XCTAssertNil(view.findView(by: "AddressInputFormViewController.addressItem.title"))
         
-        XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
+        XCTAssertEqual(countryItemView.titleLabel.text, "Country or region")
         XCTAssertEqual(countryItemView.item.value?.title, "Netherlands")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "House number")
         XCTAssertEqual(addressItemView.titleLabel.text, "Street")
@@ -98,7 +98,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         XCTAssertNil(searchItemView)
         XCTAssertNil(apartmentSuiteItemView)
 
-        XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
+        XCTAssertEqual(countryItemView.titleLabel.text, "Country or region")
         XCTAssertEqual(countryItemView.item.value?.title, "United States")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "Apartment / Suite (optional)")
         XCTAssertEqual(addressItemView.titleLabel.text, "Address")
@@ -145,7 +145,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         let postalCodeItemView: FormTextInputItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.postalCode"))
 
         XCTAssertNil(apartmentSuiteItemView)
-        XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
+        XCTAssertEqual(countryItemView.titleLabel.text, "Country or region")
         XCTAssertEqual(countryItemView.item.value?.title, "United Kingdom")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "House number")
         XCTAssertEqual(addressItemView.titleLabel.text, "Street")
@@ -180,7 +180,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
 
         XCTAssertNil(apartmentSuiteItemView)
 
-        XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
+        XCTAssertEqual(countryItemView.titleLabel.text, "Country or region")
         XCTAssertEqual(countryItemView.item.value?.title, "Canada")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "Apartment / Suite (optional)")
         XCTAssertEqual(addressItemView.titleLabel.text, "Address")
@@ -199,7 +199,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         provinceOrTerritoryItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.stateOrProvince"))
         postalCodeItemView = try XCTUnwrap(view.findView(with: "AddressInputFormViewController.address.postalCode"))
 
-        XCTAssertEqual(countryItemView.titleLabel.text, "Country/Region")
+        XCTAssertEqual(countryItemView.titleLabel.text, "Country or region")
         XCTAssertEqual(countryItemView.item.value?.title, "Brazil")
         XCTAssertEqual(houseNumberItemView.titleLabel.text, "House number")
         XCTAssertEqual(addressItemView.titleLabel.text, "Street")
@@ -320,7 +320,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         let searchViewController = try searchViewController(from: pickerViewController)
         let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
 
-        XCTAssertEqual(headerView.titleLabel.text, "Country/Region")
+        XCTAssertEqual(headerView.titleLabel.text, "Country or region")
         XCTAssertNil(searchViewController.title)
         XCTAssertTrue(searchViewController.searchBar.isDescendant(of: searchViewController.view))
         XCTAssertEqual(
