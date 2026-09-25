@@ -83,7 +83,7 @@ public class ModalToolbar: UIView, AnyNavigationBar {
             setupLayoutForCenteredMode()
         default:
             addSubview(stackView)
-            stackView.adyen.anchor(inside: self)
+            stackView.adyen.anchor(inside: safeAreaLayoutGuide)
         }
         
         self.accessibilityIdentifier = "adyen.ModalToolbar"
@@ -111,13 +111,13 @@ public class ModalToolbar: UIView, AnyNavigationBar {
         let titleTrailingAnchor = style.toolbarMode == .natural ? titleLabel.trailingAnchor : titleLabel.rightAnchor
 
         NSLayoutConstraint.activate([
-            self.topAnchor.constraint(equalTo: titleLabel.topAnchor),
-            self.bottomAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            safeAreaLayoutGuide.topAnchor.constraint(equalTo: titleLabel.topAnchor),
+            safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: titleLabel.bottomAnchor),
             safeAreaLeadingAnchor.constraint(equalTo: titleLeadingAnchor, constant: -paddingWithMarginCorrection),
             safeAreaTrailingAnchor.constraint(equalTo: titleTrailingAnchor, constant: paddingWithMarginCorrection),
             
-            self.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor),
-            self.heightAnchor.constraint(greaterThanOrEqualTo: cancelButton.heightAnchor),
+            safeAreaLayoutGuide.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor),
+            safeAreaLayoutGuide.heightAnchor.constraint(greaterThanOrEqualTo: cancelButton.heightAnchor),
             cancelPositionConstraint
         ])
     }
@@ -135,17 +135,17 @@ public class ModalToolbar: UIView, AnyNavigationBar {
 
         switch style.toolbarMode {
         case .rightCancel:
-            cancelPositionConstraint = rightAnchor.constraint(
+            cancelPositionConstraint = safeAreaLayoutGuide.rightAnchor.constraint(
                 equalTo: cancelButton.rightAnchor,
                 constant: paddingWithMarginCorrection
             )
         case .leftCancel:
-            cancelPositionConstraint = leftAnchor.constraint(
+            cancelPositionConstraint = safeAreaLayoutGuide.leftAnchor.constraint(
                 equalTo: cancelButton.leftAnchor,
                 constant: -paddingWithMarginCorrection
             )
         case .natural:
-            cancelPositionConstraint = trailingAnchor.constraint(
+            cancelPositionConstraint = safeAreaLayoutGuide.trailingAnchor.constraint(
                 equalTo: cancelButton.trailingAnchor,
                 constant: paddingWithMarginCorrection
             )
