@@ -35,7 +35,7 @@ internal final class PreApplePayComponent: PresentableComponent,
 
     internal let amount: Amount
 
-    private let applePayComponent: ApplePayComponent
+    private var applePayComponent: ApplePayComponent
 
     /// :nodoc:
     /// The context object for this component.
@@ -87,6 +87,10 @@ internal final class PreApplePayComponent: PresentableComponent,
 
     internal func didFinalize(with success: Bool, completion: (() -> Void)?) {
         applePayComponent.didFinalize(with: success, completion: completion)
+    }
+
+    internal var order: PartialPaymentOrder? {
+        didSet { applePayComponent.order = order }
     }
     
     private func createModel(with amount: Amount) -> PreApplePayView.Model {
