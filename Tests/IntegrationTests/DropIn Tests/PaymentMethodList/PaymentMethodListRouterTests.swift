@@ -83,20 +83,6 @@ struct PaymentMethodListRouterTests {
         #expect(expectedComponentContainerViewController === receivedComponentContainerViewController)
     }
 
-    @Test
-    func presentActionComponent() {
-        // Given
-        let viewControllerSpy = ViewControllerSpy()
-        let sut = makeSUT(viewController: viewControllerSpy)
-        let actionComponent = makeActionComponent()
-
-        // When
-        sut.present(actionViewController: actionComponent, onCancel: nil)
-
-        // Then
-        #expect(viewControllerSpy.presentCallsCount == 1)
-    }
-
     // MARK: - StoredPaymentMethodManagement Tests
 
     @Test
@@ -364,8 +350,8 @@ struct PaymentMethodListRouterTests {
         )
     }
 
-    private func makeActionComponent() -> UIViewController {
-        UIViewController()
+    private func makeAction() -> Action {
+        .redirect(RedirectAction(url: URL(string: "https://adyen.com")!, paymentData: "payment_data"))
     }
 
     private func makeStoredPaymentComponentMock() -> StoredComponentMock {

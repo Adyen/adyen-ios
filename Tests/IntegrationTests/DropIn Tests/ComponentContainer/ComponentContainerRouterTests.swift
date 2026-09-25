@@ -33,42 +33,6 @@ struct ComponentContainerRouterTests {
     }
 
     @Test
-    func presentActionComponent_shouldPresentModallyViewController() async {
-        // Given
-        let (sut, viewControllerSpy, _) = await makeSUT()
-        let actionComponent = await makeActionComponent()
-
-        // When
-        sut.present(actionViewController: actionComponent, onCancel: nil)
-
-        // Then
-        #expect(viewControllerSpy.presentedViewControllerCaptured != nil)
-    }
-
-    @Test
-    func presentActionComponent_shouldInjectOnCancelCallbackIntoActionWrapper() async throws {
-        // Given
-        let (sut, viewControllerSpy, _) = await makeSUT()
-        let actionComponent = await makeActionComponent()
-
-        var cancelWasCalled = false
-        let cancelCallback = { cancelWasCalled = true }
-
-        // When
-        sut.present(actionViewController: actionComponent, onCancel: cancelCallback)
-
-        // Then
-        let wrapper = try #require(
-            viewControllerSpy.presentedViewControllerCaptured as? ActionNavigationController
-        )
-
-        let injectedCallback = try #require(wrapper.onCancel)
-        injectedCallback()
-
-        #expect(cancelWasCalled)
-    }
-
-    @Test
     func dismiss_shouldCall_listener_didDismissComponentContainer() async {
         // Given
         let (sut, viewControllerSpy, listenerMock) = await makeSUT()
@@ -84,8 +48,6 @@ struct ComponentContainerRouterTests {
     // MARK: - Spy
 
     private class ViewControllerSpy: ComponentContainerViewController {
-        var pushedViewController: UIViewController?
-        var presentedViewControllerCaptured: UIViewController?
         var dismissCalled = false
         var dismissCompletion: (() -> Void)?
 
@@ -97,11 +59,6 @@ struct ComponentContainerRouterTests {
 
         func attachNavigationController(_ nav: UINavigationController) {
             _navigationController = nav
-        }
-
-        override func present(_ vc: UIViewController, animated: Bool, completion: (() -> Void)? = nil) {
-            presentedViewControllerCaptured = vc
-            completion?()
         }
 
         override func dismiss(animated: Bool, completion: (() -> Void)? = nil) {
@@ -164,9 +121,5 @@ struct ComponentContainerRouterTests {
             paymentMethod: cardPaymentMethodMock,
             viewController: viewController
         )
-    }
-
-    private func makeActionComponent() async -> UIViewController {
-        UIViewController()
     }
 }
