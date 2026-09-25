@@ -108,13 +108,16 @@ final class ListCellTests: XCTestCase {
         )
         let customInsets = UIEdgeInsets(top: 12, left: 14, bottom: 12, right: 14)
 
-        cell.setContentInsets(.zero)
+        cell.setContentInsets(nil)
         XCTAssertEqual(itemView.layoutMargins, defaultInsets)
+
+        cell.setContentInsets(.zero)
+        XCTAssertEqual(itemView.layoutMargins, .zero)
 
         cell.setContentInsets(customInsets)
         XCTAssertEqual(itemView.layoutMargins, customInsets)
 
-        cell.setContentInsets(.zero)
+        cell.setContentInsets(nil)
         XCTAssertEqual(itemView.layoutMargins, defaultInsets)
     }
 
