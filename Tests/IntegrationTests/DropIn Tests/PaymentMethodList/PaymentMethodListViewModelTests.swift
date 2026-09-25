@@ -74,6 +74,30 @@ struct PaymentMethodListViewModelTests {
         #expect(routerMock.dismissCompletionCallsCount == 1)
     }
 
+    @Test
+    func cancel_shouldCancelDropIn() {
+        // Given
+        let (sut, dropInFlowManagerMock, _) = makeSUT()
+
+        // When
+        sut.cancel()
+
+        // Then
+        #expect(dropInFlowManagerMock.cancelDropInCallsCount == 1)
+    }
+
+    @Test("The router dismissal already tears down the drop in, so it is not dismissed twice.")
+    func cancel_shouldNotDismissTheDropInThroughTheFlowManager() {
+        // Given
+        let (sut, dropInFlowManagerMock, _) = makeSUT()
+
+        // When
+        sut.cancel()
+
+        // Then
+        #expect(dropInFlowManagerMock.dismissDropInCallsCount == 0)
+    }
+
     // MARK: - PaymentComponentDelegate Tests
 
     @Test
