@@ -121,8 +121,8 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
     ///
     /// - Returns: The networks that the payment request should support.
     /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplePay` if the device doesn't support Apple Pay.
-    /// - Throws: `ApplePayComponent.Error.userCannotMakePayment` if onboarding isn't allowed
-    ///   and the user can't pay with any of the supported networks.
+    /// - Throws: `ApplePayComponent.Error.userCannotMakePayment` if the payment method has no supported networks,
+    ///   or if onboarding isn't allowed and the user can't pay with any of the supported networks.
     internal static func validatedSupportedNetworks(
         for paymentMethod: ApplePayPaymentMethod,
         configuration: ApplePayConfiguration
@@ -131,6 +131,10 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
             throw Error.deviceDoesNotSupportApplePay
         }
         let supportedNetworks = paymentMethod.supportedNetworks()
+        // Onboarding can't make up for a payment request without any supported networks.
+        guard !supportedNetworks.isEmpty else {
+            throw Error.userCannotMakePayment
+        }
         guard configuration.allowOnboarding || canMakePaymentWith(supportedNetworks) else {
             throw Error.userCannotMakePayment
         }
@@ -138,8 +142,7 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
     }
 
     private static func canMakePaymentWith(_ networks: [PKPaymentNetwork]) -> Bool {
-        guard !networks.isEmpty else { return false }
-        return PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: networks)
+        PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: networks)
     }
     
     // TODO: turn this into async, as now the sheet dismisses immediately
