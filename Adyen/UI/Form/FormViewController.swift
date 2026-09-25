@@ -263,17 +263,21 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     }
 
     private func setupLayout() {
+        let horizontalInset: CGFloat = 8
         if scrollEnabled {
             scrollView.adyen.anchor(inside: view.safeAreaLayoutGuide)
 
             NSLayoutConstraint.activate([
                 formView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-                formView.leadingAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.leadingAnchor),
-                formView.trailingAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.trailingAnchor),
+                formView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: horizontalInset),
+                formView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -horizontalInset),
                 formView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
             ])
         } else {
-            formView.adyen.anchor(inside: view.safeAreaLayoutGuide)
+            formView.adyen.anchor(
+                inside: view.safeAreaLayoutGuide,
+                with: .init(top: 0, left: horizontalInset, bottom: 0, right: horizontalInset)
+            )
         }
     }
 

@@ -27,6 +27,7 @@ open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView, AdyenObser
         
         super.init(frame: .zero)
         accessibilityIdentifier = item.identifier
+        directionalLayoutMargins = NSDirectionalEdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8)
         preservesSuperviewLayoutMargins = true
     }
     
