@@ -67,6 +67,21 @@ internal struct StoredPaymentMethodContentViewModelTests {
         #expect(context.flowManager.submitFromActionPresenterCalled)
     }
 
+    @Test
+    internal func activeComponent_whenParentStopsLoading_thenStopsEmbeddedComponent() {
+        let component = StoredLoadingComponentSpy(
+            paymentMethod: PaymentMethodMock(type: .ideal, name: "iDEAL"),
+            viewController: UIViewController()
+        )
+        let context = makeSUT(component: component)
+
+        context.sut.didAppear()
+        context.flowManager.setLoadingPresenterReceivedPresenter?.stopLoading()
+
+        #expect(context.flowManager.setLoadingPresenterReceivedPresenter === context.sut)
+        #expect(component.stopLoadingCallsCount == 1)
+    }
+
     private struct TestContext {
         let sut: StoredPaymentMethodContentViewModel
         let component: any StoredPaymentComponent
@@ -125,5 +140,25 @@ private final class StoredPaymentMethodContentRoutingSpy: StoredPaymentMethodCon
 
     func dismiss() {
         dismissCallsCount += 1
+    }
+}
+
+@MainActor
+private final class StoredLoadingComponentSpy: PaymentComponentMock, StoredPaymentComponent, LoadingComponent {
+
+    var order: PartialPaymentOrder?
+    override var type: PaymentComponentType {
+        .stored
+    }
+
+    private(set) var stopLoadingCallsCount = 0
+
+    init(paymentMethod: PaymentMethod, viewController: UIViewController) {
+        super.init(paymentMethod: paymentMethod)
+        self.viewController = viewController
+    }
+
+    func stopLoading() {
+        stopLoadingCallsCount += 1
     }
 }

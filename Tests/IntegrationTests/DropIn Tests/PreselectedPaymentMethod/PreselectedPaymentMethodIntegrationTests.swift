@@ -65,6 +65,29 @@ struct PreselectedPaymentMethodIntegrationTests {
         #expect(mockedRouter.presentPaymentMethodListCallsCount == 0)
     }
 
+    @Test
+    func interactiveStoredComponent_whenPresentedByRouter_thenUsesModalStoredPaymentMethodContent() throws {
+        let rootViewController = ViewControllerSpy()
+        let promptRouter = RouterMock()
+        let promptAssembler = StoredPaymentMethodContentAssemblerSpy(router: promptRouter)
+        let sut = PreselectedPaymentMethodRouter(
+            viewController: rootViewController,
+            listener: nil,
+            paymentMethodListAssembler: PaymentMethodListAssemblerProtocolMock(),
+            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
+            storedPaymentMethodContentAssembler: promptAssembler
+        )
+
+        sut.present(component: PaymentComponentTestData.visa.paymentComponent)
+
+        #expect(promptAssembler.resolveCallsCount == 1)
+        #expect(promptAssembler.receivedPresentationMode == .modal)
+        let navigationController = try #require(rootViewController.capturedPresentedViewController as? UINavigationController)
+        #expect(navigationController.viewControllers.first === promptRouter.rootViewController)
+        #expect(navigationController.isModalInPresentation)
+        #expect(sut.childRouter === promptRouter)
+    }
+
     // MARK: - Show All Payment Methods Tests
 
     @Test("PaymentComponent - show all payment methods presents payment method list")
@@ -163,6 +186,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         let assembler = PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssemblerMock,
             componentContainerAssembler: componentContainerAssemblerMock,
+            storedPaymentMethodContentAssembler: StoredPaymentMethodContentAssemblerSpy(router: RouterMock()),
             showsAllPaymentMethodsButton: true,
             configuration: .init(),
             dropInFlowManager: dropInFlowManager,
@@ -333,5 +357,27 @@ struct PreselectedPaymentMethodIntegrationTests {
         var showAllPaymentMethodsButtonText: String {
             "Other payment options"
         }
+    }
+}
+
+@MainActor
+private final class StoredPaymentMethodContentAssemblerSpy: StoredPaymentMethodContentAssembling {
+
+    private let router: Router?
+    private(set) var resolveCallsCount = 0
+    private(set) var receivedPresentationMode: StoredPaymentMethodContentPresentation?
+
+    init(router: Router?) {
+        self.router = router
+    }
+
+    func resolveStoredPaymentMethodContentRouter(
+        for component: PaymentComponent,
+        presentationMode: StoredPaymentMethodContentPresentation,
+        listener: StoredPaymentMethodContentRouterListener
+    ) -> Router? {
+        resolveCallsCount += 1
+        receivedPresentationMode = presentationMode
+        return router
     }
 }

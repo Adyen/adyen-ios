@@ -68,11 +68,26 @@ internal final class StoredPaymentMethodContentViewModel {
         component.viewController
     }
 
+    // MARK: - Lifecycle
+
+    internal func didAppear() {
+        dropInFlowManager.setLoadingPresenter(self)
+    }
+
+    internal func didDisappear() {
+        dropInFlowManager.setLoadingPresenter(nil)
+    }
+
     // MARK: - Actions
 
     internal func cancel() {
+        dropInFlowManager.setLoadingPresenter(nil)
         dropInFlowManager.cancel(component: component)
         router?.dismiss()
+    }
+
+    internal func stopLoading() {
+        component.stopLoading()
     }
 
     // MARK: - Private
@@ -112,6 +127,8 @@ internal final class StoredPaymentMethodContentViewModel {
         return attributedString
     }
 }
+
+extension StoredPaymentMethodContentViewModel: LoadControllable {}
 
 extension StoredPaymentMethodContentViewModel: PaymentComponentDelegate {
 

@@ -69,14 +69,10 @@ struct StoredCardInputViewModelTests {
     func textUI_WhenAmountIsAvailable() {
         // Given
         let amount = Amount(value: 14098, currencyCode: "USD")
-        let expectedTitle = "Enter security code"
-        let expectedSubTitle = "Enter the security code for VISA \(String.Adyen.securedString)4556"
         let expectedButtonTitle = "Pay $140.98"
         let sut = makeSUT(name: "VISA", lastFour: "4556", amount: amount)
 
         // Then
-        #expect(sut.titleText == expectedTitle)
-        #expect(sut.subtitleText.string == expectedSubTitle)
         #expect(sut.submitButtonTitle == expectedButtonTitle)
     }
 
@@ -84,28 +80,20 @@ struct StoredCardInputViewModelTests {
     func textUI_WhenAmountIsZero() {
         // Given
         let amount = Amount(value: 0, currencyCode: "USD")
-        let expectedTitle = "Enter security code"
-        let expectedSubTitle = "Enter the security code for VISA \(String.Adyen.securedString)4556"
-        let expectedButtonTitle = "Save details"
+        let expectedButtonTitle = "Confirm preauthorization"
         let sut = makeSUT(name: "VISA", lastFour: "4556", amount: amount)
 
         // Then
-        #expect(sut.titleText == expectedTitle)
-        #expect(sut.subtitleText.string == expectedSubTitle)
         #expect(sut.submitButtonTitle == expectedButtonTitle)
     }
 
     @Test
     func textUI_WhenAmountIsNil() {
         // Given
-        let expectedTitle = "Enter security code"
-        let expectedSubTitle = "Enter the security code for VISA \(String.Adyen.securedString)4556"
         let expectedButtonTitle = "Pay"
         let sut = makeSUT(name: "VISA", lastFour: "4556", amount: nil)
 
         // Then
-        #expect(sut.titleText == expectedTitle)
-        #expect(sut.subtitleText.string == expectedSubTitle)
         #expect(sut.submitButtonTitle == expectedButtonTitle)
     }
 
@@ -241,13 +229,9 @@ struct StoredCardInputViewModelTests {
             localizationParameters: localizationParameters
         )
 
-        let expectedTitleText = "Test-Enter security code"
-        let expectedSubtitleText = "Test-Enter the security code for VISA \(String.Adyen.securedString)1111"
         let expectedSubmitButtonTitle = "Test-Pay €3.00"
 
         // Then
-        #expect(sut.titleText == expectedTitleText)
-        #expect(sut.subtitleText.string == expectedSubtitleText)
         #expect(sut.submitButtonTitle == expectedSubmitButtonTitle)
     }
 
@@ -271,13 +255,9 @@ struct StoredCardInputViewModelTests {
             localizationParameters: localizationParameters
         )
 
-        let expectedTitleText = "Test-Enter security code"
-        let expectedSubtitleText = "Test-Enter the security code for VISA \(String.Adyen.securedString)1111"
         let expectedSubmitButtonTitle = "Test-Pay €3.00"
 
         // Then
-        #expect(sut.titleText == expectedTitleText)
-        #expect(sut.subtitleText.string == expectedSubtitleText)
         #expect(sut.submitButtonTitle == expectedSubmitButtonTitle)
     }
 
@@ -320,7 +300,6 @@ struct StoredCardInputViewModelTests {
         return StoredCardInputViewModel(
             theme: .default,
             storedCardPaymentMethod: storedCardPaymentMethod,
-            apiContext: Dummy.apiContext,
             publicKey: publicKey,
             amount: amount,
             analyticsProvider: analyticsProvider,

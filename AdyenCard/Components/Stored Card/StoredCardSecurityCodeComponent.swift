@@ -48,7 +48,6 @@ package final class StoredCardSecurityCodeComponent: StoredPaymentComponent, Loc
         let viewModel = StoredCardInputViewModel(
             theme: theme,
             storedCardPaymentMethod: storedCardPaymentMethod,
-            apiContext: context.apiContext,
             publicKey: context.publicKey,
             amount: context.amount,
             analyticsProvider: context.analyticsProvider,
