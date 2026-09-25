@@ -195,7 +195,7 @@ final class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.buildComponent(for: card)?.order, order)
     }
 
-    func test_voucherAndQRCodeMethods_withoutPhotoLibraryAccessAreOmitted() throws {
+    func test_supportedRegularPaymentMethods_withVoucherAndQRCodeMethods_shouldIncludeThem() throws {
         let methods = try AdyenCoder.decode([
             "paymentMethods": [oxxo, ["type": "pix", "name": "PIX"]]
         ]) as PaymentMethods
@@ -205,11 +205,10 @@ final class ComponentManagerTests: XCTestCase {
             paymentMethods: methods,
             paymentComponentBuilder: genericBuilder
         )
-        sut.hasPhotoLibraryUsageDescription = false
 
-        XCTAssertTrue(sut.supportedRegularPaymentMethods.isEmpty)
-        XCTAssertTrue(sut.sections.isEmpty)
-        XCTAssertEqual(assertionCount, 2)
+        XCTAssertEqual(sut.supportedRegularPaymentMethods.map(\.type.rawValue), ["oxxo", "pix"])
+        XCTAssertEqual(sut.sections.count, 1)
+        XCTAssertEqual(assertionCount, 0)
     }
 
     func test_componentConfigurationResolvedByInjectedBuilder_isNotOverwritten() throws {

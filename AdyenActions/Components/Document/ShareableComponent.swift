@@ -29,10 +29,16 @@ extension ShareableComponent {
     }
     
     internal func presentSharePopover(with item: Any, sourceView: UIView) {
+        @AdyenDependency(\.hasPhotoLibraryAddUsageDescription) var hasPhotoLibraryAddUsageDescription
+        
         let activityViewController = UIActivityViewController(
             activityItems: [item],
             applicationActivities: nil
         )
+        // The system requires NSPhotoLibraryAddUsageDescription to save to the photo library.
+        if !hasPhotoLibraryAddUsageDescription {
+            activityViewController.excludedActivityTypes = [.saveToCameraRoll]
+        }
         activityViewController.popoverPresentationController?.sourceView = sourceView
         presenterViewController.present(activityViewController, animated: true, completion: nil)
     }
