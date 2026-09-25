@@ -17,7 +17,11 @@ final class FullScreenViewControllerTests: XCTestCase {
         let view = TestPresentingView(viewModel: viewModel)
         let host = UIHostingController(rootView: view)
         
-        let window = UIWindow(frame: UIScreen.main.bounds)
+        guard let windowScene = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).first else {
+            return XCTFail("Expected an active window scene")
+        }
+
+        let window = UIWindow(windowScene: windowScene)
         window.rootViewController = host
         window.makeKeyAndVisible()
         wait(for: .seconds(1))

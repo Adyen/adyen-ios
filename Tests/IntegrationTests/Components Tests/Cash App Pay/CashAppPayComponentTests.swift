@@ -212,6 +212,68 @@ import XCTest
             XCTAssertEqual(paymentMethodType, expectedPaymentMethodType)
         }
         
+        func test_zeroAmount_whenStorePaymentMethodFieldEnabled_thenHidesFieldAndSubmitsTrue() throws {
+            let configuration = try CashAppPayConfiguration(
+                redirectURL: XCTUnwrap(URL(string: "test")),
+                showsStorePaymentMethodField: true
+            )
+            let zeroAmountContext = AdyenContext(
+                apiContext: Dummy.apiContext,
+                amount: Amount(value: 0, currencyCode: "USD"),
+                publicKey: Dummy.publicKey,
+                analyticsProvider: AnalyticsProviderMock()
+            )
+            let sut = CashAppPayComponent(
+                paymentMethod: paymentMethod,
+                context: zeroAmountContext,
+                configuration: configuration
+            )
+            let delegate = PaymentComponentDelegateMock()
+            let expectation = expectation(description: "Zero-amount payment should store the payment method.")
+            sut.delegate = delegate
+            sut.viewController.loadViewIfNeeded()
+            delegate.onDidSubmit = { data, _ in
+                XCTAssertEqual(data.storePaymentMethod, true)
+                expectation.fulfill()
+            }
+
+            let storeDetailsToggleView: UIView? = sut.viewController.view.findView(
+                with: "AdyenCashAppPay.CashAppPayComponent.storeDetailsItem"
+            )
+            XCTAssertNil(storeDetailsToggleView)
+
+            sut.submitApprovedRequest(with: [onFileGrant], profile: .init(id: "testId", cashtag: "testtag"))
+
+            wait(for: [expectation], timeout: 10)
+        }
+
+        func test_hiddenStorePaymentMethodField_whenStorePaymentMethodEnabled_thenSubmitsTrue() throws {
+            // Given
+            let configuration = try CashAppPayConfiguration(
+                redirectURL: XCTUnwrap(URL(string: "test")),
+                showsStorePaymentMethodField: false,
+                storePaymentMethod: true
+            )
+            let sut = CashAppPayComponent(
+                paymentMethod: paymentMethod,
+                context: context,
+                configuration: configuration
+            )
+            let delegate = PaymentComponentDelegateMock()
+            let expectation = expectation(description: "Payment data should request storing the payment method.")
+            sut.delegate = delegate
+            delegate.onDidSubmit = { data, _ in
+                XCTAssertEqual(data.storePaymentMethod, true)
+                expectation.fulfill()
+            }
+
+            // When
+            sut.submitApprovedRequest(with: [onFileGrant], profile: .init(id: "testId", cashtag: "testtag"))
+
+            // Then
+            wait(for: [expectation], timeout: 10)
+        }
+
         func testOneTimeSubmitDetails() throws {
             let config = try CashAppPayConfiguration(redirectURL: XCTUnwrap(URL(string: "test")))
             let sut = CashAppPayComponent(paymentMethod: paymentMethod, context: context, configuration: config)
