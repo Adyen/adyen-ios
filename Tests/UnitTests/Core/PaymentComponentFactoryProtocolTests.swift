@@ -90,6 +90,10 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         typealias Method = MockPaymentMethod
         typealias Component = MockComponent
         
+        func isAvailable(for _: MockPaymentMethod, configuration _: MockConfiguration) -> Bool {
+            true
+        }
+        
         func defaultConfiguration() -> MockConfiguration {
             MockConfiguration(value: "factory_default", showsSubmitButton: true)
         }
