@@ -35,7 +35,8 @@ internal final class PreApplePayComponent: PresentableComponent,
 
     internal let amount: Amount
 
-    private let applePayComponent: ApplePayComponent
+    /// `var` because the `order` setter inherited from `PartialPaymentOrderAware` is `mutating`.
+    internal var applePayComponent: ApplePayComponent
 
     /// :nodoc:
     /// The context object for this component.
@@ -57,6 +58,11 @@ internal final class PreApplePayComponent: PresentableComponent,
         
         return viewController
     }()
+    
+    internal var order: PartialPaymentOrder? {
+        get { applePayComponent.order }
+        set { applePayComponent.order = newValue }
+    }
     
     internal let requiresModalPresentation: Bool = true
     
@@ -88,7 +94,7 @@ internal final class PreApplePayComponent: PresentableComponent,
     internal func didFinalize(with success: Bool, completion: (() -> Void)?) {
         applePayComponent.didFinalize(with: success, completion: completion)
     }
-    
+
     private func createModel(with amount: Amount) -> PreApplePayView.Model {
         PreApplePayView.Model(hint: amount.formatted, style: configuration.style)
     }
