@@ -376,6 +376,10 @@ class ComponentManagerTests: XCTestCase {
         // Test Pre-ApplePay
         let preApplepayComponent = try (XCTUnwrap(sut.regularComponents.first(where: { $0.paymentMethod.type == .applePay }) as? PreApplePayComponent))
         XCTAssertEqual(preApplepayComponent.amount, order.remainingAmount)
+        XCTAssertEqual(preApplepayComponent.order, order)
+
+        // Test the wrapped ApplePayComponent, since it is the one submitting the payment
+        XCTAssertEqual(preApplepayComponent.applePayComponent.order, order)
     }
 
     func testShopperInformationInjectionShouldSetShopperInformationOnAffirmComponent() throws {

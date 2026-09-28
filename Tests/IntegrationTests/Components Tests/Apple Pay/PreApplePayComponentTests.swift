@@ -148,6 +148,39 @@ class PreApplePayComponentTests: XCTestCase {
         XCTAssertEqual(hintLabel.text, self.applePayPayment.amount.formatted)
     }
 
+    func testSetOrderShouldPropagateOrderToApplePayComponent() {
+        // Given
+        let order = PartialPaymentOrder(
+            pspReference: "test pspRef",
+            orderData: "test order data",
+            remainingAmount: Amount(value: 123456, currencyCode: "EUR")
+        )
+        XCTAssertNil(sut.order)
+        XCTAssertNil(sut.applePayComponent.order)
+
+        // When
+        sut.order = order
+
+        // Then
+        XCTAssertEqual(sut.applePayComponent.order, order)
+        XCTAssertEqual(sut.order, order)
+    }
+
+    func testOrderShouldReadFromApplePayComponent() {
+        // Given
+        let order = PartialPaymentOrder(
+            pspReference: "test pspRef",
+            orderData: "test order data",
+            remainingAmount: Amount(value: 123456, currencyCode: "EUR")
+        )
+
+        // When
+        sut.applePayComponent.order = order
+
+        // Then
+        XCTAssertEqual(sut.order, order)
+    }
+
     func testSubmitWithAnalyticsEnabledShouldSetCheckoutAttemptIdInPaymentComponentData() {
         // Given
         let expectedCheckoutAttemptId = "d06da733-ec41-4739-a532-5e8deab1262e16547639430681e1b021221a98c4bf13f7366b30fec4b376cc8450067ff98998682dd24fc9bda"
