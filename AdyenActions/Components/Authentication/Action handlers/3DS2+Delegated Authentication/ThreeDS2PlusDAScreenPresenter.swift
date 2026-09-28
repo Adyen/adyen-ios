@@ -72,7 +72,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
             completion: handler,
             troubleshootingHandler: troubleshootingHandler
         )
-        presentationDelegate?.present(viewController: errorController)
+        presentationDelegate?.present(actionData: ActionData(type: .threeDS2), actionViewController: errorController)
     }
     
     internal func showRegistrationError(
@@ -85,7 +85,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
             completion: handler,
             troubleshootingHandler: nil
         )
-        presentationDelegate?.present(viewController: errorController)
+        presentationDelegate?.present(actionData: ActionData(type: .threeDS2), actionViewController: errorController)
     }
     
     internal func showDeletionConfirmation(component: Component, handler: @escaping VoidHandler) {
@@ -95,7 +95,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
             completion: handler,
             troubleshootingHandler: nil
         )
-        presentationDelegate?.present(viewController: errorController)
+        presentationDelegate?.present(actionData: ActionData(type: .threeDS2), actionViewController: errorController)
     }
 
     internal func showRegistrationScreen(
@@ -118,7 +118,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                 fallbackHandler()
             }
         )
-        presentationDelegate?.present(viewController: registrationViewController)
+        presentationDelegate?.present(actionData: ActionData(type: .threeDS2), actionViewController: registrationViewController)
     }
     
     // swiftlint:disable function_parameter_count
@@ -148,7 +148,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                 removeCredentialsHandler()
             }
         )
-        presentationDelegate?.present(viewController: approvalViewController)
+        presentationDelegate?.present(actionData: ActionData(type: .threeDS2), actionViewController: approvalViewController)
     }
     
     private var biometricName: String {

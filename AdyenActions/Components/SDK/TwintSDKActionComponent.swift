@@ -164,8 +164,8 @@ import Foundation
             pollingComponent?.handle(action)
         }
 
-        private func present(_ viewController: UIViewController, presentationDelegate: PresentationDelegate) {
-            presentationDelegate.present(viewController: viewController)
+        private func present(_ viewController: UIViewController, presentationDelegate: ActionPresentationDelegate) {
+            presentationDelegate.present(actionData: ActionData(type: .sdk), actionViewController: viewController)
         }
 
         private func handleShowError(_ errorMessage: String, componentName: String) {
