@@ -20,7 +20,7 @@ import Foundation
         package let context: AdyenContext
 
         /// Delegates view controller presentation.
-        package weak var presentationDelegate: PresentationDelegate?
+        package weak var presentationDelegate: ActionPresentationDelegate?
 
         package weak var delegate: ActionComponentDelegate?
 

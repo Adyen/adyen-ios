@@ -23,7 +23,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
     package weak var delegate: ActionComponentDelegate?
 
     /// The object that acts as the presentation delegate of the action component.
-    package weak var presentationDelegate: PresentationDelegate?
+    package weak var presentationDelegate: ActionPresentationDelegate?
 
     /// Action handling configurations.
     package var configuration: Configuration

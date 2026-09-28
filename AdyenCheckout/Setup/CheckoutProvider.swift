@@ -32,7 +32,7 @@ internal class CheckoutProvider: CheckoutProviding {
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         callbackStore: SessionCheckoutCallbackStore,
-        presentationDelegate: PresentationDelegate?
+        presentationDelegate: ActionPresentationDelegate?
     ) async throws -> CheckoutCoreProtocol {
 
         let apiClient = APIClient(apiContext: configuration.apiContext)
@@ -69,7 +69,7 @@ internal class CheckoutProvider: CheckoutProviding {
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
         callbackStore: AdvancedCheckoutCallbackStore,
-        presentationDelegate: PresentationDelegate?
+        presentationDelegate: ActionPresentationDelegate?
     ) async throws -> CheckoutCoreProtocol {
 
         let apiClient = APIClient(apiContext: configuration.apiContext)
@@ -92,7 +92,7 @@ internal class CheckoutProvider: CheckoutProviding {
     internal func setup(
         configuration: CheckoutConfiguration,
         callbackStore: ActionOnlyCheckoutCallbackStore,
-        presentationDelegate: PresentationDelegate?
+        presentationDelegate: ActionPresentationDelegate?
     ) async throws -> CheckoutCoreProtocol {
 
         let apiClient = APIClient(apiContext: configuration.apiContext)

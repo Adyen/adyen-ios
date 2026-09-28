@@ -38,7 +38,7 @@ internal protocol ThreeDS2PlusDAScreenPresenterProtocol {
     func showRegistrationError(component: Component, handler: @escaping VoidHandler)
     func showDeletionConfirmation(component: Component, handler: @escaping VoidHandler)
 
-    var presentationDelegate: PresentationDelegate? { get set }
+    var presentationDelegate: ActionPresentationDelegate? { get set }
 }
 
 /// This type handles the presenting of the Delegate authentication screens of Register and Approval.
@@ -49,7 +49,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
     private let context: AdyenContext
     
     /// Delegates view controller presentation.
-    internal weak var presentationDelegate: PresentationDelegate?
+    internal weak var presentationDelegate: ActionPresentationDelegate?
     
     internal init(
         style: DelegatedAuthenticationComponentStyle,

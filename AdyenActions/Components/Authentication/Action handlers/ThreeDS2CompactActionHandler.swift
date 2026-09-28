@@ -23,7 +23,7 @@ internal final class ThreeDS2CompactActionHandler: AnyThreeDS2ActionHandler, Com
     
     // MARK: - Internal
     
-    internal weak var presentationDelegate: Adyen.PresentationDelegate? {
+    internal weak var presentationDelegate: ActionPresentationDelegate? {
         didSet {
             coreActionHandler.presentationDelegate = presentationDelegate
         }

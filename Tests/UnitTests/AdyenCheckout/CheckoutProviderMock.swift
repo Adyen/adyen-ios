@@ -45,7 +45,7 @@ internal class CheckoutProviderMock: CheckoutProviding {
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         callbackStore: SessionCheckoutCallbackStore,
-        presentationDelegate: PresentationDelegate?
+        presentationDelegate: ActionPresentationDelegate?
     ) async throws -> CheckoutCoreProtocol {
         setupSessionCalled = true
         
@@ -63,7 +63,7 @@ internal class CheckoutProviderMock: CheckoutProviding {
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
         callbackStore: AdvancedCheckoutCallbackStore,
-        presentationDelegate: PresentationDelegate?
+        presentationDelegate: ActionPresentationDelegate?
     ) async throws -> CheckoutCoreProtocol {
         setupPaymentMethodsCalled = true
         
@@ -80,7 +80,7 @@ internal class CheckoutProviderMock: CheckoutProviding {
     func setup(
         configuration: CheckoutConfiguration,
         callbackStore: ActionOnlyCheckoutCallbackStore,
-        presentationDelegate: PresentationDelegate?
+        presentationDelegate: ActionPresentationDelegate?
     ) async throws -> CheckoutCoreProtocol {
         setupActionOnlyCalled = true
         

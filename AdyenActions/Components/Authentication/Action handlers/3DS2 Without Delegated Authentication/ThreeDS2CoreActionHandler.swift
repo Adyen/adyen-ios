@@ -16,7 +16,7 @@ import UIKit
 internal protocol AnyThreeDS2CoreActionHandler: Component {
     var threeDSRequestorAppURL: URL? { get set }
     
-    var presentationDelegate: PresentationDelegate? { get set }
+    var presentationDelegate: ActionPresentationDelegate? { get set }
     
     func handle(
         _ fingerprintAction: ThreeDS2FingerprintAction,
@@ -48,7 +48,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
 
     private var service: ThreeDSService
     
-    internal weak var presentationDelegate: PresentationDelegate?
+    internal weak var presentationDelegate: ActionPresentationDelegate?
     
     /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
     internal var threeDSRequestorAppURL: URL?

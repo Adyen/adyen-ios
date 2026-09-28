@@ -41,7 +41,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
     package let session: SessionProtocol?
 
     package let configuration: CheckoutConfiguration
-    package weak var presentationDelegate: PresentationDelegate?
+    package weak var presentationDelegate: ActionPresentationDelegate?
     package let adyenContext: AdyenContext
     package let resultCallbacks: any CheckoutResultCallbackStore
     package let callbackHandler: any CheckoutCallbackHandling
@@ -82,7 +82,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
         session: SessionProtocol? = nil,
         paymentMethods: PaymentMethods? = nil,
         adyenContext: AdyenContext,
-        presentationDelegate: PresentationDelegate?,
+        presentationDelegate: ActionPresentationDelegate?,
         resultCallbacks: any CheckoutResultCallbackStore,
         callbackHandler: any CheckoutCallbackHandling
     ) {

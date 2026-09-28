@@ -22,7 +22,7 @@ package final class AuthenticationComponent: ActionComponent {
     package weak var delegate: ActionComponentDelegate?
 
     /// Delegates view controller presentation.  This property must be set if you wish to use delegated authentication.
-    package weak var presentationDelegate: PresentationDelegate? {
+    package weak var presentationDelegate: ActionPresentationDelegate? {
         didSet {
             threeDS2CompactFlowHandler.presentationDelegate = presentationDelegate
         }

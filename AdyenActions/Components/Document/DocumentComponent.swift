@@ -22,7 +22,7 @@ package final class DocumentComponent: ActionComponent, ShareableComponent {
     package weak var delegate: ActionComponentDelegate?
 
     /// Delegates view controller presentation.
-    package weak var presentationDelegate: PresentationDelegate?
+    package weak var presentationDelegate: ActionPresentationDelegate?
 
     /// The document component configurations.
     package struct Configuration {

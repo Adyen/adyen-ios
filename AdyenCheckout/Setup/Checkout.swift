@@ -118,7 +118,7 @@ internal extension Checkout {
     static func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
-        presentationDelegate: PresentationDelegate? = nil,
+        presentationDelegate: ActionPresentationDelegate? = nil,
         provider: CheckoutProviding
     ) async throws -> SessionCheckout {
         let callbackStore = SessionCheckoutCallbackStore()
@@ -135,7 +135,7 @@ internal extension Checkout {
     static func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
-        presentationDelegate: PresentationDelegate? = nil,
+        presentationDelegate: ActionPresentationDelegate? = nil,
         provider: CheckoutProviding
     ) async throws -> AdvancedCheckout {
         let callbackStore = AdvancedCheckoutCallbackStore()
@@ -151,7 +151,7 @@ internal extension Checkout {
 
     static func setup(
         configuration: CheckoutConfiguration,
-        presentationDelegate: PresentationDelegate? = nil,
+        presentationDelegate: ActionPresentationDelegate? = nil,
         provider: CheckoutProviding
     ) async throws -> ActionOnlyCheckout {
         let callbackStore = ActionOnlyCheckoutCallbackStore()
@@ -168,7 +168,7 @@ internal extension Checkout {
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         callbackStore: SessionCheckoutCallbackStore,
-        presentationDelegate: PresentationDelegate? = nil,
+        presentationDelegate: ActionPresentationDelegate? = nil,
         provider: CheckoutProviding = CheckoutProvider.default
     ) async throws -> CheckoutCoreProtocol {
         try await provider.setup(
@@ -183,7 +183,7 @@ internal extension Checkout {
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
         callbackStore: AdvancedCheckoutCallbackStore,
-        presentationDelegate: PresentationDelegate? = nil,
+        presentationDelegate: ActionPresentationDelegate? = nil,
         provider: CheckoutProviding = CheckoutProvider.default
     ) async throws -> CheckoutCoreProtocol {
         try await provider.setup(
@@ -197,7 +197,7 @@ internal extension Checkout {
     static func setup(
         configuration: CheckoutConfiguration,
         callbackStore: ActionOnlyCheckoutCallbackStore,
-        presentationDelegate: PresentationDelegate? = nil,
+        presentationDelegate: ActionPresentationDelegate? = nil,
         provider: CheckoutProviding = CheckoutProvider.default
     ) async throws -> CheckoutCoreProtocol {
         try await provider.setup(

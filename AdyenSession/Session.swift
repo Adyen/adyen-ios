@@ -19,7 +19,7 @@ package final class Session: SessionProtocol {
     package internal(set) var state: Session.State
     
     /// The presentation delegate.
-    package weak var presentationDelegate: PresentationDelegate?
+    package weak var presentationDelegate: ActionPresentationDelegate?
     
     internal let context: AdyenContext
     
@@ -48,7 +48,7 @@ package final class Session: SessionProtocol {
         state: Session.State,
         baseAPIClient: AsyncAPIClientProtocol,
         context: AdyenContext,
-        presentationDelegate: PresentationDelegate? = nil
+        presentationDelegate: ActionPresentationDelegate? = nil
     ) {
         self.state = state
         self.presentationDelegate = presentationDelegate
