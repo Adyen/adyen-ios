@@ -41,6 +41,9 @@ public class BaseCheckout {
     ///
     /// Use this to present the action's view controller yourself. When no handler is set, the SDK
     /// presents it on the payment component that started the flow, if there is one.
+    ///
+    /// Drop-in presents actions within its own navigation stack, so this callback is not invoked
+    /// for actions raised inside a Drop-in flow.
     /// - Parameter handler: Callback invoked before the action is presented.
     ///   - actionData: The ``ActionData`` describing the action, including its ``ActionData/type``.
     ///   - actionViewController: The `UIViewController` the SDK built for the action.

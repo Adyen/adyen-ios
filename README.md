@@ -228,6 +228,8 @@ Checkout builds the view controller for an action — a 3D Secure challenge, a v
 
 `ActionData.type` is an `ActionType`: `redirect`, `nativeRedirect`, `threeDS2`, `sdk`, `qrCode`, `await` or `voucher`. When you do not set `onAction(_:)`, checkout presents the action on the payment component that started the flow; the action-only flow has no such component, so it always needs a handler.
 
+Drop-in presents actions within its own navigation stack, so `onAction(_:)` is not invoked for actions raised inside a Drop-in flow.
+
 ### Handling redirects
 
 Pass incoming URLs to the SDK so active redirect actions can resume after the shopper returns from a browser or an external app. It is safe to pass all incoming URLs; any URL not belonging to an active checkout redirect is ignored.

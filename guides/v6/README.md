@@ -171,6 +171,8 @@ Checkout builds the view controller for an action — a 3D Secure challenge, a v
 
 `onAction(_:)` is available on every flow. When you do not set it, checkout presents the action on the payment component that started the flow. The action-only flow has no such component, so it always needs a handler.
 
+Drop-in presents actions within its own navigation stack, so `onAction(_:)` is not invoked for actions raised inside a Drop-in flow.
+
 ## Presenting a payment component
 
 `createPaymentComponent(for:)` returns `CheckoutPaymentComponent`. Use its `viewController` for presentation.
