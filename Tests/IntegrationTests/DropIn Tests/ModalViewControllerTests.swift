@@ -45,6 +45,17 @@ class ModalViewControllerTests: XCTestCase {
         }
     }
 
+    func testCustomNavigationBarHeightIgnoresTopSafeAreaInset() {
+        loadAndRunTests(for: NavigationStyle(), navBarType: .custom(CustomNavigationBar())) {
+            self.sut.additionalSafeAreaInsets.top = 24
+            self.sut.view.setNeedsLayout()
+            self.sut.view.layoutIfNeeded()
+
+            let separatorHeight = 1.0 / UIScreen.main.scale
+            XCTAssertEqual(self.sut.navBar.frame.height, 63.0 - separatorHeight, accuracy: 0.5)
+        }
+    }
+
     func testFormContentAlignsWithToolbar() throws {
         let formStyle = FormComponentStyle()
         let formController = FormViewController(scrollEnabled: true, style: formStyle, localizationParameters: nil)
@@ -80,11 +91,15 @@ class ModalViewControllerTests: XCTestCase {
         }
     }
     
-    fileprivate func loadAndRunTests(for style: NavigationStyle, test: @escaping () -> Void) {
+    fileprivate func loadAndRunTests(
+        for style: NavigationStyle,
+        navBarType: NavigationBarType = .regular,
+        test: @escaping () -> Void
+    ) {
         sut = ModalViewController(
             rootViewController: viewController,
             style: style,
-            navBarType: .regular
+            navBarType: navBarType
         )
         setupRootViewController(sut)
         
@@ -95,4 +110,8 @@ class ModalViewControllerTests: XCTestCase {
         
         test()
     }
+}
+
+private final class CustomNavigationBar: UIView, AnyNavigationBar {
+    var onCancelHandler: (() -> Void)?
 }

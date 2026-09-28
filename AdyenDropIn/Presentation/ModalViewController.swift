@@ -157,8 +157,17 @@ internal final class ModalViewController: UIViewController {
 
         stackView.adyen.anchor(inside: view)
         NSLayoutConstraint.activate([
-            navBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: toolbarHeight),
+            navBarHeightConstraint,
             separator.heightAnchor.constraint(equalToConstant: separatorHeight)
         ])
+    }
+
+    private var navBarHeightConstraint: NSLayoutConstraint {
+        switch navBarType {
+        case .regular:
+            return navBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: toolbarHeight)
+        case .custom:
+            return navBar.heightAnchor.constraint(equalToConstant: toolbarHeight)
+        }
     }
 }
