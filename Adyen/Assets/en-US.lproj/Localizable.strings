@@ -158,7 +158,7 @@
 "adyen.voucher.alternativeReference" = "Alternative Reference";
 "adyen.card.installments.numberOfInstallments" = "Number of installments";
 "adyen.card.installments.oneTime" = "One time payment";
-"adyen.card.installments.title" = "Installments payment";
+"adyen.card.installments.title" = "Payment plan";
 "adyen.card.installments.revolving" = "Revolving payment";
 "adyen.card.installments.monthsAndPrice" = "%@x %@";
 "adyen.card.installments.months" = "%@ months";
@@ -166,6 +166,11 @@
 "adyen_checkout_card_installments_title" = "Payment plan";
 "adyen_checkout_card_installments_picker_title" = "Installments";
 "adyen_checkout_card_installments_option_one_time_description" = "Pay the full amount today";
+"adyen.card.installments.regular" = "%@ Installments";
+"adyen.card.installments.picker.description" = "Split the total cost into monthly payments instead of paying the full amount today.";
+"adyen.card.installments.revolving.description" = "Predetermined amount each month";
+"adyen.card.installments.regular.description" = "%@ monthly payments";
+"adyen.card.installments.regular.description.withPrice" = "%@ monthly payments of %@";
 "adyen.bacs.holderNameField.title" = "Bank account holder name";
 "adyen.bacs.bankAccountNumberField.title" = "Bank account number";
 "adyen.bacs.bankLocationIdField.title" = "Sort code";

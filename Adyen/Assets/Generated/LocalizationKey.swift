@@ -344,6 +344,16 @@ public struct LocalizationKey {
     public static let cardInstallmentsMonths = LocalizationKey(key: "adyen.card.installments.months")
     /// Method of payment
     public static let cardInstallmentsPlan = LocalizationKey(key: "adyen.card.installments.plan")
+    /// %@ Installments
+    public static let cardInstallmentsRegular = LocalizationKey(key: "adyen.card.installments.regular")
+    /// Split the total cost into monthly payments instead of paying the full amount today.
+    public static let cardInstallmentsPickerDescription = LocalizationKey(key: "adyen.card.installments.picker.description")
+    /// Predetermined amount each month
+    public static let cardInstallmentsRevolvingDescription = LocalizationKey(key: "adyen.card.installments.revolving.description")
+    /// %@ monthly payments
+    public static let cardInstallmentsRegularDescription = LocalizationKey(key: "adyen.card.installments.regular.description")
+    /// %@ monthly payments of %@
+    public static let cardInstallmentsRegularDescriptionWithPrice = LocalizationKey(key: "adyen.card.installments.regular.description.withPrice")
     /// Bank account holder name
     public static let bacsHolderNameFieldTitle = LocalizationKey(key: "adyen.bacs.holderNameField.title")
     /// Bank account number
