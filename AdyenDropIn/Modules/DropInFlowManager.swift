@@ -130,11 +130,11 @@ extension DropInFlowManager: ActionComponentDelegate {
     }
 }
 
-// MARK: - PresentationDelegate
+// MARK: - ActionPresentationDelegate
 
-extension DropInFlowManager: PresentationDelegate {
+extension DropInFlowManager: ActionPresentationDelegate {
 
-    internal func present(viewController: UIViewController) {
-        actionPresenter?.present(actionViewController: viewController)
+    internal func present(actionData: ActionData, actionViewController: UIViewController) {
+        actionPresenter?.present(actionViewController: actionViewController)
     }
 }
