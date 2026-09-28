@@ -150,21 +150,31 @@ struct PaymentMethodListViewModelTests {
     // MARK: - FormattedAmount Tests
 
     @Test
-    func formattedAmount_shouldReturnFormattedContextAmount() {
+    func headerTitle_shouldReturnFormattedContextAmount() {
         // Given
         let (sut, _, _) = makeSUT()
 
         // Then
-        #expect(sut.formattedAmount.isEmpty == false)
+        #expect(sut.headerTitle.isEmpty == false)
     }
 
     @Test
-    func formattedAmount_givenNilAmount_shouldReturnEmptyString() {
+    func headerTitle_givenNilAmount_shouldReturnPaymentOptions() {
         // Given
         let (sut, _, _) = makeSUT(amount: nil)
 
         // Then
-        #expect(sut.formattedAmount == "")
+        #expect(sut.headerTitle == "Payment options")
+    }
+
+    @Test
+    func headerTitle_givenZeroAmount_shouldReturnSaveDetailsLocalizedString() {
+        // Given
+        let (sut, _, _) = makeSUT(amount: .init(value: 0, currencyCode: "EUR"))
+
+        // Then
+        let expected = localizedString(.submitButtonSaveDetails, LocalizationParameters())
+        #expect(sut.headerTitle == expected)
     }
 
     // MARK: - Subtitle Tests
@@ -176,6 +186,36 @@ struct PaymentMethodListViewModelTests {
 
         // Then - verify subtitle is not empty (actual string may change with localization)
         #expect(sut.subtitle.isEmpty == false, "Subtitle should not be empty")
+    }
+
+    @Test
+    func subtitle_givenZeroAmount_shouldReturnSaveDetailsLocalizedString() {
+        // Given
+        let (sut, _, _) = makeSUT(amount: .init(value: 0, currencyCode: "EUR"))
+
+        // Then
+        let expected = localizedString(.dropInPaymentMethodListDescriptionSaveDetails, LocalizationParameters())
+        #expect(sut.subtitle == expected)
+    }
+
+    @Test
+    func subtitle_givenNonZeroAmount_shouldReturnCompletePaymentLocalizedString() {
+        // Given
+        let (sut, _, _) = makeSUT(amount: .init(value: 100, currencyCode: "EUR"))
+
+        // Then
+        let expected = localizedString(.dropInPaymentMethodListDescriptionCompletePayment, LocalizationParameters())
+        #expect(sut.subtitle == expected)
+    }
+
+    @Test
+    func subtitle_givenNilAmount_shouldReturnCompletePaymentLocalizedString() {
+        // Given
+        let (sut, _, _) = makeSUT(amount: nil)
+
+        // Then
+        let expected = localizedString(.dropInPaymentMethodListDescriptionCompletePayment, LocalizationParameters())
+        #expect(sut.subtitle == expected)
     }
 
     // MARK: - ApplePayButtonState Tests
@@ -250,8 +290,147 @@ struct PaymentMethodListViewModelTests {
         let bancontact = items.first { $0.title == String.Adyen.securedString + "4449" }
 
         #expect(card?.subtitle == "Expired")
+        #expect(card?.subtitleStatus == .warning)
         #expect(ach?.subtitle == "ACH Direct Debit")
+        #expect(ach?.subtitleStatus == .normal)
         #expect(bancontact?.subtitle == "Expired")
+        #expect(bancontact?.subtitleStatus == .warning)
+    }
+
+    @Test
+    func remove_givenRemainingStoredMethods_shouldRefreshListAndRetainFavorites() throws {
+        // Given
+        let (sut, _, _) = makeSUT()
+        let paymentMethod = try #require(sut.paymentMethodSections.flatMap(\.paymentMethods).first as? any StoredPaymentMethod)
+        let favoritesTitle = localizedString(.paymentMethodsStoredMethods, LocalizationParameters())
+
+        // When
+        sut.remove(storedPaymentMethod: paymentMethod)
+
+        // Then
+        #expect(sut.paymentMethodSections.flatMap(\.paymentMethods).contains(where: { ($0 as? any StoredPaymentMethod)?.identifier == paymentMethod.identifier }) == false)
+        guard case let .loaded(sections) = sut.state else {
+            Issue.record("Expected the refreshed list state")
+            return
+        }
+        #expect(sections.contains { $0.headerTitle == favoritesTitle })
+    }
+
+    @Test
+    func remove_givenFinalStoredMethod_shouldRemoveFavoritesFromList() throws {
+        // Given
+        let finalStoredPaymentMethod = try #require(paymentMethods.stored.first)
+        let (sut, _, _) = makeSUT(storedPaymentMethods: [finalStoredPaymentMethod])
+        let paymentMethod = finalStoredPaymentMethod
+        let favoritesTitle = localizedString(.paymentMethodsStoredMethods, LocalizationParameters())
+
+        // When
+        sut.remove(storedPaymentMethod: paymentMethod)
+
+        // Then
+        #expect(sut.paymentMethodSections.contains { $0.header?.title == favoritesTitle } == false)
+        guard case let .loaded(sections) = sut.state else {
+            Issue.record("Expected the refreshed list state")
+            return
+        }
+        #expect(sections.contains { $0.headerTitle == favoritesTitle } == false)
+    }
+
+    // MARK: - Stored Payment Method Management Tests
+
+    @Test
+    func didLoad_givenManagementSupport_shouldExposeManageButtonOnFavorites() throws {
+        // Given
+        let (sut, _, _) = makeSUT(supportsStoredPaymentMethodManagement: true)
+        let favoritesTitle = localizedString(.paymentMethodsStoredMethods, LocalizationParameters())
+        let manageTitle = localizedString(.storedPaymentMethodManagementTitle, LocalizationParameters())
+
+        // When
+        sut.didLoad()
+
+        // Then
+        let sections = try #require(sut.state.loadedSections)
+        let favorites = try #require(sections.first { $0.headerTitle == favoritesTitle })
+        #expect(favorites.headerTrailingButton?.title == manageTitle)
+        #expect(sections.filter { $0.headerTrailingButton != nil }.count == 1)
+    }
+
+    @Test
+    func didLoad_givenNoManagementSupport_shouldNotExposeManageButton() throws {
+        // Given
+        let (sut, _, _) = makeSUT()
+
+        // When
+        sut.didLoad()
+
+        // Then
+        let sections = try #require(sut.state.loadedSections)
+        #expect(sections.contains { $0.headerTrailingButton != nil } == false)
+    }
+
+    @Test
+    func didLoad_givenHiddenStoredPaymentMethods_shouldNotExposeFavoritesOrManageButton() throws {
+        // Given
+        let configuration = DropInConfiguration().hideStoredPaymentMethods(true)
+        let (sut, _, _) = makeSUT(
+            supportsStoredPaymentMethodManagement: true,
+            configuration: configuration
+        )
+        let favoritesTitle = localizedString(.paymentMethodsStoredMethods, LocalizationParameters())
+
+        // When
+        sut.didLoad()
+
+        // Then
+        let sections = try #require(sut.state.loadedSections)
+        #expect(sections.contains { $0.headerTitle == favoritesTitle } == false)
+        #expect(sections.contains { $0.headerTrailingButton != nil } == false)
+    }
+
+    @Test
+    func didLoad_givenNoStoredPaymentMethods_shouldNotExposeManageButton() throws {
+        // Given
+        let (sut, _, _) = makeSUT(storedPaymentMethods: [], supportsStoredPaymentMethodManagement: true)
+
+        // When
+        sut.didLoad()
+
+        // Then
+        let sections = try #require(sut.state.loadedSections)
+        #expect(sections.contains { $0.headerTrailingButton != nil } == false)
+    }
+
+    @Test
+    func manageButton_shouldRouteToStoredPaymentMethodManagement() throws {
+        // Given
+        let (sut, _, routerMock) = makeSUT(supportsStoredPaymentMethodManagement: true)
+        sut.didLoad()
+        let sections = try #require(sut.state.loadedSections)
+        let manageButton = try #require(sections.compactMap(\.headerTrailingButton).first)
+
+        // When
+        manageButton.handler()
+
+        // Then
+        #expect(routerMock.presentStoredPaymentMethodManagementCallsCount == 1)
+    }
+
+    @Test
+    func remove_givenFinalStoredMethod_shouldRemoveManageButton() throws {
+        // Given
+        let finalStoredPaymentMethod = try #require(paymentMethods.stored.first)
+        let (sut, _, _) = makeSUT(
+            storedPaymentMethods: [finalStoredPaymentMethod],
+            supportsStoredPaymentMethodManagement: true
+        )
+        sut.didLoad()
+
+        // When
+        sut.remove(storedPaymentMethod: finalStoredPaymentMethod)
+
+        // Then
+        let sections = try #require(sut.state.loadedSections)
+        #expect(sections.contains { $0.headerTrailingButton != nil } == false)
     }
 
     // MARK: - ActionPresenter Tests
@@ -308,7 +487,10 @@ struct PaymentMethodListViewModelTests {
 
     private func makeSUT(
         includeApplePay: Bool = true,
-        amount: Amount? = .init(value: 100, currencyCode: "EUR")
+        storedPaymentMethods: [any StoredPaymentMethod]? = nil,
+        supportsStoredPaymentMethodManagement: Bool = false,
+        amount: Amount? = .init(value: 100, currencyCode: "EUR"),
+        configuration: DropInConfiguration = .init()
     ) -> (
         sut: PaymentMethodListViewModel,
         dropInFlowManagerMock: DropInFlowManagingMock,
@@ -321,13 +503,30 @@ struct PaymentMethodListViewModelTests {
             analyticsProvider: AnalyticsProviderMock()
         )
 
-        let methods = includeApplePay ? paymentMethods : paymentMethodsWithoutApplePay
+        var methods = includeApplePay ? paymentMethods : paymentMethodsWithoutApplePay
+        if let storedPaymentMethods {
+            methods.stored = storedPaymentMethods
+        }
         let componentManagerMock = ComponentManager(
             paymentMethods: methods,
             context: context,
-            configuration: .init(),
+            configuration: configuration,
             order: nil,
-            presentationDelegate: nil
+            paymentComponentProvider: DropInPaymentComponentProvider(
+                isAvailable: { _ in true },
+                build: { paymentMethod in
+                    if paymentMethod is any StoredPaymentMethod {
+                        return StoredComponentMock(
+                            paymentMethod: paymentMethod,
+                            viewController: UIViewController()
+                        )
+                    }
+                    return PresentablePaymentComponentMock(
+                        paymentMethod: paymentMethod,
+                        viewController: UIViewController()
+                    )
+                }
+            )
         )
         let dropInFlowManagerMock = DropInFlowManagingMock()
         let logoURLProvider = LogoURLProvider(environment: context.apiContext.environment)
@@ -336,9 +535,10 @@ struct PaymentMethodListViewModelTests {
             context: context,
             localizationParameters: LocalizationParameters(),
             componentManager: componentManagerMock,
-            configuration: DropInComponent.Configuration(),
+            configuration: configuration,
             dropInFlowManager: dropInFlowManagerMock,
             logoURLProvider: logoURLProvider,
+            supportsStoredPaymentMethodManagement: supportsStoredPaymentMethodManagement,
             theme: TestTheme.distinctive()
         )
 
@@ -416,15 +616,23 @@ extension PaymentMethodListState: Equatable {
     public static func == (lhs: PaymentMethodListState, rhs: PaymentMethodListState) -> Bool {
         switch (lhs, rhs) {
         case (.idle, .idle): true
-        case (.loading, .loading): true
         case (.loaded, .loaded): true
         default: false
         }
     }
 
     var isLoaded: Bool {
-        if case .loaded = self { return true }
+        if case .loaded = self {
+            return true
+        }
         return false
+    }
+
+    var loadedSections: [PaymentMethodSection]? {
+        if case let .loaded(sections) = self {
+            return sections
+        }
+        return nil
     }
 }
 
@@ -439,7 +647,9 @@ extension PaymentMethodListHeaderViewModel.ApplePayButtonState: Equatable {
     }
 
     var isVisible: Bool {
-        if case .visible = self { return true }
+        if case .visible = self {
+            return true
+        }
         return false
     }
 }

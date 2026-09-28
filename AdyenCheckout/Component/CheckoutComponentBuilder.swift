@@ -14,10 +14,14 @@ import Adyen
 #if canImport(AdyenCard)
     import AdyenCard
 #endif
+#if canImport(AdyenTwint)
+    import AdyenTwint
+#endif
 import Foundation
 
-internal enum CheckoutComponentBuilder {
+package enum CheckoutComponentBuilder {
     
+    // swiftlint:disable function_body_length
     @MainActor
     internal static func build(
         for paymentMethod: PaymentMethod,
@@ -52,6 +56,13 @@ internal enum CheckoutComponentBuilder {
                     configuration: configuration,
                     context: context
                 )
+            case let genericPaymentMethod as GenericPaymentMethod:
+                return try createComponent(
+                    using: GenericPaymentComponentFactory(),
+                    paymentMethod: genericPaymentMethod,
+                    configuration: configuration,
+                    context: context
+                )
         #endif
             
         // card module
@@ -66,12 +77,17 @@ internal enum CheckoutComponentBuilder {
                 // TODO: add other card methods like stored or write a generic one.
             
         #endif
-        case let genericPaymentMethod as GenericPaymentMethod:
-            return GenericPaymentComponent(
-                paymentMethod: genericPaymentMethod,
-                context: context,
-                order: nil
-            )
+            
+        // twint module
+        #if canImport(AdyenTwint)
+            case let twintPaymentMethod as TwintPaymentMethod:
+                return try createComponent(
+                    using: TwintComponentFactory(),
+                    paymentMethod: twintPaymentMethod,
+                    configuration: configuration,
+                    context: context
+                )
+        #endif
         default:
             break
         }
@@ -79,6 +95,8 @@ internal enum CheckoutComponentBuilder {
         // TODO: for gift card, throw correct error code
         throw CheckoutError(code: .paymentMethodFailure, message: "Payment method \(paymentMethod.type.rawValue) is not supported.")
     }
+
+    // swiftlint:enable function_body_length
     
     /// Builds stored payment components.
     @MainActor
@@ -86,12 +104,12 @@ internal enum CheckoutComponentBuilder {
         for storedPaymentMethod: StoredPaymentMethod,
         configuration: CheckoutConfiguration,
         context: AdyenContext
-    ) -> PaymentComponent {
+    ) throws -> PaymentComponent {
         switch storedPaymentMethod {
 
         #if canImport(AdyenCard)
             case let storedCard as StoredCardPaymentMethod:
-                return createStoredCardComponent(
+                return try createStoredCardComponent(
                     storedPaymentMethod: storedCard,
                     configuration: configuration,
                     context: context
@@ -104,6 +122,120 @@ internal enum CheckoutComponentBuilder {
                 configuration: configuration,
                 context: context
             )
+        }
+    }
+
+    /// Builds a component for a type-erased regular or stored payment method.
+    @MainActor
+    package static func build(
+        forAnyPaymentMethod paymentMethod: PaymentMethod,
+        configuration: CheckoutConfiguration,
+        sessionConfiguration: SessionComponentConfiguration? = nil,
+        context: AdyenContext
+    ) throws -> PaymentComponent {
+        if let storedPaymentMethod = paymentMethod as? any StoredPaymentMethod {
+            return try build(
+                for: storedPaymentMethod,
+                configuration: configuration,
+                context: context
+            )
+        }
+
+        return try build(
+            for: paymentMethod,
+            configuration: configuration,
+            sessionConfiguration: sessionConfiguration,
+            context: context
+        )
+    }
+
+    /// Returns whether a component can currently be built for a regular or stored payment method.
+    ///
+    /// The regular-method dispatch mirrors ``build(for:configuration:sessionConfiguration:context:)``.
+    /// Keep both switches in sync when adding a payment method.
+    @MainActor
+    package static func isAvailable(
+        forAnyPaymentMethod paymentMethod: PaymentMethod,
+        configuration: CheckoutConfiguration
+    ) -> Bool {
+        // Stored methods always get a component: neither the stored card factory nor the generic stored component can fail.
+        if paymentMethod is any StoredPaymentMethod {
+            return true
+        }
+
+        switch paymentMethod {
+
+        // components module
+        #if canImport(AdyenComponents)
+            case let blikPaymentMethod as BLIKPaymentMethod:
+                return isAvailable(
+                    using: BLIKComponentFactory(),
+                    paymentMethod: blikPaymentMethod,
+                    configuration: configuration
+                )
+            case let achPaymentMethod as ACHDirectDebitPaymentMethod:
+                return isAvailable(
+                    using: ACHDirectDebitComponentFactory(),
+                    paymentMethod: achPaymentMethod,
+                    configuration: configuration
+                )
+            case let applePayPaymentMethod as ApplePayPaymentMethod:
+                return isAvailable(
+                    using: ApplePayComponentFactory(),
+                    paymentMethod: applePayPaymentMethod,
+                    configuration: configuration
+                )
+            case let genericPaymentMethod as GenericPaymentMethod:
+                return isAvailable(
+                    using: GenericPaymentComponentFactory(),
+                    paymentMethod: genericPaymentMethod,
+                    configuration: configuration
+                )
+        #endif
+
+        // card module
+        #if canImport(AdyenCard)
+            case let cardPaymentMethod as CardPaymentMethod:
+                return isAvailable(
+                    using: CardComponentFactory(),
+                    paymentMethod: cardPaymentMethod,
+                    configuration: configuration
+                )
+        #endif
+
+        // twint module
+        #if canImport(AdyenTwint)
+            case let twintPaymentMethod as TwintPaymentMethod:
+                return isAvailable(
+                    using: TwintComponentFactory(),
+                    paymentMethod: twintPaymentMethod,
+                    configuration: configuration
+                )
+        #endif
+        default:
+            return false
+        }
+    }
+
+    /// Resolves the component configuration and asks the factory whether the component is available.
+    ///
+    /// - Returns: `false` if the configuration can't be resolved or the factory reports the component as unavailable.
+    @MainActor
+    internal static func isAvailable<Factory: PaymentComponentFactory>(
+        using factory: Factory,
+        paymentMethod: Factory.Method,
+        configuration: CheckoutConfiguration
+    ) -> Bool where Factory.Configuration: CheckoutComponentConfiguration {
+        do {
+            let componentConfiguration = try resolveConfiguration(
+                for: paymentMethod,
+                defaultValue: factory.defaultConfiguration(),
+                configuration: configuration
+            )
+            return factory.isAvailable(for: paymentMethod, configuration: componentConfiguration)
+        } catch {
+            adyenPrint("Payment method \(paymentMethod.type.rawValue) is unavailable:", error)
+            return false
         }
     }
 
@@ -125,15 +257,10 @@ internal enum CheckoutComponentBuilder {
         context: AdyenContext
     ) throws -> PaymentComponent where Factory.Configuration: CheckoutComponentConfiguration {
 
-        var componentConfiguration = try configuration.configuration(
+        let componentConfiguration = try resolveConfiguration(
             for: paymentMethod,
-            defaultValue: factory.defaultConfiguration()
-        )
-
-        componentConfiguration.showsSubmitButton = configuration.showsSubmitButton
-        componentConfiguration.theme = configuration.theme
-        componentConfiguration.localizationParameters = configuration.resolvedCheckoutLocalizationParameters(
-            mergingExistingParameters: componentConfiguration.localizationParameters
+            defaultValue: factory.defaultConfiguration(),
+            configuration: configuration
         )
 
         return try factory.create(
@@ -144,19 +271,45 @@ internal enum CheckoutComponentBuilder {
     }
 
     @MainActor
+    private static func resolveConfiguration<Configuration: CheckoutComponentConfiguration>(
+        for paymentMethod: PaymentMethod,
+        defaultValue: @autoclosure () throws -> Configuration,
+        configuration: CheckoutConfiguration
+    ) throws -> Configuration {
+
+        var componentConfiguration = try configuration.configuration(
+            for: paymentMethod,
+            defaultValue: defaultValue()
+        )
+
+        componentConfiguration.showsSubmitButton = configuration.showsSubmitButton
+        componentConfiguration.theme = configuration.theme
+        componentConfiguration.localizationParameters = configuration.resolvedCheckoutLocalizationParameters(
+            mergingExistingParameters: componentConfiguration.localizationParameters
+        )
+
+        return componentConfiguration
+    }
+
+    @MainActor
     private static func createStoredCardComponent(
         storedPaymentMethod: StoredCardPaymentMethod,
         configuration: CheckoutConfiguration,
         context: AdyenContext
-    ) -> PaymentComponent {
-        let component = StoredCardComponent(
-            storedCardPaymentMethod: storedPaymentMethod,
-            context: context,
-            theme: configuration.theme
-        )
-        component.localizationParameters = configuration.resolvedCheckoutLocalizationParameters()
+    ) throws -> PaymentComponent {
+        let factory = StoredCardComponentFactory()
 
-        return component
+        let componentConfiguration = try resolveConfiguration(
+            for: storedPaymentMethod,
+            defaultValue: factory.defaultConfiguration(),
+            configuration: configuration
+        )
+
+        return factory.create(
+            with: storedPaymentMethod,
+            context: context,
+            configuration: componentConfiguration
+        )
     }
 
     @MainActor
@@ -167,7 +320,9 @@ internal enum CheckoutComponentBuilder {
     ) -> PaymentComponent {
         let component = StoredPaymentMethodComponent(
             paymentMethod: storedPaymentMethod,
-            context: context
+            context: context,
+            theme: configuration.theme,
+            showsSubmitButton: configuration.showsSubmitButton
         )
         component.localizationParameters = configuration.resolvedCheckoutLocalizationParameters()
 

@@ -52,7 +52,6 @@ internal final class ActionComponentExample: InitialDataAdvancedFlowProtocol {
     private func createCheckout() async throws -> ActionOnlyCheckout {
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
-            amount: ConfigurationConstants.current.amount,
             clientKey: ConfigurationConstants.clientKey,
             analyticsConfiguration: .init(
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled

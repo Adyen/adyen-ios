@@ -150,9 +150,9 @@ struct ComponentContainerViewModelTests {
 
     private class ComponentContainerRoutingMock: ComponentContainerRouting {
         var presentPaymentComponentCallsCount = 0
-        var presentPaymentComponentReceivedPaymentComponent: PresentablePaymentComponent?
+        var presentPaymentComponentReceivedPaymentComponent: PaymentComponent?
 
-        func present(paymentComponent: PresentablePaymentComponent) {
+        func present(paymentComponent: PaymentComponent) {
             presentPaymentComponentCallsCount += 1
             presentPaymentComponentReceivedPaymentComponent = paymentComponent
         }
@@ -202,7 +202,7 @@ struct ComponentContainerViewModelTests {
 
         let sut = ComponentContainerViewModel(
             component: paymentComponentMock,
-            configuration: DropInComponent.Configuration(),
+            configuration: DropInConfiguration(),
             dropInFlowManager: dropInFlowManagerMock,
             partialPaymentDelegate: nil
         )

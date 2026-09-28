@@ -26,6 +26,8 @@ public final class AdyenSessionMock: SessionProtocol {
     var requestOrderCalled = false
     var cancelOrderCalled = false
     var disableStoredPaymentMethodCalled = false
+    var disabledStoredPaymentMethod: StoredPaymentMethod?
+    var disableStoredPaymentMethodResult: Result<Void, Error>?
     var performSubmitResult: Result<SubmitResult, Error>?
     var performAdditionalDetailsResult: Result<AdditionalDetailsResult, Error>?
     var performBalanceCheckResult: Result<Balance, Error>?
@@ -77,6 +79,8 @@ public final class AdyenSessionMock: SessionProtocol {
     
     public func disable(storedPaymentMethod: StoredPaymentMethod) async throws {
         disableStoredPaymentMethodCalled = true
+        disabledStoredPaymentMethod = storedPaymentMethod
+        try disableStoredPaymentMethodResult?.get()
     }
     
 }

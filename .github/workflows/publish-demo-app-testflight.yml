@@ -89,6 +89,6 @@ jobs:
           APPLE_TEAM_IDENTIFIER: ${{ secrets.APPLE_DEVELOPMENT_TEAM_ID }}
           ENVIRONMENT: ${{ secrets.ENVIRONMENT }}
         run: |
-          chmod +x ./Scripts/publish-demo-app.sh
-          ./Scripts/publish-demo-app.sh
+          chmod +x ./Scripts/publish-demo-app-testflight.sh
+          ./Scripts/publish-demo-app-testflight.sh
 

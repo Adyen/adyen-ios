@@ -133,7 +133,6 @@ import AdyenCheckout
 
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     CardConfiguration()
@@ -248,7 +247,7 @@ In v6 you present each payment method individually with `createPaymentComponent(
 let component = try checkout.createPaymentComponent(for: .scheme)
 
 // A stored payment method.
-guard let storedCard = checkout.paymentMethods?.stored
+guard let storedCard = checkout.storedPaymentMethods
     .compactMap({ $0 as? StoredCardPaymentMethod })
     .first else { return }
 
@@ -288,7 +287,6 @@ let theme = CheckoutTheme(
 
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     CardConfiguration()

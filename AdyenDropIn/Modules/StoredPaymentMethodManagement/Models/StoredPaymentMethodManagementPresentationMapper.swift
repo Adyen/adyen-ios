@@ -45,6 +45,7 @@ internal struct StoredPaymentMethodManagementPresentationMapper {
             paymentMethod: paymentMethod,
             title: displayInformation.title,
             subtitle: displayInformation.subtitle,
+            subtitleStatus: displayInformation.subtitleStatus,
             logoURL: logoURLProvider.logoURL(withName: displayInformation.logoName),
             accessibilityLabel: displayInformation.accessibilityLabel,
             removalActionTitle: removalActionTitle(for: paymentMethod)

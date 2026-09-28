@@ -13,8 +13,9 @@ import SwiftUI
 internal struct StoredPaymentMethodManagementListView: View {
 
     private enum Constants {
-        static let horizontalPadding: CGFloat = 16
+        static let topPadding: CGFloat = 16
         static let verticalSpacing: CGFloat = 16
+        static let animationDuration = 0.2
     }
 
     @ObservedObject private var viewModel: StoredPaymentMethodManagementViewModel
@@ -26,117 +27,173 @@ internal struct StoredPaymentMethodManagementListView: View {
     }
 
     internal var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: Constants.verticalSpacing) {
-                Text(viewModel.description)
-                    .font(.subheadline)
-                    .foregroundStyle(Color(uiColor: theme.colors.textSecondary))
-
-                ForEach(viewModel.sections, id: \.kind) { section in
-                    StoredPaymentMethodManagementSectionView(
-                        title: viewModel.sectionTitle(for: section.kind),
-                        section: section,
-                        removeButtonTitle: viewModel.removeButtonTitle,
-                        theme: theme,
-                        onRemove: viewModel.requestRemoval
-                    )
-                }
+        VStack(alignment: .leading, spacing: Constants.verticalSpacing) {
+            if viewModel.removalError != nil {
+                RemovalErrorView(message: viewModel.removalErrorMessage, theme: theme)
+                    .transition(.opacity.combined(with: .move(edge: .top)))
             }
-            .padding(Constants.horizontalPadding)
-        }
-    }
-}
 
-private struct StoredPaymentMethodManagementLogoView: View {
-
-    let url: URL
-
-    internal var body: some View {
-        AsyncImage(url: url) { image in
-            image
-                .resizable()
-                .scaledToFit()
-        } placeholder: {
-            Color.clear
-        }
-    }
-}
-
-private struct StoredPaymentMethodManagementSectionView: View {
-
-    private enum Constants {
-        static let itemSpacing: CGFloat = 8
-    }
-
-    let title: String
-    let section: StoredPaymentMethodManagementSection
-    let removeButtonTitle: String
-    let theme: CheckoutTheme
-    let onRemove: (StoredPaymentMethodManagementItem) -> Void
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: Constants.itemSpacing) {
-            Text(title)
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(Color(uiColor: theme.colors.textSecondary))
-
-            ForEach(section.items, id: \.paymentMethod.identifier) { item in
-                StoredPaymentMethodManagementRow(
-                    item: item,
-                    removeButtonTitle: removeButtonTitle,
+            ForEach(viewModel.sections, id: \.kind) { section in
+                SectionView(
+                    title: viewModel.sectionTitle(for: section),
+                    section: section,
+                    identifiersBeingRemoved: viewModel.identifiersBeingRemoved,
+                    removeButtonTitle: viewModel.removeButtonTitle,
                     theme: theme,
-                    onRemove: onRemove
+                    onRemove: viewModel.requestRemoval
                 )
             }
         }
-        .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.section(section.kind))
+        .padding(.top, Constants.topPadding)
+        .animation(
+            .easeInOut(duration: Constants.animationDuration),
+            value: viewModel.removalError != nil
+        )
+        .animation(
+            .easeInOut(duration: Constants.animationDuration),
+            value: paymentMethodIdentifiers
+        )
+    }
+
+    private var paymentMethodIdentifiers: [String] {
+        viewModel.sections.flatMap { section in
+            section.items.map(\.paymentMethod.identifier)
+        }
     }
 }
 
-private struct StoredPaymentMethodManagementRow: View {
+private extension StoredPaymentMethodManagementListView {
 
-    private enum Constants {
-        static let itemSpacing: CGFloat = 12
-        static let logoSize: CGFloat = 24
-        static let verticalPadding: CGFloat = 4
+    struct RemovalErrorView: View {
+
+        private enum Constants {
+            static let iconSystemName = "exclamationmark.triangle"
+            static let spacing: CGFloat = 16
+            static let iconSize: CGFloat = 16
+        }
+
+        let message: String
+        let theme: CheckoutTheme
+
+        var body: some View {
+            HStack(spacing: Constants.spacing) {
+                Image(systemName: Constants.iconSystemName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: Constants.iconSize, height: Constants.iconSize)
+                    .accessibilityHidden(true)
+
+                Text(message)
+                    .font(Font(theme.elements.labels.body.font))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .foregroundStyle(Color(uiColor: theme.colors.destructive))
+        }
     }
 
-    let item: StoredPaymentMethodManagementItem
-    let removeButtonTitle: String
-    let theme: CheckoutTheme
-    let onRemove: (StoredPaymentMethodManagementItem) -> Void
+    struct SectionView: View {
 
-    var body: some View {
-        HStack(spacing: Constants.itemSpacing) {
-            HStack(spacing: Constants.itemSpacing) {
-                StoredPaymentMethodManagementLogoView(url: item.logoURL)
-                    .frame(width: Constants.logoSize, height: Constants.logoSize)
+        private enum Constants {
+            static let headerSpacing: CGFloat = 8
+            static let itemSpacing: CGFloat = 12
+            static let headerVerticalPadding: CGFloat = 8
+        }
 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(item.title)
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(Color(uiColor: theme.colors.text))
+        let title: String?
+        let section: StoredPaymentMethodManagementSection
+        let identifiersBeingRemoved: Set<String>
+        let removeButtonTitle: String
+        let theme: CheckoutTheme
+        let onRemove: (StoredPaymentMethodManagementItem) -> Void
 
-                    if let subtitle = item.subtitle {
-                        Text(subtitle)
-                            .font(.caption)
-                            .foregroundStyle(Color(uiColor: theme.colors.textSecondary))
+        var body: some View {
+            VStack(alignment: .leading, spacing: Constants.headerSpacing) {
+                if let title {
+                    Text(title)
+                        .font(Font(theme.elements.labels.subheadlineEmphasized.font))
+                        .foregroundStyle(Color(uiColor: theme.elements.labels.subheadlineEmphasized.color))
+                        .padding(.vertical, Constants.headerVerticalPadding)
+                }
+
+                VStack(spacing: Constants.itemSpacing) {
+                    ForEach(section.items, id: \.paymentMethod.identifier) { item in
+                        RowView(
+                            item: item,
+                            isRemoving: identifiersBeingRemoved.contains(item.paymentMethod.identifier),
+                            removeButtonTitle: removeButtonTitle,
+                            theme: theme,
+                            onRemove: onRemove
+                        )
                     }
                 }
             }
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(item.accessibilityLabel ?? [item.title, item.subtitle].compactMap { $0 }.joined(separator: ", "))
-
-            Spacer(minLength: 0)
-
-            Button(removeButtonTitle) {
-                onRemove(item)
-            }
-            .font(.caption.weight(.semibold))
-            .foregroundStyle(Color(uiColor: theme.colors.destructive))
-            .accessibilityLabel(item.removalActionTitle)
-            .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.remove(item.paymentMethod.identifier))
+            .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.section(section.kind))
         }
-        .padding(.vertical, Constants.verticalPadding)
+    }
+
+    struct RowView: View {
+
+        private enum Constants {
+            static let itemSpacing: CGFloat = 16
+            static let logoSize: CGSize = .init(width: 40, height: 26)
+            static let verticalPadding: CGFloat = 12
+            static let progressViewSize: CGFloat = 24
+            static let progressViewWidth: CGFloat = 2.5
+        }
+
+        let item: StoredPaymentMethodManagementItem
+        let isRemoving: Bool
+        let removeButtonTitle: String
+        let theme: CheckoutTheme
+        let onRemove: (StoredPaymentMethodManagementItem) -> Void
+
+        var body: some View {
+            HStack(spacing: Constants.itemSpacing) {
+                HStack(spacing: Constants.itemSpacing) {
+                    Group {
+                        if isRemoving {
+                            CircularProgressView(
+                                theme: theme,
+                                size: Constants.progressViewSize,
+                                lineWidth: Constants.progressViewWidth
+                            )
+                        } else {
+                            PaymentLogoView(url: item.logoURL, theme: theme, size: Constants.logoSize)
+                        }
+                    }
+                    .frame(width: Constants.logoSize.width, height: Constants.logoSize.height)
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(item.title)
+                            .font(Font(theme.elements.labels.bodyEmphasized.font))
+                            .foregroundStyle(Color(uiColor: theme.elements.labels.bodyEmphasized.color))
+
+                        if let subtitle = item.subtitle {
+                            Text(subtitle)
+                                .font(Font(theme.elements.labels.subheadline.font))
+                                .foregroundStyle(Color(uiColor: subtitleColor))
+                        }
+                    }
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(item.accessibilityLabel ?? [item.title, item.subtitle].compactMap { $0 }.joined(separator: ", "))
+
+                Spacer(minLength: 0)
+
+                Button(removeButtonTitle) {
+                    onRemove(item)
+                }
+                .font(Font(theme.elements.labels.subheadline.font))
+                .foregroundStyle(Color(uiColor: isRemoving ? theme.colors.textOnDisabled : theme.colors.destructive))
+                .disabled(isRemoving)
+                .accessibilityLabel(item.removalActionTitle)
+                .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.remove(item.paymentMethod.identifier))
+            }
+            .padding(.vertical, Constants.verticalPadding)
+        }
+
+        private var subtitleColor: UIColor {
+            item.subtitleStatus == .warning ? theme.colors.destructive : theme.colors.textSecondary
+        }
     }
 }

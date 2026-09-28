@@ -141,7 +141,7 @@ public enum CardBrand: RawRepresentable, Codable, Equatable, Hashable {
     /// Fallback option for any other scheme name
     case other(named: String)
     
-    // swiftlint:disable cyclomatic_complexity function_body_length
+    // swiftlint:disable cyclomatic_complexity
     public init(rawValue: String) {
         switch rawValue {
         case "accel": self = .accel

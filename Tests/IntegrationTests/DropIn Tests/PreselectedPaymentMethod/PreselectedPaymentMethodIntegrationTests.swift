@@ -34,8 +34,8 @@ struct PreselectedPaymentMethodIntegrationTests {
     
     // MARK: - Submit Payment Tests
     
-    @Test("PaymentComponent that is initiable - submit payment triggers submit action")
-    func initiableComponent_submitPayment_triggersSubmit() throws {
+    @Test("PaymentComponent that is generic - submit payment triggers submit action")
+    func genericComponent_submitPayment_triggersSubmit() throws {
         // Given - use an initiable component that triggers submit directly
         let dropInFlowManager = DropInFlowManagingMock()
         let preSelectedViewController = makeSUT(
@@ -118,7 +118,7 @@ struct PreselectedPaymentMethodIntegrationTests {
 
     // MARK: - Setup of the system under test
 
-    /// A setup with the payment method router mocked to test actions made by the user for a paymentComponent that is PresentablePaymentComponent
+    /// A setup with the payment method router mocked to test actions made by the user for a paymentComponent that is PaymentComponent
     private func makeSUT(
         mockedRouter: PreselectedPaymentMethodRoutingMock? = nil,
         component: PaymentComponent
@@ -131,12 +131,13 @@ struct PreselectedPaymentMethodIntegrationTests {
         let dropInFlowManagerMock = DropInFlowManagingMock()
         let analyticsProviderMock = AnalyticsProviderMock()
         let routerMock = RouterMock()
-        let configuration: DropInComponent.Configuration = .init()
+        let configuration: DropInConfiguration = .init()
 
         let viewModel = PreselectedPaymentMethodViewModel(
             component: component,
             theme: configuration.theme,
-            localizationParameters: configuration.localizationParameters,
+            localizationParameters: configuration.resolvedLocalizationParameters,
+            showsAllPaymentMethodsButton: true,
             analyticsProvider: analyticsProviderMock,
             dropInAnalyticsConfiguration: DropInAnalyticsConfiguration(configuration: configuration),
             dropInFlowManager: dropInFlowManagerMock
@@ -162,6 +163,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         let assembler = PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssemblerMock,
             componentContainerAssembler: componentContainerAssemblerMock,
+            showsAllPaymentMethodsButton: true,
             configuration: .init(),
             dropInFlowManager: dropInFlowManager,
             partialPaymentDelegate: nil,
@@ -271,7 +273,7 @@ struct PreselectedPaymentMethodIntegrationTests {
             switch self {
             case .visa:
                 let storedCardPaymentMethod = try! AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
-                return StoredCardComponent(
+                return StoredCardSecurityCodeComponent(
                     storedCardPaymentMethod: storedCardPaymentMethod,
                     context: Dummy.context(with: Amount(value: 100, currencyCode: "EUR")),
                     theme: CheckoutTheme()
@@ -279,7 +281,7 @@ struct PreselectedPaymentMethodIntegrationTests {
 
             case .visaWithoutAmount:
                 let storedCardPaymentMethod = try! AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
-                return StoredCardComponent(
+                return StoredCardSecurityCodeComponent(
                     storedCardPaymentMethod: storedCardPaymentMethod,
                     context: Dummy.context(with: nil),
                     theme: CheckoutTheme()
@@ -287,7 +289,7 @@ struct PreselectedPaymentMethodIntegrationTests {
 
             case .visaWithZeroAmount:
                 let storedCardPaymentMethod = try! AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
-                return StoredCardComponent(
+                return StoredCardSecurityCodeComponent(
                     storedCardPaymentMethod: storedCardPaymentMethod,
                     context: Dummy.context(with: Amount(value: 0, currencyCode: "EUR")),
                     theme: CheckoutTheme()
@@ -324,7 +326,7 @@ struct PreselectedPaymentMethodIntegrationTests {
             switch self {
             case .visa, .bcmc, .initiableBCMC: "Pay €1.00"
             case .visaWithoutAmount: "Pay"
-            case .visaWithZeroAmount: "Confirm preauthorization"
+            case .visaWithZeroAmount: "Save details"
             }
         }
 

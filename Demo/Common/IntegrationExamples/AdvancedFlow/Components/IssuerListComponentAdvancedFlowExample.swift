@@ -12,7 +12,7 @@ internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvanced
 
     // MARK: - Properties
 
-    internal var issuerListComponent: PresentablePaymentComponent?
+    internal var issuerListComponent: PaymentComponent?
 
     internal weak var presenter: PresenterExampleProtocol?
     

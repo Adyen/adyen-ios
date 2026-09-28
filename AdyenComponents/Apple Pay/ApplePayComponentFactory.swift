@@ -19,6 +19,19 @@ package struct ApplePayComponentFactory: PaymentComponentFactory {
 
     package init() {}
 
+    /// Returns `false` if the device or wallet can't make the payment.
+    ///
+    /// Doesn't create the authorization controller or send analytics.
+    package func isAvailable(
+        for paymentMethod: ApplePayPaymentMethod,
+        configuration: ApplePayConfiguration
+    ) -> Bool {
+        (try? ApplePayComponent.validatedSupportedNetworks(
+            for: paymentMethod,
+            configuration: configuration
+        )) != nil
+    }
+
     package func create(
         with paymentMethod: ApplePayPaymentMethod,
         context: AdyenContext,

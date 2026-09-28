@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Adyen N.V.
+// Copyright (c) 2026 Adyen N.V.
 //
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
@@ -10,7 +10,17 @@
 import XCTest
 
 @MainActor
-class StoredCardComponentTests: XCTestCase {
+class StoredCardSecurityCodeComponentTests: XCTestCase {
+
+    // MARK: - requiresUserInteraction
+
+    func testRequiresUserInteractionIsTrue() {
+        // Given
+        let sut = makeSUT()
+
+        // Then
+        XCTAssertTrue(sut.requiresUserInteraction)
+    }
 
     // MARK: - UI Display
 
@@ -18,7 +28,7 @@ class StoredCardComponentTests: XCTestCase {
     func testUIWithClientKey() {
         // Given
         let sut = makeSUT()
-        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
+        let proxy = StoredCardSecurityCodeComponentProxy(component: sut, testCase: self)
 
         // When
         proxy.present()
@@ -34,7 +44,7 @@ class StoredCardComponentTests: XCTestCase {
     func testPaymentSubmitWithValidPublicKey() throws {
         // Given
         let sut = makeSUT()
-        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
+        let proxy = StoredCardSecurityCodeComponentProxy(component: sut, testCase: self)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
@@ -67,7 +77,7 @@ class StoredCardComponentTests: XCTestCase {
     func testSubmitShouldCallPaymentDelegateDidSubmit() throws {
         // Given
         let sut = makeSUT()
-        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
+        let proxy = StoredCardSecurityCodeComponentProxy(component: sut, testCase: self)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
@@ -98,7 +108,7 @@ class StoredCardComponentTests: XCTestCase {
     func testPaymentSubmitWithInvalidPublicKey() throws {
         // Given
         let sut = makeSUT(publicKey: "invalid_key")
-        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
+        let proxy = StoredCardSecurityCodeComponentProxy(component: sut, testCase: self)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
@@ -124,7 +134,7 @@ class StoredCardComponentTests: XCTestCase {
     func testCVCLimitForAMEX() {
         // Given
         let sut = makeSUT(brand: .americanExpress)
-        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
+        let proxy = StoredCardSecurityCodeComponentProxy(component: sut, testCase: self)
         proxy.present()
 
         // When / Then - non-numeric characters are filtered
@@ -153,7 +163,7 @@ class StoredCardComponentTests: XCTestCase {
     func testCVCLimitForNonAMEX() {
         // Given
         let sut = makeSUT(brand: .visa)
-        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
+        let proxy = StoredCardSecurityCodeComponentProxy(component: sut, testCase: self)
         proxy.present()
 
         // When / Then - build up to 3 digits
@@ -177,7 +187,7 @@ class StoredCardComponentTests: XCTestCase {
     func testPaymentSubmitWithIncompleteCVC_ShowsErrorAndDoesNotSubmit() {
         // Given
         let sut = makeSUT()
-        let proxy = StoredCardComponentProxy(component: sut, testCase: self)
+        let proxy = StoredCardSecurityCodeComponentProxy(component: sut, testCase: self)
         let delegate = PaymentComponentDelegateMock()
         sut.delegate = delegate
 
@@ -215,7 +225,7 @@ class StoredCardComponentTests: XCTestCase {
         brand: CardBrand = .visa,
         publicKey: String = Dummy.publicKey,
         analyticsProvider: AnyAnalyticsProvider? = nil
-    ) -> StoredCardComponent {
+    ) -> StoredCardSecurityCodeComponent {
         let paymentMethod = StoredCardPaymentMethod(
             type: .card,
             name: "name",
@@ -236,7 +246,7 @@ class StoredCardComponentTests: XCTestCase {
             analyticsProvider: analyticsProvider ?? AnalyticsProviderMock()
         )
 
-        return StoredCardComponent(
+        return StoredCardSecurityCodeComponent(
             storedCardPaymentMethod: paymentMethod,
             context: context,
             theme: CheckoutTheme()
@@ -244,15 +254,15 @@ class StoredCardComponentTests: XCTestCase {
     }
 }
 
-// MARK: - StoredCardComponentProxy
+// MARK: - StoredCardSecurityCodeComponentProxy
 
 @MainActor
-final class StoredCardComponentProxy {
+final class StoredCardSecurityCodeComponentProxy {
 
-    let component: StoredCardComponent
+    let component: StoredCardSecurityCodeComponent
     private let testCase: XCTestCase
 
-    init(component: StoredCardComponent, testCase: XCTestCase) {
+    init(component: StoredCardSecurityCodeComponent, testCase: XCTestCase) {
         self.component = component
         self.testCase = testCase
     }

@@ -44,7 +44,7 @@ extension DropInComponent: FinalizableComponent {
 
 extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
 
-    package func showConfirmation(for component: GenericPaymentComponent, with order: PartialPaymentOrder?) {
+    package func showConfirmation(for component: PaymentComponent, with order: PartialPaymentOrder?) {
 //        let newRootViewController = resolvePreselectedPaymentMethodView(
 //            for: component,
 //            onCancel: { [weak self] in
