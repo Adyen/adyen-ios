@@ -204,12 +204,25 @@ let storedPaymentMethods = checkout.storedPaymentMethods
 
 These replace the interim `checkout.paymentMethods?.regular` and `checkout.paymentMethods?.stored` access paths. Missing payment-method data is represented by an empty array.
 
+#### Payment method availability
+
+In v5, a payment method that couldn't be used on the device only failed when you created its component, for example `ApplePayComponent` throwing `deviceDoesNotSupportApplePay`. In v6, `SessionCheckout` and `AdvancedCheckout` let you check first:
+
+```swift
+if checkout.isPaymentMethodAvailable(for: .applePay) {
+    let component = try checkout.createPaymentComponent(for: .applePay)
+}
+```
+
+`isPaymentMethodAvailable(for:)` never throws. It returns `false` when the payment method isn't in the checkout's payment methods, or when the device or configuration doesn't meet its requirements. Payment methods without such requirements return `true`. Drop-in uses the same check to hide unavailable payment methods.
+
 #### Summary
 
 - `Checkout.setup(...)` replaces `AdyenSession.initialize(...)` for the new public v6 flows.
 - `CheckoutConfiguration` replaces flow-specific setup objects as the main integration entry point.
 - Closure callbacks replace the public delegate-first flow setup for submission and completion handling.
 - `SessionCheckout` and `AdvancedCheckout` create payment components for the active flow.
+- `isPaymentMethodAvailable(for:)` checks whether a payment method can be used on the device before creating its component.
 - Theme and localization are configured on `CheckoutConfiguration` through `theme(_:)` and `localizationProvider(_:)`.
 
 ### Card component
