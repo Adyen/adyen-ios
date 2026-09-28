@@ -190,8 +190,12 @@ extension CheckoutCore: ActionPresentationDelegate {
     package func present(actionData: ActionData, actionViewController: UIViewController) {
         if let onAction = resultCallbacks.onAction {
             onAction(actionData, actionViewController)
+        } else if let presentingViewController = pendingPaymentComponent?.viewController {
+            presentingViewController.present(actionViewController, animated: true)
         } else {
-            pendingPaymentComponent?.viewController.present(actionViewController, animated: true)
+            AdyenAssertion.assertionFailure(
+                message: "No onAction handler is set and no payment component is available to present the action on."
+            )
         }
     }
 }

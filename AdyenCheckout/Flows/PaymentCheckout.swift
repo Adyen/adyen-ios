@@ -67,16 +67,4 @@ public class PaymentCheckout: BaseCheckout {
             throw CheckoutError(error: error, fallback: .paymentMethodFailure)
         }
     }
-
-    /// Sets the callback invoked when the SDK has built the view controller for an action.
-    ///
-    /// Use this to present the action's view controller yourself. When no handler is set,
-    /// the SDK presents it on the payment component that started the flow.
-    /// - Parameter handler: Callback invoked before the action is presented.
-    ///   - actionData: The ``ActionData`` describing the action, including its ``ActionData/type``.
-    ///   - actionViewController: The `UIViewController` the SDK built for the action.
-    public func onAction(_ handler: @escaping ActionHandler) -> Self {
-        resultCallbacks.onAction = handler
-        return self
-    }
 }

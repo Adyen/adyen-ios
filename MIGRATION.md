@@ -204,7 +204,7 @@ These replace the interim `checkout.paymentMethods?.regular` and `checkout.payme
 
 #### Action presentation
 
-`SessionCheckout` and `AdvancedCheckout` expose `onAction(_:)`, invoked once the SDK has built the view controller for an action. It hands over both the action's `ActionData` and the `UIViewController`, so you decide how the action is presented:
+Every checkout flow — `SessionCheckout`, `AdvancedCheckout` and `ActionOnlyCheckout` — exposes `onAction(_:)`, invoked once the SDK has built the view controller for an action. It hands over both the action's `ActionData` and the `UIViewController`, so you decide how the action is presented:
 
 ```swift
 .onAction { actionData, actionViewController in
@@ -213,7 +213,7 @@ These replace the interim `checkout.paymentMethods?.regular` and `checkout.payme
 }
 ```
 
-`ActionData.type` is an `ActionType`, one of `redirect`, `nativeRedirect`, `threeDS2`, `sdk`, `qrCode`, `await` or `voucher`. When no handler is set, the SDK presents the view controller on the payment component that started the flow.
+`ActionData.type` is an `ActionType`, one of `redirect`, `nativeRedirect`, `threeDS2`, `sdk`, `qrCode`, `await` or `voucher`. When no handler is set, the SDK presents the view controller on the payment component that started the flow; in the action-only flow there is no such component, so a handler is required.
 
 `onAction(_:)` replaces the `presentationDelegate:` parameter of `Checkout.setup(...)`, which has been removed along with the public `PresentationDelegate` protocol. Drop the argument and the conformance from your integration.
 
