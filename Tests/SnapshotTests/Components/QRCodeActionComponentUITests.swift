@@ -29,7 +29,7 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         let sut = QRCodeActionComponent(context: Dummy.context)
         sut.configuration.style = customStyle()
-        let presentationDelegate = PresentationDelegateMock()
+        let presentationDelegate = ActionPresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
 
         presentationDelegate.doPresent = { viewController in
@@ -55,7 +55,7 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         let sut = QRCodeActionComponent(context: Dummy.context)
         sut.configuration.style = customStyle()
-        let presentationDelegate = PresentationDelegateMock()
+        let presentationDelegate = ActionPresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
 
         presentationDelegate.doPresent = { viewController in
@@ -81,7 +81,7 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         let sut = QRCodeActionComponent(context: Dummy.context)
         sut.configuration.style = customStyle()
-        let presentationDelegate = PresentationDelegateMock()
+        let presentationDelegate = ActionPresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
 
         presentationDelegate.doPresent = { viewController in

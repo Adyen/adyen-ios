@@ -24,6 +24,7 @@ final class CheckoutOnActionTests: XCTestCase {
     }
 
     override func tearDown() {
+        AdyenAssertion.listener = nil
         configuration = nil
         super.tearDown()
     }
@@ -102,6 +103,26 @@ final class CheckoutOnActionTests: XCTestCase {
 
         // Then
         XCTAssertTrue(presentingViewController.presentedViewControllers.isEmpty)
+    }
+
+    func test_present_withoutHandlerAndWithoutPendingComponent_shouldAssert() {
+        // Given
+        let sut = makeCore(resultCallbacks: ActionOnlyCheckoutCallbackStore())
+        let assertionExpectation = expectation(description: "Expect the assertion to be raised.")
+
+        AdyenAssertion.listener = { message in
+            XCTAssertEqual(
+                message,
+                "No onAction handler is set and no payment component is available to present the action on."
+            )
+            assertionExpectation.fulfill()
+        }
+
+        // When
+        sut.present(actionData: ActionData(type: .await), actionViewController: UIViewController())
+
+        // Then
+        wait(for: [assertionExpectation], timeout: 10)
     }
 
     // MARK: - Private

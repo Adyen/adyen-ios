@@ -7,12 +7,14 @@
 import Foundation
 
 /// Describes the action the SDK is about to present.
-public struct ActionData {
+public struct ActionData: Equatable, Sendable {
 
     /// The type of the action, as returned in the `/payments` response.
     public let type: ActionType
 
-    package init(type: ActionType) {
+    /// Creates action data for the given action type.
+    /// - Parameter type: The type of the action.
+    public init(type: ActionType) {
         self.type = type
     }
 }

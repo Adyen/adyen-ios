@@ -52,7 +52,7 @@ import XCTest
                 twint: twintSpy
             )
 
-            let presentationDelegateMock = PresentationDelegateMock()
+            let presentationDelegateMock = ActionPresentationDelegateMock()
             presentationDelegateMock.doPresent = { viewController in
                 let alertController = try XCTUnwrap(viewController as? UIAlertController)
                 XCTAssertEqual(alertController.message, expectedAlertMessage)
@@ -170,7 +170,7 @@ import XCTest
                 twint: twintSpy
             )
 
-            let presentationDelegateMock = PresentationDelegateMock()
+            let presentationDelegateMock = ActionPresentationDelegateMock()
             presentationDelegateMock.doPresent = { viewController in
                 let alertController = try XCTUnwrap(viewController as? UIAlertController)
                 XCTAssertTrue(alertController === expectedAppPicker)
@@ -244,7 +244,7 @@ import XCTest
             }
 
             let analyticsProviderMock = AnalyticsProviderMock()
-            let presentationDelegate = PresentationDelegateMock()
+            let presentationDelegate = ActionPresentationDelegateMock()
             
             presentationDelegate.doPresent = { viewController in
                 let alertController = try XCTUnwrap(viewController as? UIAlertController)
@@ -372,7 +372,7 @@ import XCTest
                 twint: twintSpy
             )
 
-            let presentationDelegateMock = PresentationDelegateMock()
+            let presentationDelegateMock = ActionPresentationDelegateMock()
             presentationDelegateMock.doPresent = { viewController in
                 let alertController = try XCTUnwrap(viewController as? UIAlertController)
                 XCTAssertTrue(alertController === expectedAppPicker)

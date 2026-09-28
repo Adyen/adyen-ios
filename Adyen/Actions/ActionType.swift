@@ -7,7 +7,7 @@
 import Foundation
 
 /// The type of a follow-up action, as returned in the `/payments` response.
-public enum ActionType: String, Decodable {
+public enum ActionType: String, Decodable, Sendable {
 
     /// The shopper is redirected to a URL in a web context.
     case redirect

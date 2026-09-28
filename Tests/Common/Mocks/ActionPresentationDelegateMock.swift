@@ -9,7 +9,7 @@ import Adyen
 import Foundation
 import XCTest
 
-final class PresentationDelegateMock: ActionPresentationDelegate {
+final class ActionPresentationDelegateMock: ActionPresentationDelegate {
 
     // MARK: - presentComponent
 

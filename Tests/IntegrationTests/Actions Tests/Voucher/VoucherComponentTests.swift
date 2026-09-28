@@ -14,7 +14,7 @@ class VoucherComponentTests: XCTestCase {
 
     var sut: VoucherComponent!
 
-    var presentationDelegate: PresentationDelegateMock!
+    var presentationDelegate: ActionPresentationDelegateMock!
 
     override func run() {
         AdyenDependencyValues.runTestWithValues {
@@ -26,7 +26,7 @@ class VoucherComponentTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        presentationDelegate = PresentationDelegateMock()
+        presentationDelegate = ActionPresentationDelegateMock()
         sut = VoucherComponent(context: Dummy.context)
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "test_table")
         sut.presentationDelegate = presentationDelegate

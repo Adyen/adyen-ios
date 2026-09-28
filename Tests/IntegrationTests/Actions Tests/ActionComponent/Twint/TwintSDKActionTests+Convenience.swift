@@ -89,11 +89,11 @@ import XCTest
             return component
         }
     
-        // MARK: PresentationDelegateMock
+        // MARK: ActionPresentationDelegateMock
     
-        /// PresentationDelegateMock that fails when `doPresent` is called
-        static func failingPresentationDelegateMock() -> PresentationDelegateMock {
-            let presentationDelegateMock = PresentationDelegateMock()
+        /// ActionPresentationDelegateMock that fails when `doPresent` is called
+        static func failingPresentationDelegateMock() -> ActionPresentationDelegateMock {
+            let presentationDelegateMock = ActionPresentationDelegateMock()
             presentationDelegateMock.doPresent = { _ in
                 XCTFail("Nothing should have been displayed")
             }

@@ -447,7 +447,7 @@ class AuthenticationComponentTests: XCTestCase {
             let delegate = ActionComponentDelegateMock()
         
             // A mock for the one which will present the screens if needed.
-            let presentationDelegateMock = PresentationDelegateMock()
+            let presentationDelegateMock = ActionPresentationDelegateMock()
         
             // A mock for the 3ds2 sdk
             let mockService = ThreeDSServiceableMock()
@@ -571,7 +571,7 @@ class AuthenticationComponentTests: XCTestCase {
             let delegate = ActionComponentDelegateMock()
         
             // A mock for the one which will present the screens if needed.
-            let presentationDelegateMock = PresentationDelegateMock()
+            let presentationDelegateMock = ActionPresentationDelegateMock()
         
             // A mock for the 3ds2 sdk
             let mockService = ThreeDSServiceableMock()
@@ -714,7 +714,7 @@ class AuthenticationComponentTests: XCTestCase {
             let delegate = ActionComponentDelegateMock()
         
             // A mock for the one which will present the screens if needed.
-            let presentationDelegateMock = PresentationDelegateMock()
+            let presentationDelegateMock = ActionPresentationDelegateMock()
         
             // A mock for the 3ds2 sdk, which would successfully complete a challenge.
             let mockService = ThreeDSServiceableMock()
@@ -819,7 +819,7 @@ class AuthenticationComponentTests: XCTestCase {
             let delegate = ActionComponentDelegateMock()
     
             // A mock for the one which will present the screens if needed.
-            let presentationDelegateMock = PresentationDelegateMock()
+            let presentationDelegateMock = ActionPresentationDelegateMock()
     
             // A mock for the 3ds2 sdk, which would successfully complete a challenge.
             let mockService = ThreeDSServiceableMock()

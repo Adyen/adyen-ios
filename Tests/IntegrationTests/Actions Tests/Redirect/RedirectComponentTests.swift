@@ -244,7 +244,7 @@ class RedirectComponentTests: XCTestCase {
     func testRedirectResult() throws {
         // Given
         let sut = RedirectComponent(context: Dummy.context)
-        let presentationDelegate = PresentationDelegateMock()
+        let presentationDelegate = ActionPresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate

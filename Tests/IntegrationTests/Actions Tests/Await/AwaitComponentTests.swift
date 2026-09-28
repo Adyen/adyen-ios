@@ -59,7 +59,7 @@ class AwaitComponentTests: XCTestCase {
 
         let sut = AwaitComponent(context: Dummy.context)
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        let presentationDelegate = PresentationDelegateMock()
+        let presentationDelegate = ActionPresentationDelegateMock()
         sut.presentationDelegate = presentationDelegate
 
         let presentationExpectation = expectation(description: "expect presentation delegate to be called")
@@ -103,7 +103,7 @@ class AwaitComponentTests: XCTestCase {
         sut.configuration.style = style
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
-        let presentationDelegate = PresentationDelegateMock()
+        let presentationDelegate = ActionPresentationDelegateMock()
         let waitExpectation = expectation(description: "Wait for the presentationDelegate to be called.")
         presentationDelegate.doPresent = { viewController in
             XCTAssertNotNil(viewController as? ActionViewController)
