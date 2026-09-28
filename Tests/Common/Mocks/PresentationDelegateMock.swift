@@ -9,13 +9,7 @@ import Adyen
 import Foundation
 import XCTest
 
-final class PresentationDelegateMock: NavigationDelegate {
-
-    var doDismiss: (((() -> Void)?) -> Void)?
-
-    func dismiss(completion: (() -> Void)?) {
-        doDismiss?(completion)
-    }
+final class PresentationDelegateMock: ActionPresentationDelegate {
 
     // MARK: - presentComponent
 
@@ -25,14 +19,16 @@ final class PresentationDelegateMock: NavigationDelegate {
     }
 
     var presentComponentReceivedViewController: UIViewController?
+    var presentComponentReceivedActionData: ActionData?
     var doPresent: ((_ viewController: UIViewController) throws -> Void)?
 
-    func present(viewController: UIViewController) {
+    func present(actionData: ActionData, actionViewController: UIViewController) {
         presentComponentCallsCount += 1
-        presentComponentReceivedViewController = viewController
-        
+        presentComponentReceivedViewController = actionViewController
+        presentComponentReceivedActionData = actionData
+
         do {
-            try doPresent?(viewController)
+            try doPresent?(actionViewController)
         } catch {
             XCTFail(error.localizedDescription)
         }
