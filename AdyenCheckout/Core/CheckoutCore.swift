@@ -41,7 +41,6 @@ package final class CheckoutCore: CheckoutCoreProtocol {
     package let session: SessionProtocol?
 
     package let configuration: CheckoutConfiguration
-    package weak var presentationDelegate: ActionPresentationDelegate?
     package let adyenContext: AdyenContext
     package let resultCallbacks: any CheckoutResultCallbackStore
     package let callbackHandler: any CheckoutCallbackHandling
@@ -68,7 +67,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
             configuration: actionComponentConfiguration
         )
         actionHandlingComponent.delegate = self
-        actionHandlingComponent.presentationDelegate = presentationDelegate
+        actionHandlingComponent.presentationDelegate = self
         return actionHandlingComponent
     }()
 
@@ -82,18 +81,15 @@ package final class CheckoutCore: CheckoutCoreProtocol {
         session: SessionProtocol? = nil,
         paymentMethods: PaymentMethods? = nil,
         adyenContext: AdyenContext,
-        presentationDelegate: ActionPresentationDelegate?,
         resultCallbacks: any CheckoutResultCallbackStore,
         callbackHandler: any CheckoutCallbackHandling
     ) {
         self.configuration = configuration
         self.session = session
         self.paymentMethods = paymentMethods ?? session?.state.paymentMethods
-        self.presentationDelegate = presentationDelegate
         self.adyenContext = adyenContext
         self.resultCallbacks = resultCallbacks
         self.callbackHandler = callbackHandler
-        self.session?.presentationDelegate = presentationDelegate
     }
 
     deinit {

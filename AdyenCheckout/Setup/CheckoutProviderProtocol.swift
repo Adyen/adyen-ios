@@ -15,21 +15,18 @@ internal protocol CheckoutProviding: AdyenSessionProviding {
     func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
-        callbackStore: SessionCheckoutCallbackStore,
-        presentationDelegate: ActionPresentationDelegate?
+        callbackStore: SessionCheckoutCallbackStore
     ) async throws -> CheckoutCoreProtocol
 
     func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
-        callbackStore: AdvancedCheckoutCallbackStore,
-        presentationDelegate: ActionPresentationDelegate?
+        callbackStore: AdvancedCheckoutCallbackStore
     ) async throws -> CheckoutCoreProtocol
 
     func setup(
         configuration: CheckoutConfiguration,
-        callbackStore: ActionOnlyCheckoutCallbackStore,
-        presentationDelegate: ActionPresentationDelegate?
+        callbackStore: ActionOnlyCheckoutCallbackStore
     ) async throws -> CheckoutCoreProtocol
 }
 

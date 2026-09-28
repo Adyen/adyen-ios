@@ -21,19 +21,16 @@ public enum Checkout {
     /// - Parameters:
     ///   - sessionResponse: The response from the `/sessions` call.
     ///   - configuration: The checkout configuration.
-    ///   - presentationDelegate: Optional delegate for handling UI presentation.
     /// - Returns: A session checkout instance exposing session-compatible APIs.
     /// - Throws: ``CheckoutError`` if the checkout session cannot be established.
     ///   Inspect ``CheckoutError/code`` for the specific failure reason.
     public static func setup(
         with sessionResponse: SessionResponse,
-        configuration: CheckoutConfiguration,
-        presentationDelegate: PresentationDelegate? = nil
+        configuration: CheckoutConfiguration
     ) async throws -> SessionCheckout {
         try await setup(
             with: sessionResponse,
             configuration: configuration,
-            presentationDelegate: presentationDelegate,
             provider: CheckoutProvider.default
         )
     }
@@ -42,18 +39,15 @@ public enum Checkout {
     /// - Parameters:
     ///   - paymentMethods: The payment methods from the `/paymentMethods` response.
     ///   - configuration: The checkout configuration.
-    ///   - presentationDelegate: Optional delegate for handling UI presentation.
     /// - Returns: An advanced checkout instance exposing advanced-flow APIs.
     /// - Throws: ``CheckoutError`` if checkout setup fails. Inspect ``CheckoutError/code`` for the specific failure reason.
     public static func setup(
         with paymentMethods: PaymentMethods,
-        configuration: CheckoutConfiguration,
-        presentationDelegate: PresentationDelegate? = nil
+        configuration: CheckoutConfiguration
     ) async throws -> AdvancedCheckout {
         try await setup(
             with: paymentMethods,
             configuration: configuration,
-            presentationDelegate: presentationDelegate,
             provider: CheckoutProvider.default
         )
     }
@@ -61,16 +55,13 @@ public enum Checkout {
     /// Sets up checkout for action handling only.
     /// - Parameters:
     ///   - configuration: The checkout configuration.
-    ///   - presentationDelegate: Optional delegate for handling UI presentation.
     /// - Returns: An action-only checkout instance exposing action handling APIs.
     /// - Throws: ``CheckoutError`` if checkout setup fails. Inspect ``CheckoutError/code`` for the specific failure reason.
     public static func setup(
-        configuration: CheckoutConfiguration,
-        presentationDelegate: PresentationDelegate? = nil
+        configuration: CheckoutConfiguration
     ) async throws -> ActionOnlyCheckout {
         try await setup(
             configuration: configuration,
-            presentationDelegate: presentationDelegate,
             provider: CheckoutProvider.default
         )
     }
@@ -118,7 +109,6 @@ internal extension Checkout {
     static func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
-        presentationDelegate: ActionPresentationDelegate? = nil,
         provider: CheckoutProviding
     ) async throws -> SessionCheckout {
         let callbackStore = SessionCheckoutCallbackStore()
@@ -126,7 +116,6 @@ internal extension Checkout {
             with: sessionResponse,
             configuration: configuration,
             callbackStore: callbackStore,
-            presentationDelegate: presentationDelegate,
             provider: provider
         )
         return SessionCheckout(core: core, callbackStore: callbackStore)
@@ -135,7 +124,6 @@ internal extension Checkout {
     static func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
-        presentationDelegate: ActionPresentationDelegate? = nil,
         provider: CheckoutProviding
     ) async throws -> AdvancedCheckout {
         let callbackStore = AdvancedCheckoutCallbackStore()
@@ -143,7 +131,6 @@ internal extension Checkout {
             with: paymentMethods,
             configuration: configuration,
             callbackStore: callbackStore,
-            presentationDelegate: presentationDelegate,
             provider: provider
         )
         return AdvancedCheckout(core: core, callbackStore: callbackStore)
@@ -151,14 +138,12 @@ internal extension Checkout {
 
     static func setup(
         configuration: CheckoutConfiguration,
-        presentationDelegate: ActionPresentationDelegate? = nil,
         provider: CheckoutProviding
     ) async throws -> ActionOnlyCheckout {
         let callbackStore = ActionOnlyCheckoutCallbackStore()
         let core = try await setup(
             configuration: configuration,
             callbackStore: callbackStore,
-            presentationDelegate: presentationDelegate,
             provider: provider
         )
         return ActionOnlyCheckout(core: core, callbackStore: callbackStore)
@@ -168,14 +153,12 @@ internal extension Checkout {
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
         callbackStore: SessionCheckoutCallbackStore,
-        presentationDelegate: ActionPresentationDelegate? = nil,
         provider: CheckoutProviding = CheckoutProvider.default
     ) async throws -> CheckoutCoreProtocol {
         try await provider.setup(
             with: sessionResponse,
             configuration: configuration,
-            callbackStore: callbackStore,
-            presentationDelegate: presentationDelegate
+            callbackStore: callbackStore
         )
     }
 
@@ -183,27 +166,23 @@ internal extension Checkout {
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
         callbackStore: AdvancedCheckoutCallbackStore,
-        presentationDelegate: ActionPresentationDelegate? = nil,
         provider: CheckoutProviding = CheckoutProvider.default
     ) async throws -> CheckoutCoreProtocol {
         try await provider.setup(
             with: paymentMethods,
             configuration: configuration,
-            callbackStore: callbackStore,
-            presentationDelegate: presentationDelegate
+            callbackStore: callbackStore
         )
     }
 
     static func setup(
         configuration: CheckoutConfiguration,
         callbackStore: ActionOnlyCheckoutCallbackStore,
-        presentationDelegate: ActionPresentationDelegate? = nil,
         provider: CheckoutProviding = CheckoutProvider.default
     ) async throws -> CheckoutCoreProtocol {
         try await provider.setup(
             configuration: configuration,
-            callbackStore: callbackStore,
-            presentationDelegate: presentationDelegate
+            callbackStore: callbackStore
         )
     }
 }

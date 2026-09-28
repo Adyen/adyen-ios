@@ -18,9 +18,6 @@ package final class Session: SessionProtocol {
     /// The session context information.
     package internal(set) var state: Session.State
     
-    /// The presentation delegate.
-    package weak var presentationDelegate: ActionPresentationDelegate?
-    
     internal let context: AdyenContext
     
     package var showRemovePaymentMethodButton: Bool {
@@ -47,11 +44,9 @@ package final class Session: SessionProtocol {
     internal init(
         state: Session.State,
         baseAPIClient: AsyncAPIClientProtocol,
-        context: AdyenContext,
-        presentationDelegate: ActionPresentationDelegate? = nil
+        context: AdyenContext
     ) {
         self.state = state
-        self.presentationDelegate = presentationDelegate
         self.baseAPIClient = baseAPIClient
         self.context = context
     }

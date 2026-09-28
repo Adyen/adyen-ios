@@ -129,8 +129,7 @@ let configuration = try CheckoutConfiguration(
 
 let checkout = try await Checkout.setup(
     with: sessionResponse,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 .onBeforeSubmit { data in
     .proceed(data: data, sessionData: nil)
@@ -174,8 +173,7 @@ let configuration = try CheckoutConfiguration(
 
 let checkout = try await Checkout.setup(
     with: paymentMethods,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 .onSubmit { data in
     try await callPayments(with: data)
@@ -217,6 +215,8 @@ These replace the interim `checkout.paymentMethods?.regular` and `checkout.payme
 
 `ActionData.type` is an `ActionType`, one of `redirect`, `nativeRedirect`, `threeDS2`, `sdk`, `qrCode`, `await` or `voucher`. When no handler is set, the SDK presents the view controller on the payment component that started the flow.
 
+`onAction(_:)` replaces the `presentationDelegate:` parameter of `Checkout.setup(...)`, which has been removed along with the public `PresentationDelegate` protocol. Drop the argument and the conformance from your integration.
+
 #### Summary
 
 - `Checkout.setup(...)` replaces `AdyenSession.initialize(...)` for the new public v6 flows.
@@ -224,6 +224,7 @@ These replace the interim `checkout.paymentMethods?.regular` and `checkout.payme
 - Closure callbacks replace the public delegate-first flow setup for submission and completion handling.
 - `SessionCheckout` and `AdvancedCheckout` create payment components for the active flow.
 - `onAction(_:)` exposes the action's `ActionData` and the `UIViewController` the SDK built for it.
+- `PresentationDelegate` and the `presentationDelegate:` parameter of `Checkout.setup(...)` are removed in favour of `onAction(_:)`.
 - Theme and localization are configured on `CheckoutConfiguration` through `theme(_:)` and `localizationProvider(_:)`.
 
 ### Card component
@@ -306,8 +307,7 @@ component.delegate = self
 ```swift
 let checkout = try await Checkout.setup(
     with: paymentMethods,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 .onSubmit { data in
     try await callPayments(with: data)
