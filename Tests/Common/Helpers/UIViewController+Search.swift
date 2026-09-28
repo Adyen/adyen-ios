@@ -37,8 +37,8 @@ extension UIViewController {
     }
 }
 
-extension UIViewController: PresentationDelegate {
-    public func present(viewController: UIViewController) {
-        self.present(viewController, animated: false, completion: nil)
+extension UIViewController: ActionPresentationDelegate {
+    public func present(actionData: ActionData, actionViewController: UIViewController) {
+        present(actionViewController, animated: false, completion: nil)
     }
 }

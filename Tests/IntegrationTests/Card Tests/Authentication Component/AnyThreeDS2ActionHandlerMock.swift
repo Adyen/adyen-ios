@@ -9,7 +9,7 @@
 import Foundation
 
 final class AnyThreeDS2ActionHandlerMock: AnyThreeDS2ActionHandler {
-    var presentationDelegate: (any Adyen.PresentationDelegate)?
+    var presentationDelegate: (any Adyen.ActionPresentationDelegate)?
     
     var threeDSRequestorAppURL: URL?
 

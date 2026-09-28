@@ -52,7 +52,7 @@ import XCTest
             with twintSpy: TwintSpy,
             configuration: TwintActionConfiguration = .dummy,
             context: AdyenContext = Dummy.context,
-            presentationDelegate: PresentationDelegate?,
+            presentationDelegate: ActionPresentationDelegate?,
             delegate: ActionComponentDelegate?,
             shouldFailPolling: Bool = false
         ) -> TwintSDKActionComponent {
