@@ -83,18 +83,33 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
         internal let showAmount: Bool
         
         internal func title(with localizationParameters: LocalizationParameters?) -> String {
-            var localizedText: String
-            if showAmount,
-               let amount,
-               let formatted = AmountFormatter.formatted(
-                   amount: amount.value / monthValue,
-                   currencyCode: amount.currencyCode
-               ) {
-                localizedText = localizedString(.cardInstallmentsMonthsAndPrice, localizationParameters, String(monthValue), formatted)
-            } else {
-                localizedText = localizedString(.cardInstallmentsMonths, localizationParameters, String(monthValue))
+            localizedString(
+                .cardInstallmentsRegular,
+                localizationParameters,
+                String(monthValue)
+            )
+        }
+
+        internal func subtitle(with localizationParameters: LocalizationParameters?) -> String {
+            guard showAmount,
+                  let amount,
+                  let formattedAmount = AmountFormatter.formatted(
+                      amount: amount.value / monthValue,
+                      currencyCode: amount.currencyCode
+                  ) else {
+                return localizedString(
+                    .cardInstallmentsRegularDescription,
+                    localizationParameters,
+                    String(monthValue)
+                )
             }
-            return localizedText
+
+            return localizedString(
+                .cardInstallmentsRegularDescriptionWithPrice,
+                localizationParameters,
+                String(monthValue),
+                formattedAmount
+            )
         }
     }
     
@@ -127,7 +142,20 @@ extension InstallmentElement: FormPickable {
     }
 
     internal var subtitle: String? {
-        nil
+        switch kind {
+        case .plan(.oneTime):
+            return localizedString(
+                .cardInstallmentsOneTimeDescription,
+                localizationParameters
+            )
+        case .plan(.revolving):
+            return localizedString(
+                .cardInstallmentsRevolvingDescription,
+                localizationParameters
+            )
+        case let .month(month):
+            return month.subtitle(with: localizationParameters)
+        }
     }
 
     internal var trailingText: String? {
