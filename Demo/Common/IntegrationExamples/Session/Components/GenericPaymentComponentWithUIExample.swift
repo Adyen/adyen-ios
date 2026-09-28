@@ -41,7 +41,7 @@ internal final class GenericPaymentComponentWithUIExample: InitialDataFlowProtoc
 
                 // Always present the component's own view controller (e.g. its pay button),
                 // regardless of whether the payment method requires user interaction.
-                self.present(viewController: component.viewController)
+                self.presenter?.present(viewController: component.viewController, completion: nil)
             } catch {
                 self.hideLoading()
                 self.handleError(error)
