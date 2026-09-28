@@ -19,21 +19,29 @@ extension CheckoutCore {
         let checkoutConfiguration = configuration
         let sessionConfiguration = session?.componentConfiguration
         let context = adyenContext
-        let paymentComponentBuilder: DropInPaymentComponentBuilder = { paymentMethod in
-            try CheckoutComponentBuilder.build(
-                forAnyPaymentMethod: paymentMethod,
-                configuration: checkoutConfiguration,
-                sessionConfiguration: sessionConfiguration,
-                context: context
-            )
-        }
+        let paymentComponentProvider = DropInPaymentComponentProvider(
+            isAvailable: { paymentMethod in
+                CheckoutComponentBuilder.isAvailable(
+                    forAnyPaymentMethod: paymentMethod,
+                    configuration: checkoutConfiguration
+                )
+            },
+            build: { paymentMethod in
+                try CheckoutComponentBuilder.build(
+                    forAnyPaymentMethod: paymentMethod,
+                    configuration: checkoutConfiguration,
+                    sessionConfiguration: sessionConfiguration,
+                    context: context
+                )
+            }
+        )
         let dropInComponent = CheckoutComponentBuilder.buildDropIn(
             paymentMethods: paymentMethods,
             configuration: checkoutConfiguration,
             context: context,
             actionComponentConfiguration: actionComponentConfiguration,
             storedPaymentMethodManagementCapability: sessionManagementCapability,
-            paymentComponentBuilder: paymentComponentBuilder
+            paymentComponentProvider: paymentComponentProvider
         )
         dropInComponent.delegate = self
         guard dropInComponent.hasSupportedPaymentMethods else {

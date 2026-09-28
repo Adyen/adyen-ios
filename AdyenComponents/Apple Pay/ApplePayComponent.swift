@@ -66,13 +66,10 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
         context: AdyenContext,
         configuration: ApplePayConfiguration
     ) throws {
-        guard PKPaymentAuthorizationViewController.canMakePayments() else {
-            throw Error.deviceDoesNotSupportApplePay
-        }
-        let supportedNetworks = paymentMethod.supportedNetworks()
-        guard configuration.allowOnboarding || Self.canMakePaymentWith(supportedNetworks) else {
-            throw Error.userCannotMakePayment
-        }
+        let supportedNetworks = try Self.validatedSupportedNetworks(
+            for: paymentMethod,
+            configuration: configuration
+        )
 
         configuration.paymentRequest.supportedNetworks = supportedNetworks
         self.configuration = configuration
@@ -120,9 +117,32 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
         continuation?.resume(returning: success)
     }
 
+    /// Checks the device and wallet prerequisites for Apple Pay without side effects.
+    ///
+    /// - Returns: The networks that the payment request should support.
+    /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplePay` if the device doesn't support Apple Pay.
+    /// - Throws: `ApplePayComponent.Error.userCannotMakePayment` if the payment method has no supported networks,
+    ///   or if onboarding isn't allowed and the user can't pay with any of the supported networks.
+    internal static func validatedSupportedNetworks(
+        for paymentMethod: ApplePayPaymentMethod,
+        configuration: ApplePayConfiguration
+    ) throws -> [PKPaymentNetwork] {
+        guard PKPaymentAuthorizationViewController.canMakePayments() else {
+            throw Error.deviceDoesNotSupportApplePay
+        }
+        let supportedNetworks = paymentMethod.supportedNetworks()
+        // Onboarding can't make up for a payment request without any supported networks.
+        guard !supportedNetworks.isEmpty else {
+            throw Error.userCannotMakePayment
+        }
+        guard configuration.allowOnboarding || canMakePaymentWith(supportedNetworks) else {
+            throw Error.userCannotMakePayment
+        }
+        return supportedNetworks
+    }
+
     private static func canMakePaymentWith(_ networks: [PKPaymentNetwork]) -> Bool {
-        guard !networks.isEmpty else { return false }
-        return PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: networks)
+        PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: networks)
     }
     
     // TODO: turn this into async, as now the sheet dismisses immediately

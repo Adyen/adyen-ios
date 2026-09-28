@@ -40,4 +40,11 @@ package struct BLIKComponentFactory: PaymentComponentFactory {
     package func defaultConfiguration() -> BLIKComponentConfiguration {
         BLIKComponentConfiguration()
     }
+
+    package func isAvailable(
+        for _: Method,
+        configuration _: Configuration
+    ) -> Bool {
+        true
+    }
 }

@@ -21,6 +21,7 @@ import Foundation
 
 package enum CheckoutComponentBuilder {
     
+    // swiftlint:disable function_body_length
     @MainActor
     internal static func build(
         for paymentMethod: PaymentMethod,
@@ -94,6 +95,8 @@ package enum CheckoutComponentBuilder {
         // TODO: for gift card, throw correct error code
         throw CheckoutError(code: .paymentMethodFailure, message: "Payment method \(paymentMethod.type.rawValue) is not supported.")
     }
+
+    // swiftlint:enable function_body_length
     
     /// Builds stored payment components.
     @MainActor
@@ -144,6 +147,96 @@ package enum CheckoutComponentBuilder {
             sessionConfiguration: sessionConfiguration,
             context: context
         )
+    }
+
+    /// Returns whether a component can currently be built for a regular or stored payment method.
+    ///
+    /// The regular-method dispatch mirrors ``build(for:configuration:sessionConfiguration:context:)``.
+    /// Keep both switches in sync when adding a payment method.
+    @MainActor
+    package static func isAvailable(
+        forAnyPaymentMethod paymentMethod: PaymentMethod,
+        configuration: CheckoutConfiguration
+    ) -> Bool {
+        // Stored methods always get a component: neither the stored card factory nor the generic stored component can fail.
+        if paymentMethod is any StoredPaymentMethod {
+            return true
+        }
+
+        switch paymentMethod {
+
+        // components module
+        #if canImport(AdyenComponents)
+            case let blikPaymentMethod as BLIKPaymentMethod:
+                return isAvailable(
+                    using: BLIKComponentFactory(),
+                    paymentMethod: blikPaymentMethod,
+                    configuration: configuration
+                )
+            case let achPaymentMethod as ACHDirectDebitPaymentMethod:
+                return isAvailable(
+                    using: ACHDirectDebitComponentFactory(),
+                    paymentMethod: achPaymentMethod,
+                    configuration: configuration
+                )
+            case let applePayPaymentMethod as ApplePayPaymentMethod:
+                return isAvailable(
+                    using: ApplePayComponentFactory(),
+                    paymentMethod: applePayPaymentMethod,
+                    configuration: configuration
+                )
+            case let genericPaymentMethod as GenericPaymentMethod:
+                return isAvailable(
+                    using: GenericPaymentComponentFactory(),
+                    paymentMethod: genericPaymentMethod,
+                    configuration: configuration
+                )
+        #endif
+
+        // card module
+        #if canImport(AdyenCard)
+            case let cardPaymentMethod as CardPaymentMethod:
+                return isAvailable(
+                    using: CardComponentFactory(),
+                    paymentMethod: cardPaymentMethod,
+                    configuration: configuration
+                )
+        #endif
+
+        // twint module
+        #if canImport(AdyenTwint)
+            case let twintPaymentMethod as TwintPaymentMethod:
+                return isAvailable(
+                    using: TwintComponentFactory(),
+                    paymentMethod: twintPaymentMethod,
+                    configuration: configuration
+                )
+        #endif
+        default:
+            return false
+        }
+    }
+
+    /// Resolves the component configuration and asks the factory whether the component is available.
+    ///
+    /// - Returns: `false` if the configuration can't be resolved or the factory reports the component as unavailable.
+    @MainActor
+    internal static func isAvailable<Factory: PaymentComponentFactory>(
+        using factory: Factory,
+        paymentMethod: Factory.Method,
+        configuration: CheckoutConfiguration
+    ) -> Bool where Factory.Configuration: CheckoutComponentConfiguration {
+        do {
+            let componentConfiguration = try resolveConfiguration(
+                for: paymentMethod,
+                defaultValue: factory.defaultConfiguration(),
+                configuration: configuration
+            )
+            return factory.isAvailable(for: paymentMethod, configuration: componentConfiguration)
+        } catch {
+            adyenPrint("Payment method \(paymentMethod.type.rawValue) is unavailable:", error)
+            return false
+        }
     }
 
     /// Creates a component using the provided factory for standard payment methods.

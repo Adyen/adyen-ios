@@ -36,7 +36,7 @@ internal struct DropInAssembler {
         dropInFlowManager: DropInFlowManaging,
         partialPaymentDelegate: PartialPaymentDelegate?,
         storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?,
-        paymentComponentBuilder: @escaping DropInPaymentComponentBuilder
+        paymentComponentProvider: DropInPaymentComponentProvider
     ) {
         self.title = title
         self.paymentMethods = paymentMethods
@@ -50,7 +50,7 @@ internal struct DropInAssembler {
             context: context,
             configuration: configuration,
             order: nil,
-            paymentComponentBuilder: paymentComponentBuilder
+            paymentComponentProvider: paymentComponentProvider
         )
     }
 
