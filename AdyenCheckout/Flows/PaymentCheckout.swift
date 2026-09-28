@@ -24,6 +24,25 @@ public class PaymentCheckout: BaseCheckout {
         core.paymentMethods?.stored ?? []
     }
 
+    /// Returns whether a payment method from this checkout can be used on the current device.
+    ///
+    /// Use this to decide whether to show a payment method before creating its component.
+    /// Payment methods without device or configuration requirements are always available.
+    /// The result is a snapshot: device or wallet state can change afterwards.
+    ///
+    /// ```swift
+    /// if checkout.isPaymentMethodAvailable(for: .applePay) {
+    ///     let component = try checkout.createPaymentComponent(for: .applePay)
+    /// }
+    /// ```
+    ///
+    /// - Parameter type: The payment method type from the payment methods response.
+    /// - Returns: `true` if a component can be created for the payment method; `false` if the payment method
+    ///   isn't in this checkout's payment methods, or the device or configuration doesn't meet its requirements.
+    public func isPaymentMethodAvailable(for type: PaymentMethodType) -> Bool {
+        core.isPaymentMethodAvailable(for: type)
+    }
+
     /// Creates a payment component for the specified payment method type.
     ///
     /// - Parameter type: The type of payment method to create a component for.
