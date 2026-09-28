@@ -121,13 +121,6 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
 
 // TODO: Migrate to Checkout API — SessionDelegate has been removed in v6.
 
-extension IssuerListComponentExample: PresentationDelegate {
-    internal func present(viewController: UIViewController) {
-        let wrappedViewController = self.viewController(wrapping: viewController)
-        presenter?.present(viewController: wrappedViewController, completion: nil)
-    }
-}
-
 private extension IssuerListComponentExample {
     
     func viewController(wrapping viewController: UIViewController) -> UIViewController {

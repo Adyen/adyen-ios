@@ -120,9 +120,11 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 
         let checkout = try await Checkout.setup(
             with: sessionResponse,
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
+        .onAction { [weak self] _, actionViewController in
+            self?.presenter?.present(viewController: actionViewController, completion: nil)
+        }
         .onBeforeSubmit { [weak self] data in
             guard let self else { return .abort }
             print("onBeforeSubmit: shopperName: \(String(describing: data.shopperName))")
@@ -234,12 +236,5 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
             amount: latestApplePayAmount
         )
         return try await asyncApiClient.performAsync(request)
-    }
-}
-
-extension ApplePayComponentExample: PresentationDelegate {
-
-    func present(viewController: UIViewController) {
-        presenter?.present(viewController: viewController, completion: nil)
     }
 }

@@ -70,9 +70,11 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
         let checkout = try await Checkout.setup(
             with: paymentMethods,
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
+        .onAction { [weak self] _, actionViewController in
+            self?.presenter?.present(viewController: actionViewController, completion: nil)
+        }
         .onSubmit { [weak self] data in
             guard let self else { return .completion(resultCode: "Error") }
             return await self.callPayments(with: data)
@@ -166,12 +168,5 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         // TODO: component cancellation?
         //        component?.cancelIfNeeded()
         presenter?.dismiss(completion: nil)
-    }
-}
-
-extension BLIKComponentAdvancedFlowExample: PresentationDelegate {
-
-    internal func present(viewController: UIViewController) {
-        presenter?.present(viewController: viewController, completion: nil)
     }
 }

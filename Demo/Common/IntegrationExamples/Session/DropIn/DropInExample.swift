@@ -67,9 +67,11 @@ internal final class DropInExample: InitialDataFlowProtocol {
 
         let checkout = try await Checkout.setup(
             with: sessionResponse,
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
+        .onAction { [weak self] _, actionViewController in
+            self?.presenter?.present(viewController: actionViewController, completion: nil)
+        }
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
                 result.resultCode.isSuccess,
@@ -105,12 +107,5 @@ internal final class DropInExample: InitialDataFlowProtocol {
             let title = success ? "Success" : "Error"
             self.presenter?.presentAlert(withTitle: title, message: message)
         }
-    }
-}
-
-extension DropInExample: PresentationDelegate {
-
-    internal func present(viewController: UIViewController) {
-        presenter?.present(viewController: viewController, completion: nil)
     }
 }

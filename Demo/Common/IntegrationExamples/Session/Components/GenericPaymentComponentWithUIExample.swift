@@ -62,9 +62,12 @@ internal final class GenericPaymentComponentWithUIExample: InitialDataFlowProtoc
 
         let checkout = try await Checkout.setup(
             with: sessionResponse,
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
+        .onAction { [weak self] _, actionViewController in
+            self?.presenter?.hideLoadingIndicator()
+            self?.presenter?.present(viewController: actionViewController, completion: nil)
+        }
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
                 result.resultCode.isSuccess,
@@ -100,12 +103,5 @@ internal final class GenericPaymentComponentWithUIExample: InitialDataFlowProtoc
             let title = success ? "Success" : "Error"
             self.presenter?.presentAlert(withTitle: title, message: message)
         }
-    }
-}
-
-extension GenericPaymentComponentWithUIExample: PresentationDelegate {
-    internal func present(viewController: UIViewController) {
-        presenter?.hideLoadingIndicator()
-        presenter?.present(viewController: viewController, completion: nil)
     }
 }

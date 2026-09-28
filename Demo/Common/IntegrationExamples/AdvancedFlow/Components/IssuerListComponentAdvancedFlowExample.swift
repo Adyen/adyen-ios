@@ -178,9 +178,9 @@ extension IssuerListComponentAdvancedFlowExample: ActionComponentDelegate {
     }
 }
 
-extension IssuerListComponentAdvancedFlowExample: PresentationDelegate {
-    internal func present(viewController: UIViewController) {
-        let wrappedViewController = self.viewController(wrapping: viewController)
+extension IssuerListComponentAdvancedFlowExample: ActionPresentationDelegate {
+    internal func present(actionData: ActionData, actionViewController: UIViewController) {
+        let wrappedViewController = viewController(wrapping: actionViewController)
         presenter?.present(viewController: wrappedViewController, completion: nil)
     }
 }
