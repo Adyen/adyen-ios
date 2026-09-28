@@ -214,6 +214,8 @@ These replace the interim `checkout.paymentMethods?.regular` and `checkout.payme
 
 ### Card component
 
+`CheckoutLocalizationKey` now includes the Android-aligned `cardInstallments*` keys for overriding card installment titles and descriptions.
+
 #### Configuration object
 
 ##### Before (v5)

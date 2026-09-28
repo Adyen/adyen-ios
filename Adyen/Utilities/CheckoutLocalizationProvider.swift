@@ -71,6 +71,29 @@ extension CheckoutLocalizationKey {
     public static let cardDualBrandSelectorDescription = CheckoutLocalizationKey(localizationKey: .creditCardDualBrandDescription)
     public static let cardSocialSecurityNumber = CheckoutLocalizationKey(name: "cardSocialSecurityNumber")
     public static let cardSocialSecurityNumberInvalid = CheckoutLocalizationKey(name: "cardSocialSecurityNumberInvalid")
+    /// The card installments section title.
+    public static let cardInstallmentsTitle = CheckoutLocalizationKey(localizationKey: .cardInstallmentsTitle)
+    /// The one-time payment option title.
+    public static let cardInstallmentsOneTime = CheckoutLocalizationKey(localizationKey: .cardInstallmentsOneTime)
+    /// The revolving payment option title.
+    public static let cardInstallmentsRevolving = CheckoutLocalizationKey(localizationKey: .cardInstallmentsRevolving)
+    /// The regular installments option title. `%@` is replaced by the number of installments.
+    public static let cardInstallmentsRegular = CheckoutLocalizationKey(localizationKey: .cardInstallmentsRegular)
+    /// The card installments picker title.
+    public static let cardInstallmentsPickerTitle = CheckoutLocalizationKey(localizationKey: .cardInstallmentsPickerTitle)
+    /// The card installments picker description.
+    public static let cardInstallmentsPickerDescription = CheckoutLocalizationKey(localizationKey: .cardInstallmentsPickerDescription)
+    /// The one-time payment option description.
+    public static let cardInstallmentsOneTimeDescription = CheckoutLocalizationKey(localizationKey: .cardInstallmentsOneTimeDescription)
+    /// The revolving payment option description.
+    public static let cardInstallmentsRevolvingDescription = CheckoutLocalizationKey(localizationKey: .cardInstallmentsRevolvingDescription)
+    /// The regular installments option description. `%@` is replaced by the number of monthly payments.
+    public static let cardInstallmentsRegularDescription = CheckoutLocalizationKey(localizationKey: .cardInstallmentsRegularDescription)
+    /// The regular installments option description including the installment amount.
+    /// The first `%@` is replaced by the number of payments and the second by the formatted amount.
+    public static let cardInstallmentsRegularDescriptionWithPrice = CheckoutLocalizationKey(
+        localizationKey: .cardInstallmentsRegularDescriptionWithPrice
+    )
 }
 
 // MARK: - Drop-in
@@ -119,6 +142,7 @@ extension CheckoutLocalizationKey {
 
 // swiftlint:enable identifier_name
 
+// TODO: Provide reference doc/link to the file with all SDK keys
 /// An interface for providing selective programmatic overrides of Adyen Checkout UI strings.
 ///
 /// Use this provider when you need to override a small number of strings.
@@ -131,7 +155,6 @@ extension CheckoutLocalizationKey {
 /// translated into the target language. The SDK resolves strings from `Bundle.main` first,
 /// so your translations are picked up automatically with no provider required.
 ///
-// TODO: Provide reference doc/link to the file with all SDK keys
 public protocol CheckoutLocalizationProvider {
     func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String?
 }

@@ -320,7 +320,7 @@ public struct LocalizationKey {
     public static let cardInstallmentsNumberOfInstallments = LocalizationKey(key: "adyen.card.installments.numberOfInstallments")
     /// One time payment
     public static let cardInstallmentsOneTime = LocalizationKey(key: "adyen.card.installments.oneTime")
-    /// Installments payment
+    /// Payment plan
     public static let cardInstallmentsTitle = LocalizationKey(key: "adyen.card.installments.title")
     /// Revolving payment
     public static let cardInstallmentsRevolving = LocalizationKey(key: "adyen.card.installments.revolving")
@@ -330,6 +330,20 @@ public struct LocalizationKey {
     public static let cardInstallmentsMonths = LocalizationKey(key: "adyen.card.installments.months")
     /// Method of payment
     public static let cardInstallmentsPlan = LocalizationKey(key: "adyen.card.installments.plan")
+    /// %@ Installments
+    public static let cardInstallmentsRegular = LocalizationKey(key: "adyen.card.installments.regular")
+    /// Installments
+    public static let cardInstallmentsPickerTitle = LocalizationKey(key: "adyen.card.installments.picker.title")
+    /// Split the total cost into monthly payments instead of paying the full amount today.
+    public static let cardInstallmentsPickerDescription = LocalizationKey(key: "adyen.card.installments.picker.description")
+    /// Pay the full amount today.
+    public static let cardInstallmentsOneTimeDescription = LocalizationKey(key: "adyen.card.installments.oneTime.description")
+    /// Predetermined amount each month
+    public static let cardInstallmentsRevolvingDescription = LocalizationKey(key: "adyen.card.installments.revolving.description")
+    /// %@ monthly payments
+    public static let cardInstallmentsRegularDescription = LocalizationKey(key: "adyen.card.installments.regular.description")
+    /// %@ monthly payments of %@
+    public static let cardInstallmentsRegularDescriptionWithPrice = LocalizationKey(key: "adyen.card.installments.regular.description.withPrice")
     /// Bank account holder name
     public static let bacsHolderNameFieldTitle = LocalizationKey(key: "adyen.bacs.holderNameField.title")
     /// Bank account number
