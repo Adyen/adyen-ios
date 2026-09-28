@@ -184,3 +184,14 @@ private extension CheckoutCore {
     }
     
 }
+
+extension CheckoutCore: ActionPresentationDelegate {
+
+    package func present(actionData: ActionData, actionViewController: UIViewController) {
+        if let onAction = resultCallbacks.onAction {
+            onAction(actionData, actionViewController)
+        } else {
+            pendingPaymentComponent?.viewController.present(actionViewController, animated: true)
+        }
+    }
+}

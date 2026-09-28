@@ -9,8 +9,8 @@ import UIKit
 
 /// Delegates `ViewController`'s presentation.
 @MainActor
-public protocol PresentationDelegate: AnyObject {
-    
-    /// Asks the delegate to present a `UIViewController` as the `delegate` sees fit.
-    func present(viewController: UIViewController)
+package protocol ActionPresentationDelegate: AnyObject {
+
+    /// Asks the delegate to present the action's `UIViewController` as the `delegate` sees fit.
+    func present(actionData: ActionData, actionViewController: UIViewController)
 }
