@@ -112,6 +112,7 @@ class FormViewControllerTests: XCTestCase {
             let toggleLabel = try XCTUnwrap(toggleStack.arrangedSubviews.first as? UILabel)
             let buttonView = try XCTUnwrap(stackView.arrangedSubviews[3] as? FormButtonItemView)
 
+            let expectedInset: CGFloat = scrollEnabled ? 16 : 8
             for size in [CGSize(width: 320, height: 640), CGSize(width: 704, height: 430)] {
                 sut.view.frame = CGRect(origin: .zero, size: size)
                 sut.view.layoutIfNeeded()
@@ -122,11 +123,11 @@ class FormViewControllerTests: XCTestCase {
                 let toggleFrame = toggleLabel.convert(toggleLabel.bounds, to: sut.view)
                 let buttonFrame = buttonView.submitButton.convert(buttonView.submitButton.bounds, to: sut.view)
 
-                XCTAssertEqual(numberFrame.minX, safeArea.minX + 16, accuracy: 0.5)
+                XCTAssertEqual(numberFrame.minX, safeArea.minX + expectedInset, accuracy: 0.5)
                 XCTAssertEqual(expiryFrame.minX, numberFrame.minX, accuracy: 0.5)
                 XCTAssertEqual(toggleFrame.minX, numberFrame.minX, accuracy: 0.5)
                 XCTAssertEqual(buttonFrame.minX, numberFrame.minX, accuracy: 0.5)
-                XCTAssertEqual(buttonFrame.maxX, safeArea.maxX - 16, accuracy: 0.5)
+                XCTAssertEqual(buttonFrame.maxX, safeArea.maxX - expectedInset, accuracy: 0.5)
                 XCTAssertEqual(securityCodeFrame.minX - expiryFrame.maxX, 16, accuracy: 0.5)
                 if let scrollView = contentView as? UIScrollView {
                     XCTAssertEqual(scrollView.contentSize.width, scrollView.bounds.width, accuracy: 0.5)
