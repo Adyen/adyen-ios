@@ -92,6 +92,7 @@ internal struct InstallmentElement: CustomStringConvertible, Equatable {
 
         internal func subtitle(with localizationParameters: LocalizationParameters?) -> String {
             guard showAmount,
+                  monthValue > 1,
                   let amount,
                   let formattedAmount = AmountFormatter.formatted(
                       amount: amount.value / monthValue,
