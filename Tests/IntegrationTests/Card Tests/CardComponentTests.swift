@@ -1232,6 +1232,19 @@ class CardComponentTests: XCTestCase {
         XCTAssertEqual(installmentsItemView.footerLabel.text, "Pay the full amount today")
     }
 
+    func test_installmentElement_withInvalidMonthValue_shouldUseDescriptionWithoutAmount() {
+        let sut = InstallmentElement(
+            kind: .month(.init(
+                monthValue: 0,
+                amount: Amount(value: 100, currencyCode: "EUR"),
+                showAmount: true
+            )),
+            localizationParameters: nil
+        )
+
+        XCTAssertEqual(sut.subtitle, "0 monthly payments")
+    }
+
     func test_installmentsField_withLocalizationProvider_shouldRenderAndroidAlignedOverrides() throws {
         let sectionTitle = "Choose a payment plan"
         let oneTimeTitle = "Pay once"
