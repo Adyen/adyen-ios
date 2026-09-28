@@ -10,18 +10,25 @@
 import Foundation
 
 internal struct PaymentMethodSection: Identifiable {
+    internal struct HeaderTrailingButton {
+        internal let title: String
+        internal let handler: () -> Void
+    }
 
     internal let id = UUID()
     internal let headerTitle: String?
+    internal let headerTrailingButton: HeaderTrailingButton?
     internal let items: [PaymentMethodItem]
     internal let theme: CheckoutTheme
 
     internal init(
         headerTitle: String? = nil,
+        headerTrailingButton: HeaderTrailingButton? = nil,
         items: [PaymentMethodItem],
         theme: CheckoutTheme
     ) {
         self.headerTitle = headerTitle
+        self.headerTrailingButton = headerTrailingButton
         self.items = items
         self.theme = theme
     }

@@ -99,7 +99,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
         // component.delegate = session
     }
 
-    private func present(_ component: PresentablePaymentComponent) {
+    private func present(_ component: PaymentComponent) {
         presenter?.present(viewController: component.viewController, completion: nil)
     }
 

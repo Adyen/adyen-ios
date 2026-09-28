@@ -12,14 +12,20 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
     package convenience init(
         style: Style = .init(),
         title: String?,
+        configuration: FormPickerConfiguration = .init(),
+        theme: CheckoutTheme = .default,
         options: [Option],
+        selectedOption: Option? = nil,
         selectionHandler: @escaping (Option) -> Void
     ) {
         self.init(
             localizationParameters: nil,
             style: style,
             title: title,
+            configuration: configuration,
+            theme: theme,
             options: options,
+            selectedOption: selectedOption,
             selectionHandler: selectionHandler
         )
     }
@@ -28,29 +34,48 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
         localizationParameters: LocalizationParameters? = nil,
         style: Style = .init(),
         title: String?,
+        configuration: FormPickerConfiguration = .init(),
+        theme: CheckoutTheme = .default,
         options: [Option],
+        selectedOption: Option? = nil,
         selectionHandler: @escaping (Option) -> Void
     ) {
+        let selectedOptionIdentifier = selectedOption?.identifier
         let viewModel = SearchViewController.ViewModel(
             localizationParameters: localizationParameters,
             style: style,
             searchBarPlaceholder: nil,
-            shouldFocusSearchBarOnAppearance: true
+            shouldShowSearchBar: configuration.isSearchEnabled,
+            shouldFocusSearchBarOnAppearance: configuration.isSearchEnabled
         ) { searchTerm, handler in
             
             let results = options
                 .filter { $0.matches(searchTerm: searchTerm) }
-                .map { $0.toListItem(with: selectionHandler) }
+                .map {
+                    $0.toListItem(
+                        isSelected: $0.identifier == selectedOptionIdentifier,
+                        selectedBackgroundColor: theme.colors.container,
+                        selectionHandler: selectionHandler
+                    )
+                }
             
             handler(results)
         }
         
+        let headerView = configuration.header.flatMap {
+            FormPickerHeaderView(header: $0, theme: theme)
+        }
+
         let searchViewController = SearchViewController(
             viewModel: viewModel,
-            emptyView: EmptyView()
+            emptyView: EmptyView(),
+            headerView: headerView
         )
         
-        searchViewController.title = title
+        // When a header is shown the title lives in the header; otherwise fall back to the navigation bar title.
+        if headerView == nil {
+            searchViewController.title = title
+        }
         
         super.init(rootViewController: searchViewController)
         
@@ -72,21 +97,33 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
     }
 }
 
-// MARK: FormPickerElement Convenience
+// MARK: - FormPickable Convenience
 
 private extension FormPickable {
-    
-    func toListItem(with selectionHandler: @escaping (Self) -> Void) -> ListItem {
-        .init(
+
+    func toListItem(
+        isSelected: Bool,
+        selectedBackgroundColor: UIColor,
+        selectionHandler: @escaping (Self) -> Void
+    ) -> ListItem {
+        var style = ListItemStyle()
+
+        if isSelected {
+            style.backgroundColor = selectedBackgroundColor
+        }
+
+        return ListItem(
             title: title,
             subtitle: subtitle,
             icon: listItemIcon,
             trailingInfo: trailingText.map { .text($0) },
+            style: style,
             identifier: identifier,
+            isSelected: isSelected,
             selectionHandler: { selectionHandler(self) }
         )
     }
-    
+
     func matches(searchTerm: String) -> Bool {
         if searchTerm.isEmpty {
             return true
@@ -101,7 +138,7 @@ private extension FormPickable {
         
         return subtitle?.range(of: searchTerm, options: .caseInsensitive) != nil
     }
-    
+
     private var listItemIcon: ListItem.Icon? {
         guard let icon else { return nil }
         return .init(location: .local(image: icon))

@@ -15,8 +15,13 @@ import Foundation
 public class PaymentCheckout: BaseCheckout {
 
     /// The payment methods available for this checkout flow.
-    public var paymentMethods: PaymentMethods? {
-        core.paymentMethods
+    public var paymentMethods: [PaymentMethod] {
+        core.paymentMethods?.regular ?? []
+    }
+
+    /// The stored payment methods available for this checkout flow.
+    public var storedPaymentMethods: [StoredPaymentMethod] {
+        core.paymentMethods?.stored ?? []
     }
 
     /// Creates a payment component for the specified payment method type.
@@ -48,10 +53,18 @@ public class PaymentCheckout: BaseCheckout {
         }
     }
 
-    // TODO: Dropin: When dropin is supported then we should expose this method.
-    // Currently by exposing this method we make public all related types to AnyDropInComponent. Which are V5 api and not v6.
-//    /// Creates a Drop-in component with all available payment methods.
-//    public func createDropIn() -> (any AnyDropInComponent)? {
-//        core.createDropIn()
-//    }
+    /// Creates a Drop-in component with all available supported payment methods.
+    ///
+    /// Each call returns a new Drop-in component.
+    ///
+    /// - Returns: A configured ``CheckoutDropInComponent``.
+    /// - Throws: ``CheckoutError`` with code ``CheckoutError/Code/paymentMethodFailure`` if no supported
+    ///   payment method can be assembled.
+    public func createDropIn() throws -> CheckoutDropInComponent {
+        do {
+            return try core.createDropIn()
+        } catch {
+            throw CheckoutError(error: error, fallback: .paymentMethodFailure)
+        }
+    }
 }

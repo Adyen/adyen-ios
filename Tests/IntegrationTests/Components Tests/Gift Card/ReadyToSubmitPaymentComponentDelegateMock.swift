@@ -5,12 +5,13 @@
 //
 
 @_spi(AdyenInternal) @testable import Adyen
+@testable import AdyenComponents
 import Foundation
 
 final class ReadyToSubmitPaymentComponentDelegateMock: ReadyToSubmitPaymentComponentDelegate {
-    var onShowConfirmation: ((GenericPaymentComponent, PartialPaymentOrder?) -> Void)?
+    var onShowConfirmation: ((PaymentComponent, PartialPaymentOrder?) -> Void)?
 
-    func showConfirmation(for component: GenericPaymentComponent, with order: PartialPaymentOrder?) {
+    func showConfirmation(for component: PaymentComponent, with order: PartialPaymentOrder?) {
         onShowConfirmation?(component, order)
     }
 }

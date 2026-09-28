@@ -20,33 +20,31 @@ public final class CheckoutPaymentComponent {
     internal let paymentComponent: PaymentComponent
     
     /// The view controller of the component.
-    public var viewController: UIViewController? {
-        guard let presentableComponent = paymentComponent as? PresentablePaymentComponent else {
-            return nil
-        }
-        return presentableComponent.viewController
+    public var viewController: UIViewController {
+        paymentComponent.viewController
     }
     
     package init(paymentComponent: PaymentComponent) {
         self.paymentComponent = paymentComponent
     }
 
-    /// Indicates whether the payment component requires user interaction before submitting.
+    /// Indicates whether the payment method requires user interaction before submitting.
     ///
-    /// When `true`, the component has a UI that the shopper must interact with (e.g., filling in card details).
-    /// When `false`, the component can submit immediately without presenting any UI (e.g., direct payment methods).
+    /// When this returns `false`, `submit()` can be called directly to skip a user action (e.g. a button click).
+    /// Rendering the component's `viewController` is optional in this case.
     ///
-    /// Use this property to determine whether to present the component's `viewController` or call `submit()` directly.
+    /// When this returns `true`, the component's `viewController` should be displayed so the shopper can provide
+    /// the required input before calling `submit()`.
     ///
     /// ```swift
-    /// if component.requiresUserInteraction, let componentViewController = component.viewController {
-    ///     present(componentViewController, animated: true)
+    /// if component.requiresUserInteraction {
+    ///     present(component.viewController, animated: true)
     /// } else {
     ///     component.submit()
     /// }
     /// ```
     public var requiresUserInteraction: Bool {
-        viewController != nil
+        paymentComponent.requiresUserInteraction
     }
 
     /// Submits the payment request to initiate the payment process.

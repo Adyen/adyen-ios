@@ -55,4 +55,11 @@ package struct CardComponentFactory<CardMethod: AnyCardPaymentMethod>: PaymentCo
     package func defaultConfiguration() -> CardConfiguration {
         CardConfiguration()
     }
+
+    package func isAvailable(
+        for _: Method,
+        configuration _: Configuration
+    ) -> Bool {
+        true
+    }
 }

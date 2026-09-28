@@ -15,7 +15,7 @@ import UIKit
 
 /// A component that provides a form for Boleto payment.
 @MainActor
-package final class BoletoComponent: PresentablePaymentComponent,
+package final class BoletoComponent: PaymentComponent,
     LoadingComponent,
     AdyenObserver {
 
@@ -27,6 +27,9 @@ package final class BoletoComponent: PresentablePaymentComponent,
     package var paymentMethod: PaymentMethod {
         boletoPaymentMethod
     }
+
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
     
     /// The Component's configuration.
     package var configuration: Configuration

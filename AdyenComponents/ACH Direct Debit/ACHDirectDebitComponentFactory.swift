@@ -51,4 +51,11 @@ package struct ACHDirectDebitComponentFactory: PaymentComponentFactory {
     package func defaultConfiguration() -> ACHDirectDebitConfiguration {
         ACHDirectDebitConfiguration()
     }
+
+    package func isAvailable(
+        for _: Method,
+        configuration _: Configuration
+    ) -> Bool {
+        true
+    }
 }

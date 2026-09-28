@@ -29,17 +29,20 @@ internal struct StoredPaymentMethodManagementAssembler: StoredPaymentMethodManag
     private let localizationParameters: LocalizationParameters?
     private let logoURLProvider: LogoURLProvider
     private let theme: CheckoutTheme
+    private let analyticsProvider: AnyAnalyticsProvider?
 
     // MARK: - Initializers
 
     internal init(
         localizationParameters: LocalizationParameters?,
         logoURLProvider: LogoURLProvider,
-        theme: CheckoutTheme
+        theme: CheckoutTheme,
+        analyticsProvider: AnyAnalyticsProvider?
     ) {
         self.localizationParameters = localizationParameters
         self.logoURLProvider = logoURLProvider
         self.theme = theme
+        self.analyticsProvider = analyticsProvider
     }
 
     // MARK: - StoredPaymentMethodManagementAssemblerProtocol
@@ -57,7 +60,8 @@ internal struct StoredPaymentMethodManagementAssembler: StoredPaymentMethodManag
             paymentMethods: paymentMethods,
             capability: capability,
             mapper: mapper,
-            localizationParameters: localizationParameters
+            localizationParameters: localizationParameters,
+            analyticsProvider: analyticsProvider
         )
         let hostingController = StoredPaymentMethodManagementHostingController(viewModel: viewModel, theme: theme)
         let router = StoredPaymentMethodManagementRouter(

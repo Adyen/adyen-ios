@@ -17,7 +17,7 @@ import UIKit
 
 /// A component that provides a form for ACH Direct Debit payment.
 @MainActor
-package final class ACHDirectDebitComponent: PresentablePaymentComponent,
+package final class ACHDirectDebitComponent: PaymentComponent,
     LoadingComponent {
     
     private enum ViewIdentifier {
@@ -41,6 +41,9 @@ package final class ACHDirectDebitComponent: PresentablePaymentComponent,
     
     /// Component configuration
     package var configuration: ACHDirectDebitConfiguration
+
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
 
     package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
@@ -118,7 +121,11 @@ package final class ACHDirectDebitComponent: PresentablePaymentComponent,
     }
     
     private var storePayment: Bool? {
-        configuration.showStorePaymentMethod ? storeDetailsItem.value : nil
+        if context.amount?.value == 0 {
+            return true
+        }
+
+        return configuration.showStorePaymentMethod ? storeDetailsItem.value : nil
     }
     
     // MARK: - Form Items
@@ -242,10 +249,9 @@ package final class ACHDirectDebitComponent: PresentablePaymentComponent,
             scopeInstance: self,
             postfix: ViewIdentifier.payButtonItem
         )
-        item.title = localizedSubmitButtonTitle(
+        item.title = AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: context.amount,
-            style: .immediate,
-            configuration.localizationParameters
+            localizationParameters: configuration.localizationParameters
         )
         item.buttonSelectionHandler = { [weak self] in
             self?.performSubmit()
@@ -279,7 +285,10 @@ package final class ACHDirectDebitComponent: PresentablePaymentComponent,
                 subtitle: nil // TODO: Add subtitle localization key
             ))
         }
-        if configuration.showStorePaymentMethod {
+        if StorePaymentMethodPolicy.shouldShowConsent(
+            configuredVisible: configuration.showStorePaymentMethod,
+            amount: context.amount
+        ) {
             formViewController.append(storeDetailsItem)
         }
         

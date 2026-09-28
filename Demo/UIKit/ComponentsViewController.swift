@@ -54,6 +54,12 @@ internal final class ComponentsViewController: UIViewController {
         genericPaymentComponentExample.presenter = self
         return genericPaymentComponentExample
     }
+
+    private var genericPaymentComponentWithUIExample: GenericPaymentComponentWithUIExample {
+        let genericPaymentComponentWithUIExample = GenericPaymentComponentWithUIExample()
+        genericPaymentComponentWithUIExample.presenter = self
+        return genericPaymentComponentWithUIExample
+    }
     
     private var genericPaymentComponentAdvancedFlow: GenericPaymentComponentAdvancedFlow {
         let genericPaymentComponentExample = GenericPaymentComponentAdvancedFlow()
@@ -94,7 +100,6 @@ internal final class ComponentsViewController: UIViewController {
     override internal func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Components"
-        
         componentsView.items = [
             [ComponentsItem(title: "Drop In", selectionHandler: presentDropInComponent)],
             [
@@ -109,6 +114,11 @@ internal final class ComponentsViewController: UIViewController {
                     title: "Generic/Redirect Payment",
                     subtitle: "e.g. iDEAL, PayPal, Alipay, ...",
                     selectionHandler: presentGenericPaymentComponent
+                ),
+                ComponentsItem(
+                    title: "Generic Payment (default UI)",
+                    subtitle: "Presents the component's own pay button UI",
+                    selectionHandler: presentGenericPaymentComponentWithUI
                 )
             ],
             [ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)],
@@ -170,6 +180,10 @@ internal final class ComponentsViewController: UIViewController {
         } else {
             start(genericPaymentComponentAdvancedFlow)
         }
+    }
+
+    internal func presentGenericPaymentComponentWithUI() {
+        start(genericPaymentComponentWithUIExample)
     }
 
     internal func presentApplePayComponent() {

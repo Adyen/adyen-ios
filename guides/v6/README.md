@@ -32,7 +32,7 @@ import UIKit
 
 `CheckoutConfiguration` is the checkout-wide container for:
 
-- environment, amount, and client key
+- environment and client key
 - component-specific configuration objects
 - checkout-wide options such as `showsSubmitButton(_:)`
 - theming and localization configured through `CheckoutConfiguration`
@@ -40,7 +40,6 @@ import UIKit
 ```swift
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     CardConfiguration()
@@ -58,7 +57,6 @@ Use the session flow when your backend starts checkout with `/sessions`.
 ```swift
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     CardConfiguration()
@@ -84,7 +82,9 @@ let checkout = try await Checkout.setup(
 let component = try checkout.createPaymentComponent(for: .scheme)
 ```
 
-In session flow, the effective `amount` comes from the `/sessions` response. A client-side `amount` on `CheckoutConfiguration` does not override it. For card-specific session-controlled settings such as `showStorePaymentMethod(_:)`, `installmentConfiguration(_:)`, and `showInstallmentAmount`, see [card-session-flow.md](card-session-flow.md).
+In session flow, the SDK gets the `amount` from the `/sessions` response.
+For card-specific session-controlled settings such as `showStorePaymentMethod(_:)`, `installmentConfiguration(_:)`, and
+`showInstallmentAmount`, see [card-session-flow.md](card-session-flow.md).
 
 `SessionCheckout` can:
 
@@ -98,7 +98,6 @@ Use the advanced flow when your backend starts checkout with `/paymentMethods` a
 ```swift
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     CardConfiguration()
@@ -210,7 +209,6 @@ struct DemoLocalizationProvider: CheckoutLocalizationProvider {
 
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     CardConfiguration()
@@ -225,6 +223,7 @@ Use app-bundle `.strings` or `.xcstrings` files when you want to add a fully new
 Pass incoming URLs to the SDK so active redirect actions can resume after the shopper returns from a browser or external app.
 
 **UIKit - AppDelegate:**
+
 ```swift
 func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
     Checkout.handleReturn(url: url)
@@ -233,6 +232,7 @@ func application(_ app: UIApplication, open url: URL, options: [UIApplication.Op
 ```
 
 **UIKit - SceneDelegate:**
+
 ```swift
 func scene(_ scene: UIScene, openURLContexts contexts: Set<UIOpenURLContext>) {
     guard let url = contexts.first?.url else { return }
@@ -241,6 +241,7 @@ func scene(_ scene: UIScene, openURLContexts contexts: Set<UIOpenURLContext>) {
 ```
 
 **SwiftUI:**
+
 ```swift
 ContentView()
     .onOpenURL { url in Checkout.handleReturn(url: url) }

@@ -41,6 +41,9 @@ package class ListItem: FormItem {
     /// The trailing text of the item.
     package var trailingInfo: TrailingInfoType?
 
+    /// Whether the item is currently selected.
+    package let isSelected: Bool
+
     /// The handler to invoke when the item is selected.
     package var selectionHandler: (() -> Void)?
 
@@ -64,11 +67,12 @@ package class ListItem: FormItem {
     ///   - title: The title of the item.
     ///   - subtitle: The subtitle of the item.
     ///   - icon: The icon of the item.
-    ///   - trailingText: The trailing text.
+    ///   - trailingInfo: The trailing information.
     ///   - style: The list item style.
     ///   - identifier: The `accessibilityIdentifier` to be used on the `ListItem`
-    ///   - selectionHandler: The closure to execute when an item is selected.
     ///   - accessibilityLabel: An optional custom `accessibilityLabel` to use. Defaults to title + subtitle + trailingText joined by a `, `
+    ///   - isSelected: Whether the item is currently selected.
+    ///   - selectionHandler: The closure to execute when an item is selected.
     package init(
         title: String,
         subtitle: String? = nil,
@@ -77,6 +81,7 @@ package class ListItem: FormItem {
         style: ListItemStyle = ListItemStyle(),
         identifier: String? = nil,
         accessibilityLabel: String? = nil,
+        isSelected: Bool = false,
         selectionHandler: (() -> Void)? = nil
     ) {
         self.title = title
@@ -85,6 +90,7 @@ package class ListItem: FormItem {
         self.trailingInfo = trailingInfo
         self.style = style
         self.identifier = identifier
+        self.isSelected = isSelected
         self.accessibilityLabel = accessibilityLabel ?? [
             title,
             subtitle,
