@@ -55,7 +55,11 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
             configuration: configuration
         )
         .onAction { [weak self] _, actionViewController in
-            self?.presenter?.present(viewController: actionViewController, completion: nil)
+            guard let self else { return }
+            self.presenter?.present(
+                viewController: self.viewController(wrapping: actionViewController),
+                completion: nil
+            )
         }
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
@@ -110,6 +114,16 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
         return navigation
     }
     
+    private func viewController(wrapping actionViewController: UIViewController) -> UIViewController {
+        let navigation = UINavigationController(rootViewController: actionViewController)
+        actionViewController.navigationItem.leftBarButtonItem = .init(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(cancelPressed)
+        )
+        return navigation
+    }
+
     @objc private func cancelPressed() {
         // TODO: how to do component cancellation
 //        component?.cancelIfNeeded()
