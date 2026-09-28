@@ -269,9 +269,10 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
 
             NSLayoutConstraint.activate([
                 formView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-                formView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor, constant: horizontalInset),
-                formView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor, constant: -horizontalInset),
-                formView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+                formView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: horizontalInset),
+                formView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -horizontalInset),
+                formView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+                formView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -2 * horizontalInset)
             ])
         } else {
             formView.adyen.anchor(

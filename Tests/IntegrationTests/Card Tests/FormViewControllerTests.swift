@@ -128,6 +128,9 @@ class FormViewControllerTests: XCTestCase {
                 XCTAssertEqual(buttonFrame.minX, numberFrame.minX, accuracy: 0.5)
                 XCTAssertEqual(buttonFrame.maxX, safeArea.maxX - 16, accuracy: 0.5)
                 XCTAssertEqual(securityCodeFrame.minX - expiryFrame.maxX, 16, accuracy: 0.5)
+                if let scrollView = contentView as? UIScrollView {
+                    XCTAssertEqual(scrollView.contentSize.width, scrollView.bounds.width, accuracy: 0.5)
+                }
             }
         }
     }
