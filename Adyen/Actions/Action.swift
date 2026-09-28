@@ -84,16 +84,6 @@ public enum Action: Decodable {
         }
     }
 
-    private enum ActionType: String, Decodable {
-        case redirect
-        case nativeRedirect
-        case threeDS2
-        case sdk
-        case qrCode
-        case `await`
-        case voucher
-    }
-
     private enum CodingKeys: String, CodingKey {
         case type
         case paymentMethodType

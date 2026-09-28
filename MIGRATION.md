@@ -204,12 +204,26 @@ let storedPaymentMethods = checkout.storedPaymentMethods
 
 These replace the interim `checkout.paymentMethods?.regular` and `checkout.paymentMethods?.stored` access paths. Missing payment-method data is represented by an empty array.
 
+#### Action presentation
+
+`SessionCheckout` and `AdvancedCheckout` expose `onAction(_:)`, invoked once the SDK has built the view controller for an action. It hands over both the action's `ActionData` and the `UIViewController`, so you decide how the action is presented:
+
+```swift
+.onAction { actionData, actionViewController in
+    print(actionData.type)
+    navigationController.present(actionViewController, animated: true)
+}
+```
+
+`ActionData.type` is an `ActionType`, one of `redirect`, `nativeRedirect`, `threeDS2`, `sdk`, `qrCode`, `await` or `voucher`. When no handler is set, the SDK presents the view controller on the payment component that started the flow.
+
 #### Summary
 
 - `Checkout.setup(...)` replaces `AdyenSession.initialize(...)` for the new public v6 flows.
 - `CheckoutConfiguration` replaces flow-specific setup objects as the main integration entry point.
 - Closure callbacks replace the public delegate-first flow setup for submission and completion handling.
 - `SessionCheckout` and `AdvancedCheckout` create payment components for the active flow.
+- `onAction(_:)` exposes the action's `ActionData` and the `UIViewController` the SDK built for it.
 - Theme and localization are configured on `CheckoutConfiguration` through `theme(_:)` and `localizationProvider(_:)`.
 
 ### Card component
