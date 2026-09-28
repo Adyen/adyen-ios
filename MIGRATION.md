@@ -59,8 +59,7 @@ let configuration = try CheckoutConfiguration(
 
 let checkout = try await Checkout.setup(
     with: sessionResponse,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 .onComplete { result in
     print(result.resultCode)
@@ -277,8 +276,7 @@ component.delegate = session
 ```swift
 let checkout = try await Checkout.setup(
     with: sessionResponse,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 
 let component = try checkout.createPaymentComponent(for: .scheme)

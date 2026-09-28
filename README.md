@@ -142,8 +142,7 @@ let configuration = try CheckoutConfiguration(
 
 let checkout = try await Checkout.setup(
     with: sessionResponse,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 .onComplete { result in
     print(result.resultCode)
@@ -164,8 +163,7 @@ Use the advanced flow when your backend calls `/paymentMethods` and handles `/pa
 ```swift
 let checkout = try await Checkout.setup(
     with: paymentMethods,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 .onSubmit { data in
     try await callPayments(with: data)
@@ -191,9 +189,11 @@ If your app only needs to handle actions, set up checkout without a `SessionResp
 
 ```swift
 let checkout = try await Checkout.setup(
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
+.onAction { actionData, actionViewController in
+    present(actionViewController, animated: true)
+}
 .onAdditionalDetails { data in
     try await callDetails(with: data)
 }
@@ -215,15 +215,18 @@ guard let viewController = component.viewController else { return }
 present(UINavigationController(rootViewController: viewController), animated: true)
 ```
 
-Pass a `PresentationDelegate` to `Checkout.setup(...)` if checkout should present action components from your own UI layer.
+### Presenting actions
+
+Checkout builds the view controller for an action — a 3D Secure challenge, a voucher, a QR code — and hands it to `onAction(_:)` together with an `ActionData` describing the action.
 
 ```swift
-extension CheckoutViewController: PresentationDelegate {
-    func present(viewController: UIViewController) {
-        present(viewController, animated: true)
-    }
+.onAction { actionData, actionViewController in
+    print(actionData.type)
+    present(actionViewController, animated: true)
 }
 ```
+
+`ActionData.type` is an `ActionType`: `redirect`, `nativeRedirect`, `threeDS2`, `sdk`, `qrCode`, `await` or `voucher`. When you do not set `onAction(_:)`, checkout presents the action on the payment component that started the flow; the action-only flow has no such component, so it always needs a handler.
 
 ### Handling redirects
 
