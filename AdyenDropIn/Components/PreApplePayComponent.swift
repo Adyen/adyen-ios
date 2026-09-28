@@ -35,7 +35,6 @@ internal final class PreApplePayComponent: PresentableComponent,
 
     internal let amount: Amount
 
-    /// `var` because the `order` setter inherited from `PartialPaymentOrderAware` is `mutating`.
     internal var applePayComponent: ApplePayComponent
 
     /// :nodoc:
