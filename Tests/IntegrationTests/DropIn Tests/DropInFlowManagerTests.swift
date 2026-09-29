@@ -152,7 +152,10 @@ struct DropInFlowManagerTests {
         let dropInComponent = DropInComponent(
             paymentMethods: PaymentMethods(regular: [], stored: []),
             context: context,
-            paymentComponentBuilder: { PaymentComponentMock(paymentMethod: $0) }
+            paymentComponentProvider: DropInPaymentComponentProvider(
+                isAvailable: { _ in true },
+                build: { PaymentComponentMock(paymentMethod: $0) }
+            )
         )
 
         let dropInComponentDelegate = DropInComponentDelegateMock()
