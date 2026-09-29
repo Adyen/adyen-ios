@@ -9,6 +9,7 @@
 @testable import AdyenDropIn
 @_spi(AdyenInternal) @testable import AdyenUI
 import Testing
+import UIKit
 
 @MainActor
 internal struct StoredPaymentMethodContentViewModelTests {
@@ -32,6 +33,18 @@ internal struct StoredPaymentMethodContentViewModelTests {
     internal func storedCardSecurityCodeComponent_withZeroAmount_thenProvidesSaveDetailsDescription() {
         let context = makeSUTStoredCardWithCVC(amount: Amount(value: 0, currencyCode: "EUR"))
         #expect(context.sut.subtitle.string == "Use Visa to save details")
+    }
+
+    @Test
+    internal func storedCardSecurityCodeComponent_whenCreated_thenEmphasizesNameAndAmount() {
+        let context = makeSUTStoredCardWithCVC()
+        let subtitle = context.sut.subtitle
+        let bodyFont = context.sut.theme.elements.labels.body.font
+        let emphasizedFont = context.sut.theme.elements.labels.bodyEmphasized.font
+
+        #expect(subtitle.attribute(.font, at: 4, effectiveRange: nil) as? UIFont == emphasizedFont) // "Visa"
+        #expect(subtitle.attribute(.font, at: 10, effectiveRange: nil) as? UIFont == bodyFont) // "to pay"
+        #expect(subtitle.attribute(.font, at: subtitle.length - 1, effectiveRange: nil) as? UIFont == emphasizedFont) // "€10.00"
     }
 
     @Test
