@@ -19,8 +19,6 @@ internal struct StoredPaymentMethodContentView: View {
         static let contentPadding: CGFloat = 24
     }
 
-    private static let accessibilityID = "storedPaymentMethodContent.screen"
-
     private let viewModel: StoredPaymentMethodContentViewModel
 
     internal init(viewModel: StoredPaymentMethodContentViewModel) {
@@ -48,7 +46,7 @@ internal struct StoredPaymentMethodContentView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .accessibilityIdentifier(Self.accessibilityID)
+        .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.screen)
         .onAppear { viewModel.didAppear() }
         .onDisappear { viewModel.didDisappear() }
     }
@@ -169,21 +167,19 @@ private struct ComponentViewControllerView: UIViewControllerRepresentable {
 
     @MainActor
     private final class PreviewFlowManager: DropInFlowManaging {
-
-        func submit(
-            _ data: PaymentComponentData,
-            from component: PaymentComponent,
-            actionPresenter: ActionPresenter
-        ) {}
-
+        func submit(_ data: PaymentComponentData, from component: PaymentComponent, actionPresenter: ActionPresenter) {}
         func fail(with error: Error, from component: PaymentComponent) {}
-
         func cancel(component: PaymentComponent) {}
-
         func handle(action: Action) {}
-
         func setLoadingPresenter(_ presenter: LoadControllable?) {}
-
         func stopLoading() {}
     }
 #endif
+
+// swiftlint:disable:next type_name
+internal enum StoredPaymentMethodContentAccessibilityIdentifier {
+    internal static let screen = "storedPaymentMethodContent.screen"
+    internal static let logo = "storedPaymentMethodContent.logo"
+    internal static let title = "storedPaymentMethodContent.title"
+    internal static let subtitle = "storedPaymentMethodContent.subtitle"
+}

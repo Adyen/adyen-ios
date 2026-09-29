@@ -50,14 +50,19 @@ internal final class StoredPaymentMethodContentViewModel {
     }
 
     internal var subtitle: NSAttributedString {
-        let paymentMethodName = component.paymentMethod.name
-        let text = AmountAwarePaymentStringsPolicy.storedPaymentMethodSubtitle(
-            for: paymentMethodName,
+        AmountAwarePaymentStringsPolicy.storedPaymentMethodAttributedSubtitle(
+            for: component.paymentMethod.name,
             with: component.context.amount,
-            localizationParameters: localizationParameters
+            localizationParameters: localizationParameters,
+            attributes: [
+                .font: theme.elements.labels.body.font,
+                .foregroundColor: theme.elements.labels.body.color
+            ],
+            emphasizedAttributes: [
+                .font: theme.elements.labels.bodyEmphasized.font,
+                .foregroundColor: theme.elements.labels.bodyEmphasized.color
+            ]
         )
-        let emphasizedValues = [paymentMethodName, positiveAmount?.formatted].compactMap { $0 }
-        return makeAttributedString(text, emphasizedValues: emphasizedValues)
     }
 
     internal var paymentMethodLogoURL: URL {
@@ -94,37 +99,6 @@ internal final class StoredPaymentMethodContentViewModel {
 
     private var displayInformation: DisplayInformation {
         component.paymentMethod.displayInformation(using: localizationParameters)
-    }
-
-    private var positiveAmount: Amount? {
-        guard var amount = component.context.amount, amount.value > 0 else { return nil }
-        amount.localeIdentifier = amount.localeIdentifier ?? localizationParameters?.locale
-        return amount
-    }
-
-    private func makeAttributedString(
-        _ text: String,
-        emphasizedValues: [String]
-    ) -> NSAttributedString {
-        let attributedString = NSMutableAttributedString(
-            string: text,
-            attributes: [
-                .font: theme.elements.labels.body.font,
-                .foregroundColor: theme.elements.labels.body.color
-            ]
-        )
-        emphasizedValues.forEach {
-            let range = (text as NSString).range(of: $0)
-            guard range.location != NSNotFound else { return }
-            attributedString.addAttributes(
-                [
-                    .font: theme.elements.labels.bodyEmphasized.font,
-                    .foregroundColor: theme.elements.labels.bodyEmphasized.color
-                ],
-                range: range
-            )
-        }
-        return attributedString
     }
 }
 
