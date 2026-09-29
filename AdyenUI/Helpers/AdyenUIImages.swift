@@ -16,6 +16,18 @@ package extension UIImage {
         UIImage(systemName: "lock")?.withRenderingMode(.alwaysTemplate)
     }
 
+    static var adyenCheckmark: UIImage? {
+        image(named: "ic_checkmark")
+    }
+
+    static var adyenChevronRight: UIImage? {
+        image(named: "ic_chevron_right")?.imageFlippedForRightToLeftLayoutDirection()
+    }
+
+    static var adyenWarning: UIImage? {
+        image(named: "ic_warning")
+    }
+
     // MARK: - Private
 
     private static func image(named name: String) -> UIImage? {

@@ -74,19 +74,15 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
     // MARK: - Icon
 
     private lazy var iconView: UIImageView = {
-        let view = UIImageView(image: .init(
-            named: item.iconName,
-            in: Bundle.coreInternalResources,
-            compatibleWith: nil
-        ))
+        let view = UIImageView(image: item.icon)
         view.tintColor = theme.colors.destructive
         view.accessibilityIdentifier = item.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "iconView")
         }
         view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            view.widthAnchor.constraint(equalToConstant: 12),
-            view.heightAnchor.constraint(equalToConstant: 12)
+            view.widthAnchor.constraint(equalToConstant: 16),
+            view.heightAnchor.constraint(equalToConstant: 16)
         ])
         return view
     }()
