@@ -30,7 +30,7 @@ internal class GenericPaymentMethodRouter: GenericPaymentMethodRouting {
     // MARK: - Properties
 
     internal let rootViewController: UIViewController
-    internal var childRouter: Router?
+    internal private(set) var childRouter: Router?
     private weak var listener: GenericPaymentMethodRouterListener?
 
     // MARK: - Initializers

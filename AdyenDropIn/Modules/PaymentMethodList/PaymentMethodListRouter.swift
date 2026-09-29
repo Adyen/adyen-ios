@@ -40,7 +40,7 @@ internal class PaymentMethodListRouter: PaymentMethodListRouting {
     private let storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
     private let storedPaymentMethodsProvider: () -> [any StoredPaymentMethod]
     private let onStoredPaymentMethodRemoved: (any StoredPaymentMethod) -> Void
-    internal var childRouter: Router?
+    internal private(set) var childRouter: Router?
     
     // MARK: - Initializers
 

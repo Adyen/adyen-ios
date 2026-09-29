@@ -32,7 +32,7 @@ internal class ComponentContainerRouter: ComponentContainerRouting {
 
     private let viewController: ComponentContainerViewController
     private weak var listener: ComponentContainerRouterListener?
-    internal var childRouter: Router?
+    internal private(set) var childRouter: Router?
 
     // MARK: - Initializers
 
