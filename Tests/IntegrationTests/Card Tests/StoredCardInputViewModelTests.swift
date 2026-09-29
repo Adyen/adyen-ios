@@ -80,7 +80,7 @@ struct StoredCardInputViewModelTests {
     func textUI_WhenAmountIsZero() {
         // Given
         let amount = Amount(value: 0, currencyCode: "USD")
-        let expectedButtonTitle = "Confirm preauthorization"
+        let expectedButtonTitle = "Save details"
         let sut = makeSUT(name: "VISA", lastFour: "4556", amount: amount)
 
         // Then
