@@ -165,17 +165,9 @@ private struct ComponentViewControllerView: UIViewControllerRepresentable {
 
     @MainActor
     private final class PreviewFlowManager: DropInFlowManaging {
-
-        func submit(
-            _ data: PaymentComponentData,
-            from component: PaymentComponent,
-            actionPresenter: ActionPresenter
-        ) {}
-
+        func submit(_ data: PaymentComponentData, from component: PaymentComponent, actionPresenter: ActionPresenter) {}
         func fail(with error: Error, from component: PaymentComponent) {}
-
         func cancel(component: PaymentComponent) {}
-
         func handle(action: Action) {}
     }
 #endif
