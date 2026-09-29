@@ -18,9 +18,6 @@ internal struct StoredPaymentMethodContentHeaderView: View {
         static let logoSize = CGSize(width: 80, height: 52)
         static let spacing: CGFloat = 16
         static let labelsSpacing: CGFloat = 8
-        static let logoAccessibilityID = "storedPaymentMethodContent.logo"
-        static let titleAccessibilityID = "storedPaymentMethodContent.title"
-        static let subtitleAccessibilityID = "storedPaymentMethodContent.subtitle"
     }
 
     internal let logoURL: URL
@@ -31,15 +28,15 @@ internal struct StoredPaymentMethodContentHeaderView: View {
     internal var body: some View {
         VStack(spacing: Constants.spacing) {
             PaymentLogoView(url: logoURL, theme: theme, size: Constants.logoSize)
-                .accessibilityIdentifier(Constants.logoAccessibilityID)
+                .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.logo)
                 .accessibilityHidden(true)
 
             VStack(spacing: Constants.labelsSpacing) {
                 Text(title)
                     .font(Font(theme.elements.labels.title.font))
-                    .accessibilityIdentifier(Constants.titleAccessibilityID)
+                    .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.title)
                 Text(AttributedString(subtitle))
-                    .accessibilityIdentifier(Constants.subtitleAccessibilityID)
+                    .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.subtitle)
             }
             .foregroundStyle(Color(uiColor: theme.colors.text))
             .multilineTextAlignment(.center)
