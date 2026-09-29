@@ -98,17 +98,17 @@ internal class PaymentActionViewController: UIViewController {
         navigationItem.title = actionViewController.title
         navigationItem.hidesBackButton = true
 
-        let doneButton = UIBarButtonItem(
-            barButtonSystemItem: .done,
+        let cancelButton = UIBarButtonItem(
+            barButtonSystemItem: .cancel,
             target: self,
-            action: #selector(didTapDone)
+            action: #selector(didTapCancel)
         )
-        doneButton.tintColor = theme.colors.primary
+        cancelButton.tintColor = theme.colors.primary
 
-        navigationItem.rightBarButtonItem = doneButton
+        navigationItem.leftBarButtonItem = cancelButton
     }
 
-    @objc private func didTapDone() {
+    @objc private func didTapCancel() {
         viewModel.cancel()
     }
 }
