@@ -19,8 +19,6 @@ internal struct StoredPaymentMethodContentView: View {
         static let contentPadding: CGFloat = 24
     }
 
-    private static let accessibilityID = "storedPaymentMethodContent.screen"
-
     private let viewModel: StoredPaymentMethodContentViewModel
 
     internal init(viewModel: StoredPaymentMethodContentViewModel) {
@@ -48,7 +46,7 @@ internal struct StoredPaymentMethodContentView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .accessibilityIdentifier(Self.accessibilityID)
+        .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.screen)
     }
 
     private var backButton: some View {
@@ -181,3 +179,11 @@ private struct ComponentViewControllerView: UIViewControllerRepresentable {
         func handle(action: Action) {}
     }
 #endif
+
+// swiftlint:disable:next type_name
+internal enum StoredPaymentMethodContentAccessibilityIdentifier {
+    internal static let screen = "storedPaymentMethodContent.screen"
+    internal static let logo = "storedPaymentMethodContent.logo"
+    internal static let title = "storedPaymentMethodContent.title"
+    internal static let subtitle = "storedPaymentMethodContent.subtitle"
+}
