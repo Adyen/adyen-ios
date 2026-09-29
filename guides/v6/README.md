@@ -167,7 +167,7 @@ Checkout builds the view controller for an action — a 3D Secure challenge, a v
 }
 ```
 
-`ActionData.type` is an `ActionType`: `redirect`, `nativeRedirect`, `threeDS2`, `sdk`, `qrCode`, `await` or `voucher`.
+`ActionData.type` is an `ActionType`, a `RawRepresentable` struct with the known values `redirect`, `nativeRedirect`, `threeDS2`, `sdk`, `qrCode`, `await` and `voucher`. It is a struct rather than an enum so that new action types do not break exhaustive `switch` statements in your code — always handle unknown values.
 
 `onAction(_:)` is available on every flow. When you do not set it, checkout presents the action on the payment component that started the flow. The action-only flow has no such component, so it always needs a handler.
 

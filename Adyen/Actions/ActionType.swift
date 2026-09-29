@@ -7,29 +7,49 @@
 import Foundation
 
 /// The type of a follow-up action, as returned in the `/payments` response.
-public enum ActionType: String, Decodable, Sendable {
+///
+/// This is a struct rather than an enum so that new action types added by Adyen do not
+/// break exhaustive `switch` statements in integrating code. Always handle unknown values.
+public struct ActionType: RawRepresentable, Hashable, Decodable, Sendable {
+
+    /// The raw value as returned in the `/payments` response.
+    public let rawValue: String
+
+    /// Creates an action type with the given raw value.
+    /// - Parameter rawValue: The raw value as returned in the `/payments` response.
+    public init(rawValue: String) {
+        self.rawValue = rawValue
+    }
+
+    // MARK: - Coding
+
+    public init(from decoder: Decoder) throws {
+        rawValue = try decoder.singleValueContainer().decode(String.self)
+    }
+
+    // MARK: - Known types
 
     /// The shopper is redirected to a URL in a web context.
-    case redirect
+    public static let redirect = ActionType(rawValue: "redirect")
 
     /// The shopper is redirected to a native app.
-    case nativeRedirect
+    public static let nativeRedirect = ActionType(rawValue: "nativeRedirect")
 
     /// A 3D Secure 2 flow is executed.
-    case threeDS2
+    public static let threeDS2 = ActionType(rawValue: "threeDS2")
 
     /// The shopper is redirected to a third party SDK.
-    case sdk
+    public static let sdk = ActionType(rawValue: "sdk")
 
     /// A QR code is presented to the shopper.
-    case qrCode
+    public static let qrCode = ActionType(rawValue: "qrCode")
 
     /// The SDK waits for the shopper to complete the payment out of band.
-    case `await`
+    public static let `await` = ActionType(rawValue: "await")
 
     /// A voucher is presented to the shopper.
     ///
     /// BACS Direct Debit mandates are returned as a `voucher` action by the `/payments` response
     /// and are therefore surfaced with this type.
-    case voucher
+    public static let voucher = ActionType(rawValue: "voucher")
 }

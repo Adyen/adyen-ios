@@ -147,6 +147,24 @@ class ActionTests: XCTestCase {
         XCTAssertEqual(challengeAction?.paymentData, "example_data")
     }
     
+    func testActionTypeDecodesKnownRawValues() throws {
+        let json = "[\"redirect\", \"nativeRedirect\", \"threeDS2\", \"sdk\", \"qrCode\", \"await\", \"voucher\"]"
+        let data = try XCTUnwrap(json.data(using: .utf8))
+        
+        let types = try JSONDecoder().decode([ActionType].self, from: data)
+        
+        XCTAssertEqual(types, [.redirect, .nativeRedirect, .threeDS2, .sdk, .qrCode, .await, .voucher])
+    }
+    
+    func testActionTypeDecodesUnknownRawValue() throws {
+        let json = "[\"someFutureType\"]"
+        let data = try XCTUnwrap(json.data(using: .utf8))
+        
+        let types = try JSONDecoder().decode([ActionType].self, from: data)
+        
+        XCTAssertEqual(types, [ActionType(rawValue: "someFutureType")])
+    }
+    
     func testInvalidActionDecoding() throws {
         let json = "{ \"type\": \"InvalidType\" }"
         let data = try XCTUnwrap(json.data(using: .utf8))

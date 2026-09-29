@@ -53,6 +53,12 @@ public enum Action: Decodable {
             self = try Self.handleVoucherType(from: decoder)
         case .qrCode:
             self = try Self.handleQRCodeType(from: decoder)
+        default:
+            throw DecodingError.dataCorruptedError(
+                forKey: .type,
+                in: container,
+                debugDescription: "Unknown action type \(type.rawValue)."
+            )
         }
     }
     

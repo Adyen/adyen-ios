@@ -224,7 +224,7 @@ Every checkout flow — `SessionCheckout`, `AdvancedCheckout` and `ActionOnlyChe
 }
 ```
 
-`ActionData.type` is an `ActionType`, one of `redirect`, `nativeRedirect`, `threeDS2`, `sdk`, `qrCode`, `await` or `voucher`. BACS Direct Debit mandates are returned as `voucher` actions and are surfaced as such. When no handler is set, the SDK presents the view controller on the payment component that started the flow; in the action-only flow there is no such component, so a handler is required.
+`ActionData.type` is an `ActionType`, a `RawRepresentable` struct with the known values `redirect`, `nativeRedirect`, `threeDS2`, `sdk`, `qrCode`, `await` and `voucher`. It is a struct rather than an enum so that new action types do not break exhaustive `switch` statements in your code — always handle unknown values. BACS Direct Debit mandates are returned as `voucher` actions and are surfaced as such. When no handler is set, the SDK presents the view controller on the payment component that started the flow; in the action-only flow there is no such component, so a handler is required.
 
 `onAction(_:)` replaces the `presentationDelegate:` parameter of `Checkout.setup(...)`, which has been removed along with the public `PresentationDelegate` protocol. Drop the argument and the conformance from your integration.
 
