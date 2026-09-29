@@ -27,6 +27,8 @@ package protocol CheckoutCoreProtocol: AnyObject {
 
     func handle(action: Action)
 
+    func isPaymentMethodAvailable(for type: PaymentMethodType) -> Bool
+
     func createPaymentComponent(for type: PaymentMethodType) throws -> CheckoutPaymentComponent
 
     func createPaymentComponent(for identifier: String) throws -> CheckoutPaymentComponent
@@ -95,6 +97,15 @@ package final class CheckoutCore: CheckoutCoreProtocol {
     deinit {
         submitTask?.cancel()
         additionalDetailsTask?.cancel()
+    }
+
+    package func isPaymentMethodAvailable(for type: PaymentMethodType) -> Bool {
+        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: type) else { return false }
+
+        return CheckoutComponentBuilder.isAvailable(
+            forAnyPaymentMethod: paymentMethod,
+            configuration: configuration
+        )
     }
 
     package func createPaymentComponent(for type: PaymentMethodType) throws -> CheckoutPaymentComponent {
