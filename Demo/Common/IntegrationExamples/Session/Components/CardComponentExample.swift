@@ -70,9 +70,6 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
             with: sessionResponse,
             configuration: configuration
         )
-        .onAction { [weak self] _, actionViewController in
-            self?.presenter?.present(viewController: actionViewController, completion: nil)
-        }
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
                 result.resultCode.isSuccess,

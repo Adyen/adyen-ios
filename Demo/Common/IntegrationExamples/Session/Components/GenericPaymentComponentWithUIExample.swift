@@ -64,10 +64,6 @@ internal final class GenericPaymentComponentWithUIExample: InitialDataFlowProtoc
             with: sessionResponse,
             configuration: configuration
         )
-        .onAction { [weak self] _, actionViewController in
-            self?.presenter?.hideLoadingIndicator()
-            self?.presenter?.present(viewController: actionViewController, completion: nil)
-        }
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
                 result.resultCode.isSuccess,
