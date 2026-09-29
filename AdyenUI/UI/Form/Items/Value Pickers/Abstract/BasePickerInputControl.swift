@@ -35,7 +35,11 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
 
     internal var childItemViews: [AnyFormItemView] = []
 
-    internal lazy var chevronView = UIImageView(image: accessoryImage)
+    internal lazy var chevronView: UIImageView = {
+        let imageView = UIImageView(image: accessoryImage)
+        imageView.tintColor = style.color
+        return imageView
+    }()
 
     internal var onDidResignFirstResponder: (() -> Void)?
 

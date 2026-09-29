@@ -30,6 +30,7 @@ package final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExte
         )
         
         let chevronView = UIImageView(image: image)
+        chevronView.tintColor = theme.colors.text
         chevronView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return chevronView
     }()
