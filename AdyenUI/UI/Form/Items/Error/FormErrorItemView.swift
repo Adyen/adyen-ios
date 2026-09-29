@@ -79,6 +79,7 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
             in: Bundle.coreInternalResources,
             compatibleWith: nil
         ))
+        view.tintColor = theme.colors.destructive
         view.accessibilityIdentifier = item.identifier.map {
             ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "iconView")
         }
