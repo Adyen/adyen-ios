@@ -16,11 +16,7 @@ internal final class PaymentMethodItemView: UIView {
         static let itemHeight: CGFloat = 52.0
         static let sideMargin: CGFloat = 12.0
         static let iconImageSize: CGSize = .init(width: 40, height: 26)
-        static let chevronSize: CGSize = .init(width: 20, height: 14)
-    }
-
-    private enum Images {
-        static let chevron = "chevron.forward"
+        static let chevronSize: CGSize = .init(width: 16, height: 16)
     }
 
     // MARK: - UI Elements
@@ -68,7 +64,7 @@ internal final class PaymentMethodItemView: UIView {
     private lazy var chevronImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: Images.chevron)
+        imageView.image = .adyenChevronRight
         imageView.contentMode = .scaleAspectFit
         imageView.setContentHuggingPriority(.required, for: .horizontal)
         imageView.setContentCompressionResistancePriority(.required, for: .horizontal)

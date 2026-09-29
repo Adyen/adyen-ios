@@ -45,10 +45,6 @@ package final class UPIComponent: PaymentComponent,
         static let virtualPaymentAddressInputItem = "virtualPaymentAddressInputItem"
     }
     
-    internal enum Images {
-        internal static let errorIcon = "error"
-    }
-    
     /// Configuration for UPI Component.
     package typealias Configuration = BasicComponentConfiguration
 
@@ -239,7 +235,7 @@ package final class UPIComponent: PaymentComponent,
     
     internal lazy var errorItem: FormErrorItem = {
         let errorMessage = localizedString(LocalizationKey.upiErrorNoAppSelected, configuration.localizationParameters)
-        let item = FormErrorItem(message: errorMessage, iconName: Images.errorIcon, style: FormErrorItemStyle())
+        let item = FormErrorItem(message: errorMessage, style: FormErrorItemStyle())
         item.identifier = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifier.errorItem

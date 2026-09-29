@@ -87,16 +87,10 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
     }()
 
     internal lazy var chevronView: UIImageView = {
-        let chevron = UIImage(
-            named: "chevron",
-            in: Bundle.coreInternalResources,
-            compatibleWith: nil
-        )?.withRenderingMode(.alwaysTemplate)
-
-        let imageView = UIImageView(image: chevron)
+        let imageView = UIImageView(image: .adyenChevronRight)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.setContentHuggingPriority(.required, for: .horizontal)
-        imageView.widthAnchor.constraint(equalToConstant: 8).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 16).isActive = true
         imageView.contentMode = .scaleAspectFit
 
         return imageView
