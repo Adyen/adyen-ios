@@ -31,7 +31,7 @@ import Foundation
             handler()
         }
     
-        var presentationDelegate: (any Adyen.ActionPresentationDelegate)?
+        var actionPresentationDelegate: (any Adyen.ActionPresentationDelegate)?
     
         enum ShowRegistrationScreenMockState {
             case register

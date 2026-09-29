@@ -24,7 +24,7 @@ internal protocol AnyThreeDS2ActionHandler {
 
     var threeDSRequestorAppURL: URL? { get set }
 
-    var presentationDelegate: ActionPresentationDelegate? { get set }
+    var actionPresentationDelegate: ActionPresentationDelegate? { get set }
 }
 
 internal protocol ComponentWrapper: Component {

@@ -29,10 +29,10 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         let sut = QRCodeActionComponent(context: Dummy.context)
         sut.configuration.style = customStyle()
-        let presentationDelegate = ActionPresentationDelegateMock()
-        sut.presentationDelegate = presentationDelegate
+        let actionPresentationDelegate = ActionPresentationDelegateMock()
+        sut.actionPresentationDelegate = actionPresentationDelegate
 
-        presentationDelegate.doPresent = { viewController in
+        actionPresentationDelegate.doPresent = { viewController in
             let qrCodeViewController = try XCTUnwrap(viewController as? QRCodeViewController)
 
             self.setupRootViewController(qrCodeViewController)
@@ -55,10 +55,10 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         let sut = QRCodeActionComponent(context: Dummy.context)
         sut.configuration.style = customStyle()
-        let presentationDelegate = ActionPresentationDelegateMock()
-        sut.presentationDelegate = presentationDelegate
+        let actionPresentationDelegate = ActionPresentationDelegateMock()
+        sut.actionPresentationDelegate = actionPresentationDelegate
 
-        presentationDelegate.doPresent = { viewController in
+        actionPresentationDelegate.doPresent = { viewController in
             let qrCodeViewController = try XCTUnwrap(viewController as? QRCodeViewController)
 
             self.setupRootViewController(qrCodeViewController)
@@ -81,10 +81,10 @@ class QRCodeActionComponentUITests: XCTestCase {
 
         let sut = QRCodeActionComponent(context: Dummy.context)
         sut.configuration.style = customStyle()
-        let presentationDelegate = ActionPresentationDelegateMock()
-        sut.presentationDelegate = presentationDelegate
+        let actionPresentationDelegate = ActionPresentationDelegateMock()
+        sut.actionPresentationDelegate = actionPresentationDelegate
 
-        presentationDelegate.doPresent = { viewController in
+        actionPresentationDelegate.doPresent = { viewController in
             let qrCodeViewController = try XCTUnwrap(viewController as? QRCodeViewController)
 
             self.setupRootViewController(qrCodeViewController)

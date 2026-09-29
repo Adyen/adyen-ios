@@ -20,7 +20,7 @@ internal final class PollingComponent: AnyPollingHandler {
 
     internal let context: AdyenContext
     
-    internal weak var presentationDelegate: ActionPresentationDelegate?
+    internal weak var actionPresentationDelegate: ActionPresentationDelegate?
     
     internal weak var delegate: ActionComponentDelegate?
     

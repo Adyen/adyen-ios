@@ -29,7 +29,7 @@ internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvanced
         }
         let handler = CheckoutActionComponent(context: context)
         handler.delegate = self
-        handler.presentationDelegate = self
+        handler.actionPresentationDelegate = self
         return handler
     }()
 

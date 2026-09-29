@@ -69,7 +69,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
             configuration: actionComponentConfiguration
         )
         actionHandlingComponent.delegate = self
-        actionHandlingComponent.presentationDelegate = self
+        actionHandlingComponent.actionPresentationDelegate = self
         return actionHandlingComponent
     }()
 

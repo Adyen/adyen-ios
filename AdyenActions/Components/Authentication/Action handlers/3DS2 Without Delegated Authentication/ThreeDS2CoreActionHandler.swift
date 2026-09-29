@@ -16,7 +16,7 @@ import UIKit
 internal protocol AnyThreeDS2CoreActionHandler: Component {
     var threeDSRequestorAppURL: URL? { get set }
     
-    var presentationDelegate: ActionPresentationDelegate? { get set }
+    var actionPresentationDelegate: ActionPresentationDelegate? { get set }
     
     func handle(
         _ fingerprintAction: ThreeDS2FingerprintAction,
@@ -48,7 +48,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
 
     private var service: ThreeDSService
     
-    internal weak var presentationDelegate: ActionPresentationDelegate?
+    internal weak var actionPresentationDelegate: ActionPresentationDelegate?
     
     /// `threeDSRequestorAppURL` for protocol version 2.2.0 OOB challenges
     internal var threeDSRequestorAppURL: URL?
@@ -306,7 +306,7 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
 
 extension ThreeDS2CoreActionHandler: ActionPresentationDelegate {
     internal func present(actionData: ActionData, actionViewController: UIViewController) {
-        AdyenAssertion.assert(message: "presentationDelegate should not be nil", condition: presentationDelegate == nil)
-        presentationDelegate?.present(actionData: actionData, actionViewController: actionViewController)
+        AdyenAssertion.assert(message: "actionPresentationDelegate should not be nil", condition: actionPresentationDelegate == nil)
+        actionPresentationDelegate?.present(actionData: actionData, actionViewController: actionViewController)
     }
 }

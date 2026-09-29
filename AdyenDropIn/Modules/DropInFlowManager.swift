@@ -64,7 +64,7 @@ internal class DropInFlowManager: DropInFlowManaging {
             configuration: actionComponentConfiguration
         )
         actionComponent.delegate = self
-        actionComponent.presentationDelegate = self
+        actionComponent.actionPresentationDelegate = self
         return actionComponent
     }()
 

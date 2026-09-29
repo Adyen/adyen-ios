@@ -52,7 +52,7 @@ import XCTest
             with twintSpy: TwintSpy,
             configuration: TwintActionConfiguration = .dummy,
             context: AdyenContext = Dummy.context,
-            presentationDelegate: ActionPresentationDelegate?,
+            actionPresentationDelegate: ActionPresentationDelegate?,
             delegate: ActionComponentDelegate?,
             shouldFailPolling: Bool = false
         ) -> TwintSDKActionComponent {
@@ -83,7 +83,7 @@ import XCTest
                 }
             }
         
-            component.presentationDelegate = presentationDelegate
+            component.actionPresentationDelegate = actionPresentationDelegate
             component.delegate = delegate
         
             return component
@@ -92,12 +92,12 @@ import XCTest
         // MARK: ActionPresentationDelegateMock
     
         /// ActionPresentationDelegateMock that fails when `doPresent` is called
-        static func failingPresentationDelegateMock() -> ActionPresentationDelegateMock {
-            let presentationDelegateMock = ActionPresentationDelegateMock()
-            presentationDelegateMock.doPresent = { _ in
+        static func failingActionPresentationDelegateMock() -> ActionPresentationDelegateMock {
+            let actionPresentationDelegateMock = ActionPresentationDelegateMock()
+            actionPresentationDelegateMock.doPresent = { _ in
                 XCTFail("Nothing should have been displayed")
             }
-            return presentationDelegateMock
+            return actionPresentationDelegateMock
         }
     
         /// ActionComponentDelegateMock that fails when `onDidFail` is called

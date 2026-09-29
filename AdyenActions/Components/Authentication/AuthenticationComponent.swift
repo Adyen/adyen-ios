@@ -22,9 +22,9 @@ package final class AuthenticationComponent: ActionComponent {
     package weak var delegate: ActionComponentDelegate?
 
     /// Delegates view controller presentation.  This property must be set if you wish to use delegated authentication.
-    package weak var presentationDelegate: ActionPresentationDelegate? {
+    package weak var actionPresentationDelegate: ActionPresentationDelegate? {
         didSet {
-            threeDS2CompactFlowHandler.presentationDelegate = presentationDelegate
+            threeDS2CompactFlowHandler.actionPresentationDelegate = actionPresentationDelegate
         }
     }
     
@@ -129,7 +129,7 @@ package final class AuthenticationComponent: ActionComponent {
             theme: configuration.theme,
             delegatedAuthenticationConfiguration: configuration.delegatedAuthentication
         )
-        handler.presentationDelegate = presentationDelegate
+        handler.actionPresentationDelegate = actionPresentationDelegate
         handler._isDropIn = _isDropIn
         handler.threeDSRequestorAppURL = configuration.requestorAppURL
 
@@ -142,7 +142,7 @@ package final class AuthenticationComponent: ActionComponent {
 
         component.delegate = self
         component._isDropIn = _isDropIn
-        component.presentationDelegate = presentationDelegate
+        component.actionPresentationDelegate = actionPresentationDelegate
 
         return component
     }()

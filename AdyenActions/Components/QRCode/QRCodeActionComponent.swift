@@ -29,7 +29,7 @@ package final class QRCodeActionComponent: ActionComponent, Cancellable, Shareab
     package let context: AdyenContext
 
     /// Delegates view controller presentation.
-    package weak var presentationDelegate: ActionPresentationDelegate?
+    package weak var actionPresentationDelegate: ActionPresentationDelegate?
 
     package weak var delegate: ActionComponentDelegate?
 
@@ -101,20 +101,20 @@ package final class QRCodeActionComponent: ActionComponent, Cancellable, Shareab
     ///
     /// - Parameter action: The QR code action.
     package func handle(_ action: QRCodeAction) {
-        AdyenAssertion.assert(message: "presentationDelegate is nil", condition: presentationDelegate == nil)
+        AdyenAssertion.assert(message: "actionPresentationDelegate is nil", condition: actionPresentationDelegate == nil)
         
         let viewController = createViewController(with: action)
         setUpPresenterViewController(parentViewController: viewController)
         
-        if let presentationDelegate {
+        if let actionPresentationDelegate {
             renderExpirationLabelAndStartTimer(action)
             
             startPolling(action)
             
-            present(viewController, presentationDelegate: presentationDelegate)
+            present(viewController, actionPresentationDelegate: actionPresentationDelegate)
         } else {
             AdyenAssertion.assertionFailure(
-                message: "PresentationDelegate is nil. Provide a presentation delegate to QRCodeActionComponent."
+                message: "ActionPresentationDelegate is nil. Provide a presentation delegate to QRCodeActionComponent."
             )
         }
     }
@@ -131,8 +131,8 @@ package final class QRCodeActionComponent: ActionComponent, Cancellable, Shareab
         pollingComponent?.handle(action)
     }
     
-    private func present(_ viewController: UIViewController, presentationDelegate: ActionPresentationDelegate) {
-        presentationDelegate.present(actionData: ActionData(type: .qrCode), actionViewController: viewController)
+    private func present(_ viewController: UIViewController, actionPresentationDelegate: ActionPresentationDelegate) {
+        actionPresentationDelegate.present(actionData: ActionData(type: .qrCode), actionViewController: viewController)
     }
     
     internal func timeoutDuration(for action: QRCodeAction) -> TimeInterval {

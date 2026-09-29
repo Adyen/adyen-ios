@@ -26,11 +26,11 @@ class DocumentComponentTests: XCTestCase {
     func testUI() throws {
         let style = DocumentComponentStyle()
         let sut = DocumentComponent(context: Dummy.context)
-        let presentationDelegate = ActionPresentationDelegateMock()
-        sut.presentationDelegate = presentationDelegate
+        let actionPresentationDelegate = ActionPresentationDelegateMock()
+        sut.actionPresentationDelegate = actionPresentationDelegate
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "test_table")
         
-        presentationDelegate.doPresent = { viewController in
+        actionPresentationDelegate.doPresent = { viewController in
             XCTAssertNotNil(viewController as? ActionViewController)
             let viewController = viewController as! ActionViewController
             

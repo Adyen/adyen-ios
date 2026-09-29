@@ -70,15 +70,15 @@ class QRCodeActionComponentTests: XCTestCase {
             expectationForDidProvide.fulfill()
         }
         
-        let presentationDelegate = ActionPresentationDelegateMock()
-        presentationDelegate.doPresent = { viewController in
+        let actionPresentationDelegate = ActionPresentationDelegateMock()
+        actionPresentationDelegate.doPresent = { viewController in
             XCTAssertNotNil(viewController as? QRCodeViewController)
             let viewController = viewController as! QRCodeViewController
             
             self.setupRootViewController(viewController)
         }
         
-        sut.presentationDelegate = presentationDelegate
+        sut.actionPresentationDelegate = actionPresentationDelegate
         sut.delegate = componentDelegate
         
         sut.handle(action)
@@ -118,14 +118,14 @@ class QRCodeActionComponentTests: XCTestCase {
             expectationForDidFail.fulfill()
         }
         
-        let presentationDelegate = ActionPresentationDelegateMock()
-        presentationDelegate.doPresent = { viewController in
+        let actionPresentationDelegate = ActionPresentationDelegateMock()
+        actionPresentationDelegate.doPresent = { viewController in
             XCTAssertNotNil(viewController as? QRCodeViewController)
             let viewController = viewController as! QRCodeViewController
             self.setupRootViewController(viewController)
         }
         
-        sut.presentationDelegate = presentationDelegate
+        sut.actionPresentationDelegate = actionPresentationDelegate
         sut.delegate = componentDelegate
         
         sut.handle(action)

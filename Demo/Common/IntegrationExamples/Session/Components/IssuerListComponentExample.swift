@@ -62,7 +62,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
 //                AdyenSession.initialize(
 //                    with: configuration,
 //                    delegate: self,
-//                    presentationDelegate: self,
+//                    actionPresentationDelegate: self,
 //                    completion: completion
 //                )
                 break

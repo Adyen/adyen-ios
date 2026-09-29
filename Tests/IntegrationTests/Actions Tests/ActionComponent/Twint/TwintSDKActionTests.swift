@@ -52,14 +52,14 @@ import XCTest
                 twint: twintSpy
             )
 
-            let presentationDelegateMock = ActionPresentationDelegateMock()
-            presentationDelegateMock.doPresent = { viewController in
+            let actionPresentationDelegateMock = ActionPresentationDelegateMock()
+            actionPresentationDelegateMock.doPresent = { viewController in
                 let alertController = try XCTUnwrap(viewController as? UIAlertController)
                 XCTAssertEqual(alertController.message, expectedAlertMessage)
                 noAppFoundAlertExpectation.fulfill()
             }
 
-            twintActionComponent.presentationDelegate = presentationDelegateMock
+            twintActionComponent.actionPresentationDelegate = actionPresentationDelegateMock
 
             // When
 
@@ -107,12 +107,12 @@ import XCTest
                 return false
             }
 
-            let presentationDelegate = Self.failingPresentationDelegateMock()
+            let actionPresentationDelegate = Self.failingActionPresentationDelegateMock()
 
             let twintActionComponent = Self.actionComponent(
                 with: twintSpy,
                 configuration: .dummy(maxIssuerNumber: expectedMaxIssuerNumber),
-                presentationDelegate: presentationDelegate,
+                actionPresentationDelegate: actionPresentationDelegate,
                 delegate: nil
             )
 
@@ -170,14 +170,14 @@ import XCTest
                 twint: twintSpy
             )
 
-            let presentationDelegateMock = ActionPresentationDelegateMock()
-            presentationDelegateMock.doPresent = { viewController in
+            let actionPresentationDelegateMock = ActionPresentationDelegateMock()
+            actionPresentationDelegateMock.doPresent = { viewController in
                 let alertController = try XCTUnwrap(viewController as? UIAlertController)
                 XCTAssertTrue(alertController === expectedAppPicker)
                 pickerExpectation.fulfill()
             }
 
-            twintActionComponent.presentationDelegate = presentationDelegateMock
+            twintActionComponent.actionPresentationDelegate = actionPresentationDelegateMock
 
             // When
 
@@ -244,9 +244,9 @@ import XCTest
             }
 
             let analyticsProviderMock = AnalyticsProviderMock()
-            let presentationDelegate = ActionPresentationDelegateMock()
+            let actionPresentationDelegate = ActionPresentationDelegateMock()
             
-            presentationDelegate.doPresent = { viewController in
+            actionPresentationDelegate.doPresent = { viewController in
                 let alertController = try XCTUnwrap(viewController as? UIAlertController)
                 XCTAssertEqual(alertController.message, expectedAlertMessage)
                 let errorEvent = analyticsProviderMock.errors[0]
@@ -262,7 +262,7 @@ import XCTest
             let twintActionComponent = Self.actionComponent(
                 with: twintSpy,
                 context: Dummy.context(analyticsProvider: analyticsProviderMock),
-                presentationDelegate: presentationDelegate,
+                actionPresentationDelegate: actionPresentationDelegate,
                 delegate: nil
             )
 
@@ -306,10 +306,10 @@ import XCTest
                 return false
             }
 
-            let presentationDelegate = Self.failingPresentationDelegateMock()
+            let actionPresentationDelegate = Self.failingActionPresentationDelegateMock()
             let sut = Self.actionComponent(
                 with: twintSpy,
-                presentationDelegate: presentationDelegate,
+                actionPresentationDelegate: actionPresentationDelegate,
                 delegate: nil
             )
 
@@ -372,14 +372,14 @@ import XCTest
                 twint: twintSpy
             )
 
-            let presentationDelegateMock = ActionPresentationDelegateMock()
-            presentationDelegateMock.doPresent = { viewController in
+            let actionPresentationDelegateMock = ActionPresentationDelegateMock()
+            actionPresentationDelegateMock.doPresent = { viewController in
                 let alertController = try XCTUnwrap(viewController as? UIAlertController)
                 XCTAssertTrue(alertController === expectedAppPicker)
                 pickerExpectation.fulfill()
             }
 
-            sut.presentationDelegate = presentationDelegateMock
+            sut.actionPresentationDelegate = actionPresentationDelegateMock
 
             // When
             let sdkData = TwintSDKData(token: "token", isStored: true)
