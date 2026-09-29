@@ -136,7 +136,7 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
             containerView.layer.cornerRadius = AdyenUIConstants.defaultCornerRadius
         }
 
-        chevronView.tintColor = theme.colors.primary
+        chevronView.tintColor = theme.colors.text
         valueLabel.apply(theme.elements.labels.body)
     }
 
