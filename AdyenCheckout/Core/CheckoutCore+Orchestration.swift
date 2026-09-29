@@ -12,6 +12,7 @@ import Adyen
     @_spi(AdyenInternal) import AdyenActions
 #endif
 import Foundation
+import UIKit
 
 // MARK: - Internal Helpers
 
