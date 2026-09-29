@@ -215,8 +215,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
         let currentAmount = ConfigurationConstants.current.amount
         let updatedValue = AmountFormatter.minorUnitAmount(
             from: total.amount.decimalValue,
-            currencyCode: currentAmount.currencyCode,
-            localeIdentifier: currentAmount.localeIdentifier
+            currencyCode: currentAmount.currencyCode
         )
         latestApplePayAmount = Amount(
             value: updatedValue,
