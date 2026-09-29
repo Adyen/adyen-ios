@@ -72,9 +72,6 @@ internal final class DropInAdvancedFlowExample: InitialDataAdvancedFlowProtocol 
             with: paymentMethods,
             configuration: configuration
         )
-        .onAction { [weak self] _, actionViewController in
-            self?.presenter?.present(viewController: actionViewController, completion: nil)
-        }
         .onSubmit { [weak self] data in
             guard let self else { return .completion(resultCode: "Error") }
             return await self.callPayments(with: data)

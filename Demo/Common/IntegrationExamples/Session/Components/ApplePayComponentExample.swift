@@ -122,9 +122,6 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
             with: sessionResponse,
             configuration: configuration
         )
-        .onAction { [weak self] _, actionViewController in
-            self?.presenter?.present(viewController: actionViewController, completion: nil)
-        }
         .onBeforeSubmit { [weak self] data in
             guard let self else { return .abort }
             print("onBeforeSubmit: shopperName: \(String(describing: data.shopperName))")
