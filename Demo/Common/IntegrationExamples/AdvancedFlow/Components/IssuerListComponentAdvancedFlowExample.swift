@@ -179,7 +179,7 @@ extension IssuerListComponentAdvancedFlowExample: ActionComponentDelegate {
 }
 
 extension IssuerListComponentAdvancedFlowExample: ActionPresentationDelegate {
-    internal func present(actionData: ActionData, actionViewController: UIViewController) {
+    internal func present(actionViewController: UIViewController, actionData: ActionData) {
         let wrappedViewController = viewController(wrapping: actionViewController)
         presenter?.present(viewController: wrappedViewController, completion: nil)
     }

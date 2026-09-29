@@ -140,7 +140,7 @@ package final class RedirectComponent: ActionComponent {
         )
         component.delegate = self
         browserComponent = component
-        actionPresentationDelegate?.present(actionData: ActionData(type: .redirect), actionViewController: component.viewController)
+        actionPresentationDelegate?.present(actionViewController: component.viewController, actionData: ActionData(type: .redirect))
     }
     
     // MARK: - Custom scheme link handling

@@ -72,7 +72,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
             completion: handler,
             troubleshootingHandler: troubleshootingHandler
         )
-        actionPresentationDelegate?.present(actionData: ActionData(type: .threeDS2), actionViewController: errorController)
+        actionPresentationDelegate?.present(actionViewController: errorController, actionData: ActionData(type: .threeDS2))
     }
     
     internal func showRegistrationError(
@@ -85,7 +85,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
             completion: handler,
             troubleshootingHandler: nil
         )
-        actionPresentationDelegate?.present(actionData: ActionData(type: .threeDS2), actionViewController: errorController)
+        actionPresentationDelegate?.present(actionViewController: errorController, actionData: ActionData(type: .threeDS2))
     }
     
     internal func showDeletionConfirmation(component: Component, handler: @escaping VoidHandler) {
@@ -95,7 +95,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
             completion: handler,
             troubleshootingHandler: nil
         )
-        actionPresentationDelegate?.present(actionData: ActionData(type: .threeDS2), actionViewController: errorController)
+        actionPresentationDelegate?.present(actionViewController: errorController, actionData: ActionData(type: .threeDS2))
     }
 
     internal func showRegistrationScreen(
@@ -118,7 +118,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                 fallbackHandler()
             }
         )
-        actionPresentationDelegate?.present(actionData: ActionData(type: .threeDS2), actionViewController: registrationViewController)
+        actionPresentationDelegate?.present(actionViewController: registrationViewController, actionData: ActionData(type: .threeDS2))
     }
     
     // swiftlint:disable function_parameter_count
@@ -148,7 +148,7 @@ internal final class ThreeDS2PlusDAScreenPresenter: ThreeDS2PlusDAScreenPresente
                 removeCredentialsHandler()
             }
         )
-        actionPresentationDelegate?.present(actionData: ActionData(type: .threeDS2), actionViewController: approvalViewController)
+        actionPresentationDelegate?.present(actionViewController: approvalViewController, actionData: ActionData(type: .threeDS2))
     }
     
     private var biometricName: String {

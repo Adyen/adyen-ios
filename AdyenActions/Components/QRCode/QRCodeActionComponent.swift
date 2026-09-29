@@ -132,7 +132,7 @@ package final class QRCodeActionComponent: ActionComponent, Cancellable, Shareab
     }
     
     private func present(_ viewController: UIViewController, actionPresentationDelegate: ActionPresentationDelegate) {
-        actionPresentationDelegate.present(actionData: ActionData(type: .qrCode), actionViewController: viewController)
+        actionPresentationDelegate.present(actionViewController: viewController, actionData: ActionData(type: .qrCode))
     }
     
     internal func timeoutDuration(for action: QRCodeAction) -> TimeInterval {

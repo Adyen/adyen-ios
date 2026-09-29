@@ -165,7 +165,7 @@ import Foundation
         }
 
         private func present(_ viewController: UIViewController, actionPresentationDelegate: ActionPresentationDelegate) {
-            actionPresentationDelegate.present(actionData: ActionData(type: .sdk), actionViewController: viewController)
+            actionPresentationDelegate.present(actionViewController: viewController, actionData: ActionData(type: .sdk))
         }
 
         private func handleShowError(_ errorMessage: String, componentName: String) {

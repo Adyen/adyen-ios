@@ -22,7 +22,7 @@ final class ActionPresentationDelegateMock: ActionPresentationDelegate {
     var presentComponentReceivedActionData: ActionData?
     var doPresent: ((_ viewController: UIViewController) throws -> Void)?
 
-    func present(actionData: ActionData, actionViewController: UIViewController) {
+    func present(actionViewController: UIViewController, actionData: ActionData) {
         presentComponentCallsCount += 1
         presentComponentReceivedViewController = actionViewController
         presentComponentReceivedActionData = actionData

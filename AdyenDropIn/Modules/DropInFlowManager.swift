@@ -134,7 +134,7 @@ extension DropInFlowManager: ActionComponentDelegate {
 
 extension DropInFlowManager: ActionPresentationDelegate {
 
-    internal func present(actionData: ActionData, actionViewController: UIViewController) {
+    internal func present(actionViewController: UIViewController, actionData: ActionData) {
         actionPresenter?.present(actionViewController: actionViewController)
     }
 }

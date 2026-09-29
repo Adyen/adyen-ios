@@ -188,7 +188,7 @@ private extension CheckoutCore {
 
 extension CheckoutCore: ActionPresentationDelegate {
 
-    package func present(actionData: ActionData, actionViewController: UIViewController) {
+    package func present(actionViewController: UIViewController, actionData: ActionData) {
         if let onAction = resultCallbacks.onAction {
             onAction(actionData, actionViewController)
         } else if let presentingViewController = pendingPaymentComponent?.viewController {

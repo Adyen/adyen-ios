@@ -122,7 +122,7 @@ package final class AwaitComponent: ActionComponent, Cancellable {
         let viewController = ActionViewController(view: awaitView)
 
         if let actionPresentationDelegate {
-            actionPresentationDelegate.present(actionData: ActionData(type: .await), actionViewController: viewController)
+            actionPresentationDelegate.present(actionViewController: viewController, actionData: ActionData(type: .await))
         } else {
             let message = "ActionPresentationDelegate is nil. Provide a presentation delegate to AwaitComponent."
             AdyenAssertion.assertionFailure(message: message)

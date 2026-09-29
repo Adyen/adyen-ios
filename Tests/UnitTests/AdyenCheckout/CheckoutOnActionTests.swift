@@ -60,7 +60,7 @@ final class CheckoutOnActionTests: XCTestCase {
         }
 
         // When
-        sut.present(actionData: ActionData(type: .qrCode), actionViewController: actionViewController)
+        sut.present(actionViewController: actionViewController, actionData: ActionData(type: .qrCode))
 
         // Then
         XCTAssertEqual(receivedActionData?.type, .qrCode)
@@ -79,7 +79,7 @@ final class CheckoutOnActionTests: XCTestCase {
         let actionViewController = UIViewController()
 
         // When
-        sut.present(actionData: ActionData(type: .voucher), actionViewController: actionViewController)
+        sut.present(actionViewController: actionViewController, actionData: ActionData(type: .voucher))
 
         // Then
         XCTAssertEqual(presentingViewController.presentedViewControllers.count, 1)
@@ -99,7 +99,7 @@ final class CheckoutOnActionTests: XCTestCase {
         callbackStore.onAction = { _, _ in }
 
         // When
-        sut.present(actionData: ActionData(type: .threeDS2), actionViewController: UIViewController())
+        sut.present(actionViewController: UIViewController(), actionData: ActionData(type: .threeDS2))
 
         // Then
         XCTAssertTrue(presentingViewController.presentedViewControllers.isEmpty)
@@ -119,7 +119,7 @@ final class CheckoutOnActionTests: XCTestCase {
         }
 
         // When
-        sut.present(actionData: ActionData(type: .await), actionViewController: UIViewController())
+        sut.present(actionViewController: UIViewController(), actionData: ActionData(type: .await))
 
         // Then
         wait(for: [assertionExpectation], timeout: 10)

@@ -305,8 +305,8 @@ internal class ThreeDS2CoreActionHandler: AnyThreeDS2CoreActionHandler {
 }
 
 extension ThreeDS2CoreActionHandler: ActionPresentationDelegate {
-    internal func present(actionData: ActionData, actionViewController: UIViewController) {
+    internal func present(actionViewController: UIViewController, actionData: ActionData) {
         AdyenAssertion.assert(message: "actionPresentationDelegate should not be nil", condition: actionPresentationDelegate == nil)
-        actionPresentationDelegate?.present(actionData: actionData, actionViewController: actionViewController)
+        actionPresentationDelegate?.present(actionViewController: actionViewController, actionData: actionData)
     }
 }

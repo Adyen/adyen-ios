@@ -86,7 +86,7 @@ package final class DocumentComponent: ActionComponent, ShareableComponent {
         setUpPresenterViewController(parentViewController: viewController)
 
         if let actionPresentationDelegate {
-            actionPresentationDelegate.present(actionData: ActionData(type: .voucher), actionViewController: viewController)
+            actionPresentationDelegate.present(actionViewController: viewController, actionData: ActionData(type: .voucher))
         } else {
             AdyenAssertion.assertionFailure(
                 message: "ActionPresentationDelegate is nil. Provide a presentation delegate to DocumentComponent."

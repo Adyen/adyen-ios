@@ -12,5 +12,5 @@ import UIKit
 package protocol ActionPresentationDelegate: AnyObject {
 
     /// Asks the delegate to present the action's `UIViewController` as the `delegate` sees fit.
-    func present(actionData: ActionData, actionViewController: UIViewController)
+    func present(actionViewController: UIViewController, actionData: ActionData)
 }
