@@ -26,7 +26,7 @@ internal class DropInRouter: DropInRouting {
     private let preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
-    internal var childRouter: Router?
+    internal private(set) var childRouter: Router?
     
     // MARK: - Initializers
     
