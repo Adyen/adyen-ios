@@ -25,7 +25,7 @@ internal class PaymentActionRouter: Router, PaymentActionRouting {
     // MARK: - Properties
 
     internal let rootViewController: UIViewController
-    internal let childRouter: Router? = nil
+    internal var childRouter: Router?
     private let viewModel: PaymentActionViewModelProtocol
     private weak var listener: PaymentActionRouterListener?
 
