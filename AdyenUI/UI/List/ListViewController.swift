@@ -42,9 +42,7 @@ package final class ListViewController: UITableViewController {
             guard let self else { return nil }
 
             let cell = self.dataSource.cell(for: tableView, at: indexPath)
-            if let cell = cell as? ListCell {
-                cell.setContentInsets(self.cellContentInsets)
-            }
+            (cell as? ListCell)?.setContentInsets(cellContentInsets)
             return cell
         })
     }()

@@ -321,6 +321,7 @@ class AddressInputFormViewControllerTests: XCTestCase {
         let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
 
         XCTAssertEqual(headerView.titleLabel.text, "Country or region")
+        XCTAssertEqual(headerView.subtitleLabel.text, "Search and select your country/region.")
         XCTAssertNil(searchViewController.title)
         XCTAssertTrue(searchViewController.searchBar.isDescendant(of: searchViewController.view))
         XCTAssertEqual(

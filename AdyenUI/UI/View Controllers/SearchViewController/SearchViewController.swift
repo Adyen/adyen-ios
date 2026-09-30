@@ -22,7 +22,6 @@ package class SearchViewController: UIViewController, AdyenObserver {
     private enum Layout {
         static let searchBarHorizontalInset: CGFloat = 8
         static let headerBottomSpacing: CGFloat = 8
-        static let searchResultsTopSpacing: CGFloat = 24
     }
 
     internal lazy var keyboardObserver = KeyboardObserver()
@@ -31,6 +30,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
     internal let viewModel: ViewModel
     internal let emptyView: SearchResultsEmptyView
     private let resultsHorizontalInset: CGFloat
+    private let searchTextFieldToResultsSpacing: CGFloat?
 
     /// Optional view shown above the search bar (e.g. a title/description header).
     internal let headerView: UIView?
@@ -48,16 +48,19 @@ package class SearchViewController: UIViewController, AdyenObserver {
     ///   - viewModel: The business logic of the search view controller
     ///   - emptyView: The view (conforming to ``SearchResultsEmptyView``) to show when the search results are empty.
     ///   - resultsHorizontalInset: The horizontal distance between the results and the view edges.
+    ///   - searchTextFieldToResultsSpacing: The vertical distance between the search text field and results.
     package init(
         viewModel: ViewModel,
         emptyView: SearchResultsEmptyView,
         headerView: UIView? = nil,
-        resultsHorizontalInset: CGFloat = 0
+        resultsHorizontalInset: CGFloat = 0,
+        searchTextFieldToResultsSpacing: CGFloat? = nil
     ) {
         self.emptyView = emptyView
         self.viewModel = viewModel
         self.headerView = headerView
         self.resultsHorizontalInset = resultsHorizontalInset
+        self.searchTextFieldToResultsSpacing = searchTextFieldToResultsSpacing
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -176,8 +179,10 @@ package class SearchViewController: UIViewController, AdyenObserver {
                 searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Layout.searchBarHorizontalInset),
                 searchBar.topAnchor.constraint(equalTo: contentTopAnchor, constant: contentTopSpacing)
             ])
-            resultsTopAnchor = searchBar.searchTextField.bottomAnchor
-            resultsTopSpacing = Layout.searchResultsTopSpacing
+            resultsTopAnchor = searchTextFieldToResultsSpacing == nil
+                ? searchBar.bottomAnchor
+                : searchBar.searchTextField.bottomAnchor
+            resultsTopSpacing = searchTextFieldToResultsSpacing ?? 0
         } else {
             resultsTopAnchor = contentTopAnchor
             resultsTopSpacing = contentTopSpacing

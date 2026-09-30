@@ -127,7 +127,7 @@ package final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>,
                 header: .init(
                     title: countryTitle,
                     subtitle: localizedString(
-                        LocalizationKey(key: "Search for a country or region"),
+                        LocalizationKey(key: "Search and select your country/region."),
                         configuration.localizationParameters
                     )
                 ) // TODO: Add subtitle localization key

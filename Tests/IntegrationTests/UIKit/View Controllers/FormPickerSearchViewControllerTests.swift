@@ -145,47 +145,35 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         }
     }
 
-    func test_picker_shouldUseThemeFontsForItemText() throws {
-        let searchViewController = try makeSearchViewController()
-        let results = try XCTUnwrap(searchViewController.viewModel.interfaceState.results)
-
-        XCTAssertEqual(
-            results.first?.style.title.font,
-            CheckoutTheme.default.elements.labels.bodyEmphasized.font
-        )
-        XCTAssertEqual(
-            results.first?.style.title.color,
-            CheckoutTheme.default.colors.primary
-        )
-        XCTAssertEqual(
-            results.first?.style.subtitle.font,
-            CheckoutTheme.default.elements.labels.subheadline.font
-        )
-        XCTAssertEqual(
-            results.first?.style.subtitle.color,
-            CheckoutTheme.default.colors.textSecondary
-        )
-    }
-
-    func test_picker_withCustomTheme_shouldUseThemeFontsForItemText() throws {
+    func test_picker_withCustomTheme_shouldApplyThemeToItemText() throws {
         let expectedTitleFont = UIFont.systemFont(ofSize: 19, weight: .black)
         let expectedSubtitleFont = UIFont.systemFont(ofSize: 16, weight: .thin)
-        var elements = AdyenElements.default
+        let expectedTitleColor: UIColor = .purple
+        let expectedSubtitleColor: UIColor = .orange
+        let colors = CheckoutColors(
+            primary: expectedTitleColor,
+            textSecondary: expectedSubtitleColor
+        )
+        var elements = AdyenElements(colors: colors)
         elements.labels.bodyEmphasized.font = expectedTitleFont
         elements.labels.subheadline.font = expectedSubtitleFont
 
         let searchViewController = try makeSearchViewController(
-            theme: CheckoutTheme(elements: elements)
+            theme: CheckoutTheme(colors: colors, elements: elements)
         )
         let resultsListViewController = searchViewController.resultsListViewController
         wait(until: { resultsListViewController.viewIfLoaded?.window != nil })
 
-        let firstCell = try XCTUnwrap(resultsListViewController.tableView.visibleCells.first as? ListCell)
+        let firstCell = try XCTUnwrap(
+            resultsListViewController.tableView.visibleCells.first as? ListCell
+        )
         let titleLabel: UILabel = try XCTUnwrap(firstCell.findView(by: "titleLabel"))
         let subtitleLabel: UILabel = try XCTUnwrap(firstCell.findView(by: "subtitleLabel"))
 
         XCTAssertEqual(titleLabel.font, expectedTitleFont)
+        XCTAssertEqual(titleLabel.textColor, expectedTitleColor)
         XCTAssertEqual(subtitleLabel.font, expectedSubtitleFont)
+        XCTAssertEqual(subtitleLabel.textColor, expectedSubtitleColor)
     }
 
     func test_picker_whenSelectedOptionProvided_shouldMarkMatchingResultAsSelected() throws {
