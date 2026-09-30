@@ -10,20 +10,19 @@ import XCTest
 
 final class ListCellTests: XCTestCase {
 
+    private enum Colors {
+        static let background: UIColor = .purple
+        static let container: UIColor = .orange
+    }
+
     func test_cell_whenItemSelected_shouldShowSelectedAppearance() throws {
-        let selectedBackgroundColor: UIColor = .purple
-        let cell = makeCell(
-            item: makeItem(
-                backgroundColor: selectedBackgroundColor,
-                isSelected: true
-            )
-        )
+        let cell = makeCell(item: makeItem(isSelected: true))
 
         let checkmarkImageView: UIImageView = try XCTUnwrap(cell.findView(by: "checkmark"))
         let titleLabel: UILabel = try XCTUnwrap(cell.findView(by: "titleLabel"))
         let titleStackView = try XCTUnwrap(titleLabel.superview)
 
-        XCTAssertEqual(cell.backgroundColor, selectedBackgroundColor)
+        XCTAssertEqual(cell.backgroundColor, Colors.container)
         XCTAssertEqual(cell.contentView.backgroundColor, .clear)
         XCTAssertEqual(cell.layer.cornerRadius, AdyenUIConstants.defaultCornerRadius)
         XCTAssertTrue(cell.clipsToBounds)
@@ -36,23 +35,14 @@ final class ListCellTests: XCTestCase {
     }
 
     func test_cell_whenSelectionChanges_shouldUpdateSelectedAppearance() throws {
-        let selectedBackgroundColor: UIColor = .purple
-        let unselectedBackgroundColor: UIColor = .orange
-        let cell = makeCell(
-            item: makeItem(
-                backgroundColor: selectedBackgroundColor,
-                isSelected: true
-            )
-        )
+        let cell = makeCell(item: makeItem(isSelected: true))
 
-        cell.item = makeItem(
-            backgroundColor: unselectedBackgroundColor
-        )
+        cell.item = makeItem()
         cell.layoutIfNeeded()
 
         let checkmarkImageView: UIImageView = try XCTUnwrap(cell.findView(by: "checkmark"))
 
-        XCTAssertEqual(cell.backgroundColor, unselectedBackgroundColor)
+        XCTAssertEqual(cell.backgroundColor, Colors.background)
         XCTAssertEqual(cell.contentView.backgroundColor, .clear)
         XCTAssertEqual(cell.layer.cornerRadius, 0)
         XCTAssertFalse(cell.clipsToBounds)
@@ -60,13 +50,10 @@ final class ListCellTests: XCTestCase {
         XCTAssertTrue(cell.accessibilityTraits.contains(.button))
         XCTAssertFalse(cell.accessibilityTraits.contains(.selected))
 
-        cell.item = makeItem(
-            backgroundColor: selectedBackgroundColor,
-            isSelected: true
-        )
+        cell.item = makeItem(isSelected: true)
         cell.layoutIfNeeded()
 
-        XCTAssertEqual(cell.backgroundColor, selectedBackgroundColor)
+        XCTAssertEqual(cell.backgroundColor, Colors.container)
         XCTAssertEqual(cell.contentView.backgroundColor, .clear)
         XCTAssertEqual(cell.layer.cornerRadius, AdyenUIConstants.defaultCornerRadius)
         XCTAssertTrue(cell.clipsToBounds)
@@ -79,7 +66,6 @@ final class ListCellTests: XCTestCase {
         let trailingText = "Trailing text"
         let cell = makeCell(
             item: makeItem(
-                backgroundColor: .purple,
                 isSelected: true,
                 trailingInfo: .text(trailingText)
             )
@@ -94,29 +80,8 @@ final class ListCellTests: XCTestCase {
         XCTAssertEqual(checkmarkImageView.frame.minX - trailingTextLabel.frame.maxX, 20, accuracy: 0.1)
     }
 
-    func test_cell_whenCustomHighlightColorProvided_shouldApplyAndResetHighlightColor() {
-        let backgroundColor: UIColor = .purple
-        let highlightedBackgroundColor: UIColor = .orange
-        let cell = makeCell(
-            item: makeItem(
-                backgroundColor: backgroundColor,
-                highlightedBackgroundColor: highlightedBackgroundColor
-            )
-        )
-
-        cell.setHighlighted(true, animated: false)
-
-        XCTAssertEqual(cell.contentView.backgroundColor, highlightedBackgroundColor)
-
-        cell.setHighlighted(false, animated: false)
-
-        XCTAssertEqual(cell.contentView.backgroundColor, backgroundColor)
-    }
-
-    func test_cell_whenHighlightColorOmitted_shouldKeepContentBackgroundClearWhileHighlighting() {
-        let cell = makeCell(
-            item: makeItem(backgroundColor: .purple)
-        )
+    func test_cell_whenHighlighted_shouldKeepContentBackgroundClear() {
+        let cell = makeCell(item: makeItem())
 
         cell.setHighlighted(true, animated: false)
 
@@ -126,29 +91,43 @@ final class ListCellTests: XCTestCase {
 
         XCTAssertEqual(cell.contentView.backgroundColor, .clear)
     }
+
+    func test_cell_whenTitleEmphasisHighlighted_shouldUseHighlightColor() throws {
+        let cell = makeCell(item: makeItem(titleEmphasis: .highlighted))
+
+        let titleLabel: UILabel = try XCTUnwrap(cell.findView(by: "titleLabel"))
+
+        XCTAssertEqual(titleLabel.textColor, theme.colors.highlight)
+    }
+
+    // MARK: - Helpers
+
+    private let theme = CheckoutTheme(
+        colors: CheckoutColors(
+            background: Colors.background,
+            container: Colors.container,
+            highlight: .blue
+        )
+    )
 
     private func makeCell(item: ListItem) -> ListCell {
         let cell = ListCell(style: .default, reuseIdentifier: nil)
         cell.frame = CGRect(x: 0, y: 0, width: 361, height: 68)
+        cell.theme = theme
         cell.item = item
         cell.layoutIfNeeded()
         return cell
     }
 
     private func makeItem(
-        backgroundColor: UIColor,
-        highlightedBackgroundColor: UIColor? = nil,
         isSelected: Bool = false,
+        titleEmphasis: ListItem.TitleEmphasis = .standard,
         trailingInfo: ListItem.TrailingInfoType? = nil
     ) -> ListItem {
-        var style = ListItemStyle()
-        style.backgroundColor = backgroundColor
-        style.highlightedBackgroundColor = highlightedBackgroundColor
-
-        return ListItem(
+        ListItem(
             title: "Title",
             trailingInfo: trailingInfo,
-            style: style,
+            titleEmphasis: titleEmphasis,
             identifier: "identifier",
             isSelected: isSelected
         )

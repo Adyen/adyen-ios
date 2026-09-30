@@ -55,7 +55,6 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
                 .map {
                     $0.toListItem(
                         isSelected: $0.identifier == selectedOptionIdentifier,
-                        selectedBackgroundColor: theme.colors.container,
                         selectionHandler: selectionHandler
                     )
                 }
@@ -104,21 +103,13 @@ private extension FormPickable {
 
     func toListItem(
         isSelected: Bool,
-        selectedBackgroundColor: UIColor,
         selectionHandler: @escaping (Self) -> Void
     ) -> ListItem {
-        var style = ListItemStyle()
-
-        if isSelected {
-            style.backgroundColor = selectedBackgroundColor
-        }
-
-        return ListItem(
+        ListItem(
             title: title,
             subtitle: subtitle,
             icon: listItemIcon,
             trailingInfo: trailingText.map { .text($0) },
-            style: style,
             identifier: identifier,
             isSelected: isSelected,
             selectionHandler: { selectionHandler(self) }

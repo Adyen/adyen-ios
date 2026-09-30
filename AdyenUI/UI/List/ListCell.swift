@@ -24,23 +24,21 @@ package final class ListCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override package func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        super.setHighlighted(highlighted, animated: animated)
-            
-        guard let highlightedBackgroundColor = item?.style.highlightedBackgroundColor else {
-            return
-        }
-        
-        contentView.backgroundColor = highlighted ? highlightedBackgroundColor : item?.style.backgroundColor
-    }
-    
     // MARK: - Theme
 
     /// The theme to use for styling.
     ///
     /// Settable rather than init-only because cells are created by `dequeueReusableCell`.
     package var theme: CheckoutTheme = .default {
-        didSet { itemView.theme = theme }
+        didSet {
+            itemView.theme = theme
+            applyTheme()
+        }
+    }
+
+    private func applyTheme() {
+        backgroundColor = item.map { $0.isSelected ? theme.colors.container : theme.colors.background }
+        contentView.backgroundColor = .clear
     }
 
     // MARK: - Item
@@ -50,10 +48,7 @@ package final class ListCell: UITableViewCell {
         didSet {
             itemView.item = item
             itemView.accessibilityIdentifier = item?.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "itemView") }
-            backgroundColor = item?.style.backgroundColor
-
-            let usesCustomHighlight = item?.style.highlightedBackgroundColor != nil
-            contentView.backgroundColor = usesCustomHighlight ? item?.style.backgroundColor : .clear
+            applyTheme()
 
             resetAccessoryView()
             

@@ -147,16 +147,12 @@ class FormPickerSearchViewControllerTests: XCTestCase {
 
     func test_picker_whenSelectedOptionProvided_shouldMarkMatchingResultAsSelected() throws {
         let options = makeOptions()
-        let selectedBackgroundColor: UIColor = .purple
         let selectedOption = FormPickerElement(
             identifier: options[1].identifier,
             title: "Different title"
         )
 
         let searchViewController = try makeSearchViewController(
-            theme: CheckoutTheme(
-                colors: CheckoutColors(container: selectedBackgroundColor)
-            ),
             options: options,
             selectedOption: selectedOption
         )
@@ -166,7 +162,6 @@ class FormPickerSearchViewControllerTests: XCTestCase {
 
         XCTAssertEqual(selectedResults.map(\.identifier), [selectedOption.identifier])
         XCTAssertEqual(selectedResults.first?.title, options[1].title)
-        XCTAssertEqual(selectedResults.first?.style.backgroundColor, selectedBackgroundColor)
     }
 
     func test_picker_whenSelectedOptionProvided_shouldRenderSelectedCellAppearance() throws {

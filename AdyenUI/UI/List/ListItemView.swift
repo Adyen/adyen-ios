@@ -47,7 +47,25 @@ package final class ListItemView: UIView, AnyFormItemView {
     }
 
     private func applyTheme() {
+        let labels = theme.elements.labels
+
+        titleLabel.apply(titleLabelStyle)
+        subtitleLabel.apply(labels.footnote.color(theme.colors.textSecondary))
+        (trailingView as? UILabel)?.apply(labels.body)
+
         checkmarkImageView.tintColor = theme.colors.text
+        updateImageView()
+    }
+
+    private var titleLabelStyle: AdyenLabelStyle {
+        let body = theme.elements.labels.body
+
+        switch item?.titleEmphasis {
+        case .highlighted:
+            return body.color(theme.colors.highlight)
+        case .standard, nil:
+            return body
+        }
     }
     
     @available(*, unavailable)
@@ -61,16 +79,7 @@ package final class ListItemView: UIView, AnyFormItemView {
     public var item: ListItem? {
         didSet {
             updateItemData(item: item)
-            
-            if let style = item?.style, oldValue?.style != style {
-                updateImageView(style: style)
-                titleLabel.adyen.apply(style.title)
-                subtitleLabel.adyen.apply(style.subtitle)
-                
-                if let trailingTextLabel = trailingView as? UILabel {
-                    trailingTextLabel.adyen.apply(style.trailingText)
-                }
-            }
+            applyTheme()
         }
     }
     
@@ -154,16 +163,16 @@ package final class ListItemView: UIView, AnyFormItemView {
         contentStackView.setCustomSpacing(Layout.checkmarkLeadingSpacing, after: trailingView)
     }
     
-    private func updateImageView(style: ListItemStyle) {
-        imageView.contentMode = style.image.contentMode
+    private func updateImageView() {
+        imageView.contentMode = .scaleAspectFit
         
         guard item?.icon?.canBeModified == true else {
             return imageView.layer.borderWidth = 0
         }
 
-        imageView.clipsToBounds = style.image.clipsToBounds
-        imageView.layer.borderWidth = style.image.borderWidth
-        imageView.layer.borderColor = style.image.borderColor?.cgColor
+        imageView.clipsToBounds = true
+        imageView.layer.borderWidth = 1.0 / UIScreen.main.nativeScale
+        imageView.layer.borderColor = theme.colors.separator.cgColor
     }
     
     // MARK: - Image View
@@ -182,7 +191,7 @@ package final class ListItemView: UIView, AnyFormItemView {
             return imageView.adyen.round(using: .none)
         }
 
-        imageView.adyen.round(using: item?.style.image.cornerRounding ?? .fixed(8))
+        imageView.adyen.round(using: .fixed(AdyenUIConstants.imageCornerRadius))
     }
     
     // MARK: - Title Label
@@ -286,7 +295,7 @@ package final class ListItemView: UIView, AnyFormItemView {
     
     override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        imageView.layer.borderColor = item?.style.image.borderColor?.cgColor ?? UIColor.Adyen.componentSeparator.cgColor
+        imageView.layer.borderColor = theme.colors.separator.cgColor
     }
     
 }
