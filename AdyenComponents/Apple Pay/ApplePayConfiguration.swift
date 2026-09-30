@@ -114,8 +114,7 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
         var newItems = Array(newConfig.paymentRequest.paymentSummaryItems.dropLast())
         let decimalAmount = AmountFormatter.decimalAmount(
             amount.value,
-            currencyCode: amount.currencyCode,
-            localeIdentifier: amount.localeIdentifier
+            currencyCode: amount.currencyCode
         )
         newItems.append(PKPaymentSummaryItem(label: lastItem.label, amount: decimalAmount))
         newConfig.paymentRequest.paymentSummaryItems = newItems

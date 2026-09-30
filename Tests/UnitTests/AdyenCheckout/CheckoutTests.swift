@@ -418,6 +418,71 @@ final class CheckoutTests: XCTestCase {
         XCTAssertTrue(didCallSubmit)
     }
     
+    // MARK: - isPaymentMethodAvailable(for:) Tests
+
+    func test_isPaymentMethodAvailable_withPaymentMethodWithoutRequirements_shouldReturnTrue() {
+        let sut = makeAdvancedCheckoutCore(paymentMethods: paymentMethods)
+
+        XCTAssertTrue(sut.isPaymentMethodAvailable(for: .blik))
+    }
+
+    func test_isPaymentMethodAvailable_withTypeNotInPaymentMethods_shouldReturnFalse() {
+        let sut = makeAdvancedCheckoutCore(paymentMethods: paymentMethods)
+
+        XCTAssertFalse(sut.isPaymentMethodAvailable(for: .ideal))
+    }
+
+    func test_isPaymentMethodAvailable_withoutPaymentMethods_shouldReturnFalse() {
+        let sut = makeAdvancedCheckoutCore()
+
+        XCTAssertFalse(sut.isPaymentMethodAvailable(for: .scheme))
+    }
+
+    func test_isPaymentMethodAvailable_withTypeOnlyInStoredPaymentMethods_shouldReturnFalse() {
+        let sut = makeAdvancedCheckoutCore(paymentMethods: paymentMethods)
+
+        XCTAssertTrue(paymentMethods.stored.contains { $0.type == .bcmc })
+        XCTAssertFalse(sut.isPaymentMethodAvailable(for: .bcmc))
+    }
+
+    func test_isPaymentMethodAvailable_withApplePayWithoutConfiguration_shouldReturnFalseAndCreationShouldFail() throws {
+        let sut = try makeAdvancedCheckoutCore(paymentMethods: makePaymentMethodsIncludingApplePay())
+
+        XCTAssertFalse(sut.isPaymentMethodAvailable(for: .applePay))
+        XCTAssertThrowsError(try sut.createPaymentComponent(for: .applePay))
+    }
+
+    func test_isPaymentMethodAvailable_shouldMatchPaymentComponentCreation() throws {
+        configuration.configurations[.payment(.applePay)] = try ApplePayConfiguration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
+        )
+        let paymentMethods = try makePaymentMethodsIncludingApplePay()
+        let sut = makeAdvancedCheckoutCore(paymentMethods: paymentMethods)
+
+        for paymentMethod in paymentMethods.regular {
+            let canCreateComponent = (try? sut.createPaymentComponent(for: paymentMethod.type)) != nil
+            XCTAssertEqual(
+                sut.isPaymentMethodAvailable(for: paymentMethod.type),
+                canCreateComponent,
+                "Availability and component creation disagree for \(paymentMethod.type.rawValue)"
+            )
+        }
+    }
+
+    func test_isPaymentMethodAvailable_onCheckout_shouldForwardToCore() async throws {
+        mockProvider.setupWithPaymentMethodsResult = .success(makeAdvancedCheckoutCore(paymentMethods: paymentMethods))
+
+        let checkout = try await Checkout.setup(
+            with: paymentMethods,
+            configuration: configuration,
+            presentationDelegate: nil,
+            provider: mockProvider
+        )
+
+        XCTAssertTrue(checkout.isPaymentMethodAvailable(for: .blik))
+        XCTAssertFalse(checkout.isPaymentMethodAvailable(for: .ideal))
+    }
+
     // MARK: - createPaymentComponent(for type:) Tests
     
     func test_createPaymentComponent_forType_returnsComponent_whenPaymentMethodExists() throws {
@@ -770,6 +835,12 @@ final class CheckoutTests: XCTestCase {
 
     private func typeIdentifiers(for values: [some Any]) -> [ObjectIdentifier] {
         values.map { value in ObjectIdentifier(type(of: value)) }
+    }
+
+    private func makePaymentMethodsIncludingApplePay() throws -> PaymentMethods {
+        var dictionary = paymentMethodsDictionary
+        dictionary["paymentMethods"]?.append(applePayDictionary)
+        return try AdyenCoder.decode(dictionary) as PaymentMethods
     }
 
     private func makeSessionCheckoutCore(
