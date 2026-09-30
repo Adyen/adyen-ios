@@ -229,6 +229,7 @@ final class ComponentManagerTests: XCTestCase {
                 return try CheckoutComponentBuilder.build(
                     forAnyPaymentMethod: paymentMethod,
                     configuration: checkoutConfiguration,
+                    policy: .dropIn,
                     context: self.context
                 )
             }
@@ -429,6 +430,7 @@ final class ComponentManagerTests: XCTestCase {
                 try CheckoutComponentBuilder.build(
                     forAnyPaymentMethod: paymentMethod,
                     configuration: checkoutConfiguration,
+                    policy: .dropIn,
                     context: self.context
                 )
             }

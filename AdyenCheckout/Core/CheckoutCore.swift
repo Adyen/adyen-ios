@@ -123,6 +123,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
         let paymentComponent = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: configuration,
+            policy: .components(configuration),
             sessionConfiguration: session?.componentConfiguration,
             context: adyenContext
         )
@@ -138,6 +139,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
         let paymentComponent = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: configuration,
+            policy: .components(configuration),
             context: adyenContext
         )
         paymentComponent.delegate = self
