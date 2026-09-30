@@ -36,7 +36,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
     /// Delegate to handle different viewController events.
     package weak var delegate: ViewControllerDelegate?
     
-    package lazy var resultsListViewController = ListViewController(style: viewModel.style)
+    package lazy var resultsListViewController = ListViewController(style: viewModel.style, theme: viewModel.theme)
 
     /// Initializes the search view controller.
     ///

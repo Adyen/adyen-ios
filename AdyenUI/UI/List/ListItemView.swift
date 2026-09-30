@@ -10,10 +10,6 @@ import UIKit
 /// Displays a list item.
 package final class ListItemView: UIView, AnyFormItemView {
 
-    private enum Constants {
-        static let checkmarkIcon = "verification_true"
-    }
-
     private enum Layout {
         static let checkmarkSize = CGSize(width: 24, height: 24)
         static let checkmarkLeadingSpacing: CGFloat = 20
@@ -25,9 +21,20 @@ package final class ListItemView: UIView, AnyFormItemView {
     }
     
     public var childItemViews: [AnyFormItemView] = []
+
+    /// The theme to use for styling.
+    ///
+    /// Settable rather than init-only because `ListCell` is dequeued before its theme is known.
+    package var theme: CheckoutTheme {
+        didSet { applyTheme() }
+    }
     
     /// Initializes the list item view.
-    package init(imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()) {
+    package init(
+        theme: CheckoutTheme = .default,
+        imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
+    ) {
+        self.theme = theme
         self.imageLoader = imageLoader
         
         super.init(frame: .zero)
@@ -36,6 +43,11 @@ package final class ListItemView: UIView, AnyFormItemView {
         
         preservesSuperviewLayoutMargins = true
         configureConstraints()
+        applyTheme()
+    }
+
+    private func applyTheme() {
+        checkmarkImageView.tintColor = theme.colors.text
     }
     
     @available(*, unavailable)
@@ -199,13 +211,7 @@ package final class ListItemView: UIView, AnyFormItemView {
     }()
 
     private lazy var checkmarkImageView: UIImageView = {
-        let imageView = UIImageView(
-            image: UIImage(
-                named: Constants.checkmarkIcon,
-                in: Bundle.coreInternalResources,
-                compatibleWith: nil
-            )
-        )
+        let imageView = UIImageView(image: .adyenCheckmark)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFit

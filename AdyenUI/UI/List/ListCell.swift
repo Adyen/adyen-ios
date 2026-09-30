@@ -34,6 +34,15 @@ package final class ListCell: UITableViewCell {
         contentView.backgroundColor = highlighted ? highlightedBackgroundColor : item?.style.backgroundColor
     }
     
+    // MARK: - Theme
+
+    /// The theme to use for styling.
+    ///
+    /// Settable rather than init-only because cells are created by `dequeueReusableCell`.
+    package var theme: CheckoutTheme = .default {
+        didSet { itemView.theme = theme }
+    }
+
     // MARK: - Item
     
     /// The item displayed in the cell cell.
