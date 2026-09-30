@@ -16,10 +16,29 @@ extension CheckoutCore {
             throw CheckoutError(code: .paymentMethodFailure, message: "No payment methods are available for Drop-in.")
         }
 
+        let dropInComponent = CheckoutComponentBuilder.buildDropIn(
+            paymentMethods: paymentMethods,
+            configuration: configuration,
+            context: adyenContext,
+            actionComponentConfiguration: actionComponentConfiguration,
+            storedPaymentMethodManagementCapability: sessionManagementCapability,
+            paymentComponentProvider: makeDropInPaymentComponentProvider()
+        )
+        dropInComponent.delegate = self
+        guard dropInComponent.hasSupportedPaymentMethods else {
+            throw CheckoutError(code: .paymentMethodFailure, message: "No supported payment methods are available for Drop-in.")
+        }
+        return CheckoutDropInComponent(dropInComponent: dropInComponent)
+    }
+}
+
+extension CheckoutCore {
+
+    internal func makeDropInPaymentComponentProvider() -> DropInPaymentComponentProvider {
         let checkoutConfiguration = configuration
         let sessionConfiguration = session?.componentConfiguration
         let context = adyenContext
-        let paymentComponentProvider = DropInPaymentComponentProvider(
+        return DropInPaymentComponentProvider(
             isAvailable: { paymentMethod in
                 CheckoutComponentBuilder.isAvailable(
                     forAnyPaymentMethod: paymentMethod,
@@ -30,24 +49,12 @@ extension CheckoutCore {
                 try CheckoutComponentBuilder.build(
                     forAnyPaymentMethod: paymentMethod,
                     configuration: checkoutConfiguration,
+                    policy: .dropIn,
                     sessionConfiguration: sessionConfiguration,
                     context: context
                 )
             }
         )
-        let dropInComponent = CheckoutComponentBuilder.buildDropIn(
-            paymentMethods: paymentMethods,
-            configuration: checkoutConfiguration,
-            context: context,
-            actionComponentConfiguration: actionComponentConfiguration,
-            storedPaymentMethodManagementCapability: sessionManagementCapability,
-            paymentComponentProvider: paymentComponentProvider
-        )
-        dropInComponent.delegate = self
-        guard dropInComponent.hasSupportedPaymentMethods else {
-            throw CheckoutError(code: .paymentMethodFailure, message: "No supported payment methods are available for Drop-in.")
-        }
-        return CheckoutDropInComponent(dropInComponent: dropInComponent)
     }
 }
 
