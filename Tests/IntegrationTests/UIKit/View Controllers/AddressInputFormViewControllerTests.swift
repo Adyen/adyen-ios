@@ -332,6 +332,26 @@ class AddressInputFormViewControllerTests: XCTestCase {
         )
     }
 
+    func test_countryPicker_withLocalizationProvider_shouldShowHeaderOverrides() throws {
+        let title = "Choose a country"
+        let description = "Select where you live."
+        let provider = CountryPickerLocalizationProviderMock(values: [
+            .addressCountryPickerTitle: title,
+            .addressCountryPickerDescription: description
+        ])
+        let localizationParameters = LocalizationParameters().withProvider(provider)
+        let viewController = AddressInputFormViewController(
+            viewModel: viewModel(localizationParameters: localizationParameters)
+        )
+
+        let pickerViewController = try presentCountryPicker(for: viewController)
+        let searchViewController = try searchViewController(from: pickerViewController)
+        let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
+
+        XCTAssertEqual(headerView.titleLabel.text, title)
+        XCTAssertEqual(headerView.subtitleLabel.text, description)
+    }
+
     func test_countryPicker_whenInitialCountryUnsupported_shouldNotSelectResult() throws {
         let viewController = AddressInputFormViewController(
             viewModel: viewModel(
@@ -417,6 +437,7 @@ private extension AddressInputFormViewControllerTests {
     }
     
     func viewModel(
+        localizationParameters: LocalizationParameters? = nil,
         initialCountry: String = "NL",
         prefillAddress: PostalAddress? = nil,
         style: FormComponentStyle = .init(),
@@ -427,12 +448,25 @@ private extension AddressInputFormViewControllerTests {
         .init(
             for: .billing,
             style: style,
-            localizationParameters: nil,
+            localizationParameters: localizationParameters,
             initialCountry: initialCountry,
             prefillAddress: prefillAddress,
             supportedCountryCodes: supportedCountryCodes,
             handleShowSearch: searchHandler,
             completionHandler: { _ in }
         )
+    }
+}
+
+private final class CountryPickerLocalizationProviderMock: CheckoutLocalizationProvider {
+
+    private let values: [CheckoutLocalizationKey: String]
+
+    init(values: [CheckoutLocalizationKey: String]) {
+        self.values = values
+    }
+
+    func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String? {
+        values[key]
     }
 }

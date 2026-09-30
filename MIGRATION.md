@@ -8,6 +8,11 @@ See also:
 - [guides/v6/card.md](guides/v6/card.md)
 - [guides/v6/theme.md](guides/v6/theme.md)
 
+### Localization
+
+`CheckoutLocalizationKey.addressCountryPickerTitle` and `.addressCountryPickerDescription` allow localization providers to
+override the country picker header.
+
 ### Drop-in configuration
 
 Drop-in-specific behavior is configured through `DropInConfiguration` in the `CheckoutConfiguration` DSL. Component configuration,

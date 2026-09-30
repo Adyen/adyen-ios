@@ -49,6 +49,20 @@ extension CheckoutLocalizationKey {
     public static let generalSearchHint = CheckoutLocalizationKey(localizationKey: .searchPlaceholder)
 }
 
+// MARK: - Address
+
+extension CheckoutLocalizationKey {
+    /// The country picker title.
+    public static let addressCountryPickerTitle = CheckoutLocalizationKey(
+        localizationKey: .addressCountryPickerTitle
+    )
+
+    /// The country picker description.
+    public static let addressCountryPickerDescription = CheckoutLocalizationKey(
+        localizationKey: .addressCountryPickerDescription
+    )
+}
+
 // MARK: - Card
 
 extension CheckoutLocalizationKey {
@@ -124,6 +138,7 @@ extension CheckoutLocalizationKey {
 
 // swiftlint:enable identifier_name
 
+// TODO: Provide reference doc/link to the file with all SDK keys
 /// An interface for providing selective programmatic overrides of Adyen Checkout UI strings.
 ///
 /// Use this provider when you need to override a small number of strings.
@@ -136,7 +151,6 @@ extension CheckoutLocalizationKey {
 /// translated into the target language. The SDK resolves strings from `Bundle.main` first,
 /// so your translations are picked up automatically with no provider required.
 ///
-// TODO: Provide reference doc/link to the file with all SDK keys
 public protocol CheckoutLocalizationProvider {
     func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String?
 }
