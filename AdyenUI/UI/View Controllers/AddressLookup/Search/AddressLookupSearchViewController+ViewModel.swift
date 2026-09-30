@@ -122,7 +122,7 @@ private extension AddressLookupSearchViewController.ViewModel {
         
         .init(
             title: localizedString(.addressLookupSearchManualEntryItemTitle, localizationParameters),
-            style: style.manualEntryListItem
+            titleEmphasis: .highlighted
         ) {
             self.switchToManualEntryHandler()
         }
