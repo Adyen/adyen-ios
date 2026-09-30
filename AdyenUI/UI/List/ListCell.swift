@@ -68,7 +68,7 @@ package final class ListCell: UITableViewCell {
     
     // MARK: - Internal
 
-    package func setContentInsets(_ insets: UIEdgeInsets?) {
+    internal func setContentInsets(_ insets: UIEdgeInsets?) {
         let resolvedInsets = insets ?? .init(
             top: 0,
             left: contentView.layoutMargins.left,

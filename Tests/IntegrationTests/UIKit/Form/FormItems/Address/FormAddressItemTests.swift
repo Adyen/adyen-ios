@@ -58,7 +58,7 @@ class FormAddressItemTests: XCTestCase {
         formAddressItem.value = .init(country: "US")
         XCTAssertEqual(formAddressItem.countryPickerItem.value?.identifier, "US")
     }
-
+    
     func testCountryPickerItemUpdateUnsupportedCountry() {
         
         let formAddressItem = FormAddressItem(
