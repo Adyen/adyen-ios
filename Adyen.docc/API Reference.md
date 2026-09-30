@@ -37,11 +37,11 @@ The entry points for integrating the SDK.
 - ``SessionResponse``
 - ``BeforeSubmitData``
 - ``BeforeSubmitResult``
-- ``BeforeSubmitHandler``
+- ``CheckoutBeforeSubmitHandler``
 - ``SubmitResult``
-- ``SubmitHandler``
+- ``CheckoutSubmitHandler``
 - ``AdditionalDetailsResult``
-- ``AdditionalDetailsHandler``
+- ``CheckoutAdditionalDetailsHandler``
 - ``DelegatedAuthenticationData``
 
 ## Payment Methods
