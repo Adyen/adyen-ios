@@ -25,7 +25,7 @@ package final class VoucherComponent: AnyVoucherActionHandler, ShareableComponen
     package let context: AdyenContext
 
     /// Delegates view controller presentation.
-    package weak var presentationDelegate: PresentationDelegate?
+    package weak var actionPresentationDelegate: ActionPresentationDelegate?
 
     package weak var delegate: ActionComponentDelegate?
 
@@ -115,11 +115,11 @@ package final class VoucherComponent: AnyVoucherActionHandler, ShareableComponen
         
         setUpPresenterViewController(parentViewController: viewController)
 
-        if let presentationDelegate {
-            presentationDelegate.present(viewController: viewController)
+        if let actionPresentationDelegate {
+            actionPresentationDelegate.present(actionViewController: viewController, actionData: ActionData(type: .voucher))
         } else {
             AdyenAssertion.assertionFailure(
-                message: "PresentationDelegate is nil. Provide a presentation delegate to VoucherComponent."
+                message: "ActionPresentationDelegate is nil. Provide a presentation delegate to VoucherComponent."
             )
         }
     }

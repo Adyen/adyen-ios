@@ -66,8 +66,7 @@ let configuration = try CheckoutConfiguration(
 
 let checkout = try await Checkout.setup(
     with: sessionResponse,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 .onBeforeSubmit { data in
     .proceed(data: data, sessionData: nil)
@@ -105,8 +104,7 @@ let configuration = try CheckoutConfiguration(
 
 let checkout = try await Checkout.setup(
     with: paymentMethods,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 .onSubmit { data in
     try await callPayments(with: data)
@@ -138,9 +136,11 @@ If your app only needs to handle actions, you can set up checkout without `Payme
 
 ```swift
 let checkout = try await Checkout.setup(
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
+.onAction { actionData, actionViewController in
+    present(actionViewController, animated: true)
+}
 .onAdditionalDetails { data in
     try await callDetails(with: data)
 }
@@ -156,17 +156,22 @@ let checkout = try await Checkout.setup(
 
 Call `checkout.handle(action:)` when your backend returns an action.
 
-## PresentationDelegate
+## Presenting actions
 
-Pass a `PresentationDelegate` if you want checkout to present action components from your own UI layer:
+Checkout builds the view controller for an action — a 3D Secure challenge, a voucher, a QR code — and hands it to `onAction(_:)` together with an `ActionData` describing the action. Present it from your own UI layer:
 
 ```swift
-extension CheckoutViewController: PresentationDelegate {
-    func present(viewController: UIViewController) {
-        present(viewController, animated: true)
-    }
+.onAction { actionData, actionViewController in
+    print(actionData.type)
+    present(actionViewController, animated: true)
 }
 ```
+
+`ActionData.type` is an `ActionType`, a `RawRepresentable` struct with the known values `redirect`, `nativeRedirect`, `threeDS2`, `sdk`, `qrCode`, `await` and `voucher`. It is a struct rather than an enum so that new action types do not break exhaustive `switch` statements in your code — always handle unknown values.
+
+`onAction(_:)` is available on every flow. When you do not set it, checkout presents the action on the payment component that started the flow. The action-only flow has no such component, so it always needs a handler.
+
+Drop-in presents actions within its own navigation stack, so `onAction(_:)` is not invoked for actions raised inside a Drop-in flow.
 
 ## Presenting a payment component
 

@@ -9,8 +9,9 @@ import AdyenComponents
 import Foundation
 import UIKit
 
+// TODO: - This will be removed in COSDK-1284
 @MainActor
-internal class BACSDirectDebitPresentationDelegate: PresentationDelegate {
+internal class BACSDirectDebitPresentationDelegate {
 
     // MARK: - Properties
 

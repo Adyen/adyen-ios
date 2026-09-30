@@ -68,8 +68,7 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
         
         let checkout = try await Checkout.setup(
             with: sessionResponse,
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
@@ -111,12 +110,6 @@ internal final class CardComponentExample: InitialDataFlowProtocol {
             let title = success ? "Success" : "Error"
             self.presenter?.presentAlert(withTitle: title, message: message)
         }
-    }
-}
-
-extension CardComponentExample: PresentationDelegate {
-    internal func present(viewController: UIViewController) {
-        presenter?.present(viewController: viewController, completion: nil)
     }
 }
 

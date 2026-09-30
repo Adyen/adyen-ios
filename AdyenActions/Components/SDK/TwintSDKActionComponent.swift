@@ -20,7 +20,7 @@ import Foundation
         package let context: AdyenContext
 
         /// Delegates view controller presentation.
-        package weak var presentationDelegate: PresentationDelegate?
+        package weak var actionPresentationDelegate: ActionPresentationDelegate?
 
         package weak var delegate: ActionComponentDelegate?
 
@@ -63,7 +63,7 @@ import Foundation
         ///
         /// - Parameter action: The Twint SDK action object.
         package func handle(_ action: TwintSDKAction) {
-            AdyenAssertion.assert(message: "presentationDelegate is nil", condition: presentationDelegate == nil)
+            AdyenAssertion.assert(message: "actionPresentationDelegate is nil", condition: actionPresentationDelegate == nil)
             twint.fetchInstalledAppConfigurations(maxIssuerNumber: configuration.maxIssuerNumber) { [weak self] installedApps in
                 guard let self else { return }
 
@@ -141,8 +141,8 @@ import Foundation
                 }
             )
 
-            if let viewController = appChooserViewController, let delegate = presentationDelegate {
-                present(viewController, presentationDelegate: delegate)
+            if let viewController = appChooserViewController, let delegate = actionPresentationDelegate {
+                present(viewController, actionPresentationDelegate: delegate)
             }
         }
 
@@ -164,8 +164,8 @@ import Foundation
             pollingComponent?.handle(action)
         }
 
-        private func present(_ viewController: UIViewController, presentationDelegate: PresentationDelegate) {
-            presentationDelegate.present(viewController: viewController)
+        private func present(_ viewController: UIViewController, actionPresentationDelegate: ActionPresentationDelegate) {
+            actionPresentationDelegate.present(actionViewController: viewController, actionData: ActionData(type: .sdk))
         }
 
         private func handleShowError(_ errorMessage: String, componentName: String) {
@@ -187,8 +187,8 @@ import Foundation
                     }
                 )
             )
-            if let presentationDelegate {
-                self.present(alert, presentationDelegate: presentationDelegate)
+            if let actionPresentationDelegate {
+                self.present(alert, actionPresentationDelegate: actionPresentationDelegate)
             }
         }
 

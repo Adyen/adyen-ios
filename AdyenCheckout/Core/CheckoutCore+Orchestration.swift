@@ -12,6 +12,7 @@ import Adyen
     @_spi(AdyenInternal) import AdyenActions
 #endif
 import Foundation
+import UIKit
 
 // MARK: - Internal Helpers
 
@@ -183,4 +184,19 @@ private extension CheckoutCore {
         }
     }
     
+}
+
+extension CheckoutCore: ActionPresentationDelegate {
+
+    package func present(actionViewController: UIViewController, actionData: ActionData) {
+        if let onAction = resultCallbacks.onAction {
+            onAction(actionData, actionViewController)
+        } else if let presentingViewController = pendingPaymentComponent?.viewController {
+            presentingViewController.present(actionViewController, animated: true)
+        } else {
+            AdyenAssertion.assertionFailure(
+                message: "No onAction handler is set and no payment component is available to present the action on."
+            )
+        }
+    }
 }

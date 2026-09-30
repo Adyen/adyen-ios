@@ -59,11 +59,11 @@ class AwaitComponentTests: XCTestCase {
 
         let sut = AwaitComponent(context: Dummy.context)
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-        let presentationDelegate = PresentationDelegateMock()
-        sut.presentationDelegate = presentationDelegate
+        let actionPresentationDelegate = ActionPresentationDelegateMock()
+        sut.actionPresentationDelegate = actionPresentationDelegate
 
         let presentationExpectation = expectation(description: "expect presentation delegate to be called")
-        presentationDelegate.doPresent = { viewController in
+        actionPresentationDelegate.doPresent = { viewController in
             let messageLabel: UILabel! = viewController.view.findView(by: "messageLabel")
             let spinnerLabel: UILabel! = viewController.view.findView(by: "spinnerTitleLabel")
 
@@ -103,9 +103,9 @@ class AwaitComponentTests: XCTestCase {
         sut.configuration.style = style
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
-        let presentationDelegate = PresentationDelegateMock()
-        let waitExpectation = expectation(description: "Wait for the presentationDelegate to be called.")
-        presentationDelegate.doPresent = { viewController in
+        let actionPresentationDelegate = ActionPresentationDelegateMock()
+        let waitExpectation = expectation(description: "Wait for the actionPresentationDelegate to be called.")
+        actionPresentationDelegate.doPresent = { viewController in
             XCTAssertNotNil(viewController as? ActionViewController)
             let viewController = viewController as! ActionViewController
             viewController.loadViewIfNeeded()
@@ -125,7 +125,7 @@ class AwaitComponentTests: XCTestCase {
             waitExpectation.fulfill()
         }
 
-        sut.presentationDelegate = presentationDelegate
+        sut.actionPresentationDelegate = actionPresentationDelegate
 
         sut.handle(action)
 

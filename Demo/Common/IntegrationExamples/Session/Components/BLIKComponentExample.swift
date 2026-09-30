@@ -52,8 +52,7 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
         
         let checkout = try await Checkout.setup(
             with: sessionResponse,
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
@@ -112,12 +111,5 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
         // TODO: how to do component cancellation
 //        component?.cancelIfNeeded()
         presenter?.dismiss(completion: nil)
-    }
-}
-
-extension BLIKComponentExample: PresentationDelegate {
-    
-    func present(viewController: UIViewController) {
-        presenter?.present(viewController: viewController, completion: nil)
     }
 }
