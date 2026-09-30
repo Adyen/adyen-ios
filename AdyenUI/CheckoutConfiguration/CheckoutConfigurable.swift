@@ -30,21 +30,6 @@ package protocol CheckoutComponentConfiguration: CheckoutConfigurable {
     var theme: CheckoutTheme { get set }
 }
 
-package extension CheckoutConfigurable {
-
-    // TODO: remove this, components don't support setting this individually
-    // having this function here instead of re writing it for all configurations
-    // prevents duplication, but the returned value will be seen as CheckoutConfigurable
-    // after calling this function, as opposed to actual type
-    // like BLIKComponentConfiguration before calling this.
-    func showsSubmitButton(_ showsSubmitButton: Bool) -> any CheckoutConfigurable {
-        guard let self = self as? CheckoutComponentConfiguration else { return self }
-        var copy = self
-        copy.showsSubmitButton = showsSubmitButton
-        return copy
-    }
-}
-
 package struct CompositeCheckoutConfiguration: CheckoutConfigurable {
     
     package var configurations: [CheckoutConfigurable]

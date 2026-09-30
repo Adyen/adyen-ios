@@ -102,6 +102,7 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         return try XCTUnwrap(component as? CardComponent)

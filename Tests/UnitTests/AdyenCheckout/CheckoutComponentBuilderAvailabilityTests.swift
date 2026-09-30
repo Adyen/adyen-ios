@@ -52,6 +52,7 @@ final class CheckoutComponentBuilderAvailabilityTests: XCTestCase {
             let builtComponent = try? CheckoutComponentBuilder.build(
                 forAnyPaymentMethod: paymentMethod,
                 configuration: configuration,
+                policy: .components(configuration),
                 context: context
             )
 
@@ -66,7 +67,12 @@ final class CheckoutComponentBuilderAvailabilityTests: XCTestCase {
 
         XCTAssertFalse(CheckoutComponentBuilder.isAvailable(forAnyPaymentMethod: paymentMethod, configuration: configuration))
         XCTAssertThrowsError(
-            try CheckoutComponentBuilder.build(forAnyPaymentMethod: paymentMethod, configuration: configuration, context: context)
+            try CheckoutComponentBuilder.build(
+                forAnyPaymentMethod: paymentMethod,
+                configuration: configuration,
+                policy: .components(configuration),
+                context: context
+            )
         )
     }
 
@@ -139,7 +145,7 @@ final class CheckoutComponentBuilderAvailabilityTests: XCTestCase {
         XCTAssertTrue(isAvailable)
         XCTAssertEqual(factory.receivedPaymentMethods.map(\.type), [.blik])
         let receivedConfiguration = try XCTUnwrap(factory.receivedConfigurations.first)
-        XCTAssertFalse(receivedConfiguration.showsSubmitButton)
+        XCTAssertTrue(receivedConfiguration.showsSubmitButton, "Presentation settings come from the build policy, not availability")
         XCTAssertEqual(receivedConfiguration.theme.colors.primary, .yellow)
         XCTAssertEqual(receivedConfiguration.localizationParameters, localizationParameters)
     }
