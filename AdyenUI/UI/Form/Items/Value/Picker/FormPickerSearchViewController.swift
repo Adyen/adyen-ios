@@ -94,10 +94,7 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
         
         super.init(rootViewController: searchViewController)
 
-        configureSearchField(
-            in: searchViewController,
-            style: theme.elements.textField
-        )
+        configureSearchField(in: searchViewController, style: theme.elements.textField)
         
         searchViewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
