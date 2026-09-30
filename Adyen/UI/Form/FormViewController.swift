@@ -264,7 +264,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
 
     private func setupLayout() {
         if scrollEnabled {
-            let horizontalInset: CGFloat = 8
+            let horizontalInset = Dimensions.formContainerInset
             scrollView.adyen.anchor(inside: view.safeAreaLayoutGuide)
 
             NSLayoutConstraint.activate([

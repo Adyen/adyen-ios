@@ -25,6 +25,8 @@ public final class ListItemView: UIView, AnyFormItemView {
         
         addSubview(contentStackView)
         
+        directionalLayoutMargins.leading = Dimensions.formItemMargin
+        directionalLayoutMargins.trailing = Dimensions.formItemMargin
         preservesSuperviewLayoutMargins = true
         configureConstraints()
     }

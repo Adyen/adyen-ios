@@ -16,6 +16,12 @@ public enum Dimensions {
 
     public static var maxAdaptiveWidth: CGFloat = 360
 
+    /// The horizontal inset between a scrolling form container and its content.
+    internal static let formContainerInset: CGFloat = 8
+
+    /// The layout margin of a single form item.
+    internal static let formItemMargin: CGFloat = 8
+
     public static var greatestPresentableScale: CGFloat {
         UIDevice.current.userInterfaceIdiom == .phone && UIDevice.current.orientation.isLandscape ? 1 : greatestPresentableHeightScale
     }
