@@ -6,7 +6,17 @@
 
 import AdyenNetworking
 import Foundation
+import RemoteLoggerClient
 import UIKit
+
+public let remoteLogger: RemoteLogger? = {
+    try? RemoteLogger(configuration: .init(
+        endpoint: URL(string: "http://127.0.0.1:8788")!,
+        uploadToken: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        mode: .plain,
+        delivery: .immediate
+    ))
+}()
 
 @_spi(AdyenInternal)
 public class Analytics {

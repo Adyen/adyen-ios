@@ -138,7 +138,9 @@ package class CardComponent: PaymentComponent,
     private lazy var securedViewController = SecuredViewController(child: cardViewController, style: configuration.style)
 
     internal lazy var cardViewController: CardViewController = {
-
+        Task {
+            try? await remoteLogger?.log("CardViewController has been accessed")
+        }
         let formViewController = CardViewController(
             configuration: configuration,
             shopperInformation: configuration.shopperInformation,

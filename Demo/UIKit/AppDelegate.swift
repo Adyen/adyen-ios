@@ -5,6 +5,7 @@
 //
 
 import Adyen
+import RemoteLoggerClient
 import UIKit
 
 @main
@@ -13,6 +14,10 @@ internal final class AppDelegate: UIResponder, UIApplicationDelegate {
     internal func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         #if DEBUG
             AdyenLogging.isEnabled = true
+            Task {
+                try? await remoteLogger?.log("INFO AdyenUIHost launched")
+                try? await remoteLogger?.log("DEBUG Launch options present: \(launchOptions != nil)")
+            }
         #endif
 
         return true
