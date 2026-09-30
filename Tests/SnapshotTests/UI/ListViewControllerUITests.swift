@@ -30,18 +30,6 @@ final class ListViewControllerUITests: XCTestCase {
         listComponentStyle.sectionHeader.title.font = .systemFont(ofSize: 22)
         listComponentStyle.sectionHeader.backgroundColor = .brown
         
-        // list item
-        listComponentStyle.listItem.backgroundColor = .magenta
-        listComponentStyle.listItem.title.color = .white
-        listComponentStyle.listItem.title.backgroundColor = .black
-        listComponentStyle.listItem.title.textAlignment = .left
-        listComponentStyle.listItem.title.font = .systemFont(ofSize: 30)
-        
-        listComponentStyle.listItem.subtitle.color = .white
-        listComponentStyle.listItem.subtitle.backgroundColor = .black
-        listComponentStyle.listItem.subtitle.textAlignment = .left
-        listComponentStyle.listItem.subtitle.font = .systemFont(ofSize: 30)
-        
         var footerStyle = ListSectionFooterStyle()
         footerStyle.title.color = .cyan
         footerStyle.title.backgroundColor = .brown
@@ -49,11 +37,16 @@ final class ListViewControllerUITests: XCTestCase {
         footerStyle.title.font = .systemFont(ofSize: 19)
         footerStyle.backgroundColor = .yellow
         
-        let sut = ListViewController(style: listComponentStyle)
+        // List items are themed rather than styled per item.
+        let theme = CheckoutTheme(
+            colors: CheckoutColors(background: .magenta, container: .magenta)
+        )
+
+        let sut = ListViewController(style: listComponentStyle, theme: theme)
         
-        let item11 = ListItem(title: "test title 11", style: listComponentStyle.listItem)
+        let item11 = ListItem(title: "test title 11")
         item11.identifier = "11"
-        let item12 = ListItem(title: "test title 12", style: listComponentStyle.listItem)
+        let item12 = ListItem(title: "test title 12")
         item12.identifier = "12"
         let section1 = ListSection(
             header: ListSectionHeader(title: "section 1", style: listComponentStyle.sectionHeader),
@@ -61,9 +54,9 @@ final class ListViewControllerUITests: XCTestCase {
             footer: ListSectionFooter(title: "section 1 footer", style: footerStyle)
         )
         
-        let item21 = ListItem(title: "test title 21", style: listComponentStyle.listItem)
+        let item21 = ListItem(title: "test title 21")
         item21.identifier = "21"
-        let item22 = ListItem(title: "test title 22", style: listComponentStyle.listItem)
+        let item22 = ListItem(title: "test title 22")
         item22.identifier = "22"
         let section2 = ListSection(
             header: ListSectionHeader(title: "section 2", style: listComponentStyle.sectionHeader),

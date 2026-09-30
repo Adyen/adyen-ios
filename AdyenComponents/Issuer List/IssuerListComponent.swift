@@ -131,8 +131,7 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
             )
             let listItem = ListItem(
                 title: issuer.name,
-                icon: .init(url: logoUrl),
-                style: configuration.style.listItem
+                icon: .init(url: logoUrl)
             )
             listItem.identifier = ViewIdentifierBuilder.build(
                 scopeInstance: self,
