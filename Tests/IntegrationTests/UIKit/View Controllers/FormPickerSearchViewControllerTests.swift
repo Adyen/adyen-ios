@@ -177,16 +177,12 @@ class FormPickerSearchViewControllerTests: XCTestCase {
 
     func test_picker_whenSelectedOptionProvided_shouldMarkMatchingResultAsSelected() throws {
         let options = makeOptions()
-        let selectedBackgroundColor: UIColor = .purple
         let selectedOption = FormPickerElement(
             identifier: options[1].identifier,
             title: "Different title"
         )
 
         let searchViewController = try makeSearchViewController(
-            theme: CheckoutTheme(
-                colors: CheckoutColors(container: selectedBackgroundColor)
-            ),
             options: options,
             selectedOption: selectedOption
         )
@@ -196,7 +192,6 @@ class FormPickerSearchViewControllerTests: XCTestCase {
 
         XCTAssertEqual(selectedResults.map(\.identifier), [selectedOption.identifier])
         XCTAssertEqual(selectedResults.first?.title, options[1].title)
-        XCTAssertEqual(selectedResults.first?.style.backgroundColor, selectedBackgroundColor)
     }
 
     func test_picker_whenSelectedOptionProvided_shouldRenderSelectedCellAppearance() throws {
@@ -380,16 +375,16 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         searchViewController.view.layoutIfNeeded()
 
         let cell = try XCTUnwrap(resultsListViewController.tableView.visibleCells.first as? ListCell)
-        let itemView: ListItemView = try XCTUnwrap(cell.findView(by: "itemView"))
+        let contentView = cell.contentView
         let titleLabel: UILabel = try XCTUnwrap(cell.findView(by: "titleLabel"))
         let subtitleLabel: UILabel = try XCTUnwrap(cell.findView(by: "subtitleLabel"))
-        let titleFrame = titleLabel.convert(titleLabel.bounds, to: itemView)
-        let subtitleFrame = subtitleLabel.convert(subtitleLabel.bounds, to: itemView)
+        let titleFrame = titleLabel.convert(titleLabel.bounds, to: contentView)
+        let subtitleFrame = subtitleLabel.convert(subtitleLabel.bounds, to: contentView)
 
         XCTAssertEqual(titleFrame.minX, expectedInsets.left, accuracy: 0.5)
-        XCTAssertEqual(itemView.bounds.maxX - titleFrame.maxX, expectedInsets.right, accuracy: 0.5)
+        XCTAssertEqual(contentView.bounds.maxX - titleFrame.maxX, expectedInsets.right, accuracy: 0.5)
         XCTAssertEqual(titleFrame.minY, expectedInsets.top, accuracy: 1)
-        XCTAssertEqual(itemView.bounds.maxY - subtitleFrame.maxY, expectedInsets.bottom, accuracy: 1)
+        XCTAssertEqual(contentView.bounds.maxY - subtitleFrame.maxY, expectedInsets.bottom, accuracy: 1)
         XCTAssertGreaterThanOrEqual(
             subtitleLabel.bounds.height,
             subtitleLabel.intrinsicContentSize.height - 0.5

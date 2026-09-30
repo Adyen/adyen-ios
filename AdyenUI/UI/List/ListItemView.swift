@@ -47,7 +47,27 @@ package final class ListItemView: UIView, AnyFormItemView {
     }
 
     private func applyTheme() {
-        checkmarkImageView.tintColor = theme.colors.text
+        let labels = theme.elements.labels
+
+        titleLabel.apply(titleLabelStyle)
+        subtitleLabel.apply(labels.footnote.color(theme.colors.textSecondary))
+        (trailingView as? UILabel)?.apply(labels.body)
+
+        checkmarkImageView.tintColor = item?.titleEmphasis == .primary ? theme.colors.primary : theme.colors.text
+        updateImageView()
+    }
+
+    private var titleLabelStyle: AdyenLabelStyle {
+        let body = theme.elements.labels.body
+
+        switch item?.titleEmphasis {
+        case .highlighted:
+            return body.color(theme.colors.highlight)
+        case .primary:
+            return body.color(theme.colors.primary)
+        case .standard, nil:
+            return body
+        }
     }
     
     @available(*, unavailable)
@@ -61,17 +81,7 @@ package final class ListItemView: UIView, AnyFormItemView {
     public var item: ListItem? {
         didSet {
             updateItemData(item: item)
-            
-            if let style = item?.style, oldValue?.style != style {
-                updateImageView(style: style)
-                titleLabel.adyen.apply(style.title)
-                subtitleLabel.adyen.apply(style.subtitle)
-                checkmarkImageView.tintColor = style.title.color
-                
-                if let trailingTextLabel = trailingView as? UILabel {
-                    trailingTextLabel.adyen.apply(style.trailingText)
-                }
-            }
+            applyTheme()
         }
     }
     
@@ -155,16 +165,16 @@ package final class ListItemView: UIView, AnyFormItemView {
         contentStackView.setCustomSpacing(Layout.checkmarkLeadingSpacing, after: trailingView)
     }
     
-    private func updateImageView(style: ListItemStyle) {
-        imageView.contentMode = style.image.contentMode
+    private func updateImageView() {
+        imageView.contentMode = .scaleAspectFit
         
         guard item?.icon?.canBeModified == true else {
             return imageView.layer.borderWidth = 0
         }
 
-        imageView.clipsToBounds = style.image.clipsToBounds
-        imageView.layer.borderWidth = style.image.borderWidth
-        imageView.layer.borderColor = style.image.borderColor?.cgColor
+        imageView.clipsToBounds = true
+        imageView.layer.borderWidth = 1.0 / UIScreen.main.nativeScale
+        imageView.layer.borderColor = theme.colors.separator.cgColor
     }
     
     // MARK: - Image View
@@ -183,7 +193,7 @@ package final class ListItemView: UIView, AnyFormItemView {
             return imageView.adyen.round(using: .none)
         }
 
-        imageView.adyen.round(using: item?.style.image.cornerRounding ?? .fixed(8))
+        imageView.adyen.round(using: .fixed(AdyenUIConstants.imageCornerRadius))
     }
     
     // MARK: - Title Label
@@ -250,6 +260,7 @@ package final class ListItemView: UIView, AnyFormItemView {
         stackView.setCustomSpacing(16, after: imageView)
         stackView.spacing = AdyenUIConstants.stackViewSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.setContentHuggingPriority(.required, for: .vertical)
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .fill
@@ -261,9 +272,12 @@ package final class ListItemView: UIView, AnyFormItemView {
     private let imageSize = CGSize(width: 40, height: 26)
     
     private func configureConstraints() {
-        contentStackView.adyen.anchor(inside: layoutMarginsGuide)
         
         let constraints = [
+            contentStackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+            contentStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+            contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
             imageView.widthAnchor.constraint(equalToConstant: imageSize.width),
             imageView.heightAnchor.constraint(equalToConstant: imageSize.height),
 
@@ -283,7 +297,7 @@ package final class ListItemView: UIView, AnyFormItemView {
     
     override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        imageView.layer.borderColor = item?.style.image.borderColor?.cgColor ?? UIColor.Adyen.componentSeparator.cgColor
+        imageView.layer.borderColor = theme.colors.separator.cgColor
     }
     
 }
