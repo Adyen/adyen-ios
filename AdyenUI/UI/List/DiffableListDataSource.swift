@@ -18,6 +18,11 @@ internal final class DiffableListDataSource: UITableViewDiffableDataSource<ListS
         set { coreDataSource.sections = newValue }
     }
     
+    internal var theme: CheckoutTheme {
+        get { coreDataSource.theme }
+        set { coreDataSource.theme = newValue }
+    }
+    
     private let coreDataSource = CoreListDataSource()
     
     // MARK: - UITableViewDataSource

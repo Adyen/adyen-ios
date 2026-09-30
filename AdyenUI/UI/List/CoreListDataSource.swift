@@ -16,6 +16,9 @@ internal protocol ListViewControllerDataSource: UITableViewDataSource {
     /// Cell reuse identifier.
     var cellReuseIdentifier: String { get }
     
+    /// The theme applied to the cells this data source creates.
+    var theme: CheckoutTheme { get set }
+    
     /// Reloads all data.
     func reload(newSections: [ListSection], tableView: UITableView, animated: Bool)
     
@@ -37,6 +40,8 @@ internal final class CoreListDataSource: NSObject, ListViewControllerDataSource 
     internal var sections: [ListSection] = []
     
     internal let cellReuseIdentifier = "Cell"
+    
+    internal var theme: CheckoutTheme = .default
     
     // MARK: - UITableViewDataSource
     
@@ -79,6 +84,7 @@ internal final class CoreListDataSource: NSObject, ListViewControllerDataSource 
             return UITableViewCell()
         }
         
+        cell.theme = theme
         cell.item = sections[indexPath.section].items[indexPath.row]
         
         return cell

@@ -15,6 +15,7 @@ extension AddressLookupSearchViewController {
         
         internal let localizationParameters: LocalizationParameters?
         internal let style: AddressLookupSearchStyle
+        internal let theme: CheckoutTheme
         
         private weak var lookupProvider: AddressLookupProvider?
         
@@ -27,6 +28,7 @@ extension AddressLookupSearchViewController {
         ///
         /// - Parameters:
         ///   - style: The style of the view.
+        ///   - theme: The theme to use for styling.
         ///   - localizationParameters: The localization parameters
         ///   - lookupProvider: The ``AddressLookupProvider`` to be used to lookup the addresses
         ///   - presentationHandler: A closure that allows presenting a ``UIViewController``
@@ -35,6 +37,7 @@ extension AddressLookupSearchViewController {
         ///   - cancellationHandler: A closure that is triggered when the user taps cancel
         internal init(
             style: AddressLookupSearchStyle,
+            theme: CheckoutTheme,
             localizationParameters: LocalizationParameters?,
             lookupProvider: AddressLookupProvider,
             presentationHandler: @escaping (UIViewController) -> Void,
@@ -44,6 +47,7 @@ extension AddressLookupSearchViewController {
         ) {
             self.localizationParameters = localizationParameters
             self.style = style
+            self.theme = theme
             
             self.lookupProvider = lookupProvider
             

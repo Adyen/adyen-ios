@@ -17,7 +17,7 @@ class FormErrorItemTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "Dummy Expectation")
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            let errorItem = FormErrorItem(message: "Error Message", iconName: "error", style: FormErrorItemStyle())
+            let errorItem = FormErrorItem(message: "Error Message", style: FormErrorItemStyle())
             errorItem.identifier = "errorItem"
             formViewController.append(errorItem)
 
