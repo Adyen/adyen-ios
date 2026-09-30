@@ -48,8 +48,5 @@ public struct ActionType: RawRepresentable, Hashable, Decodable, Sendable {
     public static let `await` = ActionType(rawValue: "await")
 
     /// A voucher is presented to the shopper.
-    ///
-    /// BACS Direct Debit mandates are returned as a `voucher` action by the `/payments` response
-    /// and are therefore surfaced with this type.
     public static let voucher = ActionType(rawValue: "voucher")
 }
