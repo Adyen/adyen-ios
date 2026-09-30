@@ -92,6 +92,11 @@ extension CheckoutLocalizationKey {
     // swiftlint:disable:next line_length
     public static let dropInPaymentMethodListOptionsTitleWithFavorites = CheckoutLocalizationKey(name: "dropInPaymentMethodListOptionsTitleWithFavorites")
     public static let dropInPaymentMethodCardDescription = CheckoutLocalizationKey(name: "dropInPaymentMethodCardDescription")
+    public static let dropInStoredPaymentMethodDescription = CheckoutLocalizationKey(localizationKey: .dropInStoredPaymentMethodDescription)
+    // swiftlint:disable:next line_length
+    public static let dropInStoredPaymentMethodDescriptionWithAmount = CheckoutLocalizationKey(localizationKey: .dropInStoredPaymentMethodDescriptionWithAmount)
+    // swiftlint:disable:next line_length
+    public static let dropInStoredPaymentMethodDescriptionSaveDetails = CheckoutLocalizationKey(localizationKey: .dropInStoredPaymentMethodDescriptionSaveDetails)
 }
 
 // MARK: - Await

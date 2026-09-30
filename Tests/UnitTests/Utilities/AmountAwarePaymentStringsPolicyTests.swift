@@ -6,6 +6,7 @@
 
 @testable import Adyen
 import Testing
+import UIKit
 
 struct AmountAwarePaymentStringsPolicyTests {
 
@@ -243,6 +244,98 @@ struct AmountAwarePaymentStringsPolicyTests {
         // Then
         #expect(headerTitle == "€10.00")
         #expect(subtitle == "Select your preferred payment option and complete the payment")
+    }
+
+    @Test
+    func storedPaymentMethodSubtitle_withNilAmount_thenShowsUnformattedPayDescription() {
+        let subtitle = makeSUT().storedPaymentMethodSubtitle(
+            for: "Visa",
+            with: nil,
+            localizationParameters: nil
+        )
+
+        #expect(subtitle == "Use Visa to pay")
+    }
+
+    @Test
+    func storedPaymentMethodSubtitle_withZeroAmount_thenShowsSaveDetails() {
+        let subtitle = makeSUT().storedPaymentMethodSubtitle(
+            for: "Visa",
+            with: Amount(value: 0, currencyCode: "EUR"),
+            localizationParameters: nil
+        )
+
+        #expect(subtitle == "Use Visa to save details")
+    }
+
+    @Test
+    func storedPaymentMethodSubtitle_withPositiveAmount_thenShowsFormattedAmount() {
+        let subtitle = makeSUT().storedPaymentMethodSubtitle(
+            for: "Visa",
+            with: Amount(value: 1000, currencyCode: "EUR", localeIdentifier: "en_US"),
+            localizationParameters: nil
+        )
+
+        #expect(subtitle == "Use Visa to pay €10.00")
+    }
+
+    // MARK: - Formatted positive amount
+
+    @Test
+    func formattedPositiveAmount_withPositiveAmount_thenReturnsFormattedAmount() {
+        let sut = makeSUT()
+        let formatted = sut.formattedPositiveAmount(
+            with: Amount(value: 1000, currencyCode: "EUR", localeIdentifier: "en_US"),
+            localizationParameters: nil
+        )
+        #expect(formatted == "€10.00")
+    }
+
+    @Test(arguments: [nil, Amount(value: 0, currencyCode: "EUR")])
+    func formattedPositiveAmount_withNilOrZeroAmount_thenReturnsNil(amount: Amount?) {
+        let sut = makeSUT()
+        let formatted = sut.formattedPositiveAmount(with: amount, localizationParameters: nil)
+        #expect(formatted == nil)
+    }
+
+    // MARK: - Stored payment method attributed subtitle
+
+    @Test
+    func storedPaymentMethodAttributedSubtitle_withPositiveAmount_thenEmphasizesNameAndAmount() {
+        let sut = makeSUT()
+
+        let subtitle = sut.storedPaymentMethodAttributedSubtitle(
+            for: "Visa",
+            with: Amount(value: 1000, currencyCode: "EUR", localeIdentifier: "en_US"),
+            localizationParameters: nil,
+            attributes: [.font: UIFont.systemFont(ofSize: 12)],
+            emphasizedAttributes: [.font: UIFont.boldSystemFont(ofSize: 12)]
+        )
+
+        #expect(subtitle.string == "Use Visa to pay €10.00")
+        #expect(font(at: 4, in: subtitle) == .boldSystemFont(ofSize: 12)) // "Visa"
+        #expect(font(at: 10, in: subtitle) == .systemFont(ofSize: 12)) // "to pay"
+        #expect(font(at: subtitle.length - 1, in: subtitle) == .boldSystemFont(ofSize: 12)) // "€10.00"
+    }
+
+    @Test(arguments: [nil, Amount(value: 0, currencyCode: "EUR")])
+    func storedPaymentMethodAttributedSubtitle_withNilOrZeroAmount_thenEmphasizesNameOnly(amount: Amount?) {
+        let sut = makeSUT()
+
+        let subtitle = sut.storedPaymentMethodAttributedSubtitle(
+            for: "Visa",
+            with: amount,
+            localizationParameters: nil,
+            attributes: [.font: UIFont.systemFont(ofSize: 12)],
+            emphasizedAttributes: [.font: UIFont.boldSystemFont(ofSize: 12)]
+        )
+
+        #expect(font(at: 4, in: subtitle) == .boldSystemFont(ofSize: 12)) // "Visa"
+        #expect(font(at: subtitle.length - 1, in: subtitle) == .systemFont(ofSize: 12))
+    }
+
+    private func font(at index: Int, in string: NSAttributedString) -> UIFont? {
+        string.attribute(.font, at: index, effectiveRange: nil) as? UIFont
     }
 
     private func makeSUT() -> AmountAwarePaymentStringsPolicy.Type {
