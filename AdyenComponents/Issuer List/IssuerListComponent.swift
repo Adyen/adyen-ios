@@ -37,7 +37,7 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
     package let requiresUserInteraction: Bool = true
     
     /// Component's configuration.
-    package var configuration: Configuration
+    package var configuration: IssuerListComponentConfiguration
 
     /// The title of the view controller
     private let title: String
@@ -52,7 +52,7 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
     package init(
         paymentMethod: IssuerListPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: IssuerListComponentConfiguration = .init()
     ) {
         self.issuerListPaymentMethod = paymentMethod
         self.context = context
@@ -78,7 +78,8 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
         
         let viewModel = SearchViewController.ViewModel(
             localizationParameters: configuration.localizationParameters,
-            style: configuration.style
+            style: configuration.style,
+            theme: configuration.theme
         ) { [weak self] searchText, handler in
             guard let self else { return }
             handler(self.listItems(for: searchText))
@@ -173,30 +174,6 @@ package final class IssuerListComponent: PaymentComponent, LoadingComponent {
 extension IssuerListComponent: ViewControllerDelegate {}
 
 extension IssuerListComponent: TrackableComponent {}
-
-extension IssuerListComponent {
-    
-    /// Configuration for Issuer List type components.
-    package struct Configuration {
-
-        /// The UI style of the component.
-        package var style: ListComponentStyle
-
-        package var localizationParameters: LocalizationParameters?
-
-        package init(style: ListComponentStyle = .init()) {
-            self.init(style: style, localizationParameters: nil)
-        }
-
-        package init(
-            style: ListComponentStyle = .init(),
-            localizationParameters: LocalizationParameters? = nil
-        ) {
-            self.style = style
-            self.localizationParameters = localizationParameters
-        }
-    }
-}
 
 /// Provides an issuer selection list for MOLPay payments.
 package typealias MOLPayComponent = IssuerListComponent

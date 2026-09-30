@@ -13,6 +13,9 @@ package final class ListViewController: UITableViewController {
     /// Indicates the list view controller UI style.
     package let style: ViewStyle
 
+    /// The theme to use for styling.
+    package let theme: CheckoutTheme
+
     /// Delegate to handle different viewController events.
     package weak var delegate: ViewControllerDelegate?
 
@@ -26,8 +29,10 @@ package final class ListViewController: UITableViewController {
     /// Initializes the list view controller.
     ///
     /// - Parameter style: The UI style.
-    package init(style: ViewStyle) {
+    /// - Parameter theme: The theme to use for styling. Defaults to `.default`.
+    package init(style: ViewStyle, theme: CheckoutTheme = .default) {
         self.style = style
+        self.theme = theme
         super.init(style: .grouped)
     }
 
@@ -43,9 +48,11 @@ package final class ListViewController: UITableViewController {
     }
 
     private lazy var dataSource: ListViewControllerDataSource = {
-        DiffableListDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, _ in
+        let dataSource = DiffableListDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, _ in
             self?.dataSource.cell(for: tableView, at: indexPath)
         })
+        dataSource.theme = theme
+        return dataSource
     }()
 
     package func reload(newSections: [ListSection], animated: Bool = false) {

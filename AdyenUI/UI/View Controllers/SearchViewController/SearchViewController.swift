@@ -41,7 +41,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
 
     internal var searchBarEditingStateDidChange: ((Bool) -> Void)?
     
-    package lazy var resultsListViewController = ListViewController(style: viewModel.style)
+    package lazy var resultsListViewController = ListViewController(style: viewModel.style, theme: viewModel.theme)
 
     /// Displays each result in its own section when enabled.
     /// Configure before loading the view.
