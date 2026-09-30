@@ -506,8 +506,7 @@ class ApplePayComponentTest: XCTestCase {
         let expectedRequiredShippingFields = getRandomContactFieldSet()
         let decimalAmount = AmountFormatter.decimalAmount(
             amount.value,
-            currencyCode: amount.currencyCode,
-            localeIdentifier: amount.localeIdentifier
+            currencyCode: amount.currencyCode
         )
 
         let request = PKPaymentRequest()
@@ -632,8 +631,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertNotNil(summaryItem)
         let expectedDecimalAmount = AmountFormatter.decimalAmount(
             testAmount.value,
-            currencyCode: testAmount.currencyCode,
-            localeIdentifier: testAmount.localeIdentifier
+            currencyCode: testAmount.currencyCode
         )
         XCTAssertEqual(summaryItem?.amount, expectedDecimalAmount)
         XCTAssertEqual(summaryItem?.amount, decimalAmount)
@@ -663,8 +661,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertNotNil(summaryItem)
         let expectedDecimalAmount = AmountFormatter.decimalAmount(
             testAmount.value,
-            currencyCode: testAmount.currencyCode,
-            localeIdentifier: testAmount.localeIdentifier
+            currencyCode: testAmount.currencyCode
         )
         XCTAssertEqual(summaryItem?.amount, expectedDecimalAmount)
         XCTAssertEqual(summaryItem?.amount, decimalAmount)

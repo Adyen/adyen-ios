@@ -374,8 +374,7 @@ internal extension PKPaymentRequest {
         let amount = ConfigurationConstants.current.amount
         let decimalAmount = AmountFormatter.decimalAmount(
             amount.value,
-            currencyCode: amount.currencyCode,
-            localeIdentifier: amount.localeIdentifier
+            currencyCode: amount.currencyCode
         )
 
         let paymentRequest = PKPaymentRequest()
@@ -393,8 +392,7 @@ internal extension PKPaymentRequest {
         let amount = ConfigurationConstants.current.amount
         let decimalAmount = AmountFormatter.decimalAmount(
             amount.value,
-            currencyCode: amount.currencyCode,
-            localeIdentifier: amount.localeIdentifier
+            currencyCode: amount.currencyCode
         )
 
         let paymentRequest = PKPaymentRequest()
