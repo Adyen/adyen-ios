@@ -87,6 +87,12 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             guard let self else { return .completion(resultCode: "Error") }
             return await self.callDetails(with: data)
         }
+        .onComplete { [weak self] result in
+            self?.dismissAndShowAlert(
+                result.resultCode.isSuccess,
+                result.resultCode.rawValue
+            )
+        }
         .onFailure { [weak self] error in
             self?.dismissAndShowAlert(false, error.localizedDescription)
         }
