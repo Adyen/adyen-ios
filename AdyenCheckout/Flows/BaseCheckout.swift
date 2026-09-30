@@ -47,7 +47,7 @@ public class BaseCheckout {
     /// - Parameter handler: Callback invoked before the action is presented.
     ///   - actionData: The ``ActionData`` describing the action, including its ``ActionData/type``.
     ///   - actionViewController: The `UIViewController` the SDK built for the action.
-    public func onAction(_ handler: @escaping ActionHandler) -> Self {
+    public func onAction(_ handler: @escaping CheckoutActionHandler) -> Self {
         resultCallbacks.onAction = handler
         return self
     }

@@ -13,7 +13,7 @@ package protocol CheckoutResultCallbackStore: AnyObject {
 
     var onFailure: CheckoutFailureHandler? { get set }
 
-    var onAction: ActionHandler? { get set }
+    var onAction: CheckoutActionHandler? { get set }
 }
 
 package final class SessionCheckoutCallbackStore: CheckoutResultCallbackStore {
@@ -23,7 +23,7 @@ package final class SessionCheckoutCallbackStore: CheckoutResultCallbackStore {
 
     package var onFailure: CheckoutFailureHandler?
 
-    package var onAction: ActionHandler?
+    package var onAction: CheckoutActionHandler?
 
     package func handleCompletion(resultCode: CheckoutResultCode, sessionId: String?, sessionResult: String?) {
         guard let sessionId, let sessionResult else {
@@ -43,7 +43,7 @@ package final class AdvancedCheckoutCallbackStore: CheckoutResultCallbackStore {
 
     package var onFailure: CheckoutFailureHandler?
 
-    package var onAction: ActionHandler?
+    package var onAction: CheckoutActionHandler?
 
     package func handleCompletion(resultCode: CheckoutResultCode, sessionId: String?, sessionResult: String?) {
         // sessionId and sessionResult are session-specific and not applicable to the advanced flow.
@@ -58,7 +58,7 @@ package final class ActionOnlyCheckoutCallbackStore: CheckoutResultCallbackStore
 
     package var onFailure: CheckoutFailureHandler?
 
-    package var onAction: ActionHandler?
+    package var onAction: CheckoutActionHandler?
 
     package func handleCompletion(resultCode: CheckoutResultCode, sessionId: String?, sessionResult: String?) {
         // sessionId and sessionResult are session-specific and not applicable to the action-only flow.

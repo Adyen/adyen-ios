@@ -10,7 +10,7 @@ import UIKit
 public typealias SubmitHandler = @MainActor @Sendable (_ data: PaymentComponentData) async -> SubmitResult
 public typealias AdditionalDetailsHandler = @MainActor @Sendable (_ data: ActionComponentData) async -> AdditionalDetailsResult
 public typealias BeforeSubmitHandler = @MainActor @Sendable (_ data: BeforeSubmitData) async -> BeforeSubmitResult
-public typealias ActionHandler = @MainActor @Sendable (_ actionData: ActionData, _ actionViewController: UIViewController) -> Void
+public typealias CheckoutActionHandler = @MainActor @Sendable (_ actionData: ActionData, _ actionViewController: UIViewController) -> Void
 
 package typealias SessionCheckoutCompletionHandler = @MainActor (_ result: SessionCheckoutResult) -> Void
 package typealias AdvancedCheckoutCompletionHandler = @MainActor (_ result: AdvancedCheckoutResult) -> Void
