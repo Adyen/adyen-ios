@@ -52,15 +52,8 @@ extension CheckoutLocalizationKey {
 // MARK: - Address
 
 extension CheckoutLocalizationKey {
-    /// The country picker title.
-    public static let addressCountryPickerTitle = CheckoutLocalizationKey(
-        localizationKey: .addressCountryPickerTitle
-    )
-
-    /// The country picker description.
-    public static let addressCountryPickerDescription = CheckoutLocalizationKey(
-        localizationKey: .addressCountryPickerDescription
-    )
+    public static let addressCountryPickerTitle = CheckoutLocalizationKey(localizationKey: .addressCountryPickerTitle)
+    public static let addressCountryPickerDescription = CheckoutLocalizationKey(localizationKey: .addressCountryPickerDescription)
 }
 
 // MARK: - Card
