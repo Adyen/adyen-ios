@@ -41,6 +41,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -67,6 +68,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -92,6 +94,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -118,6 +121,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: customContext
         )
         
@@ -134,6 +138,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let blikComponent = try CheckoutComponentBuilder.build(
             for: blikPaymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -152,6 +157,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -175,6 +181,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: customContext
         )
         
@@ -201,6 +208,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -214,6 +222,62 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertFalse(blikComponent.configuration.showsSubmitButton)
     }
     
+    func test_build_withDropInPolicy_shouldShowSubmitButtonWhenGlobalSettingHidesIt() throws {
+        // Given
+        let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
+        var blikConfig = BLIKComponentConfiguration()
+        blikConfig.showsSubmitButton = false
+        checkoutConfiguration = makeCheckoutConfiguration(
+            configurations: [.payment(.blik): blikConfig]
+        ).showsSubmitButton(false)
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .dropIn,
+            context: context
+        )
+
+        // Then
+        let blikComponent = try XCTUnwrap(component as? BLIKComponent)
+        XCTAssertTrue(blikComponent.configuration.showsSubmitButton)
+    }
+
+    func test_build_withGenericStoredPaymentMethodAndComponentsPolicy_shouldFollowGlobalSubmitButtonSetting() throws {
+        // Given
+        let storedPaymentMethod = try XCTUnwrap(createStoredPayPalPaymentMethod())
+        checkoutConfiguration = makeCheckoutConfiguration().showsSubmitButton(false)
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: storedPaymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
+            context: context
+        )
+
+        // Then
+        XCTAssertNil(payButtonView(in: component))
+    }
+
+    func test_build_withGenericStoredPaymentMethodAndDropInPolicy_shouldShowSubmitButtonWhenGlobalSettingHidesIt() throws {
+        // Given
+        let storedPaymentMethod = try XCTUnwrap(createStoredPayPalPaymentMethod())
+        checkoutConfiguration = makeCheckoutConfiguration().showsSubmitButton(false)
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: storedPaymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .dropIn,
+            context: context
+        )
+
+        // Then
+        XCTAssertNotNil(payButtonView(in: component))
+    }
+
     func testBuild_UsesStoredConfigurationWhenAvailable() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
@@ -227,6 +291,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -243,6 +308,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -260,6 +326,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -289,6 +356,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -313,6 +381,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             forAnyPaymentMethod: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         let cardComponent = try XCTUnwrap(component as? CardComponent)
@@ -338,6 +407,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             sessionConfiguration: .init(
                 installmentConfiguration: sessionInstallments,
                 showStorePaymentMethod: false
@@ -360,6 +430,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -379,6 +450,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             sessionConfiguration: .init(
                 installmentConfiguration: nil,
                 showStorePaymentMethod: false
@@ -404,6 +476,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -431,6 +504,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -452,6 +526,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -475,6 +550,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -500,6 +576,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -527,6 +604,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -558,6 +636,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -585,6 +664,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -610,6 +690,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -634,6 +715,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -652,6 +734,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             forAnyPaymentMethod: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -667,6 +750,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             forAnyPaymentMethod: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -684,6 +768,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -702,6 +787,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -725,6 +811,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: customContext
         )
         
@@ -743,6 +830,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -761,6 +849,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -779,6 +868,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -797,6 +887,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -822,6 +913,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -847,6 +939,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             forAnyPaymentMethod: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         let applePayComponent = try XCTUnwrap(component as? ApplePayComponent)
@@ -866,6 +959,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             try CheckoutComponentBuilder.build(
                 for: paymentMethod,
                 configuration: checkoutConfiguration,
+                policy: .components(checkoutConfiguration),
                 context: context
             ),
             "Builder should throw when Apple Pay has no default and no user-supplied config"
@@ -959,6 +1053,12 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         return try? AdyenCoder.decode(dict) as StoredBCMCPaymentMethod
     }
     
+    private func payButtonView(in component: PaymentComponent) -> UIView? {
+        let viewController = component.viewController
+        viewController.loadViewIfNeeded()
+        return viewController.view.findView(by: "payButtonItem")
+    }
+
     private func makeCheckoutConfiguration(
         configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
     ) -> CheckoutConfiguration {

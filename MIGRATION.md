@@ -35,6 +35,9 @@ does not expose stored payment method removal.
 Drop-in now always skips the payment method list when exactly one presentable regular payment method is available. The former
 `allowsSkippingPaymentList` merchant setting has been removed, and its previous default of `false` no longer applies.
 
+`CheckoutConfiguration.showsSubmitButton(_:)` applies only to components created with `createPaymentComponent`. Drop-in
+ignores it and always shows the submit buttons of the components it presents.
+
 ### Drop-in creation
 
 In v5, merchants initialized `DropInComponent` directly, supplied component and action configuration through its nested
