@@ -6,15 +6,13 @@
 
 import UIKit
 
+private enum Constants {
+    static let margin: CGFloat = 8
+}
+
 /// A view representing a form item.
 @_spi(AdyenInternal)
 open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView, AdyenObserver {
-
-    private enum Constants {
-        static var margin: CGFloat {
-            8
-        }
-    }
     
     /// The item represented by the view.
     public let item: ItemType
