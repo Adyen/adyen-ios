@@ -10,13 +10,15 @@ import UIKit
 @_spi(AdyenInternal)
 public class KeyboardObserver {
     
+    private enum Constants {
+        static let settleDelay: TimeInterval = 0.15
+    }
+    
     /// The observable keyboard rect
     @AdyenObservable(CGRect.zero)
     public private(set) var keyboardRect: CGRect
 
-    private let settleDelay: DispatchTimeInterval = .milliseconds(150)
-
-    private var pendingUpdate: DispatchWorkItem?
+    private let throttler = Throttler(minimumDelay: Constants.settleDelay)
     
     public init() {
         
@@ -29,24 +31,20 @@ public class KeyboardObserver {
     }
     
     /// Publishes a taller keyboard immediately, so the keyboard never covers content.
-    /// A shorter or hidden keyboard is published only once no new frame arrives within `settleDelay`,
+    /// A shorter or hidden keyboard is published only once no new frame arrives within `Constants.settleDelay`,
     /// because UIKit sends short-lived hide and partial frames while the device rotates or folds.
     @objc
     private func handleKeyboardWillChangeFrameNotification(_ notification: Notification) {
-        pendingUpdate?.cancel()
-        pendingUpdate = nil
-
         let visibleRect = visibleKeyboardRect(from: notification)
         guard visibleRect.height < keyboardRect.height else {
+            throttler.cancel()
             keyboardRect = visibleRect
             return
         }
 
-        let update = DispatchWorkItem { [weak self] in
+        throttler.throttle { [weak self] in
             self?.keyboardRect = visibleRect
         }
-        pendingUpdate = update
-        DispatchQueue.main.asyncAfter(deadline: .now() + settleDelay, execute: update)
     }
 
     /// Clips the keyboard frame to the screen the keyboard appears on, which is not always `UIScreen.main`
