@@ -17,7 +17,7 @@ package protocol CheckoutResultCallbackStore: AnyObject {
 }
 
 package final class SessionCheckoutCallbackStore: CheckoutResultCallbackStore {
-    package var onBeforeSubmit: CheckoutBeforeSubmitHandler?
+    package var onBeforeSubmit: BeforeSubmitHandler?
 
     package var onComplete: SessionCheckoutCompletionHandler?
 
@@ -35,9 +35,9 @@ package final class SessionCheckoutCallbackStore: CheckoutResultCallbackStore {
 }
 
 package final class AdvancedCheckoutCallbackStore: CheckoutResultCallbackStore {
-    package var onSubmit: CheckoutSubmitHandler?
+    package var onSubmit: SubmitHandler?
 
-    package var onAdditionalDetails: CheckoutAdditionalDetailsHandler?
+    package var onAdditionalDetails: AdditionalDetailsHandler?
 
     package var onComplete: AdvancedCheckoutCompletionHandler?
 
@@ -52,7 +52,7 @@ package final class AdvancedCheckoutCallbackStore: CheckoutResultCallbackStore {
 }
 
 package final class ActionOnlyCheckoutCallbackStore: CheckoutResultCallbackStore {
-    package var onAdditionalDetails: CheckoutAdditionalDetailsHandler?
+    package var onAdditionalDetails: AdditionalDetailsHandler?
 
     package var onComplete: AdvancedCheckoutCompletionHandler?
 

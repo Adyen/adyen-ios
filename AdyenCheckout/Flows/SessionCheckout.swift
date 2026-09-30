@@ -38,7 +38,7 @@ public final class SessionCheckout: PaymentCheckout {
     ///     Setting a field to `nil` has no effect; the original value collected by the component will be used instead.
     /// - Returns: A `BeforeSubmitResult`. Return `.proceed(data:sessionData:)` to continue or `.abort`
     ///   to stop the flow and reset the component state.
-    public func onBeforeSubmit(_ handler: @escaping CheckoutBeforeSubmitHandler) -> Self {
+    public func onBeforeSubmit(_ handler: @escaping BeforeSubmitHandler) -> Self {
         callbackStore.onBeforeSubmit = handler
         return self
     }

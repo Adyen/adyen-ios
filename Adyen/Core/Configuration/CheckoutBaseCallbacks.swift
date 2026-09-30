@@ -7,9 +7,9 @@
 import Foundation
 import UIKit
 
-public typealias CheckoutSubmitHandler = @MainActor @Sendable (_ data: PaymentComponentData) async -> SubmitResult
-public typealias CheckoutAdditionalDetailsHandler = @MainActor @Sendable (_ data: ActionComponentData) async -> AdditionalDetailsResult
-public typealias CheckoutBeforeSubmitHandler = @MainActor @Sendable (_ data: BeforeSubmitData) async -> BeforeSubmitResult
+public typealias SubmitHandler = @MainActor @Sendable (_ data: PaymentComponentData) async -> SubmitResult
+public typealias AdditionalDetailsHandler = @MainActor @Sendable (_ data: ActionComponentData) async -> AdditionalDetailsResult
+public typealias BeforeSubmitHandler = @MainActor @Sendable (_ data: BeforeSubmitData) async -> BeforeSubmitResult
 public typealias CheckoutActionHandler = @MainActor @Sendable (_ actionData: ActionData, _ actionViewController: UIViewController) -> Void
 
 package typealias SessionCheckoutCompletionHandler = @MainActor (_ result: SessionCheckoutResult) -> Void

@@ -243,7 +243,6 @@ Drop-in presents actions within its own navigation stack, so `onAction(_:)` is n
 - `onAction(_:)` exposes the action's `ActionData` and the `UIViewController` the SDK built for it.
 - `PresentationDelegate` and the `presentationDelegate:` parameter of `Checkout.setup(...)` are removed in favour of `onAction(_:)`.
 - Theme and localization are configured on `CheckoutConfiguration` through `theme(_:)` and `localizationProvider(_:)`.
-- Callback closure typealiases are prefixed with `Checkout` to avoid name collisions: `CheckoutSubmitHandler`, `CheckoutAdditionalDetailsHandler`, `CheckoutBeforeSubmitHandler` and `CheckoutActionHandler`.
 
 ### Card component
 
