@@ -88,8 +88,8 @@ struct PaymentActionAssemblerTests {
         hostViewController.loadViewIfNeeded()
 
         // When
-        let doneButton = try #require(hostViewController.navigationItem.rightBarButtonItem)
-        _ = try hostViewController.perform(#require(doneButton.action), with: doneButton)
+        let cancelButton = try #require(hostViewController.navigationItem.leftBarButtonItem)
+        _ = try hostViewController.perform(#require(cancelButton.action), with: cancelButton)
 
         // Then
         // The merchant is only informed once the drop in has been dismissed.

@@ -50,7 +50,7 @@ struct PaymentActionViewControllerTests {
     }
 
     @Test
-    func navigationItem_shouldUseActionViewControllerTitleAndShowDoneButton() throws {
+    func navigationItem_shouldUseActionViewControllerTitleAndShowCancelButton() throws {
         // Given
         let (sut, _, actionViewControllerSpy) = makeSUT()
 
@@ -59,8 +59,8 @@ struct PaymentActionViewControllerTests {
 
         // Then
         #expect(sut.navigationItem.title == actionViewControllerSpy.title)
-        let doneButton = try #require(sut.navigationItem.rightBarButtonItem)
-        #expect(doneButton.action != nil)
+        let cancelButton = try #require(sut.navigationItem.leftBarButtonItem)
+        #expect(cancelButton.action != nil)
     }
 
     @Test("The injected theme is applied to the view and the navigation items.")
@@ -75,19 +75,19 @@ struct PaymentActionViewControllerTests {
         // Then
         #expect(sut.view.backgroundColor == theme.colors.background)
 
-        let doneButton = try #require(sut.navigationItem.rightBarButtonItem)
-        #expect(doneButton.tintColor == theme.colors.primary)
+        let cancelButton = try #require(sut.navigationItem.leftBarButtonItem)
+        #expect(cancelButton.tintColor == theme.colors.primary)
     }
 
     @Test
-    func doneButton_shouldCallViewModelCancel() throws {
+    func cancelButton_shouldCallViewModelCancel() throws {
         // Given
         let (sut, viewModelMock, _) = makeSUT()
         sut.loadViewIfNeeded()
 
         // When
-        let doneButton = try #require(sut.navigationItem.rightBarButtonItem)
-        _ = try sut.perform(#require(doneButton.action), with: doneButton)
+        let cancelButton = try #require(sut.navigationItem.leftBarButtonItem)
+        _ = try sut.perform(#require(cancelButton.action), with: cancelButton)
 
         // Then
         #expect(viewModelMock.cancelCallsCount == 1)
