@@ -82,11 +82,30 @@ struct PreselectedPaymentMethodIntegrationTests {
         sut.present(component: PaymentComponentTestData.visa.paymentComponent)
 
         #expect(promptAssembler.resolveCallsCount == 1)
-        #expect(promptAssembler.receivedPresentationMode == .modal)
         let navigationController = try #require(rootViewController.capturedPresentedViewController as? UINavigationController)
         #expect(navigationController.viewControllers.first === promptRouter.rootViewController)
         #expect(navigationController.isModalInPresentation)
         #expect(sut.childRouter === promptRouter)
+    }
+
+    @Test
+    func storedPaymentMethodContent_whenDismissRequested_thenDismissesModalAndReleasesChildRouter() throws {
+        let rootViewController = ViewControllerSpy()
+        let promptAssembler = StoredPaymentMethodContentAssemblerSpy(router: RouterMock())
+        let sut = PreselectedPaymentMethodRouter(
+            viewController: rootViewController,
+            listener: nil,
+            paymentMethodListAssembler: PaymentMethodListAssemblerProtocolMock(),
+            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
+            storedPaymentMethodContentAssembler: promptAssembler
+        )
+        sut.present(component: PaymentComponentTestData.visa.paymentComponent)
+        try #require(sut.childRouter != nil)
+
+        sut.dismissStoredPaymentMethodContent()
+
+        #expect(rootViewController.dismissCallsCount == 1)
+        #expect(sut.childRouter == nil)
     }
 
     // MARK: - Show All Payment Methods Tests
@@ -366,7 +385,6 @@ private final class StoredPaymentMethodContentAssemblerSpy: StoredPaymentMethodC
 
     private let router: Router?
     private(set) var resolveCallsCount = 0
-    private(set) var receivedPresentationMode: StoredPaymentMethodContentPresentation?
 
     init(router: Router?) {
         self.router = router
@@ -374,11 +392,9 @@ private final class StoredPaymentMethodContentAssemblerSpy: StoredPaymentMethodC
 
     func resolveStoredPaymentMethodContentRouter(
         for component: PaymentComponent,
-        presentationMode: StoredPaymentMethodContentPresentation,
         listener: StoredPaymentMethodContentRouterListener
     ) -> Router? {
         resolveCallsCount += 1
-        receivedPresentationMode = presentationMode
         return router
     }
 }

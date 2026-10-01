@@ -122,7 +122,6 @@ internal class PaymentMethodListRouter: PaymentMethodListRouting {
     ) {
         guard let router = storedPaymentMethodContentAssembler.resolveStoredPaymentMethodContentRouter(
             for: component,
-            presentationMode: .pushed,
             listener: self
         ) else {
             // No dedicated stored payment content exists for this component; fall back to the generic component presentation.
@@ -208,7 +207,8 @@ extension PaymentMethodListRouter: StoredPaymentMethodManagementListener {
 
 extension PaymentMethodListRouter: StoredPaymentMethodContentRouterListener {
 
-    internal func didDismissStoredPaymentMethodContent() {
+    internal func dismissStoredPaymentMethodContent() {
+        viewController.navigationController?.popViewController(animated: true)
         childRouter = nil
     }
 }

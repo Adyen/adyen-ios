@@ -19,7 +19,6 @@ internal protocol StoredPaymentMethodContentAssembling {
     ///            in which case the parent module decides how to present it.
     func resolveStoredPaymentMethodContentRouter(
         for component: PaymentComponent,
-        presentationMode: StoredPaymentMethodContentPresentation,
         listener: StoredPaymentMethodContentRouterListener
     ) -> Router?
 }
@@ -46,7 +45,6 @@ internal struct StoredPaymentMethodContentAssembler: StoredPaymentMethodContentA
 
     internal func resolveStoredPaymentMethodContentRouter(
         for component: PaymentComponent,
-        presentationMode: StoredPaymentMethodContentPresentation,
         listener: StoredPaymentMethodContentRouterListener
     ) -> Router? {
         guard let component = component as? any StoredPaymentComponent else { return nil }
@@ -63,7 +61,6 @@ internal struct StoredPaymentMethodContentAssembler: StoredPaymentMethodContentA
         )
         let router = StoredPaymentMethodContentRouter(
             viewController: viewController,
-            presentationMode: presentationMode,
             listener: listener
         )
         viewModel.router = router

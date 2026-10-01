@@ -254,10 +254,29 @@ struct PaymentMethodListRouterTests {
         sut.present(component: storedPaymentComponent)
 
         #expect(promptAssembler.resolveCallsCount == 1)
-        #expect(promptAssembler.receivedPresentationMode == .pushed)
         #expect(navigationControllerSpy.capturedPushedViewController === promptRouter.rootViewController)
         #expect(componentContainerAssembler.resolveComponentContainerRouterForListenerCallsCount == 0)
         #expect(sut.childRouter === promptRouter)
+    }
+
+    @Test
+    func dismissStoredPaymentMethodContent_shouldPopAndReleaseChildRouter() throws {
+        // Given
+        let navigationControllerSpy = NavigationControllerSpy()
+        let promptAssembler = StoredPaymentMethodContentAssemblerSpy(router: RouterMock())
+        let sut = makeSUT(
+            navigationController: navigationControllerSpy,
+            storedPaymentMethodContentAssembler: promptAssembler
+        )
+        sut.present(component: makeStoredPaymentComponentMock())
+        try #require(sut.childRouter != nil)
+
+        // When
+        sut.dismissStoredPaymentMethodContent()
+
+        // Then
+        #expect(navigationControllerSpy.popViewControllerCallsCount == 1)
+        #expect(sut.childRouter == nil)
     }
 
     @Test
@@ -439,7 +458,6 @@ private final class StoredPaymentMethodContentAssemblerSpy: StoredPaymentMethodC
 
     private let router: Router?
     private(set) var resolveCallsCount = 0
-    private(set) var receivedPresentationMode: StoredPaymentMethodContentPresentation?
 
     init(router: Router?) {
         self.router = router
@@ -447,11 +465,9 @@ private final class StoredPaymentMethodContentAssemblerSpy: StoredPaymentMethodC
 
     func resolveStoredPaymentMethodContentRouter(
         for component: PaymentComponent,
-        presentationMode: StoredPaymentMethodContentPresentation,
         listener: StoredPaymentMethodContentRouterListener
     ) -> Router? {
         resolveCallsCount += 1
-        receivedPresentationMode = presentationMode
         return router
     }
 }

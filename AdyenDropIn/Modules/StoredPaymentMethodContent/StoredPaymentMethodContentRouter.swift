@@ -6,15 +6,10 @@
 
 import UIKit
 
-/// The way the stored payment method content is presented by its parent module.
-internal enum StoredPaymentMethodContentPresentation: Equatable {
-    case pushed
-    case modal
-}
-
 @MainActor
 internal protocol StoredPaymentMethodContentRouterListener: AnyObject {
-    func didDismissStoredPaymentMethodContent()
+    /// Asks the parent module to unwind the stored payment method content it presented.
+    func dismissStoredPaymentMethodContent()
 }
 
 @MainActor
@@ -26,25 +21,17 @@ internal final class StoredPaymentMethodContentRouter: Router, StoredPaymentMeth
     }
 
     private weak var listener: StoredPaymentMethodContentRouterListener?
-    private let presentationMode: StoredPaymentMethodContentPresentation
 
     internal init(
         viewController: UIViewController,
-        presentationMode: StoredPaymentMethodContentPresentation,
         listener: StoredPaymentMethodContentRouterListener
     ) {
         self.rootViewController = viewController
-        self.presentationMode = presentationMode
         self.listener = listener
     }
 
     internal func dismiss() {
-        switch presentationMode {
-        case .pushed:
-            rootViewController.navigationController?.popViewController(animated: true)
-        case .modal:
-            rootViewController.navigationController?.dismiss(animated: true)
-        }
-        listener?.didDismissStoredPaymentMethodContent()
+        // The parent module presented this content, so it also owns unwinding it.
+        listener?.dismissStoredPaymentMethodContent()
     }
 }

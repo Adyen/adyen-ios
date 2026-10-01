@@ -13,38 +13,33 @@ import UIKit
 internal struct StoredPaymentMethodContentRouterTests {
 
     @Test
-    internal func pushedPrompt_whenDismissed_thenPopsAndNotifiesListener() {
+    internal func content_whenDismissed_thenAsksListenerToUnwind() {
         let navigationController = PromptNavigationControllerSpy()
-        let (sut, listener) = makeSUT(presentationMode: .pushed, navigationController: navigationController)
+        let (sut, listener) = makeSUT(navigationController: navigationController)
 
         sut.dismiss()
 
-        #expect(navigationController.popCallsCount == 1)
-        #expect(navigationController.dismissCallsCount == 0)
         #expect(listener.dismissCallsCount == 1)
     }
 
     @Test
-    internal func modalPrompt_whenDismissed_thenDismissesAndNotifiesListener() {
+    internal func content_whenDismissed_thenDoesNotUnwindTheStackItself() {
         let navigationController = PromptNavigationControllerSpy()
-        let (sut, listener) = makeSUT(presentationMode: .modal, navigationController: navigationController)
+        let (sut, _) = makeSUT(navigationController: navigationController)
 
         sut.dismiss()
 
         #expect(navigationController.popCallsCount == 0)
-        #expect(navigationController.dismissCallsCount == 1)
-        #expect(listener.dismissCallsCount == 1)
+        #expect(navigationController.dismissCallsCount == 0)
     }
 
     private func makeSUT(
-        presentationMode: StoredPaymentMethodContentPresentation,
         navigationController: PromptNavigationControllerSpy
     ) -> (sut: StoredPaymentMethodContentRouter, listener: ListenerSpy) {
         let viewController = PromptViewControllerSpy(navigationController: navigationController)
         let listener = ListenerSpy()
         let sut = StoredPaymentMethodContentRouter(
             viewController: viewController,
-            presentationMode: presentationMode,
             listener: listener
         )
         return (sut, listener)
@@ -55,7 +50,7 @@ internal struct StoredPaymentMethodContentRouterTests {
 private final class ListenerSpy: StoredPaymentMethodContentRouterListener {
     private(set) var dismissCallsCount = 0
 
-    func didDismissStoredPaymentMethodContent() {
+    func dismissStoredPaymentMethodContent() {
         dismissCallsCount += 1
     }
 }

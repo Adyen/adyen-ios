@@ -22,7 +22,6 @@ internal struct StoredPaymentMethodContentAssemblerTests {
 
         #expect(makeSUT().resolveStoredPaymentMethodContentRouter(
             for: component,
-            presentationMode: .pushed,
             listener: ListenerSpy()
         ) != nil)
     }
@@ -42,7 +41,6 @@ internal struct StoredPaymentMethodContentAssemblerTests {
 
         #expect(makeSUT().resolveStoredPaymentMethodContentRouter(
             for: component,
-            presentationMode: .modal,
             listener: ListenerSpy()
         ) != nil)
     }
@@ -53,7 +51,6 @@ internal struct StoredPaymentMethodContentAssemblerTests {
 
         #expect(makeSUT().resolveStoredPaymentMethodContentRouter(
             for: component,
-            presentationMode: .pushed,
             listener: ListenerSpy()
         ) == nil)
     }
@@ -70,5 +67,5 @@ internal struct StoredPaymentMethodContentAssemblerTests {
 
 @MainActor
 private final class ListenerSpy: StoredPaymentMethodContentRouterListener {
-    func didDismissStoredPaymentMethodContent() {}
+    func dismissStoredPaymentMethodContent() {}
 }
