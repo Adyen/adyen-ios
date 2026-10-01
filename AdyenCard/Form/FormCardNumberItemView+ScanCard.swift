@@ -4,13 +4,16 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+#if canImport(AdyenUI)
+    import AdyenUI
+    @_spi(AdyenInternal) import class AdyenUI.FormTextItemView
+#endif
 import Foundation
 import UIKit
 
 extension FormCardNumberItemView {
     private enum Constants {
         static let buttonSpacing: CGFloat = 10
-        static let imageName = "camera.fill"
     }
 
     internal func makeCardScanAccessoryView(title: String, _ selector: Selector) -> UIView {
@@ -21,9 +24,9 @@ extension FormCardNumberItemView {
         let scanButton = UIButton(type: .system)
         scanButton.translatesAutoresizingMaskIntoConstraints = false
         scanButton.setTitle(title, for: .normal)
-        scanButton.tintColor = .systemBlue
+        scanButton.tintColor = theme.colors.highlight
 
-        scanButton.setImage(UIImage(systemName: Constants.imageName), for: .normal)
+        scanButton.setImage(.adyenCamera, for: .normal)
         
         scanButton.imageView?.contentMode = .scaleAspectFit
         scanButton.contentHorizontalAlignment = .center

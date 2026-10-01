@@ -21,9 +21,6 @@ package struct AdyenTextFieldStyle {
     /// The color of the background.
     package var backgroundColor: UIColor
 
-    /// The color of the text input container background.
-    package var containerColor: UIColor
-
     /// The error color of the text.
     package var errorColor: UIColor
     
@@ -36,8 +33,14 @@ package struct AdyenTextFieldStyle {
     /// The border color of the element in active state
     package var borderActiveColor: UIColor
 
-    /// The border width of the element
-    package var borderWidth: CGFloat = AdyenUIConstants.defaultBorderWidth
+    /// The border width of the element in its default state
+    package var defaultBorderWidth: CGFloat
+
+    /// The border width of the element in error state
+    package var errorBorderWidth: CGFloat
+
+    /// The border width of the element in focused state
+    package var focusedBorderWidth: CGFloat
     
     /// A default instance of AdyenTextFieldStyle.
     internal static let `default` = AdyenElements.default.textField
@@ -49,10 +52,11 @@ package struct AdyenTextFieldStyle {
         title: AdyenLabelStyle,
         text: AdyenLabelStyle,
         placeholder: AdyenLabelStyle,
-        borderWidth: CGFloat,
+        defaultBorderWidth: CGFloat,
+        errorBorderWidth: CGFloat,
+        focusedBorderWidth: CGFloat,
         cornerRadius: CornerRounding,
         backgroundColor: UIColor,
-        containerColor: UIColor,
         errorColor: UIColor,
         borderColor: UIColor,
         borderActiveColor: UIColor
@@ -60,11 +64,12 @@ package struct AdyenTextFieldStyle {
         self.title = title
         self.text = text
         self.backgroundColor = backgroundColor
-        self.containerColor = containerColor
         self.errorColor = errorColor
         self.cornerRadius = cornerRadius
         self.borderColor = borderColor
-        self.borderWidth = borderWidth
+        self.defaultBorderWidth = defaultBorderWidth
+        self.errorBorderWidth = errorBorderWidth
+        self.focusedBorderWidth = focusedBorderWidth
         self.borderActiveColor = borderActiveColor
         self.placeholder = placeholder
     }
@@ -82,15 +87,6 @@ extension AdyenTextFieldStyle {
         return newStyle
     }
     
-    /// Returns a new style with the specified background color of the text input container.
-    /// - Parameter containerColor: The color to set.
-    /// - Returns: A new `AdyenTextFieldStyle` instance.
-    internal func containerColor(_ containerColor: UIColor) -> AdyenTextFieldStyle {
-        var newStyle = self
-        newStyle.containerColor = containerColor
-        return newStyle
-    }
-
     /// Returns a new style with the specified error color.
     /// - Parameter errorColor: The color to set.
     /// - Returns: A new `AdyenTextFieldStyle` instance.
@@ -127,12 +123,30 @@ extension AdyenTextFieldStyle {
         return newStyle
     }
 
-    /// Returns a new style with the specified border width.
+    /// Returns a new style with the specified default border width.
     /// - Parameter borderWidth: The border width to set.
     /// - Returns: A new `AdyenTextFieldStyle` instance.
-    internal func borderWidth(_ borderWidth: CGFloat) -> AdyenTextFieldStyle {
+    internal func defaultBorderWidth(_ borderWidth: CGFloat) -> AdyenTextFieldStyle {
         var newStyle = self
-        newStyle.borderWidth = borderWidth
+        newStyle.defaultBorderWidth = borderWidth
+        return newStyle
+    }
+
+    /// Returns a new style with the specified error border width.
+    /// - Parameter borderWidth: The border width to set.
+    /// - Returns: A new `AdyenTextFieldStyle` instance.
+    internal func errorBorderWidth(_ borderWidth: CGFloat) -> AdyenTextFieldStyle {
+        var newStyle = self
+        newStyle.errorBorderWidth = borderWidth
+        return newStyle
+    }
+
+    /// Returns a new style with the specified focused border width.
+    /// - Parameter borderWidth: The border width to set.
+    /// - Returns: A new `AdyenTextFieldStyle` instance.
+    internal func focusedBorderWidth(_ borderWidth: CGFloat) -> AdyenTextFieldStyle {
+        var newStyle = self
+        newStyle.focusedBorderWidth = borderWidth
         return newStyle
     }
 }
