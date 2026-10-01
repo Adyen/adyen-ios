@@ -331,6 +331,20 @@ let component = try checkout.createPaymentComponent(for: .scheme)
 
 ### Apple Pay component
 
+In v5, Apple Pay's `viewController` was the Apple Pay sheet, and the component could only be used once. `PreApplePayComponent`
+showed an intermediate screen with the Apple Pay button.
+
+In v6, the Apple Pay component shows the Apple Pay button itself:
+
+- `viewController` is a screen that contains only the Apple Pay button. Presenting it no longer opens the Apple Pay sheet.
+  When `showsSubmitButton(false)` is set on `CheckoutConfiguration`, the screen is empty.
+- To use your own Apple Pay button, call `submit()` on the component when the shopper taps it. This opens the Apple Pay sheet.
+- The component can be reused after the shopper cancels the sheet or a payment fails.
+- An invalid payment request no longer makes creating the component fail. The failure callback receives
+  `ApplePayComponent.Error.invalidPaymentRequest` when the sheet can't be opened.
+- `ApplePayComponent.Error.submitNotSupported` is removed.
+- Drop-in shows the Apple Pay button above the payment methods list, also when `showsSubmitButton(false)` is set.
+
 Set the button's type, style and corner radius with `ApplePayButtonAppearance`. If you don't set a corner radius, the button keeps the system's default corner radius:
 
 ```swift

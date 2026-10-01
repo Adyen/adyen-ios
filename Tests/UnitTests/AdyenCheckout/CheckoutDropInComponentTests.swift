@@ -123,7 +123,7 @@ final class CheckoutDropInComponentTests: XCTestCase {
         XCTAssertEqual(listViewController.view.backgroundColor, backgroundColor)
     }
 
-    func test_createDropIn_withApplePay_shouldPresentApplePayFromHeaderButton() throws {
+    func test_createDropIn_withApplePay_shouldEmbedApplePayButtonInListHeader() throws {
         let configuration = try makeConfiguration(configurations: [
             .payment(.applePay): ApplePayConfiguration(
                 paymentRequest: Dummy.createTestApplePayPaymentRequest()
@@ -133,16 +133,38 @@ final class CheckoutDropInComponentTests: XCTestCase {
             paymentMethods: makePaymentMethods(regular: [applePayDictionary, creditCardDictionary]),
             configuration: configuration
         )
+
         let dropIn = try checkout.createDropIn()
         let navigationController = try XCTUnwrap(dropIn.viewController as? UINavigationController)
-        presentOnRoot(navigationController)
-        navigationController.topViewController?.loadViewIfNeeded()
-        let applePayButton = try XCTUnwrap(navigationController.view.firstSubview(of: PKPaymentButton.self))
+        let listViewController = try XCTUnwrap(navigationController.topViewController as? PaymentMethodListViewController)
+        listViewController.loadViewIfNeeded()
 
-        applePayButton.sendActions(for: .touchUpInside)
-        wait(for: .aMoment)
+        let applePayViewController = try XCTUnwrap(
+            listViewController.children.first { $0 is ApplePayButtonViewController } as? ApplePayButtonViewController
+        )
+        XCTAssertNotNil(listViewController.view.firstSubview(of: PKPaymentButton.self))
+        XCTAssertTrue(applePayViewController.paymentButton.isDescendant(of: listViewController.view))
+    }
 
-        XCTAssertTrue(navigationController.presentedViewController is PKPaymentAuthorizationViewController)
+    func test_createDropIn_withApplePayHidingSubmitButton_shouldStillShowApplePayButton() throws {
+        var applePayConfiguration = try ApplePayConfiguration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
+        )
+        applePayConfiguration.showsSubmitButton = false
+        let configuration = makeConfiguration(configurations: [
+            .payment(.applePay): applePayConfiguration
+        ])
+        let checkout = makeCheckout(
+            paymentMethods: makePaymentMethods(regular: [applePayDictionary, creditCardDictionary]),
+            configuration: configuration
+        )
+
+        let dropIn = try checkout.createDropIn()
+        let navigationController = try XCTUnwrap(dropIn.viewController as? UINavigationController)
+        let listViewController = try XCTUnwrap(navigationController.topViewController as? PaymentMethodListViewController)
+        listViewController.loadViewIfNeeded()
+
+        XCTAssertNotNil(listViewController.view.firstSubview(of: PKPaymentButton.self))
     }
 
     func test_createDropIn_withApplePayWithoutConfiguration_shouldOmitOnlyApplePay() throws {
@@ -152,10 +174,10 @@ final class CheckoutDropInComponentTests: XCTestCase {
 
         let dropIn = try checkout.createDropIn()
         let navigationController = try XCTUnwrap(dropIn.viewController as? UINavigationController)
-        navigationController.topViewController?.loadViewIfNeeded()
+        let listViewController = try XCTUnwrap(navigationController.topViewController as? PaymentMethodListViewController)
+        listViewController.loadViewIfNeeded()
 
-        XCTAssertTrue(navigationController.topViewController is PaymentMethodListViewController)
-        XCTAssertNil(navigationController.view.firstSubview(of: PKPaymentButton.self))
+        XCTAssertNil(listViewController.view.firstSubview(of: PKPaymentButton.self))
     }
 
     private func assertPaymentMethodFailure(

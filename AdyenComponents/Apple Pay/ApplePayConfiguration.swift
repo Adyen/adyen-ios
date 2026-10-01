@@ -17,7 +17,7 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
 
     package let componentType: CheckoutComponentType = .payment(.applePay)
 
-    /// Meaningless for Apple Pay (the system renders its own button); kept to satisfy the protocol.
+    /// Whether the component shows the Apple Pay button.
     package var showsSubmitButton: Bool = true
 
     package var theme: CheckoutTheme = .default
