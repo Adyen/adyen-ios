@@ -43,13 +43,6 @@ internal class StoredCardInputViewController: UIViewController {
         return stackView
     }()
 
-    private lazy var spacerView: UIView = {
-        let view = UIView()
-        view.setContentHuggingPriority(.defaultLow, for: .vertical)
-        view.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        return view
-    }()
-
     private lazy var securityCodeItemView: FormCardSecurityCodeItemView = {
         let view = FormCardSecurityCodeItemView(item: viewModel.securityCodeItem, theme: theme)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -120,7 +113,6 @@ internal class StoredCardInputViewController: UIViewController {
 
         [
             securityCodeItemView,
-            spacerView,
             buttonsStackView
         ].forEach(contentStackView.addArrangedSubview)
 
@@ -154,10 +146,8 @@ internal class StoredCardInputViewController: UIViewController {
             contentStackView.bottomAnchor.constraint(
                 equalTo: scrollView.contentLayoutGuide.bottomAnchor,
                 constant: -Constants.buttonsBottomPadding
-            ),
-            contentStackView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.frameLayoutGuide.heightAnchor)
+            )
         ])
-
     }
 
     private func configureContent() {
