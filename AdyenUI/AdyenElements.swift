@@ -85,10 +85,11 @@ package struct AdyenElements {
             title: labels.label,
             text: labels.body,
             placeholder: labels.body.color(colors.textSecondary),
-            borderWidth: AdyenUIConstants.defaultBorderWidth,
+            defaultBorderWidth: 1,
+            errorBorderWidth: 1.5,
+            focusedBorderWidth: 2,
             cornerRadius: .fixed(AdyenUIConstants.defaultCornerRadius),
             backgroundColor: colors.background,
-            containerColor: colors.container,
             errorColor: colors.destructive,
             borderColor: colors.containerOutline,
             borderActiveColor: colors.primary

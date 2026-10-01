@@ -26,7 +26,7 @@ final class FormTextItemViewThemeTests: XCTestCase {
         XCTAssertEqual(sut.footerLabel.text, expectedErrorMessage)
 
         let containerView = getContainerView(from: sut)
-        XCTAssertEqual(containerView?.backgroundColor, CheckoutColors.default.container)
+        XCTAssertEqual(containerView?.backgroundColor, CheckoutColors.default.background)
         // Error state should show destructive border color
         XCTAssertEqual(containerView?.layer.borderColor, CheckoutColors.default.destructive.cgColor)
     }
@@ -34,7 +34,7 @@ final class FormTextItemViewThemeTests: XCTestCase {
     func test_formTextItemView_withCustomColors_shouldApplyToUI() {
         // Given - item with required validation that will fail when empty
         let customColors = CheckoutColors(
-            container: .yellow,
+            background: .yellow,
             containerOutline: .systemPurple,
             destructive: .orange,
             text: .magenta
