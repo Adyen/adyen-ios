@@ -32,12 +32,10 @@ internal struct StoredPaymentMethodManagementEmptyState: View {
             
             VStack(spacing: Constants.messageSpacing) {
                 Text(viewModel.emptyTitle)
-                    .font(Font(theme.elements.labels.bodyEmphasized.font))
-                    .foregroundStyle(Color(uiColor: theme.elements.labels.bodyEmphasized.color))
+                    .adyenLabelStyle(theme.elements.labels.bodyEmphasized)
 
                 Text(viewModel.emptyMessage)
-                    .font(Font(theme.elements.labels.body.font))
-                    .foregroundStyle(Color(uiColor: theme.elements.labels.body.color))
+                    .adyenLabelStyle(theme.elements.labels.body)
                     .multilineTextAlignment(.center)
             }
             

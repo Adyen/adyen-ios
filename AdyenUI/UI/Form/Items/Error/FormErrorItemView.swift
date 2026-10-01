@@ -59,7 +59,7 @@ internal final class FormErrorItemView: FormItemView<FormErrorItem> {
     // MARK: - Message
 
     internal lazy var messageLabel: UILabel = {
-        let messageLabel = UILabel()
+        let messageLabel = AdyenLabel()
         messageLabel.apply(theme.elements.labels.subheadline)
         messageLabel.numberOfLines = 0
         messageLabel.isAccessibilityElement = false

@@ -85,7 +85,7 @@ private extension StoredPaymentMethodManagementListView {
                 }
 
                 Text(message)
-                    .font(Font(theme.elements.labels.body.font))
+                    .adyenLabelStyle(theme.elements.labels.body, color: theme.colors.destructive)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .foregroundStyle(Color(uiColor: theme.colors.destructive))
@@ -111,8 +111,7 @@ private extension StoredPaymentMethodManagementListView {
             VStack(alignment: .leading, spacing: Constants.headerSpacing) {
                 if let title {
                     Text(title)
-                        .font(Font(theme.elements.labels.subheadlineEmphasized.font))
-                        .foregroundStyle(Color(uiColor: theme.elements.labels.subheadlineEmphasized.color))
+                        .adyenLabelStyle(theme.elements.labels.subheadlineEmphasized)
                         .padding(.vertical, Constants.headerVerticalPadding)
                 }
 
@@ -166,13 +165,11 @@ private extension StoredPaymentMethodManagementListView {
 
                     VStack(alignment: .leading, spacing: 2) {
                         Text(item.title)
-                            .font(Font(theme.elements.labels.bodyEmphasized.font))
-                            .foregroundStyle(Color(uiColor: theme.elements.labels.bodyEmphasized.color))
+                            .adyenLabelStyle(theme.elements.labels.bodyEmphasized)
 
                         if let subtitle = item.subtitle {
                             Text(subtitle)
-                                .font(Font(theme.elements.labels.subheadline.font))
-                                .foregroundStyle(Color(uiColor: subtitleColor))
+                                .adyenLabelStyle(theme.elements.labels.subheadline, color: subtitleColor)
                         }
                     }
                 }

@@ -137,7 +137,7 @@ final class ListCellTests: XCTestCase {
             verticalFittingPriority: .fittingSizeLevel
         )
 
-        XCTAssertGreaterThanOrEqual(fittingSize.height, 64)
+        XCTAssertGreaterThanOrEqual(fittingSize.height, 68)
     }
 
     // MARK: - Helpers

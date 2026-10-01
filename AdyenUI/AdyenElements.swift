@@ -23,39 +23,48 @@ package struct AdyenElements {
         let labels = AdyenLabelStyles(
             title: AdyenLabelStyle(
                 font: UIFont.systemFont(ofSize: FontSize.title.rawValue, weight: .bold),
-                color: colors.text
+                color: colors.text,
+                lineHeight: 41
             ),
             subtitle: AdyenLabelStyle(
                 font: UIFont.systemFont(ofSize: FontSize.subtitle.rawValue, weight: .semibold),
-                color: colors.text
+                color: colors.text,
+                lineHeight: 25
             ),
             body: AdyenLabelStyle(
                 font: UIFont.systemFont(ofSize: FontSize.body.rawValue, weight: .regular),
-                color: colors.text
+                color: colors.text,
+                lineHeight: 22
             ),
             bodyEmphasized: AdyenLabelStyle(
                 font: UIFont.systemFont(ofSize: FontSize.body.rawValue, weight: .semibold),
-                color: colors.text
+                color: colors.text,
+                lineHeight: 22
             ),
             subheadline: AdyenLabelStyle(
                 font: UIFont.systemFont(ofSize: FontSize.subheadline.rawValue, weight: .regular),
-                color: colors.text
+                color: colors.text,
+                lineHeight: 20
             ),
             subheadlineEmphasized: AdyenLabelStyle(
                 font: UIFont.systemFont(ofSize: FontSize.subheadline.rawValue, weight: .semibold),
-                color: colors.text
+                color: colors.text,
+                lineHeight: 20
             ),
             footnote: AdyenLabelStyle(
                 font: UIFont.systemFont(ofSize: FontSize.footnote.rawValue, weight: .regular),
-                color: colors.text
+                color: colors.text,
+                lineHeight: 18
             ),
             footnoteEmphasized: AdyenLabelStyle(
                 font: UIFont.systemFont(ofSize: FontSize.footnote.rawValue, weight: .semibold),
-                color: colors.text
+                color: colors.text,
+                lineHeight: 18
             ),
             label: AdyenLabelStyle(
                 font: UIFont.systemFont(ofSize: FontSize.body.rawValue, weight: .semibold),
-                color: colors.text
+                color: colors.text,
+                lineHeight: 22
             )
         )
 

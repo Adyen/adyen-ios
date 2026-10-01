@@ -22,7 +22,7 @@ internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem
 
     /// The card brand selection title label item.
     internal lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel()
+        let titleLabel = AdyenLabel()
         titleLabel.text = item.title
         titleLabel.apply(theme.elements.labels.label)
         titleLabel.accessibilityLabel = ViewIdentifierBuilder.build(
@@ -34,7 +34,7 @@ internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem
 
     ///  The card brand selection subtitle label item.
     internal lazy var subtitleLabel: UILabel = {
-        let subtitleLabel = UILabel()
+        let subtitleLabel = AdyenLabel()
         subtitleLabel.text = item.subtitle
         subtitleLabel.apply(theme.elements.labels.footnote)
         subtitleLabel.numberOfLines = 0

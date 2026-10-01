@@ -15,7 +15,7 @@ package final class FormToggleItemView: FormItemView<FormToggleItem> {
     // MARK: - UI elements
     
     private lazy var label: UILabel = {
-        let label = UILabel()
+        let label = AdyenLabel()
         label.text = item.title
         label.numberOfLines = 0
         label.accessibilityIdentifier = item.identifier.map {

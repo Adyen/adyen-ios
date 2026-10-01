@@ -75,10 +75,10 @@ internal struct GenericPaymentMethodView: View {
     private var descriptionView: some View {
         VStack(spacing: Constants.descriptionViewSpacing) {
             Text("\(viewModel.title)")
-                .font(Font(theme.elements.labels.title.font))
+                .adyenLabelStyle(theme.elements.labels.title)
                 .accessibilityIdentifier(GenericPaymentMethodAccessibilityIdentifier.title)
             Text(viewModel.description)
-                .font(Font(theme.elements.labels.body.font))
+                .adyenLabelStyle(theme.elements.labels.body)
                 .accessibilityIdentifier(GenericPaymentMethodAccessibilityIdentifier.description)
         }
         .foregroundStyle(Color(uiColor: theme.colors.text))
@@ -95,8 +95,7 @@ internal struct GenericPaymentMethodView: View {
                 lineWidth: Constants.progressViewWidth
             )
             Text(viewModel.progressTitle)
-                .font(Font(theme.elements.labels.body.font))
-                .foregroundStyle(Color(uiColor: theme.colors.textSecondary))
+                .adyenLabelStyle(theme.elements.labels.body, color: theme.colors.textSecondary)
                 .accessibilityIdentifier(GenericPaymentMethodAccessibilityIdentifier.progressTitle)
         }
     }
