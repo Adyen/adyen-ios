@@ -15,6 +15,7 @@ package struct AdyenLabelStyles {
     package var subheadlineEmphasized: AdyenLabelStyle
     package var footnote: AdyenLabelStyle
     package var footnoteEmphasized: AdyenLabelStyle
+    package var label: AdyenLabelStyle
 
     /// A default instance of AdyenLabelStyles.
     internal static let `default` = AdyenElements.default.labels
@@ -32,6 +33,7 @@ package struct AdyenLabelStyles {
     ///   - subheadlineEmphasized: The emphasized subheadline label style.
     ///   - footnote: The footnote label style.
     ///   - footnoteEmphasized: The emphasized footnote label style.
+    ///   - label: The label style used for form field titles.
     internal init(
         title: AdyenLabelStyle,
         subtitle: AdyenLabelStyle,
@@ -40,7 +42,8 @@ package struct AdyenLabelStyles {
         subheadline: AdyenLabelStyle,
         subheadlineEmphasized: AdyenLabelStyle,
         footnote: AdyenLabelStyle,
-        footnoteEmphasized: AdyenLabelStyle
+        footnoteEmphasized: AdyenLabelStyle,
+        label: AdyenLabelStyle
     ) {
         self.title = title
         self.subtitle = subtitle
@@ -50,5 +53,6 @@ package struct AdyenLabelStyles {
         self.subheadlineEmphasized = subheadlineEmphasized
         self.footnote = footnote
         self.footnoteEmphasized = footnoteEmphasized
+        self.label = label
     }
 }

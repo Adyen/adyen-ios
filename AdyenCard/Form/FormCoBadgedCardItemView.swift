@@ -24,7 +24,7 @@ internal final class FormCoBadgedCardItemView: FormItemView<FormCoBadgedCardItem
     internal lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.text = item.title
-        titleLabel.apply(theme.elements.labels.bodyEmphasized)
+        titleLabel.apply(theme.elements.labels.label)
         titleLabel.accessibilityLabel = ViewIdentifierBuilder.build(
             scopeInstance: self,
             postfix: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardBadgedCardSelectionTitleLabelItem")
