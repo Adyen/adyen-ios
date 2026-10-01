@@ -98,9 +98,8 @@ internal class DropInFlowManager: DropInFlowManaging {
         isAwaitingAction = true
 
         submissionTask = Task { [weak self] in
-            let updatedData = await component.prepareSubmitData(from: data)
             guard !Task.isCancelled else { return }
-            self?.notifyDidSubmit(updatedData, from: component)
+            self?.notifyDidSubmit(data, from: component)
         }
     }
 

@@ -34,8 +34,8 @@ struct DropInFlowManagerTests {
         #expect(receivedArguments?.dropInComponent === environment.dropInComponent)
     }
 
-    @Test("The data is prepared by the component before being submitted, to let it inject the amount to pay.")
-    func submit_shouldSubmitTheDataPreparedByTheComponent() async {
+    @Test("The component prepares the data when it submits, so the data is passed through without being prepared again.")
+    func submit_shouldSubmitTheDataProvidedByTheComponent() async {
         // Given
         let environment = makeSUT()
         let component = makePaymentComponent()
@@ -48,6 +48,7 @@ struct DropInFlowManagerTests {
         // Then
         let submittedData = environment.dropInComponentDelegate.didSubmitFromInReceivedArguments?.data
         #expect((submittedData?.paymentMethod as? GenericPaymentDetails)?.type == component.paymentMethod.type)
+        #expect(submittedData?.browserInfo == nil)
     }
 
     // MARK: - Action Receipt Tests
