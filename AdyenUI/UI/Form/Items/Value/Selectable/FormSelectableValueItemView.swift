@@ -119,8 +119,8 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
     private func apply(_ theme: CheckoutTheme) {
         let style = theme.elements.textField
 
-        containerView.backgroundColor = style.containerColor
-        containerView.layer.borderWidth = style.borderWidth
+        containerView.backgroundColor = style.backgroundColor
+        containerView.layer.borderWidth = style.defaultBorderWidth
         adyen.applyLayerBorderColor(style.borderColor, on: containerView.layer)
 
         switch style.cornerRadius {
@@ -139,6 +139,7 @@ package class FormSelectableValueItemView<ValueType, ItemType: FormSelectableVal
         resolvingWith traitCollection: UITraitCollection? = nil
     ) {
         let style = theme.elements.textField
+        containerView.layer.borderWidth = isValid ? style.defaultBorderWidth : style.errorBorderWidth
         let borderColor = isValid ? style.borderColor : style.errorColor
         adyen.applyLayerBorderColor(borderColor, on: containerView.layer, resolvingWith: traitCollection)
     }
