@@ -28,7 +28,7 @@ internal final class StoredPaymentMethodManagementRouter: Router, StoredPaymentM
 
     internal let rootViewController: UIViewController
     private weak var listener: StoredPaymentMethodManagementListener?
-    internal let childRouter: Router? = nil
+    internal var childRouter: Router?
     private var isDismissHandled = false
 
     // MARK: - Initializers

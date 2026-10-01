@@ -15,8 +15,8 @@ struct PaymentMethodListRouterTests {
 
     // MARK: - Root ViewController Tests
 
-    @Test("This test makes sure the component's view controller is the start of the navigation flow.")
-    func rootViewController_shouldHave_componentViewController_asFirstView() throws {
+    @Test("The list is the root of its own module, and the drop in embeds it in a navigation controller.")
+    func rootViewController_shouldBe_listViewController() {
         // Given
         let expectedViewController = ViewControllerSpy()
         let sut = makeSUT(viewController: expectedViewController)
@@ -25,11 +25,7 @@ struct PaymentMethodListRouterTests {
         let rootViewController = sut.rootViewController
 
         // Then
-        let navigationController = try #require(rootViewController as? UINavigationController)
-
-        let receivedViewController = navigationController.viewControllers.first
-        #expect(expectedViewController == receivedViewController)
-        #expect(!navigationController.navigationBar.prefersLargeTitles)
+        #expect(rootViewController === expectedViewController)
     }
 
     // MARK: - Dismiss Tests
@@ -90,15 +86,15 @@ struct PaymentMethodListRouterTests {
     @Test
     func presentActionComponent() {
         // Given
-        let navigationControllerSpy = NavigationControllerSpy()
-        let sut = makeSUT(navigationController: navigationControllerSpy)
+        let viewControllerSpy = ViewControllerSpy()
+        let sut = makeSUT(viewController: viewControllerSpy)
         let actionComponent = makeActionComponent()
 
         // When
         sut.present(actionViewController: actionComponent, onCancel: nil)
 
-        // Then - rootViewController is the navigationController, so it receives the present call
-        #expect(navigationControllerSpy.presentCallsCount == 1)
+        // Then
+        #expect(viewControllerSpy.presentCallsCount == 1)
     }
 
     // MARK: - StoredPaymentMethodManagement Tests
@@ -305,16 +301,16 @@ struct PaymentMethodListRouterTests {
     @Test
     func presentViewController_shouldPresentModally() {
         // Given
-        let navigationControllerSpy = NavigationControllerSpy()
-        let sut = makeSUT(navigationController: navigationControllerSpy)
+        let viewControllerSpy = ViewControllerSpy()
+        let sut = makeSUT(viewController: viewControllerSpy)
         let viewControllerToPresent = UIViewController()
 
         // When
         sut.present(viewController: viewControllerToPresent)
 
         // Then
-        #expect(navigationControllerSpy.presentCallsCount == 1)
-        #expect(navigationControllerSpy.capturedPresentedViewController === viewControllerToPresent)
+        #expect(viewControllerSpy.presentCallsCount == 1)
+        #expect(viewControllerSpy.capturedPresentedViewController === viewControllerToPresent)
     }
 
     // MARK: - Helpers
@@ -341,7 +337,6 @@ struct PaymentMethodListRouterTests {
 
         return PaymentMethodListRouter(
             viewController: viewController,
-            navigationController: navigationController,
             listener: listener,
             componentContainerAssembler: componentContainerAssembler,
             genericPaymentMethodAssembler: genericPaymentMethodAssembler,
