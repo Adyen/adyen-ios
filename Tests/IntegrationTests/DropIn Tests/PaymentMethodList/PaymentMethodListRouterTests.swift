@@ -302,21 +302,6 @@ struct PaymentMethodListRouterTests {
         #expect(sut.childRouter === genericPaymentMethodRouter)
     }
 
-    @Test
-    func presentViewController_shouldPresentModally() {
-        // Given
-        let navigationControllerSpy = NavigationControllerSpy()
-        let sut = makeSUT(navigationController: navigationControllerSpy)
-        let viewControllerToPresent = UIViewController()
-
-        // When
-        sut.present(viewController: viewControllerToPresent)
-
-        // Then
-        #expect(navigationControllerSpy.presentCallsCount == 1)
-        #expect(navigationControllerSpy.capturedPresentedViewController === viewControllerToPresent)
-    }
-
     // MARK: - Helpers
 
     private func makeSUT(

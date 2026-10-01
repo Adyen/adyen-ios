@@ -7,6 +7,7 @@
 @testable import Adyen
 @testable import AdyenDropIn
 import Testing
+import UIKit
 
 @MainActor
 struct PaymentMethodListHeaderViewModelTests {
@@ -20,7 +21,7 @@ struct PaymentMethodListHeaderViewModelTests {
         let sut = PaymentMethodListHeaderViewModel(
             title: expectedAmount,
             subtitle: "Test",
-            applePayButtonState: .hidden,
+            applePayView: nil,
             theme: .init()
         )
 
@@ -37,7 +38,7 @@ struct PaymentMethodListHeaderViewModelTests {
         let sut = PaymentMethodListHeaderViewModel(
             title: "€1.00",
             subtitle: expectedSubtitle,
-            applePayButtonState: .hidden,
+            applePayView: nil,
             theme: .init()
         )
 
@@ -46,43 +47,33 @@ struct PaymentMethodListHeaderViewModelTests {
     }
 
     @Test
-    func applePayButtonState_givenHidden_shouldBeHidden() {
+    func applePayView_givenNil_shouldBeNil() {
         // Given
         let sut = PaymentMethodListHeaderViewModel(
             title: "€1.00",
             subtitle: "Test",
-            applePayButtonState: .hidden,
+            applePayView: nil,
             theme: .init()
         )
 
         // Then
-        if case .hidden = sut.applePayButtonState {
-            // Success
-        } else {
-            Issue.record("Expected applePayButtonState to be .hidden")
-        }
+        #expect(sut.applePayView == nil)
     }
 
     @Test
-    func applePayButtonState_givenVisible_shouldCallOnTapHandler() {
+    func applePayView_givenView_shouldKeepSameInstance() {
         // Given
-        var tapCount = 0
+        let applePayView = UIView()
+
+        // When
         let sut = PaymentMethodListHeaderViewModel(
             title: "€1.00",
             subtitle: "Test",
-            applePayButtonState: .visible(onTap: { tapCount += 1 }),
+            applePayView: applePayView,
             theme: .init()
         )
 
-        // When
-        guard case let .visible(onTap) = sut.applePayButtonState else {
-            Issue.record("Expected applePayButtonState to be .visible")
-            return
-        }
-        onTap()
-        onTap()
-
         // Then
-        #expect(tapCount == 2)
+        #expect(sut.applePayView === applePayView)
     }
 }

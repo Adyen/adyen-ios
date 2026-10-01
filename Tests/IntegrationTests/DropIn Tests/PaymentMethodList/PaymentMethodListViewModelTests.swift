@@ -218,24 +218,54 @@ struct PaymentMethodListViewModelTests {
         #expect(sut.subtitle == expected)
     }
 
-    // MARK: - ApplePayButtonState Tests
+    // MARK: - Apple Pay Tests
 
     @Test
-    func applePayButtonState_givenNoApplePay_shouldReturnHidden() {
+    func applePayViewController_givenNoApplePay_shouldReturnNil() {
         // Given - paymentMethods without Apple Pay
         let (sut, _, _) = makeSUT(includeApplePay: false)
 
         // Then
-        #expect(sut.applePayButtonState == .hidden)
+        #expect(sut.applePayViewController == nil)
     }
 
     @Test
-    func applePayButtonState_givenApplePay_shouldReturnVisible() {
+    func applePayViewController_givenApplePay_shouldReturnComponentViewController() {
         // Given - paymentMethods with Apple Pay
         let (sut, _, _) = makeSUT(includeApplePay: true)
 
         // Then
-        #expect(sut.applePayButtonState.isVisible)
+        #expect(sut.applePayViewController != nil)
+    }
+
+    @Test
+    func applePayViewController_givenMultipleAccesses_shouldReturnSameInstance() {
+        // Given
+        let (sut, _, _) = makeSUT(includeApplePay: true)
+
+        // When
+        let first = sut.applePayViewController
+        let second = sut.applePayViewController
+
+        // Then
+        #expect(first != nil)
+        #expect(first === second)
+    }
+
+    @Test
+    func applePayViewController_givenCancelledApplePay_shouldKeepSameInstanceAndBeIdle() throws {
+        // Given
+        let (sut, dropInFlowManagerMock, _) = makeSUT(includeApplePay: true)
+        let viewController = try #require(sut.applePayViewController)
+        let component = makePaymentComponentMock()
+
+        // When
+        sut.didFail(with: ComponentError.cancelled, from: component)
+
+        // Then
+        #expect(sut.state == .idle)
+        #expect(sut.applePayViewController === viewController)
+        #expect(dropInFlowManagerMock.failWithFromCallsCount == 0)
     }
 
     // MARK: - Select Payment Method Tests
@@ -633,23 +663,5 @@ extension PaymentMethodListState: Equatable {
             return sections
         }
         return nil
-    }
-}
-
-extension PaymentMethodListHeaderViewModel.ApplePayButtonState: Equatable {
-
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
-        case (.hidden, .hidden): true
-        case (.visible, .visible): true
-        default: false
-        }
-    }
-
-    var isVisible: Bool {
-        if case .visible = self {
-            return true
-        }
-        return false
     }
 }

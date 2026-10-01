@@ -460,24 +460,6 @@ class PaymentMethodListRoutingMock: PaymentMethodListRouting {
 
     // MARK: - present
 
-    var presentViewControllerCallsCount = 0
-    var presentViewControllerCalled: Bool {
-        presentViewControllerCallsCount > 0
-    }
-
-    var presentViewControllerReceivedViewController: UIViewController?
-    var presentViewControllerReceivedInvocations: [UIViewController] = []
-    var presentViewControllerClosure: ((UIViewController) -> Void)?
-
-    func present(viewController: UIViewController) {
-        presentViewControllerCallsCount += 1
-        presentViewControllerReceivedViewController = viewController
-        presentViewControllerReceivedInvocations.append(viewController)
-        presentViewControllerClosure?(viewController)
-    }
-
-    // MARK: - present
-
     var presentActionViewControllerOnCancelCallsCount = 0
     var presentActionViewControllerOnCancelCalled: Bool {
         presentActionViewControllerOnCancelCallsCount > 0
@@ -559,12 +541,7 @@ class PaymentMethodListViewModelProtocolMock: PaymentMethodListViewModelProtocol
     }
 
     var underlyingSubtitle: String!
-    var applePayButtonState: PaymentMethodListHeaderViewModel.ApplePayButtonState {
-        get { underlyingApplePayButtonState }
-        set(value) { underlyingApplePayButtonState = value }
-    }
-
-    var underlyingApplePayButtonState: PaymentMethodListHeaderViewModel.ApplePayButtonState!
+    var applePayViewController: UIViewController?
 
     // MARK: - cancel
 

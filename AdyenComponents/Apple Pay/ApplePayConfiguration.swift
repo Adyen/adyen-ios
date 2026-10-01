@@ -17,7 +17,7 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
 
     package let componentType: CheckoutComponentType = .payment(.applePay)
 
-    /// Meaningless for Apple Pay (the system renders its own button); kept to satisfy the protocol.
+    /// Whether the component shows the Apple Pay button.
     package var showsSubmitButton: Bool = true
 
     package var theme: CheckoutTheme = .default
@@ -30,6 +30,8 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
     /// If true, allow the shopper to add cards to Apple Pay if none exists yet.
     /// If false, then Apple Pay is disabled if the shopper doesn't have supported cards on Apple Pay wallet.
     internal var allowOnboarding: Bool = true
+
+    internal var buttonAppearance = ApplePayButtonAppearance()
 
     internal var onAuthorize: (@MainActor (PKPayment) async -> PKPaymentAuthorizationResult)?
 
@@ -237,6 +239,15 @@ extension ApplePayConfiguration {
     public func allowOnboarding(_ allowOnboarding: Bool) -> Self {
         var copy = self
         copy.allowOnboarding = allowOnboarding
+        return copy
+    }
+
+    /// Sets the appearance of the Apple Pay button.
+    /// - Parameter buttonAppearance: The Apple Pay button appearance.
+    /// - Returns: A modified copy of the configuration.
+    public func buttonAppearance(_ buttonAppearance: ApplePayButtonAppearance) -> Self {
+        var copy = self
+        copy.buttonAppearance = buttonAppearance
         return copy
     }
 }
