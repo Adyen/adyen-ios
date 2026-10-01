@@ -21,6 +21,19 @@ final class PaymentComponentDelegateMock: PaymentComponentDelegate {
         didSubmitReceivedArguments = (data: data, component: component)
         onDidSubmit?(data, component)
     }
+
+    var didFailCallsCount = 0
+    var didFailCalled: Bool {
+        didFailCallsCount > 0
+    }
+
+    var didFailReceivedArguments: (error: Error, component: PaymentComponent)?
+    var onDidFail: ((Error, PaymentComponent) -> Void)?
+    func didFail(with error: Error, from component: PaymentComponent) {
+        didFailCallsCount += 1
+        didFailReceivedArguments = (error: error, component: component)
+        onDidFail?(error, component)
+    }
 }
 ```
 
@@ -32,7 +45,8 @@ For each protocol method:
 
 - `<method>CallsCount` and `<method>Called` to verify invocations
 - `<method>ReceivedArguments` to capture arguments for assertions
-- an optional `on<Method>` closure to stub behavior
+- `<method>ReturnValue` to stub return values
+- an optional `on<Method>` closure to stub behavior or return values dynamically
 
 ### Placement
 
