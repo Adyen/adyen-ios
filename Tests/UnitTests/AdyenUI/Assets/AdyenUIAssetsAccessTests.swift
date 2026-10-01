@@ -14,7 +14,11 @@ struct AdyenUIAssetsAccessTests {
         UIImage.systemLock,
         UIImage.adyenCheckmark,
         UIImage.adyenChevronRight,
-        UIImage.adyenWarning
+        UIImage.adyenWarning,
+        UIImage.adyenChevronDown,
+        UIImage.adyenCamera,
+        UIImage.adyenSearch,
+        UIImage.adyenCross
     ])
     func verifyImages(image: UIImage?) {
         #expect(image != nil)

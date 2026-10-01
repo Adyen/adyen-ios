@@ -60,11 +60,7 @@ internal class BasePickerInputControl: UIControl, PickerTextInputControl {
     }
 
     internal var accessoryImage: UIImage? {
-        .init(
-            named: "chevron_down",
-            in: Bundle.coreInternalResources,
-            compatibleWith: nil
-        )
+        .adyenChevronDown
     }
 
     internal var customInputView: UIView
