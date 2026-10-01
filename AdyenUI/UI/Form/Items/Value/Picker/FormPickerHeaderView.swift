@@ -17,7 +17,7 @@ internal final class FormPickerHeaderView: UIView {
     // MARK: - Subviews
 
     internal lazy var titleLabel: UILabel = {
-        let label = UILabel()
+        let label = AdyenLabel()
         label.text = header.title
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
@@ -26,7 +26,7 @@ internal final class FormPickerHeaderView: UIView {
     }()
 
     internal lazy var subtitleLabel: UILabel = {
-        let label = UILabel()
+        let label = AdyenLabel()
         label.text = header.subtitle
         label.isHidden = header.subtitle?.isEmpty ?? true
         label.numberOfLines = 0

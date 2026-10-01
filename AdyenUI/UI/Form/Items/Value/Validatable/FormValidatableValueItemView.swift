@@ -23,7 +23,7 @@ open class FormValidatableValueItemView<ValueType, ItemType: FormValidatableValu
 
     /// Shows placeholder hint when valid, validation error when invalid.
     internal lazy var footerLabel: UILabel = {
-        let footerLabel = UILabel()
+        let footerLabel = AdyenLabel()
         footerLabel.apply(theme.elements.labels.subheadline)
         footerLabel.textColor = theme.colors.textSecondary
         footerLabel.isAccessibilityElement = false

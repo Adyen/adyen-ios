@@ -32,13 +32,13 @@ internal final class PaymentMethodItemView: UIView {
     }()
 
     private lazy var titleLabel: UILabel = {
-        let label = UILabel()
+        let label = AdyenLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
     private lazy var subtitleLabel: UILabel = {
-        let label = UILabel()
+        let label = AdyenLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

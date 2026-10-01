@@ -33,7 +33,7 @@ internal struct StoredPaymentMethodContentHeaderView: View {
 
             VStack(spacing: Constants.labelsSpacing) {
                 Text(title)
-                    .font(Font(theme.elements.labels.title.font))
+                    .adyenLabelStyle(theme.elements.labels.title)
                     .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.title)
                 Text(AttributedString(subtitle))
                     .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.subtitle)

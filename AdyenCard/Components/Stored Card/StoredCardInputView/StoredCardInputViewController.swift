@@ -72,7 +72,7 @@ internal class StoredCardInputViewController: UIViewController {
     }()
 
     private lazy var titleLabel: UILabel = {
-        let label = UILabel()
+        let label = AdyenLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.apply(theme.elements.labels.title)
         label.numberOfLines = 0

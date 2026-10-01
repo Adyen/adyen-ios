@@ -125,7 +125,7 @@ package final class ListItemView: UIView, AnyFormItemView {
         
         switch item?.trailingInfo {
         case let .text(string):
-            let trailingTextLabel = UILabel()
+            let trailingTextLabel = AdyenLabel()
             trailingTextLabel.translatesAutoresizingMaskIntoConstraints = false
             trailingTextLabel.text = string
             trailingTextLabel.accessibilityIdentifier = item?.identifier.map {
@@ -197,7 +197,7 @@ package final class ListItemView: UIView, AnyFormItemView {
     // MARK: - Title Label
     
     private lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel()
+        let titleLabel = AdyenLabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         return titleLabel
@@ -206,7 +206,7 @@ package final class ListItemView: UIView, AnyFormItemView {
     // MARK: - Subtitle Label
     
     private lazy var subtitleLabel: UILabel = {
-        let subtitleLabel = UILabel()
+        let subtitleLabel = AdyenLabel()
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.isHidden = true
         

@@ -71,9 +71,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         let style = theme.elements.textField
 
         // Title
-        titleLabel.font = style.title.font
-        titleLabel.textColor = style.title.color
-        titleLabel.textAlignment = style.title.textAlignment
+        titleLabel.apply(style.title)
 
         // Text field
         textField.font = style.text.font
@@ -207,12 +205,16 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     // MARK: - Validation
     
     override public var isValid: Bool {
-        if isHidden { return true }
+        if isHidden {
+            return true
+        }
         return super.isValid
     }
     
     override public func showValidation() {
-        if isHidden { return }
+        if isHidden {
+            return
+        }
         super.showValidation()
     }
     
@@ -235,13 +237,17 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     // MARK: - Interaction
     
     override open var canBecomeFirstResponder: Bool {
-        if isHidden { return false }
+        if isHidden {
+            return false
+        }
         return textField.canBecomeFirstResponder
     }
     
     @discardableResult
     override open func becomeFirstResponder() -> Bool {
-        if isHidden { return false }
+        if isHidden {
+            return false
+        }
         return textField.becomeFirstResponder()
     }
     
@@ -298,7 +304,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
     }
 
     private func removeAccessoryIfNeeded() {
-        if case .customView = accessory { return }
+        if case .customView = accessory {
+            return
+        }
         accessory = .none
     }
 
@@ -321,7 +329,9 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         }
         
         // Keep custom view unchanged
-        if case .customView = accessory { return }
+        if case .customView = accessory {
+            return
+        }
         
         let hasContent = !(textField.text ?? "").isEmpty
         accessory = (hasContent && !isEditing) ? .valid : .none
