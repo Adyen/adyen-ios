@@ -64,7 +64,7 @@ internal class DropInFlowManager: DropInFlowManaging {
             configuration: actionComponentConfiguration
         )
         actionComponent.delegate = self
-        actionComponent.presentationDelegate = self
+        actionComponent.actionPresentationDelegate = self
         return actionComponent
     }()
 
@@ -130,11 +130,11 @@ extension DropInFlowManager: ActionComponentDelegate {
     }
 }
 
-// MARK: - PresentationDelegate
+// MARK: - ActionPresentationDelegate
 
-extension DropInFlowManager: PresentationDelegate {
+extension DropInFlowManager: ActionPresentationDelegate {
 
-    internal func present(viewController: UIViewController) {
-        actionPresenter?.present(actionViewController: viewController)
+    internal func present(actionViewController: UIViewController, actionData: ActionData) {
+        actionPresenter?.present(actionViewController: actionViewController)
     }
 }

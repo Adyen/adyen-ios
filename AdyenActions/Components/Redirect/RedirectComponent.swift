@@ -56,7 +56,7 @@ package final class RedirectComponent: ActionComponent {
     package weak var delegate: ActionComponentDelegate?
 
     /// Delegates view controller presentation.
-    package weak var presentationDelegate: PresentationDelegate?
+    package weak var actionPresentationDelegate: ActionPresentationDelegate?
 
     internal var appLauncher: AnyAppLauncher = AppLauncher()
     
@@ -140,7 +140,7 @@ package final class RedirectComponent: ActionComponent {
         )
         component.delegate = self
         browserComponent = component
-        presentationDelegate?.present(viewController: component.viewController)
+        actionPresentationDelegate?.present(actionViewController: component.viewController, actionData: ActionData(type: .redirect))
     }
     
     // MARK: - Custom scheme link handling

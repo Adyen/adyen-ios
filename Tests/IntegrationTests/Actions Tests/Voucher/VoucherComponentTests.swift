@@ -14,7 +14,7 @@ class VoucherComponentTests: XCTestCase {
 
     var sut: VoucherComponent!
 
-    var presentationDelegate: PresentationDelegateMock!
+    var actionPresentationDelegate: ActionPresentationDelegateMock!
 
     override func run() {
         AdyenDependencyValues.runTestWithValues {
@@ -26,24 +26,24 @@ class VoucherComponentTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        presentationDelegate = PresentationDelegateMock()
+        actionPresentationDelegate = ActionPresentationDelegateMock()
         sut = VoucherComponent(context: Dummy.context)
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "test_table")
-        sut.presentationDelegate = presentationDelegate
+        sut.actionPresentationDelegate = actionPresentationDelegate
     }
 
     func testDokuVoucherComponent() throws {
         let action = try AdyenCoder.decode(dokuIndomaretAction) as VoucherAction
 
-        let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
-        presentationDelegate.doPresent = { [self] viewController in
+        let actionPresentationDelegateExpectation = expectation(description: "Expect actionPresentationDelegate.present() to be called.")
+        actionPresentationDelegate.doPresent = { [self] viewController in
             let view = sut.view
             
             XCTAssertNotNil(view)
             
             checkViewModel(view!.model, forAction: action)
             
-            presentationDelegateExpectation.fulfill()
+            actionPresentationDelegateExpectation.fulfill()
         }
 
         sut.handle(action)
@@ -54,15 +54,15 @@ class VoucherComponentTests: XCTestCase {
     func testEContextATMVoucherComponent() throws {
         let action = try AdyenCoder.decode(econtextATMAction) as VoucherAction
         
-        let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
-        presentationDelegate.doPresent = { [self] viewController in
+        let actionPresentationDelegateExpectation = expectation(description: "Expect actionPresentationDelegate.present() to be called.")
+        actionPresentationDelegate.doPresent = { [self] viewController in
             let view = sut.view
             
             XCTAssertNotNil(view)
             
             checkViewModel(view!.model, forAction: action)
             
-            presentationDelegateExpectation.fulfill()
+            actionPresentationDelegateExpectation.fulfill()
         }
         
         sut.handle(action)
@@ -73,15 +73,15 @@ class VoucherComponentTests: XCTestCase {
     func testBoletoVoucherComponent() throws {
         let action = try AdyenCoder.decode(boletoAction) as VoucherAction
         
-        let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
-        presentationDelegate.doPresent = { [self] viewController in
+        let actionPresentationDelegateExpectation = expectation(description: "Expect actionPresentationDelegate.present() to be called.")
+        actionPresentationDelegate.doPresent = { [self] viewController in
             let view = sut.view
             
             XCTAssertNotNil(view)
             
             checkViewModel(view!.model, forAction: action)
             
-            presentationDelegateExpectation.fulfill()
+            actionPresentationDelegateExpectation.fulfill()
         }
         
         sut.handle(action)
@@ -92,8 +92,8 @@ class VoucherComponentTests: XCTestCase {
     func testOXXOVoucherComponent() throws {
         let action = try AdyenCoder.decode(oxxoAction) as VoucherAction
         
-        let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
-        presentationDelegate.doPresent = { [self] viewController in
+        let actionPresentationDelegateExpectation = expectation(description: "Expect actionPresentationDelegate.present() to be called.")
+        actionPresentationDelegate.doPresent = { [self] viewController in
             self.setupRootViewController(viewController)
             
             let view = sut.view
@@ -122,7 +122,7 @@ class VoucherComponentTests: XCTestCase {
             XCTAssertEqual(alertSheet.actions.map(\.title), expectedActionTitles)
             XCTAssertEqual(alertSheet.actions.count, expectedActionTitles.count)
             
-            presentationDelegateExpectation.fulfill()
+            actionPresentationDelegateExpectation.fulfill()
         }
         
         sut.handle(action)
@@ -133,8 +133,8 @@ class VoucherComponentTests: XCTestCase {
     func testMultibancoVoucherComponent() throws {
         let action = try AdyenCoder.decode(multibancoVoucher) as VoucherAction
         
-        let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
-        presentationDelegate.doPresent = { [self] viewController in
+        let actionPresentationDelegateExpectation = expectation(description: "Expect actionPresentationDelegate.present() to be called.")
+        actionPresentationDelegate.doPresent = { [self] viewController in
             self.setupRootViewController(viewController)
             
             let view = sut.view
@@ -160,7 +160,7 @@ class VoucherComponentTests: XCTestCase {
             XCTAssertEqual(alertSheet.actions.map(\.title), expectedActionTitles)
             XCTAssertEqual(alertSheet.actions.count, expectedActionTitles.count)
             
-            presentationDelegateExpectation.fulfill()
+            actionPresentationDelegateExpectation.fulfill()
         }
         
         sut.handle(action)
@@ -171,15 +171,15 @@ class VoucherComponentTests: XCTestCase {
     func testEContextStoresVoucherComponent() throws {
         let action = try AdyenCoder.decode(econtextStoresAction) as VoucherAction
         
-        let presentationDelegateExpectation = expectation(description: "Expect presentationDelegate.present() to be called.")
-        presentationDelegate.doPresent = { [self] viewController in
+        let actionPresentationDelegateExpectation = expectation(description: "Expect actionPresentationDelegate.present() to be called.")
+        actionPresentationDelegate.doPresent = { [self] viewController in
             let view = sut.view
             
             XCTAssertNotNil(view)
             
             checkViewModel(view!.model, forAction: action)
             
-            presentationDelegateExpectation.fulfill()
+            actionPresentationDelegateExpectation.fulfill()
         }
         
         sut.handle(action)

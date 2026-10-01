@@ -123,8 +123,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
 
         let checkout = try await Checkout.setup(
             with: paymentMethods,
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
         .onSubmit { [weak self] data in
             guard let self else { return .completion(resultCode: "Error") }
@@ -220,12 +219,5 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
             let title = success ? "Success" : "Error"
             self.presenter?.presentAlert(withTitle: title, message: message)
         }
-    }
-}
-
-extension ApplePayComponentAdvancedFlowExample: PresentationDelegate {
-
-    func present(viewController: UIViewController) {
-        presenter?.present(viewController: viewController, completion: nil)
     }
 }

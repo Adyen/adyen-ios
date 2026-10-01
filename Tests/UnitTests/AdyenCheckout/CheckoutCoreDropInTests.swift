@@ -232,7 +232,6 @@ final class CheckoutCoreDropInTests: XCTestCase {
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
-            presentationDelegate: nil,
             resultCallbacks: callbackStore,
             callbackHandler: AdvancedCallbackHandler(callbackStore: callbackStore)
         )
@@ -244,7 +243,6 @@ final class CheckoutCoreDropInTests: XCTestCase {
             configuration: configuration,
             session: session,
             adyenContext: Dummy.context,
-            presentationDelegate: nil,
             resultCallbacks: callbackStore,
             callbackHandler: BeforeSubmitCallbackHandler(
                 handler: SessionCallbackHandler(session: session),
