@@ -106,7 +106,7 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouting {
             presentationMode: .modal,
             listener: self
         ) else {
-            // Stored components Drop-in cannot prompt for keep the generic component presentation.
+            // No dedicated stored payment content exists for this component; fall back to the generic component presentation.
             return presentModalComponent(component)
         }
         childRouter = router
