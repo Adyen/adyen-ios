@@ -48,7 +48,6 @@ internal class DropInFlowManager: DropInFlowManaging {
     private let actionComponentConfiguration: CheckoutActionComponent.Configuration
     private let paymentActionAssembler: PaymentActionAssemblerProtocol
 
-    private var submissionTask: Task<Void, Never>?
     /// Whether the payment session is expected to return an action to handle.
     private var isAwaitingAction = false
     private var didCancelDropIn = false
@@ -65,10 +64,6 @@ internal class DropInFlowManager: DropInFlowManaging {
         self.context = context
         self.actionComponentConfiguration = actionComponentConfiguration
         self.paymentActionAssembler = paymentActionAssembler
-    }
-
-    deinit {
-        submissionTask?.cancel()
     }
 
     // MARK: - Private
@@ -93,14 +88,8 @@ internal class DropInFlowManager: DropInFlowManaging {
         _ data: PaymentComponentData,
         from component: PaymentComponent
     ) {
-        submissionTask?.cancel()
-
         isAwaitingAction = true
-
-        submissionTask = Task { [weak self] in
-            guard !Task.isCancelled else { return }
-            self?.notifyDidSubmit(data, from: component)
-        }
+        notifyDidSubmit(data, from: component)
     }
 
     internal func receive(action: Action) {
@@ -147,8 +136,6 @@ internal class DropInFlowManager: DropInFlowManaging {
     }
 
     private func endSubmission() {
-        submissionTask?.cancel()
-        submissionTask = nil
         isAwaitingAction = false
     }
 

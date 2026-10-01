@@ -17,7 +17,7 @@ struct DropInFlowManagerTests {
     // MARK: - Submission Tests
 
     @Test
-    func submit_shouldNotifyTheMerchantOfTheSubmittedData() async {
+    func submit_shouldNotifyTheMerchantOfTheSubmittedData() {
         // Given
         let environment = makeSUT()
         let component = makePaymentComponent()
@@ -25,7 +25,6 @@ struct DropInFlowManagerTests {
 
         // When
         environment.sut.submit(data, from: component)
-        await waitUntil { environment.dropInComponentDelegate.didSubmitFromInCalled }
 
         // Then
         #expect(environment.dropInComponentDelegate.didSubmitFromInCallsCount == 1)
@@ -35,7 +34,7 @@ struct DropInFlowManagerTests {
     }
 
     @Test("The component prepares the data when it submits, so the data is passed through without being prepared again.")
-    func submit_shouldSubmitTheDataProvidedByTheComponent() async {
+    func submit_shouldSubmitTheDataProvidedByTheComponent() {
         // Given
         let environment = makeSUT()
         let component = makePaymentComponent()
@@ -43,7 +42,6 @@ struct DropInFlowManagerTests {
 
         // When
         environment.sut.submit(data, from: component)
-        await waitUntil { environment.dropInComponentDelegate.didSubmitFromInCalled }
 
         // Then
         let submittedData = environment.dropInComponentDelegate.didSubmitFromInReceivedArguments?.data
@@ -67,12 +65,11 @@ struct DropInFlowManagerTests {
     }
 
     @Test
-    func receive_afterTheSubmissionWasCancelled_shouldNotHandleTheAction() async {
+    func receive_afterTheSubmissionWasCancelled_shouldNotHandleTheAction() {
         // Given
         let environment = makeSUT()
         let component = makePaymentComponent()
         environment.sut.submit(makePaymentComponentData(), from: component)
-        await waitUntil { environment.dropInComponentDelegate.didSubmitFromInCalled }
         environment.sut.cancel(component: component)
 
         // When
