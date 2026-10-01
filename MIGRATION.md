@@ -329,6 +329,15 @@ let component = try checkout.createPaymentComponent(for: .scheme)
 - card brand detection callbacks -> `CardConfiguration.onBinLookup(_:)`
 - component styling moves from per-component form styling to checkout-wide `CheckoutTheme`
 
+### Apple Pay component
+
+Set the button's type, style and corner radius with `ApplePayButtonAppearance`. If you don't set a corner radius, the button keeps the system's default corner radius:
+
+```swift
+try ApplePayConfiguration(paymentRequest: paymentRequest)
+    .buttonAppearance(ApplePayButtonAppearance(buttonType: .buy, buttonStyle: .black, cornerRadius: 8))
+```
+
 ## 5.5.0
 - `telephoneNumber` property of `PrefilledShopperInformation` has been deprecated. Use the `phoneNumber` property if needed.
 

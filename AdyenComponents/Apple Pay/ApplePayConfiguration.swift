@@ -31,6 +31,8 @@ public struct ApplePayConfiguration: CheckoutComponentConfiguration {
     /// If false, then Apple Pay is disabled if the shopper doesn't have supported cards on Apple Pay wallet.
     internal var allowOnboarding: Bool = true
 
+    internal var buttonAppearance = ApplePayButtonAppearance()
+
     internal var onAuthorize: (@MainActor (PKPayment) async -> PKPaymentAuthorizationResult)?
 
     internal var onSelectShippingContact: (
@@ -237,6 +239,15 @@ extension ApplePayConfiguration {
     public func allowOnboarding(_ allowOnboarding: Bool) -> Self {
         var copy = self
         copy.allowOnboarding = allowOnboarding
+        return copy
+    }
+
+    /// Sets the appearance of the Apple Pay button.
+    /// - Parameter buttonAppearance: The Apple Pay button appearance.
+    /// - Returns: A modified copy of the configuration.
+    public func buttonAppearance(_ buttonAppearance: ApplePayButtonAppearance) -> Self {
+        var copy = self
+        copy.buttonAppearance = buttonAppearance
         return copy
     }
 }

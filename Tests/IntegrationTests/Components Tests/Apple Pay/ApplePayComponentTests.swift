@@ -160,6 +160,29 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertFalse(config.allowOnboarding)
     }
 
+    func testConfiguration_givenNoButtonAppearance_shouldUseDefaultButtonAppearance() throws {
+        let config = try ApplePayConfiguration(paymentRequest: Dummy.createTestApplePayPaymentRequest())
+
+        XCTAssertEqual(config.buttonAppearance.buttonType, .plain)
+        XCTAssertEqual(config.buttonAppearance.buttonStyle, .automatic)
+        XCTAssertNil(config.buttonAppearance.cornerRadius)
+    }
+
+    func testConfiguration_givenButtonAppearance_shouldReturnCopyWithButtonAppearance() throws {
+        let original = try ApplePayConfiguration(paymentRequest: Dummy.createTestApplePayPaymentRequest())
+
+        let configured = original.buttonAppearance(
+            ApplePayButtonAppearance(buttonType: .buy, buttonStyle: .black, cornerRadius: 8)
+        )
+
+        XCTAssertEqual(configured.buttonAppearance.buttonType, .buy)
+        XCTAssertEqual(configured.buttonAppearance.buttonStyle, .black)
+        XCTAssertEqual(configured.buttonAppearance.cornerRadius, 8)
+        XCTAssertEqual(original.buttonAppearance.buttonType, .plain)
+        XCTAssertEqual(original.buttonAppearance.buttonStyle, .automatic)
+        XCTAssertNil(original.buttonAppearance.cornerRadius)
+    }
+
     // MARK: - Component Tests
 
     func testApplePay_givenBrandsIsEmpty_shouldThrowUserCannotMakePayment() throws {
