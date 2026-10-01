@@ -125,8 +125,13 @@ class FormPickerItemTests: XCTestCase {
     }
 
     func test_pickerItem_whenHeaderConfiguredAndSearchDisabled_shouldPresentPickerWithHeaderAndNoSearchBar() throws {
-        let secondaryColor: UIColor = .purple
-        let theme = CheckoutTheme(colors: CheckoutColors(textSecondary: secondaryColor))
+        let secondaryColor: UIColor = .orange
+        let theme = CheckoutTheme(
+            colors: CheckoutColors(
+                primary: .purple,
+                textSecondary: secondaryColor
+            )
+        )
         let presentationExpectation = expectation(description: "presenter.presentViewController was called")
 
         var presentedViewController: UIViewController?
@@ -138,9 +143,14 @@ class FormPickerItemTests: XCTestCase {
             dismiss: { _ in }
         )
 
+        let selectedOption = FormPickerElement(
+            identifier: "Identifier",
+            title: "Title",
+            subtitle: "Subtitle"
+        )
         let formPickerItem = FormPickerItem<FormPickerElement>(
-            preselectedValue: nil,
-            selectableValues: [.init(identifier: "Identifier", title: "Title", subtitle: "Subtitle")],
+            preselectedValue: selectedOption,
+            selectableValues: [selectedOption],
             title: "Installments",
             placeholder: "",
             style: .init(),
@@ -168,6 +178,12 @@ class FormPickerItemTests: XCTestCase {
         XCTAssertEqual(headerView.subtitleLabel.textColor, secondaryColor)
         XCTAssertNil(searchViewController.title)
         XCTAssertFalse(searchViewController.searchBar.isDescendant(of: searchViewController.view))
+        XCTAssertEqual(
+            searchViewController.viewModel.interfaceState.results?
+                .filter(\.isSelected)
+                .map(\.identifier),
+            [selectedOption.identifier]
+        )
     }
 
     func test_pickerItem_whenConfigurationOmitted_shouldPresentPickerWithoutHeader() throws {
@@ -204,5 +220,9 @@ class FormPickerItemTests: XCTestCase {
         XCTAssertNil(searchViewController.headerView)
         XCTAssertEqual(searchViewController.title, "Country/Region")
         XCTAssertTrue(searchViewController.searchBar.isDescendant(of: searchViewController.view))
+        XCTAssertFalse(
+            try XCTUnwrap(searchViewController.viewModel.interfaceState.results)
+                .contains(where: \.isSelected)
+        )
     }
 }

@@ -11,7 +11,7 @@ import UIKit
 internal final class FormPickerHeaderView: UIView {
 
     private enum Layout {
-        static let stackSpacing: CGFloat = 4
+        static let stackSpacing = AdyenUIConstants.stackViewSpacing
     }
 
     // MARK: - Subviews
@@ -87,7 +87,8 @@ internal final class FormPickerHeaderView: UIView {
     private func applyTheme() {
         titleLabel.apply(theme.elements.labels.title)
 
-        subtitleLabel.apply(theme.elements.labels.body)
-        subtitleLabel.textColor = theme.colors.textSecondary
+        subtitleLabel.apply(
+            theme.elements.labels.body.color(theme.colors.textSecondary)
+        )
     }
 }

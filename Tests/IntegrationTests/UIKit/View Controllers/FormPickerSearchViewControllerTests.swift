@@ -145,6 +145,37 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         }
     }
 
+    func test_picker_withCustomTheme_shouldApplyThemeToItemText() throws {
+        let expectedTitleFont = UIFont.systemFont(ofSize: 19, weight: .black)
+        let expectedSubtitleFont = UIFont.systemFont(ofSize: 16, weight: .thin)
+        let expectedTitleColor: UIColor = .purple
+        let expectedSubtitleColor: UIColor = .orange
+        let colors = CheckoutColors(
+            primary: expectedTitleColor,
+            textSecondary: expectedSubtitleColor
+        )
+        var elements = AdyenElements(colors: colors)
+        elements.labels.bodyEmphasized.font = expectedTitleFont
+        elements.labels.subheadline.font = expectedSubtitleFont
+
+        let searchViewController = try makeSearchViewController(
+            theme: CheckoutTheme(colors: colors, elements: elements)
+        )
+        let resultsListViewController = searchViewController.resultsListViewController
+        wait(until: { resultsListViewController.viewIfLoaded?.window != nil })
+
+        let firstCell = try XCTUnwrap(
+            resultsListViewController.tableView.visibleCells.first as? ListCell
+        )
+        let titleLabel: UILabel = try XCTUnwrap(firstCell.findView(by: "titleLabel"))
+        let subtitleLabel: UILabel = try XCTUnwrap(firstCell.findView(by: "subtitleLabel"))
+
+        XCTAssertEqual(titleLabel.font, expectedTitleFont)
+        XCTAssertEqual(titleLabel.textColor, expectedTitleColor)
+        XCTAssertEqual(subtitleLabel.font, expectedSubtitleFont)
+        XCTAssertEqual(subtitleLabel.textColor, expectedSubtitleColor)
+    }
+
     func test_picker_whenSelectedOptionProvided_shouldMarkMatchingResultAsSelected() throws {
         let options = makeOptions()
         let selectedBackgroundColor: UIColor = .purple
@@ -275,6 +306,97 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         )
     }
 
+    func test_searchBar_whenRendered_shouldApplyPickerStyle() throws {
+        let searchViewController = try makeSearchViewController()
+        let searchTextField = searchViewController.searchBar.searchTextField
+        wait(until: { searchTextField.window != nil && searchTextField.isFirstResponder })
+        searchViewController.view.layoutIfNeeded()
+
+        XCTAssertGreaterThanOrEqual(searchViewController.searchBar.bounds.height, 44)
+        XCTAssertEqual(searchTextField.layer.cornerRadius, 14, accuracy: 0.5)
+        XCTAssertTrue(searchTextField.clipsToBounds)
+        XCTAssertEqual(searchViewController.searchBar.searchFieldBackgroundImage(for: .normal)?.size, .zero)
+    }
+
+    func test_searchBar_whenEditingStateChanges_shouldUpdateBorderColor() throws {
+        let borderColor: UIColor = .purple
+        let activeBorderColor: UIColor = .orange
+        var elements = AdyenElements.default
+        elements.textField.borderColor = borderColor
+        elements.textField.borderActiveColor = activeBorderColor
+
+        let searchViewController = try makeSearchViewController(
+            theme: CheckoutTheme(elements: elements)
+        )
+        let searchTextField = searchViewController.searchBar.searchTextField
+
+        wait(until: { searchTextField.isFirstResponder })
+        XCTAssertEqual(searchTextField.layer.borderColor, activeBorderColor.cgColor)
+
+        searchTextField.resignFirstResponder()
+        wait(until: { !searchTextField.isFirstResponder })
+        XCTAssertEqual(searchTextField.layer.borderColor, borderColor.cgColor)
+
+        searchTextField.becomeFirstResponder()
+        wait(until: { searchTextField.isFirstResponder })
+        XCTAssertEqual(searchTextField.layer.borderColor, activeBorderColor.cgColor)
+    }
+
+    func test_picker_whenLaidOut_shouldSpaceFirstResultBelowSearchField() throws {
+        let searchViewController = try makeSearchViewController()
+        let resultsListViewController = searchViewController.resultsListViewController
+        wait(until: { resultsListViewController.viewIfLoaded?.window != nil })
+        searchViewController.view.layoutIfNeeded()
+
+        let firstCell = try XCTUnwrap(resultsListViewController.tableView.visibleCells.first)
+        let searchFieldFrame = searchViewController.searchBar.searchTextField.convert(
+            searchViewController.searchBar.searchTextField.bounds,
+            to: searchViewController.view
+        )
+        let firstCellFrame = firstCell.convert(firstCell.bounds, to: searchViewController.view)
+
+        XCTAssertEqual(firstCellFrame.minY - searchFieldFrame.maxY, 24, accuracy: 0.5)
+    }
+
+    func test_picker_whenLaidOut_shouldInsetResultsFromScreenEdges() throws {
+        let expectedInset: CGFloat = 16
+        let searchViewController = try makeSearchViewController()
+        let resultsView = try XCTUnwrap(searchViewController.resultsListViewController.view)
+        wait(until: { resultsView.window != nil })
+        searchViewController.view.layoutIfNeeded()
+
+        XCTAssertEqual(resultsView.frame.minX, expectedInset, accuracy: 0.5)
+        XCTAssertEqual(
+            searchViewController.view.bounds.maxX - resultsView.frame.maxX,
+            expectedInset,
+            accuracy: 0.5
+        )
+    }
+
+    func test_picker_whenResultsRendered_shouldApplyListItemContentInsets() throws {
+        let expectedInsets = UIEdgeInsets(top: 12, left: 14, bottom: 12, right: 14)
+        let searchViewController = try makeSearchViewController()
+        let resultsListViewController = searchViewController.resultsListViewController
+        wait(until: { resultsListViewController.viewIfLoaded?.window != nil })
+        searchViewController.view.layoutIfNeeded()
+
+        let cell = try XCTUnwrap(resultsListViewController.tableView.visibleCells.first as? ListCell)
+        let itemView: ListItemView = try XCTUnwrap(cell.findView(by: "itemView"))
+        let titleLabel: UILabel = try XCTUnwrap(cell.findView(by: "titleLabel"))
+        let subtitleLabel: UILabel = try XCTUnwrap(cell.findView(by: "subtitleLabel"))
+        let titleFrame = titleLabel.convert(titleLabel.bounds, to: itemView)
+        let subtitleFrame = subtitleLabel.convert(subtitleLabel.bounds, to: itemView)
+
+        XCTAssertEqual(titleFrame.minX, expectedInsets.left, accuracy: 0.5)
+        XCTAssertEqual(itemView.bounds.maxX - titleFrame.maxX, expectedInsets.right, accuracy: 0.5)
+        XCTAssertEqual(titleFrame.minY, expectedInsets.top, accuracy: 1)
+        XCTAssertEqual(itemView.bounds.maxY - subtitleFrame.maxY, expectedInsets.bottom, accuracy: 1)
+        XCTAssertGreaterThanOrEqual(
+            subtitleLabel.bounds.height,
+            subtitleLabel.intrinsicContentSize.height - 0.5
+        )
+    }
+
     func test_picker_whenSearchDisabledAndHeaderAbsent_shouldShowResultsWithoutSearchBar() throws {
         let title = "Installments"
         let searchViewController = try makeSearchViewController(
@@ -365,12 +487,38 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         XCTAssertTrue(headerView.subtitleLabel.isHidden)
     }
 
+    func test_pickerHeader_whenTitleAndSubtitleLaidOut_shouldSpaceLabelsByEightPoints() throws {
+        let expectedSpacing: CGFloat = 8
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(
+                header: .init(
+                    title: "Installments",
+                    subtitle: "Split the total cost into monthly payments."
+                )
+            )
+        )
+        let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
+
+        searchViewController.view.layoutIfNeeded()
+
+        XCTAssertEqual(
+            headerView.subtitleLabel.frame.minY - headerView.titleLabel.frame.maxY,
+            expectedSpacing,
+            accuracy: 0.5
+        )
+    }
+
     func test_pickerHeader_shouldApplySecondaryColorToSubtitle() throws {
-        let secondaryColor: UIColor = .purple
+        let secondaryColor: UIColor = .orange
 
         let searchViewController = try makeSearchViewController(
             configuration: .init(header: .init(title: "Installments", subtitle: "Split the total cost into monthly payments.")),
-            theme: CheckoutTheme(colors: CheckoutColors(textSecondary: secondaryColor))
+            theme: CheckoutTheme(
+                colors: CheckoutColors(
+                    primary: .purple,
+                    textSecondary: secondaryColor
+                )
+            )
         )
 
         let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)

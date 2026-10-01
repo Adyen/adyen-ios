@@ -12,9 +12,11 @@ final class ListCellTests: XCTestCase {
 
     func test_cell_whenItemSelected_shouldShowSelectedAppearance() throws {
         let selectedBackgroundColor: UIColor = .purple
+        let checkmarkColor: UIColor = .green
         let cell = makeCell(
             item: makeItem(
                 backgroundColor: selectedBackgroundColor,
+                titleColor: checkmarkColor,
                 isSelected: true
             )
         )
@@ -29,6 +31,7 @@ final class ListCellTests: XCTestCase {
         XCTAssertTrue(cell.clipsToBounds)
         XCTAssertNotNil(checkmarkImageView.image)
         XCTAssertFalse(checkmarkImageView.isHidden)
+        XCTAssertEqual(checkmarkImageView.tintColor, checkmarkColor)
         XCTAssertEqual(checkmarkImageView.bounds.size, CGSize(width: 24, height: 24))
         XCTAssertEqual(checkmarkImageView.frame.minX - titleStackView.frame.maxX, 20, accuracy: 0.1)
         XCTAssertTrue(cell.accessibilityTraits.contains(.button))
@@ -94,6 +97,30 @@ final class ListCellTests: XCTestCase {
         XCTAssertEqual(checkmarkImageView.frame.minX - trailingTextLabel.frame.maxX, 20, accuracy: 0.1)
     }
 
+    func test_setContentInsets_shouldApplyCustomInsetsAndRestoreDefaults() throws {
+        let cell = makeCell(item: makeItem(backgroundColor: .purple))
+        let itemView: UIView = try XCTUnwrap(cell.findView(by: "itemView"))
+        let defaultInsets = UIEdgeInsets(
+            top: 0,
+            left: cell.contentView.layoutMargins.left,
+            bottom: 0,
+            right: cell.contentView.layoutMargins.right
+        )
+        let customInsets = UIEdgeInsets(top: 12, left: 14, bottom: 12, right: 14)
+
+        cell.setContentInsets(nil)
+        XCTAssertEqual(itemView.layoutMargins, defaultInsets)
+
+        cell.setContentInsets(.zero)
+        XCTAssertEqual(itemView.layoutMargins, .zero)
+
+        cell.setContentInsets(customInsets)
+        XCTAssertEqual(itemView.layoutMargins, customInsets)
+
+        cell.setContentInsets(nil)
+        XCTAssertEqual(itemView.layoutMargins, defaultInsets)
+    }
+
     func test_cell_whenCustomHighlightColorProvided_shouldApplyAndResetHighlightColor() {
         let backgroundColor: UIColor = .purple
         let highlightedBackgroundColor: UIColor = .orange
@@ -137,6 +164,7 @@ final class ListCellTests: XCTestCase {
 
     private func makeItem(
         backgroundColor: UIColor,
+        titleColor: UIColor? = nil,
         highlightedBackgroundColor: UIColor? = nil,
         isSelected: Bool = false,
         trailingInfo: ListItem.TrailingInfoType? = nil
@@ -144,6 +172,9 @@ final class ListCellTests: XCTestCase {
         var style = ListItemStyle()
         style.backgroundColor = backgroundColor
         style.highlightedBackgroundColor = highlightedBackgroundColor
+        if let titleColor {
+            style.title.color = titleColor
+        }
 
         return ListItem(
             title: "Title",
