@@ -134,7 +134,6 @@ final class CheckoutCoreSessionComponentConfigTests: XCTestCase {
             session: session,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
-            presentationDelegate: nil,
             resultCallbacks: callbackStore,
             callbackHandler: BeforeSubmitCallbackHandler(
                 handler: SessionCallbackHandler(session: session),
@@ -150,7 +149,6 @@ final class CheckoutCoreSessionComponentConfigTests: XCTestCase {
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
-            presentationDelegate: nil,
             resultCallbacks: callbackStore,
             callbackHandler: AdvancedCallbackHandler(callbackStore: callbackStore)
         )

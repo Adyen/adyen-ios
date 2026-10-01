@@ -41,7 +41,7 @@ internal final class GenericPaymentComponentWithUIExample: InitialDataFlowProtoc
 
                 // Always present the component's own view controller (e.g. its pay button),
                 // regardless of whether the payment method requires user interaction.
-                self.present(viewController: component.viewController)
+                self.presenter?.present(viewController: component.viewController, completion: nil)
             } catch {
                 self.hideLoading()
                 self.handleError(error)
@@ -62,8 +62,7 @@ internal final class GenericPaymentComponentWithUIExample: InitialDataFlowProtoc
 
         let checkout = try await Checkout.setup(
             with: sessionResponse,
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
@@ -100,12 +99,5 @@ internal final class GenericPaymentComponentWithUIExample: InitialDataFlowProtoc
             let title = success ? "Success" : "Error"
             self.presenter?.presentAlert(withTitle: title, message: message)
         }
-    }
-}
-
-extension GenericPaymentComponentWithUIExample: PresentationDelegate {
-    internal func present(viewController: UIViewController) {
-        presenter?.hideLoadingIndicator()
-        presenter?.present(viewController: viewController, completion: nil)
     }
 }

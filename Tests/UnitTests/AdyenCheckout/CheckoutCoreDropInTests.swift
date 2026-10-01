@@ -213,6 +213,17 @@ final class CheckoutCoreDropInTests: XCTestCase {
         XCTAssertEqual(failureCount, 1)
     }
 
+    func test_dropInPaymentComponentProvider_whenGlobalSettingHidesSubmitButton_shouldStillShowSubmitButton() throws {
+        configuration = configuration.showsSubmitButton(false)
+        let sut = makeAdvancedCheckoutCore(paymentMethods: paymentMethods)
+        let blikPaymentMethod = try XCTUnwrap(paymentMethods.regular.first { $0.type == .blik })
+
+        let component = try sut.makeDropInPaymentComponentProvider().buildComponent(for: blikPaymentMethod)
+
+        let blikComponent = try XCTUnwrap(component as? BLIKComponent)
+        XCTAssertTrue(blikComponent.configuration.showsSubmitButton)
+    }
+
     private func makeAdvancedCheckoutCore(
         callbackStore: AdvancedCheckoutCallbackStore = AdvancedCheckoutCallbackStore(),
         paymentMethods: PaymentMethods?
@@ -221,7 +232,6 @@ final class CheckoutCoreDropInTests: XCTestCase {
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
-            presentationDelegate: nil,
             resultCallbacks: callbackStore,
             callbackHandler: AdvancedCallbackHandler(callbackStore: callbackStore)
         )
@@ -233,7 +243,6 @@ final class CheckoutCoreDropInTests: XCTestCase {
             configuration: configuration,
             session: session,
             adyenContext: Dummy.context,
-            presentationDelegate: nil,
             resultCallbacks: callbackStore,
             callbackHandler: BeforeSubmitCallbackHandler(
                 handler: SessionCallbackHandler(session: session),

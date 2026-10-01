@@ -26,6 +26,7 @@ package enum CheckoutComponentBuilder {
     internal static func build(
         for paymentMethod: PaymentMethod,
         configuration: CheckoutConfiguration,
+        policy: ComponentBuildPolicy,
         sessionConfiguration: SessionComponentConfiguration? = nil,
         context: AdyenContext
     ) throws -> PaymentComponent {
@@ -40,6 +41,7 @@ package enum CheckoutComponentBuilder {
                     using: BLIKComponentFactory(),
                     paymentMethod: blikPaymentMethod,
                     configuration: configuration,
+                    policy: policy,
                     context: context
                 )
             case let achPaymentMethod as ACHDirectDebitPaymentMethod:
@@ -47,6 +49,7 @@ package enum CheckoutComponentBuilder {
                     using: ACHDirectDebitComponentFactory(sessionConfiguration: sessionConfiguration),
                     paymentMethod: achPaymentMethod,
                     configuration: configuration,
+                    policy: policy,
                     context: context
                 )
             case let applePayPaymentMethod as ApplePayPaymentMethod:
@@ -54,6 +57,7 @@ package enum CheckoutComponentBuilder {
                     using: ApplePayComponentFactory(),
                     paymentMethod: applePayPaymentMethod,
                     configuration: configuration,
+                    policy: policy,
                     context: context
                 )
             case let genericPaymentMethod as GenericPaymentMethod:
@@ -61,6 +65,7 @@ package enum CheckoutComponentBuilder {
                     using: GenericPaymentComponentFactory(),
                     paymentMethod: genericPaymentMethod,
                     configuration: configuration,
+                    policy: policy,
                     context: context
                 )
         #endif
@@ -72,6 +77,7 @@ package enum CheckoutComponentBuilder {
                     using: CardComponentFactory(sessionConfiguration: sessionConfiguration),
                     paymentMethod: cardPaymentMethod,
                     configuration: configuration,
+                    policy: policy,
                     context: context
                 )
                 // TODO: add other card methods like stored or write a generic one.
@@ -85,6 +91,7 @@ package enum CheckoutComponentBuilder {
                     using: TwintComponentFactory(),
                     paymentMethod: twintPaymentMethod,
                     configuration: configuration,
+                    policy: policy,
                     context: context
                 )
         #endif
@@ -103,6 +110,7 @@ package enum CheckoutComponentBuilder {
     internal static func build(
         for storedPaymentMethod: StoredPaymentMethod,
         configuration: CheckoutConfiguration,
+        policy: ComponentBuildPolicy,
         context: AdyenContext
     ) throws -> PaymentComponent {
         switch storedPaymentMethod {
@@ -112,6 +120,7 @@ package enum CheckoutComponentBuilder {
                 return try createStoredCardComponent(
                     storedPaymentMethod: storedCard,
                     configuration: configuration,
+                    policy: policy,
                     context: context
                 )
         #endif
@@ -120,6 +129,7 @@ package enum CheckoutComponentBuilder {
             return createStoredPaymentMethodComponent(
                 storedPaymentMethod: storedPaymentMethod,
                 configuration: configuration,
+                policy: policy,
                 context: context
             )
         }
@@ -130,6 +140,7 @@ package enum CheckoutComponentBuilder {
     package static func build(
         forAnyPaymentMethod paymentMethod: PaymentMethod,
         configuration: CheckoutConfiguration,
+        policy: ComponentBuildPolicy,
         sessionConfiguration: SessionComponentConfiguration? = nil,
         context: AdyenContext
     ) throws -> PaymentComponent {
@@ -137,6 +148,7 @@ package enum CheckoutComponentBuilder {
             return try build(
                 for: storedPaymentMethod,
                 configuration: configuration,
+                policy: policy,
                 context: context
             )
         }
@@ -144,6 +156,7 @@ package enum CheckoutComponentBuilder {
         return try build(
             for: paymentMethod,
             configuration: configuration,
+            policy: policy,
             sessionConfiguration: sessionConfiguration,
             context: context
         )
@@ -151,7 +164,7 @@ package enum CheckoutComponentBuilder {
 
     /// Returns whether a component can currently be built for a regular or stored payment method.
     ///
-    /// The regular-method dispatch mirrors ``build(for:configuration:sessionConfiguration:context:)``.
+    /// The regular-method dispatch mirrors ``build(for:configuration:policy:sessionConfiguration:context:)``.
     /// Keep both switches in sync when adding a payment method.
     @MainActor
     package static func isAvailable(
@@ -238,6 +251,9 @@ package enum CheckoutComponentBuilder {
             return false
         }
     }
+}
+
+extension CheckoutComponentBuilder {
 
     /// Creates a component using the provided factory for standard payment methods.
     ///
@@ -248,12 +264,14 @@ package enum CheckoutComponentBuilder {
     ///   - factory: The factory to use for component creation.
     ///   - paymentMethod: The payment method to create a component for.
     ///   - configuration: The checkout configuration.
+    ///   - policy: The settings chosen by the flow that shows the component.
     /// - Returns: A configured payment component.
     @MainActor
     private static func createComponent<Factory: PaymentComponentFactory>(
         using factory: Factory,
         paymentMethod: Factory.Method,
         configuration: CheckoutConfiguration,
+        policy: ComponentBuildPolicy,
         context: AdyenContext
     ) throws -> PaymentComponent where Factory.Configuration: CheckoutComponentConfiguration {
 
@@ -261,7 +279,7 @@ package enum CheckoutComponentBuilder {
             for: paymentMethod,
             defaultValue: factory.defaultConfiguration(),
             configuration: configuration
-        )
+        ).applying(policy)
 
         return try factory.create(
             with: paymentMethod,
@@ -282,7 +300,6 @@ package enum CheckoutComponentBuilder {
             defaultValue: defaultValue()
         )
 
-        componentConfiguration.showsSubmitButton = configuration.showsSubmitButton
         componentConfiguration.theme = configuration.theme
         componentConfiguration.localizationParameters = configuration.resolvedCheckoutLocalizationParameters(
             mergingExistingParameters: componentConfiguration.localizationParameters
@@ -295,6 +312,7 @@ package enum CheckoutComponentBuilder {
     private static func createStoredCardComponent(
         storedPaymentMethod: StoredCardPaymentMethod,
         configuration: CheckoutConfiguration,
+        policy: ComponentBuildPolicy,
         context: AdyenContext
     ) throws -> PaymentComponent {
         let factory = StoredCardComponentFactory()
@@ -303,7 +321,7 @@ package enum CheckoutComponentBuilder {
             for: storedPaymentMethod,
             defaultValue: factory.defaultConfiguration(),
             configuration: configuration
-        )
+        ).applying(policy)
 
         return factory.create(
             with: storedPaymentMethod,
@@ -316,13 +334,14 @@ package enum CheckoutComponentBuilder {
     private static func createStoredPaymentMethodComponent(
         storedPaymentMethod: StoredPaymentMethod,
         configuration: CheckoutConfiguration,
+        policy: ComponentBuildPolicy,
         context: AdyenContext
     ) -> PaymentComponent {
         let component = StoredPaymentMethodComponent(
             paymentMethod: storedPaymentMethod,
             context: context,
             theme: configuration.theme,
-            showsSubmitButton: configuration.showsSubmitButton
+            showsSubmitButton: policy.showsSubmitButton
         )
         component.localizationParameters = configuration.resolvedCheckoutLocalizationParameters()
 

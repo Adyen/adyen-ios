@@ -296,7 +296,7 @@ struct DropInFlowManagerTests {
         #expect(environment.dropInFlowRouter.dismissDropInCompletionCallsCount == 1)
     }
 
-    // MARK: - PresentationDelegate Tests
+    // MARK: - ActionPresentationDelegate Tests
 
     @Test
     func present_shouldResolveThePaymentActionRouterForTheActionViewController() throws {
@@ -305,7 +305,7 @@ struct DropInFlowManagerTests {
         let actionViewController = UIViewController()
 
         // When
-        environment.sut.present(viewController: actionViewController)
+        environment.sut.present(actionViewController: actionViewController, actionData: makeActionData())
 
         // Then
         #expect(environment.paymentActionAssembler.resolvePaymentActionRouterForListenerOnCancelCallsCount == 1)
@@ -322,7 +322,7 @@ struct DropInFlowManagerTests {
         environment.paymentActionAssembler.resolvePaymentActionRouterForListenerOnCancelReturnValue = paymentActionRouter
 
         // When
-        environment.sut.present(viewController: UIViewController())
+        environment.sut.present(actionViewController: UIViewController(), actionData: makeActionData())
 
         // Then
         #expect(environment.dropInFlowRouter.presentPaymentActionRouterCallsCount == 1)
@@ -333,7 +333,7 @@ struct DropInFlowManagerTests {
     func present_whenTheResolvedActionIsCancelled_shouldOnlyCancelTheDropIn() throws {
         // Given
         let environment = makeSUT()
-        environment.sut.present(viewController: UIViewController())
+        environment.sut.present(actionViewController: UIViewController(), actionData: makeActionData())
         let onCancel = try #require(environment.paymentActionAssembler.resolvePaymentActionRouterForListenerOnCancelReceivedArguments?.onCancel)
 
         // When
@@ -351,7 +351,7 @@ struct DropInFlowManagerTests {
         environment.sut.dropInFlowRouter = nil
 
         // When
-        environment.sut.present(viewController: UIViewController())
+        environment.sut.present(actionViewController: UIViewController(), actionData: makeActionData())
 
         // Then
         #expect(environment.paymentActionAssembler.resolvePaymentActionRouterForListenerOnCancelCallsCount == 0)
@@ -441,6 +441,10 @@ struct DropInFlowManagerTests {
 
     private func makeAction() -> Action {
         .redirect(RedirectAction(url: URL(string: "https://adyen.com")!, paymentData: "payment_data"))
+    }
+
+    private func makeActionData() -> ActionData {
+        ActionData(type: .redirect)
     }
 
     private func makeActionDetails() throws -> AdditionalDetails {

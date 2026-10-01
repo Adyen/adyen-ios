@@ -17,19 +17,6 @@ import Adyen
 import AdyenNetworking
 import UIKit
 
-extension DropInComponent: NavigationDelegate {
-
-    internal func dismiss(completion: (() -> Void)? = nil) {
-        viewController.dismiss(animated: true, completion: completion)
-    }
-
-    @_spi(AdyenInternal)
-    public func present(viewController: UIViewController) {
-        self.viewController.present(viewController, animated: true)
-    }
-
-}
-
 extension DropInComponent: FinalizableComponent {
 
     public func didFinalize(with success: Bool, completion: (() -> Void)?) {

@@ -22,7 +22,7 @@ package final class DocumentComponent: ActionComponent, ShareableComponent {
     package weak var delegate: ActionComponentDelegate?
 
     /// Delegates view controller presentation.
-    package weak var presentationDelegate: PresentationDelegate?
+    package weak var actionPresentationDelegate: ActionPresentationDelegate?
 
     /// The document component configurations.
     package struct Configuration {
@@ -85,11 +85,11 @@ package final class DocumentComponent: ActionComponent, ShareableComponent {
         
         setUpPresenterViewController(parentViewController: viewController)
 
-        if let presentationDelegate {
-            presentationDelegate.present(viewController: viewController)
+        if let actionPresentationDelegate {
+            actionPresentationDelegate.present(actionViewController: viewController, actionData: ActionData(type: .voucher))
         } else {
             AdyenAssertion.assertionFailure(
-                message: "PresentationDelegate is nil. Provide a presentation delegate to DocumentComponent."
+                message: "ActionPresentationDelegate is nil. Provide a presentation delegate to DocumentComponent."
             )
         }
     }

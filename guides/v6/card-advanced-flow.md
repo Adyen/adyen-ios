@@ -38,8 +38,7 @@ let configuration = try CheckoutConfiguration(
 
 let checkout = try await Checkout.setup(
     with: paymentMethods,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 .onSubmit { data in
     try await callPayments(with: data)

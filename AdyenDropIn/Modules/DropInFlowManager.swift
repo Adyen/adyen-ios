@@ -78,7 +78,7 @@ internal class DropInFlowManager: DropInFlowManaging {
             configuration: actionComponentConfiguration
         )
         actionComponent.delegate = self
-        actionComponent.presentationDelegate = self
+        actionComponent.actionPresentationDelegate = self
         return actionComponent
     }()
 
@@ -187,17 +187,17 @@ extension DropInFlowManager: ActionComponentDelegate {
     }
 }
 
-// MARK: - PresentationDelegate
+// MARK: - ActionPresentationDelegate
 
-extension DropInFlowManager: PresentationDelegate {
+extension DropInFlowManager: ActionPresentationDelegate {
 
-    internal func present(viewController: UIViewController) {
+    internal func present(actionViewController: UIViewController, actionData: ActionData) {
         guard let dropInFlowRouter else { return }
 
         // The action module dismisses the drop in through its listener,
         // so only the merchant needs to be notified on cancellation.
         let paymentActionRouter = paymentActionAssembler.resolvePaymentActionRouter(
-            for: viewController,
+            for: actionViewController,
             listener: dropInFlowRouter,
             onCancel: { [weak self] in
                 self?.cancelDropIn()

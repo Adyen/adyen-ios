@@ -191,7 +191,6 @@ final class CheckoutDropInComponentTests: XCTestCase {
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
-            presentationDelegate: nil,
             resultCallbacks: callbackStore,
             callbackHandler: AdvancedCallbackHandler(callbackStore: callbackStore)
         )

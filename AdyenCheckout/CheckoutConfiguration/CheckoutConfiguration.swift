@@ -172,6 +172,14 @@ public struct CheckoutConfiguration {
 
 extension CheckoutConfiguration {
     
+    /// Sets whether payment components show their own submit button.
+    ///
+    /// Hide the button when you want to trigger the payment yourself by calling `submit()` on the component.
+    ///
+    /// - Note: This applies only to components created with `createPaymentComponent`.
+    ///   Drop-in ignores it and always shows the submit buttons of the components it presents.
+    /// - Parameter showsSubmitButton: Whether components show their submit button. Defaults to `true`.
+    /// - Returns: A modified copy of the configuration.
     public func showsSubmitButton(_ showsSubmitButton: Bool) -> Self {
         var copy = self
         copy.showsSubmitButton = showsSubmitButton
