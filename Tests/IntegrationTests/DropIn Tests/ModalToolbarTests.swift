@@ -57,8 +57,12 @@ class ModalToolbarTests: XCTestCase {
 
         sut = ModalToolbar(title: "SomeTitle", style: style)
 
-        XCTAssertNotNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.leftAnchor })
+        let cancelConstraint = sut.constraints.first { $0.secondAnchor == sut.cancelButton.leftAnchor }
+        XCTAssertEqual(cancelConstraint?.firstAnchor, sut.safeAreaLayoutGuide.leftAnchor)
         XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.rightAnchor })
+        XCTAssertNotNil(sut.constraints.first {
+            $0.firstAnchor == sut.safeAreaLayoutGuide.centerYAnchor && $0.secondAnchor == sut.cancelButton.centerYAnchor
+        })
     }
 
     func testRightCenteredMode() {
@@ -69,7 +73,11 @@ class ModalToolbarTests: XCTestCase {
         sut = ModalToolbar(title: "SomeTitle", style: style)
 
         XCTAssertNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.leftAnchor })
-        XCTAssertNotNil(sut.constraints.first { $0.secondAnchor == sut.cancelButton.rightAnchor })
+        let cancelConstraint = sut.constraints.first { $0.secondAnchor == sut.cancelButton.rightAnchor }
+        XCTAssertEqual(cancelConstraint?.firstAnchor, sut.safeAreaLayoutGuide.rightAnchor)
+        XCTAssertNotNil(sut.constraints.first {
+            $0.firstAnchor == sut.safeAreaLayoutGuide.centerYAnchor && $0.secondAnchor == sut.cancelButton.centerYAnchor
+        })
     }
 
     func testLeftMode() {
@@ -80,6 +88,23 @@ class ModalToolbarTests: XCTestCase {
         sut = ModalToolbar(title: "SomeTitle", style: style)
 
         XCTAssertEqual(sut.stackView.arrangedSubviews.last, sut.cancelButton)
+    }
+
+    func testDefaultLayoutUsesSafeArea() {
+        sut = ModalToolbar(title: "SomeTitle", style: NavigationStyle())
+
+        XCTAssertNotNil(sut.constraints.first {
+            $0.firstAnchor == sut.stackView.topAnchor && $0.secondAnchor == sut.safeAreaLayoutGuide.topAnchor
+        })
+        XCTAssertNotNil(sut.constraints.first {
+            $0.firstAnchor == sut.stackView.leadingAnchor && $0.secondAnchor == sut.safeAreaLayoutGuide.leadingAnchor
+        })
+        XCTAssertNotNil(sut.constraints.first {
+            $0.firstAnchor == sut.safeAreaLayoutGuide.bottomAnchor && $0.secondAnchor == sut.stackView.bottomAnchor
+        })
+        XCTAssertNotNil(sut.constraints.first {
+            $0.firstAnchor == sut.safeAreaLayoutGuide.trailingAnchor && $0.secondAnchor == sut.stackView.trailingAnchor
+        })
     }
 
     func testLegacyButtonStyle() {

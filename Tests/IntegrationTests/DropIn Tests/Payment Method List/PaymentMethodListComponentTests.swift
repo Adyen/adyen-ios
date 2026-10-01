@@ -72,7 +72,61 @@ class PaymentMethodListComponentTests: XCTestCase {
         sut.stopLoadingIfNeeded()
         XCTAssertFalse(cell.showsActivityIndicator)
     }
-    
+
+    func testStoredCardLogoCentersWithTitleAndExpiry() throws {
+        let paymentMethod = StoredCardPaymentMethod(
+            type: .card,
+            name: "Visa",
+            identifier: "stored-card",
+            fundingSource: .credit,
+            supportedShopperInteractions: [.shopperPresent],
+            brand: .visa,
+            lastFour: "1142",
+            expiryMonth: "03",
+            expiryYear: "30",
+            holderName: nil
+        )
+        let storedCard = PaymentComponentMock(paymentMethod: paymentMethod)
+        let sut = PaymentMethodListComponent(
+            context: Dummy.context,
+            components: [
+                ComponentsSection(header: .init(title: "Stored", style: .init()), components: [storedCard]),
+                ComponentsSection(header: .init(title: "Others", style: .init()), components: [regularComponent])
+            ]
+        )
+        setupRootViewController(sut.listViewController)
+
+        let tableView = try XCTUnwrap(sut.listViewController.tableView)
+        tableView.layoutIfNeeded()
+
+        func content(in section: Int) throws -> (logo: UIImageView, title: UILabel, text: UIStackView) {
+            let cell = try XCTUnwrap(tableView.cellForRow(at: IndexPath(row: 0, section: section)) as? ListCell)
+            let itemView = try XCTUnwrap(cell.contentView.subviews.first { $0 is ListItemView } as? ListItemView)
+            let stack = try XCTUnwrap(itemView.subviews.first { $0 is UIStackView } as? UIStackView)
+            let logo = try XCTUnwrap(stack.arrangedSubviews.first as? UIImageView)
+            let text = try XCTUnwrap(stack.arrangedSubviews[1] as? UIStackView)
+            let title = try XCTUnwrap(text.arrangedSubviews.first as? UILabel)
+            return (logo, title, text)
+        }
+
+        let stored = try content(in: 0)
+        let regular = try content(in: 1)
+        let storedLogo = stored.logo.convert(stored.logo.bounds, to: tableView)
+        let regularLogo = regular.logo.convert(regular.logo.bounds, to: tableView)
+        let storedTitle = stored.title.convert(stored.title.bounds, to: tableView)
+        let regularTitle = regular.title.convert(regular.title.bounds, to: tableView)
+
+        XCTAssertNotNil(tableView.window)
+        XCTAssertFalse(stored.text.arrangedSubviews[1].isHidden)
+        XCTAssertTrue(regular.text.arrangedSubviews[1].isHidden)
+        XCTAssertEqual(storedLogo.minX, regularLogo.minX, accuracy: 0.5)
+        XCTAssertEqual(storedTitle.minX, regularTitle.minX, accuracy: 0.5)
+        let storedText = stored.text.convert(stored.text.bounds, to: tableView)
+        XCTAssertEqual(storedLogo.midY, storedText.midY, accuracy: 0.5)
+        XCTAssertGreaterThan(storedLogo.midY - storedTitle.midY, 1)
+        XCTAssertEqual(regularLogo.midY, regularTitle.midY, accuracy: 0.5)
+    }
+
     func testDeletionSuccess() throws {
         let section = ComponentsSection(
             header: .init(

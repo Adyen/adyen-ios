@@ -6,6 +6,10 @@
 
 import UIKit
 
+private enum Constants {
+    static let margin: CGFloat = 8
+}
+
 /// A view representing a form item.
 @_spi(AdyenInternal)
 open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView, AdyenObserver {
@@ -27,6 +31,12 @@ open class FormItemView<ItemType: FormItem>: UIView, AnyFormItemView, AdyenObser
         
         super.init(frame: .zero)
         accessibilityIdentifier = item.identifier
+        directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: Constants.margin,
+            leading: Constants.margin,
+            bottom: Constants.margin,
+            trailing: Constants.margin
+        )
         preservesSuperviewLayoutMargins = true
     }
     
