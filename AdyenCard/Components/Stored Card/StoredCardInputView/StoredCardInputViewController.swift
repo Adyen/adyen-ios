@@ -27,14 +27,6 @@ internal class StoredCardInputViewController: UIViewController {
 
     // MARK: - Subviews
 
-    private lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.showsVerticalScrollIndicator = true
-        scrollView.showsHorizontalScrollIndicator = false
-        return scrollView
-    }()
-
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -71,7 +63,6 @@ internal class StoredCardInputViewController: UIViewController {
 
     private let viewModel: StoredCardInputViewModelProtocol
     private var cancellables = Set<AnyCancellable>()
-    private var keyboardScrollViewHandler: KeyboardScrollViewHandler?
 
     private var theme: CheckoutTheme {
         viewModel.theme
@@ -106,8 +97,7 @@ internal class StoredCardInputViewController: UIViewController {
 
     private func setupView() {
         view.backgroundColor = theme.colors.background
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentStackView)
+        view.addSubview(contentStackView)
 
         buttonsStackView.addArrangedSubview(primaryButton)
 
@@ -119,7 +109,6 @@ internal class StoredCardInputViewController: UIViewController {
         configureConstraints()
         configureContent()
         setupBindings()
-        setupKeyboardObserver()
         disableSwipeDownToDismissScreen()
     }
 
@@ -129,22 +118,17 @@ internal class StoredCardInputViewController: UIViewController {
 
     private func configureConstraints() {
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-
-            contentStackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentStackView.topAnchor.constraint(equalTo: view.topAnchor),
             contentStackView.leadingAnchor.constraint(
-                equalTo: scrollView.frameLayoutGuide.leadingAnchor,
+                equalTo: view.leadingAnchor,
                 constant: Constants.contentPadding
             ),
             contentStackView.trailingAnchor.constraint(
-                equalTo: scrollView.frameLayoutGuide.trailingAnchor,
+                equalTo: view.trailingAnchor,
                 constant: -Constants.contentPadding
             ),
             contentStackView.bottomAnchor.constraint(
-                equalTo: scrollView.contentLayoutGuide.bottomAnchor,
+                equalTo: view.bottomAnchor,
                 constant: -Constants.buttonsBottomPadding
             )
         ])
@@ -184,16 +168,6 @@ internal class StoredCardInputViewController: UIViewController {
         Task { @MainActor [weak self] in
             await self?.viewModel.submit()
         }
-    }
-
-    // MARK: - Keyboard handling
-
-    private func setupKeyboardObserver() {
-        keyboardScrollViewHandler = KeyboardScrollViewHandler(
-            scrollView: scrollView,
-            view: view
-        )
-        keyboardScrollViewHandler?.startObserving()
     }
 
 }
