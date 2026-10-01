@@ -165,6 +165,10 @@ private struct ComponentViewControllerView: UIViewControllerRepresentable {
 
     @MainActor
     private final class PreviewFlowManager: DropInFlowManaging {
+        var dropInFlowRouter: (any DropInDismissing)?
+
+        func cancelDropIn() {}
+        func dismissDropIn() {}
         func submit(_ data: PaymentComponentData, from component: PaymentComponent, actionPresenter: ActionPresenter) {}
         func fail(with error: Error, from component: PaymentComponent) {}
         func cancel(component: PaymentComponent) {}

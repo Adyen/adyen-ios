@@ -9,9 +9,7 @@ import AdyenNetworking
 import Foundation
 import UIKit
 
-internal protocol DropInRouting: Router, AnyObject {
-    func dismissDropIn(completion: (() -> Void)?)
-}
+internal protocol DropInRouting: Router, DropInDismissing, AnyObject {}
 
 @MainActor
 internal class DropInRouter: DropInRouting {

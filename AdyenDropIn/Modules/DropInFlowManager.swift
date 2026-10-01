@@ -20,7 +20,15 @@ internal protocol ActionPresenter: AnyObject {
 
 // sourcery:AutoMockable
 @MainActor
-internal protocol DropInFlowManaging {
+internal protocol DropInDismissing: AnyObject {
+    func dismissDropIn(completion: (() -> Void)?)
+}
+
+// sourcery:AutoMockable
+@MainActor
+internal protocol DropInFlowManaging: AnyObject {
+    /// The root router of the drop in, which the flow manager dismisses.
+    var dropInFlowRouter: DropInDismissing? { get set }
     func submit(
         _ data: PaymentComponentData,
         from component: PaymentComponent,
@@ -29,6 +37,9 @@ internal protocol DropInFlowManaging {
     func fail(with error: Error, from component: PaymentComponent)
     func cancel(component: PaymentComponent)
     func handle(action: Action)
+    /// Notifies the merchant that the user closed the drop in before submitting a payment.
+    func cancelDropIn()
+    func dismissDropIn()
 }
 
 @MainActor
@@ -36,27 +47,30 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     // MARK: - Properties
 
+    internal weak var dropInFlowRouter: DropInDismissing?
     private weak var dropInComponent: DropInComponent?
-    private weak var dropInComponentDelegate: DropInComponentDelegate?
     private let context: AdyenContext
     private let actionComponentConfiguration: CheckoutActionComponent.Configuration
     private weak var actionPresenter: ActionPresenter?
+    private var didCancelDropIn = false
 
     // MARK: - Initializers
 
     internal init(
         dropInComponent: DropInComponent,
-        dropInComponentDelegate: DropInComponentDelegate?,
         context: AdyenContext,
         actionComponentConfiguration: CheckoutActionComponent.Configuration
     ) {
         self.dropInComponent = dropInComponent
-        self.dropInComponentDelegate = dropInComponentDelegate
         self.context = context
         self.actionComponentConfiguration = actionComponentConfiguration
     }
 
     // MARK: - Private
+
+    private var dropInComponentDelegate: DropInComponentDelegate? {
+        dropInComponent?.delegate
+    }
 
     private lazy var actionComponent: CheckoutActionComponent = {
         let actionComponent = CheckoutActionComponent(
@@ -95,6 +109,27 @@ internal class DropInFlowManager: DropInFlowManaging {
 
     internal func handle(action: Action) {
         actionComponent.handle(action)
+    }
+
+    internal func cancelDropIn() {
+        guard !didCancelDropIn else { return }
+        didCancelDropIn = true
+
+        sendExitEvent()
+
+        guard let dropInComponent else { return }
+        dropInComponentDelegate?.didFail(with: ComponentError.cancelled, from: dropInComponent)
+    }
+
+    internal func dismissDropIn() {
+        dropInFlowRouter?.dismissDropIn(completion: nil)
+    }
+
+    // MARK: - Private
+
+    private func sendExitEvent() {
+        let logEvent = AnalyticsEventLog(component: AnalyticsConstants.dropInComponentIdentifier, type: .closed)
+        context.analyticsProvider?.add(log: logEvent)
     }
 }
 
