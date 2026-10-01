@@ -17,7 +17,7 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
     }
 
     private enum Constants {
-        static let horizontalInset: CGFloat = 8
+        static let scrollViewPadding: CGFloat = 8
     }
 
     // MARK: - UI elements
@@ -271,11 +271,11 @@ open class FormViewController: UIViewController, AdyenObserver, PreferredContent
             scrollView.adyen.anchor(inside: view.safeAreaLayoutGuide)
 
             NSLayoutConstraint.activate([
-                formView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-                formView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: Constants.horizontalInset),
-                formView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -Constants.horizontalInset),
-                formView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-                formView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -2 * Constants.horizontalInset)
+                formView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+                formView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: Constants.scrollViewPadding),
+                formView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: -Constants.scrollViewPadding),
+                formView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor, constant: -Constants.scrollViewPadding),
+                formView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor, constant: -2 * Constants.scrollViewPadding)
             ])
         } else {
             formView.adyen.anchor(inside: view.safeAreaLayoutGuide)
