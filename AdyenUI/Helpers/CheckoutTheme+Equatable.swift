@@ -33,6 +33,7 @@ extension AdyenLabelStyles: Equatable {
             && lhs.bodyEmphasized == rhs.bodyEmphasized && lhs.subheadline == rhs.subheadline
             && lhs.subheadlineEmphasized == rhs.subheadlineEmphasized
             && lhs.footnote == rhs.footnote && lhs.footnoteEmphasized == rhs.footnoteEmphasized
+            && lhs.label == rhs.label
     }
 }
 

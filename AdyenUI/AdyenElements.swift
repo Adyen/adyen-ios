@@ -52,6 +52,10 @@ package struct AdyenElements {
             footnoteEmphasized: AdyenLabelStyle(
                 font: UIFont.systemFont(ofSize: FontSize.footnote.rawValue, weight: .semibold),
                 color: colors.text
+            ),
+            label: AdyenLabelStyle(
+                font: UIFont.systemFont(ofSize: FontSize.body.rawValue, weight: .semibold),
+                color: colors.text
             )
         )
 
@@ -69,7 +73,7 @@ package struct AdyenElements {
             cornerRadius: .fixed(AdyenUIConstants.defaultCornerRadius)
         )
         self.textField = AdyenTextFieldStyle(
-            title: labels.bodyEmphasized,
+            title: labels.label,
             text: labels.body,
             placeholder: labels.body.color(colors.textSecondary),
             borderWidth: AdyenUIConstants.defaultBorderWidth,
