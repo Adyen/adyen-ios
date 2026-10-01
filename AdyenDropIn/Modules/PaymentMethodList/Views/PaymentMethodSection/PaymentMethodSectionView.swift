@@ -32,7 +32,7 @@ internal final class PaymentMethodSectionView: UIView {
     }()
     
     private lazy var headerLabel: UILabel = {
-        let label = UILabel()
+        let label = AdyenLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.apply(section.theme.elements.labels.subheadlineEmphasized)
         label.numberOfLines = 0

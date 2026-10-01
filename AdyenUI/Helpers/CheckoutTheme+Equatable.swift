@@ -16,7 +16,7 @@ extension AdyenButtonStyle: Equatable {
 extension AdyenLabelStyle: Equatable {
     public static func == (lhs: AdyenLabelStyle, rhs: AdyenLabelStyle) -> Bool {
         lhs.font == rhs.font && lhs.color == rhs.color && lhs.disabledColor == rhs.disabledColor
-            && lhs.textAlignment == rhs.textAlignment
+            && lhs.textAlignment == rhs.textAlignment && lhs.lineHeight == rhs.lineHeight
     }
 }
 

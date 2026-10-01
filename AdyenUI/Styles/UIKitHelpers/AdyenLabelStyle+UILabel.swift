@@ -8,6 +8,10 @@ import UIKit
 
 package extension UILabel {
     func apply(_ style: AdyenLabelStyle) {
+        if let label = self as? AdyenLabel {
+            label.style = style
+            return
+        }
         font = style.font
         textColor = style.color
         textAlignment = style.textAlignment
