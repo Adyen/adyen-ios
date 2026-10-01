@@ -101,6 +101,9 @@ struct ComponentContainerViewModelTests {
     // MARK: - Mocks
 
     private class ComponentContainerRoutingMock: ComponentContainerRouting {
+        var childRouter: Router?
+        var rootViewController: UIViewController = .init()
+
         var presentPaymentComponentCallsCount = 0
         var presentPaymentComponentReceivedPaymentComponent: PaymentComponent?
 
