@@ -112,9 +112,6 @@ struct ComponentContainerViewModelTests {
             presentPaymentComponentReceivedPaymentComponent = paymentComponent
         }
 
-        var childRouter: Router?
-        var rootViewController: UIViewController = .init()
-
         var dismissCompletionCallsCount = 0
         var dismissCompletionReceivedCompletion: (() -> Void)?
 
