@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenDropIn
+import SafariServices
 import Testing
 import UIKit
 
@@ -113,6 +114,100 @@ struct DropInRouterTests {
         // Then
         #expect(sut.childRouter == nil)
         #expect(completionCalled)
+    }
+
+    // MARK: - PaymentActionPresenting Tests
+
+    @Test("The action is pushed onto the navigation of the module the shopper submitted the payment from.")
+    func presentPaymentActionRouter_shouldPushTheActionOnTheRootModule() {
+        // Given
+        let listViewController = ViewControllerSpy()
+        let navigationControllerSpy = NavigationControllerSpy()
+        listViewController.setNavigationController(navigationControllerSpy)
+        let sut = makeSUT(paymentMethodListRouter: makeRouterMock(rootViewController: listViewController))
+        _ = sut.rootViewController
+        let paymentActionRouter = RouterMock()
+
+        // When
+        sut.present(paymentActionRouter: paymentActionRouter)
+
+        // Then
+        #expect(navigationControllerSpy.pushViewControllerCallsCount == 1)
+        #expect(navigationControllerSpy.capturedPushedViewController === paymentActionRouter.rootViewController)
+    }
+
+    @Test("The action is presented on the deepest module of the drop in, as that is where the payment was submitted from.")
+    func presentPaymentActionRouter_shouldPushTheActionOnTheDeepestModule() {
+        // Given
+        let componentViewController = ViewControllerSpy()
+        let componentNavigationControllerSpy = NavigationControllerSpy()
+        componentViewController.setNavigationController(componentNavigationControllerSpy)
+
+        let listViewController = ViewControllerSpy()
+        let listNavigationControllerSpy = NavigationControllerSpy()
+        listViewController.setNavigationController(listNavigationControllerSpy)
+
+        let paymentMethodListRouter = makeRouterMock(rootViewController: listViewController)
+        paymentMethodListRouter.childRouter = makeRouterMock(rootViewController: componentViewController)
+
+        let sut = makeSUT(paymentMethodListRouter: paymentMethodListRouter)
+        _ = sut.rootViewController
+
+        // When
+        sut.present(paymentActionRouter: RouterMock())
+
+        // Then
+        #expect(componentNavigationControllerSpy.pushViewControllerCallsCount == 1)
+        #expect(listNavigationControllerSpy.pushViewControllerCallsCount == 0)
+    }
+
+    @Test("A web view manages its own navigation, so it is presented modally instead of pushed.")
+    func presentPaymentActionRouter_givenASafariViewController_shouldPresentItModally() throws {
+        // Given
+        let listViewController = ViewControllerSpy()
+        let navigationControllerSpy = NavigationControllerSpy()
+        listViewController.setNavigationController(navigationControllerSpy)
+        let sut = makeSUT(paymentMethodListRouter: makeRouterMock(rootViewController: listViewController))
+        _ = sut.rootViewController
+
+        let paymentActionRouter = RouterMock()
+        paymentActionRouter.rootViewController = try SFSafariViewController(url: #require(URL(string: "https://adyen.com")))
+
+        // When
+        sut.present(paymentActionRouter: paymentActionRouter)
+
+        // Then
+        #expect(listViewController.presentCallsCount == 1)
+        #expect(listViewController.capturedPresentedViewController === paymentActionRouter.rootViewController)
+        #expect(navigationControllerSpy.pushViewControllerCallsCount == 0)
+    }
+
+    @Test("The action is kept out of the child router, so that presenting it does not release the module hierarchy below the root.")
+    func presentPaymentActionRouter_shouldNotReplaceTheChildRouter() {
+        // Given
+        let paymentMethodListRouter = makeRouterMock(rootViewController: makeViewControllerInNavigation())
+        let sut = makeSUT(paymentMethodListRouter: paymentMethodListRouter)
+        _ = sut.rootViewController
+
+        // When
+        sut.present(paymentActionRouter: RouterMock())
+
+        // Then
+        #expect(sut.childRouter === paymentMethodListRouter)
+    }
+
+    @Test("Dismissing an action dismisses the drop in, as there is no way back to the payment details of the payment method.")
+    func didDismissPaymentAction_shouldDismissTheDropIn() {
+        // Given
+        let sut = makeSUT()
+        let presentation = present(sut.rootViewController)
+
+        // When
+        sut.didDismissPaymentAction(completion: nil)
+
+        // Then
+        #expect(presentation.presenter.dismissCallsCount == 1)
+        #expect(sut.childRouter == nil)
     }
 
     // MARK: - PaymentMethodListRouterListener Tests

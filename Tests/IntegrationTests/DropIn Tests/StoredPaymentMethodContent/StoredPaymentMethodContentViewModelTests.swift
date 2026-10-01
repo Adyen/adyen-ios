@@ -77,7 +77,7 @@ internal struct StoredPaymentMethodContentViewModelTests {
 
         context.sut.didSubmit(data, from: context.component)
 
-        #expect(context.flowManager.submitFromActionPresenterCalled)
+        #expect(context.flowManager.submitFromCalled)
     }
 
     private struct TestContext {
@@ -130,11 +130,6 @@ internal struct StoredPaymentMethodContentViewModelTests {
 private final class StoredPaymentMethodContentRoutingSpy: StoredPaymentMethodContentRouting {
 
     private(set) var dismissCallsCount = 0
-    private(set) var onCancel: (() -> Void)?
-
-    func present(actionViewController: UIViewController, onCancel: (() -> Void)?) {
-        self.onCancel = onCancel
-    }
 
     func dismiss() {
         dismissCallsCount += 1

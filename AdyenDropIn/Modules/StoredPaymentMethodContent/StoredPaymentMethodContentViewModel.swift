@@ -13,7 +13,6 @@ import UIKit
 
 @MainActor
 internal protocol StoredPaymentMethodContentRouting: AnyObject {
-    func present(actionViewController: UIViewController, onCancel: (() -> Void)?)
     func dismiss()
 }
 
@@ -90,7 +89,7 @@ internal final class StoredPaymentMethodContentViewModel {
 extension StoredPaymentMethodContentViewModel: PaymentComponentDelegate {
 
     internal func didSubmit(_ data: PaymentComponentData, from component: any PaymentComponent) {
-        dropInFlowManager.submit(data, from: component, actionPresenter: self)
+        dropInFlowManager.submit(data, from: component)
     }
 
     internal func didFail(with error: any Error, from component: any PaymentComponent) {
@@ -99,18 +98,5 @@ extension StoredPaymentMethodContentViewModel: PaymentComponentDelegate {
         } else {
             dropInFlowManager.fail(with: error, from: component)
         }
-    }
-}
-
-extension StoredPaymentMethodContentViewModel: ActionPresenter {
-
-    internal func present(actionViewController: UIViewController) {
-        router?.present(actionViewController: actionViewController) { [weak self] in
-            self?.cancel()
-        }
-    }
-
-    internal func didCancel(actionComponent: any ActionComponent) {
-        cancel()
     }
 }

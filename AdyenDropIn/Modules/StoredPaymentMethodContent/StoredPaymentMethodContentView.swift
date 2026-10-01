@@ -165,14 +165,14 @@ private struct ComponentViewControllerView: UIViewControllerRepresentable {
 
     @MainActor
     private final class PreviewFlowManager: DropInFlowManaging {
-        var dropInFlowRouter: (any DropInDismissing)?
+        var dropInFlowRouter: (any DropInFlowRouting)?
 
+        func receive(action: Adyen.Action) {}
         func cancelDropIn() {}
         func dismissDropIn() {}
-        func submit(_ data: PaymentComponentData, from component: PaymentComponent, actionPresenter: ActionPresenter) {}
+        func submit(_ data: PaymentComponentData, from component: PaymentComponent) {}
         func fail(with error: Error, from component: PaymentComponent) {}
         func cancel(component: PaymentComponent) {}
-        func handle(action: Action) {}
     }
 #endif
 

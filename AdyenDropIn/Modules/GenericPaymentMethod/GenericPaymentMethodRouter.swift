@@ -20,7 +20,6 @@ internal protocol GenericPaymentMethodRouterListener: AnyObject {
 // sourcery:AutoMockable
 @MainActor
 internal protocol GenericPaymentMethodRouting: Router {
-    func present(actionViewController: UIViewController, onCancel: (() -> Void)?)
     func dismiss()
 }
 
@@ -44,17 +43,6 @@ internal class GenericPaymentMethodRouter: GenericPaymentMethodRouting {
     }
 
     // MARK: - GenericPaymentMethodRouting
-
-    internal func present(
-        actionViewController: UIViewController,
-        onCancel: (() -> Void)?
-    ) {
-        let actionViewController = ActionPresentationHelper.viewController(
-            for: actionViewController,
-            onCancel: onCancel
-        )
-        rootViewController.present(actionViewController, animated: true)
-    }
 
     internal func dismiss() {
         rootViewController.navigationController?.popViewController(animated: true)
