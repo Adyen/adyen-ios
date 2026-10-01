@@ -77,7 +77,7 @@ internal enum TestTheme {
             titleFont: UIFont.systemFont(ofSize: 17, weight: .semibold),
             textColor: Colors.primary,
             textFont: UIFont.systemFont(ofSize: 17, weight: .regular),
-            containerColor: Colors.container,
+            containerColor: CheckoutColors.default.background,
             cornerRadius: textFieldCornerRadius
         )
     }

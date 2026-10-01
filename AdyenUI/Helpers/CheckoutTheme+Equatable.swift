@@ -47,7 +47,8 @@ extension AdyenSwitchStyle: Equatable {
 extension AdyenTextFieldStyle: Equatable {
     public static func == (lhs: AdyenTextFieldStyle, rhs: AdyenTextFieldStyle) -> Bool {
         lhs.backgroundColor == rhs.backgroundColor && lhs.errorColor == rhs.errorColor
-            && lhs.borderColor == rhs.borderColor && lhs.borderWidth == rhs.borderWidth
+            && lhs.borderColor == rhs.borderColor && lhs.defaultBorderWidth == rhs.defaultBorderWidth
+            && lhs.errorBorderWidth == rhs.errorBorderWidth && lhs.focusedBorderWidth == rhs.focusedBorderWidth
             && lhs.cornerRadius == rhs.cornerRadius && lhs.title == rhs.title
             && lhs.text == rhs.text && lhs.placeholder == rhs.placeholder
     }
