@@ -25,7 +25,12 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
     /// comes from demo app protocol, unused on new structure
     internal var context: AdyenContext?
 
-    internal init() {}
+    /// Whether the app shows its own Apple Pay button instead of the component's button.
+    private let usesOwnApplePayButton: Bool
+
+    internal init(usesOwnApplePayButton: Bool = false) {
+        self.usesOwnApplePayButton = usesOwnApplePayButton
+    }
 
     internal func start() {
         startLoading()
@@ -188,8 +193,25 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
     }
 
     private func present(component: CheckoutPaymentComponent) {
-        // Apple Pay's PassKit sheet is presented as-is; no navigation wrapper.
-        presenter?.present(viewController: component.viewController, completion: nil)
+        guard !usesOwnApplePayButton else {
+            // The shopper already tapped the app's own Apple Pay button, so open the sheet directly.
+            component.submit()
+            return
+        }
+
+        let componentViewController = component.viewController
+        componentViewController.view.backgroundColor = .systemBackground
+        componentViewController.navigationItem.leftBarButtonItem = .init(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(cancelPressed)
+        )
+        let navigation = UINavigationController(rootViewController: componentViewController)
+        presenter?.present(viewController: navigation, completion: nil)
+    }
+
+    @objc private func cancelPressed() {
+        presenter?.dismiss(completion: nil)
     }
 
     private func dismissAndShowAlert(_ success: Bool, _ message: String) {
