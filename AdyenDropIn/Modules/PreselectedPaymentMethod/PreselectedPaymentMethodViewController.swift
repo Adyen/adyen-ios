@@ -234,7 +234,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     }()
 
     private lazy var titleLabel: UILabel = {
-        let label = UILabel()
+        let label = AdyenLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.apply(theme.elements.labels.title)
         label.numberOfLines = 0
@@ -244,7 +244,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     }()
 
     private lazy var subtitleLabel: UILabel = {
-        let label = UILabel()
+        let label = AdyenLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.apply(theme.elements.labels.body)
         label.numberOfLines = 0
@@ -265,6 +265,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(primaryButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton")
+        button.leadingImage = .adyenLock ?? .systemLock
         return button
     }()
 

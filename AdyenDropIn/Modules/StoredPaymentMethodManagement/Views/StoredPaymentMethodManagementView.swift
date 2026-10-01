@@ -112,12 +112,10 @@ private extension StoredPaymentMethodManagementView {
         var body: some View {
             VStack(alignment: .leading, spacing: Constants.spacing) {
                 Text(title)
-                    .font(Font(theme.elements.labels.title.font))
-                    .foregroundStyle(Color(uiColor: theme.elements.labels.title.color))
+                    .adyenLabelStyle(theme.elements.labels.title)
 
                 Text(description)
-                    .font(Font(theme.elements.labels.body.font))
-                    .foregroundStyle(Color(uiColor: theme.elements.labels.body.color))
+                    .adyenLabelStyle(theme.elements.labels.body)
             }
         }
     }
@@ -142,8 +140,7 @@ private extension StoredPaymentMethodManagementView {
             VStack(spacing: Constants.buttonSpacing) {
                 Button(action: onRemove) {
                     Text(removalActionTitle)
-                        .font(Font(theme.elements.labels.bodyEmphasized.font))
-                        .foregroundStyle(Color(uiColor: theme.colors.textOnDestructive))
+                        .adyenLabelStyle(theme.elements.labels.bodyEmphasized, color: theme.colors.textOnDestructive)
                         .frame(maxWidth: .infinity, minHeight: Constants.buttonHeight)
                         .background(Color(uiColor: theme.colors.destructive))
                         .clipShape(RoundedRectangle(cornerRadius: Constants.buttonCornerRadius))
@@ -152,8 +149,7 @@ private extension StoredPaymentMethodManagementView {
 
                 Button(action: onCancel) {
                     Text(cancelTitle)
-                        .font(Font(theme.elements.labels.bodyEmphasized.font))
-                        .foregroundStyle(Color(uiColor: theme.colors.highlight))
+                        .adyenLabelStyle(theme.elements.labels.bodyEmphasized, color: theme.colors.highlight)
                         .frame(maxWidth: .infinity, minHeight: Constants.buttonHeight)
                         .background(Color(uiColor: theme.colors.background))
                         .clipShape(RoundedRectangle(cornerRadius: Constants.buttonCornerRadius))
