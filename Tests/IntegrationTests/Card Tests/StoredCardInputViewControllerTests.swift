@@ -128,15 +128,21 @@ struct StoredCardInputViewControllerTests {
         await proxy.load()
 
         let securityCodeView = try proxy.securityCodeItemView()
-        // The screen does not steal focus on load, so the shopper sees the centered Drop-in header
-        // before the keyboard covers it. Focus starts when the field is tapped.
-        #expect(!securityCodeView.isFirstResponder)
-
         securityCodeView.becomeFirstResponder()
         #expect(securityCodeView.isFirstResponder)
 
         try proxy.enterCode("123")
         #expect(!securityCodeView.isFirstResponder)
+    }
+
+    @Test
+    func onViewAppear_focusesSecurityCode() async throws {
+        let (proxy, _) = makeSUT()
+
+        await proxy.load()
+
+        // The field takes focus on appearance so the shopper can type without tapping it first.
+        #expect(try proxy.securityCodeItemView().isFirstResponder)
     }
 
     // MARK: - Helpers

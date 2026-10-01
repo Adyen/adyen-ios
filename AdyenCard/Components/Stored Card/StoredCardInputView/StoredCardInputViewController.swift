@@ -88,6 +88,11 @@ internal class StoredCardInputViewController: UIViewController {
         viewModel.viewDidLoad()
     }
 
+    override internal func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        assignInitialFirstResponder()
+    }
+
     override internal func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         viewModel.viewDidDisappear()
@@ -160,6 +165,15 @@ internal class StoredCardInputViewController: UIViewController {
             // Triggers explicit validation
             self?.securityCodeItemView.showValidation()
         }
+    }
+
+    // MARK: - First responder
+
+    /// Focuses the security code on appearance, as `FormViewController` does for its forms,
+    /// so that the shopper can type without tapping the field first.
+    private func assignInitialFirstResponder() {
+        guard securityCodeItemView.isUserInteractionEnabled else { return }
+        securityCodeItemView.becomeFirstResponder()
     }
 
     // MARK: - User Actions
