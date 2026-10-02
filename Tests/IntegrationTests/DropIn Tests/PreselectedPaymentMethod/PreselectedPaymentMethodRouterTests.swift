@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import Testing
 import UIKit
 
@@ -73,7 +74,8 @@ struct PreselectedPaymentMethodRouterTests {
     private func makeSUT(
         viewController: UIViewController = UIViewController(),
         listener: PreselectedPaymentMethodRouterListenerMock? = nil,
-        paymentMethodListRouter: RouterMock? = nil
+        paymentMethodListRouter: RouterMock? = nil,
+        theme: CheckoutTheme = CheckoutTheme()
     ) -> PreselectedPaymentMethodRouter {
         let paymentMethodListAssembler = PaymentMethodListAssemblerProtocolMock()
         paymentMethodListAssembler.resolvePaymentMethodListRouterListenerReturnValue = paymentMethodListRouter ?? RouterMock()
@@ -82,7 +84,8 @@ struct PreselectedPaymentMethodRouterTests {
             viewController: viewController,
             listener: listener ?? PreselectedPaymentMethodRouterListenerMock(),
             paymentMethodListAssembler: paymentMethodListAssembler,
-            componentContainerAssembler: ComponentContainerAssemblerProtocolMock()
+            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
+            theme: theme
         )
     }
 
