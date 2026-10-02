@@ -16,7 +16,7 @@ internal struct StoredPaymentMethodContentHeaderView: View {
 
     private enum Constants {
         static let logoSize = CGSize(width: 80, height: 52)
-        static let spacing: CGFloat = 16
+        static let spacing: CGFloat = 24
         static let labelsSpacing: CGFloat = 8
     }
 
