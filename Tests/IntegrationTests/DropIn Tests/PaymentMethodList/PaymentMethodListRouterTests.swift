@@ -238,35 +238,40 @@ struct PaymentMethodListRouterTests {
         #expect(completionCalled == true)
     }
 
+    /// Tapping a stored payment method in the list opens the dedicated stored payment screen,
+    /// pushed onto the list's navigation stack, instead of the generic component screen.
     @Test
-    func presentComponent_givenInteractiveStoredComponent_shouldPushStoredPaymentMethodContent() {
+    func presentComponent_givenStoredComponentWithContent_shouldPushStoredPaymentMethodContent() {
         let navigationControllerSpy = NavigationControllerSpy()
-        let promptRouter = RouterMock()
-        let promptAssembler = StoredPaymentMethodContentAssemblerSpy(router: promptRouter)
+        let contentRouter = RouterMock()
+        let contentAssembler = StoredPaymentMethodContentAssemblerSpy(router: contentRouter)
         let componentContainerAssembler = makeComponentContainerAssembler()
         let sut = makeSUT(
             navigationController: navigationControllerSpy,
             componentContainerAssembler: componentContainerAssembler,
-            storedPaymentMethodContentAssembler: promptAssembler
+            storedPaymentMethodContentAssembler: contentAssembler
         )
         let storedPaymentComponent = makeStoredPaymentComponentMock()
 
         sut.present(component: storedPaymentComponent)
 
-        #expect(promptAssembler.resolveCallsCount == 1)
-        #expect(navigationControllerSpy.capturedPushedViewController === promptRouter.rootViewController)
+        #expect(contentAssembler.resolveCallsCount == 1)
+        #expect(navigationControllerSpy.capturedPushedViewController === contentRouter.rootViewController)
         #expect(componentContainerAssembler.resolveComponentContainerRouterForListenerCallsCount == 0)
-        #expect(sut.childRouter === promptRouter)
+        #expect(sut.childRouter === contentRouter)
     }
 
+    /// When the shopper goes back from the stored payment screen, that screen does not close itself.
+    /// It calls `dismissStoredPaymentMethodContent()` on the list that pushed it, and the list pops it
+    /// off its own navigation stack and drops its reference so the screen is released.
     @Test
     func dismissStoredPaymentMethodContent_shouldPopAndReleaseChildRouter() throws {
         // Given
         let navigationControllerSpy = NavigationControllerSpy()
-        let promptAssembler = StoredPaymentMethodContentAssemblerSpy(router: RouterMock())
+        let contentAssembler = StoredPaymentMethodContentAssemblerSpy(router: RouterMock())
         let sut = makeSUT(
             navigationController: navigationControllerSpy,
-            storedPaymentMethodContentAssembler: promptAssembler
+            storedPaymentMethodContentAssembler: contentAssembler
         )
         sut.present(component: makeStoredPaymentComponentMock())
         try #require(sut.childRouter != nil)
@@ -279,23 +284,25 @@ struct PaymentMethodListRouterTests {
         #expect(sut.childRouter == nil)
     }
 
+    /// When there is no stored payment screen for the component, the list still shows something:
+    /// it falls back to the generic component screen rather than showing nothing.
     @Test
-    func presentComponent_givenStoredComponentWithoutPrompt_shouldFallBackToComponentContainer() {
+    func presentComponent_givenStoredComponentWithoutContent_shouldFallBackToComponentContainer() {
         // Given
         let navigationControllerSpy = NavigationControllerSpy()
-        let promptAssembler = StoredPaymentMethodContentAssemblerSpy(router: nil)
+        let contentAssembler = StoredPaymentMethodContentAssemblerSpy(router: nil)
         let componentContainerAssembler = makeComponentContainerAssembler()
         let sut = makeSUT(
             navigationController: navigationControllerSpy,
             componentContainerAssembler: componentContainerAssembler,
-            storedPaymentMethodContentAssembler: promptAssembler
+            storedPaymentMethodContentAssembler: contentAssembler
         )
 
         // When
         sut.present(component: makeStoredPaymentComponentMock())
 
         // Then
-        #expect(promptAssembler.resolveCallsCount == 1)
+        #expect(contentAssembler.resolveCallsCount == 1)
         #expect(componentContainerAssembler.resolveComponentContainerRouterForListenerCallsCount == 1)
         #expect(navigationControllerSpy.pushViewControllerCallsCount == 1)
     }

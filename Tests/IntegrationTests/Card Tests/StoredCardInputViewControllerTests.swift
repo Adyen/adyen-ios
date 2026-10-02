@@ -134,6 +134,8 @@ struct StoredCardInputViewControllerTests {
         #expect(!securityCodeView.isFirstResponder)
     }
 
+    /// The security code field takes focus as soon as the screen appears, so the keyboard is already up
+    /// and the shopper can type without tapping the field first.
     @Test
     func onViewAppear_focusesSecurityCode() async throws {
         let (proxy, _) = makeSUT()

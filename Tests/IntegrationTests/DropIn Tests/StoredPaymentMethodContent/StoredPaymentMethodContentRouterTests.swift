@@ -12,80 +12,52 @@ import UIKit
 @MainActor
 internal struct StoredPaymentMethodContentRouterTests {
 
+    /// Closing the stored payment screen does not close it directly: the screen asks whoever presented it
+    /// to take it away, because only that module knows whether it was pushed or presented modally.
     @Test
-    internal func content_whenDismissed_thenAsksListenerToUnwind() {
-        let navigationController = PromptNavigationControllerSpy()
-        let (sut, listener) = makeSUT(navigationController: navigationController)
+    internal func storedPaymentMethodContent_whenDismissed_thenAsksListenerToUnwind() {
+        let (sut, listener, _) = makeSUT()
 
         sut.dismiss()
 
         #expect(listener.dismissCallsCount == 1)
     }
 
+    /// The stored payment screen must never touch the navigation stack it sits in, so dismissing it
+    /// pops nothing and dismisses nothing: it only notifies the module that presented it.
     @Test
-    internal func content_whenDismissed_thenDoesNotUnwindTheStackItself() {
-        let navigationController = PromptNavigationControllerSpy()
-        let (sut, _) = makeSUT(navigationController: navigationController)
+    internal func storedPaymentMethodContent_whenDismissed_thenDoesNotTouchTheNavigationStack() {
+        let (sut, _, navigationController) = makeSUT()
 
         sut.dismiss()
 
-        #expect(navigationController.popCallsCount == 0)
+        #expect(navigationController.popViewControllerCallsCount == 0)
         #expect(navigationController.dismissCallsCount == 0)
     }
 
-    private func makeSUT(
-        navigationController: PromptNavigationControllerSpy
-    ) -> (sut: StoredPaymentMethodContentRouter, listener: ListenerSpy) {
-        let viewController = PromptViewControllerSpy(navigationController: navigationController)
-        let listener = ListenerSpy()
+    private func makeSUT() -> (
+        sut: StoredPaymentMethodContentRouter,
+        listener: ContentRouterListenerSpy,
+        navigationController: NavigationControllerSpy
+    ) {
+        let navigationController = NavigationControllerSpy()
+        let viewController = ViewControllerSpy()
+        viewController.setNavigationController(navigationController)
+        let listener = ContentRouterListenerSpy()
+
         let sut = StoredPaymentMethodContentRouter(
             viewController: viewController,
             listener: listener
         )
-        return (sut, listener)
+        return (sut, listener, navigationController)
     }
 }
 
 @MainActor
-private final class ListenerSpy: StoredPaymentMethodContentRouterListener {
+private final class ContentRouterListenerSpy: StoredPaymentMethodContentRouterListener {
     private(set) var dismissCallsCount = 0
 
     func dismissStoredPaymentMethodContent() {
         dismissCallsCount += 1
-    }
-}
-
-@MainActor
-private final class PromptViewControllerSpy: UIViewController {
-    private let navigationControllerSpy: UINavigationController
-
-    override var navigationController: UINavigationController? {
-        navigationControllerSpy
-    }
-
-    init(navigationController: UINavigationController) {
-        self.navigationControllerSpy = navigationController
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-@MainActor
-private final class PromptNavigationControllerSpy: UINavigationController {
-    private(set) var popCallsCount = 0
-    private(set) var dismissCallsCount = 0
-
-    override func popViewController(animated: Bool) -> UIViewController? {
-        popCallsCount += 1
-        return nil
-    }
-
-    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
-        dismissCallsCount += 1
-        completion?()
     }
 }
