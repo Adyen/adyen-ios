@@ -462,6 +462,52 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertFalse(achComponent.configuration.showStorePaymentMethod)
     }
 
+    // MARK: - BACS Direct Debit Component Tests
+
+    func test_build_withBACSPaymentMethod_returnsBACSComponent() throws {
+        // Given
+        let paymentMethod = try XCTUnwrap(createBACSPaymentMethod())
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
+            context: context
+        )
+
+        // Then
+        XCTAssertEqual(component.paymentMethod.type, .bacsDirectDebit)
+        XCTAssertEqual(component.paymentMethod.name, paymentMethod.name)
+
+        let bacsComponent = component as? BACSDirectDebitComponent
+        XCTAssertNotNil(bacsComponent, "Component should be BACSDirectDebitComponent")
+    }
+
+    func test_build_withBACSAndCustomConfiguration_appliesConfiguration() throws {
+        // Given
+        let paymentMethod = try XCTUnwrap(createBACSPaymentMethod())
+        var bacsConfig = BasicComponentConfiguration()
+        bacsConfig.showsSubmitButton = false
+
+        checkoutConfiguration = makeCheckoutConfiguration(
+            configurations: [.payment(.bacsDirectDebit): bacsConfig]
+        )
+        checkoutConfiguration.showsSubmitButton = false // Global setting, since it takes precedence over the per-component value
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
+            context: context
+        )
+
+        // Then
+        let bacsComponent = try XCTUnwrap(component as? BACSDirectDebitComponent)
+        XCTAssertFalse(bacsComponent.configuration.showsSubmitButton)
+    }
+
     // MARK: - Generic Payment Component Tests
 
     func test_build_withGenericPaymentMethod_returnsGenericPaymentComponent() throws {
@@ -587,6 +633,31 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         }
         XCTAssertEqual(
             achComponent.configuration.theme.colors.primary,
+            UIColor.yellow,
+            "Theme should be propagated from CheckoutConfiguration to component"
+        )
+    }
+
+    func test_build_withCustomTheme_propagatesThemeToBACSComponent() throws {
+        // Given
+        let paymentMethod = try XCTUnwrap(createBACSPaymentMethod())
+        let customTheme = CheckoutTheme(colors: CheckoutColors(primary: .yellow))
+
+        checkoutConfiguration = makeCheckoutConfiguration()
+        checkoutConfiguration.theme = customTheme
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
+            context: context
+        )
+
+        // Then
+        let bacsComponent = try XCTUnwrap(component as? BACSDirectDebitComponent)
+        XCTAssertEqual(
+            bacsComponent.configuration.theme.colors.primary,
             UIColor.yellow,
             "Theme should be propagated from CheckoutConfiguration to component"
         )
@@ -988,6 +1059,14 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             "name": "ACH Direct Debit"
         ]
         return try? AdyenCoder.decode(dict) as ACHDirectDebitPaymentMethod
+    }
+
+    private func createBACSPaymentMethod() -> BACSDirectDebitPaymentMethod? {
+        let dict: [String: Any] = [
+            "type": "directdebit_GB",
+            "name": "BACS Direct Debit"
+        ]
+        return try? AdyenCoder.decode(dict) as BACSDirectDebitPaymentMethod
     }
 
     private func createCardPaymentMethod() -> CardPaymentMethod? {
