@@ -73,17 +73,6 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouting {
     }
 
     internal func present(
-        paymentComponent: any PaymentComponent
-    ) {
-        let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
-            for: paymentComponent,
-            listener: self
-        )
-        self.childRouter = componentContainerRouter
-        rootViewController.present(componentContainerRouter.rootViewController, animated: true)
-    }
-
-    internal func present(
         component: PaymentComponent
     ) {
         switch component.type {
