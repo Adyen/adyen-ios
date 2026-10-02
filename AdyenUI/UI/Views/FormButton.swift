@@ -14,20 +14,27 @@ import UIKit
 /// When progress is active it replaces the image.
 package final class FormButton: UIControl {
     private enum Constants {
+        static let horizontalPadding: CGFloat = 20
         static let leadingImageWidth: CGFloat = 24
         static let leadingImageHeight: CGFloat = 24
-        static let progressViewSize: CGFloat = 20
+        static let progressViewSize: CGFloat = 24
         static let progressViewLineWidth: CGFloat = 2.5
         static let progressViewMargin: CGFloat = 0
     }
 
     private var style: ButtonStyle
     private var buttonStyle: AdyenButtonStyle = .primary(for: .default)
+    private let titleStyle: AdyenLabelStyle
 
     /// Initializes the form button.
     ///
     /// - Parameter style: The `FormButton` UI style.
     package init(style: ButtonStyle) {
+        self.titleStyle = AdyenLabelStyle(
+            font: AdyenFonts.default.bodyEmphasized,
+            color: style.title.color,
+            textAlignment: .center
+        )
         self.style = style
         super.init(frame: .zero)
         
@@ -51,6 +58,7 @@ package final class FormButton: UIControl {
         style: ButtonStyle = .init(title: .init(font: .preferredFont(forTextStyle: .body), color: .red))
     ) {
         self.buttonStyle = theme.elements.buttons.primary
+        self.titleStyle = theme.elements.labels.bodyEmphasized.color(theme.elements.buttons.primary.textColor)
         self.style = style
         super.init(frame: .zero)
 
@@ -67,8 +75,9 @@ package final class FormButton: UIControl {
     }
 
     /// Initializes the form button with AdyenButtonStyle.
-    package init(buttonStyle: AdyenButtonStyle) {
+    package init(buttonStyle: AdyenButtonStyle, titleStyle: AdyenLabelStyle) {
         self.buttonStyle = buttonStyle
+        self.titleStyle = titleStyle.color(buttonStyle.textColor)
         self.style = .init(title: .init(font: .preferredFont(forTextStyle: .body), color: .red))
         super.init(frame: .zero)
 
@@ -94,8 +103,7 @@ package final class FormButton: UIControl {
     internal lazy var backgroundView: BackgroundView = {
         let backgroundView = BackgroundView(
             cornerRounding: buttonStyle.cornerRadius ?? .fixed(AdyenUIConstants.defaultCornerRadius),
-            color: buttonStyle.backgroundColor,
-            disabledColor: buttonStyle.disabledBackgroundColor
+            color: buttonStyle.backgroundColor
         )
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -113,10 +121,8 @@ package final class FormButton: UIControl {
     }
     
     internal lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel(style: TextStyle(
-            font: AdyenFonts.default.bodyEmphasized,
-            color: buttonStyle.textColor
-        ))
+        let titleLabel = AdyenLabel()
+        titleLabel.apply(titleStyle)
         titleLabel.isAccessibilityElement = false
         
         return titleLabel
@@ -184,7 +190,7 @@ package final class FormButton: UIControl {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.spacing = 8
+        stackView.spacing = 12
         stackView.isUserInteractionEnabled = false
         return stackView
     }()
@@ -202,13 +208,15 @@ package final class FormButton: UIControl {
     /// Boolean value indicating whether a progress view should be shown.
     package var showsActivityIndicator: Bool {
         get {
-            if case .progress = leadingAccessory { return true }
+            if case .progress = leadingAccessory {
+                return true
+            }
             return false
         }
         
         set {
-            isEnabled = !newValue
             leadingAccessory = newValue ? .progress : idleLeadingAccessory
+            isEnabled = !newValue
         }
     }
     
@@ -253,14 +261,25 @@ package final class FormButton: UIControl {
     }
     
     private var contentColor: UIColor {
-        isEnabled ? buttonStyle.textColor : buttonStyle.disabledTextColor
+        if showsActivityIndicator {
+            return buttonStyle.loadingTextColor
+        }
+        return isEnabled ? buttonStyle.textColor : buttonStyle.disabledTextColor
+    }
+    
+    private var stateBackgroundColor: UIColor {
+        if showsActivityIndicator {
+            return buttonStyle.loadingBackgroundColor
+        }
+        return isEnabled ? buttonStyle.backgroundColor : buttonStyle.disabledBackgroundColor
     }
     
     private func updateAppearance() {
+        backgroundView.baseColor = stateBackgroundColor
+        backgroundColor = stateBackgroundColor
         titleLabel.textColor = contentColor
         leadingImageView.tintColor = contentColor
         progressContentView?.configuration = makeProgressConfiguration()
-        backgroundView.isEnabled = isEnabled
     }
     
     // MARK: - Layout
@@ -277,8 +296,14 @@ package final class FormButton: UIControl {
         let contentConstraints = [
             contentStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            contentStackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
-            contentStackView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
+            contentStackView.leadingAnchor.constraint(
+                greaterThanOrEqualTo: leadingAnchor,
+                constant: Constants.horizontalPadding
+            ),
+            contentStackView.trailingAnchor.constraint(
+                lessThanOrEqualTo: trailingAnchor,
+                constant: -Constants.horizontalPadding
+            )
         ].map { $0.adyen.with(priority: .defaultHigh) }
         
         let imageConstraints = [
@@ -316,17 +341,14 @@ extension FormButton {
     
     internal final class BackgroundView: UIView {
         
-        private let color: UIColor
-        private let disabledColor: UIColor
+        private var color: UIColor
         private let rounding: CornerRounding
 
         fileprivate init(
             cornerRounding: CornerRounding,
-            color: UIColor,
-            disabledColor: UIColor
+            color: UIColor
         ) {
             self.color = color
-            self.disabledColor = disabledColor
             self.rounding = cornerRounding
             super.init(frame: .zero)
             
@@ -342,13 +364,16 @@ extension FormButton {
         }
         
         // MARK: - Background Color
-        
-        fileprivate var isEnabled = true {
-            didSet {
+
+        /// The unhighlighted background color of the button.
+        fileprivate var baseColor: UIColor {
+            get { color }
+            set {
+                color = newValue
                 updateBackgroundColor()
             }
         }
-        
+
         fileprivate var isHighlighted = false {
             didSet {
                 updateBackgroundColor()
@@ -360,7 +385,7 @@ extension FormButton {
         }
         
         private func updateBackgroundColor() {
-            var backgroundColor = isEnabled ? color : disabledColor
+            var backgroundColor = color
             
             if isHighlighted {
                 backgroundColor = color.withBrightnessMultiple(0.75)

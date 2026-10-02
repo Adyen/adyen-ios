@@ -37,6 +37,18 @@ package class AdyenLabel: UILabel {
         set { super.attributedText = newValue.map(applyingLineHeight(to:)) }
     }
 
+    override package var font: UIFont? {
+        didSet { applyLineHeight() }
+    }
+
+    override package var textColor: UIColor? {
+        didSet { applyLineHeight() }
+    }
+
+    override package var textAlignment: NSTextAlignment {
+        didSet { applyLineHeight() }
+    }
+
     // MARK: - Private
 
     private func applyLineHeight() {
@@ -58,7 +70,7 @@ package class AdyenLabel: UILabel {
         let result = NSMutableAttributedString(attributedString: attributedText)
         let range = NSRange(location: 0, length: result.length)
         result.addAttribute(.paragraphStyle, value: paragraphStyle, range: range)
-        result.addAttribute(.baselineOffset, value: (lineHeight - font.lineHeight) / 2, range: range)
+        result.addAttribute(.baselineOffset, value: (lineHeight - (font?.lineHeight ?? 0)) / 2, range: range)
         return result
     }
 }

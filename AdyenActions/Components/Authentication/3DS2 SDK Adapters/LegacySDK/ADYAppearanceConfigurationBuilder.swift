@@ -82,7 +82,7 @@ internal struct ADYAppearanceConfigurationBuilder {
         }
 
         let cancelButtonAppearance = config.buttonAppearance(for: .cancel)
-        cancelButtonAppearance.textColor = theme.colors.primary
+        cancelButtonAppearance.textColor = theme.colors.text
     }
     
     private func configureButtonAppearance(
