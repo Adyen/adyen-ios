@@ -128,7 +128,6 @@ struct StoredCardInputViewControllerTests {
         await proxy.load()
 
         let securityCodeView = try proxy.securityCodeItemView()
-        securityCodeView.becomeFirstResponder()
         #expect(securityCodeView.isFirstResponder)
 
         try proxy.enterCode("123")
