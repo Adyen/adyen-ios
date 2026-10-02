@@ -13,6 +13,7 @@ package final class ListItemView: UIView, AnyFormItemView {
     private enum Layout {
         static let checkmarkSize = CGSize(width: 24, height: 24)
         static let checkmarkLeadingSpacing: CGFloat = 20
+        static let verticalPadding: CGFloat = 12
     }
 
     private let imageLoader: ImageLoading
@@ -50,7 +51,7 @@ package final class ListItemView: UIView, AnyFormItemView {
         let labels = theme.elements.labels
 
         titleLabel.apply(titleLabelStyle)
-        subtitleLabel.apply(labels.footnote.color(theme.colors.textSecondary))
+        subtitleLabel.apply(labels.subheadline.color(theme.colors.textSecondary))
         (trailingView as? UILabel)?.apply(labels.body)
 
         checkmarkImageView.tintColor = item?.titleEmphasis == .primary ? theme.colors.primary : theme.colors.text
@@ -58,7 +59,7 @@ package final class ListItemView: UIView, AnyFormItemView {
     }
 
     private var titleLabelStyle: AdyenLabelStyle {
-        let body = theme.elements.labels.body
+        let body = theme.elements.labels.bodyEmphasized
 
         switch item?.titleEmphasis {
         case .highlighted:
@@ -243,6 +244,7 @@ package final class ListItemView: UIView, AnyFormItemView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.setContentHuggingPriority(.required, for: .vertical)
         stackView.axis = .vertical
+        stackView.spacing = 2
         stackView.alignment = .fill
         stackView.distribution = .fill
         return stackView
@@ -276,15 +278,14 @@ package final class ListItemView: UIView, AnyFormItemView {
         let constraints = [
             contentStackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             contentStackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: Layout.verticalPadding),
+            contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Layout.verticalPadding),
             
             imageView.widthAnchor.constraint(equalToConstant: imageSize.width),
             imageView.heightAnchor.constraint(equalToConstant: imageSize.height),
 
             checkmarkImageView.widthAnchor.constraint(equalToConstant: Layout.checkmarkSize.width),
-            checkmarkImageView.heightAnchor.constraint(equalToConstant: Layout.checkmarkSize.height),
-            
-            self.heightAnchor.constraint(greaterThanOrEqualToConstant: 48)
+            checkmarkImageView.heightAnchor.constraint(equalToConstant: Layout.checkmarkSize.height)
         ]
 
         checkmarkImageView.setContentHuggingPriority(.required, for: .horizontal)
