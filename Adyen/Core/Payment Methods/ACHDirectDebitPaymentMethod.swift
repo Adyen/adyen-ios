@@ -42,13 +42,12 @@ public struct StoredACHDirectDebitPaymentMethod: StoredPaymentMethod, PaymentMet
         let lastFourSeparated = bankAccountLastFour.map { String($0) }.joined(separator: ", ")
         let accessibilityLabel = [
             name,
-            localizedString(.achBankAccountTitle, parameters),
             "\(localizedString(.accessibilityLastFourDigits, parameters)): \(lastFourSeparated)"
         ].joined(separator: ", ")
-        
+
         return DisplayInformation(
             title: String.Adyen.securedString + bankAccountLastFour,
-            subtitle: localizedString(.achBankAccountTitle, parameters),
+            subtitle: name,
             logoName: type.rawValue,
             accessibilityLabel: accessibilityLabel
         )

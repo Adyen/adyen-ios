@@ -12,7 +12,6 @@ package protocol ActionComponent: Component {
 
     /// The delegate of the action component.
     var delegate: ActionComponentDelegate? { get set }
-    
 }
 
 /// Describes the methods a delegate of the action component needs to implement.

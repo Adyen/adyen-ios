@@ -17,23 +17,9 @@ import Adyen
 import AdyenNetworking
 import UIKit
 
-extension DropInComponent: NavigationDelegate {
-
-    internal func dismiss(completion: (() -> Void)? = nil) {
-        viewController.dismiss(animated: true, completion: completion)
-    }
-
-    @_spi(AdyenInternal)
-    public func present(viewController: UIViewController) {
-        self.viewController.present(viewController, animated: true)
-    }
-
-}
-
 extension DropInComponent: FinalizableComponent {
 
     public func didFinalize(with success: Bool, completion: (() -> Void)?) {
-        stopLoading()
         if let finalizableComponent = selectedPaymentComponent as? FinalizableComponent {
             finalizableComponent.didFinalize(with: success, completion: completion)
         } else {
@@ -44,7 +30,7 @@ extension DropInComponent: FinalizableComponent {
 
 extension DropInComponent: ReadyToSubmitPaymentComponentDelegate {
 
-    package func showConfirmation(for component: InstantPaymentComponent, with order: PartialPaymentOrder?) {
+    package func showConfirmation(for component: PaymentComponent, with order: PartialPaymentOrder?) {
 //        let newRootViewController = resolvePreselectedPaymentMethodView(
 //            for: component,
 //            onCancel: { [weak self] in

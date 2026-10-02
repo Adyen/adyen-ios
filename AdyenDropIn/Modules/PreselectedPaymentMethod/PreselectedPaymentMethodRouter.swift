@@ -5,9 +5,13 @@
 //
 
 import Adyen
+#if canImport(AdyenActions)
+    import AdyenActions
+#endif
 import Foundation
 import UIKit
 
+// sourcery:AutoMockable
 @MainActor
 internal protocol PreselectedPaymentMethodRouterListener: AnyObject {
     func didDismissPreselectedPaymentMethod(completion: (() -> Void)?)
@@ -15,15 +19,14 @@ internal protocol PreselectedPaymentMethodRouterListener: AnyObject {
 
 // sourcery:AutoMockable
 @MainActor
-internal protocol PreselectedPaymentMethodRouting: AnyObject {
+internal protocol PreselectedPaymentMethodRouting: Router {
     func presentPaymentMethodList()
     func present(component: PaymentComponent)
-    func present(actionViewController: UIViewController, onCancel: (() -> Void)?)
     func dismiss(completion: (() -> Void)?)
 }
 
 @MainActor
-internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodRouting {
+internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouting {
     private enum Constants {
         static let chevronBackwardImage = "chevron.backward"
     }
@@ -53,13 +56,14 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     // MARK: - PreselectedPaymentMethodRouting
 
     internal func presentPaymentMethodList() {
-        let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter(delegate: self)
+        let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter(listener: self)
         self.childRouter = paymentMethodListRouter
-        rootViewController.present(paymentMethodListRouter.rootViewController, animated: true)
+        let navigationController = UINavigationController(rootViewController: paymentMethodListRouter.rootViewController)
+        rootViewController.present(navigationController, animated: true)
     }
 
     internal func present(
-        paymentComponent: any PresentableComponent
+        paymentComponent: any PaymentComponent
     ) {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: paymentComponent,
@@ -73,24 +77,11 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
         component: PaymentComponent
     ) {
         switch component.type {
-        case let .regular(regularComponent):
-            presentModalComponent(regularComponent)
-        case let .stored(storedComponent):
-            presentModalComponent(storedComponent)
-        case .initiable:
+        case .regular, .stored:
+            presentModalComponent(component)
+        case .generic:
             break
         }
-    }
-
-    internal func present(
-        actionViewController: UIViewController,
-        onCancel: (() -> Void)?
-    ) {
-        let actionViewController = ActionPresentationHelper.viewController(
-            for: actionViewController,
-            onCancel: onCancel
-        )
-        rootViewController.present(actionViewController, animated: true)
     }
 
     internal func dismiss(completion: (() -> Void)?) {
@@ -103,7 +94,7 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     // MARK: - Private
 
     private func presentModalComponent(
-        _ component: PresentableComponent
+        _ component: PaymentComponent
     ) {
         let componentContainerViewController = componentContainerViewController(for: component)
 
@@ -128,7 +119,7 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
     }
 
     private func componentContainerViewController(
-        for component: PresentableComponent
+        for component: PaymentComponent
     ) -> UIViewController {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: component,
@@ -143,6 +134,8 @@ internal class PreselectedPaymentMethodRouter: Router, PreselectedPaymentMethodR
 
 extension PreselectedPaymentMethodRouter: PaymentMethodListRouterListener {
     
+    /// Closing the payment method list closes the drop in it was opened from,
+    /// as the shopper asked to leave the flow rather than to go back.
     internal func didDismissPaymentMethodList(completion: (() -> Void)?) {
         rootViewController.presentingViewController?.dismiss(animated: true) { [weak self] in
             self?.childRouter = nil

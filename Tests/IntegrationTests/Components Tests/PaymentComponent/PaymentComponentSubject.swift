@@ -8,17 +8,20 @@
 import Foundation
 import UIKit
 
-class PaymentComponentSubject: PaymentComponent, PresentableComponent {
+class PaymentComponentSubject: PaymentComponent {
 
     // MARK: - Properties
 
     var context: AdyenContext
     var delegate: PaymentComponentDelegate?
     var paymentMethodBehavior: SDKData.PaymentMethodBehavior = .nativeComponent
+    let type: PaymentComponentType = .regular
+    let requiresUserInteraction: Bool = true
+
     var order: PartialPaymentOrder?
     var paymentMethod: PaymentMethod
 
-    /// PresentableComponent requirement
+    /// PaymentComponent requirement
     var viewController: UIViewController {
         UIViewController()
     }

@@ -40,7 +40,6 @@ final class CheckoutTests: XCTestCase {
         mockProvider = CheckoutProviderMock()
         configuration = CheckoutConfiguration(
             apiContext: Dummy.apiContext,
-            amount: Dummy.amount,
             analyticsApiContext: nil,
             analyticsConfiguration: .init()
         )
@@ -86,11 +85,13 @@ final class CheckoutTests: XCTestCase {
                 sessionData: "sessionData"
             ),
             configuration: configuration,
-            presentationDelegate: nil,
             provider: mockProvider
         )
         
-        XCTAssertNotNil(checkout.paymentMethods)
+        XCTAssertEqual(checkout.paymentMethods.map(\.name), paymentMethods.regular.map(\.name))
+        XCTAssertEqual(checkout.storedPaymentMethods.map(\.identifier), paymentMethods.stored.map(\.identifier))
+        XCTAssertEqual(typeIdentifiers(for: checkout.paymentMethods), typeIdentifiers(for: paymentMethods.regular))
+        XCTAssertEqual(typeIdentifiers(for: checkout.storedPaymentMethods), typeIdentifiers(for: paymentMethods.stored))
         XCTAssertNotNil(checkout.session)
         XCTAssertTrue(checkout.session === expectedSession)
         XCTAssertEqual(checkout.session?.state.identifier, "test_session_id")
@@ -108,7 +109,6 @@ final class CheckoutTests: XCTestCase {
                     sessionData: "sessionData"
                 ),
                 configuration: configuration,
-                presentationDelegate: nil,
                 provider: mockProvider
             )
             XCTFail("Expected error to be thrown")
@@ -125,13 +125,29 @@ final class CheckoutTests: XCTestCase {
         let checkout = try await Checkout.setup(
             with: paymentMethods,
             configuration: configuration,
-            presentationDelegate: nil,
             provider: mockProvider
         )
 
         XCTAssertNil(checkout.session)
-        XCTAssertNotNil(checkout.paymentMethods)
+        XCTAssertEqual(checkout.paymentMethods.map(\.name), paymentMethods.regular.map(\.name))
+        XCTAssertEqual(checkout.storedPaymentMethods.map(\.identifier), paymentMethods.stored.map(\.identifier))
+        XCTAssertEqual(typeIdentifiers(for: checkout.paymentMethods), typeIdentifiers(for: paymentMethods.regular))
+        XCTAssertEqual(typeIdentifiers(for: checkout.storedPaymentMethods), typeIdentifiers(for: paymentMethods.stored))
         XCTAssertTrue(mockProvider.setupPaymentMethodsCalled)
+    }
+
+    func testSetupWithPaymentMethods_whenCoreHasNoPaymentMethods_returnsEmptyLists() async throws {
+        let expectedCheckout = makeAdvancedCheckoutCore()
+        mockProvider.setupWithPaymentMethodsResult = .success(expectedCheckout)
+
+        let checkout = try await Checkout.setup(
+            with: paymentMethods,
+            configuration: configuration,
+            provider: mockProvider
+        )
+
+        XCTAssertTrue(checkout.paymentMethods.isEmpty)
+        XCTAssertTrue(checkout.storedPaymentMethods.isEmpty)
     }
 
     func testSetupWithPaymentMethods_Failure() async {
@@ -141,7 +157,6 @@ final class CheckoutTests: XCTestCase {
             _ = try await Checkout.setup(
                 with: paymentMethods,
                 configuration: configuration,
-                presentationDelegate: nil,
                 provider: mockProvider
             )
             XCTFail("Expected error to be thrown")
@@ -329,7 +344,7 @@ final class CheckoutTests: XCTestCase {
         callbackStore.onFailure = { _ in
             onFailureExpectation.fulfill()
         }
-        let component = PresentableComponentMock(paymentMethod: blik, viewController: UIViewController())
+        let component = PresentablePaymentComponentMock(paymentMethod: blik, viewController: UIViewController())
         let sut = makeSessionCheckoutCore(session: session, callbackStore: callbackStore)
         
         sut.didSubmit(paymentData, from: component)
@@ -398,6 +413,70 @@ final class CheckoutTests: XCTestCase {
         XCTAssertTrue(didCallSubmit)
     }
     
+    // MARK: - isPaymentMethodAvailable(for:) Tests
+
+    func test_isPaymentMethodAvailable_withPaymentMethodWithoutRequirements_shouldReturnTrue() {
+        let sut = makeAdvancedCheckoutCore(paymentMethods: paymentMethods)
+
+        XCTAssertTrue(sut.isPaymentMethodAvailable(for: .blik))
+    }
+
+    func test_isPaymentMethodAvailable_withTypeNotInPaymentMethods_shouldReturnFalse() {
+        let sut = makeAdvancedCheckoutCore(paymentMethods: paymentMethods)
+
+        XCTAssertFalse(sut.isPaymentMethodAvailable(for: .ideal))
+    }
+
+    func test_isPaymentMethodAvailable_withoutPaymentMethods_shouldReturnFalse() {
+        let sut = makeAdvancedCheckoutCore()
+
+        XCTAssertFalse(sut.isPaymentMethodAvailable(for: .scheme))
+    }
+
+    func test_isPaymentMethodAvailable_withTypeOnlyInStoredPaymentMethods_shouldReturnFalse() {
+        let sut = makeAdvancedCheckoutCore(paymentMethods: paymentMethods)
+
+        XCTAssertTrue(paymentMethods.stored.contains { $0.type == .bcmc })
+        XCTAssertFalse(sut.isPaymentMethodAvailable(for: .bcmc))
+    }
+
+    func test_isPaymentMethodAvailable_withApplePayWithoutConfiguration_shouldReturnFalseAndCreationShouldFail() throws {
+        let sut = try makeAdvancedCheckoutCore(paymentMethods: makePaymentMethodsIncludingApplePay())
+
+        XCTAssertFalse(sut.isPaymentMethodAvailable(for: .applePay))
+        XCTAssertThrowsError(try sut.createPaymentComponent(for: .applePay))
+    }
+
+    func test_isPaymentMethodAvailable_shouldMatchPaymentComponentCreation() throws {
+        configuration.configurations[.payment(.applePay)] = try ApplePayConfiguration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
+        )
+        let paymentMethods = try makePaymentMethodsIncludingApplePay()
+        let sut = makeAdvancedCheckoutCore(paymentMethods: paymentMethods)
+
+        for paymentMethod in paymentMethods.regular {
+            let canCreateComponent = (try? sut.createPaymentComponent(for: paymentMethod.type)) != nil
+            XCTAssertEqual(
+                sut.isPaymentMethodAvailable(for: paymentMethod.type),
+                canCreateComponent,
+                "Availability and component creation disagree for \(paymentMethod.type.rawValue)"
+            )
+        }
+    }
+
+    func test_isPaymentMethodAvailable_onCheckout_shouldForwardToCore() async throws {
+        mockProvider.setupWithPaymentMethodsResult = .success(makeAdvancedCheckoutCore(paymentMethods: paymentMethods))
+
+        let checkout = try await Checkout.setup(
+            with: paymentMethods,
+            configuration: configuration,
+            provider: mockProvider
+        )
+
+        XCTAssertTrue(checkout.isPaymentMethodAvailable(for: .blik))
+        XCTAssertFalse(checkout.isPaymentMethodAvailable(for: .ideal))
+    }
+
     // MARK: - createPaymentComponent(for type:) Tests
     
     func test_createPaymentComponent_forType_returnsComponent_whenPaymentMethodExists() throws {
@@ -489,7 +568,6 @@ final class CheckoutTests: XCTestCase {
         // When
         let checkout = try await Checkout.setup(
             configuration: configuration,
-            presentationDelegate: nil,
             provider: mockProvider
         )
         
@@ -506,7 +584,6 @@ final class CheckoutTests: XCTestCase {
         do {
             _ = try await Checkout.setup(
                 configuration: configuration,
-                presentationDelegate: nil,
                 provider: mockProvider
             )
             XCTFail("Expected error to be thrown")
@@ -523,7 +600,6 @@ final class CheckoutTests: XCTestCase {
         // When
         let checkout = try await Checkout.setup(
             configuration: configuration,
-            presentationDelegate: nil,
             provider: mockProvider
         )
         
@@ -748,6 +824,16 @@ final class CheckoutTests: XCTestCase {
         XCTAssertFalse(result)
     }
 
+    private func typeIdentifiers(for values: [some Any]) -> [ObjectIdentifier] {
+        values.map { value in ObjectIdentifier(type(of: value)) }
+    }
+
+    private func makePaymentMethodsIncludingApplePay() throws -> PaymentMethods {
+        var dictionary = paymentMethodsDictionary
+        dictionary["paymentMethods"]?.append(applePayDictionary)
+        return try AdyenCoder.decode(dictionary) as PaymentMethods
+    }
+
     private func makeSessionCheckoutCore(
         session: SessionProtocol,
         callbackStore: SessionCheckoutCallbackStore = SessionCheckoutCallbackStore()
@@ -756,7 +842,6 @@ final class CheckoutTests: XCTestCase {
             configuration: configuration,
             session: session,
             adyenContext: Dummy.context,
-            presentationDelegate: nil,
             resultCallbacks: callbackStore,
             callbackHandler: BeforeSubmitCallbackHandler(
                 handler: SessionCallbackHandler(session: session),
@@ -774,7 +859,6 @@ final class CheckoutTests: XCTestCase {
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
-            presentationDelegate: nil,
             resultCallbacks: callbackStore,
             callbackHandler: AdvancedCallbackHandler(callbackStore: callbackStore)
         )
@@ -786,7 +870,6 @@ final class CheckoutTests: XCTestCase {
         CheckoutCore(
             configuration: configuration,
             adyenContext: Dummy.context,
-            presentationDelegate: nil,
             resultCallbacks: callbackStore,
             callbackHandler: ActionOnlyCallbackHandler(callbackStore: callbackStore)
         )

@@ -17,8 +17,8 @@ package final class AwaitComponent: ActionComponent, Cancellable {
     /// The context object for this component.
     package let context: AdyenContext
 
-    /// Delegates `PresentableComponent`'s presentation.
-    package weak var presentationDelegate: PresentationDelegate?
+    /// Delegates view controller presentation.
+    package weak var actionPresentationDelegate: ActionPresentationDelegate?
 
     package weak var delegate: ActionComponentDelegate?
 
@@ -121,10 +121,10 @@ package final class AwaitComponent: ActionComponent, Cancellable {
         let awaitView = AwaitView(viewModel: viewModel, style: configuration.style)
         let viewController = ActionViewController(view: awaitView)
 
-        if let presentationDelegate {
-            presentationDelegate.present(viewController: viewController)
+        if let actionPresentationDelegate {
+            actionPresentationDelegate.present(actionViewController: viewController, actionData: ActionData(type: .await))
         } else {
-            let message = "PresentationDelegate is nil. Provide a presentation delegate to AwaitComponent."
+            let message = "ActionPresentationDelegate is nil. Provide a presentation delegate to AwaitComponent."
             AdyenAssertion.assertionFailure(message: message)
         }
 

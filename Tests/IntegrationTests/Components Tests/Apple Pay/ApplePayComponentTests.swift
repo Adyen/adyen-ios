@@ -49,6 +49,12 @@ class ApplePayComponentTest: XCTestCase {
         setupRootViewController(emptyVC)
     }
 
+    // MARK: - requiresUserInteraction
+
+    func testRequiresUserInteractionIsTrue() {
+        XCTAssertTrue(sut.requiresUserInteraction)
+    }
+
     // MARK: - Configuration Validation Tests
 
     func testConfiguration_givenEmptyMerchantIdentifier_shouldThrowEmptyMerchantIdentifier() {
@@ -500,8 +506,7 @@ class ApplePayComponentTest: XCTestCase {
         let expectedRequiredShippingFields = getRandomContactFieldSet()
         let decimalAmount = AmountFormatter.decimalAmount(
             amount.value,
-            currencyCode: amount.currencyCode,
-            localeIdentifier: amount.localeIdentifier
+            currencyCode: amount.currencyCode
         )
 
         let request = PKPaymentRequest()
@@ -626,8 +631,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertNotNil(summaryItem)
         let expectedDecimalAmount = AmountFormatter.decimalAmount(
             testAmount.value,
-            currencyCode: testAmount.currencyCode,
-            localeIdentifier: testAmount.localeIdentifier
+            currencyCode: testAmount.currencyCode
         )
         XCTAssertEqual(summaryItem?.amount, expectedDecimalAmount)
         XCTAssertEqual(summaryItem?.amount, decimalAmount)
@@ -657,8 +661,7 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertNotNil(summaryItem)
         let expectedDecimalAmount = AmountFormatter.decimalAmount(
             testAmount.value,
-            currencyCode: testAmount.currencyCode,
-            localeIdentifier: testAmount.localeIdentifier
+            currencyCode: testAmount.currencyCode
         )
         XCTAssertEqual(summaryItem?.amount, expectedDecimalAmount)
         XCTAssertEqual(summaryItem?.amount, decimalAmount)
@@ -1179,7 +1182,9 @@ private final class PKPaymentMethodMock: PKPaymentMethod {
 extension XCTestCase {
 
     func compareCollections<T: Hashable>(_ lhs: [T], _ rhs: [T]) -> Bool {
-        if lhs.count != rhs.count { return false }
+        if lhs.count != rhs.count {
+            return false
+        }
 
         let lhsSet = Set<T>(lhs)
         let rhsSet = Set<T>(rhs)

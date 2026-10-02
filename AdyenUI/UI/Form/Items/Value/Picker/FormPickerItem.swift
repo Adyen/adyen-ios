@@ -48,6 +48,8 @@ public struct FormPickerElement: FormPickable {
 open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> {
     
     package let localizationParameters: LocalizationParameters?
+    /// The picker item's configuration.
+    package let configuration: FormPickerConfiguration
     public private(set) var isOptional: Bool = false
     internal private(set) weak var presenter: ViewControllerPresenter?
     
@@ -69,6 +71,7 @@ open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> 
     ///   - placeholder: The placeholder of the item when the value is `nil`
     ///   - style: The `FormTextItemStyle` UI style.
     ///   - localizationParameters: The localization parameters.
+    ///   - configuration: The picker screen configuration (e.g. header).
     ///   - identifier: The item identifier
     package convenience init(
         preselectedValue: Value?,
@@ -77,6 +80,7 @@ open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> 
         placeholder: String,
         style: FormTextItemStyle,
         presenter: ViewControllerPresenter?,
+        configuration: FormPickerConfiguration = .init(),
         identifier: String? = nil
     ) {
         self.init(
@@ -87,6 +91,7 @@ open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> 
             style: style,
             presenter: presenter,
             localizationParameters: nil,
+            configuration: configuration,
             identifier: identifier
         )
     }
@@ -99,9 +104,11 @@ open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> 
         style: FormTextItemStyle,
         presenter: ViewControllerPresenter?,
         localizationParameters: LocalizationParameters? = nil,
+        configuration: FormPickerConfiguration = .init(),
         identifier: String? = nil
     ) {
         self.localizationParameters = localizationParameters
+        self.configuration = configuration
         self.presenter = presenter
 
         super.init(

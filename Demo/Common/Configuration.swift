@@ -137,9 +137,9 @@ internal enum BillingAddressModeDemoSetting: Codable, Hashable, CaseIterable {
 }
 
 internal struct DropInSettings: Codable {
-    internal var allowDisablingStoredPaymentMethods: Bool = false
-    internal var allowsSkippingPaymentList: Bool = false
-    internal var allowPreselectedPaymentView: Bool = true
+    internal var showRemovePaymentMethodButton: Bool = false
+    internal var hideStoredPaymentMethods: Bool = false
+    internal var startWithLastStoredPaymentMethod: Bool = true
 }
 
 internal struct ThreeDSConfigurationSettings: Codable {
@@ -228,9 +228,9 @@ internal struct DemoAppSettings: Codable {
     )
 
     internal static let defaultDropInSettings = DropInSettings(
-        allowDisablingStoredPaymentMethods: false,
-        allowsSkippingPaymentList: false,
-        allowPreselectedPaymentView: true
+        showRemovePaymentMethodButton: false,
+        hideStoredPaymentMethods: false,
+        startWithLastStoredPaymentMethod: true
     )
     
     internal static let threeDSConfigurationSettings = ThreeDSConfigurationSettings(
@@ -249,9 +249,13 @@ internal struct DemoAppSettings: Codable {
     internal static let defaultThemeSettings = ThemeSettings()
     
     fileprivate static func loadConfiguration() -> DemoAppSettings {
-        var config = UserDefaults.standard.data(forKey: defaultsKey)
+        let persistedConfiguration = UserDefaults.standard.data(forKey: defaultsKey)
             .flatMap { try? JSONDecoder().decode(DemoAppSettings.self, from: $0) }
-            ?? defaultConfiguration
+
+        // Apply external configuration from launch arguments (passed by e2e tests via Base64-encoded JSON)
+        let externalConfiguration = ExternalConfigurationReader.readFromLaunchArguments()
+        var config = resolveConfiguration(persisted: persistedConfiguration, external: externalConfiguration)
+
         switch CommandLine.arguments.first {
         case "SG":
             config.countryCode = "SG"
@@ -261,8 +265,21 @@ internal struct DemoAppSettings: Codable {
         }
         return config
     }
+
+    internal static func resolveConfiguration(
+        persisted: DemoAppSettings?,
+        external: ExternalConfiguration?,
+        default defaultConfiguration: DemoAppSettings = DemoAppSettings.defaultConfiguration
+    ) -> DemoAppSettings {
+        if CommandLine.arguments.contains("-config") {
+            return external.map { defaultConfiguration.applying($0) } ?? defaultConfiguration
+        }
+        return external.map { defaultConfiguration.applying($0) } ?? persisted ?? defaultConfiguration
+    }
     
     fileprivate static func saveConfiguration(_ configuration: DemoAppSettings) {
+        // Skip saving when launched with external config (e2e tests) to prevent test pollution
+        guard !CommandLine.arguments.contains("-config") else { return }
         if let configurationData = try? JSONEncoder().encode(configuration) {
             UserDefaults.standard.setValue(configurationData, forKey: defaultsKey)
         }
@@ -280,36 +297,23 @@ internal struct DemoAppSettings: Codable {
             .billingAddressMode(cardSettings.billingAddress.billingAddressMode)
     }
 
-    internal var cardDropInConfiguration: DropInComponent.Card {
-        .init(
-            showCardholderName: cardSettings.showCardholderName,
-            showStorePaymentMethod: cardSettings.showStorePaymentMethod,
-            showSecurityCode: cardSettings.showSecurityCode,
-            koreanAuthenticationVisibility: cardSettings.koreanAuthenticationVisibility,
-            socialSecurityNumberVisibility: cardSettings.socialSecurityNumberVisibility,
-            showSecurityCodeForStoredCard: cardSettings.showSecurityCodeForStoredCard,
-            installmentConfiguration: installmentConfiguration
-        )
+    internal var dropInConfiguration: DropInConfiguration {
+        var dropInConfiguration = DropInConfiguration()
+            .hideStoredPaymentMethods(dropInSettings.hideStoredPaymentMethods)
+            .startWithLastStoredPaymentMethod(dropInSettings.startWithLastStoredPaymentMethod)
+        dropInConfiguration.theme = themeSettings.theme.theme
+        return dropInConfiguration
     }
 
-    internal var dropInConfiguration: DropInComponent.Configuration {
-        var style = DropInComponent.Style()
-        style.navigation.tintColor = .red
+    internal var dropInActionComponentConfiguration: CheckoutActionComponent.Configuration {
+        var authenticationConfiguration = AuthenticationConfiguration(theme: themeSettings.theme.theme)
+        authenticationConfiguration.delegatedAuthentication = ConfigurationConstants.delegatedAuthenticationConfigurations
+        authenticationConfiguration.requestorAppURL = ConfigurationConstants.returnUrl
 
-        let theme = themeSettings.theme.theme
-
-        let dropInConfig = DropInComponent.Configuration(
-            style: style,
-            theme: theme,
-            allowsSkippingPaymentList: dropInSettings.allowsSkippingPaymentList,
-            allowPreselectedPaymentView: dropInSettings.allowPreselectedPaymentView
+        return CheckoutActionComponent.Configuration(
+            authentication: authenticationConfiguration,
+            twint: .init(callbackAppScheme: ConfigurationConstants.returnUrl.scheme!)
         )
-
-        dropInConfig.paymentMethodsList.allowDisablingStoredPaymentMethods = dropInSettings.allowDisablingStoredPaymentMethods
-        dropInConfig.cashAppPay = .init(redirectURL: ConfigurationConstants.returnUrl)
-        dropInConfig.actionComponent.twint = .init(callbackAppScheme: ConfigurationConstants.returnUrl.scheme!)
-
-        return dropInConfig
     }
 
     internal func applePayConfiguration(using request: PKPaymentRequest) throws -> ApplePayConfiguration {
@@ -370,8 +374,7 @@ internal extension PKPaymentRequest {
         let amount = ConfigurationConstants.current.amount
         let decimalAmount = AmountFormatter.decimalAmount(
             amount.value,
-            currencyCode: amount.currencyCode,
-            localeIdentifier: amount.localeIdentifier
+            currencyCode: amount.currencyCode
         )
 
         let paymentRequest = PKPaymentRequest()
@@ -389,8 +392,7 @@ internal extension PKPaymentRequest {
         let amount = ConfigurationConstants.current.amount
         let decimalAmount = AmountFormatter.decimalAmount(
             amount.value,
-            currencyCode: amount.currencyCode,
-            localeIdentifier: amount.localeIdentifier
+            currencyCode: amount.currencyCode
         )
 
         let paymentRequest = PKPaymentRequest()

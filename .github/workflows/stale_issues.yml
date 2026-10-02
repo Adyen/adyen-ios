@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Close stale issues
-        uses: actions/stale@v10
+        uses: actions/stale@v11
         with:
           any-of-labels: 'awaiting feedback'
           stale-issue-message: 'This issue is now stale because it has been open for 14 days with no activity. Please provide the requested information or the issue will be closed automatically.'

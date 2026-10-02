@@ -31,8 +31,7 @@ internal class CheckoutProvider: CheckoutProviding {
     internal func setup(
         with sessionResponse: SessionResponse,
         configuration: CheckoutConfiguration,
-        callbackStore: SessionCheckoutCallbackStore,
-        presentationDelegate: PresentationDelegate?
+        callbackStore: SessionCheckoutCallbackStore
     ) async throws -> CheckoutCoreProtocol {
 
         let apiClient = APIClient(apiContext: configuration.apiContext)
@@ -42,12 +41,12 @@ internal class CheckoutProvider: CheckoutProviding {
             adyenContext: adyenContext,
             apiClient: apiClient
         )
+        adyenContext.amount = session.state.amount
 
         return await CheckoutCore(
             configuration: configuration,
             session: session,
             adyenContext: adyenContext,
-            presentationDelegate: presentationDelegate,
             resultCallbacks: callbackStore,
             callbackHandler: BeforeSubmitCallbackHandler(
                 handler: SessionCallbackHandler(session: session),
@@ -62,13 +61,11 @@ internal class CheckoutProvider: CheckoutProviding {
     /// - Parameters:
     ///   - paymentMethods: The `PaymentMethods` response from the `/paymentMethods` call.
     ///   - configuration: The `CheckoutConfiguration` instance.
-    ///   - presentationDelegate: A delegate in order to handle presentation logic if needed.
     ///   - completion: A closure that is called when the setup is complete, containing the checkout object.
     internal func setup(
         with paymentMethods: PaymentMethods,
         configuration: CheckoutConfiguration,
-        callbackStore: AdvancedCheckoutCallbackStore,
-        presentationDelegate: PresentationDelegate?
+        callbackStore: AdvancedCheckoutCallbackStore
     ) async throws -> CheckoutCoreProtocol {
 
         let apiClient = APIClient(apiContext: configuration.apiContext)
@@ -78,7 +75,6 @@ internal class CheckoutProvider: CheckoutProviding {
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: adyenContext,
-            presentationDelegate: presentationDelegate,
             resultCallbacks: callbackStore,
             callbackHandler: AdvancedCallbackHandler(callbackStore: callbackStore)
         )
@@ -87,11 +83,9 @@ internal class CheckoutProvider: CheckoutProviding {
     /// Sets up the checkout object for action handling only.
     /// - Parameters:
     ///   - configuration: The `CheckoutConfiguration` instance.
-    ///   - presentationDelegate: A delegate for handling action UI presentation.
     internal func setup(
         configuration: CheckoutConfiguration,
-        callbackStore: ActionOnlyCheckoutCallbackStore,
-        presentationDelegate: PresentationDelegate?
+        callbackStore: ActionOnlyCheckoutCallbackStore
     ) async throws -> CheckoutCoreProtocol {
 
         let apiClient = APIClient(apiContext: configuration.apiContext)
@@ -100,7 +94,6 @@ internal class CheckoutProvider: CheckoutProviding {
         return await CheckoutCore(
             configuration: configuration,
             adyenContext: adyenContext,
-            presentationDelegate: presentationDelegate,
             resultCallbacks: callbackStore,
             callbackHandler: ActionOnlyCallbackHandler(callbackStore: callbackStore)
         )
@@ -149,7 +142,7 @@ internal class CheckoutProvider: CheckoutProviding {
 
             return try await AdyenContext(
                 apiContext: configuration.apiContext,
-                amount: configuration.amount,
+                amount: nil,
                 publicKey: publicKey,
                 checkoutAttemptId: checkoutAttemptId,
                 analyticsAPIContext: configuration.analyticsApiContext,

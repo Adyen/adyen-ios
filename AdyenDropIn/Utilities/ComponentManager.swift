@@ -6,12 +6,6 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
-#if canImport(AdyenCard)
-    import AdyenCard
-#endif
-#if canImport(AdyenComponents)
-    import AdyenComponents
-#endif
 #if canImport(AdyenActions)
     import AdyenActions
 #endif
@@ -25,151 +19,134 @@ import Foundation
 internal protocol ComponentManaging {
     var sections: [PaymentMethodsSection] { get }
     func buildComponent(for paymentMethod: PaymentMethod) -> PaymentComponent?
+    func removeStoredPaymentMethod(withIdentifier identifier: String)
 }
 
-// TODO: - The ComponentManager should use the factories that Eren introduced in components.
 @MainActor
 internal final class ComponentManager: ComponentManaging {
 
     // MARK: - Properties
 
-    internal let paymentMethods: PaymentMethods
-    internal let configuration: DropInComponent.Configuration
+    internal private(set) var paymentMethods: PaymentMethods
+    internal let configuration: DropInConfiguration
     internal let context: AdyenContext
     internal let order: PartialPaymentOrder?
-    internal let partialPaymentEnabled: Bool
-    internal weak var presentationDelegate: PresentationDelegate?
     
-    private let supportsEditingStoredPaymentMethods: Bool
-    
+    private let paymentComponentProvider: DropInPaymentComponentProvider
+
     private var localizationParameters: LocalizationParameters? {
-        configuration.localizationParameters
+        configuration.resolvedLocalizationParameters
     }
-    
+
     private var listStyle: ListComponentStyle {
-        configuration.style.listComponent
+        ListComponentStyle()
     }
 
     // MARK: - Initializer
-    
+
     internal init(
         paymentMethods: PaymentMethods,
         context: AdyenContext,
-        configuration: DropInComponent.Configuration,
-        partialPaymentEnabled: Bool = true,
+        configuration: DropInConfiguration,
         order: PartialPaymentOrder?,
-        supportsEditingStoredPaymentMethods: Bool = false,
-        presentationDelegate: PresentationDelegate?
+        paymentComponentProvider: DropInPaymentComponentProvider
     ) {
         self.paymentMethods = paymentMethods
         self.context = context
         self.configuration = configuration
-        self.partialPaymentEnabled = partialPaymentEnabled
         self.order = order
-        self.supportsEditingStoredPaymentMethods = supportsEditingStoredPaymentMethods
-        self.presentationDelegate = presentationDelegate
+        self.paymentComponentProvider = paymentComponentProvider
 
         updateContextAmountIfNeeded()
     }
-    
+
     // MARK: - ComponentManaging
-    
-    internal lazy var sections: [PaymentMethodsSection] = {
+
+    internal var hasSupportedPaymentMethods: Bool {
+        let hasPaymentMethods = !sections.isEmpty
+        let hasStoredPaymentMethods = configuration.startWithLastStoredPaymentMethod
+            && !supportedStoredPaymentMethods.isEmpty
+        
+        return hasPaymentMethods || hasStoredPaymentMethods
+    }
+
+    internal var sections: [PaymentMethodsSection] {
         [paidSection, storedSection, regularSection].filter { !$0.paymentMethods.isEmpty }
-    }()
+    }
+
+    internal var visibleStoredPaymentMethods: [any StoredPaymentMethod] {
+        supportedStoredPaymentMethods
+    }
+
+    internal func removeStoredPaymentMethod(withIdentifier identifier: String) {
+        paymentMethods.stored.removeAll { $0.identifier == identifier }
+        supportedStoredPaymentMethods.removeAll { $0.identifier == identifier }
+    }
+
+    internal func update(paymentMethods: PaymentMethods) {
+        self.paymentMethods = paymentMethods
+        supportedStoredPaymentMethods = storedPaymentMethodCandidates.filter { isAvailable($0) }
+        supportedRegularPaymentMethods = paymentMethods.regular.filter { isAvailable($0) }
+        supportedPaidPaymentMethods = paymentMethods.paid.filter { isAvailable($0) }
+    }
 
     internal func buildComponent(for paymentMethod: PaymentMethod) -> PaymentComponent? {
-        guard isAllowed(paymentMethod) else {
-            AdyenAssertion.assertionFailure(message: """
-            For voucher payment methods like \(paymentMethod.name) it is required to add a suitable \
-            text for the key NSPhotoLibraryAddUsageDescription in the Application Info.plist, to enable \
-            the shopper to save the voucher to their photo library.
-            """)
-            return nil
-        }
+        guard containsSupportedPaymentMethod(paymentMethod) else { return nil }
 
-        let component: PaymentComponent? = {
-            if let buildable = paymentMethod as? any PaymentComponentBuildable {
-                buildable.buildComponent(using: self)
-            } else {
-                build(paymentMethod: paymentMethod)
-            }
-        }()
-        guard var paymentComponent = component else { return nil }
-        paymentComponent.order = order
-
-        if var localizableComponent = paymentComponent as? Localizable {
-            localizableComponent.localizationParameters = localizationParameters
-        }
-
-        return paymentComponent
+        return assembleComponent(for: paymentMethod)
     }
-    
-    // MARK: - Computed Components
 
-    internal lazy var storedComponents: [PaymentComponent] = {
-        paymentMethods.stored
-            .filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
-            .compactMap(buildComponent(for:))
-    }()
+    // MARK: - Supported Payment Methods
 
-    internal lazy var regularComponents: [PaymentComponent] = {
-        paymentMethods.regular.compactMap(buildComponent(for:))
-    }()
+    internal lazy var supportedStoredPaymentMethods = storedPaymentMethodCandidates.filter { isAvailable($0) }
 
-    internal lazy var paidComponents: [PaymentComponent] = {
-        paymentMethods.paid.compactMap(buildComponent(for:))
-    }()
-    
-    internal var singleRegularComponent: (PaymentComponent & PresentableComponent)? {
-        guard storedComponents.isEmpty,
-              paidComponents.isEmpty,
-              regularComponents.count == 1,
-              let component = regularComponents.first as? (PaymentComponent & PresentableComponent)
+    internal lazy var supportedRegularPaymentMethods = paymentMethods.regular.filter { isAvailable($0) }
+
+    internal lazy var supportedPaidPaymentMethods = paymentMethods.paid.filter { isAvailable($0) }
+
+    internal var firstStoredComponent: PaymentComponent? {
+        supportedStoredPaymentMethods.first.flatMap(buildComponent(for:))
+    }
+
+    internal var singleRegularComponent: PaymentComponent? {
+        guard supportedStoredPaymentMethods.isEmpty,
+              supportedPaidPaymentMethods.isEmpty,
+              supportedRegularPaymentMethods.count == 1,
+              let paymentMethod = supportedRegularPaymentMethods.first
         else { return nil }
-        
-        return component
+
+        return buildComponent(for: paymentMethod)
     }
 
     // MARK: - Private
 
-    private lazy var paidSection: PaymentMethodsSection = {
-        let amountString = order?.remainingAmount.map(\.formatted)
-            ?? localizedString(.amount, localizationParameters).lowercased()
-
-        let footerTitle = localizedString(
-            .partialPaymentPayRemainingAmount,
-            localizationParameters,
-            amountString
-        )
-
-        return PaymentMethodsSection(
+    private var paidSection: PaymentMethodsSection {
+        PaymentMethodsSection(
+            kind: .paid,
             header: ListSectionHeader(
                 title: localizedString(.paymentMethodsPaidMethods, localizationParameters),
                 style: listStyle.sectionHeader
             ),
-            paymentMethods: paymentMethods.paid
+            paymentMethods: supportedPaidPaymentMethods
         )
-    }()
+    }
 
-    private lazy var storedSection: PaymentMethodsSection = {
-        let allowDeleting = configuration.paymentMethodsList.allowDisablingStoredPaymentMethods
-            && supportsEditingStoredPaymentMethods
-
-        let storedPaymentMethods = paymentMethods.stored
-            .filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
+    private var storedSection: PaymentMethodsSection {
+        guard !configuration.hideStoredPaymentMethods else {
+            return PaymentMethodsSection(kind: .stored, header: nil, paymentMethods: [])
+        }
 
         return PaymentMethodsSection(
+            kind: .stored,
             header: ListSectionHeader(
                 title: localizedString(.paymentMethodsStoredMethods, localizationParameters),
-                editingStyle: allowDeleting ? .delete : .none,
                 style: listStyle.sectionHeader
             ),
-            paymentMethods: storedPaymentMethods
+            paymentMethods: visibleStoredPaymentMethods
         )
-    }()
+    }
 
-    private lazy var regularSection: PaymentMethodsSection = {
+    private var regularSection: PaymentMethodsSection {
         let needsHeader = !paidSection.paymentMethods.isEmpty || !storedSection.paymentMethods.isEmpty
 
         let header: ListSectionHeader? = needsHeader
@@ -180,35 +157,50 @@ internal final class ComponentManager: ComponentManaging {
             : nil
 
         return PaymentMethodsSection(
+            kind: .regular,
             header: header,
-            paymentMethods: paymentMethods.regular
+            paymentMethods: supportedRegularPaymentMethods
         )
-    }()
+    }
 }
 
 // MARK: - Private
 
 private extension ComponentManager {
-    
+
+    var storedPaymentMethodCandidates: [any StoredPaymentMethod] {
+        paymentMethods.stored
+            .filter { $0.supportedShopperInteractions.contains(.shopperPresent) }
+    }
+
+    func isAvailable(_ paymentMethod: PaymentMethod) -> Bool {
+        paymentComponentProvider.isAvailable(for: paymentMethod)
+    }
+
+    func containsSupportedPaymentMethod(_ paymentMethod: PaymentMethod) -> Bool {
+        if let storedPaymentMethod = paymentMethod as? any StoredPaymentMethod {
+            return supportedStoredPaymentMethods.contains { $0 == storedPaymentMethod }
+        }
+        
+        return supportedRegularPaymentMethods.contains { $0 == paymentMethod }
+            || supportedPaidPaymentMethods.contains { $0 == paymentMethod }
+    }
+
+    func assembleComponent(for paymentMethod: PaymentMethod) -> PaymentComponent? {
+        do {
+            var component = try paymentComponentProvider.buildComponent(for: paymentMethod)
+            // TODO: Preserve the order assignment until partial payments have a dedicated design.
+            component.order = order
+            return component
+        } catch {
+            // TODO: Store these errors if we need to track them.
+            adyenPrint("Failed to build component for \(paymentMethod.type.rawValue):", error)
+            return nil
+        }
+    }
+
     func updateContextAmountIfNeeded() {
         guard let remainingAmount = order?.remainingAmount else { return }
         context.amount = remainingAmount
-    }
-    
-    // MARK: - Payment Method Validation
-    
-    func isAllowed(_ paymentMethod: PaymentMethod) -> Bool {
-        let requiresPhotoLibrary = isVoucherPaymentMethod(paymentMethod) || isQRCodePaymentMethod(paymentMethod)
-        guard requiresPhotoLibrary else { return true }
-        
-        return Bundle.main.object(forInfoDictionaryKey: "NSPhotoLibraryAddUsageDescription") != nil
-    }
-
-    func isQRCodePaymentMethod(_ paymentMethod: PaymentMethod) -> Bool {
-        QRCodePaymentMethod.allCases.map(\.rawValue).contains(paymentMethod.type.rawValue)
-    }
-
-    func isVoucherPaymentMethod(_ paymentMethod: PaymentMethod) -> Bool {
-        VoucherPaymentMethod.allCases.map(\.rawValue).contains(paymentMethod.type.rawValue)
     }
 }

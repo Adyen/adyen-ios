@@ -12,7 +12,7 @@ internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvanced
 
     // MARK: - Properties
 
-    internal var issuerListComponent: PresentableComponent?
+    internal var issuerListComponent: PaymentComponent?
 
     internal weak var presenter: PresenterExampleProtocol?
     
@@ -29,7 +29,7 @@ internal final class IssuerListComponentAdvancedFlowExample: InitialDataAdvanced
         }
         let handler = CheckoutActionComponent(context: context)
         handler.delegate = self
-        handler.presentationDelegate = self
+        handler.actionPresentationDelegate = self
         return handler
     }()
 
@@ -167,7 +167,6 @@ extension IssuerListComponentAdvancedFlowExample: ActionComponentDelegate {
     }
 
     internal func didProvide(_ data: ActionComponentData, from component: ActionComponent) {
-        (component as? PresentableComponent)?.viewController.view.isUserInteractionEnabled = false
         let request = PaymentDetailsRequest(
             details: data.details,
             paymentData: data.paymentData,
@@ -179,9 +178,9 @@ extension IssuerListComponentAdvancedFlowExample: ActionComponentDelegate {
     }
 }
 
-extension IssuerListComponentAdvancedFlowExample: PresentationDelegate {
-    internal func present(viewController: UIViewController) {
-        let wrappedViewController = self.viewController(wrapping: viewController)
+extension IssuerListComponentAdvancedFlowExample: ActionPresentationDelegate {
+    internal func present(actionViewController: UIViewController, actionData: ActionData) {
+        let wrappedViewController = viewController(wrapping: actionViewController)
         presenter?.present(viewController: wrappedViewController, completion: nil)
     }
 }

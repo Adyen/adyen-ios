@@ -8,6 +8,7 @@
 @testable import AdyenActions
 @testable import AdyenCheckout
 @testable import AdyenComponents
+@testable import AdyenDropIn
 @testable import AdyenUI
 import XCTest
 
@@ -124,6 +125,52 @@ final class CheckoutConfigurationTests: XCTestCase {
         }
 
         XCTAssertTrue(storedProvider === provider)
+    }
+
+    // MARK: - Drop-in Configuration Tests
+
+    func test_init_withDropInConfiguration_shouldExtractItFromDSL() throws {
+        let sut = try CheckoutConfiguration(
+            environment: .test,
+            clientKey: Dummy.apiContext.clientKey
+        ) {
+            DropInConfiguration()
+                .hideStoredPaymentMethods(true)
+                .startWithLastStoredPaymentMethod(false)
+        }
+
+        XCTAssertTrue(sut.dropInConfiguration.hideStoredPaymentMethods)
+        XCTAssertFalse(sut.dropInConfiguration.startWithLastStoredPaymentMethod)
+    }
+
+    func test_init_withMultipleDropInConfigurations_shouldUseLastValue() throws {
+        let sut = try CheckoutConfiguration(
+            environment: .test,
+            clientKey: Dummy.apiContext.clientKey
+        ) {
+            DropInConfiguration()
+                .hideStoredPaymentMethods(true)
+                .startWithLastStoredPaymentMethod(true)
+            DropInConfiguration()
+                .startWithLastStoredPaymentMethod(false)
+        }
+
+        XCTAssertFalse(sut.dropInConfiguration.hideStoredPaymentMethods)
+        XCTAssertFalse(sut.dropInConfiguration.startWithLastStoredPaymentMethod)
+    }
+
+    func test_init_withDropInAndComponentConfigurations_shouldStoreEachSeparately() throws {
+        let sut = try CheckoutConfiguration(
+            environment: .test,
+            clientKey: Dummy.apiContext.clientKey
+        ) {
+            DropInConfiguration().hideStoredPaymentMethods(true)
+            BLIKComponentConfiguration()
+        }
+
+        XCTAssertTrue(sut.dropInConfiguration.hideStoredPaymentMethods)
+        XCTAssertEqual(sut.configurations.count, 1)
+        XCTAssertNotNil(sut.configurations[.payment(.blik)] as? BLIKComponentConfiguration)
     }
 
     // MARK: - Legacy componentConfiguration Tests
@@ -313,7 +360,6 @@ final class CheckoutConfigurationTests: XCTestCase {
     ) -> CheckoutConfiguration {
         CheckoutConfiguration(
             apiContext: Dummy.apiContext,
-            amount: Dummy.amount,
             analyticsApiContext: nil,
             analyticsConfiguration: .init(),
             configurations: configurations

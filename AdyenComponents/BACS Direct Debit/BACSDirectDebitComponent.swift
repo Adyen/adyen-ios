@@ -5,7 +5,6 @@
 //
 
 import Adyen
-@_spi(AdyenInternal) import protocol Adyen.PresentableComponent
 
 #if canImport(AdyenUI)
     import AdyenUI
@@ -20,17 +19,20 @@ internal protocol BACSDirectDebitRouterProtocol: AnyObject {
 
 /// A component that provides a form for BACS Direct Debit payments.
 @MainActor
-package final class BACSDirectDebitComponent: PaymentComponent, PresentableComponent {
+package final class BACSDirectDebitComponent: PaymentComponent {
 
     /// Configuration for BACS Direct Debit Component.
     package typealias Configuration = BasicComponentConfiguration
 
-    // MARK: - PresentableComponent
+    // MARK: - PaymentComponent
 
     package let viewController: UIViewController
 
     /// The object that acts as the delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
+
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
 
     /// The BACS Direct Debit payment method.
     package var paymentMethod: PaymentMethod {
@@ -39,9 +41,6 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
 
     /// The context object for this component.
     package let context: AdyenContext
-
-    /// The object that acts as the presentation delegate of the component.
-    package weak var presentationDelegate: PresentationDelegate?
 
     /// Component's configuration
     package var configuration: Configuration
@@ -113,11 +112,10 @@ package final class BACSDirectDebitComponent: PaymentComponent, PresentableCompo
 /// :nodoc:
 extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 
+    // TODO: - This will be removed in COSDK-1284
     internal func presentConfirmation(with data: BACSDirectDebitData) {
         confirmationViewPresented = true
-        let confirmationView = assembleConfirmationView(with: data)
-
-        presentationDelegate?.present(viewController: confirmationView)
+        _ = assembleConfirmationView(with: data)
     }
 
     internal func confirmPayment(with data: BACSDirectDebitData) {

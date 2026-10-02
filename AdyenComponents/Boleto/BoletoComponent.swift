@@ -17,7 +17,6 @@ import UIKit
 @MainActor
 package final class BoletoComponent: PaymentComponent,
     LoadingComponent,
-    PresentableComponent,
     AdyenObserver {
 
     /// The context object for this component.
@@ -28,6 +27,9 @@ package final class BoletoComponent: PaymentComponent,
     package var paymentMethod: PaymentMethod {
         boletoPaymentMethod
     }
+
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
     
     /// The Component's configuration.
     package var configuration: Configuration
@@ -228,7 +230,7 @@ extension BoletoComponent {
         }
         
         override package func createPaymentDetails() -> PaymentMethodDetails {
-            onCreatePaymentDetails() ?? InstantPaymentDetails(type: paymentMethod.type)
+            onCreatePaymentDetails() ?? GenericPaymentDetails(type: paymentMethod.type)
         }
     }
 }

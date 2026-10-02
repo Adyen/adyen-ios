@@ -18,7 +18,6 @@ import UIKit
 /// A component that provides a form for gift card payments.
 @MainActor
 package final class GiftCardComponent: PaymentComponent,
-    PresentableComponent,
     Localizable,
     LoadingComponent,
     AdyenObserver {
@@ -54,6 +53,9 @@ package final class GiftCardComponent: PaymentComponent,
 
     /// A boolean value that determines whether the payment button is displayed. Defaults to `true`.
     internal let showsSubmitButton: Bool
+
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
 
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
@@ -381,7 +383,7 @@ extension GiftCardComponent {
             remainingAmount: remainingAmount
         )
         
-        let component = InstantPaymentComponent(
+        let component = GenericPaymentComponent(
             paymentMethod: paymentMethod,
             context: context,
             paymentData: paymentData
