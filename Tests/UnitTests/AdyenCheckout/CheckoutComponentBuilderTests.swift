@@ -547,12 +547,12 @@ final class CheckoutComponentBuilderTests: XCTestCase {
 
         let viewModel = component.bacsViewModel
         viewModel.viewDidLoad()
-        viewModel.holderNameItem?.value = "A. Shopper"
-        viewModel.bankAccountNumberItem?.value = "40308669"
-        viewModel.sortCodeItem?.value = "560036"
-        viewModel.emailItem?.value = "shopper@example.com"
-        viewModel.amountConsentToggleItem?.value = true
-        viewModel.legalConsentToggleItem?.value = true
+        viewModel.holderNameItem.value = "A. Shopper"
+        viewModel.bankAccountNumberItem.value = "40308669"
+        viewModel.sortCodeItem.value = "560036"
+        viewModel.emailItem.value = "shopper@example.com"
+        viewModel.amountConsentToggleItem.value = true
+        viewModel.legalConsentToggleItem.value = true
 
         // When
         component.performSubmit()

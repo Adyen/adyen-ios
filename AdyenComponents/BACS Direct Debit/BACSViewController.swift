@@ -47,14 +47,19 @@ internal final class BACSViewController: FormViewController {
     private func bindState() {
         viewModel.$state.sink { [weak self] state in
             switch state {
-            case .idle, .loaded:
-                self?.viewModel.submitButtonItem?.showsActivityIndicator = false
+            case .idle:
+                self?.setLoading(false)
+            case .invalid:
+                self?.setLoading(false)
+                _ = self?.validate()
             case .submitting:
-                self?.viewModel.submitButtonItem?.showsActivityIndicator = true
-                if self?.validate() == false {
-                    self?.viewModel.stopLoading()
-                }
+                self?.setLoading(true)
             }
         }.store(in: &cancellables)
+    }
+
+    private func setLoading(_ isLoading: Bool) {
+        viewModel.submitButtonItem?.showsActivityIndicator = isLoading
+        view.isUserInteractionEnabled = !isLoading
     }
 }
