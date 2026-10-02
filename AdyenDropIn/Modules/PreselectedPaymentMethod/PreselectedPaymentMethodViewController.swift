@@ -25,7 +25,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
         static let secondaryButtonCornerRadius: CGFloat = 14
         static let sheetCornerRadius: CGFloat = 16
 
-        static let labelsSpacing: CGFloat = 8
+        static let labelsSpacing: CGFloat = 4
         static let buttonsSpacingWithEachOther: CGFloat = 16
     }
 
@@ -247,6 +247,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
         let label = AdyenLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.apply(theme.elements.labels.body)
+        label.textColor = theme.colors.textSecondary
         label.numberOfLines = 0
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "subTitle")
         return label

@@ -16,13 +16,13 @@ internal struct StoredPaymentMethodContentHeaderView: View {
 
     private enum Constants {
         static let logoSize = CGSize(width: 80, height: 52)
-        static let spacing: CGFloat = 16
+        static let spacing: CGFloat = 24
         static let labelsSpacing: CGFloat = 8
     }
 
     internal let logoURL: URL
     internal let title: String
-    internal let subtitle: NSAttributedString
+    internal let subtitle: String
     internal let theme: CheckoutTheme
 
     internal var body: some View {
@@ -35,7 +35,8 @@ internal struct StoredPaymentMethodContentHeaderView: View {
                 Text(title)
                     .adyenLabelStyle(theme.elements.labels.title)
                     .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.title)
-                Text(AttributedString(subtitle))
+                Text(subtitle)
+                    .adyenLabelStyle(theme.elements.labels.body, color: theme.colors.textSecondary)
                     .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.subtitle)
             }
             .foregroundStyle(Color(uiColor: theme.colors.text))
@@ -50,7 +51,7 @@ internal struct StoredPaymentMethodContentHeaderView: View {
         StoredPaymentMethodContentHeaderView(
             logoURL: LogoURLProvider(environment: Environment.test).logoURL(withName: "visa"),
             title: "•••• 1111",
-            subtitle: NSAttributedString(string: "Use Visa to pay €10.00"),
+            subtitle: "Use Visa to pay €10.00",
             theme: theme
         )
         .padding()
