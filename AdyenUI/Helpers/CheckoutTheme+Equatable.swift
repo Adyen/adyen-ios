@@ -7,6 +7,8 @@
 extension AdyenButtonStyle: Equatable {
     public static func == (lhs: AdyenButtonStyle, rhs: AdyenButtonStyle) -> Bool {
         lhs.textColor == rhs.textColor && lhs.backgroundColor == rhs.backgroundColor
+            && lhs.loadingBackgroundColor == rhs.loadingBackgroundColor
+            && lhs.loadingTextColor == rhs.loadingTextColor
             && lhs.disabledTextColor == rhs.disabledTextColor
             && lhs.disabledBackgroundColor == rhs.disabledBackgroundColor
             && lhs.cornerRadius == rhs.cornerRadius

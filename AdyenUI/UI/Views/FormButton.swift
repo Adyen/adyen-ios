@@ -12,15 +12,23 @@ package final class FormButton: UIControl {
     private enum Constants {
         static let leadingImageWidth: CGFloat = 24
         static let leadingImageHeight: CGFloat = 24
+        static let activityIndicatorSize: CGFloat = 24
+        static let horizontalPadding: CGFloat = 20
     }
 
     private var style: ButtonStyle
     private var buttonStyle: AdyenButtonStyle = .primary(for: .default)
+    private let titleStyle: AdyenLabelStyle
 
     /// Initializes the form button.
     ///
     /// - Parameter style: The `FormButton` UI style.
     package init(style: ButtonStyle) {
+        self.titleStyle = AdyenLabelStyle(
+            font: AdyenFonts.default.bodyEmphasized,
+            color: style.title.color,
+            textAlignment: .center
+        )
         self.style = style
         super.init(frame: .zero)
         
@@ -28,7 +36,6 @@ package final class FormButton: UIControl {
         accessibilityTraits = .button
         
         addSubview(backgroundView)
-        addSubview(activityIndicatorView)
         addSubview(contentStackView)
 
         backgroundColor = style.backgroundColor
@@ -45,6 +52,7 @@ package final class FormButton: UIControl {
         style: ButtonStyle = .init(title: .init(font: .preferredFont(forTextStyle: .body), color: .red))
     ) {
         self.buttonStyle = theme.elements.buttons.primary
+        self.titleStyle = theme.elements.labels.bodyEmphasized.color(theme.elements.buttons.primary.textColor)
         self.style = style
         super.init(frame: .zero)
 
@@ -52,7 +60,6 @@ package final class FormButton: UIControl {
         accessibilityTraits = .button
 
         addSubview(backgroundView)
-        addSubview(activityIndicatorView)
         addSubview(contentStackView)
 
         backgroundColor = buttonStyle.backgroundColor
@@ -62,8 +69,9 @@ package final class FormButton: UIControl {
     }
 
     /// Initializes the form button with AdyenButtonStyle.
-    package init(buttonStyle: AdyenButtonStyle) {
+    package init(buttonStyle: AdyenButtonStyle, titleStyle: AdyenLabelStyle) {
         self.buttonStyle = buttonStyle
+        self.titleStyle = titleStyle.color(buttonStyle.textColor)
         self.style = .init(title: .init(font: .preferredFont(forTextStyle: .body), color: .red))
         super.init(frame: .zero)
 
@@ -71,7 +79,6 @@ package final class FormButton: UIControl {
         accessibilityTraits = .button
 
         addSubview(backgroundView)
-        addSubview(activityIndicatorView)
         addSubview(contentStackView)
 
         backgroundColor = buttonStyle.backgroundColor
@@ -108,10 +115,8 @@ package final class FormButton: UIControl {
     }
     
     internal lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel(style: TextStyle(
-            font: AdyenFonts.default.bodyEmphasized,
-            color: buttonStyle.textColor
-        ))
+        let titleLabel = AdyenLabel()
+        titleLabel.apply(titleStyle)
         titleLabel.isAccessibilityElement = false
         
         return titleLabel
@@ -139,11 +144,11 @@ package final class FormButton: UIControl {
     }()
     
     internal lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [leadingImageView, titleLabel])
+        let stackView = UIStackView(arrangedSubviews: [activityIndicatorView, leadingImageView, titleLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.spacing = 8
+        stackView.spacing = 12
         stackView.isUserInteractionEnabled = false
         return stackView
     }()
@@ -167,14 +172,39 @@ package final class FormButton: UIControl {
         set {
             if newValue {
                 activityIndicatorView.startAnimating()
-                contentStackView.alpha = 0.0
-                isEnabled = false
             } else {
                 activityIndicatorView.stopAnimating()
-                contentStackView.alpha = 1.0
-                isEnabled = true
             }
+            isEnabled = !newValue
+            updateAppearance()
         }
+    }
+
+    override package var isEnabled: Bool {
+        didSet {
+            updateAppearance()
+        }
+    }
+
+    private func updateAppearance() {
+        let backgroundColor: UIColor
+        let contentColor: UIColor
+        if showsActivityIndicator {
+            backgroundColor = buttonStyle.loadingBackgroundColor
+            contentColor = buttonStyle.loadingTextColor
+        } else if !isEnabled {
+            backgroundColor = buttonStyle.disabledBackgroundColor
+            contentColor = buttonStyle.disabledTextColor
+        } else {
+            backgroundColor = buttonStyle.backgroundColor
+            contentColor = buttonStyle.textColor
+        }
+
+        backgroundView.baseColor = backgroundColor
+        self.backgroundColor = backgroundColor
+        titleLabel.textColor = contentColor
+        leadingImageView.tintColor = contentColor
+        activityIndicatorView.color = contentColor
     }
     
     private lazy var activityIndicatorView: UIActivityIndicatorView = {
@@ -183,6 +213,11 @@ package final class FormButton: UIControl {
         activityIndicatorView.backgroundColor = .clear
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicatorView.hidesWhenStopped = true
+        // `.medium` is 20pt; scale it to the 24pt design value.
+        activityIndicatorView.transform = CGAffineTransform(
+            scaleX: Constants.activityIndicatorSize / 20,
+            y: Constants.activityIndicatorSize / 20
+        )
         activityIndicatorView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "activityIndicator")
         return activityIndicatorView
     }()
@@ -205,8 +240,14 @@ package final class FormButton: UIControl {
         let contentConstraints = [
             contentStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             contentStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            contentStackView.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
-            contentStackView.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor)
+            contentStackView.leadingAnchor.constraint(
+                greaterThanOrEqualTo: leadingAnchor,
+                constant: Constants.horizontalPadding
+            ),
+            contentStackView.trailingAnchor.constraint(
+                lessThanOrEqualTo: trailingAnchor,
+                constant: -Constants.horizontalPadding
+            )
         ].map { $0.adyen.with(priority: .defaultHigh) }
         
         let imageConstraints = [
@@ -215,8 +256,8 @@ package final class FormButton: UIControl {
         ]
         
         let spinnerConstraints = [
-            activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            activityIndicatorView.widthAnchor.constraint(equalToConstant: Constants.activityIndicatorSize),
+            activityIndicatorView.heightAnchor.constraint(equalToConstant: Constants.activityIndicatorSize)
         ]
 
         let allConstraints = contentConstraints + imageConstraints + spinnerConstraints + [heightConstraint]
@@ -238,7 +279,7 @@ extension FormButton {
     
     internal final class BackgroundView: UIView {
         
-        private let color: UIColor
+        private var color: UIColor
         private let rounding: CornerRounding
 
         fileprivate init(
@@ -261,7 +302,16 @@ extension FormButton {
         }
         
         // MARK: - Background Color
-        
+
+        /// The unhighlighted background color of the button.
+        fileprivate var baseColor: UIColor {
+            get { color }
+            set {
+                color = newValue
+                updateBackgroundColor()
+            }
+        }
+
         fileprivate var isHighlighted = false {
             didSet {
                 updateBackgroundColor()
