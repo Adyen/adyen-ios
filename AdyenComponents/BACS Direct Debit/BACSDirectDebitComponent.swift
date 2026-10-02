@@ -12,11 +12,6 @@ import Adyen
 #endif
 import UIKit
 
-internal protocol BACSDirectDebitRouterProtocol: AnyObject {
-    func presentConfirmation(with data: BACSDirectDebitData)
-    func confirmPayment(with data: BACSDirectDebitData)
-}
-
 /// A component that provides a form for BACS Direct Debit payments.
 @MainActor
 package final class BACSDirectDebitComponent: PaymentComponent {
@@ -45,115 +40,43 @@ package final class BACSDirectDebitComponent: PaymentComponent {
     /// Component's configuration
     package var configuration: Configuration
 
+    // MARK: - PaymentComponent
+
+    package func performSubmit() {
+        bacsViewModel.performSubmit()
+    }
+
     // MARK: - Properties
 
     internal let bacsPaymentMethod: BACSDirectDebitPaymentMethod
-    
-    internal var confirmationPresenter: BACSConfirmationPresenterProtocol?
-    private var confirmationViewPresented = false
-    
-    internal let inputFormViewController: BACSInputFormViewController
-    
-    internal private(set) var inputPresenter: BACSInputPresenterProtocol?
-    
+
+    internal let bacsViewModel: BACSViewModel
+
     // MARK: - Initializers
 
     /// Creates and returns a BACS Direct Debit component.
+    ///
+    /// - Note: Prefer creating instances via ``BACSDirectDebitFactory`` instead of calling
+    /// this initializer directly, as it is responsible for assembling the view model and
+    /// view controller dependencies.
     /// - Parameters:
     ///   - paymentMethod: The BACS Direct Debit payment method.
     ///   - context: The context object for this component.
     ///   - configuration: Configuration for the component.
+    ///   - viewModel: The view model backing the component's form.
+    ///   - viewController: The view controller presented by the component.
     package init(
         paymentMethod: BACSDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: Configuration,
+        viewModel: BACSViewModel,
+        viewController: UIViewController
     ) {
         self.bacsPaymentMethod = paymentMethod
         self.context = context
         self.configuration = configuration
-        self.inputFormViewController = BACSInputFormViewController(
-            title: paymentMethod.name,
-            scrollEnabled: configuration.showsSubmitButton,
-            styleProvider: configuration.style
-        )
-        self.viewController = SecuredViewController(
-            child: inputFormViewController,
-            style: configuration.style
-        )
-        
-        let tracker = BACSDirectDebitComponentTracker(
-            paymentMethod: bacsPaymentMethod,
-            context: context,
-            isDropIn: _isDropIn
-        )
-        let itemsFactory = BACSItemsFactory(
-            styleProvider: configuration.style,
-            localizationParameters: configuration.localizationParameters,
-            scope: String(describing: self)
-        )
-        self.inputPresenter = BACSInputPresenter(
-            view: inputFormViewController,
-            router: self,
-            tracker: tracker,
-            itemsFactory: itemsFactory
-        )
-        inputPresenter?.amount = context.amount
-        inputFormViewController.presenter = inputPresenter
-        
-    }
-
-    package func performSubmit() {
-        // TODO: - COSDK-1284: The confirmation screen will be removed.
-    }
-}
-
-// MARK: - BACSDirectDebitRouterProtocol
-
-/// :nodoc:
-extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
-
-    // TODO: - This will be removed in COSDK-1284
-    internal func presentConfirmation(with data: BACSDirectDebitData) {
-        confirmationViewPresented = true
-        _ = assembleConfirmationView(with: data)
-    }
-
-    internal func confirmPayment(with data: BACSDirectDebitData) {
-        guard let bacsDirectDebitPaymentMethod = paymentMethod as? BACSDirectDebitPaymentMethod else {
-            return
-        }
-        let details = BACSDirectDebitDetails(
-            paymentMethod: bacsDirectDebitPaymentMethod,
-            holderName: data.holderName,
-            bankAccountNumber: data.bankAccountNumber,
-            bankLocationId: data.bankLocationId
-        )
-        confirmationPresenter?.startLoading()
-        submit(data: PaymentComponentData(paymentMethodDetails: details, order: order))
-    }
-
-    // MARK: - Private
-
-    private func assembleConfirmationView(with data: BACSDirectDebitData) -> UIViewController {
-        let confirmationViewController = BACSConfirmationViewController(
-            title: paymentMethod.name,
-            scrollEnabled: configuration.showsSubmitButton,
-            styleProvider: configuration.style,
-            localizationParameters: configuration.localizationParameters
-        )
-        let itemsFactory = BACSItemsFactory(
-            styleProvider: configuration.style,
-            localizationParameters: configuration.localizationParameters,
-            scope: String(describing: self)
-        )
-        confirmationPresenter = BACSConfirmationPresenter(
-            data: data,
-            view: confirmationViewController,
-            router: self,
-            itemsFactory: itemsFactory
-        )
-        confirmationViewController.presenter = confirmationPresenter
-        return SecuredViewController(child: confirmationViewController, style: configuration.style)
+        self.bacsViewModel = viewModel
+        self.viewController = viewController
     }
 }
 
@@ -164,21 +87,6 @@ extension BACSDirectDebitComponent: LoadingComponent {
 
     /// Stops any processing animation that the component is running.
     package func stopLoading() {
-        confirmationPresenter?.stopLoading()
-    }
-}
-
-// MARK: - Cancellable
-
-/// :nodoc:
-extension BACSDirectDebitComponent: Cancellable {
-
-    /// Called when the user cancels the component.
-    package func didCancel() {
-        if confirmationViewPresented == false {
-            inputPresenter?.resetForm()
-        } else {
-            confirmationViewPresented = false
-        }
+        bacsViewModel.stopLoading()
     }
 }

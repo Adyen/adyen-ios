@@ -12,19 +12,20 @@ class BACSDirectDebitComponentTrackerTests: XCTestCase {
 
     var apiContext: APIContext!
     var analyticsProvider: AnalyticsProviderMock!
+    var adyenContext: AdyenContext!
     var sut: BACSDirectDebitComponentTracker!
+
+    let paymentMethod = BACSDirectDebitPaymentMethod(
+        type: .bacsDirectDebit,
+        name: "BACS Direct Debit"
+    )
 
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        let paymentMethod = BACSDirectDebitPaymentMethod(
-            type: .bacsDirectDebit,
-            name: "BACS Direct Debit"
-        )
-
         apiContext = Dummy.apiContext
         analyticsProvider = AnalyticsProviderMock()
-        let adyenContext = AdyenContext(
+        adyenContext = AdyenContext(
             apiContext: apiContext,
             amount: Dummy.amount,
             publicKey: Dummy.publicKey,
@@ -33,11 +34,12 @@ class BACSDirectDebitComponentTrackerTests: XCTestCase {
         sut = BACSDirectDebitComponentTracker(
             paymentMethod: paymentMethod,
             context: adyenContext,
-            isDropIn: false
+            isDropIn: { false }
         )
     }
 
     override func tearDownWithError() throws {
+        adyenContext = nil
         apiContext = nil
         analyticsProvider = nil
         sut = nil
@@ -50,6 +52,23 @@ class BACSDirectDebitComponentTrackerTests: XCTestCase {
 
         // Then
         XCTAssertEqual(analyticsProvider.initialEventCallsCount, 1)
+    }
+
+    func testSendInitialEventWhenInDropInShouldNotCallAnalyticsProviderSendInitialEvent() {
+        // Given
+        var isDropIn = false
+        sut = BACSDirectDebitComponentTracker(
+            paymentMethod: paymentMethod,
+            context: adyenContext,
+            isDropIn: { isDropIn }
+        )
+        isDropIn = true
+
+        // When
+        sut.sendInitialAnalytics()
+
+        // Then
+        XCTAssertEqual(analyticsProvider.initialEventCallsCount, 0)
     }
     
     func testSendRenderEventShouldAddInfoCount() {

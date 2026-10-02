@@ -15,7 +15,7 @@ class BACSInputPresenterTests: XCTestCase {
     var router: BACSRouterProtocolMock!
     var tracker: BACSDirectDebitComponentTrackerProtocolMock!
     var itemsFactory: BACSItemsFactoryProtocolMock!
-    var sut: BACSInputPresenter!
+    var sut: BACSViewModel!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -26,7 +26,7 @@ class BACSInputPresenterTests: XCTestCase {
         itemsFactory = itemsFactoryMock
         let amount = Amount(value: 105.7, currencyCode: "USD", localeIdentifier: nil)
 
-        sut = BACSInputPresenter(
+        sut = BACSViewModel(
             view: view,
             router: router,
             tracker: tracker,
@@ -77,7 +77,7 @@ class BACSInputPresenterTests: XCTestCase {
     func testContinuePaymentWhenButtonTappedShouldDisplayValidationOnView() {
         // When
         sut.viewDidLoad()
-        sut.continueButtonItem?.buttonSelectionHandler?()
+        sut.submitButtonItem?.buttonSelectionHandler?()
 
         // Then
         XCTAssertEqual(view.displayValidationCallsCount, 1)
@@ -95,7 +95,7 @@ class BACSInputPresenterTests: XCTestCase {
         sut.emailItem?.value = "mail"
 
         // When
-        sut.continueButtonItem?.buttonSelectionHandler?()
+        sut.submitButtonItem?.buttonSelectionHandler?()
 
         // Then
         XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 0)
@@ -113,7 +113,7 @@ class BACSInputPresenterTests: XCTestCase {
         sut.emailItem?.value = bacsDataMock.shopperEmail
 
         // When
-        sut.continueButtonItem?.buttonSelectionHandler?()
+        sut.submitButtonItem?.buttonSelectionHandler?()
 
         // Then
         XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 0)
@@ -131,7 +131,7 @@ class BACSInputPresenterTests: XCTestCase {
         sut.emailItem?.value = bacsDataMock.shopperEmail
 
         // When
-        sut.continueButtonItem?.buttonSelectionHandler?()
+        sut.submitButtonItem?.buttonSelectionHandler?()
 
         // Then
         XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 0)
@@ -149,7 +149,7 @@ class BACSInputPresenterTests: XCTestCase {
         sut.emailItem?.value = bacsDataMock.shopperEmail
 
         // When
-        sut.continueButtonItem?.buttonSelectionHandler?()
+        sut.submitButtonItem?.buttonSelectionHandler?()
 
         // Then
         XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 0)
@@ -167,7 +167,7 @@ class BACSInputPresenterTests: XCTestCase {
         sut.emailItem?.value = bacsDataMock.shopperEmail
 
         // When
-        sut.continueButtonItem?.buttonSelectionHandler?()
+        sut.submitButtonItem?.buttonSelectionHandler?()
 
         // Then
         XCTAssertEqual(router.presentConfirmationWithDataCallsCount, 1)
@@ -187,7 +187,7 @@ class BACSInputPresenterTests: XCTestCase {
         sut.emailItem?.value = expectedBacsData.shopperEmail
 
         // When
-        sut.continueButtonItem?.buttonSelectionHandler?()
+        sut.submitButtonItem?.buttonSelectionHandler?()
 
         // Then
         let receivedBacsData = router.presentConfirmationWithDataReceivedData
@@ -209,7 +209,7 @@ class BACSInputPresenterTests: XCTestCase {
         sut.emailItem?.value = expectedBacsData.shopperEmail
 
         // When
-        sut.continueButtonItem?.buttonSelectionHandler?()
+        sut.submitButtonItem?.buttonSelectionHandler?()
         sut.viewWillAppear()
 
         // Then
