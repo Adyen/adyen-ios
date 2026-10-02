@@ -72,7 +72,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
     internal lazy var searchBar: UISearchBar = {
         .prominent(
             placeholder: viewModel.searchBarPlaceholder,
-            backgroundColor: viewModel.style.backgroundColor,
+            theme: viewModel.theme,
             delegate: self
         )
     }()
@@ -271,6 +271,14 @@ extension SearchViewController: UISearchBarDelegate {
     
     package func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.handleSearchTextDidChange(searchText)
+    }
+    
+    package func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.adyenApplyFieldStyle(theme: viewModel.theme, isEditing: true)
+    }
+    
+    package func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.adyenApplyFieldStyle(theme: viewModel.theme, isEditing: false)
     }
     
     package func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
