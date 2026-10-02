@@ -139,8 +139,8 @@ internal final class PaymentMethodListHeaderView: UIView {
         amountLabel.apply(viewModel.theme.elements.labels.title)
 
         // Subtitle Label
-        subtitleLabel.textColor = viewModel.theme.colors.textSecondary
         subtitleLabel.apply(viewModel.theme.elements.labels.body)
+        subtitleLabel.textColor = viewModel.theme.colors.textSecondary
 
         // ApplePay Button
         applePayButton.cornerRadius = viewModel.theme.attributes.cornerRadius

@@ -75,7 +75,8 @@ internal final class PaymentMethodItemView: UIView {
         guard let trailingInfoData = item.trailingInfoData else { return nil }
         let logosView = SupportedPaymentMethodLogosView(
             imageUrls: trailingInfoData.logoUrls,
-            trailingText: trailingInfoData.text
+            trailingText: trailingInfoData.text,
+            style: logosStyle
         )
         logosView.translatesAutoresizingMaskIntoConstraints = false
         return logosView
@@ -200,6 +201,16 @@ internal final class PaymentMethodItemView: UIView {
 
         // Highlight view
         highlightView.backgroundColor = item.theme.colors.disabled
+    }
+
+    private var logosStyle: SupportedPaymentMethodLogosView.Style {
+        var style = SupportedPaymentMethodLogosView.Style()
+        style.images.borderColor = item.theme.colors.separator
+        style.trailingText = TextStyle(
+            font: item.theme.elements.labels.subheadline.font,
+            color: item.theme.colors.textSecondary
+        )
+        return style
     }
 
     private func loadIcon(from url: URL?) {
