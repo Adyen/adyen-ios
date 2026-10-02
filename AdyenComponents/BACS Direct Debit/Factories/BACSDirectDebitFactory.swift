@@ -86,4 +86,11 @@ package struct BACSDirectDebitFactory: PaymentComponentFactory {
     package func defaultConfiguration() -> BACSDirectDebitComponent.Configuration {
         BACSDirectDebitComponent.Configuration()
     }
+
+    package func isAvailable(
+        for _: Method,
+        configuration _: Configuration
+    ) -> Bool {
+        true
+    }
 }
