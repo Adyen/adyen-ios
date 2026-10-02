@@ -14,6 +14,8 @@ package struct AdyenButtonStyle {
     
     package var backgroundColor: UIColor
     package var textColor: UIColor
+    package var loadingBackgroundColor: UIColor
+    package var loadingTextColor: UIColor
     package var disabledBackgroundColor: UIColor
     package var disabledTextColor: UIColor
     package var cornerRadius: CornerRounding?
@@ -21,12 +23,16 @@ package struct AdyenButtonStyle {
     internal init(
         backgroundColor: UIColor,
         textColor: UIColor,
+        loadingBackgroundColor: UIColor,
+        loadingTextColor: UIColor,
         disabledBackgroundColor: UIColor,
         disabledTextColor: UIColor,
         cornerRadius: CornerRounding? = nil
     ) {
         self.backgroundColor = backgroundColor
         self.textColor = textColor
+        self.loadingBackgroundColor = loadingBackgroundColor
+        self.loadingTextColor = loadingTextColor
         self.disabledBackgroundColor = disabledBackgroundColor
         self.disabledTextColor = disabledTextColor
         self.cornerRadius = cornerRadius
@@ -36,6 +42,8 @@ package struct AdyenButtonStyle {
         .init(
             backgroundColor: colors.primary,
             textColor: colors.textOnPrimary,
+            loadingBackgroundColor: colors.disabled,
+            loadingTextColor: colors.text,
             disabledBackgroundColor: colors.disabled,
             disabledTextColor: colors.textOnDisabled,
             cornerRadius: .fixed(AdyenUIConstants.defaultCornerRadius)
@@ -46,6 +54,8 @@ package struct AdyenButtonStyle {
         .init(
             backgroundColor: colors.container,
             textColor: colors.text,
+            loadingBackgroundColor: colors.disabled,
+            loadingTextColor: colors.text,
             disabledBackgroundColor: colors.disabled,
             disabledTextColor: colors.textOnDisabled,
             cornerRadius: .fixed(AdyenUIConstants.defaultCornerRadius)
@@ -54,8 +64,10 @@ package struct AdyenButtonStyle {
     
     internal static func tertiary(for colors: CheckoutColors) -> AdyenButtonStyle {
         .init(
-            backgroundColor: .clear,
+            backgroundColor: colors.background,
             textColor: colors.highlight,
+            loadingBackgroundColor: colors.disabled,
+            loadingTextColor: colors.highlight,
             disabledBackgroundColor: colors.disabled,
             disabledTextColor: colors.textOnDisabled,
             cornerRadius: .fixed(AdyenUIConstants.defaultCornerRadius)
@@ -66,6 +78,8 @@ package struct AdyenButtonStyle {
         .init(
             backgroundColor: colors.destructive,
             textColor: colors.textOnDestructive,
+            loadingBackgroundColor: colors.disabled,
+            loadingTextColor: colors.text,
             disabledBackgroundColor: colors.disabled,
             disabledTextColor: colors.textOnDisabled,
             cornerRadius: .fixed(AdyenUIConstants.defaultCornerRadius)
