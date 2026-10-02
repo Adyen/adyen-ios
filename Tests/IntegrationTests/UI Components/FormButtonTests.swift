@@ -56,13 +56,13 @@ final class FormButtonTests: XCTestCase {
         XCTAssertTrue(sut.isEnabled, "Button should be enabled after activity indicator hides")
     }
 
-    func testLoadingStateUsesDisabledColors() {
+    func testLoadingStateUsesLoadingColors() {
         let buttonStyle = AdyenButtonStyle.primary(for: .default)
-        let sut = FormButton(buttonStyle: buttonStyle)
+        let sut = FormButton(buttonStyle: buttonStyle, titleStyle: CheckoutTheme.default.elements.labels.bodyEmphasized)
 
         sut.showsActivityIndicator = true
-        XCTAssertEqual(sut.titleLabel.textColor, buttonStyle.disabledTextColor, "Title should use disabled text color while loading")
-        XCTAssertEqual(sut.backgroundView.backgroundColor, buttonStyle.disabledBackgroundColor, "Background should be disabled color")
+        XCTAssertEqual(sut.titleLabel.textColor, buttonStyle.loadingTextColor, "Title should use loading text color while loading")
+        XCTAssertEqual(sut.backgroundView.backgroundColor, buttonStyle.loadingBackgroundColor, "Background should be loading color")
 
         sut.showsActivityIndicator = false
         XCTAssertEqual(sut.titleLabel.textColor, buttonStyle.textColor, "Title color should be restored after loading")
@@ -71,7 +71,7 @@ final class FormButtonTests: XCTestCase {
 
     func testDisabledStateUsesDisabledColors() {
         let buttonStyle = AdyenButtonStyle.primary(for: .default)
-        let sut = FormButton(buttonStyle: buttonStyle)
+        let sut = FormButton(buttonStyle: buttonStyle, titleStyle: CheckoutTheme.default.elements.labels.bodyEmphasized)
 
         sut.isEnabled = false
         XCTAssertEqual(sut.titleLabel.textColor, buttonStyle.disabledTextColor, "Title should use disabled text color when disabled")
@@ -84,7 +84,7 @@ final class FormButtonTests: XCTestCase {
 
     func testProgressViewReplacesLeadingImageWhileLoading() throws {
         let (sut, progressView) = try makeSUT()
-        sut.leadingImage = .systemLock
+        sut.leadingImage = UIImage(systemName: "star")
         XCTAssertFalse(sut.leadingImageView.isHidden, "Leading image should be visible initially")
 
         sut.showsActivityIndicator = true

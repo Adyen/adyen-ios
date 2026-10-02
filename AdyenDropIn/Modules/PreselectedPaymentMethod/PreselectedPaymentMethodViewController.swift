@@ -261,7 +261,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     }()
 
     private lazy var primaryButton: FormButton = {
-        let button = FormButton(buttonStyle: theme.elements.buttons.primary)
+        let button = FormButton(buttonStyle: theme.elements.buttons.primary, titleStyle: theme.elements.labels.bodyEmphasized)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(primaryButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton")
@@ -270,7 +270,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
     }()
 
     private lazy var secondaryButton: FormButton = {
-        let button = FormButton(buttonStyle: theme.elements.buttons.secondary)
+        let button = FormButton(buttonStyle: theme.elements.buttons.secondary, titleStyle: theme.elements.labels.bodyEmphasized)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(secondaryButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "secondaryButton")
