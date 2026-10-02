@@ -48,19 +48,11 @@ internal final class StoredPaymentMethodContentViewModel {
         displayInformation.title
     }
 
-    internal var subtitle: NSAttributedString {
-        AmountAwarePaymentStringsPolicy.storedPaymentMethodAttributedSubtitle(
+    internal var subtitle: String {
+        AmountAwarePaymentStringsPolicy.storedPaymentMethodSubtitle(
             for: component.paymentMethod.name,
             with: component.context.amount,
-            localizationParameters: localizationParameters,
-            attributes: [
-                .font: theme.elements.labels.body.font,
-                .foregroundColor: theme.elements.labels.body.color
-            ],
-            emphasizedAttributes: [
-                .font: theme.elements.labels.bodyEmphasized.font,
-                .foregroundColor: theme.elements.labels.bodyEmphasized.color
-            ]
+            localizationParameters: localizationParameters
         )
     }
 

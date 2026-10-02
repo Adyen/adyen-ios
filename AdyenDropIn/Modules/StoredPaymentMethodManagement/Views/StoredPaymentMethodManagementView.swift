@@ -102,7 +102,7 @@ private extension StoredPaymentMethodManagementView {
     private struct HeaderView: View {
 
         private enum Constants {
-            static let spacing: CGFloat = 8
+            static let spacing: CGFloat = 4
         }
 
         let title: String
@@ -115,7 +115,7 @@ private extension StoredPaymentMethodManagementView {
                     .adyenLabelStyle(theme.elements.labels.title)
 
                 Text(description)
-                    .adyenLabelStyle(theme.elements.labels.body)
+                    .adyenLabelStyle(theme.elements.labels.body, color: theme.colors.textSecondary)
             }
         }
     }
