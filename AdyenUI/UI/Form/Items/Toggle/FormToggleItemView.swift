@@ -31,7 +31,7 @@ package final class FormToggleItemView: FormItemView<FormToggleItem> {
         stackView.distribution = .fill
         stackView.spacing = AdyenUIConstants.stackViewSpacing
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = AdyenUIConstants.contentInsets
+        stackView.layoutMargins = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
         stackView.preservesSuperviewLayoutMargins = true
       
         return stackView
