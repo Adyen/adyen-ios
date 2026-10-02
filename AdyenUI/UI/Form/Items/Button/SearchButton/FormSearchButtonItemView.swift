@@ -40,7 +40,7 @@ internal final class FormSearchButtonItemView: FormItemView<FormSearchButtonItem
 
         .prominent(
             placeholder: item.placeholder,
-            backgroundColor: theme.colors.background,
+            theme: theme,
             delegate: self
         )
     }()
