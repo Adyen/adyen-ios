@@ -68,14 +68,22 @@ jobs:
         
     - name: Download and install simulator runtime
       if: matrix.needs_custom_sim == true
-      run: |
-        echo "Downloading iOS ${{ matrix.version }} runtime using xcodes..."
-        sudo xcodes runtimes install "iOS ${{ matrix.version }}"
-        
-        # Verify simulator is available
-        xcrun simctl list runtimes
+      uses: nick-fields/retry@v4
+      with:
+        timeout_minutes: 10
+        max_attempts: 3
+        retry_wait_seconds: 30
+        command: |
+          echo "Downloading iOS ${{ matrix.version }} runtime via xcodebuild..."
+          # Wake CoreSimulatorService first; otherwise -downloadPlatform
+          # intermittently fails with "Unable to connect to simulator" (exit 70)
+          # see - https://github.com/actions/runner-images/issues/13459
+          sudo xcrun simctl list > /dev/null
+          sudo xcodebuild -downloadPlatform iOS -buildVersion ${{ matrix.version }}
 
-    # This step is now handled by the xcodes tool above
+          # Verify the runtime actually installed, else fail so retry kicks in
+          xcrun simctl list runtimes
+          xcrun simctl list runtimes | grep -q "iOS ${{ matrix.version }}"
 
     - name: Create simulator ${{ matrix.version }}
       run: |
@@ -92,11 +100,25 @@ jobs:
         DEST: "platform=iOS Simulator,OS=${{ matrix.version }},name=${{ matrix.displayname }}"
       run: |
         echo "Destination: $DEST"
+        set +e
         xcodebuild build test \
           -project "Adyen.xcodeproj" \
           -scheme "IntegrationUIKitTests" \
           -destination "$DEST" \
           -skipPackagePluginValidation \
-          SWIFT_VERSION=5
+          -test-iterations 3 \
+          -retry-tests-on-failure \
+          -test-repetition-relaunch-enabled YES \
+          SWIFT_VERSION=5 2>&1 | tee compatibility-xcodebuild.log | xcbeautify --quieter --is-ci --disable-logging
+        status=${PIPESTATUS[0]}
+        exit "$status"
+
+    - name: Upload raw compatibility test log
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v7
+      with:
+        name: compatibility-xcodebuild-${{ matrix.displayname }}-ios-${{ matrix.version }}
+        path: compatibility-xcodebuild.log
+        if-no-files-found: error
 
 

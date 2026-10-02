@@ -21,16 +21,16 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     // MARK: - Properties
 
     internal weak var router: ComponentContainerRouting?
-    private let component: PresentableComponent
-    private let configuration: DropInComponent.Configuration
+    private let component: PaymentComponent
+    private let configuration: DropInConfiguration
     private var dropInFlowManager: DropInFlowManaging
     private weak var partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
 
     internal init(
-        component: PresentableComponent,
-        configuration: DropInComponent.Configuration,
+        component: PaymentComponent,
+        configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
@@ -48,9 +48,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     }
 
     internal func cancel() {
-        if let component = (component as? PaymentComponent) {
-            dropInFlowManager.cancel(component: component)
-        }
+        dropInFlowManager.cancel(component: component)
         
         stopLoading()
         router?.dismiss(completion: nil)
@@ -59,7 +57,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     // MARK: - Private
 
     private func setupComponent() {
-        (component as? PaymentComponent)?.delegate = self
+        component.delegate = self
         (component as? PartialPaymentComponent)?.partialPaymentDelegate = partialPaymentDelegate
         (component as? PartialPaymentComponent)?.readyToSubmitComponentDelegate = self
     }
@@ -77,7 +75,7 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        dropInFlowManager.submit(data, from: component, actionPresenter: self)
+        dropInFlowManager.submit(data, from: component)
     }
     
     internal func didFail(
@@ -92,27 +90,12 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
     }
 }
 
-// MARK: - ActionPresenter
-
-extension ComponentContainerViewModel: ActionPresenter {
-
-    internal func present(actionComponent: any PresentableComponent) {
-        router?.present(actionComponent: actionComponent) { [weak self] in
-            self?.stopLoading()
-        }
-    }
-
-    internal func didCancel(actionComponent: any ActionComponent) {
-        stopLoading()
-    }
-}
-
 // MARK: - ReadyToSubmitPaymentComponentDelegate
 
 extension ComponentContainerViewModel: ReadyToSubmitPaymentComponentDelegate {
 
     internal func showConfirmation(
-        for component: InstantPaymentComponent,
+        for component: PaymentComponent,
         with order: PartialPaymentOrder?
     ) {
         // TODO: - Handle gift card balance confirmation

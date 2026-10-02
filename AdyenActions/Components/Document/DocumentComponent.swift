@@ -21,8 +21,8 @@ package final class DocumentComponent: ActionComponent, ShareableComponent {
 
     package weak var delegate: ActionComponentDelegate?
 
-    /// Delegates `PresentableComponent`'s presentation.
-    package weak var presentationDelegate: PresentationDelegate?
+    /// Delegates view controller presentation.
+    package weak var actionPresentationDelegate: ActionPresentationDelegate?
 
     /// The document component configurations.
     package struct Configuration {
@@ -81,40 +81,17 @@ package final class DocumentComponent: ActionComponent, ShareableComponent {
         )
         let view = DocumentActionView(viewModel: viewModel, style: configuration.style)
         view.delegate = self
-        let viewController = ADYViewController(view: view)
+        let viewController = ActionViewController(view: view)
         
         setUpPresenterViewController(parentViewController: viewController)
 
-        if let presentationDelegate {
-            let presentableComponent = PresentableComponentWrapper(
-                component: self,
-                viewController: viewController,
-                navBarType: navBarType()
-            )
-            presentationDelegate.present(component: presentableComponent)
+        if let actionPresentationDelegate {
+            actionPresentationDelegate.present(actionViewController: viewController, actionData: ActionData(type: .voucher))
         } else {
             AdyenAssertion.assertionFailure(
-                message: "PresentationDelegate is nil. Provide a presentation delegate to DocumentComponent."
+                message: "ActionPresentationDelegate is nil. Provide a presentation delegate to DocumentComponent."
             )
         }
-    }
-    
-    private func navBarType() -> NavigationBarType {
-        let model = ActionNavigationBar.Model(
-            leadingButtonTitle: nil,
-            trailingButtonTitle: Bundle.Adyen.localizedDoneCopy
-        )
-        let style = ActionNavigationBar.Style(
-            leadingButton: nil,
-            trailingButton: configuration.style.doneButton,
-            backgroundColor: configuration.style.backgroundColor
-        )
-        
-        let navBar = ActionNavigationBar(model: model, style: style)
-        navBar.trailingButtonHandler = { [weak self] in
-            self.map { $0.delegate?.didComplete(from: $0) }
-        }
-        return .custom(navBar)
     }
 }
 

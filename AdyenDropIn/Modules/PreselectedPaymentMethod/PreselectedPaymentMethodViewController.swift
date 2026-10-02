@@ -123,6 +123,7 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
         subtitleLabel.text = viewModel.subtitleText
         primaryButton.title = viewModel.submitButtonTitle
         secondaryButton.title = viewModel.showAllPaymentMethodsButtonTitle
+        secondaryButton.isHidden = !viewModel.showsAllPaymentMethodsButton
     }
 
     private func setupNavigationItem() {

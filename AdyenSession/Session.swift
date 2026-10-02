@@ -18,9 +18,6 @@ package final class Session: SessionProtocol {
     /// The session context information.
     package internal(set) var state: Session.State
     
-    /// The presentation delegate.
-    package weak var presentationDelegate: PresentationDelegate?
-    
     internal let context: AdyenContext
     
     package var showRemovePaymentMethodButton: Bool {
@@ -47,11 +44,9 @@ package final class Session: SessionProtocol {
     internal init(
         state: Session.State,
         baseAPIClient: AsyncAPIClientProtocol,
-        context: AdyenContext,
-        presentationDelegate: PresentationDelegate? = nil
+        context: AdyenContext
     ) {
         self.state = state
-        self.presentationDelegate = presentationDelegate
         self.baseAPIClient = baseAPIClient
         self.context = context
     }
@@ -256,25 +251,14 @@ extension Session {
     }
 }
 
-// MARK: - Component Configuration Awareness
+// MARK: - Component Configuration
 
-extension Session: AdyenSessionAware {
-    
-    package nonisolated var isSession: Bool {
-        true
-    }
-}
+extension Session {
 
-extension Session: InstallmentConfigurationAware {
-    
-    package var installmentConfiguration: InstallmentConfiguration? {
-        state.responseConfiguration.installmentOptions
-    }
-}
-
-extension Session: StorePaymentMethodFieldAware {
-    
-    package var showStorePaymentMethodField: Bool? {
-        state.responseConfiguration.enableStoreDetails
+    package var componentConfiguration: SessionComponentConfiguration {
+        .init(
+            installmentConfiguration: state.responseConfiguration.installmentOptions,
+            showStorePaymentMethod: state.responseConfiguration.enableStoreDetails
+        )
     }
 }

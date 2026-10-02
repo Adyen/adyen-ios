@@ -89,8 +89,6 @@ class SessionTests: XCTestCase {
         XCTAssertFalse(session.state.responseConfiguration.enableStoreDetails)
         XCTAssertFalse(session.state.responseConfiguration.showRemovePaymentMethodButton)
         XCTAssertEqual(AnalyticsForSession.sessionId, "session_id")
-        XCTAssertTrue(session.isSession)
-        XCTAssertEqual(session.showStorePaymentMethodField, session.state.responseConfiguration.enableStoreDetails)
 
     }
 
@@ -522,36 +520,37 @@ class SessionTests: XCTestCase {
 
     // MARK: - Component Configuration Awareness
 
-    func test_installmentConfiguration_shouldReturnSessionConfig() throws {
+    func test_componentConfiguration_shouldReturnInstallmentConfiguration() throws {
         let config = try JSONDecoder().decode(
             SessionSetupResponse.Configuration.self,
             from: XCTUnwrap(sessionConfigJson.data(using: .utf8))
         )
         sut = initializeSession(expectedPaymentMethods: expectedPaymentMethods, configuration: config)
 
-        XCTAssertNotNil(sut.installmentConfiguration)
+        let componentConfiguration = sut.componentConfiguration
+        XCTAssertNotNil(componentConfiguration.installmentConfiguration)
         XCTAssertEqual(
-            sut.installmentConfiguration?.defaultOptions,
+            componentConfiguration.installmentConfiguration?.defaultOptions,
             .init(monthValues: [2, 3, 5], includesRevolving: false)
         )
         XCTAssertEqual(
-            sut.installmentConfiguration?.cardBasedOptions,
+            componentConfiguration.installmentConfiguration?.cardBasedOptions,
             [.visa: .init(monthValues: [3, 6, 9], includesRevolving: true)]
         )
     }
 
-    func test_showStorePaymentMethodField_shouldReflectSessionConfig() {
+    func test_componentConfiguration_shouldReturnStorePaymentMethodVisibility() {
         sut = initializeSession(
             expectedPaymentMethods: expectedPaymentMethods,
             configuration: .init(installmentOptions: nil, enableStoreDetails: true)
         )
-        XCTAssertEqual(sut.showStorePaymentMethodField, true)
+        XCTAssertTrue(sut.componentConfiguration.showStorePaymentMethod)
 
         sut = initializeSession(
             expectedPaymentMethods: expectedPaymentMethods,
             configuration: .init(installmentOptions: nil, enableStoreDetails: false)
         )
-        XCTAssertEqual(sut.showStorePaymentMethodField, false)
+        XCTAssertFalse(sut.componentConfiguration.showStorePaymentMethod)
     }
 
     // MARK: - PaymentsRequest encoding

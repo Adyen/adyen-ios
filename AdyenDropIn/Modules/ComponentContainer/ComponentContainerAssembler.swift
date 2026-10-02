@@ -12,7 +12,7 @@ import UIKit
 @MainActor
 internal protocol ComponentContainerAssemblerProtocol {
     func resolveComponentContainerRouter(
-        for component: PresentableComponent,
+        for component: PaymentComponent,
         listener: ComponentContainerRouterListener
     ) -> Router
 }
@@ -22,14 +22,14 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
 
     // MARK: - Properties
 
-    private let configuration: DropInComponent.Configuration
+    private let configuration: DropInConfiguration
     private let dropInFlowManager: DropInFlowManaging
     private let partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
 
     internal init(
-        configuration: DropInComponent.Configuration,
+        configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
@@ -41,7 +41,7 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
     // MARK: - ComponentContainerAssemblerProtocol
 
     internal func resolveComponentContainerRouter(
-        for component: PresentableComponent,
+        for component: PaymentComponent,
         listener: ComponentContainerRouterListener
     ) -> Router {
         let viewModel = ComponentContainerViewModel(

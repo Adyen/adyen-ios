@@ -41,7 +41,6 @@ internal final class VoucherView: UIView, Localizable {
 
         super.init(frame: .zero)
         self.accessibilityIdentifier = model.identifier
-        self.translatesAutoresizingMaskIntoConstraints = false
         
         buildUI()
     }
@@ -65,28 +64,33 @@ internal final class VoucherView: UIView, Localizable {
         firstSpacer.translatesAutoresizingMaskIntoConstraints = false
         let secondSpacer = UIView()
         secondSpacer.translatesAutoresizingMaskIntoConstraints = false
-        
+
+        let amountStackView = UIStackView(arrangedSubviews: [currencyLabel, amountLabel])
+        amountStackView.axis = .horizontal
+        amountStackView.alignment = .center
+        amountStackView.spacing = 4.0
+        amountStackView.translatesAutoresizingMaskIntoConstraints = false
+
         containerView.addSubview(logo)
         containerView.addSubview(firstSpacer)
-        containerView.addSubview(amountLabel)
+        containerView.addSubview(amountStackView)
         containerView.addSubview(secondSpacer)
-        containerView.addSubview(currencyLabel)
         containerView.addSubview(buttonsStackView)
-        
+
         spacerLandscapeConstraint = firstSpacer.heightAnchor.constraint(greaterThanOrEqualToConstant: 30.0)
-        spacerPortraitConstraint = firstSpacer.heightAnchor.constraint(equalToConstant: 80.0)
+        spacerPortraitConstraint = firstSpacer.heightAnchor.constraint(greaterThanOrEqualToConstant: 80.0)
 
         NSLayoutConstraint.activate([
-            logo.topAnchor.constraint(equalTo: topAnchor, constant: -22),
-            logo.centerXAnchor.constraint(equalTo: centerXAnchor),
-            firstSpacer.topAnchor.constraint(equalTo: logo.bottomAnchor),
+            firstSpacer.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             firstSpacer.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             firstSpacer.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            amountLabel.topAnchor.constraint(equalTo: firstSpacer.bottomAnchor),
-            amountLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            currencyLabel.trailingAnchor.constraint(equalTo: amountLabel.leadingAnchor, constant: -4.0),
-            currencyLabel.centerYAnchor.constraint(equalTo: amountLabel.centerYAnchor),
-            secondSpacer.topAnchor.constraint(equalTo: amountLabel.bottomAnchor),
+            logo.topAnchor.constraint(equalTo: firstSpacer.bottomAnchor),
+            logo.centerXAnchor.constraint(equalTo: centerXAnchor),
+            amountStackView.topAnchor.constraint(equalTo: logo.bottomAnchor, constant: 24.0),
+            amountStackView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            amountStackView.leadingAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.leadingAnchor),
+            amountStackView.trailingAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.trailingAnchor),
+            secondSpacer.topAnchor.constraint(equalTo: amountStackView.bottomAnchor),
             secondSpacer.heightAnchor.constraint(equalTo: firstSpacer.heightAnchor),
             secondSpacer.widthAnchor.constraint(equalTo: firstSpacer.widthAnchor),
             secondSpacer.centerXAnchor.constraint(equalTo: firstSpacer.centerXAnchor),

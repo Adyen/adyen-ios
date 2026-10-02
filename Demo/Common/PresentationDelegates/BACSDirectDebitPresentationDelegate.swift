@@ -7,9 +7,11 @@
 import Adyen
 import AdyenComponents
 import Foundation
+import UIKit
 
+// TODO: - This will be removed in COSDK-1284
 @MainActor
-internal class BACSDirectDebitPresentationDelegate: PresentationDelegate {
+internal class BACSDirectDebitPresentationDelegate {
 
     // MARK: - Properties
 
@@ -25,10 +27,10 @@ internal class BACSDirectDebitPresentationDelegate: PresentationDelegate {
         self.bacsComponent = bacsComponent
     }
 
-    internal func present(component: PresentableComponent) {
-        let navigationItem = component.viewController.navigationItem
+    internal func present(viewController: UIViewController) {
+        let navigationItem = viewController.navigationItem
         navigationItem.rightBarButtonItem = .init(barButtonSystemItem: .cancel, target: self, action: #selector(dismiss))
-        navigationController?.pushViewController(component.viewController, animated: true)
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     // MARK: - Private

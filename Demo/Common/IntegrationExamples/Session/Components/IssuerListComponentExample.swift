@@ -62,7 +62,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
 //                AdyenSession.initialize(
 //                    with: configuration,
 //                    delegate: self,
-//                    presentationDelegate: self,
+//                    actionPresentationDelegate: self,
 //                    completion: completion
 //                )
                 break
@@ -77,7 +77,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
     internal func presentComponent(with session: Session) {
         do {
             let component = try issuerListComponent(from: session)
-            let componentViewController = viewController(for: component)
+            let componentViewController = viewController(wrapping: component.viewController)
             presenter?.present(viewController: componentViewController, completion: nil)
             issuerListComponent = component
         } catch {
@@ -99,7 +99,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
         // component.delegate = session
     }
 
-    private func present(_ component: PresentableComponent) {
+    private func present(_ component: PaymentComponent) {
         presenter?.present(viewController: component.viewController, completion: nil)
     }
 
@@ -121,18 +121,11 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
 
 // TODO: Migrate to Checkout API — SessionDelegate has been removed in v6.
 
-extension IssuerListComponentExample: PresentationDelegate {
-    internal func present(component: PresentableComponent) {
-        let componentViewController = viewController(for: component)
-        presenter?.present(viewController: componentViewController, completion: nil)
-    }
-}
-
 private extension IssuerListComponentExample {
     
-    func viewController(for component: PresentableComponent) -> UIViewController {
-        let navigation = UINavigationController(rootViewController: component.viewController)
-        component.viewController.navigationItem.leftBarButtonItem = .init(
+    func viewController(wrapping viewController: UIViewController) -> UIViewController {
+        let navigation = UINavigationController(rootViewController: viewController)
+        viewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
             target: self,
             action: #selector(cancelPressed)

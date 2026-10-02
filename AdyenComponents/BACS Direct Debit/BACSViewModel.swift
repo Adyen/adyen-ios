@@ -11,12 +11,12 @@ import Adyen
 #endif
 import Foundation
 
-internal final class BACSViewModel {
+@MainActor
+package final class BACSViewModel {
 
     // MARK: - Properties
 
     private let paymentMethod: BACSDirectDebitPaymentMethod
-    private let amount: Amount?
     internal let configuration: BACSDirectDebitComponent.Configuration
     private let tracker: BACSDirectDebitComponentTrackerProtocol
     private let itemsFactory: BACSItemsFactoryProtocol
@@ -24,22 +24,31 @@ internal final class BACSViewModel {
 
     // MARK: - State
 
-    internal private(set) var items: [any FormItem] = []
-    @Published internal private(set) var shouldShowValidation = false
+    internal enum State {
+        case idle
+        case invalid
+        case submitting
+    }
+
+    @Published internal private(set) var state: State = .idle
+
+    /// The items currently displayed on the form. Populated once in `createItems()` and
+    /// is the single source of truth for both the view controller and the validity checks below.
+    internal private(set) lazy var items: [any FormItem] = createItems()
 
     // MARK: - Items
 
-    internal var holderNameItem: FormTextInputItem?
-    internal var bankAccountNumberItem: FormTextInputItem?
-    internal var sortCodeItem: FormTextInputItem?
-    internal var emailItem: FormTextInputItem?
-    internal var amountConsentToggleItem: FormToggleItem?
-    internal var legalConsentToggleItem: FormToggleItem?
-    internal var submitButtonItem: FormButtonItem?
+    internal let holderNameItem: FormTextInputItem
+    internal let bankAccountNumberItem: FormTextInputItem
+    internal let sortCodeItem: FormTextInputItem
+    internal let emailItem: FormTextInputItem
+    internal let amountConsentToggleItem: FormToggleItem
+    internal let legalConsentToggleItem: FormToggleItem
+    internal private(set) lazy var submitButtonItem: FormButtonItem? = createSubmitButtonItem()
 
     // MARK: - Initializers
 
-    internal init(
+    package init(
         paymentMethod: BACSDirectDebitPaymentMethod,
         amount: Amount?,
         configuration: BACSDirectDebitComponent.Configuration,
@@ -47,58 +56,55 @@ internal final class BACSViewModel {
         itemsFactory: BACSItemsFactoryProtocol,
         onSubmit: @escaping (_ details: BACSDirectDebitDetails) -> Void
     ) {
-        self.amount = amount
         self.paymentMethod = paymentMethod
         self.configuration = configuration
         self.tracker = tracker
         self.itemsFactory = itemsFactory
         self.onSubmit = onSubmit
+
+        self.holderNameItem = itemsFactory.createHolderNameItem()
+        self.bankAccountNumberItem = itemsFactory.createBankAccountNumberItem()
+        self.sortCodeItem = itemsFactory.createSortCodeItem()
+        self.emailItem = itemsFactory.createEmailItem()
+        self.amountConsentToggleItem = itemsFactory.createAmountConsentToggle(amount: amount)
+        self.legalConsentToggleItem = itemsFactory.createLegalConsentToggle()
     }
 
     // MARK: - Internal
 
-    internal func viewDidLoad() {
+    package func viewDidLoad() {
         tracker.sendInitialAnalytics()
         tracker.sendDidLoadEvent()
-        items = createItems()
     }
 
-    internal func stopLoading() {
-        submitButtonItem?.showsActivityIndicator = false
+    package func stopLoading() {
+        guard state == .submitting else { return }
+        state = .idle
     }
 
-    internal func performSubmit() {
-        startLoading()
-        shouldShowValidation = true
+    package func performSubmit() {
+        guard state != .submitting else { return }
 
-        guard let details = makeDetails() else {
-            stopLoading()
+        guard isValid else {
+            state = .invalid
             return
         }
 
-        onSubmit(details)
+        state = .submitting
+        onSubmit(makeDetails())
     }
 
     // MARK: - Private
 
-    private func startLoading() {
-        submitButtonItem?.showsActivityIndicator = true
+    private var isValid: Bool {
+        let areFieldsValid = items
+            .lazy
+            .compactMap { $0 as? ValidatableFormItem }
+            .allSatisfy { $0.isValid() }
+        return areFieldsValid && amountConsentToggleItem.value && legalConsentToggleItem.value
     }
 
     private func createItems() -> [any FormItem] {
-        holderNameItem = itemsFactory.createHolderNameItem()
-        bankAccountNumberItem = itemsFactory.createBankAccountNumberItem()
-        sortCodeItem = itemsFactory.createSortCodeItem()
-        emailItem = itemsFactory.createEmailItem()
-        amountConsentToggleItem = itemsFactory.createAmountConsentToggle(amount: amount)
-        legalConsentToggleItem = itemsFactory.createLegalConsentToggle()
-
-        if configuration.showsSubmitButton {
-            submitButtonItem = itemsFactory.createPaymentButton { [weak self] in
-                self?.performSubmit()
-            }
-        }
-
         let allItems: [(any FormItem)?] = [
             holderNameItem,
             bankAccountNumberItem,
@@ -115,31 +121,21 @@ internal final class BACSViewModel {
         return allItems.compactMap { $0 }
     }
 
-    private func makeDetails() -> BACSDirectDebitDetails? {
-        guard let amountTermsAccepted = amountConsentToggleItem?.value,
-              let legalTermsAccepted = legalConsentToggleItem?.value,
-              amountTermsAccepted, legalTermsAccepted else {
-            return nil
-        }
+    private func createSubmitButtonItem() -> FormButtonItem? {
+        guard configuration.showsSubmitButton else { return nil }
 
-        guard [holderNameItem, bankAccountNumberItem, sortCodeItem, emailItem]
-            .compactMap({ $0 })
-            .allSatisfy({ $0.isValid() }) else {
-            return nil
+        return itemsFactory.createPaymentButton { [weak self] in
+            self?.performSubmit()
         }
+    }
 
-        guard let holderName = holderNameItem?.value,
-              let bankAccountNumber = bankAccountNumberItem?.value,
-              let sortCode = sortCodeItem?.value else {
-            return nil
-        }
-
-        return BACSDirectDebitDetails(
+    private func makeDetails() -> BACSDirectDebitDetails {
+        BACSDirectDebitDetails(
             paymentMethod: paymentMethod,
-            holderName: holderName,
-            bankAccountNumber: bankAccountNumber,
-            bankLocationId: sortCode,
-            shopperEmail: emailItem?.value
+            holderName: holderNameItem.value,
+            bankAccountNumber: bankAccountNumberItem.value,
+            bankLocationId: sortCodeItem.value,
+            shopperEmail: emailItem.value
         )
     }
 }

@@ -71,7 +71,7 @@ extension CardViewController {
         
         internal lazy var billingAddressPickerItem: FormAddressPickerItem? = {
             switch addressMode {
-            case let .lookup(onLookup, onAddressSelected):
+            case let .lookup(_, onLookup, onAddressSelected):
                 let provider = AsyncAddressLookupProvider(
                     onLookup: onLookup,
                     onAddressSelected: onAddressSelected
@@ -91,7 +91,7 @@ extension CardViewController {
             return FormAddressPickerItem(
                 for: .billing,
                 initialCountry: initialCountry,
-                supportedCountryCodes: configuration.billingAddress.countryCodes,
+                supportedCountryCodes: addressMode.supportedCountryCodes,
                 prefillAddress: prefillAddress,
                 theme: theme,
                 style: formStyle,
@@ -265,10 +265,9 @@ extension CardViewController {
         internal lazy var button: FormButtonItem = {
             let item = FormButtonItem(style: formStyle.mainButtonItem)
             item.identifier = ViewIdentifierBuilder.build(scopeInstance: scope, postfix: "payButtonItem")
-            item.title = localizedSubmitButtonTitle(
+            item.title = AmountAwarePaymentStringsPolicy.payButtonTitle(
                 with: amount,
-                style: .immediate,
-                localizationParameters
+                localizationParameters: localizationParameters
             )
             return item
         }()

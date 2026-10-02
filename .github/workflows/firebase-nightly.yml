@@ -1,0 +1,103 @@
+name: 🌙🔥 Nightly Firebase
+
+on:
+  # 22:00 UTC Sun-Thu is 00:00 Amsterdam Mon-Fri during CEST (UTC+2). Midnight local falls on the
+  # previous UTC day, which is why the day-of-week range is shifted back by one.
+  # GitHub cron is UTC only, so this drifts to 01:00 Amsterdam once CET (UTC+1) starts.
+  # The offset minute avoids the top of the hour, when scheduled runs are most likely to be delayed.
+  schedule:
+    - cron: '7 22 * * 0-4'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false # A nightly is not worth cancelling halfway through an archive
+
+permissions:
+  contents: read
+
+jobs:
+  # The version name and the release notes are resolved here rather than at each point of use. The
+  # distribution and the cleanup at the end both depend on the version name, and a nightly release
+  # that no longer matches would silently stop being cleaned up.
+  nightly_config:
+    name: Resolve nightly configuration
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      version_name: ${{ steps.resolve.outputs.version_name }}
+      release_notes: ${{ steps.resolve.outputs.release_notes }}
+
+    steps:
+      - name: Resolve nightly configuration
+        id: resolve
+        run: |
+          {
+            echo "version_name=nightly"
+            echo "release_notes=Latest SDK build - (${GITHUB_SHA::7})"
+          } >> "$GITHUB_OUTPUT"
+
+  distribute:
+    name: 📱🔥 Nightly Firebase Distribution
+    needs: nightly_config
+    # The build number is intentionally fixed so every nightly reports the same build to Firebase
+    # App Distribution.
+    uses: ./.github/workflows/firebase-app-distribution.yml
+    with:
+      build_version_name: ${{ needs.nightly_config.outputs.version_name }}
+      build_number: '1'
+      release_notes: ${{ needs.nightly_config.outputs.release_notes }}
+    secrets: inherit
+
+  # Only a single nightly release should be available to testers at a time. App Distribution always
+  # creates a new release instead of replacing an existing one, so the superseded releases are
+  # removed here. This needs a successful release, so a failed one leaves the previous nightly
+  # release untouched.
+  remove_superseded_releases:
+    name: 🧹 Remove superseded releases
+    needs: [nightly_config, distribute]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      # Mints a short lived access token from the service account, to authenticate the App
+      # Distribution REST API calls below. The token is only valid for one hour and is never stored.
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3.0.0
+        with:
+          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/cloud-platform
+
+      - name: Remove superseded nightly releases
+        env:
+          ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+          APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+          VERSION_NAME: ${{ needs.nightly_config.outputs.version_name }}
+        run: |
+          # The project number is the second segment of the app id.
+          project_number=$(echo "$APP_ID" | cut -d: -f2)
+          api="https://firebaseappdistribution.googleapis.com/v1/projects/$project_number/apps/$APP_ID/releases"
+
+          # Releases are returned newest first, so everything after the newest nightly release is
+          # superseded. Matching on displayVersion (the version name) means that releases with an
+          # actual version name can never be removed here.
+          names=$(curl --silent --show-error --fail --get "$api" \
+            --header "Authorization: Bearer $ACCESS_TOKEN" \
+            --data-urlencode 'pageSize=100' \
+            | jq --compact-output --arg version "$VERSION_NAME" \
+              '[(.releases // [])[] | select(.displayVersion == $version) | .name] | .[1:]')
+
+          if [ "$names" = "[]" ]; then
+            echo "No superseded nightly releases to remove."
+            exit 0
+          fi
+
+          echo "Removing superseded nightly releases: $names"
+          curl --silent --show-error --fail --request POST "${api}:batchDelete" \
+            --header "Authorization: Bearer $ACCESS_TOKEN" \
+            --header "Content-Type: application/json" \
+            --data "{\"names\": $names}"

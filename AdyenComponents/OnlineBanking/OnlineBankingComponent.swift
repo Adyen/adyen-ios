@@ -15,7 +15,6 @@ import UIKit
 /// A component that provides a form for Online Banking payment.
 @MainActor
 package final class OnlineBankingComponent: PaymentComponent,
-    PresentableComponent,
     LoadingComponent {
 
     private enum ViewIdentifier {
@@ -45,6 +44,9 @@ package final class OnlineBankingComponent: PaymentComponent,
         child: formViewController,
         style: configuration.style
     )
+
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
 
     /// Component's configuration
     package var configuration: Configuration

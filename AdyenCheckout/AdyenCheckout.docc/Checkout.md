@@ -1,13 +1,26 @@
 # ``Checkout``
 
-<!--@START_MENU_TOKEN@-->Summary<!--@END_MENU_TOKEN@-->
+The entry point for setting up an Adyen Checkout flow.
 
 ## Overview
 
-<!--@START_MENU_TOKEN@-->Text<!--@END_MENU_TOKEN@-->
+Use ``Checkout`` to set up a checkout for the session flow, the advanced flow, or for action handling only. Each `setup` variant returns a flow object that exposes the APIs relevant to that integration.
 
 ## Topics
 
-### <!--@START_MENU_TOKEN@-->Group<!--@END_MENU_TOKEN@-->
+### Setting up a checkout
 
-- <!--@START_MENU_TOKEN@-->``Symbol``<!--@END_MENU_TOKEN@-->
+- ``SessionCheckout``
+- ``AdvancedCheckout``
+- ``ActionOnlyCheckout``
+- ``BaseCheckout``
+- ``PaymentCheckout``
+
+### Configuration
+
+- ``CheckoutConfiguration``
+- ``CheckoutConfigurationBuilder``
+
+### Components
+
+- ``CheckoutPaymentComponent``

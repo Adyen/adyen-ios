@@ -7,26 +7,25 @@
 import Adyen
 import Foundation
 
-// sourcery:AutoMockable
-internal protocol BACSDirectDebitComponentTrackerProtocol: AnyObject {
+package protocol BACSDirectDebitComponentTrackerProtocol: AnyObject {
     func sendInitialAnalytics()
     func sendDidLoadEvent()
 }
 
-internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerProtocol {
+package class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerProtocol {
 
     // MARK: - Properties
 
     private let paymentMethod: BACSDirectDebitPaymentMethod
     private let context: AdyenContext
-    private let isDropIn: Bool
+    private let isDropIn: () -> Bool
 
     // MARK: - Initializers
 
-    internal init(
+    package init(
         paymentMethod: BACSDirectDebitPaymentMethod,
         context: AdyenContext,
-        isDropIn: Bool
+        isDropIn: @escaping () -> Bool
     ) {
         self.paymentMethod = paymentMethod
         self.context = context
@@ -35,9 +34,9 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
 
     // MARK: - BACSDirectDebitComponentTrackerProtocol
 
-    internal func sendInitialAnalytics() {
+    package func sendInitialAnalytics() {
         // initial call is not needed again if inside dropIn
-        guard !isDropIn else { return }
+        guard !isDropIn() else { return }
         let flavor: AnalyticsFlavor = .components(type: paymentMethod.type)
         let amount = context.amount
         let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AnalyticsForSession.sessionId)
@@ -47,7 +46,7 @@ internal class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerP
         )
     }
     
-    internal func sendDidLoadEvent() {
+    package func sendDidLoadEvent() {
         let infoEvent = AnalyticsEventInfo(component: paymentMethod.type.rawValue, type: .rendered)
         context.analyticsProvider?.add(info: infoEvent)
     }

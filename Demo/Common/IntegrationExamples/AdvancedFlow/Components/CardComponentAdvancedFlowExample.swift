@@ -54,20 +54,12 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
-            amount: ConfigurationConstants.current.amount,
             clientKey: ConfigurationConstants.clientKey,
             analyticsConfiguration: .init(
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
             )
         ) {
             ConfigurationConstants.current.cardConfiguration
-                .billingAddressMode(
-                    .lookup(
-                        onAddressLookup: { searchTerm in
-                            await MapkitAddressLookupProvider().searchAsync(searchTerm)
-                        }
-                    )
-                )
                 .onBinChange { bin in
                     print("Here is the bin \(bin)")
                 }
@@ -80,8 +72,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
         let checkout = try await Checkout.setup(
             with: paymentMethods,
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
         .onSubmit { [weak self] data in
             guard let self else { return .completion(resultCode: "Error") }
@@ -162,8 +153,9 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     }
 
     private func viewController(for component: CheckoutPaymentComponent) -> UIViewController {
-        let navigation = UINavigationController(rootViewController: component.viewController!)
-        component.viewController?.navigationItem.leftBarButtonItem = .init(
+        let componentViewController = component.viewController
+        let navigation = UINavigationController(rootViewController: componentViewController)
+        componentViewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
             target: self,
             action: #selector(cancelPressed)
@@ -294,12 +286,5 @@ private struct DemoLocaleGroupedProvider: CheckoutLocalizationProvider {
     func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String? {
         guard let languageCode = locale.languageCode else { return nil }
         return overrides[languageCode]?[key]
-    }
-}
-
-extension CardComponentAdvancedFlowExample: PresentationDelegate {
-   
-    func present(component: any PresentableComponent) {
-        presenter?.present(viewController: component.viewController, completion: nil)
     }
 }

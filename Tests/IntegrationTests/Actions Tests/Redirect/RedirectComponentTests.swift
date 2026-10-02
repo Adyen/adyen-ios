@@ -159,7 +159,7 @@ class RedirectComponentTests: XCTestCase {
         let appLauncher = AppLauncherMock()
         sut.appLauncher = appLauncher
         let presentingViewControllerMock = PresentingViewControllerMock()
-        sut.presentationDelegate = presentingViewControllerMock
+        sut.actionPresentationDelegate = presentingViewControllerMock
         let topViewController = try UIViewController.topPresenter()
         topViewController.present(presentingViewControllerMock, animated: false, completion: nil)
         
@@ -193,7 +193,7 @@ class RedirectComponentTests: XCTestCase {
 
     func testOpenHttpWebLink() throws {
         let sut = RedirectComponent(context: Dummy.context)
-        sut.presentationDelegate = try UIViewController.topPresenter()
+        sut.actionPresentationDelegate = try UIViewController.topPresenter()
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
         let appLauncher = AppLauncherMock()
@@ -219,7 +219,7 @@ class RedirectComponentTests: XCTestCase {
 
     func testOpenHttpWebLinkAndDragedDown() throws {
         let sut = RedirectComponent(context: Dummy.context)
-        sut.presentationDelegate = try UIViewController.topPresenter()
+        sut.actionPresentationDelegate = try UIViewController.topPresenter()
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
 
@@ -244,14 +244,14 @@ class RedirectComponentTests: XCTestCase {
     func testRedirectResult() throws {
         // Given
         let sut = RedirectComponent(context: Dummy.context)
-        let presentationDelegate = PresentationDelegateMock()
-        sut.presentationDelegate = presentationDelegate
+        let actionPresentationDelegate = ActionPresentationDelegateMock()
+        sut.actionPresentationDelegate = actionPresentationDelegate
         let delegate = ActionComponentDelegateMock()
         sut.delegate = delegate
         let action = try RedirectAction(url: XCTUnwrap(URL(string: "https://www.adyen.com")), paymentData: "test_data")
 
         let presentExpectation = expectation(description: "Expect in app browser to be presented")
-        presentationDelegate.doPresent = { component in
+        actionPresentationDelegate.doPresent = { viewController in
             presentExpectation.fulfill()
         }
 

@@ -102,7 +102,7 @@ class CheckoutActionComponentTests: XCTestCase {
     func testRedirectToHttpWebLink() throws {
         let sut = CheckoutActionComponent(context: Dummy.context)
         let delegate = ActionComponentDelegateMock()
-        sut.presentationDelegate = try UIViewController.topPresenter()
+        sut.actionPresentationDelegate = try UIViewController.topPresenter()
         sut.delegate = delegate
 
         delegate.onDidOpenExternalApplication = { _ in
@@ -117,18 +117,19 @@ class CheckoutActionComponentTests: XCTestCase {
 
     func testAwaitAction() throws {
         let sut = CheckoutActionComponent(context: Dummy.context)
-        sut.presentationDelegate = try UIViewController.topPresenter()
+        sut.actionPresentationDelegate = try UIViewController.topPresenter()
 
         let action = Action.await(AwaitAction(paymentData: "SOME_DATA", paymentMethodType: .blik))
         sut.handle(action)
         
-        let waitExpectation = expectation(description: "Expect AwaitViewController to be presented")
+        let waitExpectation = expectation(description: "Expect ActionViewController to be presented")
         
-        try waitUntilTopPresenter(isOfType: AdyenActions.AwaitViewController.self)
+        let awaitViewController = try waitUntilTopPresenter(isOfType: ActionViewController.self)
+        XCTAssertNotNil(awaitViewController.view as? AwaitView)
 
-        (sut.presentationDelegate as! UIViewController).dismiss(animated: true) {
+        (sut.actionPresentationDelegate as! UIViewController).dismiss(animated: true) {
             let topPresentedViewController = try? UIViewController.topPresenter()
-            XCTAssertNil(topPresentedViewController as? AdyenActions.AwaitViewController)
+            XCTAssertNil(topPresentedViewController?.view as? AwaitView)
 
             waitExpectation.fulfill()
         }
@@ -150,7 +151,7 @@ class CheckoutActionComponentTests: XCTestCase {
         let sut = CheckoutActionComponent(context: Dummy.context)
         sut.appLauncher = mockAppLauncher
         
-        sut.presentationDelegate = try UIViewController.topPresenter()
+        sut.actionPresentationDelegate = try UIViewController.topPresenter()
         let action = Action.redirectableAwait(
             RedirectableAwaitAction(
                 paymentData: "SOME_DATA",
@@ -161,13 +162,14 @@ class CheckoutActionComponentTests: XCTestCase {
         
         sut.handle(action)
         
-        let waitExpectation = expectation(description: "Expect AwaitViewController to be presented")
+        let waitExpectation = expectation(description: "Expect ActionViewController to be presented")
         
-        try waitUntilTopPresenter(isOfType: AdyenActions.AwaitViewController.self)
+        let awaitViewController = try waitUntilTopPresenter(isOfType: ActionViewController.self)
+        XCTAssertNotNil(awaitViewController.view as? AwaitView)
 
-        try XCTUnwrap(sut.presentationDelegate as? UIViewController).dismiss(animated: true) {
+        try XCTUnwrap(sut.actionPresentationDelegate as? UIViewController).dismiss(animated: true) {
             let topPresentedViewController = try? UIViewController.topPresenter()
-            XCTAssertNil(topPresentedViewController as? AdyenActions.AwaitViewController)
+            XCTAssertNil(topPresentedViewController?.view as? AwaitView)
 
             waitExpectation.fulfill()
         }
@@ -202,17 +204,17 @@ class CheckoutActionComponentTests: XCTestCase {
 
     func testVoucherAction() throws {
         let sut = CheckoutActionComponent(context: Dummy.context)
-        sut.presentationDelegate = try UIViewController.topPresenter()
+        sut.actionPresentationDelegate = try UIViewController.topPresenter()
         
         let action = try JSONDecoder().decode(VoucherAction.self, from: XCTUnwrap(voucherAction.data(using: .utf8)))
         sut.handle(Action.voucher(action))
         
-        let waitExpectation = expectation(description: "Expect VoucherViewController to be presented")
-        let voucherViewController = try waitUntilTopPresenter(isOfType: ADYViewController.self)
+        let waitExpectation = expectation(description: "Expect Voucher action to be presented")
+        let voucherViewController = try waitUntilTopPresenter(isOfType: ActionViewController.self)
         XCTAssertNotNil(voucherViewController.view as? VoucherView)
         
-        let presentationDelegate = try XCTUnwrap(sut.presentationDelegate as? UIViewController)
-        presentationDelegate.dismiss(animated: true) {
+        let actionPresentationDelegate = try XCTUnwrap(sut.actionPresentationDelegate as? UIViewController)
+        actionPresentationDelegate.dismiss(animated: true) {
             XCTAssertNotEqual(voucherViewController, try? UIViewController.topPresenter())
             waitExpectation.fulfill()
         }
@@ -223,7 +225,7 @@ class CheckoutActionComponentTests: XCTestCase {
     func testQRCodeAction() throws {
 
         let sut = CheckoutActionComponent(context: Dummy.context)
-        sut.presentationDelegate = try UIViewController.topPresenter()
+        sut.actionPresentationDelegate = try UIViewController.topPresenter()
         
         let action = try JSONDecoder().decode(QRCodeAction.self, from: XCTUnwrap(qrAction.data(using: .utf8)))
         sut.handle(Action.qrCode(action))
@@ -234,19 +236,19 @@ class CheckoutActionComponentTests: XCTestCase {
     func testDocumentAction() throws {
         // DocumentAction
         let sut = CheckoutActionComponent(context: Dummy.context)
-        sut.presentationDelegate = try UIViewController.topPresenter()
+        sut.actionPresentationDelegate = try UIViewController.topPresenter()
         
         let action = try JSONDecoder().decode(DocumentAction.self, from: XCTUnwrap(documentAction.data(using: .utf8)))
         sut.handle(Action.document(action))
         
-        let documentViewController = try waitUntilTopPresenter(isOfType: ADYViewController.self)
+        let documentViewController = try waitUntilTopPresenter(isOfType: ActionViewController.self)
         XCTAssertNotNil(documentViewController.view as? DocumentActionView)
     }
     
     func testTwintAction() throws {
         
         let sut = CheckoutActionComponent(context: Dummy.context)
-        sut.presentationDelegate = try UIViewController.topPresenter()
+        sut.actionPresentationDelegate = try UIViewController.topPresenter()
         
         let assertionExpectation = expectation(description: "Should Assert if no Twint configuration is provided")
         AdyenAssertion.listener = { assertion in

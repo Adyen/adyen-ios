@@ -18,7 +18,6 @@ import UIKit
 /// A component that provides a form for ACH Direct Debit payment.
 @MainActor
 package final class ACHDirectDebitComponent: PaymentComponent,
-    PresentableComponent,
     LoadingComponent {
     
     private enum ViewIdentifier {
@@ -38,17 +37,13 @@ package final class ACHDirectDebitComponent: PaymentComponent,
         achDirectDebitPaymentMethod
     }
 
-    package weak var delegate: PaymentComponentDelegate? {
-        didSet {
-            if let storePaymentMethodAware = delegate as? StorePaymentMethodFieldAware,
-               storePaymentMethodAware.isSession {
-                configuration.showStorePaymentMethodField = storePaymentMethodAware.showStorePaymentMethodField ?? false
-            }
-        }
-    }
+    package weak var delegate: PaymentComponentDelegate?
     
     /// Component configuration
-    package var configuration: ACHDirectDebitComponentConfiguration
+    package var configuration: ACHDirectDebitConfiguration
+
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
 
     package lazy var viewController: UIViewController = SecuredViewController(
         child: formViewController,
@@ -71,7 +66,7 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     package init(
         paymentMethod: ACHDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: ACHDirectDebitComponentConfiguration = .init()
+        configuration: ACHDirectDebitConfiguration = .init()
     ) {
         self.configuration = configuration
         self.achDirectDebitPaymentMethod = paymentMethod
@@ -126,7 +121,11 @@ package final class ACHDirectDebitComponent: PaymentComponent,
     }
     
     private var storePayment: Bool? {
-        configuration.showStorePaymentMethodField ? storeDetailsItem.value : nil
+        if context.amount?.value == 0 {
+            return true
+        }
+
+        return configuration.showStorePaymentMethod ? storeDetailsItem.value : nil
     }
     
     // MARK: - Form Items
@@ -250,10 +249,9 @@ package final class ACHDirectDebitComponent: PaymentComponent,
             scopeInstance: self,
             postfix: ViewIdentifier.payButtonItem
         )
-        item.title = localizedSubmitButtonTitle(
+        item.title = AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: context.amount,
-            style: .immediate,
-            configuration.localizationParameters
+            localizationParameters: configuration.localizationParameters
         )
         item.buttonSelectionHandler = { [weak self] in
             self?.performSubmit()
@@ -287,7 +285,10 @@ package final class ACHDirectDebitComponent: PaymentComponent,
                 subtitle: nil // TODO: Add subtitle localization key
             ))
         }
-        if configuration.showStorePaymentMethodField {
+        if StorePaymentMethodPolicy.shouldShowConsent(
+            configuredVisible: configuration.showStorePaymentMethod,
+            amount: context.amount
+        ) {
             formViewController.append(storeDetailsItem)
         }
         

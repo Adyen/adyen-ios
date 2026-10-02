@@ -49,7 +49,6 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     private func applePayComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
-            amount: ConfigurationConstants.current.amount,
             clientKey: ConfigurationConstants.clientKey,
             analyticsConfiguration: .init(
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
@@ -101,7 +100,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
                     self.updateLatestApplePayAmount(using: items)
                     return PKPaymentRequestCouponCodeUpdate(paymentSummaryItems: items)
                 }
-                .onPaymentMethodChange { paymentMethod, summaryItems in
+                .onSelectPaymentMethod { paymentMethod, summaryItems in
                     // Example: Add a processing fee based on card type
                     let cardType = paymentMethod.displayName ?? "Card"
                     let items = self.updatedSummaryItems(
@@ -121,8 +120,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
 
         let checkout = try await Checkout.setup(
             with: sessionResponse,
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
         .onBeforeSubmit { [weak self] data in
             guard let self else { return .abort }
@@ -176,12 +174,8 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
     }
 
     private func present(component: CheckoutPaymentComponent) {
-        guard let viewController = component.viewController else {
-            handleError(IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self))
-            return
-        }
         // Apple Pay's PassKit sheet is presented as-is; no navigation wrapper.
-        presenter?.present(viewController: viewController, completion: nil)
+        presenter?.present(viewController: component.viewController, completion: nil)
     }
 
     private func dismissAndShowAlert(_ success: Bool, _ message: String) {
@@ -220,8 +214,7 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
         let currentAmount = ConfigurationConstants.current.amount
         let updatedValue = AmountFormatter.minorUnitAmount(
             from: total.amount.decimalValue,
-            currencyCode: currentAmount.currencyCode,
-            localeIdentifier: currentAmount.localeIdentifier
+            currencyCode: currentAmount.currencyCode
         )
         latestApplePayAmount = Amount(
             value: updatedValue,
@@ -239,12 +232,5 @@ internal final class ApplePayComponentExample: InitialDataFlowProtocol {
             amount: latestApplePayAmount
         )
         return try await asyncApiClient.performAsync(request)
-    }
-}
-
-extension ApplePayComponentExample: PresentationDelegate {
-
-    func present(component: any PresentableComponent) {
-        presenter?.present(viewController: component.viewController, completion: nil)
     }
 }

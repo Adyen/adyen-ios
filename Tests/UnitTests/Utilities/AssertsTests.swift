@@ -53,8 +53,9 @@ class AssertsTests: XCTestCase {
 
     }
 
-    func testAwaitViewControllerPreferredContentSizeAssertion() {
-        let sut = AwaitViewController(viewModel: AwaitComponentViewModel(icon: "", message: "", spinnerTitle: ""))
+    func testAwaitActionViewControllerPreferredContentSizeAssertion() {
+        let awaitView = AwaitView(viewModel: AwaitComponentViewModel(icon: "", message: "", spinnerTitle: ""))
+        let sut = ActionViewController(view: awaitView)
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in
@@ -73,7 +74,7 @@ class AssertsTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in
-            XCTAssertEqual(message, "PresentationDelegate is nil. Provide a presentation delegate to AwaitComponent.")
+            XCTAssertEqual(message, "ActionPresentationDelegate is nil. Provide a presentation delegate to AwaitComponent.")
             expectation.fulfill()
         }
 
@@ -88,7 +89,7 @@ class AssertsTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in
-            XCTAssertEqual(message, "PresentationDelegate is nil. Provide a presentation delegate to VoucherComponent.")
+            XCTAssertEqual(message, "ActionPresentationDelegate is nil. Provide a presentation delegate to VoucherComponent.")
             expectation.fulfill()
         }
 
@@ -103,21 +104,6 @@ class AssertsTests: XCTestCase {
             shopperName: "",
             instructionsUrl: XCTUnwrap(URL(string: "https://google.com"))
         )))
-
-        wait(for: [expectation], timeout: 10)
-
-    }
-
-    func testVoucherViewControllerPreferredContentSizeAssertion() {
-        let sut = VoucherViewController(voucherView: UIView(), style: VoucherComponentStyle())
-        let expectation = XCTestExpectation(description: "Dummy Expectation")
-
-        AdyenAssertion.listener = { message in
-            XCTAssertEqual(message, "PreferredContentSize is overridden for this view controller.\ngetter - returns minimum possible content size.\nsetter - no implemented.")
-            expectation.fulfill()
-        }
-
-        sut.preferredContentSize = .zero
 
         wait(for: [expectation], timeout: 10)
 

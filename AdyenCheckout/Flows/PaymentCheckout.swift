@@ -15,8 +15,32 @@ import Foundation
 public class PaymentCheckout: BaseCheckout {
 
     /// The payment methods available for this checkout flow.
-    public var paymentMethods: PaymentMethods? {
-        core.paymentMethods
+    public var paymentMethods: [PaymentMethod] {
+        core.paymentMethods?.regular ?? []
+    }
+
+    /// The stored payment methods available for this checkout flow.
+    public var storedPaymentMethods: [StoredPaymentMethod] {
+        core.paymentMethods?.stored ?? []
+    }
+
+    /// Returns whether a payment method from this checkout can be used on the current device.
+    ///
+    /// Use this to decide whether to show a payment method before creating its component.
+    /// Payment methods without device or configuration requirements are always available.
+    /// The result is a snapshot: device or wallet state can change afterwards.
+    ///
+    /// ```swift
+    /// if checkout.isPaymentMethodAvailable(for: .applePay) {
+    ///     let component = try checkout.createPaymentComponent(for: .applePay)
+    /// }
+    /// ```
+    ///
+    /// - Parameter type: The payment method type from the payment methods response.
+    /// - Returns: `true` if a component can be created for the payment method; `false` if the payment method
+    ///   isn't in this checkout's payment methods, or the device or configuration doesn't meet its requirements.
+    public func isPaymentMethodAvailable(for type: PaymentMethodType) -> Bool {
+        core.isPaymentMethodAvailable(for: type)
     }
 
     /// Creates a payment component for the specified payment method type.
@@ -48,10 +72,18 @@ public class PaymentCheckout: BaseCheckout {
         }
     }
 
-    // TODO: Dropin: When dropin is supported then we should expose this method.
-    // Currently by exposing this method we make public all related types to AnyDropInComponent. Which are V5 api and not v6.
-//    /// Creates a Drop-in component with all available payment methods.
-//    public func createDropIn() -> (any AnyDropInComponent)? {
-//        core.createDropIn()
-//    }
+    /// Creates a Drop-in component with all available supported payment methods.
+    ///
+    /// Each call returns a new Drop-in component.
+    ///
+    /// - Returns: A configured ``CheckoutDropInComponent``.
+    /// - Throws: ``CheckoutError`` with code ``CheckoutError/Code/paymentMethodFailure`` if no supported
+    ///   payment method can be assembled.
+    public func createDropIn() throws -> CheckoutDropInComponent {
+        do {
+            return try core.createDropIn()
+        } catch {
+            throw CheckoutError(error: error, fallback: .paymentMethodFailure)
+        }
+    }
 }

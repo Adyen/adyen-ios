@@ -48,7 +48,6 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
-            amount: ConfigurationConstants.current.amount,
             clientKey: ConfigurationConstants.clientKey,
             analyticsConfiguration: .init(
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
@@ -71,9 +70,15 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
         let checkout = try await Checkout.setup(
             with: paymentMethods,
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
+        .onAction { [weak self] _, actionViewController in
+            guard let self else { return }
+            self.presenter?.present(
+                viewController: self.viewController(wrapping: actionViewController),
+                completion: nil
+            )
+        }
         .onSubmit { [weak self] data in
             guard let self else { return .completion(resultCode: "Error") }
             return await self.callPayments(with: data)
@@ -153,8 +158,19 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
     }
 
     private func viewController(for component: CheckoutPaymentComponent) -> UIViewController {
-        let navigation = UINavigationController(rootViewController: component.viewController!)
-        component.viewController?.navigationItem.leftBarButtonItem = .init(
+        let componentViewController = component.viewController
+        let navigation = UINavigationController(rootViewController: componentViewController)
+        componentViewController.navigationItem.leftBarButtonItem = .init(
+            barButtonSystemItem: .cancel,
+            target: self,
+            action: #selector(cancelPressed)
+        )
+        return navigation
+    }
+
+    private func viewController(wrapping actionViewController: UIViewController) -> UIViewController {
+        let navigation = UINavigationController(rootViewController: actionViewController)
+        actionViewController.navigationItem.leftBarButtonItem = .init(
             barButtonSystemItem: .cancel,
             target: self,
             action: #selector(cancelPressed)
@@ -166,12 +182,5 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
         // TODO: component cancellation?
         //        component?.cancelIfNeeded()
         presenter?.dismiss(completion: nil)
-    }
-}
-
-extension BLIKComponentAdvancedFlowExample: PresentationDelegate {
-
-    internal func present(component: any PresentableComponent) {
-        presenter?.present(viewController: component.viewController, completion: nil)
     }
 }

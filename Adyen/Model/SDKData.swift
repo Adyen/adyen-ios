@@ -25,7 +25,7 @@ package struct SDKData: Codable {
         case nativeComponent
 
         /// Indicates that the SDK does not have native component support for this payment method
-        /// and will handle it through the Instant Payment Component.
+        /// and will handle it through the Generic Payment Component.
         case genericComponent
     }
 
@@ -79,12 +79,5 @@ package extension PaymentComponent {
 
     var paymentMethodBehavior: SDKData.PaymentMethodBehavior {
         .nativeComponent
-    }
-}
-
-package extension InstantPaymentComponent {
-
-    var paymentMethodBehavior: SDKData.PaymentMethodBehavior {
-        .genericComponent
     }
 }

@@ -12,10 +12,11 @@ import AdyenNetworking
 
 package protocol SessionProtocol: AnyObject {
     var state: Session.State { get }
-    var presentationDelegate: PresentationDelegate? { get set }
     
     var showRemovePaymentMethodButton: Bool { get }
     
+    var componentConfiguration: SessionComponentConfiguration { get }
+
     func performSubmit(_ data: PaymentComponentData) async throws -> SubmitResult
     
     func performAdditionalDetails(_ data: ActionComponentData) async throws -> AdditionalDetailsResult
