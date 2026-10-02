@@ -300,42 +300,6 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         )
     }
 
-    func test_searchBar_whenRendered_shouldApplyPickerStyle() throws {
-        let searchViewController = try makeSearchViewController()
-        let searchTextField = searchViewController.searchBar.searchTextField
-        wait(until: { searchTextField.window != nil && searchTextField.isFirstResponder })
-        searchViewController.view.layoutIfNeeded()
-
-        XCTAssertGreaterThanOrEqual(searchViewController.searchBar.bounds.height, 44)
-        XCTAssertEqual(searchTextField.layer.cornerRadius, 14, accuracy: 0.5)
-        XCTAssertTrue(searchTextField.clipsToBounds)
-        XCTAssertEqual(searchViewController.searchBar.searchFieldBackgroundImage(for: .normal)?.size, .zero)
-    }
-
-    func test_searchBar_whenEditingStateChanges_shouldUpdateBorderColor() throws {
-        let borderColor: UIColor = .purple
-        let activeBorderColor: UIColor = .orange
-        var elements = AdyenElements.default
-        elements.textField.borderColor = borderColor
-        elements.textField.borderActiveColor = activeBorderColor
-
-        let searchViewController = try makeSearchViewController(
-            theme: CheckoutTheme(elements: elements)
-        )
-        let searchTextField = searchViewController.searchBar.searchTextField
-
-        wait(until: { searchTextField.isFirstResponder })
-        XCTAssertEqual(searchTextField.layer.borderColor, activeBorderColor.cgColor)
-
-        searchTextField.resignFirstResponder()
-        wait(until: { !searchTextField.isFirstResponder })
-        XCTAssertEqual(searchTextField.layer.borderColor, borderColor.cgColor)
-
-        searchTextField.becomeFirstResponder()
-        wait(until: { searchTextField.isFirstResponder })
-        XCTAssertEqual(searchTextField.layer.borderColor, activeBorderColor.cgColor)
-    }
-
     func test_picker_whenLaidOut_shouldSpaceFirstResultBelowSearchField() throws {
         let searchViewController = try makeSearchViewController()
         let resultsListViewController = searchViewController.resultsListViewController

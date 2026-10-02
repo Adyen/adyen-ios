@@ -37,8 +37,6 @@ package class SearchViewController: UIViewController, AdyenObserver {
     
     /// Delegate to handle different viewController events.
     package weak var delegate: ViewControllerDelegate?
-
-    internal var searchBarEditingStateDidChange: ((Bool) -> Void)?
     
     package lazy var resultsListViewController = ListViewController(style: viewModel.style, theme: viewModel.theme)
 
@@ -82,7 +80,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
     internal lazy var searchBar: UISearchBar = {
         .prominent(
             placeholder: viewModel.searchBarPlaceholder,
-            backgroundColor: viewModel.style.backgroundColor,
+            theme: viewModel.theme,
             delegate: self
         )
     }()
@@ -280,17 +278,17 @@ package class SearchViewController: UIViewController, AdyenObserver {
 }
 
 extension SearchViewController: UISearchBarDelegate {
-
-    package func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchBarEditingStateDidChange?(true)
-    }
-
-    package func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        searchBarEditingStateDidChange?(false)
-    }
     
     package func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.handleSearchTextDidChange(searchText)
+    }
+    
+    package func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.adyenApplyFieldStyle(theme: viewModel.theme, isEditing: true)
+    }
+    
+    package func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.adyenApplyFieldStyle(theme: viewModel.theme, isEditing: false)
     }
     
     package func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
