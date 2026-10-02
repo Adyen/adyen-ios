@@ -18,14 +18,14 @@ package class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerPr
 
     private let paymentMethod: BACSDirectDebitPaymentMethod
     private let context: AdyenContext
-    private let isDropIn: Bool
+    private let isDropIn: () -> Bool
 
     // MARK: - Initializers
 
     package init(
         paymentMethod: BACSDirectDebitPaymentMethod,
         context: AdyenContext,
-        isDropIn: Bool
+        isDropIn: @escaping () -> Bool
     ) {
         self.paymentMethod = paymentMethod
         self.context = context
@@ -36,7 +36,7 @@ package class BACSDirectDebitComponentTracker: BACSDirectDebitComponentTrackerPr
 
     package func sendInitialAnalytics() {
         // initial call is not needed again if inside dropIn
-        guard !isDropIn else { return }
+        guard !isDropIn() else { return }
         let flavor: AnalyticsFlavor = .components(type: paymentMethod.type)
         let amount = context.amount
         let additionalFields = AdditionalAnalyticsFields(amount: amount, sessionId: AnalyticsForSession.sessionId)

@@ -24,9 +24,8 @@ package struct BACSDirectDebitFactory: PaymentComponentFactory {
     /// Creates a BACS Direct Debit payment component, assembling its view model
     /// and view controller dependencies.
     ///
-    /// - Note: The tracker created here always reports `isDropIn: false`, since
-    /// this factory runs before Drop-in has a chance to set `_isDropIn` on the
-    /// resulting component.
+    /// - Note: The tracker reads the component's `_isDropIn` flag when analytics are sent,
+    /// since Drop-in sets it only after this factory returns the component.
     ///
     /// - Parameters:
     ///   - paymentMethod: The BACS Direct Debit payment method.
@@ -38,12 +37,12 @@ package struct BACSDirectDebitFactory: PaymentComponentFactory {
         context: AdyenContext,
         configuration: BACSDirectDebitComponent.Configuration
     ) -> BACSDirectDebitComponent {
-        var component: BACSDirectDebitComponent!
+        weak var weakComponent: BACSDirectDebitComponent?
 
         let tracker = BACSDirectDebitComponentTracker(
             paymentMethod: paymentMethod,
             context: context,
-            isDropIn: false
+            isDropIn: { weakComponent?._isDropIn ?? false }
         )
         let itemsFactory = BACSItemsFactory(
             styleProvider: configuration.style,
@@ -58,6 +57,7 @@ package struct BACSDirectDebitFactory: PaymentComponentFactory {
             tracker: tracker,
             itemsFactory: itemsFactory,
             onSubmit: { details in
+                guard let component = weakComponent else { return }
                 let data = PaymentComponentData(
                     paymentMethodDetails: details,
                     order: component.order
@@ -72,13 +72,14 @@ package struct BACSDirectDebitFactory: PaymentComponentFactory {
         )
         let viewController = SecuredViewController(child: bacsViewController, style: configuration.style)
 
-        component = BACSDirectDebitComponent(
+        let component = BACSDirectDebitComponent(
             paymentMethod: paymentMethod,
             context: context,
             configuration: configuration,
             viewModel: viewModel,
             viewController: viewController
         )
+        weakComponent = component
 
         return component
     }

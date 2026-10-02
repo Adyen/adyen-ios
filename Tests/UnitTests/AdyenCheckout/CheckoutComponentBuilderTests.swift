@@ -508,6 +508,61 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertFalse(bacsComponent.configuration.showsSubmitButton)
     }
 
+    func test_build_withBACSPaymentMethod_shouldReleaseComponentWhenNoLongerReferenced() throws {
+        // Given
+        let paymentMethod = try XCTUnwrap(createBACSPaymentMethod())
+        weak var weakComponent: BACSDirectDebitComponent?
+
+        // When
+        try autoreleasepool {
+            let component = try CheckoutComponentBuilder.build(
+                for: paymentMethod,
+                configuration: checkoutConfiguration,
+                policy: .components(checkoutConfiguration),
+                context: context
+            )
+            weakComponent = component as? BACSDirectDebitComponent
+            XCTAssertNotNil(weakComponent)
+        }
+
+        // Then
+        XCTAssertNil(weakComponent, "BACSDirectDebitComponent should not be retained after its last reference is released")
+    }
+
+    func test_build_withBACSPaymentMethod_whenValidFormIsSubmitted_shouldSubmitToDelegate() async throws {
+        // Given
+        let paymentMethod = try XCTUnwrap(createBACSPaymentMethod())
+        let delegate = PaymentComponentDelegateMock()
+        let component = try XCTUnwrap(
+            CheckoutComponentBuilder.build(
+                for: paymentMethod,
+                configuration: checkoutConfiguration,
+                policy: .components(checkoutConfiguration),
+                context: context
+            ) as? BACSDirectDebitComponent
+        )
+        component.delegate = delegate
+        let didSubmitExpectation = expectation(description: "didSubmit")
+        delegate.onDidSubmit = { _, _ in didSubmitExpectation.fulfill() }
+
+        let viewModel = component.bacsViewModel
+        viewModel.viewDidLoad()
+        viewModel.holderNameItem?.value = "A. Shopper"
+        viewModel.bankAccountNumberItem?.value = "40308669"
+        viewModel.sortCodeItem?.value = "560036"
+        viewModel.emailItem?.value = "shopper@example.com"
+        viewModel.amountConsentToggleItem?.value = true
+        viewModel.legalConsentToggleItem?.value = true
+
+        // When
+        component.performSubmit()
+
+        // Then
+        await fulfillment(of: [didSubmitExpectation], timeout: 1)
+        XCTAssertTrue(delegate.didSubmitReceivedArguments?.component === component)
+        XCTAssertTrue(delegate.didSubmitReceivedArguments?.data.paymentMethod is BACSDirectDebitDetails)
+    }
+
     // MARK: - Generic Payment Component Tests
 
     func test_build_withGenericPaymentMethod_returnsGenericPaymentComponent() throws {
