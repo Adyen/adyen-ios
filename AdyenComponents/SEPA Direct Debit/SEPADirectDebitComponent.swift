@@ -15,7 +15,7 @@ import UIKit
 
 /// A component that provides a form for SEPA Direct Debit payments.
 @MainActor
-package final class SEPADirectDebitComponent: PresentablePaymentComponent, LoadingComponent {
+package final class SEPADirectDebitComponent: PaymentComponent, LoadingComponent {
 
     /// Configuration for SEPA Direct Debit Component
     package typealias Configuration = BasicComponentConfiguration
@@ -33,6 +33,9 @@ package final class SEPADirectDebitComponent: PresentablePaymentComponent, Loadi
     
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
+    
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
     
     /// Initializes the SEPA Direct Debit component.
     ///
@@ -136,10 +139,9 @@ package final class SEPADirectDebitComponent: PresentablePaymentComponent, Loadi
     internal lazy var button: FormButtonItem = {
         let item = FormButtonItem(style: configuration.style.mainButtonItem)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "payButtonItem")
-        item.title = localizedSubmitButtonTitle(
+        item.title = AmountAwarePaymentStringsPolicy.payButtonTitle(
             with: context.amount,
-            style: .immediate,
-            configuration.localizationParameters
+            localizationParameters: configuration.localizationParameters
         )
         item.buttonSelectionHandler = { [weak self] in
             self?.performSubmit()

@@ -14,7 +14,7 @@ import UIKit
 
 /// A component that provides a upi flows for UPI component.
 @MainActor
-package final class UPIComponent: PresentablePaymentComponent,
+package final class UPIComponent: PaymentComponent,
     LoadingComponent {
     
     /// The flow types for UPI component.
@@ -68,6 +68,9 @@ package final class UPIComponent: PresentablePaymentComponent,
         child: formViewController,
         style: configuration.style
     )
+    
+    package let type: PaymentComponentType = .regular
+    package let requiresUserInteraction: Bool = true
     
     /// Component's configuration
     package var configuration: Configuration

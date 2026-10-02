@@ -146,6 +146,8 @@ The SDK uses explicit access control levels (`explicit_acl` SwiftLint rule is en
 
 ## Important Development Notes
 
+Any change to public API must update `MIGRATION.md` in the same change.
+
 ### Module Dependencies
 
 Modules have clear dependency chains:

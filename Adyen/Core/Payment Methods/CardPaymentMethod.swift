@@ -63,20 +63,23 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
 
     public var fundingSource: CardFundingSource?
 
+    package var descriptionProvider = StoredCardDescriptionProvider()
+
     package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
-        let expireDate = expiryMonth + "/" + String(expiryYear.suffix(2))
-        let localizedExpiryDate = localizedString(.cardStoredExpires, parameters, expireDate)
-        
+        let description = descriptionProvider.description(for: self, using: parameters)
         let lastFourSeparated = lastFour.map { String($0) }.joined(separator: ", ")
         let accessibilityLabel = [
-            brand.name,
+            name,
             "\(localizedString(.accessibilityLastFourDigits, parameters)): \(lastFourSeparated)",
-            localizedExpiryDate
-        ].joined(separator: ", ")
-        
+            description.subtitleStatus == .warning ? description.subtitle : nil
+        ]
+        .compactMap { $0 }
+        .joined(separator: ", ")
+
         return DisplayInformation(
             title: String.Adyen.securedString + lastFour,
-            subtitle: localizedExpiryDate,
+            subtitle: description.subtitle,
+            subtitleStatus: description.subtitleStatus,
             logoName: brand.rawValue,
             accessibilityLabel: accessibilityLabel
         )
@@ -114,6 +117,78 @@ public struct StoredCardPaymentMethod: StoredPaymentMethod, AnyCardPaymentMethod
         case fundingSource
     }
     
+}
+
+package struct StoredCardDescriptionProvider {
+
+    package struct Description {
+        package let subtitle: String
+        package let subtitleStatus: DisplayInformation.SubtitleStatus
+    }
+
+    private let currentDate: Date
+    private let calendar: Calendar
+
+    package init(currentDate: Date = .now, calendar: Calendar = .current) {
+        self.currentDate = currentDate
+        self.calendar = calendar
+    }
+
+    package func description(
+        for card: StoredCardPaymentMethod,
+        using parameters: LocalizationParameters?
+    ) -> Description {
+        guard isExpired(card) else {
+            return Description(subtitle: card.name, subtitleStatus: .normal)
+        }
+
+        return Description(
+            subtitle: localizedString(.storedPaymentMethodExpired, parameters),
+            subtitleStatus: .warning
+        )
+    }
+
+    private func isExpired(_ card: StoredCardPaymentMethod) -> Bool {
+        guard
+            let expiryDateComponents = expiryDateComponents(for: card),
+            let expiryMonthStart = calendar.date(
+                from: expiryDateComponents
+            ),
+            let expiryThreshold = calendar.date(byAdding: .month, value: 1, to: expiryMonthStart)
+        else {
+            return false
+        }
+
+        return currentDate >= expiryThreshold
+    }
+
+    private func expiryDateComponents(for card: StoredCardPaymentMethod) -> DateComponents? {
+        guard
+            card.expiryMonth.count == 2,
+            let expiryMonth = Int(card.expiryMonth),
+            (1...12).contains(expiryMonth),
+            let expiryYear = normalizedExpiryYear(from: card.expiryYear)
+        else {
+            return nil
+        }
+
+        return DateComponents(year: expiryYear, month: expiryMonth)
+    }
+
+    private func normalizedExpiryYear(from expiryYear: String) -> Int? {
+        guard let year = Int(expiryYear) else {
+            return nil
+        }
+
+        switch expiryYear.count {
+        case 2:
+            return 2000 + year
+        case 4:
+            return year
+        default:
+            return nil
+        }
+    }
 }
 
 // MARK: - PaymentComponentBuildable

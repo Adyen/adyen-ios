@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
   pull_request:
     types: [opened, synchronize, reopened]
+  merge_group:
+    types: [checks_requested]
   push:
     branches:
       - develop
@@ -126,8 +128,10 @@ jobs:
         brew install swiftlint
         fastlane run swiftlint output_file:"reports/swiftlint.json" reporter:"json" ignore_exit_status:"true"
 
+    # Skipped in the merge queue: analysing the temporary gh-readonly-queue/** ref
+    # would register a throwaway branch in Sonar for every queued pull request.
     - name: 📡 Run Sonar
-      if: ${{ env.sonarToken != 0 }}
+      if: ${{ env.sonarToken != 0 && github.event_name != 'merge_group' }}
       run: |
         git fetch --unshallow --no-tags
         sonar-scanner -Dsonar.token=${{ secrets.SONAR_TOKEN }} -Dsonar.coverageReportPaths=sonarqube_updated_CI.xml

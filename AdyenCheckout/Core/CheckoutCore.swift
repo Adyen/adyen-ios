@@ -27,11 +27,13 @@ package protocol CheckoutCoreProtocol: AnyObject {
 
     func handle(action: Action)
 
+    func isPaymentMethodAvailable(for type: PaymentMethodType) -> Bool
+
     func createPaymentComponent(for type: PaymentMethodType) throws -> CheckoutPaymentComponent
 
     func createPaymentComponent(for identifier: String) throws -> CheckoutPaymentComponent
 
-    func createDropIn() -> DropInComponent?
+    func createDropIn() throws -> CheckoutDropInComponent
 }
 
 @MainActor
@@ -41,12 +43,11 @@ package final class CheckoutCore: CheckoutCoreProtocol {
     package let session: SessionProtocol?
 
     package let configuration: CheckoutConfiguration
-    package weak var presentationDelegate: PresentationDelegate?
     package let adyenContext: AdyenContext
     package let resultCallbacks: any CheckoutResultCallbackStore
     package let callbackHandler: any CheckoutCallbackHandling
 
-    internal lazy var actionHandlingComponent: ActionHandlingComponent = {
+    internal lazy var actionComponentConfiguration: CheckoutActionComponent.Configuration = {
         var authenticationConfiguration: AuthenticationConfiguration = configuration.configuration(
             for: .threeDS2,
             defaultValue: AuthenticationConfiguration(theme: configuration.theme)
@@ -55,19 +56,21 @@ package final class CheckoutCore: CheckoutCoreProtocol {
             mergingExistingParameters: authenticationConfiguration.localizationParameters
         )
 
-        let actionConfig = CheckoutActionComponent.Configuration(
+        return CheckoutActionComponent.Configuration(
             localizationParameters: configuration.resolvedCheckoutLocalizationParameters(),
             authentication: authenticationConfiguration,
             twint: configuration.configuration(for: .twint)
         )
+    }()
 
-        let handler = CheckoutActionComponent(
+    internal lazy var actionHandlingComponent: ActionHandlingComponent = {
+        let actionHandlingComponent = CheckoutActionComponent(
             context: adyenContext,
-            configuration: actionConfig
+            configuration: actionComponentConfiguration
         )
-        handler.delegate = self
-        handler.presentationDelegate = presentationDelegate
-        return handler
+        actionHandlingComponent.delegate = self
+        actionHandlingComponent.actionPresentationDelegate = self
+        return actionHandlingComponent
     }()
 
     internal var submitTask: Task<Void, Never>?
@@ -80,23 +83,29 @@ package final class CheckoutCore: CheckoutCoreProtocol {
         session: SessionProtocol? = nil,
         paymentMethods: PaymentMethods? = nil,
         adyenContext: AdyenContext,
-        presentationDelegate: PresentationDelegate?,
         resultCallbacks: any CheckoutResultCallbackStore,
         callbackHandler: any CheckoutCallbackHandling
     ) {
         self.configuration = configuration
         self.session = session
         self.paymentMethods = paymentMethods ?? session?.state.paymentMethods
-        self.presentationDelegate = presentationDelegate
         self.adyenContext = adyenContext
         self.resultCallbacks = resultCallbacks
         self.callbackHandler = callbackHandler
-        self.session?.presentationDelegate = presentationDelegate
     }
 
     deinit {
         submitTask?.cancel()
         additionalDetailsTask?.cancel()
+    }
+
+    package func isPaymentMethodAvailable(for type: PaymentMethodType) -> Bool {
+        guard let paymentMethod = paymentMethods?.paymentMethod(ofType: type) else { return false }
+
+        return CheckoutComponentBuilder.isAvailable(
+            forAnyPaymentMethod: paymentMethod,
+            configuration: configuration
+        )
     }
 
     package func createPaymentComponent(for type: PaymentMethodType) throws -> CheckoutPaymentComponent {
@@ -110,6 +119,7 @@ package final class CheckoutCore: CheckoutCoreProtocol {
         let paymentComponent = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: configuration,
+            policy: .components(configuration),
             sessionConfiguration: session?.componentConfiguration,
             context: adyenContext
         )
@@ -122,18 +132,14 @@ package final class CheckoutCore: CheckoutCoreProtocol {
             throw CheckoutError(code: .paymentMethodFailure, message: "No stored payment method found for identifier \(identifier).")
         }
 
-        let paymentComponent = CheckoutComponentBuilder.build(
+        let paymentComponent = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: configuration,
+            policy: .components(configuration),
             context: adyenContext
         )
         paymentComponent.delegate = self
         return CheckoutPaymentComponent(paymentComponent: paymentComponent)
-    }
-
-    package func createDropIn() -> DropInComponent? {
-        // TODO: dropin creation discussion with new changes
-        nil
     }
 
     package func handle(action: Action) {

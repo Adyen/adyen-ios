@@ -12,6 +12,8 @@ public struct LocalizationKey {
     public static let submitButton = LocalizationKey(key: "adyen.submitButton")
     /// Pay %@
     public static let submitButtonFormatted = LocalizationKey(key: "adyen.submitButton.formatted")
+    /// Save details
+    public static let submitButtonSaveDetails = LocalizationKey(key: "adyen.submitButton.saveDetails")
     /// Cancel
     public static let cancelButton = LocalizationKey(key: "adyen.cancelButton")
     /// OK
@@ -104,6 +106,16 @@ public struct LocalizationKey {
     public static let dropInStoredTitle = LocalizationKey(key: "adyen.dropIn.stored.title")
     /// Change Payment Method
     public static let dropInPreselectedOpenAllTitle = LocalizationKey(key: "adyen.dropIn.preselected.openAll.title")
+    /// Select your preferred payment option and complete the payment
+    public static let dropInPaymentMethodListDescriptionCompletePayment = LocalizationKey(key: "adyen.dropIn.paymentMethodList.description.completePayment")
+    /// Select your preferred payment option and save your details for future transactions
+    public static let dropInPaymentMethodListDescriptionSaveDetails = LocalizationKey(key: "adyen.dropIn.paymentMethodList.description.saveDetails")
+    /// Use %@ to pay
+    public static let dropInStoredPaymentMethodDescription = LocalizationKey(key: "adyen.dropIn.storedPaymentMethod.description")
+    /// Use %@ to pay %@
+    public static let dropInStoredPaymentMethodDescriptionWithAmount = LocalizationKey(key: "adyen.dropIn.storedPaymentMethod.description.withAmount")
+    /// Use %@ to save details
+    public static let dropInStoredPaymentMethodDescriptionSaveDetails = LocalizationKey(key: "adyen.dropIn.storedPaymentMethod.description.saveDetails")
     /// Continue to %@
     public static let continueTo = LocalizationKey(key: "adyen.continueTo")
     /// Continue
@@ -566,6 +578,30 @@ public struct LocalizationKey {
     public static let preselectedPaymentMethodSubtitle = LocalizationKey(key: "adyen.preselectedPaymentMethod.subtitle")
     /// Other payment options
     public static let preselectedPaymentMethodOtherOptions = LocalizationKey(key: "adyen.preselectedPaymentMethod.otherOptions")
+    /// Manage
+    public static let storedPaymentMethodManagementTitle = LocalizationKey(key: "adyen.storedPaymentMethodManagement.title")
+    /// Manage your favorite payment methods
+    public static let storedPaymentMethodManagementDescription = LocalizationKey(key: "adyen.storedPaymentMethodManagement.description")
+    /// Cards
+    public static let storedPaymentMethodManagementCardsTitle = LocalizationKey(key: "adyen.storedPaymentMethodManagement.cardsTitle")
+    /// Other
+    public static let storedPaymentMethodManagementOtherTitle = LocalizationKey(key: "adyen.storedPaymentMethodManagement.otherTitle")
+    /// Remove %@
+    public static let storedPaymentMethodManagementRemoveConfirmationAction = LocalizationKey(key: "adyen.storedPaymentMethodManagement.removeConfirmationAction")
+    /// Nothing here!
+    public static let storedPaymentMethodManagementEmptyTitle = LocalizationKey(key: "adyen.storedPaymentMethodManagement.emptyTitle")
+    /// You have no saved payment methods.
+    public static let storedPaymentMethodManagementEmptyMessage = LocalizationKey(key: "adyen.storedPaymentMethodManagement.emptyMessage")
+    /// Payment options
+    public static let storedPaymentMethodManagementPaymentOptions = LocalizationKey(key: "adyen.storedPaymentMethodManagement.paymentOptions")
+    /// We were unable to remove your payment method, try again later.
+    public static let storedPaymentMethodManagementRemovalErrorMessage = LocalizationKey(key: "adyen.storedPaymentMethodManagement.removalErrorMessage")
+    /// Expired
+    public static let storedPaymentMethodExpired = LocalizationKey(key: "adyen.storedPaymentMethod.expired")
+    /// You will be guided to the next step of the process.
+    public static let checkoutDropinGenericPaymentMethodDescription = LocalizationKey(key: "adyen.checkout.dropin.generic.payment.method.description")
+    /// Processing...
+    public static let checkoutDropinGenericPaymentMethodProgressTitle = LocalizationKey(key: "adyen.checkout.dropin.generic.payment.method.progress.title")
     
     internal let key: String
     

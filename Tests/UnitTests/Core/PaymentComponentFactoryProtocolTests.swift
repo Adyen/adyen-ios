@@ -40,13 +40,16 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         var showsSubmitButton: Bool = true
     }
     
-    class MockComponent: PresentablePaymentComponent {
+    class MockComponent: PaymentComponent {
 
         // PaymentComponent requirements
         var delegate: PaymentComponentDelegate?
         let paymentMethod: PaymentMethod
 
-        /// PresentablePaymentComponent requirement
+        let type: PaymentComponentType = .regular
+        let requiresUserInteraction: Bool = true
+
+        /// PaymentComponent requirement
         var viewController: UIViewController {
             UIViewController()
         }
@@ -86,6 +89,10 @@ final class PaymentComponentFactoryProtocolTests: XCTestCase {
         typealias Configuration = MockConfiguration
         typealias Method = MockPaymentMethod
         typealias Component = MockComponent
+        
+        func isAvailable(for _: MockPaymentMethod, configuration _: MockConfiguration) -> Bool {
+            true
+        }
         
         func defaultConfiguration() -> MockConfiguration {
             MockConfiguration(value: "factory_default", showsSubmitButton: true)

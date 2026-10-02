@@ -9,6 +9,11 @@ import Foundation
 /// Describes a payment method display information.
 package struct DisplayInformation: Equatable {
 
+    package enum SubtitleStatus: Equatable {
+        case normal
+        case warning
+    }
+
     package enum TrailingInfoType: Equatable {
         case text(String)
         case logos(named: [String], trailingText: String?)
@@ -28,8 +33,10 @@ package struct DisplayInformation: Equatable {
 
     /// The subtitle for the payment method, adapted for displaying in a list.
     /// This property represents optional data that can help identify a payment method.
-    /// For example, this could be the expiration date of a stored credit card.
     package let subtitle: String?
+
+    /// The semantic status of the subtitle.
+    package let subtitleStatus: SubtitleStatus
 
     /// The name of the logo resource.
     package let logoName: String
@@ -47,6 +54,7 @@ package struct DisplayInformation: Equatable {
     ///
     /// - Parameter title: The title.
     /// - Parameter subtitle: The subtitle.
+    /// - Parameter subtitleStatus: The semantic status of the subtitle.
     /// - Parameter logoName: The logo name.
     /// - Parameter disclosureText: The trailing disclosure text.
     /// - Parameter footnoteText: The footnote text if any.
@@ -55,6 +63,7 @@ package struct DisplayInformation: Equatable {
     package init(
         title: String,
         subtitle: String?,
+        subtitleStatus: SubtitleStatus = .normal,
         logoName: String,
         disclosureText: String? = nil,
         footnoteText: String? = nil,
@@ -63,6 +72,7 @@ package struct DisplayInformation: Equatable {
         self.init(
             title: title,
             subtitle: subtitle,
+            subtitleStatus: subtitleStatus,
             logoName: logoName,
             trailingInfo: disclosureText.map { .text($0) },
             footnoteText: footnoteText,
@@ -73,6 +83,7 @@ package struct DisplayInformation: Equatable {
     package init(
         title: String,
         subtitle: String?,
+        subtitleStatus: SubtitleStatus = .normal,
         logoName: String,
         trailingInfo: TrailingInfoType?,
         footnoteText: String? = nil,
@@ -80,6 +91,7 @@ package struct DisplayInformation: Equatable {
     ) {
         self.title = title
         self.subtitle = subtitle
+        self.subtitleStatus = subtitleStatus
         self.logoName = logoName
         self.trailingInfo = trailingInfo
         self.footnoteText = footnoteText

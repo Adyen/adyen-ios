@@ -133,7 +133,6 @@ import AdyenCheckout
 
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     CardConfiguration()
@@ -143,8 +142,7 @@ let configuration = try CheckoutConfiguration(
 
 let checkout = try await Checkout.setup(
     with: sessionResponse,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 .onComplete { result in
     print(result.resultCode)
@@ -165,8 +163,7 @@ Use the advanced flow when your backend calls `/paymentMethods` and handles `/pa
 ```swift
 let checkout = try await Checkout.setup(
     with: paymentMethods,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 .onSubmit { data in
     try await callPayments(with: data)
@@ -192,9 +189,11 @@ If your app only needs to handle actions, set up checkout without a `SessionResp
 
 ```swift
 let checkout = try await Checkout.setup(
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
+.onAction { actionData, actionViewController in
+    present(actionViewController, animated: true)
+}
 .onAdditionalDetails { data in
     try await callDetails(with: data)
 }
@@ -216,15 +215,20 @@ guard let viewController = component.viewController else { return }
 present(UINavigationController(rootViewController: viewController), animated: true)
 ```
 
-Pass a `PresentationDelegate` to `Checkout.setup(...)` if checkout should present action components from your own UI layer.
+### Presenting actions
+
+Checkout builds the view controller for an action — a 3D Secure challenge, a voucher, a QR code — and hands it to `onAction(_:)` together with an `ActionData` describing the action.
 
 ```swift
-extension CheckoutViewController: PresentationDelegate {
-    func present(viewController: UIViewController) {
-        present(viewController, animated: true)
-    }
+.onAction { actionData, actionViewController in
+    print(actionData.type)
+    present(actionViewController, animated: true)
 }
 ```
+
+`ActionData.type` is an `ActionType`, a `RawRepresentable` struct with the known values `redirect`, `nativeRedirect`, `threeDS2`, `sdk`, `qrCode`, `await` and `voucher`. It is a struct rather than an enum so that new action types do not break exhaustive `switch` statements in your code — always handle unknown values. When you do not set `onAction(_:)`, checkout presents the action on the payment component that started the flow; the action-only flow has no such component, so it always needs a handler.
+
+Drop-in presents actions within its own navigation stack, so `onAction(_:)` is not invoked for actions raised inside a Drop-in flow.
 
 ### Handling redirects
 
@@ -248,7 +252,7 @@ In v6 you present each payment method individually with `createPaymentComponent(
 let component = try checkout.createPaymentComponent(for: .scheme)
 
 // A stored payment method.
-guard let storedCard = checkout.paymentMethods?.stored
+guard let storedCard = checkout.storedPaymentMethods
     .compactMap({ $0 as? StoredCardPaymentMethod })
     .first else { return }
 
@@ -288,7 +292,6 @@ let theme = CheckoutTheme(
 
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     CardConfiguration()

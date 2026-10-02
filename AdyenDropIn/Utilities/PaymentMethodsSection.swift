@@ -11,6 +11,13 @@ import Adyen
 #endif
 
 internal struct PaymentMethodsSection {
+    internal enum Kind: Equatable {
+        case paid
+        case stored
+        case regular
+    }
+
+    internal let kind: Kind
     internal var header: ListSectionHeader?
     internal var paymentMethods: [PaymentMethod]
 }

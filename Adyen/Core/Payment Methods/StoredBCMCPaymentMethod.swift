@@ -24,7 +24,12 @@ public struct StoredBCMCPaymentMethod: StoredPaymentMethod, PaymentMethodDisplay
     package func overriddenDisplayInformation(using parameters: LocalizationParameters?) -> DisplayInformation {
         storedCardPaymentMethod.displayInformation(using: parameters)
     }
-    
+
+    package var descriptionProvider: StoredCardDescriptionProvider {
+        get { storedCardPaymentMethod.descriptionProvider }
+        set { storedCardPaymentMethod.descriptionProvider = newValue }
+    }
+
     public var supportedShopperInteractions: [ShopperInteraction] {
         storedCardPaymentMethod.supportedShopperInteractions
     }

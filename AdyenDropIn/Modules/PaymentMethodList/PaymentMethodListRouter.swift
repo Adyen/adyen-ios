@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenActions)
+    import AdyenActions
+#endif
 import Foundation
 import UIKit
 
@@ -16,44 +19,55 @@ internal protocol PaymentMethodListRouterListener: AnyObject {
 
 // sourcery:AutoMockable
 @MainActor
-internal protocol PaymentMethodListRouting: AnyObject {
+internal protocol PaymentMethodListRouting: Router {
     func present(component: PaymentComponent)
     func present(viewController: UIViewController)
-    func present(actionViewController: UIViewController, onCancel: (() -> Void)?)
+    func presentStoredPaymentMethodManagement()
     func dismiss(completion: (() -> Void)?)
 }
 
 @MainActor
-internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
+internal class PaymentMethodListRouter: PaymentMethodListRouting {
 
     // MARK: - Properties
 
     private let viewController: UIViewController
     private weak var listener: PaymentMethodListRouterListener?
-    private let navigationController: UINavigationController
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
+    private let genericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol
+    private let storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol
+    private let storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
+    private let storedPaymentMethodsProvider: () -> [any StoredPaymentMethod]
+    private let onStoredPaymentMethodRemoved: (any StoredPaymentMethod) -> Void
     internal private(set) var childRouter: Router?
     
     // MARK: - Initializers
 
     internal init(
         viewController: UIViewController,
-        navigationController: UINavigationController = UINavigationController(),
         listener: PaymentMethodListRouterListener?,
-        componentContainerAssembler: ComponentContainerAssemblerProtocol
+        componentContainerAssembler: ComponentContainerAssemblerProtocol,
+        genericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol,
+        storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol,
+        storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?,
+        storedPaymentMethodsProvider: @escaping () -> [any StoredPaymentMethod],
+        onStoredPaymentMethodRemoved: @escaping (any StoredPaymentMethod) -> Void
     ) {
         self.viewController = viewController
-        self.navigationController = navigationController
         self.listener = listener
         self.componentContainerAssembler = componentContainerAssembler
+        self.genericPaymentMethodAssembler = genericPaymentMethodAssembler
+        self.storedPaymentMethodManagementAssembler = storedPaymentMethodManagementAssembler
+        self.storedPaymentMethodManagementCapability = storedPaymentMethodManagementCapability
+        self.storedPaymentMethodsProvider = storedPaymentMethodsProvider
+        self.onStoredPaymentMethodRemoved = onStoredPaymentMethodRemoved
     }
     
     // MARK: - Router
     
-    internal var rootViewController: UIViewController {
-        navigationController.setViewControllers([viewController], animated: false)
-        return navigationController
-    }
+    internal private(set) lazy var rootViewController: UIViewController = {
+        viewController
+    }()
 
     // MARK: - PaymentMethodListRouting
 
@@ -64,12 +78,10 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
 
     internal func present(component: PaymentComponent) {
         switch component.type {
-        case let .regular(regularComponent):
-            pushComponentContainer(with: regularComponent)
-        case let .stored(storedComponent):
-            presentComponentContainer(with: storedComponent)
-        case .initiable:
-            break
+        case .regular, .stored:
+            pushComponentContainer(with: component)
+        case .generic:
+            pushGenericPaymentMethod(with: component)
         }
     }
 
@@ -77,51 +89,45 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         rootViewController.present(viewController, animated: true)
     }
 
-    internal func present(
-        actionViewController: UIViewController,
-        onCancel: (() -> Void)?
-    ) {
-        let actionViewController = ActionPresentationHelper.viewController(
-            for: actionViewController,
-            onCancel: onCancel
-        )
-        rootViewController.present(actionViewController, animated: true)
+    // MARK: - Internal
+
+    internal func presentStoredPaymentMethodManagement() {
+        guard childRouter == nil else {
+            return
+        }
+
+        guard let storedPaymentMethodManagementCapability else {
+            return
+        }
+
+        let storedPaymentMethodManagementRouter = storedPaymentMethodManagementAssembler
+            .resolveStoredPaymentMethodManagementRouter(
+                paymentMethods: storedPaymentMethodsProvider(),
+                capability: storedPaymentMethodManagementCapability,
+                listener: self
+            )
+        childRouter = storedPaymentMethodManagementRouter
+        viewController.navigationController?.pushViewController(storedPaymentMethodManagementRouter.rootViewController, animated: true)
     }
 
     // MARK: - Private
 
     private func pushComponentContainer(
-        with component: PresentablePaymentComponent
+        with component: PaymentComponent
     ) {
         let componentContainerViewController = componentContainerViewController(for: component)
-        navigationController.pushViewController(componentContainerViewController, animated: true)
+        viewController.navigationController?.pushViewController(componentContainerViewController, animated: true)
     }
-    
-    private func presentComponentContainer(
-        with component: PresentablePaymentComponent
+
+    private func pushGenericPaymentMethod(
+        with component: PaymentComponent
     ) {
-        let componentContainerViewController = componentContainerViewController(for: component)
-        setupCloseButton(controller: componentContainerViewController)
-        let modalNavigationController = UINavigationController(rootViewController: componentContainerViewController)
-        rootViewController.present(modalNavigationController, animated: true)
-    }
-
-    private func setupCloseButton(controller: UIViewController) {
-        let closeButton = UIBarButtonItem(
-            barButtonSystemItem: .close,
-            target: self,
-            action: #selector(closeTappedOnComponentContainerViewController)
-        )
-        controller.navigationItem.leftBarButtonItem = closeButton
-    }
-
-    @objc private func closeTappedOnComponentContainerViewController() {
-        rootViewController.dismiss(animated: true)
-        childRouter = nil
+        let genericPaymentMethodViewController = genericPaymentMethodViewController(for: component)
+        viewController.navigationController?.pushViewController(genericPaymentMethodViewController, animated: true)
     }
 
     private func componentContainerViewController(
-        for component: PresentablePaymentComponent
+        for component: PaymentComponent
     ) -> UIViewController {
         let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
             for: component,
@@ -129,6 +135,17 @@ internal class PaymentMethodListRouter: Router, PaymentMethodListRouting {
         )
         childRouter = componentContainerRouter
         return componentContainerRouter.rootViewController
+    }
+
+    private func genericPaymentMethodViewController(
+        for component: PaymentComponent
+    ) -> UIViewController {
+        let genericPaymentMethodRouter = genericPaymentMethodAssembler.resolveGenericPaymentMethodRouter(
+            for: component,
+            listener: self
+        )
+        childRouter = genericPaymentMethodRouter
+        return genericPaymentMethodRouter.rootViewController
     }
 }
 
@@ -139,5 +156,32 @@ extension PaymentMethodListRouter: ComponentContainerRouterListener {
     internal func didDismissComponentContainer(completion: (() -> Void)?) {
         childRouter = nil
         completion?()
+    }
+}
+
+// MARK: - GenericPaymentMethodRouterListener
+
+extension PaymentMethodListRouter: GenericPaymentMethodRouterListener {
+
+    internal func didDismissGenericPaymentMethod() {
+        childRouter = nil
+    }
+}
+
+// MARK: - StoredPaymentMethodManagementListener
+
+extension PaymentMethodListRouter: StoredPaymentMethodManagementListener {
+
+    internal func didRemoveStoredPaymentMethod(_ paymentMethod: any StoredPaymentMethod) {
+        onStoredPaymentMethodRemoved(paymentMethod)
+    }
+
+    internal func didRequestPaymentOptions() {
+        viewController.navigationController?.popViewController(animated: true)
+        childRouter = nil
+    }
+
+    internal func didDismissStoredPaymentMethodManagement() {
+        childRouter = nil
     }
 }

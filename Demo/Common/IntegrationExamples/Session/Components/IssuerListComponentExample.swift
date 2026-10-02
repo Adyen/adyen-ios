@@ -62,7 +62,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
 //                AdyenSession.initialize(
 //                    with: configuration,
 //                    delegate: self,
-//                    presentationDelegate: self,
+//                    actionPresentationDelegate: self,
 //                    completion: completion
 //                )
                 break
@@ -99,7 +99,7 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
         // component.delegate = session
     }
 
-    private func present(_ component: PresentablePaymentComponent) {
+    private func present(_ component: PaymentComponent) {
         presenter?.present(viewController: component.viewController, completion: nil)
     }
 
@@ -120,13 +120,6 @@ internal final class IssuerListComponentExample: InitialDataFlowProtocol {
 }
 
 // TODO: Migrate to Checkout API — SessionDelegate has been removed in v6.
-
-extension IssuerListComponentExample: PresentationDelegate {
-    internal func present(viewController: UIViewController) {
-        let wrappedViewController = self.viewController(wrapping: viewController)
-        presenter?.present(viewController: wrappedViewController, completion: nil)
-    }
-}
 
 private extension IssuerListComponentExample {
     

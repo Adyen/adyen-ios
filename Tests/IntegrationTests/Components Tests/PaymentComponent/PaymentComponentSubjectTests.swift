@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenComponents
+@testable import AdyenUI
 import XCTest
 
 @MainActor

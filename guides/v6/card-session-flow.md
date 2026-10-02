@@ -22,7 +22,6 @@ import AdyenCheckout
 ```swift
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     CardConfiguration()
@@ -38,8 +37,7 @@ let configuration = try CheckoutConfiguration(
 
 let checkout = try await Checkout.setup(
     with: sessionResponse,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 .onComplete { result in
     print(result.resultCode)

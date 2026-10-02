@@ -32,7 +32,7 @@ import UIKit
 
 `CheckoutConfiguration` is the checkout-wide container for:
 
-- environment, amount, and client key
+- environment and client key
 - component-specific configuration objects
 - checkout-wide options such as `showsSubmitButton(_:)`
 - theming and localization configured through `CheckoutConfiguration`
@@ -40,7 +40,6 @@ import UIKit
 ```swift
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     CardConfiguration()
@@ -58,7 +57,6 @@ Use the session flow when your backend starts checkout with `/sessions`.
 ```swift
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     CardConfiguration()
@@ -68,8 +66,7 @@ let configuration = try CheckoutConfiguration(
 
 let checkout = try await Checkout.setup(
     with: sessionResponse,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 .onBeforeSubmit { data in
     .proceed(data: data, sessionData: nil)
@@ -84,7 +81,9 @@ let checkout = try await Checkout.setup(
 let component = try checkout.createPaymentComponent(for: .scheme)
 ```
 
-In session flow, the effective `amount` comes from the `/sessions` response. A client-side `amount` on `CheckoutConfiguration` does not override it. For card-specific session-controlled settings such as `showStorePaymentMethod(_:)`, `installmentConfiguration(_:)`, and `showInstallmentAmount`, see [card-session-flow.md](card-session-flow.md).
+In session flow, the SDK gets the `amount` from the `/sessions` response.
+For card-specific session-controlled settings such as `showStorePaymentMethod(_:)`, `installmentConfiguration(_:)`, and
+`showInstallmentAmount`, see [card-session-flow.md](card-session-flow.md).
 
 `SessionCheckout` can:
 
@@ -98,7 +97,6 @@ Use the advanced flow when your backend starts checkout with `/paymentMethods` a
 ```swift
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     CardConfiguration()
@@ -106,8 +104,7 @@ let configuration = try CheckoutConfiguration(
 
 let checkout = try await Checkout.setup(
     with: paymentMethods,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 .onSubmit { data in
     try await callPayments(with: data)
@@ -139,9 +136,11 @@ If your app only needs to handle actions, you can set up checkout without `Payme
 
 ```swift
 let checkout = try await Checkout.setup(
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
+.onAction { actionData, actionViewController in
+    present(actionViewController, animated: true)
+}
 .onAdditionalDetails { data in
     try await callDetails(with: data)
 }
@@ -157,17 +156,22 @@ let checkout = try await Checkout.setup(
 
 Call `checkout.handle(action:)` when your backend returns an action.
 
-## PresentationDelegate
+## Presenting actions
 
-Pass a `PresentationDelegate` if you want checkout to present action components from your own UI layer:
+Checkout builds the view controller for an action — a 3D Secure challenge, a voucher, a QR code — and hands it to `onAction(_:)` together with an `ActionData` describing the action. Present it from your own UI layer:
 
 ```swift
-extension CheckoutViewController: PresentationDelegate {
-    func present(viewController: UIViewController) {
-        present(viewController, animated: true)
-    }
+.onAction { actionData, actionViewController in
+    print(actionData.type)
+    present(actionViewController, animated: true)
 }
 ```
+
+`ActionData.type` is an `ActionType`, a `RawRepresentable` struct with the known values `redirect`, `nativeRedirect`, `threeDS2`, `sdk`, `qrCode`, `await` and `voucher`. It is a struct rather than an enum so that new action types do not break exhaustive `switch` statements in your code — always handle unknown values.
+
+`onAction(_:)` is available on every flow. When you do not set it, checkout presents the action on the payment component that started the flow. The action-only flow has no such component, so it always needs a handler.
+
+Drop-in presents actions within its own navigation stack, so `onAction(_:)` is not invoked for actions raised inside a Drop-in flow.
 
 ## Presenting a payment component
 
@@ -210,7 +214,6 @@ struct DemoLocalizationProvider: CheckoutLocalizationProvider {
 
 let configuration = try CheckoutConfiguration(
     environment: .test,
-    amount: amount,
     clientKey: clientKey
 ) {
     CardConfiguration()
@@ -225,6 +228,7 @@ Use app-bundle `.strings` or `.xcstrings` files when you want to add a fully new
 Pass incoming URLs to the SDK so active redirect actions can resume after the shopper returns from a browser or external app.
 
 **UIKit - AppDelegate:**
+
 ```swift
 func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
     Checkout.handleReturn(url: url)
@@ -233,6 +237,7 @@ func application(_ app: UIApplication, open url: URL, options: [UIApplication.Op
 ```
 
 **UIKit - SceneDelegate:**
+
 ```swift
 func scene(_ scene: UIScene, openURLContexts contexts: Set<UIOpenURLContext>) {
     guard let url = contexts.first?.url else { return }
@@ -241,6 +246,7 @@ func scene(_ scene: UIScene, openURLContexts contexts: Set<UIOpenURLContext>) {
 ```
 
 **SwiftUI:**
+
 ```swift
 ContentView()
     .onOpenURL { url in Checkout.handleReturn(url: url) }

@@ -52,7 +52,6 @@ internal final class ActionComponentExample: InitialDataAdvancedFlowProtocol {
     private func createCheckout() async throws -> ActionOnlyCheckout {
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
-            amount: ConfigurationConstants.current.amount,
             clientKey: ConfigurationConstants.clientKey,
             analyticsConfiguration: .init(
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
@@ -60,9 +59,20 @@ internal final class ActionComponentExample: InitialDataAdvancedFlowProtocol {
         ) {}
 
         return try await Checkout.setup(
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
+        .onAction { [weak self] _, actionViewController in
+            // Wrap in a navigation controller with a cancel button so the action can be dismissed
+            // when testing it in isolation (the standalone Checkout flow adds no navigation chrome).
+            let navigationController = UINavigationController(rootViewController: actionViewController)
+            actionViewController.navigationItem.leftBarButtonItem = UIBarButtonItem(
+                systemItem: .cancel,
+                primaryAction: UIAction { [weak self] _ in
+                    self?.presenter?.dismiss(completion: nil)
+                }
+            )
+            self?.presenter?.present(viewController: navigationController, completion: nil)
+        }
         .onAdditionalDetails { [weak self] data in
             guard let self else { return .completion(resultCode: "Error") }
             return await self.callDetails(with: data)
@@ -105,21 +115,5 @@ internal final class ActionComponentExample: InitialDataAdvancedFlowProtocol {
             let title = success ? "Success" : "Error"
             self.presenter?.presentAlert(withTitle: title, message: message)
         }
-    }
-}
-
-extension ActionComponentExample: PresentationDelegate {
-
-    func present(viewController: UIViewController) {
-        // Wrap in a navigation controller with a cancel button so the action can be dismissed
-        // when testing it in isolation (the standalone Checkout flow adds no navigation chrome).
-        let navigationController = UINavigationController(rootViewController: viewController)
-        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            systemItem: .cancel,
-            primaryAction: UIAction { [weak self] _ in
-                self?.presenter?.dismiss(completion: nil)
-            }
-        )
-        presenter?.present(viewController: navigationController, completion: nil)
     }
 }

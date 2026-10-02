@@ -8,6 +8,7 @@
 @testable import AdyenCard
 @testable import AdyenCheckout
 @testable import AdyenComponents
+@testable import AdyenTwint
 @_spi(AdyenInternal) @testable import AdyenUI
 import PassKit
 import XCTest
@@ -40,6 +41,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -66,6 +68,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -91,6 +94,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -117,6 +121,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: customContext
         )
         
@@ -133,6 +138,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let blikComponent = try CheckoutComponentBuilder.build(
             for: blikPaymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -151,6 +157,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -174,6 +181,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: customContext
         )
         
@@ -200,6 +208,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -213,6 +222,62 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertFalse(blikComponent.configuration.showsSubmitButton)
     }
     
+    func test_build_withDropInPolicy_shouldShowSubmitButtonWhenGlobalSettingHidesIt() throws {
+        // Given
+        let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
+        var blikConfig = BLIKComponentConfiguration()
+        blikConfig.showsSubmitButton = false
+        checkoutConfiguration = makeCheckoutConfiguration(
+            configurations: [.payment(.blik): blikConfig]
+        ).showsSubmitButton(false)
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .dropIn,
+            context: context
+        )
+
+        // Then
+        let blikComponent = try XCTUnwrap(component as? BLIKComponent)
+        XCTAssertTrue(blikComponent.configuration.showsSubmitButton)
+    }
+
+    func test_build_withGenericStoredPaymentMethodAndComponentsPolicy_shouldFollowGlobalSubmitButtonSetting() throws {
+        // Given
+        let storedPaymentMethod = try XCTUnwrap(createStoredPayPalPaymentMethod())
+        checkoutConfiguration = makeCheckoutConfiguration().showsSubmitButton(false)
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: storedPaymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
+            context: context
+        )
+
+        // Then
+        XCTAssertNil(payButtonView(in: component))
+    }
+
+    func test_build_withGenericStoredPaymentMethodAndDropInPolicy_shouldShowSubmitButtonWhenGlobalSettingHidesIt() throws {
+        // Given
+        let storedPaymentMethod = try XCTUnwrap(createStoredPayPalPaymentMethod())
+        checkoutConfiguration = makeCheckoutConfiguration().showsSubmitButton(false)
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: storedPaymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .dropIn,
+            context: context
+        )
+
+        // Then
+        XCTAssertNotNil(payButtonView(in: component))
+    }
+
     func testBuild_UsesStoredConfigurationWhenAvailable() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
@@ -226,6 +291,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -242,6 +308,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -259,6 +326,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -288,6 +356,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -295,6 +364,32 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let cardComponent = try XCTUnwrap(component as? CardComponent)
         XCTAssertEqual(cardComponent.cardViewController.items.numberContainerItem.numberItem.title, "Global number")
         XCTAssertTrue(provider.recordedCalls.contains { $0.key == CheckoutLocalizationKey.cardNumber })
+    }
+
+    func test_build_withCardCallbacks_shouldPreserveCheckoutConfigurationCallbacks() throws {
+        let paymentMethod = try XCTUnwrap(createCardPaymentMethod())
+        var receivedBin: String?
+        var receivedBinLookupData: BinLookupData?
+        checkoutConfiguration.configurations[.payment(.scheme)] = CardConfiguration()
+            .onBinChange { receivedBin = $0 }
+            .onBinLookup { receivedBinLookupData = $0 }
+        let expectedBinLookupData = BinLookupData(
+            issuingCountryCode: "NL",
+            brands: [BinLookupBrand(brand: "visa", supported: true, paymentMethodVariant: nil)]
+        )
+
+        let component = try CheckoutComponentBuilder.build(
+            forAnyPaymentMethod: paymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
+            context: context
+        )
+        let cardComponent = try XCTUnwrap(component as? CardComponent)
+        cardComponent.configuration.onBinChange?("411111")
+        cardComponent.configuration.onBinLookup?(expectedBinLookupData)
+
+        XCTAssertEqual(receivedBin, "411111")
+        XCTAssertEqual(receivedBinLookupData, expectedBinLookupData)
     }
 
     func test_build_withSessionConfiguration_appliesSessionOverridesToCardComponent() throws {
@@ -312,6 +407,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             sessionConfiguration: .init(
                 installmentConfiguration: sessionInstallments,
                 showStorePaymentMethod: false
@@ -334,6 +430,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -353,6 +450,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             sessionConfiguration: .init(
                 installmentConfiguration: nil,
                 showStorePaymentMethod: false
@@ -378,12 +476,90 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
         // Then
         XCTAssertEqual(component.paymentMethod.type, .ideal)
         XCTAssertTrue(component is GenericPaymentComponent, "Component should be GenericPaymentComponent")
+    }
+
+    func test_build_withGenericPaymentMethodAndCustomConfiguration_appliesConfiguration() throws {
+        // Given
+        let dict: [String: Any] = [
+            "type": "ideal",
+            "name": "iDEAL"
+        ]
+        let paymentMethod = try XCTUnwrap(try? AdyenCoder.decode(dict) as GenericPaymentMethod)
+        var genericConfig = BasicComponentConfiguration()
+        genericConfig.showsSubmitButton = false
+
+        checkoutConfiguration = makeCheckoutConfiguration(
+            configurations: [.payment(.ideal): genericConfig]
+        )
+        checkoutConfiguration.showsSubmitButton = false // Global setting, since it takes precedence over the per-component value
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
+            context: context
+        )
+
+        // Then
+        guard let genericComponent = component as? GenericPaymentComponent else {
+            XCTFail("Component should be GenericPaymentComponent")
+            return
+        }
+        XCTAssertFalse(genericComponent.configuration.showsSubmitButton)
+    }
+
+    // MARK: - Twint Component Tests
+
+    func test_build_withTwintPaymentMethod_returnsTwintComponent() throws {
+        // Given
+        let paymentMethod = createTwintPaymentMethod()
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
+            context: context
+        )
+
+        // Then
+        XCTAssertEqual(component.paymentMethod.type, .twint)
+        XCTAssertTrue(component is TwintComponent, "Component should be TwintComponent")
+    }
+
+    func test_build_withTwintAndCustomConfiguration_appliesConfiguration() throws {
+        // Given
+        let paymentMethod = createTwintPaymentMethod()
+        var twintConfig = BasicComponentConfiguration()
+        twintConfig.showsSubmitButton = false
+
+        checkoutConfiguration = makeCheckoutConfiguration(
+            configurations: [.payment(.twint): twintConfig]
+        )
+        checkoutConfiguration.showsSubmitButton = false // Global setting, since it takes precedence over the per-component value
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
+            context: context
+        )
+
+        // Then
+        guard let twintComponent = component as? TwintComponent else {
+            XCTFail("Component should be TwintComponent")
+            return
+        }
+        XCTAssertFalse(twintComponent.configuration.showsSubmitButton)
     }
 
     // MARK: - Theme Propagation Tests
@@ -400,6 +576,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -427,6 +604,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -442,6 +620,66 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         )
     }
 
+    func test_build_withCustomTheme_propagatesThemeToGenericPaymentComponent() throws {
+        // Given
+        let dict: [String: Any] = [
+            "type": "ideal",
+            "name": "iDEAL"
+        ]
+        let paymentMethod = try XCTUnwrap(try? AdyenCoder.decode(dict) as GenericPaymentMethod)
+        let customTheme = CheckoutTheme(colors: CheckoutColors(primary: .yellow))
+
+        checkoutConfiguration = makeCheckoutConfiguration()
+        checkoutConfiguration.theme = customTheme
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
+            context: context
+        )
+
+        // Then
+        guard let genericComponent = component as? GenericPaymentComponent else {
+            XCTFail("Component should be GenericPaymentComponent")
+            return
+        }
+        XCTAssertEqual(
+            genericComponent.configuration.theme.colors.primary,
+            UIColor.yellow,
+            "Theme should be propagated from CheckoutConfiguration to component"
+        )
+    }
+
+    func test_build_withCustomTheme_propagatesThemeToTwintComponent() throws {
+        // Given
+        let paymentMethod = createTwintPaymentMethod()
+        let customTheme = CheckoutTheme(colors: CheckoutColors(primary: .yellow))
+
+        checkoutConfiguration = makeCheckoutConfiguration()
+        checkoutConfiguration.theme = customTheme
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            for: paymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
+            context: context
+        )
+
+        // Then
+        guard let twintComponent = component as? TwintComponent else {
+            XCTFail("Component should be TwintComponent")
+            return
+        }
+        XCTAssertEqual(
+            twintComponent.configuration.theme.colors.primary,
+            UIColor.yellow,
+            "Theme should be propagated from CheckoutConfiguration to component"
+        )
+    }
+
     func test_build_withCheckoutLocalizationProvider_resolvesLocalizationParametersForBLIKComponent() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
@@ -452,6 +690,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -476,6 +715,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -484,24 +724,77 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertEqual(blikComponent.configuration.localizationParameters, localizationParameters)
     }
 
+    // MARK: - Runtime Dispatch Tests
+
+    func test_buildForAnyPaymentMethod_withRegularMethod_shouldUseRegularBuilder() throws {
+        // Given
+        let paymentMethod: any PaymentMethod = try XCTUnwrap(createCardPaymentMethod())
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            forAnyPaymentMethod: paymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
+            context: context
+        )
+
+        // Then
+        XCTAssertTrue(component is CardComponent)
+    }
+
+    func test_buildForAnyPaymentMethod_withStoredMethod_shouldUseStoredBuilder() throws {
+        // Given
+        let paymentMethod: any PaymentMethod = try XCTUnwrap(createStoredCardPaymentMethod())
+
+        // When
+        let component = try CheckoutComponentBuilder.build(
+            forAnyPaymentMethod: paymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
+            context: context
+        )
+
+        // Then
+        XCTAssertTrue(component is StoredCardSecurityCodeComponent)
+    }
+
     // MARK: - Stored Payment Method Tests
     
-    func test_build_withStoredCardPaymentMethod_returnsStoredCardComponent() throws {
+    func test_build_withStoredCardPaymentMethod_returnsStoredCardSecurityCodeComponent() throws {
         // Given
         let storedPaymentMethod = try XCTUnwrap(createStoredCardPaymentMethod())
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
         // Then
         XCTAssertEqual(component.paymentMethod.type, .scheme)
-        XCTAssertTrue(component is StoredCardComponent, "Component should be StoredCardComponent")
+        XCTAssertTrue(component is StoredCardSecurityCodeComponent, "Component should be StoredCardSecurityCodeComponent")
     }
     
+    internal func test_build_withStoredCardPaymentMethodAndHiddenSecurityCode_returnsStoredPaymentMethodComponent() throws {
+        let storedPaymentMethod = try XCTUnwrap(createStoredCardPaymentMethod())
+        let cardConfiguration = CardConfiguration().showSecurityCodeForStoredCard(false)
+        checkoutConfiguration = makeCheckoutConfiguration(
+            configurations: [.payment(.scheme): cardConfiguration]
+        )
+
+        let component = try CheckoutComponentBuilder.build(
+            for: storedPaymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
+            context: context
+        )
+
+        XCTAssertTrue(component is StoredPaymentMethodComponent)
+        XCTAssertFalse(component.requiresUserInteraction)
+    }
+
     func test_build_withStoredCardPaymentMethod_passesCorrectContext() throws {
         // Given
         let customAmount = Amount(value: 1000, currencyCode: "EUR")
@@ -515,9 +808,10 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let storedPaymentMethod = try XCTUnwrap(createStoredCardPaymentMethod())
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: customContext
         )
         
@@ -533,14 +827,15 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         checkoutConfiguration = makeCheckoutConfiguration().localizationProvider(provider)
 
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
         // Then
-        let storedCardComponent = try XCTUnwrap(component as? StoredCardComponent)
+        let storedCardComponent = try XCTUnwrap(component as? StoredCardSecurityCodeComponent)
         let localizationParameters = try XCTUnwrap(storedCardComponent.localizationParameters)
         XCTAssertEqual(localizedString(.cardCvcItemTitle, localizationParameters), "Stored security code")
         XCTAssertTrue(provider.recordedCalls.contains { $0.key == .cardSecurityCode })
@@ -551,9 +846,10 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let storedPaymentMethod = try XCTUnwrap(createStoredPayPalPaymentMethod())
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -569,9 +865,10 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         checkoutConfiguration = makeCheckoutConfiguration().localizationProvider(provider)
 
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
 
@@ -587,9 +884,10 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let storedPaymentMethod = try XCTUnwrap(createStoredBCMCPaymentMethod())
         
         // When
-        let component = CheckoutComponentBuilder.build(
+        let component = try CheckoutComponentBuilder.build(
             for: storedPaymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -615,6 +913,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         let component = try CheckoutComponentBuilder.build(
             for: paymentMethod,
             configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
             context: context
         )
         
@@ -623,6 +922,33 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         XCTAssertTrue(component is ApplePayComponent, "Component should be ApplePayComponent")
     }
     
+    func test_build_withApplePayCallbacks_shouldPreserveCheckoutConfigurationCallbacks() throws {
+        let paymentMethod = try XCTUnwrap(createApplePayPaymentMethod())
+        let applePayConfiguration = try ApplePayConfiguration(
+            paymentRequest: Dummy.createTestApplePayPaymentRequest()
+        )
+        .onAuthorize { _ in PKPaymentAuthorizationResult(status: .success, errors: nil) }
+        .onSelectShippingContact { _, summaryItems in
+            PKPaymentRequestShippingContactUpdate(errors: nil, paymentSummaryItems: summaryItems, shippingMethods: [])
+        }
+        .onSelectShippingMethod { _, summaryItems in
+            PKPaymentRequestShippingMethodUpdate(paymentSummaryItems: summaryItems)
+        }
+        checkoutConfiguration.configurations[.payment(.applePay)] = applePayConfiguration
+
+        let component = try CheckoutComponentBuilder.build(
+            forAnyPaymentMethod: paymentMethod,
+            configuration: checkoutConfiguration,
+            policy: .components(checkoutConfiguration),
+            context: context
+        )
+        let applePayComponent = try XCTUnwrap(component as? ApplePayComponent)
+
+        XCTAssertNotNil(applePayComponent.configuration.onAuthorize)
+        XCTAssertNotNil(applePayComponent.configuration.onSelectShippingContact)
+        XCTAssertNotNil(applePayComponent.configuration.onSelectShippingMethod)
+    }
+
     func testBuild_WithApplePayAndNoConfiguration_ThrowsMissingConfigurationError() throws {
         // Given — no Apple Pay configuration supplied to the DSL
         let paymentMethod = try XCTUnwrap(createApplePayPaymentMethod())
@@ -633,6 +959,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             try CheckoutComponentBuilder.build(
                 for: paymentMethod,
                 configuration: checkoutConfiguration,
+                policy: .components(checkoutConfiguration),
                 context: context
             ),
             "Builder should throw when Apple Pay has no default and no user-supplied config"
@@ -649,6 +976,10 @@ final class CheckoutComponentBuilderTests: XCTestCase {
             "name": "BLIK"
         ]
         return try? AdyenCoder.decode(dict) as BLIKPaymentMethod
+    }
+
+    private func createTwintPaymentMethod() -> TwintPaymentMethod {
+        TwintPaymentMethod(type: .twint, name: "Twint")
     }
     
     private func createACHPaymentMethod() -> ACHDirectDebitPaymentMethod? {
@@ -722,12 +1053,17 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         return try? AdyenCoder.decode(dict) as StoredBCMCPaymentMethod
     }
     
+    private func payButtonView(in component: PaymentComponent) -> UIView? {
+        let viewController = component.viewController
+        viewController.loadViewIfNeeded()
+        return viewController.view.findView(by: "payButtonItem")
+    }
+
     private func makeCheckoutConfiguration(
         configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
     ) -> CheckoutConfiguration {
         CheckoutConfiguration(
             apiContext: Dummy.apiContext,
-            amount: Dummy.amount,
             analyticsApiContext: nil,
             analyticsConfiguration: .init(),
             configurations: configurations

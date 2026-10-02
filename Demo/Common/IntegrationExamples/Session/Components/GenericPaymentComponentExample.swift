@@ -52,7 +52,6 @@ internal final class GenericPaymentComponentExample: InitialDataFlowProtocol {
     private func genericPaymentComponent(from sessionResponse: SessionResponse) async throws -> CheckoutPaymentComponent {
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
-            amount: ConfigurationConstants.current.amount,
             clientKey: ConfigurationConstants.clientKey,
             analyticsConfiguration: .init(
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
@@ -63,9 +62,12 @@ internal final class GenericPaymentComponentExample: InitialDataFlowProtocol {
 
         let checkout = try await Checkout.setup(
             with: sessionResponse,
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
+        .onAction { [weak self] _, actionViewController in
+            self?.presenter?.hideLoadingIndicator()
+            self?.presenter?.present(viewController: actionViewController, completion: nil)
+        }
         .onComplete { [weak self] result in
             self?.dismissAndShowAlert(
                 result.resultCode.isSuccess,
@@ -101,12 +103,5 @@ internal final class GenericPaymentComponentExample: InitialDataFlowProtocol {
             let title = success ? "Success" : "Error"
             self.presenter?.presentAlert(withTitle: title, message: message)
         }
-    }
-}
-
-extension GenericPaymentComponentExample: PresentationDelegate {
-    internal func present(viewController: UIViewController) {
-        presenter?.hideLoadingIndicator()
-        presenter?.present(viewController: viewController, completion: nil)
     }
 }

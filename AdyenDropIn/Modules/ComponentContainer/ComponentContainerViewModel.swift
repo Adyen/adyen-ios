@@ -21,16 +21,16 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     // MARK: - Properties
 
     internal weak var router: ComponentContainerRouting?
-    private let component: PresentablePaymentComponent
-    private let configuration: DropInComponent.Configuration
+    private let component: PaymentComponent
+    private let configuration: DropInConfiguration
     private var dropInFlowManager: DropInFlowManaging
     private weak var partialPaymentDelegate: PartialPaymentDelegate?
 
     // MARK: - Initializers
 
     internal init(
-        component: PresentablePaymentComponent,
-        configuration: DropInComponent.Configuration,
+        component: PaymentComponent,
+        configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
@@ -75,7 +75,7 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        dropInFlowManager.submit(data, from: component, actionPresenter: self)
+        dropInFlowManager.submit(data, from: component)
     }
     
     internal func didFail(
@@ -90,27 +90,12 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
     }
 }
 
-// MARK: - ActionPresenter
-
-extension ComponentContainerViewModel: ActionPresenter {
-
-    internal func present(actionViewController: UIViewController) {
-        router?.present(actionViewController: actionViewController) { [weak self] in
-            self?.stopLoading()
-        }
-    }
-
-    internal func didCancel(actionComponent: any ActionComponent) {
-        stopLoading()
-    }
-}
-
 // MARK: - ReadyToSubmitPaymentComponentDelegate
 
 extension ComponentContainerViewModel: ReadyToSubmitPaymentComponentDelegate {
 
     internal func showConfirmation(
-        for component: GenericPaymentComponent,
+        for component: PaymentComponent,
         with order: PartialPaymentOrder?
     ) {
         // TODO: - Handle gift card balance confirmation

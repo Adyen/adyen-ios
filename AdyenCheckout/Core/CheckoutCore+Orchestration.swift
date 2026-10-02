@@ -12,6 +12,7 @@ import Adyen
     @_spi(AdyenInternal) import AdyenActions
 #endif
 import Foundation
+import UIKit
 
 // MARK: - Internal Helpers
 
@@ -112,9 +113,9 @@ internal extension CheckoutCore {
         case let .completion(resultCode):
             finish(with: CheckoutResultCode(rawValue: resultCode), from: source.paymentComponent)
         case .retry:
-            // TODO: Re-prompt the shopper at payment-method selection. Optionally surface
-            // `errorMessage` in the UI before re-prompting.
-            break
+            source.stopLoading()
+        // TODO: Re-prompt the shopper at payment-method selection. Optionally surface
+        // `errorMessage` in the UI before re-prompting.
         case let .partialPayment(partialPayment):
             handle(partialPayment: partialPayment, source: source)
         }
@@ -146,7 +147,7 @@ internal extension CheckoutCore {
     // invalid-token in handleDidAuthorize, action-component errors, session errors — is
     // trivially correct with no per-path special casing.
     func finish(with resultCode: CheckoutResultCode, from component: (any PaymentComponent)?) {
-        (component as? any FinalizableComponent)?.didFinalize(with: resultCode.isSuccessful, completion: nil)
+        component?.finalizeIfNeeded(with: resultCode.isSuccessful, completion: nil)
         pendingPaymentComponent = nil
         resultCallbacks.handleCompletion(
             resultCode: resultCode,
@@ -156,7 +157,7 @@ internal extension CheckoutCore {
     }
 
     func finish(with error: Error, from component: (any PaymentComponent)?) {
-        (component as? any FinalizableComponent)?.didFinalize(with: false, completion: nil)
+        component?.finalizeIfNeeded(with: false, completion: nil)
         pendingPaymentComponent = nil
         resultCallbacks.onFailure?(CheckoutError(error: error))
     }
@@ -175,6 +176,7 @@ private extension CheckoutCore {
     }
     
     func handle(_ action: Action, source: CheckoutCallbackSource) {
+        source.stopLoading()
         if let dropInComponent = source.dropInComponent as? ActionHandlingComponent {
             dropInComponent.handle(action)
         } else {
@@ -182,4 +184,19 @@ private extension CheckoutCore {
         }
     }
     
+}
+
+extension CheckoutCore: ActionPresentationDelegate {
+
+    package func present(actionViewController: UIViewController, actionData: ActionData) {
+        if let onAction = resultCallbacks.onAction {
+            onAction(actionData, actionViewController)
+        } else if let presentingViewController = pendingPaymentComponent?.viewController {
+            presentingViewController.present(actionViewController, animated: true)
+        } else {
+            AdyenAssertion.assertionFailure(
+                message: "No onAction handler is set and no payment component is available to present the action on."
+            )
+        }
+    }
 }

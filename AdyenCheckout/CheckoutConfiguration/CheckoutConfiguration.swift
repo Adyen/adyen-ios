@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenDropIn)
+    import AdyenDropIn
+#endif
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
@@ -23,7 +26,6 @@ import Foundation
 /// ```swift
 /// let configuration = try CheckoutConfiguration(
 ///     environment: .test,
-///     amount: Amount(value: 1000, currencyCode: "USD"),
 ///     clientKey: "<client-key>"
 /// ) {
 ///     CardComponentConfiguration()
@@ -37,11 +39,11 @@ public struct CheckoutConfiguration {
     
     // TODO: how we store configurations may change
     package var configurations: [CheckoutComponentType: CheckoutComponentConfiguration]
-    
+
+    package var dropInConfiguration: DropInConfiguration
+
     package var localizationProvider: (any CheckoutLocalizationProvider)?
     package var theme: CheckoutTheme
-
-    package let amount: Amount?
 
     package let apiContext: APIContext
 
@@ -52,28 +54,23 @@ public struct CheckoutConfiguration {
     /// Creates a CheckoutConfiguration instance.
     /// - Parameters:
     ///   - environment: The environment to retrieve internal resources from.
-    ///   - amount: Payment amount.
     ///   - clientKey: The client key that corresponds to the web service user you will use for initiating the payment.
     ///   - content: Configuration builder to provide the desired configuration instances.
     ///   See https://docs.adyen.com/user-management/client-side-authentication for more information.
     /// - Throws: `CheckoutError` with one of the following codes if the configuration is invalid:
     ///   - ``CheckoutError/Code/invalidClientKey`` — the client key is malformed.
-    ///   - ``CheckoutError/Code/invalidCurrencyCode`` — the currency code is not ISO 4217.
-    ///   - ``CheckoutError/Code/invalidLocale`` — the locale identifier is not supported.
-    ///   - ``CheckoutError/Code/invalidAmountValue`` — the amount value is negative.
     ///   - ``CheckoutError/Code/invalidConfiguration`` — a component configuration (e.g. Apple Pay) is invalid.
     public init(
         environment: Environment,
-        amount: Amount?,
         clientKey: String,
         analyticsConfiguration: AnalyticsConfiguration = .init(),
         @CheckoutConfigurationBuilder content: () throws -> CheckoutConfigurable
     ) throws {
         let apiContext = try APIContext(environment: environment, clientKey: clientKey)
-        if let amount { try Self.validateAmount(amount) }
         let analyticsApiContext = Self.createAnalyticsAPIContext(apiContext: apiContext)
 
         var configDictionary: [CheckoutComponentType: CheckoutComponentConfiguration] = [:]
+        var dropInConfiguration = DropInConfiguration()
         let configurations: CheckoutConfigurable
         do {
             configurations = try content()
@@ -85,32 +82,34 @@ public struct CheckoutConfiguration {
         for configuration in configArray {
             if let configuration = configuration as? CheckoutComponentConfiguration {
                 configDictionary[configuration.componentType] = configuration
+            } else if let configuration = configuration as? DropInConfiguration {
+                dropInConfiguration = configuration
             }
         }
 
         self.init(
             apiContext: apiContext,
-            amount: amount,
             analyticsApiContext: analyticsApiContext,
             analyticsConfiguration: analyticsConfiguration,
-            configurations: configDictionary
+            configurations: configDictionary,
+            dropInConfiguration: dropInConfiguration
         )
     }
     
     internal init(
         apiContext: APIContext,
-        amount: Amount?,
         analyticsApiContext: APIContext?,
         analyticsConfiguration: AnalyticsConfiguration,
         configurations: [CheckoutComponentType: CheckoutComponentConfiguration] = [:],
+        dropInConfiguration: DropInConfiguration = .init(),
         localizationProvider: (any CheckoutLocalizationProvider)? = nil,
         theme: CheckoutTheme = .default
     ) {
         self.analyticsConfiguration = analyticsConfiguration
         self.analyticsApiContext = analyticsApiContext
-        self.amount = amount
         self.apiContext = apiContext
         self.configurations = configurations
+        self.dropInConfiguration = dropInConfiguration
         self.localizationProvider = localizationProvider
         self.theme = theme
     }
@@ -169,24 +168,18 @@ public struct CheckoutConfiguration {
 
         return analyticsApiContext
     }
-    
-    private static func validateAmount(_ amount: Amount) throws {
-        guard Locale.Currency.isoCurrencies.contains(where: { $0.identifier == amount.currencyCode }) else {
-            throw CheckoutError(code: .invalidCurrencyCode, message: "Invalid currency code")
-        }
-        if let localeIdentifier = amount.localeIdentifier {
-            guard Locale.availableIdentifiers.contains(localeIdentifier) else {
-                throw CheckoutError(code: .invalidLocale, message: "Invalid locale")
-            }
-        }
-        guard amount.value >= 0 else {
-            throw CheckoutError(code: .invalidAmountValue, message: "Invalid amount value")
-        }
-    }
 }
 
 extension CheckoutConfiguration {
     
+    /// Sets whether payment components show their own submit button.
+    ///
+    /// Hide the button when you want to trigger the payment yourself by calling `submit()` on the component.
+    ///
+    /// - Note: This applies only to components created with `createPaymentComponent`.
+    ///   Drop-in ignores it and always shows the submit buttons of the components it presents.
+    /// - Parameter showsSubmitButton: Whether components show their submit button. Defaults to `true`.
+    /// - Returns: A modified copy of the configuration.
     public func showsSubmitButton(_ showsSubmitButton: Bool) -> Self {
         var copy = self
         copy.showsSubmitButton = showsSubmitButton

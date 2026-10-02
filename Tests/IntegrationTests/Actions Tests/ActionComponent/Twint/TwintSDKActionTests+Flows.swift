@@ -123,11 +123,11 @@ import XCTest
                 return true
             }
         
-            let presentationDelegate = Self.failingPresentationDelegateMock()
+            let actionPresentationDelegate = Self.failingActionPresentationDelegateMock()
 
             let twintActionComponent = Self.actionComponent(
                 with: twintSpy,
-                presentationDelegate: presentationDelegate,
+                actionPresentationDelegate: actionPresentationDelegate,
                 delegate: delegate,
                 shouldFailPolling: shouldFailPolling
             )

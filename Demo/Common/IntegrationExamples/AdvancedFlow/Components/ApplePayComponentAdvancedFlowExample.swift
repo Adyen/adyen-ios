@@ -47,7 +47,6 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
     private func applePayComponent(from paymentMethods: PaymentMethods) async throws -> CheckoutPaymentComponent {
         let configuration = try CheckoutConfiguration(
             environment: ConfigurationConstants.componentsEnvironment,
-            amount: ConfigurationConstants.current.amount,
             clientKey: ConfigurationConstants.clientKey,
             analyticsConfiguration: .init(
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
@@ -119,8 +118,7 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
 
         let checkout = try await Checkout.setup(
             with: paymentMethods,
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
         .onSubmit { [weak self] data in
             guard let self else { return .completion(resultCode: "Error") }
@@ -189,12 +187,8 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
     }
 
     private func present(component: CheckoutPaymentComponent) {
-        guard let viewController = component.viewController else {
-            handleError(IntegrationError.paymentMethodNotAvailable(paymentMethod: ApplePayPaymentMethod.self))
-            return
-        }
         // Apple Pay's PassKit sheet is presented as-is; no navigation wrapper.
-        presenter?.present(viewController: viewController, completion: nil)
+        presenter?.present(viewController: component.viewController, completion: nil)
     }
 
     private func dismissAndShowAlert(_ success: Bool, _ message: String) {
@@ -203,12 +197,5 @@ internal final class ApplePayComponentAdvancedFlowExample: InitialDataAdvancedFl
             let title = success ? "Success" : "Error"
             self.presenter?.presentAlert(withTitle: title, message: message)
         }
-    }
-}
-
-extension ApplePayComponentAdvancedFlowExample: PresentationDelegate {
-
-    func present(viewController: UIViewController) {
-        presenter?.present(viewController: viewController, completion: nil)
     }
 }

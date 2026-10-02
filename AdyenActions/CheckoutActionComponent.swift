@@ -23,7 +23,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
     package weak var delegate: ActionComponentDelegate?
 
     /// The object that acts as the presentation delegate of the action component.
-    package weak var presentationDelegate: PresentationDelegate?
+    package weak var actionPresentationDelegate: ActionPresentationDelegate?
 
     /// Action handling configurations.
     package var configuration: Configuration
@@ -133,7 +133,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
         component.configuration.style = configuration.style.redirectComponentStyle
         component.delegate = delegate
         component._isDropIn = _isDropIn
-        component.presentationDelegate = presentationDelegate
+        component.actionPresentationDelegate = actionPresentationDelegate
         currentActionComponent = component
         
         component.handle(action)
@@ -153,7 +153,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
         )
         component._isDropIn = _isDropIn
         component.delegate = delegate
-        component.presentationDelegate = presentationDelegate
+        component.actionPresentationDelegate = actionPresentationDelegate
         
         return component
     }
@@ -196,7 +196,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
             )
             component._isDropIn = _isDropIn
             component.delegate = delegate
-            component.presentationDelegate = presentationDelegate
+            component.actionPresentationDelegate = actionPresentationDelegate
         
             component.handle(action)
             currentActionComponent = component
@@ -208,7 +208,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
         component.configuration.style = configuration.style.awaitComponentStyle
         component._isDropIn = _isDropIn
         component.delegate = delegate
-        component.presentationDelegate = presentationDelegate
+        component.actionPresentationDelegate = actionPresentationDelegate
         component.configuration.localizationParameters = configuration.localizationParameters
         component.appLauncher = appLauncher
         
@@ -221,7 +221,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
         component.configuration.style = configuration.style.awaitComponentStyle
         component._isDropIn = _isDropIn
         component.delegate = delegate
-        component.presentationDelegate = presentationDelegate
+        component.actionPresentationDelegate = actionPresentationDelegate
         component.configuration.localizationParameters = configuration.localizationParameters
         component.appLauncher = appLauncher
         
@@ -234,7 +234,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
         component.configuration.style = configuration.style.voucherComponentStyle
         component._isDropIn = _isDropIn
         component.delegate = delegate
-        component.presentationDelegate = presentationDelegate
+        component.actionPresentationDelegate = actionPresentationDelegate
         component.configuration.localizationParameters = configuration.localizationParameters
         
         component.handle(action)
@@ -246,7 +246,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
         component.configuration.style = configuration.style.qrCodeComponentStyle
         component._isDropIn = _isDropIn
         component.delegate = delegate
-        component.presentationDelegate = presentationDelegate
+        component.actionPresentationDelegate = actionPresentationDelegate
         component.configuration.localizationParameters = configuration.localizationParameters
         
         component.handle(action)
@@ -259,7 +259,7 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
         component._isDropIn = _isDropIn
         component.delegate = delegate
         component.configuration.localizationParameters = configuration.localizationParameters
-        component.presentationDelegate = presentationDelegate
+        component.actionPresentationDelegate = actionPresentationDelegate
         
         component.handle(action)
         currentActionComponent = component

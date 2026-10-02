@@ -9,7 +9,6 @@
 
 public final class AdyenSessionMock: SessionProtocol {
     public var state: Session.State
-    public var presentationDelegate: PresentationDelegate?
     public var showRemovePaymentMethodButton = false
     public var componentConfiguration: SessionComponentConfiguration {
         .init(
@@ -26,17 +25,17 @@ public final class AdyenSessionMock: SessionProtocol {
     var requestOrderCalled = false
     var cancelOrderCalled = false
     var disableStoredPaymentMethodCalled = false
+    var disabledStoredPaymentMethod: StoredPaymentMethod?
+    var disableStoredPaymentMethodResult: Result<Void, Error>?
     var performSubmitResult: Result<SubmitResult, Error>?
     var performAdditionalDetailsResult: Result<AdditionalDetailsResult, Error>?
     var performBalanceCheckResult: Result<Balance, Error>?
     var requestOrderResult: Result<PartialPaymentOrder, Error>?
 
     internal init(
-        state: Session.State,
-        presentationDelegate: PresentationDelegate? = nil
+        state: Session.State
     ) {
         self.state = state
-        self.presentationDelegate = presentationDelegate
     }
     
     var refreshSessionStateCalled = false
@@ -77,6 +76,8 @@ public final class AdyenSessionMock: SessionProtocol {
     
     public func disable(storedPaymentMethod: StoredPaymentMethod) async throws {
         disableStoredPaymentMethodCalled = true
+        disabledStoredPaymentMethod = storedPaymentMethod
+        try disableStoredPaymentMethodResult?.get()
     }
     
 }

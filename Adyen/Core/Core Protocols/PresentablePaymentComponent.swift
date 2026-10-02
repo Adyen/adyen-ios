@@ -20,11 +20,3 @@ package protocol Cancellable: AnyObject {
     /// Called when the user cancels the component.
     func didCancel()
 }
-
-/// A component that provides a view controller for the shopper to fill payment details.
-@MainActor
-package protocol PresentablePaymentComponent: PaymentComponent {
-    
-    /// Returns a view controller that presents the payment details for the shopper to fill.
-    var viewController: UIViewController { get }
-}

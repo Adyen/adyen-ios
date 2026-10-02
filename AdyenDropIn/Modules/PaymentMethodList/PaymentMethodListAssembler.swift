@@ -13,7 +13,7 @@ import Foundation
 // sourcery:AutoMockable
 @MainActor
 internal protocol PaymentMethodListAssemblerProtocol {
-    func resolvePaymentMethodListRouter(delegate: PaymentMethodListRouterListener?) -> Router
+    func resolvePaymentMethodListRouter(listener: PaymentMethodListRouterListener?) -> Router
 }
 
 @MainActor
@@ -25,10 +25,12 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     private let componentManager: ComponentManager
     private let context: AdyenContext
     private let localizationParameters: LocalizationParameters
-    private let configuration: DropInComponent.Configuration
+    private let configuration: DropInConfiguration
     private let dropInFlowManager: DropInFlowManaging
     private let theme: CheckoutTheme
+    private let logoURLProvider: LogoURLProvider
     private let partialPaymentDelegate: PartialPaymentDelegate?
+    private let storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
 
     // MARK: - Initializers
 
@@ -37,10 +39,12 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         componentManager: ComponentManager,
         context: AdyenContext,
         localizationParameters: LocalizationParameters,
-        configuration: DropInComponent.Configuration,
+        configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
         theme: CheckoutTheme,
-        partialPaymentDelegate: PartialPaymentDelegate?
+        logoURLProvider: LogoURLProvider,
+        partialPaymentDelegate: PartialPaymentDelegate?,
+        storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
     ) {
         self.componentContainerAssembler = componentContainerAssembler
         self.componentManager = componentManager
@@ -49,15 +53,16 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
         self.theme = theme
+        self.logoURLProvider = logoURLProvider
         self.partialPaymentDelegate = partialPaymentDelegate
+        self.storedPaymentMethodManagementCapability = storedPaymentMethodManagementCapability
     }
 
     // MARK: - PaymentMethodListAssemblerProtocol
 
     internal func resolvePaymentMethodListRouter(
-        delegate: PaymentMethodListRouterListener?
+        listener: PaymentMethodListRouterListener?
     ) -> Router {
-        let logoURLProvider = LogoURLProvider(environment: context.apiContext.environment)
         let viewModel = PaymentMethodListViewModel(
             context: context,
             localizationParameters: localizationParameters,
@@ -65,15 +70,44 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
             logoURLProvider: logoURLProvider,
+            supportsStoredPaymentMethodManagement: storedPaymentMethodManagementCapability != nil,
             theme: theme
         )
         let view = PaymentMethodListViewController(viewModel: viewModel)
+
         let router = PaymentMethodListRouter(
             viewController: view,
-            listener: delegate,
-            componentContainerAssembler: componentContainerAssembler
+            listener: listener,
+            componentContainerAssembler: componentContainerAssembler,
+            genericPaymentMethodAssembler: resolveGenericPaymentMethodAssembler(),
+            storedPaymentMethodManagementAssembler: resolveStoredPaymentMethodManagementAssembler(),
+            storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability,
+            storedPaymentMethodsProvider: { componentManager.visibleStoredPaymentMethods },
+            onStoredPaymentMethodRemoved: { paymentMethod in
+                viewModel.remove(storedPaymentMethod: paymentMethod)
+            }
         )
         viewModel.router = router
         return router
+    }
+
+    // MARK: - Private
+
+    private func resolveStoredPaymentMethodManagementAssembler() -> StoredPaymentMethodManagementAssemblerProtocol {
+        StoredPaymentMethodManagementAssembler(
+            localizationParameters: localizationParameters,
+            logoURLProvider: logoURLProvider,
+            theme: theme,
+            analyticsProvider: context.analyticsProvider
+        )
+    }
+
+    private func resolveGenericPaymentMethodAssembler() -> GenericPaymentMethodAssemblerProtocol {
+        GenericPaymentMethodAssembler(
+            dropInFlowManager: dropInFlowManager,
+            logoURLProvider: logoURLProvider,
+            theme: theme,
+            localizationParameters: localizationParameters
+        )
     }
 }
