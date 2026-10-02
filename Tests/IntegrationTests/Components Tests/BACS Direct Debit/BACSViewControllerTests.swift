@@ -73,18 +73,69 @@ class BACSViewControllerTests: XCTestCase {
         XCTAssertEqual(viewModel.items.count, 11)
     }
 
-    func test_viewDidLoad_whenShouldShowValidationChanges_shouldShowValidation() {
-        // Given
+    func test_viewDidLoad_shouldNotShowLoading() throws {
+        // When
         sut.loadViewIfNeeded()
 
-        // When - trigger validation by submitting with invalid data
+        // Then
+        let submitButtonItem = try XCTUnwrap(viewModel.submitButtonItem)
+        XCTAssertFalse(submitButtonItem.showsActivityIndicator)
+        XCTAssertTrue(sut.view.isUserInteractionEnabled)
+    }
+
+    func test_performSubmit_whenFormIsValid_shouldShowLoading() throws {
+        // Given
+        sut.loadViewIfNeeded()
+        populateValidFormData()
+
+        // When
         viewModel.performSubmit()
 
         // Then
-        XCTAssertTrue(viewModel.shouldShowValidation)
+        let submitButtonItem = try XCTUnwrap(viewModel.submitButtonItem)
+        XCTAssertTrue(submitButtonItem.showsActivityIndicator)
+        XCTAssertFalse(sut.view.isUserInteractionEnabled)
+    }
+
+    func test_performSubmit_whenFormIsInvalid_shouldNotShowLoading() throws {
+        // Given
+        sut.loadViewIfNeeded()
+
+        // When
+        viewModel.performSubmit()
+
+        // Then
+        let submitButtonItem = try XCTUnwrap(viewModel.submitButtonItem)
+        XCTAssertEqual(viewModel.state, .invalid)
+        XCTAssertFalse(submitButtonItem.showsActivityIndicator)
+        XCTAssertTrue(sut.view.isUserInteractionEnabled)
+    }
+
+    func test_stopLoading_shouldHideLoading() throws {
+        // Given
+        sut.loadViewIfNeeded()
+        populateValidFormData()
+        viewModel.performSubmit()
+
+        // When
+        viewModel.stopLoading()
+
+        // Then
+        let submitButtonItem = try XCTUnwrap(viewModel.submitButtonItem)
+        XCTAssertFalse(submitButtonItem.showsActivityIndicator)
+        XCTAssertTrue(sut.view.isUserInteractionEnabled)
     }
 
     // MARK: - Private
+
+    private func populateValidFormData() {
+        viewModel.amountConsentToggleItem.value = true
+        viewModel.legalConsentToggleItem.value = true
+        viewModel.holderNameItem.value = "Katrina del Mar"
+        viewModel.bankAccountNumberItem.value = "90583742"
+        viewModel.sortCodeItem.value = "743082"
+        viewModel.emailItem.value = "katrina.mar@mail.com"
+    }
 
     private func makeItemsFactoryMock() -> BACSItemsFactoryProtocolMock {
         let styleProvider = FormComponentStyle()

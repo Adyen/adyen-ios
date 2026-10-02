@@ -12,8 +12,6 @@ import XCTest
 @MainActor
 class BACSDirectDebitComponentTests: XCTestCase {
 
-    var inputPresenter: BACSInputPresenterProtocolMock!
-    var confirmationPresenter: BACSConfirmationPresenterProtocolMock!
     var paymentComponentDelegate: PaymentComponentDelegateMock!
     var context: AdyenContext!
     var sut: BACSDirectDebitComponent!
@@ -25,104 +23,104 @@ class BACSDirectDebitComponentTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        inputPresenter = BACSInputPresenterProtocolMock()
-        confirmationPresenter = BACSConfirmationPresenterProtocolMock()
         paymentComponentDelegate = PaymentComponentDelegateMock()
         context = Dummy.context
 
-        sut = BACSDirectDebitComponent(
-            paymentMethod: paymentMethod,
-            context: context
+        sut = BACSDirectDebitFactory().create(
+            with: paymentMethod,
+            context: context,
+            configuration: .init()
         )
 
         sut.delegate = paymentComponentDelegate
     }
 
     override func tearDownWithError() throws {
-        inputPresenter = nil
-        confirmationPresenter = nil
         paymentComponentDelegate = nil
         context = nil
         sut = nil
         try super.tearDownWithError()
     }
 
-    func testPresentConfirmationShouldAssembleConfirmationScene() {
-        // When
-        sut.presentConfirmation(with: bacsDataMock)
-
+    func test_amountConsentToggle_shouldIncludeContextAmount() {
         // Then
-        XCTAssertNotNil(sut.confirmationPresenter)
-    }
-    
-    func testUpdatingAmount() throws {
-        let amount = Amount(value: 100, currencyCode: "EUR")
-        sut = BACSDirectDebitComponent(
-            paymentMethod: paymentMethod,
-            context: context,
-            configuration: .init()
-        )
-
-        let presenter: BACSViewModel = try XCTUnwrap(sut.inputPresenter as? BACSViewModel)
-        let expectedConsentTitle1 = presenter.itemsFactory.createConsentText(with: amount)
-        setupRootViewController(sut.viewController)
-        wait(for: .milliseconds(200))
-        
-        XCTAssertEqual(presenter.amountConsentToggleItem?.title, expectedConsentTitle1)
+        let title = sut.bacsViewModel.amountConsentToggleItem.title
+        XCTAssertTrue(title?.contains(Dummy.amount.formatted) == true)
     }
 
-    func testConfirmPaymentShouldCallConfirmationPresenterStartLoading() {
+    func test_performSubmit_whenFormIsValid_shouldCallDelegateDidSubmitWithDetails() async throws {
         // Given
-        sut.confirmationPresenter = confirmationPresenter
-
-        // When
-        sut.confirmPayment(with: bacsDataMock)
-
-        // Then
-        XCTAssertEqual(confirmationPresenter.startLoadingCallsCount, 1)
-    }
-
-    func testConfirmPaymentShouldCallPaymentComponentDelegateDidSubmit() {
-        // Given
+        populateValidFormData()
         let didSubmitExpectation = expectation(description: "Expect delegate.didSubmit() to be called.")
-        paymentComponentDelegate.onDidSubmit = { [weak self] data, component in
-            XCTAssertTrue(component === self?.sut)
-            let details = data.paymentMethod as! BACSDirectDebitDetails
-
-            XCTAssertEqual(details.holderName, self?.bacsDataMock.holderName)
-            XCTAssertEqual(details.bankAccountNumber, self?.bacsDataMock.bankAccountNumber)
-            XCTAssertEqual(details.bankLocationId, self?.bacsDataMock.bankLocationId)
-
-            self?.sut.stopLoading()
-            didSubmitExpectation.fulfill()
-        }
+        paymentComponentDelegate.onDidSubmit = { _, _ in didSubmitExpectation.fulfill() }
 
         // When
-        sut.confirmPayment(with: bacsDataMock)
+        sut.performSubmit()
 
         // Then
-        waitForExpectations(timeout: 10)
+        await fulfillment(of: [didSubmitExpectation], timeout: 1)
+        let arguments = try XCTUnwrap(paymentComponentDelegate.didSubmitReceivedArguments)
+        XCTAssertTrue(arguments.component === sut)
+
+        let details = try XCTUnwrap(arguments.data.paymentMethod as? BACSDirectDebitDetails)
+        XCTAssertEqual(details.holderName, mockHolderName)
+        XCTAssertEqual(details.bankAccountNumber, mockBankAccountNumber)
+        XCTAssertEqual(details.bankLocationId, mockBankLocationId)
+        XCTAssertEqual(details.shopperEmail, mockShopperEmail)
     }
 
-    func testStopLoadingShouldCallConfirmationPresenterStopLoading() {
+    func test_performSubmit_whenFormIsInvalid_shouldNotCallDelegateDidSubmit() async {
         // Given
-        sut.confirmationPresenter = confirmationPresenter
+        let didSubmitExpectation = expectation(description: "Expect delegate.didSubmit() not to be called.")
+        didSubmitExpectation.isInverted = true
+        paymentComponentDelegate.onDidSubmit = { _, _ in didSubmitExpectation.fulfill() }
+
+        // When
+        sut.performSubmit()
+
+        // Then
+        await fulfillment(of: [didSubmitExpectation], timeout: 0.5)
+        XCTAssertEqual(sut.bacsViewModel.state, .invalid)
+    }
+
+    func test_stopLoading_shouldSetViewModelStateToIdle() {
+        // Given
+        populateValidFormData()
+        sut.performSubmit()
+        XCTAssertEqual(sut.bacsViewModel.state, .submitting)
 
         // When
         sut.stopLoading()
 
         // Then
-        XCTAssertEqual(confirmationPresenter.stopLoadingCallsCount, 1)
+        XCTAssertEqual(sut.bacsViewModel.state, .idle)
     }
 
     // MARK: - Private
 
-    private var bacsDataMock: BACSDirectDebitData {
-        BACSDirectDebitData(
-            holderName: "Katrina del Mar",
-            bankAccountNumber: "90583742",
-            bankLocationId: "743082",
-            shopperEmail: "katrina.mar@mail.com"
-        )
+    private func populateValidFormData() {
+        let viewModel = sut.bacsViewModel
+        viewModel.amountConsentToggleItem.value = true
+        viewModel.legalConsentToggleItem.value = true
+        viewModel.holderNameItem.value = mockHolderName
+        viewModel.bankAccountNumberItem.value = mockBankAccountNumber
+        viewModel.sortCodeItem.value = mockBankLocationId
+        viewModel.emailItem.value = mockShopperEmail
+    }
+
+    private var mockHolderName: String {
+        "Katrina del Mar"
+    }
+
+    private var mockBankAccountNumber: String {
+        "90583742"
+    }
+
+    private var mockBankLocationId: String {
+        "743082"
+    }
+
+    private var mockShopperEmail: String {
+        "katrina.mar@mail.com"
     }
 }

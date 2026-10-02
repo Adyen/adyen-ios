@@ -52,160 +52,34 @@ class BACSViewModelTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func test_viewDidLoad_shouldCreateItems() {
-        // When
-        sut.viewDidLoad()
+    // MARK: - Initialization
 
+    func test_init_shouldCreateFormItems() {
         // Then
         XCTAssertEqual(itemsFactory.createHolderNameItemCallsCount, 1)
         XCTAssertEqual(itemsFactory.createBankAccountNumberItemCallsCount, 1)
         XCTAssertEqual(itemsFactory.createSortCodeItemCallsCount, 1)
         XCTAssertEqual(itemsFactory.createEmailItemCallsCount, 1)
-        XCTAssertEqual(itemsFactory.createPaymentButtonCallsCount, 1)
         XCTAssertEqual(itemsFactory.createAmountConsentToggleAmountCallsCount, 1)
         XCTAssertEqual(itemsFactory.createLegalConsentToggleCallsCount, 1)
+        XCTAssertEqual(itemsFactory.createPaymentButtonCallsCount, 0)
     }
 
-    func test_viewDidLoad_shouldPopulateItems() {
+    func test_init_shouldSetStateToIdle() {
+        // Then
+        XCTAssertEqual(sut.state, .idle)
+    }
+
+    func test_items_shouldContainAllFormItems() {
         // When
-        sut.viewDidLoad()
+        let items = sut.items
 
         // Then
-        XCTAssertEqual(sut.items.count, 11)
+        XCTAssertEqual(items.count, 11)
+        XCTAssertEqual(itemsFactory.createPaymentButtonCallsCount, 1)
     }
 
-    func test_viewDidLoad_shouldCallTrackerSendEvent() {
-        // When
-        sut.viewDidLoad()
-
-        // Then
-        XCTAssertEqual(tracker.sendInitialAnalyticsCallsCount, 1)
-        XCTAssertEqual(tracker.sendDidLoadEventCallsCount, 1)
-    }
-
-    func test_submit_whenButtonTapped_shouldSetShouldShowValidation() {
-        // When
-        sut.viewDidLoad()
-        sut.submitButtonItem?.buttonSelectionHandler?()
-
-        // Then
-        XCTAssertTrue(sut.shouldShowValidation)
-    }
-
-    func test_submit_whenAnyTextItemIsNotValid_shouldNotCallOnSubmit() {
-        // Given
-        sut.viewDidLoad()
-        sut.amountConsentToggleItem?.value = true
-        sut.legalConsentToggleItem?.value = true
-
-        sut.holderNameItem?.value = mockHolderName
-        sut.bankAccountNumberItem?.value = mockBankAccountNumber
-        sut.sortCodeItem?.value = mockBankLocationId
-        sut.emailItem?.value = "mail"
-
-        // When
-        sut.submitButtonItem?.buttonSelectionHandler?()
-
-        // Then
-        XCTAssertEqual(onSubmitCallsCount, 0)
-    }
-
-    func test_submit_whenAmountConsentItemIsDisabled_shouldNotCallOnSubmit() {
-        // Given
-        sut.viewDidLoad()
-        sut.amountConsentToggleItem?.value = false
-        sut.legalConsentToggleItem?.value = true
-
-        sut.holderNameItem?.value = mockHolderName
-        sut.bankAccountNumberItem?.value = mockBankAccountNumber
-        sut.sortCodeItem?.value = mockBankLocationId
-        sut.emailItem?.value = mockShopperEmail
-
-        // When
-        sut.submitButtonItem?.buttonSelectionHandler?()
-
-        // Then
-        XCTAssertEqual(onSubmitCallsCount, 0)
-    }
-
-    func test_submit_whenLegalConsentItemIsDisabled_shouldNotCallOnSubmit() {
-        // Given
-        sut.viewDidLoad()
-        sut.amountConsentToggleItem?.value = true
-        sut.legalConsentToggleItem?.value = false
-
-        sut.holderNameItem?.value = mockHolderName
-        sut.bankAccountNumberItem?.value = mockBankAccountNumber
-        sut.sortCodeItem?.value = mockBankLocationId
-        sut.emailItem?.value = mockShopperEmail
-
-        // When
-        sut.submitButtonItem?.buttonSelectionHandler?()
-
-        // Then
-        XCTAssertEqual(onSubmitCallsCount, 0)
-    }
-
-    func test_submit_whenAnyItemValueIsNil_shouldNotCallOnSubmit() {
-        // Given
-        sut.viewDidLoad()
-        sut.amountConsentToggleItem?.value = true
-        sut.legalConsentToggleItem?.value = true
-
-        // Missing bank holder name value
-        sut.bankAccountNumberItem?.value = mockBankAccountNumber
-        sut.sortCodeItem?.value = mockBankLocationId
-        sut.emailItem?.value = mockShopperEmail
-
-        // When
-        sut.submitButtonItem?.buttonSelectionHandler?()
-
-        // Then
-        XCTAssertEqual(onSubmitCallsCount, 0)
-    }
-
-    func test_submit_whenAllItemsAreValid_shouldCallOnSubmit() {
-        // Given
-        sut.viewDidLoad()
-        populateValidFormData()
-
-        // When
-        sut.submitButtonItem?.buttonSelectionHandler?()
-
-        // Then
-        XCTAssertEqual(onSubmitCallsCount, 1)
-    }
-
-    func test_submit_whenAllItemsAreValid_shouldCreateDetailsWithCorrectValues() {
-        // Given
-        sut.viewDidLoad()
-        populateValidFormData()
-
-        // When
-        sut.submitButtonItem?.buttonSelectionHandler?()
-
-        // Then
-        let receivedDetails = onSubmitReceivedDetails
-        XCTAssertNotNil(receivedDetails)
-        XCTAssertEqual(mockHolderName, receivedDetails?.holderName)
-        XCTAssertEqual(mockBankAccountNumber, receivedDetails?.bankAccountNumber)
-        XCTAssertEqual(mockBankLocationId, receivedDetails?.bankLocationId)
-        XCTAssertEqual(mockShopperEmail, receivedDetails?.shopperEmail)
-    }
-
-    func test_stopLoading_shouldSetActivityIndicatorToFalse() {
-        // Given
-        sut.viewDidLoad()
-        sut.submitButtonItem?.showsActivityIndicator = true
-
-        // When
-        sut.stopLoading()
-
-        // Then
-        XCTAssertEqual(sut.submitButtonItem?.showsActivityIndicator, false)
-    }
-
-    func test_viewDidLoad_whenShowsSubmitButtonIsFalse_shouldNotCreateSubmitButton() {
+    func test_items_whenShowsSubmitButtonIsFalse_shouldNotCreateSubmitButton() {
         // Given
         let paymentMethod = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit, name: "BACS Direct Debit")
         let configuration = BACSDirectDebitComponent.Configuration(showsSubmitButton: false)
@@ -220,22 +94,190 @@ class BACSViewModelTests: XCTestCase {
         )
 
         // When
-        viewModel.viewDidLoad()
+        let items = viewModel.items
 
         // Then
+        XCTAssertEqual(items.count, 10)
         XCTAssertNil(viewModel.submitButtonItem)
         XCTAssertEqual(itemsFactory.createPaymentButtonCallsCount, 0)
+    }
+
+    // MARK: - viewDidLoad
+
+    func test_viewDidLoad_shouldCallTrackerSendEvent() {
+        // When
+        sut.viewDidLoad()
+
+        // Then
+        XCTAssertEqual(tracker.sendInitialAnalyticsCallsCount, 1)
+        XCTAssertEqual(tracker.sendDidLoadEventCallsCount, 1)
+    }
+
+    // MARK: - performSubmit
+
+    func test_performSubmit_whenFormIsInvalid_shouldSetStateToInvalid() {
+        // When
+        sut.submitButtonItem?.buttonSelectionHandler?()
+
+        // Then
+        XCTAssertEqual(sut.state, .invalid)
+        XCTAssertEqual(onSubmitCallsCount, 0)
+    }
+
+    func test_performSubmit_whenAnyTextItemIsNotValid_shouldNotCallOnSubmit() {
+        // Given
+        populateValidFormData()
+        sut.emailItem.value = "mail"
+
+        // When
+        sut.submitButtonItem?.buttonSelectionHandler?()
+
+        // Then
+        XCTAssertEqual(sut.state, .invalid)
+        XCTAssertEqual(onSubmitCallsCount, 0)
+    }
+
+    func test_performSubmit_whenHolderNameIsEmpty_shouldNotCallOnSubmit() {
+        // Given
+        populateValidFormData()
+        sut.holderNameItem.value = ""
+
+        // When
+        sut.submitButtonItem?.buttonSelectionHandler?()
+
+        // Then
+        XCTAssertEqual(sut.state, .invalid)
+        XCTAssertEqual(onSubmitCallsCount, 0)
+    }
+
+    func test_performSubmit_whenAmountConsentItemIsDisabled_shouldNotCallOnSubmit() {
+        // Given
+        populateValidFormData()
+        sut.amountConsentToggleItem.value = false
+
+        // When
+        sut.submitButtonItem?.buttonSelectionHandler?()
+
+        // Then
+        XCTAssertEqual(sut.state, .invalid)
+        XCTAssertEqual(onSubmitCallsCount, 0)
+    }
+
+    func test_performSubmit_whenLegalConsentItemIsDisabled_shouldNotCallOnSubmit() {
+        // Given
+        populateValidFormData()
+        sut.legalConsentToggleItem.value = false
+
+        // When
+        sut.submitButtonItem?.buttonSelectionHandler?()
+
+        // Then
+        XCTAssertEqual(sut.state, .invalid)
+        XCTAssertEqual(onSubmitCallsCount, 0)
+    }
+
+    func test_performSubmit_whenFormIsValid_shouldSetStateToSubmitting() {
+        // Given
+        populateValidFormData()
+
+        // When
+        sut.submitButtonItem?.buttonSelectionHandler?()
+
+        // Then
+        XCTAssertEqual(sut.state, .submitting)
+        XCTAssertEqual(onSubmitCallsCount, 1)
+    }
+
+    func test_performSubmit_whenFormIsValid_shouldCreateDetailsWithCorrectValues() throws {
+        // Given
+        populateValidFormData()
+
+        // When
+        sut.submitButtonItem?.buttonSelectionHandler?()
+
+        // Then
+        let receivedDetails = try XCTUnwrap(onSubmitReceivedDetails)
+        XCTAssertEqual(mockHolderName, receivedDetails.holderName)
+        XCTAssertEqual(mockBankAccountNumber, receivedDetails.bankAccountNumber)
+        XCTAssertEqual(mockBankLocationId, receivedDetails.bankLocationId)
+        XCTAssertEqual(mockShopperEmail, receivedDetails.shopperEmail)
+    }
+
+    func test_performSubmit_whenSubmitting_shouldIgnoreSubsequentSubmits() {
+        // Given
+        populateValidFormData()
+        sut.performSubmit()
+
+        // When
+        sut.performSubmit()
+
+        // Then
+        XCTAssertEqual(sut.state, .submitting)
+        XCTAssertEqual(onSubmitCallsCount, 1)
+    }
+
+    func test_performSubmit_whenInvalidThenCorrected_shouldSubmit() {
+        // Given
+        sut.performSubmit()
+        XCTAssertEqual(sut.state, .invalid)
+
+        // When
+        populateValidFormData()
+        sut.performSubmit()
+
+        // Then
+        XCTAssertEqual(sut.state, .submitting)
+        XCTAssertEqual(onSubmitCallsCount, 1)
+    }
+
+    // MARK: - stopLoading
+
+    func test_stopLoading_whenSubmitting_shouldSetStateToIdle() {
+        // Given
+        populateValidFormData()
+        sut.performSubmit()
+
+        // When
+        sut.stopLoading()
+
+        // Then
+        XCTAssertEqual(sut.state, .idle)
+    }
+
+    func test_stopLoading_whenNotSubmitting_shouldKeepState() {
+        // Given
+        sut.performSubmit()
+
+        // When
+        sut.stopLoading()
+
+        // Then
+        XCTAssertEqual(sut.state, .invalid)
+    }
+
+    func test_stopLoading_shouldAllowResubmit() {
+        // Given
+        populateValidFormData()
+        sut.performSubmit()
+        sut.stopLoading()
+
+        // When
+        sut.performSubmit()
+
+        // Then
+        XCTAssertEqual(sut.state, .submitting)
+        XCTAssertEqual(onSubmitCallsCount, 2)
     }
 
     // MARK: - Private
 
     private func populateValidFormData() {
-        sut.amountConsentToggleItem?.value = true
-        sut.legalConsentToggleItem?.value = true
-        sut.holderNameItem?.value = mockHolderName
-        sut.bankAccountNumberItem?.value = mockBankAccountNumber
-        sut.sortCodeItem?.value = mockBankLocationId
-        sut.emailItem?.value = mockShopperEmail
+        sut.amountConsentToggleItem.value = true
+        sut.legalConsentToggleItem.value = true
+        sut.holderNameItem.value = mockHolderName
+        sut.bankAccountNumberItem.value = mockBankAccountNumber
+        sut.sortCodeItem.value = mockBankLocationId
+        sut.emailItem.value = mockShopperEmail
     }
 
     private var itemsFactoryMock: BACSItemsFactoryProtocolMock {
