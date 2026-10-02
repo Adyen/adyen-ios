@@ -75,7 +75,7 @@ internal final class PaymentMethodListHeaderView: UIView {
         )
         stackView.axis = .vertical
         stackView.spacing = 4
-        stackView.alignment = .leading
+        stackView.alignment = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -123,11 +123,6 @@ internal final class PaymentMethodListHeaderView: UIView {
             stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
 
-            labelsStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            labelsStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
-
-            applePayButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            applePayButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
             applePayButton.heightAnchor.constraint(equalToConstant: Layout.applePayButtonHeight)
         ])
 
