@@ -134,6 +134,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
         super.viewWillAppear(animated)
         
         delegate?.viewWillAppear(viewController: self)
+        hideNavigationBarHairline()
         
         if viewModel.shouldShowSearchBar,
            viewModel.shouldFocusSearchBarOnAppearance {
@@ -271,6 +272,16 @@ package class SearchViewController: UIViewController, AdyenObserver {
         """) }
     }
     
+    private func hideNavigationBarHairline() {
+        guard let navigationBar = navigationController?.navigationBar else { return }
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = viewModel.style.backgroundColor
+        appearance.shadowColor = .clear
+        navigationBar.standardAppearance = appearance
+        navigationBar.scrollEdgeAppearance = appearance
+    }
+
     @objc
     private func dismissKeyboardTapped() {
         searchBar.resignFirstResponder()
