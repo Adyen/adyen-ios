@@ -61,12 +61,13 @@ internal struct SessionRequest: APIRequest {
             )
         }
 
-        if ConfigurationConstants.current.cardSettings.showStorePaymentMethod {
+        let showStorePaymentMethod = ConfigurationConstants.current.cardSettings.showStorePaymentMethod
+        try container.encode(showStorePaymentMethod ? "askForConsent" : "disabled", forKey: .storePaymentMethodMode)
+        if showStorePaymentMethod {
             AdyenAssertion.assert(
                 message: "API version should be v70 or above to apply card component's store payment method field",
                 condition: ConfigurationConstants.demoServerEnvironment.version < 70
             )
-            try container.encode("enabled", forKey: .storePaymentMethodMode)
             try container.encode(ConfigurationConstants.recurringProcessingModel, forKey: .recurringProcessingModel)
         }
         
