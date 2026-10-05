@@ -6,69 +6,36 @@
 
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
+import AdyenNetworking
 import Foundation
 
-/// Describes the `AwaitView` UI elements.
 internal struct AwaitComponentViewModel {
-    
-    /// The await icon name.
-    internal let icon: String
-    
-    /// The await message.
-    internal let message: String
-    
-    /// The spinner title.
-    internal let spinnerTitle: String
-    
-    /// Initializes the `AwaitComponentViewModel`.
-    ///
-    /// - Parameter icon: The icon name.
-    /// - Parameter message: The await message.
-    /// - Parameter spinnerTitle: The spinner title.
-    internal init(icon: String, message: String, spinnerTitle: String) {
-        self.icon = icon
-        self.message = message
-        self.spinnerTitle = spinnerTitle
-    }
-    
+
+    /// The payment method logo URL.
+    internal let logoURL: URL
+
+    /// The await title.
+    internal let title: String
+
+    /// The await description.
+    internal let description: String
+
+    /// The progress title.
+    internal let progressTitle: String
+
     /// Initializes the `AwaitComponentViewModel`.
     ///
     /// - Parameter paymentMethodType: The `paymentMethodType` for which the await action is used.
+    /// - Parameter environment: The environment used to build the logo URL.
     /// - Parameter localizationParameters: The localization parameters to control some aspects of how strings are localized
-    internal static func viewModel(
-        with paymentMethodType: AwaitPaymentMethod,
+    internal init(
+        paymentMethodType: AwaitPaymentMethod,
+        environment: AnyAPIEnvironment,
         localizationParameters: LocalizationParameters? = nil
-    ) -> AwaitComponentViewModel {
-        
-        switch paymentMethodType {
-        case .blik, .twint:
-            return AwaitComponentViewModel(
-                icon: paymentMethodType.rawValue,
-                message: localizedString(.blikConfirmPayment, localizationParameters),
-                spinnerTitle: localizedString(.awaitWaitForConfirmation, localizationParameters)
-            )
-
-        case .mbway:
-            return AwaitComponentViewModel(
-                icon: paymentMethodType.rawValue,
-                message: localizedString(.mbwayConfirmPayment, localizationParameters),
-                spinnerTitle: localizedString(.awaitWaitForConfirmation, localizationParameters)
-            )
-            
-        case .upicollect, .upiIntent:
-            return AwaitComponentViewModel(
-                icon: paymentMethodType.rawValue,
-                message: localizedString(.upiVpaWaitingMessage, localizationParameters),
-                spinnerTitle: localizedString(.upiCollectConfirmPayment, localizationParameters)
-            )
-
-        case .payTo:
-            return AwaitComponentViewModel(
-                icon: paymentMethodType.rawValue,
-                message: localizedString(.paytoAwaitDescription, localizationParameters),
-                spinnerTitle: localizedString(.upiCollectConfirmPayment, localizationParameters)
-            )
-        }
+    ) {
+        self.logoURL = LogoURLProvider.logoURL(withName: paymentMethodType.rawValue, environment: environment)
+        self.title = localizedString(.checkoutAwaitTitle, localizationParameters)
+        self.description = localizedString(.checkoutAwaitDescription, localizationParameters)
+        self.progressTitle = localizedString(.checkoutAwaitStatus, localizationParameters)
     }
-
 }

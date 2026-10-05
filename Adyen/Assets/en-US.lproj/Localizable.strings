@@ -314,3 +314,6 @@
 "adyen.storedPaymentMethod.expired" = "Expired";
 "adyen.checkout.dropin.generic.payment.method.description" = "You will be guided to the next step of the process.";
 "adyen.checkout.dropin.generic.payment.method.progress.title" = "Processing...";
+"adyen.checkout.await.title" = "Awaiting";
+"adyen.checkout.await.description" = "Complete the payment in the provider's application or website.";
+"adyen.checkout.await.status" = "Awaiting completion..";
