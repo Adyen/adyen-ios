@@ -15,11 +15,11 @@ internal struct PaymentLogoView: View {
     private enum Shadow {
         static let nearOpacity: Double = 0.02
         static let nearRadius: CGFloat = 2
-        static let nearOffset: CGFloat = 2
+        static let nearOffset: CGFloat = 1
 
         static let farOpacity: Double = 0.04
         static let farRadius: CGFloat = 4
-        static let farOffset: CGFloat = 4
+        static let farOffset: CGFloat = 2
     }
 
     // MARK: - Properties
