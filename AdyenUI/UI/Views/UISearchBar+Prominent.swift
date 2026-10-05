@@ -23,6 +23,7 @@ package extension UISearchBar {
         // `.minimal` has no bar background or top/bottom borders; the view's
         // background color shows through instead.
         searchBar.searchBarStyle = .minimal
+        searchBar.placeholder = placeholder
         searchBar.delegate = delegate
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         searchBar.adyenApplyFieldStyle(theme: theme, isEditing: false)
