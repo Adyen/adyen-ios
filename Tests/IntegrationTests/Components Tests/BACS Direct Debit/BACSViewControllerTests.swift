@@ -24,7 +24,7 @@ class BACSViewControllerTests: XCTestCase {
         itemsFactory = makeItemsFactoryMock()
 
         let paymentMethod = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit, name: "BACS Direct Debit")
-        let amount = Amount(value: 105.7, currencyCode: "USD", localeIdentifier: nil)
+        let amount = Amount(value: 10570, currencyCode: "USD", localeIdentifier: nil)
         let configuration = BACSDirectDebitComponent.Configuration(showsSubmitButton: true)
 
         viewModel = BACSViewModel(
