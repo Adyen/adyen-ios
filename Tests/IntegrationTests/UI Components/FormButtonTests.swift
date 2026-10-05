@@ -17,6 +17,7 @@ final class FormButtonTests: XCTestCase {
 
         XCTAssertFalse(sut.showsActivityIndicator, "Activity indicator should not be showing initially")
         XCTAssertFalse(activityIndicatorView.isAnimating, "Activity indicator should not be animating initially")
+        XCTAssertTrue(activityIndicatorView.isHidden, "Activity indicator should be hidden initially")
         
         XCTAssertTrue(sut.titleLabel.alpha == 1.0, "Button title should be visible initially")
         XCTAssertEqual(sut.titleLabel.text, "Submit", "Button title should be set correctly")
@@ -32,7 +33,9 @@ final class FormButtonTests: XCTestCase {
         // Then assert loading state and title visibility
         XCTAssertTrue(sut.showsActivityIndicator, "Activity indicator should be showing after tap")
         XCTAssertTrue(activityIndicatorView.isAnimating, "Activity indicator should be animating after tap")
-        XCTAssertTrue(sut.contentStackView.alpha == 0.0, "Button title should be hidden after tap. (Button title is arranged in the stackview).")
+        XCTAssertFalse(activityIndicatorView.isHidden, "Activity indicator should be visible after tap")
+        XCTAssertTrue(sut.contentStackView.alpha == 1.0, "Button title should stay visible while loading")
+        XCTAssertTrue(sut.contentStackView.arrangedSubviews.first === activityIndicatorView, "Spinner should be before the title")
         XCTAssertFalse(sut.isEnabled, "Button should be disabled during loading")
     }
 
@@ -50,6 +53,19 @@ final class FormButtonTests: XCTestCase {
         XCTAssertFalse(activityIndicatorView.isAnimating, "Activity indicator should not be animating after setting to false")
         XCTAssertTrue(sut.titleLabel.alpha == 1.0, "Button title should be visible after activity indicator hides")
         XCTAssertTrue(sut.isEnabled, "Button should be enabled after activity indicator hides")
+    }
+
+    func testLoadingStateUsesDisabledColors() {
+        let buttonStyle = AdyenButtonStyle.primary(for: .default)
+        let sut = FormButton(buttonStyle: buttonStyle)
+
+        sut.showsActivityIndicator = true
+        XCTAssertEqual(sut.titleLabel.textColor, buttonStyle.disabledTextColor, "Title should use disabled text color while loading")
+        XCTAssertEqual(sut.backgroundView.backgroundColor, buttonStyle.disabledBackgroundColor, "Background should be disabled color")
+
+        sut.showsActivityIndicator = false
+        XCTAssertEqual(sut.titleLabel.textColor, buttonStyle.textColor, "Title color should be restored after loading")
+        XCTAssertEqual(sut.backgroundView.backgroundColor, buttonStyle.backgroundColor, "Background color should be restored after loading")
     }
 
     func makeSUT(_ title: String = "Submit") throws -> (FormButton, UIActivityIndicatorView) {

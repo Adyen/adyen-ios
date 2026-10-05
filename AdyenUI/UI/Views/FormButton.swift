@@ -28,7 +28,6 @@ package final class FormButton: UIControl {
         accessibilityTraits = .button
         
         addSubview(backgroundView)
-        addSubview(activityIndicatorView)
         addSubview(contentStackView)
 
         backgroundColor = style.backgroundColor
@@ -52,7 +51,6 @@ package final class FormButton: UIControl {
         accessibilityTraits = .button
 
         addSubview(backgroundView)
-        addSubview(activityIndicatorView)
         addSubview(contentStackView)
 
         backgroundColor = buttonStyle.backgroundColor
@@ -71,7 +69,6 @@ package final class FormButton: UIControl {
         accessibilityTraits = .button
 
         addSubview(backgroundView)
-        addSubview(activityIndicatorView)
         addSubview(contentStackView)
 
         backgroundColor = buttonStyle.backgroundColor
@@ -90,7 +87,8 @@ package final class FormButton: UIControl {
     internal lazy var backgroundView: BackgroundView = {
         let backgroundView = BackgroundView(
             cornerRounding: buttonStyle.cornerRadius ?? .fixed(AdyenUIConstants.defaultCornerRadius),
-            color: buttonStyle.backgroundColor
+            color: buttonStyle.backgroundColor,
+            disabledColor: buttonStyle.disabledBackgroundColor
         )
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -139,7 +137,7 @@ package final class FormButton: UIControl {
     }()
     
     internal lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [leadingImageView, titleLabel])
+        let stackView = UIStackView(arrangedSubviews: [activityIndicatorView, leadingImageView, titleLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .center
@@ -167,13 +165,12 @@ package final class FormButton: UIControl {
         set {
             if newValue {
                 activityIndicatorView.startAnimating()
-                contentStackView.alpha = 0.0
                 isEnabled = false
             } else {
                 activityIndicatorView.stopAnimating()
-                contentStackView.alpha = 1.0
                 isEnabled = true
             }
+            updateLoadingAppearance(isLoading: newValue)
         }
     }
     
@@ -189,6 +186,14 @@ package final class FormButton: UIControl {
     
     private var activityIndicatorStyle: UIActivityIndicatorView.Style {
         .medium
+    }
+    
+    private func updateLoadingAppearance(isLoading: Bool) {
+        let textColor = isLoading ? buttonStyle.disabledTextColor : buttonStyle.textColor
+        titleLabel.textColor = textColor
+        leadingImageView.tintColor = textColor
+        activityIndicatorView.color = textColor
+        backgroundView.isLoading = isLoading
     }
     
     // MARK: - Layout
@@ -214,12 +219,7 @@ package final class FormButton: UIControl {
             leadingImageView.heightAnchor.constraint(equalToConstant: Constants.leadingImageHeight)
         ]
         
-        let spinnerConstraints = [
-            activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor)
-        ]
-
-        let allConstraints = contentConstraints + imageConstraints + spinnerConstraints + [heightConstraint]
+        let allConstraints = contentConstraints + imageConstraints + [heightConstraint]
 
         NSLayoutConstraint.activate(allConstraints)
     }
@@ -239,13 +239,16 @@ extension FormButton {
     internal final class BackgroundView: UIView {
         
         private let color: UIColor
+        private let disabledColor: UIColor
         private let rounding: CornerRounding
 
         fileprivate init(
             cornerRounding: CornerRounding,
-            color: UIColor
+            color: UIColor,
+            disabledColor: UIColor
         ) {
             self.color = color
+            self.disabledColor = disabledColor
             self.rounding = cornerRounding
             super.init(frame: .zero)
             
@@ -262,6 +265,12 @@ extension FormButton {
         
         // MARK: - Background Color
         
+        fileprivate var isLoading = false {
+            didSet {
+                updateBackgroundColor()
+            }
+        }
+        
         fileprivate var isHighlighted = false {
             didSet {
                 updateBackgroundColor()
@@ -273,7 +282,7 @@ extension FormButton {
         }
         
         private func updateBackgroundColor() {
-            var backgroundColor = color
+            var backgroundColor = isLoading ? disabledColor : color
             
             if isHighlighted {
                 backgroundColor = color.withBrightnessMultiple(0.75)
