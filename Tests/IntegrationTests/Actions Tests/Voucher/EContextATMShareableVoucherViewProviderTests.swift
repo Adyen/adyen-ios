@@ -17,7 +17,7 @@ class EContextATMShareableVoucherViewProviderTests: XCTestCase {
         let action: VoucherAction = .econtextATM(econtextAction)
 
         let viewProvider = VoucherShareableViewProvider(
-            style: VoucherComponentStyle(),
+            theme: .default,
             environment: Dummy.apiContext.environment
         )
         viewProvider.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost")

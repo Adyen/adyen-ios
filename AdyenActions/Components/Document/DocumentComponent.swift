@@ -80,7 +80,7 @@ package final class DocumentComponent: ActionComponent, ShareableComponent {
             logoURL: imageURL,
             buttonTitle: localizedString(.boletoDownloadPdf, configuration.localizationParameters)
         )
-        let view = DocumentActionView(viewModel: viewModel, style: configuration.style)
+        let view = DocumentActionView(viewModel: viewModel, theme: configuration.theme)
         view.delegate = self
         let viewController = ActionViewController(view: view)
         
