@@ -102,7 +102,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         
         // Then
         XCTAssertEqual(sut.view.accessibilityIdentifier, "adyen.QRCode")
-        XCTAssertEqual(sut.view.backgroundColor, .white)
+        XCTAssertEqual(sut.view.backgroundColor, CheckoutTheme.default.colors.background)
     }
     
     func test_copyCodeLabel_existsOnlyForCopyCodeFlow() {
@@ -178,18 +178,7 @@ final class QRCodeViewControllerTests: XCTestCase {
         viewModel.onCopyButtonTitle = "Copied!"
         viewModel.qrCodeData = "123456"
         
-        let style = QRCodeViewStyle(
-            copyCodeButton: .init(title: .init(font: .systemFont(ofSize: 16), color: .black)),
-            saveAsImageButton: .init(title: .init(font: .systemFont(ofSize: 16), color: .black)),
-            instructionLabel: .init(font: .systemFont(ofSize: 16), color: .black),
-            amountToPayLabel: .init(font: .systemFont(ofSize: 16), color: .black),
-            progressView: .init(progressTintColor: .blue, trackTintColor: .gray),
-            expirationLabel: .init(font: .systemFont(ofSize: 16), color: .black),
-            logoCornerRounding: .fixed(8),
-            backgroundColor: .white
-        )
-        
-        let sut = QRCodeViewController(viewModel: viewModel, style: style)
+        let sut = QRCodeViewController(viewModel: viewModel, theme: .default)
         return (sut, viewModel)
     }
 }
@@ -198,7 +187,9 @@ final class QRCodeViewControllerTests: XCTestCase {
 
 private extension UIView {
     func findSubview<T: UIView>(ofType type: T.Type) -> T? {
-        if let view = self as? T { return view }
+        if let view = self as? T {
+            return view
+        }
         for subview in subviews {
             if let found = subview.findSubview(ofType: type) {
                 return found

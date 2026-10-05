@@ -39,6 +39,7 @@ internal final class VoucherView: UIView, Localizable {
 
         super.init(frame: .zero)
         self.accessibilityIdentifier = model.identifier
+        backgroundColor = model.theme.colors.background
         
         buildUI()
     }
@@ -136,7 +137,7 @@ internal final class VoucherView: UIView, Localizable {
         let logoSize = CGSize(width: 77.0, height: 50.0)
         logo.contentMode = .scaleAspectFit
         logo.clipsToBounds = true
-        logo.adyen.round(using: model.style.logoCornerRounding)
+        logo.adyen.round(using: .fixed(AdyenUIConstants.imageCornerRadius))
         logo.translatesAutoresizingMaskIntoConstraints = false
         logo.widthAnchor.constraint(equalToConstant: logoSize.width).isActive = true
         logo.heightAnchor.constraint(equalToConstant: logoSize.height).isActive = true
@@ -145,7 +146,8 @@ internal final class VoucherView: UIView, Localizable {
     }()
     
     private lazy var amountLabel: UILabel = {
-        let amountLabel = UILabel(style: model.style.amountLabel)
+        let amountLabel = AdyenLabel()
+        amountLabel.apply(model.theme.elements.labels.title)
         amountLabel.text = model.amount
         amountLabel.numberOfLines = 1
         amountLabel.setContentHuggingPriority(.required, for: .horizontal)
@@ -156,7 +158,8 @@ internal final class VoucherView: UIView, Localizable {
     }()
     
     private lazy var currencyLabel: UILabel = {
-        let currencyLabel = UILabel(style: model.style.currencyLabel)
+        let currencyLabel = AdyenLabel()
+        currencyLabel.apply(model.theme.elements.labels.bodyEmphasized)
         currencyLabel.text = model.currency
         currencyLabel.setContentHuggingPriority(.required, for: .horizontal)
         currencyLabel.setContentHuggingPriority(.required, for: .vertical)
@@ -167,7 +170,7 @@ internal final class VoucherView: UIView, Localizable {
     }()
     
     private lazy var mainButton: FormButton = {
-        let button = FormButton(style: model.style.mainButton)
+        let button = FormButton(buttonStyle: model.theme.elements.buttons.primary, titleStyle: model.theme.elements.labels.bodyEmphasized)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.title = model.mainButton
         button.addTarget(self, action: #selector(onMainButtonTap), for: .touchUpInside)
@@ -179,7 +182,12 @@ internal final class VoucherView: UIView, Localizable {
     }()
     
     private lazy var secondaryButton: UIButton = {
-        let button = UIButton(style: model.style.secondaryButton)
+        let buttonStyle = model.theme.elements.buttons.tertiary
+        let button = UIButton(type: .system)
+        button.titleLabel?.font = model.theme.elements.labels.bodyEmphasized.font
+        button.setTitleColor(buttonStyle.textColor, for: .normal)
+        button.backgroundColor = buttonStyle.backgroundColor
+        button.adyen.round(using: buttonStyle.cornerRadius ?? .fixed(AdyenUIConstants.defaultCornerRadius))
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(model.secondaryButtonTitle, for: .normal)
         button.addTarget(self, action: #selector(onSecondaryButtonTap), for: .touchUpInside)
@@ -223,7 +231,7 @@ internal final class VoucherView: UIView, Localizable {
             animations: {
                 self.secondaryButton.setTitle(self.model.codeConfirmationTitle, for: .normal)
                 self.secondaryButton.setTitleColor(
-                    self.model.style.codeConfirmationColor,
+                    self.model.theme.colors.primary,
                     for: .normal
                 )
             },
@@ -248,7 +256,7 @@ internal final class VoucherView: UIView, Localizable {
                     for: .normal
                 )
                 self.secondaryButton.setTitleColor(
-                    self.model.style.secondaryButton.title.color,
+                    self.model.theme.elements.buttons.tertiary.textColor,
                     for: .normal
                 )
             }

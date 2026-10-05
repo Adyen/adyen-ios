@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import CoreGraphics
 import QuartzCore
 import UIKit
@@ -15,7 +18,7 @@ internal class VoucherCardView: UIView {
 
     private lazy var shadowsLayer = [CALayer]()
 
-    private lazy var separatorView = VoucherSeparatorView(model: model)
+    private lazy var separatorView = VoucherSeparatorView(model: model, theme: theme)
 
     private lazy var stackView: UIStackView = {
         topView.translatesAutoresizingMaskIntoConstraints = false
@@ -38,12 +41,16 @@ internal class VoucherCardView: UIView {
 
     private let model: VoucherSeparatorView.Model
 
+    private let theme: CheckoutTheme
+
     internal init(
         model: VoucherSeparatorView.Model,
+        theme: CheckoutTheme,
         topView: UIView,
         bottomView: UIView
     ) {
         self.model = model
+        self.theme = theme
         self.topView = topView
         self.bottomView = bottomView
         super.init(frame: .zero)
@@ -77,8 +84,8 @@ internal class VoucherCardView: UIView {
     }
 
     private func updateLayersStyle() {
-        containerLayer.strokeColor = UIColor.Adyen.lightGray.withAlphaComponent(0.8).cgColor
-        containerLayer.fillColor = UIColor.Adyen.componentBackground.cgColor
+        containerLayer.strokeColor = theme.colors.containerOutline.cgColor
+        containerLayer.fillColor = theme.colors.background.cgColor
     }
 
     private var cornerRadius: CGFloat = 12
