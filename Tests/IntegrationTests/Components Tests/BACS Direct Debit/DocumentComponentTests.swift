@@ -24,7 +24,7 @@ class DocumentComponentTests: XCTestCase {
     }
     
     func testUI() throws {
-        let style = DocumentComponentStyle()
+        let theme = CheckoutTheme.default
         let sut = DocumentComponent(context: Dummy.context)
         let actionPresentationDelegate = ActionPresentationDelegateMock()
         sut.actionPresentationDelegate = actionPresentationDelegate
@@ -36,21 +36,21 @@ class DocumentComponentTests: XCTestCase {
             
             viewController.loadViewIfNeeded()
 
-            let pdfButton: UIButton? = viewController.view.findView(by: "mainButton")
+            let pdfButton: FormButton? = viewController.view.findView(by: "mainButton")
             let messageLabel: UILabel? = viewController.view.findView(by: "messageLabel")
             let logo: UIImageView? = viewController.view.findView(by: "icon")
             
             // Test pdf button
-            XCTAssertEqual(pdfButton?.backgroundColor, style.mainButton.backgroundColor)
-            XCTAssertEqual(pdfButton?.layer.cornerRadius, 0)
+            XCTAssertEqual(pdfButton?.backgroundColor, theme.elements.buttons.tertiary.backgroundColor)
+            XCTAssertEqual(pdfButton?.layer.cornerRadius, CGFloat(AdyenUIConstants.defaultCornerRadius))
             
             // Test message label
-            XCTAssertEqual(messageLabel?.font, style.messageLabel.font)
-            XCTAssertEqual(messageLabel?.textColor, style.messageLabel.color)
-            XCTAssertEqual(messageLabel?.textAlignment, style.messageLabel.textAlignment)
+            XCTAssertEqual(messageLabel?.font, theme.elements.labels.body.font)
+            XCTAssertEqual(messageLabel?.textColor, theme.colors.text)
+            XCTAssertEqual(messageLabel?.textAlignment, .center)
             
             // Test logo
-            XCTAssertEqual(logo?.layer.cornerRadius, 8)
+            XCTAssertEqual(logo?.layer.cornerRadius, CGFloat(AdyenUIConstants.imageCornerRadius))
         }
         
         try sut.handle(DocumentAction(downloadUrl: XCTUnwrap(URL(string: "www.adyen.com")), paymentMethodType: .bacs))
@@ -71,16 +71,14 @@ class DocumentComponentTests: XCTestCase {
             logoURL: XCTUnwrap(URL(string: "www.adyen.com")),
             buttonTitle: "pdf"
         )
-        let style = DocumentComponentStyle()
-        
-        let sut = DocumentActionView(viewModel: viewModel, style: style)
+        let sut = DocumentActionView(viewModel: viewModel, theme: .default)
         sut.delegate = delegateMock
         
-        let mainButton: UIButton? = sut.findView(by: "mainButton")
+        let mainButton: FormButton? = sut.findView(by: "mainButton")
         let messageLabel: UILabel? = sut.findView(by: "messageLabel")
         XCTAssertNotNil(mainButton)
         
-        XCTAssertEqual(mainButton?.titleLabel?.text, viewModel.buttonTitle)
+        XCTAssertEqual(mainButton?.title, viewModel.buttonTitle)
         XCTAssertEqual(messageLabel?.text, viewModel.message)
         
         mainButton?.sendActions(for: .touchUpInside)

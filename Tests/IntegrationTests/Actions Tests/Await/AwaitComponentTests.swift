@@ -79,10 +79,7 @@ class AwaitComponentTests: XCTestCase {
     }
 
     func testActionHandling() {
-        var style = AwaitComponentStyle()
-        style.backgroundColor = UIColor.green
-        style.message = TextStyle(font: UIFont.systemFont(ofSize: 15), color: UIColor.red, textAlignment: .center)
-        style.spinnerTitle = TextStyle(font: UIFont.systemFont(ofSize: 21), color: UIColor.blue, textAlignment: .left)
+        let theme = CheckoutTheme(colors: CheckoutColors(background: .green, text: .red, textSecondary: .blue))
 
         let action = AwaitAction(paymentData: "data", paymentMethodType: .mbway)
 
@@ -100,7 +97,7 @@ class AwaitComponentTests: XCTestCase {
         }, onQRHandler: nil)
 
         let sut = AwaitComponent(context: Dummy.context, awaitComponentBuilder: handlerProvider)
-        sut.configuration.style = style
+        sut.configuration.theme = theme
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
         let actionPresentationDelegate = ActionPresentationDelegateMock()
@@ -114,11 +111,11 @@ class AwaitComponentTests: XCTestCase {
 
             XCTAssertEqual(view.messageLabel.textColor, UIColor.red)
             XCTAssertEqual(view.messageLabel.textAlignment, .center)
-            XCTAssertEqual(view.messageLabel.font, UIFont.systemFont(ofSize: 15))
+            XCTAssertEqual(view.messageLabel.font, theme.elements.labels.body.font)
 
             XCTAssertEqual(view.spinnerTitleLabel.textColor, UIColor.blue)
             XCTAssertEqual(view.spinnerTitleLabel.textAlignment, .left)
-            XCTAssertEqual(view.spinnerTitleLabel.font, UIFont.systemFont(ofSize: 21))
+            XCTAssertEqual(view.spinnerTitleLabel.font, theme.elements.labels.footnote.font)
             XCTAssertEqual(view.activityIndicatorView.color, UIColor.blue)
             XCTAssertEqual(view.backgroundColor, .green)
 
