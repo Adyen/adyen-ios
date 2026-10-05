@@ -10,8 +10,6 @@ import UIKit
 /// A rounded button for use in forms.
 package final class FormButton: UIControl {
     private enum Constants {
-        static let leadingImageWidth: CGFloat = 24
-        static let leadingImageHeight: CGFloat = 24
         static let activityIndicatorSize: CGFloat = 24
         static let horizontalPadding: CGFloat = 20
     }
@@ -122,29 +120,8 @@ package final class FormButton: UIControl {
         return titleLabel
     }()
     
-    // MARK: - Leading Image
-    
-    /// The optional leading image displayed to the left of the title.
-    package var leadingImage: UIImage? {
-        didSet {
-            leadingImageView.image = leadingImage
-            leadingImageView.isHidden = leadingImage == nil
-        }
-    }
-    
-    private lazy var leadingImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = buttonStyle.textColor
-        imageView.isHidden = true
-        imageView.setContentHuggingPriority(.required, for: .horizontal)
-        imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
-        return imageView
-    }()
-    
     internal lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [activityIndicatorView, leadingImageView, titleLabel])
+        let stackView = UIStackView(arrangedSubviews: [activityIndicatorView, titleLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .center
@@ -203,7 +180,6 @@ package final class FormButton: UIControl {
         backgroundView.baseColor = backgroundColor
         self.backgroundColor = backgroundColor
         titleLabel.textColor = contentColor
-        leadingImageView.tintColor = contentColor
         activityIndicatorView.color = contentColor
     }
     
@@ -250,17 +226,12 @@ package final class FormButton: UIControl {
             )
         ].map { $0.adyen.with(priority: .defaultHigh) }
         
-        let imageConstraints = [
-            leadingImageView.widthAnchor.constraint(equalToConstant: Constants.leadingImageWidth),
-            leadingImageView.heightAnchor.constraint(equalToConstant: Constants.leadingImageHeight)
-        ]
-        
         let spinnerConstraints = [
             activityIndicatorView.widthAnchor.constraint(equalToConstant: Constants.activityIndicatorSize),
             activityIndicatorView.heightAnchor.constraint(equalToConstant: Constants.activityIndicatorSize)
         ]
 
-        let allConstraints = contentConstraints + imageConstraints + spinnerConstraints + [heightConstraint]
+        let allConstraints = contentConstraints + spinnerConstraints + [heightConstraint]
 
         NSLayoutConstraint.activate(allConstraints)
     }
