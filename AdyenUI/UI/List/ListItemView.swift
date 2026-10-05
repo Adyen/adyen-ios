@@ -17,9 +17,6 @@ package final class ListItemView: UIView, AnyFormItemView {
     }
 
     private let imageLoader: ImageLoading
-    private var imageLoadingTask: AdyenCancellable? {
-        willSet { imageLoadingTask?.cancel() }
-    }
     
     public var childItemViews: [AnyFormItemView] = []
 
@@ -103,7 +100,7 @@ package final class ListItemView: UIView, AnyFormItemView {
         checkmarkImageView.isHidden = item?.isSelected != true
         updateCheckmarkSpacing()
         
-        imageView.isHidden = item?.icon == nil
+        logoView.isHidden = item?.icon == nil
         updateIcon()
     }
     
@@ -113,11 +110,7 @@ package final class ListItemView: UIView, AnyFormItemView {
     }
     
     private func updateIcon() {
-        if let iconUrl = item?.icon?.url, window != nil {
-            imageLoadingTask = imageView.load(url: iconUrl, using: imageLoader)
-        } else {
-            imageLoadingTask = nil
-        }
+        logoView.load(url: window != nil ? item?.icon?.url : nil)
     }
     
     private func updateTrailingView(for item: ListItem?) {
@@ -165,35 +158,14 @@ package final class ListItemView: UIView, AnyFormItemView {
     }
     
     private func updateImageView() {
-        imageView.contentMode = .scaleAspectFit
-        
-        guard item?.icon?.canBeModified == true else {
-            return imageView.layer.borderWidth = 0
-        }
-
-        imageView.clipsToBounds = true
-        imageView.layer.borderWidth = 1.0 / UIScreen.main.nativeScale
-        imageView.layer.borderColor = theme.colors.separator.cgColor
+        let canBeModified = item?.icon?.canBeModified == true
+        logoView.cornerRadius = canBeModified ? AdyenUIConstants.imageCornerRadius : 0
+        logoView.shadowColor = canBeModified ? theme.colors.supportShadow : nil
     }
     
     // MARK: - Image View
     
-    private lazy var imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.preservesSuperviewLayoutMargins = true
-        return imageView
-    }()
-    
-    override public func layoutSubviews() {
-        super.layoutSubviews()
-
-        guard item?.icon?.canBeModified == true else {
-            return imageView.adyen.round(using: .none)
-        }
-
-        imageView.adyen.round(using: .fixed(AdyenUIConstants.imageCornerRadius))
-    }
+    private lazy var logoView = PaymentLogoView(size: imageSize, imageLoader: imageLoader)
     
     // MARK: - Title Label
     
@@ -251,13 +223,13 @@ package final class ListItemView: UIView, AnyFormItemView {
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(
             arrangedSubviews: [
-                imageView,
+                logoView,
                 titleSubtitleStackView,
                 trailingView,
                 checkmarkImageView
             ]
         )
-        stackView.setCustomSpacing(16, after: imageView)
+        stackView.setCustomSpacing(16, after: logoView)
         stackView.spacing = AdyenUIConstants.stackViewSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.setContentHuggingPriority(.required, for: .vertical)
@@ -279,24 +251,16 @@ package final class ListItemView: UIView, AnyFormItemView {
             contentStackView.topAnchor.constraint(equalTo: topAnchor, constant: Layout.verticalPadding),
             contentStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Layout.verticalPadding),
             
-            imageView.widthAnchor.constraint(equalToConstant: imageSize.width),
-            imageView.heightAnchor.constraint(equalToConstant: imageSize.height),
-
             checkmarkImageView.widthAnchor.constraint(equalToConstant: Layout.checkmarkSize.width),
             checkmarkImageView.heightAnchor.constraint(equalToConstant: Layout.checkmarkSize.height)
         ]
 
         checkmarkImageView.setContentHuggingPriority(.required, for: .horizontal)
-        imageView.setContentHuggingPriority(.required, for: .horizontal)
+        logoView.setContentHuggingPriority(.required, for: .horizontal)
         
         NSLayoutConstraint.activate(constraints)
     }
     
     // MARK: - Trait Collection
-    
-    override public func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        imageView.layer.borderColor = theme.colors.separator.cgColor
-    }
     
 }

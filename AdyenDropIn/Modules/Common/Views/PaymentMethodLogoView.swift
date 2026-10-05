@@ -10,17 +10,8 @@
 import Foundation
 import SwiftUI
 
+/// SwiftUI wrapper around the shared `AdyenUI.PaymentLogoView` so all logo styling lives in one place.
 internal struct PaymentLogoView: View {
-
-    private enum Shadow {
-        static let nearOpacity: Double = 0.02
-        static let nearRadius: CGFloat = 2
-        static let nearOffset: CGFloat = 1
-
-        static let farOpacity: Double = 0.04
-        static let farRadius: CGFloat = 4
-        static let farOffset: CGFloat = 2
-    }
 
     // MARK: - Properties
 
@@ -31,21 +22,28 @@ internal struct PaymentLogoView: View {
     // MARK: - Body
 
     internal var body: some View {
-        AsyncImage(url: url) { image in
-            image
-                .resizable()
-                .scaledToFit()
-                .clipShape(RoundedRectangle(cornerRadius: AdyenUIConstants.imageCornerRadius))
-        } placeholder: {
-            RoundedRectangle(cornerRadius: AdyenUIConstants.imageCornerRadius)
-                .fill(Color(uiColor: theme.colors.disabled))
-        }
-        .frame(width: size.width, height: size.height)
-        .shadow(color: shadowColor.opacity(Shadow.nearOpacity), radius: Shadow.nearRadius, y: Shadow.nearOffset)
-        .shadow(color: shadowColor.opacity(Shadow.farOpacity), radius: Shadow.farRadius, y: Shadow.farOffset)
+        LogoViewRepresentable(url: url, theme: theme, size: size)
+            .frame(width: size.width, height: size.height)
+    }
+}
+
+private struct LogoViewRepresentable: UIViewRepresentable {
+
+    internal let url: URL
+    internal let theme: CheckoutTheme
+    internal let size: CGSize
+
+    internal func makeUIView(context: Context) -> AdyenUI.PaymentLogoView {
+        let logoView = AdyenUI.PaymentLogoView(size: size)
+        logoView.shadowColor = theme.colors.supportShadow
+        logoView.placeholderColor = theme.colors.disabled
+        logoView.load(url: url)
+        return logoView
     }
 
-    private var shadowColor: Color {
-        Color(uiColor: theme.colors.supportShadow)
+    internal func updateUIView(_ logoView: AdyenUI.PaymentLogoView, context: Context) {
+        logoView.shadowColor = theme.colors.supportShadow
+        logoView.placeholderColor = theme.colors.disabled
+        logoView.load(url: url)
     }
 }
