@@ -29,12 +29,12 @@ internal struct CircularProgressView: View {
     internal var body: some View {
         ZStack {
             Circle()
-                .stroke(Color(uiColor: theme.colors.textOnDisabled).opacity(0.15), lineWidth: lineWidth)
+                .stroke(Color(uiColor: theme.colors.disabled), lineWidth: lineWidth)
 
             Circle()
                 .trim(from: 0, to: Constants.arcLength)
                 .stroke(
-                    Color(uiColor: theme.colors.text),
+                    Color(uiColor: theme.colors.primary),
                     style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
                 )
                 .rotationEffect(.degrees(isRotating ? 360 : 0))
