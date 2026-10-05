@@ -141,6 +141,17 @@ package class SearchViewController: UIViewController, AdyenObserver {
         delegate?.viewDidAppear(viewController: self)
     }
     
+    override package func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        // The search field background is a rendered UIImage; re-bake it on appearance changes.
+        guard traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection),
+              viewModel.shouldShowSearchBar else { return }
+        searchBar.adyenApplyFieldStyle(
+            theme: viewModel.theme,
+            isEditing: searchBar.isFirstResponder
+        )
+    }
+    
     private func setupConstraints() {
 
         let contentTopAnchor: NSLayoutYAxisAnchor
