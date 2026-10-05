@@ -11,7 +11,7 @@ import XCTest
 class AssetsAccessTests: XCTestCase {
 
     func testCoreResourcesAccess() {
-        XCTAssertNotNil(UIImage(named: "verification_false", in: Bundle.coreInternalResources, compatibleWith: nil))
+        XCTAssertNotNil(UIImage(named: "search", in: Bundle.coreInternalResources, compatibleWith: nil))
     }
 
     func testActionResourcesAccess() {
