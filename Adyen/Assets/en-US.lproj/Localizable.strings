@@ -8,7 +8,7 @@
 "adyen.error.unknown" = "An unknown error occurred";
 "adyen.validationAlert.title" = "Invalid Input";
 "adyen.paymentMethods.otherMethods" = "Others";
-"adyen.paymentMethods.storedMethods" = "Stored";
+"adyen.paymentMethods.storedMethods" = "Favorites";
 "adyen.paymentMethods.paidMethods" = "Applied";
 "adyen.paymentMethods.title" = "Payment Methods";
 "adyen.paymentMethod.removeButton" = "Yes, remove";

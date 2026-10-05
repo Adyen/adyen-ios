@@ -28,7 +28,7 @@ public struct LocalizationKey {
     public static let validationAlertTitle = LocalizationKey(key: "adyen.validationAlert.title")
     /// Others
     public static let paymentMethodsOtherMethods = LocalizationKey(key: "adyen.paymentMethods.otherMethods")
-    /// Stored
+    /// Favorites
     public static let paymentMethodsStoredMethods = LocalizationKey(key: "adyen.paymentMethods.storedMethods")
     /// Applied
     public static let paymentMethodsPaidMethods = LocalizationKey(key: "adyen.paymentMethods.paidMethods")
