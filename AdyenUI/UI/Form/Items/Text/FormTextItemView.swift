@@ -172,8 +172,8 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         let accessoryView: UIView
         switch accessory {
         case .valid:
-            accessoryView = AccessoryLogo(image: UIImage(named: "verification_true", in: .coreInternalResources, compatibleWith: nil))
-            accessoryView.tintColor = theme.colors.primary
+            accessoryView = AccessoryLogo(image: .adyenCheckmark)
+            accessoryView.tintColor = theme.colors.text
         case .invalid:
             accessoryView = AccessoryLogo(image: .adyenWarning)
             accessoryView.tintColor = theme.colors.destructive
