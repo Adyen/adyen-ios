@@ -57,7 +57,7 @@ internal final class FormCardLogosItemView: FormItemView<FormCardLogosItem>, UIC
             cell.update(
                 imageUrl: logo.url,
                 altText: logo.brand.name,
-                separatorColor: theme.colors.separator,
+                shadowColor: theme.colors.supportShadow,
                 imageLoader: imageLoader
             )
         }
@@ -97,18 +97,14 @@ extension FormCardLogosItemView {
         
         fileprivate static let reuseIdentifier = "CardLogoCell"
         
-        private lazy var cardTypeImageView = UIImageView()
+        private lazy var logoView = PaymentLogoView(size: Constants.cardSize)
         
         private var imageUrl: URL?
-        private var imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
-        private var imageLoadingTask: AdyenCancellable? {
-            willSet { imageLoadingTask?.cancel() }
-        }
         
         override private init(frame: CGRect) {
             super.init(frame: frame)
-            contentView.addSubview(cardTypeImageView)
-            cardTypeImageView.adyen.anchor(inside: contentView)
+            contentView.addSubview(logoView)
+            logoView.adyen.anchor(inside: contentView)
         }
         
         @available(*, unavailable)
@@ -116,19 +112,14 @@ extension FormCardLogosItemView {
             fatalError("init(coder:) has not been implemented")
         }
         
-        internal func update(imageUrl: URL, altText: String, separatorColor: UIColor, imageLoader: ImageLoading) {
+        internal func update(imageUrl: URL, altText: String, shadowColor: UIColor, imageLoader: ImageLoading) {
             self.imageUrl = imageUrl
-            self.imageLoader = imageLoader
+            logoView.imageLoader = imageLoader
+            logoView.shadowColor = shadowColor
             
-            cardTypeImageView.isAccessibilityElement = true
-            cardTypeImageView.accessibilityValue = altText
-            cardTypeImageView.accessibilityTraits.insert(.image)
-            
-            cardTypeImageView.layer.masksToBounds = true
-            cardTypeImageView.layer.borderWidth = 1.0 / UIScreen.main.nativeScale
-            cardTypeImageView.layer.borderColor = separatorColor.cgColor
-            cardTypeImageView.backgroundColor = .clear
-            cardTypeImageView.adyen.round(using: .fixed(AdyenUIConstants.imageCornerRadius))
+            logoView.imageView.isAccessibilityElement = true
+            logoView.imageView.accessibilityValue = altText
+            logoView.imageView.accessibilityTraits.insert(.image)
             
             updateIcon()
         }
@@ -139,11 +130,7 @@ extension FormCardLogosItemView {
         }
         
         private func updateIcon() {
-            if let imageUrl, window != nil {
-                imageLoadingTask = cardTypeImageView.load(url: imageUrl, using: imageLoader)
-            } else {
-                imageLoadingTask = nil
-            }
+            logoView.load(url: window != nil ? imageUrl : nil)
         }
     }
 }
