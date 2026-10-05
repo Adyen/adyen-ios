@@ -10,8 +10,6 @@ import UIKit
 
 struct AdyenUIAssetsAccessTests {
     @Test("Images", arguments: [
-        UIImage.adyenLock,
-        UIImage.systemLock,
         UIImage.adyenCheckmark,
         UIImage.adyenChevronRight,
         UIImage.adyenWarning,

@@ -266,7 +266,6 @@ internal class PreselectedPaymentMethodViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(primaryButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton")
-        button.leadingImage = .adyenLock ?? .systemLock
         return button
     }()
 
