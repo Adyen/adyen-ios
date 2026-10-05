@@ -33,7 +33,7 @@ class SupportedPaymentMethodLogosViewTests: XCTestCase {
         XCTAssertEqual(supportedLogosView.subviews.count, 1)
         XCTAssertTrue(supportedLogosView.subviews.first === supportedLogosView.content)
         
-        let logoViews = try XCTUnwrap(supportedLogosView.content?.subviews.compactMap { $0 as? UIImageView })
+        let logoViews = try XCTUnwrap(supportedLogosView.content?.subviews.compactMap { $0 as? PaymentLogoView })
         XCTAssertEqual(logoViews.count, 1)
         
         let trailingLabel = try XCTUnwrap(supportedLogosView.content?.subviews.last as? UILabel)
