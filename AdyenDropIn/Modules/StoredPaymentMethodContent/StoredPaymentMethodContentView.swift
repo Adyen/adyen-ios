@@ -17,6 +17,8 @@ internal struct StoredPaymentMethodContentView: View {
 
     private enum Constants {
         static let contentPadding: CGFloat = 16
+        static let contentSpacing: CGFloat = 32
+        static let bottomPadding: CGFloat = 16
     }
 
     private let viewModel: StoredPaymentMethodContentViewModel
@@ -27,7 +29,7 @@ internal struct StoredPaymentMethodContentView: View {
 
     internal var body: some View {
         ScrollView {
-            VStack(spacing: 32) {
+            VStack(spacing: Constants.contentSpacing) {
                 // TODO: Robert: How do I center this in SwiftUI? Without using any computations using GeometryReaders or Layout. A problem for later.
                 StoredPaymentMethodContentHeaderView(
                     logoURL: viewModel.paymentMethodLogoURL,
@@ -40,7 +42,7 @@ internal struct StoredPaymentMethodContentView: View {
                 ComponentViewControllerView(viewController: viewModel.componentViewController)
             }
             .frame(maxWidth: .infinity)
-            .padding(.bottom, 16)
+            .padding(.bottom, Constants.bottomPadding)
         }
         .background(Color(uiColor: viewModel.theme.colors.background))
         .toolbar {
