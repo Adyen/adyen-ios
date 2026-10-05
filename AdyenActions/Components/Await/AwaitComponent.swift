@@ -27,6 +27,9 @@ package final class AwaitComponent: ActionComponent, Cancellable {
         
         /// The component UI style.
         package var style: AwaitComponentStyle
+
+        /// The theme applied to the component's screens.
+        package var theme: CheckoutTheme = .default
         
         /// The localization parameters, leave it nil to use the default parameters.
         package var localizationParameters: LocalizationParameters?
