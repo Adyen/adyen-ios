@@ -83,6 +83,7 @@ package final class ListViewController: UITableViewController {
         tableView.isOpaque = false
 
         tableView.separatorColor = .clear
+        tableView.separatorStyle = .none
         tableView.sectionHeaderHeight = UITableView.automaticDimension
         tableView.sectionFooterHeight = 0.0
         tableView.estimatedRowHeight = 56.0
