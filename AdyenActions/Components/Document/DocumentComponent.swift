@@ -26,22 +26,18 @@ package final class DocumentComponent: ActionComponent, ShareableComponent {
 
     /// The document component configurations.
     package struct Configuration {
-        
-        /// The component UI style.
-        package var style: DocumentComponentStyle
 
         /// The theme applied to the component's screens.
-        package var theme: CheckoutTheme = .default
-        
+        package var theme: CheckoutTheme
+
         /// The localization parameters, leave it nil to use the default parameters.
         package var localizationParameters: LocalizationParameters?
-        
-        package init(style: DocumentComponentStyle = DocumentComponentStyle()) {
-            self.init(style: style, localizationParameters: nil)
-        }
 
-        package init(style: DocumentComponentStyle = DocumentComponentStyle(), localizationParameters: LocalizationParameters? = nil) {
-            self.style = style
+        package init(
+            theme: CheckoutTheme = .default,
+            localizationParameters: LocalizationParameters? = nil
+        ) {
+            self.theme = theme
             self.localizationParameters = localizationParameters
         }
     }
