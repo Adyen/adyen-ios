@@ -21,7 +21,6 @@ internal enum DefaultColorsLight {
     internal static let text = UIColor.color(hex: 0x00112C)
     internal static let textSecondary = UIColor.color(hex: 0x5C687C)
 
-    internal static let success = UIColor.color(hex: 0x07893C)
     internal static let supportShadow = UIColor.color(hex: 0x001222)
 }
 
@@ -40,7 +39,6 @@ internal enum DefaultColorsDark {
     internal static let text = UIColor.color(hex: 0xEDEDED)
     internal static let textSecondary = UIColor.color(hex: 0xA5A5A5)
 
-    internal static let success = UIColor.color(hex: 0x41CD7A)
     internal static let supportShadow = UIColor.color(hex: 0x070707)
 }
 
@@ -60,7 +58,6 @@ public struct CheckoutColors: Equatable {
     public var text: UIColor
     public var textSecondary: UIColor
 
-    package var success: UIColor
     package var supportShadow: UIColor
 
     // MARK: - Initializers
@@ -82,7 +79,6 @@ public struct CheckoutColors: Equatable {
         self.text = .dynamic(light: DefaultColorsLight.text, dark: DefaultColorsDark.text)
         self.textSecondary = .dynamic(light: DefaultColorsLight.textSecondary, dark: DefaultColorsDark.textSecondary)
 
-        self.success = .dynamic(light: DefaultColorsLight.success, dark: DefaultColorsDark.success)
         self.supportShadow = .dynamic(light: DefaultColorsLight.supportShadow, dark: DefaultColorsDark.supportShadow)
     }
 
@@ -116,7 +112,6 @@ public struct CheckoutColors: Equatable {
         self.separator = separator ?? defaultScheme.separator
         self.text = text ?? defaultScheme.text
         self.textSecondary = textSecondary ?? defaultScheme.textSecondary
-        self.success = defaultScheme.success
         self.supportShadow = defaultScheme.supportShadow
     }
 }
