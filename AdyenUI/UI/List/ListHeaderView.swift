@@ -29,6 +29,9 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// The theme to use for styling. Set before `headerItem` so it is picked up on update.
+    package var theme: CheckoutTheme = .default
+
     internal var headerItem: ListSectionHeader? {
         didSet {
             updateItem()
@@ -37,8 +40,8 @@ internal final class ListHeaderView: UITableViewHeaderFooterView {
     
     private func updateItem() {
         guard let item = headerItem else { return }
-        backgroundView?.backgroundColor = item.style.backgroundColor
-        contentView.backgroundColor = item.style.backgroundColor
+        backgroundView?.backgroundColor = theme.colors.background
+        contentView.backgroundColor = theme.colors.background
         titleLabel.adyen.apply(item.style.title)
         titleLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(
             scopeInstance: "Adyen.ListHeaderView.\(item.title)",

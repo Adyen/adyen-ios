@@ -13,13 +13,13 @@ internal final class ListFooterView: UIView {
     /// The list section header style.
     internal let style: ListSectionFooterStyle
 
-    internal init(title: String, style: ListSectionFooterStyle) {
+    internal init(title: String, style: ListSectionFooterStyle, theme: CheckoutTheme = .default) {
         self.title = title
         self.style = style
 
         super.init(frame: .zero)
 
-        backgroundColor = style.backgroundColor
+        backgroundColor = theme.colors.background
         addSubview(stackView)
 
         stackView.adyen.anchor(inside: self)
