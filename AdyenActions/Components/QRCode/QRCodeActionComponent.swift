@@ -35,22 +35,18 @@ package final class QRCodeActionComponent: ActionComponent, Cancellable, Shareab
 
     /// The QR code component configurations.
     package struct Configuration {
-        
-        /// The component UI style.
-        package var style: QRCodeComponentStyle = .init()
 
         /// The theme applied to the component's screens.
-        package var theme: CheckoutTheme = .default
+        package var theme: CheckoutTheme
 
         /// The localization parameters, leave it nil to use the default parameters.
         package var localizationParameters: LocalizationParameters?
-        
-        package init(style: QRCodeComponentStyle = QRCodeComponentStyle()) {
-            self.init(style: style, localizationParameters: nil)
-        }
 
-        package init(style: QRCodeComponentStyle = QRCodeComponentStyle(), localizationParameters: LocalizationParameters? = nil) {
-            self.style = style
+        package init(
+            theme: CheckoutTheme = .default,
+            localizationParameters: LocalizationParameters? = nil
+        ) {
+            self.theme = theme
             self.localizationParameters = localizationParameters
         }
     }
