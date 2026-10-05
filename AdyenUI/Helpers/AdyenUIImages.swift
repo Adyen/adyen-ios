@@ -8,14 +8,6 @@ import UIKit
 
 package extension UIImage {
 
-    static var adyenLock: UIImage? {
-        image(named: "bento-lock")?.withRenderingMode(.alwaysTemplate)
-    }
-
-    static var systemLock: UIImage? {
-        UIImage(systemName: "lock")?.withRenderingMode(.alwaysTemplate)
-    }
-
     static var adyenCheckmark: UIImage? {
         image(named: "ic_checkmark")
     }
