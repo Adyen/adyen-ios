@@ -77,6 +77,7 @@ open class FormTextItemView<ItemType: FormTextItem>: FormValidatableValueItemVie
         textField.font = style.text.font
         textField.textColor = style.text.color
         textField.textAlignment = style.text.textAlignment
+        textField.tintColor = style.borderActiveColor
 
         // Container
         entryTextStackView.backgroundColor = style.backgroundColor
