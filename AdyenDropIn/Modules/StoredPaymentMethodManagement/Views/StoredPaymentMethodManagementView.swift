@@ -123,10 +123,10 @@ private extension StoredPaymentMethodManagementView {
     private struct RemovalConfirmationView: View {
         
         private enum Constants {
-            static let horizontalPadding: CGFloat = 16
+            static let horizontalPadding: CGFloat = 8
             static let verticalPadding: CGFloat = 16
             static let buttonHeight: CGFloat = 52
-            static let buttonSpacing: CGFloat = 8
+            static let buttonSpacing: CGFloat = 12
             static let buttonCornerRadius: CGFloat = 14
         }
 
