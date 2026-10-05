@@ -153,10 +153,10 @@ package final class ListCell: UITableViewCell {
         let layoutGuide = contentView.layoutMarginsGuide
         
         let constraints = [
-            itemView.topAnchor.constraint(equalTo: topAnchor),
+            itemView.topAnchor.constraint(equalTo: contentView.topAnchor),
             itemView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
             itemView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-            itemView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            itemView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             contentView.heightAnchor
                 .constraint(greaterThanOrEqualToConstant: 48.0)
                 .adyen.with(priority: .defaultHigh)
