@@ -119,7 +119,7 @@ package final class AwaitComponent: ActionComponent, Cancellable {
             with: action.paymentMethodType,
             localizationParameters: configuration.localizationParameters
         )
-        let awaitView = AwaitView(viewModel: viewModel, style: configuration.style)
+        let awaitView = AwaitView(viewModel: viewModel, theme: configuration.theme)
         let viewController = ActionViewController(view: awaitView)
 
         if let actionPresentationDelegate {
