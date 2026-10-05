@@ -49,13 +49,7 @@ package final class ListCell: UITableViewCell {
             itemView.item = item
             itemView.accessibilityIdentifier = item?.identifier.map { ViewIdentifierBuilder.build(scopeInstance: $0, postfix: "itemView") }
             applyTheme()
-
-            itemView.layoutMargins = item?.style.contentInsets ?? .init(
-                top: 0,
-                left: contentView.layoutMargins.left,
-                bottom: 0,
-                right: contentView.layoutMargins.right
-            )
+            updateHorizontalInsets()
 
             resetAccessoryView()
             
@@ -76,6 +70,8 @@ package final class ListCell: UITableViewCell {
         clipsToBounds = isSelected
         accessibilityMarkAsSelected(isSelected)
     }
+    
+    // MARK: - Internal
     
     /// Indicates if the cell is in an enabled state.
     internal var isEnabled = true {
@@ -142,7 +138,7 @@ package final class ListCell: UITableViewCell {
     }
     
     // MARK: - Item View
-
+    
     private lazy var itemView: ListItemView = {
         let itemView = ListItemView()
         itemView.translatesAutoresizingMaskIntoConstraints = false
@@ -153,12 +149,27 @@ package final class ListCell: UITableViewCell {
     }()
     
     // MARK: - Layout
-
+    
+    private lazy var layoutMarginsConstraints = [
+        itemView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
+        itemView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor)
+    ]
+    
+    private lazy var leadingInsetConstraint = itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor)
+    private lazy var trailingInsetConstraint = contentView.trailingAnchor.constraint(equalTo: itemView.trailingAnchor)
+    
+    private func updateHorizontalInsets() {
+        let inset = item?.horizontalContentInset
+        let insetConstraints = [leadingInsetConstraint, trailingInsetConstraint]
+        insetConstraints.forEach { $0.constant = inset ?? 0 }
+        
+        NSLayoutConstraint.deactivate(inset == nil ? insetConstraints : layoutMarginsConstraints)
+        NSLayoutConstraint.activate(inset == nil ? layoutMarginsConstraints : insetConstraints)
+    }
+    
     private func configureConstraints() {
         let constraints = [
             itemView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            itemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             itemView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             contentView.heightAnchor
                 .constraint(greaterThanOrEqualToConstant: 48.0)
@@ -166,6 +177,7 @@ package final class ListCell: UITableViewCell {
         ]
         
         NSLayoutConstraint.activate(constraints)
+        updateHorizontalInsets()
     }
     
 }

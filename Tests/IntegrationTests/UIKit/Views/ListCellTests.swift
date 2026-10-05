@@ -124,6 +124,20 @@ final class ListCellTests: XCTestCase {
         XCTAssertEqual(titleLabel.textColor, theme.colors.highlight)
     }
 
+    func test_cell_whenItemHasSubtitle_fittingHeightIncludesLabels() {
+        let cell = ListCell(style: .default, reuseIdentifier: nil)
+        cell.theme = theme
+        cell.item = ListItem(title: "Title", subtitle: "Subtitle", identifier: "identifier")
+
+        let fittingSize = cell.contentView.systemLayoutSizeFitting(
+            CGSize(width: 361, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+
+        XCTAssertGreaterThanOrEqual(fittingSize.height, 64)
+    }
+
     // MARK: - Helpers
 
     private let theme = CheckoutTheme(
