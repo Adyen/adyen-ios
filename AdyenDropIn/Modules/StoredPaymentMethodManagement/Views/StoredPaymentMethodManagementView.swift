@@ -39,7 +39,7 @@ internal struct StoredPaymentMethodManagementView: View {
         .sheet(item: removalConfirmationItem) { item in
             if #available(iOS 16.4, *) {
                 removalConfirmationView(for: item)
-                    .presentationBackground(.black.opacity(0.1))
+                    .presentationBackground(Color(uiColor: theme.colors.background))
             } else {
                 removalConfirmationView(for: item)
             }
