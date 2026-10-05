@@ -8,6 +8,7 @@
 @testable import AdyenActions
 @testable import AdyenDropIn
 @_spi(AdyenInternal) @testable import AdyenUI
+import SwiftUI
 import XCTest
 
 final class PollingHandlerMock: AnyPollingHandler {
@@ -64,11 +65,11 @@ class AwaitComponentTests: XCTestCase {
 
         let presentationExpectation = expectation(description: "expect presentation delegate to be called")
         actionPresentationDelegate.doPresent = { viewController in
-            let messageLabel: UILabel! = viewController.view.findView(by: "messageLabel")
-            let spinnerLabel: UILabel! = viewController.view.findView(by: "spinnerTitleLabel")
+            let viewModel = try XCTUnwrap(viewController as? UIHostingController<AwaitView>).rootView.viewModel
 
-            XCTAssertEqual(messageLabel.text, "Confirm your payment on the MB WAY app -- Test")
-            XCTAssertEqual(spinnerLabel.text, "Waiting for confirmation -- Test")
+            XCTAssertEqual(viewModel.title, "Awaiting -- Test")
+            XCTAssertEqual(viewModel.description, "Complete the payment in the provider's application or website. -- Test")
+            XCTAssertEqual(viewModel.progressTitle, "Awaiting completion.. -- Test")
 
             presentationExpectation.fulfill()
         }
@@ -103,21 +104,16 @@ class AwaitComponentTests: XCTestCase {
         let actionPresentationDelegate = ActionPresentationDelegateMock()
         let waitExpectation = expectation(description: "Wait for the actionPresentationDelegate to be called.")
         actionPresentationDelegate.doPresent = { viewController in
-            XCTAssertNotNil(viewController as? ActionViewController)
-            let viewController = viewController as! ActionViewController
-            viewController.loadViewIfNeeded()
+            let hostingController = try XCTUnwrap(viewController as? UIHostingController<AwaitView>)
+            let awaitView = hostingController.rootView
 
-            let view = viewController.view as! AwaitView
-
-            XCTAssertEqual(view.messageLabel.textColor, UIColor.red)
-            XCTAssertEqual(view.messageLabel.textAlignment, .center)
-            XCTAssertEqual(view.messageLabel.font, theme.elements.labels.body.font)
-
-            XCTAssertEqual(view.spinnerTitleLabel.textColor, UIColor.blue)
-            XCTAssertEqual(view.spinnerTitleLabel.textAlignment, .left)
-            XCTAssertEqual(view.spinnerTitleLabel.font, theme.elements.labels.footnote.font)
-            XCTAssertEqual(view.activityIndicatorView.color, UIColor.blue)
-            XCTAssertEqual(view.backgroundColor, .green)
+            XCTAssertEqual(hostingController.sizingOptions, .preferredContentSize)
+            XCTAssertEqual(awaitView.theme.colors, theme.colors)
+            XCTAssertEqual(awaitView.theme.elements, theme.elements)
+            XCTAssertEqual(
+                awaitView.viewModel.logoURL,
+                LogoURLProvider.logoURL(withName: "mbway", environment: Dummy.context.apiContext.environment)
+            )
 
             waitExpectation.fulfill()
         }

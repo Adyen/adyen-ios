@@ -57,3 +57,6 @@
 "adyen.voucher.introduction" = "Thank you for your purchase, please use the following information to complete your payment. -- Test";
 "adyen.voucher.readInstructions" = "Read instructions -- Test";
 "adyen.voucher.collectionInstitutionNumber" = "Collection Institution Number -- Test";
+"adyen.checkout.await.title" = "Awaiting -- Test";
+"adyen.checkout.await.description" = "Complete the payment in the provider's application or website. -- Test";
+"adyen.checkout.await.status" = "Awaiting completion.. -- Test";

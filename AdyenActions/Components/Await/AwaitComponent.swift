@@ -9,6 +9,7 @@ import Foundation
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
+import SwiftUI
 
 /// A component that handles Await action's.
 @MainActor
@@ -110,12 +111,13 @@ package final class AwaitComponent: ActionComponent, Cancellable {
     package func handle(_ action: AwaitAction) {
         Analytics.sendEvent(component: componentName, flavor: _isDropIn ? .dropin : .components, context: context.apiContext)
 
-        let viewModel = AwaitComponentViewModel.viewModel(
-            with: action.paymentMethodType,
+        let viewModel = AwaitComponentViewModel(
+            paymentMethodType: action.paymentMethodType,
+            environment: context.apiContext.environment,
             localizationParameters: configuration.localizationParameters
         )
-        let awaitView = AwaitView(viewModel: viewModel, theme: configuration.theme)
-        let viewController = ActionViewController(view: awaitView)
+        let viewController = UIHostingController(rootView: AwaitView(viewModel: viewModel, theme: configuration.theme))
+        viewController.sizingOptions = .preferredContentSize
 
         if let actionPresentationDelegate {
             actionPresentationDelegate.present(actionViewController: viewController, actionData: ActionData(type: .await))

@@ -54,8 +54,7 @@ class AssertsTests: XCTestCase {
     }
 
     func testAwaitActionViewControllerPreferredContentSizeAssertion() {
-        let awaitView = AwaitView(viewModel: AwaitComponentViewModel(icon: "", message: "", spinnerTitle: ""))
-        let sut = ActionViewController(view: awaitView)
+        let sut = ActionViewController(view: UIView())
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in

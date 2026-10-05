@@ -8,6 +8,7 @@
 @testable import AdyenActions
 @_spi(AdyenInternal) @testable import AdyenUI
 import SafariServices
+import SwiftUI
 import XCTest
 
 #if canImport(AdyenTwint)
@@ -124,12 +125,12 @@ class CheckoutActionComponentTests: XCTestCase {
         
         let waitExpectation = expectation(description: "Expect ActionViewController to be presented")
         
-        let awaitViewController = try waitUntilTopPresenter(isOfType: ActionViewController.self)
-        XCTAssertNotNil(awaitViewController.view as? AwaitView)
+        let awaitViewController = try waitUntilTopPresenter(isOfType: UIHostingController<AwaitView>.self)
+        XCTAssertEqual(awaitViewController.rootView.viewModel.title, localizedString(.checkoutAwaitTitle, nil))
 
         (sut.actionPresentationDelegate as! UIViewController).dismiss(animated: true) {
             let topPresentedViewController = try? UIViewController.topPresenter()
-            XCTAssertNil(topPresentedViewController?.view as? AwaitView)
+            XCTAssertNil(topPresentedViewController as? UIHostingController<AwaitView>)
 
             waitExpectation.fulfill()
         }
@@ -164,12 +165,12 @@ class CheckoutActionComponentTests: XCTestCase {
         
         let waitExpectation = expectation(description: "Expect ActionViewController to be presented")
         
-        let awaitViewController = try waitUntilTopPresenter(isOfType: ActionViewController.self)
-        XCTAssertNotNil(awaitViewController.view as? AwaitView)
+        let awaitViewController = try waitUntilTopPresenter(isOfType: UIHostingController<AwaitView>.self)
+        XCTAssertEqual(awaitViewController.rootView.viewModel.title, localizedString(.checkoutAwaitTitle, nil))
 
         try XCTUnwrap(sut.actionPresentationDelegate as? UIViewController).dismiss(animated: true) {
             let topPresentedViewController = try? UIViewController.topPresenter()
-            XCTAssertNil(topPresentedViewController?.view as? AwaitView)
+            XCTAssertNil(topPresentedViewController as? UIHostingController<AwaitView>)
 
             waitExpectation.fulfill()
         }

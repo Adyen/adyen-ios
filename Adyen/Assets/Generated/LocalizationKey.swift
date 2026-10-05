@@ -602,6 +602,12 @@ public struct LocalizationKey {
     public static let checkoutDropinGenericPaymentMethodDescription = LocalizationKey(key: "adyen.checkout.dropin.generic.payment.method.description")
     /// Processing...
     public static let checkoutDropinGenericPaymentMethodProgressTitle = LocalizationKey(key: "adyen.checkout.dropin.generic.payment.method.progress.title")
+    /// Awaiting
+    public static let checkoutAwaitTitle = LocalizationKey(key: "adyen.checkout.await.title")
+    /// Complete the payment in the provider's application or website.
+    public static let checkoutAwaitDescription = LocalizationKey(key: "adyen.checkout.await.description")
+    /// Awaiting completion..
+    public static let checkoutAwaitStatus = LocalizationKey(key: "adyen.checkout.await.status")
     
     internal let key: String
     

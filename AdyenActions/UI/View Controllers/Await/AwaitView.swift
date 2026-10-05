@@ -4,123 +4,87 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-import Adyen
 #if canImport(AdyenUI)
-    @_spi(AdyenInternal) import AdyenUI
+    import AdyenUI
 #endif
-import Foundation
-import UIKit
+import SwiftUI
 
-internal final class AwaitView: UIView {
-    
-    internal lazy var icon: UIImageView = {
-        var image = UIImage(named: viewModel.icon)
-        if image == nil {
-            image = UIImage(named: viewModel.icon, in: Bundle.actionsInternalResources, compatibleWith: nil)
+internal struct AwaitView: View {
+
+    private enum Constants {
+        static let logoSize = CGSize(width: 80, height: 52)
+        static let descriptionViewSpacing: CGFloat = 8
+        static let descriptionViewTopPadding: CGFloat = 24
+
+        static let progressViewSpacing: CGFloat = 16
+        static let progressViewTopPadding: CGFloat = 32
+        static let progressViewSize: CGFloat = 48
+        static let progressViewWidth: CGFloat = 4
+    }
+
+    // MARK: - Properties
+
+    internal let viewModel: AwaitComponentViewModel
+    internal let theme: CheckoutTheme
+
+    // MARK: - Body
+
+    internal var body: some View {
+        VStack {
+            logoView
+            descriptionView
+            progressView
+                .padding(.top, Constants.progressViewTopPadding)
         }
-        let imageView = UIImageView(image: image)
-        imageView.contentMode = .center
-        imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "icon")
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return imageView
-    }()
-    
-    internal lazy var messageLabel: UILabel = {
-        let label = AdyenLabel()
-        label.apply(theme.elements.labels.body)
-        label.textAlignment = .center
-        label.text = viewModel.message
-        label.numberOfLines = 0
-        label.lineBreakMode = .byWordWrapping
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "messageLabel")
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        return label
-    }()
-    
-    internal lazy var spinnerView: UIView = {
-        let stackView = UIStackView(arrangedSubviews: [activityIndicatorView, spinnerTitleLabel])
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .fillProportionally
-        stackView.spacing = 6
-        stackView.isUserInteractionEnabled = false
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return stackView
-    }()
-    
-    internal lazy var activityIndicatorView: UIActivityIndicatorView = {
-        let activityIndicatorView = UIActivityIndicatorView(style: .gray)
-        activityIndicatorView.color = theme.colors.textSecondary
-        activityIndicatorView.backgroundColor = .clear
-        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        activityIndicatorView.hidesWhenStopped = true
-        activityIndicatorView.startAnimating()
-        
-        return activityIndicatorView
-    }()
-    
-    internal lazy var spinnerTitleLabel: UILabel = {
-        let label = AdyenLabel()
-        label.apply(theme.elements.labels.footnote)
-        label.textColor = theme.colors.textSecondary
-        label.text = viewModel.spinnerTitle
-        label.numberOfLines = 1
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "spinnerTitleLabel")
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        return label
-    }()
-    
-    private lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [icon, messageLabel, spinnerView])
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = 16
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return stackView
-    }()
-    
-    /// The view model.
-    private let viewModel: AwaitComponentViewModel
-    
-    /// The theme.
-    private let theme: CheckoutTheme
-    
-    /// Initializes the `AwaitView`.
-    ///
-    /// - Parameter viewModel: The view model.
-    /// - Parameter theme: The theme.
-    internal init(
-        viewModel: AwaitComponentViewModel,
-        theme: CheckoutTheme = .default
-    ) {
-        self.viewModel = viewModel
-        self.theme = theme
-        super.init(frame: .zero)
-        addSubview(contentStackView)
-        configureConstraints()
-        backgroundColor = theme.colors.background
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding()
+        .background(Color(uiColor: theme.colors.background))
+        .accessibilityIdentifier(AwaitAccessibilityIdentifier.screen)
     }
-    
-    @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+
+    // MARK: - Private
+
+    private var logoView: some View {
+        PaymentLogo(
+            url: viewModel.logoURL,
+            theme: theme,
+            size: Constants.logoSize
+        )
+        .accessibilityIdentifier(AwaitAccessibilityIdentifier.logo)
     }
-    
-    private func configureConstraints() {
-        let constraints = [
-            contentStackView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
-            contentStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            contentStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            contentStackView.topAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.topAnchor, constant: 16),
-            contentStackView.bottomAnchor.constraint(lessThanOrEqualTo: safeAreaLayoutGuide.bottomAnchor, constant: -16),
-            messageLabel.widthAnchor.constraint(equalTo: contentStackView.widthAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
+
+    private var descriptionView: some View {
+        VStack(spacing: Constants.descriptionViewSpacing) {
+            Text(viewModel.title)
+                .adyenLabelStyle(theme.elements.labels.title)
+                .accessibilityIdentifier(AwaitAccessibilityIdentifier.title)
+            Text(viewModel.description)
+                .adyenLabelStyle(theme.elements.labels.body, color: theme.colors.textSecondary)
+                .accessibilityIdentifier(AwaitAccessibilityIdentifier.description)
+        }
+        .foregroundStyle(Color(uiColor: theme.colors.text))
+        .multilineTextAlignment(.center)
+        .padding(.top, Constants.descriptionViewTopPadding)
     }
+
+    private var progressView: some View {
+        VStack(spacing: Constants.progressViewSpacing) {
+            CircularProgressView(
+                theme: theme,
+                size: Constants.progressViewSize,
+                lineWidth: Constants.progressViewWidth
+            )
+            Text(viewModel.progressTitle)
+                .adyenLabelStyle(theme.elements.labels.body, color: theme.colors.textSecondary)
+                .accessibilityIdentifier(AwaitAccessibilityIdentifier.progressTitle)
+        }
+    }
+}
+
+internal enum AwaitAccessibilityIdentifier {
+    internal static let screen = "await.screen"
+    internal static let logo = "await.logo"
+    internal static let title = "await.title"
+    internal static let description = "await.description"
+    internal static let progressTitle = "await.progressTitle"
 }
