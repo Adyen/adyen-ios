@@ -11,6 +11,10 @@ import Adyen
 import Foundation
 import UIKit
 
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
+
 // sourcery:AutoMockable
 @MainActor
 internal protocol PreselectedPaymentMethodRouterListener: AnyObject {
@@ -38,6 +42,7 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouting {
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
     private let storedPaymentMethodContentAssembler: StoredPaymentMethodContentAssembling
+    private let theme: CheckoutTheme
     internal private(set) var childRouter: Router?
     
     // MARK: - Initializers
@@ -47,13 +52,15 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouting {
         listener: PreselectedPaymentMethodRouterListener?,
         paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
         componentContainerAssembler: ComponentContainerAssemblerProtocol,
-        storedPaymentMethodContentAssembler: StoredPaymentMethodContentAssembling
+        storedPaymentMethodContentAssembler: StoredPaymentMethodContentAssembling,
+        theme: CheckoutTheme
     ) {
         self.rootViewController = viewController
         self.listener = listener
         self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
         self.storedPaymentMethodContentAssembler = storedPaymentMethodContentAssembler
+        self.theme = theme
     }
 
     // MARK: - PreselectedPaymentMethodRouting
@@ -61,19 +68,11 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouting {
     internal func presentPaymentMethodList() {
         let paymentMethodListRouter = paymentMethodListAssembler.resolvePaymentMethodListRouter(listener: self)
         self.childRouter = paymentMethodListRouter
-        let navigationController = UINavigationController(rootViewController: paymentMethodListRouter.rootViewController)
-        rootViewController.present(navigationController, animated: true)
-    }
-
-    internal func present(
-        paymentComponent: any PaymentComponent
-    ) {
-        let componentContainerRouter = componentContainerAssembler.resolveComponentContainerRouter(
-            for: paymentComponent,
-            listener: self
+        let navigationController = CheckoutNavigationController(
+            rootViewController: paymentMethodListRouter.rootViewController,
+            theme: theme
         )
-        self.childRouter = componentContainerRouter
-        rootViewController.present(componentContainerRouter.rootViewController, animated: true)
+        rootViewController.present(navigationController, animated: true)
     }
 
     internal func present(
@@ -109,7 +108,10 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouting {
             return presentModalComponent(component)
         }
         childRouter = router
-        let navigationController = UINavigationController(rootViewController: router.rootViewController)
+        let navigationController = CheckoutNavigationController(
+            rootViewController: router.rootViewController,
+            theme: theme
+        )
         navigationController.isModalInPresentation = true
         rootViewController.present(navigationController, animated: true)
     }
@@ -119,7 +121,10 @@ internal class PreselectedPaymentMethodRouter: PreselectedPaymentMethodRouting {
     ) {
         let componentContainerViewController = componentContainerViewController(for: component)
 
-        let navigationController = UINavigationController(rootViewController: componentContainerViewController)
+        let navigationController = CheckoutNavigationController(
+            rootViewController: componentContainerViewController,
+            theme: theme
+        )
         setupNavigationBackButton(controller: componentContainerViewController)
         rootViewController.present(navigationController, animated: true)
     }

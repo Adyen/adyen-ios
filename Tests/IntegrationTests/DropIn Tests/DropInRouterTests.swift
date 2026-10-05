@@ -6,6 +6,7 @@
 
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import SafariServices
 import Testing
 import UIKit
@@ -305,7 +306,8 @@ struct DropInRouterTests {
         root: DropInRoot = .paymentMethodList,
         paymentMethodListRouter: RouterMock? = nil,
         preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocolMock? = nil,
-        componentContainerAssembler: ComponentContainerAssemblerProtocolMock? = nil
+        componentContainerAssembler: ComponentContainerAssemblerProtocolMock? = nil,
+        theme: CheckoutTheme = CheckoutTheme()
     ) -> DropInRouter {
         let paymentMethodListAssembler = PaymentMethodListAssemblerProtocolMock()
         paymentMethodListAssembler.resolvePaymentMethodListRouterListenerReturnValue = paymentMethodListRouter
@@ -315,7 +317,8 @@ struct DropInRouterTests {
             viewModel: DropInViewModelStub(root: root),
             preselectedPaymentMethodAssembler: preselectedPaymentMethodAssembler ?? PreselectedPaymentMethodAssemblerProtocolMock(),
             paymentMethodListAssembler: paymentMethodListAssembler,
-            componentContainerAssembler: componentContainerAssembler ?? ComponentContainerAssemblerProtocolMock()
+            componentContainerAssembler: componentContainerAssembler ?? ComponentContainerAssemblerProtocolMock(),
+            theme: theme
         )
     }
 

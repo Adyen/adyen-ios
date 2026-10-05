@@ -78,7 +78,8 @@ struct PreselectedPaymentMethodIntegrationTests {
             listener: nil,
             paymentMethodListAssembler: PaymentMethodListAssemblerProtocolMock(),
             componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
-            storedPaymentMethodContentAssembler: contentAssembler
+            storedPaymentMethodContentAssembler: contentAssembler,
+            theme: .default
         )
 
         sut.present(component: PaymentComponentTestData.visa.paymentComponent)
@@ -102,7 +103,8 @@ struct PreselectedPaymentMethodIntegrationTests {
             listener: nil,
             paymentMethodListAssembler: PaymentMethodListAssemblerProtocolMock(),
             componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
-            storedPaymentMethodContentAssembler: contentAssembler
+            storedPaymentMethodContentAssembler: contentAssembler,
+            theme: .default
         )
         sut.present(component: PaymentComponentTestData.visa.paymentComponent)
         try #require(sut.childRouter != nil)

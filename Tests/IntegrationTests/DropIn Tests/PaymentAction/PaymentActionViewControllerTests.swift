@@ -7,6 +7,7 @@
 @testable import Adyen
 @testable import AdyenActions
 @testable import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import Testing
 import UIKit
 
@@ -49,7 +50,7 @@ struct PaymentActionViewControllerTests {
     }
 
     @Test
-    func navigationItem_shouldUseActionViewControllerTitleAndShowDoneButton() throws {
+    func navigationItem_shouldUseActionViewControllerTitleAndShowCancelButton() throws {
         // Given
         let (sut, _, actionViewControllerSpy) = makeSUT()
 
@@ -58,19 +59,35 @@ struct PaymentActionViewControllerTests {
 
         // Then
         #expect(sut.navigationItem.title == actionViewControllerSpy.title)
-        let doneButton = try #require(sut.navigationItem.rightBarButtonItem)
-        #expect(doneButton.action != nil)
+        let cancelButton = try #require(sut.navigationItem.leftBarButtonItem)
+        #expect(cancelButton.action != nil)
+    }
+
+    @Test("The injected theme is applied to the view and the navigation items.")
+    func viewDidLoad_shouldApplyTheTheme() throws {
+        // Given
+        let theme = CheckoutTheme(colors: CheckoutColors(background: .magenta, primary: .cyan))
+        let (sut, _, _) = makeSUT(theme: theme)
+
+        // When
+        sut.loadViewIfNeeded()
+
+        // Then
+        #expect(sut.view.backgroundColor == theme.colors.background)
+
+        let cancelButton = try #require(sut.navigationItem.leftBarButtonItem)
+        #expect(cancelButton.tintColor == theme.colors.primary)
     }
 
     @Test
-    func doneButton_shouldCallViewModelCancel() throws {
+    func cancelButton_shouldCallViewModelCancel() throws {
         // Given
         let (sut, viewModelMock, _) = makeSUT()
         sut.loadViewIfNeeded()
 
         // When
-        let doneButton = try #require(sut.navigationItem.rightBarButtonItem)
-        _ = try sut.perform(#require(doneButton.action), with: doneButton)
+        let cancelButton = try #require(sut.navigationItem.leftBarButtonItem)
+        _ = try sut.perform(#require(cancelButton.action), with: cancelButton)
 
         // Then
         #expect(viewModelMock.cancelCallsCount == 1)
@@ -181,12 +198,13 @@ struct PaymentActionViewControllerTests {
 
     // MARK: - Helpers
 
-    private func makeSUT() -> (
+    private func makeSUT(theme: CheckoutTheme = CheckoutTheme()) -> (
         sut: PaymentActionViewController,
         viewModelMock: PaymentActionViewModelProtocolMock,
         actionViewControllerSpy: ActionViewControllerSpy
     ) {
         let viewModelMock = PaymentActionViewModelProtocolMock()
+        viewModelMock.theme = theme
         let actionViewControllerSpy = ActionViewControllerSpy()
         actionViewControllerSpy.title = "Payment Action"
 

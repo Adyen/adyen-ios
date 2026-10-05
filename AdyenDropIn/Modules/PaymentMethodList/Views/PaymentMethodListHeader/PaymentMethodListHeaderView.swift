@@ -15,6 +15,12 @@ internal final class PaymentMethodListHeaderView: UIView {
     private enum Layout {
         static let applePayButtonHeight: CGFloat = 48
         static let subtitleBottomMargin: CGFloat = 24
+        static let labelMargins = NSDirectionalEdgeInsets(
+            top: 0,
+            leading: PaymentMethodItemView.contentHorizontalInset,
+            bottom: 0,
+            trailing: PaymentMethodItemView.contentHorizontalInset
+        )
     }
 
     // MARK: - UI Elements
@@ -47,17 +53,29 @@ internal final class PaymentMethodListHeaderView: UIView {
         return button
     }()
     
+    private lazy var labelsStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [amountLabel, subtitleLabel])
+        stackView.axis = .vertical
+        stackView.spacing = 4
+        stackView.alignment = .leading
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        // The labels are inset like the item content, so that they line up with the item titles
+        // rather than with the edges the item backgrounds and the Apple Pay button reach out to.
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.directionalLayoutMargins = Layout.labelMargins
+        return stackView
+    }()
+
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(
             arrangedSubviews: [
-                amountLabel,
-                subtitleLabel,
+                labelsStackView,
                 applePayButton
             ]
         )
         stackView.axis = .vertical
         stackView.spacing = 4
-        stackView.alignment = .leading
+        stackView.alignment = .fill
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -96,7 +114,7 @@ internal final class PaymentMethodListHeaderView: UIView {
         addSubview(stackView)
         
         if case .visible = viewModel.applePayButtonState {
-            stackView.setCustomSpacing(Layout.subtitleBottomMargin, after: subtitleLabel)
+            stackView.setCustomSpacing(Layout.subtitleBottomMargin, after: labelsStackView)
         }
 
         NSLayoutConstraint.activate([
@@ -105,8 +123,6 @@ internal final class PaymentMethodListHeaderView: UIView {
             stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
 
-            applePayButton.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
-            applePayButton.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
             applePayButton.heightAnchor.constraint(equalToConstant: Layout.applePayButtonHeight)
         ])
 
@@ -118,8 +134,8 @@ internal final class PaymentMethodListHeaderView: UIView {
         amountLabel.apply(viewModel.theme.elements.labels.title)
 
         // Subtitle Label
-        subtitleLabel.textColor = viewModel.theme.colors.textSecondary
         subtitleLabel.apply(viewModel.theme.elements.labels.body)
+        subtitleLabel.textColor = viewModel.theme.colors.textSecondary
 
         // ApplePay Button
         applePayButton.cornerRadius = viewModel.theme.attributes.cornerRadius

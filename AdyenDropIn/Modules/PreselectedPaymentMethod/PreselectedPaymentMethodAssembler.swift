@@ -77,7 +77,8 @@ internal struct PreselectedPaymentMethodAssembler: PreselectedPaymentMethodAssem
             listener: listener,
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: componentContainerAssembler,
-            storedPaymentMethodContentAssembler: storedPaymentMethodContentAssembler
+            storedPaymentMethodContentAssembler: storedPaymentMethodContentAssembler,
+            theme: configuration.theme
         )
         viewModel.router = router
         return router
