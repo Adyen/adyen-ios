@@ -26,6 +26,11 @@ package struct AdyenElements {
                 color: colors.text,
                 lineHeight: 41
             ),
+            title2: AdyenLabelStyle(
+                font: UIFont.systemFont(ofSize: 22, weight: .bold),
+                color: colors.text,
+                lineHeight: 28
+            ),
             subtitle: AdyenLabelStyle(
                 font: UIFont.systemFont(ofSize: FontSize.subtitle.rawValue, weight: .semibold),
                 color: colors.text,
