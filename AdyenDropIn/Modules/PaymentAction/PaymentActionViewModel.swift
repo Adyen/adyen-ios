@@ -8,9 +8,14 @@ import Adyen
 import Foundation
 import UIKit
 
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
+
 // sourcery:AutoMockable
 @MainActor
 internal protocol PaymentActionViewModelProtocol: AnyObject {
+    var theme: CheckoutTheme { get }
     func cancel()
 }
 
@@ -19,12 +24,17 @@ internal class PaymentActionViewModel: PaymentActionViewModelProtocol {
 
     // MARK: - Properties
 
+    internal let theme: CheckoutTheme
     internal weak var router: PaymentActionRouting?
     private let onCancel: () -> Void
 
     // MARK: - Initializers
 
-    internal init(onCancel: @escaping () -> Void) {
+    internal init(
+        theme: CheckoutTheme,
+        onCancel: @escaping () -> Void
+    ) {
+        self.theme = theme
         self.onCancel = onCancel
     }
 

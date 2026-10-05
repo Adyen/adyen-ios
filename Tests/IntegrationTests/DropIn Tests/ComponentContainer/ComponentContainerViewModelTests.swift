@@ -8,6 +8,7 @@
 @testable import AdyenActions
 @testable import AdyenDropIn
 @testable import AdyenEncryption
+@_spi(AdyenInternal) @testable import AdyenUI
 import Testing
 import UIKit
 
@@ -147,6 +148,7 @@ struct ComponentContainerViewModelTests {
 
         let sut = ComponentContainerViewModel(
             component: paymentComponentMock,
+            theme: CheckoutTheme(),
             configuration: DropInConfiguration(),
             dropInFlowManager: dropInFlowManagerMock,
             partialPaymentDelegate: nil

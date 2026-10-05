@@ -177,6 +177,12 @@ class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtoc
     }
 
     var underlyingComponentViewController: UIViewController!
+    var theme: CheckoutTheme {
+        get { underlyingTheme }
+        set(value) { underlyingTheme = value }
+    }
+
+    var underlyingTheme: CheckoutTheme!
 
     // MARK: - cancel
 
@@ -539,6 +545,13 @@ class PaymentActionRoutingMock: PaymentActionRouting {
 }
 
 class PaymentActionViewModelProtocolMock: PaymentActionViewModelProtocol {
+
+    var theme: CheckoutTheme {
+        get { underlyingTheme }
+        set(value) { underlyingTheme = value }
+    }
+
+    var underlyingTheme: CheckoutTheme!
 
     // MARK: - cancel
 

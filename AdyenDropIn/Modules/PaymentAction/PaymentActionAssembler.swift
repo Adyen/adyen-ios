@@ -12,6 +12,10 @@ import Foundation
 import SafariServices
 import UIKit
 
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
+
 // sourcery:AutoMockable
 @MainActor
 internal protocol PaymentActionAssemblerProtocol {
@@ -25,6 +29,16 @@ internal protocol PaymentActionAssemblerProtocol {
 @MainActor
 internal struct PaymentActionAssembler: PaymentActionAssemblerProtocol {
 
+    // MARK: - Properties
+
+    private let theme: CheckoutTheme
+
+    // MARK: - Initializers
+
+    internal init(theme: CheckoutTheme) {
+        self.theme = theme
+    }
+
     // MARK: - PaymentActionAssemblerProtocol
 
     internal func resolvePaymentActionRouter(
@@ -32,7 +46,7 @@ internal struct PaymentActionAssembler: PaymentActionAssemblerProtocol {
         listener: PaymentActionRouterListener,
         onCancel: @escaping () -> Void
     ) -> Router {
-        let viewModel = PaymentActionViewModel(onCancel: onCancel)
+        let viewModel = PaymentActionViewModel(theme: theme, onCancel: onCancel)
         let router = PaymentActionRouter(
             viewController: rootViewController(for: actionViewController, viewModel: viewModel),
             viewModel: viewModel,
