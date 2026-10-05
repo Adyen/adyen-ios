@@ -77,9 +77,9 @@ package final class ListViewController: UITableViewController {
     override package func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = style.backgroundColor
-        tableView.backgroundColor = style.backgroundColor
-        tableView.backgroundView?.backgroundColor = style.backgroundColor
+        view.backgroundColor = theme.colors.background
+        tableView.backgroundColor = theme.colors.background
+        tableView.backgroundView?.backgroundColor = theme.colors.background
         tableView.isOpaque = false
 
         tableView.separatorColor = .clear
@@ -119,6 +119,7 @@ package final class ListViewController: UITableViewController {
             headerView = ListHeaderView(reuseIdentifier: reuseIdentifier)
         }
 
+        headerView.theme = theme
         headerView.headerItem = headerItem
 
         headerView.accessibilityIdentifier = ViewIdentifierBuilder.build(
@@ -143,7 +144,7 @@ package final class ListViewController: UITableViewController {
         guard let footer = sections[section].footer else {
             return nil
         }
-        let footerView = ListFooterView(title: footer.title, style: footer.style)
+        let footerView = ListFooterView(title: footer.title, style: footer.style, theme: theme)
         footerView.accessibilityIdentifier = ViewIdentifierBuilder.build(
             scopeInstance: "Adyen.ListViewController",
             postfix: "footerView.\(section)"
