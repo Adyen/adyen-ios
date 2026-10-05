@@ -29,6 +29,9 @@ package final class DocumentComponent: ActionComponent, ShareableComponent {
         
         /// The component UI style.
         package var style: DocumentComponentStyle
+
+        /// The theme applied to the component's screens.
+        package var theme: CheckoutTheme = .default
         
         /// The localization parameters, leave it nil to use the default parameters.
         package var localizationParameters: LocalizationParameters?
