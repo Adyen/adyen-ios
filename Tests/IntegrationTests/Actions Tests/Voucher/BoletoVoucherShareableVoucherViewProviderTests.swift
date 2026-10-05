@@ -13,7 +13,7 @@ class BoletoVoucherShareableVoucherViewProviderTests: XCTestCase {
 
     func testBoletoBancairoVoucher() throws {
         let viewProvider = VoucherShareableViewProvider(
-            style: VoucherComponentStyle(),
+            theme: .default,
             environment: Dummy.apiContext.environment
         )
 
