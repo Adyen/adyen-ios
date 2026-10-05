@@ -34,7 +34,8 @@ package final class PaymentLogoView: UIView {
 
     // MARK: - Properties
 
-    private let imageLoader: ImageLoading
+    /// The image loader used to fetch logos. Reassignable for reused cells.
+    package var imageLoader: ImageLoading
 
     private var imageLoadingTask: AdyenCancellable? {
         willSet { imageLoadingTask?.cancel() }
