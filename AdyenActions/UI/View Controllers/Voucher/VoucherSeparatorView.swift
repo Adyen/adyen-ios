@@ -15,12 +15,6 @@ import UIKit
 extension VoucherSeparatorView {
     internal struct Model {
         internal var separatorTitle: String
-
-        internal var separatorStyle = TextStyle(
-            font: .preferredFont(forTextStyle: .footnote),
-            color: UIColor.Adyen.componentLabel,
-            textAlignment: .center
-        )
     }
 }
 
@@ -34,8 +28,11 @@ internal final class VoucherSeparatorView: UIView {
 
     private let model: Model
 
-    internal init(model: Model) {
+    private let theme: CheckoutTheme
+
+    internal init(model: Model, theme: CheckoutTheme) {
         self.model = model
+        self.theme = theme
         super.init(frame: .zero)
         buildUI()
     }
@@ -107,7 +104,9 @@ internal final class VoucherSeparatorView: UIView {
         leftSeparatorLayer.frame = leftSeparatorLayerFrame
         separatorTextLayer.frame = separatorTextLayerFrame
 
-        separatorTextLayer.foregroundColor = model.separatorStyle.color.cgColor
+        separatorTextLayer.foregroundColor = theme.colors.text.cgColor
+        leftSeparatorLayer.backgroundColor = theme.colors.separator.cgColor
+        rightSeparatorLayer.backgroundColor = theme.colors.separator.cgColor
     }
 
     private func buildUI() {
@@ -115,8 +114,6 @@ internal final class VoucherSeparatorView: UIView {
     }
 
     private func buildSeparatorLines() {
-        leftSeparatorLayer.backgroundColor = UIColor.Adyen.lightGray.cgColor
-        rightSeparatorLayer.backgroundColor = UIColor.Adyen.lightGray.cgColor
         leftSeparatorLayer.contentsScale = UIScreen.main.scale
         rightSeparatorLayer.contentsScale = UIScreen.main.scale
         layer.addSublayer(leftSeparatorLayer)
@@ -126,10 +123,10 @@ internal final class VoucherSeparatorView: UIView {
 
     private func buildSeparatorTextLayer() {
         let text = model.separatorTitle
-        let style = model.separatorStyle
-        separatorTextLayer.font = style.font
-        separatorTextLayer.fontSize = style.font.pointSize
-        separatorTextLayer.alignmentMode = style.textAlignment.adyen.caAlignmentMode
+        let font = theme.elements.labels.footnote.font
+        separatorTextLayer.font = font
+        separatorTextLayer.fontSize = font.pointSize
+        separatorTextLayer.alignmentMode = .center
         separatorTextLayer.string = text
         separatorTextLayer.contentsScale = UIScreen.main.scale
         layer.addSublayer(separatorTextLayer)

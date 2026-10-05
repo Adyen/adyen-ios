@@ -96,7 +96,7 @@ package final class VoucherComponent: AnyVoucherActionHandler, ShareableComponen
         self.context = context
         self.configuration = configuration
         self.voucherShareableViewProvider = voucherShareableViewProvider ??
-            VoucherShareableViewProvider(style: configuration.style, environment: context.apiContext.environment)
+            VoucherShareableViewProvider(theme: configuration.theme, environment: context.apiContext.environment)
         self.passProvider = passProvider ?? AppleWalletPassProvider(context: context)
     }
 
@@ -110,6 +110,7 @@ package final class VoucherComponent: AnyVoucherActionHandler, ShareableComponen
         fetchAndCacheAppleWalletPassIfNeeded(with: action.anyAction)
 
         voucherShareableViewProvider.localizationParameters = configuration.localizationParameters
+        voucherShareableViewProvider.theme = configuration.theme
 
         let view = VoucherView(model: viewModel(with: action))
         view.delegate = self
@@ -131,18 +132,6 @@ package final class VoucherComponent: AnyVoucherActionHandler, ShareableComponen
         
     private func viewModel(with action: VoucherAction) -> VoucherView.Model {
         let anyAction = action.anyAction
-        let viewStyle = VoucherView.Model.Style(
-            editButton: configuration.style.editButton,
-            doneButton: configuration.style.doneButton,
-            mainButton: configuration.style.mainButton,
-            secondaryButton: configuration.style.secondaryButton,
-            codeConfirmationColor: configuration.style.codeConfirmationColor,
-            amountLabel: configuration.style.amountLabel,
-            currencyLabel: configuration.style.currencyLabel,
-            logoCornerRounding: .fixed(5),
-            backgroundColor: configuration.style.backgroundColor
-        )
-        
         let comps = anyAction.totalAmount.formattedComponents
         
         return VoucherView.Model(
@@ -159,7 +148,7 @@ package final class VoucherComponent: AnyVoucherActionHandler, ShareableComponen
             secondaryButtonTitle: localizedString(.moreOptions, configuration.localizationParameters),
             codeConfirmationTitle: localizedString(.pixInstructionsCopiedMessage, configuration.localizationParameters),
             mainButtonType: canAddPasses(action: action.anyAction) ? .addToAppleWallet : .save,
-            style: viewStyle,
+            theme: configuration.theme,
             imageLoader: ImageLoaderProvider.imageLoader()
         )
     }

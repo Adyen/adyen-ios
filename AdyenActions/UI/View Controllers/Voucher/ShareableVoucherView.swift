@@ -21,7 +21,7 @@ internal class ShareableVoucherView: UIView, Localizable {
         self.model = model
         super.init(frame: .zero)
         buildUI()
-        backgroundColor = model.style.backgroundColor
+        backgroundColor = model.theme.colors.background
     }
 
     @available(*, unavailable)
@@ -45,24 +45,29 @@ internal class ShareableVoucherView: UIView, Localizable {
         
         return VoucherCardView(
             model: model.separatorModel,
+            theme: model.theme,
             topView: topView,
             bottomView: bottomView
         )
     }()
     
     private lazy var textLabel: UILabel = {
-        let label = createLabel(with: model.style.text, text: model.text, identifier: "textLabel")
+        let label = createLabel(with: model.theme.elements.labels.footnote, text: model.text, identifier: "textLabel")
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         return label
     }()
     
-    private lazy var amountLabel: UILabel = createLabel(with: model.style.amount, text: model.amount, identifier: "amountLabel")
+    private lazy var amountLabel: UILabel = createLabel(
+        with: model.theme.elements.labels.bodyEmphasized,
+        text: model.amount,
+        identifier: "amountLabel"
+    )
     
     private lazy var logoView: UIImageView = {
         let imageView = UIImageView()
         let logoSize = CGSize(width: 77.0, height: 50.0)
-        imageView.adyen.round(using: model.style.logoCornerRounding)
+        imageView.adyen.round(using: .fixed(AdyenUIConstants.imageCornerRadius))
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.clipsToBounds = true
@@ -91,7 +96,9 @@ internal class ShareableVoucherView: UIView, Localizable {
     }
     
     internal func createBottomView() -> UIView {
-        let codeLabel = UILabel(style: model.style.codeText)
+        let codeLabel = AdyenLabel()
+        codeLabel.apply(model.theme.elements.labels.title2)
+        codeLabel.textAlignment = .center
         codeLabel.text = model.code
         let views = [codeLabel] + model.fields.flatMap {
             [createSeparator(), createKeyValueView(key: $0.title, value: $0.value, identifier: $0.identifier)]
@@ -111,15 +118,19 @@ internal class ShareableVoucherView: UIView, Localizable {
     
     private func createSeparator() -> UIView {
         let view = UIView()
-        view.backgroundColor = UIColor.Adyen.lightGray
+        view.backgroundColor = model.theme.colors.separator
         view.translatesAutoresizingMaskIntoConstraints = false
         view.heightAnchor.constraint(equalToConstant: 1).isActive = true
         return view
     }
     
     private func createKeyValueView(key: String, value: String, identifier: String) -> UIView {
-        let keyLabel = createLabel(with: model.style.text, text: key, identifier: identifier + "KeyLabel")
-        let valueLabel = createLabel(with: model.style.fieldValueText, text: value, identifier: identifier + "ValueLabel")
+        let keyLabel = createLabel(with: model.theme.elements.labels.footnote, text: key, identifier: identifier + "KeyLabel")
+        let valueLabel = createLabel(
+            with: model.theme.elements.labels.footnoteEmphasized,
+            text: value,
+            identifier: identifier + "ValueLabel"
+        )
         
         keyLabel.translatesAutoresizingMaskIntoConstraints = false
         valueLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -142,13 +153,15 @@ internal class ShareableVoucherView: UIView, Localizable {
         return containerView
     }
     
-    private func createLabel(with style: TextStyle, text: String?, identifier: String) -> UILabel {
-        let label = UILabel(style: style)
+    private func createLabel(with style: AdyenLabelStyle, text: String?, identifier: String) -> UILabel {
+        let label = AdyenLabel()
+        label.apply(style)
+        label.textAlignment = .center
+        label.lineBreakMode = .byTruncatingTail
+        label.numberOfLines = 1
         label.text = text
         label.isAccessibilityElement = false
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: "adyen.voucher", postfix: identifier)
-        label.lineBreakMode = .byTruncatingTail
-        label.numberOfLines = 1
         
         return label
     }
@@ -181,38 +194,7 @@ extension ShareableVoucherView {
         
         internal let logo: UIImage?
         
-        internal var style: Style
-        
-        internal struct Style {
-            
-            internal var text = TextStyle(
-                font: .preferredFont(forTextStyle: .footnote),
-                color: UIColor.Adyen.componentLabel,
-                textAlignment: .center
-            )
-            
-            internal var amount = TextStyle(
-                font: UIFont.preferredFont(forTextStyle: .callout).adyen.font(with: .bold),
-                color: UIColor.Adyen.componentLabel,
-                textAlignment: .center
-            )
-            
-            internal var codeText = TextStyle(
-                font: UIFont.preferredFont(forTextStyle: .title1).adyen.font(with: .bold),
-                color: UIColor.Adyen.componentLabel,
-                textAlignment: .center
-            )
-            
-            internal var fieldValueText = TextStyle(
-                font: UIFont.preferredFont(forTextStyle: .footnote).adyen.font(with: .semibold),
-                color: UIColor.Adyen.componentLabel,
-                textAlignment: .center
-            )
-            
-            internal var logoCornerRounding = CornerRounding.fixed(5)
-            
-            internal var backgroundColor: UIColor
-        }
+        internal let theme: CheckoutTheme
         
     }
     

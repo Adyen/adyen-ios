@@ -41,16 +41,17 @@ internal final class QRCodeView: UIView, AdyenObserver {
     
     // MARK: - Initialization
     
-    internal init(viewModel: QRCodeViewModelProtocol, style: QRCodeViewStyle) {
-        self.amountLabel = UILabel(style: style.amountToPayLabel)
-        self.progressView = UIProgressView(style: style.progressView)
-        self.expirationLabel = UILabel(style: style.expirationLabel)
+    internal init(viewModel: QRCodeViewModelProtocol, theme: CheckoutTheme) {
+        self.amountLabel = AdyenLabel()
+        self.progressView = UIProgressView()
+        self.expirationLabel = AdyenLabel()
         
         super.init(frame: .zero)
         
         buildViewHierarchy()
         setupLayoutConstraints()
         setupSubviews()
+        apply(theme)
         configure(with: viewModel)
     }
     
@@ -101,6 +102,18 @@ internal final class QRCodeView: UIView, AdyenObserver {
         expirationLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.expirationLabel)
         
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: ViewIdentifier.qrCodeImage)
+    }
+    
+    private func apply(_ theme: CheckoutTheme) {
+        amountLabel.apply(theme.elements.labels.bodyEmphasized)
+        amountLabel.textAlignment = .center
+        
+        progressView.progressTintColor = theme.colors.primary
+        progressView.trackTintColor = theme.colors.container
+        
+        expirationLabel.apply(theme.elements.labels.footnote)
+        expirationLabel.textColor = theme.colors.textSecondary
+        expirationLabel.textAlignment = .center
     }
     
     // MARK: - Configuration

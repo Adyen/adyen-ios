@@ -13,7 +13,7 @@ class OXXOShareableVoucherViewProviderTests: XCTestCase {
 
     func testOXXOVoucher() throws {
         let viewProvider = VoucherShareableViewProvider(
-            style: VoucherComponentStyle(),
+            theme: .default,
             environment: Dummy.apiContext.environment
         )
 

@@ -52,7 +52,7 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
     
     internal private(set) lazy var logoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.adyen.round(using: style.logoCornerRounding)
+        imageView.adyen.round(using: .fixed(AdyenUIConstants.imageCornerRadius))
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFit
         imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(
@@ -63,7 +63,9 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
     }()
     
     internal private(set) lazy var instructionLabel: UILabel = {
-        let instructionLabel = UILabel(style: style.instructionLabel)
+        let instructionLabel = AdyenLabel()
+        instructionLabel.apply(theme.elements.labels.subheadline)
+        instructionLabel.textAlignment = .center
         instructionLabel.text = viewModel.instructionText
         instructionLabel.numberOfLines = 0
         instructionLabel.accessibilityIdentifier = ViewIdentifierBuilder.build(
@@ -73,10 +75,10 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
         return instructionLabel
     }()
     
-    internal private(set) lazy var qrCodeView = QRCodeView(viewModel: viewModel, style: style)
+    internal private(set) lazy var qrCodeView = QRCodeView(viewModel: viewModel, theme: theme)
         
     internal private(set) lazy var actionButton: FormButton = {
-        let button = FormButton(style: actionButtonStyle)
+        let button = FormButton(buttonStyle: theme.elements.buttons.primary, titleStyle: theme.elements.labels.bodyEmphasized)
         
         button.title = viewModel.actionButtonTitle
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(
@@ -94,14 +96,14 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
         guard case .copyCode = viewModel.flowType else { return nil }
         
         let textStyle = TextStyle(
-            font: .systemFont(ofSize: 20, weight: .semibold),
-            color: UIColor.Adyen.componentLabel
+            font: theme.elements.labels.subtitle.font,
+            color: theme.colors.text
         )
         let copyLabelView = CopyLabelView(
             text: viewModel.qrCodeData,
             style: textStyle
         )
-        copyLabelView.adyen.round(using: style.logoCornerRounding)
+        copyLabelView.adyen.round(using: .fixed(AdyenUIConstants.imageCornerRadius))
         copyLabelView.layoutMargins = Layout.copyLabelViewMargins
         
         return copyLabelView
@@ -110,13 +112,13 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
     // MARK: - Properties
         
     private let viewModel: QRCodeViewModelProtocol
-    private let style: QRCodeViewStyle
+    private let theme: CheckoutTheme
     
     // MARK: - Initializers
     
-    internal init(viewModel: QRCodeViewModelProtocol, style: QRCodeViewStyle) {
+    internal init(viewModel: QRCodeViewModelProtocol, theme: CheckoutTheme) {
         self.viewModel = viewModel
-        self.style = style
+        self.theme = theme
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -183,15 +185,6 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
     }
             
     // MARK: - Private
-    
-    private var actionButtonStyle: ButtonStyle {
-        switch viewModel.flowType {
-        case .copyCode:
-            return style.copyCodeButton
-        case .saveCodeAsImage:
-            return style.saveAsImageButton
-        }
-    }
     
     private var actionButtonAccessibilityIdentifier: String {
         switch viewModel.flowType {
@@ -268,6 +261,6 @@ internal final class QRCodeViewController: UIViewController, AdyenObserver {
     
     private func configureAppearance() {
         view.accessibilityIdentifier = ViewIdentifier.view
-        view.backgroundColor = style.backgroundColor
+        view.backgroundColor = theme.colors.background
     }
 }

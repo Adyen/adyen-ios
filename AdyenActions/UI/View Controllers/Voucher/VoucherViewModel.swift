@@ -32,31 +32,9 @@ extension VoucherView {
         
         internal let mainButtonType: Button
         
-        internal let style: Style
+        internal let theme: CheckoutTheme
         
         internal let imageLoader: ImageLoading
-        
-        internal struct Style {
-            
-            internal let editButton: ButtonStyle
-            
-            internal let doneButton: ButtonStyle
-            
-            internal let mainButton: ButtonStyle
-            
-            internal let secondaryButton: ButtonStyle
-            
-            internal let codeConfirmationColor: UIColor
-            
-            internal let amountLabel: TextStyle
-            
-            internal let currencyLabel: TextStyle
-            
-            internal let logoCornerRounding: CornerRounding
-            
-            internal let backgroundColor: UIColor
-            
-        }
         
         internal enum Button {
             case addToAppleWallet

@@ -7,19 +7,22 @@
 import Adyen
 @_spi(AdyenInternal) import struct Adyen.LocalizationKey
 import AdyenNetworking
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import Foundation
 import UIKit
 
 internal protocol AnyVoucherShareableViewProvider: Localizable {
 
-    var style: VoucherComponentStyle { get }
+    var theme: CheckoutTheme { get set }
     
     func provideView(with action: VoucherAction, logo: UIImage?) -> UIView
 }
 
 internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvider {
 
-    internal let style: VoucherComponentStyle
+    internal var theme: CheckoutTheme
 
     internal var localizationParameters: LocalizationParameters?
     
@@ -27,8 +30,8 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
     
     private let environment: AnyAPIEnvironment
 
-    internal init(style: VoucherComponentStyle, environment: AnyAPIEnvironment) {
-        self.style = style
+    internal init(theme: CheckoutTheme, environment: AnyAPIEnvironment) {
+        self.theme = theme
         self.environment = environment
     }
     
@@ -102,7 +105,6 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
         )
         let separatorTitle = localizedString(.voucherPaymentReferenceLabel, localizationParameters)
         let text = localizedString(.voucherIntroduction, localizationParameters)
-        let style = ShareableVoucherView.Model.Style(backgroundColor: self.style.backgroundColor)
         
         return ShareableVoucherView.Model(
             separatorModel: .init(separatorTitle: separatorTitle),
@@ -111,7 +113,7 @@ internal final class VoucherShareableViewProvider: AnyVoucherShareableViewProvid
             code: reference,
             fields: fields,
             logo: logo,
-            style: style
+            theme: theme
         )
     }
 

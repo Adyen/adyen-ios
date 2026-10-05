@@ -27,7 +27,9 @@ internal final class AwaitView: UIView {
     }()
     
     internal lazy var messageLabel: UILabel = {
-        let label = UILabel(style: style.message)
+        let label = AdyenLabel()
+        label.apply(theme.elements.labels.body)
+        label.textAlignment = .center
         label.text = viewModel.message
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -51,7 +53,7 @@ internal final class AwaitView: UIView {
     
     internal lazy var activityIndicatorView: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView(style: .gray)
-        activityIndicatorView.color = style.spinnerTitle.color
+        activityIndicatorView.color = theme.colors.textSecondary
         activityIndicatorView.backgroundColor = .clear
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicatorView.hidesWhenStopped = true
@@ -61,7 +63,9 @@ internal final class AwaitView: UIView {
     }()
     
     internal lazy var spinnerTitleLabel: UILabel = {
-        let label = UILabel(style: style.spinnerTitle)
+        let label = AdyenLabel()
+        label.apply(theme.elements.labels.footnote)
+        label.textColor = theme.colors.textSecondary
         label.text = viewModel.spinnerTitle
         label.numberOfLines = 1
         label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "spinnerTitleLabel")
@@ -83,23 +87,23 @@ internal final class AwaitView: UIView {
     /// The view model.
     private let viewModel: AwaitComponentViewModel
     
-    /// The UI style.
-    private let style: AwaitComponentStyle
+    /// The theme.
+    private let theme: CheckoutTheme
     
     /// Initializes the `AwaitView`.
     ///
     /// - Parameter viewModel: The view model.
-    /// - Parameter style: The UI style.
+    /// - Parameter theme: The theme.
     internal init(
         viewModel: AwaitComponentViewModel,
-        style: AwaitComponentStyle = AwaitComponentStyle()
+        theme: CheckoutTheme = .default
     ) {
         self.viewModel = viewModel
-        self.style = style
+        self.theme = theme
         super.init(frame: .zero)
         addSubview(contentStackView)
         configureConstraints()
-        backgroundColor = style.backgroundColor
+        backgroundColor = theme.colors.background
     }
     
     @available(*, unavailable)

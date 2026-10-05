@@ -36,18 +36,17 @@ internal final class DocumentActionView: UIView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.widthAnchor.constraint(equalToConstant: 80).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 52).isActive = true
-        imageView.adyen.round(using: style.image.cornerRounding)
-        imageView.contentMode = style.image.contentMode
-        imageView.layer.masksToBounds = style.image.clipsToBounds
-        imageView.layer.borderColor = style.image.borderColor?.cgColor
-        imageView.layer.borderWidth = style.image.borderWidth
-        imageView.backgroundColor = style.image.backgroundColor
+        imageView.adyen.round(using: .fixed(AdyenUIConstants.imageCornerRadius))
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
         
         return imageView
     }()
     
     internal lazy var messageLabel: UILabel = {
-        let label = UILabel(style: style.messageLabel)
+        let label = AdyenLabel()
+        label.apply(theme.elements.labels.body)
+        label.textAlignment = .center
         label.text = viewModel.message
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -57,14 +56,13 @@ internal final class DocumentActionView: UIView {
         return label
     }()
     
-    private lazy var mainButton: UIButton = {
-        let button = UIButton(style: style.mainButton)
+    private lazy var mainButton: FormButton = {
+        let button = FormButton(buttonStyle: theme.elements.buttons.tertiary, titleStyle: theme.elements.labels.bodyEmphasized)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(viewModel.buttonTitle, for: .normal)
+        button.title = viewModel.buttonTitle
         button.addTarget(self, action: #selector(onMainButtonTap), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "mainButton")
         button.preservesSuperviewLayoutMargins = true
-        button.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
         
         return button
     }()
@@ -77,17 +75,17 @@ internal final class DocumentActionView: UIView {
     private let imageLoader: ImageLoading
     private var imageLoadingTask: AdyenCancellable?
     
-    /// The UI style.
-    private let style: DocumentComponentStyle
+    /// The theme.
+    private let theme: CheckoutTheme
     
     internal init(
         viewModel: DocumentActionViewModel,
-        style: DocumentComponentStyle,
+        theme: CheckoutTheme,
         imageLoader: ImageLoading = ImageLoaderProvider.imageLoader()
     ) {
         self.viewModel = viewModel
         self.imageLoader = imageLoader
-        self.style = style
+        self.theme = theme
         super.init(frame: .zero)
         configureViews()
     }
@@ -98,7 +96,7 @@ internal final class DocumentActionView: UIView {
     }
     
     private func configureViews() {
-        backgroundColor = style.backgroundColor
+        backgroundColor = theme.colors.background
         addSubview(stackView)
         stackView.adyen.anchor(inside: .view(self), edgeInsets: .init(left: 20, right: 20))
         NSLayoutConstraint.activate([
