@@ -25,7 +25,7 @@ struct PaymentMethodItemViewTests {
         // Then
         let logosView = try #require(sut.firstSubview(of: SupportedPaymentMethodLogosView.self))
         #expect(logosView.style.logoShadowColor == theme.colors.supportShadow)
-        #expect(logosView.style.trailingText.color == theme.colors.textSecondary)
+        #expect(logosView.style.trailingText.color == theme.colors.textOnDisabled)
         #expect(logosView.style.trailingText.font == theme.elements.labels.subheadline.font)
     }
 

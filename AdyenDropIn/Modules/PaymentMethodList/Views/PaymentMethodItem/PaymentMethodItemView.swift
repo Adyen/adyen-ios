@@ -193,7 +193,7 @@ internal final class PaymentMethodItemView: UIView {
         style.logoShadowColor = item.theme.colors.supportShadow
         style.trailingText = TextStyle(
             font: item.theme.elements.labels.subheadline.font,
-            color: item.theme.colors.textSecondary
+            color: item.theme.colors.textOnDisabled
         )
         return style
     }
