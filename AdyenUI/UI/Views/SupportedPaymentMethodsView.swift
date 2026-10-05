@@ -21,6 +21,9 @@ package class SupportedPaymentMethodLogosView: UIView {
             contentMode: .scaleAspectFit
         )
         
+        /// The color of the shadow shown behind each logo. `nil` shows no shadow.
+        package var logoShadowColor: UIColor?
+
         package var trailingText: TextStyle = .init(
             font: .preferredFont(forTextStyle: .callout),
             color: UIColor.Adyen.componentSecondaryLabel
@@ -79,16 +82,15 @@ package class SupportedPaymentMethodLogosView: UIView {
     private func updateContent() {
         backgroundColor = style.backgroundColor
         
-        let imageViews = imageUrls.map { url in
-            let imageView = UIImageView()
-            imageView.adyen.apply(style.images)
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                imageView.widthAnchor.constraint(equalToConstant: imageSize.width),
-                imageView.heightAnchor.constraint(equalToConstant: imageSize.height)
-            ])
-            imageView.load(url: url, using: imageLoader)
-            return imageView
+        let imageViews = imageUrls.map { url -> UIView in
+            let logoView = PaymentLogoView(size: imageSize, imageLoader: imageLoader)
+            logoView.imageView.adyen.apply(style.images)
+            logoView.shadowColor = style.logoShadowColor
+            if case let .fixed(radius) = style.images.cornerRounding {
+                logoView.cornerRadius = radius
+            }
+            logoView.load(url: url)
+            return logoView
         }
         
         let label = UILabel()

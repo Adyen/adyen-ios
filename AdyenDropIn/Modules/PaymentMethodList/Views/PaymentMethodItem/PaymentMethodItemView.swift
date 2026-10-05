@@ -37,23 +37,10 @@ internal final class PaymentMethodItemView: UIView {
 
     // MARK: - UI Elements
 
-    private lazy var iconImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = AdyenUIConstants.imageCornerRadius
-        imageView.clipsToBounds = true
-        return imageView
-    }()
-
-    /// Wraps the icon so the shadows are not cut off by the image view's clipping.
-    private lazy var iconContainerView: LogoShadowContainerView = {
-        let view = LogoShadowContainerView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(iconImageView)
-        iconImageView.adyen.anchor(inside: view)
-        return view
-    }()
+    private lazy var logoView = AdyenUI.PaymentLogoView(
+        size: Layout.iconImageSize,
+        imageLoader: imageLoader
+    )
 
     private lazy var titleLabel: UILabel = {
         let label = AdyenLabel()
@@ -98,7 +85,7 @@ internal final class PaymentMethodItemView: UIView {
 
     private lazy var contentStackView: UIStackView = {
         let subviews = [
-            iconContainerView,
+            logoView,
             textStackView,
             trailingInfoView,
             chevronImageView
@@ -119,10 +106,6 @@ internal final class PaymentMethodItemView: UIView {
     }()
 
     // MARK: - Properties
-
-    private var imageLoadingTask: AdyenCancellable? {
-        willSet { imageLoadingTask?.cancel() }
-    }
 
     private var item: PaymentMethodItem
     private let imageLoader: ImageLoader
@@ -158,9 +141,6 @@ internal final class PaymentMethodItemView: UIView {
         contentStackView.adyen.anchor(inside: layoutMarginsGuide)
 
         NSLayoutConstraint.activate([
-            iconContainerView.widthAnchor.constraint(equalToConstant: Layout.iconImageSize.width),
-            iconContainerView.heightAnchor.constraint(equalToConstant: Layout.iconImageSize.height),
-
             chevronImageView.widthAnchor.constraint(equalToConstant: Layout.chevronSize.width),
             chevronImageView.heightAnchor.constraint(equalToConstant: Layout.chevronSize.height),
 
@@ -190,8 +170,8 @@ internal final class PaymentMethodItemView: UIView {
         layer.cornerRadius = item.theme.attributes.cornerRadius
         layer.masksToBounds = true
 
-        // Icon shadows
-        updateShadowColors()
+        // Logo
+        logoView.shadowColor = item.theme.colors.supportShadow
 
         // Title Label
         titleLabel.apply(item.theme.elements.labels.bodyEmphasized)
@@ -209,7 +189,8 @@ internal final class PaymentMethodItemView: UIView {
 
     private var logosStyle: SupportedPaymentMethodLogosView.Style {
         var style = SupportedPaymentMethodLogosView.Style()
-        style.images.borderColor = item.theme.colors.separator
+        style.images.borderWidth = 0
+        style.logoShadowColor = item.theme.colors.supportShadow
         style.trailingText = TextStyle(
             font: item.theme.elements.labels.subheadline.font,
             color: item.theme.colors.textSecondary
@@ -217,24 +198,8 @@ internal final class PaymentMethodItemView: UIView {
         return style
     }
 
-    override internal func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        updateShadowColors()
-    }
-
-    private func updateShadowColors() {
-        iconContainerView.shadowColor = item.theme.colors.supportShadow.resolvedColor(with: traitCollection)
-    }
-
     private func loadIcon(from url: URL?) {
-        iconImageView.image = nil
-        imageLoadingTask = nil
-
-        guard let url else { return }
-
-        imageLoadingTask = imageLoader.load(url: url) { [weak self] image in
-            self?.iconImageView.image = image
-        }
+        logoView.load(url: url)
     }
 
     @objc private func handleTap() {
@@ -277,62 +242,6 @@ internal final class PaymentMethodItemView: UIView {
             options: [.beginFromCurrentState, .allowUserInteraction]
         ) {
             self.highlightView.alpha = 0
-        }
-    }
-}
-
-/// Draws Figma's `Shadow low` elevation behind a logo via two layers.
-/// The shadows live on sibling layers so the clipped image inside does not cut them off.
-private final class LogoShadowContainerView: UIView {
-
-    private enum Shadow {
-        static let nearOpacity: CGFloat = 0.02
-        static let nearRadius: CGFloat = 2
-        static let nearOffset: CGFloat = 1
-
-        static let farOpacity: CGFloat = 0.04
-        static let farRadius: CGFloat = 4
-        static let farOffset: CGFloat = 2
-    }
-
-    private let nearShadowLayer = CALayer()
-    private let farShadowLayer = CALayer()
-
-    internal var shadowColor: UIColor? {
-        didSet {
-            nearShadowLayer.shadowColor = shadowColor?.withAlphaComponent(Shadow.nearOpacity).cgColor
-            farShadowLayer.shadowColor = shadowColor?.withAlphaComponent(Shadow.farOpacity).cgColor
-        }
-    }
-
-    override internal init(frame: CGRect) {
-        super.init(frame: frame)
-
-        nearShadowLayer.shadowOffset = CGSize(width: 0, height: Shadow.nearOffset)
-        nearShadowLayer.shadowRadius = Shadow.nearRadius
-        nearShadowLayer.shadowOpacity = 1
-        farShadowLayer.shadowOffset = CGSize(width: 0, height: Shadow.farOffset)
-        farShadowLayer.shadowRadius = Shadow.farRadius
-        farShadowLayer.shadowOpacity = 1
-
-        layer.insertSublayer(farShadowLayer, at: 0)
-        layer.insertSublayer(nearShadowLayer, at: 0)
-    }
-
-    @available(*, unavailable)
-    internal required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override internal func layoutSubviews() {
-        super.layoutSubviews()
-        let shadowPath = UIBezierPath(
-            roundedRect: bounds,
-            cornerRadius: AdyenUIConstants.imageCornerRadius
-        ).cgPath
-        [nearShadowLayer, farShadowLayer].forEach {
-            $0.frame = bounds
-            $0.shadowPath = shadowPath
         }
     }
 }

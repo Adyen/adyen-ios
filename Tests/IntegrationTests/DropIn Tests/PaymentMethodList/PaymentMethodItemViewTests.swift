@@ -16,7 +16,7 @@ struct PaymentMethodItemViewTests {
     @Test("The trailing logos follow the checkout theme rather than the legacy defaults.")
     func init_givenTrailingLogos_shouldStyleThemWithTheTheme() throws {
         // Given
-        let theme = CheckoutTheme(colors: CheckoutColors(separator: .cyan, textSecondary: .magenta))
+        let theme = CheckoutTheme(colors: CheckoutColors(textSecondary: .magenta))
         let item = makeItem(theme: theme)
 
         // When
@@ -24,7 +24,7 @@ struct PaymentMethodItemViewTests {
 
         // Then
         let logosView = try #require(sut.firstSubview(of: SupportedPaymentMethodLogosView.self))
-        #expect(logosView.style.images.borderColor == theme.colors.separator)
+        #expect(logosView.style.logoShadowColor == theme.colors.supportShadow)
         #expect(logosView.style.trailingText.color == theme.colors.textSecondary)
         #expect(logosView.style.trailingText.font == theme.elements.labels.subheadline.font)
     }
