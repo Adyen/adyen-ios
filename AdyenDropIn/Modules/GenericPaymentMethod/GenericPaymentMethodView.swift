@@ -13,11 +13,11 @@ internal struct GenericPaymentMethodView: View {
 
     private enum Constants {
         static let logoSize = CGSize(width: 80, height: 52)
-        static let descriptionViewSpacing: CGFloat = 16
-        static let descriptionViewTopPadding: CGFloat = 32
+        static let descriptionViewSpacing: CGFloat = 8
+        static let descriptionViewTopPadding: CGFloat = 24
 
         static let progressViewSpacing: CGFloat = 16
-        static let progressViewBottomPadding: CGFloat = 64
+        static let progressViewTopPadding: CGFloat = 32
         static let progressViewSize: CGFloat = 48
         static let progressViewWidth: CGFloat = 4
     }
@@ -38,7 +38,7 @@ internal struct GenericPaymentMethodView: View {
             logoView
             descriptionView
             progressView
-                .padding(.top, Constants.progressViewBottomPadding)
+                .padding(.top, Constants.progressViewTopPadding)
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -78,7 +78,7 @@ internal struct GenericPaymentMethodView: View {
                 .adyenLabelStyle(theme.elements.labels.title)
                 .accessibilityIdentifier(GenericPaymentMethodAccessibilityIdentifier.title)
             Text(viewModel.description)
-                .adyenLabelStyle(theme.elements.labels.body)
+                .adyenLabelStyle(theme.elements.labels.body, color: theme.colors.textSecondary)
                 .accessibilityIdentifier(GenericPaymentMethodAccessibilityIdentifier.description)
         }
         .foregroundStyle(Color(uiColor: theme.colors.text))
