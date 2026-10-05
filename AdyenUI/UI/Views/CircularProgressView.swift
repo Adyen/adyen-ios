@@ -4,13 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
-#if canImport(AdyenUI)
-    import AdyenUI
-#endif
 import Foundation
 import SwiftUI
 
-internal struct CircularProgressView: View {
+package struct CircularProgressView: View {
 
     private enum Constants {
         static let arcLength = 0.25
@@ -19,14 +16,22 @@ internal struct CircularProgressView: View {
 
     // MARK: - Properties
 
-    internal let theme: CheckoutTheme
-    internal let size: CGFloat
-    internal let lineWidth: CGFloat
+    private let theme: CheckoutTheme
+    private let size: CGFloat
+    private let lineWidth: CGFloat
     @State private var isRotating = false
+
+    // MARK: - Initializers
+
+    package init(theme: CheckoutTheme, size: CGFloat, lineWidth: CGFloat) {
+        self.theme = theme
+        self.size = size
+        self.lineWidth = lineWidth
+    }
 
     // MARK: - Body
 
-    internal var body: some View {
+    package var body: some View {
         ZStack {
             Circle()
                 .stroke(Color(uiColor: theme.colors.disabled), lineWidth: lineWidth)
