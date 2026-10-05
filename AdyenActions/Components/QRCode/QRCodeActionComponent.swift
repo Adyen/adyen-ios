@@ -39,6 +39,9 @@ package final class QRCodeActionComponent: ActionComponent, Cancellable, Shareab
         /// The component UI style.
         package var style: QRCodeComponentStyle = .init()
 
+        /// The theme applied to the component's screens.
+        package var theme: CheckoutTheme = .default
+
         /// The localization parameters, leave it nil to use the default parameters.
         package var localizationParameters: LocalizationParameters?
         
