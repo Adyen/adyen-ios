@@ -13,6 +13,12 @@ internal final class PaymentMethodSectionView: UIView {
 
     private enum Layout {
         static let headerLabelBottomMargin: CGFloat = 16
+        static let headerMargins = NSDirectionalEdgeInsets(
+            top: 0,
+            leading: PaymentMethodItemView.contentHorizontalInset,
+            bottom: 0,
+            trailing: PaymentMethodItemView.contentHorizontalInset
+        )
     }
 
     // MARK: - UI Elements
@@ -54,6 +60,10 @@ internal final class PaymentMethodSectionView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .center
+        // The header is inset like the item content, so that it lines up with the item titles
+        // rather than with the edges the item backgrounds bleed out to.
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.directionalLayoutMargins = Layout.headerMargins
         return stackView
     }()
 

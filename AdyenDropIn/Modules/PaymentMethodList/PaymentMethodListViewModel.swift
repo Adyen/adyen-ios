@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 #if canImport(AdyenUI)
     import AdyenUI
-    @_spi(AdyenInternal) import struct AdyenUI.ListSection
 #endif
 
 internal enum PaymentMethodListState {
@@ -161,7 +160,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             }.map(paymentMethodItem(from:))
 
             return PaymentMethodSection(
-                headerTitle: section.header?.title,
+                headerTitle: section.headerTitle,
                 headerTrailingButton: manageButton(for: section, items: items),
                 items: items,
                 theme: theme

@@ -350,7 +350,7 @@ struct PaymentMethodListViewModelTests {
         sut.remove(storedPaymentMethod: paymentMethod)
 
         // Then
-        #expect(sut.paymentMethodSections.contains { $0.header?.title == favoritesTitle } == false)
+        #expect(sut.paymentMethodSections.contains { $0.headerTitle == favoritesTitle } == false)
         guard case let .loaded(sections) = sut.state else {
             Issue.record("Expected the refreshed list state")
             return
