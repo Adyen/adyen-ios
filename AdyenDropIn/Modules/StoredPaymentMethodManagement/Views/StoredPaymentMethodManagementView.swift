@@ -149,9 +149,9 @@ private extension StoredPaymentMethodManagementView {
 
                 Button(action: onCancel) {
                     Text(cancelTitle)
-                        .adyenLabelStyle(theme.elements.labels.bodyEmphasized, color: theme.colors.highlight)
+                        .adyenLabelStyle(theme.elements.labels.bodyEmphasized, color: theme.colors.text)
                         .frame(maxWidth: .infinity, minHeight: Constants.buttonHeight)
-                        .background(Color(uiColor: theme.colors.background))
+                        .background(Color(uiColor: theme.colors.container))
                         .clipShape(RoundedRectangle(cornerRadius: Constants.buttonCornerRadius))
                 }
                 .accessibilityIdentifier(StoredPaymentMethodManagementAccessibilityIdentifier.cancelRemoval)
