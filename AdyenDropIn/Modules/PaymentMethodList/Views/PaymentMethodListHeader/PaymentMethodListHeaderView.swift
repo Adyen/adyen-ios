@@ -7,13 +7,11 @@
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
-import PassKit
 import UIKit
 
 internal final class PaymentMethodListHeaderView: UIView {
 
     private enum Layout {
-        static let applePayButtonHeight: CGFloat = 48
         static let subtitleBottomMargin: CGFloat = 24
         static let labelMargins = NSDirectionalEdgeInsets(
             top: 0,
@@ -43,16 +41,6 @@ internal final class PaymentMethodListHeaderView: UIView {
         return label
     }()
     
-    private lazy var applePayButton: PKPaymentButton = {
-        let button = PKPaymentButton(paymentButtonType: .plain, paymentButtonStyle: .automatic)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(applePayButtonTapped), for: .touchUpInside)
-        if case .hidden = viewModel.applePayButtonState {
-            button.isHidden = true
-        }
-        return button
-    }()
-    
     private lazy var labelsStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [amountLabel, subtitleLabel])
         stackView.axis = .vertical
@@ -69,8 +57,7 @@ internal final class PaymentMethodListHeaderView: UIView {
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView(
             arrangedSubviews: [
-                labelsStackView,
-                applePayButton
+                labelsStackView
             ]
         )
         stackView.axis = .vertical
@@ -97,14 +84,6 @@ internal final class PaymentMethodListHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Actions
-    
-    @objc private func applePayButtonTapped() {
-        if case let .visible(onTap) = viewModel.applePayButtonState {
-            onTap()
-        }
-    }
-    
     // MARK: - Private
     
     private func setupView() {
@@ -112,21 +91,24 @@ internal final class PaymentMethodListHeaderView: UIView {
         accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "headerView")
 
         addSubview(stackView)
-        
-        if case .visible = viewModel.applePayButtonState {
-            stackView.setCustomSpacing(Layout.subtitleBottomMargin, after: labelsStackView)
-        }
 
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
-
-            applePayButton.heightAnchor.constraint(equalToConstant: Layout.applePayButtonHeight)
+            stackView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
         ])
 
+        setupApplePayView()
         applyTheme()
+    }
+
+    private func setupApplePayView() {
+        guard let applePayView = viewModel.applePayView else { return }
+
+        applePayView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(applePayView)
+        stackView.setCustomSpacing(Layout.subtitleBottomMargin, after: labelsStackView)
     }
 
     private func applyTheme() {
@@ -136,8 +118,5 @@ internal final class PaymentMethodListHeaderView: UIView {
         // Subtitle Label
         subtitleLabel.apply(viewModel.theme.elements.labels.body)
         subtitleLabel.textColor = viewModel.theme.colors.textSecondary
-
-        // ApplePay Button
-        applePayButton.cornerRadius = viewModel.theme.attributes.cornerRadius
     }
 }

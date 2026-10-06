@@ -21,7 +21,6 @@ internal protocol PaymentMethodListRouterListener: AnyObject {
 @MainActor
 internal protocol PaymentMethodListRouting: Router {
     func present(component: PaymentComponent)
-    func present(viewController: UIViewController)
     func presentStoredPaymentMethodManagement()
     func dismiss(completion: (() -> Void)?)
 }
@@ -88,10 +87,6 @@ internal class PaymentMethodListRouter: PaymentMethodListRouting {
         case .generic:
             pushGenericPaymentMethod(with: component)
         }
-    }
-
-    internal func present(viewController: UIViewController) {
-        rootViewController.present(viewController, animated: true)
     }
 
     // MARK: - Internal
