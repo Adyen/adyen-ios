@@ -62,8 +62,7 @@ let configuration = try CheckoutConfiguration(
 
 let checkout = try await Checkout.setup(
     with: sessionResponse,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 .onComplete { result in
     print(result.resultCode)
@@ -132,8 +131,7 @@ let configuration = try CheckoutConfiguration(
 
 let checkout = try await Checkout.setup(
     with: sessionResponse,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 .onBeforeSubmit { data in
     .proceed(data: data, sessionData: nil)
@@ -177,8 +175,7 @@ let configuration = try CheckoutConfiguration(
 
 let checkout = try await Checkout.setup(
     with: paymentMethods,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 .onSubmit { data in
     try await callPayments(with: data)
@@ -219,6 +216,23 @@ if checkout.isPaymentMethodAvailable(for: .applePay) {
 
 `isPaymentMethodAvailable(for:)` never throws. It returns `false` when the payment method isn't in the checkout's payment methods, or when the device or configuration doesn't meet its requirements. Payment methods without such requirements return `true`. Drop-in uses the same check to hide unavailable payment methods.
 
+#### Action presentation
+
+Every checkout flow — `SessionCheckout`, `AdvancedCheckout` and `ActionOnlyCheckout` — exposes `onAction(_:)`, invoked once the SDK has built the view controller for an action. It hands over both the action's `ActionData` and the `UIViewController`, so you decide how the action is presented:
+
+```swift
+.onAction { actionData, actionViewController in
+    print(actionData.type)
+    navigationController.present(actionViewController, animated: true)
+}
+```
+
+`ActionData.type` is an `ActionType`, a `RawRepresentable` struct with the known values `redirect`, `nativeRedirect`, `threeDS2`, `sdk`, `qrCode`, `await` and `voucher`. It is a struct rather than an enum so that new action types do not break exhaustive `switch` statements in your code — always handle unknown values. BACS Direct Debit mandates are returned as `voucher` actions and are surfaced as such. When no handler is set, the SDK presents the view controller on the payment component that started the flow; in the action-only flow there is no such component, so a handler is required.
+
+`onAction(_:)` replaces the `presentationDelegate:` parameter of `Checkout.setup(...)`, which has been removed along with the public `PresentationDelegate` protocol. Drop the argument and the conformance from your integration.
+
+Drop-in presents actions within its own navigation stack, so `onAction(_:)` is not invoked for actions raised inside a Drop-in flow.
+
 #### Summary
 
 - `Checkout.setup(...)` replaces `AdyenSession.initialize(...)` for the new public v6 flows.
@@ -226,7 +240,10 @@ if checkout.isPaymentMethodAvailable(for: .applePay) {
 - Closure callbacks replace the public delegate-first flow setup for submission and completion handling.
 - `SessionCheckout` and `AdvancedCheckout` create payment components for the active flow.
 - `isPaymentMethodAvailable(for:)` checks whether a payment method can be used on the device before creating its component.
+- `onAction(_:)` exposes the action's `ActionData` and the `UIViewController` the SDK built for it.
+- `PresentationDelegate` and the `presentationDelegate:` parameter of `Checkout.setup(...)` are removed in favour of `onAction(_:)`.
 - Theme and localization are configured on `CheckoutConfiguration` through `theme(_:)` and `localizationProvider(_:)`.
+- Callback closure typealiases are prefixed with `Checkout` to avoid name collisions: `CheckoutSubmitHandler`, `CheckoutAdditionalDetailsHandler`, `CheckoutBeforeSubmitHandler` and `CheckoutActionHandler`.
 
 ### Card component
 
@@ -278,8 +295,7 @@ component.delegate = session
 ```swift
 let checkout = try await Checkout.setup(
     with: sessionResponse,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 
 let component = try checkout.createPaymentComponent(for: .scheme)
@@ -308,8 +324,7 @@ component.delegate = self
 ```swift
 let checkout = try await Checkout.setup(
     with: paymentMethods,
-    configuration: configuration,
-    presentationDelegate: self
+    configuration: configuration
 )
 .onSubmit { data in
     try await callPayments(with: data)

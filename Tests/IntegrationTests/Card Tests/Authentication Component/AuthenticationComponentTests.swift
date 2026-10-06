@@ -447,7 +447,7 @@ class AuthenticationComponentTests: XCTestCase {
             let delegate = ActionComponentDelegateMock()
         
             // A mock for the one which will present the screens if needed.
-            let presentationDelegateMock = PresentationDelegateMock()
+            let actionPresentationDelegateMock = ActionPresentationDelegateMock()
         
             // A mock for the 3ds2 sdk
             let mockService = ThreeDSServiceableMock()
@@ -501,7 +501,7 @@ class AuthenticationComponentTests: XCTestCase {
                 threeDS2CompactFlowHandler: compactActionHandler,
                 redirectComponent: redirectComponent
             )
-            sut.presentationDelegate = presentationDelegateMock
+            sut.actionPresentationDelegate = actionPresentationDelegateMock
             let delegateExpectation = expectation(description: "Expect delegate didProvide(_:from:) function to be called.")
             delegate.onDidProvide = { data, component in
                 XCTAssertTrue(component === sut)
@@ -527,7 +527,7 @@ class AuthenticationComponentTests: XCTestCase {
         
             // Check if the UI is displayed & simulate the tap of the first button which is approve.
             let presentationExpectation = expectation(description: "Approval view controller should be shown.")
-            presentationDelegateMock.doPresent = { viewController in
+            actionPresentationDelegateMock.doPresent = { viewController in
                 let approvalViewController = viewController as? DAApprovalViewController
                 XCTAssertNotNil(approvalViewController)
                 self.verifyApprovalView(viewController: approvalViewController)
@@ -571,7 +571,7 @@ class AuthenticationComponentTests: XCTestCase {
             let delegate = ActionComponentDelegateMock()
         
             // A mock for the one which will present the screens if needed.
-            let presentationDelegateMock = PresentationDelegateMock()
+            let actionPresentationDelegateMock = ActionPresentationDelegateMock()
         
             // A mock for the 3ds2 sdk
             let mockService = ThreeDSServiceableMock()
@@ -625,7 +625,7 @@ class AuthenticationComponentTests: XCTestCase {
                 threeDS2CompactFlowHandler: compactActionHandler,
                 redirectComponent: redirectComponent
             )
-            sut.presentationDelegate = presentationDelegateMock
+            sut.actionPresentationDelegate = actionPresentationDelegateMock
             let delegateExpectation = expectation(description: "Expect delegate didProvide(_:from:) function to be called.")
             delegate.onDidProvide = { data, component in
                 XCTAssertTrue(component === sut)
@@ -648,7 +648,7 @@ class AuthenticationComponentTests: XCTestCase {
             // Check if the UI is displayed & simulate the tap of the first button which is approve.
             let approvalPresentationExpectation = expectation(description: "Approval view controller should be shown.")
             let approvalErrorPresentationExpectation = expectation(description: "Error on Approval view should be shown.")
-            presentationDelegateMock.doPresent = { viewController in
+            actionPresentationDelegateMock.doPresent = { viewController in
                 if let approvalViewController = viewController as? DAApprovalViewController {
                     XCTAssertNotNil(approvalViewController)
                     self.verifyApprovalView(viewController: approvalViewController)
@@ -714,7 +714,7 @@ class AuthenticationComponentTests: XCTestCase {
             let delegate = ActionComponentDelegateMock()
         
             // A mock for the one which will present the screens if needed.
-            let presentationDelegateMock = PresentationDelegateMock()
+            let actionPresentationDelegateMock = ActionPresentationDelegateMock()
         
             // A mock for the 3ds2 sdk, which would successfully complete a challenge.
             let mockService = ThreeDSServiceableMock()
@@ -758,7 +758,7 @@ class AuthenticationComponentTests: XCTestCase {
                 threeDS2CompactFlowHandler: compactActionHandler,
                 redirectComponent: redirectComponent
             )
-            sut.presentationDelegate = presentationDelegateMock
+            sut.actionPresentationDelegate = actionPresentationDelegateMock
             // Verify if we get a challengeResult.
             let delegateExpectation = expectation(description: "Expect delegate didProvide(_:from:) function to be called.")
             delegate.onDidProvide = { data, component in
@@ -776,7 +776,7 @@ class AuthenticationComponentTests: XCTestCase {
         
             // Verify if the UI is displayed & simulate the tap of the first button which is approve.
             let presentationExpectation = expectation(description: "Approval view controller should be shown.")
-            presentationDelegateMock.doPresent = { viewController in
+            actionPresentationDelegateMock.doPresent = { viewController in
                 let registrationViewController = viewController as? DARegistrationViewController
                 self.verifyRegistrationView(viewController: registrationViewController)
                 XCTAssertNotNil(registrationViewController)
@@ -819,7 +819,7 @@ class AuthenticationComponentTests: XCTestCase {
             let delegate = ActionComponentDelegateMock()
     
             // A mock for the one which will present the screens if needed.
-            let presentationDelegateMock = PresentationDelegateMock()
+            let actionPresentationDelegateMock = ActionPresentationDelegateMock()
     
             // A mock for the 3ds2 sdk, which would successfully complete a challenge.
             let mockService = ThreeDSServiceableMock()
@@ -863,7 +863,7 @@ class AuthenticationComponentTests: XCTestCase {
                 threeDS2CompactFlowHandler: compactActionHandler,
                 redirectComponent: redirectComponent
             )
-            sut.presentationDelegate = presentationDelegateMock
+            sut.actionPresentationDelegate = actionPresentationDelegateMock
             // Verify if we get a challengeResult.
             let delegateExpectation = expectation(description: "Expect delegate didProvide(_:from:) function to be called.")
             delegate.onDidProvide = { data, component in
@@ -883,7 +883,7 @@ class AuthenticationComponentTests: XCTestCase {
             let registrationViewExpectation = expectation(description: "Registration view controller should be shown.")
             let registrationErrorViewExpectation = expectation(description: "Registration error view controller should be shown.")
 
-            presentationDelegateMock.doPresent = { viewController in
+            actionPresentationDelegateMock.doPresent = { viewController in
                 if let registrationViewController = viewController as? DARegistrationViewController {
                     self.verifyRegistrationView(viewController: registrationViewController)
                     XCTAssertNotNil(registrationViewController)

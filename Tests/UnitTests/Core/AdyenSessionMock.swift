@@ -9,7 +9,6 @@
 
 public final class AdyenSessionMock: SessionProtocol {
     public var state: Session.State
-    public var presentationDelegate: PresentationDelegate?
     public var showRemovePaymentMethodButton = false
     public var componentConfiguration: SessionComponentConfiguration {
         .init(
@@ -34,11 +33,9 @@ public final class AdyenSessionMock: SessionProtocol {
     var requestOrderResult: Result<PartialPaymentOrder, Error>?
 
     internal init(
-        state: Session.State,
-        presentationDelegate: PresentationDelegate? = nil
+        state: Session.State
     ) {
         self.state = state
-        self.presentationDelegate = presentationDelegate
     }
     
     var refreshSessionStateCalled = false

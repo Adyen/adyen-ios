@@ -85,7 +85,6 @@ final class CheckoutTests: XCTestCase {
                 sessionData: "sessionData"
             ),
             configuration: configuration,
-            presentationDelegate: nil,
             provider: mockProvider
         )
         
@@ -110,7 +109,6 @@ final class CheckoutTests: XCTestCase {
                     sessionData: "sessionData"
                 ),
                 configuration: configuration,
-                presentationDelegate: nil,
                 provider: mockProvider
             )
             XCTFail("Expected error to be thrown")
@@ -127,7 +125,6 @@ final class CheckoutTests: XCTestCase {
         let checkout = try await Checkout.setup(
             with: paymentMethods,
             configuration: configuration,
-            presentationDelegate: nil,
             provider: mockProvider
         )
 
@@ -146,7 +143,6 @@ final class CheckoutTests: XCTestCase {
         let checkout = try await Checkout.setup(
             with: paymentMethods,
             configuration: configuration,
-            presentationDelegate: nil,
             provider: mockProvider
         )
 
@@ -161,7 +157,6 @@ final class CheckoutTests: XCTestCase {
             _ = try await Checkout.setup(
                 with: paymentMethods,
                 configuration: configuration,
-                presentationDelegate: nil,
                 provider: mockProvider
             )
             XCTFail("Expected error to be thrown")
@@ -475,7 +470,6 @@ final class CheckoutTests: XCTestCase {
         let checkout = try await Checkout.setup(
             with: paymentMethods,
             configuration: configuration,
-            presentationDelegate: nil,
             provider: mockProvider
         )
 
@@ -574,7 +568,6 @@ final class CheckoutTests: XCTestCase {
         // When
         let checkout = try await Checkout.setup(
             configuration: configuration,
-            presentationDelegate: nil,
             provider: mockProvider
         )
         
@@ -591,7 +584,6 @@ final class CheckoutTests: XCTestCase {
         do {
             _ = try await Checkout.setup(
                 configuration: configuration,
-                presentationDelegate: nil,
                 provider: mockProvider
             )
             XCTFail("Expected error to be thrown")
@@ -608,7 +600,6 @@ final class CheckoutTests: XCTestCase {
         // When
         let checkout = try await Checkout.setup(
             configuration: configuration,
-            presentationDelegate: nil,
             provider: mockProvider
         )
         
@@ -851,7 +842,6 @@ final class CheckoutTests: XCTestCase {
             configuration: configuration,
             session: session,
             adyenContext: Dummy.context,
-            presentationDelegate: nil,
             resultCallbacks: callbackStore,
             callbackHandler: BeforeSubmitCallbackHandler(
                 handler: SessionCallbackHandler(session: session),
@@ -869,7 +859,6 @@ final class CheckoutTests: XCTestCase {
             configuration: configuration,
             paymentMethods: paymentMethods,
             adyenContext: Dummy.context,
-            presentationDelegate: nil,
             resultCallbacks: callbackStore,
             callbackHandler: AdvancedCallbackHandler(callbackStore: callbackStore)
         )
@@ -881,7 +870,6 @@ final class CheckoutTests: XCTestCase {
         CheckoutCore(
             configuration: configuration,
             adyenContext: Dummy.context,
-            presentationDelegate: nil,
             resultCallbacks: callbackStore,
             callbackHandler: ActionOnlyCallbackHandler(callbackStore: callbackStore)
         )

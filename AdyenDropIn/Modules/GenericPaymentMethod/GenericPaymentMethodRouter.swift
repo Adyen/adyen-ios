@@ -4,6 +4,10 @@
 // This file is open source and available under the MIT license. See the LICENSE file for more info.
 //
 
+import Adyen
+#if canImport(AdyenActions)
+    import AdyenActions
+#endif
 import Foundation
 import UIKit
 
@@ -14,18 +18,19 @@ internal protocol GenericPaymentMethodRouterListener: AnyObject {
 }
 
 // sourcery:AutoMockable
-internal protocol GenericPaymentMethodRouting: AnyObject {
-    func present(actionViewController: UIViewController, onCancel: (() -> Void)?)
+@MainActor
+internal protocol GenericPaymentMethodRouting: Router {
     func dismiss()
 }
 
-internal class GenericPaymentMethodRouter: Router, GenericPaymentMethodRouting {
+@MainActor
+internal class GenericPaymentMethodRouter: GenericPaymentMethodRouting {
 
     // MARK: - Properties
 
     internal let rootViewController: UIViewController
-    private weak var listener: GenericPaymentMethodRouterListener?
     internal private(set) var childRouter: Router?
+    private weak var listener: GenericPaymentMethodRouterListener?
 
     // MARK: - Initializers
 
@@ -38,17 +43,6 @@ internal class GenericPaymentMethodRouter: Router, GenericPaymentMethodRouting {
     }
 
     // MARK: - GenericPaymentMethodRouting
-
-    internal func present(
-        actionViewController: UIViewController,
-        onCancel: (() -> Void)?
-    ) {
-        let actionViewController = ActionPresentationHelper.viewController(
-            for: actionViewController,
-            onCancel: onCancel
-        )
-        rootViewController.present(actionViewController, animated: true)
-    }
 
     internal func dismiss() {
         rootViewController.navigationController?.popViewController(animated: true)

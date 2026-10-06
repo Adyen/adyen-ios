@@ -14,7 +14,6 @@ class BACSDirectDebitComponentTests: XCTestCase {
 
     var inputPresenter: BACSInputPresenterProtocolMock!
     var confirmationPresenter: BACSConfirmationPresenterProtocolMock!
-    var presentationDelegate: PresentationDelegateMock!
     var paymentComponentDelegate: PaymentComponentDelegateMock!
     var context: AdyenContext!
     var sut: BACSDirectDebitComponent!
@@ -28,7 +27,6 @@ class BACSDirectDebitComponentTests: XCTestCase {
         try super.setUpWithError()
         inputPresenter = BACSInputPresenterProtocolMock()
         confirmationPresenter = BACSConfirmationPresenterProtocolMock()
-        presentationDelegate = PresentationDelegateMock()
         paymentComponentDelegate = PaymentComponentDelegateMock()
         context = Dummy.context
 
@@ -37,14 +35,12 @@ class BACSDirectDebitComponentTests: XCTestCase {
             context: context
         )
 
-        sut.presentationDelegate = presentationDelegate
         sut.delegate = paymentComponentDelegate
     }
 
     override func tearDownWithError() throws {
         inputPresenter = nil
         confirmationPresenter = nil
-        presentationDelegate = nil
         paymentComponentDelegate = nil
         context = nil
         sut = nil
@@ -73,14 +69,6 @@ class BACSDirectDebitComponentTests: XCTestCase {
         wait(for: .milliseconds(200))
         
         XCTAssertEqual(presenter.amountConsentToggleItem?.title, expectedConsentTitle1)
-    }
-
-    func testPresentConfirmationShouldCallPresentationDelegatePresent() {
-        // When
-        sut.presentConfirmation(with: bacsDataMock)
-
-        // Then
-        XCTAssertEqual(presentationDelegate.presentComponentCallsCount, 1)
     }
 
     func testConfirmPaymentShouldCallConfirmationPresenterStartLoading() {

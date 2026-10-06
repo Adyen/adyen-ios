@@ -31,7 +31,7 @@ public final class ActionOnlyCheckout: BaseCheckout {
     /// - Parameter handler: Callback invoked when an action component provides data for `/payments/details`.
     ///   - data: The `ActionComponentData` containing the action `details` and optional `paymentData` returned by the previous `/payments` response.
     /// - Returns: An `AdditionalDetailsResult` describing how checkout should continue after the details are submitted.
-    public func onAdditionalDetails(_ handler: @escaping AdditionalDetailsHandler) -> Self {
+    public func onAdditionalDetails(_ handler: @escaping CheckoutAdditionalDetailsHandler) -> Self {
         callbackStore.onAdditionalDetails = handler
         return self
     }

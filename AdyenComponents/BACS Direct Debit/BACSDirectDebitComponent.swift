@@ -42,9 +42,6 @@ package final class BACSDirectDebitComponent: PaymentComponent {
     /// The context object for this component.
     package let context: AdyenContext
 
-    /// The object that acts as the presentation delegate of the component.
-    package weak var presentationDelegate: PresentationDelegate?
-
     /// Component's configuration
     package var configuration: Configuration
 
@@ -115,11 +112,10 @@ package final class BACSDirectDebitComponent: PaymentComponent {
 /// :nodoc:
 extension BACSDirectDebitComponent: BACSDirectDebitRouterProtocol {
 
+    // TODO: - This will be removed in COSDK-1284
     internal func presentConfirmation(with data: BACSDirectDebitData) {
         confirmationViewPresented = true
-        let confirmationView = assembleConfirmationView(with: data)
-
-        presentationDelegate?.present(viewController: confirmationView)
+        _ = assembleConfirmationView(with: data)
     }
 
     internal func confirmPayment(with data: BACSDirectDebitData) {

@@ -74,7 +74,7 @@ class AssertsTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in
-            XCTAssertEqual(message, "PresentationDelegate is nil. Provide a presentation delegate to AwaitComponent.")
+            XCTAssertEqual(message, "ActionPresentationDelegate is nil. Provide a presentation delegate to AwaitComponent.")
             expectation.fulfill()
         }
 
@@ -89,7 +89,7 @@ class AssertsTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Dummy Expectation")
 
         AdyenAssertion.listener = { message in
-            XCTAssertEqual(message, "PresentationDelegate is nil. Provide a presentation delegate to VoucherComponent.")
+            XCTAssertEqual(message, "ActionPresentationDelegate is nil. Provide a presentation delegate to VoucherComponent.")
             expectation.fulfill()
         }
 

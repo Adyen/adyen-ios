@@ -8,10 +8,15 @@ import Adyen
 import Foundation
 import UIKit
 
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
+
 // sourcery:AutoMockable
 @MainActor
 internal protocol ComponentContainerViewModelProtocol {
     var componentViewController: UIViewController { get }
+    var theme: CheckoutTheme { get }
     func cancel()
 }
 
@@ -20,6 +25,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     // MARK: - Properties
 
+    internal let theme: CheckoutTheme
     internal weak var router: ComponentContainerRouting?
     private let component: PaymentComponent
     private let configuration: DropInConfiguration
@@ -30,11 +36,13 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
 
     internal init(
         component: PaymentComponent,
+        theme: CheckoutTheme,
         configuration: DropInConfiguration,
         dropInFlowManager: DropInFlowManaging,
         partialPaymentDelegate: PartialPaymentDelegate?
     ) {
         self.component = component
+        self.theme = theme
         self.configuration = configuration
         self.dropInFlowManager = dropInFlowManager
         self.partialPaymentDelegate = partialPaymentDelegate
@@ -75,7 +83,7 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        dropInFlowManager.submit(data, from: component, actionPresenter: self)
+        dropInFlowManager.submit(data, from: component)
     }
     
     internal func didFail(
@@ -87,21 +95,6 @@ extension ComponentContainerViewModel: PaymentComponentDelegate {
         } else {
             dropInFlowManager.fail(with: error, from: component)
         }
-    }
-}
-
-// MARK: - ActionPresenter
-
-extension ComponentContainerViewModel: ActionPresenter {
-
-    internal func present(actionViewController: UIViewController) {
-        router?.present(actionViewController: actionViewController) { [weak self] in
-            self?.stopLoading()
-        }
-    }
-
-    internal func didCancel(actionComponent: any ActionComponent) {
-        stopLoading()
     }
 }
 

@@ -72,8 +72,7 @@ internal final class CardComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
 
         let checkout = try await Checkout.setup(
             with: paymentMethods,
-            configuration: configuration,
-            presentationDelegate: self
+            configuration: configuration
         )
         .onSubmit { [weak self] data in
             guard let self else { return .completion(resultCode: "Error") }
@@ -287,12 +286,5 @@ private struct DemoLocaleGroupedProvider: CheckoutLocalizationProvider {
     func localizedString(_ key: CheckoutLocalizationKey, locale: Locale) -> String? {
         guard let languageCode = locale.languageCode else { return nil }
         return overrides[languageCode]?[key]
-    }
-}
-
-extension CardComponentAdvancedFlowExample: PresentationDelegate {
-   
-    func present(viewController: UIViewController) {
-        presenter?.present(viewController: viewController, completion: nil)
     }
 }

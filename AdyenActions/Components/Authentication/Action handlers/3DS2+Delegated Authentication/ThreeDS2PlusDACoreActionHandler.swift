@@ -42,7 +42,7 @@ internal typealias VoidHandler = () -> Void
         /// - Parameter context: The context object for this component.
         /// - Parameter appearanceConfiguration: The appearance configuration.
         /// - Parameter delegatedAuthenticationConfiguration: The delegated authentication configuration.
-        /// - Parameter presentationDelegate: The presentation delegate
+        /// - Parameter actionPresentationDelegate: The presentation delegate
         internal convenience init(
             context: AdyenContext,
             service: ThreeDSService,
@@ -87,7 +87,7 @@ internal typealias VoidHandler = () -> Void
             self.presenter = presenter
             self.delegatedAuthenticationService = delegatedAuthenticationService
             super.init(context: context, service: service, theme: theme)
-            self.presenter.presentationDelegate = self
+            self.presenter.actionPresentationDelegate = self
         }
         
         // MARK: - Fingerprint
