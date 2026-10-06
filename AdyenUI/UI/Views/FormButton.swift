@@ -122,13 +122,49 @@ package final class FormButton: UIControl {
         return titleLabel
     }()
     
+    // MARK: - Leading Accessory
+    
+    /// The content shown in the leading slot before the title. Only one accessory can be shown at a time.
+    private enum LeadingAccessory {
+        case none
+        case image(UIImage)
+        case progress
+    }
+    
+    private var leadingAccessory: LeadingAccessory = .none {
+        didSet {
+            applyLeadingAccessory()
+        }
+    }
+    
+    /// The accessory to show when the button is not loading.
+    private var idleLeadingAccessory: LeadingAccessory {
+        leadingImage.map(LeadingAccessory.image) ?? .none
+    }
+    
+    private func applyLeadingAccessory() {
+        switch leadingAccessory {
+        case .none:
+            leadingImageView.isHidden = true
+            hideProgressView()
+        case let .image(image):
+            leadingImageView.image = image
+            leadingImageView.isHidden = false
+            hideProgressView()
+        case .progress:
+            leadingImageView.isHidden = true
+            showProgressView()
+        }
+    }
+    
     // MARK: - Leading Image
     
     /// The optional leading image displayed to the left of the title.
+    /// While loading, the progress view takes its place and the image comes back when loading ends.
     package var leadingImage: UIImage? {
         didSet {
-            leadingImageView.image = leadingImage
-            updateLeadingImageVisibility()
+            guard !showsActivityIndicator else { return }
+            leadingAccessory = idleLeadingAccessory
         }
     }
     
@@ -166,16 +202,13 @@ package final class FormButton: UIControl {
     /// Boolean value indicating whether a progress view should be shown.
     package var showsActivityIndicator: Bool {
         get {
-            progressContentView != nil
+            if case .progress = leadingAccessory { return true }
+            return false
         }
         
         set {
             isEnabled = !newValue
-            if newValue {
-                showProgressView()
-            } else {
-                hideProgressView()
-            }
+            leadingAccessory = newValue ? .progress : idleLeadingAccessory
         }
     }
     
@@ -211,19 +244,12 @@ package final class FormButton: UIControl {
         (contentView as UIView).adyen.anchor(inside: progressContainerView)
         progressContentView = contentView
         progressContainerView.isHidden = false
-        updateLeadingImageVisibility()
     }
     
     private func hideProgressView() {
         progressContentView?.removeFromSuperview()
         progressContentView = nil
         progressContainerView.isHidden = true
-        updateLeadingImageVisibility()
-    }
-    
-    /// The progress view takes the place of the leading image while loading.
-    private func updateLeadingImageVisibility() {
-        leadingImageView.isHidden = leadingImage == nil || showsActivityIndicator
     }
     
     private var contentColor: UIColor {
