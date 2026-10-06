@@ -34,6 +34,7 @@ internal class PaymentMethodListRouter: PaymentMethodListRouting {
     private let viewController: UIViewController
     private weak var listener: PaymentMethodListRouterListener?
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
+    private let storedPaymentMethodContentAssembler: StoredPaymentMethodContentAssembling
     private let genericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol
     private let storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol
     private let storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
@@ -47,6 +48,7 @@ internal class PaymentMethodListRouter: PaymentMethodListRouting {
         viewController: UIViewController,
         listener: PaymentMethodListRouterListener?,
         componentContainerAssembler: ComponentContainerAssemblerProtocol,
+        storedPaymentMethodContentAssembler: StoredPaymentMethodContentAssembling,
         genericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol,
         storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol,
         storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?,
@@ -56,6 +58,7 @@ internal class PaymentMethodListRouter: PaymentMethodListRouting {
         self.viewController = viewController
         self.listener = listener
         self.componentContainerAssembler = componentContainerAssembler
+        self.storedPaymentMethodContentAssembler = storedPaymentMethodContentAssembler
         self.genericPaymentMethodAssembler = genericPaymentMethodAssembler
         self.storedPaymentMethodManagementAssembler = storedPaymentMethodManagementAssembler
         self.storedPaymentMethodManagementCapability = storedPaymentMethodManagementCapability
@@ -78,7 +81,9 @@ internal class PaymentMethodListRouter: PaymentMethodListRouting {
 
     internal func present(component: PaymentComponent) {
         switch component.type {
-        case .regular, .stored:
+        case .stored:
+            pushStoredPaymentMethodContent(with: component)
+        case .regular:
             pushComponentContainer(with: component)
         case .generic:
             pushGenericPaymentMethod(with: component)
@@ -111,6 +116,20 @@ internal class PaymentMethodListRouter: PaymentMethodListRouting {
     }
 
     // MARK: - Private
+
+    private func pushStoredPaymentMethodContent(
+        with component: PaymentComponent
+    ) {
+        guard let router = storedPaymentMethodContentAssembler.resolveStoredPaymentMethodContentRouter(
+            for: component,
+            listener: self
+        ) else {
+            // No dedicated stored payment content exists for this component; fall back to the generic component presentation.
+            return pushComponentContainer(with: component)
+        }
+        childRouter = router
+        viewController.navigationController?.pushViewController(router.rootViewController, animated: true)
+    }
 
     private func pushComponentContainer(
         with component: PaymentComponent
@@ -182,6 +201,14 @@ extension PaymentMethodListRouter: StoredPaymentMethodManagementListener {
     }
 
     internal func didDismissStoredPaymentMethodManagement() {
+        childRouter = nil
+    }
+}
+
+extension PaymentMethodListRouter: StoredPaymentMethodContentRouterListener {
+
+    internal func dismissStoredPaymentMethodContent() {
+        viewController.navigationController?.popViewController(animated: true)
         childRouter = nil
     }
 }
