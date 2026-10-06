@@ -13,16 +13,6 @@ import SwiftUI
 @MainActor
 package final class AwaitComponent: ActionComponent, Cancellable {
 
-    /// The context object for this component.
-    package let context: AdyenContext
-
-    /// Delegates view controller presentation.
-    package weak var actionPresentationDelegate: ActionPresentationDelegate?
-
-    package weak var delegate: ActionComponentDelegate?
-
-    internal var appLauncher: AnyAppLauncher = AppLauncher()
-
     /// The await component configurations.
     package struct Configuration {
 
@@ -40,6 +30,20 @@ package final class AwaitComponent: ActionComponent, Cancellable {
             self.localizationParameters = localizationParameters
         }
     }
+
+    // MARK: - Properties
+
+    /// The context object for this component.
+    package let context: AdyenContext
+
+    /// Delegates view controller presentation.
+    package weak var actionPresentationDelegate: ActionPresentationDelegate?
+
+    package weak var delegate: ActionComponentDelegate?
+
+    internal var appLauncher: AnyAppLauncher = AppLauncher()
+
+    private var pollingHandler: AnyPollingHandler?
     
     /// The await component configurations.
     package var configuration: Configuration
@@ -100,7 +104,7 @@ package final class AwaitComponent: ActionComponent, Cancellable {
     }
 
     package func didCancel() {
-        paymentMethodSpecificPollingComponent?.didCancel()
+        pollingHandler?.didCancel()
     }
 
     /// Handles await action.
@@ -124,13 +128,10 @@ package final class AwaitComponent: ActionComponent, Cancellable {
             AdyenAssertion.assertionFailure(message: message)
         }
 
-        paymentMethodSpecificPollingComponent = pollingHandlerProvider.handler(for: action.paymentMethodType)
-        paymentMethodSpecificPollingComponent?.delegate = self
-        paymentMethodSpecificPollingComponent?.handle(action)
+        pollingHandler = pollingHandlerProvider.handler(for: action.paymentMethodType)
+        pollingHandler?.delegate = self
+        pollingHandler?.handle(action)
     }
-
-    private var paymentMethodSpecificPollingComponent: AnyPollingHandler?
-    
 }
 
 // MARK: - ActionComponentDelegate
