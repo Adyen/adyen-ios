@@ -97,7 +97,7 @@ class AwaitComponentTests: XCTestCase {
             return handler
         }, onQRHandler: nil)
 
-        let sut = AwaitComponent(context: Dummy.context, awaitComponentBuilder: handlerProvider)
+        let sut = AwaitComponent(context: Dummy.context, pollingHandlerProvider: handlerProvider)
         sut.configuration.theme = theme
         sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
 
