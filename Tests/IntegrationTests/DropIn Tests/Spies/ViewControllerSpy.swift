@@ -74,4 +74,11 @@ final class NavigationControllerSpy: UINavigationController {
         presentAnimated = flag
         completion?()
     }
+
+    var dismissCallsCount = 0
+
+    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        dismissCallsCount += 1
+        completion?()
+    }
 }

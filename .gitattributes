@@ -1,0 +1,3 @@
+# Sourcery output. Regenerate with Tools/Sourcery/sourcery.sh rather than editing,
+# and let review focus on the protocols that drive it.
+Tests/GeneratedMocks/** linguist-generated=true

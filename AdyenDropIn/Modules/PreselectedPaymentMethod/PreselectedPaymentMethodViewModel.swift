@@ -181,7 +181,7 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        dropInFlowManager.submit(data, from: component, actionPresenter: self)
+        dropInFlowManager.submit(data, from: component)
     }
     
     internal func didFail(
@@ -199,20 +199,5 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         var infoEvent = AnalyticsEventInfo(component: AnalyticsConstants.dropInComponentIdentifier, type: .rendered)
         infoEvent.configData = dropInAnalyticsConfiguration
         analyticsProvider?.add(info: infoEvent)
-    }
-}
-
-// MARK: - ActionPresenter
-
-extension PreselectedPaymentMethodViewModel: ActionPresenter {
-
-    internal func present(actionViewController: UIViewController) {
-        router?.present(actionViewController: actionViewController) { [weak self] in
-            self?.stopLoading()
-        }
-    }
-
-    internal func didCancel(actionComponent: any ActionComponent) {
-        stopLoading()
     }
 }

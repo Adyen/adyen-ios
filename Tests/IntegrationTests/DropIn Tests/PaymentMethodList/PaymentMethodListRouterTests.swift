@@ -15,8 +15,8 @@ struct PaymentMethodListRouterTests {
 
     // MARK: - Root ViewController Tests
 
-    @Test("This test makes sure the component's view controller is the start of the navigation flow.")
-    func rootViewController_shouldHave_componentViewController_asFirstView() throws {
+    @Test("The list is the root of its own module, and the drop in embeds it in a navigation controller.")
+    func rootViewController_shouldBe_listViewController() {
         // Given
         let expectedViewController = ViewControllerSpy()
         let sut = makeSUT(viewController: expectedViewController)
@@ -25,11 +25,7 @@ struct PaymentMethodListRouterTests {
         let rootViewController = sut.rootViewController
 
         // Then
-        let navigationController = try #require(rootViewController as? UINavigationController)
-
-        let receivedViewController = navigationController.viewControllers.first
-        #expect(expectedViewController == receivedViewController)
-        #expect(!navigationController.navigationBar.prefersLargeTitles)
+        #expect(rootViewController === expectedViewController)
     }
 
     // MARK: - Dismiss Tests
@@ -85,20 +81,6 @@ struct PaymentMethodListRouterTests {
         #expect(sut.childRouter === componentContainerRouter)
         let receivedComponentContainerViewController = navigationControllerSpy.capturedPushedViewController
         #expect(expectedComponentContainerViewController === receivedComponentContainerViewController)
-    }
-
-    @Test
-    func presentActionComponent() {
-        // Given
-        let navigationControllerSpy = NavigationControllerSpy()
-        let sut = makeSUT(navigationController: navigationControllerSpy)
-        let actionComponent = makeActionComponent()
-
-        // When
-        sut.present(actionViewController: actionComponent, onCancel: nil)
-
-        // Then - rootViewController is the navigationController, so it receives the present call
-        #expect(navigationControllerSpy.presentCallsCount == 1)
     }
 
     // MARK: - StoredPaymentMethodManagement Tests
@@ -256,25 +238,73 @@ struct PaymentMethodListRouterTests {
         #expect(completionCalled == true)
     }
 
+    /// Tapping a stored payment method in the list opens the dedicated stored payment screen,
+    /// pushed onto the list's navigation stack, instead of the generic component screen.
     @Test
-    func presentComponent_givenStoredComponent_shouldPushComponentContainer() {
-        // Given
+    func presentComponent_givenStoredComponentWithContent_shouldPushStoredPaymentMethodContent() {
         let navigationControllerSpy = NavigationControllerSpy()
-        let componentContainerRouter = RouterMock()
-        let componentContainerAssemblerMock = makeComponentContainerAssembler(router: componentContainerRouter)
+        let contentRouter = RouterMock()
+        let contentAssembler = StoredPaymentMethodContentAssemblerSpy(router: contentRouter)
+        let componentContainerAssembler = makeComponentContainerAssembler()
         let sut = makeSUT(
             navigationController: navigationControllerSpy,
-            componentContainerAssembler: componentContainerAssemblerMock
+            componentContainerAssembler: componentContainerAssembler,
+            storedPaymentMethodContentAssembler: contentAssembler
         )
         let storedPaymentComponent = makeStoredPaymentComponentMock()
 
-        // When
         sut.present(component: storedPaymentComponent)
 
-        // Then - stored components are pushed, just like regular components
+        #expect(contentAssembler.resolveCallsCount == 1)
+        #expect(navigationControllerSpy.capturedPushedViewController === contentRouter.rootViewController)
+        #expect(componentContainerAssembler.resolveComponentContainerRouterForListenerCallsCount == 0)
+        #expect(sut.childRouter === contentRouter)
+    }
+
+    /// When the shopper goes back from the stored payment screen, that screen does not close itself.
+    /// It calls `dismissStoredPaymentMethodContent()` on the list that pushed it, and the list pops it
+    /// off its own navigation stack and drops its reference so the screen is released.
+    @Test
+    func dismissStoredPaymentMethodContent_shouldPopAndReleaseChildRouter() throws {
+        // Given
+        let navigationControllerSpy = NavigationControllerSpy()
+        let contentAssembler = StoredPaymentMethodContentAssemblerSpy(router: RouterMock())
+        let sut = makeSUT(
+            navigationController: navigationControllerSpy,
+            storedPaymentMethodContentAssembler: contentAssembler
+        )
+        sut.present(component: makeStoredPaymentComponentMock())
+        try #require(sut.childRouter != nil)
+
+        // When
+        sut.dismissStoredPaymentMethodContent()
+
+        // Then
+        #expect(navigationControllerSpy.popViewControllerCallsCount == 1)
+        #expect(sut.childRouter == nil)
+    }
+
+    /// When there is no stored payment screen for the component, the list still shows something:
+    /// it falls back to the generic component screen rather than showing nothing.
+    @Test
+    func presentComponent_givenStoredComponentWithoutContent_shouldFallBackToComponentContainer() {
+        // Given
+        let navigationControllerSpy = NavigationControllerSpy()
+        let contentAssembler = StoredPaymentMethodContentAssemblerSpy(router: nil)
+        let componentContainerAssembler = makeComponentContainerAssembler()
+        let sut = makeSUT(
+            navigationController: navigationControllerSpy,
+            componentContainerAssembler: componentContainerAssembler,
+            storedPaymentMethodContentAssembler: contentAssembler
+        )
+
+        // When
+        sut.present(component: makeStoredPaymentComponentMock())
+
+        // Then
+        #expect(contentAssembler.resolveCallsCount == 1)
+        #expect(componentContainerAssembler.resolveComponentContainerRouterForListenerCallsCount == 1)
         #expect(navigationControllerSpy.pushViewControllerCallsCount == 1)
-        #expect(navigationControllerSpy.presentCallsCount == 0)
-        #expect(sut.childRouter === componentContainerRouter)
     }
 
     @Test
@@ -309,6 +339,7 @@ struct PaymentMethodListRouterTests {
         navigationController: NavigationControllerSpy = NavigationControllerSpy(),
         listener: PaymentMethodListRouterListenerMock? = nil,
         componentContainerAssembler: ComponentContainerAssemblerProtocolMock? = nil,
+        storedPaymentMethodContentAssembler: StoredPaymentMethodContentAssembling? = nil,
         genericPaymentMethodAssembler: GenericPaymentMethodAssemblerProtocol? = nil,
         storedPaymentMethodManagementAssembler: StoredPaymentMethodManagementAssemblerProtocol? = nil,
         supportsStoredPaymentMethodManagement: Bool = true,
@@ -316,6 +347,8 @@ struct PaymentMethodListRouterTests {
     ) -> PaymentMethodListRouter {
         viewController.setNavigationController(navigationController)
         let componentContainerAssembler = componentContainerAssembler ?? makeComponentContainerAssembler()
+        let storedPaymentMethodContentAssembler = storedPaymentMethodContentAssembler
+            ?? StoredPaymentMethodContentAssemblerSpy(router: RouterMock())
         let genericPaymentMethodAssembler = genericPaymentMethodAssembler
             ?? GenericPaymentMethodAssemblerSpy(router: RouterMock())
         let storedPaymentMethodManagementAssembler = storedPaymentMethodManagementAssembler
@@ -326,9 +359,9 @@ struct PaymentMethodListRouterTests {
 
         return PaymentMethodListRouter(
             viewController: viewController,
-            navigationController: navigationController,
             listener: listener,
             componentContainerAssembler: componentContainerAssembler,
+            storedPaymentMethodContentAssembler: storedPaymentMethodContentAssembler,
             genericPaymentMethodAssembler: genericPaymentMethodAssembler,
             storedPaymentMethodManagementAssembler: storedPaymentMethodManagementAssembler,
             storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability,
@@ -354,8 +387,8 @@ struct PaymentMethodListRouterTests {
         )
     }
 
-    private func makeActionComponent() -> UIViewController {
-        UIViewController()
+    private func makeAction() -> Action {
+        .redirect(RedirectAction(url: URL(string: "https://adyen.com")!, paymentData: "payment_data"))
     }
 
     private func makeStoredPaymentComponentMock() -> StoredComponentMock {
@@ -407,6 +440,25 @@ private final class GenericPaymentMethodAssemblerSpy: GenericPaymentMethodAssemb
         for component: PaymentComponent,
         listener: GenericPaymentMethodRouterListener
     ) -> Router {
+        resolveCallsCount += 1
+        return router
+    }
+}
+
+@MainActor
+private final class StoredPaymentMethodContentAssemblerSpy: StoredPaymentMethodContentAssembling {
+
+    private let router: Router?
+    private(set) var resolveCallsCount = 0
+
+    init(router: Router?) {
+        self.router = router
+    }
+
+    func resolveStoredPaymentMethodContentRouter(
+        for component: PaymentComponent,
+        listener: StoredPaymentMethodContentRouterListener
+    ) -> Router? {
         resolveCallsCount += 1
         return router
     }

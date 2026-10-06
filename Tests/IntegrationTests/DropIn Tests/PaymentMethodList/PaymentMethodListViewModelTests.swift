@@ -74,6 +74,30 @@ struct PaymentMethodListViewModelTests {
         #expect(routerMock.dismissCompletionCallsCount == 1)
     }
 
+    @Test
+    func cancel_shouldCancelDropIn() {
+        // Given
+        let (sut, dropInFlowManagerMock, _) = makeSUT()
+
+        // When
+        sut.cancel()
+
+        // Then
+        #expect(dropInFlowManagerMock.cancelDropInCallsCount == 1)
+    }
+
+    @Test("The router dismissal already tears down the drop in, so it is not dismissed twice.")
+    func cancel_shouldNotDismissTheDropInThroughTheFlowManager() {
+        // Given
+        let (sut, dropInFlowManagerMock, _) = makeSUT()
+
+        // When
+        sut.cancel()
+
+        // Then
+        #expect(dropInFlowManagerMock.dismissDropInCallsCount == 0)
+    }
+
     // MARK: - PaymentComponentDelegate Tests
 
     @Test
@@ -87,10 +111,8 @@ struct PaymentMethodListViewModelTests {
         sut.didSubmit(data, from: paymentComponentMock)
 
         // Then
-        #expect(dropInFlowManagerMock.submitFromActionPresenterCallsCount == 1)
-
-        let receivedActionPresenter = dropInFlowManagerMock.submitFromActionPresenterReceivedArguments?.actionPresenter
-        #expect(sut === receivedActionPresenter)
+        #expect(dropInFlowManagerMock.submitFromCallsCount == 1)
+        #expect(dropInFlowManagerMock.submitFromReceivedArguments?.component === paymentComponentMock)
     }
 
     @Test
@@ -358,7 +380,7 @@ struct PaymentMethodListViewModelTests {
         sut.remove(storedPaymentMethod: paymentMethod)
 
         // Then
-        #expect(sut.paymentMethodSections.contains { $0.header?.title == favoritesTitle } == false)
+        #expect(sut.paymentMethodSections.contains { $0.headerTitle == favoritesTitle } == false)
         guard case let .loaded(sections) = sut.state else {
             Issue.record("Expected the refreshed list state")
             return
@@ -461,56 +483,6 @@ struct PaymentMethodListViewModelTests {
         // Then
         let sections = try #require(sut.state.loadedSections)
         #expect(sections.contains { $0.headerTrailingButton != nil } == false)
-    }
-
-    // MARK: - ActionPresenter Tests
-
-    @Test
-    func presentActionComponent_shouldCallRouterPresentActionComponent() {
-        // Given
-        let (sut, _, routerMock) = makeSUT()
-        let actionComponentMock = makeActionComponentMock()
-
-        // When
-        sut.present(actionViewController: actionComponentMock)
-
-        // Then
-        #expect(routerMock.presentActionViewControllerOnCancelCallsCount == 1)
-    }
-
-    @Test
-    func presentActionComponent_onCancelCallback_shouldTransitionToIdleState() {
-        // Given
-        let (sut, _, routerMock) = makeSUT()
-        let actionComponentMock = makeActionComponentMock()
-        sut.didLoad() // Set state to loaded first
-        #expect(sut.state.isLoaded)
-
-        // Capture the onCancel callback when present is called
-        var capturedOnCancel: (() -> Void)?
-        routerMock.presentActionViewControllerOnCancelClosure = { _, onCancel in
-            capturedOnCancel = onCancel
-        }
-
-        // When
-        sut.present(actionViewController: actionComponentMock)
-        capturedOnCancel?()
-
-        // Then
-        #expect(sut.state == .idle)
-    }
-
-    @Test
-    func didCancelActionComponent_shouldTransitionToIdleState() {
-        // Given
-        let (sut, _, _) = makeSUT()
-        let actionComponentMock = RedirectComponent(context: contextMock)
-
-        // When
-        sut.didCancel(actionComponent: actionComponentMock)
-
-        // Then
-        #expect(sut.state == .idle)
     }
 
     // MARK: - Helpers

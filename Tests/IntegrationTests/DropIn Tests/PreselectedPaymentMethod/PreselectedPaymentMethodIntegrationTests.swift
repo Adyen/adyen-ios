@@ -35,7 +35,7 @@ struct PreselectedPaymentMethodIntegrationTests {
     // MARK: - Submit Payment Tests
     
     @Test("PaymentComponent that is generic - submit payment triggers submit action")
-    func genericComponent_submitPayment_triggersSubmit() throws {
+    func genericComponent_submitPayment_triggersSubmit() async throws {
         // Given - use an initiable component that triggers submit directly
         let dropInFlowManager = DropInFlowManagingMock()
         let preSelectedViewController = makeSUT(
@@ -46,9 +46,10 @@ struct PreselectedPaymentMethodIntegrationTests {
         // When - user submits payment
         preSelectedViewController.load()
         try preSelectedViewController.submitPayment()
-        
+        await waitUntil { dropInFlowManager.submitFromCalled }
+
         // Then - verify dropInFlowManager.submit was called
-        #expect(dropInFlowManager.submitFromActionPresenterCalled)
+        #expect(dropInFlowManager.submitFromCalled)
     }
 
     @Test("PaymentComponent that is presentable - submit payment triggers presentation")
@@ -63,6 +64,55 @@ struct PreselectedPaymentMethodIntegrationTests {
         // Then - verify presentComponent is called
         #expect(mockedRouter.presentComponentCallsCount == 1)
         #expect(mockedRouter.presentPaymentMethodListCallsCount == 0)
+    }
+
+    /// The preselected screen has no navigation stack of its own, so it shows the stored payment screen
+    /// modally, wrapped in its own navigation controller that cannot be swiped away.
+    @Test
+    func storedComponentWithContent_whenPresented_thenShowsStoredPaymentMethodContentModally() throws {
+        let rootViewController = ViewControllerSpy()
+        let contentRouter = RouterMock()
+        let contentAssembler = StoredPaymentMethodContentAssemblerSpy(router: contentRouter)
+        let sut = PreselectedPaymentMethodRouter(
+            viewController: rootViewController,
+            listener: nil,
+            paymentMethodListAssembler: PaymentMethodListAssemblerProtocolMock(),
+            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
+            storedPaymentMethodContentAssembler: contentAssembler,
+            theme: .default
+        )
+
+        sut.present(component: PaymentComponentTestData.visa.paymentComponent)
+
+        #expect(contentAssembler.resolveCallsCount == 1)
+        let navigationController = try #require(rootViewController.capturedPresentedViewController as? UINavigationController)
+        #expect(navigationController.viewControllers.first === contentRouter.rootViewController)
+        #expect(navigationController.isModalInPresentation)
+        #expect(sut.childRouter === contentRouter)
+    }
+
+    /// When the shopper goes back from the stored payment screen, that screen does not close itself.
+    /// It calls `dismissStoredPaymentMethodContent()` on the preselected screen that presented it,
+    /// and the preselected screen dismisses the modal and drops its reference so the screen is released.
+    @Test
+    func storedPaymentMethodContent_whenDismissRequested_thenDismissesModalAndReleasesChildRouter() throws {
+        let rootViewController = ViewControllerSpy()
+        let contentAssembler = StoredPaymentMethodContentAssemblerSpy(router: RouterMock())
+        let sut = PreselectedPaymentMethodRouter(
+            viewController: rootViewController,
+            listener: nil,
+            paymentMethodListAssembler: PaymentMethodListAssemblerProtocolMock(),
+            componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
+            storedPaymentMethodContentAssembler: contentAssembler,
+            theme: .default
+        )
+        sut.present(component: PaymentComponentTestData.visa.paymentComponent)
+        try #require(sut.childRouter != nil)
+
+        sut.dismissStoredPaymentMethodContent()
+
+        #expect(rootViewController.dismissCallsCount == 1)
+        #expect(sut.childRouter == nil)
     }
 
     // MARK: - Show All Payment Methods Tests
@@ -163,6 +213,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         let assembler = PreselectedPaymentMethodAssembler(
             paymentMethodListAssembler: paymentMethodListAssemblerMock,
             componentContainerAssembler: componentContainerAssemblerMock,
+            storedPaymentMethodContentAssembler: StoredPaymentMethodContentAssemblerSpy(router: RouterMock()),
             showsAllPaymentMethodsButton: true,
             configuration: .init(),
             dropInFlowManager: dropInFlowManager,
@@ -171,7 +222,7 @@ struct PreselectedPaymentMethodIntegrationTests {
         )
 
         let router = assembler.resolvePreselectedPaymentMethodRouter(
-            delegate: nil,
+            listener: nil,
             component: component,
             title: "Test Title"
         )
@@ -333,5 +384,24 @@ struct PreselectedPaymentMethodIntegrationTests {
         var showAllPaymentMethodsButtonText: String {
             "Other payment options"
         }
+    }
+}
+
+@MainActor
+private final class StoredPaymentMethodContentAssemblerSpy: StoredPaymentMethodContentAssembling {
+
+    private let router: Router?
+    private(set) var resolveCallsCount = 0
+
+    init(router: Router?) {
+        self.router = router
+    }
+
+    func resolveStoredPaymentMethodContentRouter(
+        for component: PaymentComponent,
+        listener: StoredPaymentMethodContentRouterListener
+    ) -> Router? {
+        resolveCallsCount += 1
+        return router
     }
 }

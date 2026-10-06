@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 #if canImport(AdyenUI)
     import AdyenUI
-    @_spi(AdyenInternal) import struct AdyenUI.ListSection
 #endif
 
 internal enum PaymentMethodListState {
@@ -128,6 +127,9 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }()
 
     internal func cancel() {
+        dropInFlowManager.cancelDropIn()
+
+        // The dismissal travels up through the router listener, which tears down the drop in.
         router?.dismiss(completion: nil)
     }
 
@@ -156,7 +158,7 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             }.map(paymentMethodItem(from:))
 
             return PaymentMethodSection(
-                headerTitle: section.header?.title,
+                headerTitle: section.headerTitle,
                 headerTrailingButton: manageButton(for: section, items: items),
                 items: items,
                 theme: theme
@@ -214,7 +216,7 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
-        dropInFlowManager.submit(data, from: component, actionPresenter: self)
+        dropInFlowManager.submit(data, from: component)
     }
 
     internal func didFail(
@@ -229,20 +231,5 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
             return
         }
         dropInFlowManager.fail(with: error, from: component)
-    }
-}
-
-// MARK: - ActionPresenter
-
-extension PaymentMethodListViewModel: ActionPresenter {
-
-    internal func present(actionViewController: UIViewController) {
-        router?.present(actionViewController: actionViewController) { [weak self] in
-            self?.state = .idle
-        }
-    }
-
-    internal func didCancel(actionComponent: any ActionComponent) {
-        state = .idle
     }
 }

@@ -16,7 +16,9 @@ import SwiftUI
 internal struct StoredPaymentMethodContentView: View {
 
     private enum Constants {
-        static let contentPadding: CGFloat = 24
+        static let contentPadding: CGFloat = 16
+        static let contentSpacing: CGFloat = 32
+        static let bottomPadding: CGFloat = 16
     }
 
     private let viewModel: StoredPaymentMethodContentViewModel
@@ -26,19 +28,22 @@ internal struct StoredPaymentMethodContentView: View {
     }
 
     internal var body: some View {
-        VStack {
-            // TODO: Robert: How do I center this in SwiftUI? Without using any computations using GeometryReaders or Layout. A problem for later.
-            StoredPaymentMethodContentHeaderView(
-                logoURL: viewModel.paymentMethodLogoURL,
-                title: viewModel.title,
-                subtitle: viewModel.subtitle,
-                theme: viewModel.theme
-            )
-            .padding(.horizontal, Constants.contentPadding)
+        ScrollView {
+            VStack(spacing: Constants.contentSpacing) {
+                // TODO: Robert: How do I center this in SwiftUI? Without using any computations using GeometryReaders or Layout. A problem for later.
+                StoredPaymentMethodContentHeaderView(
+                    logoURL: viewModel.paymentMethodLogoURL,
+                    title: viewModel.title,
+                    subtitle: viewModel.subtitle,
+                    theme: viewModel.theme
+                )
+                .padding(.horizontal, Constants.contentPadding)
 
-            ComponentViewControllerView(viewController: viewModel.componentViewController)
+                ComponentViewControllerView(viewController: viewModel.componentViewController)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.bottom, Constants.bottomPadding)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(uiColor: viewModel.theme.colors.background))
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -67,6 +72,24 @@ private struct ComponentViewControllerView: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+
+    /// A view controller has no intrinsic size, so its content is measured against the proposed
+    /// width to give it a height of its own inside the scroll view.
+    func sizeThatFits(
+        _ proposal: ProposedViewSize,
+        uiViewController: UIViewController,
+        context: Context
+    ) -> CGSize? {
+        guard let width = proposal.width, width > 0 else { return nil }
+
+        let fittingSize = uiViewController.view.systemLayoutSizeFitting(
+            CGSize(width: width, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+
+        return CGSize(width: width, height: fittingSize.height)
+    }
 }
 
 // MARK: - Previews
@@ -165,10 +188,14 @@ private struct ComponentViewControllerView: UIViewControllerRepresentable {
 
     @MainActor
     private final class PreviewFlowManager: DropInFlowManaging {
-        func submit(_ data: PaymentComponentData, from component: PaymentComponent, actionPresenter: ActionPresenter) {}
+        var dropInFlowRouter: (any DropInFlowRouting)?
+
+        func receive(action: Adyen.Action) {}
+        func cancelDropIn() {}
+        func dismissDropIn() {}
+        func submit(_ data: PaymentComponentData, from component: PaymentComponent) {}
         func fail(with error: Error, from component: PaymentComponent) {}
         func cancel(component: PaymentComponent) {}
-        func handle(action: Action) {}
     }
 #endif
 

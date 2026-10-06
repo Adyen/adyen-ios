@@ -13,7 +13,7 @@ import Foundation
 // sourcery:AutoMockable
 @MainActor
 internal protocol PaymentMethodListAssemblerProtocol {
-    func resolvePaymentMethodListRouter(delegate: PaymentMethodListRouterListener?) -> Router
+    func resolvePaymentMethodListRouter(listener: PaymentMethodListRouterListener?) -> Router
 }
 
 @MainActor
@@ -22,6 +22,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     // MARK: - Properties
 
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
+    private let storedPaymentMethodContentAssembler: StoredPaymentMethodContentAssembling
     private let componentManager: ComponentManager
     private let context: AdyenContext
     private let localizationParameters: LocalizationParameters
@@ -36,6 +37,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
 
     internal init(
         componentContainerAssembler: ComponentContainerAssemblerProtocol,
+        storedPaymentMethodContentAssembler: StoredPaymentMethodContentAssembling,
         componentManager: ComponentManager,
         context: AdyenContext,
         localizationParameters: LocalizationParameters,
@@ -47,6 +49,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
         storedPaymentMethodManagementCapability: StoredPaymentMethodManagementCapability?
     ) {
         self.componentContainerAssembler = componentContainerAssembler
+        self.storedPaymentMethodContentAssembler = storedPaymentMethodContentAssembler
         self.componentManager = componentManager
         self.context = context
         self.localizationParameters = localizationParameters
@@ -61,7 +64,7 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
     // MARK: - PaymentMethodListAssemblerProtocol
 
     internal func resolvePaymentMethodListRouter(
-        delegate: PaymentMethodListRouterListener?
+        listener: PaymentMethodListRouterListener?
     ) -> Router {
         let viewModel = PaymentMethodListViewModel(
             context: context,
@@ -77,8 +80,9 @@ internal struct PaymentMethodListAssembler: PaymentMethodListAssemblerProtocol {
 
         let router = PaymentMethodListRouter(
             viewController: view,
-            listener: delegate,
+            listener: listener,
             componentContainerAssembler: componentContainerAssembler,
+            storedPaymentMethodContentAssembler: storedPaymentMethodContentAssembler,
             genericPaymentMethodAssembler: resolveGenericPaymentMethodAssembler(),
             storedPaymentMethodManagementAssembler: resolveStoredPaymentMethodManagementAssembler(),
             storedPaymentMethodManagementCapability: storedPaymentMethodManagementCapability,
