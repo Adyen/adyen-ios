@@ -206,28 +206,35 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
     }
     
     private func handle(_ action: AwaitAction) {
-        let component = AwaitComponent(context: context)
-        component.configuration.theme = configuration.theme
-        component._isDropIn = _isDropIn
-        component.delegate = delegate
-        component.actionPresentationDelegate = actionPresentationDelegate
-        component.configuration.localizationParameters = configuration.localizationParameters
-        component.appLauncher = appLauncher
-        
-        component.handle(action)
-        currentActionComponent = component
+        handle(awaitFlow: .standard(action))
     }
 
     private func handle(_ action: RedirectableAwaitAction) {
-        let component = AwaitComponent(context: context)
-        component.configuration.theme = configuration.theme
+        handle(awaitFlow: .redirectable(action))
+    }
+
+    private func handle(awaitFlow flow: AwaitComponent.Flow) {
+        guard let actionPresentationDelegate else {
+            let message = "ActionPresentationDelegate is nil. Provide a presentation delegate to AwaitComponent."
+            AdyenAssertion.assertionFailure(message: message)
+            return
+        }
+
+        let component = AwaitComponent(
+            context: context,
+            flow: flow,
+            actionPresentationDelegate: actionPresentationDelegate,
+            configuration: .init(
+                theme: configuration.theme,
+                localizationParameters: configuration.localizationParameters
+            ),
+            appLauncher: appLauncher,
+            pollingHandlerProvider: PollingHandlerProvider(context: context)
+        )
         component._isDropIn = _isDropIn
         component.delegate = delegate
-        component.actionPresentationDelegate = actionPresentationDelegate
-        component.configuration.localizationParameters = configuration.localizationParameters
-        component.appLauncher = appLauncher
-        
-        component.handle(action)
+
+        component.handle()
         currentActionComponent = component
     }
 

@@ -42,10 +42,13 @@ class AwaitComponentUITests: XCTestCase {
     private func verifyAwaitScreen(for paymentMethodType: AwaitPaymentMethod, theme: CheckoutTheme, named name: String) {
         let presentationExpectation = expectation(description: "Await screen presented")
 
-        let sut = AwaitComponent(context: Dummy.context)
-        sut.configuration.theme = theme
         let actionPresentationDelegate = ActionPresentationDelegateMock()
-        sut.actionPresentationDelegate = actionPresentationDelegate
+        let sut = AwaitComponent(
+            context: Dummy.context,
+            action: AwaitAction(paymentData: "data", paymentMethodType: paymentMethodType),
+            actionPresentationDelegate: actionPresentationDelegate,
+            configuration: .init(theme: theme)
+        )
 
         actionPresentationDelegate.doPresent = { viewController in
             self.setupRootViewController(viewController)
@@ -53,7 +56,7 @@ class AwaitComponentUITests: XCTestCase {
             presentationExpectation.fulfill()
         }
 
-        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: paymentMethodType))
+        sut.handle()
 
         waitForExpectations(timeout: 10, handler: nil)
     }

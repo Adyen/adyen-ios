@@ -57,11 +57,13 @@ extension AwaitAction: Equatable {
 class AwaitComponentTests: XCTestCase {
 
     func testLocalizationWithCustomTableName() {
-
-        let sut = AwaitComponent(context: Dummy.context)
-        sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
         let actionPresentationDelegate = ActionPresentationDelegateMock()
-        sut.actionPresentationDelegate = actionPresentationDelegate
+        let sut = AwaitComponent(
+            context: Dummy.context,
+            action: AwaitAction(paymentData: "data", paymentMethodType: .mbway),
+            actionPresentationDelegate: actionPresentationDelegate,
+            configuration: .init(localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil))
+        )
 
         let presentationExpectation = expectation(description: "expect presentation delegate to be called")
         actionPresentationDelegate.doPresent = { viewController in
@@ -74,7 +76,7 @@ class AwaitComponentTests: XCTestCase {
             presentationExpectation.fulfill()
         }
 
-        sut.handle(AwaitAction(paymentData: "data", paymentMethodType: .mbway))
+        sut.handle()
 
         waitForExpectations(timeout: 2, handler: nil)
     }
@@ -97,10 +99,6 @@ class AwaitComponentTests: XCTestCase {
             return handler
         }, onQRHandler: nil)
 
-        let sut = AwaitComponent(context: Dummy.context, pollingHandlerProvider: handlerProvider)
-        sut.configuration.theme = theme
-        sut.configuration.localizationParameters = LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
-
         let actionPresentationDelegate = ActionPresentationDelegateMock()
         let waitExpectation = expectation(description: "Wait for the actionPresentationDelegate to be called.")
         actionPresentationDelegate.doPresent = { viewController in
@@ -118,11 +116,101 @@ class AwaitComponentTests: XCTestCase {
             waitExpectation.fulfill()
         }
 
-        sut.actionPresentationDelegate = actionPresentationDelegate
+        let sut = AwaitComponent(
+            context: Dummy.context,
+            flow: .standard(action),
+            actionPresentationDelegate: actionPresentationDelegate,
+            configuration: .init(
+                theme: theme,
+                localizationParameters: LocalizationParameters(tableName: "AdyenUIHost", keySeparator: nil)
+            ),
+            pollingHandlerProvider: handlerProvider
+        )
 
-        sut.handle(action)
+        sut.handle()
 
         waitForExpectations(timeout: 5, handler: nil)
+    }
+
+    func test_didCancel_beforeHandle_shouldCancelPollingHandler() {
+        let handler = PollingHandlerMock()
+        let cancelExpectation = expectation(description: "PollingHandler.didCancel() must be called.")
+        handler.onDidCancel = { cancelExpectation.fulfill() }
+
+        let actionPresentationDelegate = ActionPresentationDelegateMock()
+        let sut = AwaitComponent(
+            context: Dummy.context,
+            flow: .standard(AwaitAction(paymentData: "data", paymentMethodType: .blik)),
+            actionPresentationDelegate: actionPresentationDelegate,
+            pollingHandlerProvider: AwaitActionHandlerProviderMock(onAwaitHandler: { _ in handler })
+        )
+
+        sut.didCancel()
+
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+
+    func test_handle_whenRedirectFails_shouldFailAndCancelPollingHandler() throws {
+        let appLauncher = AppLauncherMock()
+        appLauncher.onOpenCustomSchemeUrl = { _, completion in completion?(false) }
+
+        let handler = PollingHandlerMock()
+        handler.onHandle = { _ in XCTFail("Polling must not start when the redirect fails.") }
+        let cancelExpectation = expectation(description: "PollingHandler.didCancel() must be called.")
+        handler.onDidCancel = { cancelExpectation.fulfill() }
+
+        let actionPresentationDelegate = ActionPresentationDelegateMock()
+        actionPresentationDelegate.doPresent = { _ in XCTFail("The await screen must not be presented when the redirect fails.") }
+
+        let action = try RedirectableAwaitAction(
+            paymentData: "data",
+            paymentMethodType: .upiIntent,
+            url: XCTUnwrap(URL(string: "upi://pay"))
+        )
+        let sut = AwaitComponent(
+            context: Dummy.context,
+            flow: .redirectable(action),
+            actionPresentationDelegate: actionPresentationDelegate,
+            appLauncher: appLauncher,
+            pollingHandlerProvider: AwaitActionHandlerProviderMock(onAwaitHandler: { _ in handler })
+        )
+
+        let delegate = ActionComponentDelegateMock()
+        let failExpectation = expectation(description: "ActionComponentDelegate.didFail() must be called.")
+        delegate.onDidFail = { error, _ in
+            XCTAssertEqual(error as? RedirectComponent.Error, .appNotFound)
+            failExpectation.fulfill()
+        }
+        sut.delegate = delegate
+
+        sut.handle()
+
+        waitForExpectations(timeout: 2, handler: nil)
+    }
+
+    func test_handle_whenPresentationDelegateIsDeallocated_shouldNotStartPolling() throws {
+        let handler = PollingHandlerMock()
+        handler.onHandle = { _ in XCTFail("Polling must not start without a presentation delegate.") }
+
+        var actionPresentationDelegate: ActionPresentationDelegateMock? = ActionPresentationDelegateMock()
+        let sut = try AwaitComponent(
+            context: Dummy.context,
+            flow: .standard(AwaitAction(paymentData: "data", paymentMethodType: .blik)),
+            actionPresentationDelegate: XCTUnwrap(actionPresentationDelegate),
+            pollingHandlerProvider: AwaitActionHandlerProviderMock(onAwaitHandler: { _ in handler })
+        )
+        actionPresentationDelegate = nil
+
+        let assertionExpectation = expectation(description: "Assertion must be triggered.")
+        AdyenAssertion.listener = { message in
+            XCTAssertEqual(message, "ActionPresentationDelegate is nil. Provide a presentation delegate to AwaitComponent.")
+            assertionExpectation.fulfill()
+        }
+        defer { AdyenAssertion.listener = nil }
+
+        sut.handle()
+
+        waitForExpectations(timeout: 2, handler: nil)
     }
 
 }
