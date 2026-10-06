@@ -296,6 +296,22 @@ class ApplePayComponentTest: XCTestCase {
         XCTAssertEqual(makeControllerCallsCount, 1)
     }
 
+    func test_release_whileSheetIsOnScreen_shouldDismissSheet() {
+        submit()
+        weak var releasedComponent = sut
+
+        sut = nil
+
+        wait(until: { self.controllerMock.dismissCallsCount == 1 }, timeout: 5, retryInterval: .milliseconds(10))
+        XCTAssertNil(releasedComponent)
+    }
+
+    func test_release_withoutSheet_shouldNotDismiss() {
+        sut = nil
+
+        XCTAssertEqual(controllerMock.dismissCallsCount, 0)
+    }
+
     func test_submit_whenSheetCannotBePresented_shouldFailWithInvalidPaymentRequest() async {
         controllerMock.presentResult = false
         let didFail = expectation(description: "didFail called")

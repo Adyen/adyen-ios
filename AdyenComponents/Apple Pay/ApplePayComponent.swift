@@ -90,6 +90,15 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
         sendInitialAnalytics()
     }
 
+    deinit {
+        // The sheet has its own window and PassKit holds its delegate weakly,
+        // so nothing else would close a sheet that is still on screen.
+        guard let controller = authorizationController else { return }
+        Task { @MainActor in
+            await controller.dismiss()
+        }
+    }
+
     /// The screen that contains the Apple Pay button. It's empty when `showsSubmitButton` is `false`.
     package var viewController: UIViewController {
         buttonViewController
