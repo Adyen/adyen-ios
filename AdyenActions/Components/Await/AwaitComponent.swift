@@ -44,7 +44,7 @@ package final class AwaitComponent: ActionComponent, Cancellable {
     /// The await component configurations.
     package var configuration: Configuration
 
-    private let awaitComponentBuilder: AnyPollingHandlerProvider
+    private let pollingHandlerProvider: AnyPollingHandlerProvider
     
     /// Initializes the `AwaitComponent`.
     ///
@@ -56,7 +56,7 @@ package final class AwaitComponent: ActionComponent, Cancellable {
     ) {
         self.init(
             context: context,
-            awaitComponentBuilder: PollingHandlerProvider(context: context),
+            pollingHandlerProvider: PollingHandlerProvider(context: context),
             configuration: configuration
         )
     }
@@ -68,12 +68,12 @@ package final class AwaitComponent: ActionComponent, Cancellable {
     /// - Parameter configuration: The Component UI style.
     internal init(
         context: AdyenContext,
-        awaitComponentBuilder: AnyPollingHandlerProvider,
+        pollingHandlerProvider: AnyPollingHandlerProvider,
         configuration: Configuration = .init()
     ) {
         self.context = context
         self.configuration = configuration
-        self.awaitComponentBuilder = awaitComponentBuilder
+        self.pollingHandlerProvider = pollingHandlerProvider
     }
     
     private let componentName = "await"
@@ -124,7 +124,7 @@ package final class AwaitComponent: ActionComponent, Cancellable {
             AdyenAssertion.assertionFailure(message: message)
         }
 
-        paymentMethodSpecificPollingComponent = awaitComponentBuilder.handler(for: action.paymentMethodType)
+        paymentMethodSpecificPollingComponent = pollingHandlerProvider.handler(for: action.paymentMethodType)
         paymentMethodSpecificPollingComponent?.delegate = delegate
 
         paymentMethodSpecificPollingComponent?.handle(action)
