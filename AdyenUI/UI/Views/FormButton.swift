@@ -18,6 +18,7 @@ package final class FormButton: UIControl {
         static let leadingImageHeight: CGFloat = 24
         static let progressViewSize: CGFloat = 20
         static let progressViewLineWidth: CGFloat = 2.5
+        static let progressViewMargin: CGFloat = 0
     }
 
     private var style: ButtonStyle
@@ -165,7 +166,7 @@ package final class FormButton: UIControl {
     /// Boolean value indicating whether a progress view should be shown.
     package var showsActivityIndicator: Bool {
         get {
-            progressHostingController != nil
+            progressContentView != nil
         }
         
         set {
@@ -178,7 +179,7 @@ package final class FormButton: UIControl {
         }
     }
     
-    private var progressHostingController: UIHostingController<CircularProgressView>?
+    private var progressContentView: (UIView & UIContentView)?
     
     private lazy var progressContainerView: UIView = {
         let view = UIView()
@@ -189,30 +190,33 @@ package final class FormButton: UIControl {
         return view
     }()
     
-    private func makeProgressView() -> CircularProgressView {
-        CircularProgressView(
-            arcColor: contentColor,
-            trackColor: contentColor,
-            size: Constants.progressViewSize,
-            lineWidth: Constants.progressViewLineWidth
-        )
+    private func makeProgressConfiguration() -> UIContentConfiguration {
+        UIHostingConfiguration {
+            CircularProgressView(
+                arcColor: contentColor,
+                trackColor: contentColor,
+                size: Constants.progressViewSize,
+                lineWidth: Constants.progressViewLineWidth
+            )
+        }
+        .margins(.all, Constants.progressViewMargin)
     }
     
     private func showProgressView() {
-        guard progressHostingController == nil else { return }
-        let hostingController = UIHostingController(rootView: makeProgressView())
-        hostingController.view.backgroundColor = .clear
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        progressContainerView.addSubview(hostingController.view)
-        hostingController.view.adyen.anchor(inside: progressContainerView)
-        progressHostingController = hostingController
+        guard progressContentView == nil else { return }
+        let contentView = makeProgressConfiguration().makeContentView()
+        contentView.backgroundColor = .clear
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        progressContainerView.addSubview(contentView)
+        (contentView as UIView).adyen.anchor(inside: progressContainerView)
+        progressContentView = contentView
         progressContainerView.isHidden = false
         updateLeadingImageVisibility()
     }
     
     private func hideProgressView() {
-        progressHostingController?.view.removeFromSuperview()
-        progressHostingController = nil
+        progressContentView?.removeFromSuperview()
+        progressContentView = nil
         progressContainerView.isHidden = true
         updateLeadingImageVisibility()
     }
@@ -229,7 +233,7 @@ package final class FormButton: UIControl {
     private func updateAppearance() {
         titleLabel.textColor = contentColor
         leadingImageView.tintColor = contentColor
-        progressHostingController?.rootView = makeProgressView()
+        progressContentView?.configuration = makeProgressConfiguration()
         backgroundView.isEnabled = isEnabled
     }
     
