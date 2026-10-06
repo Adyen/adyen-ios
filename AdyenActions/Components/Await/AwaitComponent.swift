@@ -127,11 +127,35 @@ package final class AwaitComponent: ActionComponent, Cancellable {
         }
 
         paymentMethodSpecificPollingComponent = pollingHandlerProvider.handler(for: action.paymentMethodType)
-        paymentMethodSpecificPollingComponent?.delegate = delegate
-
+        paymentMethodSpecificPollingComponent?.delegate = self
         paymentMethodSpecificPollingComponent?.handle(action)
     }
 
     private var paymentMethodSpecificPollingComponent: AnyPollingHandler?
     
+}
+
+// MARK: - ActionComponentDelegate
+
+extension AwaitComponent: ActionComponentDelegate {
+
+    package func didProvide(
+        _ data: ActionComponentData,
+        from component: any ActionComponent
+    ) {
+        delegate?.didProvide(data, from: component)
+    }
+    
+    package func didComplete(
+        from component: any ActionComponent
+    ) {
+        delegate?.didComplete(from: component)
+    }
+    
+    package func didFail(
+        with error: any Error,
+        from component: any ActionComponent
+    ) {
+        delegate?.didFail(with: error, from: component)
+    }
 }
