@@ -197,6 +197,20 @@ struct DropInFlowManagerTests {
         #expect(environment.dropInFlowRouter.dismissDropInCompletionCallsCount == 0)
     }
 
+    @Test("Cancelling the drop in stops the action in progress, for example the polling of an await action.")
+    func cancelDropIn_shouldCancelTheActionInProgress() {
+        // Given
+        let environment = makeSUT()
+        let actionComponent = CancellableActionComponentMock()
+        environment.sut.actionComponent.currentActionComponent = actionComponent
+
+        // When
+        environment.sut.cancelDropIn()
+
+        // Then
+        #expect(actionComponent.didCancelCallsCount == 1)
+    }
+
     @Test
     func dismissDropIn_shouldDismissThroughTheRouter() {
         // Given
@@ -296,6 +310,20 @@ struct DropInFlowManagerTests {
         #expect(environment.dropInFlowRouter.dismissDropInCompletionCallsCount == 1)
     }
 
+    @Test("A cancelled action reports its cancellation after the drop in was already cancelled and dismissed, which must not dismiss it again.")
+    func didFailAction_givenACancellationAfterTheDropInWasCancelled_shouldNotDismissTheDropInAgain() {
+        // Given
+        let environment = makeSUT()
+        environment.sut.cancelDropIn()
+
+        // When
+        environment.sut.didFail(with: ComponentError.cancelled, from: ActionComponentMock())
+
+        // Then
+        #expect(environment.dropInComponentDelegate.didFailWithFromCallsCount == 1)
+        #expect(environment.dropInFlowRouter.dismissDropInCompletionCallsCount == 0)
+    }
+
     // MARK: - ActionPresentationDelegate Tests
 
     @Test
@@ -368,6 +396,18 @@ struct DropInFlowManagerTests {
 
         func stopLoading() {
             stopLoadingCallsCount += 1
+        }
+    }
+
+    @MainActor
+    private final class CancellableActionComponentMock: ActionComponent, Cancellable {
+        let context = Dummy.context
+        weak var delegate: ActionComponentDelegate?
+
+        var didCancelCallsCount = 0
+
+        func didCancel() {
+            didCancelCallsCount += 1
         }
     }
 

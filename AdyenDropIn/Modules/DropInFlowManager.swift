@@ -72,7 +72,7 @@ internal class DropInFlowManager: DropInFlowManaging {
         dropInComponent?.delegate
     }
 
-    private lazy var actionComponent: CheckoutActionComponent = {
+    internal private(set) lazy var actionComponent: CheckoutActionComponent = {
         let actionComponent = CheckoutActionComponent(
             context: context,
             configuration: actionComponentConfiguration
@@ -118,6 +118,7 @@ internal class DropInFlowManager: DropInFlowManaging {
         didCancelDropIn = true
 
         endSubmission()
+        actionComponent.cancel()
         sendExitEvent()
 
         guard let dropInComponent else { return }
@@ -178,6 +179,7 @@ extension DropInFlowManager: ActionComponentDelegate {
         // Dismissing an action, for example by closing the web page of a redirect,
         // dismisses the drop in as there is no way back to the payment details.
         if case ComponentError.cancelled = error {
+            guard !didCancelDropIn else { return }
             cancelDropIn()
             return dismissDropIn()
         }
