@@ -1165,7 +1165,7 @@ class CardComponentTests: XCTestCase {
         setupRootViewController(sut.viewController)
         
         let installmentItemView: BaseFormPickerItemView<InstallmentElement>? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
-        XCTAssertEqual(installmentItemView?.titleLabel.text, "Installments")
+        XCTAssertEqual(installmentItemView?.titleLabel.text, localizedString(.cardInstallmentsPickerTitle, nil))
         XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
         XCTAssertFalse(try XCTUnwrap(sut.cardViewController.items.installmentsItem?.isHidden.wrappedValue))
         
@@ -1207,8 +1207,7 @@ class CardComponentTests: XCTestCase {
         )
         setupRootViewController(sut.viewController)
 
-        // TODO: Replace LocalizationKey(key: "Payment plan") with a proper generated localization key once the section header is localized.
-        let headerTitle = localizedString(LocalizationKey(key: "Payment plan"), sut.configuration.localizationParameters)
+        let headerTitle = localizedString(.cardInstallmentsTitle, sut.configuration.localizationParameters)
         let sectionView = try XCTUnwrap(
             sectionHeaderView(containing: headerTitle, in: sut.cardViewController.view)
         )
@@ -1260,7 +1259,7 @@ class CardComponentTests: XCTestCase {
         setupRootViewController(sut.viewController)
         
         let installmentItemView: BaseFormPickerItemView<InstallmentElement>? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
-        XCTAssertEqual(installmentItemView?.titleLabel.text, "Installments")
+        XCTAssertEqual(installmentItemView?.titleLabel.text, localizedString(.cardInstallmentsPickerTitle, nil))
         XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
         XCTAssertFalse(try XCTUnwrap(sut.cardViewController.items.installmentsItem?.isHidden.wrappedValue))
         
@@ -1298,7 +1297,7 @@ class CardComponentTests: XCTestCase {
         setupRootViewController(sut.viewController)
         
         let installmentItemView: BaseFormPickerItemView<InstallmentElement>? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
-        XCTAssertEqual(installmentItemView?.titleLabel.text, "Installments")
+        XCTAssertEqual(installmentItemView?.titleLabel.text, localizedString(.cardInstallmentsPickerTitle, nil))
         XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
         XCTAssertTrue(try XCTUnwrap(sut.cardViewController.items.installmentsItem?.isHidden.wrappedValue))
         
@@ -1349,7 +1348,7 @@ class CardComponentTests: XCTestCase {
         setupRootViewController(sut.viewController)
         
         let installmentItemView: BaseFormPickerItemView<InstallmentElement>? = sut.cardViewController.view.findView(with: "AdyenCard.CardComponent.installmentsItem")
-        XCTAssertEqual(installmentItemView?.titleLabel.text, "Installments")
+        XCTAssertEqual(installmentItemView?.titleLabel.text, localizedString(.cardInstallmentsPickerTitle, nil))
         XCTAssertEqual(installmentItemView?.inputControl.label, "One time payment")
         XCTAssertTrue(try XCTUnwrap(sut.cardViewController.items.installmentsItem?.isHidden.wrappedValue))
         
