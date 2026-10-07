@@ -390,9 +390,8 @@ extension CardViewController {
     
     private var installmentsItem: FormItem? {
         guard let installmentsItem = items.installmentsItem else { return nil }
-        // TODO: Localize the "Payment plan" section header.
         return installmentsItem.withSectionHeader(title: localizedString(
-            LocalizationKey(key: "Payment plan"), localizationParameters
+            .cardInstallmentsTitle, localizationParameters
         ))
     }
     
