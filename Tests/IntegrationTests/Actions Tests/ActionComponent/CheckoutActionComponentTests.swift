@@ -304,6 +304,19 @@ class CheckoutActionComponentTests: XCTestCase {
             _ = TwintActionConfiguration(callbackAppScheme: scheme)
         }
     }
+
+    func test_didCancel_shouldCancelTheCurrentActionComponent() {
+        // Given
+        let sut = CheckoutActionComponent(context: Dummy.context)
+        let currentActionComponent = CancellableActionComponentMock()
+        sut.currentActionComponent = currentActionComponent
+
+        // When
+        sut.didCancel()
+
+        // Then
+        XCTAssertEqual(currentActionComponent.didCancelCallsCount, 1)
+    }
     
     func testHandleRedirectEvent() throws {
         let redirectAction = try RedirectAction(url: XCTUnwrap(URL(string: "https://www.adyen.com")), paymentData: "test_data")
@@ -368,4 +381,16 @@ class CheckoutActionComponentTests: XCTestCase {
         }
     }
     
+}
+
+@MainActor
+private final class CancellableActionComponentMock: ActionComponent, Cancellable {
+    let context = Dummy.context
+    weak var delegate: ActionComponentDelegate?
+
+    var didCancelCallsCount = 0
+
+    func didCancel() {
+        didCancelCallsCount += 1
+    }
 }

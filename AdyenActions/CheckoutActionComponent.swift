@@ -273,6 +273,15 @@ package final class CheckoutActionComponent: ActionComponent, ActionHandlingComp
     }
 }
 
+// MARK: - Cancellable
+
+extension CheckoutActionComponent: Cancellable {
+
+    package func didCancel() {
+        (currentActionComponent as? Cancellable)?.didCancel()
+    }
+}
+
 private extension Action {
     
     var analyticsType: String {
