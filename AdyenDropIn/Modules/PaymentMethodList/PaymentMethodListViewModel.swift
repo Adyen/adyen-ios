@@ -30,7 +30,8 @@ internal protocol PaymentMethodListViewModelProtocol {
 
     var headerTitle: String { get }
     var subtitle: String { get }
-    var applePayButtonState: PaymentMethodListHeaderViewModel.ApplePayButtonState { get }
+    /// The Apple Pay component's button screen, or `nil` when Apple Pay isn't available.
+    var applePayViewController: UIViewController? { get }
 }
 
 @MainActor
@@ -104,11 +105,8 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
         )
     }
 
-    internal var applePayButtonState: PaymentMethodListHeaderViewModel.ApplePayButtonState {
-        guard applePayPaymentMethod != nil else { return .hidden }
-        return .visible { [weak self] in
-            self?.startApplePay()
-        }
+    internal var applePayViewController: UIViewController? {
+        applePayComponent?.viewController
     }
 
     private var applePayPaymentMethod: PaymentMethod? {
@@ -117,7 +115,16 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
             .first { $0.type == .applePay }
     }
 
-    private var applePayComponent: PaymentComponent?
+    // TODO: Building the Apple Pay component here sends its setup analytics request when the list loads,
+    // duplicating Drop-in's own setup request. Remove once setup analytics move out of components.
+    private lazy var applePayComponent: PaymentComponent? = {
+        guard let applePayPaymentMethod,
+              let component = componentManager.buildComponent(for: applePayPaymentMethod) else {
+            return nil
+        }
+        component.delegate = self
+        return component
+    }()
 
     internal func cancel() {
         dropInFlowManager.cancelDropIn()
@@ -133,15 +140,6 @@ internal class PaymentMethodListViewModel: PaymentMethodListViewModelProtocol {
     }
 
     // MARK: - Private
-
-    private func startApplePay() {
-        guard applePayComponent == nil, let applePayPaymentMethod else { return }
-        self.applePayComponent = componentManager.buildComponent(for: applePayPaymentMethod)
-        applePayComponent?.delegate = self
-
-        guard let applePayViewController = applePayComponent?.viewController else { return }
-        router?.present(viewController: applePayViewController)
-    }
 
     internal func select(paymentMethod: PaymentMethod) {
         guard let component = componentManager.buildComponent(for: paymentMethod) else { return }
@@ -230,9 +228,8 @@ extension PaymentMethodListViewModel: PaymentComponentDelegate {
         }
 
         if case ComponentError.cancelled = error {
-            applePayComponent = nil
-        } else {
-            dropInFlowManager.fail(with: error, from: component)
+            return
         }
+        dropInFlowManager.fail(with: error, from: component)
     }
 }

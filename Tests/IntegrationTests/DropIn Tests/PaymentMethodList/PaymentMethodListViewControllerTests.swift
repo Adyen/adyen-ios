@@ -322,7 +322,7 @@ private class TestablePaymentMethodListViewModel: PaymentMethodListViewModelProt
     let theme: CheckoutTheme = .init()
     let headerTitle: String = "€1.00"
     let subtitle: String = "Select your preferred payment option"
-    let applePayButtonState: PaymentMethodListHeaderViewModel.ApplePayButtonState = .hidden
+    let applePayViewController: UIViewController? = nil
 
     @Published private var state: PaymentMethodListState = .idle
     var statePublisher: Published<PaymentMethodListState>.Publisher {

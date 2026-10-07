@@ -5,6 +5,9 @@
 //
 
 import Adyen
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
 import Foundation
 import PassKit
 
@@ -29,6 +32,15 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
     /// cancellation (false) from a UI-only sheet dismissal during authorization (true).
     internal var authorizationHandled = false
 
+    /// The controller of the sheet, from the moment `submit()` starts presenting it until it's dismissed.
+    /// `nil` when no sheet is shown.
+    internal var authorizationController: ApplePayAuthorizationControlling?
+
+    /// Creates the controller that presents the Apple Pay sheet. A new one is needed for every presentation.
+    internal var makeAuthorizationController: (PKPaymentRequest) -> ApplePayAuthorizationControlling = {
+        PKPaymentAuthorizationController(paymentRequest: $0)
+    }
+
     /// The context object for this component.
     package let context: AdyenContext
 
@@ -39,8 +51,6 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
 
     internal let configuration: ApplePayConfiguration
 
-    internal var paymentAuthorizationViewController: PKPaymentAuthorizationViewController?
-
     /// The delegate of the component.
     package weak var delegate: PaymentComponentDelegate?
 
@@ -49,18 +59,15 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
 
     /// Initializes the component.
     ///
-    /// After the shopper authorizes payment, the component suspends the Apple Pay sheet
+    /// The component shows the Apple Pay button in its `viewController`. Tapping it, or calling `submit()`,
+    /// opens the Apple Pay sheet. After the shopper authorizes payment, the component keeps the sheet open
     /// until `didFinalize(with:completion:)` is called with the backend result.
-    /// The sheet then shows a success or failure animation and dismisses automatically.
-    ///
-    /// - Note: Do not reuse this component. Create a fresh instance per payment attempt.
     ///
     /// - Parameter paymentMethod: The Apple Pay payment method. Must include country code.
     /// - Parameter context: The context object for this component.
     /// - Parameter configuration: Apple Pay component configuration
     /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplePay` if the current device's hardware doesn't support ApplePay.
     /// - Throws: `ApplePayComponent.Error.userCannotMakePayment` if user can't make payments on any of the supported networks.
-    /// - Throws: `ApplePayComponent.Error.invalidPaymentRequest` if the payment authorization view controller could not be created.
     package init(
         paymentMethod: ApplePayPaymentMethod,
         context: AdyenContext,
@@ -77,30 +84,63 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
         self.applePayPaymentMethod = paymentMethod
         super.init()
 
-        let controller = PKPaymentAuthorizationViewController(paymentRequest: paymentRequest)
-        guard let controller else {
-            throw Error.invalidPaymentRequest
-        }
-        controller.delegate = self
-        self.paymentAuthorizationViewController = controller
+        // TODO: Move the setup analytics request out of the component
+        // because _isDropIn is not used yet.
+        // Inside Drop-in, this duplicates Drop-in's own setup request.
         sendInitialAnalytics()
     }
 
-    /// Returns the payment authorization view controller created during initialization.
-    ///
-    /// - Important: Do not access this property after the component has been used and dismissed.
-    ///   Create a new `ApplePayComponent` instance for each payment attempt.
+    deinit {
+        // The sheet has its own window and PassKit holds its delegate weakly,
+        // so nothing else would close a sheet that is still on screen.
+        guard let controller = authorizationController else { return }
+        Task { @MainActor in
+            await controller.dismiss()
+        }
+    }
+
+    /// The screen that contains the Apple Pay button. It's empty when `showsSubmitButton` is `false`.
     package var viewController: UIViewController {
-        guard let controller = paymentAuthorizationViewController else {
-            preconditionFailure(
-                "The Apple Pay view controller is no longer available. "
-                    + "Create a new ApplePayComponent instance for each payment attempt."
-            )
+        buttonViewController
+    }
+
+    private lazy var buttonViewController: ApplePayButtonViewController = {
+        let viewController = ApplePayButtonViewController(
+            appearance: configuration.buttonAppearance,
+            showsSubmitButton: configuration.showsSubmitButton
+        )
+        viewController.onSubmit = { [weak self] in
+            self?.performSubmit()
         }
-        if !controller.isViewLoaded {
-            sendDidLoadEvent()
+        return viewController
+    }()
+
+    /// Checks the device and wallet prerequisites for Apple Pay without side effects.
+    ///
+    /// - Returns: The networks that the payment request should support.
+    /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplePay` if the device doesn't support Apple Pay.
+    /// - Throws: `ApplePayComponent.Error.userCannotMakePayment` if the payment method has no supported networks,
+    ///   or if onboarding isn't allowed and the user can't pay with any of the supported networks.
+    internal static func validatedSupportedNetworks(
+        for paymentMethod: ApplePayPaymentMethod,
+        configuration: ApplePayConfiguration
+    ) throws -> [PKPaymentNetwork] {
+        guard PKPaymentAuthorizationController.canMakePayments() else {
+            throw Error.deviceDoesNotSupportApplePay
         }
-        return controller
+        let supportedNetworks = paymentMethod.supportedNetworks()
+        // Onboarding can't make up for a payment request without any supported networks.
+        guard !supportedNetworks.isEmpty else {
+            throw Error.userCannotMakePayment
+        }
+        guard configuration.allowOnboarding || canMakePaymentWith(supportedNetworks) else {
+            throw Error.userCannotMakePayment
+        }
+        return supportedNetworks
+    }
+
+    private static func canMakePaymentWith(_ networks: [PKPaymentNetwork]) -> Bool {
+        PKPaymentAuthorizationController.canMakePayments(usingNetworks: networks)
     }
 
     /// Cancels a pending authorization when the user dismisses the Apple Pay sheet
@@ -116,34 +156,6 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
         paymentResultContinuation = nil
         continuation?.resume(returning: success)
     }
-
-    /// Checks the device and wallet prerequisites for Apple Pay without side effects.
-    ///
-    /// - Returns: The networks that the payment request should support.
-    /// - Throws: `ApplePayComponent.Error.deviceDoesNotSupportApplePay` if the device doesn't support Apple Pay.
-    /// - Throws: `ApplePayComponent.Error.userCannotMakePayment` if the payment method has no supported networks,
-    ///   or if onboarding isn't allowed and the user can't pay with any of the supported networks.
-    internal static func validatedSupportedNetworks(
-        for paymentMethod: ApplePayPaymentMethod,
-        configuration: ApplePayConfiguration
-    ) throws -> [PKPaymentNetwork] {
-        guard PKPaymentAuthorizationViewController.canMakePayments() else {
-            throw Error.deviceDoesNotSupportApplePay
-        }
-        let supportedNetworks = paymentMethod.supportedNetworks()
-        // Onboarding can't make up for a payment request without any supported networks.
-        guard !supportedNetworks.isEmpty else {
-            throw Error.userCannotMakePayment
-        }
-        guard configuration.allowOnboarding || canMakePaymentWith(supportedNetworks) else {
-            throw Error.userCannotMakePayment
-        }
-        return supportedNetworks
-    }
-
-    private static func canMakePaymentWith(_ networks: [PKPaymentNetwork]) -> Bool {
-        PKPaymentAuthorizationViewController.canMakePayments(usingNetworks: networks)
-    }
     
     // TODO: turn this into async, as now the sheet dismisses immediately
     // before user can see the success checkmark on Apple Pay
@@ -158,9 +170,34 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
         completion?()
     }
 
+    /// Opens the Apple Pay sheet.
+    ///
+    /// Does nothing while the sheet is already on screen.
+    /// Reports `ApplePayComponent.Error.invalidPaymentRequest` if the sheet can't be presented.
     package func performSubmit() {
-        delegate?.didFail(with: Error.submitNotSupported, from: self)
+        guard authorizationController == nil else { return }
+
+        // A dismissed sheet can still wait for a result that will never arrive.
+        cancelPendingAuthorization()
+        authorizationHandled = false
+
+        let controller = makeAuthorizationController(paymentRequest)
+        controller.delegate = self
+        // Set before presenting, so repeated taps are ignored before the sheet appears.
+        authorizationController = controller
+
+        Task {
+            guard await controller.present() else {
+                authorizationController = nil
+                delegate?.didFail(with: Error.invalidPaymentRequest, from: self)
+                return
+            }
+            sendDidLoadEvent()
+        }
     }
 }
 
+// MARK: - Analytics
+
+/// The `rendered` event is sent each time the Apple Pay sheet opens.
 extension ApplePayComponent: TrackableComponent {}
