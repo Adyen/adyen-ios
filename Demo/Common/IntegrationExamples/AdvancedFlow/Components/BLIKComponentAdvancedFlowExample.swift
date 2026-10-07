@@ -52,21 +52,19 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
             analyticsConfiguration: .init(
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
             )
-        ) {
-            BLIKConfiguration()
-        }
-        .theme(
-            CheckoutTheme(
-                colors: .init(
-                    primary: .systemBlue,
-                    destructive: .systemRed,
-                    textOnDestructive: .white,
-                    disabled: .systemGray,
-                    textOnDisabled: .lightGray
+        ) {}
+            .theme(
+                CheckoutTheme(
+                    colors: .init(
+                        primary: .systemBlue,
+                        destructive: .systemRed,
+                        textOnDestructive: .white,
+                        disabled: .systemGray,
+                        textOnDisabled: .lightGray
+                    )
                 )
+                .cornerRadius(8.0)
             )
-            .cornerRadius(8.0)
-        )
 
         let checkout = try await Checkout.setup(
             with: paymentMethods,

@@ -128,7 +128,7 @@ final class CheckoutComponentBuilderAvailabilityTests: XCTestCase {
     func test_isAvailable_withMerchantConfiguration_shouldPassResolvedConfigurationToFactory() throws {
         let paymentMethod = try AdyenCoder.decode(["type": "blik", "name": "BLIK"]) as BLIKPaymentMethod
         let localizationParameters = LocalizationParameters(enforcedLocale: "it-IT")
-        var blikConfiguration = BLIKConfiguration()
+        var blikConfiguration = BasicComponentConfiguration()
         blikConfiguration.showsSubmitButton = true
         blikConfiguration.localizationParameters = localizationParameters
         var configuration = makeCheckoutConfiguration(configurations: [.payment(.blik): blikConfiguration])
@@ -211,20 +211,20 @@ private struct UnsupportedPaymentMethod: PaymentMethod {
 
 @MainActor
 private final class AvailabilitySpyFactory: PaymentComponentFactory {
-    typealias Configuration = BLIKConfiguration
+    typealias Configuration = BasicComponentConfiguration
     typealias Method = BLIKPaymentMethod
     typealias Component = BLIKComponent
 
     private let isAvailableResult: Bool
     private(set) var receivedPaymentMethods: [BLIKPaymentMethod] = []
-    private(set) var receivedConfigurations: [BLIKConfiguration] = []
+    private(set) var receivedConfigurations: [BasicComponentConfiguration] = []
     private(set) var defaultConfigurationCallsCount = 0
 
     init(isAvailable: Bool = true) {
         self.isAvailableResult = isAvailable
     }
 
-    func isAvailable(for paymentMethod: BLIKPaymentMethod, configuration: BLIKConfiguration) -> Bool {
+    func isAvailable(for paymentMethod: BLIKPaymentMethod, configuration: BasicComponentConfiguration) -> Bool {
         receivedPaymentMethods.append(paymentMethod)
         receivedConfigurations.append(configuration)
         return isAvailableResult
@@ -233,13 +233,13 @@ private final class AvailabilitySpyFactory: PaymentComponentFactory {
     func create(
         with paymentMethod: BLIKPaymentMethod,
         context: AdyenContext,
-        configuration: BLIKConfiguration
+        configuration: BasicComponentConfiguration
     ) -> BLIKComponent {
         BLIKComponentFactory().create(with: paymentMethod, context: context, configuration: configuration)
     }
 
-    func defaultConfiguration() -> BLIKConfiguration {
+    func defaultConfiguration() -> BasicComponentConfiguration {
         defaultConfigurationCallsCount += 1
-        return BLIKConfiguration()
+        return BasicComponentConfiguration()
     }
 }

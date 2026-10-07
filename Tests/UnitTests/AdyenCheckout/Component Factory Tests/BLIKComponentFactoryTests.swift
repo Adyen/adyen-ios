@@ -34,7 +34,6 @@ final class BLIKComponentFactoryTests: XCTestCase {
         let configuration = factory.defaultConfiguration()
         
         // Then
-        XCTAssertEqual(configuration.componentType, .payment(.blik))
         XCTAssertTrue(configuration.showsSubmitButton)
     }
     
@@ -56,7 +55,7 @@ final class BLIKComponentFactoryTests: XCTestCase {
     func testCreate_WithValidPaymentMethod_ReturnsComponent() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
-        let configuration = BLIKConfiguration()
+        let configuration = BasicComponentConfiguration()
         
         // When
         let component = factory.create(
@@ -73,7 +72,7 @@ final class BLIKComponentFactoryTests: XCTestCase {
     func testCreate_WithCustomConfiguration_UsesProvidedConfiguration() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
-        var configuration = BLIKConfiguration()
+        var configuration = BasicComponentConfiguration()
         configuration.showsSubmitButton = false
         
         // When
@@ -91,7 +90,7 @@ final class BLIKComponentFactoryTests: XCTestCase {
     func testCreate_PreservesPaymentMethodReference() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
-        let configuration = BLIKConfiguration()
+        let configuration = BasicComponentConfiguration()
         
         // When
         let component = factory.create(
@@ -115,7 +114,7 @@ final class BLIKComponentFactoryTests: XCTestCase {
             analyticsProvider: AnalyticsProviderMock()
         )
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
-        let configuration = BLIKConfiguration()
+        let configuration = BasicComponentConfiguration()
         
         // When
         let component = factory.create(
@@ -150,7 +149,6 @@ final class BLIKComponentFactoryTests: XCTestCase {
         
         // Then - Verify types through their properties
         XCTAssertEqual(paymentMethod.type, .blik)
-        XCTAssertEqual(configuration.componentType, .payment(.blik))
         XCTAssertEqual(component.paymentMethod.type, .blik)
     }
     
@@ -160,7 +158,7 @@ final class BLIKComponentFactoryTests: XCTestCase {
         // Given
         let paymentMethod1 = try XCTUnwrap(createBLIKPaymentMethod())
         let paymentMethod2 = try XCTUnwrap(createBLIKPaymentMethod())
-        let configuration = BLIKConfiguration()
+        let configuration = BasicComponentConfiguration()
         
         // When
         let component1 = factory.create(with: paymentMethod1, context: context, configuration: configuration)
