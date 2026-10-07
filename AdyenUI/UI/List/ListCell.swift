@@ -46,6 +46,13 @@ package final class ListCell: UITableViewCell {
             let usesCustomHighlight = item?.style.highlightedBackgroundColor != nil
             contentView.backgroundColor = usesCustomHighlight ? item?.style.backgroundColor : .clear
 
+            itemView.layoutMargins = item?.style.contentInsets ?? .init(
+                top: 0,
+                left: contentView.layoutMargins.left,
+                bottom: 0,
+                right: contentView.layoutMargins.right
+            )
+
             resetAccessoryView()
             
             accessibilityLabel = item?.accessibilityLabel
@@ -64,20 +71,6 @@ package final class ListCell: UITableViewCell {
         )
         clipsToBounds = isSelected
         accessibilityMarkAsSelected(isSelected)
-    }
-    
-    // MARK: - Internal
-
-    internal func setContentInsets(_ insets: UIEdgeInsets?) {
-        let resolvedInsets = insets ?? .init(
-            top: 0,
-            left: contentView.layoutMargins.left,
-            bottom: 0,
-            right: contentView.layoutMargins.right
-        )
-
-        guard itemView.layoutMargins != resolvedInsets else { return }
-        itemView.layoutMargins = resolvedInsets
     }
     
     /// Indicates if the cell is in an enabled state.

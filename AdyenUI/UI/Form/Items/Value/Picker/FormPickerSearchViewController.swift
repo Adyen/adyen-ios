@@ -84,8 +84,6 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
             searchTextFieldToResultsSpacing: FormPickerLayout.searchTextFieldToResultsSpacing
         )
 
-        searchViewController.resultsListViewController.cellContentInsets = FormPickerLayout.listItemContentInsets
-        
         if headerView == nil {
             searchViewController.title = configuration.title
         }
@@ -157,6 +155,7 @@ private extension FormPickable {
         if isSelected {
             style.backgroundColor = theme.colors.container
         }
+        style.contentInsets = FormPickerLayout.listItemContentInsets
 
         return ListItem(
             title: title,

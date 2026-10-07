@@ -35,15 +35,9 @@ package final class ListViewController: UITableViewController {
         dataSource.sections
     }
 
-    internal var cellContentInsets: UIEdgeInsets?
-
     private lazy var dataSource: ListViewControllerDataSource = {
         DiffableListDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, _ in
-            guard let self else { return nil }
-
-            let cell = self.dataSource.cell(for: tableView, at: indexPath)
-            (cell as? ListCell)?.setContentInsets(cellContentInsets)
-            return cell
+            self?.dataSource.cell(for: tableView, at: indexPath)
         })
     }()
 

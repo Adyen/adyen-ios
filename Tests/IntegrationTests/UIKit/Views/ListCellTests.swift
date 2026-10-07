@@ -97,7 +97,7 @@ final class ListCellTests: XCTestCase {
         XCTAssertEqual(checkmarkImageView.frame.minX - trailingTextLabel.frame.maxX, 20, accuracy: 0.1)
     }
 
-    func test_setContentInsets_shouldApplyCustomInsetsAndRestoreDefaults() throws {
+    func test_itemStyleContentInsets_shouldApplyCustomInsetsAndRestoreDefaults() throws {
         let cell = makeCell(item: makeItem(backgroundColor: .purple))
         let itemView: UIView = try XCTUnwrap(cell.findView(by: "itemView"))
         let defaultInsets = UIEdgeInsets(
@@ -108,16 +108,13 @@ final class ListCellTests: XCTestCase {
         )
         let customInsets = UIEdgeInsets(top: 12, left: 14, bottom: 12, right: 14)
 
-        cell.setContentInsets(nil)
-        XCTAssertEqual(itemView.layoutMargins, defaultInsets)
-
-        cell.setContentInsets(.zero)
-        XCTAssertEqual(itemView.layoutMargins, .zero)
-
-        cell.setContentInsets(customInsets)
+        cell.item = makeItem(backgroundColor: .purple, contentInsets: customInsets)
         XCTAssertEqual(itemView.layoutMargins, customInsets)
 
-        cell.setContentInsets(nil)
+        cell.item = makeItem(backgroundColor: .purple, contentInsets: .zero)
+        XCTAssertEqual(itemView.layoutMargins, .zero)
+
+        cell.item = makeItem(backgroundColor: .purple)
         XCTAssertEqual(itemView.layoutMargins, defaultInsets)
     }
 
@@ -167,11 +164,13 @@ final class ListCellTests: XCTestCase {
         titleColor: UIColor? = nil,
         highlightedBackgroundColor: UIColor? = nil,
         isSelected: Bool = false,
-        trailingInfo: ListItem.TrailingInfoType? = nil
+        trailingInfo: ListItem.TrailingInfoType? = nil,
+        contentInsets: UIEdgeInsets? = nil
     ) -> ListItem {
         var style = ListItemStyle()
         style.backgroundColor = backgroundColor
         style.highlightedBackgroundColor = highlightedBackgroundColor
+        style.contentInsets = contentInsets
         if let titleColor {
             style.title.color = titleColor
         }
