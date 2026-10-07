@@ -17,7 +17,7 @@ package final class BACSViewModel {
     // MARK: - Properties
 
     private let paymentMethod: BACSDirectDebitPaymentMethod
-    internal let configuration: BACSDirectDebitComponent.Configuration
+    internal let configuration: BACSDirectDebitConfiguration
     private let tracker: BACSDirectDebitComponentTrackerProtocol
     private let itemsFactory: BACSItemsFactoryProtocol
     private let onSubmit: (_ details: BACSDirectDebitDetails) -> Void
@@ -51,7 +51,7 @@ package final class BACSViewModel {
     package init(
         paymentMethod: BACSDirectDebitPaymentMethod,
         amount: Amount?,
-        configuration: BACSDirectDebitComponent.Configuration,
+        configuration: BACSDirectDebitConfiguration,
         tracker: BACSDirectDebitComponentTrackerProtocol,
         itemsFactory: BACSItemsFactoryProtocol,
         onSubmit: @escaping (_ details: BACSDirectDebitDetails) -> Void

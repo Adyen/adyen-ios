@@ -7,7 +7,6 @@
 import Adyen
 #if canImport(AdyenUI)
     import AdyenUI
-    @_spi(AdyenInternal) import struct AdyenUI.BasicComponentConfiguration
 #endif
 import UIKit
 
@@ -15,7 +14,7 @@ import UIKit
 /// wiring up the view model and view controller dependencies.
 @MainActor
 package struct BACSDirectDebitFactory: PaymentComponentFactory {
-    package typealias Configuration = BACSDirectDebitComponent.Configuration
+    package typealias Configuration = BACSDirectDebitConfiguration
     package typealias Method = BACSDirectDebitPaymentMethod
     package typealias Component = BACSDirectDebitComponent
 
@@ -35,7 +34,7 @@ package struct BACSDirectDebitFactory: PaymentComponentFactory {
     package func create(
         with paymentMethod: BACSDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: BACSDirectDebitComponent.Configuration
+        configuration: BACSDirectDebitConfiguration
     ) -> BACSDirectDebitComponent {
         weak var weakComponent: BACSDirectDebitComponent?
 
@@ -84,8 +83,8 @@ package struct BACSDirectDebitFactory: PaymentComponentFactory {
         return component
     }
 
-    package func defaultConfiguration() -> BACSDirectDebitComponent.Configuration {
-        BACSDirectDebitComponent.Configuration()
+    package func defaultConfiguration() -> BACSDirectDebitConfiguration {
+        BACSDirectDebitConfiguration()
     }
 
     package func isAvailable(

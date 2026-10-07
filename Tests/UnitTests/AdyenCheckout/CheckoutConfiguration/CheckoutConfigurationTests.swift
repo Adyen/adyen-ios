@@ -173,6 +173,26 @@ final class CheckoutConfigurationTests: XCTestCase {
         XCTAssertNotNil(sut.configurations[.payment(.blik)] as? BLIKComponentConfiguration)
     }
 
+    func test_init_withBACSDirectDebitConfiguration_shouldResolveItForBACSPaymentMethod() throws {
+        var bacsConfiguration = BACSDirectDebitConfiguration()
+        bacsConfiguration.showsSubmitButton = false
+        let sut = try CheckoutConfiguration(
+            environment: .test,
+            clientKey: Dummy.apiContext.clientKey
+        ) {
+            bacsConfiguration
+        }
+        let paymentMethod = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit, name: "BACS Direct Debit")
+
+        let resolvedConfiguration: BACSDirectDebitConfiguration = try sut.configuration(
+            for: paymentMethod,
+            defaultValue: BACSDirectDebitConfiguration()
+        )
+
+        XCTAssertEqual(resolvedConfiguration.componentType, .payment(.bacsDirectDebit))
+        XCTAssertFalse(resolvedConfiguration.showsSubmitButton)
+    }
+
     // MARK: - Legacy componentConfiguration Tests
     
     func testComponentConfiguration_WithExistingConfiguration_ReturnsConfiguration() throws {
