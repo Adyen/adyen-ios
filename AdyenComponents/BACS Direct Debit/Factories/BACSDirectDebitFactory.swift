@@ -14,7 +14,7 @@ import UIKit
 /// wiring up the view model and view controller dependencies.
 @MainActor
 package struct BACSDirectDebitFactory: PaymentComponentFactory {
-    package typealias Configuration = BACSDirectDebitConfiguration
+    package typealias Configuration = BasicComponentConfiguration
     package typealias Method = BACSDirectDebitPaymentMethod
     package typealias Component = BACSDirectDebitComponent
 
@@ -34,7 +34,7 @@ package struct BACSDirectDebitFactory: PaymentComponentFactory {
     package func create(
         with paymentMethod: BACSDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: BACSDirectDebitConfiguration
+        configuration: BasicComponentConfiguration
     ) -> BACSDirectDebitComponent {
         weak var weakComponent: BACSDirectDebitComponent?
 
@@ -83,8 +83,8 @@ package struct BACSDirectDebitFactory: PaymentComponentFactory {
         return component
     }
 
-    package func defaultConfiguration() -> BACSDirectDebitConfiguration {
-        BACSDirectDebitConfiguration()
+    package func defaultConfiguration() -> BasicComponentConfiguration {
+        BasicComponentConfiguration()
     }
 
     package func isAvailable(

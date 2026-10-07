@@ -344,38 +344,6 @@ let component = try checkout.createPaymentComponent(for: .scheme)
 - card brand detection callbacks -> `CardConfiguration.onBinLookup(_:)`
 - component styling moves from per-component form styling to checkout-wide `CheckoutTheme`
 
-### BACS Direct Debit component
-
-#### Configuration object
-
-`BACSDirectDebitComponent.Configuration` is replaced by the top-level `BACSDirectDebitConfiguration`, which you pass in the
-`CheckoutConfiguration` DSL.
-
-##### Before (v5)
-
-```swift
-let configuration = BACSDirectDebitComponent.Configuration()
-let component = BACSDirectDebitComponent(
-    paymentMethod: paymentMethod,
-    context: context,
-    configuration: configuration
-)
-```
-
-##### After (v6)
-
-```swift
-let configuration = try CheckoutConfiguration(
-    environment: .test,
-    clientKey: clientKey
-) {
-    BACSDirectDebitConfiguration()
-}
-```
-
-The confirmation screen has been removed. Shoppers now submit the payment directly from the input form, and you can trigger
-submission yourself by calling `submit()` on the `CheckoutPaymentComponent`.
-
 ## 5.5.0
 - `telephoneNumber` property of `PrefilledShopperInformation` has been deprecated. Use the `phoneNumber` property if needed.
 

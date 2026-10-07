@@ -487,7 +487,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
     func test_build_withBACSAndCustomConfiguration_appliesConfiguration() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBACSPaymentMethod())
-        var bacsConfig = BACSDirectDebitConfiguration()
+        var bacsConfig = BasicComponentConfiguration()
         bacsConfig.showsSubmitButton = false
 
         checkoutConfiguration = makeCheckoutConfiguration(

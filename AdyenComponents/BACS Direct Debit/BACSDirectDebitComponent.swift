@@ -34,7 +34,7 @@ package final class BACSDirectDebitComponent: PaymentComponent {
     package let context: AdyenContext
 
     /// Component's configuration
-    package var configuration: BACSDirectDebitConfiguration
+    package var configuration: BasicComponentConfiguration
 
     // MARK: - PaymentComponent
 
@@ -64,7 +64,7 @@ package final class BACSDirectDebitComponent: PaymentComponent {
     package init(
         paymentMethod: BACSDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: BACSDirectDebitConfiguration,
+        configuration: BasicComponentConfiguration = .init(),
         viewModel: BACSViewModel,
         viewController: UIViewController
     ) {
