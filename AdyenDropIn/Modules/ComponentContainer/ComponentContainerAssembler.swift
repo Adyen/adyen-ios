@@ -8,6 +8,10 @@ import Adyen
 import Foundation
 import UIKit
 
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
+
 // sourcery:AutoMockable
 @MainActor
 internal protocol ComponentContainerAssemblerProtocol {
@@ -46,6 +50,7 @@ internal struct ComponentContainerAssembler: ComponentContainerAssemblerProtocol
     ) -> Router {
         let viewModel = ComponentContainerViewModel(
             component: component,
+            theme: configuration.theme,
             configuration: configuration,
             dropInFlowManager: dropInFlowManager,
             partialPaymentDelegate: partialPaymentDelegate

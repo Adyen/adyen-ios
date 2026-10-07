@@ -46,9 +46,7 @@ internal final class BLIKComponentExample: InitialDataFlowProtocol {
             analyticsConfiguration: .init(
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
             )
-        ) {
-            BLIKComponentConfiguration()
-        }
+        ) {}
         
         let checkout = try await Checkout.setup(
             with: sessionResponse,

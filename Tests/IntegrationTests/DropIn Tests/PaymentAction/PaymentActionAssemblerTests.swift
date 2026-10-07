@@ -6,6 +6,7 @@
 
 @testable import Adyen
 @testable import AdyenDropIn
+@_spi(AdyenInternal) @testable import AdyenUI
 import SafariServices
 import Testing
 import UIKit
@@ -18,7 +19,7 @@ struct PaymentActionAssemblerTests {
     @Test("Action components that do not manage their own navigation are hosted in a container that adds a done button.")
     func resolvePaymentActionRouter_givenAPlainViewController_shouldHostItInAPaymentActionViewController() throws {
         // Given
-        let sut = PaymentActionAssembler()
+        let sut = PaymentActionAssembler(theme: CheckoutTheme())
         let actionViewController = UIViewController()
 
         // When
@@ -36,7 +37,7 @@ struct PaymentActionAssemblerTests {
     @Test("A web view is used as is, to avoid embedding it inside another view.")
     func resolvePaymentActionRouter_givenASafariViewController_shouldUseItAsTheRoot() throws {
         // Given
-        let sut = PaymentActionAssembler()
+        let sut = PaymentActionAssembler(theme: CheckoutTheme())
         let actionViewController = try SFSafariViewController(url: #require(URL(string: "https://adyen.com")))
 
         // When
@@ -53,7 +54,7 @@ struct PaymentActionAssemblerTests {
     @Test("Action components that manage their own navigation are used as is.")
     func resolvePaymentActionRouter_givenANavigationController_shouldUseItAsTheRoot() {
         // Given
-        let sut = PaymentActionAssembler()
+        let sut = PaymentActionAssembler(theme: CheckoutTheme())
         let actionViewController = UINavigationController(rootViewController: UIViewController())
 
         // When
@@ -70,7 +71,7 @@ struct PaymentActionAssemblerTests {
     @Test("Dismissing the hosted action routes through the view model to the router, and notifies the listener.")
     func resolvePaymentActionRouter_whenTheHostedActionIsDismissed_shouldNotifyTheListenerAndCallOnCancel() throws {
         // Given
-        let sut = PaymentActionAssembler()
+        let sut = PaymentActionAssembler(theme: CheckoutTheme())
         let listenerMock = PaymentActionRouterListenerMock()
         var onCancelCallsCount = 0
 
@@ -87,8 +88,8 @@ struct PaymentActionAssemblerTests {
         hostViewController.loadViewIfNeeded()
 
         // When
-        let doneButton = try #require(hostViewController.navigationItem.rightBarButtonItem)
-        _ = try hostViewController.perform(#require(doneButton.action), with: doneButton)
+        let cancelButton = try #require(hostViewController.navigationItem.leftBarButtonItem)
+        _ = try hostViewController.perform(#require(cancelButton.action), with: cancelButton)
 
         // Then
         // The merchant is only informed once the drop in has been dismissed.

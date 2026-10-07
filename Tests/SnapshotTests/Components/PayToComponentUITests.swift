@@ -59,7 +59,7 @@ class PayToComponentUITests: XCTestCase {
         style.textField.title.textAlignment = .left
         style.textField.backgroundColor = .blue
 
-        let config = PayToComponent.Configuration(style: style)
+        let config = BasicComponentConfiguration(style: style)
 
         let sut = PayToComponent(
             paymentMethod: paymentMethod,
@@ -108,7 +108,7 @@ class PayToComponentUITests: XCTestCase {
         style.segmentedControlStyle.textStyle.textAlignment = .center
         style.segmentedControlStyle.textStyle.color = .red
 
-        let config = PayToComponent.Configuration(style: style)
+        let config = BasicComponentConfiguration(style: style)
 
         let sut = PayToComponent(
             paymentMethod: paymentMethod,
@@ -136,7 +136,7 @@ class PayToComponentUITests: XCTestCase {
         style.textField.title.backgroundColor = .red
         style.textField.backgroundColor = .brown
 
-        let config = PayToComponent.Configuration(style: style)
+        let config = BasicComponentConfiguration(style: style)
         let sut = PayToComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -147,7 +147,7 @@ class PayToComponentUITests: XCTestCase {
 
     func test_payTo_component_details_for_pay_id_flow_using_mobile() throws {
         // Given
-        let config = PayToComponent.Configuration(style: style)
+        let config = BasicComponentConfiguration(style: style)
 
         let sut = PayToComponent(
             paymentMethod: paymentMethod,
@@ -210,7 +210,7 @@ class PayToComponentUITests: XCTestCase {
 
     func test_payTo_component_details_for_pay_id_flow_using_email() throws {
         // Given
-        let config = PayToComponent.Configuration(style: style)
+        let config = BasicComponentConfiguration(style: style)
 
         let sut = PayToComponent(
             paymentMethod: paymentMethod,
@@ -276,7 +276,7 @@ class PayToComponentUITests: XCTestCase {
 
     func test_payTo_component_details_for_pay_id_flow_using_abn() throws {
         // Given
-        let config = PayToComponent.Configuration(style: style)
+        let config = BasicComponentConfiguration(style: style)
 
         let sut = PayToComponent(
             paymentMethod: paymentMethod,
@@ -343,7 +343,7 @@ class PayToComponentUITests: XCTestCase {
 
     func test_payTo_component_details_for_pay_id_flow_using_organizationId() throws {
         // Given
-        let config = PayToComponent.Configuration(style: style)
+        let config = BasicComponentConfiguration(style: style)
 
         let sut = PayToComponent(
             paymentMethod: paymentMethod,
@@ -413,7 +413,7 @@ class PayToComponentUITests: XCTestCase {
 
     func test_payTo_component_details_for_bsb_flow() throws {
         // Given
-        let config = PayToComponent.Configuration(style: style)
+        let config = BasicComponentConfiguration(style: style)
 
         let sut = PayToComponent(
             paymentMethod: paymentMethod,

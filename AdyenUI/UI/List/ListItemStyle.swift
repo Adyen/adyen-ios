@@ -45,6 +45,10 @@ package struct ListItemStyle: ViewStyle {
     /// Background color when highlighted (tapped).
     package var highlightedBackgroundColor: UIColor?
 
+    /// Insets applied to the content view of the cell displaying the item.
+    /// `nil` uses the cell's default layout margins.
+    package var contentInsets: UIEdgeInsets?
+
     /// Initializes the list item style.
     ///
     /// - Parameter title: The title style.
@@ -67,7 +71,8 @@ extension ListItemStyle: Equatable {
         lhs.title == rhs.title &&
             lhs.subtitle == rhs.subtitle &&
             lhs.image == rhs.image &&
-            lhs.backgroundColor.cgColor == rhs.backgroundColor.cgColor
+            lhs.backgroundColor.cgColor == rhs.backgroundColor.cgColor &&
+            lhs.contentInsets == rhs.contentInsets
     }
     
 }

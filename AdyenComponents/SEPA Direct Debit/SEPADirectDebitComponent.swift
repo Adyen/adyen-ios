@@ -17,14 +17,11 @@ import UIKit
 @MainActor
 package final class SEPADirectDebitComponent: PaymentComponent, LoadingComponent {
 
-    /// Configuration for SEPA Direct Debit Component
-    package typealias Configuration = BasicComponentConfiguration
-
     /// The context object for this component.
     package let context: AdyenContext
 
     /// Component's configuration
-    package var configuration: Configuration
+    package var configuration: BasicComponentConfiguration
 
     /// The SEPA Direct Debit payment method.
     package var paymentMethod: PaymentMethod {
@@ -45,7 +42,7 @@ package final class SEPADirectDebitComponent: PaymentComponent, LoadingComponent
     package init(
         paymentMethod: SEPADirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: BasicComponentConfiguration = .init()
     ) {
         self.sepaDirectDebitPaymentMethod = paymentMethod
         self.context = context

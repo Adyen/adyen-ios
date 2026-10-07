@@ -21,22 +21,11 @@ internal class StoredCardInputViewController: UIViewController {
 
     private enum Constants {
         static let contentPadding: CGFloat = 16
-        static let distanceBetweenImageAndLabels: CGFloat = 12
         static let distanceFromButtonsToLabels: CGFloat = 24
         static let buttonsBottomPadding: CGFloat = 0
-        static let labelsSpacing: CGFloat = 8
-        static let buttonsSpacingWithEachOther: CGFloat = 16
     }
 
     // MARK: - Subviews
-
-    private lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.showsVerticalScrollIndicator = true
-        scrollView.showsHorizontalScrollIndicator = false
-        return scrollView
-    }()
 
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView()
@@ -44,49 +33,6 @@ internal class StoredCardInputViewController: UIViewController {
         stackView.axis = .vertical
         stackView.spacing = Constants.distanceFromButtonsToLabels
         return stackView
-    }()
-
-    private lazy var topContentStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = Constants.distanceBetweenImageAndLabels
-        return stackView
-    }()
-
-    private lazy var cardImageView: CardImageView = {
-        let imageView = CardImageView(item: viewModel.cardImageItem)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardShapedImage")
-        return imageView
-    }()
-
-    private lazy var labelsStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.spacing = Constants.labelsSpacing
-        return stackView
-    }()
-
-    private lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.apply(theme.elements.labels.title)
-        label.numberOfLines = 0
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title")
-
-        return label
-    }()
-
-    private lazy var subtitleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        label.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "subTitle")
-        return label
     }()
 
     private lazy var securityCodeItemView: FormCardSecurityCodeItemView = {
@@ -101,7 +47,6 @@ internal class StoredCardInputViewController: UIViewController {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = Constants.buttonsSpacingWithEachOther
         return stackView
     }()
 
@@ -110,7 +55,6 @@ internal class StoredCardInputViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(primaryButtonTapped), for: .touchUpInside)
         button.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton")
-        button.leadingImage = .adyenLock ?? .systemLock
         return button
     }()
 
@@ -118,7 +62,6 @@ internal class StoredCardInputViewController: UIViewController {
 
     private let viewModel: StoredCardInputViewModelProtocol
     private var cancellables = Set<AnyCancellable>()
-    private var keyboardScrollViewHandler: KeyboardScrollViewHandler?
 
     private var theme: CheckoutTheme {
         viewModel.theme
@@ -144,6 +87,11 @@ internal class StoredCardInputViewController: UIViewController {
         viewModel.viewDidLoad()
     }
 
+    override internal func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        assignInitialFirstResponder()
+    }
+
     override internal func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         viewModel.viewDidDisappear()
@@ -153,23 +101,11 @@ internal class StoredCardInputViewController: UIViewController {
 
     private func setupView() {
         view.backgroundColor = theme.colors.background
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentStackView)
-
-        [
-            titleLabel,
-            subtitleLabel
-        ].forEach(labelsStackView.addArrangedSubview)
-
-        [
-            cardImageView,
-            labelsStackView
-        ].forEach(topContentStackView.addArrangedSubview)
+        view.addSubview(contentStackView)
 
         buttonsStackView.addArrangedSubview(primaryButton)
 
         [
-            topContentStackView,
             securityCodeItemView,
             buttonsStackView
         ].forEach(contentStackView.addArrangedSubview)
@@ -177,9 +113,7 @@ internal class StoredCardInputViewController: UIViewController {
         configureConstraints()
         configureContent()
         setupBindings()
-        setupKeyboardObserver()
         disableSwipeDownToDismissScreen()
-        securityCodeItemView.becomeFirstResponder()
     }
 
     private func disableSwipeDownToDismissScreen() {
@@ -187,24 +121,24 @@ internal class StoredCardInputViewController: UIViewController {
     }
 
     private func configureConstraints() {
-        // TODO: Robert: StoredView: Auto layout Constraints breaks. This needs a separate investigation as this involves the FormCardSecurityCodeItemView
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-
-            contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: Constants.contentPadding),
-            contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -Constants.buttonsBottomPadding),
-            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -2 * Constants.contentPadding)
+            contentStackView.topAnchor.constraint(equalTo: view.topAnchor),
+            contentStackView.leadingAnchor.constraint(
+                equalTo: view.leadingAnchor,
+                constant: Constants.contentPadding
+            ),
+            contentStackView.trailingAnchor.constraint(
+                equalTo: view.trailingAnchor,
+                constant: -Constants.contentPadding
+            ),
+            contentStackView.bottomAnchor.constraint(
+                equalTo: view.bottomAnchor,
+                constant: -Constants.buttonsBottomPadding
+            )
         ])
-
     }
 
     private func configureContent() {
-        titleLabel.text = viewModel.titleText
-        subtitleLabel.attributedText = viewModel.subtitleText
         primaryButton.title = viewModel.submitButtonTitle
     }
 
@@ -232,22 +166,21 @@ internal class StoredCardInputViewController: UIViewController {
         }
     }
 
+    // MARK: - First responder
+
+    /// Focuses the security code on appearance, as `FormViewController` does for its forms,
+    /// so that the shopper can type without tapping the field first.
+    private func assignInitialFirstResponder() {
+        guard securityCodeItemView.isUserInteractionEnabled else { return }
+        securityCodeItemView.becomeFirstResponder()
+    }
+
     // MARK: - User Actions
 
     @objc private func primaryButtonTapped() {
         Task { @MainActor [weak self] in
             await self?.viewModel.submit()
         }
-    }
-
-    // MARK: - Keyboard handling
-
-    private func setupKeyboardObserver() {
-        keyboardScrollViewHandler = KeyboardScrollViewHandler(
-            scrollView: scrollView,
-            view: view
-        )
-        keyboardScrollViewHandler?.startObserving()
     }
 
 }

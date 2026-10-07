@@ -8,11 +8,19 @@ import Adyen
 import Foundation
 import UIKit
 
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
+
 internal class ComponentContainerViewController: UIViewController {
     
     // MARK: - Properties
     
     private let viewModel: ComponentContainerViewModelProtocol
+
+    private var theme: CheckoutTheme {
+        viewModel.theme
+    }
     
     // MARK: - Initializers
     
@@ -32,6 +40,7 @@ internal class ComponentContainerViewController: UIViewController {
         super.viewDidLoad()
         setupComponentView()
         setupNavigationItem()
+        applyTheme()
     }
     
     override public func viewDidDisappear(_ animated: Bool) {
@@ -47,6 +56,10 @@ internal class ComponentContainerViewController: UIViewController {
     }
     
     // MARK: - Private
+
+    private func applyTheme() {
+        view.backgroundColor = theme.colors.background
+    }
 
     private func setupComponentView() {
         componentViewController.willMove(toParent: self)
