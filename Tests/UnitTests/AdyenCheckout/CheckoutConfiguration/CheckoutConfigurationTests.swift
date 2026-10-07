@@ -30,7 +30,7 @@ final class CheckoutConfigurationTests: XCTestCase {
     
     func testConfiguration_WithExistingConfiguration_ReturnsStoredConfiguration() throws {
         // Given
-        var blikConfig = BLIKComponentConfiguration()
+        var blikConfig = BLIKConfiguration()
         blikConfig.showsSubmitButton = false // Custom value
         
         let checkoutConfig = makeCheckoutConfiguration(
@@ -39,9 +39,9 @@ final class CheckoutConfigurationTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         
         // When
-        let resolvedConfig: BLIKComponentConfiguration = try checkoutConfig.configuration(
+        let resolvedConfig: BLIKConfiguration = try checkoutConfig.configuration(
             for: paymentMethod,
-            defaultValue: BLIKComponentConfiguration()
+            defaultValue: BLIKConfiguration()
         )
         
         // Then - Should return the stored configuration with custom value
@@ -53,11 +53,11 @@ final class CheckoutConfigurationTests: XCTestCase {
         // Given
         let checkoutConfig = makeCheckoutConfiguration()
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
-        var defaultConfig = BLIKComponentConfiguration()
+        var defaultConfig = BLIKConfiguration()
         defaultConfig.showsSubmitButton = false // Custom default
         
         // When
-        let resolvedConfig: BLIKComponentConfiguration = try checkoutConfig.configuration(
+        let resolvedConfig: BLIKConfiguration = try checkoutConfig.configuration(
             for: paymentMethod,
             defaultValue: defaultConfig
         )
@@ -69,7 +69,7 @@ final class CheckoutConfigurationTests: XCTestCase {
     
     func testConfiguration_AutoclosureNotEvaluatedWhenConfigExists() throws {
         // Given
-        var blikConfig = BLIKComponentConfiguration()
+        var blikConfig = BLIKConfiguration()
         blikConfig.showsSubmitButton = false
         
         let checkoutConfig = makeCheckoutConfiguration(
@@ -79,11 +79,11 @@ final class CheckoutConfigurationTests: XCTestCase {
         var defaultWasCalled = false
         
         // When
-        let resolvedConfig: BLIKComponentConfiguration = try checkoutConfig.configuration(
+        let resolvedConfig: BLIKConfiguration = try checkoutConfig.configuration(
             for: paymentMethod,
             defaultValue: {
                 defaultWasCalled = true
-                return BLIKComponentConfiguration()
+                return BLIKConfiguration()
             }()
         )
         
@@ -99,11 +99,11 @@ final class CheckoutConfigurationTests: XCTestCase {
         var defaultWasCalled = false
         
         // When
-        let _: BLIKComponentConfiguration = try checkoutConfig.configuration(
+        let _: BLIKConfiguration = try checkoutConfig.configuration(
             for: paymentMethod,
             defaultValue: {
                 defaultWasCalled = true
-                return BLIKComponentConfiguration()
+                return BLIKConfiguration()
             }()
         )
         
@@ -165,28 +165,28 @@ final class CheckoutConfigurationTests: XCTestCase {
             clientKey: Dummy.apiContext.clientKey
         ) {
             DropInConfiguration().hideStoredPaymentMethods(true)
-            BLIKComponentConfiguration()
+            BLIKConfiguration()
         }
 
         XCTAssertTrue(sut.dropInConfiguration.hideStoredPaymentMethods)
         XCTAssertEqual(sut.configurations.count, 1)
-        XCTAssertNotNil(sut.configurations[.payment(.blik)] as? BLIKComponentConfiguration)
+        XCTAssertNotNil(sut.configurations[.payment(.blik)] as? BLIKConfiguration)
     }
 
     // MARK: - Legacy componentConfiguration Tests
     
     func testComponentConfiguration_WithExistingConfiguration_ReturnsConfiguration() throws {
         // Given
-        let blikConfig = BLIKComponentConfiguration()
+        let blikConfig = BLIKConfiguration()
         let checkoutConfig = makeCheckoutConfiguration(
             configurations: [.payment(.blik): blikConfig]
         )
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         
         // When
-        let resolvedConfig: BLIKComponentConfiguration = try checkoutConfig.configuration(
+        let resolvedConfig: BLIKConfiguration = try checkoutConfig.configuration(
             for: paymentMethod,
-            defaultValue: BLIKComponentConfiguration()
+            defaultValue: BLIKConfiguration()
         )
         
         // Then

@@ -23,7 +23,7 @@ final class ComponentBuildPolicyTests: XCTestCase {
     }
 
     func test_applying_shouldReturnConfigurationWithPolicySettings() {
-        var blikConfiguration = BLIKComponentConfiguration()
+        var blikConfiguration = BLIKConfiguration()
         blikConfiguration.showsSubmitButton = true
         let hidingPolicy = ComponentBuildPolicy.components(makeCheckoutConfiguration().showsSubmitButton(false))
 

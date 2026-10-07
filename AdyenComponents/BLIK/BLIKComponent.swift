@@ -35,7 +35,7 @@ package final class BLIKComponent: PaymentComponent, LoadingComponent {
     package let requiresUserInteraction: Bool = true
     
     /// Component's configuration
-    package var configuration: BLIKComponentConfiguration
+    package var configuration: BLIKConfiguration
 
     private let blikPaymentMethod: BLIKPaymentMethod
 
@@ -47,7 +47,7 @@ package final class BLIKComponent: PaymentComponent, LoadingComponent {
     package init(
         paymentMethod: BLIKPaymentMethod,
         context: AdyenContext,
-        configuration: BLIKComponentConfiguration = .init()
+        configuration: BLIKConfiguration = .init()
     ) {
         self.blikPaymentMethod = paymentMethod
         self.context = context

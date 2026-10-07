@@ -12,7 +12,7 @@ import Adyen
 /// provided BLIK payment method and component configuration.
 @MainActor
 package struct BLIKComponentFactory: PaymentComponentFactory {
-    package typealias Configuration = BLIKComponentConfiguration
+    package typealias Configuration = BLIKConfiguration
     package typealias Method = BLIKPaymentMethod
     package typealias Component = BLIKComponent
     
@@ -28,7 +28,7 @@ package struct BLIKComponentFactory: PaymentComponentFactory {
     package func create(
         with paymentMethod: BLIKPaymentMethod,
         context: AdyenContext,
-        configuration: BLIKComponentConfiguration
+        configuration: BLIKConfiguration
     ) -> BLIKComponent {
         BLIKComponent(
             paymentMethod: paymentMethod,
@@ -37,8 +37,8 @@ package struct BLIKComponentFactory: PaymentComponentFactory {
         )
     }
     
-    package func defaultConfiguration() -> BLIKComponentConfiguration {
-        BLIKComponentConfiguration()
+    package func defaultConfiguration() -> BLIKConfiguration {
+        BLIKConfiguration()
     }
 
     package func isAvailable(

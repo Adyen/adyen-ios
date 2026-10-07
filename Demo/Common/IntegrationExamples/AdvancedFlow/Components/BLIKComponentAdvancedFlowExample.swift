@@ -53,7 +53,7 @@ internal final class BLIKComponentAdvancedFlowExample: InitialDataAdvancedFlowPr
                 isEnabled: ConfigurationConstants.current.analyticsSettings.isEnabled
             )
         ) {
-            BLIKComponentConfiguration()
+            BLIKConfiguration()
         }
         .theme(
             CheckoutTheme(

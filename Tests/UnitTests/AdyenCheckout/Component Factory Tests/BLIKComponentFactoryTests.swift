@@ -56,7 +56,7 @@ final class BLIKComponentFactoryTests: XCTestCase {
     func testCreate_WithValidPaymentMethod_ReturnsComponent() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
-        let configuration = BLIKComponentConfiguration()
+        let configuration = BLIKConfiguration()
         
         // When
         let component = factory.create(
@@ -73,7 +73,7 @@ final class BLIKComponentFactoryTests: XCTestCase {
     func testCreate_WithCustomConfiguration_UsesProvidedConfiguration() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
-        var configuration = BLIKComponentConfiguration()
+        var configuration = BLIKConfiguration()
         configuration.showsSubmitButton = false
         
         // When
@@ -91,7 +91,7 @@ final class BLIKComponentFactoryTests: XCTestCase {
     func testCreate_PreservesPaymentMethodReference() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
-        let configuration = BLIKComponentConfiguration()
+        let configuration = BLIKConfiguration()
         
         // When
         let component = factory.create(
@@ -115,7 +115,7 @@ final class BLIKComponentFactoryTests: XCTestCase {
             analyticsProvider: AnalyticsProviderMock()
         )
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
-        let configuration = BLIKComponentConfiguration()
+        let configuration = BLIKConfiguration()
         
         // When
         let component = factory.create(
@@ -160,7 +160,7 @@ final class BLIKComponentFactoryTests: XCTestCase {
         // Given
         let paymentMethod1 = try XCTUnwrap(createBLIKPaymentMethod())
         let paymentMethod2 = try XCTUnwrap(createBLIKPaymentMethod())
-        let configuration = BLIKComponentConfiguration()
+        let configuration = BLIKConfiguration()
         
         // When
         let component1 = factory.create(with: paymentMethod1, context: context, configuration: configuration)
