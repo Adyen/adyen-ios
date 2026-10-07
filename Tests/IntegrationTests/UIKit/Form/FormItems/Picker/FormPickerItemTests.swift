@@ -121,7 +121,8 @@ class FormPickerItemTests: XCTestCase {
             presenter: nil
         )
 
-        XCTAssertNil(formPickerItem.configuration.header)
+        XCTAssertEqual(formPickerItem.configuration.title, "")
+        XCTAssertNil(formPickerItem.configuration.subtitle)
     }
 
     func test_pickerItem_whenHeaderConfiguredAndSearchDisabled_shouldPresentPickerWithHeaderAndNoSearchBar() throws {
@@ -156,7 +157,8 @@ class FormPickerItemTests: XCTestCase {
             style: .init(),
             presenter: presenter,
             configuration: .init(
-                header: .init(title: "Installments", subtitle: "Split the total cost into monthly payments."),
+                title: "Installments",
+                subtitle: "Split the total cost into monthly payments.",
                 isSearchEnabled: false
             )
         )

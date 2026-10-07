@@ -14,12 +14,11 @@ package final class FormRegionPickerItem: FormPickerItem<FormPickerElement> {
         preselectedRegion: Region?,
         selectableRegions: [Region],
         validationFailureMessage: String?,
-        title: String,
         placeholder: String,
         style: FormTextItemStyle,
         presenter: ViewControllerPresenter?,
         localizationParameters: LocalizationParameters? = nil,
-        configuration: FormPickerConfiguration = .init(),
+        configuration: FormPickerConfiguration,
         identifier: String? = nil
     ) {
         let preselectedValue = preselectedRegion?.toFormPickerElement()
@@ -28,7 +27,7 @@ package final class FormRegionPickerItem: FormPickerItem<FormPickerElement> {
         super.init(
             preselectedValue: preselectedValue,
             selectableValues: selectableValues,
-            title: title,
+            title: configuration.title,
             placeholder: placeholder,
             style: style,
             presenter: presenter,

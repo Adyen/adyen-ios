@@ -17,7 +17,6 @@ package class FormPickerItemView<Value: FormPickable>: FormSelectableValueItemVi
             
             let pickerViewController = FormPickerSearchViewController(
                 localizationParameters: item.localizationParameters,
-                title: item.title,
                 configuration: item.configuration,
                 theme: theme,
                 options: item.selectableValues,

@@ -22,8 +22,7 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
     
     package convenience init(
         style: Style = .init(),
-        title: String?,
-        configuration: FormPickerConfiguration = .init(),
+        configuration: FormPickerConfiguration,
         theme: CheckoutTheme = .default,
         options: [Option],
         selectedOption: Option? = nil,
@@ -32,7 +31,6 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
         self.init(
             localizationParameters: nil,
             style: style,
-            title: title,
             configuration: configuration,
             theme: theme,
             options: options,
@@ -44,8 +42,7 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
     package init(
         localizationParameters: LocalizationParameters? = nil,
         style: Style = .init(),
-        title: String?,
-        configuration: FormPickerConfiguration = .init(),
+        configuration: FormPickerConfiguration,
         theme: CheckoutTheme = .default,
         options: [Option],
         selectedOption: Option? = nil,
@@ -73,9 +70,11 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
             handler(results)
         }
         
-        let headerView = configuration.header.flatMap {
-            FormPickerHeaderView(header: $0, theme: theme)
-        }
+        // An in-content header is only rendered when a subtitle is provided;
+        // otherwise the title is shown in the navigation bar.
+        let headerView: UIView? = configuration.subtitle == nil
+            ? nil
+            : FormPickerHeaderView(configuration: configuration, theme: theme)
 
         let searchViewController = SearchViewController(
             viewModel: viewModel,
@@ -87,9 +86,8 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
 
         searchViewController.resultsListViewController.cellContentInsets = FormPickerLayout.listItemContentInsets
         
-        // When a header is shown the title lives in the header; otherwise fall back to the navigation bar title.
         if headerView == nil {
-            searchViewController.title = title
+            searchViewController.title = configuration.title
         }
         
         super.init(rootViewController: searchViewController)

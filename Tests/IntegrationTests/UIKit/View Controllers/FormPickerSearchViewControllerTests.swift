@@ -44,8 +44,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         let expectation = expectation(description: "Selection handler was executed")
         
         let pickerSearchViewController = FormPickerSearchViewController(
-            title: nil,
-            configuration: .init(isSearchEnabled: false),
+            configuration: .init(title: "Picker", isSearchEnabled: false),
             options: [option]
         ) { element in
             XCTAssertEqual(element.identifier, option.identifier)
@@ -77,7 +76,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         let option: FormPickerElement = .init(identifier: "Identifier", title: "Title", subtitle: "Subtitle")
         
         let pickerSearchViewController = FormPickerSearchViewController(
-            title: nil,
+            configuration: .init(title: "Picker"),
             options: [option]
         ) { _ in }
         
@@ -115,7 +114,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         let option: FormPickerElement = .init(identifier: "Identifier", title: "Title", subtitle: "Subtitle")
         
         let pickerSearchViewController = FormPickerSearchViewController(
-            title: nil,
+            configuration: .init(title: "Picker"),
             options: [option]
         ) { _ in }
         
@@ -400,8 +399,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
     func test_picker_whenSearchDisabledAndHeaderAbsent_shouldShowResultsWithoutSearchBar() throws {
         let title = "Installments"
         let searchViewController = try makeSearchViewController(
-            title: title,
-            configuration: .init(isSearchEnabled: false)
+            configuration: .init(title: title, isSearchEnabled: false)
         )
 
         XCTAssertFalse(searchViewController.searchBar.isDescendant(of: searchViewController.view))
@@ -412,8 +410,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
 
     func test_picker_whenSearchDisabledAndOptionsEmpty_shouldShowEmptyStateWithoutSearchBar() throws {
         let pickerViewController = FormPickerSearchViewController<FormPickerElement>(
-            title: "Installments",
-            configuration: .init(isSearchEnabled: false),
+            configuration: .init(title: "Installments", isSearchEnabled: false),
             options: []
         ) { _ in
             XCTFail("Selection handler should not be called")
@@ -433,7 +430,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
 
     func test_pickerHeader_whenSubtitleProvided_shouldRenderTitleAndSubtitle() throws {
         let searchViewController = try makeSearchViewController(
-            configuration: .init(header: .init(title: "Installments", subtitle: "Split the total cost into monthly payments."))
+            configuration: .init(title: "Installments", subtitle: "Split the total cost into monthly payments.")
         )
 
         let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
@@ -446,7 +443,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
     }
 
     func test_pickerHeader_whenHeaderAbsent_shouldUseNavigationTitle() throws {
-        let searchViewController = try makeSearchViewController(title: "Country/Region")
+        let searchViewController = try makeSearchViewController(configuration: .init(title: "Country/Region"))
 
         XCTAssertNil(searchViewController.headerView)
         XCTAssertEqual(searchViewController.title, "Country/Region")
@@ -454,32 +451,28 @@ class FormPickerSearchViewControllerTests: XCTestCase {
 
     func test_pickerHeader_whenTitleAndSubtitleEmpty_shouldUseNavigationTitle() throws {
         let searchViewController = try makeSearchViewController(
-            title: "Installments",
-            configuration: .init(header: .init(title: "", subtitle: ""))
+            configuration: .init(title: "", subtitle: "")
         )
 
         XCTAssertNil(searchViewController.headerView)
-        XCTAssertEqual(searchViewController.title, "Installments")
+        XCTAssertEqual(searchViewController.title, "")
     }
 
     func test_pickerHeader_whenTitleEmptyAndSubtitleProvided_shouldUseNavigationTitle() throws {
         let searchViewController = try makeSearchViewController(
-            title: "Installments",
             configuration: .init(
-                header: .init(
-                    title: "",
-                    subtitle: "Split the total cost into monthly payments."
-                )
+                title: "",
+                subtitle: "Split the total cost into monthly payments."
             )
         )
 
         XCTAssertNil(searchViewController.headerView)
-        XCTAssertEqual(searchViewController.title, "Installments")
+        XCTAssertEqual(searchViewController.title, "")
     }
 
     func test_pickerHeader_whenSubtitleEmpty_shouldHideSubtitleLabel() throws {
         let searchViewController = try makeSearchViewController(
-            configuration: .init(header: .init(title: "Installments", subtitle: ""))
+            configuration: .init(title: "Installments", subtitle: "")
         )
 
         let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
@@ -491,10 +484,8 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         let expectedSpacing: CGFloat = 8
         let searchViewController = try makeSearchViewController(
             configuration: .init(
-                header: .init(
-                    title: "Installments",
-                    subtitle: "Split the total cost into monthly payments."
-                )
+                title: "Installments",
+                subtitle: "Split the total cost into monthly payments."
             )
         )
         let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
@@ -512,7 +503,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         let secondaryColor: UIColor = .orange
 
         let searchViewController = try makeSearchViewController(
-            configuration: .init(header: .init(title: "Installments", subtitle: "Split the total cost into monthly payments.")),
+            configuration: .init(title: "Installments", subtitle: "Split the total cost into monthly payments."),
             theme: CheckoutTheme(
                 colors: CheckoutColors(
                     primary: .purple,
@@ -525,20 +516,18 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         XCTAssertEqual(headerView.subtitleLabel.textColor, secondaryColor)
     }
 
-    func test_pickerHeader_whenSubtitleNil_shouldHideSubtitleLabel() throws {
+    func test_pickerHeader_whenSubtitleNil_shouldUseNavigationTitle() throws {
         let searchViewController = try makeSearchViewController(
-            configuration: .init(header: .init(title: "Installments"))
+            configuration: .init(title: "Installments")
         )
 
-        let headerView = try XCTUnwrap(searchViewController.headerView as? FormPickerHeaderView)
-        XCTAssertEqual(headerView.titleLabel.text, "Installments")
-        XCTAssertNil(headerView.subtitleLabel.text)
-        XCTAssertTrue(headerView.subtitleLabel.isHidden)
+        XCTAssertNil(searchViewController.headerView)
+        XCTAssertEqual(searchViewController.title, "Installments")
     }
 
     func test_pickerHeader_whenLaidOut_shouldHugContentHeight() throws {
         let searchViewController = try makeSearchViewController(
-            configuration: .init(header: .init(title: "Installments"))
+            configuration: .init(title: "Installments", subtitle: "Split the total cost into monthly payments.")
         )
         let headerView = try XCTUnwrap(
             searchViewController.headerView as? FormPickerHeaderView
@@ -569,8 +558,7 @@ class FormPickerSearchViewControllerTests: XCTestCase {
     // MARK: - Helpers
 
     private func makeSearchViewController(
-        title: String? = nil,
-        configuration: FormPickerConfiguration = .init(),
+        configuration: FormPickerConfiguration = .init(title: "Picker"),
         theme: CheckoutTheme = .default,
         options: [FormPickerElement] = [
             .init(
@@ -584,7 +572,6 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         line: UInt = #line
     ) throws -> SearchViewController {
         let pickerSearchViewController = FormPickerSearchViewController(
-            title: title,
             configuration: configuration,
             theme: theme,
             options: options,

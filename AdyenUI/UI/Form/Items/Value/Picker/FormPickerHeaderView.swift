@@ -18,7 +18,7 @@ internal final class FormPickerHeaderView: UIView {
 
     internal lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = header.title
+        label.text = configuration.title
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -27,8 +27,8 @@ internal final class FormPickerHeaderView: UIView {
 
     internal lazy var subtitleLabel: UILabel = {
         let label = UILabel()
-        label.text = header.subtitle
-        label.isHidden = header.subtitle?.isEmpty ?? true
+        label.text = configuration.subtitle
+        label.isHidden = configuration.subtitle?.isEmpty ?? true
         label.numberOfLines = 0
         label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -46,17 +46,17 @@ internal final class FormPickerHeaderView: UIView {
 
     // MARK: - Properties
 
-    private let header: FormPickerConfiguration.Header
+    private let configuration: FormPickerConfiguration
     private let theme: CheckoutTheme
 
     // MARK: - Initializers
 
-    internal init?(header: FormPickerConfiguration.Header, theme: CheckoutTheme) {
-        guard !header.title.isEmpty else {
+    internal init?(configuration: FormPickerConfiguration, theme: CheckoutTheme) {
+        guard !configuration.title.isEmpty else {
             return nil
         }
 
-        self.header = header
+        self.configuration = configuration
         self.theme = theme
         super.init(frame: .zero)
         setupView()
