@@ -25,7 +25,7 @@ class BACSViewControllerTests: XCTestCase {
 
         let paymentMethod = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit, name: "BACS Direct Debit")
         let amount = Amount(value: 10570, currencyCode: "USD", localeIdentifier: nil)
-        let configuration = BACSDirectDebitComponent.Configuration(showsSubmitButton: true)
+        let configuration = BasicComponentConfiguration(showsSubmitButton: true)
 
         viewModel = BACSViewModel(
             paymentMethod: paymentMethod,

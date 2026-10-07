@@ -25,7 +25,7 @@ class BACSViewModelTests: XCTestCase {
         itemsFactory = itemsFactoryMock
         let amount = Amount(value: 10570, currencyCode: "USD", localeIdentifier: nil)
         let paymentMethod = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit, name: "BACS Direct Debit")
-        let configuration = BACSDirectDebitComponent.Configuration(showsSubmitButton: true)
+        let configuration = BasicComponentConfiguration(showsSubmitButton: true)
 
         onSubmitCallsCount = 0
         onSubmitReceivedDetails = nil
@@ -82,7 +82,7 @@ class BACSViewModelTests: XCTestCase {
     func test_items_whenShowsSubmitButtonIsFalse_shouldNotCreateSubmitButton() {
         // Given
         let paymentMethod = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit, name: "BACS Direct Debit")
-        let configuration = BACSDirectDebitComponent.Configuration(showsSubmitButton: false)
+        let configuration = BasicComponentConfiguration(showsSubmitButton: false)
 
         let viewModel = BACSViewModel(
             paymentMethod: paymentMethod,
