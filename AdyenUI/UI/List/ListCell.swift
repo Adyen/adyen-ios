@@ -46,6 +46,13 @@ package final class ListCell: UITableViewCell {
             let usesCustomHighlight = item?.style.highlightedBackgroundColor != nil
             contentView.backgroundColor = usesCustomHighlight ? item?.style.backgroundColor : .clear
 
+            itemView.layoutMargins = item?.style.contentInsets ?? .init(
+                top: 0,
+                left: contentView.layoutMargins.left,
+                bottom: 0,
+                right: contentView.layoutMargins.right
+            )
+
             resetAccessoryView()
             
             accessibilityLabel = item?.accessibilityLabel
@@ -65,8 +72,6 @@ package final class ListCell: UITableViewCell {
         clipsToBounds = isSelected
         accessibilityMarkAsSelected(isSelected)
     }
-    
-    // MARK: - Internal
     
     /// Indicates if the cell is in an enabled state.
     internal var isEnabled = true {
@@ -133,7 +138,7 @@ package final class ListCell: UITableViewCell {
     }
     
     // MARK: - Item View
-    
+
     private lazy var itemView: ListItemView = {
         let itemView = ListItemView()
         itemView.translatesAutoresizingMaskIntoConstraints = false
@@ -144,15 +149,13 @@ package final class ListCell: UITableViewCell {
     }()
     
     // MARK: - Layout
-    
+
     private func configureConstraints() {
-        let layoutGuide = contentView.layoutMarginsGuide
-        
         let constraints = [
-            itemView.topAnchor.constraint(equalTo: topAnchor),
-            itemView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
-            itemView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
-            itemView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            itemView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            itemView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            itemView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            itemView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             contentView.heightAnchor
                 .constraint(greaterThanOrEqualToConstant: 48.0)
                 .adyen.with(priority: .defaultHigh)
