@@ -29,12 +29,16 @@ package class SearchViewController: UIViewController, AdyenObserver {
 
     internal let viewModel: ViewModel
     internal let emptyView: SearchResultsEmptyView
+    private let resultsHorizontalInset: CGFloat
+    private let searchTextFieldToResultsSpacing: CGFloat?
 
     /// Optional view shown above the search bar (e.g. a title/description header).
     internal let headerView: UIView?
     
     /// Delegate to handle different viewController events.
     package weak var delegate: ViewControllerDelegate?
+
+    internal var searchBarEditingStateDidChange: ((Bool) -> Void)?
     
     package lazy var resultsListViewController = ListViewController(style: viewModel.style)
 
@@ -43,14 +47,20 @@ package class SearchViewController: UIViewController, AdyenObserver {
     /// - Parameters:
     ///   - viewModel: The business logic of the search view controller
     ///   - emptyView: The view (conforming to ``SearchResultsEmptyView``) to show when the search results are empty.
+    ///   - resultsHorizontalInset: The horizontal distance between the results and the view edges.
+    ///   - searchTextFieldToResultsSpacing: The vertical distance between the search text field and results.
     package init(
         viewModel: ViewModel,
         emptyView: SearchResultsEmptyView,
-        headerView: UIView? = nil
+        headerView: UIView? = nil,
+        resultsHorizontalInset: CGFloat = 0,
+        searchTextFieldToResultsSpacing: CGFloat? = nil
     ) {
         self.emptyView = emptyView
         self.viewModel = viewModel
         self.headerView = headerView
+        self.resultsHorizontalInset = resultsHorizontalInset
+        self.searchTextFieldToResultsSpacing = searchTextFieldToResultsSpacing
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -169,16 +179,18 @@ package class SearchViewController: UIViewController, AdyenObserver {
                 searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Layout.searchBarHorizontalInset),
                 searchBar.topAnchor.constraint(equalTo: contentTopAnchor, constant: contentTopSpacing)
             ])
-            resultsTopAnchor = searchBar.bottomAnchor
-            resultsTopSpacing = 0
+            resultsTopAnchor = searchTextFieldToResultsSpacing == nil
+                ? searchBar.bottomAnchor
+                : searchBar.searchTextField.bottomAnchor
+            resultsTopSpacing = searchTextFieldToResultsSpacing ?? 0
         } else {
             resultsTopAnchor = contentTopAnchor
             resultsTopSpacing = contentTopSpacing
         }
         
         NSLayoutConstraint.activate([
-            resultsListViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            resultsListViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            resultsListViewController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: resultsHorizontalInset),
+            resultsListViewController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -resultsHorizontalInset),
             resultsListViewController.view.topAnchor.constraint(equalTo: resultsTopAnchor, constant: resultsTopSpacing),
             resultsListViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
@@ -268,6 +280,14 @@ package class SearchViewController: UIViewController, AdyenObserver {
 }
 
 extension SearchViewController: UISearchBarDelegate {
+
+    package func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBarEditingStateDidChange?(true)
+    }
+
+    package func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBarEditingStateDidChange?(false)
+    }
     
     package func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.handleSearchTextDidChange(searchText)
