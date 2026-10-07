@@ -57,7 +57,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
     func testBuild_WithBLIKAndCustomConfiguration_AppliesConfiguration() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
-        var blikConfig = BLIKComponentConfiguration()
+        var blikConfig = BasicComponentConfiguration()
         blikConfig.showsSubmitButton = false
         
         checkoutConfiguration = makeCheckoutConfiguration(
@@ -196,7 +196,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
     func testBuild_MergesGlobalShowsFormButtonSetting() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
-        var blikConfig = BLIKComponentConfiguration()
+        var blikConfig = BasicComponentConfiguration()
         blikConfig.showsSubmitButton = true // Component-specific
         
         checkoutConfiguration = makeCheckoutConfiguration(
@@ -225,7 +225,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
     func test_build_withDropInPolicy_shouldShowSubmitButtonWhenGlobalSettingHidesIt() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
-        var blikConfig = BLIKComponentConfiguration()
+        var blikConfig = BasicComponentConfiguration()
         blikConfig.showsSubmitButton = false
         checkoutConfiguration = makeCheckoutConfiguration(
             configurations: [.payment(.blik): blikConfig]
@@ -281,7 +281,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
     func testBuild_UsesStoredConfigurationWhenAvailable() throws {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
-        let customConfig = BLIKComponentConfiguration()
+        let customConfig = BasicComponentConfiguration()
         
         checkoutConfiguration = makeCheckoutConfiguration(
             configurations: [.payment(.blik): customConfig]
@@ -831,7 +831,7 @@ final class CheckoutComponentBuilderTests: XCTestCase {
         // Given
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         let localizationParameters = LocalizationParameters(enforcedLocale: "it-IT")
-        var blikConfiguration = BLIKComponentConfiguration()
+        var blikConfiguration = BasicComponentConfiguration()
         blikConfiguration.localizationParameters = localizationParameters
         checkoutConfiguration = makeCheckoutConfiguration(
             configurations: [.payment(.blik): blikConfiguration]

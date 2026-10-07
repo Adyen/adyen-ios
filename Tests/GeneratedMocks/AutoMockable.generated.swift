@@ -177,6 +177,12 @@ class ComponentContainerViewModelProtocolMock: ComponentContainerViewModelProtoc
     }
 
     var underlyingComponentViewController: UIViewController!
+    var theme: CheckoutTheme {
+        get { underlyingTheme }
+        set(value) { underlyingTheme = value }
+    }
+
+    var underlyingTheme: CheckoutTheme!
 
     // MARK: - cancel
 
@@ -540,6 +546,13 @@ class PaymentActionRoutingMock: PaymentActionRouting {
 
 class PaymentActionViewModelProtocolMock: PaymentActionViewModelProtocol {
 
+    var theme: CheckoutTheme {
+        get { underlyingTheme }
+        set(value) { underlyingTheme = value }
+    }
+
+    var underlyingTheme: CheckoutTheme!
+
     // MARK: - cancel
 
     var cancelCallsCount = 0
@@ -629,24 +642,6 @@ class PaymentMethodListRoutingMock: PaymentMethodListRouting {
         presentComponentClosure?(component)
     }
 
-    // MARK: - present
-
-    var presentViewControllerCallsCount = 0
-    var presentViewControllerCalled: Bool {
-        presentViewControllerCallsCount > 0
-    }
-
-    var presentViewControllerReceivedViewController: UIViewController?
-    var presentViewControllerReceivedInvocations: [UIViewController] = []
-    var presentViewControllerClosure: ((UIViewController) -> Void)?
-
-    func present(viewController: UIViewController) {
-        presentViewControllerCallsCount += 1
-        presentViewControllerReceivedViewController = viewController
-        presentViewControllerReceivedInvocations.append(viewController)
-        presentViewControllerClosure?(viewController)
-    }
-
     // MARK: - presentStoredPaymentMethodManagement
 
     var presentStoredPaymentMethodManagementCallsCount = 0
@@ -716,12 +711,7 @@ class PaymentMethodListViewModelProtocolMock: PaymentMethodListViewModelProtocol
     }
 
     var underlyingSubtitle: String!
-    var applePayButtonState: PaymentMethodListHeaderViewModel.ApplePayButtonState {
-        get { underlyingApplePayButtonState }
-        set(value) { underlyingApplePayButtonState = value }
-    }
-
-    var underlyingApplePayButtonState: PaymentMethodListHeaderViewModel.ApplePayButtonState!
+    var applePayViewController: UIViewController?
 
     // MARK: - cancel
 
@@ -858,24 +848,6 @@ class PreselectedPaymentMethodRoutingMock: PreselectedPaymentMethodRouting {
 
 class StoredCardInputViewModelProtocolMock: StoredCardInputViewModelProtocol {
 
-    var cardImageItem: CardImageItem {
-        get { underlyingCardImageItem }
-        set(value) { underlyingCardImageItem = value }
-    }
-
-    var underlyingCardImageItem: CardImageItem!
-    var titleText: String {
-        get { underlyingTitleText }
-        set(value) { underlyingTitleText = value }
-    }
-
-    var underlyingTitleText: String!
-    var subtitleText: NSAttributedString {
-        get { underlyingSubtitleText }
-        set(value) { underlyingSubtitleText = value }
-    }
-
-    var underlyingSubtitleText: NSAttributedString!
     var securityCodeItem: FormCardSecurityCodeItem {
         get { underlyingSecurityCodeItem }
         set(value) { underlyingSecurityCodeItem = value }

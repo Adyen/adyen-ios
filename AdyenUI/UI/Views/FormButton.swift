@@ -5,13 +5,20 @@
 //
 
 import Adyen
+import SwiftUI
 import UIKit
 
 /// A rounded button for use in forms.
+/// It has a template like [{Progress-indicator} | {image}] {Text}
+/// The progress indicator for the button is a custom one implemented by `CircularProgressView` to show and remove progress we add and remove that view.
+/// When progress is active it replaces the image.
 package final class FormButton: UIControl {
     private enum Constants {
         static let leadingImageWidth: CGFloat = 24
         static let leadingImageHeight: CGFloat = 24
+        static let progressViewSize: CGFloat = 20
+        static let progressViewLineWidth: CGFloat = 2.5
+        static let progressViewMargin: CGFloat = 0
     }
 
     private var style: ButtonStyle
@@ -28,7 +35,6 @@ package final class FormButton: UIControl {
         accessibilityTraits = .button
         
         addSubview(backgroundView)
-        addSubview(activityIndicatorView)
         addSubview(contentStackView)
 
         backgroundColor = style.backgroundColor
@@ -52,7 +58,6 @@ package final class FormButton: UIControl {
         accessibilityTraits = .button
 
         addSubview(backgroundView)
-        addSubview(activityIndicatorView)
         addSubview(contentStackView)
 
         backgroundColor = buttonStyle.backgroundColor
@@ -71,7 +76,6 @@ package final class FormButton: UIControl {
         accessibilityTraits = .button
 
         addSubview(backgroundView)
-        addSubview(activityIndicatorView)
         addSubview(contentStackView)
 
         backgroundColor = buttonStyle.backgroundColor
@@ -90,7 +94,8 @@ package final class FormButton: UIControl {
     internal lazy var backgroundView: BackgroundView = {
         let backgroundView = BackgroundView(
             cornerRounding: buttonStyle.cornerRadius ?? .fixed(AdyenUIConstants.defaultCornerRadius),
-            color: buttonStyle.backgroundColor
+            color: buttonStyle.backgroundColor,
+            disabledColor: buttonStyle.disabledBackgroundColor
         )
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -117,17 +122,53 @@ package final class FormButton: UIControl {
         return titleLabel
     }()
     
-    // MARK: - Leading Image
+    // MARK: - Leading Accessory
     
-    /// The optional leading image displayed to the left of the title.
-    package var leadingImage: UIImage? {
+    /// The content shown in the leading slot before the title. Only one accessory can be shown at a time.
+    private enum LeadingAccessory {
+        case none
+        case image(UIImage)
+        case progress
+    }
+    
+    private var leadingAccessory: LeadingAccessory = .none {
         didSet {
-            leadingImageView.image = leadingImage
-            leadingImageView.isHidden = leadingImage == nil
+            applyLeadingAccessory()
         }
     }
     
-    private lazy var leadingImageView: UIImageView = {
+    /// The accessory to show when the button is not loading.
+    private var idleLeadingAccessory: LeadingAccessory {
+        leadingImage.map(LeadingAccessory.image) ?? .none
+    }
+    
+    private func applyLeadingAccessory() {
+        switch leadingAccessory {
+        case .none:
+            leadingImageView.isHidden = true
+            hideProgressView()
+        case let .image(image):
+            leadingImageView.image = image
+            leadingImageView.isHidden = false
+            hideProgressView()
+        case .progress:
+            leadingImageView.isHidden = true
+            showProgressView()
+        }
+    }
+    
+    // MARK: - Leading Image
+    
+    /// The optional leading image displayed to the left of the title.
+    /// While loading, the progress view takes its place and the image comes back when loading ends.
+    package var leadingImage: UIImage? {
+        didSet {
+            guard !showsActivityIndicator else { return }
+            leadingAccessory = idleLeadingAccessory
+        }
+    }
+    
+    internal lazy var leadingImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
@@ -139,7 +180,7 @@ package final class FormButton: UIControl {
     }()
     
     internal lazy var contentStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [leadingImageView, titleLabel])
+        let stackView = UIStackView(arrangedSubviews: [progressContainerView, leadingImageView, titleLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.alignment = .center
@@ -156,39 +197,70 @@ package final class FormButton: UIControl {
         }
     }
     
-    // MARK: - Activity Indicator View
+    // MARK: - Progress View
     
-    /// Boolean value indicating whether an activity indicator should be shown.
+    /// Boolean value indicating whether a progress view should be shown.
     package var showsActivityIndicator: Bool {
         get {
-            activityIndicatorView.isAnimating
+            if case .progress = leadingAccessory { return true }
+            return false
         }
         
         set {
-            if newValue {
-                activityIndicatorView.startAnimating()
-                contentStackView.alpha = 0.0
-                isEnabled = false
-            } else {
-                activityIndicatorView.stopAnimating()
-                contentStackView.alpha = 1.0
-                isEnabled = true
-            }
+            isEnabled = !newValue
+            leadingAccessory = newValue ? .progress : idleLeadingAccessory
         }
     }
     
-    private lazy var activityIndicatorView: UIActivityIndicatorView = {
-        let activityIndicatorView = UIActivityIndicatorView(style: activityIndicatorStyle)
-        activityIndicatorView.color = titleLabel.textColor
-        activityIndicatorView.backgroundColor = .clear
-        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
-        activityIndicatorView.hidesWhenStopped = true
-        activityIndicatorView.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "activityIndicator")
-        return activityIndicatorView
+    private var progressContentView: (UIView & UIContentView)?
+    
+    private lazy var progressContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        view.isHidden = true
+        view.accessibilityIdentifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "activityIndicator")
+        return view
     }()
     
-    private var activityIndicatorStyle: UIActivityIndicatorView.Style {
-        .medium
+    private func makeProgressConfiguration() -> UIContentConfiguration {
+        UIHostingConfiguration {
+            CircularProgressView(
+                arcColor: contentColor,
+                trackColor: contentColor,
+                size: Constants.progressViewSize,
+                lineWidth: Constants.progressViewLineWidth
+            )
+        }
+        .margins(.all, Constants.progressViewMargin)
+    }
+    
+    private func showProgressView() {
+        guard progressContentView == nil else { return }
+        let contentView = makeProgressConfiguration().makeContentView()
+        contentView.backgroundColor = .clear
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        progressContainerView.addSubview(contentView)
+        (contentView as UIView).adyen.anchor(inside: progressContainerView)
+        progressContentView = contentView
+        progressContainerView.isHidden = false
+    }
+    
+    private func hideProgressView() {
+        progressContentView?.removeFromSuperview()
+        progressContentView = nil
+        progressContainerView.isHidden = true
+    }
+    
+    private var contentColor: UIColor {
+        isEnabled ? buttonStyle.textColor : buttonStyle.disabledTextColor
+    }
+    
+    private func updateAppearance() {
+        titleLabel.textColor = contentColor
+        leadingImageView.tintColor = contentColor
+        progressContentView?.configuration = makeProgressConfiguration()
+        backgroundView.isEnabled = isEnabled
     }
     
     // MARK: - Layout
@@ -214,12 +286,12 @@ package final class FormButton: UIControl {
             leadingImageView.heightAnchor.constraint(equalToConstant: Constants.leadingImageHeight)
         ]
         
-        let spinnerConstraints = [
-            activityIndicatorView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            activityIndicatorView.centerYAnchor.constraint(equalTo: centerYAnchor)
-        ]
-
-        let allConstraints = contentConstraints + imageConstraints + spinnerConstraints + [heightConstraint]
+        let progressConstraints = [
+            progressContainerView.widthAnchor.constraint(equalToConstant: Constants.progressViewSize),
+            progressContainerView.heightAnchor.constraint(equalToConstant: Constants.progressViewSize)
+        ].map { $0.adyen.with(priority: .defaultHigh) }
+        
+        let allConstraints = contentConstraints + imageConstraints + progressConstraints + [heightConstraint]
 
         NSLayoutConstraint.activate(allConstraints)
     }
@@ -232,6 +304,12 @@ package final class FormButton: UIControl {
         }
     }
     
+    override package var isEnabled: Bool {
+        didSet {
+            updateAppearance()
+        }
+    }
+    
 }
 
 extension FormButton {
@@ -239,13 +317,16 @@ extension FormButton {
     internal final class BackgroundView: UIView {
         
         private let color: UIColor
+        private let disabledColor: UIColor
         private let rounding: CornerRounding
 
         fileprivate init(
             cornerRounding: CornerRounding,
-            color: UIColor
+            color: UIColor,
+            disabledColor: UIColor
         ) {
             self.color = color
+            self.disabledColor = disabledColor
             self.rounding = cornerRounding
             super.init(frame: .zero)
             
@@ -262,6 +343,12 @@ extension FormButton {
         
         // MARK: - Background Color
         
+        fileprivate var isEnabled = true {
+            didSet {
+                updateBackgroundColor()
+            }
+        }
+        
         fileprivate var isHighlighted = false {
             didSet {
                 updateBackgroundColor()
@@ -273,7 +360,7 @@ extension FormButton {
         }
         
         private func updateBackgroundColor() {
-            var backgroundColor = color
+            var backgroundColor = isEnabled ? color : disabledColor
             
             if isHighlighted {
                 backgroundColor = color.withBrightnessMultiple(0.75)
