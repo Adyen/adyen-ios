@@ -58,7 +58,7 @@ class OnlineBankingComponentUITests: XCTestCase {
         style.textField.title.textAlignment = .left
         style.textField.backgroundColor = .blue
 
-        let config = OnlineBankingComponent.Configuration(style: style)
+        let config = BasicComponentConfiguration(style: style)
         let sut = OnlineBankingComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -70,7 +70,7 @@ class OnlineBankingComponentUITests: XCTestCase {
 
     func testPressContinueButton() {
         // Given
-        let config = OnlineBankingComponent.Configuration(style: style)
+        let config = BasicComponentConfiguration(style: style)
         let sut = OnlineBankingComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -103,7 +103,7 @@ class OnlineBankingComponentUITests: XCTestCase {
 
     func testContinueButtonLoading() throws {
         // Given
-        let config = OnlineBankingComponent.Configuration(style: style)
+        let config = BasicComponentConfiguration(style: style)
         let sut = OnlineBankingComponent(
             paymentMethod: paymentMethod,
             context: context,
