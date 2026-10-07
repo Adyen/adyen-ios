@@ -35,5 +35,28 @@ class ThrottlerTests: XCTestCase {
         wait(for: [lastBlockExpectation], timeout: 100)
         XCTAssertEqual(counter, 1) // Making sure the code was only executed once
     }
+    
+    func testCancelPreventsPendingBlockFromExecuting() {
+        let sut = Throttler(minimumDelay: 0.1)
+        var didExecute = false
+        
+        sut.throttle { didExecute = true }
+        sut.cancel()
+        wait(for: .milliseconds(300))
+        
+        XCTAssertFalse(didExecute)
+    }
+    
+    func testThrottleAfterCancelExecutesNewBlock() {
+        let sut = Throttler(minimumDelay: 0.1)
+        var executions: [String] = []
+        
+        sut.throttle { executions.append("cancelled") }
+        sut.cancel()
+        sut.throttle { executions.append("new") }
+        wait(for: .milliseconds(300))
+        
+        XCTAssertEqual(executions, ["new"])
+    }
 
 }

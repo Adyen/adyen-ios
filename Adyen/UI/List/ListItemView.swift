@@ -10,6 +10,11 @@ import UIKit
 /// Displays a list item.
 @_spi(AdyenInternal)
 public final class ListItemView: UIView, AnyFormItemView {
+
+    private enum Constants {
+        static let horizontalMargin: CGFloat = 8
+    }
+
     private let imageLoader: ImageLoading
     private var imageLoadingTask: AdyenCancellable? {
         willSet { imageLoadingTask?.cancel() }
@@ -25,6 +30,8 @@ public final class ListItemView: UIView, AnyFormItemView {
         
         addSubview(contentStackView)
         
+        directionalLayoutMargins.leading = Constants.horizontalMargin
+        directionalLayoutMargins.trailing = Constants.horizontalMargin
         preservesSuperviewLayoutMargins = true
         configureConstraints()
     }

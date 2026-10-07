@@ -7,6 +7,10 @@
 import Foundation
 import UIKit
 
+private enum Constants {
+    static let horizontalPadding: CGFloat = 8
+}
+
 /// Simple form item to wrap another item and provide padding around it.
 @_spi(AdyenInternal)
 public class FormContainerItem<ContentItem: FormItem>: FormItem {
@@ -70,6 +74,8 @@ private class FormContainerItemView: UIView, AnyFormItemView {
                 with: padding
             )
         } else {
+            directionalLayoutMargins.leading = Constants.horizontalPadding
+            directionalLayoutMargins.trailing = Constants.horizontalPadding
             contentView.adyen.anchor(
                 inside: self.layoutMarginsGuide
             )
@@ -86,7 +92,7 @@ public extension FormItem {
     
     /// Adds padding around the form item
     ///
-    /// If no padding is provided it uses the superview layout margins to specify the amount of padding around the item
+    /// If padding is nil it uses the superview layout margins to specify the amount of padding around the item
     ///
     /// - Parameters:
     ///   - padding: The optional fixed padding to apply

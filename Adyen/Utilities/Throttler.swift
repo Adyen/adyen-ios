@@ -31,4 +31,9 @@ public final class Throttler {
         // => delay the workItem execution by the minimum delay time
         queue.asyncAfter(deadline: .now() + minimumDelay, execute: workItem)
     }
+    
+    /// Cancels the throttled block if it has not been executed yet.
+    public func cancel() {
+        workItem.cancel()
+    }
 }

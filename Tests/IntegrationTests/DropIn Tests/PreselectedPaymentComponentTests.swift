@@ -222,6 +222,37 @@ class PreselectedPaymentComponentTests: XCTestCase {
         XCTAssertEqual(listViewTitle.text, "•••• 1111")
         XCTAssertEqual(listViewSubtitle.text, "Expires 08/18")
     }
+
+    func testStoredCardLogoAlignsWithFormContent() throws {
+        let formController = try XCTUnwrap(sut.viewController as? FormViewController)
+        formController.view.isUserInteractionEnabled = false
+        let modal = ModalViewController(rootViewController: formController, navBarType: .regular)
+        modal.additionalSafeAreaInsets.right = 32
+        setupRootViewController(modal)
+
+        let toolbar = try XCTUnwrap(modal.navBar as? ModalToolbar)
+        let itemView: ListItemView = try XCTUnwrap(formController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.defaultComponent"))
+        let stack = try XCTUnwrap(itemView.subviews.first { $0 is UIStackView } as? UIStackView)
+        let logo = try XCTUnwrap(stack.arrangedSubviews.first as? UIImageView)
+        let textStack = try XCTUnwrap(stack.arrangedSubviews[1] as? UIStackView)
+        let title: UILabel = try XCTUnwrap(itemView.findView(by: "titleLabel"))
+        let button: SubmitButton = try XCTUnwrap(formController.view.findView(with: "AdyenDropIn.PreselectedPaymentMethodComponent.submitButton.button"))
+
+        for size in [CGSize(width: 320, height: 640), CGSize(width: 704, height: 430)] {
+            modal.view.frame = CGRect(origin: .zero, size: size)
+            modal.view.layoutIfNeeded()
+            let headingFrame = toolbar.titleLabel.convert(toolbar.titleLabel.bounds, to: modal.view)
+            let logoFrame = logo.convert(logo.bounds, to: modal.view)
+            let titleFrame = title.convert(title.bounds, to: modal.view)
+            let textFrame = textStack.convert(textStack.bounds, to: modal.view)
+            let buttonFrame = button.convert(button.bounds, to: modal.view)
+
+            XCTAssertEqual(logoFrame.minX, headingFrame.minX, accuracy: 0.5)
+            XCTAssertEqual(logoFrame.minX, buttonFrame.minX, accuracy: 0.5)
+            XCTAssertEqual(titleFrame.minX - logoFrame.maxX, 16, accuracy: 0.5)
+            XCTAssertEqual(logoFrame.midY, textFrame.midY, accuracy: 0.5)
+        }
+    }
     
     func getStoredCard() -> StoredCardPaymentMethod {
         try! AdyenCoder.decode(storedCreditCardDictionary) as StoredCardPaymentMethod
