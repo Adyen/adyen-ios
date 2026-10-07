@@ -8,16 +8,12 @@ import Adyen
 
 #if canImport(AdyenUI)
     import AdyenUI
-    @_spi(AdyenInternal) import struct AdyenUI.BasicComponentConfiguration
 #endif
 import UIKit
 
 /// A component that provides a form for BACS Direct Debit payments.
 @MainActor
 package final class BACSDirectDebitComponent: PaymentComponent {
-
-    /// Configuration for BACS Direct Debit Component.
-    package typealias Configuration = BasicComponentConfiguration
 
     // MARK: - PaymentComponent
 
@@ -38,7 +34,7 @@ package final class BACSDirectDebitComponent: PaymentComponent {
     package let context: AdyenContext
 
     /// Component's configuration
-    package var configuration: Configuration
+    package var configuration: BasicComponentConfiguration
 
     // MARK: - PaymentComponent
 
@@ -68,7 +64,7 @@ package final class BACSDirectDebitComponent: PaymentComponent {
     package init(
         paymentMethod: BACSDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration,
+        configuration: BasicComponentConfiguration = .init(),
         viewModel: BACSViewModel,
         viewController: UIViewController
     ) {

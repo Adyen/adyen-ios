@@ -49,9 +49,6 @@ package final class UPIComponent: PaymentComponent,
         internal static let errorIcon = "error"
     }
     
-    /// Configuration for UPI Component.
-    package typealias Configuration = BasicComponentConfiguration
-
     /// The context object for this component.
     package var context: AdyenContext
 
@@ -73,7 +70,7 @@ package final class UPIComponent: PaymentComponent,
     package let requiresUserInteraction: Bool = true
     
     /// Component's configuration
-    package var configuration: Configuration
+    package var configuration: BasicComponentConfiguration
 
     private let upiPaymentMethod: UPIPaymentMethod
     
@@ -91,7 +88,7 @@ package final class UPIComponent: PaymentComponent,
     package init(
         paymentMethod: UPIPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: BasicComponentConfiguration = .init()
     ) {
         self.upiPaymentMethod = paymentMethod
         self.context = context

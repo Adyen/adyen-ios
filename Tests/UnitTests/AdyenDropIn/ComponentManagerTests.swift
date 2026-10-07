@@ -103,7 +103,7 @@ final class ComponentManagerTests: XCTestCase {
         sut.update(paymentMethods: PaymentMethods(regular: [regular], stored: []))
 
         XCTAssertEqual(sut.sections.map(\.kind), [.regular])
-        XCTAssertNil(sut.sections[0].header)
+        XCTAssertNil(sut.sections[0].headerTitle)
     }
 
     func test_buildComponent_forDisplayedMethod_createsFreshComponent() throws {

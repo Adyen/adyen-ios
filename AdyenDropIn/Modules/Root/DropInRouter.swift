@@ -10,6 +10,10 @@ import Foundation
 import SafariServices
 import UIKit
 
+#if canImport(AdyenUI)
+    import AdyenUI
+#endif
+
 internal protocol DropInRouting: Router, DropInFlowRouting, AnyObject {}
 
 @MainActor
@@ -25,6 +29,7 @@ internal class DropInRouter: DropInRouting {
     private let preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol
     private let paymentMethodListAssembler: PaymentMethodListAssemblerProtocol
     private let componentContainerAssembler: ComponentContainerAssemblerProtocol
+    private let theme: CheckoutTheme
     internal private(set) var childRouter: Router?
     private var paymentActionRouter: Router?
     
@@ -34,12 +39,14 @@ internal class DropInRouter: DropInRouting {
         viewModel: DropInViewModelProtocol,
         preselectedPaymentMethodAssembler: PreselectedPaymentMethodAssemblerProtocol,
         paymentMethodListAssembler: PaymentMethodListAssemblerProtocol,
-        componentContainerAssembler: ComponentContainerAssemblerProtocol
+        componentContainerAssembler: ComponentContainerAssemblerProtocol,
+        theme: CheckoutTheme
     ) {
         self.viewModel = viewModel
         self.preselectedPaymentMethodAssembler = preselectedPaymentMethodAssembler
         self.paymentMethodListAssembler = paymentMethodListAssembler
         self.componentContainerAssembler = componentContainerAssembler
+        self.theme = theme
     }
 
     // MARK: - Private
@@ -66,7 +73,7 @@ internal class DropInRouter: DropInRouting {
         }
 
         self.childRouter = router
-        return UINavigationController(rootViewController: router.rootViewController)
+        return CheckoutNavigationController(rootViewController: router.rootViewController, theme: theme)
     }
 }
 

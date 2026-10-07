@@ -11,7 +11,6 @@ import Adyen
 #endif
 #if canImport(AdyenUI)
     import AdyenUI
-    @_spi(AdyenInternal) import struct AdyenUI.ListSection
 #endif
 import Foundation
 
@@ -36,10 +35,6 @@ internal final class ComponentManager: ComponentManaging {
 
     private var localizationParameters: LocalizationParameters? {
         configuration.resolvedLocalizationParameters
-    }
-
-    private var listStyle: ListComponentStyle {
-        ListComponentStyle()
     }
 
     // MARK: - Initializer
@@ -123,25 +118,19 @@ internal final class ComponentManager: ComponentManaging {
     private var paidSection: PaymentMethodsSection {
         PaymentMethodsSection(
             kind: .paid,
-            header: ListSectionHeader(
-                title: localizedString(.paymentMethodsPaidMethods, localizationParameters),
-                style: listStyle.sectionHeader
-            ),
+            headerTitle: localizedString(.paymentMethodsPaidMethods, localizationParameters),
             paymentMethods: supportedPaidPaymentMethods
         )
     }
 
     private var storedSection: PaymentMethodsSection {
         guard !configuration.hideStoredPaymentMethods else {
-            return PaymentMethodsSection(kind: .stored, header: nil, paymentMethods: [])
+            return PaymentMethodsSection(kind: .stored, headerTitle: nil, paymentMethods: [])
         }
 
         return PaymentMethodsSection(
             kind: .stored,
-            header: ListSectionHeader(
-                title: localizedString(.paymentMethodsStoredMethods, localizationParameters),
-                style: listStyle.sectionHeader
-            ),
+            headerTitle: localizedString(.paymentMethodsStoredMethods, localizationParameters),
             paymentMethods: visibleStoredPaymentMethods
         )
     }
@@ -149,16 +138,13 @@ internal final class ComponentManager: ComponentManaging {
     private var regularSection: PaymentMethodsSection {
         let needsHeader = !paidSection.paymentMethods.isEmpty || !storedSection.paymentMethods.isEmpty
 
-        let header: ListSectionHeader? = needsHeader
-            ? ListSectionHeader(
-                title: localizedString(.paymentMethodsOtherMethods, localizationParameters),
-                style: listStyle.sectionHeader
-            )
+        let headerTitle: String? = needsHeader
+            ? localizedString(.paymentMethodsOtherMethods, localizationParameters)
             : nil
 
         return PaymentMethodsSection(
             kind: .regular,
-            header: header,
+            headerTitle: headerTitle,
             paymentMethods: supportedRegularPaymentMethods
         )
     }

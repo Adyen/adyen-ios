@@ -31,7 +31,7 @@ class OnlineBankingComponentTests: XCTestCase {
         sut = OnlineBankingComponent(
             paymentMethod: paymentMethod,
             context: context,
-            configuration: OnlineBankingComponent.Configuration(style: style)
+            configuration: BasicComponentConfiguration(style: style)
         )
         getFormViewController().title = "Test title"
     }
