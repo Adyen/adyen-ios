@@ -727,13 +727,13 @@ class CardComponentTests: XCTestCase {
             XCTAssertEqual(data.storePaymentMethod, true)
             XCTAssertEqual(data.billingAddress, expectedVerificationAddress)
 
-            sut.finalizeIfNeeded(with: true, completion: {
+            Task {
+                await sut.finalizeIfNeeded(success: true)
+                XCTAssertEqual(sut.cardViewController.view.isUserInteractionEnabled, true)
+                XCTAssertEqual(sut.cardViewController.items.button.showsActivityIndicator, false)
                 finalizationExpectation.fulfill()
-            })
+            }
             delegateExpectation.fulfill()
-
-            XCTAssertEqual(sut.cardViewController.view.isUserInteractionEnabled, true)
-            XCTAssertEqual(sut.cardViewController.items.button.showsActivityIndicator, false)
         }
 
         let view: UIView = sut.viewController.view

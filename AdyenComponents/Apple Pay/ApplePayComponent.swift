@@ -24,7 +24,7 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
     internal let applePayPaymentMethod: ApplePayPaymentMethod
 
     /// The continuation that bridges the gap between `submit(data:)` (fire-and-forget)
-    /// and the backend result delivered via `didFinalize(with:completion:)`.
+    /// and the backend result delivered via `finalize(success:)`.
     /// While suspended, the Apple Pay sheet stays on screen waiting for a `PKPaymentAuthorizationResult`.
     internal var paymentResultContinuation: CheckedContinuation<Bool, Never>?
 
@@ -61,7 +61,7 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
     ///
     /// The component shows the Apple Pay button in its `viewController`. Tapping it, or calling `submit()`,
     /// opens the Apple Pay sheet. After the shopper authorizes payment, the component keeps the sheet open
-    /// until `didFinalize(with:completion:)` is called with the backend result.
+    /// until `finalize(success:)` is called with the backend result.
     ///
     /// - Parameter paymentMethod: The Apple Pay payment method. Must include country code.
     /// - Parameter context: The context object for this component.
@@ -157,17 +157,14 @@ package class ApplePayComponent: NSObject, PaymentComponent, FinalizableComponen
         continuation?.resume(returning: success)
     }
     
-    // TODO: turn this into async, as now the sheet dismisses immediately
-    // before user can see the success checkmark on Apple Pay
+    // TODO: return only once the sheet is dismissed, so the Checkout layer
+    // doesn't notify the merchant while the sheet still shows its result.
     /// Resumes the suspended Apple Pay authorization so the sheet shows a success/failure animation
     /// and dismisses. Called by the Checkout layer once the backend payment result is known.
     ///
-    /// - Parameters:
-    ///   - success: `true` if the payment succeeded, `false` otherwise.
-    ///   - completion: Invoked once the continuation has been resumed.
-    package func didFinalize(with success: Bool, completion: (() -> Void)?) {
+    /// - Parameter success: `true` if the payment succeeded, `false` otherwise.
+    package func finalize(success: Bool) async {
         resumeContinuation(success: success)
-        completion?()
     }
 
     /// Opens the Apple Pay sheet.

@@ -197,10 +197,14 @@ final class CheckoutCoreDropInTests: XCTestCase {
         XCTAssertEqual(completionCount, 1)
     }
 
-    func test_dropInPaymentFailure_shouldReachFailureHandlerOnce() {
+    func test_dropInPaymentFailure_shouldReachFailureHandlerOnce() async {
         let callbackStore = AdvancedCheckoutCallbackStore()
+        let failed = expectation(description: "onFailure called")
         var failureCount = 0
-        callbackStore.onFailure = { _ in failureCount += 1 }
+        callbackStore.onFailure = { _ in
+            failureCount += 1
+            failed.fulfill()
+        }
         let sut = makeAdvancedCheckoutCore(callbackStore: callbackStore, paymentMethods: paymentMethods)
         let paymentMethod = paymentMethods.regular[0]
 
@@ -210,6 +214,7 @@ final class CheckoutCoreDropInTests: XCTestCase {
             in: ActionHandlingDropInMock()
         )
 
+        await fulfillment(of: [failed], timeout: 1)
         XCTAssertEqual(failureCount, 1)
     }
 

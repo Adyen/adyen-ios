@@ -244,6 +244,7 @@ Drop-in presents actions within its own navigation stack, so `onAction(_:)` is n
 - `PresentationDelegate` and the `presentationDelegate:` parameter of `Checkout.setup(...)` are removed in favour of `onAction(_:)`.
 - Theme and localization are configured on `CheckoutConfiguration` through `theme(_:)` and `localizationProvider(_:)`.
 - Callback closure typealiases are prefixed with `Checkout` to avoid name collisions: `CheckoutSubmitHandler`, `CheckoutAdditionalDetailsHandler`, `CheckoutBeforeSubmitHandler` and `CheckoutActionHandler`.
+- `FinalizableComponent` and `Component.finalizeIfNeeded(with:completion:)` are no longer public, and `DropInComponent` no longer conforms to `FinalizableComponent`. Checkout ends the payment in the component itself and then reports the result through `onComplete` or `onFailure`.
 
 ### Card component
 
