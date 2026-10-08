@@ -146,6 +146,7 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         _ data: PaymentComponentData,
         from component: any PaymentComponent
     ) {
+        stopLoading()
         dropInFlowManager.submit(data, from: component)
     }
     
@@ -153,6 +154,7 @@ extension PreselectedPaymentMethodViewModel: PaymentComponentDelegate {
         with error: any Error,
         from component: any PaymentComponent
     ) {
+        stopLoading()
         if case ComponentError.cancelled = error {
             cancel()
         } else {
