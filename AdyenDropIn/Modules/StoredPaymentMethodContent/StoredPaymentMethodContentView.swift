@@ -16,7 +16,7 @@ import SwiftUI
 internal struct StoredPaymentMethodContentView: View {
 
     private enum Constants {
-        static let contentPadding: CGFloat = 16
+        static let contentPadding: CGFloat = 8
         static let contentSpacing: CGFloat = 32
         static let bottomPadding: CGFloat = 16
     }
@@ -43,7 +43,7 @@ internal struct StoredPaymentMethodContentView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.bottom, Constants.bottomPadding)
-                .padding(.horizontal, 8)
+                .padding(.horizontal, Constants.contentPadding)
                 .frame(minHeight: geometry.size.height)
             }
         }

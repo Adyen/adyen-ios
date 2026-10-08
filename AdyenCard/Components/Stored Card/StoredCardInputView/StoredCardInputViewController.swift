@@ -20,7 +20,7 @@ internal class StoredCardInputViewController: UIViewController {
     // MARK: - Constants
 
     private enum Constants {
-        static let contentPadding: CGFloat = 16
+        static let contentPadding: CGFloat = 8
         static let distanceFromButtonsToLabels: CGFloat = 24
         static let buttonsBottomPadding: CGFloat = 0
     }
