@@ -71,16 +71,10 @@ internal final class PreselectedPaymentMethodViewController: UIHostingController
 internal struct PreselectedPaymentMethodView: View {
 
     private enum Constants {
-        static let paymentLogoSize = CGSize(width: 80, height: 52)
-
         static let contentTopPadding: CGFloat = 24
         static let contentPadding: CGFloat = 24
 
         static let labelsToButtonPadding: CGFloat = 16
-
-        static let logoToLabelsSpacing: CGFloat = 24
-
-        static let labelsSpacing: CGFloat = 8
 
         static let buttonsSpacing: CGFloat = 16
         static let buttonsBottomPadding: CGFloat = 16
@@ -105,29 +99,21 @@ internal struct PreselectedPaymentMethodView: View {
             }
         }
         .background(Color(uiColor: viewModel.theme.colors.background))
+        .accessibilityIdentifier(PreselectedPaymentMethodAccessibilityIdentifier.screen)
     }
 
     private var topContent: some View {
-        VStack(spacing: Constants.logoToLabelsSpacing) {
-            PaymentLogoView(
-                url: viewModel.paymentMethodLogoURL,
-                theme: viewModel.theme,
-                size: Constants.paymentLogoSize
+        PaymentMethodContentHeaderView(
+            logoURL: viewModel.paymentMethodLogoURL,
+            title: viewModel.titleText,
+            subtitle: AttributedString(viewModel.subtitleText),
+            theme: viewModel.theme,
+            accessibilityIdentifiers: .init(
+                logo: PreselectedPaymentMethodAccessibilityIdentifier.logo,
+                title: PreselectedPaymentMethodAccessibilityIdentifier.title,
+                subtitle: PreselectedPaymentMethodAccessibilityIdentifier.subtitle
             )
-            .accessibilityIdentifier(ViewIdentifierBuilder.build(scopeInstance: self, postfix: "cardShapedImage"))
-            .accessibilityHidden(true)
-
-            VStack(spacing: Constants.labelsSpacing) {
-                Text(viewModel.titleText)
-                    .font(Font(viewModel.theme.elements.labels.title.font))
-                    .accessibilityIdentifier(ViewIdentifierBuilder.build(scopeInstance: self, postfix: "title"))
-                Text(viewModel.subtitleText)
-                    .font(Font(viewModel.theme.elements.labels.body.font))
-                    .accessibilityIdentifier(ViewIdentifierBuilder.build(scopeInstance: self, postfix: "subTitle"))
-            }
-            .foregroundStyle(Color(uiColor: viewModel.theme.colors.text))
-            .multilineTextAlignment(.center)
-        }
+        )
     }
 
     private var buttons: some View {
@@ -137,7 +123,7 @@ internal struct PreselectedPaymentMethodView: View {
                 style: viewModel.theme.elements.buttons.primary,
                 isEnabled: !viewModel.isLoading,
                 showsActivityIndicator: viewModel.isLoading,
-                accessibilityIdentifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "primaryButton"),
+                accessibilityIdentifier: PreselectedPaymentMethodAccessibilityIdentifier.primaryButton,
                 action: viewModel.submitPayment
             )
             .frame(height: Constants.buttonHeight)
@@ -148,11 +134,21 @@ internal struct PreselectedPaymentMethodView: View {
                     style: viewModel.theme.elements.buttons.secondary,
                     isEnabled: !viewModel.isLoading,
                     showsActivityIndicator: false,
-                    accessibilityIdentifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "secondaryButton"),
+                    accessibilityIdentifier: PreselectedPaymentMethodAccessibilityIdentifier.secondaryButton,
                     action: viewModel.showAllPaymentMethods
                 )
                 .frame(height: Constants.buttonHeight)
             }
         }
     }
+}
+
+// swiftlint:disable:next type_name
+internal enum PreselectedPaymentMethodAccessibilityIdentifier {
+    internal static let screen = "preselectedPaymentMethod.screen"
+    internal static let logo = "preselectedPaymentMethod.logo"
+    internal static let title = "preselectedPaymentMethod.title"
+    internal static let subtitle = "preselectedPaymentMethod.subtitle"
+    internal static let primaryButton = "preselectedPaymentMethod.primaryButton"
+    internal static let secondaryButton = "preselectedPaymentMethod.secondaryButton"
 }
