@@ -34,6 +34,7 @@ internal final class PreselectedPaymentMethodViewController: UIHostingController
 
     override internal func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = viewModel.theme.colors.background
         setupNavigationItem()
         configurePresentationSheet()
         viewModel.viewDidLoad()

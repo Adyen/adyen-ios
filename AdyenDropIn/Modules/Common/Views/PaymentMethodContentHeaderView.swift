@@ -41,11 +41,13 @@ internal struct PaymentMethodContentHeaderView: View {
             VStack(spacing: Constants.labelsSpacing) {
                 Text(title)
                     .font(Font(theme.elements.labels.title.font))
+                    .foregroundStyle(Color(uiColor: theme.elements.labels.title.color))
                     .accessibilityIdentifier(accessibilityIdentifiers.title)
                 Text(subtitle)
+                    .font(Font(theme.elements.labels.body.font))
+                    .foregroundStyle(Color(uiColor: theme.elements.labels.body.color))
                     .accessibilityIdentifier(accessibilityIdentifiers.subtitle)
             }
-            .foregroundStyle(Color(uiColor: theme.colors.text))
             .multilineTextAlignment(.center)
         }
     }
