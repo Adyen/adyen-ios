@@ -49,6 +49,13 @@ extension CheckoutLocalizationKey {
     public static let generalSearchHint = CheckoutLocalizationKey(localizationKey: .searchPlaceholder)
 }
 
+// MARK: - Address
+
+extension CheckoutLocalizationKey {
+    public static let addressCountryPickerTitle = CheckoutLocalizationKey(localizationKey: .addressCountryPickerTitle)
+    public static let addressCountryPickerDescription = CheckoutLocalizationKey(localizationKey: .addressCountryPickerDescription)
+}
+
 // MARK: - Card
 
 extension CheckoutLocalizationKey {

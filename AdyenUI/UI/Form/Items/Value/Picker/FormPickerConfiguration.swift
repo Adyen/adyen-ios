@@ -9,33 +9,18 @@ import Foundation
 /// Configuration for the picker search screen.
 package struct FormPickerConfiguration {
 
-    /// Header shown at the top of the picker screen. `nil` → no header.
-    package let header: Header?
+    /// The title of the picker screen.
+    package let title: String
+
+    /// The subtitle of the picker screen.
+    package let subtitle: String?
 
     /// Whether the picker shows its search bar.
     package let isSearchEnabled: Bool
 
-    package init(
-        header: Header? = nil,
-        isSearchEnabled: Bool = true
-    ) {
-        self.header = header
+    package init(title: String, subtitle: String? = nil, isSearchEnabled: Bool = true) {
+        self.title = title
+        self.subtitle = subtitle
         self.isSearchEnabled = isSearchEnabled
-    }
-}
-
-extension FormPickerConfiguration {
-
-    /// The title/subtitle content of the picker screen header.
-    package struct Header: Equatable {
-
-        package let title: String
-
-        package let subtitle: String?
-
-        package init(title: String, subtitle: String? = nil) {
-            self.title = title
-            self.subtitle = subtitle
-        }
     }
 }

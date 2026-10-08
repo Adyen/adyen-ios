@@ -32,6 +32,8 @@ package class ListItem: FormItem {
         case standard
         /// Rendered in the theme's highlight color, for items that act as a link or an action.
         case highlighted
+        /// Rendered in the theme's primary color, for items picked from a list of options.
+        case primary
     }
 
     /// The emphasis applied to the item's title.
@@ -48,6 +50,10 @@ package class ListItem: FormItem {
 
     /// The trailing text of the item.
     package var trailingInfo: TrailingInfoType?
+
+    /// The distance between the cell's edges and the item's content.
+    /// `nil` aligns the content with the cell's layout margins.
+    package let horizontalContentInset: CGFloat?
 
     /// Whether the item is currently selected.
     package let isSelected: Bool
@@ -77,6 +83,7 @@ package class ListItem: FormItem {
     ///   - icon: The icon of the item.
     ///   - trailingInfo: The trailing information.
     ///   - titleEmphasis: The emphasis applied to the title.
+    ///   - horizontalContentInset: The distance between the cell's edges and the item's content.
     ///   - identifier: The `accessibilityIdentifier` to be used on the `ListItem`
     ///   - accessibilityLabel: An optional custom `accessibilityLabel` to use. Defaults to title + subtitle + trailingText joined by a `, `
     ///   - isSelected: Whether the item is currently selected.
@@ -87,6 +94,7 @@ package class ListItem: FormItem {
         icon: Icon? = nil,
         trailingInfo: TrailingInfoType? = nil,
         titleEmphasis: TitleEmphasis = .standard,
+        horizontalContentInset: CGFloat? = nil,
         identifier: String? = nil,
         accessibilityLabel: String? = nil,
         isSelected: Bool = false,
@@ -97,6 +105,7 @@ package class ListItem: FormItem {
         self.icon = icon
         self.trailingInfo = trailingInfo
         self.titleEmphasis = titleEmphasis
+        self.horizontalContentInset = horizontalContentInset
         self.identifier = identifier
         self.isSelected = isSelected
         self.accessibilityLabel = accessibilityLabel ?? [

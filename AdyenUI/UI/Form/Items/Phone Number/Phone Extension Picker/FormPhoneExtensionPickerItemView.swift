@@ -52,7 +52,7 @@ package final class FormPhoneExtensionPickerItemView: FormItemView<FormPhoneExte
             
             let pickerViewController = FormPickerSearchViewController(
                 localizationParameters: item.localizationParameters,
-                title: item.title,
+                configuration: item.configuration,
                 options: item.selectableValues
             ) { [weak topPresenter, weak self] selectedItem in
                 self?.item.value = selectedItem

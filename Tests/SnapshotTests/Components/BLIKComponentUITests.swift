@@ -56,13 +56,14 @@ final class BLIKComponentUITests: XCTestCase {
         style.textField.title.textAlignment = .center
         style.textField.backgroundColor = .red
 
-        let config = BLIKComponentConfiguration(style: style)
+        var config = BasicComponentConfiguration()
+        config.style = style
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
         assertViewControllerImage(matching: sut.viewController, named: "UI_configuration")
     }
 
     func testSubmitForm() throws {
-        let config = BLIKComponentConfiguration(style: .init())
+        let config = BasicComponentConfiguration()
         let sut = BLIKComponent(paymentMethod: paymentMethod, context: context, configuration: config)
 
         let delegate = PaymentComponentDelegateMock()

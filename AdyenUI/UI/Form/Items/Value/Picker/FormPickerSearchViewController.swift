@@ -7,12 +7,17 @@
 import Adyen
 import UIKit
 
+private enum FormPickerLayout {
+    static let horizontalInset: CGFloat = 16
+    static let searchTextFieldToResultsSpacing: CGFloat = 24
+    static let listItemHorizontalInset: CGFloat = 14
+}
+
 package final class FormPickerSearchViewController<Option: FormPickable>: UINavigationController {
     
     package convenience init(
         style: Style = .init(),
-        title: String?,
-        configuration: FormPickerConfiguration = .init(),
+        configuration: FormPickerConfiguration,
         theme: CheckoutTheme = .default,
         options: [Option],
         selectedOption: Option? = nil,
@@ -21,7 +26,6 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
         self.init(
             localizationParameters: nil,
             style: style,
-            title: title,
             configuration: configuration,
             theme: theme,
             options: options,
@@ -33,8 +37,7 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
     package init(
         localizationParameters: LocalizationParameters? = nil,
         style: Style = .init(),
-        title: String?,
-        configuration: FormPickerConfiguration = .init(),
+        configuration: FormPickerConfiguration,
         theme: CheckoutTheme = .default,
         options: [Option],
         selectedOption: Option? = nil,
@@ -62,19 +65,22 @@ package final class FormPickerSearchViewController<Option: FormPickable>: UINavi
             handler(results)
         }
         
-        let headerView = configuration.header.flatMap {
-            FormPickerHeaderView(header: $0, theme: theme)
-        }
+        // An in-content header is only rendered when a subtitle is provided;
+        // otherwise the title is shown in the navigation bar.
+        let headerView: UIView? = configuration.subtitle == nil
+            ? nil
+            : FormPickerHeaderView(configuration: configuration, theme: theme)
 
         let searchViewController = SearchViewController(
             viewModel: viewModel,
             emptyView: EmptyView(),
-            headerView: headerView
+            headerView: headerView,
+            resultsHorizontalInset: FormPickerLayout.horizontalInset,
+            searchTextFieldToResultsSpacing: FormPickerLayout.searchTextFieldToResultsSpacing
         )
-        
-        // When a header is shown the title lives in the header; otherwise fall back to the navigation bar title.
+
         if headerView == nil {
-            searchViewController.title = title
+            searchViewController.title = configuration.title
         }
         
         super.init(rootViewController: searchViewController)
@@ -110,6 +116,8 @@ private extension FormPickable {
             subtitle: subtitle,
             icon: listItemIcon,
             trailingInfo: trailingText.map { .text($0) },
+            titleEmphasis: .primary,
+            horizontalContentInset: FormPickerLayout.listItemHorizontalInset,
             identifier: identifier,
             isSelected: isSelected,
             selectionHandler: { selectionHandler(self) }

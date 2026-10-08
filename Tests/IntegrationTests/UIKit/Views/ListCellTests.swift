@@ -92,6 +92,30 @@ final class ListCellTests: XCTestCase {
         XCTAssertEqual(cell.contentView.backgroundColor, .clear)
     }
 
+    func test_cell_whenHorizontalContentInsetProvided_shouldInsetItemViewAndRestoreMargins() throws {
+        let cell = makeCell(item: makeItem(horizontalContentInset: 14))
+        let itemView: UIView = try XCTUnwrap(cell.findView(by: "itemView"))
+
+        XCTAssertEqual(itemView.frame.minX, 14, accuracy: 0.1)
+        XCTAssertEqual(cell.contentView.bounds.maxX - itemView.frame.maxX, 14, accuracy: 0.1)
+
+        cell.item = makeItem()
+        cell.layoutIfNeeded()
+
+        XCTAssertEqual(itemView.frame.minX, cell.contentView.layoutMargins.left, accuracy: 0.1)
+        XCTAssertEqual(cell.contentView.bounds.maxX - itemView.frame.maxX, cell.contentView.layoutMargins.right, accuracy: 0.1)
+    }
+
+    func test_cell_whenTitleEmphasisPrimary_shouldUsePrimaryColorForTitleAndCheckmark() throws {
+        let cell = makeCell(item: makeItem(isSelected: true, titleEmphasis: .primary))
+
+        let titleLabel: UILabel = try XCTUnwrap(cell.findView(by: "titleLabel"))
+        let checkmarkImageView: UIImageView = try XCTUnwrap(cell.findView(by: "checkmark"))
+
+        XCTAssertEqual(titleLabel.textColor, theme.colors.primary)
+        XCTAssertEqual(checkmarkImageView.tintColor, theme.colors.primary)
+    }
+
     func test_cell_whenTitleEmphasisHighlighted_shouldUseHighlightColor() throws {
         let cell = makeCell(item: makeItem(titleEmphasis: .highlighted))
 
@@ -120,6 +144,7 @@ final class ListCellTests: XCTestCase {
         colors: CheckoutColors(
             background: Colors.background,
             container: Colors.container,
+            primary: .green,
             highlight: .blue
         )
     )
@@ -136,12 +161,14 @@ final class ListCellTests: XCTestCase {
     private func makeItem(
         isSelected: Bool = false,
         titleEmphasis: ListItem.TitleEmphasis = .standard,
-        trailingInfo: ListItem.TrailingInfoType? = nil
+        trailingInfo: ListItem.TrailingInfoType? = nil,
+        horizontalContentInset: CGFloat? = nil
     ) -> ListItem {
         ListItem(
             title: "Title",
             trailingInfo: trailingInfo,
             titleEmphasis: titleEmphasis,
+            horizontalContentInset: horizontalContentInset,
             identifier: "identifier",
             isSelected: isSelected
         )

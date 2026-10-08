@@ -116,10 +116,14 @@ package final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>,
                 .countryFieldInvalid,
                 configuration.localizationParameters
             ),
-            title: localizedString(.countryFieldTitle, configuration.localizationParameters),
             placeholder: localizedString(.countryFieldPlaceholder, configuration.localizationParameters),
             style: style.textField,
             presenter: presenter,
+            localizationParameters: configuration.localizationParameters,
+            configuration: .init(
+                title: localizedString(.addressCountryPickerTitle, configuration.localizationParameters),
+                subtitle: localizedString(.addressCountryPickerDescription, configuration.localizationParameters)
+            ),
             identifier: ViewIdentifierBuilder.build(scopeInstance: self, postfix: "country")
         )
     }()
@@ -194,10 +198,10 @@ package final class FormAddressItem: FormValueItem<PostalAddress, AddressStyle>,
             preselectedRegion: defaultRegion,
             selectableRegions: subRegions,
             validationFailureMessage: validationMessage,
-            title: itemTitle,
             placeholder: itemTitle,
             style: style.textField,
-            presenter: presenter
+            presenter: presenter,
+            configuration: .init(title: itemTitle)
         )
         
         bind(item: item, to: .stateOrProvince, subRegions: subRegions)
