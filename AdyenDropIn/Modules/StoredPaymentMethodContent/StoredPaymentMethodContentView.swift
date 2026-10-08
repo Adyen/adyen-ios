@@ -31,11 +31,16 @@ internal struct StoredPaymentMethodContentView: View {
         GeometryReader { geometry in
             ScrollView {
                 VStack(spacing: Constants.contentSpacing) {
-                    StoredPaymentMethodContentHeaderView(
+                    PaymentMethodContentHeaderView(
                         logoURL: viewModel.paymentMethodLogoURL,
                         title: viewModel.title,
-                        subtitle: viewModel.subtitle,
-                        theme: viewModel.theme
+                        subtitle: AttributedString(viewModel.subtitle),
+                        theme: viewModel.theme,
+                        accessibilityIdentifiers: .init(
+                            logo: StoredPaymentMethodContentAccessibilityIdentifier.logo,
+                            title: StoredPaymentMethodContentAccessibilityIdentifier.title,
+                            subtitle: StoredPaymentMethodContentAccessibilityIdentifier.subtitle
+                        )
                     )
                     .padding(.horizontal, Constants.contentPadding)
 

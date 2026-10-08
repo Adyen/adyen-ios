@@ -12,7 +12,7 @@
 #endif
 import SwiftUI
 
-internal struct StoredPaymentMethodContentHeaderView: View {
+internal struct PaymentMethodContentHeaderView: View {
 
     private enum Constants {
         static let logoSize = CGSize(width: 80, height: 52)
@@ -20,23 +20,30 @@ internal struct StoredPaymentMethodContentHeaderView: View {
         static let labelsSpacing: CGFloat = 8
     }
 
+    internal struct AccessibilityIdentifiers {
+        internal let logo: String
+        internal let title: String
+        internal let subtitle: String
+    }
+
     internal let logoURL: URL
     internal let title: String
-    internal let subtitle: NSAttributedString
+    internal let subtitle: AttributedString
     internal let theme: CheckoutTheme
+    internal let accessibilityIdentifiers: PaymentMethodContentHeaderView.AccessibilityIdentifiers
 
     internal var body: some View {
         VStack(spacing: Constants.spacing) {
             PaymentLogoView(url: logoURL, theme: theme, size: Constants.logoSize)
-                .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.logo)
+                .accessibilityIdentifier(accessibilityIdentifiers.logo)
                 .accessibilityHidden(true)
 
             VStack(spacing: Constants.labelsSpacing) {
                 Text(title)
                     .font(Font(theme.elements.labels.title.font))
-                    .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.title)
-                Text(AttributedString(subtitle))
-                    .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.subtitle)
+                    .accessibilityIdentifier(accessibilityIdentifiers.title)
+                Text(subtitle)
+                    .accessibilityIdentifier(accessibilityIdentifiers.subtitle)
             }
             .foregroundStyle(Color(uiColor: theme.colors.text))
             .multilineTextAlignment(.center)
@@ -45,13 +52,18 @@ internal struct StoredPaymentMethodContentHeaderView: View {
 }
 
 #if DEBUG
-    #Preview("Stored payment method header") {
+    #Preview("Payment method content header") {
         let theme = CheckoutTheme.default
-        StoredPaymentMethodContentHeaderView(
+        PaymentMethodContentHeaderView(
             logoURL: LogoURLProvider(environment: Environment.test).logoURL(withName: "visa"),
             title: "•••• 1111",
-            subtitle: NSAttributedString(string: "Use Visa to pay €10.00"),
-            theme: theme
+            subtitle: AttributedString("Use Visa to pay €10.00"),
+            theme: theme,
+            accessibilityIdentifiers: .init(
+                logo: "preview.logo",
+                title: "preview.title",
+                subtitle: "preview.subtitle"
+            )
         )
         .padding()
         .background(Color(uiColor: theme.colors.background))
