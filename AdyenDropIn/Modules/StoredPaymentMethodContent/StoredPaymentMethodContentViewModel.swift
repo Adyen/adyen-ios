@@ -67,7 +67,7 @@ internal final class StoredPaymentMethodContentViewModel {
     // MARK: - Actions
 
     internal func cancel() {
-        dropInFlowManager.cancel(component: component)
+        dropInFlowManager.discardPendingSubmission()
         router?.dismiss()
     }
 

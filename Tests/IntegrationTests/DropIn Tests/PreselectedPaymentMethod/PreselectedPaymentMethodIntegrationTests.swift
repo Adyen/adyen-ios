@@ -46,10 +46,10 @@ struct PreselectedPaymentMethodIntegrationTests {
         // When - user submits payment
         preSelectedViewController.load()
         try preSelectedViewController.submitPayment()
-        await waitUntil { dropInFlowManager.submitFromCalled }
+        await waitUntil { dropInFlowManager.submitCalled }
 
         // Then - verify dropInFlowManager.submit was called
-        #expect(dropInFlowManager.submitFromCalled)
+        #expect(dropInFlowManager.submitCalled)
     }
 
     @Test("PaymentComponent that is presentable - submit payment triggers presentation")
@@ -101,8 +101,8 @@ struct PreselectedPaymentMethodIntegrationTests {
 
     // MARK: - Cancel Tests
 
-    @Test("PaymentComponent - cancel dismisses and cancels component")
-    func paymentComponent_cancel_dismissesAndCancels() {
+    @Test("PaymentComponent - cancel dismisses and discards the pending submission")
+    func paymentComponent_cancel_dismissesAndDiscardsThePendingSubmission() {
         // Given
         let testData = PaymentComponentTestData.visa
         let mockedRouter = PreselectedPaymentMethodRoutingMock()
@@ -112,9 +112,9 @@ struct PreselectedPaymentMethodIntegrationTests {
         // When - user cancels
         preSelectedViewController.cancel()
 
-        // Then - verify dismiss and cancel are called
+        // Then - verify dismiss is called and the pending submission is discarded
         #expect(mockedRouter.dismissCompletionCalled)
-        #expect(dropInFlowManagerMock.cancelComponentCalled)
+        #expect(dropInFlowManagerMock.discardPendingSubmissionCalled)
     }
 
     // MARK: - Setup of the system under test

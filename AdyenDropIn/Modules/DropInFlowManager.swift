@@ -22,7 +22,6 @@ internal protocol DropInDismissing: AnyObject {
 @MainActor
 internal protocol DropInFlowRouting: PaymentActionPresenting, DropInDismissing {}
 
-// sourcery:AutoMockable
 @MainActor
 internal protocol DropInFlowManaging: AnyObject {
     var dropInFlowRouter: DropInFlowRouting? { get set }
@@ -31,7 +30,8 @@ internal protocol DropInFlowManaging: AnyObject {
     /// Handles the action returned by the payment session for the pending submission.
     func receive(action: Action)
     func fail(with error: Error, from component: PaymentComponent)
-    func cancel(component: PaymentComponent)
+    /// The shopper left the payment method before its submission completed, so a late action is ignored.
+    func discardPendingSubmission()
     /// Notifies the merchant that the user closed the drop in before submitting a payment.
     func cancelDropIn()
     func dismissDropIn()
@@ -106,11 +106,8 @@ internal class DropInFlowManager: DropInFlowManaging {
         dropInComponentDelegate?.didFail(with: error, from: component, in: dropInComponent)
     }
 
-    internal func cancel(component: PaymentComponent) {
+    internal func discardPendingSubmission() {
         endSubmission()
-
-        guard let dropInComponent else { return }
-        dropInComponentDelegate?.didCancel(component: component, from: dropInComponent)
     }
 
     internal func cancelDropIn() {

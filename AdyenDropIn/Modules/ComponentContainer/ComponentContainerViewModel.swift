@@ -56,7 +56,7 @@ internal class ComponentContainerViewModel: ComponentContainerViewModelProtocol 
     }
 
     internal func cancel() {
-        dropInFlowManager.cancel(component: component)
+        dropInFlowManager.discardPendingSubmission()
         
         stopLoading()
         router?.dismiss(completion: nil)

@@ -65,12 +65,12 @@ struct DropInFlowManagerTests {
     }
 
     @Test
-    func receive_afterTheSubmissionWasCancelled_shouldNotHandleTheAction() {
+    func receive_afterThePendingSubmissionWasDiscarded_shouldNotHandleTheAction() {
         // Given
         let environment = makeSUT()
         let component = makePaymentComponent()
         environment.sut.submit(makePaymentComponentData(), from: component)
-        environment.sut.cancel(component: component)
+        environment.sut.discardPendingSubmission()
 
         // When
         environment.sut.receive(action: makeAction())
@@ -129,20 +129,6 @@ struct DropInFlowManagerTests {
     }
 
     // MARK: - Cancellation Tests
-
-    @Test
-    func cancelComponent_shouldNotifyTheMerchantOfTheCancelledComponent() {
-        // Given
-        let environment = makeSUT()
-        let component = makePaymentComponent()
-
-        // When
-        environment.sut.cancel(component: component)
-
-        // Then
-        #expect(environment.dropInComponentDelegate.didCancelComponentFromCallsCount == 1)
-        #expect(environment.dropInComponentDelegate.didCancelComponentFromReceivedArguments?.component === component)
-    }
 
     @Test
     func cancelDropIn_shouldNotifyTheMerchantWithACancellationError() {

@@ -172,7 +172,7 @@ private struct ComponentViewControllerView: UIViewControllerRepresentable {
         func dismissDropIn() {}
         func submit(_ data: PaymentComponentData, from component: PaymentComponent) {}
         func fail(with error: Error, from component: PaymentComponent) {}
-        func cancel(component: PaymentComponent) {}
+        func discardPendingSubmission() {}
     }
 #endif
 
