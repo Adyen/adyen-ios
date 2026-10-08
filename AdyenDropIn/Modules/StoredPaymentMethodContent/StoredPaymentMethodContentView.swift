@@ -32,10 +32,7 @@ internal struct StoredPaymentMethodContentView: View {
             ScrollView {
                 VStack(spacing: Constants.contentSpacing) {
                     PaymentMethodContentHeaderView(
-                        logoURL: viewModel.paymentMethodLogoURL,
-                        title: viewModel.title,
-                        subtitle: AttributedString(viewModel.subtitle),
-                        theme: viewModel.theme,
+                        viewModel: viewModel.header,
                         accessibilityIdentifiers: .init(
                             logo: StoredPaymentMethodContentAccessibilityIdentifier.logo,
                             title: StoredPaymentMethodContentAccessibilityIdentifier.title,

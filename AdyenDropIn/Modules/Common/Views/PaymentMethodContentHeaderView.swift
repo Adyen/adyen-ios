@@ -26,26 +26,23 @@ internal struct PaymentMethodContentHeaderView: View {
         internal let subtitle: String
     }
 
-    internal let logoURL: URL
-    internal let title: String
-    internal let subtitle: AttributedString
-    internal let theme: CheckoutTheme
+    internal let viewModel: PaymentMethodContentHeaderViewModel
     internal let accessibilityIdentifiers: PaymentMethodContentHeaderView.AccessibilityIdentifiers
 
     internal var body: some View {
         VStack(spacing: Constants.spacing) {
-            PaymentLogoView(url: logoURL, theme: theme, size: Constants.logoSize)
+            PaymentLogoView(url: viewModel.logoURL, theme: viewModel.theme, size: Constants.logoSize)
                 .accessibilityIdentifier(accessibilityIdentifiers.logo)
                 .accessibilityHidden(true)
 
             VStack(spacing: Constants.labelsSpacing) {
-                Text(title)
-                    .font(Font(theme.elements.labels.title.font))
-                    .foregroundStyle(Color(uiColor: theme.elements.labels.title.color))
+                Text(viewModel.title)
+                    .font(Font(viewModel.theme.elements.labels.title.font))
+                    .foregroundStyle(Color(uiColor: viewModel.theme.elements.labels.title.color))
                     .accessibilityIdentifier(accessibilityIdentifiers.title)
-                Text(subtitle)
-                    .font(Font(theme.elements.labels.body.font))
-                    .foregroundStyle(Color(uiColor: theme.elements.labels.body.color))
+                Text(viewModel.subtitle)
+                    .font(Font(viewModel.theme.elements.labels.body.font))
+                    .foregroundStyle(Color(uiColor: viewModel.theme.elements.labels.body.color))
                     .accessibilityIdentifier(accessibilityIdentifiers.subtitle)
             }
             .multilineTextAlignment(.center)
@@ -57,10 +54,12 @@ internal struct PaymentMethodContentHeaderView: View {
     #Preview("Payment method content header") {
         let theme = CheckoutTheme.default
         PaymentMethodContentHeaderView(
-            logoURL: LogoURLProvider(environment: Environment.test).logoURL(withName: "visa"),
-            title: "•••• 1111",
-            subtitle: AttributedString("Use Visa to pay €10.00"),
-            theme: theme,
+            viewModel: .init(
+                logoURL: LogoURLProvider(environment: Environment.test).logoURL(withName: "visa"),
+                title: "•••• 1111",
+                subtitle: AttributedString("Use Visa to pay €10.00"),
+                theme: theme
+            ),
             accessibilityIdentifiers: .init(
                 logo: "preview.logo",
                 title: "preview.title",
