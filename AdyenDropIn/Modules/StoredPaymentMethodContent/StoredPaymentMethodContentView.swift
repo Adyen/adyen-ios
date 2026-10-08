@@ -28,21 +28,24 @@ internal struct StoredPaymentMethodContentView: View {
     }
 
     internal var body: some View {
-        ScrollView {
-            VStack(spacing: Constants.contentSpacing) {
-                // TODO: Robert: How do I center this in SwiftUI? Without using any computations using GeometryReaders or Layout. A problem for later.
-                StoredPaymentMethodContentHeaderView(
-                    logoURL: viewModel.paymentMethodLogoURL,
-                    title: viewModel.title,
-                    subtitle: viewModel.subtitle,
-                    theme: viewModel.theme
-                )
-                .padding(.horizontal, Constants.contentPadding)
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(spacing: Constants.contentSpacing) {
+                    StoredPaymentMethodContentHeaderView(
+                        logoURL: viewModel.paymentMethodLogoURL,
+                        title: viewModel.title,
+                        subtitle: viewModel.subtitle,
+                        theme: viewModel.theme
+                    )
+                    .padding(.horizontal, Constants.contentPadding)
 
-                ComponentViewControllerView(viewController: viewModel.componentViewController)
+                    ComponentViewControllerView(viewController: viewModel.componentViewController)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.bottom, Constants.bottomPadding)
+                .padding(.horizontal, 8)
+                .frame(minHeight: geometry.size.height)
             }
-            .frame(maxWidth: .infinity)
-            .padding(.bottom, Constants.bottomPadding)
         }
         .background(Color(uiColor: viewModel.theme.colors.background))
         .toolbar {
