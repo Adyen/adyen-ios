@@ -67,14 +67,14 @@ internal final class ComponentsViewController: UIViewController {
         return genericPaymentComponentExample
     }
 
-    private var applePayComponentAdvancedFlowExample: ApplePayComponentAdvancedFlowExample {
-        let applePayComponentAdvancedFlow = ApplePayComponentAdvancedFlowExample()
+    private func applePayComponentAdvancedFlowExample(usesOwnApplePayButton: Bool) -> ApplePayComponentAdvancedFlowExample {
+        let applePayComponentAdvancedFlow = ApplePayComponentAdvancedFlowExample(usesOwnApplePayButton: usesOwnApplePayButton)
         applePayComponentAdvancedFlow.presenter = self
         return applePayComponentAdvancedFlow
     }
 
-    private var applePayComponentExample: ApplePayComponentExample {
-        let applePayComponent = ApplePayComponentExample()
+    private func applePayComponentExample(usesOwnApplePayButton: Bool) -> ApplePayComponentExample {
+        let applePayComponent = ApplePayComponentExample(usesOwnApplePayButton: usesOwnApplePayButton)
         applePayComponent.presenter = self
         return applePayComponent
     }
@@ -121,7 +121,14 @@ internal final class ComponentsViewController: UIViewController {
                     selectionHandler: presentGenericPaymentComponentWithUI
                 )
             ],
-            [ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayComponent)],
+            [
+                ComponentsItem(title: "Apple Pay", selectionHandler: presentApplePayWithOwnButton),
+                ComponentsItem(
+                    title: "Apple Pay (default UI)",
+                    subtitle: "Presents the component's own Apple Pay button",
+                    selectionHandler: presentApplePayComponent
+                )
+            ],
             [
                 ComponentsItem(
                     title: "Actions",
@@ -187,10 +194,19 @@ internal final class ComponentsViewController: UIViewController {
     }
 
     internal func presentApplePayComponent() {
+        startApplePay(usesOwnApplePayButton: false)
+    }
+
+    /// Opens the Apple Pay sheet straight from the app's own Apple Pay button.
+    internal func presentApplePayWithOwnButton() {
+        startApplePay(usesOwnApplePayButton: true)
+    }
+
+    private func startApplePay(usesOwnApplePayButton: Bool) {
         if componentsView.isUsingSession {
-            start(applePayComponentExample)
+            start(applePayComponentExample(usesOwnApplePayButton: usesOwnApplePayButton))
         } else {
-            start(applePayComponentAdvancedFlowExample)
+            start(applePayComponentAdvancedFlowExample(usesOwnApplePayButton: usesOwnApplePayButton))
         }
     }
     

@@ -51,7 +51,7 @@ package final class ListItemView: UIView, AnyFormItemView {
         subtitleLabel.apply(labels.subheadline.color(theme.colors.textSecondary))
         (trailingView as? UILabel)?.apply(labels.body)
 
-        checkmarkImageView.tintColor = theme.colors.text
+        checkmarkImageView.tintColor = item?.titleEmphasis == .primary ? theme.colors.primary : theme.colors.text
         updateImageView()
     }
 
@@ -61,6 +61,8 @@ package final class ListItemView: UIView, AnyFormItemView {
         switch item?.titleEmphasis {
         case .highlighted:
             return body.color(theme.colors.highlight)
+        case .primary:
+            return body.color(theme.colors.primary)
         case .standard, nil:
             return body
         }

@@ -88,7 +88,7 @@ class SEPADirectDebitComponentTests: XCTestCase {
     
     func testUIConfiguration() throws {
         // Given - use TestTheme helper for distinctive, verifiable styling
-        var configuration = SEPADirectDebitComponent.Configuration()
+        var configuration = BasicComponentConfiguration()
         configuration.theme = TestTheme.distinctive()
 
         let sepaPaymentMethod = SEPADirectDebitPaymentMethod(type: .sepaDirectDebit, name: "Test name")

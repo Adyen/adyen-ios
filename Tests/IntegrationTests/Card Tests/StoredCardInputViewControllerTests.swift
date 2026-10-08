@@ -25,20 +25,11 @@ struct StoredCardInputViewControllerTests {
     }
 
     @Test
-    func viewDidLoad_configuresLabelsAndButtonsFromViewModel() async throws {
-        let titleText = "Enter security code"
-        let subtitleText = "Use your Visa card"
+    func viewDidLoad_configuresButtonFromViewModel() async throws {
         let submitTitle = "Pay €9.99"
-
-        let (proxy, _) = makeSUT(
-            titleText: titleText,
-            subtitleText: subtitleText,
-            submitButtonTitle: submitTitle
-        )
+        let (proxy, _) = makeSUT(submitButtonTitle: submitTitle)
         await proxy.load()
 
-        #expect(try proxy.titleLabelText == titleText)
-        #expect(try proxy.subtitleLabelText == subtitleText)
         #expect(try proxy.primaryButtonTitle == submitTitle)
     }
 
@@ -138,30 +129,34 @@ struct StoredCardInputViewControllerTests {
 
         let securityCodeView = try proxy.securityCodeItemView()
         #expect(securityCodeView.isFirstResponder)
+
         try proxy.enterCode("123")
         #expect(!securityCodeView.isFirstResponder)
+    }
+
+    /// The security code field takes focus as soon as the screen appears, so the keyboard is already up
+    /// and the shopper can type without tapping the field first.
+    @Test
+    func onViewAppear_focusesSecurityCode() async throws {
+        let (proxy, _) = makeSUT()
+
+        await proxy.load()
+
+        // The field takes focus on appearance so the shopper can type without tapping it first.
+        #expect(try proxy.securityCodeItemView().isFirstResponder)
     }
 
     // MARK: - Helpers
 
     private func makeSUT(
-        titleText: String = "Enter security code",
-        subtitleText: String = "Use your Visa card",
         submitButtonTitle: String = "Pay €1.00",
         inProgressPublisher: Published<Bool>.Publisher? = nil
     ) -> (proxy: StoredCardInputViewControllerProxy, viewModel: StoredCardInputViewModelProtocolMock) {
         let viewModel = StoredCardInputViewModelProtocolMock()
-        viewModel.underlyingTitleText = titleText
-        viewModel.underlyingSubtitleText = NSAttributedString(string: subtitleText)
         viewModel.underlyingSubmitButtonTitle = submitButtonTitle
         viewModel.underlyingTheme = .default
         viewModel.underlyingInProgressPublisher = inProgressPublisher ?? StoredCardInputInProgressSource().$isInProgress
         viewModel.underlyingSecurityCodeItem = FormCardSecurityCodeItem()
-        viewModel.underlyingCardImageItem = CardImageItem(
-            imageURL: nil,
-            sizeMode: .fixed(CGSize(width: 80, height: 52)),
-            theme: .default
-        )
 
         let viewController = StoredCardInputViewController(viewModel: viewModel)
         return (StoredCardInputViewControllerProxy(viewController: viewController), viewModel)
@@ -185,26 +180,6 @@ struct StoredCardInputViewControllerProxy {
                 viewController.loadViewIfNeeded()
                 continuation.resume()
             }
-        }
-    }
-
-    var titleLabelText: String {
-        get throws {
-            let label = try #require(
-                viewController.view.findView(by: "title") as? UILabel,
-                "Cannot find title label"
-            )
-            return try #require(label.text)
-        }
-    }
-
-    var subtitleLabelText: String {
-        get throws {
-            let label = try #require(
-                viewController.view.findView(by: "subTitle") as? UILabel,
-                "Cannot find subtitle label"
-            )
-            return try #require(label.attributedText?.string)
         }
     }
 

@@ -85,6 +85,7 @@ struct PreselectedPaymentMethodRouterTests {
             listener: listener ?? PreselectedPaymentMethodRouterListenerMock(),
             paymentMethodListAssembler: paymentMethodListAssembler,
             componentContainerAssembler: ComponentContainerAssemblerProtocolMock(),
+            storedPaymentMethodContentAssembler: StoredPaymentMethodContentAssemblerStub(),
             theme: theme
         )
     }
@@ -100,5 +101,16 @@ struct PreselectedPaymentMethodRouterTests {
         presenter.present(viewController, animated: false)
 
         return (window, presenter)
+    }
+}
+
+@MainActor
+private final class StoredPaymentMethodContentAssemblerStub: StoredPaymentMethodContentAssembling {
+
+    func resolveStoredPaymentMethodContentRouter(
+        for component: PaymentComponent,
+        listener: StoredPaymentMethodContentRouterListener
+    ) -> Router? {
+        RouterMock()
     }
 }

@@ -21,9 +21,6 @@ internal protocol BACSDirectDebitRouterProtocol: AnyObject {
 @MainActor
 package final class BACSDirectDebitComponent: PaymentComponent {
 
-    /// Configuration for BACS Direct Debit Component.
-    package typealias Configuration = BasicComponentConfiguration
-
     // MARK: - PaymentComponent
 
     package let viewController: UIViewController
@@ -43,7 +40,7 @@ package final class BACSDirectDebitComponent: PaymentComponent {
     package let context: AdyenContext
 
     /// Component's configuration
-    package var configuration: Configuration
+    package var configuration: BasicComponentConfiguration
 
     // MARK: - Properties
 
@@ -66,7 +63,7 @@ package final class BACSDirectDebitComponent: PaymentComponent {
     package init(
         paymentMethod: BACSDirectDebitPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: BasicComponentConfiguration = .init()
     ) {
         self.bacsPaymentMethod = paymentMethod
         self.context = context

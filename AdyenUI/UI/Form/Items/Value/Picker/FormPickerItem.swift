@@ -80,7 +80,7 @@ open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> 
         placeholder: String,
         style: FormTextItemStyle,
         presenter: ViewControllerPresenter?,
-        configuration: FormPickerConfiguration = .init(),
+        configuration: FormPickerConfiguration? = nil,
         identifier: String? = nil
     ) {
         self.init(
@@ -104,11 +104,11 @@ open class FormPickerItem<Value: FormPickable>: FormSelectableValueItem<Value?> 
         style: FormTextItemStyle,
         presenter: ViewControllerPresenter?,
         localizationParameters: LocalizationParameters? = nil,
-        configuration: FormPickerConfiguration = .init(),
+        configuration: FormPickerConfiguration? = nil,
         identifier: String? = nil
     ) {
         self.localizationParameters = localizationParameters
-        self.configuration = configuration
+        self.configuration = configuration ?? .init(title: title)
         self.presenter = presenter
 
         super.init(

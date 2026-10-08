@@ -16,7 +16,9 @@ package struct CircularProgressView: View {
 
     // MARK: - Properties
 
-    private let theme: CheckoutTheme
+    private let arcColor: UIColor
+    private let trackColor: UIColor
+    private let trackOpacity: Double
     private let size: CGFloat
     private let lineWidth: CGFloat
     @State private var isRotating = false
@@ -24,7 +26,25 @@ package struct CircularProgressView: View {
     // MARK: - Initializers
 
     package init(theme: CheckoutTheme, size: CGFloat, lineWidth: CGFloat) {
-        self.theme = theme
+        self.init(
+            arcColor: theme.colors.primary,
+            trackColor: theme.colors.disabled,
+            trackOpacity: 1,
+            size: size,
+            lineWidth: lineWidth
+        )
+    }
+
+    package init(
+        arcColor: UIColor,
+        trackColor: UIColor,
+        trackOpacity: Double = 0.15,
+        size: CGFloat,
+        lineWidth: CGFloat
+    ) {
+        self.arcColor = arcColor
+        self.trackColor = trackColor
+        self.trackOpacity = trackOpacity
         self.size = size
         self.lineWidth = lineWidth
     }
@@ -34,12 +54,12 @@ package struct CircularProgressView: View {
     package var body: some View {
         ZStack {
             Circle()
-                .stroke(Color(uiColor: theme.colors.disabled), lineWidth: lineWidth)
+                .stroke(Color(uiColor: trackColor).opacity(trackOpacity), lineWidth: lineWidth)
 
             Circle()
                 .trim(from: 0, to: Constants.arcLength)
                 .stroke(
-                    Color(uiColor: theme.colors.primary),
+                    Color(uiColor: arcColor),
                     style: StrokeStyle(lineWidth: lineWidth, lineCap: .round)
                 )
                 .rotationEffect(.degrees(isRotating ? 360 : 0))

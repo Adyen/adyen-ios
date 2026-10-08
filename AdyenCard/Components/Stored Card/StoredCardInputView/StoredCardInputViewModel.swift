@@ -18,10 +18,6 @@ import Foundation
 
 // sourcery: AutoMockable
 internal protocol StoredCardInputViewModelProtocol: AnyObject {
-    var cardImageItem: CardImageItem { get }
-    var titleText: String { get }
-    var subtitleText: NSAttributedString { get }
-
     var securityCodeItem: FormCardSecurityCodeItem { get }
 
     var submitButtonTitle: String { get }
@@ -38,13 +34,8 @@ internal protocol StoredCardInputViewModelProtocol: AnyObject {
 
 internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol {
 
-    private enum Constants {
-        static let cardImageSize = CGSize(width: 80, height: 52)
-    }
-
     private let localizationParameters: LocalizationParameters?
     private var storedCardPaymentMethod: StoredCardPaymentMethod
-    private let apiContext: APIContext
     private let analyticsProvider: AnyAnalyticsProvider?
     private let amount: Amount?
     private let publicKey: String
@@ -64,7 +55,6 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
     internal init(
         theme: CheckoutTheme,
         storedCardPaymentMethod: StoredCardPaymentMethod,
-        apiContext: APIContext,
         publicKey: String,
         amount: Amount?,
         analyticsProvider: AnyAnalyticsProvider?,
@@ -74,53 +64,17 @@ internal final class StoredCardInputViewModel: StoredCardInputViewModelProtocol 
         self.theme = theme
         self.storedCardPaymentMethod = storedCardPaymentMethod
         self.amount = amount
-        self.apiContext = apiContext
         self.publicKey = publicKey
         self.localizationParameters = localizationParameters
         self.analyticsProvider = analyticsProvider
         self.cardBrand = cardBrand
     }
 
-    internal lazy var cardImageItem: CardImageItem = {
-        let displayInformation = storedCardPaymentMethod.displayInformation(using: localizationParameters)
-        let imageURL = LogoURLProvider.logoURL(
-            withName: displayInformation.logoName,
-            environment: apiContext.environment,
-            size: .large
-        )
-        return CardImageItem(
-            imageURL: imageURL,
-            sizeMode: .fixed(Constants.cardImageSize),
-            theme: theme
-        )
-    }()
-
     internal lazy var securityCodeItem: FormCardSecurityCodeItem = {
         let item = FormCardSecurityCodeItem(localizationParameters: localizationParameters)
         item.identifier = ViewIdentifierBuilder.build(scopeInstance: self, postfix: "securityCodeItem")
         return item
     }()
-
-    internal var titleText: String {
-        // TODO: Robert: StoredView: The keys will change when we get the localization. So the keys will need to be updated.
-        localizedString(.cardSecurityCodeTitle, localizationParameters)
-    }
-
-    // TODO: Robert: StoredView: This & the pay button title needs to change according to the amount.
-    /// We construct something like - Enter the security code for BOLD[Visa •••• 4556]
-    internal var subtitleText: NSAttributedString {
-        let displayInformation = storedCardPaymentMethod.displayInformation(using: localizationParameters)
-        let paymentMethodTitle = storedCardPaymentMethod.name + " " + displayInformation.title
-        let localizedString = localizedString(.cardSecurityCodeDescription, localizationParameters, paymentMethodTitle)
-
-        let attributed = NSMutableAttributedString(string: localizedString)
-
-        let range = (localizedString as NSString).range(of: paymentMethodTitle)
-        attributed.addAttribute(.font, value: theme.elements.labels.bodyEmphasized.font, range: range)
-        attributed.addAttribute(.foregroundColor, value: theme.elements.labels.bodyEmphasized.color, range: range)
-
-        return attributed
-    }
 
     internal var submitButtonTitle: String {
         AmountAwarePaymentStringsPolicy.payButtonTitle(

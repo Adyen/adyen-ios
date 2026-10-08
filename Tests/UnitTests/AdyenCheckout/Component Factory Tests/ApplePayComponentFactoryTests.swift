@@ -133,7 +133,7 @@ final class ApplePayComponentFactoryTests: XCTestCase {
             paymentRequest.supportedNetworks,
             try ApplePayComponent.validatedSupportedNetworks(for: paymentMethod, configuration: configuration)
         )
-        XCTAssertNotNil(component.paymentAuthorizationViewController)
+        XCTAssertTrue(component.viewController is ApplePayButtonViewController)
     }
 
     // MARK: - Type Conformance Tests

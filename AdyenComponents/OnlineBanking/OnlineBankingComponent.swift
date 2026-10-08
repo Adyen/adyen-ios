@@ -28,9 +28,6 @@ package final class OnlineBankingComponent: PaymentComponent,
         static let onlineBankingSK = "https://static.payu.com/sites/terms/files/payu_privacy_policy_sk.pdf"
     }
 
-    /// Configuration for Online Banking Component.
-    package typealias Configuration = BasicComponentConfiguration
-
     /// The context object for this component.
     package var context: AdyenContext
 
@@ -49,7 +46,7 @@ package final class OnlineBankingComponent: PaymentComponent,
     package let requiresUserInteraction: Bool = true
 
     /// Component's configuration
-    package var configuration: Configuration
+    package var configuration: BasicComponentConfiguration
 
     private let onlineBankingPaymentMethod: OnlineBankingPaymentMethod
 
@@ -118,7 +115,7 @@ package final class OnlineBankingComponent: PaymentComponent,
     package init(
         paymentMethod: OnlineBankingPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: BasicComponentConfiguration = .init()
     ) {
         self.onlineBankingPaymentMethod = paymentMethod
         self.context = context

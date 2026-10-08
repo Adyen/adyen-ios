@@ -7,17 +7,12 @@
 #if canImport(AdyenUI)
     import AdyenUI
 #endif
-import Foundation
+import UIKit
 
 internal struct PaymentMethodListHeaderViewModel {
-
-    internal enum ApplePayButtonState {
-        case hidden
-        case visible(onTap: () -> Void)
-    }
-
     internal let title: String
     internal let subtitle: String
-    internal let applePayButtonState: ApplePayButtonState
+    /// The Apple Pay component's button, or `nil` when Apple Pay isn't available.
+    internal let applePayView: UIView?
     internal let theme: CheckoutTheme
 }

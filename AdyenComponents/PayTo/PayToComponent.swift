@@ -16,9 +16,6 @@ import UIKit
 @MainActor
 package final class PayToComponent: PaymentComponent, AdyenObserver, LoadingComponent {
 
-    /// Configuration for PayTo Component.
-    package typealias Configuration = BasicComponentConfiguration
-
     /// The context object for this component.
     package var context: AdyenContext
 
@@ -26,7 +23,7 @@ package final class PayToComponent: PaymentComponent, AdyenObserver, LoadingComp
     package weak var delegate: PaymentComponentDelegate?
 
     /// Component's configuration
-    package var configuration: Configuration
+    package var configuration: BasicComponentConfiguration
 
     /// The payment method object for this component.
     package var paymentMethod: PaymentMethod {
@@ -98,7 +95,7 @@ package final class PayToComponent: PaymentComponent, AdyenObserver, LoadingComp
     package init(
         paymentMethod: PayToPaymentMethod,
         context: AdyenContext,
-        configuration: Configuration = .init()
+        configuration: BasicComponentConfiguration = .init()
     ) {
         self.payToPaymentMethod = paymentMethod
         self.context = context

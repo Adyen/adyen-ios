@@ -65,7 +65,7 @@ class UPIComponentUITests: XCTestCase {
         style.textField.title.textAlignment = .left
         style.textField.backgroundColor = .blue
     
-        let config = UPIComponent.Configuration(style: style)
+        let config = BasicComponentConfiguration(style: style)
         let sut = UPIComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -113,7 +113,7 @@ class UPIComponentUITests: XCTestCase {
         style.segmentedControlStyle.textStyle.textAlignment = .center
         style.segmentedControlStyle.textStyle.color = .red
     
-        let config = UPIComponent.Configuration(style: style)
+        let config = BasicComponentConfiguration(style: style)
         let sut = UPIComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -131,7 +131,7 @@ class UPIComponentUITests: XCTestCase {
 
     func testUIElementsForPayByAnyUPIAppFlowType() {
         // Assert
-        let config = UPIComponent.Configuration(style: style)
+        let config = BasicComponentConfiguration(style: style)
         let sut = UPIComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -143,7 +143,7 @@ class UPIComponentUITests: XCTestCase {
 
     func testUPIComponentDetailsForUPIIntentFlow() throws {
         // Given
-        let config = UPIComponent.Configuration(style: style)
+        let config = BasicComponentConfiguration(style: style)
         let sut = UPIComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -178,7 +178,7 @@ class UPIComponentUITests: XCTestCase {
 
     func testUPIComponentDetailsForUPICollectFlow() throws {
         // Given
-        let config = UPIComponent.Configuration(style: style)
+        let config = BasicComponentConfiguration(style: style)
         let sut = UPIComponent(
             paymentMethod: paymentMethod,
             context: context,
@@ -225,7 +225,7 @@ class UPIComponentUITests: XCTestCase {
 
     func test_noAppSelectedSubmit_shouldShowError() throws {
         
-        let config = UPIComponent.Configuration(style: style)
+        let config = BasicComponentConfiguration(style: style)
         let sut = UPIComponent(
             paymentMethod: paymentMethod,
             context: context,

@@ -40,7 +40,7 @@ internal class PaymentMethodListViewController: UIViewController {
         let headerViewModel = PaymentMethodListHeaderViewModel(
             title: viewModel.headerTitle,
             subtitle: viewModel.subtitle,
-            applePayButtonState: viewModel.applePayButtonState,
+            applePayView: embedApplePayViewController(),
             theme: viewModel.theme
         )
 
@@ -121,6 +121,18 @@ internal class PaymentMethodListViewController: UIViewController {
     private func setupHeaderView() {
         contentStackView.addArrangedSubview(headerView)
         contentStackView.setCustomSpacing(Layout.headerViewBottomMargin, after: headerView)
+    }
+
+    /// Adds the Apple Pay component's screen as a child and returns its view for the header.
+    private func embedApplePayViewController() -> UIView? {
+        guard let applePayViewController = viewModel.applePayViewController else { return nil }
+
+        addChild(applePayViewController)
+        // The header already provides the margins.
+        applePayViewController.viewRespectsSystemMinimumLayoutMargins = false
+        applePayViewController.view.directionalLayoutMargins = .zero
+        applePayViewController.didMove(toParent: self)
+        return applePayViewController.view
     }
 
     private func setupPaymentMethodSectionsStackView() {

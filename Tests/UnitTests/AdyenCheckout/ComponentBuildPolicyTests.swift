@@ -7,6 +7,7 @@
 @_spi(AdyenInternal) @testable import Adyen
 @testable import AdyenCheckout
 @testable import AdyenComponents
+@_spi(AdyenInternal) @testable import AdyenUI
 import XCTest
 
 final class ComponentBuildPolicyTests: XCTestCase {
@@ -23,7 +24,7 @@ final class ComponentBuildPolicyTests: XCTestCase {
     }
 
     func test_applying_shouldReturnConfigurationWithPolicySettings() {
-        var blikConfiguration = BLIKComponentConfiguration()
+        var blikConfiguration = BasicComponentConfiguration()
         blikConfiguration.showsSubmitButton = true
         let hidingPolicy = ComponentBuildPolicy.components(makeCheckoutConfiguration().showsSubmitButton(false))
 

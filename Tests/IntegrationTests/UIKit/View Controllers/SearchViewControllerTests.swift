@@ -162,6 +162,19 @@ class SearchViewControllerTests: XCTestCase {
         XCTAssertTrue(searchViewController.searchBar.isDescendant(of: searchViewController.view))
     }
 
+    func test_content_whenSearchBarVisibleAndSpacingOmitted_shouldStartBelowSearchBar() {
+        let searchViewController = makeSearchViewController()
+
+        setupRootViewController(searchViewController)
+        searchViewController.view.layoutIfNeeded()
+
+        XCTAssertEqual(
+            searchViewController.resultsListViewController.view.frame.minY,
+            searchViewController.searchBar.frame.maxY,
+            accuracy: 0.1
+        )
+    }
+
     func test_searchBar_whenHiddenAndFocusRequested_shouldNotBeAddedOrFocused() {
         let searchViewController = makeSearchViewController(
             shouldShowSearchBar: false,

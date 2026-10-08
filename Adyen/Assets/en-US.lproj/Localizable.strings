@@ -105,6 +105,8 @@
 "adyen.countryField.title" = "Country/Region";
 "adyen.countryField.placeholder" = "Country/Region";
 "adyen.countryField.invalid" = "Invalid country/region";
+"adyen_checkout_address_country_picker_title" = "Country or region";
+"adyen_checkout_address_country_picker_description" = "Search and select your country/region.";
 "adyen.addressField.title" = "Address";
 "adyen.addressField.placeholder" = "Address";
 "adyen.streetField.title" = "Street";

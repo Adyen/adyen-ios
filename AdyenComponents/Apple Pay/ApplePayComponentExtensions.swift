@@ -7,28 +7,49 @@
 import Adyen
 import Foundation
 import PassKit
+import UIKit
 
-@_spi(AdyenInternal)
-extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
+/// The members of `PKPaymentAuthorizationController` that `ApplePayComponent` uses.
+@MainActor
+internal protocol ApplePayAuthorizationControlling: AnyObject {
+    var delegate: PKPaymentAuthorizationControllerDelegate? { get set }
+    func present() async -> Bool
+    func dismiss() async
+}
+
+extension PKPaymentAuthorizationController: ApplePayAuthorizationControlling {}
+
+extension ApplePayComponent: PKPaymentAuthorizationControllerDelegate {
 
     // MARK: - Did Finish
 
-    public func paymentAuthorizationViewControllerDidFinish(_ controller: PKPaymentAuthorizationViewController) {
-        controller.dismiss(animated: true) { [weak self] in
-            MainActor.assumeIsolated {
-                guard let self, !self.authorizationHandled else { return }
+    public func paymentAuthorizationControllerDidFinish(_ controller: PKPaymentAuthorizationController) {
+        Task {
+            await authorizationController?.dismiss()
+            authorizationController = nil
+            guard !authorizationHandled else { return }
 
-                // Either user cancelled, or dismissed mid-authorization. Cancel current.
-                self.cancelPendingAuthorization()
-                self.delegate?.didFail(with: ComponentError.cancelled, from: self)
-            }
+            // Either user cancelled, or dismissed mid-authorization. Cancel current.
+            cancelPendingAuthorization()
+            delegate?.didFail(with: ComponentError.cancelled, from: self)
+        }
+    }
+
+    // MARK: - Presentation Window
+
+    public nonisolated func presentationWindow(for controller: PKPaymentAuthorizationController) -> UIWindow? {
+        // PassKit asks for the window on the main thread.
+        MainActor.assumeIsolated {
+            // Prefer the scene that shows the Apple Pay button. The merchant can also call `submit()`
+            // without showing it, so fall back to the key window.
+            viewController.viewIfLoaded?.window ?? UIApplication.shared.adyen.mainKeyWindow
         }
     }
 
     // MARK: - Did Authorize (async)
 
-    public func paymentAuthorizationViewController(
-        _ controller: PKPaymentAuthorizationViewController,
+    public func paymentAuthorizationController(
+        _ controller: PKPaymentAuthorizationController,
         didAuthorizePayment payment: PKPayment
     ) async -> PKPaymentAuthorizationResult {
         await handleAuthorize(payment: payment)
@@ -36,17 +57,17 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
 
     // MARK: - Payment Method (async)
 
-    public func paymentAuthorizationViewController(
-        _ controller: PKPaymentAuthorizationViewController,
-        didSelect paymentMethod: PKPaymentMethod
+    public func paymentAuthorizationController(
+        _ controller: PKPaymentAuthorizationController,
+        didSelectPaymentMethod paymentMethod: PKPaymentMethod
     ) async -> PKPaymentRequestPaymentMethodUpdate {
         await handleSelectPaymentMethod(paymentMethod)
     }
 
     // MARK: - Shipping Contact (async)
 
-    public func paymentAuthorizationViewController(
-        _ controller: PKPaymentAuthorizationViewController,
+    public func paymentAuthorizationController(
+        _ controller: PKPaymentAuthorizationController,
         didSelectShippingContact contact: PKContact
     ) async -> PKPaymentRequestShippingContactUpdate {
         await handleSelectShippingContact(contact)
@@ -54,17 +75,17 @@ extension ApplePayComponent: PKPaymentAuthorizationViewControllerDelegate {
 
     // MARK: - Shipping Method (async)
 
-    public func paymentAuthorizationViewController(
-        _ controller: PKPaymentAuthorizationViewController,
-        didSelect shippingMethod: PKShippingMethod
+    public func paymentAuthorizationController(
+        _ controller: PKPaymentAuthorizationController,
+        didSelectShippingMethod shippingMethod: PKShippingMethod
     ) async -> PKPaymentRequestShippingMethodUpdate {
         await handleSelectShippingMethod(shippingMethod)
     }
 
     // MARK: - Coupon Code (async)
 
-    public func paymentAuthorizationViewController(
-        _ controller: PKPaymentAuthorizationViewController,
+    public func paymentAuthorizationController(
+        _ controller: PKPaymentAuthorizationController,
         didChangeCouponCode couponCode: String
     ) async -> PKPaymentRequestCouponCodeUpdate {
         await handleChangeCouponCode(couponCode)

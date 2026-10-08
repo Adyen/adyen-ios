@@ -19,7 +19,7 @@ struct PaymentMethodListHeaderViewTests {
         let viewModel = PaymentMethodListHeaderViewModel(
             title: "€10.00",
             subtitle: "Choose a payment method",
-            applePayButtonState: .hidden,
+            applePayView: nil,
             theme: theme
         )
 

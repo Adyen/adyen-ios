@@ -30,7 +30,7 @@ final class CheckoutConfigurationTests: XCTestCase {
     
     func testConfiguration_WithExistingConfiguration_ReturnsStoredConfiguration() throws {
         // Given
-        var blikConfig = BLIKComponentConfiguration()
+        var blikConfig = BasicComponentConfiguration()
         blikConfig.showsSubmitButton = false // Custom value
         
         let checkoutConfig = makeCheckoutConfiguration(
@@ -39,13 +39,12 @@ final class CheckoutConfigurationTests: XCTestCase {
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         
         // When
-        let resolvedConfig: BLIKComponentConfiguration = try checkoutConfig.configuration(
+        let resolvedConfig: BasicComponentConfiguration = try checkoutConfig.configuration(
             for: paymentMethod,
-            defaultValue: BLIKComponentConfiguration()
+            defaultValue: BasicComponentConfiguration()
         )
         
         // Then - Should return the stored configuration with custom value
-        XCTAssertEqual(resolvedConfig.componentType, .payment(.blik))
         XCTAssertFalse(resolvedConfig.showsSubmitButton, "Should use stored configuration value")
     }
     
@@ -53,23 +52,22 @@ final class CheckoutConfigurationTests: XCTestCase {
         // Given
         let checkoutConfig = makeCheckoutConfiguration()
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
-        var defaultConfig = BLIKComponentConfiguration()
+        var defaultConfig = BasicComponentConfiguration()
         defaultConfig.showsSubmitButton = false // Custom default
         
         // When
-        let resolvedConfig: BLIKComponentConfiguration = try checkoutConfig.configuration(
+        let resolvedConfig: BasicComponentConfiguration = try checkoutConfig.configuration(
             for: paymentMethod,
             defaultValue: defaultConfig
         )
         
         // Then - Should return the default value
-        XCTAssertEqual(resolvedConfig.componentType, .payment(.blik))
         XCTAssertFalse(resolvedConfig.showsSubmitButton, "Should use default value")
     }
     
     func testConfiguration_AutoclosureNotEvaluatedWhenConfigExists() throws {
         // Given
-        var blikConfig = BLIKComponentConfiguration()
+        var blikConfig = BasicComponentConfiguration()
         blikConfig.showsSubmitButton = false
         
         let checkoutConfig = makeCheckoutConfiguration(
@@ -79,11 +77,11 @@ final class CheckoutConfigurationTests: XCTestCase {
         var defaultWasCalled = false
         
         // When
-        let resolvedConfig: BLIKComponentConfiguration = try checkoutConfig.configuration(
+        let resolvedConfig: BasicComponentConfiguration = try checkoutConfig.configuration(
             for: paymentMethod,
             defaultValue: {
                 defaultWasCalled = true
-                return BLIKComponentConfiguration()
+                return BasicComponentConfiguration()
             }()
         )
         
@@ -99,11 +97,11 @@ final class CheckoutConfigurationTests: XCTestCase {
         var defaultWasCalled = false
         
         // When
-        let _: BLIKComponentConfiguration = try checkoutConfig.configuration(
+        let _: BasicComponentConfiguration = try checkoutConfig.configuration(
             for: paymentMethod,
             defaultValue: {
                 defaultWasCalled = true
-                return BLIKComponentConfiguration()
+                return BasicComponentConfiguration()
             }()
         )
         
@@ -165,33 +163,33 @@ final class CheckoutConfigurationTests: XCTestCase {
             clientKey: Dummy.apiContext.clientKey
         ) {
             DropInConfiguration().hideStoredPaymentMethods(true)
-            BLIKComponentConfiguration()
+            ACHDirectDebitConfiguration()
         }
 
         XCTAssertTrue(sut.dropInConfiguration.hideStoredPaymentMethods)
         XCTAssertEqual(sut.configurations.count, 1)
-        XCTAssertNotNil(sut.configurations[.payment(.blik)] as? BLIKComponentConfiguration)
+        XCTAssertNotNil(sut.configurations[.payment(.achDirectDebit)] as? ACHDirectDebitConfiguration)
     }
 
     // MARK: - Legacy componentConfiguration Tests
     
     func testComponentConfiguration_WithExistingConfiguration_ReturnsConfiguration() throws {
         // Given
-        let blikConfig = BLIKComponentConfiguration()
+        var blikConfig = BasicComponentConfiguration()
+        blikConfig.showsSubmitButton = false
         let checkoutConfig = makeCheckoutConfiguration(
             configurations: [.payment(.blik): blikConfig]
         )
         let paymentMethod = try XCTUnwrap(createBLIKPaymentMethod())
         
         // When
-        let resolvedConfig: BLIKComponentConfiguration = try checkoutConfig.configuration(
+        let resolvedConfig: BasicComponentConfiguration = try checkoutConfig.configuration(
             for: paymentMethod,
-            defaultValue: BLIKComponentConfiguration()
+            defaultValue: BasicComponentConfiguration()
         )
         
         // Then
-        let unwrapped = resolvedConfig
-        XCTAssertEqual(unwrapped.componentType, .payment(.blik))
+        XCTAssertFalse(resolvedConfig.showsSubmitButton, "Should return the stored configuration")
     }
     
     // MARK: - Action Configuration Tests

@@ -224,6 +224,10 @@ public struct LocalizationKey {
     public static let countryFieldPlaceholder = LocalizationKey(key: "adyen.countryField.placeholder")
     /// Invalid country/region
     public static let countryFieldInvalid = LocalizationKey(key: "adyen.countryField.invalid")
+    /// Country or region
+    public static let addressCountryPickerTitle = LocalizationKey(key: "adyen_checkout_address_country_picker_title")
+    /// Search and select your country/region.
+    public static let addressCountryPickerDescription = LocalizationKey(key: "adyen_checkout_address_country_picker_description")
     /// Address
     public static let addressFieldTitle = LocalizationKey(key: "adyen.addressField.title")
     /// Address
