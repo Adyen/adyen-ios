@@ -7,7 +7,7 @@
 import SwiftUI
 import UIKit
 
-package struct FormButtonRepresentable: UIViewRepresentable {
+package struct FormButtonRepresentable: View {
 
     package let title: String
     package let style: AdyenButtonStyle
@@ -33,37 +33,57 @@ package struct FormButtonRepresentable: UIViewRepresentable {
         self.action = action
     }
 
+    package var body: some View {
+        UIKitFormButton(
+            title: title,
+            style: style,
+            showsActivityIndicator: showsActivityIndicator,
+            accessibilityIdentifier: accessibilityIdentifier,
+            action: action
+        )
+        .disabled(!isEnabled || showsActivityIndicator)
+    }
+}
+
+private struct UIKitFormButton: UIViewRepresentable {
+
+    let title: String
+    let style: AdyenButtonStyle
+    let showsActivityIndicator: Bool
+    let accessibilityIdentifier: String
+    let action: () -> Void
+
     /// Creates the coordinator that forwards UIKit tap events.
-    package func makeCoordinator() -> Coordinator {
+    func makeCoordinator() -> Coordinator {
         Coordinator(action: action)
     }
 
     /// Creates the UIKit form button and connects its tap handler.
-    package func makeUIView(context: Context) -> FormButton {
+    func makeUIView(context: Context) -> FormButton {
         let button = FormButton(buttonStyle: style)
         button.addTarget(context.coordinator, action: #selector(Coordinator.didTapButton), for: .touchUpInside)
         return button
     }
 
     /// Synchronizes the latest SwiftUI state with the UIKit form button.
-    package func updateUIView(_ button: FormButton, context: Context) {
+    func updateUIView(_ button: FormButton, context: Context) {
         context.coordinator.action = action
         button.title = title
         button.showsActivityIndicator = showsActivityIndicator
-        button.isEnabled = isEnabled && !showsActivityIndicator
+        button.isEnabled = context.environment.isEnabled && !showsActivityIndicator
         button.accessibilityIdentifier = accessibilityIdentifier
     }
 
-    package final class Coordinator: NSObject {
-        package var action: () -> Void
+    final class Coordinator: NSObject {
+        var action: () -> Void
 
         /// Stores the action invoked when the button is tapped.
-        package init(action: @escaping () -> Void) {
+        init(action: @escaping () -> Void) {
             self.action = action
         }
 
         /// Forwards the UIKit tap event to the configured action.
-        @objc package func didTapButton() {
+        @objc func didTapButton() {
             action()
         }
     }

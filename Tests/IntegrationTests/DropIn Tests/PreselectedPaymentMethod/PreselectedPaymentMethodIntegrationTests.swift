@@ -52,6 +52,43 @@ struct PreselectedPaymentMethodIntegrationTests {
         #expect(dropInFlowManager.submitFromCalled)
     }
 
+    /// Verifies that successful submission removes the loading state.
+    @Test
+    func loadingViewModel_whenSubmissionSucceeds_thenStopsLoading() throws {
+        let component = makeGenericComponent()
+        let (sut, _, _) = makeSUT(component: component)
+        try sut.submitPayment()
+
+        try sut.completePayment(from: component)
+
+        #expect(try !sut.isLoading)
+    }
+
+    /// Verifies that failed submission removes the loading state.
+    @Test
+    func loadingViewModel_whenSubmissionFails_thenStopsLoading() throws {
+        let component = makeGenericComponent()
+        let (sut, _, _) = makeSUT(component: component)
+        try sut.submitPayment()
+
+        try sut.failPayment(with: Dummy.error, from: component)
+
+        #expect(try !sut.isLoading)
+    }
+
+    /// Verifies that cancelling payment removes the loading state.
+    @Test
+    func loadingViewModel_whenPaymentIsCancelled_thenStopsLoading() throws {
+        let component = makeGenericComponent()
+        let (sut, _, _) = makeSUT(component: component)
+        sut.load()
+        try sut.submitPayment()
+
+        sut.cancel()
+
+        #expect(try !sut.isLoading)
+    }
+
     @Test("PaymentComponent that is presentable - submit payment triggers presentation")
     func presentableComponent_submitPayment_triggersPresentation() throws {
         let mockedRouter = PreselectedPaymentMethodRoutingMock()
@@ -166,6 +203,12 @@ struct PreselectedPaymentMethodIntegrationTests {
         #expect(dropInFlowManagerMock.cancelComponentCalled)
     }
 
+    private func makeGenericComponent() -> PaymentComponentMock {
+        let component = PaymentComponentMock(paymentMethod: PaymentComponentTestData.visa.paymentComponent.paymentMethod)
+        component.shouldCallDelegateOnSubmit = false
+        return component
+    }
+
     // MARK: - Setup of the system under test
 
     /// A setup with the payment method router mocked to test actions made by the user for a paymentComponent that is PaymentComponent
@@ -274,10 +317,26 @@ struct PreselectedPaymentMethodIntegrationTests {
             }
         }
 
+        var isLoading: Bool {
+            get throws {
+                try preselectedViewController.viewModel.isLoading
+            }
+        }
+
         // MARK: - User Actions
 
         func submitPayment() throws {
             try preselectedViewController.viewModel.submitPayment()
+        }
+
+        func completePayment(from component: PaymentComponent) throws {
+            let details = GenericPaymentDetails(type: component.paymentMethod.type)
+            let data = PaymentComponentData(paymentMethodDetails: details, order: nil)
+            try preselectedViewController.viewModel.didSubmit(data, from: component)
+        }
+
+        func failPayment(with error: Error, from component: PaymentComponent) throws {
+            try preselectedViewController.viewModel.didFail(with: error, from: component)
         }
 
         func showAllPaymentMethods() throws {
