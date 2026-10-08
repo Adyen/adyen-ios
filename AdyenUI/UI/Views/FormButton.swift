@@ -9,6 +9,7 @@ import SwiftUI
 import UIKit
 
 /// A rounded button for use in forms.
+/// Use `FormButtonRepresentable` to display this button in SwiftUI.
 /// It has a template like [{Progress-indicator} | {image}] {Text}
 /// The progress indicator for the button is a custom one implemented by `CircularProgressView` to show and remove progress we add and remove that view.
 /// When progress is active it replaces the image.

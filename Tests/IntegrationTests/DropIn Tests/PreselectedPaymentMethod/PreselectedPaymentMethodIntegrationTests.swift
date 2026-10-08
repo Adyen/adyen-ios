@@ -240,64 +240,48 @@ struct PreselectedPaymentMethodIntegrationTests {
 
         // MARK: - Readable UI accessors
 
+        private var preselectedViewController: PreselectedPaymentMethodViewController {
+            get throws {
+                try #require(viewController as? PreselectedPaymentMethodViewController)
+            }
+        }
+
         func load() {
             viewController.loadViewIfNeeded()
         }
 
         var primaryTitleText: String {
             get throws {
-                let titleLabel = try #require(viewController.view.findView(by: "title") as? UILabel)
-                return try #require(titleLabel.text)
+                try preselectedViewController.viewModel.titleText
             }
         }
 
         var subTitleText: String {
             get throws {
-                let secondaryTitleLabel = try #require(viewController.view.findView(by: "subTitle") as? UILabel)
-                return try #require(secondaryTitleLabel.text)
+                try preselectedViewController.viewModel.subtitleText
             }
         }
 
         var submitButtonText: String {
             get throws {
-                let button = try submitButton()
-                return try #require(button.title)
+                try preselectedViewController.viewModel.submitButtonTitle
             }
         }
 
         var showAllPaymentMethodsButtonText: String {
             get throws {
-                let button = try showAllPaymentMethodsButton()
-                return try #require(button.title)
+                try preselectedViewController.viewModel.showAllPaymentMethodsButtonTitle
             }
-        }
-
-        // MARK: - UI elements
-
-        func submitButton() throws -> FormButton {
-            try #require(
-                viewController.view.findView(by: "primaryButton") as? FormButton,
-                "Cannot find submitButton - Check if the element exists in the view."
-            )
-        }
-
-        func showAllPaymentMethodsButton() throws -> FormButton {
-            try #require(
-                viewController.view.findView(by: "secondaryButton") as? FormButton,
-                "Cannot find showAllPaymentMethodsButton - Check if the element exists in the view."
-            )
         }
 
         // MARK: - User Actions
 
         func submitPayment() throws {
-            let button = try submitButton()
-            button.sendActions(for: .touchUpInside)
+            try preselectedViewController.viewModel.submitPayment()
         }
 
         func showAllPaymentMethods() throws {
-            let button = try showAllPaymentMethodsButton()
-            button.sendActions(for: .touchUpInside)
+            try preselectedViewController.viewModel.showAllPaymentMethods()
         }
 
         func cancel() {
