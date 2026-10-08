@@ -105,10 +105,7 @@ internal struct PreselectedPaymentMethodView: View {
 
     private var topContent: some View {
         PaymentMethodContentHeaderView(
-            logoURL: viewModel.paymentMethodLogoURL,
-            title: viewModel.titleText,
-            subtitle: AttributedString(viewModel.subtitleText),
-            theme: viewModel.theme,
+            viewModel: viewModel.header,
             accessibilityIdentifiers: .init(
                 logo: PreselectedPaymentMethodAccessibilityIdentifier.logo,
                 title: PreselectedPaymentMethodAccessibilityIdentifier.title,

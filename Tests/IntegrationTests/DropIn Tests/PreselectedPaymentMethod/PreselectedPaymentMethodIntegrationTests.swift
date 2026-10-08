@@ -295,13 +295,13 @@ struct PreselectedPaymentMethodIntegrationTests {
 
         var primaryTitleText: String {
             get throws {
-                try preselectedViewController.viewModel.titleText
+                try preselectedViewController.viewModel.header.title
             }
         }
 
         var subTitleText: String {
             get throws {
-                try preselectedViewController.viewModel.subtitleText
+                try String(preselectedViewController.viewModel.header.subtitle.characters)
             }
         }
 
@@ -411,8 +411,10 @@ struct PreselectedPaymentMethodIntegrationTests {
 
         var expectedSubTitleText: String {
             switch self {
-            case .visa, .visaWithoutAmount, .visaWithZeroAmount: "Use VISA"
-            case .bcmc, .initiableBCMC: "Use Maestro"
+            case .visa: "Use VISA to pay €1.00"
+            case .visaWithoutAmount: "Use VISA to pay"
+            case .visaWithZeroAmount: "Use VISA to save details"
+            case .bcmc, .initiableBCMC: "Use Maestro to pay €1.00"
             }
         }
 

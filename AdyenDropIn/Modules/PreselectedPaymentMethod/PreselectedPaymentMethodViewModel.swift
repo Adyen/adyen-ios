@@ -55,24 +55,13 @@ internal final class PreselectedPaymentMethodViewModel: ObservableObject {
 
     // MARK: - Display Properties
 
-    internal var paymentMethodLogoURL: URL {
-        let paymentMethod = component.paymentMethod
-        let displayInformation = paymentMethod.displayInformation(using: localizationParameters)
-        // TODO: Robert: This will change as we will not rely on DisplayInformation for V6.
-        return LogoURLProvider.logoURL(
-            withName: displayInformation.logoName,
-            environment: component.context.apiContext.environment,
-            size: .large
+    internal var header: PaymentMethodContentHeaderViewModel {
+        PaymentMethodContentHeaderViewModel(
+            paymentMethod: component.paymentMethod,
+            context: component.context,
+            localizationParameters: localizationParameters,
+            theme: theme
         )
-    }
-
-    internal var titleText: String {
-        let displayInformation = component.paymentMethod.displayInformation(using: localizationParameters)
-        return displayInformation.title
-    }
-
-    internal var subtitleText: String {
-        localizedString(.preselectedPaymentMethodSubtitle, localizationParameters, component.paymentMethod.name)
     }
 
     internal var submitButtonTitle: String {
