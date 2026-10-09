@@ -147,7 +147,7 @@ final class FormButtonTests: XCTestCase {
         isEnabled: Bool = true,
         showsActivityIndicator: Bool = false,
         action: @escaping () -> Void = {}
-    ) throws -> (UIWindow, UIHostingController<FormButtonRepresentable>, FormButton) {
+    ) throws -> (UIWindow, UIHostingController<FormButtonView>, FormButton) {
         let hostingController = UIHostingController(rootView: makeRepresentable(
             title: title,
             isEnabled: isEnabled,
@@ -167,8 +167,8 @@ final class FormButtonTests: XCTestCase {
         isEnabled: Bool,
         showsActivityIndicator: Bool,
         action: @escaping () -> Void = {}
-    ) -> FormButtonRepresentable {
-        FormButtonRepresentable(
+    ) -> FormButtonView {
+        FormButtonView(
             title: title,
             style: .primary(for: .default),
             isEnabled: isEnabled,
