@@ -1166,6 +1166,7 @@ class CardComponentTests: XCTestCase {
 
         let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
         XCTAssertEqual(installmentsItem.title, localizedString(.cardInstallmentsPickerTitle, nil))
+        XCTAssertEqual(installmentsItem.placeholder, localizedString(.cardInstallmentsOneTimeDescription, nil))
         XCTAssertEqual(installmentsItem.formattedValue, "One time payment")
         XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
 
@@ -1260,6 +1261,7 @@ class CardComponentTests: XCTestCase {
 
         let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
         XCTAssertEqual(installmentsItem.title, localizedString(.cardInstallmentsPickerTitle, nil))
+        XCTAssertEqual(installmentsItem.placeholder, localizedString(.cardInstallmentsOneTimeDescription, nil))
         XCTAssertEqual(installmentsItem.formattedValue, "One time payment")
         XCTAssertFalse(installmentsItem.isHidden.wrappedValue)
 
@@ -1298,6 +1300,7 @@ class CardComponentTests: XCTestCase {
 
         let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
         XCTAssertEqual(installmentsItem.title, localizedString(.cardInstallmentsPickerTitle, nil))
+        XCTAssertEqual(installmentsItem.placeholder, localizedString(.cardInstallmentsOneTimeDescription, nil))
         XCTAssertEqual(installmentsItem.formattedValue, "One time payment")
         XCTAssertTrue(installmentsItem.isHidden.wrappedValue)
 
@@ -1349,6 +1352,7 @@ class CardComponentTests: XCTestCase {
 
         let installmentsItem = try XCTUnwrap(sut.cardViewController.items.installmentsItem)
         XCTAssertEqual(installmentsItem.title, localizedString(.cardInstallmentsPickerTitle, nil))
+        XCTAssertEqual(installmentsItem.placeholder, localizedString(.cardInstallmentsOneTimeDescription, nil))
         XCTAssertEqual(installmentsItem.formattedValue, "One time payment")
         XCTAssertTrue(installmentsItem.isHidden.wrappedValue)
 

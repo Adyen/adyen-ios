@@ -74,13 +74,12 @@ internal final class FormCardInstallmentsItem: FormPickerItem<InstallmentElement
         self.installmentConfiguration = installmentConfiguration
         self.amount = amount
         let oneTimePaymentElement = InstallmentElement(kind: .plan(.oneTime), localizationParameters: localizationParameters)
-        // TODO: Localize "Pay the full amount today".
         // TODO: Footer subtitle is static; make it reflect the selected installment type.
         super.init(
             preselectedValue: oneTimePaymentElement,
             selectableValues: [oneTimePaymentElement],
             title: localizedString(.cardInstallmentsPickerTitle, localizationParameters),
-            placeholder: localizedString(LocalizationKey(key: "Pay the full amount today"), localizationParameters),
+            placeholder: localizedString(.cardInstallmentsOneTimeDescription, localizationParameters),
             style: style,
             presenter: presenter,
             localizationParameters: localizationParameters

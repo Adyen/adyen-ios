@@ -83,7 +83,8 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
     func test_cardComponent_builtFromCheckoutConfiguration_withGlobalProvider_shouldRenderInstallmentsStrings() throws {
         let provider = CardComponentLocalizationFlowProviderMock(values: [
             .cardInstallmentsTitle: "Custom payment plan",
-            .cardInstallmentsPickerTitle: "Custom installments"
+            .cardInstallmentsPickerTitle: "Custom installments",
+            .cardInstallmentsOneTimeDescription: "Custom full amount today"
         ])
 
         var cardConfiguration = CardConfiguration()
@@ -98,6 +99,7 @@ final class CardComponentLocalizationFlowTests: XCTestCase {
         setupRootViewController(sut.viewController)
 
         XCTAssertEqual(sut.cardViewController.items.installmentsItem?.title, "Custom installments")
+        XCTAssertEqual(sut.cardViewController.items.installmentsItem?.placeholder, "Custom full amount today")
         XCTAssertNotNil(sectionHeaderView(containing: "Custom payment plan", in: sut.cardViewController.view))
     }
 
