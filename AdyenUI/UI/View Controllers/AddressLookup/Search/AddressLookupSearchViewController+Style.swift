@@ -11,12 +11,6 @@ package struct AddressLookupSearchStyle: ViewStyle {
 
     package var backgroundColor: UIColor = .Adyen.componentBackground
 
-    package var manualEntryListItem: ListItemStyle = {
-        var listItemStyle = ListItemStyle()
-        listItemStyle.title.color = .Adyen.defaultBlue
-        return listItemStyle
-    }()
-    
     package var emptyView: EmptyStateViewStyle = .init()
 
     package init() {}

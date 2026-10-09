@@ -25,13 +25,13 @@ class FormAddressPickerItemViewStyleTests: XCTestCase {
 
     // MARK: - TitleLabel Style Tests
 
-    func test_titleLabel_font_shouldUseThemeBodyEmphasizedFont() {
-        let expectedFont = CheckoutTheme.default.elements.labels.bodyEmphasized.font
+    func test_titleLabel_font_shouldUseThemeLabelFont() {
+        let expectedFont = CheckoutTheme.default.elements.labels.label.font
         XCTAssertEqual(sut.titleLabel.font, expectedFont)
     }
 
-    func test_titleLabel_color_shouldUseThemeBodyEmphasizedColor() {
-        let expectedColor = CheckoutTheme.default.elements.labels.bodyEmphasized.color
+    func test_titleLabel_color_shouldUseThemeLabelColor() {
+        let expectedColor = CheckoutTheme.default.elements.labels.label.color
         XCTAssertEqual(sut.titleLabel.textColor, expectedColor)
     }
 

@@ -19,8 +19,8 @@ open class FormValueItemView<ValueType, Style, ItemType: FormValueItem<ValueType
 
     /// The top label view.
     public lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel()
-        titleLabel.apply(theme.elements.labels.bodyEmphasized)
+        let titleLabel = AdyenLabel()
+        titleLabel.apply(theme.elements.labels.label)
         titleLabel.text = item.title
         titleLabel.numberOfLines = 0
         titleLabel.isAccessibilityElement = false
