@@ -195,6 +195,39 @@ final class ComponentManagerTests: XCTestCase {
         XCTAssertEqual(sut.buildComponent(for: card)?.order, order)
     }
 
+    func test_buildComponent_shouldMarkComponentAsDropIn() throws {
+        let card = try AdyenCoder.decode(creditCardDictionary) as CardPaymentMethod
+        let sut = makeSUT(
+            paymentMethods: PaymentMethods(regular: [card], stored: []),
+            paymentComponentBuilder: genericBuilder
+        )
+
+        let component = try XCTUnwrap(sut.buildComponent(for: card))
+
+        XCTAssertTrue(component._isDropIn)
+    }
+
+    func test_buildComponent_withBACS_shouldSkipInitialAnalyticsAndSendRenderedEvent() throws {
+        let analyticsProvider = AnalyticsProviderMock()
+        context = AdyenContext(
+            apiContext: Dummy.apiContext,
+            amount: Dummy.amount,
+            publicKey: Dummy.publicKey,
+            analyticsProvider: analyticsProvider
+        )
+        let bacs = BACSDirectDebitPaymentMethod(type: .bacsDirectDebit, name: "BACS Direct Debit")
+        let sut = try makeSUT(
+            paymentMethods: PaymentMethods(regular: [bacs], stored: []),
+            paymentComponentProvider: checkoutProvider()
+        )
+
+        let component = try XCTUnwrap(sut.buildComponent(for: bacs) as? BACSDirectDebitComponent)
+        component.bacsViewModel.viewDidLoad()
+
+        XCTAssertEqual(analyticsProvider.initialEventCallsCount, 0)
+        XCTAssertEqual(analyticsProvider.infos.map(\.type), [.rendered])
+    }
+
     func test_supportedRegularPaymentMethods_withVoucherAndQRCodeMethods_shouldIncludeThem() throws {
         let methods = try AdyenCoder.decode([
             "paymentMethods": [oxxo, ["type": "pix", "name": "PIX"]]

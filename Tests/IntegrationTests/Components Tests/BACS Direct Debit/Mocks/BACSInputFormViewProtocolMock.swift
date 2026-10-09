@@ -8,7 +8,7 @@
 @testable import AdyenComponents
 @_spi(AdyenInternal) @testable import AdyenUI
 
-class BACSInputFormViewProtocolMock: BACSInputFormViewProtocol {
+class BACSInputFormViewProtocolMock: BACSView {
 
     // MARK: - setupNavigationBar
 

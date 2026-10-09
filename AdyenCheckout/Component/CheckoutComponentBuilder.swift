@@ -52,6 +52,14 @@ package enum CheckoutComponentBuilder {
                     policy: policy,
                     context: context
                 )
+            case let bacsPaymentMethod as BACSDirectDebitPaymentMethod:
+                return try createComponent(
+                    using: BACSDirectDebitFactory(),
+                    paymentMethod: bacsPaymentMethod,
+                    configuration: configuration,
+                    policy: policy,
+                    context: context
+                )
             case let applePayPaymentMethod as ApplePayPaymentMethod:
                 return try createComponent(
                     using: ApplePayComponentFactory(),
@@ -162,6 +170,7 @@ package enum CheckoutComponentBuilder {
         )
     }
 
+    // swiftlint:disable function_body_length
     /// Returns whether a component can currently be built for a regular or stored payment method.
     ///
     /// The regular-method dispatch mirrors ``build(for:configuration:policy:sessionConfiguration:context:)``.
@@ -190,6 +199,12 @@ package enum CheckoutComponentBuilder {
                 return isAvailable(
                     using: ACHDirectDebitComponentFactory(),
                     paymentMethod: achPaymentMethod,
+                    configuration: configuration
+                )
+            case let bacsPaymentMethod as BACSDirectDebitPaymentMethod:
+                return isAvailable(
+                    using: BACSDirectDebitFactory(),
+                    paymentMethod: bacsPaymentMethod,
                     configuration: configuration
                 )
             case let applePayPaymentMethod as ApplePayPaymentMethod:
@@ -229,6 +244,8 @@ package enum CheckoutComponentBuilder {
             return false
         }
     }
+
+    // swiftlint:enable function_body_length
 
     /// Resolves the component configuration and asks the factory whether the component is available.
     ///

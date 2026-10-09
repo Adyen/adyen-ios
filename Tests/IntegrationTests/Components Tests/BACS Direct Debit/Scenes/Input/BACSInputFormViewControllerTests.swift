@@ -11,7 +11,7 @@ import XCTest
 
 class BACSInputFormViewControllerTests: XCTestCase {
 
-    var sut: BACSInputFormViewController!
+    var sut: BACSViewController!
     var presenter: BACSInputPresenterProtocolMock!
 
     override func setUpWithError() throws {
@@ -19,12 +19,12 @@ class BACSInputFormViewControllerTests: XCTestCase {
         presenter = BACSInputPresenterProtocolMock()
 
         let styleProvider = FormComponentStyle()
-        sut = BACSInputFormViewController(
+        sut = BACSViewController(
             title: "BACS Direct Debit",
             scrollEnabled: true,
             styleProvider: styleProvider
         )
-        sut.presenter = presenter
+        sut.viewModel = presenter
     }
 
     override func tearDownWithError() throws {
