@@ -19,7 +19,7 @@ internal extension View {
     ///   - style: The style to apply.
     ///   - color: An optional override for the style's color.
     func adyenLabelStyle(_ style: AdyenLabelStyle, color: UIColor? = nil) -> some View {
-        let extraSpacing = (style.lineHeight ?? style.font.lineHeight) - style.font.lineHeight
+        let extraSpacing = max(0, (style.lineHeight ?? style.font.lineHeight) - style.font.lineHeight)
         return font(Font(style.font))
             .foregroundStyle(Color(uiColor: color ?? style.color))
             .lineSpacing(extraSpacing)
