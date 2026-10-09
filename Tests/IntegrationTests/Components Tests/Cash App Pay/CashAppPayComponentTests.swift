@@ -294,9 +294,10 @@ import XCTest
                 XCTAssertEqual(details.customerId, "testId")
                 XCTAssertNil(details.onFileGrantId)
 
-                sut.finalizeIfNeeded(with: true, completion: {
+                Task {
+                    await sut.finalizeIfNeeded(success: true)
                     finalizationExpectation.fulfill()
-                })
+                }
                 delegateExpectation.fulfill()
             }
             
@@ -325,9 +326,10 @@ import XCTest
                 XCTAssertEqual(details.cashtag, "testtag")
                 XCTAssertEqual(details.onFileGrantId, "onFileGrantId1")
 
-                sut.finalizeIfNeeded(with: true, completion: {
+                Task {
+                    await sut.finalizeIfNeeded(success: true)
                     finalizationExpectation.fulfill()
-                })
+                }
                 delegateExpectation.fulfill()
             }
             
@@ -353,9 +355,10 @@ import XCTest
             let finalizationExpectation = expectation(description: "Component should finalize.")
 
             paymentDelegateMock.onDidSubmit = { _, _ in
-                sut.finalizeIfNeeded(with: true, completion: {
+                Task {
+                    await sut.finalizeIfNeeded(success: true)
                     finalizationExpectation.fulfill()
-                })
+                }
                 didSubmitExpectation.fulfill()
             }
 
