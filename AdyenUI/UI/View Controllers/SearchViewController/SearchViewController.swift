@@ -21,7 +21,8 @@ package class SearchViewController: UIViewController, AdyenObserver {
 
     private enum Layout {
         static let searchBarHorizontalInset: CGFloat = 8
-        static let headerBottomSpacing: CGFloat = 8
+        static let headerTopSpacing: CGFloat = 16
+        static let headerBottomSpacing: CGFloat = 24
     }
 
     internal lazy var keyboardObserver = KeyboardObserver()
@@ -159,7 +160,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
             let headerHeightHug = headerView.heightAnchor.constraint(equalToConstant: 0)
             headerHeightHug.priority = .defaultLow
             NSLayoutConstraint.activate([
-                headerView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
+                headerView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: Layout.headerTopSpacing),
                 headerView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
                 headerView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
                 headerHeightHug
@@ -224,9 +225,7 @@ package class SearchViewController: UIViewController, AdyenObserver {
             emptyView.searchTerm = searchTerm
             
         case let .showingResults(results):
-            resultsListViewController.reload(
-                newSections: [.init(items: results)]
-            )
+            resultsListViewController.reload(newSections: results.map { ListSection(items: [$0]) })
             resultsListViewController.view.isHidden = false
         }
     }

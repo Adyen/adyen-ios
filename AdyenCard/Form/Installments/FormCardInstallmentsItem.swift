@@ -74,7 +74,6 @@ internal final class FormCardInstallmentsItem: FormPickerItem<InstallmentElement
         self.installmentConfiguration = installmentConfiguration
         self.amount = amount
         let oneTimePaymentElement = InstallmentElement(kind: .plan(.oneTime), localizationParameters: localizationParameters)
-        // TODO: Footer subtitle is static; make it reflect the selected installment type.
         super.init(
             preselectedValue: oneTimePaymentElement,
             selectableValues: [oneTimePaymentElement],
@@ -82,7 +81,12 @@ internal final class FormCardInstallmentsItem: FormPickerItem<InstallmentElement
             placeholder: localizedString(.cardInstallmentsOneTimeDescription, localizationParameters),
             style: style,
             presenter: presenter,
-            localizationParameters: localizationParameters
+            localizationParameters: localizationParameters,
+            configuration: .init(
+                title: localizedString(.cardInstallmentsPickerTitle, localizationParameters),
+                subtitle: localizedString(.cardInstallmentsPickerDescription, localizationParameters),
+                isSearchEnabled: false
+            )
         )
         updateOptionalStatus(isOptional: true)
         isHidden.wrappedValue = true
@@ -119,5 +123,6 @@ internal final class FormCardInstallmentsItem: FormPickerItem<InstallmentElement
 
     override internal func updateFormattedValue() {
         formattedValue = value?.title
+        placeholder = value?.subtitle
     }
 }
