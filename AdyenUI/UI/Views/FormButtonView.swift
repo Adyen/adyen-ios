@@ -34,7 +34,7 @@ package struct FormButtonView: View {
     }
 
     package var body: some View {
-        FormButtonRepresentable(
+        FormButtonBridge(
             title: title,
             style: style,
             showsActivityIndicator: showsActivityIndicator,
@@ -45,7 +45,7 @@ package struct FormButtonView: View {
     }
 }
 
-private struct FormButtonRepresentable: UIViewRepresentable {
+private struct FormButtonBridge: UIViewRepresentable {
 
     let title: String
     let style: AdyenButtonStyle
