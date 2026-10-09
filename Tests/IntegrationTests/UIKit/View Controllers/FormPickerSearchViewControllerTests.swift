@@ -396,6 +396,21 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         )
     }
 
+    func test_picker_whenResultsRendered_shouldSpaceTitleAndSubtitleByTwoPoints() throws {
+        let searchViewController = try makeSearchViewController()
+        let resultsListViewController = searchViewController.resultsListViewController
+        wait(until: { resultsListViewController.viewIfLoaded?.window != nil })
+        searchViewController.view.layoutIfNeeded()
+
+        let cell = try XCTUnwrap(resultsListViewController.tableView.visibleCells.first as? ListCell)
+        let titleLabel: UILabel = try XCTUnwrap(cell.findView(by: "titleLabel"))
+        let subtitleLabel: UILabel = try XCTUnwrap(cell.findView(by: "subtitleLabel"))
+        let titleFrame = titleLabel.convert(titleLabel.bounds, to: cell)
+        let subtitleFrame = subtitleLabel.convert(subtitleLabel.bounds, to: cell)
+
+        XCTAssertEqual(subtitleFrame.minY - titleFrame.maxY, 2, accuracy: 0.5)
+    }
+
     func test_picker_whenSearchDisabledAndHeaderAbsent_shouldShowResultsWithoutSearchBar() throws {
         let title = "Installments"
         let searchViewController = try makeSearchViewController(
@@ -406,6 +421,25 @@ class FormPickerSearchViewControllerTests: XCTestCase {
         XCTAssertFalse(searchViewController.searchBar.isFirstResponder)
         XCTAssertEqual(searchViewController.title, title)
         XCTAssertEqual(searchViewController.resultsListViewController.sections.first?.items.count, 1)
+    }
+
+    func test_picker_whenSearchDisabledAndHeaderPresent_shouldSpaceFirstResultBelowHeader() throws {
+        let searchViewController = try makeSearchViewController(
+            configuration: .init(
+                title: "Installments",
+                subtitle: "Split the total cost into monthly payments.",
+                isSearchEnabled: false
+            )
+        )
+        let resultsListViewController = searchViewController.resultsListViewController
+        wait(until: { resultsListViewController.viewIfLoaded?.window != nil })
+        searchViewController.view.layoutIfNeeded()
+
+        let headerView = try XCTUnwrap(searchViewController.headerView)
+        let firstCell = try XCTUnwrap(resultsListViewController.tableView.visibleCells.first)
+        let firstCellFrame = firstCell.convert(firstCell.bounds, to: searchViewController.view)
+
+        XCTAssertEqual(firstCellFrame.minY - headerView.frame.maxY, 24, accuracy: 0.5)
     }
 
     func test_picker_whenSearchDisabledAndOptionsEmpty_shouldShowEmptyStateWithoutSearchBar() throws {
