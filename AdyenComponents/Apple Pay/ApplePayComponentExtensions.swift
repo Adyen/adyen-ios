@@ -24,15 +24,7 @@ extension ApplePayComponent: PKPaymentAuthorizationControllerDelegate {
     // MARK: - Did Finish
 
     public func paymentAuthorizationControllerDidFinish(_ controller: PKPaymentAuthorizationController) {
-        Task {
-            await authorizationController?.dismiss()
-            authorizationController = nil
-            guard !authorizationHandled else { return }
-
-            // Either user cancelled, or dismissed mid-authorization. Cancel current.
-            cancelPendingAuthorization()
-            delegate?.didFail(with: ComponentError.cancelled, from: self)
-        }
+        requestSheetClose()
     }
 
     // MARK: - Presentation Window
@@ -97,20 +89,20 @@ extension ApplePayComponent: PKPaymentAuthorizationControllerDelegate {
 extension ApplePayComponent {
 
     private func handleAuthorize(payment: PKPayment) async -> PKPaymentAuthorizationResult {
-        authorizationHandled = true
-
         guard !payment.token.paymentData.isEmpty else {
-            delegate?.didFail(with: Error.invalidToken, from: self)
+            // PassKit closes the sheet after a failure without errors.
+            sheetOutcome = .failed(Error.invalidToken)
             return PKPaymentAuthorizationResult(status: .failure, errors: nil)
         }
+        sheetOutcome = .authorized
 
         // Optional merchant validation via configuration closure
         if let onAuthorize = configuration.onAuthorize {
             let result = await onAuthorize(payment)
             if result.status == .failure {
-                // Sheet stays open for the shopper to retry.
-                // Cancelling after this before a new authorize should trigger didFail
-                authorizationHandled = false
+                // With errors the shopper can fix, the sheet stays open to retry.
+                // Without them, PassKit closes the sheet, which is reported as a cancel.
+                sheetOutcome = .cancelled
                 return result
             }
         }
@@ -129,9 +121,7 @@ extension ApplePayComponent {
 
         let data = PaymentComponentData(paymentMethodDetails: details, order: order)
 
-        // Store the continuation first, then submit. submit() is fire-and-forget — it triggers
-        // the delegate's didSubmit which eventually leads to resolve(success:) being called.
-        // The continuation must be stored before submit so resolve() has something to resume.
+        // Stored before submitting, so `finalize(success:)` always finds it.
         let success = await withCheckedContinuation { continuation in
             self.paymentResultContinuation = continuation
             self.submit(data: data)
@@ -185,8 +175,8 @@ extension ApplePayComponent {
     /// If the result indicates failure or has empty items, the current `paymentRequest.paymentSummaryItems`
     /// are returned unchanged.
     ///
-    /// If validation fails, notifies the delegate via `didFail` and falls back to the
-    /// previous valid summary items to keep the Apple Pay sheet in a consistent state.
+    /// If validation fails, returns the previous valid summary items, because PassKit still needs an answer,
+    /// and closes the sheet. The error is reported through `didFail` once the sheet is dismissed.
     ///
     /// Otherwise the new items are accepted and stored on `paymentRequest`.
     private func validSummaryItems(from result: some PKPaymentRequestUpdate) -> [PKPaymentSummaryItem] {
@@ -198,7 +188,9 @@ extension ApplePayComponent {
             paymentRequest.paymentSummaryItems = result.paymentSummaryItems
             return result.paymentSummaryItems
         } catch {
-            delegate?.didFail(with: error, from: self)
+            sheetOutcome = .failed(error)
+            // PassKit gets this update before the sheet task resumes and dismisses the sheet.
+            requestSheetClose()
             return paymentRequest.paymentSummaryItems
         }
     }

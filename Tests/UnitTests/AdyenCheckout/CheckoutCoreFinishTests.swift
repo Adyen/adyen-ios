@@ -239,6 +239,40 @@ final class CheckoutCoreFinishTests: XCTestCase {
         XCTAssertEqual(failureCount, 1)
     }
 
+    // MARK: - Outcomes without a submit
+
+    func test_closingDropInWithoutSubmit_shouldReportTheCancellation() async {
+        let failed = expectation(description: "onFailure called")
+        var failureCodes: [CheckoutError.Code] = []
+        callbackStore.onFailure = { error in
+            failureCodes.append(error.code)
+            failed.fulfill()
+        }
+
+        sut.didFail(with: ComponentError.cancelled, from: DropInComponentMock())
+
+        await fulfillment(of: [failed], timeout: 1)
+        XCTAssertNil(sut.pendingPaymentComponent)
+        XCTAssertEqual(failureCodes, [.cancelled])
+    }
+
+    func test_cancellingTwiceWithoutSubmit_shouldReportBothCancellations() async {
+        let component = PaymentComponentMock(paymentMethod: paymentMethod)
+        let failed = expectation(description: "onFailure called twice")
+        failed.expectedFulfillmentCount = 2
+        var failureCodes: [CheckoutError.Code] = []
+        callbackStore.onFailure = { error in
+            failureCodes.append(error.code)
+            failed.fulfill()
+        }
+
+        sut.didFail(with: ComponentError.cancelled, from: component)
+        sut.didFail(with: ComponentError.cancelled, from: component)
+
+        await fulfillment(of: [failed], timeout: 1)
+        XCTAssertEqual(failureCodes, [.cancelled, .cancelled])
+    }
+
     // MARK: - Helpers
 
     private func makePaymentData() -> PaymentComponentData {
