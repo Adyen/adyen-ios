@@ -158,7 +158,7 @@ private extension StoredPaymentMethodManagementListView {
                                 lineWidth: Constants.progressViewWidth
                             )
                         } else {
-                            PaymentLogoView(url: item.logoURL, theme: theme, size: Constants.logoSize)
+                            PaymentMethodLogoView(url: item.logoURL, theme: theme, size: Constants.logoSize)
                         }
                     }
                     .frame(width: Constants.logoSize.width, height: Constants.logoSize.height)

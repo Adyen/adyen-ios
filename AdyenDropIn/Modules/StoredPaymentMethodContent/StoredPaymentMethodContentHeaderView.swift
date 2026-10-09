@@ -27,7 +27,7 @@ internal struct StoredPaymentMethodContentHeaderView: View {
 
     internal var body: some View {
         VStack(spacing: Constants.spacing) {
-            PaymentLogoView(url: logoURL, theme: theme, size: Constants.logoSize)
+            PaymentMethodLogoView(url: logoURL, theme: theme, size: Constants.logoSize)
                 .accessibilityIdentifier(StoredPaymentMethodContentAccessibilityIdentifier.logo)
                 .accessibilityHidden(true)
 
