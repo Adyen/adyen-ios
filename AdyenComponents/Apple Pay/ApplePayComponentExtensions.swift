@@ -94,7 +94,6 @@ extension ApplePayComponent {
             sheetOutcome = .failed(Error.invalidToken)
             return PKPaymentAuthorizationResult(status: .failure, errors: nil)
         }
-        sheetOutcome = .authorized
 
         // Optional merchant validation via configuration closure
         if let onAuthorize = configuration.onAuthorize {
@@ -102,10 +101,12 @@ extension ApplePayComponent {
             if result.status == .failure {
                 // With errors the shopper can fix, the sheet stays open to retry.
                 // Without them, PassKit closes the sheet, which is reported as a cancel.
-                sheetOutcome = .cancelled
                 return result
             }
         }
+        // Set after `onAuthorize`, so a sheet that closes while it runs, for example after PassKit's timeout,
+        // is reported as a cancel.
+        sheetOutcome = .authorized
 
         // Build payment details and submit to delegate (fire-and-forget)
         let token = payment.token.paymentData.base64EncodedString()
