@@ -66,20 +66,6 @@ class BACSItemsFactoryProtocolMock: BACSItemsFactoryProtocol {
         return createEmailItemReturnValue
     }
 
-    // MARK: - createContinueButton
-
-    var createContinueButtonCallsCount = 0
-    var createContinueButtonCalled: Bool {
-        createContinueButtonCallsCount > 0
-    }
-
-    var createContinueButtonReturnValue: FormButtonItem!
-
-    func createContinueButton() -> FormButtonItem {
-        createContinueButtonCallsCount += 1
-        return createContinueButtonReturnValue
-    }
-
     // MARK: - createPaymentButton
 
     var createPaymentButtonCallsCount = 0
@@ -88,9 +74,12 @@ class BACSItemsFactoryProtocolMock: BACSItemsFactoryProtocol {
     }
 
     var createPaymentButtonReturnValue: FormButtonItem!
+    var createPaymentButtonReceivedOnSubmit: (() -> Void)?
 
-    func createPaymentButton() -> FormButtonItem {
+    func createPaymentButton(_ onSubmit: @escaping () -> Void) -> FormButtonItem {
         createPaymentButtonCallsCount += 1
+        createPaymentButtonReceivedOnSubmit = onSubmit
+        createPaymentButtonReturnValue.buttonSelectionHandler = onSubmit
         return createPaymentButtonReturnValue
     }
 
@@ -108,14 +97,6 @@ class BACSItemsFactoryProtocolMock: BACSItemsFactoryProtocol {
         createAmountConsentToggleAmountCallsCount += 1
         createAmountConsentToggleReceivedAmount = amount
         return createAmountConsentToggleAmountReturnValue
-    }
-    
-    var createConsentTextReturnValue: String!
-    var createConsentTextReceivedAmount: Amount?
-    
-    func createConsentText(with amount: Amount?) -> String {
-        createConsentTextReceivedAmount = amount
-        return createConsentTextReturnValue
     }
 
     // MARK: - createLegalConsentToggle
