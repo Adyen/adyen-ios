@@ -86,8 +86,13 @@ package class SupportedPaymentMethodLogosView: UIView {
             let logoView = PaymentLogoView(size: imageSize, imageLoader: imageLoader)
             logoView.imageView.adyen.apply(style.images)
             logoView.shadowColor = style.logoShadowColor
-            if case let .fixed(radius) = style.images.cornerRounding {
+            switch style.images.cornerRounding {
+            case let .fixed(radius):
                 logoView.cornerRadius = radius
+            case .none:
+                logoView.cornerRadius = 0
+            case let .percent(percent):
+                logoView.cornerRadius = min(imageSize.width, imageSize.height) * percent
             }
             logoView.load(url: url)
             return logoView
